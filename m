@@ -1,174 +1,137 @@
-Return-Path: <stable+bounces-241836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241837-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABk0CIu48WngjwEAu9opvQ
-	(envelope-from <stable+bounces-241836-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:51:39 +0200
+	id YKZKOzS68Wl1kAEAu9opvQ
+	(envelope-from <stable+bounces-241837-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:58:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC53E490C7A
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:51:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 931A5490DA9
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F0D73007A66
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 07:51:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16378301874C
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 07:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33151396587;
-	Wed, 29 Apr 2026 07:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UCkhjA8J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537E1396D0A;
+	Wed, 29 Apr 2026 07:56:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F039288AD;
-	Wed, 29 Apr 2026 07:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8E32D0FC;
+	Wed, 29 Apr 2026 07:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777449093; cv=none; b=LclgiCXPL3LoQEo+VOiwUk2IyVnwJk4Hclh/Fx/wMfxgeri9lzWihh+U+glo0n8B9O5p2tXeZG3AG0W5ZEqEeUqkRwX/s6nYAMpNkSgPuoHFeQ5xdJUS5Uqr74UlNkXc9v3EYPHy75fNDOxZhQb/yOOVzX4MOtwFeB6On5JBpsg=
+	t=1777449369; cv=none; b=I8myRsMzo4QfYXedYpBEiTRzcwUoLZIOJ356XVxeReJ8pm7JLRTZ72MZubtnzQ53MPPb0y9r0+ibylbys4Kuv8GMzu64c/WhoKoEb2DxnTHNKXD4lCg9dD0I/uKMEwdYMC1mrz8GUknovaA3+dZqFzXiN5N7REzDky3o0JhFns8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777449093; c=relaxed/simple;
-	bh=CFZ5uMBKSrGu7JAvCGEzeeRZBxCKOCNIMeeQ3EVVpx0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W2CPD7f+L+UnJHyy8sX4rJ1eIDGFmwp137NaILuFpop0b4/N6Ari5PFvqFdsaKEz26Ba/dndUtN5qd5JlNZFutCC1E/Tu5IZiyzc1S24PaKLUBb0q0Od2YFKCdc+1TpK4kLibLy+hxnXxOo8dh0VTTltCcov1veLBcXaDTjmEnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UCkhjA8J; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Rn
-	FBQCpgoJYGqHjOv7EfoGIdH2jJ4SYUqml+NyqGTBA=; b=UCkhjA8JougnFVw925
-	5nvkYv13V+JKM9fG+pK8ZxcV/4KEUUtQcNuO2ZoSWa3LqgLBZIIoOV9ZGZCgTJCW
-	dVlEmYwHgVLvBTcwHzMpyUrB8TH4FkBsxtfgaIqLe/he/x7m9rFhaNBHaI+J4X0L
-	SKp+6Zp3h4AS+3uwET5VOUxMA=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wAn3cdJuPFpvSa8CQ--.6606S2;
-	Wed, 29 Apr 2026 15:50:34 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Tung Nguyen <tung.q.nguyen@dektech.com.au>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Jon Maloy <jmaloy@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Robert Garcia <rob_garcia@163.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] tipc: fix kernel warning when sending SYN message
-Date: Wed, 29 Apr 2026 15:50:33 +0800
-Message-Id: <20260429075033.234885-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1777449369; c=relaxed/simple;
+	bh=Kkv97VMnztmelRWbOIZlO1gcT+e2sRBJ+LEZugPERUg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uizi9+mDmTs8RRrTL0BjTHPW/pmoa+Wu6ZUtTzZA8X9/K+FXMoGC/bk7Pzc78Hc/nLw0c6z01zYUzDY/TSaG8PfETNF0WSGCiUn4wOnjYsO/chqGFa+aqwEvvIOO+6Qiq4AsTdaf+b+wWhf/vbAaHTgP1hLPu5o02ZoohxnZc2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4g58b35J6Rz1T4G8;
+	Wed, 29 Apr 2026 15:49:35 +0800 (CST)
+Received: from kwepemf100018.china.huawei.com (unknown [7.202.181.17])
+	by mail.maildlp.com (Postfix) with ESMTPS id 091A320226;
+	Wed, 29 Apr 2026 15:55:56 +0800 (CST)
+Received: from [10.67.120.168] (10.67.120.168) by
+ kwepemf100018.china.huawei.com (7.202.181.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 29 Apr 2026 15:55:47 +0800
+Message-ID: <ff248023-a367-3561-1c04-77da1b1f3794@hisilicon.com>
+Date: Wed, 29 Apr 2026 15:55:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAn3cdJuPFpvSa8CQ--.6606S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuF1kAFyfGryruw4fJw13urg_yoW5Xw48pF
-	1YgasxAr1rKr4UWa95XF4q9a4Ikan7tFyIg34kKF15urZ0g3ZxtayjqF4UuF18WrZxAFWF
-	qanFgF97KF1Fk37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_ku4UUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5QoXgmnxuEoUtAAA3w
-X-Rspamd-Queue-Id: EC53E490C7A
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH rc 00/15] Various bug fixes for RDMA drivers in the uapi
+ functions
+To: Jason Gunthorpe <jgg@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>, Eric Dumazet <edumazet@google.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>, Jakub Kicinski
+	<kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	<linux-hyperv@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, Selvin Xavier
+	<selvin.xavier@broadcom.com>, Chengchang Tang <tangchengchang@huawei.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Yishai Hadas <yishaih@nvidia.com>
+CC: Abhijit Gangurde <abhijit.gangurde@amd.com>, Adit Ranadive
+	<aditr@vmware.com>, Allen Hubbe <allen.hubbe@amd.com>, Andrew Boyer
+	<andrew.boyer@amd.com>, Aditya Sarwade <asarwade@vmware.com>, Brad Spengler
+	<brad.spengler@opensrcsec.com>, Bryan Tan <bryantan@vmware.com>, "David S.
+ Miller" <davem@davemloft.net>, Dexuan Cui <decui@microsoft.com>, Doug Ledford
+	<dledford@redhat.com>, George Zhang <georgezhang@vmware.com>, Jorgen Hansen
+	<jhansen@vmware.com>, Jianbo Liu <jianbol@nvidia.com>, Kai Aizen
+	<kai.aizen.dev@gmail.com>, Leon Romanovsky <leonro@mellanox.com>, Leon
+ Romanovsky <leonro@nvidia.com>, Yixian Liu <liuyixian@huawei.com>, Long Li
+	<longli@microsoft.com>, Lijun Ou <oulijun@huawei.com>, Parav Pandit
+	<parav.pandit@emulex.com>, <patches@lists.linux.dev>, Roland Dreier
+	<roland@purestorage.com>, Roland Dreier <rolandd@cisco.com>, Sagi Grimberg
+	<sagi@grimberg.me>, Ajay Sharma <sharmaajay@microsoft.com>,
+	<stable@vger.kernel.org>, Tariq Toukan <tariqt@mellanox.com>, "Wei Hu
+ (Xavier)" <xavier.huwei@huawei.com>, Shaobo Xu <xushaobo2@huawei.com>,
+	Nenglong Zhao <zhaonenglong@hisilicon.com>
+References: <0-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com>
+Content-Language: en-US
+From: Junxian Huang <huangjunxian6@hisilicon.com>
+In-Reply-To: <0-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemf100018.china.huawei.com (7.202.181.17)
+X-Rspamd-Queue-Id: 931A5490DA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	DMARC_POLICY_QUARANTINE(1.50)[hisilicon.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241836-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,davemloft.net,163.com,zeniv.linux.org.uk,vger.kernel.org,lists.sourceforge.net];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[amd.com,vmware.com,opensrcsec.com,davemloft.net,microsoft.com,redhat.com,nvidia.com,gmail.com,mellanox.com,huawei.com,emulex.com,lists.linux.dev,purestorage.com,cisco.com,grimberg.me,vger.kernel.org,hisilicon.com];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241837-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[47];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[huangjunxian6@hisilicon.com,stable@vger.kernel.org];
+	NEURAL_SPAM(0.00)[0.194];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hisilicon.com:mid,hisilicon.com:email]
 
-From: Tung Nguyen <tung.q.nguyen@dektech.com.au>
 
-[ Upstream commit 11a4d6f67cf55883dc78e31c247d1903ed7feccc ]
 
-When sending a SYN message, this kernel stack trace is observed:
+On 2026/4/29 0:17, Jason Gunthorpe wrote:
+> All were found by Sashiko or Claude AI tools. They vary in severity, but
+> are all things that shouldn't be present.
+> 
+> Jason Gunthorpe (15):
+>   RDMA/hns: Fix xarray race in hns_roce_create_srq()
+>   RDMA/hns: Fix xarray race in hns_roce_create_qp_common()
+>   RDMA/hns: Fix unlocked call to hns_roce_qp_remove()
 
-...
-[   13.396352] RIP: 0010:_copy_from_iter+0xb4/0x550
-...
-[   13.398494] Call Trace:
-[   13.398630]  <TASK>
-[   13.398630]  ? __alloc_skb+0xed/0x1a0
-[   13.398630]  tipc_msg_build+0x12c/0x670 [tipc]
-[   13.398630]  ? shmem_add_to_page_cache.isra.71+0x151/0x290
-[   13.398630]  __tipc_sendmsg+0x2d1/0x710 [tipc]
-[   13.398630]  ? tipc_connect+0x1d9/0x230 [tipc]
-[   13.398630]  ? __local_bh_enable_ip+0x37/0x80
-[   13.398630]  tipc_connect+0x1d9/0x230 [tipc]
-[   13.398630]  ? __sys_connect+0x9f/0xd0
-[   13.398630]  __sys_connect+0x9f/0xd0
-[   13.398630]  ? preempt_count_add+0x4d/0xa0
-[   13.398630]  ? fpregs_assert_state_consistent+0x22/0x50
-[   13.398630]  __x64_sys_connect+0x16/0x20
-[   13.398630]  do_syscall_64+0x42/0x90
-[   13.398630]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+For hns patches:
+Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
 
-It is because commit a41dad905e5a ("iov_iter: saner checks for attempt
-to copy to/from iterator") has introduced sanity check for copying
-from/to iov iterator. Lacking of copy direction from the iterator
-viewpoint would lead to kernel stack trace like above.
-
-This commit fixes this issue by initializing the iov iterator with
-the correct copy direction when sending SYN or ACK without data.
-
-Fixes: f25dcc7687d4 ("tipc: tipc ->sendmsg() conversion")
-Reported-by: syzbot+d43608d061e8847ec9f3@syzkaller.appspotmail.com
-Acked-by: Jon Maloy <jmaloy@redhat.com>
-Signed-off-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
-Link: https://lore.kernel.org/r/20230214012606.5804-1-tung.q.nguyen@dektech.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Use WRITE instead of ITER_SOURCE. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- net/tipc/socket.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index eccb97b530b7..addf8e107485 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -2616,6 +2616,7 @@ static int tipc_connect(struct socket *sock, struct sockaddr *dest,
- 		/* Send a 'SYN-' to destination */
- 		m.msg_name = dest;
- 		m.msg_namelen = destlen;
-+		iov_iter_kvec(&m.msg_iter, WRITE, NULL, 0, 0);
- 
- 		/* If connect is in non-blocking case, set MSG_DONTWAIT to
- 		 * indicate send_msg() is never blocked.
-@@ -2778,6 +2779,7 @@ static int tipc_accept(struct socket *sock, struct socket *new_sock, int flags,
- 		__skb_queue_head(&new_sk->sk_receive_queue, buf);
- 		skb_set_owner_r(buf, new_sk);
- 	}
-+	iov_iter_kvec(&m.msg_iter, WRITE, NULL, 0, 0);
- 	__tipc_sendstream(new_sock, &m, 0);
- 	release_sock(new_sk);
- exit:
--- 
-2.34.1
-
+Thanks,
+Junxian
 
