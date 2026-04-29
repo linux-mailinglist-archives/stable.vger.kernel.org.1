@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-241926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cB65HFFG8mmApQEAu9opvQ
-	(envelope-from <stable+bounces-241926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:56:33 +0200
+	id +JQXFXBG8mmApQEAu9opvQ
+	(envelope-from <stable+bounces-241927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:57:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7B9498611
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7F0498628
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D21A3014BA7
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:56:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B937A301AAB6
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E89D41B360;
-	Wed, 29 Apr 2026 17:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CD8421892;
+	Wed, 29 Apr 2026 17:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jYQAlbJM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cOCqCjDy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616FB3FE640
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F2241323A
 	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 17:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777485379; cv=none; b=fOsOlsfhYGYvHnkbaUlIV8NSJT4nacybJt0sGkg4i8fRjXZJedlf9A2nEwGwGVryiC8sK7zoR2wFpTrC/EBtYhtv5Ema8ekOHJQV71nwGwI9yYyi6cNXJfWcCIMx2Lustt/5VGZC0MAYWquZehEmyYg6G6Xl+b4SNKKppz3I76Q=
+	t=1777485380; cv=none; b=D0ZzQMjh4E63lykfYhjRmS7nZrIX2ScaXdUa8M7HggICxqoQWB/uMdGaNvJsOa1MY+uvTGrNY5uReWdIutQP9osaENgL+zE+1v8euLiACTbhDBYRhnL9lPn2I5jfaebdAhxPK3mF6gDYM1s7gg9dtq7GseKnIwV6/F9uWwmnYvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777485379; c=relaxed/simple;
-	bh=eDBirYq4pCbL+nEUiEp7cl5+N06I9yeNRMJUvi0dUZs=;
+	s=arc-20240116; t=1777485380; c=relaxed/simple;
+	bh=hPxaXd3xjy2aLoQlfjNn2TCMZsSvXUAXKxOi1BUCOho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gE31Z0K3UsqPV/DKu+zeukwFoMnQkqvzoB5u5pnIPO5eEtSPQp0FP4VtWzmjQS1psLHitm784z2GXVXbnKVdfGWmBFEsG4N5JvtYcB/R1BnID29Uoa5XdqT2DThZRA+0LhE+KSI7E2sTdi0rOpaXYT0/ceCvWQIwMLj1yiNPW5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jYQAlbJM; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=D0lnsCnrRTBo4W0ZwvHKJ/IoOoZDmjgF/iov7ojAvptCIL4hUfAYYybJecPuk7XpgazABxNVxGM15FsXRbOh+Y60PQTJX7TJLienrEOAOUtp0mbCpEdtJXAxby2CDt+ZeNwT78utitjIqMxBR1ULvU59V0lEJssVY5X2z00niFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cOCqCjDy; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso276715e9.0
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-448528f4e69so55664f8f.3
         for <stable@vger.kernel.org>; Wed, 29 Apr 2026 10:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1777485376; x=1778090176; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZAVLe7MO2A1MyrDF6a2t4MvPRiDZqS4DmH+U/JOcnYM=;
-        b=jYQAlbJMAUmgBX14wyxFlZBhXAKj3S+TKPLSDiohw7yy20edVzYsqczSigBf0J6CcC
-         ktDQiI+MWNeYMkIasiq6Qa6I8khKvtNF5t2q33GMs9LFFsuSvZuUIy88OuGlTYUP4IkD
-         WPkh/d+tsh2lw6msVv4Q+TiPhfofGlpslXAeSx/2MpTgu6SLSRqstfmuT/4zkVjdmJOL
-         FOo889lSGnqyx97fziO/SI+wjyWY2ZOWYsmPwZ9UTjf4w/BYKexvsrhONblzXMIHeHEd
-         FmQL/73zTpBwt2H6vWHOIHk9wYs0vqoo7ffG7R2+fu40Cx1svYsuGwplU06b9E4pzZCy
-         uO4g==
+        bh=m+m+c0QFSmHtefs8UGhgSoeILNWZg2rQuDAplxBi5ys=;
+        b=cOCqCjDy12B6ro9esSG+onM18Ju1+DNt8/lJj8j5rlGgFor/h5mlDqT3erRDdbA+ES
+         gHnNUhRutovnkf/sUDku21JaD+l5b3ZO7HzsvKFyA+v1p8eOYzU+H/FXzPAMhg2ke7yG
+         UNeh6nngm5LEjC2jXkbTF3ix0qJV3IHHLcfDQX/YcUUl2BwRkS8XkBfbgD6gMUlnw+ji
+         lC5Ht0vquY4rWMH8MPLqKQAS/TYI6O7AFSiq9VyoMmWuzZPY4MDdk5o1k7fLD+0zEts9
+         TKqYWefBXPw6owlzPTYACRXr2GBB3VqLj7eitM5b9JV8SJJyPi5S7jhq1CfRZOEhEsBv
+         eMzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1777485376; x=1778090176;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ZAVLe7MO2A1MyrDF6a2t4MvPRiDZqS4DmH+U/JOcnYM=;
-        b=YdPouiiXYiVeuq5+YQiCxZRTzaDufdptmOA18dGsTR5f1oy41iRmYRFR48G+FVRSHH
-         Ymw4NqYeurXyoyQG6LAbeDevRGM6gW5Lrw73PLKvFiCHsl1YC7KnxsqLFypvgd+Dskoz
-         GKjBWDZbVvMP4gpztMEi4Znuebs6dBmWqZSZPhF74gjJqqS67tzpAeBLfivl6LPOQimh
-         v0VsoBAW3GI4jZmSX4QPmhaMbq9VO+5thYa6Pil4atQIwkFFsHrRTpf7PnzkDU5J4YFM
-         DLVl2a/ZrF1nTV+HREP5wtzXxTZSalDWKArdEG/Tov3AuMHDfON4OuT+ykZXd0XS4LbZ
-         TdRA==
-X-Forwarded-Encrypted: i=1; AFNElJ9PNLiLYFp8kCoD6RjXiHNyJEXzPK1nMcZdfFc8lxT0ltKrnJle+aqOwO4KoIergQlOAOqRwDg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz00t7G/k6rCKgoDBGd7yZp8VwKAZ3lTKu48/+DxdBXETyxNZT1
-	mNOApMewrrjj+/QcldwrFbBc3TAzmeaKRdSiIi2NPvqBTzFM2P9RcKU=
-X-Gm-Gg: AeBDiesp2U3sSjTQQUnamd9AsbECudlsw0oUemAshO3Cp0JCflyqCwlzLor3JDkFCaI
-	4KAEgYVWgI26DzHQ2DRHSEwEsTgCPwJVluVhS4cvbA90f97mJUcTnh5sayPeLP1DldviWw0DLmv
-	npFkG6WHHtIHOGOJKePJ1pD5KqzN8QZ4jaqKY9pu5/dkp5SzCN/SW1D2LaoLrfjwkziUhQO8iq4
-	EISk+Fwco/+knMWjOgklB8K+DMY1c6PHkz0sQyBHqIjXXYjQma0Tkbr19/oUewOt8E1lTBs9Lfw
-	Fv6rFzIF0OMwsiLEeayP+eHsB9NDdoUgD5Tiv2QKYD5kwHkE8ddqNBu7Fu02EYZYtCA9DIi8AkB
-	1WZd2113MoLhjhR7O1n0wmKjVERH8DknWXdu8luYKT4FlAV5WuD+x5VcPY6TKvkbtsAEI2mnZHr
-	KEI68=
-X-Received: by 2002:a05:600c:c048:b0:485:39b2:a47c with SMTP id 5b1f17b1804b1-48a77b22dedmr99590625e9.25.1777485375550;
-        Wed, 29 Apr 2026 10:56:15 -0700 (PDT)
+        bh=m+m+c0QFSmHtefs8UGhgSoeILNWZg2rQuDAplxBi5ys=;
+        b=K8/c1/0v2wHK7bYX2nxeNMhPbu0qlFZH1t8UNu9x4aIWhBbCnwciM0RVfwNEBJH6gj
+         IHWBLpv+iIer4fGF1KalmuPTsHoOaZAsRBkHmlpBbdtP9JLHx0uhfJPFGOZApHd09eru
+         YqR4zjZklbUgEXUucS8vmOPZv3kKW8uRJzWZlJj0DEoHhHS6VhnP8Mh5TgJCurDPPVI8
+         IgtZJ5CQiaQGzHkruuciTTfXedRKiFwMvrA4OFPXdnbOxtj2gwUXtXXpcJcw1W7tKM8e
+         w2gBgYNK5HQp5wB6bRfpgEO6hHZ6dKUlnptp44/ncVvAAzREHLdliH9e2IH4X/v1alsl
+         SPkA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Tfh9gOUFbkKeTZ/9ARXRr7r+yM486Y5L3Y/aM9RAXQbqcOlJvI/yTxhHo2Q4wR1VFwmdjFrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+rW97i79QRwdApWBkqWOGtgIK3mHuxvDkfDfwifKWwHxd99wB
+	Ci8qeRYxPnk8D22wbY3p/QfwZpGrg0V/QnsKYvQdeKlMfJmdOzL3ZaE=
+X-Gm-Gg: AeBDieuwaS+gOHa2+RH1J0z6lWczMthm0CKyaPjAONH4s7RHw0ki2zlSJ7S1yukEHV5
+	2y9JG1rKLP+eFshQ8gYd1EfvkUw+6UcwYjBrONHkazSYuiRIoXWjDpKHD/QFk9zzBvCXuBWctvC
+	HkroPi9VUP3K5Cl7vMH49MRrH7RjPO7hFBxo1+wR1zK7NXf8FaSxHeMgEV+xtKTWtZyV4gN6iZC
+	mpiZOUEkvkTJbaLM86TfVx2PAl//uNGAkfkEH+LzgnLpArSDjJP5fnRFoJf1nhBaKvMVFUYa2oc
+	I2u3juMf2kuORXlIT30sSlLjvKfTaGbEdNiV4iTCQREs2e5Y/6rjORX1XvGQNg8o1tc+aMBthc8
+	RgvnehzaeVx+k3uGWj64SaMU/QinONV4vl1MdyPecJY6/R70dmsCR+GPZOci0wQBb/54om9Oe+w
+	NqDyEbmOdymPOQVw==
+X-Received: by 2002:a5d:5848:0:b0:441:2473:c30a with SMTP id ffacd0b85a97d-446496d79aemr15475160f8f.31.1777485376333;
+        Wed, 29 Apr 2026 10:56:16 -0700 (PDT)
 Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b3d48517sm6183750f8f.5.2026.04.29.10.56.14
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b3d48517sm6183750f8f.5.2026.04.29.10.56.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 10:56:14 -0700 (PDT)
+        Wed, 29 Apr 2026 10:56:15 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>
 Cc: Florian Westphal <fw@strlen.de>,
@@ -85,9 +85,9 @@ Cc: Florian Westphal <fw@strlen.de>,
 	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH 1/2] netfilter: ip_tables: allocate hook ops before making table visible
-Date: Wed, 29 Apr 2026 17:56:11 +0000
-Message-ID: <20260429175613.1459342-2-tristmd@gmail.com>
+Subject: [PATCH 2/2] netfilter: ip6_tables: allocate hook ops before making table visible
+Date: Wed, 29 Apr 2026 17:56:12 +0000
+Message-ID: <20260429175613.1459342-3-tristmd@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260429175613.1459342-1-tristmd@gmail.com>
 References: <20260429175613.1459342-1-tristmd@gmail.com>
@@ -98,7 +98,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5E7B9498611
+X-Rspamd-Queue-Id: 0F7F0498628
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -112,7 +112,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241926-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241927-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -128,44 +128,37 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,talencesecurity.com:email]
 
 From: Tristan Madani <tristan@talencesecurity.com>
 
-ipt_register_table() adds the table to the per-netns list via
-xt_register_table() before allocating the per-netns hook ops copy
-via kmemdup_array().  This leaves a window where the table is
-visible in the list with ops=NULL.
+ip6t_register_table() first calls xt_register_table() which adds the
+table to the per-netns list, making it visible to other code paths. Only
+after that does it allocate the per-net copy of hook ops via
+kmemdup_array(). This leaves a window where the table is findable via
+xt_find_table() but has ops=NULL.
 
-If cleanup_net() runs during this window (e.g. due to concurrent
-netns teardown with failslab-induced allocation failures), the
-pre_exit callback finds the table via xt_find_table() and passes
-the NULL ops pointer to nf_unregister_net_hooks(), causing a NULL
-pointer dereference:
+If cleanup_net runs during this window (racing namespace teardown
+against lazy table init), ip6t_unregister_table_pre_exit() finds the
+table via xt_find_table() and passes the NULL ops pointer to
+nf_unregister_net_hooks(), causing a general protection fault when it
+dereferences ops[0].pf.
 
-  general protection fault in nf_unregister_net_hooks+0xbc/0x150
-  RIP: nf_unregister_net_hooks (net/netfilter/core.c:613)
-  Call Trace:
-    ipt_unregister_table_pre_exit
-    iptable_mangle_net_pre_exit
-    ops_pre_exit_list
-    cleanup_net
+Fix this by allocating the ops array before calling xt_register_table(),
+so the table is never visible in the list with a NULL ops pointer.
 
-Fix by moving the ops allocation before xt_register_table() so
-the table is never in the list without valid ops.
-
-Fixes: ae689334225f ("netfilter: ip_tables: pass table pointer via nf_hook_ops")
+Fixes: ee177a54413a ("netfilter: ip6_tables: pass table pointer via nf_hook_ops")
 Cc: stable@vger.kernel.org
 Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
- net/ipv4/netfilter/ip_tables.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ net/ipv6/netfilter/ip6_tables.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 23c8deff8095a..c47bc776eb4f2 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -1745,6 +1745,21 @@ int ipt_register_table(struct net *net, const struct xt_table *table,
+diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
+index d585ac3c11133..17143277637a5 100644
+--- a/net/ipv6/netfilter/ip6_tables.c
++++ b/net/ipv6/netfilter/ip6_tables.c
+@@ -1754,6 +1754,21 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
  		return ret;
  	}
  
@@ -186,8 +179,8 @@ index 23c8deff8095a..c47bc776eb4f2 100644
 +
  	new_table = xt_register_table(net, table, &bootstrap, newinfo);
  	if (IS_ERR(new_table)) {
- 		struct ipt_entry *iter;
-@@ -1752,27 +1767,13 @@ int ipt_register_table(struct net *net, const struct xt_table *table,
+ 		struct ip6t_entry *iter;
+@@ -1761,24 +1776,13 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
  		xt_entry_foreach(iter, loc_cpu_entry, newinfo->size)
  			cleanup_entry(iter, net);
  		xt_free_table_info(newinfo);
@@ -195,9 +188,6 @@ index 23c8deff8095a..c47bc776eb4f2 100644
  		return PTR_ERR(new_table);
  	}
  
--	/* No template? No need to do anything. This is used by 'nat' table, it registers
--	 * with the nat core instead of the netfilter core.
--	 */
  	if (!template_ops)
  		return 0;
  
