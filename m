@@ -1,155 +1,158 @@
-Return-Path: <stable+bounces-241894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOS4IGsN8mkynQEAu9opvQ
-	(envelope-from <stable+bounces-241894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:53:47 +0200
+	id gEiGGhYN8mkynQEAu9opvQ
+	(envelope-from <stable+bounces-241895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:52:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324614952E0
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:53:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE02495268
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF58830AE20A
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:42:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9895E30DA62D
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDE139D6E6;
-	Wed, 29 Apr 2026 13:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8430F3BF699;
+	Wed, 29 Apr 2026 13:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKVVMajt"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="FH+21a+v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903FB3FE667
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 13:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8ED3FFAB9;
+	Wed, 29 Apr 2026 13:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777470069; cv=none; b=qlhJenB9DE0b0wtQvq4u6KdZ/jCKVQp7oYvVV/t7cqdTjlS/AMbeJILGAN+S9/WfNjWnk/epbfpkyq+RmbCDlUKQicKtc5wU0xWVI0hn2yIEistiAj2YQEiUFBDHHssYZtBVNgNHFB/yqLOek6wYlA4LvlXRdfbaIM0WxmpcDBk=
+	t=1777470213; cv=none; b=bkLzk4QXmaydqViVT0I2EV55FohxUyc+nkuEmisNXBsI8XTxFfJ/ztZ3O+smJ2LGOyP4/Wv/TPsfndhM6n90HQeM1H4+1uVqwGnfoDvyRPDTqsEggOGt5zEmyBweQ+hkYAO452swYgfOCSExGDEeB1kWxzkKO+gug94fSFy0Mac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777470069; c=relaxed/simple;
-	bh=qAZ16WjkXW8EaE4bAi9IdH+z9/TRRUTlzn3zZxZEVLw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N1NTw61yFSWtDwJ3dZF2I+zgDPorGOV2nW5SFv8I7OOIDyc9Vi4skH9vmtNP7DT4ek2aQSV7nGtM81OLQyYJtLG4DIAxRT8o1EqqUx3e02Tai8haYmBlS9gYG0iIzrnPSR9LHTcqkv3K6SZEdYfDjNp15UZc4ULM5vfpM9TrXhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKVVMajt; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so217881325e9.2
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 06:41:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777470059; x=1778074859; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SE1WBDEAJ1UYNmcfE47F7BEz7WO16H1bRtYL6mvQ6Xs=;
-        b=OKVVMajtloHYxEnX2+J+ZSCy4yTiSNRho/lGJPvJh/Aral/GUR82G4qRfUS6qEWiGs
-         ifsJfjsRdH9dzbx9fYmTrOkFj4JSfsBGYBECRsIjvxatPAinhCzqLKOhejOMUBZmC3aE
-         ImuD6DAwDwnB3zw2i81tDLDckD6xGCkP2vvA5NmWlXx0n+o3CJqBNrldWQD5OqWru7tl
-         Fngru0z1sVT6qsR/yrqgdk3XaQwgyVJpeNzGR/38PAxqzhgc38Xs3g6i79gb8zf4L3HA
-         F+vTYCdg0pFBtCkdVDH5F0ApxusQCkmMTwhv/BQ3x8HT+Dmh2nOgY2zS2d/8POYyjbUl
-         uEnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777470059; x=1778074859;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SE1WBDEAJ1UYNmcfE47F7BEz7WO16H1bRtYL6mvQ6Xs=;
-        b=abgcdA5Rc/5XYQJWkd2+hsxygTM3wMMUTcK5h7IYnmbdpSzS1kE8bzr7qHMdjjifoi
-         iqHPFO64DgpSaCfuhq205GeJZqFxoGhYa44VQr30FgsNLd5tzEdcTZnyKm2abcleMpPZ
-         uzNLyi6RWFM0SR4gkrW5bRCjP0I1PE4tZXkUJS/QyI+CeIY4IesIa4+3CcvnfVOfZcoh
-         vs2GHiC/rsddqf6K59XOnqXyyFTSGz6SZbDdH0jxcPFinMkeRHTdFP5D05YD9VjcQ5dW
-         gBXNRqpSBu7gZ4DAfT2UI4zKcI2U/331JDO5CGPB00v5JMandx31dlgLZNV+hAOmZ8zH
-         XdGg==
-X-Gm-Message-State: AOJu0Yz3KCeG956Gb55WKayeH9aKyx2ckogaUimACGG9QxnXXtFT1b8F
-	iwuVUs9LoHFJpg35gD6lzUf99Vb+kCmcA8S76L1nMlGsjvtEpCJs4XqC
-X-Gm-Gg: AeBDieuULYoFoFMZwIRTuU5PdwhGNjciMR5Fi7wtCJ4D46hE8EgKBFPI44Siy0RSg0U
-	hNRsppbS34kRIaTufi0i35ChUV9YRnMy4r9/+9dVP9G6rXqjdV9MNGdDjAaJtwOHQUw5kuyedMK
-	TH7s+lxJ/QgOW4+XThIxZ83IRJu6UrIkRqI4ZLsHTHGPLeHyd0JZHw0CWViVFUV0gUn+iY5BSRb
-	nmU8JXLPQIXcGteywZd3ch07lDHuL2ImOYCdpNg0SdThjaGAUogyOGxwWkCsaxA3QSu+SW9MBUW
-	nkkk+dIs5n9g7CO8IFvxbtmAFF/op5Daivv0qLXRJ/jLejjGQzau2ZfYJUaJk6+bsDECq8aE/hG
-	/VlZTh7eTz7HfCDOjbfa/CN28XKZWf7t5nwcliGGySiL9KkM5bt5dv896aKdT0aiRck0SMhvqLM
-	coXmgxalp47Dfbled31Al6NXHDLb4VHTTui3VNMBUlib5WhvOVDjjDp5SUOIC7pkY5cxX/rR8Qj
-	qxcHdhr7Q==
-X-Received: by 2002:a05:600c:4e4b:b0:488:be58:bb5b with SMTP id 5b1f17b1804b1-48a7b547375mr70268735e9.24.1777470059359;
-        Wed, 29 Apr 2026 06:40:59 -0700 (PDT)
-Received: from ?IPV6:2001:861:3385:e20:f99c:d6cf:27e6:2b03? ([2001:861:3385:e20:f99c:d6cf:27e6:2b03])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c57b579sm56656275e9.4.2026.04.29.06.40.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Apr 2026 06:40:58 -0700 (PDT)
-Message-ID: <2d81e7f6-b6e4-4e3e-bd75-315c696c003a@gmail.com>
-Date: Wed, 29 Apr 2026 15:40:28 +0200
+	s=arc-20240116; t=1777470213; c=relaxed/simple;
+	bh=6CmdSRqBgcDMnEg7Iw4AGlEjRqglThA579jeLaWJJ6Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bl+PKtY6ufzot5XJ34YXZSTJthBJ2b7EO1vnBpXXoyn3Ga7AwtvpPqCEXBkabLZoeXxJFSGi82vyroAEK1qUPAN2VMCt6LoYkdgfepIEnG/WUUwzqeeUjUuoPw2c6yq1Kzf6qPkI5G8aPQRZ4vake+K+H3w60mDIHavj7RJByYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=FH+21a+v; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id C70971FB70;
+	Wed, 29 Apr 2026 15:43:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1777470201;
+	bh=WoLY0VfrRS2QQCo2S5G6Qe5l+XRLfteiRAzVDZloMAY=; h=From:To:Subject;
+	b=FH+21a+vlYMYyfVlq8SHvfYJSWJZ0Sez8wvlGLqzHnrQIDQ8m70j5dKq+E1Pq0s2F
+	 nPCU3N3/xsgOD8KVY63eDKR+TTAH6eW9V1J5tK8fTFn0x4chH3pJL4XzxHJVhVBdzs
+	 37K7PDY8G06OC7grV45QghiBnqDH/ORMfGa0GJfqQ2wDYjU5NRgFeWinVfApqnlk0m
+	 iXZVWi4eXWGqSuIeeScNXW98rF+rESdiHHB6N2DT98Z8gO9z1YOXGEJif72aARhtAF
+	 oeTBJUAmPwrTpLunwKyptIj78GUEYXXcUo59xQK6xnMO4IMwQPAItFvd5nzVtDaoE1
+	 nZGX0wAZO1Q0Q==
+Date: Wed, 29 Apr 2026 15:43:17 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Vitor Soares <ivitro@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Vitor Soares <vitor.soares@toradex.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: Re: [PATCH v4] drm/bridge: cdns-dsi: Replace deprecated
+ UNIVERSAL_DEV_PM_OPS()
+Message-ID: <20260429134317.GA74339@francesco-nb>
+References: <20260407144142.1420354-2-ivitro@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] drm/sti: remove bridge when sti_hda component_add
- fails
-To: Osama Abdelkader <osama.abdelkader@gmail.com>, luca.ceresoli@bootlin.com,
- Alain Volmat <alain.volmat@foss.st.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260423200622.325076-1-osama.abdelkader@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Rapha=C3=ABl_Gallais-Pou?= <rgallaispou@gmail.com>
-In-Reply-To: <20260423200622.325076-1-osama.abdelkader@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 324614952E0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260407144142.1420354-2-ivitro@gmail.com>
+X-Rspamd-Queue-Id: 0FE02495268
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
+	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,bootlin.com,foss.st.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-241894-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-241895-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rgallaispou@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com,oss.qualcomm.com,bootlin.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,toradex.com,lists.freedesktop.org,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[dolcini.it:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
 
++Dmitry, Luca
 
+Hello,
 
-On 4/23/26 22:06, Osama Abdelkader wrote:
-> Use devm_drm_bridge_add() so the bridge is released if probe fails after
-> registration, and drop the manual drm_bridge_remove() in remove().
+On Tue, Apr 07, 2026 at 03:41:41PM +0100, Vitor Soares wrote:
+> From: Vitor Soares <vitor.soares@toradex.com>
 > 
-> Check the return value of devm_drm_bridge_add().
+> The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
+> for both runtime PM and system sleep. This causes the DSI clocks to be
+> disabled twice: once during runtime suspend and again during system
+> suspend, resulting in a WARN message from the clock framework when
+> attempting to disable already-disabled clocks.
 > 
-> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> Fixes: d28726efc637 ("drm/sti: hda: add bridge before attaching")
-> Cc: stable@vger.kernel.org
-> ---
-Hi Osama,
+> [   84.384540] clk:231:5 already disabled
+> [   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
+> ...
+> [   84.579183] Call trace:
+> [   84.581624]  clk_core_disable+0xa4/0xac
+> [   84.585457]  clk_disable+0x30/0x4c
+> [   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
+> [   84.593651]  pm_generic_suspend+0x2c/0x44
+> [   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
+> [   84.601670]  dpm_run_callback+0x8c/0x14c
+> [   84.605588]  __device_suspend+0x1a0/0x56c
+> [   84.609594]  dpm_suspend+0x17c/0x21c
+> [   84.613165]  dpm_suspend_start+0xa0/0xa8
+> [   84.617083]  suspend_devices_and_enter+0x12c/0x634
+> [   84.621872]  pm_suspend+0x1fc/0x368
+> 
+> To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
+> SET_RUNTIME_PM_OPS(), enabling suspend/resume handling through the
+> _enable()/_disable() hooks managed by the DRM framework for both
+> runtime and system-wide PM.
+> 
+> Cc: stable@vger.kernel.org # 6.1.x
+> Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
+> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
 
-Acked-by: Raphaël Gallais-Pou <rgallaispou@gmail.com>
+Luca, Dmitry: any chance you can help with this patch?
 
 Thanks,
-Best regards,
-Raphaël
+Francesco
+
 
