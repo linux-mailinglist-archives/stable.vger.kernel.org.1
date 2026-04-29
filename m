@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-241922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNqtC7g/8mlypAEAu9opvQ
-	(envelope-from <stable+bounces-241922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:28:24 +0200
+	id WKEFM+9C8mkapQEAu9opvQ
+	(envelope-from <stable+bounces-241923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:42:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852AD4982CB
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2368C498408
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C176A3078421
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:25:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45EE930107C7
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7103FE65F;
-	Wed, 29 Apr 2026 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C785D3CA4A0;
+	Wed, 29 Apr 2026 17:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ae4z7bVu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiqkAnVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0E53B19A6;
-	Wed, 29 Apr 2026 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8E8379979;
+	Wed, 29 Apr 2026 17:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777483542; cv=none; b=PSdT5PaOsTXRs1KD4W2GhM1ijyot4V7MYVGQhmztHm85dWGO6PpM1s6Vd1De6eqs6xiwwFUF/iBIcL2hVIUPyZV/Z/3JyQ9zOP6jzlR6Br+fvMTx0zNXLRwRju2bym75BudVEkiSwB5D30dfbH4HjGEgMi15fiqzsx9CsalE0io=
+	t=1777484492; cv=none; b=B9QQc3JcRu2WaPciexw67OAmQOhO4Yrtms+vws74q0wibhjA/rSe1CbozoXyTFjuykVxyKL/N5meJ6ncuGGdQw0/2qFJartAkH8AH82ahPynmj2pT6u7dvj5AUoapFe16SC8rdRhkLftJDwkHGrP8SExXU/s3xGwLzIRtox4Pyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777483542; c=relaxed/simple;
-	bh=80DkCvT8zC5wBnVU5hg6ExQ3xCe0JBXKo+wVVdVx3nw=;
+	s=arc-20240116; t=1777484492; c=relaxed/simple;
+	bh=M3BG+Ofis3GqXd+2CIpLjrDhCW+IsglJSqrSOaHdIxw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mQo90kVEJXQgh99xMU6wIw6LQZ7Bqs49IrkWNr1cCGss3Ri7jJDLDZ+CR0NQ9ofUfb7l1ar5m4KFpkxFHA8kZTwnuxb5QDHlvtzIuPu2popoToiQw8CcAtE3rPqt+5gGVWpRptuunDU7S42VVWeTac5174UkZ9cNa3mNch4JXMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ae4z7bVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066DEC19425;
-	Wed, 29 Apr 2026 17:25:39 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=fjYKsQXprHEQmxaI7mSEIoiqcDAOEwr5MOn56Sa5KOyY+sYzkRRWqG0//5WVSDULeUZOKrFiLz5zE5clwkyGmpSAr+UZFlQbY8QurOl5X39778XyHtQrGRnaMMFmZKlONVIxJy5rewsF2OfVCpqU/3wePy6NBE9/pQYEc+cdU2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YiqkAnVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD7AC19425;
+	Wed, 29 Apr 2026 17:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777483542;
-	bh=80DkCvT8zC5wBnVU5hg6ExQ3xCe0JBXKo+wVVdVx3nw=;
+	s=k20201202; t=1777484492;
+	bh=M3BG+Ofis3GqXd+2CIpLjrDhCW+IsglJSqrSOaHdIxw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ae4z7bVuBxlf90GpyzdVAxtEawN9X/wNdWdCy00+jwErDn2qSJmlkIJh/5LB99GTI
-	 LYGwdFMdk6j7DwFIQv8caCNmFXTT1wJNDotaaEjTIuuA+EumPPleZDQHxTLplTiefs
-	 1mA2dlC5zUcuPEzX4IsBnAgAYppnHUqU5t2Dd8LCBFvWOrcnr74dFX+vlDWtu6Fpp9
-	 mUsDbmCwhOEdbxxvG0JoCUdlnI+5x3aXM5+4Y71Cf8phoOOr2xeX9nusBCGqNkjcp9
-	 wR1V6rfbNOn2mZRMtVctEt1omHjs6i2polw0V3Otjr6v+3hJMEA+uA1sU3/kKiu9hE
-	 g/11YRBG4VWzg==
-Message-ID: <a54113fc-bbe1-4201-aa1f-97811627e6ff@kernel.org>
-Date: Wed, 29 Apr 2026 19:25:36 +0200
+	b=YiqkAnVVZGbcDibDLiOf0x1gp+g/rKpC5qMUSVa3Ad1A2pVweBlBcflehOrLBcfA6
+	 nmU+Afr9ysvXPpSXCWoX4cfnNlgTR+tBGJknFlCbAVouOZ8KzHSYOFtVFn0n7hnHN8
+	 hRu3v0OWGw4m7C7+BOsP36Y9I1JGo5NSaNBCy2+W/58U9MKHSB8g3Ua4ZmDNd5C6UE
+	 Lk7BaSh+yPURXYYYsFc+BmFpu2NWETY/TektTBC2quGjdwCng+aSwhDUsi5lN5mtM/
+	 dPi0Cte2bqmgqBNV2lTLXUpQcsZThCHJqB/T1H+jh4yGpKkfUxqsZwNN5thoPf2aKq
+	 +Ti6n3Olqq92Q==
+Message-ID: <9cf7168b-1d17-487a-8a99-329158da7581@kernel.org>
+Date: Wed, 29 Apr 2026 19:41:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -109,7 +109,7 @@ Organization: NGI0 Core
 In-Reply-To: <20260428074844.1746594-1-shardul.b@mpiricsoftware.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 852AD4982CB
+X-Rspamd-Queue-Id: 2368C498408
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -120,7 +120,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241922-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241923-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[kernel.org,redhat.com,mpiric.us,mpiricsoftware.com,gmail.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -155,28 +155,20 @@ On 28/04/2026 09:48, Shardul Bankar wrote:
 > uses JOINACKMAC correctly for ACK HMAC failure. Use JOINSYNACKMAC
 > at the SYN/ACK validation site so each counter reflects the packet
 > whose HMAC actually failed.
-> 
-> Suggested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Fixes: 3eccc998b50b ("mptcp: increment MIB counters in a few places")
 
-Thank you for this patch! It looks good to me, except this Fixes tag:
-how did you get it? It is only available from an old archived branch:
+Now in our tree (fixes for -net):
 
-  archived/t/upstream_20200401
+New patches for t/upstream-net and t/upstream:
+- aec458ef6eb7: mptcp: use MPJoinSynAckHMacFailure for SynAck HMAC failure
+- Results: 581441b9adeb..4d36cf47658c (export-net)
+- Results: d1636d717db9..83e40a2e5ca0 (export)
 
-Note that AI Coding Assistants are allowed, but the Assisted-by mention
-is then required, see:
+Tests are now in progress:
 
-  https://docs.kernel.org/process/coding-assistants.html
-
-Git blame should be done from the net/net-next branches or the
-export/export-net ones.
-
-I'm going to use this one instead:
-
-Fixes: fc518953bc9c ("mptcp: add and use MIB counter infrastructure")
-
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+- export-net:
+https://github.com/multipath-tcp/mptcp_net-next/commit/35ef198760c9a2bea1ce2edb5f5d503bef518644/checks
+- export:
+https://github.com/multipath-tcp/mptcp_net-next/commit/8a8f6fca4cf7c8d0b2f1f949e481a3d6840f3286/checks
 
 Cheers,
 Matt
