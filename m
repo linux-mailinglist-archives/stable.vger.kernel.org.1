@@ -1,244 +1,198 @@
-Return-Path: <stable+bounces-241874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CP4vJB/y8WmElwEAu9opvQ
-	(envelope-from <stable+bounces-241874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:57:19 +0200
+	id sFywLpXy8WmElwEAu9opvQ
+	(envelope-from <stable+bounces-241875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:59:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DB0493C82
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:57:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F23493CDE
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88BB6305C49F
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:54:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7868E3004686
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2513A1A21;
-	Wed, 29 Apr 2026 11:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D202F5328;
+	Wed, 29 Apr 2026 11:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CIyg/cMq"
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="dIarXD+X"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188273E8C49;
-	Wed, 29 Apr 2026 11:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF33D1A6807
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 11:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777463695; cv=none; b=TONuP6+QqEEQP0a0DlVu7nbe55+esAk3KFSVyL+u1k3H5MI+MqEVJORyL6LxR1mfKoEjPQ/Qspqy33Uhu6tA6BvHx371Pk0r6q4IYjoUsixURLlQ8HkjW7IwbwtBcuBdnQzeo9DHPyZbnnyMe18mpdPCRVCJoXoM5xa0NG9Y42U=
+	t=1777463948; cv=none; b=Ngz+PxuHQo+LGKQTVYF+XXNokbTBzoJei2lGaQta8mcmpGzmNCbO+yKMSnWp5Nj+9D35yi4M6KUTG7fhLBXhifFe8cq4HIZIbfOhM47z8yn1aL2J60Vlvxo2XRIwsKUTiECutu6bWDpCZpgk/IwpSQx5NeUCYLY3+DoOQYJQpYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777463695; c=relaxed/simple;
-	bh=FdZn2aKtKAfbY3SHzbUAI2dxsrv/92v7leXVaVUavoc=;
-	h=Date:To:From:Subject:Message-Id; b=PF+bjoG9k2kftv0qfKPQYxZqtX2n3eXHTeHd+Y9q6YZcADv5i8m7ldTrlytvDLpFQLkQok3TO3a857MON7R/1xsJazKcC5b+JwGiiua0uThX6TQR/sWbwM+VOOsPk2gxK/8Ybn1Vtw0ASrKA2JqYjDrbU5AT35Q+9ZHucqAgN24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CIyg/cMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F26AC19425;
-	Wed, 29 Apr 2026 11:54:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777463694;
-	bh=FdZn2aKtKAfbY3SHzbUAI2dxsrv/92v7leXVaVUavoc=;
-	h=Date:To:From:Subject:From;
-	b=CIyg/cMqPMd8QePSJMPAwuhKCNk8z78Yl5uIiruoSVX89OjhDEy9L6HzbzSDfHW6C
-	 bqc0RRhnY5PvW9oml94paQ238yuQphOHtty6JFxK8TA+yIYn9SHlsiSpcDJEETc79Y
-	 VQfDYfJGb9p50dXjVInv6wUYM7R4JGlqdOfkMcK0=
-Date: Wed, 29 Apr 2026 04:54:54 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,peterz@infradead.org,mingo@redhat.com,luto@kernel.org,lance.yang@linux.dev,jgg@ziepe.ca,hpa@zytor.com,bp@alien8.de,baolu.lu@linux.intel.com,david@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260429115454.9F26AC19425@smtp.kernel.org>
+	s=arc-20240116; t=1777463948; c=relaxed/simple;
+	bh=S9mRGcV/7Wf6FJrGaqZo3jB8lyUf2MO45aoTlX4+Mv8=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=HtIcA6mcIPenhtw5m4F40iHkyFz+S8f10ildja8YxFI1n0mmmMVlZYqPngUFcv5y8VTN7wIDYsxKc8pIMOevXBDqPpgcq+aMahM4hKL70BFPDrZfbI1K37WW9K42SwPP2J8qIRydv2dbzRuQXhFM7kdqhPtYmT8tGW5carnFspU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=dIarXD+X; arc=none smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ecf9e398f4so6132440eec.1
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 04:59:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci.org; s=google; t=1777463946; x=1778068746; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dEAQe/h7jSAB/RjyWv3OoIy3HnuCeq73gqAXZDCdZJk=;
+        b=dIarXD+XAHN0mC3B1s/5gKcVCAj+RR4bfRgqC+l+cwTfs4A1sCWuRQht1CBuP2PmVU
+         xZOYb+5cwIgHp8Z1mOYRoYkeSJysXZYOVDdr/daChzaT3Qwdjw0w5vzoKlNWOd0SGORa
+         DIMTK5Kbzrv4xS4Kry/rsknBKSi1qe4qUEk0F0Jr4KwDAhdy4AIWtyvApR2zVmZsjl5B
+         anMgl+ac9alKpNco/uDHdFbblrmGG8YFmziTj6YptvVoTqev5h1DtH/mnTMNoIFAVIBE
+         hKBub2aybe4a7GF5uUPs6jPyRgfH0qpyd4l9bjYXKi77Vz8ykTnod4txuAe4yoxpwWRx
+         PBmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777463946; x=1778068746;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dEAQe/h7jSAB/RjyWv3OoIy3HnuCeq73gqAXZDCdZJk=;
+        b=fGzva5mpvge7aHJsPi//ijhO00jMLt/cAfSnv3oF7tWxcCCSN1p+GDiYBcvZT3XIg2
+         dFVtbKJsWtCRu7qjgz96dDVPX2C3iU15wsuoe/IiE/maKoXfgR0wX6yHF6GKO/GbF2gG
+         WYUUk0AgA6/8yndtTjVM3fg79POGNiPIepXpjW5jJermNQ3Afsfyho4Y0ga9ZjBrOZBn
+         CWkQdfGwVQcmLkuiYB6XBlSDcUaNIsxn87KrOnwgdOL9MBgz0Hp0qRaz2XHrgWmcM7b1
+         eqBfqdH0GVwZNygkDdsu54eadm0ULRhKKDrHw2Vskq3wRRT7t6B6aUBxxDaXHfUAQHV2
+         u1rw==
+X-Forwarded-Encrypted: i=1; AFNElJ99CLbje9MJQJ4/JVCLkOup9fVlAs5ExpCJf5nP3+ZZyxwLTExCf+He+njDL6P0KdSoaNa05GI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzF6/xmYUHLDttGOpCV+M9nsCSp/vSGY62O8nzc2SEFaphaU1na
+	7j8QtN+mOu+18S0TZE+Wugb9xmurI+j8wCGF/qPV6tfHlfsAW4nUlGVDX9qIytTtkCM=
+X-Gm-Gg: AeBDieuwbVIB0pVUNadQ5FQmj5aQnVhkU8cBKCeH/NTVWOA6JWy83hf7S40iCxEY2Ct
+	xLEXANf+giu+9sKQcWjfMf7SGuz6M1OnugAs2sbfdseHGGEKw04qEwmovvi5UZYbS+KpCBSjw5x
+	YDUhh/yOcC2NA9bE+BV6AvPGZokbbatGQ5B3O4VMedKCjyZ4qe9n/ZJ8mIHXr6LntgjYCTAmBL2
+	7asB93h75Udf/zrvJTxN7m6wrrWiPk13S2iJyNBCZnVlpTSa+51wzLALsqm4+//71sAU/uF8i68
+	b3bNZKVAzmGjftT0ehNGvssAOwsaoYh0zHP2ZDbVON1qKteICll2c/AD1FgWAJow58Qvzok+bhR
+	//fFlDW6CK9o5DGTAdfWSnhaiGpTThEtKjdg50bplM3vmSqLKykQ8K2E4D5IQnHhkEm3J5tVpe4
+	i7wKonaedJ+ft6Z8HXbmoG7OCp0VA+uiBpHaO5sQ==
+X-Received: by 2002:a05:7300:7255:b0:2ed:e12:3771 with SMTP id 5a478bee46e88-2ed1991b2a9mr1521902eec.33.1777463945730;
+        Wed, 29 Apr 2026 04:59:05 -0700 (PDT)
+Received: from 7f5f57871823 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ed1bf6d52fsm1845399eec.4.2026.04.29.04.59.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 04:59:04 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 10DB0493C82
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-7.0.y: (build) in binrpm-pkg
+ (/tmp/kci/linux/scripts/Makefile.package:75) [logspe...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Wed, 29 Apr 2026 11:59:04 -0000
+Message-ID: <177746394435.2212.14228042765433357994@7f5f57871823>
+X-Rspamd-Queue-Id: D0F23493CDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241874-lists,stable=lfdr.de];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241875-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernelci.org:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lists.linux.dev:replyto]
 
 
-The patch titled
-     Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Hello,
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+New build issue found on stable-rc/linux-7.0.y:
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
-Date: Wed, 29 Apr 2026 12:49:14 +0200
-
-In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched from
-freeing non-boot page tables through __free_pages() to pagetable_free().
-
-However, the function is also called to free vmemmap pages.
-
-Given that vmemmap pages are not page tables, already the
-page_ptdesc(page) is wrong.  But worse, pagetable_free() calls
-
-	__free_pages(page, compound_order(page));
-
-As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
-except for HVO, which doesn't apply here -- we will only free the first
-page when freeing a PMD-sized vmemmap page, leaking the other ones.
-
-Fix it by properly decoupling pagetable and vmemmap freeing. 
-free_pagetable() no longer has to mess with SECTION_INFO, as only the
-vmemmap is marked like that in register_page_bootmem_memmap().
-
-The indentation in remove_pmd_table() is messed up, let's fix that while
-touching it.
-
-Note that we'll try to get rid of that bootmem info handling soon.  For
-now, we'll handle it similar to free_pagetable(), just avoiding the ifdef.
-
-Link: https://lore.kernel.org/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org
-Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+ in binrpm-pkg (/tmp/kci/linux/scripts/Makefile.package:75) [logspec:kbuild,kbuild.other]
 ---
 
- arch/x86/mm/init_64.c |   40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+- dashboard: https://d.kernelci.org/i/maestro:4fdb5583057fedafa816917f15e40cf6a4866b6b
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  bff90486aa66dbad83a0777f3c17e34fcf26a3e5
+- tags: v7.0.2
 
---- a/arch/x86/mm/init_64.c~x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages
-+++ a/arch/x86/mm/init_64.c
-@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(str
- #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
- 		enum bootmem_type type = bootmem_type(page);
- 
--		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
-+		if (type == MIX_SECTION_INFO) {
- 			while (nr_pages--)
- 				put_page_bootmem(page++);
- 		} else {
-@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(str
- 	}
- }
- 
--static void __meminit free_hugepage_table(struct page *page,
-+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
- 		struct vmem_altmap *altmap)
- {
--	if (altmap)
--		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
--	else
--		free_pagetable(page, get_order(PMD_SIZE));
-+	unsigned long nr_pages = 1u << order;
-+
-+	if (altmap) {
-+		vmem_altmap_free(altmap, nr_pages);
-+	} else if (PageReserved(page)) {
-+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
-+		    bootmem_type(page) == SECTION_INFO) {
-+			while (nr_pages--)
-+				put_page_bootmem(page++);
-+		} else {
-+			free_reserved_pages(page, nr_pages);
-+		}
-+	} else {
-+		__free_pages(page, order);
-+	}
- }
- 
- static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
-@@ -1118,7 +1129,8 @@ remove_pte_table(pte_t *pte_start, unsig
- 			return;
- 
- 		if (!direct)
--			free_pagetable(pte_page(*pte), 0);
-+			/* We never populate base pages from the altmap. */
-+			free_vmemmap_pages(pte_page(*pte), 0, NULL);
- 
- 		spin_lock(&init_mm.page_table_lock);
- 		pte_clear(&init_mm, addr, pte);
-@@ -1153,19 +1165,19 @@ remove_pmd_table(pmd_t *pmd_start, unsig
- 			if (IS_ALIGNED(addr, PMD_SIZE) &&
- 			    IS_ALIGNED(next, PMD_SIZE)) {
- 				if (!direct)
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
-+					free_vmemmap_pages(pmd_page(*pmd),
-+							   PMD_ORDER, altmap);
- 
- 				spin_lock(&init_mm.page_table_lock);
- 				pmd_clear(pmd);
- 				spin_unlock(&init_mm.page_table_lock);
- 				pages++;
- 			} else if (vmemmap_pmd_is_unused(addr, next)) {
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
--					spin_lock(&init_mm.page_table_lock);
--					pmd_clear(pmd);
--					spin_unlock(&init_mm.page_table_lock);
-+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
-+						   altmap);
-+				spin_lock(&init_mm.page_table_lock);
-+				pmd_clear(pmd);
-+				spin_unlock(&init_mm.page_table_lock);
- 			}
- 			continue;
- 		}
-_
+Please include the KernelCI tag when submitting a fix:
 
-Patches currently in -mm which might be from david@kernel.org are
+Reported-by: kernelci.org bot <bot@kernelci.org>
 
-mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free.patch
-x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
-sh-use-folio_mapped-instead-of-page_mapped-in-sh4_flush_cache_page.patch
-bpf-arena-use-page_ref_count-instead-of-page_mapped-in-arena_free_pages.patch
-mm-remove-page_mapped.patch
 
+Log excerpt:
+=====================================================
+# /tmp/kci/artifacts/fragments/0.config -> /tmp/kci/artifacts/build/0.config
+# /tmp/kci/artifacts/fragments/1.config -> /tmp/kci/artifacts/build/1.config
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- x86_64_defconfig
+scripts/kconfig/merge_config.sh -m -O /tmp/kci/artifacts/build /tmp/kci/artifacts/build/.config /tmp/kci/artifacts/build/0.config /tmp/kci/artifacts/build/1.config
+Using /tmp/kci/artifacts/build/.config as base
+Merging /tmp/kci/artifacts/build/0.config
+Value of CONFIG_BLK_DEV_NVME is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: # CONFIG_BLK_DEV_NVME is not set
+New value: CONFIG_BLK_DEV_NVME=y
+Value of CONFIG_ENA_ETHERNET is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: # CONFIG_ENA_ETHERNET is not set
+New value: CONFIG_ENA_ETHERNET=y
+Value of CONFIG_XFS_FS is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: # CONFIG_XFS_FS is not set
+New value: CONFIG_XFS_FS=y
+Merging /tmp/kci/artifacts/build/1.config
+#
+# merged configuration written to /tmp/kci/artifacts/build/.config (needs make)
+#
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- olddefconfig
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu-
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- bzImage
+rm -rf /tmp/kci/artifacts/build/modinstall
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=/tmp/kci/artifacts/build/modinstall ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- modules_install
+tar --sort=name --owner=tuxmake:1000 --group=tuxmake:1000 --mtime=@1777462488 --clamp-mtime -caf /tmp/kci/artifacts/build/modules.tar.xz -C /tmp/kci/artifacts/build/modinstall lib
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- binrpm-pkg
+/bin/sh: 1: rpmbuild: not found
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## x86_64_defconfig+aws-ec2 on (x86_64):
+- compiler: gcc-14
+- config: None
+- dashboard: https://d.kernelci.org/build/maestro:69f1ec5907f3fa55982d9808
+
+
+#kernelci issue maestro:4fdb5583057fedafa816917f15e40cf6a4866b6b
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
