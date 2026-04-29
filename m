@@ -1,195 +1,223 @@
-Return-Path: <stable+bounces-241804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNEaMKJv8WkIgwEAu9opvQ
-	(envelope-from <stable+bounces-241804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 04:40:34 +0200
+	id QLZkO1F28WkxhAEAu9opvQ
+	(envelope-from <stable+bounces-241805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 05:09:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5918E48E64E
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 04:40:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E0948E8FA
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 05:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07DD530515D8
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 02:39:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C76C83060D5C
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D7A3845DC;
-	Wed, 29 Apr 2026 02:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE0F308F15;
+	Wed, 29 Apr 2026 03:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2UT6JMC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HpqfvgQm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9897F382395
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 02:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777430363; cv=pass; b=EPobt3nyWy2mUJKUulShGF+Qxbum6xNpEVIiduAzvIsAHMmd3rfKEf7JX30TVAs5nXUE4BPTo3xf+2H/YXwSdTpgwtZKOvGfikwSKXvzwMfvkosWTR5ndAfFkjEj1YXNhD3B9m6ZHzPGCeo2CZfA0xyT0vAGZyfqXV891TQr5mQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777430363; c=relaxed/simple;
-	bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mzFZRJVJRYpoUbyokEz+nryn4kBFJHUj7CRdKtVu9N4PLIlW38WR7io4fejM2SlHIHLDh10tMIy5YhKNXPUB8a+lwu5SsExC3r/VCbT9jRiS6Qoc1iLZiR6In9wyr0Tabgrcg0HASRZ3z6dPps6LigvkS3DRYqUl/2IpYayBGIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2UT6JMC; arc=pass smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4891c0620bcso83213375e9.1
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 19:39:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777430360; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EBeux7P/fYSBXssT8bNvig9R/ypEcrwWTSkWNCbK0eZ1CHxpQld24YKIeKXKt7GeCx
-         Aomc3/hshtmix6ZjU6QaIyrCpN+BfmonbuoLUZxHAxPUD9bAnlcl4nOeGLopqZ4S2YXG
-         IjlHrV563Kgrsn9UsdYi6n+q6AGjNhAAynoODhRG8LcioJ/6eK5Kmtq1BfRxKkoBX046
-         ahJQywlxTPzf+qt1HdE9mZMyuHINfA/zKjZiLhKweusIlNfRaMAgnWHBb07vpA72ztr5
-         IsmZk9hfOd2NcDXzJyh3m9DbOTUcXnVv4hLdG9jgbWyNeyEAAsoDhYVrudxnVuynGKby
-         CrJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-        fh=++ilSGiBO4Pz8/rMK9pPoNZCG55D5XYvXV4E12ZVT0o=;
-        b=gQrKprNCdPYTI6zo16bcvaXxriTP5tNcL96VfKxqGu+5HSnagmw9TGuCxrAuNvhNJB
-         D7g6FYpmHIVDVbpgAhzSswBye6ebrzj2kesFXPSVo3AfkonMTGk9wj1fBzv8vqD8NBxM
-         YRo2cddP9ZpbR0Zy+0mWqzZjn0y7ZjpTmgtzndFOTHPDM5OlvNrlnK7KhFjkBeAVCo1w
-         Cch6AAi76JAZVmzT/CeZf6nkIBW71fLrnsy+6xvAqkD3CsZ/H6Q1gd9nK1oRRkNGVhsT
-         PY6Qc49XFcq2af/2mAuY3MbcULx0TkBE+gd+VEZ+frQfwGjSXt4Moi6psBPZKeI7uUGh
-         U3XA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777430360; x=1778035160; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-        b=F2UT6JMCDHS4+k+vhk3lJOGy45zJjEgLLedAFtnFRyIRCZABmmwHZLLtl6q41YOHUc
-         4chDfd91aV9zWIb2MX3nOIOsGtt9JRzkIMHoKYS5mi8hRv5z0gr6ofqwUmfuZQ12vclr
-         YpjYRd39q0r7sIXZTht8TedUL5n+f1uqoP75/OvYGm7kADaSOGI2fptkighbxxre9n0z
-         ui3AsUkxjRueN8s4JuLRpr1xbxbSLJtLz0K0fuIy6KSrEt+6qlJL4eLJkamrlkwu7sCp
-         ymhOLeRkIq71YQ+HqN5oDkK36HrDAPHwYxAUXEGV3+J9XVUMkQY3CwX/aCaA8+vnnwug
-         kTHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777430360; x=1778035160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-        b=jBm2OommNiN7yR1ffOzPHuguTTJyuSZRT/r3yYF0Isi++FWpmnvJ6k+qcOIYn/qWbc
-         Kh/NUh7ZgkxsDv62V183CBu/DPp5ghFnHYF8QGntd0FbW7ljL7dMj/thVzHp70Gk1OBS
-         MhD55eAs15po+XmcqqyPI5eyGSjeMKN8O9ZTANqSRn5TOctlPDPh7rWzau7EP/nCXd+g
-         /potyPJf4zq07dP+jHcFS7JMRxrrNDtVAJ6PWxJk+iWd7no/oTYbMiGHefS6M5Zd6fMm
-         U+fCB2ODis9QU9f86pfK7eyIN4+O4FnMyOJwuBOlY5YVl/NrwJ9dWmD/YTEtRPvEvuIS
-         ulGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/44jDtdVpMa2kJJznJsuizJhSFWCitM3gsue8NMwKc3/czL8zA/q+PMNcc7+B7VpV1jpjIwuw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywHk1+R6qRJlvd/sUrzkWpALrG110Y3sJd08Bzvv4ohx06Ch+k
-	ll8+kFI/3Zj/wRD8a7BlxDprI7ONPzM+aTCVIF1Dt55YaKiDuBLzlowLkq1thztX/ESxKtdZZeK
-	84F3rWFuTkjNwMmarY7uHM4W7bHJiFz4=
-X-Gm-Gg: AeBDiesamYGx4qW+5tKhxCqGEgtJBVuaV0ASF9amkpKv+fILbpajreERPQOGmGwNwPm
-	X2vvMJisdF/Mu85bcwTNl2/ZzyOGHdRgqDDzTfizMKA1YSIhWuGx4BRRr5I7R6HnjCJYMPg4OL2
-	Sxe7UORzQLrXZRYEf7AArBPVr/Q1z0H9pIvRnQUmxMiQZtkDybeDefsrstf8X8tf6+LO+LzHE1F
-	26x8WtlJwjgVUog6TR2mZhOXsoFUS2A5yBr5oT9Art+ZQM9kXYOcJyUxsZkIc0wBUTZUvanYddw
-	mscslSAlDPkQZiHBadmVDqlLWHpVc+mZO53egbYMS8lQ4aDh
-X-Received: by 2002:a05:6000:2dc2:b0:43f:e791:a333 with SMTP id
- ffacd0b85a97d-446496d7a5fmr9453139f8f.29.1777430359955; Tue, 28 Apr 2026
- 19:39:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0B92DC32A
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 03:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777431871; cv=none; b=hF82b8AWPGCbK6DYqa7bFnXPTGMjOzbT8mM1ed/Jlm3sLLGViZjERySfTLVuQEz1jmRVC4+XmO86OIZgUkodUkS+H0vNAMy+W3hg39T083YuE/MJw1SgDOJ+lvrFIhVQ0UwcXTIiKguuFX8tz26e8SN+Wbo5w+oeUOGoz7xsNIQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777431871; c=relaxed/simple;
+	bh=Q12eOtvJ+6xl4ZwrDqguILZTLzchiUz9odVa22G/aS8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D8gPfVYaU7+kAGkvReek73ykHmq2xEfdJRemGJaLMqWtzeFq873/ZsiRN0W+USyeVp3VwD70Ewbx6iSgxAsoQD84K50K7pXjX/2WxB5Nl7jZTad/JBqZPlx9Xcx2D86FM8/WFCQXcEmSI29qPoRitC7lmyL4JUC3X27jcX3apAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HpqfvgQm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777431868;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ldwwJIVF7m6VyRD35VYHAOudLjUCD6MJS07MQJZaKIw=;
+	b=HpqfvgQmqP4AywWyT/GJiFzuCQQS3Zj9UwmJLludBrKUOFZudlEcxjthjaCb/W/adZHYYQ
+	L6PFWu9sixQQD6InD1ATgQEIZYeLlGtr+Q0eZRqdHqpfNPOlmVH1G8k0Pql9/fnUBhn985
+	mZEbu+bo7069uy3Asi87GjpabSHTipw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-OmYw-u2QM62O1aSfJHEcfQ-1; Tue,
+ 28 Apr 2026 23:04:24 -0400
+X-MC-Unique: OmYw-u2QM62O1aSfJHEcfQ-1
+X-Mimecast-MFC-AGG-ID: OmYw-u2QM62O1aSfJHEcfQ_1777431862
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 94521195609F;
+	Wed, 29 Apr 2026 03:04:21 +0000 (UTC)
+Received: from GoldenWind.lan (unknown [10.22.88.40])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C0B31180047F;
+	Wed, 29 Apr 2026 03:04:17 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: Ben Skeggs <bskeggs@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	James Jones <jajones@nvidia.com>,
+	Faith Ekstrand <faith.ekstrand@collabora.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Zhang Enpei <zhang.enpei@zte.com.cn>,
+	stable@vger.kernel.org,
+	"Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+	"Kees Cook" <kees@kernel.org>,
+	"Simona Vetter" <simona@ffwll.ch>,
+	"David Airlie" <airlied@gmail.com>,
+	"Thomas Zimmermann" <tzimmermann@suse.de>,
+	"Maxime Ripard" <mripard@kernel.org>,
+	"Lyude Paul" <lyude@redhat.com>
+Subject: [PATCH] drm/nouveau/disp/r535: Add scanline position support + head state support
+Date: Tue, 28 Apr 2026 23:03:40 -0400
+Message-ID: <20260429030348.3930866-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428110713.2550315-1-maoyixie.tju@gmail.com>
- <20260428110713.2550315-3-maoyixie.tju@gmail.com> <CABAhCOTmZ4hAuhtimOX1YQDGFC2fbXm5WmwT0Z8PxZU7Zq-2Fw@mail.gmail.com>
- <CANn89iJzu1zXpx5G-3jVDS0duLB_tbm+ULzLk1ZW68fayoF9qQ@mail.gmail.com>
-In-Reply-To: <CANn89iJzu1zXpx5G-3jVDS0duLB_tbm+ULzLk1ZW68fayoF9qQ@mail.gmail.com>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Wed, 29 Apr 2026 10:38:42 +0800
-X-Gm-Features: AVHnY4LZocalNrJgv7vMB2vdTcn-atowI7erBu9gVSevVS-P9DwrltOsUKB23To
-Message-ID: <CABAhCOSFvmxQjnxcdkJV8mx-d163tKz2ykgyciHSFOqs-yBrmg@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
-To: Eric Dumazet <edumazet@google.com>
-Cc: Maoyi Xie <maoyixie.tju@gmail.com>, netdev@vger.kernel.org, kuniyu@google.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, 
-	kuznet@ms2.inr.ac.ru, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	security@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5918E48E64E
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: 73E0948E8FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241804-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[redhat.com,nvidia.com,collabora.com,intel.com,gmail.com,kernel.org,zte.com.cn,vger.kernel.org,linux.intel.com,ffwll.ch,suse.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241805-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,google.com,davemloft.net,kernel.org,redhat.com,ms2.inr.ac.ru];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shawleon@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,ntu.edu.sg:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lyude@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,zte.com.cn:email]
 
-On Wed, Apr 29, 2026 at 10:00=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> On Tue, Apr 28, 2026 at 6:58=E2=80=AFPM Xiao Liang <shaw.leon@gmail.com> =
-wrote:
-> >
-> > On Tue, Apr 28, 2026 at 7:07=E2=80=AFPM Maoyi Xie <maoyixie.tju@gmail.c=
-om> wrote:
-> > >
-> > > From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-> > >
-> > > After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
-> > > rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
-> > > ip6gre hash via link_net. ip6erspan_changelink() was not converted in
-> > > that series and still uses dev_net(dev), which diverges from the
-> > > device's creation netns after IFLA_NET_NS_FD migration.
-> > >
-> > > This re-inserts the tunnel into the wrong per-netns hash, leaving a
-> > > stale entry in the original creation netns. When that netns is later
-> > > destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
-> > > slab-use-after-free reported by KASAN, followed by a kernel BUG at
-> > > net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
-> > >
-> > > Reachable from an unprivileged user namespace ("unshare --user
-> > > --map-root-user --net"); cross-tenant scope on container hosts.
-> > >
-> > > Note: ip6gre_changelink() (the non-erspan sibling earlier in the same
-> > > file) already uses the cached t->net correctly. The bug is specific
-> > > to ip6erspan_changelink() copying the wrong shape.
-> > >
-> > > Fixes: 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of rtnl_=
-link_ops")
-> >
-> > The changes look good to me. But why is 5e72ce3e3980 mentioned
-> > here? It neither introduced nor was intended to fix this bug.
->
-> Which patch added the bug then in your opinion?
+That's right! It looks like this never actually got finished, something
+which I just noticed today when I saw this fun message spamming one of my
+test machine's kernel logs when enabling display debug output for nouveau:
 
-Maybe 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
-which initially introduced ip6erspan_changelink using the wrong
-dev_net()?
-And ab5098fa25b9 ("ip6_gre: fix tunnel list corruption for x-netns")
-fixed this for ip6gre, but ip6erspan was left.
-Anyway 5e72ce3e3980 doesn't exist before v6.15.
+  [drm:drm_crtc_vblank_helper_get_vblank_timestamp_internal] crtc 0 : scanoutpos query failed.
+
+So it looks like we've been falling back to DRM's core fallback for a while
+now, whoops.
+
+So, while it seems that we do have the option of doing this through GSP -
+that doesn't seem like a great idea. Mainly because reading this from GSP
+would involve a lot more latency then we should have for vblank handling
+due to the RPC communication. So instead of implementing that, just use
+gv100_head_state and gv100_head_rgpos for implementing .state and .rgpos.
+It seems to work perfectly fine!
+
+Fixes: 9e9944449023 ("drm/nouveau/disp/r535: initial support")
+Cc: Ben Skeggs <bskeggs@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Timur Tabi <ttabi@nvidia.com>
+Cc: Ben Skeggs <bskeggs@nvidia.com>
+Cc: James Jones <jajones@nvidia.com>
+Cc: Faith Ekstrand <faith.ekstrand@collabora.com>
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Aaron Kling <webgeek1234@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Zhang Enpei <zhang.enpei@zte.com.cn>
+Cc: <stable@vger.kernel.org> # v6.7+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c       | 4 ++--
+ drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h        | 2 ++
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c | 8 ++------
+ 3 files changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c
+index dbd984da75014..0608266188d3e 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c
+@@ -253,7 +253,7 @@ gv100_head_vblank_get(struct nvkm_head *head)
+ 	nvkm_mask(device, 0x611d80 + (head->id * 4), 0x00000004, 0x00000004);
+ }
+ 
+-static void
++void
+ gv100_head_rgpos(struct nvkm_head *head, u16 *hline, u16 *vline)
+ {
+ 	struct nvkm_device *device = head->disp->engine.subdev.device;
+@@ -263,7 +263,7 @@ gv100_head_rgpos(struct nvkm_head *head, u16 *hline, u16 *vline)
+ 	*hline = nvkm_rd32(device, 0x616334 + hoff) & 0x0000ffff;
+ }
+ 
+-static void
++void
+ gv100_head_state(struct nvkm_head *head, struct nvkm_head_state *state)
+ {
+ 	struct nvkm_device *device = head->disp->engine.subdev.device;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h b/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h
+index 856252bf559a4..b642729c254fe 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h
+@@ -53,6 +53,8 @@ void gf119_head_rgclk(struct nvkm_head *, int);
+ 
+ int gv100_head_cnt(struct nvkm_disp *, unsigned long *);
+ int gv100_head_new(struct nvkm_disp *, int id);
++void gv100_head_state(struct nvkm_head *head, struct nvkm_head_state *state);
++void gv100_head_rgpos(struct nvkm_head *head, u16 *hline, u16 *vline);
+ 
+ #define HEAD_MSG(h,l,f,a...) do {                                              \
+ 	struct nvkm_head *_h = (h);                                            \
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c
+index 6e63df816d855..49a1eef9bdf14 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c
+@@ -625,14 +625,10 @@ r535_head_vblank_get(struct nvkm_head *head)
+ 	nvkm_mask(device, 0x611d80 + (head->id * 4), 0x00000002, 0x00000002);
+ }
+ 
+-static void
+-r535_head_state(struct nvkm_head *head, struct nvkm_head_state *state)
+-{
+-}
+-
+ static const struct nvkm_head_func
+ r535_head = {
+-	.state = r535_head_state,
++	.state = gv100_head_state,
++	.rgpos = gv100_head_rgpos,
+ 	.vblank_get = r535_head_vblank_get,
+ 	.vblank_put = r535_head_vblank_put,
+ };
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+-- 
+2.54.0
+
 
