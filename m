@@ -1,101 +1,76 @@
-Return-Path: <stable+bounces-241847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aI4bKpvH8Wn+kQEAu9opvQ
-	(envelope-from <stable+bounces-241847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:55:55 +0200
+	id mEo3J5nK8Wn+kQEAu9opvQ
+	(envelope-from <stable+bounces-241848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:08:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421E249168C
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:55:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C66491918
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5EFB3026C3D
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 08:54:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 112EB301258C
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBEF3B9601;
-	Wed, 29 Apr 2026 08:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FB73BADB5;
+	Wed, 29 Apr 2026 09:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J3UECdS2"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UJcmu71O"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6AC1DF25C
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 08:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64C81DF25C;
+	Wed, 29 Apr 2026 09:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777452898; cv=none; b=bzMc7pkjpYRyrrzFvsyV8z0YsGLoYyQx/Fd8m2kgelNqbG3IOM35vgJnI5PkM1HVueDbLRmCahAAxB9qz6+mTHYZEXywkD5XO7yeHMjVBynIDVlMkpoaFGevzElffK+oCA8wMCbz0TIMFTjR8Db+umGvSvGCXMvw6V9Vlh627QA=
+	t=1777453603; cv=none; b=BTSufWqOfnSyt4oBbP9XzJDzZHAKxJxbtg1HadJk9zf5n8dsjDQGG6Svv1cSu8YHl3LaTSvQtpUbwwhfN/ZVei/AcmImK0BaT3LZOfq7Uq0xVc/tFE2OGjxxW4BVnI3BweAw7gfBlvLDLaAYjLrYCBxGGbCXsLUUp7JOtNwuXNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777452898; c=relaxed/simple;
-	bh=OGC7+IcZNZIL6sd3hOLyJPDWEm22FuB1Y+vAmXpI6EU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S401sdw1paKf380wBr1xSdXyoiZ7Vzso4GzjINhexYCR787LLOo0gptgxoZuemwU+jdDgk5uO4IVk2n3PpN9MLxacYiI5z7+/u/AojBzqH3agttXuZD3c8Ug4iKzxXqo8lWWvoTby9msxLVXH2pJajIhqA9W10/xN+Tpt6ePeu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J3UECdS2; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ba3115fe0d5so121365366b.1
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 01:54:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777452894; x=1778057694; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wxxbbPZ8q2XWtUlU/73YnAMHWldZI5Lyz7JAu6k9IoU=;
-        b=J3UECdS2on/eRgMU+Q7mwA4hNRZEujruIEbgMXyVWehdXFwkAakK2Z0g7K+YQpByfJ
-         FRaE6tzIDJWOIjIINzOabdtg61LqIJGdCaUz4HDwKbCSAnNil4/SZtNJEX4aAvPap6Zf
-         W7MrM3nIJzaJSFetObHeK4+L8TJaP1+6vXv4BUmVyL4T6no22hZAIsStWsxZ3qWpMPUz
-         m9vVkMjKv78DgsHlAAZF3JWJs1qIaSpmMg5HnGCgZVlk/yD35hkKJkSlFqSJOVgMAM5X
-         sDxGB1Tj+WVQCXkOCUdLAfbvVXOB2nHJUd8F88F2S6fRGrFJXHwb3bvwnjf2mSg2S/RV
-         Gztw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777452894; x=1778057694;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wxxbbPZ8q2XWtUlU/73YnAMHWldZI5Lyz7JAu6k9IoU=;
-        b=JWYjBHR9+JhVyZ+SjEtJ1H4zCczeqZNUONC04yiwrerzDPpx8aviiIZowO8IbApoJJ
-         rg2ABO41sz3YTNpynIMbYOF5Htk6raiDsE1BwFWm8rFcER9zzdRx+qfT82Y5QilvuEsa
-         7JtsNGetLTREosx6V0mXdRKpVcVKG4KpDgoa4aN4Ny7liYY7qlF5ZfsCymgsq/NO3x4w
-         htPK8xIIQ4/xqLIdgw/uCHEQG3lpBpIHr7OeWfVlh20lr/DGj4FjADwyV5tPfNXT/PST
-         OygJUcGZfyyByQRVB9efRPGH/dErjBLC35m5xQi8lwsac6kNSzujRElU/78kVZG3TuB6
-         jzLA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Q8Frr+tMD6n5B3Ofd7kp/R3eC7f3ri0/3Jv9Cm6xKD2EHXqeQZYZJLUEsiwlfodMieGgQz+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt6bLVHO+CwBi4/PeO1q3itY++XfU+cRCgHAaUOdDbnceswNRf
-	sNAZQi27t7Xa+z04KJlttp0Kax8mO7sKwo35zC/lZX1cMSlvrEL/pPeK
-X-Gm-Gg: AeBDieub+JmVm71qemNlugpjTrPmmAMbTr31pTgwbou3blpJLpOtJOsHlVeVXT51fsD
-	M0duRz7DIZmBiwEBpgotwd+OdlSgevjHMLgo69Va7xJ2AmtKqwy/ujwzD84SvVpkf0AQQ++Qe5u
-	18t3Wkm0fn8P7JQqBMG6W+U8RziXqZ4RpxXl9yZbqaQKhQPLfLnRl1VUEwfUuJB84Lxxq0ZK1pu
-	nc/isIsTFFXMyT0wx0/5lU35WOHiTGk34fpFzZaxdhsuxS/3dYf6h6jlzsnZhFP4mlLswwuWlSr
-	+Hymh2x/kUlyDamrMXg6sb315LqSqZdjo2t5SVe3+9okBckKUJFWO5sQ2UClfBrirBB8g+AZz60
-	n2YJayTeVqQ6zxRbU/g2xZfyBvAoJpMzRN9dC6CQfQlFHxM/i2nzz3723Cq6fGKPCmBNHiwOnws
-	yuKrfnu4VBCSNFs8NjIwfns4f43koopB/y6oR0Xn2ng9KAvvZ+ejG1e+Tmo8OZc+lYp3QvIkGNu
-	cRb9qxFh+utRjeV841U1kjowF71Fo72UZ+SPlE52/RTTQFFdh4=
-X-Received: by 2002:a17:907:3e0f:b0:ba7:41d0:5efd with SMTP id a640c23a62f3a-bb96bb7eba4mr103744066b.28.1777452893856;
-        Wed, 29 Apr 2026 01:54:53 -0700 (PDT)
-Received: from localhost.localdomain (pqu18.internetdsl.tpnet.pl. [213.76.110.18])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bb980a70168sm62682466b.2.2026.04.29.01.54.52
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 29 Apr 2026 01:54:53 -0700 (PDT)
-From: Michal Kosiorek <mkosiorek121@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1777453603; c=relaxed/simple;
+	bh=xpDsb9TnyWmJ1AkE2rIeWJVfyu8QLqL1lFAm7MNZ8to=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VzsYbRDc10CzVokePj5V1OEbRnq6CIwyTDMDh4ES1b/yJHceTMoAhO6w/j/7KbSNDx8n4F6Bq0+5sCW7x05452GrrMzAIcVAfhZcGol1pc1bjFIC0uRZfOm4NlPLgYnfA4+gihJ+mWnCVpO9pbncDA98gtcOvHpMjZkekP7qs0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UJcmu71O; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 107A320B716C; Wed, 29 Apr 2026 02:06:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 107A320B716C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777453602;
+	bh=Qe8O0g3Ko5WnnnKQNFmZBLhQmwZhiY4RiL4WEuVfoCs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UJcmu71OH5QgxUdLgjqCkskc16d04Khos/6FWpzIUzMGVl0AWxv0n/9LXZgqDGnED
+	 JvvdC89uc3ABxZy/PD1dJJIylPDrh677wYIKV7vEO99r+M+kP2X0cDj9ikpexTAOPJ
+	 CGuPHVFYdCyZMVR6yoLjuoKmLy06I74Uoj18qM7Q=
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
 	Simon Horman <horms@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	netdev@vger.kernel.org,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>,
+	Yury Norov <yury.norov@gmail.com>
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>,
 	stable@vger.kernel.org
-Subject: [PATCH ipsec v2] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
-Date: Wed, 29 Apr 2026 10:54:51 +0200
-Message-ID: <20260429085451.93944-1-mkosiorek121@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <afHEWqYEiA07An7W@secunet.com>
-References: <afHEWqYEiA07An7W@secunet.com>
+Subject: [PATCH net v2] net: mana: Optimize irq affinity for low vcpu configs
+Date: Wed, 29 Apr 2026 02:06:37 -0700
+Message-ID: <20260429090640.1790104-1-shradhagupta@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,155 +78,208 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 421E249168C
+X-Rspamd-Queue-Id: E8C66491918
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-241847-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[25];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-241848-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkosiorek121@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	RBL_SEM_FAIL(0.00)[104.64.211.4:query timed out];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
 
-KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
-hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
-(reproduced on 6.12.47, also reachable via the same code path on
-torvalds/master and on the ipsec tree). Nine unique signatures cluster
-in the xfrm_state lifecycle, the load-bearing one being:
+In mana driver, the number of IRQs allocated is capped by the
+min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
+than the vcpu count, we want to utilize all the vCPUs, irrespective of
+their NUMA/core bindings.
 
-  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
-  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
-  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
-  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
+This is important, especially in the envs where number of vCPUs are so
+few that the softIRQ handling overhead on two IRQs on the same vCPU is
+much more than their overheads if they were spread across sibling vCPUs.
 
-  Workqueue: netns cleanup_net
-  Call Trace:
-   __hlist_del / hlist_del_rcu
-   __xfrm_state_delete
-   xfrm_state_delete
-   xfrm_state_flush
-   xfrm_state_fini
-   ops_exit_list
-   cleanup_net
+This behaviour is more evident with dynamic IRQ allocation. Since MANA
+IRQs are assigned at a later stage compared to static allocation, other
+device IRQs may already be affinitized to the vCPUs. As a result, IRQ
+weights become imbalanced, causing multiple MANA IRQs to land on the
+same vCPU, while some vCPUs have none.
 
-The other observed signatures hit the same slab object from
-__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
-write variant of __xfrm_state_delete, all on the byseq/byspi
-hash chains.
+In such cases when many parallel TCP connections are tested, the
+throughput drops significantly.
 
-__xfrm_state_delete() guards its byseq and byspi unhashes with
-value-based predicates:
+Test envs:
+=======================================================
+Case 1: without this patch
+=======================================================
+4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
 
-	if (x->km.seq)
-		hlist_del_rcu(&x->byseq);
-	if (x->id.spi)
-		hlist_del_rcu(&x->byspi);
+	TYPE		effective vCPU aff
+=======================================================
+IRQ0:	HWC		0
+IRQ1:	mana_q1		0
+IRQ2:	mana_q2		2
+IRQ3:	mana_q3		0
+IRQ4:	mana_q4		3
 
-while everywhere else in the file (e.g. state_cache, state_cache_input)
-the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
-x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
-into byspi, but a path that observes x->id.spi != 0 outside of
-xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
-with whether x is actually on the list. The same holds for x->km.seq
-versus byseq, and the bydst/bysrc unhashes have no predicate at all,
-so a second __xfrm_state_delete() on the same object writes through
-LIST_POISON pprev.
+%soft on each vCPU(mpstat -P ALL 1) on receiver
+vCPU		0	1	2	3
+=======================================================
+pass 1:		38.85	0.03	24.89	24.65
+pass 2:		39.15	0.03	24.57	25.28
+pass 3:		40.36	0.03	23.20	23.17
 
-The defensive change here:
+=======================================================
+Case 2: with this patch
+=======================================================
+4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
 
-  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
-    bysrc, byseq and byspi so a second deletion is a no-op rather
-    than a write through LIST_POISON pprev. The byseq/byspi nodes
-    are already initialised in xfrm_state_alloc().
-  - Test hlist_unhashed() rather than the value predicate for
-    byseq/byspi, so the unhash decision tracks list state rather than
-    mutable scalar fields.
+        TYPE            effective vCPU aff
+=======================================================
+IRQ0:   HWC             0
+IRQ1:   mana_q1         0
+IRQ2:   mana_q2         1
+IRQ3:   mana_q3         2
+IRQ4:   mana_q4         3
 
-Empirical verification: applied this patch on top of v6.12.47, rebuilt,
-and re-ran the same syzkaller harness for 1h16m on a previously-crashy
-configuration that produced ~100 hits each of slab-use-after-free
-Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
-__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
-~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
-confirms the xfrm_state slab is actively allocated and freed during
-the run (~143 KiB resident), so the fuzzer is still exercising those
-code paths -- they just no longer crash.
+%soft on each vCPU(mpstat -P ALL 1) on receiver
+vCPU            0       1       2       3
+=======================================================
+pass 1:         15.42	15.85	14.99	14.51
+pass 2:         15.53	15.94	15.81	15.93
+pass 3:         16.41	16.35	16.40	16.36
 
-Reproduction:
+=======================================================
+Throughput Impact(in Gbps, same env)
+=======================================================
+TCP conn	with patch	w/o patch
+20480		15.65		7.73
+10240		15.63		8.93
+8192		15.64		9.69
+6144		15.64		13.16
+4096		15.69		15.75
+2048		15.69		15.83
+1024		15.71		15.28
 
-  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
-  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
-  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
-  - 9 unique signatures collected in ~9h, all within xfrm_state
-    lifecycle
-
-Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
-Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
-Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
 ---
+Changes in v2
+ * Removed the unused skip_first_cpu variable
+ * fixed exit condition in irq_setup_linear() with len == 0
+ * changed return type of irq_setup_linear() as it will always be 0
+ * removed the unnecessary rcu_read_lock() in irq_setup_linear()
+ * added appropriate comments to indicate expected behaviour when
+   IRQs are more than or equal to num_online_cpus()
+---
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 47 ++++++++++++++++---
+ 1 file changed, 40 insertions(+), 7 deletions(-)
 
-Resending v2 via git send-email -- the previous post had been sent
-through Gmail's web client which stripped all tabs from the diff
-hunk and made the patch un-applyable. Apologies for the noise. No
-other changes versus the prior v2 send.
-
- net/xfrm/xfrm_state.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 1748d374abca..686014d39429 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -818,17 +818,17 @@ int __xfrm_state_delete(struct xfrm_state *x)
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 098fbda0d128..d740d1dc43da 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -167,6 +167,8 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
+ 	} else {
+ 		/* If dynamic allocation is enabled we have already allocated
+ 		 * hwc msi
++		 * Also, we make sure in this case the following is always true
++		 * (num_msix_usable - 1 HWC) <= num_online_cpus()
+ 		 */
+ 		gc->num_msix_usable = min(resp.max_msix, num_online_cpus() + 1);
+ 	}
+@@ -1672,11 +1674,24 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
+ 	return 0;
+ }
  
- 		spin_lock(&net->xfrm.xfrm_state_lock);
- 		list_del(&x->km.all);
--		hlist_del_rcu(&x->bydst);
--		hlist_del_rcu(&x->bysrc);
--		if (x->km.seq)
--			hlist_del_rcu(&x->byseq);
-+		hlist_del_init_rcu(&x->bydst);
-+		hlist_del_init_rcu(&x->bysrc);
-+		if (!hlist_unhashed(&x->byseq))
-+			hlist_del_init_rcu(&x->byseq);
- 		if (!hlist_unhashed(&x->state_cache))
- 			hlist_del_rcu(&x->state_cache);
- 		if (!hlist_unhashed(&x->state_cache_input))
- 			hlist_del_rcu(&x->state_cache_input);
++/* should be called with cpus_read_lock() held */
++static void irq_setup_linear(unsigned int *irqs, unsigned int len)
++{
++	int cpu;
++
++	for_each_online_cpu(cpu) {
++		if (len == 0)
++			break;
++
++		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
++		len--;
++	}
++}
++
+ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+ {
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 	struct gdma_irq_context *gic;
+-	bool skip_first_cpu = false;
+ 	int *irqs, irq, err, i;
  
--		if (x->id.spi)
--			hlist_del_rcu(&x->byspi);
-+		if (!hlist_unhashed(&x->byspi))
-+			hlist_del_init_rcu(&x->byspi);
- 		net->xfrm.state_num--;
- 		xfrm_nat_keepalive_state_updated(x);
- 		spin_unlock(&net->xfrm.xfrm_state_lock);
+ 	irqs = kmalloc_objs(int, nvec);
+@@ -1722,13 +1737,31 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+ 	 * first CPU sibling group since they are already affinitized to HWC IRQ
+ 	 */
+ 	cpus_read_lock();
+-	if (gc->num_msix_usable <= num_online_cpus())
+-		skip_first_cpu = true;
++	if (gc->num_msix_usable <= num_online_cpus()) {
++		err = irq_setup(irqs, nvec, gc->numa_node, true);
++		if (err) {
++			cpus_read_unlock();
++			goto free_irq;
++		}
++	} else {
++		/*
++		 * When num_msix_usable are more than num_online_cpus, we try to
++		 * make sure we are using all vcpus. In such a case NUMA or
++		 * CPU core affinity does not matter.
++		 * Note: in this case the total mana IRQ should always be
++		 * num_online_cpus + 1. The first HWC IRQ is already handled
++		 * in HWC setup calls
++		 * However, if CPUs went offline since num_msix_usable was
++		 * computed, nvec count will be more than num_online_cpus().
++		 * In such cases remaining extra IRQs will retain their default
++		 * affinity.
++		 */
++		if (nvec > num_online_cpus())
++			dev_dbg(&pdev->dev,
++				"IRQ count %d exceeds online CPU count %d. Some IRQs will share CPU\n",
++				nvec, num_online_cpus());
+ 
+-	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+-	if (err) {
+-		cpus_read_unlock();
+-		goto free_irq;
++		irq_setup_linear(irqs, nvec);
+ 	}
+ 
+ 	cpus_read_unlock();
+
+base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
 -- 
-2.54.0
+2.34.1
 
 
