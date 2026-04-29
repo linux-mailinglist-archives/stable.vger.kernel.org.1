@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-241844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPLKLbfD8WkbkQEAu9opvQ
-	(envelope-from <stable+bounces-241844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:39:19 +0200
+	id uNHSFsbD8WkbkQEAu9opvQ
+	(envelope-from <stable+bounces-241845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:39:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24138491444
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:39:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E81C49145A
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 018EB300645A
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 08:39:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5A036302AF18
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 08:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5B53B0AF1;
-	Wed, 29 Apr 2026 08:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF26E3B0AF1;
+	Wed, 29 Apr 2026 08:39:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB8037A494;
-	Wed, 29 Apr 2026 08:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C369B37A494;
+	Wed, 29 Apr 2026 08:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777451953; cv=none; b=jc5jyB/i5fEpqUFIftvtlKe7+smACTOnl7CUlN/faTSP6OSOdt/O8QBdPSj1UOdIvU4bnwje6EOHPG7mY0dE14Hzc/lwbkvI85i9dxJNGLTB7mcKhocPxXaI6pxItSE0ffL7EqIjM9jHxYWnD7mnJUJLLdlU187MaANIXS8AbQM=
+	t=1777451958; cv=none; b=qxjO7wARp7CHVCXNhraea6AGA+z1QYMN6F5YJlNPwEJb2XTKGSfeDvdk+PPFMQYlp9KY344kCzlCqhhmIZUcx169wmtd9BHt20LLtpJGaWOIIlTYfx6clznkwzBca5zqYm8kBnzOGfSa4EKC+xpfYZYWnEHaGCHcst0isii2uQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777451953; c=relaxed/simple;
-	bh=pwZI+Wi6wyw5IfLMCoALecdqKTdTrP3HOiHP35jv+Fo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EUZYgHc/iHz6L0ojArB/CnnPEgTm0/czQt6tOw0GfiHjAOR1tt+jexkLgfR7vOrYYAlrFBkzx/nmbrDmu64yy0TDt0XGy643a3ANcF/ccdrULy6RJKS69cu+T9OlTHv6fwnci0hi/XU6R0y1ME+C7uAX0/kctk0PiraNC6tThAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
+	s=arc-20240116; t=1777451958; c=relaxed/simple;
+	bh=psz74xlyo+Q/D2GKhu7Hni7zJsLkYJergDSVpn6RWXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ax2a/XBQ6K8Kc/MqkPXm2QkrC7aqdaAVhGrctVMk73RUO4rLcEyo0D8gltoOG8CvreiW61IpGD3UgjQ3CqgsakaQYaQOQBTSm39i0S05BoKnpZ2rfFfgqx/eNRjBZi/Zjgj5XxesAbjnUlIS8TZFiCe4qQf8ga78dGlulfYXdkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz13t1777451887t57a78d8a
-X-QQ-Originating-IP: fSps1ZI6Jcae7ux/p/gvKgU6avO9QRFKo56ynkofpLk=
+X-QQ-mid: esmtpgz13t1777451890te988ade6
+X-QQ-Originating-IP: cuFgxeLDLHQr17MDl9BvVrK4VlEB+G9bs4t8/BsiYyM=
 Received: from w-MS-7E16.trustnetic.com ( [36.24.191.108])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 29 Apr 2026 16:37:59 +0800 (CST)
+	id ; Wed, 29 Apr 2026 16:38:08 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16571850513645495144
+X-BIZMAIL-ID: 17928567013619831319
 EX-QQ-RecipientCnt: 11
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -52,10 +53,12 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Kees Cook <kees@kernel.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net 1/2] net: libwx: fix VF illegal register access
-Date: Wed, 29 Apr 2026 16:37:42 +0800
-Message-ID: <4D1F4452D21DE107+20260429083743.88961-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net 2/2] net: libwx: use request_irq for VF misc interrupt
+Date: Wed, 29 Apr 2026 16:37:43 +0800
+Message-ID: <786DDC7D5CCA6D0A+20260429083743.88961-2-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260429083743.88961-1-jiawenwu@trustnetic.com>
+References: <20260429083743.88961-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,25 +68,26 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M//muKyjQOU4HpFh4VqgsmTq/maQpjbQZnxwFjWcSOap8bupHYiUc6c9
-	SAs9fmG5w910HqDPIw2NW8MLvgOKoX+qUc/oC9VwhvE517yPXf1E4UavkZRdyKZndjRr5k4
-	2Tq90O66dnFp6s8RdgvcOp/HrBie9FORBzG//pDA35cHK7o80ywVqqNQ1Pb3PCgwDgteWZG
-	0pM4Ppic+A5fQz9tgeLkeLJ0Q48BSAs05k20gl80hAxR+XLUQEliy64PVBlr+V0G3o47oSS
-	oYM2qOeVZyMA/nIhqS0unxgAb7Dr0Emi9LwyvSYsawJlmbZ/MrL4gAmFTpAGlbOEXtdsn3U
-	nIOVf/CDi2AUa6N/ZmG0ItkRQp1fsRFt8jGF5mxaPrAC0GblelxHf5hbbYfCNjDo8cbALHs
-	PO5zb6X7hfQsUf+LPgMeyvChfmWZTfv9LD9cmuEXkH9tVBCmJlplCeJdtuAJEk4ICa73dW1
-	FRkcq2o5fCtl7jhgmK/7RKZDKU2SVFISi78GtBDHPpxU4OdmEmpkNl6MHiG3CkJ+5CAPLYJ
-	mZm2WLzbkDJi3dNfCzoutrZVEIqvVazJjCULs1V+nt82LL+wavje9R/6o4JzWQSINwoCYv5
-	2ZZ7JVLmjjMjju0jqpXIUqkjjzqAtZdn+imuyxJDeRahAuCRN2lAaKs4Z534kNx2ByMyoue
-	+/99r1NgIoJ9ZRU4a4puaH/eboZ+hc5y/g7ayhurVfDhGvD0iVsuGkyddKL6mkqtLPZZ8GH
-	2ic57dpiJXEEnJ4LQ8sJ0/sbIN+zwI2EcnJFBif2402pUh/qDugSn5v6dwjETIymqOhajoF
-	+DVtJ+JYV5RrKrjsbiW6lhR2EbyxM+qppDSht7WsyaX2OU3CqM5x7jEOcv7SM41dvbX7soF
-	gQ4Sz2XMlDqndgwGF87xFTDBlPZt6ioPiDqMXGk3Q+Gm/e2mdgwLooBrKmEJDl2feqgQNjY
-	gqZOiP1wIaQGvA8503b9UcPJXIWV2dVA0VNWTzRlzHNhLLraVcVfsigRsSBMsteFXD9hDRJ
-	vOQ60CFTIn3v17lxAAUoXLGmCmryhl6CvVUYQSg4PsemPOJMhECx2r4MpMNu8=
+X-QQ-XMAILINFO: NSXtYWcyD5KOs8APlK1IfwaTYPxQAyl3qy1odxVGBrH8hcH47PUFnWZf
+	eFGusaYvM1aJMS7c9ZWQUUhZ0Rl9IdBA1X6vj5bYb7iXtBBGWh5GHqZ8otYetl8R+F/pneJ
+	LRuaN8el9FvACRCJG+dsOgXRMByOeYPigY2f32D8EARbqshKg9Ezpk3o4IOy4MSMkzeI6gR
+	fdoMusgZPqOIOIgIJsOA223NsT0OWqdc7kF02Bn1kwcVCoOc+NPg+RdaDvARkDKk7zV+3gS
+	Vm1gvks+eFGiXxmuViLC6C2vARCu9XjEwQsa2/HAgkvi+Nuq3YBW4TnKUhosKW/BJg0Gceq
+	vbHoiyPpzbpGLqFBF/sx9QtpUbMNIlFvoIyQoXbNEwLzgL3mqZ3ziRrquQGJ7HmzNXolkfl
+	tod0VDl0GG48qGcHdzYJJG54/Y5/kUC7BO2gPfRKIj93dWStcfUxWlINKIE+YI6zJKdeZZZ
+	8t8KGEBImsIWyxGSkw5LafhF9/cr7TdN7Oou/NwSAIC7edVam3N5UkmV41CEHxPrfUKU0rZ
+	eJUVlyK8y0i36giyDKPCFllrjnKofdP6G3EIjSSwO13kUTnqmwDU/0S7jBi/zkDpUE3DG0C
+	kWyCsz4CcPdHWm52tubM1t1+mrxQaxyxVeXplCAblFCrYGVAhnp9uaYleTbyKv9/+ZDK5zy
+	/2UQ5EfuVrbCaVuPDpxUX2oLa9ToXlXIsRrkYGQKxXEHaYznxEK9XWXE4kiSPDG5ZyP0de+
+	ftSoQ/IekKu6w9LmjW3mjl9JMB0nlOwgu9jBMAbTd7qHyWCFHCoV7xmsDj/1WtCJWbobcMK
+	mVQoA558xmQ4riX6kbUFHfdxYXt2z3ipLqL5Xd70zG5Fb9PHGlE1XrJBebagr4i765ppKyZ
+	YLbvjZASdigli4VsfEJARpOPu1c1IcGMZvMiJwOP2rwOxjcSDtRn0A3xBipL1tapQxlczaD
+	iVSBNMuEj27r4RM5SdDA6Ihp5yuZp/thWuaQZF05mjhjYG1Njx0r0ZHAmmpz56NHQpyCoFI
+	Y+5su6SF0p+PYTLo+fIGm3z5LlwCuazOSAC/PmsY0NzSXKwc6sJboxxI8du8TQM1LUd3Iis
+	g==
 X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 24138491444
+X-Rspamd-Queue-Id: 0E81C49145A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
@@ -91,60 +95,61 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241844-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241845-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[trustnetic.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	NEURAL_SPAM(0.00)[0.595];
+	NEURAL_SPAM(0.00)[0.611];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-Register WX_CFG_PORT_ST is a PF restricted register. When a VF is
-initialized, attempting to read this register triggers an illegal
-register access, which lead to a system hang.
+Currently, request_threaded_irq() is used with a primary handler but a
+NULL threaded handler, while also setting the IRQF_ONESHOT flag. This
+specific combination triggers a WARNING since the commit aef30c8d569c
+("genirq: Warn about using IRQF_ONESHOT without a threaded handler").
 
-When the device is VF, the bus function ID can be obtained directly from
-the PCI_FUNC(pdev->devfn).
+WARNING: kernel/irq/manage.c:1502 at __setup_irq+0x4fa/0x760
 
-Fixes: a04ea57aae37 ("net: libwx: fix device bus LAN ID")
+Fix the issue by switching to request_irq(), which is the appropriate
+interface or a non-threaded interrupt handler, and removing the
+unnecessary IRQF_ONESHOT flag.
+
+Fixes: eb4898fde1de ("net: libwx: add wangxun vf common api")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_vf_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index d3772d01e00b..2451f6b20b11 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2480,8 +2480,11 @@ int wx_sw_init(struct wx *wx)
- 	wx->oem_svid = pdev->subsystem_vendor;
- 	wx->oem_ssid = pdev->subsystem_device;
- 	wx->bus.device = PCI_SLOT(pdev->devfn);
--	wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
--				 rd32(wx, WX_CFG_PORT_ST));
-+	if (pdev->is_virtfn)
-+		wx->bus.func = PCI_FUNC(pdev->devfn);
-+	else
-+		wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
-+					 rd32(wx, WX_CFG_PORT_ST));
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+index 29cdbed2e5ec..94ff8f5f0b4c 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -99,8 +99,8 @@ int wx_request_msix_irqs_vf(struct wx *wx)
+ 		}
+ 	}
  
- 	if (wx->oem_svid == PCI_VENDOR_ID_WANGXUN ||
- 	    pdev->is_virtfn) {
+-	err = request_threaded_irq(wx->msix_entry->vector, wx_msix_misc_vf,
+-				   NULL, IRQF_ONESHOT, netdev->name, wx);
++	err = request_irq(wx->msix_entry->vector, wx_msix_misc_vf,
++			  0, netdev->name, wx);
+ 	if (err) {
+ 		wx_err(wx, "request_irq for msix_other failed: %d\n", err);
+ 		goto free_queue_irqs;
 -- 
 2.51.0
 
