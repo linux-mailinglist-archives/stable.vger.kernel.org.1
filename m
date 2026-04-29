@@ -1,193 +1,182 @@
-Return-Path: <stable+bounces-241849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKVnHvPO8WlrkgEAu9opvQ
-	(envelope-from <stable+bounces-241849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:27:15 +0200
+	id iM4vLszQ8WlrkgEAu9opvQ
+	(envelope-from <stable+bounces-241851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:35:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744C0491E1A
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:27:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1634D491FE5
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 654F83008091
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:27:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD7B730E92C4
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D1421B9F6;
-	Wed, 29 Apr 2026 09:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699193CA49D;
+	Wed, 29 Apr 2026 09:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1nArF057"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="SJqp01h7";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="5Q/MWX61"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D86B37D137;
-	Wed, 29 Apr 2026 09:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F9A3C060B;
+	Wed, 29 Apr 2026 09:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454827; cv=none; b=JScX3syGl3TVjs5u3vQfgrH7k0RoMRqA7VBiTTQDWxA9Szg9zx4zwdU9E04RlXlQHRuz5JBkqshBGXoKQK5V40KYDcjhPxJcbNkiRpy3f1e/zFHuosU+FEnVAi+gXcU+DwR41wq/bID56AyZJ9kcespdUUqd+QXR2ZRcuuIJH5k=
+	t=1777455031; cv=none; b=T5J+0G32OWz1lQitxU2g5rRY+DAElnj/B5p/2V6OMgb6RnAqZhFk/ywcwz5tH4JFGBGBSSUq03SpnN4pZSYJgzw5tGXWTfM9f1p+gAsyyttI50yEf4ZyBPenJsDmtJdS3CKApB9dl/+flWPqF2yX+wBpqkPTLqo3vey7jc+F4s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777454827; c=relaxed/simple;
-	bh=e9kpVznoXWPmdDZYzo5h7YVmLm1mINreekjC/IMMlhU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=QlQnMt31rsk7tw91AcRWQzRpZTDnvlTdKrwjq5zhhrqZajghNKx9d5I3LZ3FnM7JNv0NnG+IU1TI3+MvpAn1jlVu+jKpj8FHJSpnhSonbbZPhb2L3u6rx/fO8SHy5lT/Whu1GaF+5fn+Nfr4s8CJl0PpLvBimwX3yPtwIDeer5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1nArF057; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 14CCC4E42B3E;
-	Wed, 29 Apr 2026 09:27:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CCBA9601DF;
-	Wed, 29 Apr 2026 09:27:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B918D10729379;
-	Wed, 29 Apr 2026 11:26:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777454821; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=xZ8VMjmAuXE7bj1xiXzUWvyTTPxElhI0qs5AYciLeQ8=;
-	b=1nArF057MsMdZUgpYhN6s2KAv0T+92sKVtzrc9vC4QAfR0RXrUhkbBhxtmA9h1DCjxoujY
-	QVnIjPjFlbwJud/AmAcnGvuzmaW9fNl+GOe/afSDYnBUDnQOsdmCsbUSVr07HAWddXsSj6
-	IaJksiqOzEQDbMp/0m5HTQvuorwLatoJIiupolrhAKmWuSoHdq+e/nz2zG+3ZoZdJ3NoaR
-	4IcS4+0df/byy5pe321xxmEhjDt40kcvH7xHhQeSRjvf3VI3HkbxyISGfetNNkseaCEuuH
-	piAruBTpPYZ/tTLULngBtcnjj1Br7ipcaommegW5qt2UElS4/W4X+FyrPFgq1A==
+	s=arc-20240116; t=1777455031; c=relaxed/simple;
+	bh=xRErcKPQnoGFO/OuoFMb+jcfuLMIcQU35H8D5CzakEU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZhE3trlgs3ClMzSXZt2nRtIN+iaLu4MsKbCpf4p12xdKbUhpn5lKTeSNEmyn6NDTMyi2qBZnQphA0HjFMzYxai0MUg0p7M61gWuXtQpM79VMmQp6TWxwuokF4tpjPTIKoyLS5AcqEk2MWDh2ac1CKlPYhxiqg7lssH2b53ZDv18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=SJqp01h7; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=5Q/MWX61; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Date:Subject:From; t=1777455012; bh=us61U4dauSW9BvRwTbffQGU
+	gfbtB4S9QeDn8Q3GvZ5o=; b=SJqp01h7TUzWixGXVpL5hGL/hY0JblECHjPFnwAZY8ez+oybL0
+	H0CrTmJLC0M6E/b//oXj640Yfg/3jOMhKRlGGGrwShUpHvChxcLVqNiPc+2Uc1W8i0H8ASSr/DO
+	8gviWdUvvxMeFjxVy2A0RFhhaOG2jSWr5Eclqkz7mlXqd4JyALDysw4bctFFHL/6A6A4XnaHmzn
+	JHskj2z1L3Apzghgoh2KpaMX/Nic5/BrUWz7+ndVcJu2fXLuSdzg3UTnniYhQkMzE95KZ7gw54y
+	LbZcTqIa5YaZGcWSQIAuUr0VdOlOnWh427P5njcg/z4eOvyCrQItR3XUJngQwfBtAMQ==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Date:Subject:From; t=1777455012; bh=us61U4dauSW9BvRwTbffQGU
+	gfbtB4S9QeDn8Q3GvZ5o=; b=5Q/MWX61o9jo8ydrVV0IN3yE7hwVw6UgO8uZQqGRqsW2gX61u/
+	e89VSTDUf0obBfNeLk+RGG4YuFB2FmkFi7CQ==;
+From: Nickolay Goppen <setotau@mainlining.org>
+Subject: [PATCH v5 0/5] arm64: dts: qcom: sdm630/660 FastRPC fixes
+Date: Wed, 29 Apr 2026 12:30:07 +0300
+Message-Id: <20260429-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v5-0-16bc82e622ad@mainlining.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Apr 2026 11:26:47 +0200
-Message-Id: <DI5J5659IHRK.2VDGEBK93OQJP@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net v2 2/4] net: macb: drop in-flight Tx SKBs on close
-Cc: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Haavard Skinnemoen" <hskinnemoen@atmel.com>, "Jeff Garzik"
- <jeff@garzik.org>, "Paolo Valerio" <pvalerio@redhat.com>, "Conor Dooley"
- <conor@kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>, <stable@vger.kernel.org>
-To: "Nicolai Buchwitz" <nb@tipi-net.de>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
- <20260428-macb-drop-tx-v2-2-647f5199d8df@bootlin.com>
- <75229fab491465e06a98ee580a51f0b4@tipi-net.de>
-In-Reply-To: <75229fab491465e06a98ee580a51f0b4@tipi-net.de>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 744C0491E1A
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJ/P8WkC/5XOTU7DMBAF4KtUXjPIGY/tlhX3QF34L6kRcYKdR
+ qAqd8cpm0h0ETYjvdHoe3NjJeQYCns53FgOcyxxSDXIpwNzF5O6ANHXzJCj4tRI+HRDD8X3SnF
+ wvoxg1tGaMuXRgZ8KtPELPHdGK4GcpGHVGnOo63vP2/k3l6t9D25a8fXiEss05O/7I3Oz3v23c
+ 26AAxeWtLR4kpJeexPTR0wxdc9D7thaPOOGRr6Xxkq3ymljhTseT+YhLbY07qVFpVGTNUI30lv
+ +kKYtTXtpqnQIEqVWpEjjH3pZlh8OW59+AgIAAA==
+X-Change-ID: 20260415-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-d0ca7632045a
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Nickolay Goppen <setotau@mainlining.org>, 
+ Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Konrad Dybcio <konradybcio@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777455011; l=2735;
+ i=setotau@mainlining.org; s=20250815; h=from:subject:message-id;
+ bh=xRErcKPQnoGFO/OuoFMb+jcfuLMIcQU35H8D5CzakEU=;
+ b=32wlkg4Ws+nxg3L7pBLlSHJfbeoee7TP3jbl6LDNSC5SvsidYfCMs0yIjs4oJjiDYW2i7VPbt
+ sjNLEje8XYQCPA0GMgdsK1kgGiCG4jW9cKSycZjwqP9xaNPXBEaBhV5
+X-Developer-Key: i=setotau@mainlining.org; a=ed25519;
+ pk=Og7YO6LfW+M2QfcJfjaUaXc8oOr5zoK8+4AtX5ICr4o=
+X-Rspamd-Queue-Id: 1634D491FE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[mainlining.org,reject];
+	R_DKIM_ALLOW(-0.20)[mainlining.org:s=202507r,mainlining.org:s=202507e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241849-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[bootlin.com:+];
+	TAGGED_FROM(0.00)[bounces-241851-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[mainlining.org,oss.qualcomm.com,vger.kernel.org,lists.sr.ht,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tipi-net.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:mid,bootlin.com:email,bootlin.com:dkim,bootlin.com:url]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[setotau@mainlining.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mainlining.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hello Nicolai,
+This series introduces fixes that make FastRPC on SDM660 work properly.
+Currently only the calculator_example test passes on both ADSP and 
+CDSP [1].
+Also assign adsp_mem region to the ADSP's FastRPC node.
 
-On Tue Apr 28, 2026 at 11:30 PM CEST, Nicolai Buchwitz wrote:
-> On 28.4.2026 18:32, Th=C3=A9o Lebrun wrote:
->> The MACB driver has since forever leaked the outgoing SKBs that
->> have not yet been marked as completed. They live in queue->tx_skb
->> which gets freed without remorse nor checking.
->>=20
->> macb_free_consistent() gets called in a few codepaths, but only
->> close will trigger the added expressions. In macb_open() and
->> macb_alloc_consistent() failure cases, tx_skb just got allocated
->> and is empty.
->>=20
->> Use the new macb_tx_unmap() prototype to report our error as
->> SKB_DROP_REASON_NOT_SPECIFIED rather than SKB_CONSUMED which makes it
->> sound like no error occurred. Equivalent to dev_kfree_skb_any().
->>=20
->> Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->> ---
->>  drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
->>  1 file changed, 20 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/drivers/net/ethernet/cadence/macb_main.c=20
->> b/drivers/net/ethernet/cadence/macb_main.c
->> index 9caae1ef52b1..5a2500bd59a6 100644
->> --- a/drivers/net/ethernet/cadence/macb_main.c
->> +++ b/drivers/net/ethernet/cadence/macb_main.c
->> @@ -2678,8 +2678,26 @@ static void macb_free_consistent(struct macb=20
->> *bp)
->>  	dma_free_coherent(dev, size, bp->queues[0].rx_ring,=20
->> bp->queues[0].rx_ring_dma);
->>=20
->>  	for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queue) =
-{
->> -		kfree(queue->tx_skb);
->> -		queue->tx_skb =3D NULL;
->> +		if (queue->tx_skb) {
->> +			unsigned int dropped =3D 0, tail;
->> +
->> +			for (tail =3D queue->tx_tail; tail !=3D queue->tx_head;
->> +			     tail++) {
->> +				if (macb_tx_skb(queue, tail)->skb)
->> +					dropped++;
->> +				macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0,
->> +					      SKB_DROP_REASON_NOT_SPECIFIED);
->> +			}
->
-> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+[1]: https://github.com/qualcomm/fastrpc/issues/269#issuecomment-4232125297
 
-Thanks for the review!
-We are quite a few caring about MACB which is nice.
+Signed-off-by: Nickolay Goppen <setotau@mainlining.org>
+---
+Changes in v5:
+- Changed alloc-ranges of adsp_mem (Konrad Dybcio)
+- Reordered patches
+- Link to v4: https://patch.msgid.link/20260424-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v4-0-ee5257646472@mainlining.org
 
-> Side note, not blocking: macb_close() doesn't cancel tx_error_task,
-> so the workqueue handler can race with this loop on tx_skb[]. The
-> exposure is pre-existing, but maybe worth a follow-up adding
-> cancel_work_sync() between napi_disable() and macb_free_consistent().
+Changes in v4:
+- Added CP_ADSP_SHARED VMID to dt-bindings (Ekansh Gupta and Konrad Dybcio)
+- Added Fixes tags
+- Link to v3: https://patch.msgid.link/20260422-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v3-0-274ba3715db0@mainlining.org
 
-Yes, noticed that while working on the context swapping series [0].
-The goal here is to improve MACB piecewise, so I won't take that on in
-the current series.
+Changes in v3:
+- Brought back patch that changed adsp_mem to reusable (Ekansh Gupta)
+- Changed adsp_mem to dynamic allocation (Ekansh Gupta)
+- Fixed alignment of the vmids property of adsp
+- Link to v2: https://patch.msgid.link/20260420-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v2-0-f6c7ab3c889a@mainlining.org
 
-[0]: https://lore.kernel.org/all/90f843aa3940bdbabadddce27314c1f1@tipi-net.=
-de/t/#mda18f759c27a4d833084b23605463994632d97e3
-     (and the two replies)
+Changes in v2:
+- Dropped patch that changed adsp_mem to reusable
+- Added vmids to fastrpc subnode of adsp (Ekansh Gupta)
+- Link to v1: https://patch.msgid.link/20260415-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v1-0-03b475b29554@mainlining.org
 
-Thanks,
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Nickolay Goppen <setotau@mainlining.org>
+Cc: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Konrad Dybcio <konradybcio@gmail.com>
 
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+---
+Nickolay Goppen (5):
+      dt-bindings: firmware: qcom: scm: add CP_ADSP_SHARED VMID
+      arm64: dts: qcom: sdm660: set cdsp compute-cbs' regs properly
+      arm64: dts: qcom: sdm630: set adsp compute-cbs' regs properly
+      arm64: dts: qcom: sdm630: describe adsp_mem region properly
+      arm64: dts: qcom: sdm630: assign adsp_mem region to ADSP FastRPC node
+
+ arch/arm64/boot/dts/qcom/sdm630.dtsi    | 28 +++++++++++++++----------
+ arch/arm64/boot/dts/qcom/sdm660.dtsi    | 36 ++++++++++++++++-----------------
+ include/dt-bindings/firmware/qcom,scm.h |  1 +
+ 3 files changed, 36 insertions(+), 29 deletions(-)
+---
+base-commit: 5a154741a8271f2db906ed4c33a55a1c83e84da1
+change-id: 20260415-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-d0ca7632045a
+
+Best regards,
+--  
+Nickolay Goppen <setotau@mainlining.org>
 
 
