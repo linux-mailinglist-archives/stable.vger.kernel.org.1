@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-241936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIyREo1h8mlNqgEAu9opvQ
-	(envelope-from <stable+bounces-241936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 21:52:45 +0200
+	id sE6JJ6Jh8mk0qgEAu9opvQ
+	(envelope-from <stable+bounces-241938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 21:53:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F8C499E4E
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 21:52:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA397499E7E
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 21:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF5CB303CC00
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:52:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B73FB3071847
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D40C38837C;
-	Wed, 29 Apr 2026 19:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35F3390212;
+	Wed, 29 Apr 2026 19:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DumGdNFP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dk7n4FXD"
 X-Original-To: Stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CDD194A6C;
-	Wed, 29 Apr 2026 19:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258B8388E5A;
+	Wed, 29 Apr 2026 19:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777492342; cv=none; b=lSUceaTqMUm46wdoowcs2kLskFP2kN5+fjslKwGckv56G3sjyLmsjWtKmAcg8KA9UHSQ3dLONMslVH4UlxuJhf5ppOzjf8M+HliGDLTbhNYnjx5nqBB+ajmBjO7Jl8bajkHEPN6irUD2i+6iYGVtq1EclOVZrVAgHT84i7drXTk=
+	t=1777492344; cv=none; b=hUiij/xPA/fC7ckHRhytZ37HQwwHnJISQ6MT6D6Oj1XDgb5QBdzcxcwvSd/fg1njHeGopNE4Ts4pBUzd52pVdn7P92MHCUrTr0qp4tpZrww0Pq6jEBb+Ld+0cSdXw42J6w31g1Gp5MEyyevg9ZA7o2lfaZuGmLrNuZsO1ReIUeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777492342; c=relaxed/simple;
-	bh=eV+8wjJgFvWbZ6S1ykU0YqF/7yuRj+RxujDHHfqxLaE=;
+	s=arc-20240116; t=1777492344; c=relaxed/simple;
+	bh=COwCRWMpR2QUZTYUePCcQS4dOqrwI8PSME3538UB0N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LebSUcOmGM+6xbvZB2B1CA54k4eb6UVfhq2GkgJFJobp1UPFCz6OsXvotdrlQjJ5m35ECj7V2Lme5Xm/LUXE7LbSaTjZty2RyEjC/zKnDE2wgI6zX/9aYmVcmRsFRmOtX+h5CrjofFDEVtSDW8rw/hcVlmRYRla+kK3IL04bY90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DumGdNFP; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=M5gRVoZ/RH1I2tdUTIvNk0zjzUKj/FKI+gVmDZ7Uzx9JIrFVKY2bUVYKPpjCBhOMCojXcgD5cyyVyqefx1jmSQeohPMHmPffJyD2mrbF/vG+W+nQjHEePIvsEzQyh365LEJz5mnoyOEQAjn65fBjK9uz/eX1XVtwLggY0x1KJ3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dk7n4FXD; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777492341; x=1809028341;
+  t=1777492343; x=1809028343;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=eV+8wjJgFvWbZ6S1ykU0YqF/7yuRj+RxujDHHfqxLaE=;
-  b=DumGdNFPYkm2UohwWdgTXlbOCiAi+I3vrtjKkbI35f3ir7Bu1GisRldH
-   DSZkVZMJlwiyiDrVohVukaoRdvxWK8yC3LqeXhfj7c/2aUC1TUoSvNWvZ
-   dFLfow3PTqirJJKQXQodxQapGRiuvHcTZdhpxrYSi95D2kITXFvPfddgl
-   v4SF1wzPVSP9IoNYJQp36DEQp8+scILUe0hc3HNc+1akj7ZQ+J0S+OeDM
-   zADAb/zHKDiaGF4Cdx0S5kX+1CE5Zn6P+LqNpawQwmlZsVZnjZr/naTuh
-   2Esh0ARWSL6WSOnP1qpDqt05ExFN1dZJ6ntYBLU0GLJuXvHLdPgCPzfAb
+  bh=COwCRWMpR2QUZTYUePCcQS4dOqrwI8PSME3538UB0N4=;
+  b=Dk7n4FXDzzeq/Dpxiq+A623YUtx27XQnVxVaqh/5C8+wWmN6LCGi2a46
+   xaVzQtJXzpAFX6f4Kwr4i/3OW+UcGCPJxZe1GjWj7Xv1DpYFqE6WvOhd8
+   kLqWNwEvVIaGVoaBmkczjKQHHdtqvdyTrhymOkar1Nh936tUkslkb93ng
+   wky2MAai3cf8xW/2jra+XAJ9CsNiD8lc5OjQ5N2pNrlH98m9YLoExWI9u
+   AXEYJ7MwobPegnQISQ4bzrHCh4uufu3ZrRnZV/OE3nrynqXD/3j2l52eS
+   WuJz54q7SKLok7tE8rJ25RgVuSyTclq53XQByTWeZ6HwjAnrpdScIHPa3
    g==;
-X-CSE-ConnectionGUID: RuQaPQgOQD+Fm16VUo12uA==
-X-CSE-MsgGUID: Tg0ZU0J/S5+Lx4FR1xlbTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78326736"
+X-CSE-ConnectionGUID: qhozSwZ6T5S8sH3S9/DFtg==
+X-CSE-MsgGUID: QLDuSlhYRPe5pTrZT6awNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78326738"
 X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
-   d="scan'208";a="78326736"
+   d="scan'208";a="78326738"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
   by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 12:52:16 -0700
-X-CSE-ConnectionGUID: sN7IZ9dTR2Okdqwx1muxDA==
-X-CSE-MsgGUID: Ul6VFZ6kRFidScAlhtr00A==
+X-CSE-ConnectionGUID: gDRlO9WlSX2WlQNlrKdqTg==
+X-CSE-MsgGUID: Dl+1UrJnSXCRKoHcbj/7bQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
-   d="scan'208";a="239385675"
+   d="scan'208";a="239385676"
 Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
   by orviesa005.jf.intel.com with ESMTP; 29 Apr 2026 12:52:17 -0700
 From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
@@ -68,9 +68,9 @@ Cc: platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	Stable@vger.kernel.org
-Subject: [PATCH 2/3] platform/x86: intel: Add notifiers support
-Date: Wed, 29 Apr 2026 12:52:13 -0700
-Message-ID: <20260429195214.1532711-3-srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH 3/3] platform/x86/intel/tpmi/plr: Prevent fault during unbind
+Date: Wed, 29 Apr 2026 12:52:14 -0700
+Message-ID: <20260429195214.1532711-4-srinivas.pandruvada@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260429195214.1532711-1-srinivas.pandruvada@linux.intel.com>
 References: <20260429195214.1532711-1-srinivas.pandruvada@linux.intel.com>
@@ -81,7 +81,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 56F8C499E4E
+X-Rspamd-Queue-Id: EA397499E7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -90,16 +90,16 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241936-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241938-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org];
@@ -110,93 +110,121 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
 
-In some cases a driver using services of vsec_tpmi driver requires some
-processing before vsec_tpmi exits. For example a children using debugfs
-can't use debugfs as this will be deleted by the vsec_tpmi driver.
+This driver faults when intel vsec driver unbound from PCI driver
+interface. For example:
 
-This is the case when unbind using PCI driver interface. In this case
-the remove callback of vsec_tpmi driver is called first, then remove
-callback of its children.
+echo 0000:00:03.1 > /sys/bus/pci/drivers/intel_vsec/unbind
 
-Add support of blocking chain notifiers support. Notify on successful probe
-and before clean up in the remove callback.
+This is caused by accessing plr->dbgfs_dir after vsec_tpmi driver is
+removed. Here vsec_tpmi driver is the parent. On unbind, the parent
+device remove callback is called first which here will remove debugfs
+interface. Hence plr->dbgfs_dir is no longer valid.
+
+Register notifier for TPMI_CORE_EXIT and make this pointer to NULL,
+so that debugfs_remove_recursive() is not called with bad plr->dbgfs_dir
+pointer.
+
+After notifier is returned the vsec_tpmi driver will call remove debugfs
+by calling debugfs_remove_recursive().
 
 Fixes: 811f67c51636 ("platform/x86/intel/tpmi: Add new auxiliary driver for performance limits")
 Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: <Stable@vger.kernel.org>
 ---
- drivers/platform/x86/intel/vsec_tpmi.c | 19 +++++++++++++++++++
- include/linux/intel_tpmi.h             |  6 ++++++
- 2 files changed, 25 insertions(+)
+ drivers/platform/x86/intel/plr_tpmi.c | 43 +++++++++++++++++++++++++--
+ 1 file changed, 41 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/vsec_tpmi.c b/drivers/platform/x86/intel/vsec_tpmi.c
-index a38014e81e85..16fd7aa41f20 100644
---- a/drivers/platform/x86/intel/vsec_tpmi.c
-+++ b/drivers/platform/x86/intel/vsec_tpmi.c
-@@ -56,6 +56,7 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
+diff --git a/drivers/platform/x86/intel/plr_tpmi.c b/drivers/platform/x86/intel/plr_tpmi.c
+index 05727169f49c..644df673896b 100644
+--- a/drivers/platform/x86/intel/plr_tpmi.c
++++ b/drivers/platform/x86/intel/plr_tpmi.c
+@@ -22,6 +22,7 @@
  #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/mutex.h>
 +#include <linux/notifier.h>
- #include <linux/pci.h>
- #include <linux/security.h>
- #include <linux/sizes.h>
-@@ -188,6 +189,20 @@ struct tpmi_feature_state {
- /* Used during auxbus device creation */
- static DEFINE_IDA(intel_vsec_tpmi_ida);
- 
-+static BLOCKING_NOTIFIER_HEAD(tpmi_notify_list);
-+
-+int tpmi_register_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&tpmi_notify_list, nb);
-+}
-+EXPORT_SYMBOL_NS_GPL(tpmi_register_notifier, "INTEL_TPMI");
-+
-+int tpmi_unregister_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_unregister(&tpmi_notify_list, nb);
-+}
-+EXPORT_SYMBOL_NS_GPL(tpmi_unregister_notifier, "INTEL_TPMI");
-+
- struct oobmsm_plat_info *tpmi_get_platform_data(struct auxiliary_device *auxdev)
- {
- 	struct intel_vsec_device *vsec_dev = auxdev_to_ivdev(auxdev);
-@@ -832,6 +847,8 @@ static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
- 		return ret;
- 	}
- 
-+	blocking_notifier_call_chain(&tpmi_notify_list, TPMI_CORE_INIT, auxdev);
-+
- 	return 0;
- }
- 
-@@ -845,6 +862,8 @@ static void tpmi_remove(struct auxiliary_device *auxdev)
- {
- 	struct intel_tpmi_info *tpmi_info = auxiliary_get_drvdata(auxdev);
- 
-+	blocking_notifier_call_chain(&tpmi_notify_list, TPMI_CORE_EXIT, auxdev);
-+
- 	debugfs_remove_recursive(tpmi_info->dbgfs_dir);
- }
- 
-diff --git a/include/linux/intel_tpmi.h b/include/linux/intel_tpmi.h
-index 94c06bf214fb..15f02422e9ca 100644
---- a/include/linux/intel_tpmi.h
-+++ b/include/linux/intel_tpmi.h
-@@ -28,6 +28,12 @@ enum intel_tpmi_id {
- 	TPMI_INFO_ID = 0x81,	/* Special ID for PCI BDF and Package ID information */
+ #include <linux/seq_file.h>
+ #include <linux/sprintf.h>
+ #include <linux/types.h>
+@@ -60,6 +61,8 @@ struct tpmi_plr {
+ 	struct tpmi_plr_die *die_info;
+ 	int num_dies;
+ 	struct auxiliary_device *auxdev;
++	struct notifier_block nb;
++	struct mutex lock; /* Protect access to dbgfs_dir  */
  };
  
-+#define TPMI_CORE_INIT	0
-+#define TPMI_CORE_EXIT	1
+ static const char * const plr_coarse_reasons[] = {
+@@ -255,6 +258,30 @@ static ssize_t plr_status_write(struct file *filp, const char __user *ubuf,
+ }
+ DEFINE_SHOW_STORE_ATTRIBUTE(plr_status);
+ 
++static int intel_plr_notify(struct notifier_block *self, unsigned long action, void *data)
++{
++	struct tpmi_plr *plr = container_of(self, struct tpmi_plr, nb);
 +
-+int tpmi_register_notifier(struct notifier_block *nb);
-+int tpmi_unregister_notifier(struct notifier_block *nb);
++	if (action == TPMI_CORE_EXIT) {
++		guard(mutex)(&plr->lock);
++		plr->dbgfs_dir = NULL;
++	}
 +
- struct oobmsm_plat_info *tpmi_get_platform_data(struct auxiliary_device *auxdev);
- struct resource *tpmi_get_resource_at_index(struct auxiliary_device *auxdev, int index);
- int tpmi_get_resource_count(struct auxiliary_device *auxdev);
++	return NOTIFY_DONE;
++}
++
++static int intel_plr_register_notifier(struct notifier_block *nb)
++{
++	nb->notifier_call = intel_plr_notify;
++	nb->priority = 0;
++	return tpmi_register_notifier(nb);
++}
++
++static void intel_plr_unregister_notifier(struct notifier_block *nb)
++{
++	tpmi_unregister_notifier(nb);
++}
++
+ static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxiliary_device_id *id)
+ {
+ 	struct oobmsm_plat_info *plat_info;
+@@ -282,10 +309,16 @@ static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxilia
+ 	if (!plr)
+ 		return -ENOMEM;
+ 
++	mutex_init(&plr->lock);
++
++	intel_plr_register_notifier(&plr->nb);
++
+ 	plr->die_info = devm_kcalloc(&auxdev->dev, num_resources, sizeof(*plr->die_info),
+ 				     GFP_KERNEL);
+-	if (!plr->die_info)
+-		return -ENOMEM;
++	if (!plr->die_info) {
++		err = -ENOMEM;
++		goto err_notify;
++	}
+ 
+ 	plr->num_dies = num_resources;
+ 	plr->dbgfs_dir = debugfs_create_dir("plr", dentry);
+@@ -326,6 +359,9 @@ static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxilia
+ 
+ err:
+ 	debugfs_remove_recursive(plr->dbgfs_dir);
++err_notify:
++	intel_plr_unregister_notifier(&plr->nb);
++
+ 	return err;
+ }
+ 
+@@ -333,6 +369,9 @@ static void intel_plr_remove(struct auxiliary_device *auxdev)
+ {
+ 	struct tpmi_plr *plr = auxiliary_get_drvdata(auxdev);
+ 
++	intel_plr_unregister_notifier(&plr->nb);
++
++	guard(mutex)(&plr->lock);
+ 	debugfs_remove_recursive(plr->dbgfs_dir);
+ }
+ 
 -- 
 2.52.0
 
