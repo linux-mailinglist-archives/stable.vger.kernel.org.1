@@ -1,207 +1,321 @@
-Return-Path: <stable+bounces-241796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOeJKw5m8WlfggEAu9opvQ
-	(envelope-from <stable+bounces-241796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:59:42 +0200
+	id oAUFN/Rl8WlfggEAu9opvQ
+	(envelope-from <stable+bounces-241795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:59:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5936648E321
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:59:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E5148E311
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CF463034CAC
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 01:58:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 58BDF301B1FD
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 01:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43FB35BDC2;
-	Wed, 29 Apr 2026 01:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEC834C141;
+	Wed, 29 Apr 2026 01:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nFBldmeQ"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="AfmcBZ1R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023100.outbound.protection.outlook.com [40.93.201.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F43F35B634
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 01:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3B123ED5B;
+	Wed, 29 Apr 2026 01:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.100
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777427923; cv=pass; b=XlaBHoEZOTYeT7C5r1/yQUdUh7gKOCIXZG3+ih8WDnlw+xP8Nzts9AZ0inYcUY32HFVOl/LyvL8aViui3EywkmHO4LipH8VlTNHHXxx9vtmaEFOdFrubNrVpEAV5nn89Q0aqYN8VfFG72iHrLAyy7ObJXMXZWivRW2icCBQYdRU=
+	t=1777427905; cv=fail; b=YlLhGSj6/TY5TqahENrkZlkQgsthcfWDyfHgW2u80VXWf/GvZRX6RywD6p0fiJdfE5+w6U2kJIwgrN8GiBbrAaX4UhXZ4HyTPF+VREu7uzgQqvMcWCwE5BBWMFJ66peoU90rAE1r7ybaZptOtFk0vnqym6VBgvCfpI0Um+PUVHk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777427923; c=relaxed/simple;
-	bh=Pxrojmrc2cY8YLtMnn3WHI2wj4Rjocszi1DAJUpeITE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fsJdkWbGpZpiDdXqqn+KEDirEemUQ1tG52BZe2tV108V+NLoGM46YCWLDI8LdKtKd0AICEgKOAwtqkWkRbxTtQaM1hmrrkkr6eY1Q+sgHnFAZr4ZUhYJDML9JS7W1gzrhAFnG15VuILf4QhFXljKrg/A2SwLTw67Ul/r3NV/LnA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nFBldmeQ; arc=pass smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-44509921fbcso1768000f8f.3
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 18:58:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777427920; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eVm0D5BtkJSLwDmzx4iIwgUPmNlUx37yGSWy8o6ZOfSmM3+JRIMSSX2YaH+9xoUZOv
-         CHn+XxIrK0hCjpXRRA480236dpSjW1OTaK+IfdCPM5sjnvY1U+26Mofk9CaT4N4OPymm
-         BpZ5PEoBIJv5Nta6Ic6FkKWgtlFQDD8tbkPRNSzeN2GELibX1uuCOavW/7+q8D1izIOP
-         ziGv6OIxDALM6CROz8fbzXnXb1noiBl/JBlunhOuAr4mmRlZYM6BL81wIewmm4HIZNrB
-         VBj5vSYEemOM3NU4SuEadrZXlj9oFQtTH49EdCy+Gm6MUiiSTdXzB+VDtGY/RU7wnDPz
-         EzQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yuqGeXahbxcUk1u4/2wMgxO+sa3eSW+uWGPH0ECvggc=;
-        fh=jVfEWh+rQnKDvmRJ+ZuxOSdQSot5Bdp/d0OYphjGnsA=;
-        b=EqeMOYBgHb/SG7iiiMbCL2aTfVUHJFCo0fH28ldhNmdo3VNJUjthUW5/GaOaSW3l2e
-         2waKjB70FRgPb5+HbYjhoRPhbSvrQ5qQWQR3OQjYo9j+eej7T+H6ETqwf5JqkiIjicUv
-         z7OoByuzMGFBe3dgSzb51ZVY7r7rXs+I8niAY10tuYHER65xwKf5YN1I9AbrzuslZbsZ
-         vEB0tNXQnmUZ/XoNoaCrCPbiVkN00YP13S36ehiUwRenzZcP91Zh06iApIlQeoekoY/5
-         o7gt3IAJX39aPqrc3khG3aoFGdPQsq0JDO3M3dqbDUDSt2qXwhKPtzpl+Lvsabu3LOc6
-         Zwvg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777427920; x=1778032720; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yuqGeXahbxcUk1u4/2wMgxO+sa3eSW+uWGPH0ECvggc=;
-        b=nFBldmeQPfcpVzNubkTFn1V/ReisvKU1H1uz0rVgUM6z9F5I4MjjEeopC6jgZWgPpj
-         oRUPQw6Zs+Pitn1CG4yz2KEhZblX8MAcTpJNusQRzqrgOcY25X5aONEUOQDL2baZcUBz
-         whMjUtqv1bgCkqwrsrpQppBsemsh/CrJHjRLQBdfJGIiDPNb0QQpGwN6XR0tHEnH3x1V
-         DqVy3+OgEuzBa1EaDbXlURMoH2QiytRHrVkAH4n7sDnCxipaccG6xGeY6RTHwCcAh5Y5
-         wyUo5Sv1OusV7PrrSSnxbDGCyfxO253B4qFB5d1kzAcWIMN45suzKVWOXI7teS1DyrBL
-         gPFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777427920; x=1778032720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yuqGeXahbxcUk1u4/2wMgxO+sa3eSW+uWGPH0ECvggc=;
-        b=b+AnQmFogxq9SQuff5rwfaPU/TK0x5b3tNtQUWpCxX5EEa3m2OdOGjWmKIGrOSSkEt
-         K0+9qF6fYH9EQ0aR4W9YIIImtQbW82PVTWMx9bGFAByx0u0otsSIeszDJ0arbXiWpKK7
-         5lF4zQalFLdgsBB+5Of/F0rNOr9Z7EaoBg8kUSuqf758IgxRse5klipJklMIkjaSjJYr
-         s/JPFuw0RcwFk06XVwLuLkH18DBaSTGD7P/CV4oNlr1qo8t/H8s70KG0970iTrAD3r2x
-         ikz/8LS8ve5iq5iF3YQovfDGM3yM6wzxIF52OTTTD/ovDwBxRAVbsHVegTCZTwT7cm1u
-         s1EA==
-X-Forwarded-Encrypted: i=1; AFNElJ90xTTpex/AmzJQIYaH3CBCv5RbhnKvJAva/lGv5t3Nh6fgrz0hB5KUogSYgrpBED0AV+PXVkA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/SUIzwR6hHZg+0s36S/q65asF0Bz8s7SvWhY4qcvkf+18yZCw
-	s4wdMiFzP7RSV8I66ED/NQyxLQv0KbWMJh1iZUEcxgrVGQMEN0JEnHsH0xlZsVmTR4u/2Or3Ckv
-	ZNF4yURuhryn9cDqIRVtxcO4cv/ZKSiOd7sxPjm0=
-X-Gm-Gg: AeBDieu7JldpphnhMEHfHDwTdQIyRC8wSo/NE83SZ3Vy9/GsPx7El97mbBWjZZkbCDs
-	D4TMJMa3OjEFWr7jF7dpRPznUx1dDgwEiyW3FVAUUvReFt7Ody+mPwR/CaQImchUE6l6NW9MBu8
-	M9i6m8mYmJg5LuwKQ4YG6aGhk4WiWTsnhaz4I8U3PyAd3WQ5GPVVTa8DTcjboUzCsV6Kbqbw8aZ
-	tvJiMgdYSd85hgLyQ/vu9Rz6G7tXGiMCP4o/HEbjJ3LeJV+BQfXt16LEXqB633mLM0GfdpCbEML
-	gMWrA4EJW6vuuRB2cfixPZmme/IKM8184SiYMXeKEGxlZBXB4hS7pPz/x0w=
-X-Received: by 2002:a5d:5d0f:0:b0:43d:71f4:7ed4 with SMTP id
- ffacd0b85a97d-4478e9943c5mr2778885f8f.15.1777427919385; Tue, 28 Apr 2026
- 18:58:39 -0700 (PDT)
+	s=arc-20240116; t=1777427905; c=relaxed/simple;
+	bh=aSTcYHca9ECfU2Z69e9LHAhvpdfazq9yp1YToKLDXXo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=s+hJJ3WOjnp8gly5isS2ZQu9IUeoL+pTkvBrXrLT4hkD5Z0k7/A4dulbKTOusQ7/kuA8655J0OkQYjKBhBVoLDch4BrFv3ePHC92YKrCLEEUc3VSECSJyPHvbqt0gUJVm3CfaoT64rNh0/2wwrg92Oqly8kQm754zsNJ4nbMFSg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=AfmcBZ1R; arc=fail smtp.client-ip=40.93.201.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jG54f/NUZauEBQO9MR8hVc1dmUexz3zBX4CPd8S3nENJnYqfc84BSnzivcRnJkQwVLMpIncCqHOoWRoY4iV5904uv8j0pmO26QYaUtaeynOttWHE2Ti4diUebqBa8i8PHDnz80ZElvXtdemR81oyT8bmSTltFi8NFMeur0cDBP3qgo9bjYVWxz2SRxkBBba3ZI9oDb+NU1DHd87HBIurr3JZabTZO3msHSfRudqn/lk5w1/w+4G5vgJU9yfPAXo8jzDZCyRFZ2wWixWoMqE8QKTiBCPSxtGnfC7IE4nSc23H7eVqsOZi5YBdQXjyt8HrIcmniY6VPKQU/hckVSQrLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/cTvGkAlkH7djI1Dk59/5Bls7bi7xvvtkbLFgUAiPyY=;
+ b=mx9OdCl013X4gId2X0fLregFgtY9cLNhcTSNH+YMFlnUcXqQfwqe3Vtla9d/5SQhocg6yUyTvzI6RrOpMS7k3QNzKubeKPNzXyWnN2GThj95OcLCbXcXp16Uy5MYY3/tyWJsIZVIKk5Ttn3K0xLn5ULX4idFoXfyigD4MEFClo1Q6Zi46jQtIzZTsOcFAaWSfX/yeW5OPDgfu5ctmfYN3OqkomPEV4RSXmpObTxiPj3nExJ5ZjWIUFOPCUflZJ6rV/8/+zxatU04twwlKlJjFfUXfcQDxWpkbMzMWifWFL2kcNFKQ8yQTuI7LFO8/fdUcMv9mDfl0B+ipXnRYo7sJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/cTvGkAlkH7djI1Dk59/5Bls7bi7xvvtkbLFgUAiPyY=;
+ b=AfmcBZ1RpGVP5mfv5NVs0yOQW4xrMjAsUg0eXSu21GOzZgioF69IoHMdV8fTp7Hn2fghqmOdf5wT8HEzFAv6miODK6/6vm6y8mTWLIoSHpAZ5q4v99/YEvI1EbpMr2/K5tTFu99ziTzetTCryxM4nRIcoCSjpYLwCNoGT61SvvU=
+Received: from SA1PR21MB6921.namprd21.prod.outlook.com (2603:10b6:806:4a7::11)
+ by SA5PR21MB6945.namprd21.prod.outlook.com (2603:10b6:806:4d5::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.4; Wed, 29 Apr
+ 2026 01:58:20 +0000
+Received: from SA1PR21MB6921.namprd21.prod.outlook.com
+ ([fe80::51cf:497c:e5df:f6d]) by SA1PR21MB6921.namprd21.prod.outlook.com
+ ([fe80::51cf:497c:e5df:f6d%2]) with mapi id 15.20.9870.013; Wed, 29 Apr 2026
+ 01:58:20 +0000
+From: Dexuan Cui <DECUI@microsoft.com>
+To: Michael Kelley <mhklinux@outlook.com>, KY Srinivasan <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, "wei.liu@kernel.org"
+	<wei.liu@kernel.org>, Long Li <longli@microsoft.com>, "lpieralisi@kernel.org"
+	<lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"mani@kernel.org" <mani@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, Jake Oshins
+	<jakeo@microsoft.com>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "matthew.ruffell@canonical.com"
+	<matthew.ruffell@canonical.com>, "kjlx@templeofstupid.com"
+	<kjlx@templeofstupid.com>
+CC: Krister Johansen <johansen@templeofstupid.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v2] PCI: hv: Allocate MMIO from above 4GB for the config
+ window
+Thread-Topic: [PATCH v2] PCI: hv: Allocate MMIO from above 4GB for the config
+ window
+Thread-Index:
+ AQHcwvqZ7/kLR2JkdUmudlv9HY41bLXRHh0QgAOgeDCAAHmtkIAKqeRQgA0oSLCACEewkA==
+Date: Wed, 29 Apr 2026 01:58:19 +0000
+Message-ID:
+ <SA1PR21MB69213486F821CA5A2C793C81BF342@SA1PR21MB6921.namprd21.prod.outlook.com>
+References: <20260402234313.2490779-1-decui@microsoft.com>
+ <SN6PR02MB415794E53D2B621F6A8BA382D45CA@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SA1PR21MB69215C164B06109C6682984EBF5BA@SA1PR21MB6921.namprd21.prod.outlook.com>
+ <SN6PR02MB4157D5C8EE35A221B130FC5AD45BA@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com>
+ <SN6PR02MB4157D5BAFAE2134276241FFED42A2@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To:
+ <SN6PR02MB4157D5BAFAE2134276241FFED42A2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=8e73110c-cf31-4373-a3ed-8fccb895746f;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-04-29T00:06:33Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR21MB6921:EE_|SA5PR21MB6945:EE_
+x-ms-office365-filtering-correlation-id: 01c5b9e6-0403-4016-8265-08dea592c9ab
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020|38070700021|18002099003|22082099003|56012099003;
+x-microsoft-antispam-message-info:
+ JHDe2LBREGzymIKUfNuCEwEdt0my3A1asdAJNoIUY0aO83J0PRpNLKzzmiT338vG2FgehRGRSsuFmheA3nHmtuWPzQHcTBpqdMX6un8e4xdqNjzcZjQNvmUtxeznJjkVWwYPlapEOJdDJe1Rh+H6VNg9/9UwBVEfxvTQY4tIKSjIpdieFp9icFjrj6NAcnhUK3xMxWgtfKxiL1/WDPkCGBsJXUBCf4ARojNpp+OGpukJug8qRHdXph3McFv0FBuRMWEmweYm7E0NMxfn7IfjhTYDd7QAfzR+LFEocAGs/8x0/K3LgEHb7PXQoLpjA/2r1fWfrsUuSMm2YO2zcfFISwZfT9tyj0GrKrFcCn0poKoNF8hpfVDG6S3uChu2TulNp9J1wqpyw6oBrmO0rIJj00OPLqKjaLM2ggvqD13I1OZAKKavhjoEe5N9m5IrjgFV0z+Lkm0xYDrLEvX9n+VsnQ61zT1rb7bPUaEJaXrMcOofmqZbVBNT6vIDO+67819iSEEhs+BbjLpuQ5mJLUX/5dC5qJ7V5CiL6aC4J2ED69EjHTshqsXfmdF1of9VTLnPnlswu0IvHidadBD04p+A0YCtH2ULUem2qhJ5nsAl/TPy2BCTyd4xlQJ3ZXPtbxA5NKdkn/jzo4VoPk7BNDsoOFBbpyjD8BwpO86NtMORr0fVY9nMUfTUWgP7HK0r5vSRPFtCTXMIzVBlnmkRPnKfnw1Rl29x+2c+mR4/QsF4Ou5klPyEP660eQKfsA53ypr0ziDroGArEi6EzzGashRitWhYL0PQ6ztD4ufMzu6qUNUzmwIlLjx/5RTqWGIFn+l0
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6921.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?WmrSm7Amng+H0ENsHmAB3PHH/EayFFz0R6jn5k1gxQE2Zd4rNiLV17l+F2cm?=
+ =?us-ascii?Q?TZjlnVvTy8vEpB3rVvy6AA3HWpNz2Cxf+5IBdUEjETl630ehhiaI8Yc4/u/e?=
+ =?us-ascii?Q?gnqfVmyFKuAVA5S5+bTh/wMn5KxZdY38KbJt167nHqSAkMEEqUx2GuGUNi30?=
+ =?us-ascii?Q?1Nf1lM6ixlz1evqeKM8d076u/zhHqI7WFsH+3txPn8kbWKvH5EmO5117chgj?=
+ =?us-ascii?Q?+3LNS0BcZUB9rfsbahfaqOl987akA1j7BYQfIhRe4hzQmt0LMojlqP1Vz/Tx?=
+ =?us-ascii?Q?J3fF/8XAEiSPnD/AmWvkHuFJE4ej7k9VnUFDtsW/N9o2TcQM20JMnIUL1C2f?=
+ =?us-ascii?Q?D+fiuXAOh2KWvxI5XICXh7V+xhJL0Cd32Mj52XBor617jaYO9P7M73cifc78?=
+ =?us-ascii?Q?TI6OtMg/lZJ79/fbIYtu5q8tGHrUgelRwhRo4NOq9AvZq1sXPLcDP/x9Fucy?=
+ =?us-ascii?Q?3c+w0/9E3p4YTxylMl1iAAUg8cdsNYAkYTnYnhBJiqhUAPP3h9IJJG5mX5cU?=
+ =?us-ascii?Q?fMg9yuKNninp3qR+Ciu8txVP6PjQJNTmyH3z35vgJEcyIB273JHdssZ6Bpnm?=
+ =?us-ascii?Q?kqOl3lnYqEOm5fdfSQEmdaZyS5IBBkYA63P9OURzkgQREfxWRMaw0IOFenlF?=
+ =?us-ascii?Q?/kyvO4AX07enu+fZ4RwpcivkKZGOUdMRA0+TM6PwtiCAuTdPGW2jKZzQYMCQ?=
+ =?us-ascii?Q?0+4TnBF9afH0awCIs8ZGHDev3i0ch5pMVHSO20phG6OzM5L5ecDfsn0Qm0mq?=
+ =?us-ascii?Q?HXTXpM+LP8uWBN/RdrlHpH80D3DKKGBQyfM2soT6qgkTB9PjMdqrcuT7VpmF?=
+ =?us-ascii?Q?j5gAruv1eI/mbvM4RHg0guVzFu91BDUChr4m02lH8EkOtOCBI5dwg6tMOCUJ?=
+ =?us-ascii?Q?Eg3k78X/FlKw58od/AYUaiX0kNdafLF3USdaHDtgvqt+WuuZgC1XQcKYwZYr?=
+ =?us-ascii?Q?UOgwYpV5larwQcOonHCyguJSB0TsPWjU/kkw1bpGD8CPRa6AmPRIh5BXh8KD?=
+ =?us-ascii?Q?V6/fjxl7FFC42aNWBe2pe38Db9x559pswcFU0SISoeO7sz7VgTXndj0zzsdS?=
+ =?us-ascii?Q?42dUaJx2zHG0ub4wz5JaQgM9o73s/CipJ1fenYuvFMKnbzhEJMwSyXGcD4b5?=
+ =?us-ascii?Q?34QbDxXOCpU4sbhDRole3lAEWNs8cmqrgwzovOmjBLpRhZnWqlZzkUjrbDix?=
+ =?us-ascii?Q?jwqRRTJqul9LFtWQirP+LqYU8K8vN1XqYSHyOjNsYFGAKOJGJFvDkh/cSM0d?=
+ =?us-ascii?Q?lV310jnnQWSPoMYN2ysEgNzjPeUrxWWrWbltKUteRraiV+tUpqMtdYrvgJNI?=
+ =?us-ascii?Q?y1cC6LdqqAl8VsmiV7hTbqig5f27Azh9h0TvVZPst/15xcqm0sMsuAEkRaAy?=
+ =?us-ascii?Q?kADDr4BW7xtTKb+gLwTQRVE5amYFCRBq18Vwu1lz2lUd5x1LYJy9ds5VJIsf?=
+ =?us-ascii?Q?mX3nhuPN1wBa5A7/4r6GOZVG/3M0WoKxtfSd7B5MuTdeSWzCxDnDbkCRd0Nc?=
+ =?us-ascii?Q?Sx5uEQXeFl38SfRgSChzLjreiWFoIiZayhVhfeuuIHnPjvLQLI5PTvapaQse?=
+ =?us-ascii?Q?A1hnC5lyHl5ttNvNmRb+JTQ6BV4a8VJreGO6+y1CX+uK4EB254V/czZaPpCz?=
+ =?us-ascii?Q?mgY0CUNHOCC5RyHNyVx1x+U/EjoSxV4YQ+pgXVnB8tSf0zWlv+rfghH9fiSv?=
+ =?us-ascii?Q?anzAXKwBuFRvzw8y6PiOnt8eP+j6OucgpZuEneWZMNPXv9MTmdZYmkKYG2dh?=
+ =?us-ascii?Q?vIUZYIqzWw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428110713.2550315-1-maoyixie.tju@gmail.com> <20260428110713.2550315-3-maoyixie.tju@gmail.com>
-In-Reply-To: <20260428110713.2550315-3-maoyixie.tju@gmail.com>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Wed, 29 Apr 2026 09:58:01 +0800
-X-Gm-Features: AVHnY4LERK-_-glKNSMAd_6o281Ks5DC7YxO0koEJgi2NjQopuPz9tDFTvsvn7c
-Message-ID: <CABAhCOTmZ4hAuhtimOX1YQDGFC2fbXm5WmwT0Z8PxZU7Zq-2Fw@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: netdev@vger.kernel.org, kuniyu@google.com, davem@davemloft.net, 
-	kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, dsahern@kernel.org, 
-	kuznet@ms2.inr.ac.ru, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	security@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5936648E321
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6921.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01c5b9e6-0403-4016-8265-08dea592c9ab
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2026 01:58:19.9968
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: y1vzzx5BmwUvAC/qZvjyEoD2MGZuqmo5NMWqZmzGAC1WT3o07tl2fYdRI+4nYf3B7wqHskpeRjzx0/sbUAcbxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PR21MB6945
+X-Rspamd-Queue-Id: 46E5148E311
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[microsoft.com,reject];
+	R_DKIM_ALLOW(-0.20)[microsoft.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241796-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-241795-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com,microsoft.com,kernel.org,google.com,vger.kernel.org,canonical.com,templeofstupid.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[microsoft.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[DECUI@microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shawleon@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,ntu.edu.sg:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email,SA1PR21MB6921.namprd21.prod.outlook.com:mid]
 
-On Tue, Apr 28, 2026 at 7:07=E2=80=AFPM Maoyi Xie <maoyixie.tju@gmail.com> =
-wrote:
->
-> From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
->
-> After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
-> rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
-> ip6gre hash via link_net. ip6erspan_changelink() was not converted in
-> that series and still uses dev_net(dev), which diverges from the
-> device's creation netns after IFLA_NET_NS_FD migration.
->
-> This re-inserts the tunnel into the wrong per-netns hash, leaving a
-> stale entry in the original creation netns. When that netns is later
-> destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
-> slab-use-after-free reported by KASAN, followed by a kernel BUG at
-> net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
->
-> Reachable from an unprivileged user namespace ("unshare --user
-> --map-root-user --net"); cross-tenant scope on container hosts.
->
-> Note: ip6gre_changelink() (the non-erspan sibling earlier in the same
-> file) already uses the cached t->net correctly. The bug is specific
-> to ip6erspan_changelink() copying the wrong shape.
->
-> Fixes: 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of rtnl_link=
-_ops")
+> From: Michael Kelley <mhklinux@outlook.com>
+> Sent: Thursday, April 23, 2026 10:40 AM
+> > ...
+> > Another example is: for a Gen2 VM with the below commands:
+> >    Set-VM -LowMemoryMappedIoSpace 1GB \
+> >           -VMName decui-u2204-gen2-fb
+> >    // i.e. the default setting on Azure. Let's ignore CVMs here.
 
-The changes look good to me. But why is 5e72ce3e3980 mentioned
-here? It neither introduced nor was intended to fix this bug.
+Sorry for the incorrect statement: this is not the default setting
+on Azure. The default for regular VMs on Azure should be
+"-LowMemoryMappedIoSpace 3GB".  Not sure how I made the
+incorrect statement -- I guess I might have confused my local VM
+with my Azure VM, and at some moment, I might have mistaken
+the meaning of the "-LowMemoryMappedIoSpace" parameter:
+for that local VM, I might somehow incorrectly though that the
+param means low_mmio_base rather than low_mmio_size.
 
-Thanks.
+> FWIW, I'm seeing that in Gen2 VMs in Azure, the low_mmio_size
+> is 3 GiB. I'm looking at a D16ds_v5, and a D16lds_v6. The v5 VM
+> is newly created, while the v6 has been around for a few months.
 
-> Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-> Cc: stable@vger.kernel.org # v5.15+
-> Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-> ---
->  net/ipv6/ip6_gre.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index dafcc0dcd..38ac14cc0 100644
-> --- a/net/ipv6/ip6_gre.c
-> +++ b/net/ipv6/ip6_gre.c
-> @@ -2261,7 +2261,8 @@ static int ip6erspan_changelink(struct net_device *=
-dev, struct nlattr *tb[],
->                                 struct nlattr *data[],
->                                 struct netlink_ext_ack *extack)
->  {
-> -       struct ip6gre_net *ign =3D net_generic(dev_net(dev), ip6gre_net_i=
-d);
-> +       struct ip6_tnl *nt =3D netdev_priv(dev);
-> +       struct ip6gre_net *ign =3D net_generic(nt->net, ip6gre_net_id);
->         struct __ip6_tnl_parm p;
->         struct ip6_tnl *t;
->
-> --
-> 2.34.1
->
+This is also my observation, after I double checked my Azure VM.
+
+> In a CVM, the low_mmio_size should be 1 GiB. This overall example
+> is still correct -- it's just the comment that I have doubts about. Or
+> maybe you are looking at a different VM size that has a different
+> default?
+
+For CVMs, yes, the low_mmio_size is 1GB.
+
+>=20
+> Some years back, I had gotten into a discussion with Azure about
+> this size because the swiotlb memory wants to be allocated below
+> the 4 GiB line, and reserving 3 GiB for low mmio limited the size
+> of the swiotlb. CVMs were changed to have only 1 GiB for low
+> mmio because they need a larger swiotlb.
+
+Right, I also remember the story. :-)
+
+> > With the below command:
+> >    Set-VM -LowMemoryMappedIoSpace 3GB \
+> >           -VMName decui-u2204-gen2-fb
+> >    // i.e. the default setting on Azure. Unlike x86-64, an ARM64
+> >    // VM on Azure has 3GB of mmio below 4GB.
+>=20
+> See my previous comment on the same topic. I think arm64
+> and x86/x64 are the same.
+
+Agreed.
+
+> Question about Gen 1 VMs: If the Linux frame buffer driver moves
+> the frame buffer somewhere other than the default location, and
+> then the VM does a kexec/kdump, what does the legacy PCI graphic
+> device BAR report as the frame buffer location? Does it *always*
+> report 4G-128MB, or does it report the new location? I can run
+
+It always reports 4G-128MB.=20
+BTW,  I suspect a Gen2 VM may have the same issue, i.e.=20
+currently we only reserve 8MB below 4GB; if hyperv_drm uses
+high MMIO, I suspect the UEFI firmware would still report the
+same original low MMIO framebuffer base/size to the kdump kernel,
+but there is no easy way to verify this for Gen2 VMs...
+
+> an experiment to find out, but maybe you've already done so and
+> not reported that detail here.
+>=20
+> Michael
+
+I have a Gen1 Ubuntu 22.04 VM, and I run the below commands:
+Set-VM -LowMemoryMappedIoSpace 128MB -VMName decui-u2204-gen1-fb
+Set-VMVideo -VMName decui-u2204-gen1-fb -HorizontalResolution 7680 -Vertica=
+lResolution 4320 -ResolutionType Single
+
+When the VM boots up, we reserve 64MB at 4G-128MB:
+[   11.492075] hv_vmbus: hv_mmio=3D[mem 0xf8000000-0xfed3ffff],[mem 0xfe000=
+0000-0xfffffffff] fb=3D[mem 0xf8000000-0xfbffffff]
+
+Since the required mmio size in the hyperv-drm driver is 128MB:
+[   28.631923] hyperv_connect_vsp: hyperv_drm: mmio_megabytes=3D128 MB
+the driver has to allocate MMIO from the high MMIO space, because=20
+we only reserve 64MB below 4GB, and the available low_mmio_size is
+smaller than 128MB due to the vTPM MMIO range:
+
+# cat /proc/iomem
+00000000-00000fff : Reserved
+00001000-0009fbff : System RAM
+0009fc00-0009ffff : Reserved
+000a0000-000bffff : PCI Bus 0000:00
+000c0000-000c7fff : Video ROM
+000e0000-000fffff : Reserved
+  000f0000-000fffff : System ROM
+00100000-f7feffff : System RAM
+  d7000000-f6ffffff : Crash kernel
+f7ff0000-f7ffefff : ACPI Tables
+f7fff000-f7ffffff : ACPI Non-volatile Storage
+f8000000-fffbffff : PCI Bus 0000:00
+  f8000000-fbffffff : 0000:00:08.0
+  fec00000-fec003ff : IOAPIC 0
+  fee00000-fee00fff : PNP0C02:01
+fffc0000-ffffffff : PNP0C01:00
+100000000-507ffffff : System RAM
+  281600000-28295449f : Kernel code
+  282a00000-283746fff : Kernel rodata
+  283800000-283c5287f : Kernel data
+  28411a000-2845fffff : Kernel bss
+fe0000000-fffffffff : PCI Bus 0000:00
+  fe0000000-fe7ffffff : 5620e0c7-8062-4dce-aeb7-520c7ef76171
+
+However,  when the kdump kernel starts to run, and I print the
+pci_resource_start(pdev, 0) and pci_resource_len(pdev, 0)
+from vmbus_reserve_fb(), I still see 4G-128MB:
+[   12.506159] Gen1 VM: start=3D0xf8000000, size=3D0x4000000
+
+In this case, we can't really fix the MMIO conflict, e.g.
+if both hv_pci and hyperv_drm are built as modules, then
+the order of loading them can be nondeterministic:if the order
+in the first kernel is different from the order in
+the kdump kernel, we run into trouble.
+
+If the order is deterministic (e.g. hv_pci is
+built-in, and hyperv_drm is built as a module),
+we should be good since both allocates MMIO from
+the high MMIO range in a deterministic way.
+
+Thanks,
+Dexuan
 
