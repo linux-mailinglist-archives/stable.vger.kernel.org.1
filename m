@@ -1,81 +1,62 @@
-Return-Path: <stable+bounces-241835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEK6AVuz8WmwjgEAu9opvQ
-	(envelope-from <stable+bounces-241835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:29:31 +0200
+	id ABk0CIu48WngjwEAu9opvQ
+	(envelope-from <stable+bounces-241836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:51:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDB749077C
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:29:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC53E490C7A
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8E0EF3014FD5
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 07:29:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0F0D73007A66
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 07:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F153A5E69;
-	Wed, 29 Apr 2026 07:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33151396587;
+	Wed, 29 Apr 2026 07:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dS1BH+oy"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UCkhjA8J"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2FE3A544A;
-	Wed, 29 Apr 2026 07:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F039288AD;
+	Wed, 29 Apr 2026 07:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777447748; cv=none; b=jYjS73RQDbxY1kYZTIZYkVOs91VB7tDKzHgNNMkY2hSZ25IaVzt5WepbNPyJCw7KxT9XJlYRDNRv8TOOavE667ipFA1g/hnYfoRK7cSJuXOiGAraFYYI7vPtuMjpabqdwqpiJGrMQMrDFdrtt5t8zV2V2BTDi7zooZC+o+81eo8=
+	t=1777449093; cv=none; b=LclgiCXPL3LoQEo+VOiwUk2IyVnwJk4Hclh/Fx/wMfxgeri9lzWihh+U+glo0n8B9O5p2tXeZG3AG0W5ZEqEeUqkRwX/s6nYAMpNkSgPuoHFeQ5xdJUS5Uqr74UlNkXc9v3EYPHy75fNDOxZhQb/yOOVzX4MOtwFeB6On5JBpsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777447748; c=relaxed/simple;
-	bh=ZQOkCYnVZVIH8EPI+hVf+trWhsoG6Ezt8CwwxR3iaFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKYyvuBrK2611aFac9OliDmNrSgV7ciJbHmpEI1+Lp4QcMgzPRk7ZQ6QrnkSiyAtLn5rxsFaEocEuwALLtNRORmx0FlqxWox38aMkOuO/s2lzjskwHb9Rt6KpHYzBP7bXAYfwxLlhyOMndH60W2+1zC+vcjgkPASZbxVeIslID4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dS1BH+oy; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777447747; x=1808983747;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZQOkCYnVZVIH8EPI+hVf+trWhsoG6Ezt8CwwxR3iaFc=;
-  b=dS1BH+oyNU7JxF0rLYnzXZB42C3nE9N9mpUk2wIY97EgpRHfihcS3ZgV
-   Ble6foL92JI6UTSxyPgQwj1u89K/JwWrcNhvXFjqMDESovLsAl4YfQ8ye
-   cDyKMS8bmSIIF4dJ469x/k9uACwI48DyBCDdtSrSGH3aglX3lvkCttahV
-   sZr+3mxlCws7DOQHpxtbrc4/sau9+NjVs0Q265U6B4CZKKEOcllAdClXm
-   rjjJRFrVRlw5dEfYJxV696cwohAw1BiersMyp0JZuhchJ1KRU7LWndg7B
-   yySG/GzT33qwh4x6m5M+8pqpizWPxwFcP9uNnnRatWmYqNHN0R40miAbx
-   w==;
-X-CSE-ConnectionGUID: 1+7SY+m4Q5GkdY7FWHh50Q==
-X-CSE-MsgGUID: dEOHlRmnSPC+jMYpqO/UPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78385801"
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="78385801"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:07 -0700
-X-CSE-ConnectionGUID: +1M7tQq+Q2egq0jq81cD9g==
-X-CSE-MsgGUID: hse7KraFR/eiex16L4hUgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="272324268"
-Received: from emr-bkc.sh.intel.com ([10.112.230.82])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:05 -0700
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-To: kvm@vger.kernel.org
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Gao Chao <chao.gao@intel.com>,
-	stable@vger.kernel.org,
-	Farrah Chen <farrah.chen@intel.com>
-Subject: [PATCH v2 1/2] KVM: x86: Always report highest IRR from __kvm_apic_update_irr()
-Date: Wed, 29 Apr 2026 15:28:07 +0800
-Message-ID: <20260429072851.3004430-2-chenyi.qiang@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260429072851.3004430-1-chenyi.qiang@intel.com>
-References: <20260429072851.3004430-1-chenyi.qiang@intel.com>
+	s=arc-20240116; t=1777449093; c=relaxed/simple;
+	bh=CFZ5uMBKSrGu7JAvCGEzeeRZBxCKOCNIMeeQ3EVVpx0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W2CPD7f+L+UnJHyy8sX4rJ1eIDGFmwp137NaILuFpop0b4/N6Ari5PFvqFdsaKEz26Ba/dndUtN5qd5JlNZFutCC1E/Tu5IZiyzc1S24PaKLUBb0q0Od2YFKCdc+1TpK4kLibLy+hxnXxOo8dh0VTTltCcov1veLBcXaDTjmEnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UCkhjA8J; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Rn
+	FBQCpgoJYGqHjOv7EfoGIdH2jJ4SYUqml+NyqGTBA=; b=UCkhjA8JougnFVw925
+	5nvkYv13V+JKM9fG+pK8ZxcV/4KEUUtQcNuO2ZoSWa3LqgLBZIIoOV9ZGZCgTJCW
+	dVlEmYwHgVLvBTcwHzMpyUrB8TH4FkBsxtfgaIqLe/he/x7m9rFhaNBHaI+J4X0L
+	SKp+6Zp3h4AS+3uwET5VOUxMA=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wAn3cdJuPFpvSa8CQ--.6606S2;
+	Wed, 29 Apr 2026 15:50:34 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Jon Maloy <jmaloy@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Robert Garcia <rob_garcia@163.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] tipc: fix kernel warning when sending SYN message
+Date: Wed, 29 Apr 2026 15:50:33 +0800
+Message-Id: <20260429075033.234885-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,123 +64,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CDDB749077C
+X-CM-TRANSID:_____wAn3cdJuPFpvSa8CQ--.6606S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuF1kAFyfGryruw4fJw13urg_yoW5Xw48pF
+	1YgasxAr1rKr4UWa95XF4q9a4Ikan7tFyIg34kKF15urZ0g3ZxtayjqF4UuF18WrZxAFWF
+	qanFgF97KF1Fk37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_ku4UUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5QoXgmnxuEoUtAAA3w
+X-Rspamd-Queue-Id: EC53E490C7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241835-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenyi.qiang@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-241836-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,davemloft.net,163.com,zeniv.linux.org.uk,vger.kernel.org,lists.sourceforge.net];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Compute *max_irr from the existing IRR in __kvm_apic_update_irr() even
-when pi_harvest_pir() returns false (PIR is empty), instead of leaving
-*max_irr uninitialized at -1.
+From: Tung Nguyen <tung.q.nguyen@dektech.com.au>
 
-In a nested VM stress test, the following WARNING fires in
-vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
-interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
-vmx_sync_pir_to_irr() again) returns -1:
+[ Upstream commit 11a4d6f67cf55883dc78e31c247d1903ed7feccc ]
 
-  WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
-  Call Trace:
-   kvm_check_and_inject_events
-   vcpu_enter_guest.constprop.0
-   vcpu_run
-   kvm_arch_vcpu_ioctl_run
-   kvm_vcpu_ioctl
-   __x64_sys_ioctl
-   do_syscall_64
-   entry_SYSCALL_64_after_hwframe
+When sending a SYN message, this kernel stack trace is observed:
 
-The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
-and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
-performs two individually-atomic operations that are not a single
-transaction:
+...
+[   13.396352] RIP: 0010:_copy_from_iter+0xb4/0x550
+...
+[   13.398494] Call Trace:
+[   13.398630]  <TASK>
+[   13.398630]  ? __alloc_skb+0xed/0x1a0
+[   13.398630]  tipc_msg_build+0x12c/0x670 [tipc]
+[   13.398630]  ? shmem_add_to_page_cache.isra.71+0x151/0x290
+[   13.398630]  __tipc_sendmsg+0x2d1/0x710 [tipc]
+[   13.398630]  ? tipc_connect+0x1d9/0x230 [tipc]
+[   13.398630]  ? __local_bh_enable_ip+0x37/0x80
+[   13.398630]  tipc_connect+0x1d9/0x230 [tipc]
+[   13.398630]  ? __sys_connect+0x9f/0xd0
+[   13.398630]  __sys_connect+0x9f/0xd0
+[   13.398630]  ? preempt_count_add+0x4d/0xa0
+[   13.398630]  ? fpregs_assert_state_consistent+0x22/0x50
+[   13.398630]  __x64_sys_connect+0x16/0x20
+[   13.398630]  do_syscall_64+0x42/0x90
+[   13.398630]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-  1. pi_test_and_set_pir(vector)  -- sets the PIR bit
-  2. pi_test_and_set_on()         -- sets PID.ON
+It is because commit a41dad905e5a ("iov_iter: saner checks for attempt
+to copy to/from iterator") has introduced sanity check for copying
+from/to iov iterator. Lacking of copy direction from the iterator
+viewpoint would lead to kernel stack trace like above.
 
-The following interleaving triggers the bug:
+This commit fixes this issue by initializing the iov iterator with
+the correct copy direction when sending SYN or ACK without data.
 
-  Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
-  B1: set PIR[vector]
-                                  A1: pi_clear_on()
-                                  A2: pi_harvest_pir() -> sees B1 bit
-                                  A3: xchg() -> consumes bit, PIR=0
-                                      (1st sync returns correct max_irr)
-  B2: set PID.ON = 1
-
-                                  Target vCPU (2nd sync_pir_to_irr):
-                                  C1: pi_test_on() -> TRUE (from B2)
-                                  C2: pi_clear_on() -> ON=0
-                                  C3: pi_harvest_pir() -> PIR empty
-                                  C4: *max_irr = -1, early return
-                                      IRR NOT SCANNED
-
-The interrupt is not lost (it resides in the IRR from the first sync and
-is recovered on the next vcpu_enter_guest() iteration), but the incorrect
-max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
-
-Fix this by scanning the IRR via apic_find_highest_vector() in
-__kvm_apic_update_irr() when PIR is empty, so that *max_irr always
-reflects the true highest pending interrupt regardless of PIR state.
-
-Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
-Cc: stable@vger.kernel.org
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Assisted-by: GitHub Copilot:Claude Opus 4.6
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+Fixes: f25dcc7687d4 ("tipc: tipc ->sendmsg() conversion")
+Reported-by: syzbot+d43608d061e8847ec9f3@syzkaller.appspotmail.com
+Acked-by: Jon Maloy <jmaloy@redhat.com>
+Signed-off-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Link: https://lore.kernel.org/r/20230214012606.5804-1-tung.q.nguyen@dektech.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Use WRITE instead of ITER_SOURCE. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
- arch/x86/kvm/lapic.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/tipc/socket.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 9381c58d4c85..e9f1e5451160 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -669,12 +669,14 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
- 	u32 irr_val, prev_irr_val;
- 	int max_updated_irr;
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index eccb97b530b7..addf8e107485 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -2616,6 +2616,7 @@ static int tipc_connect(struct socket *sock, struct sockaddr *dest,
+ 		/* Send a 'SYN-' to destination */
+ 		m.msg_name = dest;
+ 		m.msg_namelen = destlen;
++		iov_iter_kvec(&m.msg_iter, WRITE, NULL, 0, 0);
  
-+	if (!pi_harvest_pir(pir, pir_vals)) {
-+		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
-+		return false;
-+	}
-+
- 	max_updated_irr = -1;
- 	*max_irr = -1;
- 
--	if (!pi_harvest_pir(pir, pir_vals))
--		return false;
--
- 	for (i = vec = 0; i <= 7; i++, vec += 32) {
- 		u32 *p_irr = (u32 *)(regs + APIC_IRR + i * 0x10);
- 
+ 		/* If connect is in non-blocking case, set MSG_DONTWAIT to
+ 		 * indicate send_msg() is never blocked.
+@@ -2778,6 +2779,7 @@ static int tipc_accept(struct socket *sock, struct socket *new_sock, int flags,
+ 		__skb_queue_head(&new_sk->sk_receive_queue, buf);
+ 		skb_set_owner_r(buf, new_sk);
+ 	}
++	iov_iter_kvec(&m.msg_iter, WRITE, NULL, 0, 0);
+ 	__tipc_sendstream(new_sock, &m, 0);
+ 	release_sock(new_sk);
+ exit:
 -- 
-2.43.5
+2.34.1
 
 
