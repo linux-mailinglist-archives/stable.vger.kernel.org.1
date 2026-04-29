@@ -1,123 +1,146 @@
-Return-Path: <stable+bounces-241909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HoqM4kl8mm/oQEAu9opvQ
-	(envelope-from <stable+bounces-241909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:36:41 +0200
+	id cH/JKP8m8mm/oQEAu9opvQ
+	(envelope-from <stable+bounces-241910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:42:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4959A4970FC
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:36:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1084497264
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F020D30A2DD3
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:29:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A0CB0306C97A
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA3937AA63;
-	Wed, 29 Apr 2026 15:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8A8381B0E;
+	Wed, 29 Apr 2026 15:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikpIL1yd"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="N2xbpZiW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5EC34D926;
-	Wed, 29 Apr 2026 15:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0BC3815E4
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 15:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777476545; cv=none; b=oqj50zBfgGjvAn0NCp8oh4KTm6T0tV29i4sznyINMI42YIZFlHTWQ5N4f/ABJuj5GiMceREnwyTMRlLGa0pYwHnflpDU34fsVMO75eQyk5csMWmJH0rAamicd49SQoG/uPmHRNTC+9GKxbeWg8mCeX3pqh4t8gIlqgfm5tx76+8=
+	t=1777476629; cv=none; b=tt5qL88YLwCBbhi2ktZHJtMqwgiRKNsV5s3yw46tSH4yIEGJ1FoXjCDq96i9uXnjiMHYO5/eWDAbH7rcROI5uY2Be2WGEBFNMghwUnPUgwUgufuKzSB78iAz6qCPt/gFk7qrl1J4NkTelskFCI+UQzgBJ0gzXqcAA1kTHV6n+NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777476545; c=relaxed/simple;
-	bh=YeTMeJkDmWUV9scj0Qx6X9iodupxXx8OHcr5NE4U4k0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=lajSLJGUH4xlGu8qamlVC/tH14kgAlre0P2HapGh2wXzk/VhIr8fe/ATzLae008HebN7LKpn3pPqDwlwkfSSh3jG7ERIDsUCICLfLMo68oFchtodd0Pjvldzn4DwqviDlp7ZAEsNKkdRuR1Vfj4vvVzSJGSWpGyQt0jk/995Mv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikpIL1yd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DBEC19425;
-	Wed, 29 Apr 2026 15:29:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777476544;
-	bh=YeTMeJkDmWUV9scj0Qx6X9iodupxXx8OHcr5NE4U4k0=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=ikpIL1yd5tWJdLYpskJKgadcmn2FD5F2fw2zXb5UuS736kISuW73HET7FHgtI77NL
-	 Rw2IJn1/khRA7OD5G0aIXdj1JyQT3LpQe37+4xE98NwYgkL1fV8ysBdzFJUebUoWdQ
-	 PJCmmy4k9GNJU3BjNfH9+gWnXttYXah5TZUR5EeDgJdInwB278qIacudUfQ7UZHmbK
-	 MmuN8fE+v5nDkk6i5+RhbaaALBGBAOTNkfCIG8UYFFHBoSDHwtK26ALmu1SfAqMCW8
-	 XF8zLc65mueePNWKfejfb1MOZz8dCYpSxaYYaLNq4bm0pCX/vgwgL9+5K6ShkZIMaS
-	 oWYj9jlqurizA==
+	s=arc-20240116; t=1777476629; c=relaxed/simple;
+	bh=wr2Cjzi48zX0nGmklAOr0JeVqZqqLYl0lRJmnThQBwc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bra2lu+ljWa0kh9rrbW0TumUH4xEVcLJNbvC8URJOEa0V2zufDk1rCp1rSdXhnFI2V/TWSl4M5dHdNRHaY3CeFtn+VS3AwKkNmHeKvWyhOTshMvgx5DSdDfLqOhEKN+j7N7uZEmUHLSCqfMbXfu2sKNNz13EPw6PhzPtfs4+aRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=N2xbpZiW; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <2aa36364-6c60-4927-9344-6c4e0a072aac@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777476625;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pRKjPGTHB7gLsglvS58rZ1PmYiUs4SxFlaTZpxLq+pI=;
+	b=N2xbpZiWavmWTwLOQZ9SLU3kOEvqkgRkMHKC2SfGAAdy2KqvPcXuf7tfqARmWRGt7BgSDf
+	h03I8++9UxXR5pvDvj1K1I7HyZd7fLtpLApqxFr7VluomyCioKyr7kzB71uz/uydKe/v51
+	+0jD4ZvgPMiL0Gq0oVrNCjzSzsGQetE=
+Date: Wed, 29 Apr 2026 23:29:51 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Apr 2026 17:29:02 +0200
-Message-Id: <DI5QUINEJC6U.32I161SD0KU76@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] driver core: reject devices with unregistered buses
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, <driver-core@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-To: "Johan Hovold" <johan@kernel.org>
-References: <20260427102852.2174-1-johan@kernel.org>
- <DI50WG9XK1I4.1R6DXSZSWFRDC@kernel.org>
- <afHZWasOhRaeBCnt@hovoldconsulting.com>
- <DI5LDIQW45PE.LPIWCARJV7WC@kernel.org>
- <afHsgv9SUqfn-G1x@hovoldconsulting.com>
- <DI5Q29QMNVNH.1B2N4VBA2ZVQW@kernel.org>
- <afIe495IbAe7EeDt@hovoldconsulting.com>
-In-Reply-To: <afIe495IbAe7EeDt@hovoldconsulting.com>
-X-Rspamd-Queue-Id: 4959A4970FC
+MIME-Version: 1.0
+Subject: Re: [PATCH v2] x86/mm: fix freeing of PMD-sized vmemmap pages
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Andy Lutomirski <luto@kernel.org>,
+ linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>
+References: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: D1084497264
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241909-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241910-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TO_DN_SOME(0.00)[]
 
-On Wed Apr 29, 2026 at 5:08 PM CEST, Johan Hovold wrote:
-> No, I'm saying that it's a bug in driver core to silently treat a device
-> that is registered before its bus as a bus-less device.
 
-This is an argument that I can buy into, but in the previous discussion (an=
-d in
-the commit message) the whole motivation evolved around "reject devices wit=
-h
-unregistered buses to catch any callers that get the ordering wrong", i.e. =
-catch
-other people's bugs.
 
-What you are raising now is "the driver core is conflating no bus with
-unregistered bus handling". However, the commit message does not reflect th=
-at at
-all.
+On 2026/4/29 18:49, David Hildenbrand (Arm) wrote:
+> In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
+> from freeing non-boot page tables through __free_pages() to
+> pagetable_free().
+> 
+> However, the function is also called to free vmemmap pages.
+> 
+> Given that vmemmap pages are not page tables, already the page_ptdesc(page)
+> is wrong. But worse, pagetable_free() calls
+> 
+> 	__free_pages(page, compound_order(page));
+> 
+> As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
+> except for HVO, which doesn't apply here -- we will only free the first
+> page when freeing a PMD-sized vmemmap page, leaking the other ones.
+> 
+> Fix it by properly decoupling pagetable and vmemmap freeing.
+> free_pagetable() no longer has to mess with SECTION_INFO, as only the
+> vmemmap is marked like that in register_page_bootmem_memmap().
+> 
+> The indentation in remove_pmd_table() is messed up, let's fix that
+> while touching it.
+> 
+> Note that we'll try to get rid of that bootmem info handling soon. For
+> now, we'll handle it similar to free_pagetable(), just avoiding the
+> ifdef.
+> 
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+> Reproduced and tested with a simple VM with a virtio-mem device,
+> repeatedly adding and removing memory.
+> 
+> Found by code inspection while working on bootmem_info removal.
+> ---
 
-Can you please adjust the commit message accordingly?
+Retested. Works as expected :)
 
-(As for the stable question, I don't think this changes anything though.)
+Cheers, Lance
 
