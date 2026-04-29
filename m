@@ -1,139 +1,175 @@
-Return-Path: <stable+bounces-241876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBFECg7z8WmElwEAu9opvQ
-	(envelope-from <stable+bounces-241876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 14:01:18 +0200
+	id MLIzHMj68WmElwEAu9opvQ
+	(envelope-from <stable+bounces-241877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 14:34:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF146493D25
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 14:01:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13034941E6
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 14:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EE6B302DE2B
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 12:01:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 543A4308EE83
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 12:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6638C3F6610;
-	Wed, 29 Apr 2026 12:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C32E3F0A98;
+	Wed, 29 Apr 2026 12:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RnnXKcd4"
+	dkim=pass (2048-bit key) header.d=aepfle.de header.i=@aepfle.de header.b="hRKI9ibj";
+	dkim=permerror (0-bit key) header.d=aepfle.de header.i=@aepfle.de header.b="CZAbca8/"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EFF3C4567
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 12:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777464068; cv=none; b=WL4dlBccucADsoxk7bJZu8bh7KtHMU6QA54t9oFIHdKPULa2li92CmSvxTlqcH9o2KlbpSQLQ6yH72xaM8oFStJMjJ5p/dASb8C5FWMXKHXTBVbkq1yxorLy8XNVqF9cYiUHXIlW3XuERkbmQRBe2z0mqcP/BCzJcviHKRUE+JU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777464068; c=relaxed/simple;
-	bh=itr8NWOHQ6V8gxzf86xpcySPtZbv4JBsseEIXm5Jbts=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmMKpAW48tqZ/bWLUhMqzjoHiNYi2VAfDiC7Zpe6fKqiZeBzQ8/f6JUGWixZN6uewgtyf2ssBjQynxYyGcg+9Oe6y7W3O3BsbFixMNUu5Hp4sgGwxj7zV2BsbLCDt4K8uxCB+BzEe+k7DEOyREtBl5d5OD1fb7DoJegLQqwINBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RnnXKcd4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777464066;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=itr8NWOHQ6V8gxzf86xpcySPtZbv4JBsseEIXm5Jbts=;
-	b=RnnXKcd4cSlQ44bQIMP+PEI/llzE0Kqve0kImxTCXVOej74aPieK9dDeRP++mWFqv2gQt9
-	DAgGOqd2Hk8WX0aWo5BaBBYSAesdaOjRfB0Yil6eDsx4LiLCOgqJEzAzTDDFdgPS/fxfbi
-	IeixB0y1KImjl1UiB8kGcl3ffuYbFhY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-1K6ZWJ6kO1qRKGz_ssUZRQ-1; Wed,
- 29 Apr 2026 08:00:57 -0400
-X-MC-Unique: 1K6ZWJ6kO1qRKGz_ssUZRQ-1
-X-Mimecast-MFC-AGG-ID: 1K6ZWJ6kO1qRKGz_ssUZRQ_1777464054
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E300180036E;
-	Wed, 29 Apr 2026 12:00:54 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.45])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 23490195608E;
-	Wed, 29 Apr 2026 12:00:48 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: aleksandr.loktionov@intel.com
-Cc: anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	jacob.e.keller@intel.com,
-	jesse.brandeburg@intel.com,
-	jtornosm@redhat.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v5 3/4] iavf: send MAC change request synchronously
-Date: Wed, 29 Apr 2026 14:00:47 +0200
-Message-ID: <20260429120047.218369-1-jtornosm@redhat.com>
-In-Reply-To: <IA3PR11MB89861527E138BBA14FA907DCE5342@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <IA3PR11MB89861527E138BBA14FA907DCE5342@IA3PR11MB8986.namprd11.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6352F299A87;
+	Wed, 29 Apr 2026 12:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.165
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777465849; cv=pass; b=aynJvptGtz/8duVa0qgtr3iz51FUCXauvs6E9WoNgGvG33PrWQPoE4oKI+xpgz4goqAx/WexRFQzxD+aag//cncaBpJ6BLFnGEXXlUmJC908HQGKegX0FMNjZH6IBfo8mObTjJWQYaXqiWpqpmYQ2GqRyu6RFvexQutx3zzhy58=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777465849; c=relaxed/simple;
+	bh=EJXR65qhDAKudP2+vZ3Pwhpj0KDsnzSTV2XCWNJ8kzI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pjvuXgnOMKFP1K0sX9n5bB6+OpVOfU9WwJHp9hQ18Llwp9lScyl2ar690nJCTyDI9KoqERJupmC9OeR0b1+wdMzhNOfe2JzJxkow0fK6nRIk4owvIYZKWYilRzdRQI11epKlR9ZxBB+MGQjaJmdz6ces069OWBUiTtYGglbZ9B8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aepfle.de; spf=pass smtp.mailfrom=aepfle.de; dkim=pass (2048-bit key) header.d=aepfle.de header.i=@aepfle.de header.b=hRKI9ibj; dkim=permerror (0-bit key) header.d=aepfle.de header.i=@aepfle.de header.b=CZAbca8/; arc=pass smtp.client-ip=81.169.146.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aepfle.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aepfle.de
+ARC-Seal: i=1; a=rsa-sha256; t=1777465659; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=otcAGfCFsIXy9xVvQreHJr3WeYLGXKF42cCDDVx+6PJFjcE+YeE80+QY0Od84b1Gib
+    oWCclDWB7bAq3AhUGFyrTkaUgdC9h+EzCIRCWr2Lgb0TkRRH0XSLMBMK7twckyL1arZj
+    QuAre+nis34xjaetU0k9xCvKU/AqVIdWE4c5QEcpz2LbjheTjE1le+mK0hdhE+2rjTtm
+    Di5eGuX0g6XRph8DXEBMDjx7M+KNjWuJ8kAO1+W6b1A9DkjPc+IdhCsHmizQvc9TXO8q
+    5CaY9lDo7yf0MjQWIBgMhUYwHq+rGJ9+e/KvzJKzA4l0tsfKc3buLlP0ruhvDqrOv7MN
+    2lhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1777465659;
+    s=strato-dkim-0002; d=strato.com;
+    h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=EJXR65qhDAKudP2+vZ3Pwhpj0KDsnzSTV2XCWNJ8kzI=;
+    b=I0b9GZgtYmrm95nrGhzHTcJ19n5TO67z/LRvseQoRMOu78wQYSH1uQeS3ObV+2ZSE6
+    VPk4apEOH4PmtxLww3isY1PwBpV8H9yUzwUp9ZR4zO97e05dF50AEGRaGxx6ZkxlDaIz
+    4gokdNg+eLqwXFqeNQtzCA46Kifh0pDjurSjmbH3Lu5xqXuqfqM3c1bl1XuuQ3npQpEB
+    TGq2vuERbJEkM1N+WyXjVhyWfvq+/TUetBrgR6Emdd21S/la0At1xxRsNqwOVvny+jM6
+    vvCqejT9shCP0ohICFMDIhO/taFEvEmzGwIm2OvqVMG8u40EJ0T+JdORYmst+eQqC5UF
+    M2rw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1777465659;
+    s=strato-dkim-0002; d=aepfle.de;
+    h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=EJXR65qhDAKudP2+vZ3Pwhpj0KDsnzSTV2XCWNJ8kzI=;
+    b=hRKI9ibjBCjMe74LzcDlXJ13vlNH5pTVjdpeSpp9XZZHqzUgzCoDQr0RIo3PZLH1Ee
+    gOEtXxfyT1WTwJsqt3Dfi44NYlYLC+DL9f2DtUAKyyyiPhr5PFyR1WWRjfToHF0ID2r8
+    SGp781A7Cl8GyomK869cV5BeZw8dnkmBhKF8wzZUiWmwovy3Y9ZinvEVDggYV5C+Drtb
+    Di5X3UvToXOQQUUAfpsknq9ui9XWWaetTee2wjMH6ywjGrTaSh1hIulOnD9MkpRg6E1v
+    VLzDW0h9N2DXbBCD1c624ekmTofuENsnz0MYE530i0WOMO6zOtTC219KbcJm/Gjacevh
+    sP3g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1777465659;
+    s=strato-dkim-0003; d=aepfle.de;
+    h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=EJXR65qhDAKudP2+vZ3Pwhpj0KDsnzSTV2XCWNJ8kzI=;
+    b=CZAbca8/inEMT2kGe1DeS7LrIxTDz4d5NW0OYDKtg6PV7K601ee/IHFGwjW5OIgOfN
+    F8jafsk7DmALJRvT5UCw==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OmD4uXd0fm0SoJ7/xK6yGaFsaWnaJwse7ii63+wjqP+qP1K"
+Received: from sender
+    by smtp.strato.de (RZmta 55.0.1 AUTH)
+    with ESMTPSA id D7618223TCRc1m7
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 29 Apr 2026 14:27:38 +0200 (CEST)
+Date: Wed, 29 Apr 2026 14:27:24 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+ <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+ <decui@microsoft.com>, Long Li <longli@microsoft.com>, Greg Kroah-Hartman
+ <gregkh@suse.de>, stable@vger.kernel.org, Ky Srinivasan
+ <ksrinivasan@novell.com>, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hv: utils: handle and propagate errors in kvp_register
+Message-ID: <20260429142724.4d74641a.olaf@aepfle.de>
+In-Reply-To: <20260414111008.307220-2-thorsten.blum@linux.dev>
+References: <20260414111008.307220-2-thorsten.blum@linux.dev>
+X-Mailer: Claws Mail (olh) 20240610T104514.591ffb65 hat ein Softwareproblem, kann man nichts machen.
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Rspamd-Queue-Id: AF146493D25
+Content-Type: multipart/signed; boundary="Sig_/9QPQHzLuDWUzzMAsondCt0X";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F13034941E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-3.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[aepfle.de,reject];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[aepfle.de:s=strato-dkim-0002,aepfle.de:s=strato-dkim-0003];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241876-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-241877-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[aepfle.de:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[olaf@aepfle.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[aepfle.de:dkim,aepfle.de:mid,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hello Aleksandr,
+--Sig_/9QPQHzLuDWUzzMAsondCt0X
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> I think continue at the end of the cycle is redundant.
-That continue is intentional; without it, if timeout expires but there
-are still messages in the queue, we give up without processing them. The
-message we're waiting for might be in the queue and not a lot of messages
-stored are expected.
-That continue reduces possible false timeouts (because the expected message
-could be stored in the queue) while keeping the delay minimal.
-The timeout is really just an estimate, and I don't think it needs
-to be very precise.
+Tue, 14 Apr 2026 13:10:08 +0200 Thorsten Blum <thorsten.blum@linux.dev>:
 
-Thanks
+> Fixes: 245ba56a52a3 ("Staging: hv: Implement key/value pair (KVP)")
 
-Best regards
-Jose Ignacio
+Please do not abuse the Fixes tag when it fact this change is "cosmetics".
 
+
+Olaf
+
+--Sig_/9QPQHzLuDWUzzMAsondCt0X
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmnx+SwACgkQ86SN7mm1
+DoDOqw//QGH7JipvvKfUGAD0ya2ffmoGZ29i2a2jTl1YKx1dflByNsHdzJ8rSMZR
+sDVp6r90A7Hp7T6wXqjr9LLfNktWlT2tWj3t4ElATm3B1LX0nqxpjeHepUm/qocP
+RFdJOEQdkS8AtOUK15UoZz+V/N5FzhY2/tsdwxP1QNJ7fy3TwlHiOHlIXSCgZzY/
+hiRJM+7lfOdZUBzTKYQsCzD0p5rf2jKQ71w+JuTohTKPrmwvXDOoDbZHP463ic8A
+09f2cCS6ZuJyXm4RE+CXDUI4cZB76SBaYUEbBR2ozqAJNgq78VRHZsxC3jjt4yDd
+VPQUIyFyBUtTe3+HMc/PGWuTxjd1GDQSdS/RwtwhICKhxPxD5mEWof4Z9MQmBIiu
+DrhlhcCIDMrOI99qu5GfACy2wr5RuorIWYtopdSb7Jr/eb5GNxA7GzdUfSwdzyQv
+KMX6gqcDOLPErjyYHQQbbYELhNX/WyHoCR2JJFoZ6GGh9QR+dSXJNPTMpvhaFQIX
+G8c5meN/PEGciXUPpG3/fG+Bwn5YOibW2UFMkdC90HSMyJOmLkyxE0kSmIXtQGwk
+EsQoc8mYBWP39fv+TtyCfE2WHYH10J3K2ToeaxSCJvMg2V0xLth2CMPaA65ovISB
+Ijr/q7YQpgTdj78DfXJ0R2MS496kj1otKgXgdI5pRuGp6iUGxRg=
+=cDGz
+-----END PGP SIGNATURE-----
+
+--Sig_/9QPQHzLuDWUzzMAsondCt0X--
 
