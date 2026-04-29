@@ -1,223 +1,182 @@
-Return-Path: <stable+bounces-241805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLZkO1F28WkxhAEAu9opvQ
-	(envelope-from <stable+bounces-241805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 05:09:05 +0200
+	id 2FRQGVR28WkxhAEAu9opvQ
+	(envelope-from <stable+bounces-241806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 05:09:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E0948E8FA
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 05:09:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2769748E901
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 05:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C76C83060D5C
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:04:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 800AE301A768
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE0F308F15;
-	Wed, 29 Apr 2026 03:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6335537EFF4;
+	Wed, 29 Apr 2026 03:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HpqfvgQm"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="wRZEtqG1"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0B92DC32A
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 03:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674963822B9;
+	Wed, 29 Apr 2026 03:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777431871; cv=none; b=hF82b8AWPGCbK6DYqa7bFnXPTGMjOzbT8mM1ed/Jlm3sLLGViZjERySfTLVuQEz1jmRVC4+XmO86OIZgUkodUkS+H0vNAMy+W3hg39T083YuE/MJw1SgDOJ+lvrFIhVQ0UwcXTIiKguuFX8tz26e8SN+Wbo5w+oeUOGoz7xsNIQ=
+	t=1777432138; cv=none; b=XEzjiepV13dEfdha6yrD0btKRfr3Ac9JuOxnOB7Q9IIDRY4ZdpmB3NaLWSBft62nXhweAc2Fw7nglGKcwIK0A0cj4jaoauFoTHMmbfM549B6pwP35awnIU2skVlcvrykhAH78mBV+SYwEy7c2rkFx6IJ00i9e1oR4maudFla9tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777431871; c=relaxed/simple;
-	bh=Q12eOtvJ+6xl4ZwrDqguILZTLzchiUz9odVa22G/aS8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D8gPfVYaU7+kAGkvReek73ykHmq2xEfdJRemGJaLMqWtzeFq873/ZsiRN0W+USyeVp3VwD70Ewbx6iSgxAsoQD84K50K7pXjX/2WxB5Nl7jZTad/JBqZPlx9Xcx2D86FM8/WFCQXcEmSI29qPoRitC7lmyL4JUC3X27jcX3apAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HpqfvgQm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777431868;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ldwwJIVF7m6VyRD35VYHAOudLjUCD6MJS07MQJZaKIw=;
-	b=HpqfvgQmqP4AywWyT/GJiFzuCQQS3Zj9UwmJLludBrKUOFZudlEcxjthjaCb/W/adZHYYQ
-	L6PFWu9sixQQD6InD1ATgQEIZYeLlGtr+Q0eZRqdHqpfNPOlmVH1G8k0Pql9/fnUBhn985
-	mZEbu+bo7069uy3Asi87GjpabSHTipw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-OmYw-u2QM62O1aSfJHEcfQ-1; Tue,
- 28 Apr 2026 23:04:24 -0400
-X-MC-Unique: OmYw-u2QM62O1aSfJHEcfQ-1
-X-Mimecast-MFC-AGG-ID: OmYw-u2QM62O1aSfJHEcfQ_1777431862
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 94521195609F;
-	Wed, 29 Apr 2026 03:04:21 +0000 (UTC)
-Received: from GoldenWind.lan (unknown [10.22.88.40])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C0B31180047F;
-	Wed, 29 Apr 2026 03:04:17 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Ben Skeggs <bskeggs@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	James Jones <jajones@nvidia.com>,
-	Faith Ekstrand <faith.ekstrand@collabora.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Zhang Enpei <zhang.enpei@zte.com.cn>,
-	stable@vger.kernel.org,
-	"Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
-	"Kees Cook" <kees@kernel.org>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"David Airlie" <airlied@gmail.com>,
-	"Thomas Zimmermann" <tzimmermann@suse.de>,
-	"Maxime Ripard" <mripard@kernel.org>,
-	"Lyude Paul" <lyude@redhat.com>
-Subject: [PATCH] drm/nouveau/disp/r535: Add scanline position support + head state support
-Date: Tue, 28 Apr 2026 23:03:40 -0400
-Message-ID: <20260429030348.3930866-1-lyude@redhat.com>
+	s=arc-20240116; t=1777432138; c=relaxed/simple;
+	bh=7+yC5hMF0qdU1S40QGVDkFTwKdacY27SAFDKbirVewQ=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Nl0/RIKDWsC6wOggpLf1xwyN8Fkqxdl3s3GSbIFG8hMRZTL+uQk/oB8Y27a1MBomMhQEXqhU+cTerHnr8EJ6rLvDwA2HSxuHWCRyRacJHlPDdFd84nH4JcP7TcFpIYOB7wPv4bjTljbclQ/pqCbaVxjKJR/c6h89lfYBc0El4dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=wRZEtqG1; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=xX0viIPInKzZ41oL478Oobdtorp+A0qdchKgB4MiC+Q=;
+	b=wRZEtqG1ojzHisLsXlxwRdn5+Jd5rHXE0MjAblypteB/4bP6N7dY8K21sfS5P7ly81FOyw/br
+	+XvZYTvTsjMIkOWPKa2WMJGGARA4Rrs1RTZvJr0EnSiuUngmfpopv1U5etxTXFX5Ufm5QwPFXdA
+	iwWjvTtUImaOvMTxi+2vwng=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4g52C92vVHzcZxk;
+	Wed, 29 Apr 2026 11:01:57 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 95FDD4048F;
+	Wed, 29 Apr 2026 11:08:52 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 29 Apr 2026 11:08:52 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 29 Apr 2026 11:08:51 +0800
+Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison
+ accounting lookup
+To: Muchun Song <muchun.song@linux.dev>
+CC: Muchun Song <songmuchun@bytedance.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, "Dan
+ Williams" <djbw@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	<linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>,
+	<driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, David Hildenbrand <david@kernel.org>, "Oscar
+ Salvador" <osalvador@suse.de>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Rafael J Wysocki <rafael@kernel.org>, "Danilo
+ Krummrich" <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+References: <94F5B89A-008A-4EDB-920F-31B4895C2699@linux.dev>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <c6e1df1e-be5e-2468-d46e-453985ba1e79@huawei.com>
+Date: Wed, 29 Apr 2026 11:08:51 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <94F5B89A-008A-4EDB-920F-31B4895C2699@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: 73E0948E8FA
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: 2769748E901
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[redhat.com,nvidia.com,collabora.com,intel.com,gmail.com,kernel.org,zte.com.cn,vger.kernel.org,linux.intel.com,ffwll.ch,suse.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241805-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lyude@redhat.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[bytedance.com,intel.com,gmail.com,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,suse.de,linuxfoundation.org,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-241806-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linmiaohe@huawei.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,zte.com.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-That's right! It looks like this never actually got finished, something
-which I just noticed today when I saw this fun message spamming one of my
-test machine's kernel logs when enabling display debug output for nouveau:
+On 2026/4/28 21:52, Muchun Song wrote:
+> 
+> 
+> 
+>> On Apr 28, 2026, at 20:34, Miaohe Lin <linmiaohe@huawei.com> wrote:
+>> ﻿On 2026/4/28 19:40, Muchun Song wrote:
+>>>
+>>>
+>>>> On Apr 28, 2026, at 19:37, Miaohe Lin <linmiaohe@huawei.com> wrote:
+>>>> On 2026/4/28 16:52, Muchun Song wrote:
+>>>>> memblk_nr_poison_inc() and memblk_nr_poison_sub() call
+>>>>> find_memory_block_by_id(), which requires device_hotplug_lock to
+>>>>> serialize the xarray lookup against memory block removal.
+>>>>> Take device_hotplug_lock around the lookup and nr_hwpoison update so
+>>>>> the memory block cannot disappear between xa_load() and get_device().
+>>>>> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>>> Thanks for update.
+>>>>> ---
+>>>>> drivers/base/memory.c | 10 ++++++++--
+>>>>> 1 file changed, 8 insertions(+), 2 deletions(-)
+>>>>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+>>>>> index 6981b55d582a..f76aee29e9a5 100644
+>>>>> --- a/drivers/base/memory.c
+>>>>> +++ b/drivers/base/memory.c
+>>>>> @@ -1228,23 +1228,29 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+>>>>> void memblk_nr_poison_inc(unsigned long pfn)
+>>>>> {
+>>>>>    const unsigned long block_id = pfn_to_block_id(pfn);
+>>>>> -    struct memory_block *mem = find_memory_block_by_id(block_id);
+>>>>> +    struct memory_block *mem;
+>>>>> +    lock_device_hotplug();
+>>>> memblk_nr_poison_inc() and memblk_nr_poison_sub() are both called from memory_failure() context.
+>>>> I'm afraid if memory_failure() is triggered while lock_device_hotplug is held, it will lead to
+>>>> deadlock. Or am I miss something?
+>>>
+>>> I am curious is there any place where memory_failure() is called with holding lock_device_hotplug?
+>>
+>> Sorry for dumb scenario, I was a bit too presumptuous. But there might be another possible deadlock:
+>>
+>> remove_memory
+>>  lock_device_hotplug <-- first called here
+>>  try_remove_memory
+>>    remove_memory_block_devices
+>>      num_poisoned_pages_sub
+> 
+> Passing pfn = -1 here.
+> 
+>>        memblk_nr_poison_sub
+>>          lock_device_hotplug <-- deadlock here
+> 
+> No. Can’t reach here. No deadlock.
 
-  [drm:drm_crtc_vblank_helper_get_vblank_timestamp_internal] crtc 0 : scanoutpos query failed.
+Right, I missed that. Thanks. But I'm still worried that there might be potential issues.
+For example, this function could be called while lock_page is held. Acquiring lock_device_hotplug
+while already holding lock_page might cause problems, though I haven't seen any specific issues yet.
+Also there might be some other potential scenarios that haven't been considered. Hope I'm just
+overthinking it. :)
 
-So it looks like we've been falling back to DRM's core fallback for a while
-now, whoops.
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
-So, while it seems that we do have the option of doing this through GSP -
-that doesn't seem like a great idea. Mainly because reading this from GSP
-would involve a lot more latency then we should have for vblank handling
-due to the RPC communication. So instead of implementing that, just use
-gv100_head_state and gv100_head_rgpos for implementing .state and .rgpos.
-It seems to work perfectly fine!
-
-Fixes: 9e9944449023 ("drm/nouveau/disp/r535: initial support")
-Cc: Ben Skeggs <bskeggs@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Timur Tabi <ttabi@nvidia.com>
-Cc: Ben Skeggs <bskeggs@nvidia.com>
-Cc: James Jones <jajones@nvidia.com>
-Cc: Faith Ekstrand <faith.ekstrand@collabora.com>
-Cc: Suraj Kandpal <suraj.kandpal@intel.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Aaron Kling <webgeek1234@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Zhang Enpei <zhang.enpei@zte.com.cn>
-Cc: <stable@vger.kernel.org> # v6.7+
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c       | 4 ++--
- drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h        | 2 ++
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c | 8 ++------
- 3 files changed, 6 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c
-index dbd984da75014..0608266188d3e 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/gv100.c
-@@ -253,7 +253,7 @@ gv100_head_vblank_get(struct nvkm_head *head)
- 	nvkm_mask(device, 0x611d80 + (head->id * 4), 0x00000004, 0x00000004);
- }
- 
--static void
-+void
- gv100_head_rgpos(struct nvkm_head *head, u16 *hline, u16 *vline)
- {
- 	struct nvkm_device *device = head->disp->engine.subdev.device;
-@@ -263,7 +263,7 @@ gv100_head_rgpos(struct nvkm_head *head, u16 *hline, u16 *vline)
- 	*hline = nvkm_rd32(device, 0x616334 + hoff) & 0x0000ffff;
- }
- 
--static void
-+void
- gv100_head_state(struct nvkm_head *head, struct nvkm_head_state *state)
- {
- 	struct nvkm_device *device = head->disp->engine.subdev.device;
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h b/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h
-index 856252bf559a4..b642729c254fe 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/head.h
-@@ -53,6 +53,8 @@ void gf119_head_rgclk(struct nvkm_head *, int);
- 
- int gv100_head_cnt(struct nvkm_disp *, unsigned long *);
- int gv100_head_new(struct nvkm_disp *, int id);
-+void gv100_head_state(struct nvkm_head *head, struct nvkm_head_state *state);
-+void gv100_head_rgpos(struct nvkm_head *head, u16 *hline, u16 *vline);
- 
- #define HEAD_MSG(h,l,f,a...) do {                                              \
- 	struct nvkm_head *_h = (h);                                            \
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c
-index 6e63df816d855..49a1eef9bdf14 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/disp.c
-@@ -625,14 +625,10 @@ r535_head_vblank_get(struct nvkm_head *head)
- 	nvkm_mask(device, 0x611d80 + (head->id * 4), 0x00000002, 0x00000002);
- }
- 
--static void
--r535_head_state(struct nvkm_head *head, struct nvkm_head_state *state)
--{
--}
--
- static const struct nvkm_head_func
- r535_head = {
--	.state = r535_head_state,
-+	.state = gv100_head_state,
-+	.rgpos = gv100_head_rgpos,
- 	.vblank_get = r535_head_vblank_get,
- 	.vblank_put = r535_head_vblank_put,
- };
-
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
--- 
-2.54.0
-
+Thanks.
+.
 
