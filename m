@@ -1,450 +1,450 @@
-Return-Path: <stable+bounces-242135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDf6Mlht82lf2gEAu9opvQ
-	(envelope-from <stable+bounces-242135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 16:55:20 +0200
+	id UOVBENBt82m42gEAu9opvQ
+	(envelope-from <stable+bounces-242136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 16:57:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587484A44C1
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 16:55:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C18C4A455B
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 16:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E1E0301E6F8
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:54:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 664DE3009811
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85052428851;
-	Thu, 30 Apr 2026 14:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EF0436353;
+	Thu, 30 Apr 2026 14:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Adp4deEV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsRxFjGP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEB342EED9
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 14:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB599227B94
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 14:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777560862; cv=none; b=JD1nh0urx1nbQpQQWJpB2dt1QGo8/u9CbsMsMpjFK1O5YaALN/ccgUw5ImxD5AkzdhYh1nWkZjbGe+Al+FZXLhpsQtdsvzDkgHh7ydNm3dlt4fkTVIgzCas23uSKtIFbcrZas9orZU+WV35NfpTXrh2qmIs0EBgjgDh/dpv4PSE=
+	t=1777560990; cv=none; b=p12PbgEsOJkvsDHvhcngzOs9JUT/ZHwrWmQ2WAAnE3Qaj2FlccoEOsoFH2pFXDR7PG9G0Kg69tEi/lar9jhcB10v7Gm9EaDY9WTzz6qNM78Tm0fdpGni1zix1oSWxT6fR6y11CVuBdgRVRKj/TWlyhA+n0Dlfg7J9ZvaQr+ITyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777560862; c=relaxed/simple;
-	bh=VZTJlq5QRnx6a9s3PldKAGp1z8FlIxwAHjB+OU32d30=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DbcRz9B7JRcMy/SChL4LIetUe28w4sXeFpyKrWIlet8qAw4e4IePjnrb0BXFPxgRYqHn0aKptG8Y+88eIIVi3PzevqAcOm/Q+mo2XFnXvr4fuuhLrcr0nAr6d41tTN/6+6Uq9h2g0WrtWVBFOYnBtS3GHTtoWZmNKPRn9Qbr4e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Adp4deEV; arc=none smtp.client-ip=209.85.217.41
+	s=arc-20240116; t=1777560990; c=relaxed/simple;
+	bh=nVVdyvWnvMEChGYctnaNOUiWzvIlGJUOyhpd4ZKbW0s=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=VQdWUJDmrPxVB/ae42Mve/x4ve9PGEI+gN89sbTXpso798VG6vrQkwaaELZL242yST3V6DSpBUg1ZSvnT7li9y7q7vm86EZzBYYloNcvOeXjwyX6gWUymmDvGgP6PXM8GkrBZrlIX4Q0BmCgFiXfSKjMnj5tZuPK9mk34kaYToI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsRxFjGP; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-6121f20650dso372350137.1
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 07:54:20 -0700 (PDT)
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2ecf9e398f4so404629eec.1
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 07:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777560860; x=1778165660; darn=vger.kernel.org;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CPxbjoeeqwnnH+MxEDiX8q4Zku2etTK1rWCxOeGm53A=;
-        b=Adp4deEVzmvxUH16KOjj79onMo7/E2fjC53SdcACj9rQL9a9VGZaN38/zzP3Fm5099
-         NRSbehOCD3u0itphHVBijxG693SxvRTdKiKdHdbTeMtn15dJJFY2jbzj5035rQfVSXVl
-         uQRz12T0YSdSm6K+xpwwgMXPh0aoqhPAC/TEDwvWV/IpslylTzZuNDEe8rBeiJC4ZAYH
-         Y9EE05OOPhIUFJ9QBwQrCO9afzqV+wodN9GrYMkZrE537SVUWJm+ABhB5i/l8boaKl8M
-         tChV4HJwqd3U/pBoVqihxEAMeBpHuSZUmu3kjzGjNPpBQaRevuPNru8z/pFAT9Wlr68q
-         /L4g==
+        d=gmail.com; s=20251104; t=1777560988; x=1778165788; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LUNPqyzWnajU/PD+h7ddsaH410QkU1Ojez7rgykqDvg=;
+        b=YsRxFjGPL4tdYC3UGYkm7AczH4vFzmY279qmNYdUo9wdQi9/6Em5T5g/KhlGLJgZyu
+         Nck+JA9IDP0b6CAUtnZcPA3UDLnXGRSzakTsyZHXS1LPWIFpBUdnjVJX0uzIqAtON91Y
+         nRxck7BqSxwmJ/zBu2/Dtc+MMfd7yuEgqxCZgwjiWcpOZVEuM+PG1chAW56ONrNlxMKz
+         BcwYbWBEfyNwkynsnt6zA/yrI2J6kM9HbUF5Uv/cce8quma2P+v7at+WW8cK1YC8pRpq
+         /dno3ZHtOyy6Bg7SqbciNbwGEKV+RQJtU2IIbY2Eukx8+0rvblmw1yYbxY16UIYo4COG
+         JXow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777560860; x=1778165660;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CPxbjoeeqwnnH+MxEDiX8q4Zku2etTK1rWCxOeGm53A=;
-        b=b09TtadsMuU7c0DZTZg45D6D80ywp5q1YzejFeeJt12ORSgRg7KVJABWA7Dap9LFjb
-         ILcuzAmQxHLAlbXJuYYm0LegIdZ0L4RtgcQQiGUrXOSEhzjCzSGphd7VeLnGcF+2Ikko
-         FWlHOm8AutNckxVe7/qvs/ZiH09VI1uggcTYZNCr/lbYjTIw6DczDFMobqaLnH3F0OdZ
-         NbBHDktubvjuF9jtADQKU9EuQSrqvFwOokhi06qQlO+Vta2WYvN0nKemt3R9/UjBmiOD
-         zUvH9hp8QmxRGP+NcJcXuUKL0tRKiH1x7DL8/9j/Igt3NSWQVip3blOdxoTGvFKQDQ/F
-         Ub5A==
-X-Forwarded-Encrypted: i=1; AFNElJ/E39x3OJLqN1eekTZxjaCz5PxPS186DG73g3v/sSpfr1tdECROa9/6eN0xfy0+QvT11axu5nA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIB29YlrnSkkYYGaDYtAibnx95vJkVG+401xjZ2EkFKmej7BAc
-	fPnuWaehqYfcAaZH9Y2Y5mGnW0GUaSlqkUEm3+QE0DMZqOKsYbmJE0Er
-X-Gm-Gg: AeBDieu++7e3ECoCJ0vFbs2Cm3j+QXHgyPs+DjOOdapT17Hv6VMAgiCjylt40qvuPd5
-	mVNlMtFH1YKaaSSlzC1f5fLUg+i45EO/6fmyQdzjTWibnjNHFnU9iaDAibwTG3x1ztU/C1DzGj6
-	k2bs6BFZVBS3VIwlwXKIU+H9X4ndFepo0seO/pgm59h9GoiSd5qZdKOH7+Zs+JtYaU88/Z4lDoV
-	K9mIYrbE3wy81FKvMwSQTBjW0Bl/R9ykIaW5CdwdiKazGB9MJ3auU0brjtX/56ZVZlIQiUjLPeS
-	4FiKuTFik7ILdCW6CMdqb4QBorKlAB0SL/ftesGQHGGmKVG81rogliarnz5zv8njHASSMOzqTdG
-	1x/S6mF8BTI23P8+LeknrsBYcgX4TMGJRPqOiqvFNwHgUO6bRJiaFRPnJ+qih8Td6DCm4+t1Me/
-	+Ou4GnIkLBODk1lzgjXDbgwJPXQWATLlSJd3uHHYqPGg00YIgyg3oGWr+vTj8UYgsFcDSAxDUk6
-	zm5kwQZg3zN
-X-Received: by 2002:a05:6102:2b82:b0:607:97ef:4dae with SMTP id ada2fe7eead31-62ad384adb2mr1634824137.16.1777560859763;
-        Thu, 30 Apr 2026 07:54:19 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-6298433531bsm2947616137.9.2026.04.30.07.54.15
+        d=1e100.net; s=20251104; t=1777560988; x=1778165788;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LUNPqyzWnajU/PD+h7ddsaH410QkU1Ojez7rgykqDvg=;
+        b=cSA6tyYKEQve1tVi/X1Lh2iZMkQStdH3UhTcwHGGedcNoP0x6gXtMIkXB31j3nMOxA
+         wFAFT6I+vgkKpUQysG3wKW1uPeUMSH0adrNcbWvURW98Q5wwsSJs60/qxk55nXTI+ksA
+         jXUKK7ZYFVcn8k9MbV5NYuVxkWdz+a9diTSZEk45sXQvfjJQh6RvpeURXOMmQk49A4kv
+         VCKGdbDkEKxiq7obkZxUnVHLlLZWoTYk7YHgbO+SLU+bPoLoSvwjf/V6KUtxuI/350Jz
+         771ZLg8sKqrP7a65+zcPpyFK4e2X9ypqH1QkVXz8ibDWm75qLAt/jMJbURZoIUDtLezx
+         FXQw==
+X-Forwarded-Encrypted: i=1; AFNElJ/vcIFNO4iVEPI9+JcqWUoigRjBx8mEo7y2VWNZshofA2dIjvvXqXvsievWrNEo04/7bwFArzM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdBmXyO1mpcokJY/TxW/Xm7DEFQHMbeE0XQQZ29jTjUlJeZM9X
+	gwa/Nc2QxSiwf6FcGQq4dW/wA0nE+MzPtN3zUa710ARwRckclXgu6Lkk
+X-Gm-Gg: AeBDiev287Pa2BqiyK6MdfTIaNHs8Yp2897waFEUqmGueMJZiISSE9hOB5fWkN1sGK4
+	SRD3Cw0dmCo3uEsyUDhLMCsxL/Tx898PEUNPEzwSy5hJ405naALR1EchjDSj7ai/h97TnInfYn5
+	AAhVODC8rHdBLf3EWX05SoSVAT9a4PgNmDMtkmWsLPtCgHgbx10XEs/jX/9MctRfFQqi8jZWxAy
+	ktQfRpFMVjOkguEFWRnNScUQZ/2MkB+UMeKtYmDW/2o/xI/FQdkxWkQuNtkDoCy11s4UijBUWG3
+	/vgjhEfMqvYGUwcI7Ei/08+sG9YFwXh48Tk6ob9IEb7N3beafAvwP5QAjRtgM+uxQYqO4sn+Ysf
+	BG1oyBOcvFAvT5NSfU3BOJW24V/WLhjATlg2YydkY4iHqF3Lv+Zcxt70s0hhs9Nr54iVxYIDni/
+	08HWS6pZYTetr7dasn2ToVFiMCwF1fqDAihmHxKslZxJul6Vlw6c9zpxiZ4oni8bzGKg==
+X-Received: by 2002:a05:7300:7b89:b0:2d4:532e:7e45 with SMTP id 5a478bee46e88-2ed3dbbf845mr1697251eec.23.1777560987790;
+        Thu, 30 Apr 2026 07:56:27 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([2607:fb90:fde2:1502:ac39:c338:9ab8:e005])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3889d628sm230215eec.6.2026.04.30.07.56.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2026 07:54:19 -0700 (PDT)
-Message-ID: <6b19445f-d684-47cf-890c-82217a941cf0@gmail.com>
-Date: Thu, 30 Apr 2026 11:54:13 -0300
+        Thu, 30 Apr 2026 07:56:27 -0700 (PDT)
+Date: Thu, 30 Apr 2026 07:56:27 -0700
+From: "Derek J. Clark" <derekjohn.clark@gmail.com>
+To: =?ISO-8859-1?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+CC: Hans de Goede <hansg@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet <corbet@lwn.net>,
+ Rong Zhang <i@rong.moe>, Kurt Borja <kuurtb@gmail.com>,
+ platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v10_06/16=5D_platform/x86=3A_lenovo-wmi-ot?=
+ =?US-ASCII?Q?her=3A_Limit_adding_attributes_to_supported_devices?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <1ce1d6f6-9196-c8a1-913d-4bdec2b1af80@linux.intel.com>
+References: <20260412211121.2220556-1-derekjohn.clark@gmail.com> <20260412211121.2220556-7-derekjohn.clark@gmail.com> <1ce1d6f6-9196-c8a1-913d-4bdec2b1af80@linux.intel.com>
+Message-ID: <AA4D5F92-E158-48D1-85FC-CAA72A4EDD8A@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ALSA: hda/tas2781: Wait for async firmware callback at
- unbind
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
- Baojun Xu <baojun.xu@ti.com>, Takashi Iwai <tiwai@suse.com>,
- Jaroslav Kysela <perex@perex.cz>, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260430-alsa-hda-tas2781-fw-callback-teardown-v1-1-874367d6b41b@gmail.com>
- <87y0i4mu22.wl-tiwai@suse.de> <87wlxomshl.wl-tiwai@suse.de>
-From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
- <cassiogabrielcontato@gmail.com>
-Content-Language: en-US
-In-Reply-To: <87wlxomshl.wl-tiwai@suse.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------op0KNBokqrHZZ5pVmcRKqSL6"
-X-Rspamd-Queue-Id: 587484A44C1
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6C18C4A455B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-0.95 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-242135-lists,stable=lfdr.de];
+	XM_UA_NO_VERSION(0.01)[];
+	URIBL_MULTI_FAIL(0.00)[squebb.ca:server fail,intel.com:server fail,rong.moe:server fail,sin.lore.kernel.org:server fail];
+	FREEMAIL_CC(0.00)[kernel.org,squebb.ca,gmx.de,lwn.net,rong.moe,gmail.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242136-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[derekjohnclark@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,rong.moe:email,squebb.ca:email]
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------op0KNBokqrHZZ5pVmcRKqSL6
-Content-Type: multipart/mixed; boundary="------------JK5HSCf5sfRfgTrkkCUWy2Ma";
- protected-headers="v1"
-From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
- <cassiogabrielcontato@gmail.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
- Baojun Xu <baojun.xu@ti.com>, Takashi Iwai <tiwai@suse.com>,
- Jaroslav Kysela <perex@perex.cz>, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Message-ID: <6b19445f-d684-47cf-890c-82217a941cf0@gmail.com>
-Subject: Re: [PATCH] ALSA: hda/tas2781: Wait for async firmware callback at
- unbind
-References: <20260430-alsa-hda-tas2781-fw-callback-teardown-v1-1-874367d6b41b@gmail.com>
- <87y0i4mu22.wl-tiwai@suse.de> <87wlxomshl.wl-tiwai@suse.de>
-In-Reply-To: <87wlxomshl.wl-tiwai@suse.de>
-Autocrypt-Gossip: addr=perex@perex.cz; keydata=
- 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
-
---------------JK5HSCf5sfRfgTrkkCUWy2Ma
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On 4/30/26 11:29, Takashi Iwai wrote:
-> On Thu, 30 Apr 2026 15:55:33 +0200,
-> Takashi Iwai wrote:
->>
->> On Thu, 30 Apr 2026 06:02:02 +0200,
->> C=C3=A1ssio Gabriel wrote:
->>>
->>> The TAS2781 HDA I2C and SPI side-codec drivers queue the RCA
->>> firmware load with request_firmware_nowait() from component bind. The=
-
->>> firmware loader keeps a device reference and pins the callback module=
+On April 30, 2026 7:01:55 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo=2Ejarvinen@lin=
+ux=2Eintel=2Ecom> wrote:
+>On Sun, 12 Apr 2026, Derek J=2E Clark wrote:
+>
+>> Adds lwmi_is_attr_01_supported, and only creates the attribute subfolde=
+r
+>> if the attribute is supported by the hardware=2E Due to some poorly
+>> implemented BIOS this is a multi-step sequence of events=2E This is
+>> because:
+>> - Some BIOS support getting the capability data from custom mode (0xff)=
 ,
->>> but it does not protect the driver's HDA private state from component=
+>>   while others only support it in no-mode (0x00)=2E
+>> - Some BIOS support get/set for the current value from custom mode (0xf=
+f),
+>>   while others only support it in no-mode (0x00)=2E
+>> - Some BIOS report capability data for a method that is not fully
+>>   implemented=2E
+>> - Some BIOS have methods fully implemented, but no complimentary
+>>   capability data=2E
+>>=20
+>> To ensure we only expose fully implemented methods with corresponding
+>> capability data, we check each outcome before reporting that an
+>> attribute can be supported=2E
+>>=20
+>> Checking for lwmi_is_attr_01_supported during remove is not done to
+>> ensure that we don't attempt to call cd01 or send WMI events if one of
+>> the interfaces being removed was the cause of the driver unloading=2E
+>>=20
+>> Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
+>> Reported-by: Kurt Borja <kuurtb@gmail=2Ecom>
+>> Closes: https://lore=2Ekernel=2Eorg/platform-driver-x86/DG60P3SHXR8H=2E=
+3NSEHMZ6J7XRC@gmail=2Ecom/
+>> Cc: stable@vger=2Ekernel=2Eorg
+>> Reviewed-by: Rong Zhang <i@rong=2Emoe>
+>> Tested-by: Rong Zhang <i@rong=2Emoe>
+>> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb=2Eca>
+>> Signed-off-by: Derek J=2E Clark <derekjohn=2Eclark@gmail=2Ecom>
+>> ---
+>> v7:
+>>   - Move earlier in the series=2E This required dropping the use of
+>>     lwmi_attr_id as it will be added later=2E
+>>   - Add missing switch between cd_mode_id and cv_mode_id in
+>>     current_value_store=2E
+>> v6:
+>>   - Zero initialize args in lwmi_is_attr_01_supported=2E
+>>   - Fix formatting=2E
+>> v5:
+>>   - Move cv/cd_mode_id refrences from path 3/4=2E
+>>   - Add missing import for ARRAY_SIZE=2E
+>>   - Make lwmi_is_attr_01_supported return bool instead of u32=2E
+>>   - Various formatting fixes=2E
+>> v4:
+>>   - Use for loop instead of backtrace gotos for checking if an attribut=
+e
+>>     is supported=2E
+>>   - Add include for dev_printk=2E
+>>   - Wrap dev_dbg in lwmi_is_attr_01_supported earlier=2E
+>>   - Don't use symmetric cleanup of attributes in error states=2E
+>> ---
+>>  drivers/platform/x86/lenovo/wmi-gamezone=2Eh |   1 +
+>>  drivers/platform/x86/lenovo/wmi-other=2Ec    | 114 ++++++++++++++++++-=
+--
+>>  2 files changed, 98 insertions(+), 17 deletions(-)
+>>=20
+>> diff --git a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh b/drivers/pla=
+tform/x86/lenovo/wmi-gamezone=2Eh
+>> index 6b163a5eeb95=2E=2Eddb919cf6c36 100644
+>> --- a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>> +++ b/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>> @@ -10,6 +10,7 @@ enum gamezone_events_type {
+>>  };
+>> =20
+>>  enum thermal_mode {
+>> +	LWMI_GZ_THERMAL_MODE_NONE =3D	   0x00,
+>>  	LWMI_GZ_THERMAL_MODE_QUIET =3D	   0x01,
+>>  	LWMI_GZ_THERMAL_MODE_BALANCED =3D	   0x02,
+>>  	LWMI_GZ_THERMAL_MODE_PERFORMANCE =3D 0x03,
+>> diff --git a/drivers/platform/x86/lenovo/wmi-other=2Ec b/drivers/platfo=
+rm/x86/lenovo/wmi-other=2Ec
+>> index 50a03f5fd6ab=2E=2E29d062a1c6dc 100644
+>> --- a/drivers/platform/x86/lenovo/wmi-other=2Ec
+>> +++ b/drivers/platform/x86/lenovo/wmi-other=2Ec
+>> @@ -550,6 +550,8 @@ struct tunable_attr_01 {
+>>  	u8 feature_id;
+>>  	u8 device_id;
+>>  	u8 type_id;
+>> +	u8 cd_mode_id; /* mode arg for searching capdata */
+>> +	u8 cv_mode_id; /* mode arg for set/get current_value */
+>>  };
+>> =20
+>>  static struct tunable_attr_01 ppt_pl1_spl =3D {
+>> @@ -775,7 +777,6 @@ static ssize_t attr_current_value_store(struct kobj=
+ect *kobj,
+>>  	struct wmi_method_args_32 args =3D {};
+>>  	struct capdata01 capdata;
+>>  	enum thermal_mode mode;
+>> -	u32 attribute_id;
+>>  	u32 value;
+>>  	int ret;
+>> =20
+>> @@ -786,13 +787,12 @@ static ssize_t attr_current_value_store(struct ko=
+bject *kobj,
+>>  	if (mode !=3D LWMI_GZ_THERMAL_MODE_CUSTOM)
+>>  		return -EBUSY;
+>> =20
+>> -	attribute_id =3D
+>> -		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+>> -		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> -		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+>> -		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devic=
+e_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cd_mode_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> =20
+>> -	ret =3D lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capdata);
+>> +	ret =3D lwmi_cd01_get_data(priv->cd01_list, args=2Earg0, &capdata);
+>>  	if (ret)
+>>  		return ret;
+>> =20
+>> @@ -803,7 +803,10 @@ static ssize_t attr_current_value_store(struct kob=
+ject *kobj,
+>>  	if (value < capdata=2Emin_value || value > capdata=2Emax_value)
+>>  		return -EINVAL;
+>> =20
+>> -	args=2Earg0 =3D attribute_id;
+>> +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devic=
+e_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cv_mode_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>
+>It's already repeated a few times and you're adding more in this patch=2E
+>
+>We should have a helper function for this encoding as it seems to=20
+>repeat=2E That is, something that takes tunable_attr and mode as input
+>(the conversion of existing entries should be in own patch preceeding=20
+>this fix patch)=2E
+>
 
->>> unbind.
->>>
->>> The callback dereferences tas_hda/tas_priv, takes codec_lock,
->>> creates ALSA controls, updates RCA/DSP state, runs runtime PM, and ma=
-y
->>> load DSP and calibration data. Component unbind currently removes
->>> controls and DSP state immediately, and the later device remove destr=
-oys
->>> codec_lock through tasdevice_remove(). A delayed callback can therefo=
-re
->>> run after the HDA component state has been torn down.
->>>
->>> Track the pending HDA RCA request with a completion. Mark it cancelle=
-d
->>> at unbind, let a callback that observes cancellation exit before pars=
-ing
->>> firmware or creating controls, and wait for any already-running callb=
-ack
->>> before tearing down HDA controls and DSP state.
->>>
->>> Clear cached kcontrol pointers as controls are removed, and when
->>> snd_ctl_add() rejects them, so a later cancelled or failed bind canno=
-t
->>> remove stale controls from an earlier bind.
->>>
->>> Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
->>> Fixes: bb5f86ea50ff ("ALSA: hda/tas2781: Add tas2781 hda SPI driver")=
+Hi Ilpo,
 
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: C=C3=A1ssio Gabriel <cassiogabrielcontato@gmail.com>
->>
->> Hmm, this looks too complex than needed.  Basically what we want is a
->> simple cancel or sync for async firmware loading work.  Once when such=
+A function for that is added in patch 10, though it is slightly modified f=
+rom that to be more flexible is tunable_attr isn't used (such as with the f=
+an test attributes)
 
->> a helper is provided, the rest in the HD-audio side will be just a
->> call of it at the remove or unbind.  And, I guess we can implement the=
+Originally I had that patch preceding any additions, but after discussing =
+with Rong we felt like it would be easier for stable backports if all the f=
+ixes were upfront=2E I can certainly move it back if you still prefer=2E
 
->> helper in the f/w loader with a help of devres or such.
->=20
-> I meant something like below (caution: totally untested)
->=20
->=20
-> Takashi
->=20
-> -- 8< --
->=20
-> diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmwar=
-e_loader/main.c
-> index a11b30dda23b..bd99c5417be8 100644
-> --- a/drivers/base/firmware_loader/main.c
-> +++ b/drivers/base/firmware_loader/main.c
-> @@ -1140,6 +1140,20 @@ struct firmware_work {
->  	u32 opt_flags;
->  };
-> =20
-> +static void firmware_devres_release(struct device *dev, void *res)
-> +{
-> +	struct firmware_work *fw_work =3D res;
-> +
-> +	module_put(fw_work->module);
-> +	kfree_const(fw_work->name);
-> +	put_device(fw_work->device); /* taken in request_firmware_nowait() */=
-
-> +}
-> +
-> +static int firmware_devres_match(struct device *dev, void *res, void *=
-data)
-> +{
-> +	return res =3D=3D data;
-> +}
-> +
->  static void request_firmware_work_func(struct work_struct *work)
->  {
->  	struct firmware_work *fw_work;
-> @@ -1150,14 +1164,10 @@ static void request_firmware_work_func(struct w=
-ork_struct *work)
->  	_request_firmware(&fw, fw_work->name, fw_work->device, NULL, 0, 0,
->  			  fw_work->opt_flags);
->  	fw_work->cont(fw, fw_work->context);
-> -	put_device(fw_work->device); /* taken in request_firmware_nowait() */=
-
-> -
-> -	module_put(fw_work->module);
-> -	kfree_const(fw_work->name);
-> -	kfree(fw_work);
-> +	devres_release(fw_work->device, firmware_devres_release,
-> +		       firmware_devres_match, fw_work);
->  }
-> =20
-> -
->  static int _request_firmware_nowait(
->  	struct module *module, bool uevent,
->  	const char *name, struct device *device, gfp_t gfp, void *context,
-> @@ -1165,14 +1175,14 @@ static int _request_firmware_nowait(
->  {
->  	struct firmware_work *fw_work;
-> =20
-> -	fw_work =3D kzalloc_obj(struct firmware_work, gfp);
-> +	fw_work =3D devres_alloc(firmware_devres_release, sizeof(*fw_work), g=
-fp);
->  	if (!fw_work)
->  		return -ENOMEM;
-> =20
->  	fw_work->module =3D module;
->  	fw_work->name =3D kstrdup_const(name, gfp);
->  	if (!fw_work->name) {
-> -		kfree(fw_work);
-> +		devres_free(fw_work);
->  		return -ENOMEM;
->  	}
->  	fw_work->device =3D device;
-> @@ -1184,18 +1194,19 @@ static int _request_firmware_nowait(
-> =20
->  	if (!uevent && fw_cache_is_setup(device, name)) {
->  		kfree_const(fw_work->name);
-> -		kfree(fw_work);
-> +		devres_free(fw_work);
->  		return -EOPNOTSUPP;
->  	}
-> =20
->  	if (!try_module_get(module)) {
->  		kfree_const(fw_work->name);
-> -		kfree(fw_work);
-> +		devres_free(fw_work);
->  		return -EFAULT;
->  	}
-> =20
->  	get_device(fw_work->device);
->  	INIT_WORK(&fw_work->work, request_firmware_work_func);
-> +	devres_add(device, fw_work);
->  	schedule_work(&fw_work->work);
->  	return 0;
->  }
-> @@ -1259,6 +1270,28 @@ int firmware_request_nowait_nowarn(
->  }
->  EXPORT_SYMBOL_GPL(firmware_request_nowait_nowarn);
-> =20
-> +static int firmware_devres_cont_match(struct device *dev, void *res, v=
-oid *data)
-> +{
-> +	struct firmware_work *fw_work =3D res;
-> +
-> +	return fw_work->cont =3D=3D data;
-> +}
-> +
-> +void request_firmware_nowait_cancel(
-> +	struct device *device,
-> +	void (*cont)(const struct firmware *fw, void *context))
-> +{
-> +	struct firmware_work *fw_work;
-> +
-> +	fw_work =3D devres_remove(device, firmware_devres_release,
-> +				firmware_devres_cont_match, cont);
-> +	if (!fw_work)
-> +		return;
-> +	cancel_work_sync(&fw_work->work);
-> +	firmware_devres_release(fw_work->device, fw_work);
-> +	devres_free(fw_work);
-> +}
-> +
->  #ifdef CONFIG_FW_CACHE
->  static ASYNC_DOMAIN_EXCLUSIVE(fw_cache_domain);
-> =20
-> diff --git a/include/linux/firmware.h b/include/linux/firmware.h
-> index aae1b85ffc10..f7a80ed9c825 100644
-> --- a/include/linux/firmware.h
-> +++ b/include/linux/firmware.h
-> @@ -110,6 +110,9 @@ int request_firmware_nowait(
->  	struct module *module, bool uevent,
->  	const char *name, struct device *device, gfp_t gfp, void *context,
->  	void (*cont)(const struct firmware *fw, void *context));
-> +void request_firmware_nowait_cancel(
-> +	struct device *device,
-> +	void (*cont)(const struct firmware *fw, void *context));
->  int request_firmware_direct(const struct firmware **fw, const char *na=
-me,
->  			    struct device *device);
->  int request_firmware_into_buf(const struct firmware **firmware_p,
-> @@ -157,6 +160,12 @@ static inline int request_firmware_nowait(
->  	return -EINVAL;
->  }
-> =20
-> +static inline void request_firmware_nowait_cancel(
-> +	struct device *device,
-> +	void (*cont)(const struct firmware *fw, void *context))
-> +{
-> +}
-> +
->  static inline void release_firmware(const struct firmware *fw)
->  {
->  }
-
-Hmm, I see. Thanks for the ideas.
-
-Ok, so that's what I thought:
-=20
-1. add a firmware-loader cancel/sync helper for request_firmware_nowait()=
-,
-then use it from the TAS2781 HDA I2C/SPI unbind paths before controls/DSP=
- teardown.
-
-2. make the core helper handle the devres teardown case carefully,
-so automatic devres release cannot free the firmware_work while the queue=
-d
-work can still run, and document that the helper cancels a not-yet-runnin=
-g
-callback or waits for an already-running callback to return.
-
-I'll send a v2 two-patch series, because of the a generic firmware-loader=
- API/contract
-change in drivers/base/firmware_loader/ and include/linux/firmware.h
-
---=20
 Thanks,
-C=C3=A1ssio
+Derek
 
 
---------------JK5HSCf5sfRfgTrkkCUWy2Ma--
+>>  	args=2Earg1 =3D value;
+>> =20
+>>  	ret =3D lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_SET=
+,
+>> @@ -837,7 +840,6 @@ static ssize_t attr_current_value_show(struct kobje=
+ct *kobj,
+>>  	struct lwmi_om_priv *priv =3D dev_get_drvdata(tunable_attr->dev);
+>>  	struct wmi_method_args_32 args =3D {};
+>>  	enum thermal_mode mode;
+>> -	u32 attribute_id;
+>>  	int retval;
+>>  	int ret;
+>> =20
+>> @@ -845,13 +847,14 @@ static ssize_t attr_current_value_show(struct kob=
+ject *kobj,
+>>  	if (ret)
+>>  		return ret;
+>> =20
+>> -	attribute_id =3D
+>> -		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+>> -		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> -		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+>> -		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> +	/* If "no-mode" is the supported mode, ensure we never send current m=
+ode */
+>> +	if (tunable_attr->cv_mode_id =3D=3D LWMI_GZ_THERMAL_MODE_NONE)
+>> +		mode =3D tunable_attr->cv_mode_id;
+>> =20
+>> -	args=2Earg0 =3D attribute_id;
+>> +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devic=
+e_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+>> +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> =20
+>>  	ret =3D lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_GET=
+,
+>>  				    (unsigned char *)&args, sizeof(args),
+>> @@ -862,6 +865,81 @@ static ssize_t attr_current_value_show(struct kobj=
+ect *kobj,
+>>  	return sysfs_emit(buf, "%d\n", retval);
+>>  }
+>> =20
+>> +/**
+>> + * lwmi_attr_01_is_supported() - Determine if the given attribute is s=
+upported=2E
+>> + * @tunable_attr: The attribute to verify=2E
+>> + *
+>> + * First check if the attribute has a corresponding capdata01 table in=
+ the cd01
+>> + * module under the "custom" mode (0xff)=2E If that is not present the=
+n check if
+>> + * there is a corresponding "no-mode" (0x00) entry=2E If either of tho=
+se passes,
+>> + * check capdata->supported for values > 0=2E If capdata is available,=
+ attempt to
+>> + * determine the set/get mode for the current value property using a s=
+imilar
+>> + * pattern=2E If the value returned by either custom or no-mode is 0, =
+or we get
+>> + * an error, we assume that mode is not supported=2E If any of the abo=
+ve checks
+>> + * fail then the attribute is not fully supported=2E
+>> + *
+>> + * The probed cd_mode_id/cv_mode_id are stored on the tunable_attr for=
+ later
+>> + * reference=2E
+>> + *
+>> + * Return: bool=2E
+>> + */
+>> +static bool lwmi_attr_01_is_supported(struct tunable_attr_01 *tunable_=
+attr)
+>> +{
+>> +	u8 modes[2] =3D { LWMI_GZ_THERMAL_MODE_CUSTOM, LWMI_GZ_THERMAL_MODE_N=
+ONE };
+>> +	struct lwmi_om_priv *priv =3D dev_get_drvdata(tunable_attr->dev);
+>> +	struct wmi_method_args_32 args =3D {};
+>> +	bool cd_mode_found =3D false;
+>> +	bool cv_mode_found =3D false;
+>> +	struct capdata01 capdata;
+>> +	int retval, ret, i;
+>> +
+>> +	/* Determine tunable_attr->cd_mode_id*/
+>> +	for (i =3D 0; i < ARRAY_SIZE(modes); i++) {
+>> +		args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devi=
+ce_id) |
+>> +			    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> +			    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, modes[i]) |
+>> +			    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> +
+>> +		ret =3D lwmi_cd01_get_data(priv->cd01_list, args=2Earg0, &capdata);
+>> +		if (ret || !capdata=2Esupported)
+>> +			continue;
+>> +		tunable_attr->cd_mode_id =3D modes[i];
+>> +		cd_mode_found =3D true;
+>> +		break;
+>> +	}
+>> +
+>> +	if (!cd_mode_found)
+>> +		return cd_mode_found;
+>> +
+>> +	dev_dbg(tunable_attr->dev,
+>> +		"cd_mode_id: %#010x\n", args=2Earg0);
+>> +
+>> +	/* Determine tunable_attr->cv_mode_id, returns 1 if supported*/
+>> +	for (i =3D 0; i < ARRAY_SIZE(modes); i++) {
+>> +		args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devi=
+ce_id) |
+>> +			    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> +			    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, modes[i]) |
+>> +			    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> +
+>> +		ret =3D lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_GE=
+T,
+>> +					    (unsigned char *)&args, sizeof(args),
+>> +					    &retval);
+>> +		if (ret || !retval)
+>> +			continue;
+>> +		tunable_attr->cv_mode_id =3D modes[i];
+>> +		cv_mode_found =3D true;
+>> +		break;
+>> +	}
+>> +
+>> +	if (!cv_mode_found)
+>> +		return cv_mode_found;
+>> +
+>> +	dev_dbg(tunable_attr->dev, "cv_mode_id: %#010x, attribute support lev=
+el: %#010x\n",
+>> +		args=2Earg0, capdata=2Esupported);
+>> +
+>> +	return capdata=2Esupported > 0 ? true : false;
+>> +}
+>> +
+>>  /* Lenovo WMI Other Mode Attribute macros */
+>>  #define __LWMI_ATTR_RO(_func, _name)                                  =
+\
+>>  	{                                                             \
+>> @@ -985,12 +1063,14 @@ static void lwmi_om_fw_attr_add(struct lwmi_om_p=
+riv *priv)
+>>  	}
+>> =20
+>>  	for (i =3D 0; i < ARRAY_SIZE(cd01_attr_groups) - 1; i++) {
+>> +		cd01_attr_groups[i]=2Etunable_attr->dev =3D &priv->wdev->dev;
+>> +		if (!lwmi_attr_01_is_supported(cd01_attr_groups[i]=2Etunable_attr))
+>> +			continue;
+>> +
+>>  		err =3D sysfs_create_group(&priv->fw_attr_kset->kobj,
+>>  					 cd01_attr_groups[i]=2Eattr_group);
+>>  		if (err)
+>>  			goto err_remove_groups;
+>> -
+>> -		cd01_attr_groups[i]=2Etunable_attr->dev =3D &priv->wdev->dev;
+>>  	}
+>>  	return;
+>> =20
+>>=20
+>
 
---------------op0KNBokqrHZZ5pVmcRKqSL6
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQSrYqI5vIrg1X9eqEjQXT8aWv/ugwUCafNtFQUDAAAAAAAKCRDQXT8aWv/ugySs
-AQCeUdvKQqEfFQ99J/pVHwir01Vnn0Jg5c+7PmuAhMzYngD/VfQSuJImiRmRDxM4Lq0Hhg2OWSDU
-n0HTiCRq8Dqolgg=
-=uUqd
------END PGP SIGNATURE-----
-
---------------op0KNBokqrHZZ5pVmcRKqSL6--
 
