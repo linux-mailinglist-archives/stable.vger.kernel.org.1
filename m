@@ -1,139 +1,172 @@
-Return-Path: <stable+bounces-242100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAU9MwZN82lnzQEAu9opvQ
-	(envelope-from <stable+bounces-242100-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:37:26 +0200
+	id QHEKA0lN82lnzQEAu9opvQ
+	(envelope-from <stable+bounces-242101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:38:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D03A4A2CAD
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA094A2CEB
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF89A301C88D
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:37:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 024BA301FD6E
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3076406268;
-	Thu, 30 Apr 2026 12:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E82E406277;
+	Thu, 30 Apr 2026 12:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qXNby89r"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ezRKIkMg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2752580D7;
-	Thu, 30 Apr 2026 12:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3D2406260;
+	Thu, 30 Apr 2026 12:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777552630; cv=none; b=q/jg5UpFj14pZ+gi367vvA/RNJCDE+usmC9kOvRha6DV66zKMOPU7VSJxZvblxOrI3C6CLG4M1ZQgYGHFnqpLRSpMBeB5racGIoWoKTNWJAPhm2UnW1V+9ksJcrfzbEA5jEwiMj6o7qHFaHGJRVA1w9Vbh9/caEjzhr46Vb/D30=
+	t=1777552672; cv=none; b=n28TE2tYtw/ADRrA2IK2c/g3fV2/DNXtjX8p/VUhlnZYvQSZjcokQ8i4spwdgDOTtlBxst9lQLrBjlD+3T/e97uDRK9B1jfI5MrdBovPoRhpNo/9cBouEx36UatdGqCVaOvWPkGer7BbwTpBczJaiU72oLDq8YS7Y07fqaay9Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777552630; c=relaxed/simple;
-	bh=mR9AQJnykFvzCVGNFszfC6SYPqN8+eFh24emSOY9PvE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DMMaTgsEnH6NuyS13X2I5xSRih751lsVr4esCPlOOIhJQ9KQWuJffLyciKILp9NjnhtJjPcIzUq1EsBkIL2zR5yEUzzdiuMQ/chvzljCuglU80aGITV6bzGT1rQiNHfqEmy3Z9Xdn/A2l8noKYl+M+r7pDhqynNgfuDXDPMSrQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qXNby89r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E048C2BCB3;
-	Thu, 30 Apr 2026 12:37:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777552630;
-	bh=mR9AQJnykFvzCVGNFszfC6SYPqN8+eFh24emSOY9PvE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=qXNby89rGpmxXEpD4eilUWVa7ROY8o55qxV+s0sQQ4z1fwIhJr9vDdm4TdqxthZny
-	 98IMnwzqgEKBfukuXylk1WiNXrup/tR+tPOhKnant2PNuYzceC/u17AA3/iOTRFEBW
-	 jj3Lwzx0EjArowVkbBAqcypMxoj+Cqs9cTN0JweYa8xYKKM5QL5EaGA4dgUD0g+asU
-	 20p5y7CSLSVGTIadqAdQiJDdJkyXJTEp20HeVhIR3sAqwqGhhTitez2e8PewsDKMzr
-	 0vnIo0yxjNr/aeWjDWsOfqglJw9JajaLK9HwZeN4Xh6IElrArQkIOujXXQSyjAGpOm
-	 AwSXgQJsBoeVA==
-From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chris Morgan <macromorgan@hotmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>, Alexey Charkov <alchark@flipper.net>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sebastian Reichel <sebastian.reichel@collabora.com>, 
- linux-pm@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- stable@vger.kernel.org
-In-Reply-To: <20260331-bq25792-v6-0-0278fba33eb9@flipper.net>
-References: <20260331-bq25792-v6-0-0278fba33eb9@flipper.net>
-Subject: Re: (subset) [PATCH v6 00/11] Add support for the TI BQ25792
- battery charger
-Message-Id: <177755262690.2557411.9260557703583835724.b4-ty@b4>
-Date: Thu, 30 Apr 2026 13:37:06 +0100
+	s=arc-20240116; t=1777552672; c=relaxed/simple;
+	bh=7HPUcR8285oASPEPdQ3uCkZCcDoT78pU2f7CPixIm4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ndJLavnrvvDHC8Jl59pSraJIZsFFlDuBpsgWf23PRNtYnBdu/YSSF7ws+5KZVX1LQUFzTFIDhfGPy6avfg/npgwWfl0CwX3lBP2RSOUm3lQ8vXdmASmxXFRLxS3SwBthtYYCev1Q/73CtzglA3IY27sIV4Ic8M+sZiVx3yoCgo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ezRKIkMg; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F08B19F6;
+	Thu, 30 Apr 2026 05:37:44 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 464D43F7B4;
+	Thu, 30 Apr 2026 05:37:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777552669; bh=7HPUcR8285oASPEPdQ3uCkZCcDoT78pU2f7CPixIm4U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ezRKIkMgNpnf2rFG7bNWqgnB1U/ESgHDMInNeRwgf/Q0UB9pO0E+arQrNfdeVH0aC
+	 O0joOZ+gJtN1+m3MfJ9h8WF4Y8ODT04kdMcjG5A2aUcxKXVGZAhggg8LpQ6iEJDCY1
+	 wUI+AuCSaPhxbAdaub9eNaVRjmyez7/rxAxlzYnw=
+Date: Thu, 30 Apr 2026 13:37:42 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Fuad Tabba <tabba@google.com>
+Cc: Will Deacon <will@kernel.org>, maz@kernel.org, oliver.upton@linux.dev,
+	james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
+	qperret@google.com, vdonnefort@google.com, catalin.marinas@arm.com,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/8] KVM: arm64: Make EL2 exception entry and exit
+ context-synchronization events
+Message-ID: <afNNFtoZJk2IXwwU@J2N7QTR9R3>
+References: <20260428103008.696141-1-tabba@google.com>
+ <20260428103008.696141-2-tabba@google.com>
+ <afMb7uuPlUbLeu7k@willie-the-truck>
+ <CA+EHjTw6rx5rCVnR7Dfva3xmmgGjqUeUaT=3zDCEsN0J909Wsg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.16-dev-ad80c
-X-Rspamd-Queue-Id: 5D03A4A2CAD
+In-Reply-To: <CA+EHjTw6rx5rCVnR7Dfva3xmmgGjqUeUaT=3zDCEsN0J909Wsg@mail.gmail.com>
+X-Rspamd-Queue-Id: EFA094A2CEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242101-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,hotmail.com,gmail.com,flipper.net];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242100-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[arm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:dkim]
 
-On Tue, 31 Mar 2026 19:43:37 +0400, Alexey Charkov wrote:
-> This adds support for the TI BQ25792 battery charger, which is similar in
-> overall logic to the BQ25703A, but has a different register layout and
-> slightly different lower-level programming logic.
+On Thu, Apr 30, 2026 at 01:18:48PM +0100, Fuad Tabba wrote:
+> On Thu, 30 Apr 2026 at 10:08, Will Deacon <will@kernel.org> wrote:
+> > On Tue, Apr 28, 2026 at 11:30:01AM +0100, Fuad Tabba wrote:
+> > > Fixes: fe2c8d19189e ("KVM: arm64: Turn SCTLR_ELx_FLAGS into INIT_SCTLR_EL2_MMU_ON")
+> >
+> > I don't think this Fixes: tag is accurate:
+> >
+> > 1. That commit doesn't do anything with EIS/EOS afaict.
+> > 2. Back in 5.12 (when that thing landed), SCTLR_EL2_RES1 did actually
+> >    include EIS and EOS
+> >
+> > so I think the issue here might be that the auto-generated sysreg file
+> > quietly changes the RES1 definitions as bits get allocated, but the
+> > macros using the RES1 definition don't get updated. That's a pretty
+> > horrible pit that it feels like we might keep falling into :/
+
+I think that's a review failure, and people need to be careful when
+updating the sysreg file (e.g. looking at whether any new bits were
+previously RESx, and considering the impact). Regardless of tooling, we
+need people to conciosuly review that.
+
+> > Looking at 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg
+> > infrastructure"), I think we ended up dropping a whole bunch of fields
+> > from the RES1 mask (which became 0!). Have you checked all of those?
+
+> On the wider question of the other bits dropped from the old mask,
+> I went through them against DDI 0487 M.b §D24.2.175. The summary
+> (SCTLR_EL2 with E2H=0):
 > 
-> The series is organized as follows:
-> - Patch 1 adds the new variant to the existing DT binding, including the
->   changes in electrical characteristics
-> - Patches 2-4 are minor cleanups to the existing BQ25703A OTG regulator
->   driver, slimming down the code and making it more reusable for the new
->   BQ25792 variant
-> - Patch 5 is a logical fix to the BQ25703A clamping logic for VSYSMIN
->   (this is a standalone fix which can be applied independently and may be
->   backported to stable)
-> - Patches 6-8 are slight refactoring of the existing BQ25703A charger
->   driver to make it more reusable for the new BQ25792 variant
-> - Patch 9 adds platform data to distinguish between the two variants in
->   the parent MFD driver, and binds it to the new compatible string
-> - Patches 10-11 add variant-specific code to support the new BQ25792
->   variant in the regulator part and the charger part respectively,
->   selected by the platform data added in patch 9
+>   bit  field    E2H=0 status                  kernel cares?
+>   -------------------------------------------------------------
+>    4   SA0      RES1 unconditionally          no
+>    5   CP15BEN  RES1 unconditionally          no
+>   11   EOS      RES1 iff !FEAT_ExS, else RW   yes (this fix)
+>   16   nTWI     RES1 unconditionally          no
+>   18   nTWE     RES1 unconditionally          no
+>   22   EIS      RES1 iff !FEAT_ExS, else RW   yes (this fix)
+>   23   SPAN     RES1 unconditionally          no
+>   28   nTLSMD   RES1 unconditionally          no
+>   29   LSMAOE   RES1 unconditionally          no
 > 
-> [...]
+> The seven non-EIS/EOS bits all fall under the "Otherwise: Reserved,
+> RES1" clause for the E2H=0 layout, with no feature guard. Writing 0
+> to them is a no-op, so dropping them from the mask should be harmless
+> I think. EIS and EOS are the only positions where the bit
+> becomes RW (with UNKNOWN reset) on FEAT_ExS hardware and the
+> kernel actively relies on the value being 1, which is what this
+> patch addresses.
+> 
+> I agree the auto-generator silently zeroing previously hand-rolled
+> RES1 masks is a real problem. Happy to look at either teaching the
+> sysreg infrastructure to express conditional RES1 (so config.c's
+> AS_RES1/FEAT_X facts can flow back into the header masks), 
 
-Applied, thanks!
+Please don't add that to the syreg code; that's deliberately *only* the
+architectural definitions, and overloading that is going to make things
+even more confusing, because "I want to treat this as RESx in this piece
+of code" isn't a global property.
 
-[01/11] dt-bindings: mfd: ti,bq25703a: Expand to include BQ25792
-        commit: 2a0bd270f95a774349e85c8eabac5a275298b6fc
-[09/11] mfd: bq257xx: Add BQ25792 support
-        commit: fb0d8bbcaf2355a7a06b053efa77f09766948313
+> or at least adding a build-time check that flags any auto-generated
+> <REG>_RES1 that shrinks. After this series, though. Let me know if
+> you'd like me to take a stab.
 
---
-Lee Jones [李琼斯]
+FWIW, having tooling to compare before/after would be useful, but I
+don't think that can be a standard build-time check, given that this
+would depend on having the old and new sysreg files available for
+comparison.
 
+Mark.
 
