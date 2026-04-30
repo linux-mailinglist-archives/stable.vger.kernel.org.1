@@ -1,296 +1,264 @@
-Return-Path: <stable+bounces-242098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOI7MHJH82kMzAEAu9opvQ
-	(envelope-from <stable+bounces-242098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:13:38 +0200
+	id GMW3ENpI82kMzAEAu9opvQ
+	(envelope-from <stable+bounces-242099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:19:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3204C4A2A22
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:13:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF3E4A2AF7
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8005B300FFB5
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:13:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAB67300E3D4
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8090E402444;
-	Thu, 30 Apr 2026 12:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039901C84A2;
+	Thu, 30 Apr 2026 12:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ci9Sy1pl"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rrsFK7Tq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF23C401A1E
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 12:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605343B19D5
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 12:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777551215; cv=pass; b=CAQ7YBWNrwngiTJS4fgS6C+dLUK8xcjYZyAWL44E+Nf20bBnvevWSFLySPsXThnJdA6YwUccG9n058bs94iRqLObS73CVovQkY15JrJYaRe3QRYBZxCNCbQQCbGUMyaRwvXeWZgi8C4iHNz4QkxXaTxB8bQZiU4a09wMUWbKvbQ=
+	t=1777551568; cv=pass; b=MG0GTotlZQIUzb5hCImzjABT+OFfQ2nYTV4axd6+hK4sr/46eT3Sig5J5O0mZYJ8PSjJ6eTm4LlJYk1pT4lrvqaMultqpFJ/JuabPR6C9clL4bK4fsVtkmwqJnNoL0jPoFWyn+k34S16uscKHumLEBCDBtOPrK/XufDcVwdP9Fk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777551215; c=relaxed/simple;
-	bh=TXDa7NSy3a1jhWRS3H4Tp3vEJQ8F5w1HWUyRgirZx6M=;
+	s=arc-20240116; t=1777551568; c=relaxed/simple;
+	bh=44cjooSElohMQFoXrm+AMIOG2x7f7KQkgD2E8+cShXo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fs3zLwjUu9n7VXnrty8MI+KHwSE0nqxYYwiY4Y+NRadHsKcVmWH+p4LzLU8QcD0HcXedHgZhDuNWltcTUkbLH3ALHMA0sx+aY+nlCnd5iE4cld6vSy5sUGCbdjxze12f/mwXbO+vt0W+brTlKPFcFMWjmz16j6H/MW/pae0kKW0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ci9Sy1pl; arc=pass smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-38e84ed22bdso9744871fa.2
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 05:13:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777551212; cv=none;
+	 To:Cc:Content-Type; b=Imfl8oR01rQGGFjZC7ueAXz4/0xlb/lzpy8FPOu7lx+EG75LauaJjREtIUSji8Nu7kwrrmEtBIrUxKocupfpanN+QJWIzci+uIkXMn/EjYrrGnjVzNaE5UjZELklDM0HE279ny2CLj49skjQZDYjjmsOQ5i7Ke/GvfPJSGOcU6A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rrsFK7Tq; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50d864c23bdso642421cf.1
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 05:19:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777551566; cv=none;
         d=google.com; s=arc-20240605;
-        b=GWD43zKhfaip8qghWa2IgI5CziCyMiRq8280yOvBo6RSteKgTUKgdgOb2vu1pvZC9X
-         fpRpqXPX2u71ENMvbvMvyi3tO2+a99W0JSvkLCHsEYYXD+rVYkNSxjvSYPTmXHpR6nGb
-         Q65P7HyDljxgMeFTMbPkTJDPrxggS8ofwBT6bWWLAizPIxNgjvcwGAF23qNZ5wYIbVqs
-         hRo/iO/O4GASEE3kzEaLJEGF1FiY6YYhLlGPxLCj8lXAkzupZGlrTmfvb9dlg8APXq90
-         jPs3wwHqZccB2IvjCHnx4suK0rhDMQp1kJjsQxbDaQSbK4eMOtRhRj3tYjQUUYyktpDy
-         cHSA==
+        b=iG80uajaPUa1n4lMgtZV9RzCV8lpqwtcom5cjjMuqCnFVj4CC+nR2EwjqzF2GoqQzE
+         OXsU2CrJDOBSFe3POJch+fdcJMXSz19w7QkzrGYRKZ2076JJWynOUgkUiMJXm1VDKDm+
+         /AlTaG4L/MzeVzzqb64P3nJpNtUWjWJrtjuqk8VTgNU7ZQ5GVWve5aNtWlFKc7nh6OAn
+         dos0+8hWSJ7H/kI9EJ7axG9+3eDl8UW8Z79rvL6JmcEEZr8ry2Q0YiKcLQrOVF4OFBG4
+         L4zzBYB8NXFoz0BrYP79UUrKxDaKCaNam0E8wVho8dwCZVb7OB/Jm1louov1Jfl3zcRc
+         DV4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=gYuaEj62f6abXXXknGHMgNIJHgrJvbt+knMI7MVBneE=;
-        fh=OG389UaHTI0xO94/eVAZAIkvtXsxro6FPmSeFbWmoTs=;
-        b=GY+jFdoiriLNWJcsM89xeUQ/3jcO2Pvdg9Anw3/e8PCX+NxxOLtzRozNP8XQKMGumN
-         q8fjQeIjbl9N4YUSBOv9U4oCK6J3T38usbFOB+UmlrDCJ0AM4Y33KGqxJctkqMn8rlPg
-         rQAUBDLw51fnrqzKHOvCEdj3BfMpuyOG7Dq3vrvrsMEPLU9ukOs4PazN45gWvbpcVkJr
-         4yNY7N0a1VJnnLWl1EJybAeib9IxXjJr11/qmS7fbhcFEH23MpSP7g3CB4ZDT2okWdcw
-         6YQ7Oe8BYd3mAaTOHI0HaZTbFhsCcuAYHjs/uQC/2SfVYOTptk06jlXQ5xAFVKoJkU//
-         e0bQ==;
+        bh=wHRKEeAne5F8MKTBpMczt1Dq5nvrp7CkygWD8nWgp48=;
+        fh=HGeJ7MVLWDA4QJREwj4G29ybiUDFAI0KA5yrzuxekN0=;
+        b=QVimfp+BkLQMpc26iBBya+G+V4RZU/gF58ZfugWHWfNmGioReIV4ScR8ztP8MZdtX9
+         QOJJzpmooLP9dPmhPd41JGWA1ztXqaKZ6yRzKBbPkO394VSjtaIQdr0pTNduGsVyOFNL
+         JoDemTPVzZImw4EwYxdsKNORiZiaQKcmkKa3VVefnkUzs+pFyf74OasW5Z8MpySUnsjl
+         QL9ctcnmJ+u/P2wcUWJUWlpSKjm6bV52ychxnZ6EhX1eif17zrJ2IjuY9YaSvS/0TQrb
+         rwS04lwPOD388hdbCFtfKsdZgvNyKElwwhXB3k6M4FS68x2Kq2flKy7HvFRP/xaj0Aub
+         XL8w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777551212; x=1778156012; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777551566; x=1778156366; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gYuaEj62f6abXXXknGHMgNIJHgrJvbt+knMI7MVBneE=;
-        b=Ci9Sy1plPyQU4UoMlE0Hah7bQf63oXJiek5ZesbqNjgEH21rFGHD36u6T9Kf4v01Vn
-         oOfWHQJvCp8pb7cARwTB7z+drZx5rl8eBxO7CFk3Km9LucjovE0Xj4s0ZiVkjWJ4ZS3I
-         7qXAjMhucUwGYGkKzARdVpcZtK/d5t+Xm4pYQ8IGpjBM580Qe6ZUjp9eDLTw6uAyF4lO
-         tEl7VH9DQ8/aUXlo2RCdItpMbZbWLYNdPHJkCMbgSyL+Zt+JZyHR0AMObSDjFfXuh7rR
-         rq1o7KagK+cbxAbnWLTJec5pJ72lJpr0lHsZ4A0sB3u1xKLyOPcRZBOZhRaFSbjBUNoa
-         ObeA==
+        bh=wHRKEeAne5F8MKTBpMczt1Dq5nvrp7CkygWD8nWgp48=;
+        b=rrsFK7TqHn5FCWaPmJee1+tFfgMfm1xo3XDQXAPqHjNFJXAdq2qdhKavu1F8wuNTD9
+         xpHgGf9g4jWkqeT+Yh4+Xoo/5YnqvSvtfWS3dPawzZsbg207PzS8/AwMykqfjgU9FlG6
+         kTA9pcK0W8zU7bO4/fkWPfDZtGDAJq3YtAzpp/Z51x5tR3pKbftjuZRCioYSGTXlmkIK
+         lvrUxIgMUefXGLjNdDlUMiwbVWhUM3Sur6C16R8CsP3PlfGzqe95uLP08HBVJ073EKCr
+         cnBzoprugEpMD0Kam7wwmXdxuzS/I4q5H5Xv6UBqcFZT68MC37oqcYifrLnxtehwe4oF
+         zbvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777551212; x=1778156012;
+        d=1e100.net; s=20251104; t=1777551566; x=1778156366;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=gYuaEj62f6abXXXknGHMgNIJHgrJvbt+knMI7MVBneE=;
-        b=JX76p2lPCdZ7dsyJdFjfapFa8f6sdUaH2rWPnjXfWdzBnue89MqfXz0VWmPFxH9jwm
-         PcMddIanMrqc7JMZRtLNJaA781vQr1AWmCvzMI85W+ZCA3s6yDB+93E2jEMIvutxM9lU
-         S0P47AnNodK1KrFBkiRlAJKq+5P31S3Fa2vODWK5TkWzbHvoa0EKBPWJWMoK7AhHIZJA
-         nUkiEW3MMjqlMom32bha+DKHCnBoiX7UvlN25G2mNnQuj2L0VzeF8n1jgQuibckarRbH
-         dNXGnWmXbwStKaGCo+7Cvt1808MCaTLyyqonh4CRfGEv0JTgy+DsygX+3QaY30KqTMky
-         snNA==
-X-Forwarded-Encrypted: i=1; AFNElJ/uNj12oI4q3DA6t9hrzeTK90+oWdRrDg7FYOUttv8RXPOmUjFPiwhoNMABN31F41onGVHlgQU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBBNo16k+vxP2ypJkSOGBFLANLsqdL9jJzjmQsZy5I+8ctXKQ3
-	8660rhqWrf/JvXL16mY8Rleo5vvU9kl0Qx0AYBmfJ4ARkIVv1dEoymKo9ZX9CYQAWLJTad4oVob
-	Y4uvlkdY8J/tn81KMPAIE/tkcBF7iC/ms12Fj
-X-Gm-Gg: AeBDiev6vjckHOF301qZRurhbbxFFI7JQKOAzRcYH8HBw1BSdfhRMiSdx6Hjhe/iClf
-	KzvGxZjXXOXqaRKZjqqgnrOU6JX7+Y5PkwHO3VYwsXv024efp+qnKbM+v/ShXk3S9x16XwZVjUW
-	JenqYUES7Taqn5d6Fxd+esH81iNKnpiiABlPbMZJhjELqccy4U1etR4SuuX/6zUnrfD6ZAfujKq
-	BBTJLL/FogBgBn86vEe/HIJamL7XNmCxIyaaGmrm9abovfYwbCW8hhXpdQ1x0VACVZImK8GYtBH
-	c8jHRMzvTBDFC2cKZss=
-X-Received: by 2002:a05:6512:3b28:b0:5a6:2a5f:11d with SMTP id
- 2adb3069b0e04-5a8522d4b14mr982679e87.26.1777551211529; Thu, 30 Apr 2026
- 05:13:31 -0700 (PDT)
+        bh=wHRKEeAne5F8MKTBpMczt1Dq5nvrp7CkygWD8nWgp48=;
+        b=pf8pVAViIgJVAaJKSmpgQn3jqNCe+2R6Dua1Que3bp2nfpS8vpCTtVp4k3LtOX8bB8
+         hSYKuzPVP6gXFptKaWIBXwPrgK+UKgncICzBXfn1JpnHA+xfOTplCwLresp4YPExEcE9
+         P6q3/Foc1cZN0kSzaW+siy8JY0tCbeKqhImGUDUy5t/ULvRd8A+jVXLxtFIl3wyA3zn9
+         tWwrcwajE77JPeFFI6p0yJgPy2i8HrUvXq8YSz+QGnZmVWerjveDoGDet+opmi9dKIom
+         /syxBqXRgXHmBsrJW9fhSp2pPQjatsvFUHtUoZrcMffYjDZHG08LZA06YMHYWe0/IL1J
+         kHEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+OrWLFSy2tPitU2GpqTIKdJ4+IgSRRI8NnZ2rFl6os2ETrN18NwWQqylfzkRGtHcid1I87pRM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAHPlC3mOSM/yL7x0Wi1NY+aB9zoIFLS4pLE5Ey+DymJY/bg2M
+	SPmcb/MzXYs/Lkj3HyIPu708pcPtctTXSaY/hTzx3S6z12JxOMfxmtxCjueKrbTNVgiZUPca/15
+	sgAvCdf4eMMnwZ6nTNB882CBWeqRtvz+pr5TKenJq
+X-Gm-Gg: AeBDietvE5xeCLjzNjyTgeTAIimbP+ewUoPJ0YdVmnEU1p4vLvHE5x8z9roGrfnir95
+	NK2PaSlr0xejx1sRCfS4UHrfWqB4YVWVlZZ02RISnktXO+3O6HUbla+8JJe5Zx1kNSECo9gcNPx
+	YQ4Uc2Jz1CGdQv+2+37xYyV3e6lU4W9p8ELdxQwKKJfNaOfRmGNKOukOmhCG0Cd7JCYrEV4x6yb
+	qw2LtY9CBRgcb2LOP8E9KBbu5VMGYPLLT64OEUsVNy1oLK44zDPnZR5U6WfwegkNg1f7JlvfnfR
+	bD5A19FgVf4+gPD/p/35EaHYicPWxyDkf5rklBQp6B38PrpQ3WqtJbcwZ9I=
+X-Received: by 2002:a05:622a:a6da:b0:4f3:5475:6b10 with SMTP id
+ d75a77b69052e-5102830838amr13557601cf.8.1777551565713; Thu, 30 Apr 2026
+ 05:19:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430040704.113622-1-kartikey406@gmail.com>
-In-Reply-To: <20260430040704.113622-1-kartikey406@gmail.com>
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Thu, 30 Apr 2026 21:13:15 +0900
-X-Gm-Features: AVHnY4Iy8pyMuz7kCxFxo_q6faXjAqhfSG5inFa-dNzyMIHUZn4zGe-SBjClBdU
-Message-ID: <CAKFNMo=_mkGn6OtXXcjhiYFQ2cvBVisPbSsRMz3XBqxHvByyMw@mail.gmail.com>
-Subject: Re: [PATCH v3] nilfs2: reject CLEAN_SEGMENTS ioctl with out-of-range
- segment numbers
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: slava@dubeyko.com, linux-nilfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260428103008.696141-1-tabba@google.com> <20260428103008.696141-2-tabba@google.com>
+ <afMb7uuPlUbLeu7k@willie-the-truck>
+In-Reply-To: <afMb7uuPlUbLeu7k@willie-the-truck>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 30 Apr 2026 13:18:48 +0100
+X-Gm-Features: AVHnY4KrIAjURaGJR0bOqEe6FW-ppWuYCbxV1LsE0PqXIXBObjOjW2F6E4sgXIQ
+Message-ID: <CA+EHjTw6rx5rCVnR7Dfva3xmmgGjqUeUaT=3zDCEsN0J909Wsg@mail.gmail.com>
+Subject: Re: [PATCH 1/8] KVM: arm64: Make EL2 exception entry and exit
+ context-synchronization events
+To: Will Deacon <will@kernel.org>
+Cc: maz@kernel.org, oliver.upton@linux.dev, james.morse@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, qperret@google.com, 
+	vdonnefort@google.com, catalin.marinas@arm.com, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3204C4A2A22
+X-Rspamd-Queue-Id: ABF3E4A2AF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242098-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242099-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konishiryusuke@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,62f0f99d2f2bb8e3bbd7];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-On Thu, Apr 30, 2026 at 1:07=E2=80=AFPM Deepanshu Kartikey wrote:
->
-> Syzbot reported a hung task in nilfs_transaction_begin() where multiple
-> tasks performing chmod() on a nilfs2 mount blocked for over 143 seconds
-> waiting to acquire ns_segctor_sem for read:
->
->   INFO: task syz.0.17:5918 blocked for more than 143 seconds.
->   Call Trace:
->    schedule+0x164/0x360
->    rwsem_down_read_slowpath+0x6d9/0x940
->    down_read+0x99/0x2e0
->    nilfs_transaction_begin+0x364/0x710 fs/nilfs2/segment.c:221
->    nilfs_setattr+0x124/0x2c0 fs/nilfs2/inode.c:921
->    notify_change+0xc1a/0xf40
->    chmod_common+0x273/0x4a0
->    do_fchmodat+0x12d/0x230
->
-> The writer holding ns_segctor_sem was a concurrent
-> NILFS_IOCTL_CLEAN_SEGMENTS caller, stuck inside printk while emitting
-> per-element warnings from nilfs_sufile_updatev():
->
->    __nilfs_msg+0x373/0x450 fs/nilfs2/super.c:78
->    nilfs_sufile_updatev+0x21c/0x6d0 fs/nilfs2/sufile.c:186
->    nilfs_sufile_freev fs/nilfs2/sufile.h:93 [inline]
->    nilfs_free_segments fs/nilfs2/segment.c:1140 [inline]
->    nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1261 [inline]
->    nilfs_segctor_do_construct+0x1f55/0x76c0
->    nilfs_clean_segments+0x3bd/0xa50
->    nilfs_ioctl_clean_segments fs/nilfs2/ioctl.c:922 [inline]
->    nilfs_ioctl+0x261f/0x2780
->
-> The root cause is that user-supplied segment numbers are not validated
-> before nilfs_clean_segments() begins doing work; the range check on
-> each segnum is performed deep inside the call chain by
-> nilfs_sufile_updatev(), which emits a nilfs_warn() per invalid entry
-> while still holding the segctor lock and the sufile mi_sem.  Under load
-> (repeated invocations across multiple mounts saturating the global
-> printk path), the cumulative printk latency keeps ns_segctor_sem held
-> long enough to trip the hung_task watchdog, blocking concurrent
-> operations such as chmod() that need ns_segctor_sem for read.
->
-> Fix by validating the contents of kbufs[4] in nilfs_clean_segments()
-> immediately after acquiring ns_segctor_sem via nilfs_transaction_lock().
-> Holding ns_segctor_sem serializes the check against
-> nilfs_ioctl_resize(), which can modify ns_nsegments, so the validation
-> uses a consistent value.  Out-of-range segment numbers are rejected
-> with -EINVAL before any segment-cleaning work begins, so the bad
-> entries never reach the per-element diagnostic path inside
-> nilfs_sufile_updatev().
->
-> Reported-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D62f0f99d2f2bb8e3bbd7
-> Tested-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
-> Fixes: 4f6b828837b4 ("nilfs2: fix lock order reversal in nilfs_clean_segm=
-ents ioctl")
+Hi Will,
 
-The cause appears to be commit 071cb4b81987 ("nilfs2: eliminate
-removal list of segments"), which removed the segment release logic
-that used a list of segment information structures.
-Prior to that, the validity check of segment numbers was performed
-within nilfs_ioctl_prepare_clean_segments().
 
-Everything else seems OK, so I'll fix only that tag myself, perform a
-final check, and then send it upstream.
+On Thu, 30 Apr 2026 at 10:08, Will Deacon <will@kernel.org> wrote:
+>
+> On Tue, Apr 28, 2026 at 11:30:01AM +0100, Fuad Tabba wrote:
+> > SCTLR_EL2.EIS and SCTLR_EL2.EOS control whether exception entry and
+> > exit at EL2 are Context Synchronisation Events (CSEs). Per ARM DDI
+> > 0487 M.b, EIS is governed by D1.4.2 rule RBBSRF (p. D1-7205) and EOS
+> > by D1.4.4.1 rule RBWCFK (p. D1-7209). D24.2.175 (p. D24-9754):
+> >
+> >   - !FEAT_ExS: the bit is RES1, so the entry/exit is unconditionally
+> >     a CSE.
+> >   - FEAT_ExS: the reset value is architecturally UNKNOWN; software
+> >     must set the bit to make the entry/exit a CSE.
+> >
+> > INIT_SCTLR_EL2_MMU_ON in arch/arm64/include/asm/sysreg.h sets neither
+> > bit. KVM/arm64 hot paths rely on ERET from EL2 being a CSE, and on
+> > synchronous EL1->EL2 entry being a CSE, to elide explicit ISBs after
+> > MSRs to context-switching system registers (HCR_EL2, HFGxTR_EL2,
+> > HCRX_EL2, ZCR_EL2, CPACR_EL1, CPTR_EL2, SCTLR_EL1, ptrauth keys,
+> > etc.); examples include the activate-traps path,
+> > ptrauth_switch_to_guest, and the FPSIMD trap re-enable in
+> > kvm_hyp_handle_fpsimd. On FEAT_ExS hardware those reliances are not
+> > architecturally backed unless EOS=3D1 (and, for entry, EIS=3D1), and
+> > whether they hold today depends on firmware initialisation outside
+> > the kernel's control.
+> >
+> > Make the guarantee explicit: include SCTLR_ELx_EIS | SCTLR_ELx_EOS in
+> > INIT_SCTLR_EL2_MMU_ON so that EL2 exception entry and exit are
+> > unconditionally CSEs regardless of whether FEAT_ExS is implemented.
+> > This matches the pairing in arch/arm64/kvm/config.c which treats EIS
+> > and EOS together as RES1 under !FEAT_ExS.
+> >
+> > INIT_SCTLR_EL2_MMU_OFF is left unchanged: that path is used during
+> > very early EL2 init and the EL2 MMU-off transition, neither of which
+> > relies on these bits in the same way.
+> >
+> > Fixes: fe2c8d19189e ("KVM: arm64: Turn SCTLR_ELx_FLAGS into INIT_SCTLR_=
+EL2_MMU_ON")
+>
+> I don't think this Fixes: tag is accurate:
+>
+> 1. That commit doesn't do anything with EIS/EOS afaict.
+> 2. Back in 5.12 (when that thing landed), SCTLR_EL2_RES1 did actually
+>    include EIS and EOS
+>
+> so I think the issue here might be that the auto-generated sysreg file
+> quietly changes the RES1 definitions as bits get allocated, but the
+> macros using the RES1 definition don't get updated. That's a pretty
+> horrible pit that it feels like we might keep falling into :/
+>
+> Looking at 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg
+> infrastructure"), I think we ended up dropping a whole bunch of fields
+> from the RES1 mask (which became 0!). Have you checked all of those?
 
-Thanks,
-Ryusuke Konishi
+You're right, fe2c8d19189e didn't touch EIS/EOS: the SCTLR_EL2_RES1
+mask it pulled into INIT_SCTLR_EL2_MMU_ON already contained
+BIT(11)/BIT(22). Looking at it, I _think_ it's this one:
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
-> Changes in v3:
->   - Move validation from nilfs_ioctl_clean_segments() into
->     nilfs_clean_segments(), under ns_segctor_sem held for write
->     by nilfs_transaction_lock(), to serialize against
->     nilfs_ioctl_resize() which can modify ns_nsegments
->     (Ryusuke Konishi)
->   - Introduce local variables segnumv and nfreesegs for readability,
->     rather than open-coding casts of kbufs[4] (Ryusuke Konishi)
->   - Emit nilfs_err() once on the first out-of-range segnum and bail
->     out, instead of nilfs_warn() per element (Ryusuke Konishi)
->   - Add bail_unlock label for the early-failure path, parallel to
->     the existing out_unlock structure (Ryusuke Konishi)
->
-> Changes in v2:
->   - Reuse existing 'n' loop variable instead of introducing a new
->     one (Slava Dubeyko)
->   - Add dedicated out_free_segnums label so the validation-failure
->     path falls through the existing cleanup ladder rather than
->     duplicating kfree(kbufs[4]) inline (Slava Dubeyko)
-> ---
->  fs/nilfs2/segment.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->
-> diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-> index 1491a4d4b1e1..dc54643866ce 100644
-> --- a/fs/nilfs2/segment.c
-> +++ b/fs/nilfs2/segment.c
-> @@ -2512,12 +2512,33 @@ int nilfs_clean_segments(struct super_block *sb, =
-struct nilfs_argv *argv,
->         struct nilfs_sc_info *sci =3D nilfs->ns_writer;
->         struct nilfs_transaction_info ti;
->         int err;
-> +       size_t i, nfreesegs =3D argv[4].v_nmembs;
-> +       __u64 *segnumv =3D kbufs[4];
->
->         if (unlikely(!sci))
->                 return -EROFS;
->
->         nilfs_transaction_lock(sb, &ti, 1);
->
-> +       /*
-> +        * Validate segment numbers under ns_segctor_sem (held for write
-> +        * by nilfs_transaction_lock above) so the check is serialized
-> +        * against nilfs_ioctl_resize(), which can modify ns_nsegments.
-> +        * Rejecting bad input here, before any segment-cleaning work
-> +        * begins, avoids the per-element diagnostic path inside
-> +        * nilfs_sufile_updatev() that would otherwise run under this
-> +        * same lock and stall concurrent readers.
-> +        */
-> +       for (i =3D 0; i < nfreesegs; i++) {
-> +               if (segnumv[i] >=3D nilfs->ns_nsegments) {
-> +                       nilfs_err(sb,
-> +                                "Segment number %llu to be freed is out =
-of range",
-> +                                (unsigned long long)segnumv[i]);
-> +                       err =3D -EINVAL;
-> +                       goto bail_unlock;
-> +               }
-> +       }
-> +
->         err =3D nilfs_mdt_save_to_shadow_map(nilfs->ns_dat);
->         if (unlikely(err))
->                 goto out_unlock;
-> @@ -2558,6 +2579,7 @@ int nilfs_clean_segments(struct super_block *sb, st=
-ruct nilfs_argv *argv,
->         sci->sc_freesegs =3D NULL;
->         sci->sc_nfreesegs =3D 0;
->         nilfs_mdt_clear_shadow_map(nilfs->ns_dat);
-> + bail_unlock:
->         nilfs_transaction_unlock(sb);
->         return err;
->  }
-> --
-> 2.43.0
->
->
+  0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg infrastructure")
+
+After that commit SCTLR_EL2_RES1 is auto-generated. Because the
+sysreg tooling can only model unconditional RES1, and EIS/EOS are
+RES1 only when !FEAT_ExS, the generated mask is UL(0). I'll fix the
+Fixes: tag in v2.
+
+On the wider question of the other bits dropped from the old mask,
+I went through them against DDI 0487 M.b =C2=A7D24.2.175. The summary
+(SCTLR_EL2 with E2H=3D0):
+
+  bit  field    E2H=3D0 status                  kernel cares?
+  -------------------------------------------------------------
+   4   SA0      RES1 unconditionally          no
+   5   CP15BEN  RES1 unconditionally          no
+  11   EOS      RES1 iff !FEAT_ExS, else RW   yes (this fix)
+  16   nTWI     RES1 unconditionally          no
+  18   nTWE     RES1 unconditionally          no
+  22   EIS      RES1 iff !FEAT_ExS, else RW   yes (this fix)
+  23   SPAN     RES1 unconditionally          no
+  28   nTLSMD   RES1 unconditionally          no
+  29   LSMAOE   RES1 unconditionally          no
+
+The seven non-EIS/EOS bits all fall under the "Otherwise: Reserved,
+RES1" clause for the E2H=3D0 layout, with no feature guard. Writing 0
+to them is a no-op, so dropping them from the mask should be harmless
+I think. EIS and EOS are the only positions where the bit
+becomes RW (with UNKNOWN reset) on FEAT_ExS hardware and the
+kernel actively relies on the value being 1, which is what this
+patch addresses.
+
+I agree the auto-generator silently zeroing previously hand-rolled
+RES1 masks is a real problem. Happy to look at either teaching the
+sysreg infrastructure to express conditional RES1 (so config.c's
+AS_RES1/FEAT_X facts can flow back into the header masks), or at
+least adding a build-time check that flags any auto-generated
+<REG>_RES1 that shrinks. After this series, though. Let me know if
+you'd like me to take a stab.
+
+What plan to changechange in v2:
+
+1. Fixes: 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg infrastructure"=
+).
+2. Add one paragraph in the commit message explaining that the bug
+landed when SCTLR_EL2_RES1 was auto-generated to UL(0), with a
+one-line justification that the other seven dropped bits are
+unconditionally RES1 at E2H=3D0 and so harmless.
+3. Code diff unchanged (still just adding SCTLR_ELx_EIS |
+SCTLR_ELx_EOS to INIT_SCTLR_EL2_MMU_ON).
+
+What do you think?
+
+Cheers,
+/fuad
+
+> Will
 
