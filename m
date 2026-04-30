@@ -1,122 +1,137 @@
-Return-Path: <stable+bounces-242028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242029-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id C5v8KiX+8mkfwgEAu9opvQ
-	(envelope-from <stable+bounces-242028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:00:53 +0200
+	id OBe2LOD+8mmIwQEAu9opvQ
+	(envelope-from <stable+bounces-242029-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:04:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3406C49E502
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0925A49E57A
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C832301E965
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 07:00:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FD573007F5D
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 07:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FB33845A1;
-	Thu, 30 Apr 2026 07:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DBF396577;
+	Thu, 30 Apr 2026 07:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOeRkHuG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sPAfy6AC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB74838228B;
-	Thu, 30 Apr 2026 07:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782B395259;
+	Thu, 30 Apr 2026 07:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777532447; cv=none; b=BIEwjsMlhZVf8vtaCErxvA6sbIXe+E0yapiZrRxboKqMdIM3CqKxc/CxZtd0PdhVdl0zot57CeFXTOupyp6r4W6keF0hKRYqJKoTRHCzOHf4SIYOeWEXdDK4f6i+JKimLXVGap8DiF/TZGFOECLhaZm+LztIbtxdCFnudI2TN/o=
+	t=1777532610; cv=none; b=ipT0XEXneKB+t3flMCkH8hj5G1XCXq0mF0FEWjFWn99OzGE9iMS/JB1KZUoDulEzruGQ1jbiIgvZsdF4FKVK/ld1t8BuR8wvV2G0Ui3GfCRxOoXt6mgeBHKAkfqyxs3CTD4KV74O4mL/9SVbHeQ9Q0KsvXU511pev3tJigA8uaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777532447; c=relaxed/simple;
-	bh=vm4DnZEcnJZov8kEum6ZEQm9FFa1s/wzkKI1zE9zvVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=igPgfr50jWORvrDI1lKD3pxWhZTu6sKjDw2PXzT36GPyn73IznH21xKWuOzBqzDVAJ/ITv9TxIbQu97R2WmtehCmAV+OIhFGz/4nohl7/mqGPuvPp1fomp6AqNajqkxDk5znSPVq8qGsOWblLp+mxsmT0/lNzgINz18SWOE98s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOeRkHuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B39C2BCC4;
-	Thu, 30 Apr 2026 07:00:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777532446;
-	bh=vm4DnZEcnJZov8kEum6ZEQm9FFa1s/wzkKI1zE9zvVo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QOeRkHuGa9UdSBMBMJA0jEs1Tz6YWkscd1/CkCPHjledr/hKyADvk3b2UNHBk0Z56
-	 m0dgMwLw/bmKeoNCK5dtTMNLzUl+scEWJ7dg7bVW18RfPWk/DKAF7KbOKsKTmoCn2O
-	 B/pcGfm1VG7NuPQyNIGyEIXcnHEDLhrwfDXM/fJs=
-Date: Thu, 30 Apr 2026 09:00:06 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Johan Hovold <johan@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] driver core: faux: fix root device registration
-Message-ID: <2026043054-limes-simply-e9ad@gregkh>
-References: <20260424153127.2647405-1-johan@kernel.org>
- <20260424153127.2647405-2-johan@kernel.org>
- <DI54XY4CNFCD.30M3UJGK1M3BE@kernel.org>
- <afHapCZz5C42euaD@hovoldconsulting.com>
- <DI5KV97TNS9D.28EQTYL46PKT1@kernel.org>
- <afHpUxQ5U_4RWjDZ@hovoldconsulting.com>
- <DI5PDWIV7N7X.16VB7OPUTJ6ZK@kernel.org>
- <afIdl9VcaXxBb0Ll@hovoldconsulting.com>
- <DI5WUT6CUDAN.3SI10HVHF3NWJ@kernel.org>
+	s=arc-20240116; t=1777532610; c=relaxed/simple;
+	bh=ldHduypkfg8LNl5PWslKxZaIFVNY3iE0K9zRSjzyDOE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JKj+OEaSs7F9DGL/O1lS0p5KTC820bl8vfsNtyvnEBXHg36YxcFyVcmdJCIvbYlrh6Qf3M4qvjG9fqpgf1NIZYlk79pYXy/K0szGgQgLPj47PToYiP9uQ9i6AlCsp7A4Yw1Ko2IHFKUttgX+VGD3Aj2J9uzOWrnntSBXesXDV6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sPAfy6AC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4A9C2BCB3;
+	Thu, 30 Apr 2026 07:03:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777532610;
+	bh=ldHduypkfg8LNl5PWslKxZaIFVNY3iE0K9zRSjzyDOE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sPAfy6ACvgYEcvNTWIYswdN1gRRtTpwosZwUL2RVXlrfryvXzyg3fwahI+7R4OX7W
+	 fHcyNpeoGttOWYHo0iAYb7TwMbN1U7G1aZ/kxRVM989/f5mrrIqTWGVyCToy6gPIlT
+	 ENF7b4vkPsC8oqwVxtpy/ScnZnpBJNBknXcVptBUFWSy1eqbbKUwWVwF3ZuN8vcq0i
+	 nB+F2a3Z2nZUqwpnIIQgmPoJJwZ5B2CRMrN2H8AycOKTIo6Lw0q2y00dRebyYFOOXf
+	 t8Mc3i1Hl/6m+vUkHFxua43FOo8mLW9qtDx+XEXIHxAoGbR3I0BaZhRxaPCWjAEGp3
+	 ujZMyWaET+yPQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: stable@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.10 00/10] AF_ALG fixes
+Date: Thu, 30 Apr 2026 00:01:18 -0700
+Message-ID: <20260430070128.219863-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DI5WUT6CUDAN.3SI10HVHF3NWJ@kernel.org>
-X-Rspamd-Queue-Id: 3406C49E502
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0925A49E57A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242028-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242029-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Wed, Apr 29, 2026 at 10:11:31PM +0200, Danilo Krummrich wrote:
-> On Wed Apr 29, 2026 at 5:02 PM CEST, Johan Hovold wrote:
-> > Again, feel free to drop the CC stable tag if you want to.
-> 
-> It's not so much about what I want -- I just try to stay close to what the
-> guideline is, and only deviate when there's a good reason.
-> 
+This series backports recent AF_ALG fixes to 5.10.  Compared to the 5.15
+series
+(https://lore.kernel.org/linux-crypto/20260430063604.173525-1-ebiggers@kernel.org)
+I changed memcpy_sglist() to use atomic kmaps instead of local kmaps,
+since local kmaps are not available in 5.10.  I also added "crypto: doc
+- fix kernel-doc notation in chacha.c and af_alg.c" to make a later
+commit cherry-pick cleanly.
 
-Personally, I think it's good to backport this.  I trust Johan here so I
-have no objection to taking this for stable trees (nor the other patches
-he tagged for stable).
+Douya Le (1):
+  crypto: algif_aead - snapshot IV for async AEAD requests
 
-The rules are there for the stable maintainers to say "no" to, not so
-much for us to be extremely strict about it at times if it makes sense
-to us.
+Eric Biggers (3):
+  crypto: scatterwalk - Backport memcpy_sglist()
+  crypto: algif_aead - use memcpy_sglist() instead of null skcipher
+  crypto: authenc - use memcpy_sglist() instead of null skcipher
 
-thanks,
+Herbert Xu (5):
+  crypto: algif_aead - Revert to operating out-of-place
+  crypto: authencesn - Do not place hiseq at end of dst for out-of-place
+    decryption
+  crypto: authencesn - Fix src offset when decrypting in-place
+  crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
+  crypto: algif_aead - Fix minimum RX size check for decryption
 
-greg k-h
+Randy Dunlap (1):
+  crypto: doc - fix kernel-doc notation in chacha.c and af_alg.c
+
+ crypto/Kconfig               |   2 -
+ crypto/af_alg.c              | 137 +++++++++++------------
+ crypto/algif_aead.c          | 203 ++++++++---------------------------
+ crypto/algif_skcipher.c      |   6 +-
+ crypto/authenc.c             |  32 +-----
+ crypto/authencesn.c          |  84 ++++++---------
+ crypto/scatterwalk.c         |  98 +++++++++++++++++
+ include/crypto/if_alg.h      |   5 +-
+ include/crypto/scatterwalk.h |  32 ++++++
+ lib/crypto/chacha.c          |   4 +-
+ 10 files changed, 272 insertions(+), 331 deletions(-)
+
+
+base-commit: 49e5d20074c20b20773c6dc0f8dce0635591093b
+-- 
+2.54.0
+
 
