@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-242163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GTfKJiI82mS4wEAu9opvQ
-	(envelope-from <stable+bounces-242163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:51:36 +0200
+	id sJp8Lj2J82md4wEAu9opvQ
+	(envelope-from <stable+bounces-242164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE0B4A604B
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:51:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01C04A60FE
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D3E7300B769
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 16:45:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90D72300BC4E
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 16:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FED3290DB;
-	Thu, 30 Apr 2026 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B0B2EDD69;
+	Thu, 30 Apr 2026 16:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hXDiLppD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7oRJ6gf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA032DA768
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BD12DA768
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 16:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777567517; cv=none; b=u+q548DA1UdjvsysrUUmTeh/O5j7bIA8tEEP/5f3UcSaUB07NmHRUL5dUIwT+01GC0nXX+/UU2NIU2Xa9P3rQvR1ikSVVfPLPBnMKHY6ufKJ5NOUp/4A5Fm5GU2p3H28HgqyctSwlHhoqw7xWDfMLkQ96mcztqbcdPKr/+I6fFc=
+	t=1777567521; cv=none; b=kgDCcek5TRnDLX+P0qkNpCXYEw5btkPPjPZE90KE3pdMHIN8gHT5vuyX9iiuLa4WMHpKlnbD09BZ8aAHeDUC7ttIfubK5iEzI2g7Xkx2q3X9AlpbkNdQuq6iVgeU44kiz2jr4xDuKnlD6G/3SUAeInEP/gESxN4RqJ46c8Kr/Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777567517; c=relaxed/simple;
-	bh=bjHNGNhe8R9yBKZvBde2OZ6sJrV5cEAz8DX84cUSgFs=;
+	s=arc-20240116; t=1777567521; c=relaxed/simple;
+	bh=9JpMdAdDRn6kvxLco1JvLGEbJWlPFF1cy2mxUIaev/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jy5x9Hpn/5C+DqOZKpDmYPR64PpMaP5+Md+GVG5aBXRjrgHWe+Z46W4OfKfxavIRwSiG2e5ONjCD8B+oRicEbhJoUMHyGWr/rCVCxaORxX4neZvgdYfC3AL++oyiwvtmMU+LgBdQt+qJWpoW5I/SpK3PwF+YUJkHzYHBV7Hj2r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hXDiLppD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12A4C2BCB3;
-	Thu, 30 Apr 2026 16:45:16 +0000 (UTC)
+	 MIME-Version; b=aZpEyfkNxs8JWCM7Nho3CRZKJds020YrD7vA6C+enW5qCTcq9uMzDgiufLcEZZkvD0Cpjn3Rf80ThB9hrL7heDE42T4txRUda4/JZ9HFtnS58m+rCYKto6EeqDJiEQ54Tlt0fMi2PH5zGDQjia2tsk/BRZoT0Nl9McXAaFYmxjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7oRJ6gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98EFC2BCC6;
+	Thu, 30 Apr 2026 16:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777567517;
-	bh=bjHNGNhe8R9yBKZvBde2OZ6sJrV5cEAz8DX84cUSgFs=;
+	s=k20201202; t=1777567521;
+	bh=9JpMdAdDRn6kvxLco1JvLGEbJWlPFF1cy2mxUIaev/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXDiLppDwSGTQn4XmxCAo+9ji5VMVlwUFcwimrYSCM8i8kByVb1D2KmQuh4MWJFG3
-	 tqXgimGvCghR4qIh1jwSfa3N9KeCX4Zn+ckoW2eunk0Yc0PISTk7tENRKtDlf5ShBe
-	 hmmyAfGPPhx5UNdH4gyjzJxlppvmg4bfKe2ohlmL83wtrBdK0PCmFjE2wKq+z42J09
-	 +IPTPXKaihpkZkcvgEvIgMoItyqCpr6CGptWK/+jrM7OOHxiwKiIMbIY8Kfb8VCt7k
-	 Y50IAHZ0mofc9181AJTCCjFHTr2yirwl/VsSl8Hf6JndTL7q0GUK4HbBbIGLZ3QaYu
-	 rlP9IoTwRAy5w==
+	b=b7oRJ6gfppaxXuQcqk6wceCLmiMLRTkQ3viKn/CsIy+SwTd58YG/n6kr41VhZ5AuG
+	 nRa9rVEcswvgKpeWFciCMpGPgBXtMLQAj2/nKxieE8voUmE2T8ThxzuD7xbUL5a0Xj
+	 eh/PfUTL2Bj9djcmwdx9m8iXCQdg9GEqXVt7Ic/eCwsvXH3slvNStCmtmEhO2aHfA2
+	 c+rsQq6ei5B/xaFcMesw66In+B9X0Geb/H/mRetzy7mFocUBqoj6kcTiKgsibMsF5I
+	 bNdboPZeaQtxTbFvuFSL7DsWM1CUoHOCW4LqN74jmI1gQCcC/E5ObnvuobFiCfajxT
+	 uq0sbU8+DLVKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] thermal: core: Fix thermal zone governor cleanup issues
-Date: Thu, 30 Apr 2026 12:45:15 -0400
-Message-ID: <20260430164515.1851850-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] wifi: mt76: mt792x: describe USB WFSYS reset with a descriptor
+Date: Thu, 30 Apr 2026 12:45:17 -0400
+Message-ID: <20260430164518.1852033-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026043038-magnetic-staple-59dd@gregkh>
-References: <2026043038-magnetic-staple-59dd@gregkh>
+In-Reply-To: <2026043041-oops-stimulant-6ca1@gregkh>
+References: <2026043041-oops-stimulant-6ca1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0CE0B4A604B
+X-Rspamd-Queue-Id: B01C04A60FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -79,9 +80,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242163-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-242164-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,69 +91,96 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,mediatek.com:email]
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Sean Wang <sean.wang@mediatek.com>
 
-[ Upstream commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 ]
+[ Upstream commit e6f48512c1ceebcd1ce6bb83df3b3d56a261507d ]
 
-If thermal_zone_device_register_with_trips() fails after adding
-a thermal governor to the thermal zone being registered, the
-governor is not removed from it as appropriate which may lead to
-a memory leak.
+Prepare mt792xu_wfsys_reset() for chips that share the same USB WFSYS
+reset flow but use different register definitions.
 
-In turn, thermal_zone_device_unregister() calls thermal_set_governor()
-without acquiring the thermal zone lock beforehand which may race with
-a governor update via sysfs and may lead to a use-after-free in that
-case.
+This is a pure refactor of the current mt7921u path and keeps the reset
+sequence unchanged.
 
-Address these issues by adding two thermal_set_governor() calls, one to
-thermal_release() to remove the governor from the given thermal zone,
-and one to the thermal zone registration error path to cover failures
-preceding the thermal zone device registration.
-
-Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each thermal zone")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20260311002825.15502-1-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: 56154fef47d1 ("wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../net/wireless/mediatek/mt76/mt792x_usb.c   | 40 +++++++++++++++----
+ 1 file changed, 32 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 8ce1134e15e56..1eaddce11aedd 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -917,6 +917,7 @@ static void thermal_release(struct device *dev)
- 		     sizeof("thermal_zone") - 1)) {
- 		tz = to_thermal_zone(dev);
- 		thermal_zone_destroy_device_groups(tz);
-+		thermal_set_governor(tz, NULL);
- 		mutex_destroy(&tz->lock);
- 		complete(&tz->removal);
- 	} else if (!strncmp(dev_name(dev), "cooling_device",
-@@ -1483,8 +1484,10 @@ thermal_zone_device_register_with_trips(const char *type,
- 	/* sys I/F */
- 	/* Add nodes that are always present via .groups */
- 	result = thermal_zone_create_device_groups(tz);
--	if (result)
-+	if (result) {
-+		thermal_set_governor(tz, NULL);
- 		goto remove_id;
-+	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+index 76272a03b22e5..7b1bee3c6605d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -206,6 +206,24 @@ static void mt792xu_epctl_rst_opt(struct mt792x_dev *dev, bool reset)
+ 	mt792xu_uhw_wr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT, val);
+ }
  
- 	/* A new thermal zone needs to be updated anyway. */
- 	atomic_set(&tz->need_update, 1);
-@@ -1630,8 +1633,6 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
++struct mt792xu_wfsys_desc {
++	u32 rst_reg;
++	u32 done_reg;
++	u32 done_mask;
++	u32 done_val;
++	u32 delay_ms;
++	bool need_status_sel;
++};
++
++static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
++	.rst_reg = MT_CBTOP_RGU_WF_SUBSYS_RST,
++	.done_reg = MT_UDMA_CONN_INFRA_STATUS,
++	.done_mask = MT_UDMA_CONN_WFSYS_INIT_DONE,
++	.done_val = MT_UDMA_CONN_WFSYS_INIT_DONE,
++	.delay_ms = 0,
++	.need_status_sel = true,
++};
++
+ int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
+ {
+ 	int err;
+@@ -236,25 +254,31 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
  
- 	cancel_delayed_work_sync(&tz->poll_queue);
+ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+ {
++	const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
+ 	u32 val;
+ 	int i;
  
--	thermal_set_governor(tz, NULL);
--
- 	thermal_remove_hwmon_sysfs(tz);
- 	ida_free(&thermal_tz_ida, tz->id);
- 	ida_destroy(&tz->ida);
+ 	mt792xu_epctl_rst_opt(dev, false);
+ 
+-	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
+ 	val |= MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
+ 
+-	usleep_range(10, 20);
++	if (desc->delay_ms)
++		msleep(desc->delay_ms);
++	else
++		usleep_range(10, 20);
+ 
+-	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
+ 	val &= ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
++
++	if (desc->need_status_sel)
++		mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
+ 
+-	mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
+ 	for (i = 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
+-		val = mt792xu_uhw_rr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS);
+-		if (val & MT_UDMA_CONN_WFSYS_INIT_DONE)
++		val = mt792xu_uhw_rr(&dev->mt76, desc->done_reg);
++		if ((val & desc->done_mask) == desc->done_val)
+ 			break;
+ 
+ 		msleep(100);
 -- 
 2.53.0
 
