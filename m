@@ -1,166 +1,218 @@
-Return-Path: <stable+bounces-242105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMumIJdW82mLzgEAu9opvQ
-	(envelope-from <stable+bounces-242105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:18:15 +0200
+	id kHyfEgZX82mLzgEAu9opvQ
+	(envelope-from <stable+bounces-242106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:20:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EFC14A34FB
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 408114A3574
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2607E30095EE
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 13:17:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B10E330034B3
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 13:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EFF423148;
-	Thu, 30 Apr 2026 13:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E2541B360;
+	Thu, 30 Apr 2026 13:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxvNvxQ2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SBWki/Ya"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B7141B360
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 13:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777555026; cv=pass; b=WYVaaoSQbBKARaPIApY/rU31iT7DsHlKTnr5r0ZEffw4tuLOXQqTlHiaOx93m8YKZniYSWWqHsbIWnRfPxOnElyn6eBd5d76L7fdIjregeJNtJCSQSs5ZkepZqN2YRwDmC7ucQ9A55TYtXoUNqaM/lkYxjcD5JKDiS0YKJHKw9Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777555026; c=relaxed/simple;
-	bh=CW9oV6oDJor07e61kTEkhmTZFlL7d8Er44rZpxHeW9M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BBNSOyDsb5on2fbEPMyZHUK3HX+DYaq1C4Z2uZk1M4HJ2UAlwulsl9JCLjnKHVt26ZlDtvWfxPx96abCROHXb8nbkMZzfRMylEPd23NBX+nw4+nWYbn7yVwkatXK7SRVDbcaBNHCXXgHUSg/TFo1xmym3w+Kyxw+tb6FkAmAkH4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxvNvxQ2; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso1025571eec.1
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 06:17:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777555024; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eWterS6I/qcDTlyDMr/OuShUX/FZ1OukTe6/K3qHXlzerdOfJDWlPD5D0cXZt6JoXX
-         zRDgq3XwHNwrYfxXlxCHv2LRNJqlLdDLf8YhUdyzvDUEObLBQOBSGiDgK51rUFucnAGt
-         HfK1NP71UJ36TwvAiq348bz2SbpoaHQ7VG8cfQ8CKiLzkLzGaY12EYvsd9NdPZZvnhkT
-         vccxIYQ8p5mY/1/Vbu8M/nrlHrK/zvvbZGxgeAObqoTBQFTTNUZPblkT5CUb+Hi5BJFu
-         duQdRa2QEiNuYbuivP5hs7M42teP5IMtYUP6eSVd9eyY0I9/ZSqTLV5PWjrguqpOH0xk
-         Srqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=CW9oV6oDJor07e61kTEkhmTZFlL7d8Er44rZpxHeW9M=;
-        fh=8aDTJp2eQQPZii/WncgAk/kWmLRl3F67r5Nd5u2eslE=;
-        b=fZ6w3Y4PNHgs1uSFEiMec9/uweSTICZ4H2ltjCmRYJpeAwncEqqGxwV+tvkNy6S4kX
-         TBndSXVImMeRPbUnCdL3LdVcqhWHwSPoa87CHd9AzzkXageUzJD6aVsEESZgauAHUECI
-         xy5VPM28hxI9iZww0/OvOQxnZV+c+Z5bqCUdbCi8rtUeuOW7GhGWTUdaWB3h4N1Yt/BP
-         DZvOJmyw7PzCX3101iz3vmFQeiXDCQul+8OeLQNjBlSDMhvM2DKzT5BrT4k/sxyGEGf4
-         PEEJwqPsXjuCsExu0qZSi0Hl/HBvhDhEJzp1dQgOi3UxFdzmkPWHiIda7Zn7lkz8zG2f
-         aOZg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777555024; x=1778159824; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CW9oV6oDJor07e61kTEkhmTZFlL7d8Er44rZpxHeW9M=;
-        b=UxvNvxQ27nhQyn2OE1dnnS8b16PThxNoMkP1A2R3ReyMNTHMcG/y8TO/YTnM1nwXqO
-         R4oyCjoXXCNDK6noPY5IpehTzUFn+qXoUgPo+f1J/h/kmg0zzwgMtEnono5GadsdlYq7
-         V8WW4ZJyuQ2fX91D4y34llDDFgRuXi6W4ci5Ud6MnYVtpTqhok6rtCdjQEcWHGl0JJmE
-         UDunZVoV6s3fKtxG1NYULZksDJwNpv6BcMBCSiXZZ0PxYXvI5jQHnN+44GTizNLJFbLD
-         r9PZiaJFnB5ODQOswe/UQedjsCw0KPgYTNne414BEm0rC7kFj0SE9izrPLV5cG5volb2
-         iUEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777555024; x=1778159824;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CW9oV6oDJor07e61kTEkhmTZFlL7d8Er44rZpxHeW9M=;
-        b=aklc3u9BW9uo2WaOZXZw52evfUi1T+epxu1fd3kzoksUtbn78q2aX3MgmrosHCrhzJ
-         d35t9pre/iLe0eIj9sV4UEI3hNHZOoY9SMaTS+synh7bVIjZSQN5bm+X1Hk+KCvcL/Ip
-         dA1nYSg5QkKLA1IR8XWAFkhpgc719Qab2WfSC7CGS8CZ22txff90MyAlw51tR6uABky8
-         60p9oXHhaTpn0Fn/4sbQh0OvDwdTUQegDhEgBI/hyBtQDfB2Kuyhcs/RHRw6T6cNEZdS
-         7ZfYxyDlqyJ9TtnYPxYF2oFumgN5q7KGiunICDtW0t8z8g99MQ/cl5t0VNDu2KjDw9Hj
-         9pCw==
-X-Forwarded-Encrypted: i=1; AFNElJ9c8ZeoxlnRpHe4BvGjYtmI8Hw/XE/kbm81CCBJFgZM0vQomLGQ/+f7NbUA2ELQV5QdANjitYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRFApDwU5xZY3H6TmSpgLWPIhZV4ZcgkDuT//o6S49UtCGwfOd
-	tRxkatNBu9eYjovO2D4Ascj11ZXDPZkRq7axfULmPg8vPulGzGuI+k7F0QkzwIj/A44NgECtaUJ
-	q+sdb37bB+9Q+U8E737LJpn6qPSmHv3w=
-X-Gm-Gg: AeBDiesq7lYqY63E6c3N3xDEoysp5XDIWgD30QF+r+vqKKsPoLtzLv7QiLBlmtDaokp
-	mR3bsJllDFLf0y1zKq4SqhxGfAJPXw/LcwEVi92csBdBgkGci81bsCG/c+AV9bGhuPayv6nYkZO
-	N+iHy18OSwfTL1FNrOLv+nupK2MNUfP3eTgoNJ+NlehKQqSRgAxkYV4afnQ+LcmTJ3MS82Wy62z
-	q3Pi/jxshL078kJsmT6nYFRXCnlpvcixfQyNdRh3PxwKtVZuQA5VHFd4oOvXmkW/jQJ5TRrM+6W
-	v702EcXaBjSCpIiGQMk+ek1/PJTTv/tftBTG+d73juxofoMgmljCuW/bvz8JKEk4jijnssAlcwI
-	3pc7pNZ2hZtfHD0lZLRk9A7aecD71co7Xw/ob4JPR8r8ItEsRe9oXeo0iz6HOPRNlZ+qyNzFS0r
-	LPtS9mYwuZWrYm97UI2ifIJaRKpOgPym98vGl8XcqKX/TcTBa1
-X-Received: by 2002:a05:7300:7b89:b0:2ed:e14:42e8 with SMTP id
- 5a478bee46e88-2ed3ff5ba70mr1281308eec.33.1777555024167; Thu, 30 Apr 2026
- 06:17:04 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2F03D9DC7;
+	Thu, 30 Apr 2026 13:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777555198; cv=none; b=sc2h+aQlHsveJtEv7anG0ghW/eL1sV07jeSreHm0R2Eiw0gFrwEIMK3C2iaTNR9Q891McsLQNUkZ1bacpJVh+/EpooumRAtDBpzH0SG1ollAzHdDR8JotEksHVcr5ZtRjQL41abVWa9XezkUBFt4uaLVfArarh/5rfOy3520Eqo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777555198; c=relaxed/simple;
+	bh=IBpDiy93+weWWApVOVB+pQcwXsPcT2CofYBIjjvyjhs=;
+	h=Date:To:From:Subject:Message-Id; b=thg5uJzRpLMP/g9jjFbQy9B6ZmD8tuhwxpK8BlP5vxaG5GBuWZYsaMZ2Lqe2NWE/Q+mlsjsM4EYzwkklc67CQ+qh0JcxpYxv41qLBxv9pqRPJWgjG6znCIpp8Xe6YPxZ7HI1/GwLunXCuec8PbgEcDUZ7S61ajBOScAAk7BMQXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SBWki/Ya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94351C2BCB3;
+	Thu, 30 Apr 2026 13:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777555197;
+	bh=IBpDiy93+weWWApVOVB+pQcwXsPcT2CofYBIjjvyjhs=;
+	h=Date:To:From:Subject:From;
+	b=SBWki/YagYUAYU4Av/zwqOo/+7OGLvRtLJsvR+LmuHnabAfLrlGLEwGHiWp4ouGco
+	 llLjJk0JDGnFARg7uxp/WX8SuxU0itViscgFVXiaioHFwqKMH+bTNdkS5TtNx+25wh
+	 rb6+CYPbzGkC0Mwaz5JmUjVJdVWCC90ch8fsyQgE=
+Date: Thu, 30 Apr 2026 06:19:56 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,osalvador@suse.de,mhocko@suse.com,maobibo@loongson.cn,ljs@kernel.org,liam@infradead.org,lance.yang@linux.dev,hughd@google.com,david@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-__vm_normal_page-to-handle-missing-support-for-pmd_special-pud_special.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260430131957.94351C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <2026043052-coasting-tinwork-27b5@gregkh> <CADo9pHjPzxmHNd8MAeWH=CCuVazxpb3OxdasEcUxoarvLwKzZg@mail.gmail.com>
- <2026043052-deflector-dodgy-93a6@gregkh>
-In-Reply-To: <2026043052-deflector-dodgy-93a6@gregkh>
-From: Luna Jernberg <droidbittin@gmail.com>
-Date: Thu, 30 Apr 2026 15:16:49 +0200
-X-Gm-Features: AVHnY4JWaL9qa50i735penGj69PRLX-X2jSKFNURvzf7Yr6rvEqNLBzocsSb6V4
-Message-ID: <CADo9pHihUk66XL2Fy+tFqCcgwv1M5YMEDDS-ASJMkC=WM_Xvcw@mail.gmail.com>
-Subject: Re: Linux 7.0.3
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Luna Jernberg <droidbittin@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	akpm@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net, 
-	jslaby@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7EFC14A34FB
+X-Rspamd-Queue-Id: 408114A3574
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-242106-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242105-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[droidbittin@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,copy.fail:url,mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Ah alright then i know, its me thats not keeping up thank you
 
-Den tors 30 apr. 2026 kl 15:15 skrev Greg Kroah-Hartman
-<gregkh@linuxfoundation.org>:
->
-> On Thu, Apr 30, 2026 at 03:09:05PM +0200, Luna Jernberg wrote:
-> > Hey!
-> >
-> > Works fine
-> >
-> > patching: https://copy.fail/ next ? ;)
->
-> That was fixed a while ago in older kernel releases that you should
-> already be running :)
->
-> thanks,
->
-> greg k-h
+The patch titled
+     Subject: mm: fix __vm_normal_page() to handle missing support for pmd_special()/pud_special()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-__vm_normal_page-to-handle-missing-support-for-pmd_special-pud_special.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-__vm_normal_page-to-handle-missing-support-for-pmd_special-pud_special.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: mm: fix __vm_normal_page() to handle missing support for pmd_special()/pud_special()
+Date: Thu, 30 Apr 2026 13:31:22 +0200
+
+On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
+"WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
+VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed by
+"BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s when
+reclaim gets to call shrink_huge_zero_folio_scan().
+
+It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd: and
+indeed, whereas pte_special() and pte_mkspecial() are subject to a
+dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
+are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled on
+any 32-bit architecture.
+
+While the problem was exposed through commit d80a9cb1a64a
+("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()"), it was an
+oversight in commit af38538801c6 ("mm/memory: factor out common code from
+vm_normal_page_*()") and would result in other problems:
+* huge zero folio accounted in smaps, pagemap (PAGE_IS_FILE) and
+  numamaps as file-backed THP
+* folio_walk_start() returning the folio even without FW_ZEROPAGE set.
+  Callers seem to tolerate that, though.
+
+... and triggering the VM_WARN_ON_ONE(), although never reported so far.
+
+To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() to consider
+whether pmd_special/pud_special is actually implemented.
+
+Link: https://lore.kernel.org/20260430-pmd_special-v1-1-dbcbcfd72c20@kernel.org
+Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Reported-by: Hugh Dickins <hughd@google.com>
+Closes: https://lore.kernel.org/r/74a75b59-2e13-3985-ee99-d5521f39df2a@google.com
+Reported-by: Bibo Mao <maobibo@loongson.cn>
+Closes: https://lore.kernel.org/r/20260430041121.2839350-1-maobibo@loongson.cn
+Debugged-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Bibo Mao <maobibo@loongson.cn>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory.c |   22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
+
+--- a/mm/memory.c~mm-fix-__vm_normal_page-to-handle-missing-support-for-pmd_special-pud_special
++++ a/mm/memory.c
+@@ -612,6 +612,21 @@ static void print_bad_page_map(struct vm
+ 	dump_stack();
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+ }
++
++static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
++{
++	switch (level) {
++	case PGTABLE_LEVEL_PTE:
++		return IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL);
++	case PGTABLE_LEVEL_PMD:
++		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
++	case PGTABLE_LEVEL_PUD:
++		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP);
++	default:
++		return false;
++	}
++}
++
+ #define print_bad_pte(vma, addr, pte, page) \
+ 	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
+ 
+@@ -684,7 +699,7 @@ static inline struct page *__vm_normal_p
+ 		unsigned long addr, unsigned long pfn, bool special,
+ 		unsigned long long entry, enum pgtable_level level)
+ {
+-	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
++	if (pgtable_level_has_pxx_special(level)) {
+ 		if (unlikely(special)) {
+ #ifdef CONFIG_FIND_NORMAL_PAGE
+ 			if (vma->vm_ops && vma->vm_ops->find_normal_page)
+@@ -699,8 +714,9 @@ static inline struct page *__vm_normal_p
+ 			return NULL;
+ 		}
+ 		/*
+-		 * With CONFIG_ARCH_HAS_PTE_SPECIAL, any special page table
+-		 * mappings (incl. shared zero folios) are marked accordingly.
++		 * With working pte_special()/pmd_special()..., any special page
++		 * table mappings (incl. shared zero folios) are marked
++		 * accordingly.
+ 		 */
+ 	} else {
+ 		if (unlikely(vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))) {
+_
+
+Patches currently in -mm which might be from david@kernel.org are
+
+mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free.patch
+mm-fix-__vm_normal_page-to-handle-missing-support-for-pmd_special-pud_special.patch
+sh-use-folio_mapped-instead-of-page_mapped-in-sh4_flush_cache_page.patch
+bpf-arena-use-page_ref_count-instead-of-page_mapped-in-arena_free_pages.patch
+mm-remove-page_mapped.patch
+
 
