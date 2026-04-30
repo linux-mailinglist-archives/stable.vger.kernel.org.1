@@ -1,151 +1,161 @@
-Return-Path: <stable+bounces-242059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242060-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qA25Ikoc82kvxQEAu9opvQ
-	(envelope-from <stable+bounces-242059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:09:30 +0200
+	id yFxGCE4e82kvxQEAu9opvQ
+	(envelope-from <stable+bounces-242060-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:18:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AA249FA83
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9120C49FBCE
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EE913017000
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:08:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF46C300A62E
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD1B369211;
-	Thu, 30 Apr 2026 09:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64E939B95E;
+	Thu, 30 Apr 2026 09:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tr+sv2mF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="klmbMQK8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5E0263F44;
-	Thu, 30 Apr 2026 09:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C5D36827E;
+	Thu, 30 Apr 2026 09:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777540084; cv=none; b=Qw1rj6ze7VSClMj4GlfyeKynS3J5xPMPtZbEy8188UayyTogCswhUlkGS4Tf3awpfLjJNyuQfOge6s/Q53/upP6YriiKlXs8CLf9nF8UH/QVvUYmcUCDjPaIp5Izu7uGC6IwHka9ydA+WnHAwS2yu/C83zsE9231xfQQNi8Zpm4=
+	t=1777540680; cv=none; b=nZLaPytBJzBD39FjrthM+DnqKkFEpEmlS1uTaxl2F3VpYnksAFPl52L/pJ9C69iUMBfGhalmvTvvFn2Ey5iNZR8ta2aWSyxgk0TtcAWjISbE7HTuTHfTGONsrgLc1VH7SJcpQABItzYkkkXOo8Qv2O2PLBaaATKI0Qxqomex95E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777540084; c=relaxed/simple;
-	bh=ZFzSNODvz59u5BBj2IDcPy45PSPOnkHPbn9VjRLPFko=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jAeO+1eSbEAy6NWPTkwcgVH+2ZYxxxSzihnHGpMl/KYs/BbFvjDv022ewn9r9vkwQx4MB8/NqNslYqFarNFD4vC5/0yfy4Z3UEDX3+CxIQnQNrb8qDPDsa1PfEYewYAOGf5iGSdab8yjUZvJMpTMlqUGjYpppUP9Asvi9AyrReY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tr+sv2mF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F31C2BCB3;
-	Thu, 30 Apr 2026 09:08:01 +0000 (UTC)
+	s=arc-20240116; t=1777540680; c=relaxed/simple;
+	bh=Y1IqjaKgqBrIy/QgUYgru/+YxC+AuARpeUSdDcOtnk4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uI3Tf+eFumpIW8PjMHuFfUKpLa1qipyx6CBjnbBmwLXy1zykMmSV68mlIP1bqvdjuQ+V9D3tUW+aW//pO6e0CNEjjN3JtdTDihROAI4vY8+wKuVvrb6S9yHrooxrPXRIu9V33bIpHRK6XKmH9gqkHQ6sB+aZMu4dqjyofWkQ/wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=klmbMQK8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F199CC2BCB3;
+	Thu, 30 Apr 2026 09:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777540083;
-	bh=ZFzSNODvz59u5BBj2IDcPy45PSPOnkHPbn9VjRLPFko=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tr+sv2mFI9m4Ofy6Z0CStOodv0cPAChYeTf2a3fmIaFcBPf+N3J7PMUQ2IsSG5aKu
-	 Ws09EaXWOCdaKF/SE443itbM9VK4E6tn5zNtfAWEe8F1oVWjulubvyY+SDFIG8nGJb
-	 aWwDoCxGyVXwVXC9Fo/HEw+pFY5Br/2PfTvj2DMn+cBsBZsx93dLe+tf6r4zPvfsXb
-	 3KzcHrFPh+lw+7fU3SCr7XSFXlFjhgeGtTQy7ByyUK5bnWqLhPH0nxu0bphVd+9mvJ
-	 TzuqDp7DgriF5jFxU5E3CPNYB03GIMupks3LEdgHdC2+eFLWbj4/NOO1gDLJ5imF9V
-	 b4u8H3NfNszvQ==
-Date: Thu, 30 Apr 2026 10:07:58 +0100
-From: Will Deacon <will@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: maz@kernel.org, oliver.upton@linux.dev, james.morse@arm.com,
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, qperret@google.com,
-	vdonnefort@google.com, catalin.marinas@arm.com,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/8] KVM: arm64: Make EL2 exception entry and exit
- context-synchronization events
-Message-ID: <afMb7uuPlUbLeu7k@willie-the-truck>
-References: <20260428103008.696141-1-tabba@google.com>
- <20260428103008.696141-2-tabba@google.com>
+	s=k20201202; t=1777540680;
+	bh=Y1IqjaKgqBrIy/QgUYgru/+YxC+AuARpeUSdDcOtnk4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=klmbMQK8qMylNbonHELEWr1HvtdLV+lyPnA22PYwMCjUIsc5UBK5X0ObFiMKxOieT
+	 PmaCSZqd2aVm119RH1BA06UgrdTZiTvg6mpoQOVwO+Qh/X3gsNy4NDSzJzzCLJWpQ1
+	 LXQVQ5DkivLL+2g5ysgkYhgsEK0gnBLSD93lF9/+iPSgF563dsaRKa6V/6yyyhxt3J
+	 FaUy2mHACQwHoFq6S1s/dxzPLiL2BZCK3bbGUDlsT19mt8dqzoDzvYgeAM9qqZd5AQ
+	 4ERi8vrpEnR/SqeY4S1MAmUq0fv/O48jVAH+3b5jBGL3swfskksbj66Fipz+lWG5cV
+	 709iPBLeimTUg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wINWv-00000000xuJ-2rja;
+	Thu, 30 Apr 2026 11:17:57 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rafael J Wysocki <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] driver core: reject devices with unregistered buses
+Date: Thu, 30 Apr 2026 11:17:18 +0200
+Message-ID: <20260430091718.230228-1-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428103008.696141-2-tabba@google.com>
-X-Rspamd-Queue-Id: 26AA249FA83
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9120C49FBCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242059-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[will@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242060-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Tue, Apr 28, 2026 at 11:30:01AM +0100, Fuad Tabba wrote:
-> SCTLR_EL2.EIS and SCTLR_EL2.EOS control whether exception entry and
-> exit at EL2 are Context Synchronisation Events (CSEs). Per ARM DDI
-> 0487 M.b, EIS is governed by D1.4.2 rule RBBSRF (p. D1-7205) and EOS
-> by D1.4.4.1 rule RBWCFK (p. D1-7209). D24.2.175 (p. D24-9754):
-> 
->   - !FEAT_ExS: the bit is RES1, so the entry/exit is unconditionally
->     a CSE.
->   - FEAT_ExS: the reset value is architecturally UNKNOWN; software
->     must set the bit to make the entry/exit a CSE.
-> 
-> INIT_SCTLR_EL2_MMU_ON in arch/arm64/include/asm/sysreg.h sets neither
-> bit. KVM/arm64 hot paths rely on ERET from EL2 being a CSE, and on
-> synchronous EL1->EL2 entry being a CSE, to elide explicit ISBs after
-> MSRs to context-switching system registers (HCR_EL2, HFGxTR_EL2,
-> HCRX_EL2, ZCR_EL2, CPACR_EL1, CPTR_EL2, SCTLR_EL1, ptrauth keys,
-> etc.); examples include the activate-traps path,
-> ptrauth_switch_to_guest, and the FPSIMD trap re-enable in
-> kvm_hyp_handle_fpsimd. On FEAT_ExS hardware those reliances are not
-> architecturally backed unless EOS=1 (and, for entry, EIS=1), and
-> whether they hold today depends on firmware initialisation outside
-> the kernel's control.
-> 
-> Make the guarantee explicit: include SCTLR_ELx_EIS | SCTLR_ELx_EOS in
-> INIT_SCTLR_EL2_MMU_ON so that EL2 exception entry and exit are
-> unconditionally CSEs regardless of whether FEAT_ExS is implemented.
-> This matches the pairing in arch/arm64/kvm/config.c which treats EIS
-> and EOS together as RES1 under !FEAT_ExS.
-> 
-> INIT_SCTLR_EL2_MMU_OFF is left unchanged: that path is used during
-> very early EL2 init and the EL2 MMU-off transition, neither of which
-> relies on these bits in the same way.
-> 
-> Fixes: fe2c8d19189e ("KVM: arm64: Turn SCTLR_ELx_FLAGS into INIT_SCTLR_EL2_MMU_ON")
+Trying to register a device on a bus which has not yet been registered
+used to trigger a NULL-pointer dereference, but since the const bus
+structure rework registration instead succeeds without the device being
+added to the bus.
 
-I don't think this Fixes: tag is accurate:
+This specifically means that the device will never bind to a driver and
+that the bus sysfs attributes are not created (i.e. as if the device had
+no bus).
 
-1. That commit doesn't do anything with EIS/EOS afaict.
-2. Back in 5.12 (when that thing landed), SCTLR_EL2_RES1 did actually
-   include EIS and EOS
+Reject devices with unregistered buses to catch any callers that get
+the ordering wrong and to handle bus registration failures more
+gracefully.
 
-so I think the issue here might be that the auto-generated sysreg file
-quietly changes the RES1 definitions as bits get allocated, but the
-macros using the RES1 definition don't get updated. That's a pretty
-horrible pit that it feels like we might keep falling into :/
+Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cleanups")
+Cc: stable@vger.kernel.org	# 6.3
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
 
-Looking at 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg
-infrastructure"), I think we ended up dropping a whole bunch of fields
-from the RES1 mask (which became 0!). Have you checked all of those?
+Changes in v2:
+ - amend commit message with implications of the device not being added
+   to the bus
 
-Will
+
+ drivers/base/bus.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 8b6722ff8590..d17bd91490ee 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -544,10 +544,10 @@ static const struct attribute_group driver_override_dev_group = {
+  */
+ int bus_add_device(struct device *dev)
+ {
+-	struct subsys_private *sp = bus_to_subsys(dev->bus);
++	struct subsys_private *sp;
+ 	int error;
+ 
+-	if (!sp) {
++	if (!dev->bus) {
+ 		/*
+ 		 * This is a normal operation for many devices that do not
+ 		 * have a bus assigned to them, just say that all went
+@@ -556,6 +556,13 @@ int bus_add_device(struct device *dev)
+ 		return 0;
+ 	}
+ 
++	sp = bus_to_subsys(dev->bus);
++	if (!sp) {
++		pr_err("%s: cannot add device '%s' to unregistered bus '%s'\n",
++		       __func__, dev_name(dev), dev->bus->name);
++		return -EINVAL;
++	}
++
+ 	/*
+ 	 * Reference in sp is now incremented and will be dropped when
+ 	 * the device is removed from the bus
+-- 
+2.53.0
+
 
