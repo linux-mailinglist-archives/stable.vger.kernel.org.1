@@ -1,200 +1,226 @@
-Return-Path: <stable+bounces-242209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHnrDtLG82ni6wEAu9opvQ
-	(envelope-from <stable+bounces-242209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 23:17:06 +0200
+	id oK3TECbK82mL7AEAu9opvQ
+	(envelope-from <stable+bounces-242210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 23:31:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAF64A8179
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 23:17:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A29C4A8355
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 23:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1BFB3063A85
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:15:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 50B2830055AF
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2186C3242B5;
-	Thu, 30 Apr 2026 21:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F8027A904;
+	Thu, 30 Apr 2026 21:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKxwnJEG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E54yCNp0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6A329D26B
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 21:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777583733; cv=none; b=S3YRe2IXPZKearxAvHutu6vwkzUokI3i9cEUZa/YxZr9L2rJPbpcUVU1Rglo3/efs/h+iAIfxFe3hxbfgQMuTn+SkAnziejGakHFfsFItFUDjagg2wVcKClReYrDQbP2yH/ghYoz3TWJg0cxtxZfQuyuePZcwtGzLlLKEL31Lno=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777583733; c=relaxed/simple;
-	bh=a2/4NZb1cq6S5TUZgGQmvZJsMsttNjgFGxtg5rSSmVY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sW7SKr45CWRW1xSJZX0L7o/M7e/DcyIr8bLvsuEIUO2GKVu4t1Qx4q4uAmAnCelrmshX02ibaaHFxbM2uW7qb5ABPdGCv8slsJ/qlMtiy6w77jp5yvyV/I8ZsuYIi9+85g5R9VYfZcCk6je4p0due9FZTlvOSEW6im+PZlqu5W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKxwnJEG; arc=none smtp.client-ip=74.125.82.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FA136E467
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 21:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777584190; cv=pass; b=mCX5Fla8ECHx3f/2LF/4tGh49BodWlnBaa663mvwmiL5JYKbBhdJAh9ebr4v0WbbILFqFft9aNW7D1nO1H0XOJllu5orC6iKxU+0el2CBO1cMOenkGB5TPo/oniZqrVYev5WkBdSkizVLvUJOhx1mfqYb4vlGvrDSUHDUMlN5FM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777584190; c=relaxed/simple;
+	bh=2uxDae9ONJwe0Y0DiJfQRd5vGS73WGpldKj8Ll5+1w0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jgcfwiZs4uS5K+Vq3qSQ82e6XxtsHMdVU95xhXjMJiWZLo73AGT7nrDsTrN2ZPSWEwhD42XZjlpeZbfkD+TsMcEnBod4y9srrGt3qMmjjFEO2lSZ5ogXvQZ8NQrvunP2QNPNrqRC21zo3oFsx8Elx43SACUuVGSKmHyq9YJWj7Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E54yCNp0; arc=pass smtp.client-ip=74.125.82.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2c15849aa2cso2098781eec.0
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 14:15:32 -0700 (PDT)
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12db205ca0bso156502c88.2
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 14:23:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777584188; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RszlUcvV1Vf0y0saVoueQ0dBLZzh/lqZpNyr4rcnZBNq+osDz8O3A2T7FZiduidijB
+         /LOk897/QNvnPw/6BBzAyFv1+gOjUcaICYFOBuu6SJrXjC8CQosH2iH2KprlIVqP8ttT
+         Yirjmn4frmLJMBT4dqlMW3Gm9SABujuJwwG41wihH4pr5/vNV2Uin6AIv91ovT5R0Zp0
+         yv2mY3ypsHDlAl9cmpUIugaozyiAJdEjzOb26U/wbNgEl0J8zKsst6ch7ESnNF6TkOim
+         8fWPjkQfZknyROElQWMjhvNsTzIjwQtzO36fcJF2fptch/kGHvgXAUbWV90Wiphn4Agq
+         vA/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4bf+/AuCnDsNNa3KHyHBcLKzX/unSh3vRTfxAh38ofQ=;
+        fh=cnW0qUBGvvYNXLXd+rWEDkQOsngiEQ7f4sOXdVrVw60=;
+        b=kXRAOAXeDcuzW6ukfpuMJ0HZhgu4538/m+bunf/NWwrCoBFPjhMi9yvtfPz45xfxBI
+         8XCugzB6LlPibDQQbhK7x0gzvwNt9Kgo27MUeeIbBOfPcW/wInGYGBIS33QfS6TL/rjV
+         7UiH6rZgcUXDdo67/YJ9uBIkCH1UvTLOQcL2lDv/u9KnyDEH4c0MsSmZomKaVgB4PhpG
+         lj/NgF5mxSYZ6fVC/sNUdXU4TGmwoUVofVO+5IDenASkB1GJxZiqTvz3esR8Ll+4YYV6
+         WYmOD41C1ZV3OAoI3CJX1cW+LpClRID+Vc+xaJGrzb3DMxnz+UrjGGYIRNUtDEKLWV15
+         uTLg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777583732; x=1778188532; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u5HU0juTrz/+bwfhVRVrLsU2IXIIJwo9lCW9lyuPHrs=;
-        b=kKxwnJEGCtsHTgv4VoUkOt1Th28Qyo02lxw30BFbeDfYQyLew/K+5otDe21Ogss4eG
-         6BJitBwQfeU0jaKi6qb3nEfmaQXS5oO04PLigJyVNMpGG2SN0AHpgb+BxCQdkReRZUzo
-         ukgcnAC/z8M7FBNJy4SI2IDxqJap0IWqkXShs2ou3A6DOclsLEGzE/m+Q9dLyTmQA0zn
-         9OCtZfQa3myC9btptJeW2wh5JqNDZtMagARtDC9vrKiOSub6QqcuoBu8dzcbPaGebBkG
-         hxtvXpTfE992B+mz1ZeGfh4QIe/WCIP2ylM3oCg+ym1IbmHd9Y8MGcz/WEoWkdHonTTO
-         3muQ==
+        d=gmail.com; s=20251104; t=1777584188; x=1778188988; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4bf+/AuCnDsNNa3KHyHBcLKzX/unSh3vRTfxAh38ofQ=;
+        b=E54yCNp0FG43nSKEpwde3bQTmZl/TTAtQZji6dbtMHoP19ZG6tOCoGU6An01Nb/X0b
+         /uj1WufJRkFeawqWBtNPw8FwSY7jNFtte87EaN/byvdDgGuA7GU5AzQ+rqpwN//XM36I
+         dJnXLcl+RqjnfO6q+++cJI1S9HdYGLUolLRw/gTNSWFkaKSg7KX72HNaK+o1/OyYdZ6v
+         Y4tw7d/DzivwdfumkbTLLxdNtsBe/pI4Ff/lH6uobn9S81UZujUAj9K5TuLPwKund+ND
+         2cKY8Z7vZblsho2GNeoY5vMaPGYoVhG8jPw8huTBa/BYe2KJkri14wlXjQoKX3OP38SE
+         fUQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777583732; x=1778188532;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=u5HU0juTrz/+bwfhVRVrLsU2IXIIJwo9lCW9lyuPHrs=;
-        b=QRC8lGDB4lj1jh/ROMgjqV9f3XZd48fJGm4uZ+aP18IppfoJsFZhKTMCaokfljhkUD
-         hzPvzlB782eodTriTf1mhuBCvLU39kc4oQs4CTmInTne0LrZp+y7ctubbHrhid6o0awP
-         FYUJTHPjick2/SekfWToPiVzqLCEjcwXiooOkTFDWxpCma4bNTjnbgLpLDh2e6HyiocL
-         boNhvHK3Ni8j4moM06ah+YtoJm5ZlBJVID7P2qThDS7n2CBsv2JKNFubUQJmF6ye1Pz4
-         nZKVf+1JEjlHPbVMulCeWFfN5zM9IqOmVXOFsNT6SVCi91sOFxaWeSUCmp3RFKv2NHDx
-         0dVw==
-X-Forwarded-Encrypted: i=1; AFNElJ/5bId6vX51AQKw1YymReeyCyseNXNm5cradU7qSSA8nqdU4yuxv5nvIEmBFV2zpCp8X8H5M+Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUywZVMjhiUp0FKA7aSe94hzAdQyuN2+t7X/Ds27CsqkCR18bD
-	gBCafhNCecQZahuaiSGVn1ESetgy/t44DUU6a+XNWv83XkXD7iuHYGOZ
-X-Gm-Gg: AeBDietk1ZZsZSLR0bqn+xWrG3xCoH5YnZqKYonNyziyiv0IAfdWNr+cLJrsY4R5Knr
-	EB8ypOTpNZDuh5RQW5r3/mFe6wS9eEdnzqnzDL8Jy8IBLGezqWAbKnkNvlPFEpKIL+4GYc3sFfM
-	mQ/yU/M2m72IY5alf+YSMFgHtN8jyyr0ZnCGQ3fDYiXwOstz6mseiCTcyjJt1BTdMQo6bWzR0Qz
-	1mFxuLAWs+h8rS0YX1ye9Y2uqcBeQa5rHeD7Gw2fReRDW4bK+skpbAQn0Gt/+x3aIRCDe875CcI
-	d1yIQ73mq+ktKvvwREF1zAakqBKLO+3JE9mvhkOneDN4vHLIyDnbkxbtqO+hMf0ZAjx2j3TL6vE
-	8m9c43DticbS0wZKTWNv+AXy509aqkVaIRYkqFALHfeD9B0ei/Ip9RiEH6WKR9DEm2iJTjY7h3Q
-	3i+oTyjNKPp3FAZnmm21LDNb0Qw3h0r9fRK08ESaZEIKCN6Rr0XI4LzItT1FNZmun4BqS3LQK6S
-	uET5M0SgNTB
-X-Received: by 2002:a05:7300:cac8:b0:2ce:25be:c8e8 with SMTP id 5a478bee46e88-2ed3f15d4e0mr2351042eec.17.1777583731421;
-        Thu, 30 Apr 2026 14:15:31 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3b783a95sm1581959eec.22.2026.04.30.14.15.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 14:15:31 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Thu, 30 Apr 2026 18:15:11 -0300
-Subject: [PATCH v2 2/2] ALSA: hda/tas2781: Cancel async firmware request at
- unbind
+        d=1e100.net; s=20251104; t=1777584188; x=1778188988;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4bf+/AuCnDsNNa3KHyHBcLKzX/unSh3vRTfxAh38ofQ=;
+        b=mNf2Nl1RBJStYiAdC4jFvR4OchOQSHaJQVBgHMdk8WucMhdK9att7dEAUG9fTztjxp
+         84QSf1TURLpXC32nEW0WrxJHuIktXD9kzssoiY2WHmFlSAUb3g9LhLS60LuIfhrvbEJD
+         X2uMEH6lOlOvgHgLdlzDGdB+brtFBxJZ8G3zfwGIdq6h5RhNZkMIcbKQ4U/CHpbDW76D
+         g6qNKCNXOmQksFOr6lNgnhHJbu1n9npJW/5GUasP+zMLjs4kKopDmihuMrMN7E/q5RhU
+         /f9hvTAE3c50F/On9HK9A7T6c7RXOR3tlilavynTOVfHBB5H2/ZwM5Az0xwib1gWTzUQ
+         KHCg==
+X-Forwarded-Encrypted: i=1; AFNElJ8bTxNje+YwOO2e9kqcXCVKgya4beOvMY5lvWwS1uV0TyZ/h1cgF2KuH2+CYpwJeJJ3HKo0AaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWQlmKTCn4X7O9H+SnG9Rm7u3damTLxq5yKxiaD/aJMsWSBRUj
+	T0PDRVMGu8aluF4F2MQDD1r9Eby1yzIxg+5HcgcyHtuuqxV7TcI9YoqSEITYfUv8RmtVA1c3yqX
+	4f3ayL6oObT2MUKGKhSgE468C0/4NCA0=
+X-Gm-Gg: AeBDieuUiPSXVUkCcycLLW47uwnGWLK5MK99ZlVJO42vBFxibgEgyx108dFokzJHKsg
+	oFaCCUTzt/dLtqQhDp0Mrwvm4WZp3Dguj19lvWNoZGTOZQjSjCPCmUc1mCfIxA6LUYBUxLcFD5V
+	cVj/X7yRVuo/xl/rKqOkC5qg1jMyVHk62W6VThF0SWXAXseXSEXhkC4r7llQk0K2auG2slNBvm7
+	PZ+f+YyCm1S4illSHXSr49BzrOElN/HYXO1tG4LatV8fBcvavYAGk6sZ0b4lZz8U8U4rJMiGZUM
+	fiKKTCdfFpqVRmgHBXsNWoVWYWWpAsysU2yiKD5JAdcCVNk5WNofqn5Okl2UoZYcAWwlsywA6GW
+	vYOKixbgQvklI7+c44oYMf6fG85IUy3EKUQ==
+X-Received: by 2002:a05:7301:5803:b0:2ea:de28:f389 with SMTP id
+ 5a478bee46e88-2ed3ef6ebd6mr980570eec.8.1777584188058; Thu, 30 Apr 2026
+ 14:23:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260430-alsa-hda-tas2781-fw-callback-teardown-v2-2-2c7d89cb3175@gmail.com>
-References: <20260430-alsa-hda-tas2781-fw-callback-teardown-v2-0-2c7d89cb3175@gmail.com>
-In-Reply-To: <20260430-alsa-hda-tas2781-fw-callback-teardown-v2-0-2c7d89cb3175@gmail.com>
-To: Luis Chamberlain <mcgrof@kernel.org>, 
- Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
- Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
- Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>
-Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-sound@vger.kernel.org, Takashi Iwai <tiwai@suse.de>, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2197;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=a2/4NZb1cq6S5TUZgGQmvZJsMsttNjgFGxtg5rSSmVY=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJmfj6W+ZUkUXdEW9+/VnoZpvg5rn7+9absxJKC+v2dqp
- 7FQ6bGDHaUsDGJcDLJiiiyrkxZZ7ul6cLU+boUHzBxWJpAhDFycAjCRL3EM/1S+9qy722QU1d+t
- lBwu6vzwg32OG3/QW6Pp0zpMxRWZvzIyLHQPWvF4+95dJxoMtv6+VurxX0XFy3vVFMfrmtktnYk
- feAA=
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Rspamd-Queue-Id: ABAF64A8179
-X-Rspamd-Action: no action
+References: <20260426144201.227108-1-ojeda@kernel.org>
+In-Reply-To: <20260426144201.227108-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 30 Apr 2026 23:22:55 +0200
+X-Gm-Features: AVHnY4IfHY-QpW189HGIBjOv408u-WVPLp2De5vzk3HKKlMEGMU_6EDA8ddRWI4
+Message-ID: <CANiq72mSsW2PwOb++YyHM518s=2A7TEVugqL_ufZjGuiSsg4Fg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: allow `clippy::collapsible_match` globally
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <christian@brauner.io>, 
+	Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1A29C4A8355
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [7.34 / 15.00];
+	URIBL_BLACK(7.50)[rust-lang.github.io:url];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,suse.de,gmail.com];
-	TAGGED_FROM(0.00)[bounces-242209-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242210-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	R_DKIM_ALLOW(0.00)[gmail.com:s=20251104];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	GREYLIST(0.00)[pass,body];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,android.com,brauner.io,google.com,kernel.org,garyguo.net,protonmail.com,umich.edu,vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.997];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,rust-lang.github.io:url,mail.gmail.com:mid]
+X-Spam: Yes
 
-TAS2781 HDA I2C and SPI queue RCA firmware loading from component
-bind with request_firmware_nowait(). The firmware loader keeps the
-callback module pinned and holds a device reference, but the callback
-still uses driver-private HDA state.
+On Sun, Apr 26, 2026 at 4:42=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> The `clippy::collapsible_match` lint [1] can make code harder to read
+> in certain cases [2], e.g.
+>
+>       CLIPPY P rust/libmacros.so - due to command line change
+>     warning: this `if` can be collapsed into the outer `match`
+>       --> rust/pin-init/internal/src/helpers.rs:91:17
+>        |
+>     91 | /                 if nesting =3D=3D 1 {
+>     92 | |                     impl_generics.push(tt.clone());
+>     93 | |                     impl_generics.push(tt);
+>     94 | |                     skip_until_comma =3D false;
+>     95 | |                 }
+>        | |_________________^
+>        |
+>        =3D help: for further information visit https://rust-lang.github.i=
+o/rust-clippy/master/index.html#collapsible_match
+>        =3D note: `-W clippy::collapsible-match` implied by `-W clippy::al=
+l`
+>        =3D help: to override `-W clippy::all` add `#[allow(clippy::collap=
+sible_match)]`
+>     help: collapse nested if block
+>        |
+>     90 ~             TokenTree::Punct(p) if skip_until_comma && p.as_char=
+() =3D=3D ','
+>     91 ~                 && nesting =3D=3D 1 =3D> {
+>     92 |                     impl_generics.push(tt.clone());
+>     93 |                     impl_generics.push(tt);
+>     94 |                     skip_until_comma =3D false;
+>     95 ~                 }
+>        |
+>
+> The lint does not have much upside -- when the suggestion may be a good
+> one, it would still read fine when nested anyway. And it is the kind of
+> lint that may easily bias people to just apply the suggestion instead
+> of allowing it.
+>
+> Thus just let developers decide on their own.
+>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsib=
+le_match [1]
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72nWYJna_hdFxjQCQZK6yJB=
+rr1Mb86iKavivV0U0BgufeA@mail.gmail.com/ [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Component unbind removes controls and DSP state immediately. Later
-device removal tears down the TAS2781 private data, including
-codec_lock. If the async firmware callback runs after unbind has
-started, it can operate on state that is being torn down.
+Applied (both patches) to `rust-fixes` -- thanks!
 
-Cancel or synchronize the async firmware request before removing
-controls and DSP state. A queued callback is cancelled, and an
-already-running callback is allowed to finish before unbind continues.
+    [ In addition, as Gary points out [3], the suggestion is also wrong [4]=
+ and
+      in the process of being fixed [5], possibly for Rust 1.97.0:
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-Fixes: bb5f86ea50ff ("ALSA: hda/tas2781: Add tas2781 hda SPI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
----
- sound/hda/codecs/side-codecs/tas2781_hda_i2c.c | 2 ++
- sound/hda/codecs/side-codecs/tas2781_hda_spi.c | 2 ++
- 2 files changed, 4 insertions(+)
+      Link: https://lore.kernel.org/rust-for-linux/DI3YV94TH9I3.1SOHW515524=
+97@garyguo.net/
+[3]
+      Link: https://github.com/rust-lang/rust-clippy/issues/16875 [4]
+      Link: https://github.com/rust-lang/rust-clippy/pull/16878 [5]
 
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-index 67240ce184e1..34c6940f3521 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-@@ -588,6 +588,8 @@ static void tas2781_hda_unbind(struct device *dev,
- 		comp->playback_hook = NULL;
- 	}
- 
-+	request_firmware_nowait_cancel(tas_hda->priv->dev, tasdev_fw_ready);
-+
- 	tas2781_hda_remove_controls(tas_hda);
- 
- 	tasdevice_config_info_remove(tas_hda->priv);
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-index 0e4f3553f273..6b0d6c764009 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-@@ -750,6 +750,8 @@ static void tas2781_hda_unbind(struct device *dev, struct device *master,
- 		comp->playback_hook = NULL;
- 	}
- 
-+	request_firmware_nowait_cancel(tas_priv->dev, tasdev_fw_ready);
-+
- 	tas2781_hda_remove_controls(tas_hda);
- 
- 	tasdevice_config_info_remove(tas_priv);
+        - Miguel ]
 
--- 
-2.54.0
+Ideally, we would have an `Acked-by` on the second one from Binder
+maintainers, but it is trivial.
 
+Cheers,
+Miguel
 
