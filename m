@@ -1,183 +1,177 @@
-Return-Path: <stable+bounces-241971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKGCJd6s8mn/tQEAu9opvQ
-	(envelope-from <stable+bounces-241971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:14:06 +0200
+	id gK1lNQKu8mkatgEAu9opvQ
+	(envelope-from <stable+bounces-241972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FF549BF50
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:14:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3611049BF83
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9D426300B8C5
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 01:14:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44EA2302BE1F
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 01:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAB92475CF;
-	Thu, 30 Apr 2026 01:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1BE259CB9;
+	Thu, 30 Apr 2026 01:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/PNwpQ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEdr9kD2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f193.google.com (mail-qk1-f193.google.com [209.85.222.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D878B2367D3
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 01:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.193
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777511641; cv=pass; b=eG3P28PwvYt4hepTZIyko082MWw+H4rjjsuIIQHmfJ0VSB1DLE6NwJj5bz95exUJFfQc3houHpMv8TbZwi2sp8Z2zEP1qi9GqVvaFazDnWRP6zQcFeiulImMmvEwRuTCCDrV6tsqXiSsoYLexenDNUhVX0tK016oiGTjdkcSN4s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777511641; c=relaxed/simple;
-	bh=tqaDce29jr/G7DRTAEhFxC4N7p1PmHs0sEj/V7P6OGc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CdjW4/dLdQrbJgl2IS5Yx6egVbxwHiVlLGSAVqOBgYEGpL/GjBkGqcBBQ17U88+fOOJbKG/VjAp65JHUfzAFQXozKbU6xkJ2zYOHqUH8vzIYWCfu5CA4l7dnQEOURL0PTWMxiVIaIoVnSlkYmYDlTALF9h9eNu5tT9Rqm7QU58c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/PNwpQ5; arc=pass smtp.client-ip=209.85.222.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f193.google.com with SMTP id af79cd13be357-8eae9229110so64008085a.1
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 18:13:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777511638; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EbMZiSky8rKzIYWHZQXkPHciUdhc3z5WGYeGB6QwlUOaMw07pisuN/owoQb174gq7L
-         aoCeZF6a0Ea5R/YUM87gkuL8v4+VB478FCRrAw0MVijIdk9VQS8ONJvTyCsMpdEH1BlQ
-         l42sriZ7v9HwgwVlFMQqp2MyZvIvaLtNlgiRXB3bVuK+AtDabvwzyhJ74ItBVsDhClp1
-         XLHriTTJLHS/nn0u4Hvub4tjSH/t3zZo3TzYfUSpcrxHCHjqxR35tFbFPPoB0qDoDOAe
-         szqEBnnLnZAKrGPnSgUy1knd45fBR27DjXqa2L2qW7o9/rCCT1DucOzvlhKKsvzbbdN/
-         0eIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
-        fh=HFpwh4JyAtUfur3ZupbuTJ5yyYTlrZBL89DSuBYBKDs=;
-        b=ACYuWt6uN6JigQ/WST9eGo8Hro/LU+5rWxPkodU05y9IuFtvEaLW3N2eTKmgFU2H0g
-         AK/OKMBO3CMjNlsBXhgPosjh8bJJ+5U/XrHOcs1G1EXJJQiKvxQWS0LlKeGYzAQT6xip
-         0SEqImU8v4CABTSLMcDa8CkPIbpMtOGUfuEnIZo8Hw/YVIfhJotluWk7o+/7w/guzlKz
-         MTW/AwFFqkgCKQ6k8V5jCNvpDTbf8/ATT/Uz21T0DADWYskHCQtgGFAVThm0pf4LtEse
-         tsOwzu4MkNUsNmA1rOgqMxRwFKkFHz6gh3ccybAbYb5/XvpmjP7Judnn2ZRlq68znhfq
-         C3+w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777511638; x=1778116438; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
-        b=O/PNwpQ5zrqHYinmxLZo6hYQ+Gt71tWCyga2F/pWkU/AKr/XVW9OXFyJwhcLhd7joG
-         Q6pPyM2J9pl4SyWpa2an2h6aciEpTdg1fBvfdGrrJ+iozenF3jHnjk0zyZi1qyFkiq5O
-         zuwxv13fwWgp4QIsGuarCy/BXgldahpj0F2ccjwnVg7i9RD6P8Dgsv7pn/AlMcPCpisW
-         dz6buLQIUXtMpGkIBWaiXywyQtX5Z7qTuCBnnbhR6z5EUubyBvEM8Z5fSowY+a1jjCYM
-         7hhNwLu8AO/oAKivm8k4p+gEkEW2xbB54FrgQX+Mu9TTtVk04orNOUxLSlwYB2p+YffH
-         epbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777511638; x=1778116438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
-        b=rEzh5GAby+labLTuNSfCRr89jQiuknWInXX7JPAomgDJ4Mnka7wsYnTG8YqFPhsbai
-         4+KSg0k4h2wClAyy7lzPmoUoDeKVsSQXoADxH9wefBNjGjI+/nAFi6G0Ix4/v/q/Wacb
-         JsVWJGS8UTeks8CrVXL0Ksgwr1Iab+qt0AzO+/7mvp7PdHgXmTP92LWFWlOjWnfzrY0f
-         oNbuXGjkSO8Q/kWVXhxpgObd3rNL9uBjBqAAvHaWzuqTEWDNjc1OOrXFkNiTiiTPeGS1
-         Si7eoQLFaHkukcLdD00oWduCPgP3zOEALVSqndT4dN9WdVVwQgFJfT6fC3eUVBiacsWQ
-         Cgag==
-X-Forwarded-Encrypted: i=1; AFNElJ++dmXCBkYxHGuYTFBfjB9qqdC4PuZV3JAD8rRXWTZYMRp+CrbAOOn8MDe8GDjYzT3QZb04t30=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdYSJRZtFel6bEXbS6tZ3UejH5OqSY/bBvJ2zaepEAM+nm6hgA
-	tcnuCWHCnAK344c/BWTuI/um7K0nNR7v8Y7aobsQZ6q+3rB9PA5umg9HQJmZ8pHBDewWm/6dUiC
-	JK2UI0P4uhn0KDYdE5wJ6awSHAtvZGjk=
-X-Gm-Gg: AeBDieslvw/opetMJ9LrnohngIrg4bOrkHWrmprqDqAUVMdRNcNyLq0gXCVoNuCnxt1
-	H9J9tOkFnV34a8SxFlwhRt/8l3bI7LO9TWwqwqYfodnTFRMZ7jf8StV+W+m1DCwoWRprSLhJ1iD
-	8iKBmMsXHgniQK1/TDE9UfoOF0deexKwRtrFqV3j1RgQvPociOhA9VPiwpP5d6Mn7/EDjOY7Lz8
-	9xzo9wivhNAUPKJmSJ+f02yEeCwWYJKd7iQnezzTPJq9qXLr4GFeKR2hOY3H1ZICN9pUUl+1JSU
-	a1vjtVDMhy5Ug1iI3sCG1/L9QtuHCzNiTop0C9K8ZI0/YFfI6nPC/rrPgJtk/tcr1Xo570/mQY8
-	h97U=
-X-Received: by 2002:a05:620a:1786:b0:8ed:e1d4:1644 with SMTP id
- af79cd13be357-8fa863df4bcmr184203285a.3.1777511638380; Wed, 29 Apr 2026
- 18:13:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F364194A6C;
+	Thu, 30 Apr 2026 01:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777511929; cv=none; b=rS/G3a9aFvdQmVFbcuSoCoT2rYEN535HW06nIRGPoL3PEFGxmW/qnNewelWn5JJZMSFLJP4vPR/i6gATDq7vL9cPc8LFJV08F6FGYilP5Q3N+Mv1UWXCuKJq7UYM3Z3bKG1+x1IH0NW1EiUgn8mrrTKDc5BsQtjhE4JhbQ7zu3A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777511929; c=relaxed/simple;
+	bh=8I/TGIeJpKZJ99tALKbqpZFfrLAguMqYMRot9pDDjFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nm5Zax7NBDsFx9GbB3yho0kl6jcV0UQwwby8Sz6BcTM7MeDNlV0eZW4KL0NH6E1Mi/VOIAHcuo+Euvn6aGBZqfRWJ7m0bhkYhQANwws7b+BmMbaIueqa5HsF86vdmaKXu3IqrbztdWGIdKskF6MLWAyxsPrUSZ+DWhRK6LADzKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEdr9kD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432F0C19425;
+	Thu, 30 Apr 2026 01:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777511928;
+	bh=8I/TGIeJpKZJ99tALKbqpZFfrLAguMqYMRot9pDDjFA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CEdr9kD2r1ZVsI0g0c7GJRNC+Pq09jt6y+7cDDBpYMJV/41JimIDZMSiNyXoQZ2Us
+	 iimqk9jWtUXNca7Ne9Gu5y8BpvEmXd1V5r+jNM/Lmwt+8ZWz14yFq4elltN2VJq7Co
+	 NKi45Q8L8SFdopY/EYrAqunqvI5qXIFRpHYsVIaUdkKjgrnl8SsnnZ8e4vMfuzeiqK
+	 Qs0cXPCi7GXPgKNpD+wLoVKxvD8gPPKNM/1fBsydCt9FTDYfkaBvYGGel3//uYg2GE
+	 3Cq7Au9wcuVc9IGPDaNzL02+h7BmRU7lJC2ESobGzAwBcCT12rTLTFL/525SDiejCz
+	 JLNd6LSa3MUdA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: maoyixie.tju@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	kuniyu@google.com,
+	shaw.leon@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	kuznet@ms2.inr.ac.ru,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	security@kernel.org
+Subject: Re: [PATCH net 1/2] ip6: vti: Use ip6_tnl.net in vti6_changelink().
+Date: Wed, 29 Apr 2026 18:18:47 -0700
+Message-ID: <20260430011847.2344915-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260428110713.2550315-2-maoyixie.tju@gmail.com>
+References: <20260428110713.2550315-2-maoyixie.tju@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428030826.47509-1-enelsonmoore@gmail.com> <20260429175421.014bb28f@kernel.org>
-In-Reply-To: <20260429175421.014bb28f@kernel.org>
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Wed, 29 Apr 2026 18:13:46 -0700
-X-Gm-Features: AVHnY4J1jUYA03pvf-5_5V3JNJphmuZu7BwnIMTt_nc9cAvdILco119uAEfpHjU
-Message-ID: <CADkSEUiRwto-14zkER30WJdiQa2b+OGOZ+2S50pq4doJ37X70Q@mail.gmail.com>
-Subject: Re: [PATCH v2] net: ethernet: rnpgbe: mark nonfunctional incomplete
- driver as BROKEN
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
-	Yibo Dong <dong100@mucse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, MD Danish Anwar <danishanwar@ti.com>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 97FF549BF50
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3611049BF83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241971-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241972-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,google.com,gmail.com,davemloft.net,redhat.com,ms2.inr.ac.ru];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.944];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Wed, Apr 29, 2026 at 5:54=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
-> I'm having second thoughts about this. I'm worried users will come to
-> expect that drivers are marked as BROKEN until such time that they
-> can be considered a sufficiently complete replacement for an OOT /
-> vendor driver. This will be highly subjective.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+ip6: vti: Use ip6_tnl.net in vti6_changelink().
 
-Hi, Jakub,
+After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+rtnl_link_ops"), vti6_newlink() correctly resolves the per-netns vti6
+hash via link_net. vti6_changelink() and vti6_update() were not
+converted in that series and still read dev_net(dev) /
+dev_net(t->dev), which diverge from the device's creation netns
+after IFLA_NET_NS_FD migration. The result is a stale per-netns hash
+entry; cleanup_net() of the original netns then walks freed memory.
 
-I understand your concern, but there is precedent for doing this when
-the driver doesn't work at all.
+> diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+> index ad5290be4dd6..dcb257411d6e 100644
+> --- a/net/ipv6/ip6_vti.c
+> +++ b/net/ipv6/ip6_vti.c
+> @@ -722,10 +722,11 @@ vti6_tnl_change(struct ip6_tnl *t, const struct __ip6_tnl_parm *p,
+>  static int vti6_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
+>  		       bool keep_mtu)
+>  {
+> -	struct net *net = dev_net(t->dev);
+> -	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
+> +	struct net *net = t->net;
+> +	struct vti6_net *ip6n;
+>  	int err;
 
-The ntsync driver was marked as broken in commit f5b335dc025c ("misc:
-ntsync: mark driver as "broken" to prevent from building") until it
-was fully merged. The BROKEN dependency was then removed in commit
-c301e1fefc2d ("ntsync: No longer depend on BROKEN.")
+Does this fix introduce a regression by leaving a loophole in
+vti6_siocdevprivate()?
 
-If it were my decision, I would remove BROKEN from this driver once it
-supports a stable network connection, and perhaps also once it
-survives suspends and resumes, since that is expected in modern
-desktop use cases. I think that is a fairly objective reading of the
-word BROKEN.
+While vti6_changelink() and vti6_update() now correctly use t->net,
+vti6_siocdevprivate() still uses dev_net(dev) to locate the tunnel during
+a tunnel modification ioctl:
 
-It might also be a good idea to agree on expected uses of
-CONFIG_BROKEN and document them in init/Kconfig.
-Currently it says:
-  This option allows you to choose whether you want to try to
-  compile (and fix) old drivers that haven't been updated to
-  new infrastructure.
-which does not fully encompass what it is used for.
+net/ipv6/ip6_vti.c:vti6_siocdevprivate() {
+	...
+	struct net *net = dev_net(dev);
+	...
+	case SIOCCHGTUNNEL:
+		...
+		t = vti6_locate(net, &p1, cmd == SIOCADDTUNNEL);
+		if (dev != ip6n->fb_tnl_dev && cmd == SIOCCHGTUNNEL) {
+			if (t) {
+				if (t->dev != dev) {
+					err = -EEXIST;
+					break;
+				}
+			} else
+				t = netdev_priv(dev);
 
-Ethan
+			err = vti6_update(t, &p1, false);
+		}
+	...
+}
+
+Because the collision check occurs in the new namespace (dev_net(dev)), but
+vti6_update() now modifies the original namespace's hash table (t->net),
+could an attacker in the new namespace configure their tunnel to perfectly
+match the parameters of an existing victim tunnel in the original namespace?
+
+Since the check in the new namespace finds no collision, it seems it bypasses
+the error check. Then vti6_update() prepends the attacker's tunnel
+into the original namespace's hash table, which might allow intercepting or
+hijacking traffic destined for the victim tunnel.
+
+Should vti6_siocdevprivate() also be updated to use t->net for collision
+checks to prevent cross-namespace traffic hijacking?
+-- 
+pw-bot: cr
 
