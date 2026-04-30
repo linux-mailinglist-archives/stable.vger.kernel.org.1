@@ -1,116 +1,200 @@
-Return-Path: <stable+bounces-242145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCcwGPd382mt4AEAu9opvQ
-	(envelope-from <stable+bounces-242145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:40:39 +0200
+	id sEugBJ1482mt4AEAu9opvQ
+	(envelope-from <stable+bounces-242146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:43:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041604A4F8C
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:40:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B594A504E
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:43:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 235ED3001FFF
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:38:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9C7B302BDFC
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F7F3290D2;
-	Thu, 30 Apr 2026 15:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E80B33D6E3;
+	Thu, 30 Apr 2026 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MTKO1+k6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJJuuIUT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0972E2C08D4;
-	Thu, 30 Apr 2026 15:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB76257824
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 15:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777563528; cv=none; b=Ovz1g9ErKZazoFYgRQlDsp3m0Je/lFcnKEaqv9Pc4HLBj4Tr9IVFyvdYY8CzVDzPOJeC47kuHf2zFfxCLiEHrBHrYT1Jbs+/B7+DCEuIUGJpc1zxeY7agmwX7FQAN99xd4phiniZmF4qdMnwUVnsTdZa/RdvGBv6mUilljcpBkw=
+	t=1777563657; cv=none; b=mC8IqFyPluZE/GdD8ImQG4/guBt/2xzrji61Kbq+exsTCeFm0EKMrOuBrtmhVnJj19cLHSpQPb4E+sC8tyVE/GtlXHaKe1pW04KtYgWWENPadwE3MJeRo6xT0nOFSJmd/IAFXTSYz6bBrZ/Sr/lN7fZUcukc9ilfDyOqOKGGrxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777563528; c=relaxed/simple;
-	bh=8OolfLwWwxTmLUkqeMTXK9OIOZKt5KSDF1NSjnW2kL0=;
+	s=arc-20240116; t=1777563657; c=relaxed/simple;
+	bh=z0DYBvb+LZUpxretZCjDv+k9yn01sF1apvq6+r/SDyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=khAppTekrp0xrUTn5BiKUyTzlxxlYD+vu7YIN5OeaPA/jCm0h6JkkyJbc2io+wS/K02ezhsyT3CM4mmP6YnnIsk2MDzjtsm8mrCmlqjvnpDOfRrP5GVWjA7Lo50jAqTmFOW0DBFlvb3HWJxI/3TQB9r68UxRj7eveybLATUqTU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTKO1+k6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDD4C2BCB3;
-	Thu, 30 Apr 2026 15:38:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777563527;
-	bh=8OolfLwWwxTmLUkqeMTXK9OIOZKt5KSDF1NSjnW2kL0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTKO1+k6e4KsB4vN8Qz2H3X9XzIX5BQ2eRM3SjOI/tCLKTDl6LH8uH5CLNnHFcb4k
-	 s/BwW4XJ4jCfNNunZDL7wfPqIiYMR4WCHxsrAJN+DOzMNMiTkRwoQ0d9cm3n+uOnJs
-	 oo8wqMh1jkM78zP5AXXHOtnbUnP9ZSN0fSU4BtN7sI1l6pIcR9JYBEpImVPq5rCRei
-	 D9H+MCe023NPDxPlj9KK07MaAAMcwj3T5kHGfFp3VpuJzoQTEWSnrdvzSyphCo/B6/
-	 fvcjQwZzaNJm3t8y4sPqUtu8k9y1iyaLQ8li8+e+HN2KTrQUdyOwj8DRd3nawSCQpF
-	 hWmhxgs9IWdqQ==
-From: Danilo Krummrich <dakr@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rafael J Wysocki <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] driver core: reject devices with unregistered buses
-Date: Thu, 30 Apr 2026 17:38:43 +0200
-Message-ID: <20260430153843.3517839-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260430091718.230228-1-johan@kernel.org>
-References: <20260430091718.230228-1-johan@kernel.org>
-X-Patch-Reply: applied
+	 MIME-Version; b=rXFy08IjFnNuUEuw3qyPLR3oTD5tKf8wI8ltUtIU6mWDY/jyl8uka5ec+aGpWs49O86CZArA0+6G9kGYy7HQ5grGogWH4nEtQu0h8Wu5DfMnBWeRKzcFvQtakzCvWXMM08unF7DV5QCNN7W4fJNr+ymkP6763ZqufNECn4C6oX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJJuuIUT; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488d2079582so11435925e9.2
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 08:40:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777563654; x=1778168454; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/1jOo4LrB4QdOIsyappS3L/Lh2AU+Kgh3i+w/0anQdk=;
+        b=dJJuuIUT+cTodLhKdLcHNOczbeJHwb0K63slp0RTXkUY6t3dlXd/UOl/jbx/yKOmRS
+         fr1QjWcBacT3xIr+9W16NyM69ACtUunD3r3PfJceojrqmblCGmuPvntIahKhNValqesw
+         tGO6QYp1LBiYOKvEsacq7ISgKs4JNYmafY7GeVHcrZvBVndeKq8CpAM2/ch4G3kqSFaF
+         Xd2n/8XC1ZDKXKSj/VSD8sMVOx5ttAjYRrRCNNPZmhrJSl9PxYirKrDyAzWbFPzYNOqu
+         D/rKls+pDfn+L8QcFO7bCYQ7FhvHxGKA9uytJZBu9VVeQ/QSMU63Dz9p0B2/vVGnxSr4
+         q4dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777563654; x=1778168454;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/1jOo4LrB4QdOIsyappS3L/Lh2AU+Kgh3i+w/0anQdk=;
+        b=Ri4bA4Vkze9ZkFL+wTR1DP/RgPLGjIvsPHXiuMkSvHA/Bsnm5ronR9KAPsuW7/ApBL
+         pcgiYLSSZRQjP6OhBTMu4YgrDRH/IbuYeIpg1a4hxDfLIdYwu86iOGnhH53nLuKCzjl0
+         pGxAYe/x6255KZslg9l7xWwXScz7aIqEg3nlnyBi4xCepqmHUWSMgbGe59JOba+nzAns
+         BLvzr8cXJBRiujoJ8f6dzm9+js3oWiVNBGqmP395nVfu0qm5kvHQAFmdRcU9CL2xsVCH
+         9vPke2UgMu2xa4tes1JPLXO7Wo3pkTOdmnrn9k9S9x2cmleBsrBn+c+t7juptabjFg74
+         0tkw==
+X-Gm-Message-State: AOJu0Yw28XLOxyEBb4i5gDGAWsLHtwuUpp+fuYTOsfVxYPLob/DTKEht
+	8DiHE+zHOWHhAPL0a/Obj45nlgbw1wGyXb85eqo2wGhMuqsolfYsiICajcbj77sqnJW+hw==
+X-Gm-Gg: AeBDiesP8M4ea6XzuP4h/uc+73bmjmhGeHG9LBFy8Lw+bss0acpV0NPesVyhMXSx2BE
+	vQYjyDlJP9Q2t2R6u925NOiR1yu1oDxC2PcHEPpZHVnUtp6uBRmWgG7VnSWX/leczQEKs/Yn9Rj
+	XwbrBFe2zt2pP41XePA7vMWKJUjEuQ8fOI45jzEqTdUOl++eqDth2YEjJucnSXHaLnd8VHnDKuA
+	AXBFQVwkwSCAC6mwXIO50hhfhQPEV0BkQidaByqJhoSjIlLLNacMC53FFvX2HwTINfCcGcbn+3o
+	27C5R0FCl5+lPpWDdIFaAo0ZtSICDHz73m/UTtjsy560P3xBdc0YdwG9DDvKIYKpalW7MPtRJ+7
+	UksEI1mtjZNATuCPbUpsmIaEkuLwBjz7mmf8UpJB56+sG4QQ5w5TBuNr1nsr+GK42OKQtiDLRSV
+	6QCaqwfCCYpPBN/8flv1e1B7DAsbcEc0ne5I1elyHSO6EB9uq6ZJDdvdLzvUzQfB7gAyZHEPlEq
+	vBSh+5dFkN0LD56tImUHIbCV8eSTXJP6vdcrg==
+X-Received: by 2002:a05:600c:190f:b0:48a:563c:c8c5 with SMTP id 5b1f17b1804b1-48a83d6ebe5mr57909705e9.8.1777563653525;
+        Thu, 30 Apr 2026 08:40:53 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:a041:e04f:2600:a0c9:1d35:8283:f96b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7b901a15sm96960055e9.1.2026.04.30.08.40.52
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 30 Apr 2026 08:40:53 -0700 (PDT)
+From: Kai Zen <kai.aizen.dev@gmail.com>
+To: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	gregkh@linuxfoundation.org
+Subject: [PATCH net v3] net: rtnetlink: zero ifla_vf_broadcast to avoid stack infoleak in rtnl_fill_vfinfo
+Date: Thu, 30 Apr 2026 18:40:44 +0300
+Message-ID: <3c506e8f936e52b57620269b55c348af05d413a2.1777557228.git.kai.aizen.dev@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CALynFi54eQj7SOmF6QNG0eqhLw7AuURzo6tSYQavvM3ZP74ikw@mail.gmail.com>
+References: <CALynFi54eQj7SOmF6QNG0eqhLw7AuURzo6tSYQavvM3ZP74ikw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 041604A4F8C
+X-Rspamd-Queue-Id: 68B594A504E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242145-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[kaiaizendev@gmail.com,stable@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242146-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Thu, 30 Apr 2026 11:17:18 +0200, Johan Hovold wrote:
-> [PATCH v2] driver core: reject devices with unregistered buses
+rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
+without initialisation:
 
-Applied, thanks!
+	struct ifla_vf_broadcast vf_broadcast;
 
-  Branch: driver-core-testing
-  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+The struct contains a single fixed 32-byte field:
 
-[1/1] driver core: reject devices with unregistered buses
-      commit: 13c7c1752b6c
+	/* include/uapi/linux/if_link.h */
+	struct ifla_vf_broadcast {
+		__u8 broadcast[32];
+	};
 
-The patch will appear in the next linux-next integration (typically within 24
-hours on weekdays).
+The function then copies dev->broadcast into it using dev->addr_len
+as the length:
 
-The patch is in the driver-core-testing branch and will be promoted to
-driver-core-next after validation.
+	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+
+On Ethernet devices (the overwhelming majority of SR-IOV NICs)
+dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
+written. The remaining 26 bytes retain whatever was previously on
+the kernel stack. The full struct is then handed to userspace via:
+
+	nla_put(skb, IFLA_VF_BROADCAST,
+		sizeof(vf_broadcast), &vf_broadcast)
+
+leaking up to 26 bytes of uninitialised kernel stack per VF per
+RTM_GETLINK request, repeatable.
+
+The other vf_* structs in the same function are explicitly zeroed
+for exactly this reason - see the memset() calls for ivi,
+vf_vlan_info, node_guid and port_guid a few lines above.
+vf_broadcast was simply missed when it was added.
+
+Reachability: any unprivileged local process can open AF_NETLINK /
+NETLINK_ROUTE without capabilities and send RTM_GETLINK with an
+IFLA_EXT_MASK attribute carrying RTEXT_FILTER_VF. The kernel walks
+each VF and emits IFLA_VF_BROADCAST, leaking 26 bytes of stack per
+VF per request. Stack residue at this call site can include return
+addresses and transient sensitive data; KASAN with stack
+instrumentation, or KMSAN, will flag the nla_put() when reproduced.
+
+Zero the on-stack struct before the partial memcpy, matching the
+existing pattern used for the other vf_* structs in the same
+function.
+
+Fixes: 75345f888f70 ("ipoib: show VF broadcast address")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kai Zen <kai.aizen.dev@gmail.com>
+---
+ net/core/rtnetlink.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index b613bb6e0..df042da42 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1572,6 +1572,7 @@ static noinline_for_stack int rtnl_fill_vfinfo(struct sk_buff *skb,
+ 		port_guid.vf = ivi.vf;
+ 
+ 	memcpy(vf_mac.mac, ivi.mac, sizeof(ivi.mac));
++	memset(&vf_broadcast, 0, sizeof(vf_broadcast));
+ 	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+ 	vf_vlan.vlan = ivi.vlan;
+ 	vf_vlan.qos = ivi.qos;
+-- 
+2.43.0
+
 
