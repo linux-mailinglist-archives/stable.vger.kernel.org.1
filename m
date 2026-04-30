@@ -1,159 +1,165 @@
-Return-Path: <stable+bounces-242042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SE4mDHAC82lswgEAu9opvQ
-	(envelope-from <stable+bounces-242042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:19:12 +0200
+	id 8HxzC2wB82lswgEAu9opvQ
+	(envelope-from <stable+bounces-242041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:14:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD4249E86E
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:19:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A123249E7AA
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB38930570CE
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 07:14:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41CCC301D321
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 07:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D90639BFFD;
-	Thu, 30 Apr 2026 07:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43E539BFFB;
+	Thu, 30 Apr 2026 07:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="UaoP2Ge6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kYBcSMOz"
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="oVgLBWoK"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D310C377EBC;
-	Thu, 30 Apr 2026 07:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A18377EBC;
+	Thu, 30 Apr 2026 07:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777533290; cv=none; b=j1rByj2UurfIh28qt4kzt6xclU042V/k0ueBqQT9KdIPDSgml9+L/NuzhwMD+I2lwwevq8XbVuuVeQesIU7cUVFg90o3B9rCR0e5g1ZCX9VsA6bRIHHeDXHVnk/LQcUg5oWMYAkEgRiEiSbwdkI9xe1ISjaIOBHysm/L6LWmAyw=
+	t=1777533280; cv=none; b=shNTCCbk57idlN7+8TXw5wm7cud0vlcb0HWI8r4jCu/neYcrjCFO072O8PupE7snXkXiUXWKZl5LG0honk+gTTr2Ze1iP2A94DdUOldH8ikW/awsfdg1yyOajQ/B1rGToa+gmMJn2Fmom8s8kYefpcLxm3A7Tq7915q/2+3txbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777533290; c=relaxed/simple;
-	bh=MEcjXTzZlyjt2PeKQfm2/w4PEMRUiDCmw/7DBOXvbF0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BA9WCcD+cS9r3y3MFyqvKmxpBNSMxprH1lf2FruOOF1ZruweFbYo5NeCZClIcX5box+Ebqd36ktZCIId6KBBqaiv8977JBKSJQXGE10OWxwSZhixIJmlOH213l8xMLJe7xz36466HdIk93GCcMb6c/EGAjRuw+mjhjBPgfzBWfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=UaoP2Ge6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kYBcSMOz; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 0EC2B1D0005D;
-	Thu, 30 Apr 2026 03:14:47 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 30 Apr 2026 03:14:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1777533287; x=1777619687; bh=u6LrQpJaPC
-	0YlQY7hm45cbsv7jFqX5wenKOhGdaP7OI=; b=UaoP2Ge6AGzXaTpyAGI86hVvet
-	03zSzBP/ZG88/FW4JNlp0u/DYxQ79IZnvlac1lEbs1UpvclJFfQp7FxrGIhkexBg
-	KBFJzsIDn1kFvlPlxmd1xLTh3HXrNnC94w3G+43m2xKhLGWi/3YV/ELX/ef8Xm0d
-	p6dU2uOLU17vYnyO/rUtR36ZePGAZ5MSnjO06sXNrhzCnxwgvMvb1klgx6/N2pWd
-	0wYf3w3q2LoyRC1xeblRFrxAWij8zEA9+vCSkz/Hx2OsKmuCmtiIffeMwTjncNWv
-	caAcsOdLD5jd9w1WSI5qU3xHjE+TbR/ITV0Q0oYmKp6HVhrGApjqPFQNmpPg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1777533287; x=1777619687; bh=u6LrQpJaPC0YlQY7hm45cbsv7jFqX5wenKO
-	hGdaP7OI=; b=kYBcSMOzz+ufsZd/zsq38N01h6nb+b2WohbVe8ZLkjHBL4aQ7NN
-	3GU1Pc62RmqgzmzOR6YZsVTCwidhsN3HG83WfFHHt0272xjm6H4Dm+hn43xSgQS4
-	QW+jlJg2a9g8Qts0j66HZ6HL+PZ4LqY1hMYQhT9Dl52vmiXjJYFyAJCXPWoAoKMJ
-	COjDKCApAONp0vXxYyNWLyafdL0fhBLrZclpZxESw2AUxnWelkNzoRr7iK9oFkfi
-	/n95DM+F1RF6j5JxR0p/5+cujCRv4BCJ/e/vSfTY68qBO0d4/bjc1NsUG/eec06D
-	78f4yVjcHUmSPfFuxmw1hktU0jXEVrQvKBA==
-X-ME-Sender: <xms:ZwHzaUYJKvx7-ObFp81QVrxzndMv_wIHw0L1k3OZ4Md6P63IhY9Dvw>
-    <xme:ZwHzaSfYN5NBfQGsYhBrDcmuYywXaCGSqTA9YGD004qMuk8Z9_yVNdepy0xSakU88
-    UJ9gWxivKxAgaKM-OrC9X6pC40OdPUn8UmAlnbrF6KcE_pvpg>
-X-ME-Received: <xmr:ZwHzaZnqC01lxYE_TxQ3vzXXlZzVei2diraGQCasxGf-y8RKZgwZ2K8Axb0pZL5YxOjtcQyaqJmUQvUA9zqHyR4j8Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekieeilecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
-    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefhjefgffekie
-    ehteekhefftdefueehudevffeiheevheeltefgtdeuudfgffekudenucffohhmrghinhep
-    tghophihrdhfrghilhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
-    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepkedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepvggsihhgghgvrhhssehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehlihhnuhigqdgtrhihphhtohesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprghnrgdrohhrghdrrghu
-X-ME-Proxy: <xmx:ZwHzaa3Q5k4WPR0vSZ-dXQPjRlRYsZnAPCjF3VCsyqZCXE9joXzK6Q>
-    <xmx:ZwHzaaew_vDZFqR1Km_MzEwYiVxEELhMBMgs2dJwW7uDxZuxQ4LRYA>
-    <xmx:ZwHzacZRjd0tqyQYtxACpQSGC00mzAzJH0IjmZJ0McwQ30HuzKvgMg>
-    <xmx:ZwHzaXF3puw7LlqTwWFidf9LPyKfX9Fiw1AkI93A87jzGnQxloV3dw>
-    <xmx:ZwHzaZh0d08byDmckFhSz2ldSiZwbn-n7dw0bZ7kf9QAMysIByyUMAiN>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Apr 2026 03:14:47 -0400 (EDT)
-Date: Thu, 30 Apr 2026 09:14:00 +0200
-From: Greg KH <greg@kroah.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: stable@vger.kernel.org, linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH 6.12 0/8] AF_ALG fixes
-Message-ID: <2026043050-drainpipe-salvage-07c1@gregkh>
-References: <20260430060702.110091-1-ebiggers@kernel.org>
- <20260430061120.GA54208@sol>
- <2026043052-juiciness-dreamlike-e33c@gregkh>
+	s=arc-20240116; t=1777533280; c=relaxed/simple;
+	bh=9p6qcbnC9W8Op8ZW63/wJ/shZ8IDJFL5eDzsJbCfzjE=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=pXnLaE5q/HjZkJdxRJ4ZlqI1bkvFLpcW2JiJfVDYEvZkG4LNIxjhpBP3LGLwRRboD7s9AWW9HtVkz60Kdu4HDVJL573+EXSItRquX6gRbJc8t2dfteOs2b+A1loIirFXVWkJDrYwBA2DEUA1LcIwl5fA2LB3ni6TAytOSKdtdQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=oVgLBWoK; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D5E9FA5338;
+	Thu, 30 Apr 2026 09:14:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1777533273; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ofsbHe1+Vc16B+sH0Di155irlQlERmPTioiiPYeTY1U=;
+	b=oVgLBWoK1rhtvx9PiPWRC2g0SEkdmrUkxMbW5NjqEiEC1t7iqgqM9f9IvzYazP57a0qzs9
+	Do/ceK3rgdkeA+V+yyU9c+MQrKPoawLG1wUXL6rTmIhYmYf4bIeVRxcXZFBprsS3DaULGn
+	KHTXJnJrcL35ReG9UaRAb/XjYQMJmmoSgRJ6C+iGfY4bWX8gxvSHgfbvsamRERzQclLuz0
+	o/WFnwqd90ymjKeweI2bFh7lg705xtwVTk0QbfjsmD1LSGe4YIi4xVURPQMFGimxOXSL8i
+	Iy6FM8TEP6rGXr5FoKYP79QmrubtJ5s+lAc5P+SNBdwpxN/ZSyOztgfCWXKaxA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026043052-juiciness-dreamlike-e33c@gregkh>
-X-Rspamd-Queue-Id: 8BD4249E86E
+Date: Thu, 30 Apr 2026 09:14:26 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik
+ <jeff@garzik.org>, Paolo Valerio <pvalerio@redhat.com>, Conor Dooley
+ <conor@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
+ <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 2/4] net: macb: drop in-flight Tx SKBs on close
+In-Reply-To: <20260429193446.5985abea@kernel.org>
+References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
+ <20260428-macb-drop-tx-v2-2-647f5199d8df@bootlin.com>
+ <20260429193446.5985abea@kernel.org>
+Message-ID: <08335d886fb578f18b13f82deafe2995@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: A123249E7AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm2,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[tipi-net.de:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242042-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[tipi-net.de];
+	TAGGED_FROM(0.00)[bounces-242041-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[tipi-net.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kroah.com:dkim,messagingengine.com:dkim,copy.fail:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On Thu, Apr 30, 2026 at 09:05:02AM +0200, Greg KH wrote:
-> On Wed, Apr 29, 2026 at 11:11:20PM -0700, Eric Biggers wrote:
-> > On Wed, Apr 29, 2026 at 11:06:54PM -0700, Eric Biggers wrote:
-> > > This series backports the recent AF_ALG fixes to 6.12.  These include
-> > > the fix for https://copy.fail/, fixes for that fix, and some other fixes
-> > > that went in at around the same time that seem related.
-> > > 
-> > > To enable the 5 actual fix commits to cherry-pick cleanly, commit 1
-> > > copies the latest implementation of memcpy_sglist() from upstream, and
-> > > commits 2 and 5 cleanly cherry-pick a couple cleanup commits.
-> > > 
-> > > I didn't check older kernels yet, but this should be usable as a
-> > > starting point for them.
-> > 
-> > It applies to 6.6 as well.  There's a conflict on 6.1.
-> 
-> There's a conflict on 6.6, let me see if I can fix it up...
-> 
+Hi Théo and Jacub
 
-I think I got it working now...
+On 30.4.2026 04:34, Jakub Kicinski wrote:
+> On Tue, 28 Apr 2026 18:32:58 +0200 Théo Lebrun wrote:
+>>  	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+>> -		kfree(queue->tx_skb);
+>> -		queue->tx_skb = NULL;
+>> +		if (queue->tx_skb) {
+>> +			unsigned int dropped = 0, tail;
+>> +
+>> +			for (tail = queue->tx_tail; tail != queue->tx_head;
+>> +			     tail++) {
+>> +				if (macb_tx_skb(queue, tail)->skb)
+>> +					dropped++;
+>> +				macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0,
+>> +					      SKB_DROP_REASON_NOT_SPECIFIED);
+>> +			}
+>> +
+>> +			queue->stats.tx_dropped += dropped;
+>> +			bp->dev->stats.tx_dropped += dropped;
+> 
+> I'm slightly baffled by the stats in this driver.
+> 
+> Incrementing of both device and queue stats is highly unusual.
+> The driver seems to already have the values for the per-queue drops
+> but currently never increments it (did I miss it?) It does for Rx
+> stats but not for Tx stats.
+> 
+> As sashiko correctly points out incrementing dev stats will lead
+> to races and lass of increments for multi-queue devices.
+> 
+> Since there are no increments for tx_dropped stat today - could you
+> please delete it from ethtool -S, migrate the only existing
+> dev->stats.tx_dropped++; to increment the per-queue stat and make
+> macb_get_stats() collect the tx_dropped from all queues, instead
+> of relying on the device-level stat?
+
+Would make sense, yes. While we're already cleaning this up, two
+more things possibly worth touching:
+
+1. macb_start_xmit() drops the skb on macb_clear_csum() and
+    macb_pad_and_fcs() failures without counting it. Both could
+    use a tx_dropped++.
+
+2. tx_packets / tx_bytes already increment per-queue but never
+    rach nstat (rx side too). Could just pick them up in the same
+    loop.
+
+> [...]
+
+Thanks,
+Nicolai
 
