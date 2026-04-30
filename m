@@ -1,165 +1,230 @@
-Return-Path: <stable+bounces-242041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HxzC2wB82lswgEAu9opvQ
-	(envelope-from <stable+bounces-242041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:14:52 +0200
+	id YN18BBwD82lswgEAu9opvQ
+	(envelope-from <stable+bounces-242043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:22:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A123249E7AA
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:14:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5B949E91D
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 41CCC301D321
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 07:14:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6C16304752F
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 07:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43E539BFFB;
-	Thu, 30 Apr 2026 07:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CB839FCAC;
+	Thu, 30 Apr 2026 07:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="oVgLBWoK"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bhfNzI/w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A18377EBC;
-	Thu, 30 Apr 2026 07:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA9E39FCA5;
+	Thu, 30 Apr 2026 07:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777533280; cv=none; b=shNTCCbk57idlN7+8TXw5wm7cud0vlcb0HWI8r4jCu/neYcrjCFO072O8PupE7snXkXiUXWKZl5LG0honk+gTTr2Ze1iP2A94DdUOldH8ikW/awsfdg1yyOajQ/B1rGToa+gmMJn2Fmom8s8kYefpcLxm3A7Tq7915q/2+3txbM=
+	t=1777533500; cv=none; b=uWBCN6aQkCYkPJ431viEsedWI98fxzBzp+wo1m6wx5pers6mtqdVKC5Vz6wAAS1niaZoplkmf4/oIMf8toJeI98bSayWuLMmN+YXuw3Z6Xq7GtQXRjQEwtiTcK/2k+Oz/7lhT+d9S2S4RA+4YTxlcMbqlNzhOB4KjGqQaqwK0QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777533280; c=relaxed/simple;
-	bh=9p6qcbnC9W8Op8ZW63/wJ/shZ8IDJFL5eDzsJbCfzjE=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=pXnLaE5q/HjZkJdxRJ4ZlqI1bkvFLpcW2JiJfVDYEvZkG4LNIxjhpBP3LGLwRRboD7s9AWW9HtVkz60Kdu4HDVJL573+EXSItRquX6gRbJc8t2dfteOs2b+A1loIirFXVWkJDrYwBA2DEUA1LcIwl5fA2LB3ni6TAytOSKdtdQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=oVgLBWoK; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D5E9FA5338;
-	Thu, 30 Apr 2026 09:14:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1777533273; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ofsbHe1+Vc16B+sH0Di155irlQlERmPTioiiPYeTY1U=;
-	b=oVgLBWoK1rhtvx9PiPWRC2g0SEkdmrUkxMbW5NjqEiEC1t7iqgqM9f9IvzYazP57a0qzs9
-	Do/ceK3rgdkeA+V+yyU9c+MQrKPoawLG1wUXL6rTmIhYmYf4bIeVRxcXZFBprsS3DaULGn
-	KHTXJnJrcL35ReG9UaRAb/XjYQMJmmoSgRJ6C+iGfY4bWX8gxvSHgfbvsamRERzQclLuz0
-	o/WFnwqd90ymjKeweI2bFh7lg705xtwVTk0QbfjsmD1LSGe4YIi4xVURPQMFGimxOXSL8i
-	Iy6FM8TEP6rGXr5FoKYP79QmrubtJ5s+lAc5P+SNBdwpxN/ZSyOztgfCWXKaxA==
+	s=arc-20240116; t=1777533500; c=relaxed/simple;
+	bh=Q7foYfp8ARoIBQqg1d2+D9rs0xQ21+cNmUKlyxxvTFE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I1lt+zsczI3HvXIHEjrDMij8ONKcFOR5anwf5jl2UBrzVRDxPpb550pko9mpgsIoqV+HOuCeAxDEoYsaFcNlL6FClu6sXdmsqOU8OzBju8rK7HIUwUFPUo5YHk3H7hZ+pFtxRDRNdICBBq6vpSktOBm0cKnfw3EEIqSVMBU7PS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bhfNzI/w; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ek
+	Cy/GX+5k72OAkBDR9bmLdXrX1HQq/QVHZD/S3Dr/A=; b=bhfNzI/wZX/r+rr2g9
+	yF4Im+Qn4RJ5dYPadk8tB2CeBvw6vzCYOdVaUsHhinRYH4rgwkliidJQcVVkSADF
+	3uZaKO/n3T9h44YgnllO7IEoone5uVvI4SeJyLEMzRtGt9BS4LibpXdiZEe6dry3
+	juSS9f4gL9JOW2wtvHTMU6Fqw=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wAX4WzdAfNpXUOSCg--.61089S2;
+	Thu, 30 Apr 2026 15:16:46 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Haoze Xie <royenheart@gmail.com>
+Cc: Simon Wunderlich <sw@simonwunderlich.de>,
+	Robert Garcia <rob_garcia@163.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>,
+	Marek Lindner <mareklindner@neomailbox.ch>,
+	Antonio Quartulli <a@unstable.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] batman-adv: hold claim backbone gateways by reference
+Date: Thu, 30 Apr 2026 15:16:45 +0800
+Message-Id: <20260430071645.3030702-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Apr 2026 09:14:26 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, Nicolas Ferre
- <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik
- <jeff@garzik.org>, Paolo Valerio <pvalerio@redhat.com>, Conor Dooley
- <conor@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 2/4] net: macb: drop in-flight Tx SKBs on close
-In-Reply-To: <20260429193446.5985abea@kernel.org>
-References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
- <20260428-macb-drop-tx-v2-2-647f5199d8df@bootlin.com>
- <20260429193446.5985abea@kernel.org>
-Message-ID: <08335d886fb578f18b13f82deafe2995@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: A123249E7AA
+X-CM-TRANSID:_____wAX4WzdAfNpXUOSCg--.61089S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXryxGFykCrWrWr13GF1ftFb_yoWrCr15pF
+	17Kw1rKrs7Xws7X342yry2gF1UXrs3GrW7WryUGF1Iyw1jyr18K345KF1IvF4YyFyqkrs8
+	Zr1Ykr17urs8CrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR4SoJUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5h7OOmnzAd4ToQAA37
+X-Rspamd-Queue-Id: AF5B949E91D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[tipi-net.de:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[tipi-net.de];
-	TAGGED_FROM(0.00)[bounces-242041-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[tipi-net.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-242043-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[163.com:+];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[simonwunderlich.de,163.com,gmail.com,lzu.edu.cn,narfation.org,neomailbox.ch,unstable.cc,davemloft.net,kernel.org,lunn.ch,lists.open-mesh.org,vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[simonwunderlich.de:email,lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,narfation.org:email]
 
-Hi Théo and Jacub
+From: Haoze Xie <royenheart@gmail.com>
 
-On 30.4.2026 04:34, Jakub Kicinski wrote:
-> On Tue, 28 Apr 2026 18:32:58 +0200 Théo Lebrun wrote:
->>  	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
->> -		kfree(queue->tx_skb);
->> -		queue->tx_skb = NULL;
->> +		if (queue->tx_skb) {
->> +			unsigned int dropped = 0, tail;
->> +
->> +			for (tail = queue->tx_tail; tail != queue->tx_head;
->> +			     tail++) {
->> +				if (macb_tx_skb(queue, tail)->skb)
->> +					dropped++;
->> +				macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0,
->> +					      SKB_DROP_REASON_NOT_SPECIFIED);
->> +			}
->> +
->> +			queue->stats.tx_dropped += dropped;
->> +			bp->dev->stats.tx_dropped += dropped;
-> 
-> I'm slightly baffled by the stats in this driver.
-> 
-> Incrementing of both device and queue stats is highly unusual.
-> The driver seems to already have the values for the per-queue drops
-> but currently never increments it (did I miss it?) It does for Rx
-> stats but not for Tx stats.
-> 
-> As sashiko correctly points out incrementing dev stats will lead
-> to races and lass of increments for multi-queue devices.
-> 
-> Since there are no increments for tx_dropped stat today - could you
-> please delete it from ethtool -S, migrate the only existing
-> dev->stats.tx_dropped++; to increment the per-queue stat and make
-> macb_get_stats() collect the tx_dropped from all queues, instead
-> of relying on the device-level stat?
+[ Upstream commit 82d8701b2c930d0e96b0dbc9115a218d791cb0d2 ]
 
-Would make sense, yes. While we're already cleaning this up, two
-more things possibly worth touching:
+batadv_bla_add_claim() can replace claim->backbone_gw and drop the old
+gateway's last reference while readers still follow the pointer.
 
-1. macb_start_xmit() drops the skb on macb_clear_csum() and
-    macb_pad_and_fcs() failures without counting it. Both could
-    use a tx_dropped++.
+The netlink claim dump path dereferences claim->backbone_gw->orig and
+takes claim->backbone_gw->crc_lock without pinning the underlying
+backbone gateway. batadv_bla_check_claim() still has the same naked
+pointer access pattern.
 
-2. tx_packets / tx_bytes already increment per-queue but never
-    rach nstat (rx side too). Could just pick them up in the same
-    loop.
+Reuse batadv_bla_claim_get_backbone_gw() in both readers so they operate
+on a stable gateway reference until the read-side work is complete.
+This keeps the dump and claim-check paths aligned with the lifetime
+rules introduced for the other BLA claim readers.
 
-> [...]
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Fixes: 04f3f5bf1883 ("batman-adv: add B.A.T.M.A.N. Dump BLA claims via netlink")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ net/batman-adv/bridge_loop_avoidance.c | 27 +++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-Thanks,
-Nicolai
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index 17687848daec..fb9aaf82f713 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -2131,6 +2131,7 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
+ 			    struct batadv_bla_claim *claim)
+ {
+ 	u8 *primary_addr = primary_if->net_dev->dev_addr;
++	struct batadv_bla_backbone_gw *backbone_gw;
+ 	u16 backbone_crc;
+ 	bool is_own;
+ 	void *hdr;
+@@ -2146,32 +2147,35 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
+ 
+ 	genl_dump_check_consistent(cb, hdr);
+ 
+-	is_own = batadv_compare_eth(claim->backbone_gw->orig,
+-				    primary_addr);
++	backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
++
++	is_own = batadv_compare_eth(backbone_gw->orig, primary_addr);
+ 
+-	spin_lock_bh(&claim->backbone_gw->crc_lock);
+-	backbone_crc = claim->backbone_gw->crc;
+-	spin_unlock_bh(&claim->backbone_gw->crc_lock);
++	spin_lock_bh(&backbone_gw->crc_lock);
++	backbone_crc = backbone_gw->crc;
++	spin_unlock_bh(&backbone_gw->crc_lock);
+ 
+ 	if (is_own)
+ 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
+ 			genlmsg_cancel(msg, hdr);
+-			goto out;
++			goto put_backbone_gw;
+ 		}
+ 
+ 	if (nla_put(msg, BATADV_ATTR_BLA_ADDRESS, ETH_ALEN, claim->addr) ||
+ 	    nla_put_u16(msg, BATADV_ATTR_BLA_VID, claim->vid) ||
+ 	    nla_put(msg, BATADV_ATTR_BLA_BACKBONE, ETH_ALEN,
+-		    claim->backbone_gw->orig) ||
++		    backbone_gw->orig) ||
+ 	    nla_put_u16(msg, BATADV_ATTR_BLA_CRC,
+ 			backbone_crc)) {
+ 		genlmsg_cancel(msg, hdr);
+-		goto out;
++		goto put_backbone_gw;
+ 	}
+ 
+ 	genlmsg_end(msg, hdr);
+ 	ret = 0;
+ 
++put_backbone_gw:
++	batadv_backbone_gw_put(backbone_gw);
+ out:
+ 	return ret;
+ }
+@@ -2467,6 +2471,7 @@ int batadv_bla_backbone_dump(struct sk_buff *msg, struct netlink_callback *cb)
+ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
+ 			    u8 *addr, unsigned short vid)
+ {
++	struct batadv_bla_backbone_gw *backbone_gw;
+ 	struct batadv_bla_claim search_claim;
+ 	struct batadv_bla_claim *claim = NULL;
+ 	struct batadv_hard_iface *primary_if = NULL;
+@@ -2489,9 +2494,13 @@ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
+ 	 * return false.
+ 	 */
+ 	if (claim) {
+-		if (!batadv_compare_eth(claim->backbone_gw->orig,
++		backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
++
++		if (!batadv_compare_eth(backbone_gw->orig,
+ 					primary_if->net_dev->dev_addr))
+ 			ret = false;
++
++		batadv_backbone_gw_put(backbone_gw);
+ 		batadv_claim_put(claim);
+ 	}
+ 
+-- 
+2.34.1
+
 
