@@ -1,130 +1,173 @@
-Return-Path: <stable+bounces-242151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLS/EAJ682mt4AEAu9opvQ
-	(envelope-from <stable+bounces-242151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:49:22 +0200
+	id AKx2Ldx682nH4QEAu9opvQ
+	(envelope-from <stable+bounces-242152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:53:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B104E4A51AE
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:49:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1F04A529F
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CAC07302CB24
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:49:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0306300EAA0
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BE144CAD7;
-	Thu, 30 Apr 2026 15:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EBB44CAE2;
+	Thu, 30 Apr 2026 15:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iwo+M3QG"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FU9Sc0Z5"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CEA44BC8E
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 15:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65AC44BCB0;
+	Thu, 30 Apr 2026 15:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564154; cv=none; b=TG8Z/miK8iAHx50o86nF0TDL0nnNl5TH5kLX3eKDVv+gkVaDz+Qipp6wvg/1Zif/qFGdPglCZMRdkzXqWhx52IbS7m6IvcH5Toat4kgILI5ib9eqMjFIeLMpOJpSGPWWvQXn0fgxqrmdDOG11pUKU1gVOEdjc4HgN4jfHaYXBXE=
+	t=1777564171; cv=none; b=ZXZt2ElqBOIq7vO1G1wVmkplzGTMfmlGBhdODCR0rdE3uvhODUkqni6CC3WM4LMy+g7XGfX2TRtc1Tu1a/e4ovcrV1vYSYBQI54meyGV2GgLRBHQS73R2VNxd1G4DbpzGbL3LKe0o/OSghwReGxy32/oIVY8MT+e0f/JWqaL5Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777564154; c=relaxed/simple;
-	bh=B/A6auNUdXoDwC07h8sgrRFpq8fcdichT8Vqt7DKumA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CldtAgz3vZ09yITiU6z66lu8CThVXAb5DM1VUMGwKf1mIeCXzx1DRjCL6nA3SHsNQtGr5ig0a41Jew4TeXgIMIsn+JtU5sHQ2IPTzFI0aux0qhwzd2gJt2WR57krn009DbyMw/zBoydmINq+u3uNtW61sczSGg8KO3hqRQxsV4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iwo+M3QG; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <c92e701f-33b5-4f93-8e09-86e36e0dba60@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777564140;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sg09exyfANbcZe40eI+KW434RgIdCLDQC6dSbNk1QGo=;
-	b=iwo+M3QGC2+aMuteqpB4XgW6PETfC0cCr9y2vztm+qkbtmULLim0nNf6RuqKALI7mS+leu
-	8AuxGb9IrFAvcEaK7MaNC3/Y928kGYbEpIDL+0W47Ou4XaxHLwN0F1nzg5StOBkgPvxPat
-	kB96ryqGmV3ZJdx3aGv9tI/uLp/Z3Gw=
-Date: Thu, 30 Apr 2026 16:48:54 +0100
+	s=arc-20240116; t=1777564171; c=relaxed/simple;
+	bh=U9cfvuAJYm3hSOhlE8bKK8zVYOpVn7y76zVweeYTk34=;
+	h=Date:To:From:Subject:Message-Id; b=LdgkIeYVGpXNdtNbpvDTRrjDuqQU1VUxWaDxyZI7FrQUsu/zPUAdO30hOfttguj+/hswxDh6/se4wUYdOtyXY6EeJ6EQQANoJ/Z4XNb9/vEHmxi0LhFk61rvnTss27rHWFSqYfKLhLZwULxwc1BQXNQMaBuV2lNJbxZgdEUBiPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FU9Sc0Z5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCB9C2BCB3;
+	Thu, 30 Apr 2026 15:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777564171;
+	bh=U9cfvuAJYm3hSOhlE8bKK8zVYOpVn7y76zVweeYTk34=;
+	h=Date:To:From:Subject:From;
+	b=FU9Sc0Z5rvBYi+MTmjeTVoaP1QiH391AvO+4oq05iVnAdzZSrYBE7V75oJLtoLqPK
+	 ck/1fxgZTcshfYzIhW/OezKwwYvRKEUJSxyjrpJl+CX1R+SbvWTxnLfwyTAb7wVesE
+	 jcgawwjh4MCOEHEhNJDPzsowoQFSH1sB5lNWQJD0=
+Date: Thu, 30 Apr 2026 08:49:29 -0700
+To: mm-commits@vger.kernel.org,vishal.l.verma@intel.com,stable@vger.kernel.org,rafael@kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,linmiaohe@huawei.com,huang.ying.caritas@gmail.com,gregkh@linuxfoundation.org,david@kernel.org,dakr@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [withdrawn] drivers-base-memory-fix-locking-for-poison-accounting-lookup.patch removed from -mm tree
+Message-Id: <20260430154931.3DCB9C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH v3] bpf: crypto: snapshot params before string validation
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>,
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260430043404.58221-1-pengpeng@iscas.ac.cn>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260430043404.58221-1-pengpeng@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B104E4A51AE
+X-Rspamd-Queue-Id: 0E1F04A529F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242151-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linux.dev,gmail.com,kernel.org,fomichev.me,google.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-242152-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,intel.com,kernel.org,suse.de,gmail.com,huawei.com,linuxfoundation.org,bytedance.com,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vadim.fedorenko@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On 30/04/2026 05:34, Pengpeng Hou wrote:
-> bpf_crypto_ctx_create() receives a BPF-supplied params pointer. The
-> current selftests use static initializers, but BPF programs can also
-> build the struct in writable BPF memory before calling the kfunc. The
-> verifier checks that the memory is accessible; it does not prove that
-> the fixed type[] and algo[] fields are NUL-terminated strings.
-> 
-> Copy the params once into a local snapshot, validate the reserved fields
-> and fixed-width strings there, and then use the same snapshot for all
-> later checks and crypto API calls. This also keeps key_len and authsize
-> stable across validation and use if params points at mutable BPF memory.
 
-You didn't answer the question why copying params will somehow help?
+The quilt patch titled
+     Subject: drivers/base/memory: fix locking for poison accounting lookup
+has been removed from the -mm tree.  Its filename was
+     drivers-base-memory-fix-locking-for-poison-accounting-lookup.patch
 
-> 
-> Add a selftest that fills algo[] completely and expects -EINVAL.
+This patch was dropped because it was withdrawn
 
-What happens without the fix?
+------------------------------------------------------
+From: Muchun Song <songmuchun@bytedance.com>
+Subject: drivers/base/memory: fix locking for poison accounting lookup
+Date: Tue, 28 Apr 2026 16:52:19 +0800
 
-BPF Crypto follows in-kernel Crypto API as all other in-kernel users.
-If there is a problem in crypto - we have to fix it in crypto subsystem.
+memblk_nr_poison_inc() and memblk_nr_poison_sub() call
+find_memory_block_by_id(), which requires device_hotplug_lock to serialize
+the xarray lookup against memory block removal.
 
-NAck.
+Take device_hotplug_lock around the lookup and nr_hwpoison update so the
+memory block cannot disappear between xa_load() and get_device().
+
+Link: https://lore.kernel.org/20260428085219.1316047-4-songmuchun@bytedance.com
+Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/base/memory.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+--- a/drivers/base/memory.c~drivers-base-memory-fix-locking-for-poison-accounting-lookup
++++ a/drivers/base/memory.c
+@@ -1228,23 +1228,29 @@ int walk_dynamic_memory_groups(int nid,
+ void memblk_nr_poison_inc(unsigned long pfn)
+ {
+ 	const unsigned long block_id = pfn_to_block_id(pfn);
+-	struct memory_block *mem = find_memory_block_by_id(block_id);
++	struct memory_block *mem;
+ 
++	lock_device_hotplug();
++	mem = find_memory_block_by_id(block_id);
+ 	if (mem) {
+ 		atomic_long_inc(&mem->nr_hwpoison);
+ 		put_device(&mem->dev);
+ 	}
++	unlock_device_hotplug();
+ }
+ 
+ void memblk_nr_poison_sub(unsigned long pfn, long i)
+ {
+ 	const unsigned long block_id = pfn_to_block_id(pfn);
+-	struct memory_block *mem = find_memory_block_by_id(block_id);
++	struct memory_block *mem;
+ 
++	lock_device_hotplug();
++	mem = find_memory_block_by_id(block_id);
+ 	if (mem) {
+ 		atomic_long_sub(i, &mem->nr_hwpoison);
+ 		put_device(&mem->dev);
+ 	}
++	unlock_device_hotplug();
+ }
+ 
+ static unsigned long memblk_nr_poison(struct memory_block *mem)
+_
+
+Patches currently in -mm which might be from songmuchun@bytedance.com are
+
+mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch
+drivers-base-memory-fix-memory-block-reference-leak-in-poison-accounting.patch
+mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
+mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
+mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
+mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
+mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
+mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
+mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
 
 
