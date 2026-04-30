@@ -1,451 +1,293 @@
-Return-Path: <stable+bounces-242190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHwNGHSc82kx5QEAu9opvQ
-	(envelope-from <stable+bounces-242190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:16:20 +0200
+	id 8NhpGHOb82ku5QEAu9opvQ
+	(envelope-from <stable+bounces-242187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:12:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFCA4A6C39
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:16:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A134A6BC5
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BD7F3022FBB
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:16:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2F62730060B2
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EEA47B406;
-	Thu, 30 Apr 2026 18:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA10B44D696;
+	Thu, 30 Apr 2026 18:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="pq7r7E3B"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T/whbGG7";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XWR4nAct"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F7546AF21;
-	Thu, 30 Apr 2026 18:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777572962; cv=pass; b=UHcHKPlLpfKsfPcxF3b1PrH4BYTmQcGOPmDMBA9Hkvj52frNpu5vHFIhCqi4HUSYBh9UY/VBzibwg0HZdtG5WIZs1BAjC8stN7FrnfobCgv+e8Eond/idIJ1hIcL16fuUMNt6jSs45pIlqlzOWIBxhe+5TwL584lpRjR8jxWiMU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777572962; c=relaxed/simple;
-	bh=mCf4AaTYi/gXyO034hCcH04yGG1e/G2ZsWlg0y4dDmU=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=pk/ndWZ3ncujA/j+apENorZgbGEyb1zxrfZKgP0GPJy2mjewqqgorR6bpcHC2a1LfengPwwE5LPy3TCenf95nSJG/WlN4NamNZP2y0tqnRBXkbQ2wB6B2g6Mc+hG09hgIy1AgdjDFIArfTVPp+hwNnLIBn35gVUs1PYdc1IfvGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=pq7r7E3B; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
-ARC-Seal: i=1; a=rsa-sha256; t=1777572951; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=d661YFcXVTWLrMshK1pbPLTfpT24NY5f7DDHe8FbM5w3BamcPBg98otNuBz6O3JA3S72JuNqJPQzFhgk4QzsWc+ClMiAVvUiaD/6y4HdgUroVPZ+i7WLoCrByw+HGysneA/YsP4S8TLYq5CajRcH3dpW6XEtTih/xBPTK5P5uIA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777572951; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Cj5Mp0fk5sz1fvgYnGU9nSyBpwp/Vp6go4TlSjYCrDs=; 
-	b=OuzcpxyGYtOLUBh2deiZ+z2qNafbRqxCaNQIHoyOiVVzIVLfej+q8UEWQu8wG+JfCB6UOJ5YzP8LL/pm8FqDcNx+zMudDJpmIHEO9RV6DjmsyMMiiKTj6gWiF5+UtuB3lrY0xXfYGPjQqApWeMnRk7QCzfH8PN5diKzzXfEd+b4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777572951;
-	s=zmail2048; d=rong.moe; i=i@rong.moe;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:Date:MIME-Version:Message-Id:Reply-To;
-	bh=Cj5Mp0fk5sz1fvgYnGU9nSyBpwp/Vp6go4TlSjYCrDs=;
-	b=pq7r7E3Bzjt7Osx6rIWahiHrcBMBW+FSeap92BvUkt/RQVZ/lmb5dajGqMqez8zW
-	am4G7y9VlaDtDTTXw06KcVL+Cdnq0TIKIu8O2mGoYfN+rl2JOZ6nCMYROg3IXrWzhPh
-	1py1MNfltKfNEjLyomT5YzfGCwE8raJzVUjcMrRHYLQoueWnOSYr3l1FRnrKeVqTLaZ
-	7chXcEmh4QCs/f/FZxSjPAxXQE4fz9m/LTzzfEWrN+PB1lj9WAUiUjCaqSsraGjQtIB
-	3lppgKXc9nhd8jpR/60UMI/fo5Q1ctpG+KOvgTO26CjhDuBtAtkl6Wd/pqZz9EjDFcl
-	XtNwySbhtA==
-Received: by mx.zohomail.com with SMTPS id 1777572947936673.0187289364471;
-	Thu, 30 Apr 2026 11:15:47 -0700 (PDT)
-Message-ID: <6d1aa0f0bbbd82fd0633619ec4905419db15592e.camel@rong.moe>
-Subject: Re: [PATCH v10 06/16] platform/x86: lenovo-wmi-other: Limit adding
- attributes to supported devices
-From: Rong Zhang <i@rong.moe>
-To: "Derek J. Clark" <derekjohn.clark@gmail.com>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Hans de Goede <hansg@kernel.org>, Mark Pearson
- <mpearson-lenovo@squebb.ca>,  Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet
- <corbet@lwn.net>, Kurt Borja <kuurtb@gmail.com>, 
-	platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-	stable@vger.kernel.org
-In-Reply-To: <AA4D5F92-E158-48D1-85FC-CAA72A4EDD8A@gmail.com>
-References: <20260412211121.2220556-1-derekjohn.clark@gmail.com>
-	 <20260412211121.2220556-7-derekjohn.clark@gmail.com>
-	 <1ce1d6f6-9196-c8a1-913d-4bdec2b1af80@linux.intel.com>
-	 <AA4D5F92-E158-48D1-85FC-CAA72A4EDD8A@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBFF46AF01
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 18:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777572715; cv=none; b=pCvDXv0Q6ll+lflh88zt4v/XtTuGuB9mQcGZ8DPehrQ6VJvMwjRoAy7Z89OeG+pxRVtwHos+ecOpsEsS0CCYSJPcf7wxjmq7bAyZhblaFvAmQrQCBkF3F/I8w9SLk5V8uoy8DVmtReUHPr4ZA9TBzdbc1sex+inK0bpwFPHGtdU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777572715; c=relaxed/simple;
+	bh=gQzIxcSxyvmzQKisxCRYc/QwhGs1vo24eOUTTDHgv8E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rnFKjJkesGDZkSzaAwDzlVoIFL70vAu59s+ic8iEqwXRbiXsnxnwpatkmEd02x24pHOei+BJVmDErKnglN+IWuXub7nSW3gye00hGHYHXVh/a4HPLcWxruD5lIYeEt+bzqiAAxnUajkrnW/M8w/daKCNILT+4nr7DaB+f7Cp0zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T/whbGG7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XWR4nAct; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777572713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W1Whz6JpMQNNVhu6Dh4cuj5tfSFS3tpn/UV4LHkcCn0=;
+	b=T/whbGG7rohgT9TSa62OIwIinfZH0Ah0BCHXZ4k7WdWWsReLxUf17C73i4xAuKoQsieYfQ
+	yVueipirhGCskRlEvwgtH5YrUU42ro3Pf59RUECbTk0fnYyn8yJsZwxf/H3dwfE4X42D7t
+	d6Gb0dfYRI900EqIbrybMYPNSqA1+LU=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-580-RL_gv-vTMx-MOI3Boby6Xw-1; Thu, 30 Apr 2026 14:11:51 -0400
+X-MC-Unique: RL_gv-vTMx-MOI3Boby6Xw-1
+X-Mimecast-MFC-AGG-ID: RL_gv-vTMx-MOI3Boby6Xw_1777572711
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7b3e41a97f0so22054767b3.0
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 11:11:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777572711; x=1778177511; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=W1Whz6JpMQNNVhu6Dh4cuj5tfSFS3tpn/UV4LHkcCn0=;
+        b=XWR4nActPlKZY6LW0pnG+164YKbr0XbgYBkgvdjwCLzldjfA2OPLWYM6u8sZ5XMJyR
+         DReWVoQ88vjpVSHvZqpL/byHX9Q8ZNxIyb208+BfLBaa5uzMXAU8YX6CyRN+1F6eIkAL
+         0RZm+6gvphfKcWozKNh92V5mc7jll/A4rDuq4JWykVyYRxw82pwtM2EN0Q2t2IevNRFU
+         +YIPUsDLxmN2HIjYEm0mGl98FqEfwOsfChWf/qq+H7cv8CzURQrYAaNjL87yfHR09edL
+         egyeQLhvtBmOjzHz37V1OAII85fU+oT9qp+GJFsbpNKPZwiTXWaTEa9rHE0aC/VUrdNb
+         BxZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777572711; x=1778177511;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W1Whz6JpMQNNVhu6Dh4cuj5tfSFS3tpn/UV4LHkcCn0=;
+        b=lyJT85hfmm0HwRTpL1CoKksU1jkF3KwlSvuNhzf4V1ofWZjMxzo2EmEl5Vqt1Jr6py
+         uuynpgdbDHJpui0VWj7ggjSI8fsb15ivIKDulkNr+7jeNZRghmVQMJtMBJ3XUjjxXRmb
+         RwBQdkGenICkvtUmxGmUx6z/JkXjFpuSF+lLZPdALxXw3MbT+/dA+f56fxg8jsAwNhO6
+         MT5UINJZ7fjOoC8BBPemocXw72Y9eS2dl/sLH2QE52PU48kOlCCmYboqx5HqxCqp5yw+
+         zEv7IMBupsgVO6EsjLOzVzTPg7c24iczM2URPFAnbYWtU6d+wg7iYVN6+LHRYiWJ8uJK
+         H7IA==
+X-Forwarded-Encrypted: i=1; AFNElJ/ESIajp9xWupGyWs7VOJX39osQzebDhoJejOkU4F3D70swDmNyp+akaGUZ2ee/L33IaJ1q1Fo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhIP5FZpNc0Ri/SygCDPn9T+z8ZLysvdToK8HbsrlDpk8ibZsw
+	VwR7zf/JZz+w+xeXH6v0kCMDqsCdjgoRf/Qxx8k/HWrj/e+PYsvQ+UVNrZkKONzDv3aaYW2Z9ss
+	0iP1QJen8KZ/YeqqmjwG9Xg4gcv0XcMs7kgxSVsSr85NokjlV6BT29hcefw==
+X-Gm-Gg: AeBDiesVxShJfGmXJAE9H7675p513VV0o0Mu5bGxmyJSE5PK7+2IlC6ZGXaPiH7P9kJ
+	mWHfAX2PIApZs0Prl/GeXnqG1wXuJBZtsV8xKlRylp2Qty3RwWucH7PEHFQ84HVq8gFErN4Eti9
+	W6vQdcxDypNJ/+RbfWe8ihdhG+GgDSwDeWTnuRGBv8zz9HfW28LYtVbnd03g8+7MV9rDHeB1NCP
+	D6Ojdxz2C7qUbnsVXLiOl5Yju3GML//hU2MNv7FhOs/geIRGrgF7BAHfiFX613WPs14nN3x+f0L
+	SVe2GhXt4FjFtuqmSv+pIBV4I8Lk+vgTbtJBQE2zI7Iad3XGOaqO1jY1gJPHUpH7pSygjOgwe3l
+	cQpgNmEr3cWu8LCsGNoXFxJnGLBQX5SG29LthcKoqhg8lVhktWIyDd3OS+LG4JRI=
+X-Received: by 2002:a05:690c:660d:b0:79a:dae4:5832 with SMTP id 00721157ae682-7bd52892ec7mr42941127b3.22.1777572705777;
+        Thu, 30 Apr 2026 11:11:45 -0700 (PDT)
+X-Received: by 2002:a05:690c:660d:b0:79a:dae4:5832 with SMTP id 00721157ae682-7bd52892ec7mr42940677b3.22.1777572705281;
+        Thu, 30 Apr 2026 11:11:45 -0700 (PDT)
+Received: from li-4c4c4544-0032-4210-804c-c3c04f423534.ibm.com ([2600:1700:6476:1430::29])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd6683836asm556967b3.25.2026.04.30.11.11.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 11:11:44 -0700 (PDT)
+Message-ID: <eea194aa0f8734f38fa645db935aca47175bdf17.camel@redhat.com>
+Subject: Re: [PATCH v3] nilfs2: reject CLEAN_SEGMENTS ioctl with
+ out-of-range segment numbers
+From: Viacheslav Dubeyko <vdubeyko@redhat.com>
+To: Deepanshu Kartikey <kartikey406@gmail.com>, konishi.ryusuke@gmail.com, 
+	slava@dubeyko.com
+Cc: linux-nilfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com,
+ stable@vger.kernel.org
+Date: Thu, 30 Apr 2026 11:11:43 -0700
+In-Reply-To: <20260430040704.113622-1-kartikey406@gmail.com>
+References: <20260430040704.113622-1-kartikey406@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 01 May 2026 02:10:39 +0800
+User-Agent: Evolution 3.60.0 (3.60.0-1.fc44app2) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2-9 
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: BFFCA4A6C39
+X-Rspamd-Queue-Id: 92A134A6BC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[rong.moe,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[rong.moe:s=zmail2048];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242190-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	TAGGED_FROM(0.00)[bounces-242187-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com];
-	FREEMAIL_CC(0.00)[kernel.org,squebb.ca,gmx.de,lwn.net,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[i@rong.moe,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[rong.moe:+];
+	FROM_NEQ_ENVFROM(0.00)[vdubeyko@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,rong.moe:dkim,rong.moe:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+	TAGGED_RCPT(0.00)[stable,62f0f99d2f2bb8e3bbd7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email]
 
-Hi Derek,
+On Thu, 2026-04-30 at 09:37 +0530, Deepanshu Kartikey wrote:
+> Syzbot reported a hung task in nilfs_transaction_begin() where multiple
+> tasks performing chmod() on a nilfs2 mount blocked for over 143 seconds
+> waiting to acquire ns_segctor_sem for read:
+>=20
+>   INFO: task syz.0.17:5918 blocked for more than 143 seconds.
+>   Call Trace:
+>    schedule+0x164/0x360
+>    rwsem_down_read_slowpath+0x6d9/0x940
+>    down_read+0x99/0x2e0
+>    nilfs_transaction_begin+0x364/0x710 fs/nilfs2/segment.c:221
+>    nilfs_setattr+0x124/0x2c0 fs/nilfs2/inode.c:921
+>    notify_change+0xc1a/0xf40
+>    chmod_common+0x273/0x4a0
+>    do_fchmodat+0x12d/0x230
+>=20
+> The writer holding ns_segctor_sem was a concurrent=20
+> NILFS_IOCTL_CLEAN_SEGMENTS caller, stuck inside printk while emitting=20
+> per-element warnings from nilfs_sufile_updatev():
+>=20
+>    __nilfs_msg+0x373/0x450 fs/nilfs2/super.c:78
+>    nilfs_sufile_updatev+0x21c/0x6d0 fs/nilfs2/sufile.c:186
+>    nilfs_sufile_freev fs/nilfs2/sufile.h:93 [inline]
+>    nilfs_free_segments fs/nilfs2/segment.c:1140 [inline]
+>    nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1261 [inline]
+>    nilfs_segctor_do_construct+0x1f55/0x76c0
+>    nilfs_clean_segments+0x3bd/0xa50
+>    nilfs_ioctl_clean_segments fs/nilfs2/ioctl.c:922 [inline]
+>    nilfs_ioctl+0x261f/0x2780
+>=20
+> The root cause is that user-supplied segment numbers are not validated
+> before nilfs_clean_segments() begins doing work; the range check on
+> each segnum is performed deep inside the call chain by
+> nilfs_sufile_updatev(), which emits a nilfs_warn() per invalid entry
+> while still holding the segctor lock and the sufile mi_sem.  Under load
+> (repeated invocations across multiple mounts saturating the global
+> printk path), the cumulative printk latency keeps ns_segctor_sem held
+> long enough to trip the hung_task watchdog, blocking concurrent
+> operations such as chmod() that need ns_segctor_sem for read.
+>=20
+> Fix by validating the contents of kbufs[4] in nilfs_clean_segments()
+> immediately after acquiring ns_segctor_sem via nilfs_transaction_lock().
+> Holding ns_segctor_sem serializes the check against
+> nilfs_ioctl_resize(), which can modify ns_nsegments, so the validation
+> uses a consistent value.  Out-of-range segment numbers are rejected
+> with -EINVAL before any segment-cleaning work begins, so the bad
+> entries never reach the per-element diagnostic path inside
+> nilfs_sufile_updatev().
+>=20
+> Reported-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D62f0f99d2f2bb8e3bbd7
+> Tested-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
+> Fixes: 4f6b828837b4 ("nilfs2: fix lock order reversal in nilfs_clean_segm=
+ents ioctl")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+> Changes in v3:
+>   - Move validation from nilfs_ioctl_clean_segments() into
+>     nilfs_clean_segments(), under ns_segctor_sem held for write
+>     by nilfs_transaction_lock(), to serialize against
+>     nilfs_ioctl_resize() which can modify ns_nsegments
+>     (Ryusuke Konishi)
+>   - Introduce local variables segnumv and nfreesegs for readability,
+>     rather than open-coding casts of kbufs[4] (Ryusuke Konishi)
+>   - Emit nilfs_err() once on the first out-of-range segnum and bail
+>     out, instead of nilfs_warn() per element (Ryusuke Konishi)
+>   - Add bail_unlock label for the early-failure path, parallel to
+>     the existing out_unlock structure (Ryusuke Konishi)
+>=20
+> Changes in v2:
+>   - Reuse existing 'n' loop variable instead of introducing a new
+>     one (Slava Dubeyko)
+>   - Add dedicated out_free_segnums label so the validation-failure
+>     path falls through the existing cleanup ladder rather than
+>     duplicating kfree(kbufs[4]) inline (Slava Dubeyko)
+> ---
+>  fs/nilfs2/segment.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>=20
+> diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+> index 1491a4d4b1e1..dc54643866ce 100644
+> --- a/fs/nilfs2/segment.c
+> +++ b/fs/nilfs2/segment.c
+> @@ -2512,12 +2512,33 @@ int nilfs_clean_segments(struct super_block *sb, =
+struct nilfs_argv *argv,
+>  	struct nilfs_sc_info *sci =3D nilfs->ns_writer;
+>  	struct nilfs_transaction_info ti;
+>  	int err;
 
-On Thu, 2026-04-30 at 07:56 -0700, Derek J. Clark wrote:
-> On April 30, 2026 7:01:55 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo.jarvinen@lin=
-ux.intel.com> wrote:
-> > On Sun, 12 Apr 2026, Derek J. Clark wrote:
-> >=20
-> > > Adds lwmi_is_attr_01_supported, and only creates the attribute subfol=
-der
-> > > if the attribute is supported by the hardware. Due to some poorly
-> > > implemented BIOS this is a multi-step sequence of events. This is
-> > > because:
-> > > - Some BIOS support getting the capability data from custom mode (0xf=
-f),
-> > >   while others only support it in no-mode (0x00).
-> > > - Some BIOS support get/set for the current value from custom mode (0=
-xff),
-> > >   while others only support it in no-mode (0x00).
-> > > - Some BIOS report capability data for a method that is not fully
-> > >   implemented.
-> > > - Some BIOS have methods fully implemented, but no complimentary
-> > >   capability data.
-> > >=20
-> > > To ensure we only expose fully implemented methods with corresponding
-> > > capability data, we check each outcome before reporting that an
-> > > attribute can be supported.
-> > >=20
-> > > Checking for lwmi_is_attr_01_supported during remove is not done to
-> > > ensure that we don't attempt to call cd01 or send WMI events if one o=
-f
-> > > the interfaces being removed was the cause of the driver unloading.
-> > >=20
-> > > Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver"=
-)
-> > > Reported-by: Kurt Borja <kuurtb@gmail.com>
-> > > Closes: https://lore.kernel.org/platform-driver-x86/DG60P3SHXR8H.3NSE=
-HMZ6J7XRC@gmail.com/
-> > > Cc: stable@vger.kernel.org
-> > > Reviewed-by: Rong Zhang <i@rong.moe>
-> > > Tested-by: Rong Zhang <i@rong.moe>
-> > > Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> > > Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-> > > ---
-> > > v7:
-> > >   - Move earlier in the series. This required dropping the use of
-> > >     lwmi_attr_id as it will be added later.
-> > >   - Add missing switch between cd_mode_id and cv_mode_id in
-> > >     current_value_store.
-> > > v6:
-> > >   - Zero initialize args in lwmi_is_attr_01_supported.
-> > >   - Fix formatting.
-> > > v5:
-> > >   - Move cv/cd_mode_id refrences from path 3/4.
-> > >   - Add missing import for ARRAY_SIZE.
-> > >   - Make lwmi_is_attr_01_supported return bool instead of u32.
-> > >   - Various formatting fixes.
-> > > v4:
-> > >   - Use for loop instead of backtrace gotos for checking if an attrib=
-ute
-> > >     is supported.
-> > >   - Add include for dev_printk.
-> > >   - Wrap dev_dbg in lwmi_is_attr_01_supported earlier.
-> > >   - Don't use symmetric cleanup of attributes in error states.
-> > > ---
-> > >  drivers/platform/x86/lenovo/wmi-gamezone.h |   1 +
-> > >  drivers/platform/x86/lenovo/wmi-other.c    | 114 ++++++++++++++++++-=
---
-> > >  2 files changed, 98 insertions(+), 17 deletions(-)
-> > >=20
-> > > diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.h b/drivers/pla=
-tform/x86/lenovo/wmi-gamezone.h
-> > > index 6b163a5eeb95..ddb919cf6c36 100644
-> > > --- a/drivers/platform/x86/lenovo/wmi-gamezone.h
-> > > +++ b/drivers/platform/x86/lenovo/wmi-gamezone.h
-> > > @@ -10,6 +10,7 @@ enum gamezone_events_type {
-> > >  };
-> > > =20
-> > >  enum thermal_mode {
-> > > +	LWMI_GZ_THERMAL_MODE_NONE =3D	   0x00,
-> > >  	LWMI_GZ_THERMAL_MODE_QUIET =3D	   0x01,
-> > >  	LWMI_GZ_THERMAL_MODE_BALANCED =3D	   0x02,
-> > >  	LWMI_GZ_THERMAL_MODE_PERFORMANCE =3D 0x03,
-> > > diff --git a/drivers/platform/x86/lenovo/wmi-other.c b/drivers/platfo=
-rm/x86/lenovo/wmi-other.c
-> > > index 50a03f5fd6ab..29d062a1c6dc 100644
-> > > --- a/drivers/platform/x86/lenovo/wmi-other.c
-> > > +++ b/drivers/platform/x86/lenovo/wmi-other.c
-> > > @@ -550,6 +550,8 @@ struct tunable_attr_01 {
-> > >  	u8 feature_id;
-> > >  	u8 device_id;
-> > >  	u8 type_id;
-> > > +	u8 cd_mode_id; /* mode arg for searching capdata */
-> > > +	u8 cv_mode_id; /* mode arg for set/get current_value */
-> > >  };
-> > > =20
-> > >  static struct tunable_attr_01 ppt_pl1_spl =3D {
-> > > @@ -775,7 +777,6 @@ static ssize_t attr_current_value_store(struct ko=
-bject *kobj,
-> > >  	struct wmi_method_args_32 args =3D {};
-> > >  	struct capdata01 capdata;
-> > >  	enum thermal_mode mode;
-> > > -	u32 attribute_id;
-> > >  	u32 value;
-> > >  	int ret;
-> > > =20
-> > > @@ -786,13 +787,12 @@ static ssize_t attr_current_value_store(struct =
-kobject *kobj,
-> > >  	if (mode !=3D LWMI_GZ_THERMAL_MODE_CUSTOM)
-> > >  		return -EBUSY;
-> > > =20
-> > > -	attribute_id =3D
-> > > -		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
-> > > -		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
-> > > -		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
-> > > -		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> > > +	args.arg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devic=
-e_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cd_mode_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> > > =20
-> > > -	ret =3D lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capdata)=
-;
-> > > +	ret =3D lwmi_cd01_get_data(priv->cd01_list, args.arg0, &capdata);
-> > >  	if (ret)
-> > >  		return ret;
-> > > =20
-> > > @@ -803,7 +803,10 @@ static ssize_t attr_current_value_store(struct k=
-object *kobj,
-> > >  	if (value < capdata.min_value || value > capdata.max_value)
-> > >  		return -EINVAL;
-> > > =20
-> > > -	args.arg0 =3D attribute_id;
-> > > +	args.arg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devic=
-e_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cv_mode_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> >=20
-> > It's already repeated a few times and you're adding more in this patch.
-> >=20
-> > We should have a helper function for this encoding as it seems to=20
-> > repeat. That is, something that takes tunable_attr and mode as input
-> > (the conversion of existing entries should be in own patch preceeding=
-=20
-> > this fix patch).
-> >=20
->=20
-> Hi Ilpo,
->=20
-> A function for that is added in patch 10, though it is slightly modified =
-from that to be more flexible is tunable_attr isn't used (such as with the =
-fan test attributes)
->=20
-> Originally I had that patch preceding any additions, but after discussing=
- with Rong we felt like it would be easier for stable backports if all the =
-fixes were upfront. I can certainly move it back if you still prefer.
+Usually, I prefer to keep the err variable at the end of declarations. Beca=
+use,
+it is the ending state of the function. And I am feeling that something is =
+wrong
+every time when likewise variable is hidden inside of declaration list. :) =
+There
+is nothing critical in my remark. But anyway... :)
 
-Moving it back is OK for me, too.
+The path looks good to me.
 
-I think exposing non-fully-functioning fw-attrs on stable/LTS kernels
-should be acceptable as long as reading/writing these attributes doesn't
-break anything, which is exactly the case now (i.e., without this
-patch).
+Thanks,
+Slava.
 
-Thanks a lot for your hard work in this series,
-Rong
+> +	size_t i, nfreesegs =3D argv[4].v_nmembs;
+> +	__u64 *segnumv =3D kbufs[4];
+> =20
+>  	if (unlikely(!sci))
+>  		return -EROFS;
+> =20
+>  	nilfs_transaction_lock(sb, &ti, 1);
+> =20
+> +	/*
+> +	 * Validate segment numbers under ns_segctor_sem (held for write
+> +	 * by nilfs_transaction_lock above) so the check is serialized
+> +	 * against nilfs_ioctl_resize(), which can modify ns_nsegments.
+> +	 * Rejecting bad input here, before any segment-cleaning work
+> +	 * begins, avoids the per-element diagnostic path inside
+> +	 * nilfs_sufile_updatev() that would otherwise run under this
+> +	 * same lock and stall concurrent readers.
+> +	 */
+> +	for (i =3D 0; i < nfreesegs; i++) {
+> +		if (segnumv[i] >=3D nilfs->ns_nsegments) {
+> +			nilfs_err(sb,
+> +				 "Segment number %llu to be freed is out of range",
+> +				 (unsigned long long)segnumv[i]);
+> +			err =3D -EINVAL;
+> +			goto bail_unlock;
+> +		}
+> +	}
+> +
+>  	err =3D nilfs_mdt_save_to_shadow_map(nilfs->ns_dat);
+>  	if (unlikely(err))
+>  		goto out_unlock;
+> @@ -2558,6 +2579,7 @@ int nilfs_clean_segments(struct super_block *sb, st=
+ruct nilfs_argv *argv,
+>  	sci->sc_freesegs =3D NULL;
+>  	sci->sc_nfreesegs =3D 0;
+>  	nilfs_mdt_clear_shadow_map(nilfs->ns_dat);
+> + bail_unlock:
+>  	nilfs_transaction_unlock(sb);
+>  	return err;
+>  }
 
->=20
-> Thanks,
-> Derek
->=20
->=20
-> > >  	args.arg1 =3D value;
-> > > =20
-> > >  	ret =3D lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_S=
-ET,
-> > > @@ -837,7 +840,6 @@ static ssize_t attr_current_value_show(struct kob=
-ject *kobj,
-> > >  	struct lwmi_om_priv *priv =3D dev_get_drvdata(tunable_attr->dev);
-> > >  	struct wmi_method_args_32 args =3D {};
-> > >  	enum thermal_mode mode;
-> > > -	u32 attribute_id;
-> > >  	int retval;
-> > >  	int ret;
-> > > =20
-> > > @@ -845,13 +847,14 @@ static ssize_t attr_current_value_show(struct k=
-object *kobj,
-> > >  	if (ret)
-> > >  		return ret;
-> > > =20
-> > > -	attribute_id =3D
-> > > -		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
-> > > -		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
-> > > -		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
-> > > -		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> > > +	/* If "no-mode" is the supported mode, ensure we never send current=
- mode */
-> > > +	if (tunable_attr->cv_mode_id =3D=3D LWMI_GZ_THERMAL_MODE_NONE)
-> > > +		mode =3D tunable_attr->cv_mode_id;
-> > > =20
-> > > -	args.arg0 =3D attribute_id;
-> > > +	args.arg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devic=
-e_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
-> > > +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
-> > > +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> > > =20
-> > >  	ret =3D lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_G=
-ET,
-> > >  				    (unsigned char *)&args, sizeof(args),
-> > > @@ -862,6 +865,81 @@ static ssize_t attr_current_value_show(struct ko=
-bject *kobj,
-> > >  	return sysfs_emit(buf, "%d\n", retval);
-> > >  }
-> > > =20
-> > > +/**
-> > > + * lwmi_attr_01_is_supported() - Determine if the given attribute is=
- supported.
-> > > + * @tunable_attr: The attribute to verify.
-> > > + *
-> > > + * First check if the attribute has a corresponding capdata01 table =
-in the cd01
-> > > + * module under the "custom" mode (0xff). If that is not present the=
-n check if
-> > > + * there is a corresponding "no-mode" (0x00) entry. If either of tho=
-se passes,
-> > > + * check capdata->supported for values > 0. If capdata is available,=
- attempt to
-> > > + * determine the set/get mode for the current value property using a=
- similar
-> > > + * pattern. If the value returned by either custom or no-mode is 0, =
-or we get
-> > > + * an error, we assume that mode is not supported. If any of the abo=
-ve checks
-> > > + * fail then the attribute is not fully supported.
-> > > + *
-> > > + * The probed cd_mode_id/cv_mode_id are stored on the tunable_attr f=
-or later
-> > > + * reference.
-> > > + *
-> > > + * Return: bool.
-> > > + */
-> > > +static bool lwmi_attr_01_is_supported(struct tunable_attr_01 *tunabl=
-e_attr)
-> > > +{
-> > > +	u8 modes[2] =3D { LWMI_GZ_THERMAL_MODE_CUSTOM, LWMI_GZ_THERMAL_MODE=
-_NONE };
-> > > +	struct lwmi_om_priv *priv =3D dev_get_drvdata(tunable_attr->dev);
-> > > +	struct wmi_method_args_32 args =3D {};
-> > > +	bool cd_mode_found =3D false;
-> > > +	bool cv_mode_found =3D false;
-> > > +	struct capdata01 capdata;
-> > > +	int retval, ret, i;
-> > > +
-> > > +	/* Determine tunable_attr->cd_mode_id*/
-> > > +	for (i =3D 0; i < ARRAY_SIZE(modes); i++) {
-> > > +		args.arg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devi=
-ce_id) |
-> > > +			    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) =
-|
-> > > +			    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, modes[i]) |
-> > > +			    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> > > +
-> > > +		ret =3D lwmi_cd01_get_data(priv->cd01_list, args.arg0, &capdata);
-> > > +		if (ret || !capdata.supported)
-> > > +			continue;
-> > > +		tunable_attr->cd_mode_id =3D modes[i];
-> > > +		cd_mode_found =3D true;
-> > > +		break;
-> > > +	}
-> > > +
-> > > +	if (!cd_mode_found)
-> > > +		return cd_mode_found;
-> > > +
-> > > +	dev_dbg(tunable_attr->dev,
-> > > +		"cd_mode_id: %#010x\n", args.arg0);
-> > > +
-> > > +	/* Determine tunable_attr->cv_mode_id, returns 1 if supported*/
-> > > +	for (i =3D 0; i < ARRAY_SIZE(modes); i++) {
-> > > +		args.arg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->devi=
-ce_id) |
-> > > +			    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) =
-|
-> > > +			    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, modes[i]) |
-> > > +			    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> > > +
-> > > +		ret =3D lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_=
-GET,
-> > > +					    (unsigned char *)&args, sizeof(args),
-> > > +					    &retval);
-> > > +		if (ret || !retval)
-> > > +			continue;
-> > > +		tunable_attr->cv_mode_id =3D modes[i];
-> > > +		cv_mode_found =3D true;
-> > > +		break;
-> > > +	}
-> > > +
-> > > +	if (!cv_mode_found)
-> > > +		return cv_mode_found;
-> > > +
-> > > +	dev_dbg(tunable_attr->dev, "cv_mode_id: %#010x, attribute support l=
-evel: %#010x\n",
-> > > +		args.arg0, capdata.supported);
-> > > +
-> > > +	return capdata.supported > 0 ? true : false;
-> > > +}
-> > > +
-> > >  /* Lenovo WMI Other Mode Attribute macros */
-> > >  #define __LWMI_ATTR_RO(_func, _name)                                =
-  \
-> > >  	{                                                             \
-> > > @@ -985,12 +1063,14 @@ static void lwmi_om_fw_attr_add(struct lwmi_om=
-_priv *priv)
-> > >  	}
-> > > =20
-> > >  	for (i =3D 0; i < ARRAY_SIZE(cd01_attr_groups) - 1; i++) {
-> > > +		cd01_attr_groups[i].tunable_attr->dev =3D &priv->wdev->dev;
-> > > +		if (!lwmi_attr_01_is_supported(cd01_attr_groups[i].tunable_attr))
-> > > +			continue;
-> > > +
-> > >  		err =3D sysfs_create_group(&priv->fw_attr_kset->kobj,
-> > >  					 cd01_attr_groups[i].attr_group);
-> > >  		if (err)
-> > >  			goto err_remove_groups;
-> > > -
-> > > -		cd01_attr_groups[i].tunable_attr->dev =3D &priv->wdev->dev;
-> > >  	}
-> > >  	return;
-> > > =20
-> > >=20
-> >=20
 
