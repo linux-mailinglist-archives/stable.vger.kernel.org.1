@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-242197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLK4EbWx82mD6AEAu9opvQ
-	(envelope-from <stable+bounces-242197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:47:01 +0200
+	id qNd7BLax82mD6AEAu9opvQ
+	(envelope-from <stable+bounces-242198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:47:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFEB4A775B
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:47:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96A04A7762
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49DD6300D1EB
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA36F300D75A
 	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 19:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8011F33EB01;
-	Thu, 30 Apr 2026 19:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8308D350A05;
+	Thu, 30 Apr 2026 19:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s366sgNM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BBVCwdTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D75335564
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 19:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4583134DB6C
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 19:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777578418; cv=none; b=pJsoj1Y8ZfXce0FV2rNjCK9OVfVAdUhyQXBSOwzjb75dVlu2uEoXpJUVPWNxL6La08W00tekEPtz2OTfihc713z+3Fag+DdrS539ZjHDY/eGBvFeOStZN2LwNwnrbXXUUu8z5EBdwu+1JKhk+JkL0PcjgTHbu7KJ2nTmB/M98Os=
+	t=1777578420; cv=none; b=C+R39k5TNf8x3T1wji1/6qwSlhFfcx6cX3OZh4rHc+YVbqWOZGGCnvxUTjegRV1L1gVgYW0cCD774vVR2FBcmzYoOV1ZlT42RMROibxn9gdzr4mRJzqUaAcC5w4X05TY15Ir10G+fNinWUp0hWOiG/DaY62S8HZsQhBzaF7jNxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777578418; c=relaxed/simple;
-	bh=kuBJ/JniM6OAZwVMglkKU13Mf57aQ7AmaRhJGheajx4=;
+	s=arc-20240116; t=1777578420; c=relaxed/simple;
+	bh=df854Rk1TprR94CjXbFYh2wpjIJg7TSylsZTM+LSqMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEp1w+nBHC21F29cD/NVqQT404LvZCmSXTi38SLXo1HDv7MeLuAbrmTriEatHvKhMrMo7wvLF5PWdvClyzk92kfzhW3PodlRQTeTqQnx2tRM0tUrUVYyxkXOSIH4IHrupmD4M4XlhRAtfL5Ikf89Ufn11FsucX015Rzdf/Ts6v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s366sgNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DC9C2BCB3;
-	Thu, 30 Apr 2026 19:46:57 +0000 (UTC)
+	 MIME-Version; b=a2BzV3f+nku0NVx1br5F0/xqIVs2uolQm671H17tOfHmn2WaOxmiv8JMhjwhwpFvBzIKNETvVpjViW41AOOMdOv7mYKoU1dJ04I/B7G1e9DRliGSBIK76s6cUgF5P6sD6QlR2X9zzNDZzR6358QRJXuD5al1E8Soxe3We5mVPaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BBVCwdTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D458C2BCB3;
+	Thu, 30 Apr 2026 19:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777578417;
-	bh=kuBJ/JniM6OAZwVMglkKU13Mf57aQ7AmaRhJGheajx4=;
+	s=k20201202; t=1777578420;
+	bh=df854Rk1TprR94CjXbFYh2wpjIJg7TSylsZTM+LSqMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s366sgNMO8pnt9wsO3Te2yDDYz/WFiilS4Ko6jciHrvWnS+f17yguIBf9vVcW/I9t
-	 /F+2Ewy5wqFl/hdJkrkHvUOQ5tCJnGPx2dgINHdazS66RIZ3ldVTgU8A6nw/GexP7E
-	 558y9qSgq6oRXqaXURdlei7P3Lq9qdnTdHgpFfNyOlabd91c/AjvKsvdWe4yboplvD
-	 y0DXA9QdhlJ4BsSbBKL6xiGIDqlBoe2s2vSMxtgtyzTDS/wMg843SeSh5A77NSK+A7
-	 fKlFpwBxa6UuLw2iU0zSJBvfRRrTVzOSFRuJWrbGwJD+NoXrj9eeSDCC0x7RbQLwxw
-	 XaRd8FM771tcw==
+	b=BBVCwdTknDFe5LxcSPRLEiD6mhKxYmYqNTek0XDWe/zqSbELVoDlFbLOzMbOqMTNg
+	 KzRKVdxSFF62FbEQ+iD/0AWUbMshwhGbjckGD5mFro/yfypXoLPz7jBKgqG/TZDSK/
+	 pEDvkgEHHxTDLI+pN7IEW/rCt3DPO3WMR6qiTQpZSAss2ARTON0+tUG08YfB6McOww
+	 9ibukVRMmLZzrULJUcaG0P0M23xhkQFFutTJW4t84BwBTvWP+5c7oRXVp4zyqBmjWQ
+	 Iqsf8XgyWXF/oS9FBqkuU1QA23HBS0YkkZGCiZS577aiDnRveU7wws42U7hw9nr4st
+	 osPuRWEntw9ZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Daniel Hodges <git@danielhodges.dev>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] thermal: core: Fix thermal zone governor cleanup issues
-Date: Thu, 30 Apr 2026 15:46:54 -0400
-Message-ID: <20260430194654.1996047-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] wifi: mwifiex: fix use-after-free in mwifiex_adapter_cleanup()
+Date: Thu, 30 Apr 2026 15:46:57 -0400
+Message-ID: <20260430194657.1996779-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026043040-shorts-dimly-d534@gregkh>
-References: <2026043040-shorts-dimly-d534@gregkh>
+In-Reply-To: <2026043028-icky-undrilled-1ab3@gregkh>
+References: <2026043028-icky-undrilled-1ab3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DEFEB4A775B
+X-Rspamd-Queue-Id: C96A04A7762
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -79,9 +80,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242197-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-242198-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,70 +91,50 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,danielhodges.dev:email]
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Daniel Hodges <git@danielhodges.dev>
 
-[ Upstream commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 ]
+[ Upstream commit ae5e95d4157481693be2317e3ffcd84e36010cbb ]
 
-If thermal_zone_device_register_with_trips() fails after adding
-a thermal governor to the thermal zone being registered, the
-governor is not removed from it as appropriate which may lead to
-a memory leak.
+The mwifiex_adapter_cleanup() function uses timer_delete()
+(non-synchronous) for the wakeup_timer before the adapter structure is
+freed. This is incorrect because timer_delete() does not wait for any
+running timer callback to complete.
 
-In turn, thermal_zone_device_unregister() calls thermal_set_governor()
-without acquiring the thermal zone lock beforehand which may race with
-a governor update via sysfs and may lead to a use-after-free in that
-case.
+If the wakeup_timer callback (wakeup_timer_fn) is executing when
+mwifiex_adapter_cleanup() is called, the callback will continue to
+access adapter fields (adapter->hw_status, adapter->if_ops.card_reset,
+etc.) which may be freed by mwifiex_free_adapter() called later in the
+mwifiex_remove_card() path.
 
-Address these issues by adding two thermal_set_governor() calls, one to
-thermal_release() to remove the governor from the given thermal zone,
-and one to the thermal zone registration error path to cover failures
-preceding the thermal zone device registration.
+Use timer_delete_sync() instead to ensure any running timer callback has
+completed before returning.
 
-Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each thermal zone")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
-[ adapted context for missing mutex_destroy/complete ]
+Fixes: 4636187da60b ("mwifiex: add wakeup timer based recovery mechanism")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+Link: https://patch.msgid.link/20260206194401.2346-1-git@danielhodges.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ changed `timer_delete_sync(&adapter->wakeup_timer)` to `del_timer_sync(&adapter->wakeup_timer)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 1cf49912dc96c..7b4d31df0e0de 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -986,6 +986,7 @@ static void thermal_release(struct device *dev)
- 		     sizeof("thermal_zone") - 1)) {
- 		tz = to_thermal_zone(dev);
- 		thermal_zone_destroy_device_groups(tz);
-+		thermal_set_governor(tz, NULL);
- 		kfree(tz);
- 	} else if (!strncmp(dev_name(dev), "cooling_device",
- 			    sizeof("cooling_device") - 1)) {
-@@ -1447,8 +1448,10 @@ thermal_zone_device_register(const char *type, int trips, int mask,
- 	/* sys I/F */
- 	/* Add nodes that are always present via .groups */
- 	result = thermal_zone_create_device_groups(tz, mask);
--	if (result)
-+	if (result) {
-+		thermal_set_governor(tz, NULL);
- 		goto remove_id;
-+	}
- 
- 	/* A new thermal zone needs to be updated anyway. */
- 	atomic_set(&tz->need_update, 1);
-@@ -1571,8 +1574,6 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
- 
- 	cancel_delayed_work_sync(&tz->poll_queue);
- 
--	thermal_set_governor(tz, NULL);
--
- 	thermal_remove_hwmon_sysfs(tz);
- 	ida_simple_remove(&thermal_tz_ida, tz->id);
- 	ida_destroy(&tz->ida);
+diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+index f006a3d72b404..6ba7082d65b64 100644
+--- a/drivers/net/wireless/marvell/mwifiex/init.c
++++ b/drivers/net/wireless/marvell/mwifiex/init.c
+@@ -399,7 +399,7 @@ static void mwifiex_invalidate_lists(struct mwifiex_adapter *adapter)
+ static void
+ mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
+ {
+-	del_timer(&adapter->wakeup_timer);
++	del_timer_sync(&adapter->wakeup_timer);
+ 	del_timer_sync(&adapter->devdump_timer);
+ 	mwifiex_cancel_all_pending_cmd(adapter);
+ 	wake_up_interruptible(&adapter->cmd_wait_q.wait);
 -- 
 2.53.0
 
