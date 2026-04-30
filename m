@@ -1,269 +1,167 @@
-Return-Path: <stable+bounces-242054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAKTOuIY82nNxAEAu9opvQ
-	(envelope-from <stable+bounces-242054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 10:54:58 +0200
+	id yE/CDCgZ82llxAEAu9opvQ
+	(envelope-from <stable+bounces-242055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 10:56:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662F849F805
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 10:54:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9042149F84F
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 10:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42121300CC1B
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 08:52:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43C8D303FDE1
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 08:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FF33FE675;
-	Thu, 30 Apr 2026 08:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC5E39A07B;
+	Thu, 30 Apr 2026 08:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IRJkMoYr"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="CmuUr5qf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C089234A773
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 08:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8276E36B043
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 08:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777539145; cv=none; b=tT6lLchUq9bMRmxKfP13Sfe4wN3xgli0rrP+BzF+BjDnWP7b9WWbmI1gEm0AtWU2JRy67O88HFpLXfh3ij3L2oqmzg34FwxKGZe73rKdhlh6N+XXQGfUxj1jl+JXqbA+sKXamhG5YqL0uJ06ypo4KikjJPySM0zKBFF1CadIcac=
+	t=1777539174; cv=none; b=o2AenrU3lF/Pi3mHkvIJEfIENMROenRYuXTFVNLdq+z9sL00j1BwtK3RT7u1O/38bOf9IyQFwbCo1pqatN8LPrT/lpoipssoXiHDEkG0vCZXsNCVXRyhSBTqgWklStoEBiHDI9COLyd/A2Oa7bxOFXkXTQD8vCzGwBW1zqfzOag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777539145; c=relaxed/simple;
-	bh=nh8FeWVgZMmI1Zz40jRCGrGIcuEoqQHDX1Vv7w5wdMA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=vFIvBspZ8ZUihDjP/2Trm7zP6daJ1wgdmTb8o+2Bg25MtrX5BbxBkMeopDtE2iiURBK1zrC6de5UTFLVauMerYfic6ZKCpn1x51jjIRYdCe1BLQiBYZfBwyvmnrZwSYbXp3d1k+GLHQfKImLzr4lXKlL58eqlOIL5iFrsChDYFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IRJkMoYr; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-444826c16ffso592433f8f.1
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 01:52:23 -0700 (PDT)
+	s=arc-20240116; t=1777539174; c=relaxed/simple;
+	bh=M62EI5Mu5WxwDQuwYxcl9pu3zFbB4oajFWySVOikOwY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PiXDoD9QVDw9NxG459pjThuGWMBuJRYdeFi/L3wTvGs5t6acUbCCL9OKBBLblyPJijtdqyIEMh9Qs/OR8+uWchUmEzONWb+7wqXs0kp8EzMF3SOYzPjYK80u2zgbpKcdjh9MwmRzChrlo28U94aJVLmKkU2YH+jRIy/gpp4UvrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=CmuUr5qf; arc=none smtp.client-ip=35.162.73.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777539142; x=1778143942; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nh8FeWVgZMmI1Zz40jRCGrGIcuEoqQHDX1Vv7w5wdMA=;
-        b=IRJkMoYrC0NcKTcQ3H3pr9hjyjetobaGvdK5RBUJwJ1S+MM6BCoP2a+x0pzDNqBpeU
-         5ahl4AiWlPLmFVE4dnPImZmKr46avcwA4Aq9ZP75Av3dJ94oLQl44V0NGJ9jr8EqLCJQ
-         b7a56kJWJbCcZOCGmFpV5ssUO+tpF9l9IW0ztcl9MTU+Vtvr6pfeMkVNrGzWkBjhQxap
-         qn9IFmGIY/n+12JzU3C6TOXWj/PCtXMx9+KOxcgVxQsYWv4dfS9IatkVwc+vKGNC/ULl
-         uZ2R5uO44CYv/gHfRz5m/FGkQLEkgUWbPedOPY26ycaHnSZ6CKyqsfd3KwUWeCQbnabp
-         pjkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777539142; x=1778143942;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nh8FeWVgZMmI1Zz40jRCGrGIcuEoqQHDX1Vv7w5wdMA=;
-        b=iZ356kgixyVtth2Y0gz00LKgc6iP+gKa74umRB+EZVoHD7Mp6lxeir7WBFSFN7j4qP
-         pa8v0Tnz/GaAzkvYWs/sT4rsZ/29ZMr72hAVkJo1fCr1ECjWzO/yjZlnN8VDXqa/qGhg
-         vtDjvcXpnCRGqyBaW220sihHlASblEJEv9DKcoxxq/KSooVPq3dudvjApbw13cpO4LpF
-         DBn7z3hh+QRD9a/6772M0caUkYxoICNtflXwo7y0iBfJxoZ82Ne/a2u1gbyHnFwsw6Hr
-         u7ccVWrtKgT7epH0V0BPo90JJaKiASoT49uDYUglxpTbEbPdYyA2ERUXw3CKzq1NG0Tz
-         yqWQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8JSvX7ucR2pZ3K30rLWX1o+/vm1rQMizQflPRW4A1KVLkvM6/y8mjF5IrYa0t95Z2HjfVyATs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybHDRREgnwh9b+ICu71QyGzGYMh8FPU3gIpLsomyEuzh6UUFsM
-	FGfzNTaLiD81ZUfknRrNHKCQZRxDMPz3X+BW2t5Xnqp7Rc9TzIqvCASS
-X-Gm-Gg: AeBDiev/CDMiqePUTaNo5sBhzADeGu2mchU560Mg9blSnETbiWTie+4Apjc0NTdGflu
-	OHf6o+wSD4SCJT+h9V0yjHi4tEtlIrE5f4WJL+X0hhVbaWs35PH8c3lN6ED9qn4wFipJfghz6xz
-	27F6pyVFFR3cmnMctkk9TPlGPFBApkcRhKZYCC5NJ3TK0Mdg+qtzbvf05B9JyqIqnTu0NCHrvMT
-	KR0RpLWnsr1Fv0FNfb9Ska13uzIMdBjUgFd9HwAVfJ2bB/l9OfFtv1i94TcF5S+2cK1tYPpbic/
-	07JY96WasObKm7pum108JOjfYtvmfZtrJBueV6mjYKppA/dbCVsj0Z52pgcBZkQpbCAYZf1UStH
-	g2SvTtmAfdx9yVH1I9mvptCfaUMU4vDy29GVsHT0932wvQHPuwmptQbapA1kSudEoxP6E1rLpNj
-	zVtQ/STBCzRWg/btrG7b/fH+FlCi4DzsmAF4OFYMUZpOf+Bux1OIs+ThRq
-X-Received: by 2002:a05:6000:2486:b0:43d:7b85:6c95 with SMTP id ffacd0b85a97d-4493fa014admr2984866f8f.33.1777539141830;
-        Thu, 30 Apr 2026 01:52:21 -0700 (PDT)
-Received: from vitor-nb.Home (dsl-43-224.bl27.telepac.pt. [176.79.43.224])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b7217b20sm11157241f8f.22.2026.04.30.01.52.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 01:52:21 -0700 (PDT)
-Message-ID: <19d0a0b1d33061a0421edf883acaaa7e366646c2.camel@gmail.com>
-Subject: Re: [PATCH v4] drm/bridge: cdns-dsi: Replace deprecated
- UNIVERSAL_DEV_PM_OPS()
-From: Vitor Soares <ivitro@gmail.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Andrzej Hajda
- <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: Vitor Soares <vitor.soares@toradex.com>,
- dri-devel@lists.freedesktop.org,  linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date: Thu, 30 Apr 2026 09:52:19 +0100
-In-Reply-To: <DI6C5A83IG4B.1UV6WJMFQ9AA7@bootlin.com>
-References: <20260407144142.1420354-2-ivitro@gmail.com>
-	 <DI6C5A83IG4B.1UV6WJMFQ9AA7@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1777539173; x=1809075173;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GDI1eH8kw9PQ5e3/aO/48yjtkGcQsC1i9WD6WyAITMg=;
+  b=CmuUr5qfP9r3mDKF3v+aTZmcfXrLNiaP/Lvn8L9zyp42KWpv2rGCn6D5
+   WKkdFQq0NdUlnjQt8irdPhh8b3IvqegUKNr/Uw09DaQFxUu0ZJUzFccGI
+   AdMxe/Gh3VmNlLbdv6vM1av/rBQXeM88m3nxvrnoKZXc0EvOkcDJMlJjw
+   YMmug74YdwjwZVfT+/PBuEa63IYSo1H3hQXfLzvaQB8ZQfPHhz/xtxbh0
+   Z1mq05v/DAIm/Z/5PnEQmxn59giPR3gxGBlGbvGIUor/91Bl/Qy9qZ12t
+   buQGMsx+TukWanQT231UfJtL6p+6EEeZpy+OcV+83UJnCIeWwrdGaK6De
+   w==;
+X-CSE-ConnectionGUID: Zxb30sHcSLK9PoGWVFu8MQ==
+X-CSE-MsgGUID: OP9njLT1TY6fJ5YivpoyjQ==
+X-IronPort-AV: E=Sophos;i="6.23,207,1770595200"; 
+   d="scan'208";a="18349848"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 08:52:48 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:17214]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.8.77:2525] with esmtp (Farcaster)
+ id c1b1f43f-57ce-491c-9786-4ab49d329f3b; Thu, 30 Apr 2026 08:52:48 +0000 (UTC)
+X-Farcaster-Flow-ID: c1b1f43f-57ce-491c-9786-4ab49d329f3b
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 30 Apr 2026 08:52:47 +0000
+Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 30 Apr 2026 08:52:47 +0000
+From: Bjoern Doebel <doebel@amazon.de>
+To: 
+CC: Bjoern Doebel <doebel@amazon.de>, <stable@vger.kernel.org>
+Subject: [PATCH] smb: client: use kzalloc to zero-initialize security descriptor buffer
+Date: Thu, 30 Apr 2026 08:52:28 +0000
+Message-ID: <20260430085232.1213357-1-doebel@amazon.de>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 662F849F805
+X-ClientProxiedBy: EX19D041UWB003.ant.amazon.com (10.13.139.176) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9042149F84F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242054-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[bootlin.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-242055-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.de:email,amazon.de:dkim,amazon.de:mid];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[doebel@amazon.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[amazon.de:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ivitro@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:url]
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-Hi Luca,
+Commit 62e7dd0a39c2d ("smb: common: change the data type of num_aces
+to le16") split struct smb_acl's __le32 num_aces field into __le16
+num_aces and __le16 reserved. The reserved field corresponds to Sbz2
+in the MS-DTYP ACL wire format, which must be zero [1].
 
-Thanks you for the feedback.
+When building an ACL descriptor in build_sec_desc(), we are using a
+kmalloc()'ed descriptor buffer and writing the fields explicitly using
+le16() writes now. This never writes to the 2 byte reserved field,
+leaving it as uninitialized heap data.
 
-On Thu, 2026-04-30 at 10:10 +0200, Luca Ceresoli wrote:
-> On Tue Apr 7, 2026 at 4:41 PM CEST, Vitor Soares wrote:
-> > From: Vitor Soares <vitor.soares@toradex.com>
-> >=20
-> > The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
-> > for both runtime PM and system sleep. This causes the DSI clocks to be
-> > disabled twice: once during runtime suspend and again during system
-> > suspend, resulting in a WARN message from the clock framework when
-> > attempting to disable already-disabled clocks.
-> >=20
-> > [=C2=A0=C2=A0 84.384540] clk:231:5 already disabled
-> > [=C2=A0=C2=A0 84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c=
-:1181
-> > clk_core_disable+0xa4/0xac
-> > ...
-> > [=C2=A0=C2=A0 84.579183] Call trace:
-> > [=C2=A0=C2=A0 84.581624]=C2=A0 clk_core_disable+0xa4/0xac
-> > [=C2=A0=C2=A0 84.585457]=C2=A0 clk_disable+0x30/0x4c
-> > [=C2=A0=C2=A0 84.588857]=C2=A0 cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
-> > [=C2=A0=C2=A0 84.593651]=C2=A0 pm_generic_suspend+0x2c/0x44
-> > [=C2=A0=C2=A0 84.597661]=C2=A0 ti_sci_pd_suspend+0xbc/0x15c
-> > [=C2=A0=C2=A0 84.601670]=C2=A0 dpm_run_callback+0x8c/0x14c
-> > [=C2=A0=C2=A0 84.605588]=C2=A0 __device_suspend+0x1a0/0x56c
-> > [=C2=A0=C2=A0 84.609594]=C2=A0 dpm_suspend+0x17c/0x21c
-> > [=C2=A0=C2=A0 84.613165]=C2=A0 dpm_suspend_start+0xa0/0xa8
-> > [=C2=A0=C2=A0 84.617083]=C2=A0 suspend_devices_and_enter+0x12c/0x634
-> > [=C2=A0=C2=A0 84.621872]=C2=A0 pm_suspend+0x1fc/0x368
-> >=20
-> > To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
-> > SET_RUNTIME_PM_OPS(), enabling suspend/resume handling through the
->=20
-> This is not what the patch does, the patch uses RUNTIME_PM_OPS.
->=20
+When the reserved field happens to contain non-zero slab garbage,
+Samba rejects the security descriptor with "ndr_pull_security_descriptor
+failed: Range Error", causing chmod to fail with EINVAL.
 
-I missed changing it. I will send another version fixing the commit message
-to RUNTIME_PM_OPS().
+Change kmalloc() to kzalloc() to ensure the entire buffer is
+zero-initialized.
 
-> > _enable()/_disable() hooks managed by the DRM framework for both
-> > runtime and system-wide PM.
-> >=20
-> > Cc: stable@vger.kernel.org=C2=A0# 6.1.x
-> > Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-> > Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-> > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> > ---
-> > v3 -> v4
-> > =C2=A0- Add Reviewed-by from Tomi Valkeinen
-> > =C2=A0- Rebase on top of drm-misc-fixes
-> > =C2=A0- Verified issue still present on current mainline
-> >=20
-> > v2 -> v3
-> > =C2=A0- Fix warning: 'cdns_dsi_suspend' defined but not used [-Wunused-=
-function]
-> > =C2=A0- Fix warning: 'cdns_dsi_resume' defined but not used [-Wunused-f=
-unction]
-> >=20
-> > v1 -> v2
-> > =C2=A0- Rely only on SET_RUNTIME_PM_OPS() for the PM.
-> >=20
-> > =C2=A0drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 11 ++++++-----
-> > =C2=A01 file changed, 6 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> > b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> > index 0dd85e26248c..e07a9892df4e 100644
-> > --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> > +++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> > @@ -1230,7 +1230,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_op=
-s =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.transfer =3D cdns_dsi_=
-transfer,
-> > =C2=A0};
-> >=20
-> > -static int __maybe_unused cdns_dsi_resume(struct device *dev)
-> > +static int cdns_dsi_resume(struct device *dev)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct cdns_dsi *dsi =
-=3D dev_get_drvdata(dev);
-> >=20
-> > @@ -1241,7 +1241,7 @@ static int __maybe_unused cdns_dsi_resume(struct
-> > device *dev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > =C2=A0}
-> >=20
-> > -static int __maybe_unused cdns_dsi_suspend(struct device *dev)
-> > +static int cdns_dsi_suspend(struct device *dev)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct cdns_dsi *dsi =
-=3D dev_get_drvdata(dev);
-> >=20
-> > @@ -1251,8 +1251,9 @@ static int __maybe_unused cdns_dsi_suspend(struct
-> > device *dev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > =C2=A0}
-> >=20
-> > -static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
-> > cdns_dsi_resume,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 NULL);
-> > +static const struct dev_pm_ops cdns_dsi_pm_ops =3D {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0RUNTIME_PM_OPS(cdns_dsi_susp=
-end, cdns_dsi_resume, NULL)
-> > +};
->=20
-> Not an expert here, but the docs [0] suggest using
-> DEFINE_RUNTIME_DEV_PM_OPS(). Is there a good reason to not do so?
->=20
-> [0]
-> https://elixir.bootlin.com/linux/v7.0.1/source/include/linux/pm.h#L455-L4=
-56
->=20
-> Luca
->=20
+Fixes: 62e7dd0a39c2d ("smb: common: change the data type of num_aces to le16")
+Cc: stable@vger.kernel.org
 
-In an earlier discussion [0], we concluded that bridges/panels should only =
-deal
-with runtime PM:
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+Assisted-by: Kiro:claude-opus-4.6
+[1] https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/20233ed8-a6c6-4097-aafa-dd545ed24428
+---
+ fs/smb/client/cifsacl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[0]
-https://lore.kernel.org/all/a1cf67da-a0cb-46c5-b22b-10ecca8ab383@ideasonboa=
-rd.com/
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index ec5d477793040..a2750f1e3d90b 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -1732,7 +1732,7 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
+ 	 * descriptor parameters, and security descriptor itself
+ 	 */
+ 	nsecdesclen = max_t(u32, nsecdesclen, DEFAULT_SEC_DESC_LEN);
+-	pnntsd = kmalloc(nsecdesclen, GFP_KERNEL);
++	pnntsd = kzalloc(nsecdesclen, GFP_KERNEL);
+ 	if (!pnntsd) {
+ 		kfree(pntsd);
+ 		cifs_put_tlink(tlink);
+-- 
+2.48.2
 
-Best regards,
-Vitor Soares
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
