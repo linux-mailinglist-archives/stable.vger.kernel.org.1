@@ -1,161 +1,146 @@
-Return-Path: <stable+bounces-241979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFPJCfO88mlbtwEAu9opvQ
-	(envelope-from <stable+bounces-241979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 04:22:43 +0200
+	id 0M+zKV7A8mnktwEAu9opvQ
+	(envelope-from <stable+bounces-241980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 04:37:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EB749C479
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 04:22:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A88449C655
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 04:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1C91301A28B
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 02:22:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EEB43040447
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 02:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3294F261B9B;
-	Thu, 30 Apr 2026 02:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96235287257;
+	Thu, 30 Apr 2026 02:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lJ7cmyo1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etwG8gnx"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECCE288C30;
-	Thu, 30 Apr 2026 02:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D4E175A5;
+	Thu, 30 Apr 2026 02:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777515740; cv=none; b=FthI0BtAxRAlG1HZ74eRyAgSd9x7ZXkxu3eqMujzjJ2RbUipvVyeqAUgNDgxk3tlq1OZWzzjY40vQMqT3e4t1WJf990Hv9nUYKkSsolMXBVyMC7Lb1d/tMm0lujo1AICf+suBM/TJUJQ+RtVAfsVMMXI2dBpq8Uk2lesT3UcnN8=
+	t=1777516489; cv=none; b=RmUZSNIKwg4Zk+25wv+lZJ1mrS06/4Ey0z934zQgXo054b2CTi8WjQ0p8B2E23vjv4T5kcd0LqG1m6tJLtAGhCApEPAhHmeLu9/xyEXjKaogel3FDWG9bVHMrwhsyW7bU3hJNJfY7ZXPCkJoXz9IMOn28F2Bfco0VmAokkDsB4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777515740; c=relaxed/simple;
-	bh=kskXGl60052vWFg2uJaxvo0jP+mKoelIHMmuGjmHezA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HayZE5hrLqqjqJPTz09V1jMRAWjX+VqbRCGUI0zJuRjv7GkES+AYMEH8WH5GGKLE85gjFiuqwErVAnLRzSbZE9bVFFNBupiLrUyKOdgPKydiRqiAMRL1E/ZUuUTwfSSEZvFhhluQd8yA82uqDkSoIugzji09UO2CYaNz+arHdsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lJ7cmyo1; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777515728; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=H46ycR2cIdd55PmtPaTFZw2OcVc3hi3Ihdl6EegFnqI=;
-	b=lJ7cmyo1tUN1B8eGVCIvY1nnLRNPxZMKHVZiM4AE38UAZxzxsyRWn92/OeuMd77bK3YEOZwkWA2HJSUH+DAc4mee6C6OqaiaWHbG7uuKGUC/PVw1r3PZH3D8Z83pX43dXQdDvs1GFglTxU3GsrgVDyLYeDWbGVNUwgdcEEh42Jw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R431e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X1za2vT_1777515727;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X1za2vT_1777515727 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 30 Apr 2026 10:22:08 +0800
-Date: Thu, 30 Apr 2026 10:22:07 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: maz@kernel.org, oliver.upton@linux.dev, james.morse@arm.com, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, qperret@google.com, vdonnefort@google.com, 
-	catalin.marinas@arm.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/8] KVM: arm64: Make EL2 exception entry and exit
- context-synchronization events
-Message-ID: <ygj3ik6y6kqggfnoyz72klhk3ttv72qv2ob4qferjdo7wvtxc7@zvhup2sqtc2p>
-References: <20260428103008.696141-1-tabba@google.com>
- <20260428103008.696141-2-tabba@google.com>
+	s=arc-20240116; t=1777516489; c=relaxed/simple;
+	bh=Akn6BBdD9VzfdZuUDM8cGWmjnSwFKo+fMd1NMemYleY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DXyzsgkKhjckghHCduN8IIZMDMinlZNkwbNf8GbPvD21jcG1qiYcSi/PvCE7vrGp2QzLwM180Bj2GEI6izFAxTMvOcou7w46JAVPaBx+HdrYJYhtYwMOu/mU531giU2wm0tpmIdLMuwAyVmJtCN6Yl8zzcHlw916MdQKoKx6gBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etwG8gnx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDABBC19425;
+	Thu, 30 Apr 2026 02:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777516488;
+	bh=Akn6BBdD9VzfdZuUDM8cGWmjnSwFKo+fMd1NMemYleY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=etwG8gnxcw1f0mIkPJ4N1NlXamuy+3oKr+++bRrqZJOlX7OluoFD9kx6zdyiah44Y
+	 Pgxae1oCn2+qLYw/kLEHMR/zvwKd1QZLl4CSxm/oXuS9V0WLVs8bEcWa4bu6KqJ0Tg
+	 4sXYZmSTDFni3kXtEOFy2CvFet8i6Uzd4RdtvRsTuNwtermhmUNfTK/TIYo9q5LCTU
+	 R7iiP/c1/dTesatYATC80BnVfyUrDvYl0P4OflSaWzXu60mrNsKp6X3rQxfD1twGZ0
+	 ZMRUKTv5TIfLBce05avRvwVnz3Ynk4C8GyhZ9d1Adu6IsPKed/SyO+GNKzrLpAAHR7
+	 HhVYAXggn3BBw==
+Date: Wed, 29 Apr 2026 19:34:46 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff
+ Garzik <jeff@garzik.org>, Paolo Valerio <pvalerio@redhat.com>, Conor Dooley
+ <conor@kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Vladimir Kondratiev
+ <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
+ <gregory.clement@bootlin.com>, =?UTF-8?B?QmVub8OudA==?= Monin
+ <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 2/4] net: macb: drop in-flight Tx SKBs on close
+Message-ID: <20260429193446.5985abea@kernel.org>
+In-Reply-To: <20260428-macb-drop-tx-v2-2-647f5199d8df@bootlin.com>
+References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
+	<20260428-macb-drop-tx-v2-2-647f5199d8df@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428103008.696141-2-tabba@google.com>
-X-Rspamd-Queue-Id: 90EB749C479
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0A88449C655
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-8.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241980-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241979-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yaoyuan@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Tue, Apr 28, 2026 at 11:30:01AM +0800, Fuad Tabba wrote:
-> SCTLR_EL2.EIS and SCTLR_EL2.EOS control whether exception entry and
-> exit at EL2 are Context Synchronisation Events (CSEs). Per ARM DDI
-> 0487 M.b, EIS is governed by D1.4.2 rule RBBSRF (p. D1-7205) and EOS
-> by D1.4.4.1 rule RBWCFK (p. D1-7209). D24.2.175 (p. D24-9754):
->
->   - !FEAT_ExS: the bit is RES1, so the entry/exit is unconditionally
->     a CSE.
->   - FEAT_ExS: the reset value is architecturally UNKNOWN; software
->     must set the bit to make the entry/exit a CSE.
->
-> INIT_SCTLR_EL2_MMU_ON in arch/arm64/include/asm/sysreg.h sets neither
-> bit. KVM/arm64 hot paths rely on ERET from EL2 being a CSE, and on
-> synchronous EL1->EL2 entry being a CSE, to elide explicit ISBs after
-> MSRs to context-switching system registers (HCR_EL2, HFGxTR_EL2,
-> HCRX_EL2, ZCR_EL2, CPACR_EL1, CPTR_EL2, SCTLR_EL1, ptrauth keys,
-> etc.); examples include the activate-traps path,
-> ptrauth_switch_to_guest, and the FPSIMD trap re-enable in
-> kvm_hyp_handle_fpsimd. On FEAT_ExS hardware those reliances are not
-> architecturally backed unless EOS=1 (and, for entry, EIS=1), and
-> whether they hold today depends on firmware initialisation outside
-> the kernel's control.
->
-> Make the guarantee explicit: include SCTLR_ELx_EIS | SCTLR_ELx_EOS in
-> INIT_SCTLR_EL2_MMU_ON so that EL2 exception entry and exit are
-> unconditionally CSEs regardless of whether FEAT_ExS is implemented.
-> This matches the pairing in arch/arm64/kvm/config.c which treats EIS
-> and EOS together as RES1 under !FEAT_ExS.
->
-> INIT_SCTLR_EL2_MMU_OFF is left unchanged: that path is used during
-> very early EL2 init and the EL2 MMU-off transition, neither of which
-> relies on these bits in the same way.
->
-> Fixes: fe2c8d19189e ("KVM: arm64: Turn SCTLR_ELx_FLAGS into INIT_SCTLR_EL2_MMU_ON")
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> ---
->  arch/arm64/include/asm/sysreg.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
-> index 736561480f36..7aa08d59d494 100644
-> --- a/arch/arm64/include/asm/sysreg.h
-> +++ b/arch/arm64/include/asm/sysreg.h
-> @@ -844,7 +844,7 @@
->  #define INIT_SCTLR_EL2_MMU_ON						\
->  	(SCTLR_ELx_M  | SCTLR_ELx_C | SCTLR_ELx_SA | SCTLR_ELx_I |	\
->  	 SCTLR_ELx_IESB | SCTLR_ELx_WXN | ENDIAN_SET_EL2 |		\
+On Tue, 28 Apr 2026 18:32:58 +0200 Th=C3=A9o Lebrun wrote:
+>  	for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queue) {
+> -		kfree(queue->tx_skb);
+> -		queue->tx_skb =3D NULL;
+> +		if (queue->tx_skb) {
+> +			unsigned int dropped =3D 0, tail;
+> +
+> +			for (tail =3D queue->tx_tail; tail !=3D queue->tx_head;
+> +			     tail++) {
+> +				if (macb_tx_skb(queue, tail)->skb)
+> +					dropped++;
+> +				macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0,
+> +					      SKB_DROP_REASON_NOT_SPECIFIED);
+> +			}
+> +
+> +			queue->stats.tx_dropped +=3D dropped;
+> +			bp->dev->stats.tx_dropped +=3D dropped;
 
-Hi Fuad,
+I'm slightly baffled by the stats in this driver.
 
-> -	 SCTLR_ELx_ITFSB | SCTLR_EL2_RES1)
-> +	 SCTLR_ELx_ITFSB | SCTLR_ELx_EIS | SCTLR_ELx_EOS | SCTLR_EL2_RES1)
+Incrementing of both device and queue stats is highly unusual.
+The driver seems to already have the values for the per-queue drops
+but currently never increments it (did I miss it?) It does for Rx
+stats but not for Tx stats.
 
-LGTM.
+As sashiko correctly points out incrementing dev stats will lead
+to races and lass of increments for multi-queue devices.
 
-Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+Since there are no increments for tx_dropped stat today - could you
+please delete it from ethtool -S, migrate the only existing
+dev->stats.tx_dropped++; to increment the per-queue stat and make=20
+macb_get_stats() collect the tx_dropped from all queues, instead
+of relying on the device-level stat?
 
->
->  #define INIT_SCTLR_EL2_MMU_OFF \
->  	(SCTLR_EL2_RES1 | ENDIAN_SET_EL2)
-> --
-> 2.54.0.545.g6539524ca2-goog
->
+This should be patch 2 in this series, and then subsequent patches
+don't have to do this double-counting dance.
+
+I suppose you may want to migrate the byte and packet counters
+while at it, and add a u64 sync...
 
