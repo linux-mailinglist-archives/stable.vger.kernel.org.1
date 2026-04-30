@@ -1,473 +1,259 @@
-Return-Path: <stable+bounces-241984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PTkBUzU8mmyugEAu9opvQ
-	(envelope-from <stable+bounces-241984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 06:02:20 +0200
+	id +PG4AuTV8mnIugEAu9opvQ
+	(envelope-from <stable+bounces-241985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 06:09:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44A949D1FD
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 06:02:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6827B49D351
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 06:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 267E330041F4
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 04:02:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 243D43011C73
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 04:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D5A35295E;
-	Thu, 30 Apr 2026 04:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1BF363C7C;
+	Thu, 30 Apr 2026 04:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hj8anph9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLjpXUhJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B15619E839
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 04:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFFB35A93C
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 04:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777521735; cv=none; b=TW8zv7ZXV4rZnnuz9nBcV0JtUyZKpxv5CFhn9PgyuPCYEHNDQgo4//K2bDBJ4LhNS8+ArAehm6uz/N7B0YvuW5KsIhAjCS28+J7VbQ/HQckb2bghgyFrijL9hVZUrxU4AkOBrnteNvFHK8al+HsIn83HiKplAcWse9sWbjrpOm4=
+	t=1777522033; cv=none; b=Pt4nyORB1sNHtj2SEbR5tzTHxLYOxdII8kvd6wqx/SYnzwcfvZ/zdci75Q+tcwrnk75NxH9RETzf4UnPXNqg9RA0HdMEzBLttyyNKdrOqWgVm+KNuTJb5IsdZfjpjD60czAEyA6WQ4NoyNSwbfXhfYGsI7zT9ih/v6rPh0cjKqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777521735; c=relaxed/simple;
-	bh=ynqLYw8zk5KVx4jE+LlDKr4h++AttPRWRYWvwQ2HY20=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dVRDMuxV79MDvOFDKj84P3w7EooVzQaLzDyG49a8unGBA2U3aDkT5pe1xuMU8QkMN3eKyTAEYGBPSPE1hefZfa5X+m6I5pmZ3eUL8IhOcdbhMrdD4KLqNAjXe4gU868r3p1thksfgbTiIsjCdFv/l4GBofaHYTRcR3cEKu1hqCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hj8anph9; arc=none smtp.client-ip=74.125.82.43
+	s=arc-20240116; t=1777522033; c=relaxed/simple;
+	bh=qAQK+k1/cFh8xK496xBgAoE1NTaxbAGL+2QmAbrBLe8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SRn08xRlgGCns75vMrXhziN8po5/QVU4xgnN5G8ND7BB79jqtf0XwVwtu7UeBlqJq6KXoHtbG/vkM6OB5DB5uXvOKp52MaH7mssaeJroc240iRicsoy/tZ0G3C7+YN6fsyvMkUOdiCK5FCTFeUG+AaF29TYufWjGVojgsaJLWcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLjpXUhJ; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12c8f9846c8so732839c88.0
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 21:02:14 -0700 (PDT)
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c79467f11abso250193a12.2
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 21:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777521733; x=1778126533; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FnqG32j2rEC21fiuSfzK8wXn5oGN92hklM3twulbezM=;
-        b=Hj8anph9CkPJzQ+ZIvRxOZck67G37ca4Is3T4IPA1jfXTWFUdZKPPtivum39aOi+Z8
-         r2eduEDwxNkM569d7B0pFBsSHfl9M6YnVOUYCAOScZcEb2/URiMlUwCfPlb8soWiS8g3
-         CUz+sPnrHGG+3IDN9OQ4yYxWqUQlRtBL1t7E+oiNa+R1jEdLY5Ik+kC5Erl/3gC33MM8
-         D10WWWML4uH5wu13zIsmtGGbX/pu0qiFJKEpDA54+RbAqyZD/Q9kOBZ+jV8eu7qh3hfg
-         j7G+wqOsuyOrpDuFUAKrz8leesdP2gd1ChRxQ+nKjKaVmZdj48FPaZhnAC7OMiyMAtO1
-         ejjg==
+        d=gmail.com; s=20251104; t=1777522031; x=1778126831; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k/wjRyTJ9aYm0fg4TFEq5rsq+yvGFZ1pVdZXbpzLTXo=;
+        b=GLjpXUhJ/uwONAue6m+BIDaUul5eJMJA+pwQvfa6p4I/NIIlim5NrwAskV0CogOz35
+         v2m09Zg5C6pu29Q5PMS8yhtjleN3OehSgYKq7/YZ0Q96BGJUWFgVdE7uMWR7h1/cL7Y8
+         dBlpa4hvSOKzDqB23Nt2k0Mvk1GjYLl1SAdxDfzJggmWOIiHtvdHbHozOfWu4dcg1ZJW
+         lFK9QBhiAl6dQDMOU0wRMwg/FN8YTHrQ4NEeDycMpZ24RTTerETkWxBfZrGs6b35QprQ
+         UQjVXusKZoKfGfR3TDwQdxsz0EfOeBdphJ4ZPF1zvSh7fLToSwzJJLiADqhwIw1zPrLW
+         4vGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777521733; x=1778126533;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1777522031; x=1778126831;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FnqG32j2rEC21fiuSfzK8wXn5oGN92hklM3twulbezM=;
-        b=sQLCyDDs8rzfDNKsn8Dz+VWcx0LJ38PcUItH02A48aEnt9zWbeK0iizlSGbaRVzU4y
-         PILermML5AZnGub1oeAS8eHafnHuNSejIXGDTZsIflCLQPSj7Tudwc0NYK9c+QNYo2wN
-         8nPGiHwIca2oeEAtsZll30g7KsngampT9l7N6vjOMla0ZFWcDzu5mK2OpUkVx7HCZS9y
-         zHdLRJucoPeYE2jUYtZs+/YtaA1dFmtmeee32BnqSnxZGdqFcYk9Mo6fRiv5EtD7jCuz
-         PtHzF6LFQp0k5VzVVSHUepIfLD7Xf4wNR2bzTkxIJT43HgEj7P7ycCyj7GQmkyaVOfYn
-         udZg==
-X-Forwarded-Encrypted: i=1; AFNElJ+PWlNK8OHFUstArZA0jlfO1VBx1NFWM8bwLZu0eIgwQj3MaQkcBW3FVZ5BbqCA46QUSI+3a74=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpwjtOv4ctyXtV6dgr74/ayayNik9Ee/j+MKPfPVkjVxWQhiBV
-	huzMzqQ9T2F7M8T1GzRNMa0U143RoXMvO1WElyiXf0ef0uesgYw70m5d
-X-Gm-Gg: AeBDievbPi0WQGibAaF2pNjDdaklTT2Ijo1mqDh+nGzcnYUQIgRxETdXghV9z38sBa6
-	JSJmUD+26Ofy+8htKRq/gxCMQpDx2vQgmi/nM57wkJDQ+wkuyXv9W0RZQPEId3k/5lZ21AB08YN
-	OGPfA8i3PhC1YrXNIEh+xL9twOZbRHrx94wLIHkdse/Vg7Mh87LiWbbBfmLDv4jx7Y7w+VLDB1t
-	MY5vIGzbG6nrsfWe9dLWPzHXqEk/f4KBBMTNx2AsXbZjtcg8d4jf73sS1g+k8dkkvfGxJmwPeWD
-	788+1VCX5T5j8Vc+Hs8Tv+7gda6ZOXcmqGXqeL2o2pgKy8F5EOb+DHmQUsN42MnFMJ+OiunoCff
-	ZlkweGOs0sye04ofJJJdml5phwQz+iMoCg4hPICWWi5cbtqv4f0jsylpsboqVMfm6+EKgM4aXYB
-	b4E/2iW/S5Dz3hhDhNi1JDgsEr2+qCEdetYOQgQeoguzEszcsYB6M419UmuycLNyYCsVh3aKzSz
-	7eCz6Hhs9hl
-X-Received: by 2002:a05:7022:6289:b0:12d:ea6a:1d33 with SMTP id a92af1059eb24-12dead1c08bmr611167c88.33.1777521733086;
-        Wed, 29 Apr 2026 21:02:13 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12de31ab65fsm5636481c88.0.2026.04.29.21.02.10
+        bh=k/wjRyTJ9aYm0fg4TFEq5rsq+yvGFZ1pVdZXbpzLTXo=;
+        b=WyE6Dhsmqcsj6si32IlWd1/tntHzMR7VxVzUAdfSAbY0ckOj29ODWcuRahnFessCIw
+         umr8sOvEC0LK9uvutiVmSTcwZA6TRUS4P/9rjl8WQxdx7Pda7eKEXBg8SdwFjRb3+JZ6
+         S576AOJ2b1/6m2PgrNOPdFNX09lQaCZtibWsZ2q2KFnJ7p7DCwDIQorUNnV99g2efPu/
+         EZWtcfq+F7QgjfLtgEo+9nmoStxdQRS/ozB7kjLh3P1TZu+DfQbqVN18sm2pUpEO7P1S
+         j7I31GOXHgnZsc1aBjbuuACSpOIt+KPdlSKS8A09AH8GuLfc8A/pEoxmTOXMfd/U7ZLz
+         rKng==
+X-Forwarded-Encrypted: i=1; AFNElJ/pM01yxoD5c6X570YecGDDmwCJQA9T+ZalHiF+owGPkxI5HGVpRsz2gMzmf2ybFwCk/AEOfBU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzLuW/iGiul6lxIF/CdFkliSt/UDEg666sruA2fS5aTWGtbYTE
+	mHIDVbKuc0grKz4f07dN/b2yfl7LHOZsmTN6nFw6H2UM6+IvTzdMlHzg
+X-Gm-Gg: AeBDieuiMdqCcHmtEBW+Sc/UTiK0Pl49+cJEXwIUeArz5q77PiPHMuZ2kwxEiZWbTRY
+	Ssoxezjsd71ZL15L7XnHGqogeI5ZcitHB2Ng1m+n/Ni3DBCiPqtOo+pAxx3uKC6OhBp9KQwlTeR
+	aIdcNgIeDX0noVLDCgSCXwIGTl1wtjosAVXtzAHTdItRHXGLrsdg+HGiJNBHAWQEbFJ+W2epAc0
+	aty5oYbsw+k8t477jtEfkLUlr1wS98ISQ6lZiq+6gz1APcmxWvibD+HH6LLX0vK3jfMF4WtrWD3
+	kaTEqRizodzBSH3fb/MDtQhG32PS1Ir5LAIQ1gQNhVTm8JKG+6N4Fi+exL0H+jZi9KpoVx73mJg
+	ZnWx6qvlJ4qJPwPp+CVG8utefzQS54i3l7Mq4R4dyvW9YnBDNGSnoHl3Nn17WT5KvDiJ1L3JeU4
+	W/w9NwHMl5rx469PvDzQ1GrxJj6DvdKoKHRgnxOdyAeFOzB3U8GVBZU3CN2jp0gimGM6CZpwmdX
+	ffKoo3dl+8PQSSsAQ==
+X-Received: by 2002:a05:6a20:3ca3:b0:39b:d937:8010 with SMTP id adf61e73a8af0-3a3cf82c8a5mr1440198637.45.1777522031416;
+        Wed, 29 Apr 2026 21:07:11 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:383f:e9bf:615b:4859:6e22])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed5cf7d4sm4353894b3a.23.2026.04.29.21.07.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 21:02:12 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Thu, 30 Apr 2026 01:02:02 -0300
-Subject: [PATCH] ALSA: hda/tas2781: Wait for async firmware callback at
- unbind
+        Wed, 29 Apr 2026 21:07:10 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: konishi.ryusuke@gmail.com,
+	slava@dubeyko.com
+Cc: linux-nilfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3] nilfs2: reject CLEAN_SEGMENTS ioctl with out-of-range segment numbers
+Date: Thu, 30 Apr 2026 09:37:04 +0530
+Message-ID: <20260430040704.113622-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260430-alsa-hda-tas2781-fw-callback-teardown-v1-1-874367d6b41b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQ7CIBBA0as0s3YSQNJWr2K6GGBqUdIaBq1J0
- 7uLunyb/zcQzpEFzs0GmV9R4jJX6EMDfqL5yhhDNRhlWmWNRkpCOAXCQmK6XuO4oqeUHPk7FqY
- clnXGo+taq6xzJ9NDbT0yj/H9+1yGv+XpbuzLNw77/gFHqrTJiQAAAA==
-X-Change-ID: 20260421-alsa-hda-tas2781-fw-callback-teardown-3b76404bb928
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
- Baojun Xu <baojun.xu@ti.com>, Takashi Iwai <tiwai@suse.com>, 
- Jaroslav Kysela <perex@perex.cz>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11790;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=ynqLYw8zk5KVx4jE+LlDKr4h++AttPRWRYWvwQ2HY20=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJmfrti2NOleTX+Z8IX3Uv/KBWvsbfcd656g9P9c9/krR
- noruqIPdpSyMIhxMciKKbKsTlpkuafrwdX6uBUeMHNYmUCGMHBxCsBEtkUxMty1zpfatE+Oh7Fw
- qtubaM9faoKlzmpvP3hoc4ctzfjdG8nIcIZf+88D9mV7DEPW6Vg3qSftnRacvujf9z1CF3bYrY2
- o5QAA
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Rspamd-Queue-Id: B44A949D1FD
+X-Rspamd-Queue-Id: 6827B49D351
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-241984-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241985-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,62f0f99d2f2bb8e3bbd7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
 
-The TAS2781 HDA I2C and SPI side-codec drivers queue the RCA
-firmware load with request_firmware_nowait() from component bind. The
-firmware loader keeps a device reference and pins the callback module,
-but it does not protect the driver's HDA private state from component
-unbind.
+Syzbot reported a hung task in nilfs_transaction_begin() where multiple
+tasks performing chmod() on a nilfs2 mount blocked for over 143 seconds
+waiting to acquire ns_segctor_sem for read:
 
-The callback dereferences tas_hda/tas_priv, takes codec_lock,
-creates ALSA controls, updates RCA/DSP state, runs runtime PM, and may
-load DSP and calibration data. Component unbind currently removes
-controls and DSP state immediately, and the later device remove destroys
-codec_lock through tasdevice_remove(). A delayed callback can therefore
-run after the HDA component state has been torn down.
+  INFO: task syz.0.17:5918 blocked for more than 143 seconds.
+  Call Trace:
+   schedule+0x164/0x360
+   rwsem_down_read_slowpath+0x6d9/0x940
+   down_read+0x99/0x2e0
+   nilfs_transaction_begin+0x364/0x710 fs/nilfs2/segment.c:221
+   nilfs_setattr+0x124/0x2c0 fs/nilfs2/inode.c:921
+   notify_change+0xc1a/0xf40
+   chmod_common+0x273/0x4a0
+   do_fchmodat+0x12d/0x230
 
-Track the pending HDA RCA request with a completion. Mark it cancelled
-at unbind, let a callback that observes cancellation exit before parsing
-firmware or creating controls, and wait for any already-running callback
-before tearing down HDA controls and DSP state.
+The writer holding ns_segctor_sem was a concurrent 
+NILFS_IOCTL_CLEAN_SEGMENTS caller, stuck inside printk while emitting 
+per-element warnings from nilfs_sufile_updatev():
 
-Clear cached kcontrol pointers as controls are removed, and when
-snd_ctl_add() rejects them, so a later cancelled or failed bind cannot
-remove stale controls from an earlier bind.
+   __nilfs_msg+0x373/0x450 fs/nilfs2/super.c:78
+   nilfs_sufile_updatev+0x21c/0x6d0 fs/nilfs2/sufile.c:186
+   nilfs_sufile_freev fs/nilfs2/sufile.h:93 [inline]
+   nilfs_free_segments fs/nilfs2/segment.c:1140 [inline]
+   nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1261 [inline]
+   nilfs_segctor_do_construct+0x1f55/0x76c0
+   nilfs_clean_segments+0x3bd/0xa50
+   nilfs_ioctl_clean_segments fs/nilfs2/ioctl.c:922 [inline]
+   nilfs_ioctl+0x261f/0x2780
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-Fixes: bb5f86ea50ff ("ALSA: hda/tas2781: Add tas2781 hda SPI driver")
+The root cause is that user-supplied segment numbers are not validated
+before nilfs_clean_segments() begins doing work; the range check on
+each segnum is performed deep inside the call chain by
+nilfs_sufile_updatev(), which emits a nilfs_warn() per invalid entry
+while still holding the segctor lock and the sufile mi_sem.  Under load
+(repeated invocations across multiple mounts saturating the global
+printk path), the cumulative printk latency keeps ns_segctor_sem held
+long enough to trip the hung_task watchdog, blocking concurrent
+operations such as chmod() that need ns_segctor_sem for read.
+
+Fix by validating the contents of kbufs[4] in nilfs_clean_segments()
+immediately after acquiring ns_segctor_sem via nilfs_transaction_lock().
+Holding ns_segctor_sem serializes the check against
+nilfs_ioctl_resize(), which can modify ns_nsegments, so the validation
+uses a consistent value.  Out-of-range segment numbers are rejected
+with -EINVAL before any segment-cleaning work begins, so the bad
+entries never reach the per-element diagnostic path inside
+nilfs_sufile_updatev().
+
+Reported-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=62f0f99d2f2bb8e3bbd7
+Tested-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
+Fixes: 4f6b828837b4 ("nilfs2: fix lock order reversal in nilfs_clean_segments ioctl")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 ---
- sound/hda/codecs/side-codecs/tas2781_hda.c     | 39 ++++++++++++++++++++++++++
- sound/hda/codecs/side-codecs/tas2781_hda.h     |  8 ++++++
- sound/hda/codecs/side-codecs/tas2781_hda_i2c.c | 18 +++++++++++-
- sound/hda/codecs/side-codecs/tas2781_hda_spi.c | 26 +++++++++++++++--
- 4 files changed, 88 insertions(+), 3 deletions(-)
+Changes in v3:
+  - Move validation from nilfs_ioctl_clean_segments() into
+    nilfs_clean_segments(), under ns_segctor_sem held for write
+    by nilfs_transaction_lock(), to serialize against
+    nilfs_ioctl_resize() which can modify ns_nsegments
+    (Ryusuke Konishi)
+  - Introduce local variables segnumv and nfreesegs for readability,
+    rather than open-coding casts of kbufs[4] (Ryusuke Konishi)
+  - Emit nilfs_err() once on the first out-of-range segnum and bail
+    out, instead of nilfs_warn() per element (Ryusuke Konishi)
+  - Add bail_unlock label for the early-failure path, parallel to
+    the existing out_unlock structure (Ryusuke Konishi)
 
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda.c b/sound/hda/codecs/side-codecs/tas2781_hda.c
-index b22f93424c62..52674f675461 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda.c
-@@ -241,6 +241,45 @@ int tas2781_save_calibration(struct tas2781_hda *hda)
- }
- EXPORT_SYMBOL_NS_GPL(tas2781_save_calibration, "SND_HDA_SCODEC_TAS2781");
- 
-+void tas2781_hda_fw_request_init(struct tas2781_hda *tas_hda)
-+{
-+	WRITE_ONCE(tas_hda->fw_cancel, false);
-+	init_completion(&tas_hda->fw_done);
-+	complete_all(&tas_hda->fw_done);
-+}
-+EXPORT_SYMBOL_NS_GPL(tas2781_hda_fw_request_init,
-+		     "SND_HDA_SCODEC_TAS2781");
-+
-+void tas2781_hda_fw_request_start(struct tas2781_hda *tas_hda)
-+{
-+	WRITE_ONCE(tas_hda->fw_cancel, false);
-+	reinit_completion(&tas_hda->fw_done);
-+}
-+EXPORT_SYMBOL_NS_GPL(tas2781_hda_fw_request_start,
-+		     "SND_HDA_SCODEC_TAS2781");
-+
-+void tas2781_hda_fw_request_done(struct tas2781_hda *tas_hda)
-+{
-+	complete_all(&tas_hda->fw_done);
-+}
-+EXPORT_SYMBOL_NS_GPL(tas2781_hda_fw_request_done,
-+		     "SND_HDA_SCODEC_TAS2781");
-+
-+void tas2781_hda_fw_request_cancel(struct tas2781_hda *tas_hda)
-+{
-+	WRITE_ONCE(tas_hda->fw_cancel, true);
-+	wait_for_completion(&tas_hda->fw_done);
-+}
-+EXPORT_SYMBOL_NS_GPL(tas2781_hda_fw_request_cancel,
-+		     "SND_HDA_SCODEC_TAS2781");
-+
-+bool tas2781_hda_fw_request_cancelled(struct tas2781_hda *tas_hda)
-+{
-+	return READ_ONCE(tas_hda->fw_cancel);
-+}
-+EXPORT_SYMBOL_NS_GPL(tas2781_hda_fw_request_cancelled,
-+		     "SND_HDA_SCODEC_TAS2781");
-+
- void tas2781_hda_remove(struct device *dev,
- 	const struct component_ops *ops)
- {
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda.h b/sound/hda/codecs/side-codecs/tas2781_hda.h
-index 66188909a0bb..d536108e4559 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda.h
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda.h
-@@ -7,6 +7,7 @@
- #ifndef __TAS2781_HDA_H__
- #define __TAS2781_HDA_H__
- 
-+#include <linux/completion.h>
- #include <sound/asound.h>
- 
- /* Flag of calibration registers address. */
-@@ -59,13 +60,20 @@ struct tas2781_hda {
- 	struct snd_kcontrol *dsp_prog_ctl;
- 	struct snd_kcontrol *dsp_conf_ctl;
- 	struct snd_kcontrol *prof_ctl;
-+	struct completion fw_done;
- 	enum device_catlog_id catlog_id;
- 	void *hda_priv;
-+	bool fw_cancel;
- };
- 
- extern const efi_guid_t tasdev_fct_efi_guid[];
- 
- int tas2781_save_calibration(struct tas2781_hda *p);
-+void tas2781_hda_fw_request_init(struct tas2781_hda *tas_hda);
-+void tas2781_hda_fw_request_start(struct tas2781_hda *tas_hda);
-+void tas2781_hda_fw_request_done(struct tas2781_hda *tas_hda);
-+void tas2781_hda_fw_request_cancel(struct tas2781_hda *tas_hda);
-+bool tas2781_hda_fw_request_cancelled(struct tas2781_hda *tas_hda);
- void tas2781_hda_remove(struct device *dev,
- 	const struct component_ops *ops);
- int tasdevice_info_profile(struct snd_kcontrol *kctl,
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-index 67240ce184e1..6693f4aa29fa 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-@@ -401,12 +401,17 @@ static void tas2781_hda_remove_controls(struct tas2781_hda *tas_hda)
- 	struct hda_codec *codec = tas_hda->priv->codec;
- 
- 	snd_ctl_remove(codec->card, tas_hda->dsp_prog_ctl);
-+	tas_hda->dsp_prog_ctl = NULL;
- 	snd_ctl_remove(codec->card, tas_hda->dsp_conf_ctl);
-+	tas_hda->dsp_conf_ctl = NULL;
- 
--	for (int i = ARRAY_SIZE(hda_priv->snd_ctls) - 1; i >= 0; i--)
-+	for (int i = ARRAY_SIZE(hda_priv->snd_ctls) - 1; i >= 0; i--) {
- 		snd_ctl_remove(codec->card, hda_priv->snd_ctls[i]);
-+		hda_priv->snd_ctls[i] = NULL;
-+	}
- 
- 	snd_ctl_remove(codec->card, tas_hda->prof_ctl);
-+	tas_hda->prof_ctl = NULL;
- }
- 
- static void tasdev_add_kcontrols(struct tasdevice_priv *tas_priv,
-@@ -423,6 +428,7 @@ static void tasdev_add_kcontrols(struct tasdevice_priv *tas_priv,
- 			dev_err(tas_priv->dev,
- 				"Failed to add KControl %s = %d\n",
- 				tas_snd_ctrls[i].name, ret);
-+			ctls[i] = NULL;
- 			break;
- 		}
- 	}
-@@ -492,6 +498,9 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
- 	guard(pm_runtime_active_auto)(tas_priv->dev);
- 	guard(mutex)(&tas_priv->codec_lock);
- 
-+	if (tas2781_hda_fw_request_cancelled(tas_hda))
-+		goto out;
-+
- 	ret = tasdevice_rca_parser(tas_priv, fmw);
- 	if (ret)
- 		goto out;
-@@ -527,6 +536,7 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
- 
- out:
- 	release_firmware(fmw);
-+	tas2781_hda_fw_request_done(tas_hda);
- }
- 
- static int tas2781_hda_bind(struct device *dev, struct device *master,
-@@ -567,9 +577,12 @@ static int tas2781_hda_bind(struct device *dev, struct device *master,
- 
- 	strscpy(comp->name, dev_name(dev), sizeof(comp->name));
- 
-+	tas2781_hda_fw_request_start(tas_hda);
- 	ret = tascodec_init(tas_hda->priv, codec, THIS_MODULE, tasdev_fw_ready);
- 	if (!ret)
- 		comp->playback_hook = tas2781_hda_playback_hook;
-+	else
-+		tas2781_hda_fw_request_done(tas_hda);
- 
- 	return ret;
- }
-@@ -588,6 +601,8 @@ static void tas2781_hda_unbind(struct device *dev,
- 		comp->playback_hook = NULL;
- 	}
- 
-+	tas2781_hda_fw_request_cancel(tas_hda);
-+
- 	tas2781_hda_remove_controls(tas_hda);
- 
- 	tasdevice_config_info_remove(tas_hda->priv);
-@@ -617,6 +632,7 @@ static int tas2781_hda_i2c_probe(struct i2c_client *clt)
- 		return -ENOMEM;
- 
- 	tas_hda->hda_priv = hda_priv;
-+	tas2781_hda_fw_request_init(tas_hda);
- 
- 	dev_set_drvdata(&clt->dev, tas_hda);
- 	tas_hda->dev = &clt->dev;
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-index 0e4f3553f273..a716a4fc644a 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-@@ -538,13 +538,18 @@ static void tas2781_hda_remove_controls(struct tas2781_hda *tas_hda)
- 	struct tas2781_hda_spi_priv *h_priv = tas_hda->hda_priv;
- 
- 	snd_ctl_remove(codec->card, tas_hda->dsp_prog_ctl);
-+	tas_hda->dsp_prog_ctl = NULL;
- 
- 	snd_ctl_remove(codec->card, tas_hda->dsp_conf_ctl);
-+	tas_hda->dsp_conf_ctl = NULL;
- 
--	for (int i = ARRAY_SIZE(h_priv->snd_ctls) - 1; i >= 0; i--)
-+	for (int i = ARRAY_SIZE(h_priv->snd_ctls) - 1; i >= 0; i--) {
- 		snd_ctl_remove(codec->card, h_priv->snd_ctls[i]);
-+		h_priv->snd_ctls[i] = NULL;
-+	}
- 
- 	snd_ctl_remove(codec->card, tas_hda->prof_ctl);
-+	tas_hda->prof_ctl = NULL;
- }
- 
- static int tas2781_hda_spi_prf_ctl(struct tas2781_hda *h)
-@@ -558,9 +563,11 @@ static int tas2781_hda_spi_prf_ctl(struct tas2781_hda *h)
- 	tas2781_prof_ctl.name = name;
- 	h->prof_ctl = snd_ctl_new1(&tas2781_prof_ctl, p);
- 	rc = snd_ctl_add(c->card, h->prof_ctl);
--	if (rc)
-+	if (rc) {
- 		dev_err(p->dev, "Failed to add KControl: %s, rc = %d\n",
- 			tas2781_prof_ctl.name, rc);
-+		h->prof_ctl = NULL;
-+	}
- 	return rc;
- }
- 
-@@ -580,6 +587,7 @@ static int tas2781_hda_spi_snd_ctls(struct tas2781_hda *h)
- 	if (rc) {
- 		dev_err(p->dev, "Failed to add KControl: %s, rc = %d\n",
- 			tas2781_snd_ctls[i].name, rc);
-+		h_priv->snd_ctls[i] = NULL;
- 		return rc;
- 	}
- 	i++;
-@@ -590,6 +598,7 @@ static int tas2781_hda_spi_snd_ctls(struct tas2781_hda *h)
- 	if (rc) {
- 		dev_err(p->dev, "Failed to add KControl: %s, rc = %d\n",
- 			tas2781_snd_ctls[i].name, rc);
-+		h_priv->snd_ctls[i] = NULL;
- 		return rc;
- 	}
- 	i++;
-@@ -600,6 +609,7 @@ static int tas2781_hda_spi_snd_ctls(struct tas2781_hda *h)
- 	if (rc) {
- 		dev_err(p->dev, "Failed to add KControl: %s, rc = %d\n",
- 			tas2781_snd_ctls[i].name, rc);
-+		h_priv->snd_ctls[i] = NULL;
- 	}
- 	return rc;
- }
-@@ -619,6 +629,7 @@ static int tas2781_hda_spi_dsp_ctls(struct tas2781_hda *h)
- 	if (rc) {
- 		dev_err(p->dev, "Failed to add KControl: %s, rc = %d\n",
- 			tas2781_dsp_ctls[i].name, rc);
-+		h->dsp_prog_ctl = NULL;
- 		return rc;
- 	}
- 	i++;
-@@ -629,6 +640,7 @@ static int tas2781_hda_spi_dsp_ctls(struct tas2781_hda *h)
- 	if (rc) {
- 		dev_err(p->dev, "Failed to add KControl: %s, rc = %d\n",
- 			tas2781_dsp_ctls[i].name, rc);
-+		h->dsp_conf_ctl = NULL;
- 	}
- 
- 	return rc;
-@@ -644,6 +656,9 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
- 	guard(pm_runtime_active_auto)(tas_priv->dev);
- 	guard(mutex)(&tas_priv->codec_lock);
- 
-+	if (tas2781_hda_fw_request_cancelled(tas_hda))
-+		goto out;
-+
- 	ret = tasdevice_rca_parser(tas_priv, fmw);
- 	if (ret)
- 		goto out;
-@@ -698,6 +713,7 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
- 	tas2781_save_calibration(tas_hda);
- out:
- 	release_firmware(fmw);
-+	tas2781_hda_fw_request_done(tas_hda);
- }
- 
- static int tas2781_hda_bind(struct device *dev, struct device *master,
-@@ -724,10 +740,13 @@ static int tas2781_hda_bind(struct device *dev, struct device *master,
- 
- 	strscpy(comp->name, dev_name(dev), sizeof(comp->name));
- 
-+	tas2781_hda_fw_request_start(tas_hda);
- 	ret = tascodec_spi_init(tas_hda->priv, codec, THIS_MODULE,
- 		tasdev_fw_ready);
- 	if (!ret)
- 		comp->playback_hook = tas2781_hda_playback_hook;
-+	else
-+		tas2781_hda_fw_request_done(tas_hda);
- 
- 	/* Only HP Laptop support SPI-based TAS2781 */
- 	tas_hda->catlog_id = HP;
-@@ -750,6 +769,8 @@ static void tas2781_hda_unbind(struct device *dev, struct device *master,
- 		comp->playback_hook = NULL;
- 	}
- 
-+	tas2781_hda_fw_request_cancel(tas_hda);
-+
- 	tas2781_hda_remove_controls(tas_hda);
- 
- 	tasdevice_config_info_remove(tas_priv);
-@@ -780,6 +801,7 @@ static int tas2781_hda_spi_probe(struct spi_device *spi)
- 		return -ENOMEM;
- 
- 	tas_hda->hda_priv = hda_priv;
-+	tas2781_hda_fw_request_init(tas_hda);
- 	spi->max_speed_hz = TAS2781_SPI_MAX_FREQ;
- 
- 	tas_priv = devm_kzalloc(&spi->dev, sizeof(*tas_priv), GFP_KERNEL);
-
+Changes in v2:
+  - Reuse existing 'n' loop variable instead of introducing a new
+    one (Slava Dubeyko)
+  - Add dedicated out_free_segnums label so the validation-failure
+    path falls through the existing cleanup ladder rather than
+    duplicating kfree(kbufs[4]) inline (Slava Dubeyko)
 ---
-base-commit: 1bc46462f4c09f8d429ae8ec17f92886d604659f
-change-id: 20260421-alsa-hda-tas2781-fw-callback-teardown-3b76404bb928
+ fs/nilfs2/segment.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-Best regards,
---  
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 1491a4d4b1e1..dc54643866ce 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2512,12 +2512,33 @@ int nilfs_clean_segments(struct super_block *sb, struct nilfs_argv *argv,
+ 	struct nilfs_sc_info *sci = nilfs->ns_writer;
+ 	struct nilfs_transaction_info ti;
+ 	int err;
++	size_t i, nfreesegs = argv[4].v_nmembs;
++	__u64 *segnumv = kbufs[4];
+ 
+ 	if (unlikely(!sci))
+ 		return -EROFS;
+ 
+ 	nilfs_transaction_lock(sb, &ti, 1);
+ 
++	/*
++	 * Validate segment numbers under ns_segctor_sem (held for write
++	 * by nilfs_transaction_lock above) so the check is serialized
++	 * against nilfs_ioctl_resize(), which can modify ns_nsegments.
++	 * Rejecting bad input here, before any segment-cleaning work
++	 * begins, avoids the per-element diagnostic path inside
++	 * nilfs_sufile_updatev() that would otherwise run under this
++	 * same lock and stall concurrent readers.
++	 */
++	for (i = 0; i < nfreesegs; i++) {
++		if (segnumv[i] >= nilfs->ns_nsegments) {
++			nilfs_err(sb,
++				 "Segment number %llu to be freed is out of range",
++				 (unsigned long long)segnumv[i]);
++			err = -EINVAL;
++			goto bail_unlock;
++		}
++	}
++
+ 	err = nilfs_mdt_save_to_shadow_map(nilfs->ns_dat);
+ 	if (unlikely(err))
+ 		goto out_unlock;
+@@ -2558,6 +2579,7 @@ int nilfs_clean_segments(struct super_block *sb, struct nilfs_argv *argv,
+ 	sci->sc_freesegs = NULL;
+ 	sci->sc_nfreesegs = 0;
+ 	nilfs_mdt_clear_shadow_map(nilfs->ns_dat);
++ bail_unlock:
+ 	nilfs_transaction_unlock(sb);
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
