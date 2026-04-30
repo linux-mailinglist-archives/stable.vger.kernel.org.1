@@ -1,234 +1,180 @@
-Return-Path: <stable+bounces-242172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DYPEqqO82kQ5AEAu9opvQ
-	(envelope-from <stable+bounces-242172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 19:17:30 +0200
+	id gEiZAlOQ82lJ5AEAu9opvQ
+	(envelope-from <stable+bounces-242173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 19:24:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE814A6411
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 19:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7D54A6545
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 19:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 495B1301158F
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:17:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68A943037DFF
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 17:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0413630B1;
-	Thu, 30 Apr 2026 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C9A47278A;
+	Thu, 30 Apr 2026 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CovOWcW8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yol647O1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EDC3D7D97
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 17:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777569444; cv=pass; b=EIppUELTxJQy5LsIdvj9wQhp/e0kqroNWFt7z5TSQ/PynP4+XkEqN4qJMeDt2H7l2iISyYG+ZcGLJqPeMlsq93ZkHYdUdy0r+A+07SWuhqBgAT8+SQ9AlZGDie1LSiLfxF8+wqgZRRjkfJBVbkbRVMeFrVxLFBeDyv73pz3hUtc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777569444; c=relaxed/simple;
-	bh=xmlUvms7jbdQ6jObUvE2V4NxlxV71FYkVh2c+YJ28h8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TTW8l8F0+qGMaeKYXPLUHoIMkQ6dUlcwyCp3GxUscN7svDuLRAThcfXmGe9QdIA5g3UngDsZ7XdIw9Zz4zybAJjfFRlQ1cvly1i0C7zU8R1ODe1XZZdGqgZ+pDzWkVUR/lrtU332tlf8PseIIhHk/N0HdfyDUsDOCq6Yz9bcJWE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CovOWcW8; arc=pass smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DAB407572
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 17:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777569787; cv=none; b=AAtVmg7qrLrTrfCI46H4FQXmh6Vcb7wr/+kD3mzEuan4WGtJ/Ufs6KuOK0mfwe9vMhC/Vq+eV13i6ksD2RJqXrg/jxIKqNcMAU57CJ9jiMbGk0P8DkDy+AU54AOy6DguExm8RMMJorewPQgdCxv/UYxSkhreXvwpdvTjVdoB4/I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777569787; c=relaxed/simple;
+	bh=zFB/iOZ19wQjJXG0nzOV7p8jbdcKKyA1ghYwzJk8F+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mcnmHdKPd6HI5aoQ9L3c64HdRUzezNrPyc8p8rGeoOhu0064NoxfldOn8M/qETEzlrRte8TGdHN2q4sSHVDKx+0pTCExtHKbyxAiSkmDTxxsd/+5D9eLPF8lzpq9gXBDoeKVoIGtH0SaiX88fn/ezTGr468iqpiKzAJjd1Tu3rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yol647O1; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-651bc83e74aso1091867d50.2
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 10:17:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777569441; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bij3BcjavhRWbDVmdW5mIjUqp3kbOtKdZbJznPctnoTDkVEOpGxub0L5vtBmNGB67y
-         6cYEAXlmGXkCSkkGrdNtAAaEXYC2JUUOYPhbqL8V4+42eA6pv+bGCd1oaYLo00qh0gjZ
-         vYbaVroca3z8hSgEgPd8qqXvV8wmBPFsDZP4HzuAu+uwu0/xPxwgzRk8Op3j9q3z5RMc
-         6QQLh7G85JlQgES1oM4YcJDoB/1/TAeW/AlJkknHYRSLlCg1sY+NC+GGYkq2sfiC75KW
-         vcE+cHSswQAP8Fm0mOK+tSzbYXzXX59VVTHgkZwrRaYeV1XvnCfIu0SiiVu5HWWDFcKc
-         i5OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ha0rgF4Ilfcxptzl06v51LwEiI+VXaaWgoLeb5OWN3Y=;
-        fh=ZBZ/uaJVAqZoXyTv8qPPR+zROhPSqjXb62LMKd8PBzs=;
-        b=lPWICSaBr0M26hjOVlcAw89Co1xbpcPvQJ1aqSWIaImCuBTV1PRJLu2VJPZoeXySPw
-         IPjZNWMIdF1PHCswNBXZ0yRIebKaalX7Dxantqbjctzw9QdJjgqsB5BjwS0AxeU/nQMt
-         dcm8vmhuvMsf2DQTsYkBNVMhi52prGAMN3P6f0JbI/ZXYIMpC0VdNNrg5X3Wle8oO9vK
-         DYeOVg4UsnoLTpNjd3rDdEy2sAjoYzjxYGiUbEfsNUMft2vRz9veiiDk3lMXrfxwdj89
-         ect9KLtzHbdFsWY2PXJHxToAY1+ddi/v4AGI2uJXoQVREnfm2ktIhJUwkSQH1r0NgPv/
-         IMkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b24fcc2b5dso7825785ad.1
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 10:23:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777569441; x=1778174241; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ha0rgF4Ilfcxptzl06v51LwEiI+VXaaWgoLeb5OWN3Y=;
-        b=CovOWcW84jC7RWp25i3JqCHXWAfcsLdoImUZzkhgQZvmJ9y5dpxbYGvN0rNwPM63+f
-         +veDO8LEEcAyo9S0VeimHSkUrtXQ53TRYfj6NRY9DgNh2HfE0YZaoADl8mdZ1q157OLb
-         EE9tolFr6VhWI8JwMwzWbJkbcfmrCvtEQsbJdsANcR2mW9l0jyhS/dP3ER8Mq1ngr4EB
-         sqbVr4VceyRZxDBaWYn6f1owoHXldBeArBch3imT1hOGaVBaLP4aWXzC2DcMXmp8OqXD
-         4C4f+haECdZDG1ao04BVhKEvGjsXmYJgEIG9uyYWxPDVGEVKkz+GRYFaS3HvHcyQkFy2
-         oQbg==
+        d=gmail.com; s=20251104; t=1777569785; x=1778174585; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Fsgwp7UDQpeyb+JW2HoyU5IVU1CSyJAoqsfmKXtsW4=;
+        b=Yol647O1gjCVwM1TL8PUeaplA4PMzJPBh/m3pjGDVmR6O6kS9bJMnmZgCmBOilEv5q
+         9dXmTTdCFN/T8D4/HjAZkYlrK5BxgTxc/Eda9ZRFlhcI9mJYH69o8vaOfHYz+2iaV1TW
+         lg9Fpw1JoQFv2Jpk9Ln1x8cboeAUIUODre1GVwGRhPYX3Yn6o0PpDcpBie7n/J/4cy7+
+         PzgfOvlS05EesG22ra80vXy2765o8v1KUS0eghlHuhTmjz+F1f1oOuGKdHDj4Ui3p+bB
+         kDHSCHr8lcdEEv8snxp0PPrMQ05hFt8979N+Qs6eiLtay2nVXINxMSDidtfS9XPwMUL0
+         xdew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777569441; x=1778174241;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ha0rgF4Ilfcxptzl06v51LwEiI+VXaaWgoLeb5OWN3Y=;
-        b=DFMH2t8Vp9jMSHNBuRPtFe/PDaA+BzZQ8px+RlzGhDduepbRh/o+3rO2sbwrCSyWNv
-         j8cyt4YQEEtnHgS/gAgzhOSvETu/8I9n/2Fyl+mbObSwY2tI4zrPEjuEGG9UAM3hlLN9
-         teyUkUGiQy2a3bY73YNAyhSyJTduTjb1B/tlS8tonhXFYKCasWd1qxvnWZwArnDEYmRF
-         8XIwYSMic87VYiqehvFwOwSx2yQ1YV6QpcPVptLhcAptgiyUkDTorAJ6oOe0iWPhppYo
-         kt8M13crdTU16U/kKP/q5jDiIe4PLhq5FStV73jteFDMTkmNOtiSREb158eD+fm1kxDK
-         Vlqg==
-X-Forwarded-Encrypted: i=1; AFNElJ9fnI1ArDE7N2uVZuMwTNOezpSKoLrafG5oAXq7MMvA0qLzkFusjvuicCOLUCljXjSQiw5T7iI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyp1w6/9D8KC9dpTVrjLIhdLbjNiGhkVC2mLf6nheUr7qDyfMtg
-	U79qsV8vytyeMV0pvKcn3js6B1WQaHt/39bQ69f3fO6Xma+vB6XbcTEivE/zFwfBRSuBbavV4xz
-	+cq9QW1a84C1wjWnVsxhVwCMcyEokk5eR64yQy+c=
-X-Gm-Gg: AeBDiesSuh4IR5tJIofIgzlPK4CtbBHSW+ME+VxIjrWWWEYus2lEvqFXUB+qvG8WHkD
-	VhEq4oRsDyC4HfxTbgIMzKoqRKeahUbroboufIugf07tFTsUUn/nC91gzo1th4LT3C5B867VlkE
-	LOaHyR5zswe2bHBZoPRPWpCKoWzoT39cjcxk7OYWSKncfJrhZjm+bTEHhAmiWvGcYwVdjvKcuE0
-	Hw54gYyg9H50r+0yqCin58L+e3tp7b5syaJXI1d71Qpx+DMnCHFucrrGH/zxs2VkwqPLwTg4M2l
-	F6u77SU4Nf3vwoV8b9/p1yo9+NQYbtpyuXpI9EIdEdSMbpT91pLRGFrgVWccaEMs8GlwNSqU/Xu
-	UJjyP
-X-Received: by 2002:a53:db4e:0:b0:657:8b53:bd42 with SMTP id
- 956f58d0204a3-65c18dda124mr2437866d50.34.1777569441287; Thu, 30 Apr 2026
- 10:17:21 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777569785; x=1778174585;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8Fsgwp7UDQpeyb+JW2HoyU5IVU1CSyJAoqsfmKXtsW4=;
+        b=ZzGh1xXRkp8tV/Z81XB6Hd/39FMDAwCgpGWSia7o2iJb+ihH26Iu/DoPcs/hANi9ao
+         epn5NZPjAMBsaA9Dq7K4TWsNRzkPgnajvGtQI1Nx1JvIO3p/LpTvnAMFjAZj7ZQVbn1v
+         XWY/ONr0dFDvniYy3sBVQSJVOSMMkx4ik8YGSrW14BrpxxYMmrIFw7NmcZpK+cS8kZqm
+         vu01YA/aE2z1BRDqjov0OHRve/3N8sLhCSU40sOHkoKM6TgLBvpf9xZv/XW880wt7lCS
+         acRfO9lJXA2SyEr2jxoYQcIHhrfFdfzltRP+wlc+ZqhBtGWZU/3uR63/IFyfZ+7haPFz
+         WFoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8KuhTrccrxPpH7Smte5Pa+L7AJoxf50RgSe+IrN8S0H0hszUlNIeGBH+rc+3mV6bBehr9kLfM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzipcXvM5paWUDDHvz0jy3yBuC9qdsCZ8SWV/79RO49G3h7XsP
+	cCU7dnB1tI3+MZqhqKgTfSRGRRdku9+nc4pf11+EIZj9jnZmyyjsoaZN
+X-Gm-Gg: AeBDieswz4Gs24Ch25+BwfCQACesquxatyduJjYjQWEeN43TM/Vjk7JYQyrpc8MvGMr
+	xkVHA9F7nnTRCKJAnLQP+P7gZfsk/RViBF73v0zh1lqmmHCsHav/I+a8DTY4zw7aCvy3mxIrbAY
+	KIVyn3CP60IbzOUj1dkk3CBVazXN4wVN4keJWXSelwc3gcscFmEGd/YZq9po0RoP8D5kaA+swWw
+	XMo7rNOv6YkDHPkMZgnDgd2et/WMckeGjD/95p2SEek7NZNQw5hu7zbH5Mnl8BbfgrLwkW1wkRv
+	X9xO7ESNK/tj8NFgBibUhp7bWGIZPMUTCjV6sREH+1ujd9g/OvLZOJr//gdw4BFSkfLFJZuCa5X
+	+oyUOMtB7YTrsr8oyB+Aa2/AqCdHVh+QB/2oDpr68jfdeMK5o0AVUyIViRvlOVcGeodokAc3w5K
+	V7hBCSK7Rb+HQimbyp9qvYNMShbqdGK2dFEqza2G2/UQ6x0LQ=
+X-Received: by 2002:a17:903:5cf:b0:2b0:7225:d2c0 with SMTP id d9443c01a7336-2b9a2504c12mr24809985ad.30.1777569785201;
+        Thu, 30 Apr 2026 10:23:05 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9caa7e47asm1984265ad.15.2026.04.30.10.23.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 10:23:04 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 30 Apr 2026 10:23:03 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+	"alexandru.tachici@analog.com" <alexandru.tachici@analog.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] hwmon: (ltc2992) Clamp threshold writes to hardware
+ range
+Message-ID: <693bf2bf-55ee-4985-b8d6-344d358e933b@roeck-us.net>
+References: <20260416215904.101969-1-sanman.pradhan@hpe.com>
+ <20260416215904.101969-2-sanman.pradhan@hpe.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <AS8P250MB079109F82C16BEDC4F9FE584EB372@AS8P250MB0791.EURP250.PROD.OUTLOOK.COM>
-In-Reply-To: <AS8P250MB079109F82C16BEDC4F9FE584EB372@AS8P250MB0791.EURP250.PROD.OUTLOOK.COM>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 30 Apr 2026 13:17:09 -0400
-X-Gm-Features: AVHnY4JApx891aGHP7nLh5SQa3vkfZx1uBEMocpDau9aHtZE1upWH-Epuj2FbSA
-Message-ID: <CABBYNZL4P1HkA_FMFkBu0Ou-qi1a6Atv3ae-U32r2U1JgkOe1A@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: l2cap: fix UAF race in l2cap_sock_cleanup_listen
-To: =?UTF-8?Q?Safa_Karaku=C5=9F?= <safa.karakus@secunnix.com>
-Cc: "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>, 
-	"marcel@holtmann.org" <marcel@holtmann.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8FE814A6411
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260416215904.101969-2-sanman.pradhan@hpe.com>
+X-Rspamd-Queue-Id: 4E7D54A6545
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242172-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242173-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:mid,juniper.net:email]
 
-Hi Safa,
-
-On Tue, Apr 28, 2026 at 7:30=E2=80=AFPM Safa Karaku=C5=9F <safa.karakus@sec=
-unnix.com> wrote:
->
-> l2cap_sock_cleanup_listen() dequeues child sockets via
-> bt_accept_dequeue() without holding a reference on the returned sk.
-> A concurrent HCI disconnect can trigger l2cap_conn_del() on CPU1
-> which, while holding chan->lock, calls:
->
->   teardown_cb  -> sock_set_flag(sk, SOCK_ZAPPED)
->   close_cb     -> l2cap_sock_kill(sk) -> sock_put(sk) -> kfree(sk)
->
-> all before CPU0 has a chance to acquire chan->lock.  CPU0 then calls
-> l2cap_chan_lock() on the now-freed sk's chan (already safe because
-> l2cap_chan_hold() was called first) but subsequently passes the freed
-> sk pointer to l2cap_sock_kill(), causing a use-after-free read on
-> sk->sk_flags and sk->sk_socket.
->
-> Fix by calling sock_hold() immediately after bt_accept_dequeue() to
-> prevent kfree(sk) from racing with our traversal.  After acquiring
-> chan->lock, check SOCK_DEAD: if l2cap_conn_del() already invoked
-> l2cap_sock_kill() (which sets SOCK_DEAD), skip the duplicate call to
-> avoid a double sock_put().  Drop the extra reference with sock_put()
-> at the end of each loop iteration.
->
-> Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Cre=
-dit Based Mode")
+On Thu, Apr 16, 2026 at 09:59:30PM +0000, Pradhan, Sanman wrote:
+> From: Sanman Pradhan <psanman@juniper.net>
+> 
+> ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
+> do not validate the user-supplied value before converting it to a
+> register value. This can result in:
+> 
+> 1. Negative input values wrapping to large positive register values.
+>    For power, the negative long is implicitly cast to u64 in
+>    mul_u64_u32_div(), producing an incorrect value. For voltage and
+>    current, the negative converted value wraps when passed to
+>    ltc2992_write_reg() as a u32.
+> 
+> 2. Intermediate arithmetic exceeding the range representable in u64 on
+>    64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
+>    exceed U64_MAX when val is a large positive long. In
+>    ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
+>    similarly. In ltc2992_set_power(), the computed value may not fit
+>    in u64.
+> 
+> 3. Register values exceeding the hardware field width. Voltage and
+>    current threshold registers are 12-bit (stored left-justified in
+>    16 bits), and power threshold registers are 24-bit. Without
+>    clamping, bits above the field width are truncated in
+>    ltc2992_write_reg().
+> 
+> Fix by clamping negative values to zero, clamping positive values to
+> the rounded hardware-representable maximum (the value returned by the
+> read path for a full-scale register) to prevent intermediate overflow,
+> and clamping the converted register value to the hardware field width
+> before writing. The existing conversion formula and rounding behavior
+> are preserved.
+> 
+> In the power write path, cancel the factor of 1000 from both the
+> numerator (r_sense_uohm * 1000) and the denominator
+> (VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
+> r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
+> 
+> Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Safa Karakus<safa.karakus@secunnix.com>
-> ---
->  net/bluetooth/l2cap_sock.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
->
-> diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-> index 71e8c1b45..4475d3377 100644
-> --- a/net/bluetooth/l2cap_sock.c
-> +++ b/net/bluetooth/l2cap_sock.c
-> @@ -1477,7 +1477,15 @@ static void l2cap_sock_cleanup_listen(struct sock =
-*parent)
->
->         /* Close not yet accepted channels */
->         while ((sk =3D bt_accept_dequeue(parent, NULL))) {
-> -               struct l2cap_chan *chan =3D l2cap_pi(sk)->chan;
-> +               struct l2cap_chan *chan;
-> +
-> +               /* Hold sk across the chan->lock acquisition window.
-> +                * A concurrent l2cap_conn_del() can call l2cap_sock_kill=
-(sk)
-> +                * -> kfree(sk) inside chan->lock before we acquire it,
-> +                * leaving a dangling pointer.
-> +                */
-> +               sock_hold(sk);
-> +               chan =3D l2cap_pi(sk)->chan;
->
->                 BT_DBG("child chan %p state %s", chan,
->                        state_to_string(chan->state));
-> @@ -1487,10 +1495,16 @@ static void l2cap_sock_cleanup_listen(struct sock=
- *parent)
->
->                 __clear_chan_timer(chan);
->                 l2cap_chan_close(chan, ECONNRESET);
-> -               l2cap_sock_kill(sk);
-> +               /* l2cap_conn_del() may have already called l2cap_sock_ki=
-ll()
-> +                * (setting SOCK_DEAD); skip the duplicate to avoid a
-> +                * double sock_put().
-> +                */
-> +               if (!sock_flag(sk, SOCK_DEAD))
-> +                       l2cap_sock_kill(sk);
->
->                 l2cap_chan_unlock(chan);
->                 l2cap_chan_put(chan);
-> +               sock_put(sk);
->         }
->  }
->
-> --
-> 2.34.1
+> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
 
-sashiko flags 2 critical flaws with these changes:
+Applied.
 
-https://sashiko.dev/#/patchset/AS8P250MB079109F82C16BEDC4F9FE584EB372%40AS8=
-P250MB0791.EURP250.PROD.OUTLOOK.COM
-
---=20
-Luiz Augusto von Dentz
+Thanks,
+Guenter
 
