@@ -1,293 +1,154 @@
-Return-Path: <stable+bounces-242187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NhpGHOb82ku5QEAu9opvQ
-	(envelope-from <stable+bounces-242187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:12:03 +0200
+	id yMg6B+Ob82kx5QEAu9opvQ
+	(envelope-from <stable+bounces-242188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:13:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A134A6BC5
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:12:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228724A6BEA
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 20:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2F62730060B2
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:11:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F008C300623C
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 18:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA10B44D696;
-	Thu, 30 Apr 2026 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F642D7814;
+	Thu, 30 Apr 2026 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T/whbGG7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XWR4nAct"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQ09D3It"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBFF46AF01
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 18:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DC747A0B4
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 18:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777572715; cv=none; b=pCvDXv0Q6ll+lflh88zt4v/XtTuGuB9mQcGZ8DPehrQ6VJvMwjRoAy7Z89OeG+pxRVtwHos+ecOpsEsS0CCYSJPcf7wxjmq7bAyZhblaFvAmQrQCBkF3F/I8w9SLk5V8uoy8DVmtReUHPr4ZA9TBzdbc1sex+inK0bpwFPHGtdU=
+	t=1777572828; cv=none; b=FqeTZO/iTn3kPDCabWkUUrGAcfIQc6Z61NuFnTBoSwtieIsIv2/bvNjsP9SFS1GfAQFoD4HEukcSyg5ojFlLlZfDbpjpwWkI3J99Q31CAuuuWfBU6N6saRVQGFX02Iwgy9oECoBflpJo1Vg9IKTyCF8WDd1+7zWsosn4WRu5x/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777572715; c=relaxed/simple;
-	bh=gQzIxcSxyvmzQKisxCRYc/QwhGs1vo24eOUTTDHgv8E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rnFKjJkesGDZkSzaAwDzlVoIFL70vAu59s+ic8iEqwXRbiXsnxnwpatkmEd02x24pHOei+BJVmDErKnglN+IWuXub7nSW3gye00hGHYHXVh/a4HPLcWxruD5lIYeEt+bzqiAAxnUajkrnW/M8w/daKCNILT+4nr7DaB+f7Cp0zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T/whbGG7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XWR4nAct; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777572713;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W1Whz6JpMQNNVhu6Dh4cuj5tfSFS3tpn/UV4LHkcCn0=;
-	b=T/whbGG7rohgT9TSa62OIwIinfZH0Ah0BCHXZ4k7WdWWsReLxUf17C73i4xAuKoQsieYfQ
-	yVueipirhGCskRlEvwgtH5YrUU42ro3Pf59RUECbTk0fnYyn8yJsZwxf/H3dwfE4X42D7t
-	d6Gb0dfYRI900EqIbrybMYPNSqA1+LU=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-580-RL_gv-vTMx-MOI3Boby6Xw-1; Thu, 30 Apr 2026 14:11:51 -0400
-X-MC-Unique: RL_gv-vTMx-MOI3Boby6Xw-1
-X-Mimecast-MFC-AGG-ID: RL_gv-vTMx-MOI3Boby6Xw_1777572711
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7b3e41a97f0so22054767b3.0
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 11:11:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777572711; x=1778177511; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=W1Whz6JpMQNNVhu6Dh4cuj5tfSFS3tpn/UV4LHkcCn0=;
-        b=XWR4nActPlKZY6LW0pnG+164YKbr0XbgYBkgvdjwCLzldjfA2OPLWYM6u8sZ5XMJyR
-         DReWVoQ88vjpVSHvZqpL/byHX9Q8ZNxIyb208+BfLBaa5uzMXAU8YX6CyRN+1F6eIkAL
-         0RZm+6gvphfKcWozKNh92V5mc7jll/A4rDuq4JWykVyYRxw82pwtM2EN0Q2t2IevNRFU
-         +YIPUsDLxmN2HIjYEm0mGl98FqEfwOsfChWf/qq+H7cv8CzURQrYAaNjL87yfHR09edL
-         egyeQLhvtBmOjzHz37V1OAII85fU+oT9qp+GJFsbpNKPZwiTXWaTEa9rHE0aC/VUrdNb
-         BxZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777572711; x=1778177511;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W1Whz6JpMQNNVhu6Dh4cuj5tfSFS3tpn/UV4LHkcCn0=;
-        b=lyJT85hfmm0HwRTpL1CoKksU1jkF3KwlSvuNhzf4V1ofWZjMxzo2EmEl5Vqt1Jr6py
-         uuynpgdbDHJpui0VWj7ggjSI8fsb15ivIKDulkNr+7jeNZRghmVQMJtMBJ3XUjjxXRmb
-         RwBQdkGenICkvtUmxGmUx6z/JkXjFpuSF+lLZPdALxXw3MbT+/dA+f56fxg8jsAwNhO6
-         MT5UINJZ7fjOoC8BBPemocXw72Y9eS2dl/sLH2QE52PU48kOlCCmYboqx5HqxCqp5yw+
-         zEv7IMBupsgVO6EsjLOzVzTPg7c24iczM2URPFAnbYWtU6d+wg7iYVN6+LHRYiWJ8uJK
-         H7IA==
-X-Forwarded-Encrypted: i=1; AFNElJ/ESIajp9xWupGyWs7VOJX39osQzebDhoJejOkU4F3D70swDmNyp+akaGUZ2ee/L33IaJ1q1Fo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhIP5FZpNc0Ri/SygCDPn9T+z8ZLysvdToK8HbsrlDpk8ibZsw
-	VwR7zf/JZz+w+xeXH6v0kCMDqsCdjgoRf/Qxx8k/HWrj/e+PYsvQ+UVNrZkKONzDv3aaYW2Z9ss
-	0iP1QJen8KZ/YeqqmjwG9Xg4gcv0XcMs7kgxSVsSr85NokjlV6BT29hcefw==
-X-Gm-Gg: AeBDiesVxShJfGmXJAE9H7675p513VV0o0Mu5bGxmyJSE5PK7+2IlC6ZGXaPiH7P9kJ
-	mWHfAX2PIApZs0Prl/GeXnqG1wXuJBZtsV8xKlRylp2Qty3RwWucH7PEHFQ84HVq8gFErN4Eti9
-	W6vQdcxDypNJ/+RbfWe8ihdhG+GgDSwDeWTnuRGBv8zz9HfW28LYtVbnd03g8+7MV9rDHeB1NCP
-	D6Ojdxz2C7qUbnsVXLiOl5Yju3GML//hU2MNv7FhOs/geIRGrgF7BAHfiFX613WPs14nN3x+f0L
-	SVe2GhXt4FjFtuqmSv+pIBV4I8Lk+vgTbtJBQE2zI7Iad3XGOaqO1jY1gJPHUpH7pSygjOgwe3l
-	cQpgNmEr3cWu8LCsGNoXFxJnGLBQX5SG29LthcKoqhg8lVhktWIyDd3OS+LG4JRI=
-X-Received: by 2002:a05:690c:660d:b0:79a:dae4:5832 with SMTP id 00721157ae682-7bd52892ec7mr42941127b3.22.1777572705777;
-        Thu, 30 Apr 2026 11:11:45 -0700 (PDT)
-X-Received: by 2002:a05:690c:660d:b0:79a:dae4:5832 with SMTP id 00721157ae682-7bd52892ec7mr42940677b3.22.1777572705281;
-        Thu, 30 Apr 2026 11:11:45 -0700 (PDT)
-Received: from li-4c4c4544-0032-4210-804c-c3c04f423534.ibm.com ([2600:1700:6476:1430::29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd6683836asm556967b3.25.2026.04.30.11.11.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 11:11:44 -0700 (PDT)
-Message-ID: <eea194aa0f8734f38fa645db935aca47175bdf17.camel@redhat.com>
-Subject: Re: [PATCH v3] nilfs2: reject CLEAN_SEGMENTS ioctl with
- out-of-range segment numbers
-From: Viacheslav Dubeyko <vdubeyko@redhat.com>
-To: Deepanshu Kartikey <kartikey406@gmail.com>, konishi.ryusuke@gmail.com, 
-	slava@dubeyko.com
-Cc: linux-nilfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com,
- stable@vger.kernel.org
-Date: Thu, 30 Apr 2026 11:11:43 -0700
-In-Reply-To: <20260430040704.113622-1-kartikey406@gmail.com>
-References: <20260430040704.113622-1-kartikey406@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.0 (3.60.0-1.fc44app2) 
+	s=arc-20240116; t=1777572828; c=relaxed/simple;
+	bh=L/5U++biNDMBUtPbxgH5ptjaeBsGBMVEMMUNS5TFPsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Tt4I5mnYwy7MGEelMLy+uO34XR0DZPkkMwD7e509ejaPPBe0puW5FIxuOMMY4GRPhdRj/g4SZlyZ5AGF5BGHuCZnopYzzTiLcJcRt98FJNPy3RFu7s0wl+Mf7dZ5CyNmfqv+G+02xw7SOoWMOqaILJsAwpLJVbCQ+7+tO9HCToI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQ09D3It; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB04C2BCB8;
+	Thu, 30 Apr 2026 18:13:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777572827;
+	bh=L/5U++biNDMBUtPbxgH5ptjaeBsGBMVEMMUNS5TFPsA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WQ09D3ItI6qPg5PtAZDeNO4SogJvHu3TsEyV9mf80jpa4+D/XxSIESJSM06PBfNev
+	 almQpmPCBKOdTpT3m+yNQEnA0AfmeYgKhe5Kdu/oKokM47O6mDTxJyHj+QyzQgGwXB
+	 1B11hVE6fTJGJVohyLWGPJzMZUn3GeVFyBwOd3jkrjB71xpUqxpvWiGHwzy+3ZDVlu
+	 CllUr8QKV5Hq7Rf1G/LMaV4N0S5jUf7SpIlbwoQ+thQnzPjwrFeVLwMuCYth+qYYNg
+	 evYA2Gc5dxYaPq+Otg/PESPW6BggXixlpxAoJdOQBGA6yNIM68wkzxs4q12+du/5kj
+	 rydbIhn0cyMiw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] spi: imx: Convert to platform remove callback returning void
+Date: Thu, 30 Apr 2026 14:13:43 -0400
+Message-ID: <20260430181344.1923600-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026043052-amplify-gag-dbbc@gregkh>
+References: <2026043052-amplify-gag-dbbc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 92A134A6BC5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 228724A6BEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	TAGGED_FROM(0.00)[bounces-242187-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242188-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vdubeyko@redhat.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,62f0f99d2f2bb8e3bbd7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On Thu, 2026-04-30 at 09:37 +0530, Deepanshu Kartikey wrote:
-> Syzbot reported a hung task in nilfs_transaction_begin() where multiple
-> tasks performing chmod() on a nilfs2 mount blocked for over 143 seconds
-> waiting to acquire ns_segctor_sem for read:
->=20
->   INFO: task syz.0.17:5918 blocked for more than 143 seconds.
->   Call Trace:
->    schedule+0x164/0x360
->    rwsem_down_read_slowpath+0x6d9/0x940
->    down_read+0x99/0x2e0
->    nilfs_transaction_begin+0x364/0x710 fs/nilfs2/segment.c:221
->    nilfs_setattr+0x124/0x2c0 fs/nilfs2/inode.c:921
->    notify_change+0xc1a/0xf40
->    chmod_common+0x273/0x4a0
->    do_fchmodat+0x12d/0x230
->=20
-> The writer holding ns_segctor_sem was a concurrent=20
-> NILFS_IOCTL_CLEAN_SEGMENTS caller, stuck inside printk while emitting=20
-> per-element warnings from nilfs_sufile_updatev():
->=20
->    __nilfs_msg+0x373/0x450 fs/nilfs2/super.c:78
->    nilfs_sufile_updatev+0x21c/0x6d0 fs/nilfs2/sufile.c:186
->    nilfs_sufile_freev fs/nilfs2/sufile.h:93 [inline]
->    nilfs_free_segments fs/nilfs2/segment.c:1140 [inline]
->    nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1261 [inline]
->    nilfs_segctor_do_construct+0x1f55/0x76c0
->    nilfs_clean_segments+0x3bd/0xa50
->    nilfs_ioctl_clean_segments fs/nilfs2/ioctl.c:922 [inline]
->    nilfs_ioctl+0x261f/0x2780
->=20
-> The root cause is that user-supplied segment numbers are not validated
-> before nilfs_clean_segments() begins doing work; the range check on
-> each segnum is performed deep inside the call chain by
-> nilfs_sufile_updatev(), which emits a nilfs_warn() per invalid entry
-> while still holding the segctor lock and the sufile mi_sem.  Under load
-> (repeated invocations across multiple mounts saturating the global
-> printk path), the cumulative printk latency keeps ns_segctor_sem held
-> long enough to trip the hung_task watchdog, blocking concurrent
-> operations such as chmod() that need ns_segctor_sem for read.
->=20
-> Fix by validating the contents of kbufs[4] in nilfs_clean_segments()
-> immediately after acquiring ns_segctor_sem via nilfs_transaction_lock().
-> Holding ns_segctor_sem serializes the check against
-> nilfs_ioctl_resize(), which can modify ns_nsegments, so the validation
-> uses a consistent value.  Out-of-range segment numbers are rejected
-> with -EINVAL before any segment-cleaning work begins, so the bad
-> entries never reach the per-element diagnostic path inside
-> nilfs_sufile_updatev().
->=20
-> Reported-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D62f0f99d2f2bb8e3bbd7
-> Tested-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
-> Fixes: 4f6b828837b4 ("nilfs2: fix lock order reversal in nilfs_clean_segm=
-ents ioctl")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
-> Changes in v3:
->   - Move validation from nilfs_ioctl_clean_segments() into
->     nilfs_clean_segments(), under ns_segctor_sem held for write
->     by nilfs_transaction_lock(), to serialize against
->     nilfs_ioctl_resize() which can modify ns_nsegments
->     (Ryusuke Konishi)
->   - Introduce local variables segnumv and nfreesegs for readability,
->     rather than open-coding casts of kbufs[4] (Ryusuke Konishi)
->   - Emit nilfs_err() once on the first out-of-range segnum and bail
->     out, instead of nilfs_warn() per element (Ryusuke Konishi)
->   - Add bail_unlock label for the early-failure path, parallel to
->     the existing out_unlock structure (Ryusuke Konishi)
->=20
-> Changes in v2:
->   - Reuse existing 'n' loop variable instead of introducing a new
->     one (Slava Dubeyko)
->   - Add dedicated out_free_segnums label so the validation-failure
->     path falls through the existing cleanup ladder rather than
->     duplicating kfree(kbufs[4]) inline (Slava Dubeyko)
-> ---
->  fs/nilfs2/segment.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->=20
-> diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-> index 1491a4d4b1e1..dc54643866ce 100644
-> --- a/fs/nilfs2/segment.c
-> +++ b/fs/nilfs2/segment.c
-> @@ -2512,12 +2512,33 @@ int nilfs_clean_segments(struct super_block *sb, =
-struct nilfs_argv *argv,
->  	struct nilfs_sc_info *sci =3D nilfs->ns_writer;
->  	struct nilfs_transaction_info ti;
->  	int err;
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Usually, I prefer to keep the err variable at the end of declarations. Beca=
-use,
-it is the ending state of the function. And I am feeling that something is =
-wrong
-every time when likewise variable is hidden inside of declaration list. :) =
-There
-is nothing critical in my remark. But anyway... :)
+[ Upstream commit 423e548127223d597bb65a149ebcb3c50ea08846 ]
 
-The path looks good to me.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Thanks,
-Slava.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-> +	size_t i, nfreesegs =3D argv[4].v_nmembs;
-> +	__u64 *segnumv =3D kbufs[4];
-> =20
->  	if (unlikely(!sci))
->  		return -EROFS;
-> =20
->  	nilfs_transaction_lock(sb, &ti, 1);
-> =20
-> +	/*
-> +	 * Validate segment numbers under ns_segctor_sem (held for write
-> +	 * by nilfs_transaction_lock above) so the check is serialized
-> +	 * against nilfs_ioctl_resize(), which can modify ns_nsegments.
-> +	 * Rejecting bad input here, before any segment-cleaning work
-> +	 * begins, avoids the per-element diagnostic path inside
-> +	 * nilfs_sufile_updatev() that would otherwise run under this
-> +	 * same lock and stall concurrent readers.
-> +	 */
-> +	for (i =3D 0; i < nfreesegs; i++) {
-> +		if (segnumv[i] >=3D nilfs->ns_nsegments) {
-> +			nilfs_err(sb,
-> +				 "Segment number %llu to be freed is out of range",
-> +				 (unsigned long long)segnumv[i]);
-> +			err =3D -EINVAL;
-> +			goto bail_unlock;
-> +		}
-> +	}
-> +
->  	err =3D nilfs_mdt_save_to_shadow_map(nilfs->ns_dat);
->  	if (unlikely(err))
->  		goto out_unlock;
-> @@ -2558,6 +2579,7 @@ int nilfs_clean_segments(struct super_block *sb, st=
-ruct nilfs_argv *argv,
->  	sci->sc_freesegs =3D NULL;
->  	sci->sc_nfreesegs =3D 0;
->  	nilfs_mdt_clear_shadow_map(nilfs->ns_dat);
-> + bail_unlock:
->  	nilfs_transaction_unlock(sb);
->  	return err;
->  }
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230306065733.2170662-3-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 1c78c2002380 ("spi: imx: fix use-after-free on unbind")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-imx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index e929a5af38eea..9bf9ded1de1ea 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1878,7 +1878,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int spi_imx_remove(struct platform_device *pdev)
++static void spi_imx_remove(struct platform_device *pdev)
+ {
+ 	struct spi_controller *controller = platform_get_drvdata(pdev);
+ 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(controller);
+@@ -1897,8 +1897,6 @@ static int spi_imx_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(spi_imx->dev);
+ 
+ 	spi_imx_sdma_exit(spi_imx);
+-
+-	return 0;
+ }
+ 
+ static int __maybe_unused spi_imx_runtime_resume(struct device *dev)
+@@ -1960,7 +1958,7 @@ static struct platform_driver spi_imx_driver = {
+ 		   .pm = &imx_spi_pm,
+ 	},
+ 	.probe = spi_imx_probe,
+-	.remove = spi_imx_remove,
++	.remove_new = spi_imx_remove,
+ };
+ module_platform_driver(spi_imx_driver);
+ 
+-- 
+2.53.0
 
 
