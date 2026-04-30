@@ -1,154 +1,211 @@
-Return-Path: <stable+bounces-241967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGZuCFuj8mm3tAEAu9opvQ
-	(envelope-from <stable+bounces-241967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 02:33:31 +0200
+	id gHI9JUai8mm3tAEAu9opvQ
+	(envelope-from <stable+bounces-241963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 02:28:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD8949BC29
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 02:33:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFE649BBC5
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 02:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E8B5307D8EC
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 00:31:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AE07D30091D6
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 00:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEAD1CAA6C;
-	Thu, 30 Apr 2026 00:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D97AE573;
+	Thu, 30 Apr 2026 00:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CTBVTM2M"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KtyXF0+2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22661A682F;
-	Thu, 30 Apr 2026 00:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777509065; cv=none; b=fMur9HnKnSGGM+2nVQPUCIevPMAJ9sR9SpUimM2pHd20Pc5MaF6u3wE3byxV+fP/L/HZjrZMDIm0aYRnM8hEHiU46whs8Fo9aZrf418xy2PqBc8hUrAmrWNKdIXU/PmDLNdKQAiLhqocjC5/M3ff85IvuVtOiLpQ3iB+eu4TBJ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777509065; c=relaxed/simple;
-	bh=qwSIvUAIHquGWy/otod5pyn/mc/Z6mxdBqjoaK+pMr8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DLRaK2oLUPPVSd/5TEI4+Fadqo4MGDBmiw0inuX78ZddopoKdJ3rBrsIdqt8kJlEKbWPHWNSaVXp0ylUauQfcRrDnvh+FmC1J03WUQV53lu/U78Pjp5WSrVfWJ0Eetq1fMQf3rmgETJatH9aLkF3CrMfExyNC2paCB3CyMzqW78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CTBVTM2M; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777509065; x=1809045065;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qwSIvUAIHquGWy/otod5pyn/mc/Z6mxdBqjoaK+pMr8=;
-  b=CTBVTM2MwT5jxB6bRUjKFW+xBuougqt1mjQoo4tGzUzRcb4DKOqPdqAW
-   nBbUxZrK4OZGIdj/XXEdAHzRCHUEzTSptQ4oieAl9159GnQl7zImDMj68
-   6oDrJubz9SJGAehX/c28FN0Kfn1ye6mPwT4lK4HRTi4K1LSoqYpsnz0Ny
-   JOBPi8M3b2fC+4/+4vzYos2OXCLszzoIYhtDuWSuiZqwOgWcMnQZuGCwB
-   d3rMgAW3RTH0JPhXX9ei9ov7mONoKvD95tEbaODAa07uPHNir9Wky2n88
-   LZkPU923rU214FAp+UzNF9zW0llS+NZoznuqk9bTjQs4AXfzwAh4pbJIM
-   w==;
-X-CSE-ConnectionGUID: bWjKF9vHQUSmwMFTwK1ZFg==
-X-CSE-MsgGUID: CWB3pJWPQF23qyrNefcWrA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="95873673"
-X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="95873673"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 17:31:05 -0700
-X-CSE-ConnectionGUID: BYLsI6v7SCOvlFBCuH+eYQ==
-X-CSE-MsgGUID: D9tDnfB2TF2iQnbRaGUWxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="234455212"
-Received: from spr.sh.intel.com ([10.112.229.196])
-  by orviesa009.jf.intel.com with ESMTP; 29 Apr 2026 17:31:01 -0700
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Dapeng Mi <dapeng1.mi@intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [Patch v4 4/5] perf/x86/intel: Enable auto counter reload for DMR
-Date: Thu, 30 Apr 2026 08:25:57 +0800
-Message-Id: <20260430002558.712334-5-dapeng1.mi@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260430002558.712334-1-dapeng1.mi@linux.intel.com>
-References: <20260430002558.712334-1-dapeng1.mi@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE9E40DFC1
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 00:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777508929; cv=pass; b=TTHY7VbPEQte07LdNSQBxh9vMX/gqGEfWJPyVKfr80FV1djQU6onE1Cuh7WC9T0bzZ4yUQY42cHI7OcIqon3f+czvKft5zQzPBqWhq7DXKy/p8DVQSNr9LsAFknjsIxREX4wE3OKfoVAmSCIRsKoBwux7rS/L0weKlZbMGGdA9Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777508929; c=relaxed/simple;
+	bh=2ftKwyQUTO10w0p4XlLTgNdZkLtUGTvLoPBlLI1YUsM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MCyRH6JTXUZXnYiVKOq4n/8AaG0gzqHTBXrFLPWoiTl5HsahIDPYwe+2aOJSj1x1tqN6Av6GjUTgXvcyMEIiyglRoh03STkYhmN8y6jlePdYrhA1jjUZGjs1Xl9sXvP0Uo0FDKokriRDsrTRvbNY2C2vp/8uRybbpCIDtjzxf/s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KtyXF0+2; arc=pass smtp.client-ip=209.85.160.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-4303eb92930so263757fac.3
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 17:28:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777508927; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Bi8BbD+PSiGqeLWU2KIJ844zAI5m6a8KPLJe9zfy03jZ0qBcLfKl/+Zv5iBaW0MGve
+         6dOPPPQdTOy7x89eezbos0K0/Wylj85qrdRJSROb6H8kDmBihgAC8MrDi6e6MJYx7udK
+         1AFTJKdgzZaRNriFuCyZ26YDHJ1R7TX1qSe4d5jntVJ3UiV4li9k9IeE+ok1F9iH3vto
+         0H7vWJSQL6/rFsYQG5wao8Qs488vzmGQ9i4xUzH5f7kyY0GsmhQbMCd4WXJDVUPzyJJ8
+         XPpbvDPmJn8VB917zV9IFVHDap6f5xr6JYunV9Cmdmzcb3nGyHbUn+fH10zZQ92IJQlq
+         uAnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JH3hr11S4P5ZvOMMt7/qOE1BZfjmtAau6k7ZWMhb4fA=;
+        fh=BnvOKKRQ3+j/v7xZIvioDhz44UxM87Yiye2sSVwqKxk=;
+        b=A9uVB2QkEZKRfdzFnA+90vqIlwbs2F8pk+doqQcZkwd4GpPfzNFWffrcsPA8izLm/E
+         GsG3dN5aH9wCZt02LCpIjxEhHz6uWO2fmZI4iX9KqtpVyzlOvleB+tHbA9Z33wv96DxS
+         hvHbbYfBqEuc/TU4acAMdj5Rr4LqrlpSK/tE1b3S0SJ5Pbljaxts1B1XQuRJlNGbDn6Z
+         u5NZDAcOmHG/hlYyYrNHnOTuoMsVhO8HQTPghGr/UijRyQWa/H5OaCcyIRJtb1u8VvOW
+         FgHOMLR1QMHkjaQ21YpvAKgkyRi59G+wQ6uYnfjh2nxBvEjHcbf3DSOUN4WYxP0IpxdO
+         jWeg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777508927; x=1778113727; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JH3hr11S4P5ZvOMMt7/qOE1BZfjmtAau6k7ZWMhb4fA=;
+        b=KtyXF0+2bb9tcflg5QB7h10DRqFtOSVWIvKaWxRFzc9f+R0veIdlkrO4qCvi5s1JeV
+         I6smVYkdMnVIeArvX0bSOef6MQ48W4w0sSjKwPBAfJfB18xoTFmWlh/zpAJAtXtajZEX
+         8YOP47RalMVs0FKPKjBymK/XI5/A4wyyC/8tdlX54IAJ58OtfZUdtNrXUNFovO0172S7
+         f6L61bxha9WAXXrSV21IQwFszmZYlWbjczUpYeGT0w3WmpkpbrqYC2y2yjMT3PE0xfFy
+         tTwEbgMWD1wGDQzbon3RQcLam9vQ20lIayFwePM/QxCFCbaALjoGpxP7j95Ep/qzjxPz
+         jnFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777508927; x=1778113727;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JH3hr11S4P5ZvOMMt7/qOE1BZfjmtAau6k7ZWMhb4fA=;
+        b=RszmiLmYnf7EV2SxDDapjp8yr1ZrN3EeoLvEZCKo0/8Ll/5mDrhaWZ749OpbcxRdbo
+         jcnr/I61HElW87BfUafFsHs+Page3PBoiPkEqNwdg0Ye8uYFXfl+AQivBvJ0yPYyIBRs
+         A9CYXhDZ3VnGuqByBh22e1BtDItVt1V49xm3UlL/6E1P6q/IOXykz2NvJlBppikFMoIP
+         9xvveGgMLUEBMYxLGP14kTL6akVAErh3R7z/0ijNecvbDN35D/Np+1uri3XzpQK1qoZr
+         omnNIothRhlhX9/PQ26vAwqe5jGTReJsmN8DKJZXFMB0oJFXpn73YHJLFICzMPd5C+J4
+         h2sw==
+X-Forwarded-Encrypted: i=1; AFNElJ/emqb60Ox7IKSR5KUwsohhoOi4ZTGwWlzs52loN5uRPJ4Bz3dZzBhNvhYVLvYhPCO4u8WmUj0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDYjp5ihhBHYWrvgqoicHjFKEElU9nDIsc4W0az0ENiyqmFRVk
+	SiUfUGEuFpNhPhV4og4hb1RUFKKLsIGYgglsjfWGpgISO1Xx4u6XeSQde1hyXcYmqk9W86b1yMs
+	Ue5XL5B3nFIRJCi9uhsi64sfR9cmU4U4=
+X-Gm-Gg: AeBDietX6J2LelZbtMq60iSDGbgX6iePLuSp1HJVgRSEKqhb9UvleQKeu19lEpj6/Bx
+	5amSEGQ9MCyfIP3MsTzyAFY3Q3N0oUcpKOEg3iganRhkXmV2+RPtI95H3kY9JEi4x7eSGqduuRU
+	pUg7mI+ogbVUfQpy8oHR7KQEUXGsPAguPCEuKweYaG1cbXIBWe3o89EDqqoLsEzwn38EtSWi474
+	/g7PZS+44mUpPK85yz7WxrwxJMTIZCuK/tmS+89J8DW4O6UR/sHHeSH6iFyY6DWZyJgpvzv7Jfh
+	w0SOaRmgbWOoiVRu4A==
+X-Received: by 2002:a05:6870:3182:b0:42f:cdab:1a71 with SMTP id
+ 586e51a60fabf-43437e12c29mr245278fac.15.1777508926773; Wed, 29 Apr 2026
+ 17:28:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9BD8949BC29
+References: <20260429000623.3356606-1-avagin@google.com> <7c2681ee-a53c-402c-8947-e7a74f8720c8@intel.com>
+ <CANaxB-xvGc1A3Ga_ASh-RZbh0+abxp4e4qbiPKcMJ5-5Wtzr6Q@mail.gmail.com>
+ <3ef742fe-9761-4714-84d9-e72fabc5def1@intel.com> <CANaxB-y4wh3JYUctDMWVuuOz9ZhVH9RAwopPZQ39JfmxkjN56g@mail.gmail.com>
+ <a1614b76-192f-41b3-a4e9-a4ce6816d745@intel.com>
+In-Reply-To: <a1614b76-192f-41b3-a4e9-a4ce6816d745@intel.com>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Wed, 29 Apr 2026 17:28:35 -0700
+X-Gm-Features: AVHnY4LFNLnNTRp-9JNIjCeO2LcOT82LxI878kawXd-pRTDtl8nGbrVMJdKdNAM
+Message-ID: <CANaxB-zRCvdEQ1K1dMbC0MpqQ=16kpnD-ds9jStV-OGUpnb_og@mail.gmail.com>
+Subject: Re: [PATCH] Revert "x86/fpu: Refine and simplify the magic number
+ check during signal return"
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: Andrei Vagin <avagin@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	criu@lists.linux.dev, x86@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9DFE649BBC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-241967-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241963-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.intel.com:mid]
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[avagin@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Panther cove µarch starts to support auto counter reload (ACR), but the
-static_call intel_pmu_enable_acr_event() is not updated for the Panther
-Cove µarch used by DMR. It leads to the auto counter reload is not
-really enabled on DMR.
+On Wed, Apr 29, 2026 at 2:44=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.=
+com> wrote:
+>
+> On 4/29/2026 1:44 PM, Andrei Vagin wrote:
+> >
+> > Enforcing validation against 'fpstate->user_size' instead of the frame'=
+s
+> > own 'fx_sw->xstate_size' changes the kernel ABI, it isn't strengthen th=
+e
+> > sanity check logic. When user-space supplies a valid, self-consistent
+> > frame with an explicit size that older kernels accepted, and the update=
+d
+> > logic rejects it, which triggers a userspace regression.
+> Sorry, I don't get your version of ABI.
+>
+> Eventually, XRSTOR will execute to restore the state. The kernel tracks
+> each task's requested feature bitmap (RFBM), which determines the size.
+> As describe SDM Vol.1, Section 13.13:
+>
+>     An execution of an instruction in the XSAVE feature set may access
+>     any byte of any state component on which that execution operates even
+>     when saving a state component is omitted ...
+>
+> Given this, the kernel must ensure the backing memory is valid and
+> sufficient. So this consistency does matter.
 
-Update static_call intel_pmu_enable_acr_event() in intel_pmu_init_pnc().
 
-Cc: stable@vger.kernel.org
-Fixes: d345b6bb8860 ("perf/x86/intel: Add core PMU support for DMR")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
----
- arch/x86/events/intel/core.c | 1 +
- 1 file changed, 1 insertion(+)
+We need to add one more paragraph to have the full context:
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 9e77d836b878..4d5c35f0df5c 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -7518,6 +7518,7 @@ static __always_inline void intel_pmu_init_pnc(struct pmu *pmu)
- 	hybrid(pmu, event_constraints) = intel_pnc_event_constraints;
- 	hybrid(pmu, pebs_constraints) = intel_pnc_pebs_event_constraints;
- 	hybrid(pmu, extra_regs) = intel_pnc_extra_regs;
-+	static_call_update(intel_pmu_enable_acr_event, intel_pmu_enable_acr);
- }
- 
- static __always_inline void intel_pmu_init_skt(struct pmu *pmu)
--- 
-2.34.1
+    Each instruction in the XSAVE feature set operates on a set of
+    XSAVE-managed state components. The specific set of components on
+    which an instruction operates is determined by the values of XCR0,
+    the IA32_XSS MSR, EDX:EAX, and (for XRSTOR and XRSTORS) the XSAVE
+    header.
 
+    Section 13.4 provides the details necessary to determine the
+    location of each state component for any execution of an
+    instruction in the XSAVE feature set.  An execution of an
+    instruction in the XSAVE feature set may access any byte of any
+    state component on which that execution operates even when saving
+    a state component is omitted because it is in its initial
+    configuration; when restoring a state component to its initial
+    configuration; or when XFD is enabled for the state components
+    (see Section 13.14).
+
+I interpret this to mean that XRSTOR will not access memory for a component
+if its corresponding bit is clear in the XSAVE header.
+
+However, my point was not about the CPU specification, but about the
+kernel ABI. The reverted change broke existing user-space applications
+without justifying an ABI regression. Even if xrstor were to trigger a
+fault, the kernel handles it properly, so there is no real issue there.
+
+It feels like we are trying to justify the change after the fact. The
+rule is: "we don't break user-space". As usual, there are no rules
+without exceptions, but any exception should be explicitly analyzed
+considering all side effects.  According to the commit message of the
+reverted commit, that wasn't such case.
+
+Thanks,
+Andrei
 
