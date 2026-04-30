@@ -1,161 +1,184 @@
-Return-Path: <stable+bounces-242075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2F39MFYm82mZxgEAu9opvQ
-	(envelope-from <stable+bounces-242075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:52:22 +0200
+	id YMrzCQ0r82nMxwEAu9opvQ
+	(envelope-from <stable+bounces-242076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:12:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E434A037F
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EC14A0916
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32F93308CDB3
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 09:46:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE23930254C5
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 10:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3FA3FB07A;
-	Thu, 30 Apr 2026 09:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E913FB072;
+	Thu, 30 Apr 2026 10:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4W59MvG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hWH5Zasr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3BF3FFAC2;
-	Thu, 30 Apr 2026 09:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777542355; cv=none; b=NdORIR7879uTWJNL0K79CUV561+nQdPjOJ4oWU/cIC72ONSRapcE+svT2FkCeKFrXFbCQXoYV25ZxSIxaY9P7dZhQDq24WUu2p9FXNmpPoOnfXDcEi9DsVrF2UR+3uFzOfZOIMZ1Ghl2w2nRB7dOstHUwaXyyx9eTinU9+OP2x8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777542355; c=relaxed/simple;
-	bh=UpDLWD4oxHyFP99ch3aJwxBm+h7KtymOvkDKAk24mLQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKOjyJG29yHoEclcbyEX99vEYVuTeHIpwNhSYiSFab3+X3zbJWgzUBMp+gHYhDWYDhxFrPH3LHFGBtP3TGIf5IwmDgYSJ8C6EmlkVKXqiY5yF8zW3wm6aa7yIadcTDQWXs2J1J3g+mVy3jkLft5Eeily3Ui6TCibj4NxbloMEdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4W59MvG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DEEC2BCB3;
-	Thu, 30 Apr 2026 09:45:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777542355;
-	bh=UpDLWD4oxHyFP99ch3aJwxBm+h7KtymOvkDKAk24mLQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4W59MvGF9qUiuM4XtsCdNzmpDThGKLlck1tzpV0ZANlO6j9FGjOOG1VT1Pg3eyA5
-	 JqmqIzAx8zC4mlahXpS1K1Kc8a3iWjjPpkEBfisC+i+BEA04Mk2IVBdrAvHEOorbRg
-	 Ncj/M1+sfLGTfulL4tkVOVK5I7IvGbbnV1x4GwIA=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	torvalds@linux-foundation.org,
-	stable@vger.kernel.org
-Cc: lwn@lwn.net,
-	jslaby@suse.cz,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 7.0.3
-Date: Thu, 30 Apr 2026 11:45:06 +0200
-Message-ID: <2026043052-repent-reckless-1967@gregkh>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026043052-coasting-tinwork-27b5@gregkh>
-References: <2026043052-coasting-tinwork-27b5@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5473D8138
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 10:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777543621; cv=pass; b=pkRTyubVI1aIHsivpsZdX15p149xCHAkN9vr/L6AcNlK/LYQYKYUJXfV5i/OZgA9Otc5tpwfn7j6KkhsgcqJs77H402kluUBWZavCgZUn0VO995q+v1SfiSlarnFlqQRapCyDGxmfU/PePAIKieXfy8MQtaBpyiBMVEDQcvWO1I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777543621; c=relaxed/simple;
+	bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XcKjzhj3d2K3tIU9/UrL0tEJxr4BIZlnNqTDUcKfopS1CCTR8aB8gVlCus5Vgis7A1xaX6bJXLiQJiTj5QItt7DLdU5WKTcPUVPfwY0oOIKM9bGaLuSQsmuJsoderZO3qtrwa3JUhkuPefckrfbnMxR7bGLpYpkLgeik+9D3xqk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hWH5Zasr; arc=pass smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-483487335c2so8262025e9.2
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 03:06:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777543618; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MX5mz3w/mOZ/y2UUPf8GE+VO6eQ0MLselQ9md4UaFYL6rI4SWUKy4PESyVMa4+ljjM
+         WDWkHPmjKxcnfeFqDsMPZ9+bGKMYbJhKap+VSKSV5IdSV59lefFQnB+y9xJ9Dbl+yeDI
+         slsLUtIxdzuysywWKfmN/CjYXQJJXU4irHBDUvJiLE67dvodOm8JhKmfCCVFx1N7NnW3
+         mW7aanjydN/LhsX1MAPjWDo/uZ1kp726zoEEpkYVrEQPV4j2chCROqd8r6TJPw7ERncW
+         fMoHSYFKajZZzQaH6xhF2lOb/FccNdUhOjMhVl18VuTrrX8bIR1pAHkyPsvbTnl5yzAS
+         Rm3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+        fh=6MaSLzhkkR9zUzmxml/LhLSxDn5ea40O2L5rBDAoWIM=;
+        b=QbUV11i2ub2ZjlHj9j7ahecgy3XigqcC7VSb8u7Co5M+cxCgo/yezQRMbkVSS5x3mx
+         r0GHTm0NH8D+Yfq39CnqNBSxTTHmcHJfraKFEu876uQBuyNMbN03T7ZgD2YV6sNz7+6z
+         6TFzrwuuS45VzyAjW6o2oFLXtxIc1qOHjmz6bZN3P+rGlJGVI8E6D65kxcAv1bVYTpeg
+         L1/Cg8QvUsFBtYH7RCZWe51/670RHs1b1lPJg97IyTQzbkAPtcMf7Ky1+MdYUOZkM4qd
+         ti0vFK/BsnsCJFLxE267YOO+inRSlz/4Tu3PdGg7m6JUTMsrCHoSe8JaNFBCVYWzXY7R
+         PWEA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777543618; x=1778148418; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+        b=hWH5Zasr9qhJ764vlFS7lMMDRcKYOhbQeGl+nHGoaIKd+LMep7IBHAQT0V+ezw+II/
+         AcrUtka3O1Oa83OrWRHei9M5TE/myPojJV4ndWF2nGXlFQWB1gPn5H/Bpsy/h2AcTS/t
+         Y0aPnZz9ndgpcG9B0tpf3Bnq2i55rPEn7ig9Q7gCbmFG8CSFy8AfugsPqGV9JgwVwRJO
+         ePwhjl4iZqXLwhPRGskY3R2d0awxtdcw2Xr7sQ7+Rb7l5LhazjhVctgNjkdTdiTEiQSP
+         7LDYhr8ADn0K1vjH7qNyMZBzeoOcsn8QLv+DgVaiMHM0du5ey60CyQrmWWA+2Yx0vL91
+         iQdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777543618; x=1778148418;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+        b=LcvzOplqdfGzD9yPlyNw1almFuTgbVspww35ve958UzIA+Byo54u1Zyh17jloZeVLZ
+         690v2U7o6xMObD2PVm6VyBSYzsWWXnPIILUryF7wb5MjuxPXpi/Ao1ZuiePpLlcrn9pQ
+         bv+D1jZVhWe0HJ9pGpJpG5OErGmNPEK++48ViS34EnTYy2qXzhbBDMtxyZ0RLzfg0S5F
+         8/vLbDFmUUhvqXqL4M9dvoF6a6KVOPkUI5P6N/97ZEFQ7V468Ufo7sze7Hv7CfuSclMw
+         Pa/gMR4b5G72HoLCRn7scMCmfMIQO06jdm+lAZFx0jws6+htspOwxge+d7Jo0zeKRaoh
+         w/oA==
+X-Forwarded-Encrypted: i=1; AFNElJ+TmLG0+5YXAn6qSwSypw6X+3YxTu1mwP56T2/tRab5NRYjjAAKHsEm32ceZJD6BN6zhRie2hw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4jvEjKkyUJ60WcCync79u9kbLWQ2xsGKEJ0CNGE3d8FSiW7/6
+	fwvp3+nVNjbRoCWXvlBPZWAJaeUdZ5Q4aIWhuizuvf2J2wlKenRJB1xeuG2zTGWAC7iAa4gtMrf
+	S8yOyMhZea2CRb1YNpcp7gc5PQ5yFnGI=
+X-Gm-Gg: AeBDies/awSxisKt8yQl4BN2slhAihjRGBRTpkA9Sky117+GSvnJhPsBLoSVqTkmVwP
+	NdqFA/d9FCs3/SPaqxKs6nNAI4BVGiKA38GG+165aQK8TG/ph4tstDvRsw1vQd2Htfy8AXVsQct
+	CkXVlao/3TaP8FCU7d78eYTvYMtiPmxO70M5cvzSzSAPANTEpnwNVtpJDXQLLArLZJFEPM/bxQK
+	HX+gy3OpOpFgzjAtL0FiEAnJITTh+cdDXMNGyHwNVXEf+n8rH4/jMF/DzQ2Ary7HGGv6zAYJMJE
+	ZNT30bpLvUgqxTcPTr6an8YMDr0x
+X-Received: by 2002:a05:600d:8408:b0:480:3ad0:93bf with SMTP id
+ 5b1f17b1804b1-48a8452cd4amr28513795e9.24.1777543616751; Thu, 30 Apr 2026
+ 03:06:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 71E434A037F
+References: <20260428110713.2550315-3-maoyixie.tju@gmail.com> <20260430011849.2345207-1-kuba@kernel.org>
+In-Reply-To: <20260430011849.2345207-1-kuba@kernel.org>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+Date: Thu, 30 Apr 2026 18:06:45 +0800
+X-Gm-Features: AVHnY4J_1Ckk_0_wc90cHEBhr1N2bAxmlonoBSKgk48Fyitc25vQe1jE3K00alc
+Message-ID: <CAHPEe=G00_xFCx59KVRejzwJJVH0MkK4yB+7PFjHtyp+CBT8dQ@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, kuniyu@google.com, shaw.leon@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	dsahern@kernel.org, kuznet@ms2.inr.ac.ru, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, security@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 93EC14A0916
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242076-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242075-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,gmail.com,davemloft.net,redhat.com,kernel.org,ms2.inr.ac.ru];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-diff --git a/Makefile b/Makefile
-index b17ca865bcee..61f8019efd5a 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 7
- PATCHLEVEL = 0
--SUBLEVEL = 2
-+SUBLEVEL = 3
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index 15ba592236e8..725a49a0eee7 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -1620,6 +1620,12 @@ static void privcmd_close(struct vm_area_struct *vma)
- 	kvfree(pages);
- }
- 
-+static int privcmd_may_split(struct vm_area_struct *area, unsigned long addr)
-+{
-+	/* Forbid splitting, avoids double free via privcmd_close(). */
-+	return -EINVAL;
-+}
-+
- static vm_fault_t privcmd_fault(struct vm_fault *vmf)
- {
- 	printk(KERN_DEBUG "privcmd_fault: vma=%p %lx-%lx, pgoff=%lx, uv=%p\n",
-@@ -1631,6 +1637,7 @@ static vm_fault_t privcmd_fault(struct vm_fault *vmf)
- 
- static const struct vm_operations_struct privcmd_vm_ops = {
- 	.close = privcmd_close,
-+	.may_split = privcmd_may_split,
- 	.fault = privcmd_fault
- };
- 
-diff --git a/drivers/xen/sys-hypervisor.c b/drivers/xen/sys-hypervisor.c
-index b1bb01ba82f8..91923242a5ae 100644
---- a/drivers/xen/sys-hypervisor.c
-+++ b/drivers/xen/sys-hypervisor.c
-@@ -366,6 +366,8 @@ static ssize_t buildid_show(struct hyp_sysfs_attr *attr, char *buffer)
- 			ret = sprintf(buffer, "<denied>");
- 		return ret;
- 	}
-+	if (ret > PAGE_SIZE)
-+		return -ENOSPC;
- 
- 	buildid = kmalloc(sizeof(*buildid) + ret, GFP_KERNEL);
- 	if (!buildid)
-@@ -373,8 +375,10 @@ static ssize_t buildid_show(struct hyp_sysfs_attr *attr, char *buffer)
- 
- 	buildid->len = ret;
- 	ret = HYPERVISOR_xen_version(XENVER_build_id, buildid);
--	if (ret > 0)
--		ret = sprintf(buffer, "%s", buildid->buf);
-+	if (ret > 0) {
-+		/* Build id is binary, not a string. */
-+		memcpy(buffer, buildid->buf, ret);
-+	}
- 	kfree(buildid);
- 
- 	return ret;
+Hi Kuniyuki, Xiao, Eric, Jakub,
+
+Sorry for the delay, I had a fever yesterday.
+
+Thanks for the reviews.
+
+> Kuniyuki:
+> nit: Please keep reverse xmas tree order, and you can reuse *t below.
+> nit: Reported-by is not needed if it's same with SOB.
+
+Both noted. v2 reuses *t and drops the Reported-by trailer.
+
+> Xiao:
+> > Fixes: 5e72ce3e3980 ...
+> But why is 5e72ce3e3980 mentioned here? It neither introduced nor
+> was intended to fix this bug.
+> Maybe 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
+> which initially introduced ip6erspan_changelink
+
+5e72ce3e3980 was the wrong anchor. 2d665034f239 introduced
+ip6erspan_changelink with the dev_net(dev) shape. v2 uses that as the
+Fixes target.
+
+> Jakub:
+> > While reviewing this area, I noticed a regression further down
+> > in ip6erspan_changelink() regarding the metadata tunnel
+> > unlinking.
+
+The ip6gre_tunnel_unlink_md / ip6erspan_tunnel_unlink_md naming
+asymmetry is real. Whether collect_md_tun_erspan ends up dangling and
+reachable by ip6gre_tunnel_lookup() requires tracing I have not yet
+done. v2 stays scoped to the dev_net conversion. The unlink_md side is
+better handled in a separate patch.
+
+v2 sent on netdev as a separate thread.
+
+Maoyi
 
