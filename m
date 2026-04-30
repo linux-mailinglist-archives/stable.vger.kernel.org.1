@@ -1,172 +1,292 @@
-Return-Path: <stable+bounces-242101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHEKA0lN82lnzQEAu9opvQ
-	(envelope-from <stable+bounces-242101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:38:33 +0200
+	id gNvuD8VR82lnzQEAu9opvQ
+	(envelope-from <stable+bounces-242102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:57:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA094A2CEB
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:38:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31D14A307D
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 024BA301FD6E
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:37:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E6313077295
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 12:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E82E406277;
-	Thu, 30 Apr 2026 12:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270D740B6FC;
+	Thu, 30 Apr 2026 12:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ezRKIkMg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qaGD9F1x"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3D2406260;
-	Thu, 30 Apr 2026 12:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1C140B6ED
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 12:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777552672; cv=none; b=n28TE2tYtw/ADRrA2IK2c/g3fV2/DNXtjX8p/VUhlnZYvQSZjcokQ8i4spwdgDOTtlBxst9lQLrBjlD+3T/e97uDRK9B1jfI5MrdBovPoRhpNo/9cBouEx36UatdGqCVaOvWPkGer7BbwTpBczJaiU72oLDq8YS7Y07fqaay9Cs=
+	t=1777553619; cv=none; b=FVUcCDwg19TKSjnvdIXFDyBLaT6QvW4sK0f8vmkwLiKLKLxxa6PQ/iHP3fwAPHKFjNitlhpx51TIOvs9et6u2swII9tDljp9KX9/+K5fuK6L+5KqnzpCcbZywI2GYHhINBM/2EKz79i7dHnbIpzE+nl5+2yx3vcYRdAXlzZ1W7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777552672; c=relaxed/simple;
-	bh=7HPUcR8285oASPEPdQ3uCkZCcDoT78pU2f7CPixIm4U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ndJLavnrvvDHC8Jl59pSraJIZsFFlDuBpsgWf23PRNtYnBdu/YSSF7ws+5KZVX1LQUFzTFIDhfGPy6avfg/npgwWfl0CwX3lBP2RSOUm3lQ8vXdmASmxXFRLxS3SwBthtYYCev1Q/73CtzglA3IY27sIV4Ic8M+sZiVx3yoCgo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ezRKIkMg; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F08B19F6;
-	Thu, 30 Apr 2026 05:37:44 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 464D43F7B4;
-	Thu, 30 Apr 2026 05:37:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777552669; bh=7HPUcR8285oASPEPdQ3uCkZCcDoT78pU2f7CPixIm4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ezRKIkMgNpnf2rFG7bNWqgnB1U/ESgHDMInNeRwgf/Q0UB9pO0E+arQrNfdeVH0aC
-	 O0joOZ+gJtN1+m3MfJ9h8WF4Y8ODT04kdMcjG5A2aUcxKXVGZAhggg8LpQ6iEJDCY1
-	 wUI+AuCSaPhxbAdaub9eNaVRjmyez7/rxAxlzYnw=
-Date: Thu, 30 Apr 2026 13:37:42 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: Will Deacon <will@kernel.org>, maz@kernel.org, oliver.upton@linux.dev,
-	james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
-	qperret@google.com, vdonnefort@google.com, catalin.marinas@arm.com,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/8] KVM: arm64: Make EL2 exception entry and exit
- context-synchronization events
-Message-ID: <afNNFtoZJk2IXwwU@J2N7QTR9R3>
-References: <20260428103008.696141-1-tabba@google.com>
- <20260428103008.696141-2-tabba@google.com>
- <afMb7uuPlUbLeu7k@willie-the-truck>
- <CA+EHjTw6rx5rCVnR7Dfva3xmmgGjqUeUaT=3zDCEsN0J909Wsg@mail.gmail.com>
+	s=arc-20240116; t=1777553619; c=relaxed/simple;
+	bh=MrZROx1R2EGjiSat4enmcn6Hqeoz4Tpe6kImgFwNXZ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rpdCwhQOzQyUJDfMXkhQPgKLojHMM+F79MqeLM/gC5W8d5/tTop/pU039eX9hwpGuS5FmQY/dQ2rxLL24S13INYah2j/8XYGdjCXS0AHM8tZmmmt4eKz3Y1z4xtQNx2Dh3gjcUazNKBoo6Ur15rfgiLfHnwChVVKTWq6ReyRB/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qaGD9F1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92936C2BCC6
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 12:53:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777553619;
+	bh=MrZROx1R2EGjiSat4enmcn6Hqeoz4Tpe6kImgFwNXZ0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qaGD9F1xBOMEwB/ULuhGjlWsggud4YUt/POVHjDe8xOU1+VrxLeRstl3NenAa9SGo
+	 L7VmH/rnbt8vFN3T15uzlkKAYah3qYGp5Q8V73LRIpZfYzHGT0RusFjx5JlFPiyRml
+	 j3ikStniYx3GBb038XHahvcoVkdjnS8uCITiljcSifovcby+TISnvUBYqNYrf/0AbZ
+	 sShjfT1/RHuD6WvgLJFM4v1rC4lJU0D2QJBt9dsQsNesKcarWCOKX4ozf6+FaDToMd
+	 zuZDVM04YBxcPqa9Lgthmfo9nFNOHMdDIAE6shIEnU9PvhARqcgLvYG2stV8RA+rrN
+	 HmYBGPp7VRp7g==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b9358dd7f79so147891666b.1
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 05:53:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8dRwUJkQGej/0ZXAycQi4sCpUGmNEKNRwGkbqzGl/Pms9XysD3E7ZIIBf8SeqL2Ig4x8Fs7Cs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7tGlHYJL9lIc1ohKUNf4jUbP4GzLiZjSXRL/ZH8+L87cqfOLt
+	SfNYjxiEQa+yhWX32r8UCFNIMKD2TrnABqQ/auJqabrGrvZVEPHbIX7CHTiOhDt1O+B+Dvo2NIS
+	BedHmgHNbjJY6/PvGoFe2XEr/OUXWCAw=
+X-Received: by 2002:a17:907:9412:b0:bad:92f5:daea with SMTP id
+ a640c23a62f3a-bbac4bd3a3cmr182270366b.14.1777553617986; Thu, 30 Apr 2026
+ 05:53:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+EHjTw6rx5rCVnR7Dfva3xmmgGjqUeUaT=3zDCEsN0J909Wsg@mail.gmail.com>
-X-Rspamd-Queue-Id: EFA094A2CEB
+References: <cover.1777510825.git.wqu@suse.com> <d02693a5159193f02dda9c7b500e00e7ed41a171.1777510825.git.wqu@suse.com>
+In-Reply-To: <d02693a5159193f02dda9c7b500e00e7ed41a171.1777510825.git.wqu@suse.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Thu, 30 Apr 2026 13:53:01 +0100
+X-Gmail-Original-Message-ID: <CAL3q7H73=ZMyu+t4pcfoCnU_wCAL-=8hhG=ijg-242nsY1DeFQ@mail.gmail.com>
+X-Gm-Features: AVHnY4KmOOS80ZXBZxH_4YzbStus7_3B6-Sjhza97TTsP3XAQ4RQVMEAIzcgrqY
+Message-ID: <CAL3q7H73=ZMyu+t4pcfoCnU_wCAL-=8hhG=ijg-242nsY1DeFQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] btrfs: only release the dirty pages io tree after
+ successful writes
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A31D14A307D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242101-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-242102-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[arm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,suse.com:email]
 
-On Thu, Apr 30, 2026 at 01:18:48PM +0100, Fuad Tabba wrote:
-> On Thu, 30 Apr 2026 at 10:08, Will Deacon <will@kernel.org> wrote:
-> > On Tue, Apr 28, 2026 at 11:30:01AM +0100, Fuad Tabba wrote:
-> > > Fixes: fe2c8d19189e ("KVM: arm64: Turn SCTLR_ELx_FLAGS into INIT_SCTLR_EL2_MMU_ON")
-> >
-> > I don't think this Fixes: tag is accurate:
-> >
-> > 1. That commit doesn't do anything with EIS/EOS afaict.
-> > 2. Back in 5.12 (when that thing landed), SCTLR_EL2_RES1 did actually
-> >    include EIS and EOS
-> >
-> > so I think the issue here might be that the auto-generated sysreg file
-> > quietly changes the RES1 definitions as bits get allocated, but the
-> > macros using the RES1 definition don't get updated. That's a pretty
-> > horrible pit that it feels like we might keep falling into :/
+On Thu, Apr 30, 2026 at 2:07=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
+>
+> [BUG]
+> With the recent commit "btrfs: warn about extent buffer that can not be
+> released",
 
-I think that's a review failure, and people need to be careful when
-updating the sysreg file (e.g. looking at whether any new bits were
-previously RESx, and considering the impact). Regardless of tooling, we
-need people to conciosuly review that.
+It's a bit odd to refer to that patch as it comes after in the series.
 
-> > Looking at 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg
-> > infrastructure"), I think we ended up dropping a whole bunch of fields
-> > from the RES1 mask (which became 0!). Have you checked all of those?
+> we can trigger the following warning running test cases like
+> generic/388 at unmount:
+>
+>  BTRFS critical (device dm-2 state E): emergency shutdown
+>  BTRFS error (device dm-2 state E): cow_file_range failed, root=3D5 inode=
+=3D265 start=3D135168 len=3D118784 cur_offset=3D135168 cur_alloc_size=3D0: =
+-5
+>  BTRFS error (device dm-2 state E): error while writing out transaction: =
+-30
+>  BTRFS warning (device dm-2 state E): Skipping commit of aborted transact=
+ion.
+>  BTRFS error (device dm-2 state EA): Transaction 9 aborted (error -30)
+>  BTRFS: error (device dm-2 state EA) in cleanup_transaction:2068: errno=
+=3D-30 Readonly filesystem
+>  BTRFS info (device dm-2 state EA): forced readonly
+>  BTRFS error (device dm-2 state EA): failed to run delalloc range, root=
+=3D5 ino=3D265 folio=3D135168 submit_bitmap=3D0 start=3D135168 len=3D118784=
+: -5
+>  BTRFS info (device dm-2 state EA): last unmount of filesystem 8b3d8748-4=
+710-4b5a-84d9-b072cb03be2d
+>  ------------[ cut here ]------------
+>  WARNING: disk-io.c:3306 at invalidate_btree_folios+0xfd/0x1ca [btrfs], C=
+PU#4: umount/60183
 
-> On the wider question of the other bits dropped from the old mask,
-> I went through them against DDI 0487 M.b §D24.2.175. The summary
-> (SCTLR_EL2 with E2H=0):
-> 
->   bit  field    E2H=0 status                  kernel cares?
->   -------------------------------------------------------------
->    4   SA0      RES1 unconditionally          no
->    5   CP15BEN  RES1 unconditionally          no
->   11   EOS      RES1 iff !FEAT_ExS, else RW   yes (this fix)
->   16   nTWI     RES1 unconditionally          no
->   18   nTWE     RES1 unconditionally          no
->   22   EIS      RES1 iff !FEAT_ExS, else RW   yes (this fix)
->   23   SPAN     RES1 unconditionally          no
->   28   nTLSMD   RES1 unconditionally          no
->   29   LSMAOE   RES1 unconditionally          no
-> 
-> The seven non-EIS/EOS bits all fall under the "Otherwise: Reserved,
-> RES1" clause for the E2H=0 layout, with no feature guard. Writing 0
-> to them is a no-op, so dropping them from the mask should be harmless
-> I think. EIS and EOS are the only positions where the bit
-> becomes RW (with UNKNOWN reset) on FEAT_ExS hardware and the
-> kernel actively relies on the value being 1, which is what this
-> patch addresses.
-> 
-> I agree the auto-generator silently zeroing previously hand-rolled
-> RES1 masks is a real problem. Happy to look at either teaching the
-> sysreg infrastructure to express conditional RES1 (so config.c's
-> AS_RES1/FEAT_X facts can flow back into the header masks), 
+This stack trace is also outdated because the function is now named
+invalidate_and_check_btree_folios().
 
-Please don't add that to the syreg code; that's deliberately *only* the
-architectural definitions, and overloading that is going to make things
-even more confusing, because "I want to treat this as RESx in this piece
-of code" isn't a global property.
+Otherwise:
 
-> or at least adding a build-time check that flags any auto-generated
-> <REG>_RES1 that shrinks. After this series, though. Let me know if
-> you'd like me to take a stab.
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
 
-FWIW, having tooling to compare before/after would be useful, but I
-don't think that can be a standard build-time check, given that this
-would depend on having the old and new sysreg files available for
-comparison.
+Thanks.
 
-Mark.
+>  CPU: 4 UID: 0 PID: 60183 Comm: umount Tainted: G        W  OE       7.0.=
+0-rc6-custom+ #365 PREEMPT(full)  5804053f02137e627472d94b5128cc9fcb110e88
+>  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2=
+022
+>  RIP: 0010:invalidate_btree_folios+0xfd/0x1ca [btrfs]
+>  Call Trace:
+>   <TASK>
+>   close_ctree+0x534/0x57a [btrfs eeeee2af86b856a32e0b81b75d427a17a62ffe29=
+]
+>   generic_shutdown_super+0x89/0x1a0
+>   kill_anon_super+0x16/0x40
+>   btrfs_kill_super+0x16/0x20 [btrfs eeeee2af86b856a32e0b81b75d427a17a62ff=
+e29]
+>   deactivate_locked_super+0x2d/0xb0
+>   cleanup_mnt+0xdc/0x140
+>   task_work_run+0x5a/0xa0
+>   exit_to_user_mode_loop+0x123/0x4b0
+>   do_syscall_64+0x288/0x7d0
+>   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+>   </TASK>
+>  ---[ end trace 0000000000000000 ]---
+>  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30=
+507008 owner 1 gen 9 refs 2 flags 0x7
+>  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30=
+588928 owner 9 gen 9 refs 2 flags 0x7
+>  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30=
+605312 owner 257 gen 9 refs 2 flags 0x7
+>  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30=
+621696 owner 7 gen 9 refs 2 flags 0x7
+>  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30=
+638080 owner 258 gen 9 refs 2 flags 0x7
+>  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30=
+654464 owner 2 gen 9 refs 2 flags 0x7
+>  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30=
+670848 owner 10 gen 9 refs 2 flags 0x7
+>
+> I'm using a stripped down version, which seems to trigger the warning
+> more reliably:
+>
+>   _fsstress_pid=3D""
+>   workload()
+>   {
+>         dmesg -C
+>         mkfs.btrfs -f -K $dev > /dev/null
+>         echo 1 > /sys/kernel/debug/clear_warn_once
+>         mount $dev $mnt
+>         $fsstress -w -n 1024 -p 4 -d $mnt &
+>         _fsstress_pid=3D$!
+>         sleep 0
+>         $godown $mnt
+>         pkill --echo -PIPE fsstress > /dev/null
+>         wait $_fsstress_pid
+>         unset _fsstress_pid
+>         umount $mnt
+>
+>         if dmesg | grep -q "WARNING"; then
+>                 fail
+>         fi
+>   }
+>
+>   for (( i =3D 0; i < $runtime; i++ )); do
+>         echo "=3D=3D=3D $i/$runtime =3D=3D=3D"
+>         workload
+>   done
+>
+> [CAUSE]
+> Inside btrfs_write_and_wait_transaction(), we first try to write all
+> dirty ebs, then wait for them to finish.
+>
+> After that we call btrfs_extent_io_tree_release() to free all
+> extent states from dirty_pages io tree.
+>
+> However if we hit an error from btrfs_write_marked_extent(), then we
+> still call btrfs_extent_io_tree_release() to clear that dirty_pages io
+> tree, which may contain dirty records that we haven't yet submitted.
+>
+> Furthermore, the later transaction cleanup path will utilize that
+> dirty_pages io tree to properly cleanup those dirty ebs, but since it's
+> already empty, no dirty ebs are properly cleaned up, thus will later
+> trigger the warnings inside invalidate_btree_folios().
+>
+> [FIX]
+> Normally such dirty ebs won't cause problems, as when the iput() is
+> called on the btree inode, the dirty ebs will be forcibly written back,
+> and since the fs is already in an error status, such writeback will not
+> reach disk and finish immediately.
+>
+> But it's still better to get rid of such dirty ebs, if we ended up with
+> dirty ebs but the fs is not in an error status, then such writeback at
+> iput() time will be too late, as all workers are already stopped but
+> writeback will utilize workers, which will lead to NULL pointer
+> dereferences.
+>
+> Instead of unconditionally calling btrfs_extent_io_tree_release(), only
+> call it if btrfs_write_and_wait_transaction() finished successfully, so
+> that @dirty_pages extent io tree is kept untouched for transaction
+> cleanup.
+>
+> CC: stable@vger.kernel.org # 6.1+
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+>  fs/btrfs/disk-io.c     | 1 +
+>  fs/btrfs/transaction.c | 9 ++++-----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+> index 308955f0592a..f28cef8217de 100644
+> --- a/fs/btrfs/disk-io.c
+> +++ b/fs/btrfs/disk-io.c
+> @@ -4679,6 +4679,7 @@ static void btrfs_destroy_marked_extents(struct btr=
+fs_fs_info *fs_info,
+>                         free_extent_buffer_stale(eb);
+>                 }
+>         }
+> +       btrfs_extent_io_tree_release(dirty_pages);
+>  }
+>
+>  static void btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,
+> diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+> index 248adb785051..194f581b36f3 100644
+> --- a/fs/btrfs/transaction.c
+> +++ b/fs/btrfs/transaction.c
+> @@ -1293,14 +1293,13 @@ static int btrfs_write_and_wait_transaction(struc=
+t btrfs_trans_handle *trans)
+>         blk_finish_plug(&plug);
+>         ret2 =3D btrfs_wait_extents(fs_info, dirty_pages);
+>
+> -       btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
+> -
+>         if (ret)
+>                 return ret;
+> -       else if (ret2)
+> +       if (ret2)
+>                 return ret2;
+> -       else
+> -               return 0;
+> +
+> +       btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
+> +       return 0;
+>  }
+>
+>  /*
+> --
+> 2.54.0
+>
+>
 
