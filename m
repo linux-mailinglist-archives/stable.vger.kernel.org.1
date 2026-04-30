@@ -1,272 +1,183 @@
-Return-Path: <stable+bounces-241970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HwGMnSr8mnLtQEAu9opvQ
-	(envelope-from <stable+bounces-241970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:08:04 +0200
+	id cKGCJd6s8mn/tQEAu9opvQ
+	(envelope-from <stable+bounces-241971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:14:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4536349BF07
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:08:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FF549BF50
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 03:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 73049301DC2B
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 01:07:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9D426300B8C5
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 01:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD2A24EAB1;
-	Thu, 30 Apr 2026 01:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAB92475CF;
+	Thu, 30 Apr 2026 01:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="U7TBFJj+";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="U7TBFJj+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/PNwpQ5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qk1-f193.google.com (mail-qk1-f193.google.com [209.85.222.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7101A9FA0
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 01:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777511274; cv=none; b=ZMze/qqfbN5Hu9PJ1n7XLRlKLiXBQJAppR04bqjlIapdFpY4HicnZ+OY6V6c9yz/8Av58uZIHLmqX94txjK2xSjfiXYiSBs1jrnreLaYKsrKkPjFRKYACyiNxZX2Puc1apxbXV+zBYN0qWogkDz2LVTBLvOFA+svnsB1Axw7dls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777511274; c=relaxed/simple;
-	bh=phYS5BGiu552kew9MVMGYc8SKpzy3z0je7TNYrG9DzY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqWAQyMBQDkEpaFVFCt2H7lhgMcnrzyx8TUOdCX5XAMHS5yGbd44B9sKPcx5f/su1+IJ8B/x7Q6RFpKHtGO2ifmjvok5k1+/wCM6X9i6KLAaGSBOQjJgXrQ+VgmEFHeKUDUUtOPtU9jP3efGZwPfd0iZzCWkr44ZhiNXfepWxow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=U7TBFJj+; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=U7TBFJj+; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 193B56A7C2;
-	Thu, 30 Apr 2026 01:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1777511271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3LSuVdunNBqxPG46c9EbrP4WTo2JEjwwHmAFlxHofTc=;
-	b=U7TBFJj+Ok3ZIo4gahHTkrBDIivFfJSjZHmXM5vstMhSTwY9x+UEQnisDZ7M7LyJd+sHq+
-	cNTpMdDcVOX1vOG493Ah+y+ipoIa1BRY8k0EFXziemlSKVdvkxMG6RcwtBu8WYdlqodrsV
-	34bpQV+eRTLgzr8JMS6DfIGTZ2ZQYW0=
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1777511271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3LSuVdunNBqxPG46c9EbrP4WTo2JEjwwHmAFlxHofTc=;
-	b=U7TBFJj+Ok3ZIo4gahHTkrBDIivFfJSjZHmXM5vstMhSTwY9x+UEQnisDZ7M7LyJd+sHq+
-	cNTpMdDcVOX1vOG493Ah+y+ipoIa1BRY8k0EFXziemlSKVdvkxMG6RcwtBu8WYdlqodrsV
-	34bpQV+eRTLgzr8JMS6DfIGTZ2ZQYW0=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1E36D593B0;
-	Thu, 30 Apr 2026 01:07:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oAqoNGWr8mlyWgAAD6G6ig
-	(envelope-from <wqu@suse.com>); Thu, 30 Apr 2026 01:07:49 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v4 1/2] btrfs: only release the dirty pages io tree after successful writes
-Date: Thu, 30 Apr 2026 10:37:22 +0930
-Message-ID: <d02693a5159193f02dda9c7b500e00e7ed41a171.1777510825.git.wqu@suse.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1777510825.git.wqu@suse.com>
-References: <cover.1777510825.git.wqu@suse.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D878B2367D3
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 01:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.193
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777511641; cv=pass; b=eG3P28PwvYt4hepTZIyko082MWw+H4rjjsuIIQHmfJ0VSB1DLE6NwJj5bz95exUJFfQc3houHpMv8TbZwi2sp8Z2zEP1qi9GqVvaFazDnWRP6zQcFeiulImMmvEwRuTCCDrV6tsqXiSsoYLexenDNUhVX0tK016oiGTjdkcSN4s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777511641; c=relaxed/simple;
+	bh=tqaDce29jr/G7DRTAEhFxC4N7p1PmHs0sEj/V7P6OGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CdjW4/dLdQrbJgl2IS5Yx6egVbxwHiVlLGSAVqOBgYEGpL/GjBkGqcBBQ17U88+fOOJbKG/VjAp65JHUfzAFQXozKbU6xkJ2zYOHqUH8vzIYWCfu5CA4l7dnQEOURL0PTWMxiVIaIoVnSlkYmYDlTALF9h9eNu5tT9Rqm7QU58c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/PNwpQ5; arc=pass smtp.client-ip=209.85.222.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f193.google.com with SMTP id af79cd13be357-8eae9229110so64008085a.1
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 18:13:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777511638; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EbMZiSky8rKzIYWHZQXkPHciUdhc3z5WGYeGB6QwlUOaMw07pisuN/owoQb174gq7L
+         aoCeZF6a0Ea5R/YUM87gkuL8v4+VB478FCRrAw0MVijIdk9VQS8ONJvTyCsMpdEH1BlQ
+         l42sriZ7v9HwgwVlFMQqp2MyZvIvaLtNlgiRXB3bVuK+AtDabvwzyhJ74ItBVsDhClp1
+         XLHriTTJLHS/nn0u4Hvub4tjSH/t3zZo3TzYfUSpcrxHCHjqxR35tFbFPPoB0qDoDOAe
+         szqEBnnLnZAKrGPnSgUy1knd45fBR27DjXqa2L2qW7o9/rCCT1DucOzvlhKKsvzbbdN/
+         0eIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
+        fh=HFpwh4JyAtUfur3ZupbuTJ5yyYTlrZBL89DSuBYBKDs=;
+        b=ACYuWt6uN6JigQ/WST9eGo8Hro/LU+5rWxPkodU05y9IuFtvEaLW3N2eTKmgFU2H0g
+         AK/OKMBO3CMjNlsBXhgPosjh8bJJ+5U/XrHOcs1G1EXJJQiKvxQWS0LlKeGYzAQT6xip
+         0SEqImU8v4CABTSLMcDa8CkPIbpMtOGUfuEnIZo8Hw/YVIfhJotluWk7o+/7w/guzlKz
+         MTW/AwFFqkgCKQ6k8V5jCNvpDTbf8/ATT/Uz21T0DADWYskHCQtgGFAVThm0pf4LtEse
+         tsOwzu4MkNUsNmA1rOgqMxRwFKkFHz6gh3ccybAbYb5/XvpmjP7Judnn2ZRlq68znhfq
+         C3+w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777511638; x=1778116438; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
+        b=O/PNwpQ5zrqHYinmxLZo6hYQ+Gt71tWCyga2F/pWkU/AKr/XVW9OXFyJwhcLhd7joG
+         Q6pPyM2J9pl4SyWpa2an2h6aciEpTdg1fBvfdGrrJ+iozenF3jHnjk0zyZi1qyFkiq5O
+         zuwxv13fwWgp4QIsGuarCy/BXgldahpj0F2ccjwnVg7i9RD6P8Dgsv7pn/AlMcPCpisW
+         dz6buLQIUXtMpGkIBWaiXywyQtX5Z7qTuCBnnbhR6z5EUubyBvEM8Z5fSowY+a1jjCYM
+         7hhNwLu8AO/oAKivm8k4p+gEkEW2xbB54FrgQX+Mu9TTtVk04orNOUxLSlwYB2p+YffH
+         epbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777511638; x=1778116438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
+        b=rEzh5GAby+labLTuNSfCRr89jQiuknWInXX7JPAomgDJ4Mnka7wsYnTG8YqFPhsbai
+         4+KSg0k4h2wClAyy7lzPmoUoDeKVsSQXoADxH9wefBNjGjI+/nAFi6G0Ix4/v/q/Wacb
+         JsVWJGS8UTeks8CrVXL0Ksgwr1Iab+qt0AzO+/7mvp7PdHgXmTP92LWFWlOjWnfzrY0f
+         oNbuXGjkSO8Q/kWVXhxpgObd3rNL9uBjBqAAvHaWzuqTEWDNjc1OOrXFkNiTiiTPeGS1
+         Si7eoQLFaHkukcLdD00oWduCPgP3zOEALVSqndT4dN9WdVVwQgFJfT6fC3eUVBiacsWQ
+         Cgag==
+X-Forwarded-Encrypted: i=1; AFNElJ++dmXCBkYxHGuYTFBfjB9qqdC4PuZV3JAD8rRXWTZYMRp+CrbAOOn8MDe8GDjYzT3QZb04t30=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdYSJRZtFel6bEXbS6tZ3UejH5OqSY/bBvJ2zaepEAM+nm6hgA
+	tcnuCWHCnAK344c/BWTuI/um7K0nNR7v8Y7aobsQZ6q+3rB9PA5umg9HQJmZ8pHBDewWm/6dUiC
+	JK2UI0P4uhn0KDYdE5wJ6awSHAtvZGjk=
+X-Gm-Gg: AeBDieslvw/opetMJ9LrnohngIrg4bOrkHWrmprqDqAUVMdRNcNyLq0gXCVoNuCnxt1
+	H9J9tOkFnV34a8SxFlwhRt/8l3bI7LO9TWwqwqYfodnTFRMZ7jf8StV+W+m1DCwoWRprSLhJ1iD
+	8iKBmMsXHgniQK1/TDE9UfoOF0deexKwRtrFqV3j1RgQvPociOhA9VPiwpP5d6Mn7/EDjOY7Lz8
+	9xzo9wivhNAUPKJmSJ+f02yEeCwWYJKd7iQnezzTPJq9qXLr4GFeKR2hOY3H1ZICN9pUUl+1JSU
+	a1vjtVDMhy5Ug1iI3sCG1/L9QtuHCzNiTop0C9K8ZI0/YFfI6nPC/rrPgJtk/tcr1Xo570/mQY8
+	h97U=
+X-Received: by 2002:a05:620a:1786:b0:8ed:e1d4:1644 with SMTP id
+ af79cd13be357-8fa863df4bcmr184203285a.3.1777511638380; Wed, 29 Apr 2026
+ 18:13:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 4536349BF07
+References: <20260428030826.47509-1-enelsonmoore@gmail.com> <20260429175421.014bb28f@kernel.org>
+In-Reply-To: <20260429175421.014bb28f@kernel.org>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Wed, 29 Apr 2026 18:13:46 -0700
+X-Gm-Features: AVHnY4J1jUYA03pvf-5_5V3JNJphmuZu7BwnIMTt_nc9cAvdILco119uAEfpHjU
+Message-ID: <CADkSEUiRwto-14zkER30WJdiQa2b+OGOZ+2S50pq4doJ37X70Q@mail.gmail.com>
+Subject: Re: [PATCH v2] net: ethernet: rnpgbe: mark nonfunctional incomplete
+ driver as BROKEN
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
+	Yibo Dong <dong100@mucse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, MD Danish Anwar <danishanwar@ti.com>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 97FF549BF50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_FROM(0.00)[bounces-241970-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241971-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-[BUG]
-With the recent commit "btrfs: warn about extent buffer that can not be
-released", we can trigger the following warning running test cases like
-generic/388 at unmount:
+On Wed, Apr 29, 2026 at 5:54=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+> I'm having second thoughts about this. I'm worried users will come to
+> expect that drivers are marked as BROKEN until such time that they
+> can be considered a sufficiently complete replacement for an OOT /
+> vendor driver. This will be highly subjective.
 
- BTRFS critical (device dm-2 state E): emergency shutdown
- BTRFS error (device dm-2 state E): cow_file_range failed, root=5 inode=265 start=135168 len=118784 cur_offset=135168 cur_alloc_size=0: -5
- BTRFS error (device dm-2 state E): error while writing out transaction: -30
- BTRFS warning (device dm-2 state E): Skipping commit of aborted transaction.
- BTRFS error (device dm-2 state EA): Transaction 9 aborted (error -30)
- BTRFS: error (device dm-2 state EA) in cleanup_transaction:2068: errno=-30 Readonly filesystem
- BTRFS info (device dm-2 state EA): forced readonly
- BTRFS error (device dm-2 state EA): failed to run delalloc range, root=5 ino=265 folio=135168 submit_bitmap=0 start=135168 len=118784: -5
- BTRFS info (device dm-2 state EA): last unmount of filesystem 8b3d8748-4710-4b5a-84d9-b072cb03be2d
- ------------[ cut here ]------------
- WARNING: disk-io.c:3306 at invalidate_btree_folios+0xfd/0x1ca [btrfs], CPU#4: umount/60183
- CPU: 4 UID: 0 PID: 60183 Comm: umount Tainted: G        W  OE       7.0.0-rc6-custom+ #365 PREEMPT(full)  5804053f02137e627472d94b5128cc9fcb110e88
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
- RIP: 0010:invalidate_btree_folios+0xfd/0x1ca [btrfs]
- Call Trace:
-  <TASK>
-  close_ctree+0x534/0x57a [btrfs eeeee2af86b856a32e0b81b75d427a17a62ffe29]
-  generic_shutdown_super+0x89/0x1a0
-  kill_anon_super+0x16/0x40
-  btrfs_kill_super+0x16/0x20 [btrfs eeeee2af86b856a32e0b81b75d427a17a62ffe29]
-  deactivate_locked_super+0x2d/0xb0
-  cleanup_mnt+0xdc/0x140
-  task_work_run+0x5a/0xa0
-  exit_to_user_mode_loop+0x123/0x4b0
-  do_syscall_64+0x288/0x7d0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  </TASK>
- ---[ end trace 0000000000000000 ]---
- BTRFS warning (device dm-2 state EA): unable to release extent buffer 30507008 owner 1 gen 9 refs 2 flags 0x7
- BTRFS warning (device dm-2 state EA): unable to release extent buffer 30588928 owner 9 gen 9 refs 2 flags 0x7
- BTRFS warning (device dm-2 state EA): unable to release extent buffer 30605312 owner 257 gen 9 refs 2 flags 0x7
- BTRFS warning (device dm-2 state EA): unable to release extent buffer 30621696 owner 7 gen 9 refs 2 flags 0x7
- BTRFS warning (device dm-2 state EA): unable to release extent buffer 30638080 owner 258 gen 9 refs 2 flags 0x7
- BTRFS warning (device dm-2 state EA): unable to release extent buffer 30654464 owner 2 gen 9 refs 2 flags 0x7
- BTRFS warning (device dm-2 state EA): unable to release extent buffer 30670848 owner 10 gen 9 refs 2 flags 0x7
+Hi, Jakub,
 
-I'm using a stripped down version, which seems to trigger the warning
-more reliably:
+I understand your concern, but there is precedent for doing this when
+the driver doesn't work at all.
 
-  _fsstress_pid=""
-  workload()
-  {
-  	dmesg -C
-  	mkfs.btrfs -f -K $dev > /dev/null
-  	echo 1 > /sys/kernel/debug/clear_warn_once
-  	mount $dev $mnt
-  	$fsstress -w -n 1024 -p 4 -d $mnt &
-  	_fsstress_pid=$!
-  	sleep 0
-  	$godown $mnt
-  	pkill --echo -PIPE fsstress > /dev/null
-  	wait $_fsstress_pid
-  	unset _fsstress_pid
-  	umount $mnt
+The ntsync driver was marked as broken in commit f5b335dc025c ("misc:
+ntsync: mark driver as "broken" to prevent from building") until it
+was fully merged. The BROKEN dependency was then removed in commit
+c301e1fefc2d ("ntsync: No longer depend on BROKEN.")
 
-  	if dmesg | grep -q "WARNING"; then
-  		fail
-  	fi
-  }
+If it were my decision, I would remove BROKEN from this driver once it
+supports a stable network connection, and perhaps also once it
+survives suspends and resumes, since that is expected in modern
+desktop use cases. I think that is a fairly objective reading of the
+word BROKEN.
 
-  for (( i = 0; i < $runtime; i++ )); do
-  	echo "=== $i/$runtime ==="
-  	workload
-  done
+It might also be a good idea to agree on expected uses of
+CONFIG_BROKEN and document them in init/Kconfig.
+Currently it says:
+  This option allows you to choose whether you want to try to
+  compile (and fix) old drivers that haven't been updated to
+  new infrastructure.
+which does not fully encompass what it is used for.
 
-[CAUSE]
-Inside btrfs_write_and_wait_transaction(), we first try to write all
-dirty ebs, then wait for them to finish.
-
-After that we call btrfs_extent_io_tree_release() to free all
-extent states from dirty_pages io tree.
-
-However if we hit an error from btrfs_write_marked_extent(), then we
-still call btrfs_extent_io_tree_release() to clear that dirty_pages io
-tree, which may contain dirty records that we haven't yet submitted.
-
-Furthermore, the later transaction cleanup path will utilize that
-dirty_pages io tree to properly cleanup those dirty ebs, but since it's
-already empty, no dirty ebs are properly cleaned up, thus will later
-trigger the warnings inside invalidate_btree_folios().
-
-[FIX]
-Normally such dirty ebs won't cause problems, as when the iput() is
-called on the btree inode, the dirty ebs will be forcibly written back,
-and since the fs is already in an error status, such writeback will not
-reach disk and finish immediately.
-
-But it's still better to get rid of such dirty ebs, if we ended up with
-dirty ebs but the fs is not in an error status, then such writeback at
-iput() time will be too late, as all workers are already stopped but
-writeback will utilize workers, which will lead to NULL pointer
-dereferences.
-
-Instead of unconditionally calling btrfs_extent_io_tree_release(), only
-call it if btrfs_write_and_wait_transaction() finished successfully, so
-that @dirty_pages extent io tree is kept untouched for transaction
-cleanup.
-
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/disk-io.c     | 1 +
- fs/btrfs/transaction.c | 9 ++++-----
- 2 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 308955f0592a..f28cef8217de 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4679,6 +4679,7 @@ static void btrfs_destroy_marked_extents(struct btrfs_fs_info *fs_info,
- 			free_extent_buffer_stale(eb);
- 		}
- 	}
-+	btrfs_extent_io_tree_release(dirty_pages);
- }
- 
- static void btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 248adb785051..194f581b36f3 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1293,14 +1293,13 @@ static int btrfs_write_and_wait_transaction(struct btrfs_trans_handle *trans)
- 	blk_finish_plug(&plug);
- 	ret2 = btrfs_wait_extents(fs_info, dirty_pages);
- 
--	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
--
- 	if (ret)
- 		return ret;
--	else if (ret2)
-+	if (ret2)
- 		return ret2;
--	else
--		return 0;
-+
-+	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
-+	return 0;
- }
- 
- /*
--- 
-2.54.0
-
+Ethan
 
