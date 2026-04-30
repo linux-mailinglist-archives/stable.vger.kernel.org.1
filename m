@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GG/KK4Ne82lT1wEAu9opvQ
-	(envelope-from <stable+bounces-242116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:52:03 +0200
+	id WLJ+DZBe82lT1wEAu9opvQ
+	(envelope-from <stable+bounces-242118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:52:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7724E4A3AFC
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:52:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E94394A3B26
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 15:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92EAA301221A
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 13:51:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 51C63301FCB5
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 13:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B7D423A9B;
-	Thu, 30 Apr 2026 13:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3E83A5452;
+	Thu, 30 Apr 2026 13:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJ+DhCBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO7jvTfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6D52580D7
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 13:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1122363C55
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 13:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777557103; cv=none; b=ssNDg8xvHPo1BM6XNOtqluHnypzSPgGeQTZsiWc/b+HbtPQcmDWGYj4rOvzzvjpnNInzwiPQYLqVButpNAghyp81uWrzmV31/mRLCpH7m3/ywtDmxOpuccP7+XJN/HWfOe5YAapqFWzMYCkDduuEyhZvNeQOVGXObcVKZl+gWNc=
+	t=1777557111; cv=none; b=KyKe8HrGW0beTyIzsZkZqa+mDFhytk4wZS6n0l0v6htT+jC7M2O3UEqr03+R4PRHkoQhAv6lSHNphvaj3ipe2c+Flkpp4qjstZ8OooY/FwS90+gUM5tO7cz5Zajk9oA29nWYXvJ7Ywr+bFqaFrNkjVZxbWp/UN3cDgUzetPCypw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777557103; c=relaxed/simple;
-	bh=YEGPlT5tpj2JFBfXGWB8Dv3r+2JE3n6sMWQcPJ5+UcU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qU+5qcop32B3u7CRXKdFVFOtp77zERgJhEtYe4xLMQxIl1vITFzu/qcTvVgOPZ87DiV4nnGVbAjstdvwlWNLSs8zbb8rZTP7u8JCuxjDBNgDhrYkhBRvSphg00OlRwwt/hliCzKL/m3hMlVgs0CBLJ/5/zpzQEgLhLKgh/f75aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJ+DhCBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30610C2BCB3;
-	Thu, 30 Apr 2026 13:51:43 +0000 (UTC)
+	s=arc-20240116; t=1777557111; c=relaxed/simple;
+	bh=vjjUdG+ze7W0Lqiv3TpavuO8QqKLZUOcevMTxqPALdE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fDGqRm4PYXWzgI8aZeyM6wo9Vjx2UR6fdabIL1Ex9yOPN7oeqxFvYggwAJySydAmnl5e7Ry9cCm4kBuU6kxlA+oYqb8hmNG6ZNASkJHgvOAEcw05biIG01H0I4oquZuh+wQql48dyM4aBmT8gOTrmNcCexoO+U5ih0+4rOl0Lcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rO7jvTfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF976C2BCB3;
+	Thu, 30 Apr 2026 13:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777557103;
-	bh=YEGPlT5tpj2JFBfXGWB8Dv3r+2JE3n6sMWQcPJ5+UcU=;
+	s=korg; t=1777557111;
+	bh=vjjUdG+ze7W0Lqiv3TpavuO8QqKLZUOcevMTxqPALdE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cJ+DhCBxik9vHzcxPagyWUCKH7+8ubaFtcZN0cg46Hb4wtR7aqRMhLbWnMrbuTufB
-	 WFnGeP8DAMyyBf+oU2uT83ot9zrOy4yuZVSjwZzq5WUp2d6i8N1FtEnEpsIg9S9M7y
-	 nXRQ6M9+HxNgi1p0y5qyCCjCOGrwRTQn+0qTDKKg=
-Subject: FAILED: patch "[PATCH] wifi: mwifiex: fix use-after-free in" failed to apply to 5.10-stable tree
-To: git@danielhodges.dev,johannes.berg@intel.com
+	b=rO7jvTfseQQDbd5+osyifEBCXy42SyhPTpnjfRpJwpzTgpTaIuqa5ZHIH1rZdE91D
+	 fKnpTp6kE95+WGW/BJTtDeIH8IlBcpFexEzWuFipz9gXAMO9vvxy8cI4GnVQYrMLAy
+	 vd9yo5g/rapRne/0yGmcKJCkftEBU73jKM6Su98w=
+Subject: FAILED: patch "[PATCH] wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling" failed to apply to 7.0-stable tree
+To: sean.wang@mediatek.com,nbd@nbd.name
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 30 Apr 2026 15:51:28 +0200
-Message-ID: <2026043028-icky-undrilled-1ab3@gregkh>
+Date: Thu, 30 Apr 2026 15:51:40 +0200
+Message-ID: <2026043040-tissue-nuptials-8136@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7724E4A3AFC
+X-Rspamd-Queue-Id: E94394A3B26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242116-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242118-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,25 +81,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,danielhodges.dev:email,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,nbd.name:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mediatek.com:email,linuxfoundation.org:dkim]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 7.0-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x ae5e95d4157481693be2317e3ffcd84e36010cbb
+git cherry-pick -x 56154fef47d104effa9f29ed3db4f805cbc0d640
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026043028-icky-undrilled-1ab3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026043040-tissue-nuptials-8136@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,44 +111,69 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ae5e95d4157481693be2317e3ffcd84e36010cbb Mon Sep 17 00:00:00 2001
-From: Daniel Hodges <git@danielhodges.dev>
-Date: Fri, 6 Feb 2026 14:44:01 -0500
-Subject: [PATCH] wifi: mwifiex: fix use-after-free in
- mwifiex_adapter_cleanup()
+From 56154fef47d104effa9f29ed3db4f805cbc0d640 Mon Sep 17 00:00:00 2001
+From: Sean Wang <sean.wang@mediatek.com>
+Date: Tue, 10 Mar 2026 19:28:25 -0500
+Subject: [PATCH] wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
 
-The mwifiex_adapter_cleanup() function uses timer_delete()
-(non-synchronous) for the wakeup_timer before the adapter structure is
-freed. This is incorrect because timer_delete() does not wait for any
-running timer callback to complete.
+mt7925u uses different reset/status registers from mt7921u. Reusing the
+mt7921u register set causes the WFSYS reset to fail.
 
-If the wakeup_timer callback (wakeup_timer_fn) is executing when
-mwifiex_adapter_cleanup() is called, the callback will continue to
-access adapter fields (adapter->hw_status, adapter->if_ops.card_reset,
-etc.) which may be freed by mwifiex_free_adapter() called later in the
-mwifiex_remove_card() path.
+Add a chip-specific descriptor in mt792xu_wfsys_reset() to select the
+correct registers and fix mt7925u failing to initialize after a warm
+reboot.
 
-Use timer_delete_sync() instead to ensure any running timer callback has
-completed before returning.
-
-Fixes: 4636187da60b ("mwifiex: add wakeup timer based recovery mechanism")
+Fixes: d28e1a48952e ("wifi: mt76: mt792x: introduce mt792x-usb module")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-Link: https://patch.msgid.link/20260206194401.2346-1-git@danielhodges.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20260311002825.15502-2-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
-index 5c9a46e64d23..0c8925013724 100644
---- a/drivers/net/wireless/marvell/mwifiex/init.c
-+++ b/drivers/net/wireless/marvell/mwifiex/init.c
-@@ -391,7 +391,7 @@ static void mwifiex_invalidate_lists(struct mwifiex_adapter *adapter)
- static void
- mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+index 7ddde9286861..d2a8b2b0df32 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+@@ -392,6 +392,10 @@
+ #define MT_CBTOP_RGU_WF_SUBSYS_RST	MT_CBTOP_RGU(0x600)
+ #define MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH BIT(0)
+ 
++#define MT7925_CBTOP_RGU_WF_SUBSYS_RST	0x70028600
++#define MT7925_WFSYS_INIT_DONE_ADDR	0x184c1604
++#define MT7925_WFSYS_INIT_DONE		0x00001d1e
++
+ #define MT_HW_BOUND			0x70010020
+ #define MT_HW_CHIPID			0x70010200
+ #define MT_HW_REV			0x70010204
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+index a92e872226cf..47827d1c5ccb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -224,6 +224,15 @@ static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
+ 	.need_status_sel = true,
+ };
+ 
++static const struct mt792xu_wfsys_desc mt7925_wfsys_desc = {
++	.rst_reg = MT7925_CBTOP_RGU_WF_SUBSYS_RST,
++	.done_reg = MT7925_WFSYS_INIT_DONE_ADDR,
++	.done_mask = U32_MAX,
++	.done_val = MT7925_WFSYS_INIT_DONE,
++	.delay_ms = 20,
++	.need_status_sel = false,
++};
++
+ int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
  {
--	timer_delete(&adapter->wakeup_timer);
-+	timer_delete_sync(&adapter->wakeup_timer);
- 	cancel_delayed_work_sync(&adapter->devdump_work);
- 	mwifiex_cancel_all_pending_cmd(adapter);
- 	wake_up_interruptible(&adapter->cmd_wait_q.wait);
+ 	int err;
+@@ -254,7 +263,9 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+ 
+ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+ {
+-	const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
++	const struct mt792xu_wfsys_desc *desc = is_mt7925(&dev->mt76) ?
++						&mt7925_wfsys_desc :
++						&mt7921_wfsys_desc;
+ 	u32 val;
+ 	int i;
+ 
 
 
