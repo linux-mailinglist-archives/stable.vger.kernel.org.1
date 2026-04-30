@@ -1,148 +1,177 @@
-Return-Path: <stable+bounces-242218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAI3AMTl82kK8gEAu9opvQ
-	(envelope-from <stable+bounces-242218-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 01:29:08 +0200
+	id oC0YEEvo82mE8gEAu9opvQ
+	(envelope-from <stable+bounces-242219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 01:39:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C484A8D8E
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 01:29:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA324A8E6F
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 01:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E98953012205
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 23:29:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9773A301A902
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 23:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DFC37F8C6;
-	Thu, 30 Apr 2026 23:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kvhJKMr0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E8D3D34AA;
+	Thu, 30 Apr 2026 23:39:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+Received: from mail-qt1-f196.google.com (mail-qt1-f196.google.com [209.85.160.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7DB3CA4B6
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 23:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89063C553A
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 23:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777591741; cv=none; b=DpFnvPri6Mk5Hf7/Qbv99MaibcLUiT9J7gd3Ny2Xnvx4bP6xLYvRVNvf2FdLqMXC5jIk1qGutrw8W0iOCz+g1GvoNNkGE19pvNwc5l7DbUatTmEVRaE3F5aI/lo+Vm7lN8B61WyX8DHkjw4ImMTlD9MbQy4yqfIgOUAknQlpdoY=
+	t=1777592347; cv=none; b=Jf3CJWXRHyw7ftRTzH3j++exOH1NPcrHKqucv+zc61zmMCwA/bmFBtEB3rfqJlCQcH5ec0yzzLu66c9+wv+mCEZOpdsFe4rcpYacUizJuUXq5R1vmCJXT1qwKYW7GYHgVAqJeatNoP73Uc/qyB6T6CvBr/ZGAIXkwCXFgciv8AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777591741; c=relaxed/simple;
-	bh=05e4kCmh5d4jmhjGWrDP68fi2cOhrwkmP/2S+lC/vVc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=R62d35fVPnCOz2oIWIxeba+Er+vkyLpYLlW6Em1TZTq/2heuE9+cceWIDzIIUXXVqr2q1abmOe3YKqE+VoZ+UHNZ3lYVFEaV+4VGaX4DNMDdCfuMBTCZFlfJirw6t2c9yIf52KY4m/bgpKJ5yf5/C+4Mc6OQloV5cL8H6dg3bCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wnliu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kvhJKMr0; arc=none smtp.client-ip=74.125.82.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wnliu.bounces.google.com
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2dd6fb4c867so6511668eec.0
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 16:28:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777591736; x=1778196536; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=J7V+aJczrYa+luWKSbD/4vJrKAK9nvJvKMYrb9vqHfk=;
-        b=kvhJKMr04ku1nxBeneCkLqKEo59xDl+HlYyDe/uSlCg5rEPkAjZ1I/vovf9lQaAOmr
-         6sdpK+6R1WHTd6zAc/BQj/eIe7jSxObV85zAuH7DYOfUp7IjoCrNS46a+LwIc9kYF/2J
-         Z2Wge3Ihd3owJ8YRB/sqEfhWvo0EBXGHyuTPw6nnKxA/Qt64iFmYm8Q3Gy5l5mHwWtyu
-         HAJZjBWugdu/BhjsCDTVRZ6brPI9iss46rll8PFsitRd2PZQn5UMXrZoBN3GuOX3ktsL
-         NHqle/Y7yZkMeegEprZmkUA3BPq4qrYIaxg0CdFWHFsgLAiuSC9Erv56I2x99pZVwFr4
-         mPbg==
+	s=arc-20240116; t=1777592347; c=relaxed/simple;
+	bh=RosUM6xPRIY1oTK9LeKQ/7oZG5o9uW6w4P5hZC7Uc/U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IZZe8pn6/Zwl7XbzTU8LEJPpyP+YXKOSsz+/YjXORxw+l6pt1r373YxLgjiZBAFIMEpHwIEs+9VEjqJ9mQxDM7kkNruLzbbVJtkq9EJlZ+i+5X+4VVXyuwun+0we9EEm5aiENUHXMZmxg2m6OntiZUaeMpGUpafgSRfZ/KiqlLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f196.google.com with SMTP id d75a77b69052e-50fb8e9a4edso16376451cf.1
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 16:39:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777591736; x=1778196536;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J7V+aJczrYa+luWKSbD/4vJrKAK9nvJvKMYrb9vqHfk=;
-        b=cbUTlE0lfdQQdgWvMbLdNo2URkSD7QFosmM8raj4zCs4W19Km1UyBY1ty5/oKGWlql
-         slohxWhOtvugxT4OEi5qF6EE58ssZOKSVDar+pjPgN0BPfUV+8AmbDo5SRYg+nNjfOyS
-         StWFXnwjfhKkLcY+/JpZSq9Vrq1JHTAHFw5GNoNKC1kbTUFdGuj1222da9KpohKVPIV8
-         kTgdmabGIFEN38imlYJuAvYsnTdKTbXPv+cNecpz24HDdtsPhqzmuEt1irYB4YRS0uCw
-         S5EIg4faDRjo6wfT0Dn1FUr4aSGun/S7+czjSeG2N4r02vHTvgh00iOUP3Zr26LJSgR+
-         tgDw==
-X-Forwarded-Encrypted: i=1; AFNElJ+Fq1ByNfwlrVXm2HB1c2RMiqwWKpW3TvkAiVGnyAqH1SHjNqB8pLfRS9oF0+cjAOD9QJoI5Lw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8JNwd22JSRN9posMQyHwmgY3cmcdbJGNBt/iYP21Dt9Jyx4zo
-	1WG0ZecMFM4NHseb1k8Qf8cuihoBEOsKEPQdxC6S9UxsyPExe9sUxREqe+tCA9KqGKLWfc7GusQ
-	AYw==
-X-Received: from dldnz3.prod.google.com ([2002:a05:701a:ca03:b0:12d:bd4b:5b09])
- (user=wnliu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:985:b0:12d:b7e5:a691
- with SMTP id a92af1059eb24-12df822905emr291576c88.7.1777591736300; Thu, 30
- Apr 2026 16:28:56 -0700 (PDT)
-Date: Thu, 30 Apr 2026 23:28:51 +0000
+        d=1e100.net; s=20251104; t=1777592345; x=1778197145;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SA+eWHMkILjGV4lZwdF0bh9/zh8ox7+jWKzlWflnjB8=;
+        b=IXBNwf/+QZzv/bixVFlgX0x+GRuRIQ9UROrMmCeCAmlKNQPT68I1Xw0fC6/QbTZdOs
+         LZHoUk+AsxCcgS+4mEnOnM5WLIK0R22xc6s4BZRcrcUfbVOu+TQZxf4mluqpvk4i6Bly
+         EMnOLy1VNeRNsXq2XNnDqe3/pb3mp96GojcwM1F1+8lo8I5Ht1aSg9+TsK4GESLk347a
+         40wXWArAdYOEYbaUwpjMHKhhzoYLrd0sHMrSQx/w4Q4yTC0dRrwlPWyIhddDxSD38/vQ
+         HkeHSUW9Apet91hXYKyJ0kSeJofAmTqKwfwMU+cFqd5fCAhECIpSj5/paIHe9v9Q4Qur
+         96xw==
+X-Forwarded-Encrypted: i=1; AFNElJ8lKJnG7qPK27npVUHjpbivQO7KTKG8JRwKuO/J6TBOdMjIfSI51Facab/KnEpszusTrMKI2hQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyvC3JKZyfKhzE+YAQFSG6wHtujEToCFS2sH41e07E8tNGMKHu
+	JvBD2SdD64rXeVUG8P/Ym+FfXnHzBNy3OiY2XjuTOsyvc/Ty8CsxCtJt
+X-Gm-Gg: AeBDietJlFr6kQhzjKxFlKoddCYmmwrkFcM5TcgBvntCcTopUsb5FEUW171TxCWQuO/
+	z6YCC4ZwMRVeUuTiA2nhYDXCvDRVjyda1jeAS6oOPOt3EHwQbWSPOAzgjR/tkKxiSfKKg4T/SyX
+	/LfumDkPrEazQkyWwPocNMaWt1bWqz62Fae+X9OjYxfnkeSvgiUdkCTBmrtXFw3SZRmwCXeHK4m
+	Xf8JagK6lTiXwdpAFmfndRoekd8yGXKouFbZZ4EdFxTwAtOoyjuXx9FhD2QbZNjacji38BxxTdu
+	pr+6zCW3DM8a3dHFQmqOoW7m076/LVmCvU6S90WRKHSG70/epdrK0UJbFTWWV4BPi9mjdG5xR3k
+	szeX41rphpPsi1ephayiK59GjnIUnPcrKPD5cpGlmJX5SBPp4NFfutR+NVzJws9hcd8sAUphArz
+	R7IwhRqsatTf0qEVi1z+ZCSWIPnPVIDj3gSEC4IC/QQNl2/Tl4cLu1xbBSB2koBo6+teVaew==
+X-Received: by 2002:ac8:5a0e:0:b0:50d:8db0:7abb with SMTP id d75a77b69052e-5102adc9563mr74431601cf.42.1777592344891;
+        Thu, 30 Apr 2026 16:39:04 -0700 (PDT)
+Received: from im-t490s.redhat.com (89-24-32-159.nat.epc.tmcz.cz. [89.24.32.159])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51040934199sm221cf.13.2026.04.30.16.39.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 16:39:04 -0700 (PDT)
+From: Ilya Maximets <i.maximets@ovn.org>
+To: netdev@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Yang Yang <n05ec@lzu.edu.cn>,
+	dev@openvswitch.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Ilya Maximets <i.maximets@ovn.org>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2 1/2] openvswitch: vport: fix self-deadlock on release of tunnel ports
+Date: Fri,  1 May 2026 01:38:37 +0200
+Message-ID: <20260430233848.440994-2-i.maximets@ovn.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260430233848.440994-1-i.maximets@ovn.org>
+References: <20260430233848.440994-1-i.maximets@ovn.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260430232851.236666-1-wnliu@google.com>
-Subject: [PATCH] iommu/amd: Fix precedence order in set_dte_passthrough()
-From: Weinan Liu <wnliu@google.com>
-To: iommu@lists.linux.dev, jgg@nvidia.com, joro@8bytes.org, 
-	suravee.suthikulpanit@amd.com
-Cc: will@kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	robin.murphy@arm.com, vasant.hegde@amd.com, santosh.shukla@amd.com, 
-	chrisl@kernel.org, Weinan Liu <wnliu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C1C484A8D8E
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9DA324A8E6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[ovn.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-242218-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242219-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wnliu@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,davemloft.net,google.com,kernel.org,outlook.com,lzu.edu.cn,openvswitch.org,vger.kernel.org,ovn.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[i.maximets@ovn.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.979];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ovn.org:mid,ovn.org:email]
 
-Bitwise OR | operator has a higher precedence than the ternary ?:
-operatior. It will be incorrectly evaluated as:
+vports are used concurrently and protected by RCU, so netdev_put()
+must happen after the RCU grace period.  So, either in an RCU call or
+after the synchronize_net().  The rtnl_delete_link() must happen under
+RTNL and so can't be executed in RCU context.  Calling synchronize_net()
+while holding RTNL is not a good idea for performance and system
+stability under load in general, so calling netdev_put() in RCU call
+is the right solution here.
 
-new->data[1] |= (FIELD_PREP(...) | dev_data->ats_enabled) ? DTE_FLAG_IOTLB : 0;
+However,
+when the device is deleted, rtnl_unlock() will call netdev_run_todo()
+and block until all the references are gone.  In the current code this
+means that we never reach the call_rcu() and the vport is never freed
+and the reference is never released, causing a self-deadlock on device
+removal.
 
-Wrap the conditional operation in parentheses to enforce the
-correct evaluation order.
+Fix that by moving the rcu_call() before the rtnl_unlock(), so the
+scheduled RCU callback will be executed when synchronize_net() is
+called from the rtnl_unlock()->netdev_run_todo() while the RTNL itself
+is already released.
 
-Fixes: 93eee2a49c1b ("iommu/amd: Refactor logic to program the host page table in DTE")
-Signed-off-by: Weinan Liu <wnliu@google.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 6931d21f87bc ("openvswitch: defer tunnel netdev_put to RCU release")
+Cc: stable@vger.kernel.org
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
 ---
- drivers/iommu/amd/iommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/openvswitch/vport-netdev.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 01171361f9bc..ccffbecb15c2 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2149,7 +2149,8 @@ static void set_dte_passthrough(struct iommu_dev_data *dev_data,
- 	new->data[0] |= DTE_FLAG_TV | DTE_FLAG_IR | DTE_FLAG_IW;
+diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+index 12055af832dc0..a1df551e915bc 100644
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -196,9 +196,13 @@ void ovs_netdev_tunnel_destroy(struct vport *vport)
+ 	 */
+ 	if (vport->dev->reg_state == NETREG_REGISTERED)
+ 		rtnl_delete_link(vport->dev, 0, NULL);
+-	rtnl_unlock();
  
- 	new->data[1] |= FIELD_PREP(DTE_DOMID_MASK, domain->id) |
--			(dev_data->ats_enabled) ? DTE_FLAG_IOTLB : 0;
-+			(dev_data->ats_enabled ? DTE_FLAG_IOTLB : 0);
-+
++	/* We can't put the device reference yet, since it can still be in
++	 * use, but rtnl_unlock()->netdev_run_todo() will block until all
++	 * the references are released, so the RCU call must be before it.
++	 */
+ 	call_rcu(&vport->rcu, vport_netdev_free);
++	rtnl_unlock();
  }
+ EXPORT_SYMBOL_GPL(ovs_netdev_tunnel_destroy);
  
- static void set_dte_entry(struct amd_iommu *iommu,
 -- 
-2.54.0.545.g6539524ca2-goog
+2.53.0
 
 
