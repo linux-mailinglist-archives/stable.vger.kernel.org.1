@@ -1,189 +1,226 @@
-Return-Path: <stable+bounces-242092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPiYEk5E82kMzAEAu9opvQ
-	(envelope-from <stable+bounces-242092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:00:14 +0200
+	id eA/FNQ9E82lDzAEAu9opvQ
+	(envelope-from <stable+bounces-242093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 13:59:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E615D4A27CF
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 14:00:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 354F84A278D
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 13:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA3E43080AB7
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:55:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B89B30182BD
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 11:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E0A3FFACA;
-	Thu, 30 Apr 2026 11:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2723FA5CC;
+	Thu, 30 Apr 2026 11:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="phgCxWVI"
+	dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b="TFIUTwSU"
 X-Original-To: stable@vger.kernel.org
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012036.outbound.protection.outlook.com [52.101.48.36])
+Received: from relayaws-01.paragon-software.com (relayaws-01.paragon-software.com [35.157.23.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AA0375ABD;
-	Thu, 30 Apr 2026 11:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777550128; cv=fail; b=TayAHgFUvh9FC+g1w5vl5ZrR1G4O1ttgJhNXFn/IbZNmojAGQ6IiB6eyMH5NF+hBGGBUy3IOS5sHlIpQm9HO4WvBIMgafq71pQlLE4ga5fk+FFHqJWqv9d9+KtZ16Dz6oBXKCAWv2QOc4XFfFbnDVBdR5OmzDCFDHj9KDQ8tcQs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777550128; c=relaxed/simple;
-	bh=wPWy54fGFlXIfUuRX2Qz10xC9jEph166R1HadhF+D8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=spiWyZJyxhbg8nb9wTggy1OMjBEuMeHCw5EXOhIdtBIZHYbyvOhK2Kim3TA6qEbJZoecqs6QQc9yiaFOWA55Fh53f/3aeUzuoIynISjteaieWh4CbvgFbC+KqgbPFVQAOuF1Wz/mlw8SwvvUly4a4nzxl7f+3/Bk+CVvFpVHItE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=phgCxWVI; arc=fail smtp.client-ip=52.101.48.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BwxK9iId+bNtbwQ1CHyntzFwozJHn7Lxhz9G/DQ8du1Cdnf6jyRp76tzgvJNhkTAVpQfjCbZSfurydHgpxKhRQ7XwpdjIJcs2w/UOE9X01PMWIqANv/P+v/TxcgUdpemKKuabY8i51nE39HJjJ89OAORuKKbRI5LozGBdRDCYzB/r7ZWyugLt9Luxj4Lk9Gu6Rdc643BxDYw/DL2/MYOV9wJIh2stN9WY4B8/6Zhva57dfW6oXUg9tXp/CdGdhGZMTL7rTsBAcJOAbO7Bq8SCfu3s+5Meu35iQZoBn83HAw42NGINUk/PqT96A8GDMmXKdX+XuZ41ByIsn4FsZbiyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=smahzfj9/n3PlEYhLaENrHvsUkPZx5+ExCrwMPMjN8I=;
- b=XsyZ1IgQI3ArQy+6QJFMZ+9yCoBqugkl+2vKnkaRoCbrJNd95E39sbRYUlm5TtbLmSJ252qjzs4JS2kshmFjPynJfUmOqmGMK7pkzkSiWdoQ5G/vDVThSv9TC0kRqFHSL1qFKeJLgiTlBB/P5sQtatZYLUjMFQTTogsvc9UucZFczQdV1rvcWzeNF0oVAg5MyIR/pZ9/zPQpsDeIs/rq1GpDycSR8yw+TjNfFLZBObFwfLdf6O8/ec2G1KdM1TLK3mubVNh0B/jca6n7LBGhQWc6TZFTMZX6zSrAsibsT0BM2klnLOWCBL/7Gj2a1nrn/2hXoK2tI3ykdBwdz8dlhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=smahzfj9/n3PlEYhLaENrHvsUkPZx5+ExCrwMPMjN8I=;
- b=phgCxWVISiHObHC9gi70/QisdujInbqoqN8uKEpaY2NfG+4xN4aeq4LpnJJUSAAIOPE8jWcoRD0guNRMo1R9S/Sc83TJ2jnmR+G1Tt9peh8ueOqPDWpA07y/Z0OFtzdw6G7ri/VROOq7viTWykJ8AwWtjS+Epo9aIKwE80uKoc4NhNptw0fSqS0/86tQdqlGBpL41aqyt2t4U3Tf3RTpW3C761/NjaAKXM/qcgs19zZ5Xo930ulimQJk7x3iGxB9PCFUFJMzbMFBGY9dUClLyL3UJSoDj8QrssligQbhmkDCD5dhX81FHhuSm+0dnNPM4xwzUkiKwyAN0hvWdRWw2g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by DS2PR12MB9797.namprd12.prod.outlook.com (2603:10b6:8:2ba::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.20; Thu, 30 Apr
- 2026 11:55:14 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Thu, 30 Apr 2026
- 11:55:14 +0000
-Date: Thu, 30 Apr 2026 08:55:13 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: will@kernel.org, robin.murphy@arm.com, kevin.tian@intel.com,
-	joro@8bytes.org, praan@google.com, kees@kernel.org,
-	baolu.lu@linux.intel.com, miko.lenczewski@arm.com,
-	smostafa@google.com, linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, jamien@nvidia.com
-Subject: Re: [PATCH rc v4 1/5] iommu/arm-smmu-v3: Add
- arm_smmu_kdump_adopt_strtab() for kdump
-Message-ID: <20260430115513.GG3225388@nvidia.com>
-References: <cover.1777446969.git.nicolinc@nvidia.com>
- <edc9df0e05559ee3edfeb833b84d421d9b040dba.1777446969.git.nicolinc@nvidia.com>
- <afJ6Lu0aZyff5TYZ@Asurada-Nvidia>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afJ6Lu0aZyff5TYZ@Asurada-Nvidia>
-X-ClientProxiedBy: IA1P220CA0018.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:464::9) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538B03AB294;
+	Thu, 30 Apr 2026 11:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.157.23.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777550307; cv=none; b=tQRxE7lrfBEYsT0NF638RNgk2DGI56DVYIjMvIiJN2yV669I3Bu75nPutVnYh27o/um+iWQOseTe5Jc3Ln3SRy+568k75AQ6zKPFADi7stcckGWLTtrLp58a6t9rKgKSwJMygEOEh8zY9FxERVfCACw7pbkRHNDMTMlM0nO143o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777550307; c=relaxed/simple;
+	bh=3ERtXKUFHXuJ3le2SNtpi49sIu/Scqmldi0MxFG6JtI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=iGs7VJOVvD3B0IuoC886rFvODrqyKZTPcBBAzzBgkJ4YwkNyLDyb3w/7iEQuavwky62M2fdfP87Ul82YSWpfxsoAPkbRNn4VnEf7LDIs42q69MiyU2n2/IKcMb+A5FZDMhErbSYIrGvr4IMrkpoxRPToWbz7gDLgYeFuacU22vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com; spf=pass smtp.mailfrom=paragon-software.com; dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b=TFIUTwSU; arc=none smtp.client-ip=35.157.23.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paragon-software.com
+Received: from relayfre-01.paragon-software.com (relayfre-01.paragon-software.com [176.12.100.13])
+	by relayaws-01.paragon-software.com (Postfix) with ESMTPS id B623B1D47;
+	Thu, 30 Apr 2026 11:58:25 +0000 (UTC)
+Authentication-Results: relayaws-01.paragon-software.com;
+	dkim=pass (1024-bit key; unprotected) header.d=paragon-software.com header.i=@paragon-software.com header.b=TFIUTwSU;
+	dkim-atps=neutral
+Received: from dlg2.mail.paragon-software.com (vdlg-exch-02.paragon-software.com [172.30.1.105])
+	by relayfre-01.paragon-software.com (Postfix) with ESMTPS id E215B2133;
+	Thu, 30 Apr 2026 11:58:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=paragon-software.com; s=mail; t=1777550297;
+	bh=b3m7VUHX6nz2dIH7u7IHU0RNpctq4AB0Qv+256/ZUPk=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=TFIUTwSUb1rgtNAp1N+r6T6kXoOgXFpHfN4V6oXUT1UjgrkTI5NS/ZPdDoWwxnc96
+	 v5/COQC6QlF5ISQ09sggeTGJglePhwjpJ5Gbm1xVtHAgNJ8hjyDii/bFhIj5vipSDD
+	 sOSmyfPywPvylCIFyzcKUaGkGV+fbvKnFXI9EQ7g=
+Received: from [192.168.95.128] (172.30.20.214) by
+ vdlg-exch-02.paragon-software.com (172.30.1.105) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 30 Apr 2026 14:58:17 +0300
+Message-ID: <e6ed6668-7251-4847-9511-ccad55c5f6d2@paragon-software.com>
+Date: Thu, 30 Apr 2026 13:58:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS2PR12MB9797:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11d877f7-7e23-42dc-24aa-08dea6af571f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	GXtIq8wgv6UmMAw9Po+59QNma66w7fIM+ME8RZJK8lo15hN+1iFQ9vZALx0xbDlZD4D6nAAFjSYDl768Cn/tD98JV1qu5dxGhcP2IdPzGJX/FIlYQ6PwC/wuI5i2iybu/F0OZ4VFvPULSYaua7Gs3d6runItcS9sEx4tR0fA7KJxUjxh76T6rj7YdCWzybSSolhN9KfbW3ke41ZTv5+S2adbhPmFF8lba4TaLQ/sM+szwCzoiuI3OkAgqo/WuKYG03ZSIkZfOLA3ddYcPPZOTijzJMG4uMbYr5HBrIXTa8HQaydj0xmeUGs4yrQq/bZWA4ZKTzyJDjNe7TSEeDOE5pJc4ZWODWdyau4pMui+pA1/hC1HLMJ69oC4N+ff+jkUXU33M086wjONAmczh5GbSnwKjYZYtk9+zIvMHnXT0CvYLbKZuuKfl3VsmR8RTOY5LFki3zCS3FrD6Cn4Ms+ktwLb20wGiN1yFZ7leWigMMg4se8WPWMhjYWK20OmfMLnSDJ71Nxh8NE4OXj3PTBIZfaQ43WN1J3weKim5KN+fw0DHK6THstIWGlFtZ+PUiP2p+2GzKfFPzHDToE6hjKlNfqg03guSllttI9EDyHt2E/mCMAHdwO3EZ16Mox83e/z2hOMwOu+SyykJ7fNsYCZsRbx2iLEvtvExNoeOou4Jv73fEGyNZOyG9ApjBa6yJH9xc2h+f8DoWdCulw3jPrrpAabOkVJG+U5iLERawsJLaE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xEZsZFcHucL0VU1I15bAXkqeVTLeqCYz09TbGWw1XExDKFueUSh+JXLUyRvG?=
- =?us-ascii?Q?q7XXR4L/hH4ZWocFijRH4ZGuSBx2szjdfzVekbzwTf/ZAzL/+Q7xOJIhS/oX?=
- =?us-ascii?Q?lCWLS3aKkNzty5Me7M5azu6TCfGMDG4DiItS0vfs6tdGg3HzFaeorDVflSga?=
- =?us-ascii?Q?s3BaMP1Fndkro1paSKR4eYQPrGH6GXq3m9L5K29BQOW5GtQji5wCUanhsLvQ?=
- =?us-ascii?Q?8E9/3UcPGpP1uAKiNRUPyp23NN0BWCcV6c5XQNqus4DExtp+s7lVs0qmVo/F?=
- =?us-ascii?Q?Qi2MqCmXHXdU2KOebUlEcxH9zqjweQ4j5iMWqDWul4CmGMtop79GwzOPVdPH?=
- =?us-ascii?Q?5CXbjrquO97iNu1e7zw8jM+wqLUSgr1ZFUf76o0psyehhQDF6jsWIdrMbJRm?=
- =?us-ascii?Q?TAEIK4nv5eCRYYFGEIHBJttXaoNneToyFMDL3yobNljsCx0Bdd/w1tWOpprr?=
- =?us-ascii?Q?ptn7qFy2KhBNti50a7Mekb25EbrxVH3mh60b4zSq/8gnDK7CnMcEMl9svyoK?=
- =?us-ascii?Q?C/iP+YU8xBqaiy+8HF+EOQpNuJ/pG18O+UQzxfiU7sE48sc6rUQUCn5mSja5?=
- =?us-ascii?Q?Q5lLk30TeO7L3pUzD0xtTk3bRtr4j1vaNPbSU87BngxHDXvp3sHl51LduSRU?=
- =?us-ascii?Q?+LLx6vndjw108Wu8UNp2wpjQ8lnF2BaX2YkVYMe3sA7W+FeI+TqTuqa2FBHw?=
- =?us-ascii?Q?If4al7rRGruLkGePATQ+ckyMyHvlbiweeQK3t2RD2QUJAAAFggVmamorCDNs?=
- =?us-ascii?Q?BPKPvOzNzBCceHJ3FfUqRElG1l9DbBFGnYoKSLWD6XD0DWw3eb1A0qtMGGzQ?=
- =?us-ascii?Q?gCxHwRI65+NA2ZcultCyYgXnkSgGHqnyMrO+1W2dg5XZMUvRjO4coeo0plTv?=
- =?us-ascii?Q?laOX+2YOy+En3OjYpZtGGUskhuNDX9FMUvvrVpqAF131lxnN+nXIBVOp2hQr?=
- =?us-ascii?Q?3wdD9oNQfW6MoQdfs4r0pekrVu5YpFiChdVFxSfqyeCGjf1GfiRN/PfrlRA+?=
- =?us-ascii?Q?LuNAgjwZ0ZL7BfD4n4uQ+CHUqeuVdw89OiMEt/vf7NLbonrfsBud7Fnryqvd?=
- =?us-ascii?Q?+EdHBeec8xSFAmDK7aHo9C/GIUrxydsmK/dZMTOLtRJJCO9JpMXIuYpcTc1d?=
- =?us-ascii?Q?qIFDd9FVEHGkFmLIYEPTKRX1ZvjU7X0sItcWZgZCm9e+aC5Po8ZW80Jq8UwA?=
- =?us-ascii?Q?0xW+WiCa+9+r6daca67YRDOI2wdS8phAET8248JSDUBTxdExrDfmLPuv6aA1?=
- =?us-ascii?Q?UV0aNBV/TzFWwAcNqelQ/7W6ui16PJ6awTe2yyMp3Ka8Q/70zij4jT8vR2WD?=
- =?us-ascii?Q?sC0d44E1IObVClGCvxgCpiUoh2sNwjHxdHfgda2uvrO1zEjDp2Yqq8RqkKo1?=
- =?us-ascii?Q?JVjR6sVOso7kq7TC3Ea5ytZ8o6LWqoVrSLkn2XYX1ZQh6nZxe9yc2vgneB4f?=
- =?us-ascii?Q?QBfRXcIz5UR7kQcNV7xFK1yV+gfz3P5OeY6CGINHZ8Mf7EW3sI0e6ncgOVWw?=
- =?us-ascii?Q?0YYXXo47Ei+Fiv432O9QCDAxCCUJsrdXMzqNlaqbQ44U/2vcZbln8YQPJTTj?=
- =?us-ascii?Q?AihnKILEtDdpVxrrwk+HVdKeW3RTOpwbjZP5EtbTH6CgRus/ZzpLEVu6tIe6?=
- =?us-ascii?Q?F3NljGe+iw+rADIMiU47IN8Juk/PiugLuVQffSP9OW2xeaLRNG23VF/4cFKf?=
- =?us-ascii?Q?kCLgKfqRijO9nuSLgCKLih1hWuhLet1Ru8NAFJb4rFehqS7s?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11d877f7-7e23-42dc-24aa-08dea6af571f
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 11:55:14.7174
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cH/5YEztnuECZMIhQB0lRcwYmzsF/nAcJhxc80Dx/ssfA3brLeD+Ys17sCjHj8wU
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9797
-X-Rspamd-Queue-Id: E615D4A27CF
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/ntfs3: add depth limit to indx_find_buffer to prevent
+ stack overflow
+To: Michael Bommarito <michael.bommarito@gmail.com>
+CC: <ntfs3@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260413133117.3687677-1-michael.bommarito@gmail.com>
+Content-Language: en-US
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+In-Reply-To: <20260413133117.3687677-1-michael.bommarito@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: vobn-exch-01.paragon-software.com (172.30.72.13) To
+ vdlg-exch-02.paragon-software.com (172.30.1.105)
+X-Rspamd-Queue-Id: 354F84A278D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[paragon-software.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[paragon-software.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242092-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242093-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[paragon-software.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[almaz.alexandrovich@paragon-software.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,Nvidia.com:dkim]
+	REDIRECTOR_URL(0.00)[aka.ms];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,aka.ms:url,paragon-software.com:dkim,paragon-software.com:mid]
 
-On Wed, Apr 29, 2026 at 02:37:50PM -0700, Nicolin Chen wrote:
-> On Wed, Apr 29, 2026 at 12:20:49AM -0700, Nicolin Chen wrote:
-> 
-> > +static int arm_smmu_kdump_adopt_strtab_2lvl(struct arm_smmu_device *smmu,
-> > +					    u32 cfg_reg, dma_addr_t dma)
-> [...]
-> > +	for (i = 0; i < num_l1_ents; i++) {
-> > +		u64 l2ptr = le64_to_cpu(cfg->l2.l1tab[i].l2ptr);
-> 
-> Sashiko pointed out a missing READ_ON here.
+On 4/13/26 15:31, Michael Bommarito wrote:
 
-??
+> [You don't often get email from michael.bommarito@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>
+> indx_find_buffer() recursively descends the B+ tree index with no depth
+> limit.  A crafted NTFS image with circular index node references causes
+> unbounded recursion, overflowing the kernel stack and panicking the
+> system.
+>
+> This is reachable by mounting a malicious NTFS filesystem (e.g. from a
+> USB drive via desktop automount) and deleting a file whose index entry
+> triggers the rebalancing fallback path in indx_delete_entry().
+>
+> Add a depth parameter and bail out with -EINVAL when it reaches the
+> fnd->nodes array bound, matching the constraint already enforced by
+> fnd_push() in indx_find().
+>
+> The related function indx_find() was previously patched for a similar
+> infinite-loop issue (commit 1732053c8a6b), but indx_find_buffer() was
+> missed.
+>
+> Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: Codex:gpt-5-4
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> ---
+> Found during a broader arch/um/ and filesystem security audit.
+> This is the same class of bug as the one fixed by commit
+> 1732053c8a6b ("fs: ntfs3: check return value of indx_find to
+> avoid infinite loop"), which added a depth limit to indx_find()
+> but missed indx_find_buffer().
+>
+> Reproduced on UML (ARCH=um) with a crafted NTFS image containing
+> a circular B+ tree directory index. Mounting the image and
+> deleting a specific file triggers indx_delete_entry() ->
+> indx_find_buffer() -> unbounded recursion -> stack overflow:
+>
+>    Kernel panic - not syncing: Kernel tried to access user memory
+>      at addr 0x606128c4, ip 0x6012907e
+>    Call Trace:
+>     [<60611ec2>] ? indx_read_ra+0x0/0x677
+>
+> At 168+ bytes per frame, ~97 recursions overflow the 16KB kernel
+> stack. Desktop automount (udisks2 + ntfs3) means a crafted USB
+> drive can trigger this without privilege.
+>
+> Note: the pre-existing indx_node allocated by indx_read() during
+> the DFS is leaked when the new depth limit fires. This is a
+> pre-existing issue (the node was also leaked on any other error
+> return from indx_find_buffer); fixing it cleanly requires
+> restructuring the node ownership model and is left for a
+> follow-up patch.
+>
+> Reproducer script and crafted image builder available on request.
+>
+>   fs/ntfs3/index.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+> index 97f06c26fe1a..2c43e7c27861 100644
+> --- a/fs/ntfs3/index.c
+> +++ b/fs/ntfs3/index.c
+> @@ -2013,13 +2013,21 @@ int indx_insert_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
+>   static struct indx_node *indx_find_buffer(struct ntfs_index *indx,
+>                                            struct ntfs_inode *ni,
+>                                            const struct INDEX_ROOT *root,
+> -                                         __le64 vbn, struct indx_node *n)
+> +                                         __le64 vbn, struct indx_node *n,
+> +                                         int depth)
+>   {
+>          int err;
+>          const struct NTFS_DE *e;
+>          struct indx_node *r;
+>          const struct INDEX_HDR *hdr = n ? &n->index->ihdr : &root->ihdr;
+>
+> +       /*
+> +        * Limit recursion depth to prevent stack overflow from crafted
+> +        * images.  Use the same bound as the fnd->nodes array (20).
+> +        */
+> +       if (depth > ARRAY_SIZE(((struct ntfs_fnd *)NULL)->nodes))
+> +               return ERR_PTR(-EINVAL);
+> +
+>          /* Step 1: Scan one level. */
+>          for (e = hdr_first_de(hdr);; e = hdr_next_de(hdr, e)) {
+>                  if (!e)
+> @@ -2040,7 +2048,8 @@ static struct indx_node *indx_find_buffer(struct ntfs_index *indx,
+>                          if (err)
+>                                  return ERR_PTR(err);
+>
+> -                       r = indx_find_buffer(indx, ni, root, vbn, n);
+> +                       r = indx_find_buffer(indx, ni, root, vbn, n,
+> +                                            depth + 1);
+>                          if (r)
+>                                  return r;
+>                  }
+> @@ -2446,7 +2455,7 @@ int indx_delete_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
+>
+>                  fnd_clear(fnd);
+>
+> -               in = indx_find_buffer(indx, ni, root, sub_vbn, NULL);
+> +               in = indx_find_buffer(indx, ni, root, sub_vbn, NULL, 0);
+>                  if (IS_ERR(in)) {
+>                          err = PTR_ERR(in);
+>                          goto out;
+> --
+> 2.53.0
+>
+Hello,
 
-There is no concurrency at this point?
+Sorry for the delay.
+Your patch was applied, thanks.
 
-Jason
+Regards,
+Konstantin
+
 
