@@ -1,82 +1,84 @@
-Return-Path: <stable+bounces-242199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDedGoay82nn6AEAu9opvQ
-	(envelope-from <stable+bounces-242199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:50:30 +0200
+	id IEboHyi082kg6QEAu9opvQ
+	(envelope-from <stable+bounces-242200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:57:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E054A778A
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:50:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F9F44A7817
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 21:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 840223022A83
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 19:50:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B2372300B8E0
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 19:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C471F350A05;
-	Thu, 30 Apr 2026 19:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF04382380;
+	Thu, 30 Apr 2026 19:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5FavkWM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GRfraDgE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0D633F37F
-	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 19:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE29381AF1
+	for <stable@vger.kernel.org>; Thu, 30 Apr 2026 19:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777578626; cv=none; b=K73waou1SDaemgup7GGERN6GtgGhQOeNjjAcB4QyfWQiLpBRv9f1awf2MicW5KjCV1q+ia5sT5jQOZiy3TeBN+D6d7s1XxPAee25sXB7fsddMPkgiUnf7SpqxOrEPCyWyWUX5IPJcBvBCqLIjBiOEaxikwxyzIB9JOwsvgp7L0o=
+	t=1777579036; cv=none; b=t/7fMMlFBrWNwn4HdagCyCxYwBahHQzriTJ3IZ5D1pKyQ2iw5zV6xQg4yf3zh+YovLeTDPd1kWrShejy42bronef0mCW1N/wgZFZcb/D5rAZjt8+5pmy8eQ8JM7Gm7sGnp6xCp9VgaEirsy/B1+5XHAORmwx9Bb5C2K+3SXwX1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777578626; c=relaxed/simple;
-	bh=lVj9l+0N1jtYsqvEBiLnFZ2/3v1EchPWkJh38hXrag4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EDpbr1HPdDdZ/VpEtWOkdUc9oXyEudN6BlRxW7HdjkMSJfDCwPE51SDZkI0e7LLDwEHjfotX+J8jnCX1y4tqPNC5ClBK/B72bNBS5DIqaOEaQwTFLiHT6kbE3HB0XQGqSpih9JnOK4JGxrXQuXb31YUZPXVt5yse7EaUzLJbtNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5FavkWM; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1777579036; c=relaxed/simple;
+	bh=IamWvDL/vfzrLrP055VymOxe9MPDgKdr9LOvSE+KKa4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M5pe8Uuo6F+PKxfJAQpr1SLgr9awJFKZBClyqAYVAfxNU6NWEipfm0KzLqTfaucESaWCuMn8k65mrG8XhR90TCCnNxb4lWy2ODCfbX2M0bOtRPpul30GekwQnhFz52amNOBcYsBb+Ax/dA08AkS1U1N5EfppMBACQxnucOLfgo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GRfraDgE; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so12670965e9.2
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 12:50:25 -0700 (PDT)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43fe608cb92so821947f8f.2
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 12:57:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777578624; x=1778183424; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777579033; x=1778183833; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xV2RUgdcgAI6HubmbhhtbLRAwJ2b8LARLx9dBYFOMRs=;
-        b=C5FavkWMYAKh0TWNMMWZDqV8Erp3ztkDV+Fb7wWNdiG52UXVulTg5d/qfCNRXYmP+z
-         ihDj32IX37nWolccCfKK77FFjHtpkVMPo5ZmGubg3j6HqflIwnpEV9ZNYcHvxeZAc5+S
-         L35o2dfB6urA2o/R3yaQT8hGfXlTMLbBYhNA3nlMG7CB/nKQ4KX5iD56mdYlioRDibpC
-         5rPozV+orgp6tU9DiwNc7DwRWoTA6z4QZA/lDH9CnjKtxN16hwaEf2w+CmZTdYvWTjGs
-         mjCzSXEGCcioVT+jo/Fc9xuVd42FwwO9D+js9lMoqDsKd693l3OOeZwdUDK8NQvaJlnh
-         tPnQ==
+        bh=xXo4GTKuApdH2855i6VQmTYDmGzNNitfMak3tWGUlss=;
+        b=GRfraDgE5l3pb5/OT5SeaM05MWot4xQ1AMGjibQIHaIwl+Z3vQD84sQmM2ulCOaP+r
+         Jt4gSF6CDqZXnVJZN4Q+P4/GF9ZznMA6VmQyaaHr1Vjb7RxQIibAurQABFFSzc/3uVbX
+         zcAgBtkwe/i2L9GS4sVJyP81iO1ARbYM73ed6NbeYFJjmLNpBZuvsp0OC4+OIlJyTtOw
+         1TqIbKb4kPugBrOJLgoWjh+yG94hSGE8zCWkWiH6OSkP6k8rNehfiq8JEuOsoPmkMn5L
+         VSWv5ADuIvHUl4SlZB+QPjziEyR8fdG7VSHlUjsejZ0hoCRk49B5X7bqrWNd8YgcSE0F
+         tLyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777578624; x=1778183424;
+        d=1e100.net; s=20251104; t=1777579033; x=1778183833;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xV2RUgdcgAI6HubmbhhtbLRAwJ2b8LARLx9dBYFOMRs=;
-        b=p50wkZ2BW2EHO4j463VmBpaNxLmT/l3BTJO3Ch/NAEInSOPq3heZs1RXF3lkpQhhht
-         UWn9Rl1BvHFafvrgEzjZdytl6qMLFGnkObh2DlG7+xug3JujiymjvO7ZIePz4IIBUIRV
-         cLzYTwhoOwiAbRJEJBpgyEXx/HZg0aboNbgcpCJnMP12BahLPpclY8asS7wMSwaLX2xz
-         uWhMJ9WYz8hZo7OvfIWzM15uvWDdfmV8FAi127BME95ISSn5UkS5tDIuBLTuQeCrddMS
-         Aoci2Uwx6gnJbYRJHbUe3ve7Ds1TgjpcW6MTwQWgmjSE53ZdIG75v0iszOZJOiHTD7/o
-         xCLg==
-X-Forwarded-Encrypted: i=1; AFNElJ9XQtXZB/q+XOZ16dhEu3KaiOjjvLdL4xod+/Qliidwy9wjF7oRcK7D2UlWySsbTLM/kEwwsWc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/kvd2ZEE+Xh7VIrTskOfUcNpX7RUPmw9w4hxznLp9wR/+Ym8d
-	0X4KxZHYuhwSDiaKryGOmm2ehPXsMZRRYRPWNkaYCh/1h+17LPJbPWpJ
-X-Gm-Gg: AeBDieulEfls/COu0/xKG8dk5PdWu7FVGfzCDASmzzxo0AUcwVNW5ow5fqfaR+UBpqo
-	p2zlWNDqefB2VomJRWqgSbR9F3PKhZ4vKkO6vFKvSmiZxbsXJMmY7Pr605/773iphoSaEuW5HiB
-	0aPTJM1CVRZrIFqzqYuwCOjGuWZHKH67Nv+tYX/QLQXJ+fqdJNZTL4cBXiD3KobwHFWvN1fDoZv
-	Ol1WHtEos5X7ZmBZXW8ErZjIInzh7ey62o/9J0dIfAQdc29/OyakRGF255Nc711T4QZ8kgLqM3o
-	dyIEbIAjW1QEJgVOlxYV9IdiokpcZ+aQh94yPP82YVg/yqO862PeChTqVMCKUnqPKc861Asosid
-	ay/l8cagySnubDav/ppOiFvF1fr4Ek75WBCpsU0vknv9fAsW5Ph/5BxWQhReQYAIrijYgwKmp88
-	mIfpIKHH6Bwlw7Azd/2yv+7vmmfWExPrZ1hOJm0H/bwrgtk4p3JQb7kw32qxibVwBEkElzt/U=
-X-Received: by 2002:a05:600c:a14:b0:486:f634:ef1 with SMTP id 5b1f17b1804b1-48a844525c5mr68630135e9.17.1777578623521;
-        Thu, 30 Apr 2026 12:50:23 -0700 (PDT)
+        bh=xXo4GTKuApdH2855i6VQmTYDmGzNNitfMak3tWGUlss=;
+        b=HOc2QdzHjGHdXvorVot/XxCI1b5nRL08MYTPVdwViLw3pdTRdmoTSInHMrQ1JkW5dE
+         Zi51SZU6Ivhs9IOgEfN+dhhJn5wkQcOnFVkU7QSif0ZK1cmC/aW+j4EOoZKZyZvBNWSR
+         9eX9mJmbyIuGIH8Y3yUYWSB7EKRbNYVzH3VhVQdzkNUtfahPG0GSS2iovZmTDAauLisv
+         wG3+UQXynFLJTZDeUE+agzrwMADtD6XEklETN2jt/oJQFwDKYyBLRvzNlErQLvkAEgLV
+         8iIA7+jVyBCghGPr8xVl3iG+olvCIc952S2ApCzwqwa3q2Juwnh9HhzIV32Aw7l3X/lb
+         Q4qA==
+X-Forwarded-Encrypted: i=1; AFNElJ8h7D6kwoGH6syuY9dKc0rUm1JUepeP1L/hqzcrQihIxnjVnpKuUbLV4Hh4U8oUdrAp8/1ifJU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu7yurUy9NETdDxaEJQPODaLst2VyerjoJ/zfYAEVNCOJ43ix8
+	UWlQW89QHG8pYOPZn0g82U9V8PexF4Mg6G8rJnDZGHphLQiXJr8nYnJC4OZJMhczJ6g=
+X-Gm-Gg: AeBDiesH69o1WapicRjP1D1V6n4+BEFypGQw9GD0oY5wNonZ2zId+J/k8xgBwE5GtQX
+	T8aj4M4sgey8Zf8GLtJdjipz6XRYB+JQs9cZwAmFCVr8UjQX/f4xCqP157gP/E/UcTPrJ2seuKe
+	qcGX1zEwRtQs2a5JkXniMQSdAo6q9+VbNWKmm575zfkCQ/tTgtTTiGzp/OdxDRYo+XtqrsWeQWo
+	7te6YuFIt/ohpZCMJjK7klw/8CqTAmkLnvarXzXWFnRarrl8zsO0vp8ojQ1m9Ss+R9aeDd7yP44
+	9utTCcL6ja77iuw3OyONCWDIuaq1GZIvzGF7TLhEMlk4lnV+n2mYovxrDSe1RAfyr5njswTgJGr
+	Jf/82zgOV2YFoYtruM/g34ZN4jtppcfun8eUfThA3382DifVTKz+zq421sygUX2hi4U3CBEeZ8M
+	RqYXoVsEtX9RAseHDYsuDPYrrhrA/pzukn8pbXrocvJZfSKGsKasjH8u5UO/NQ/krKECEjNMA=
+X-Received: by 2002:a05:6000:2c11:b0:43d:775b:c9bd with SMTP id ffacd0b85a97d-4493cc3f4e1mr7237459f8f.10.1777579032765;
+        Thu, 30 Apr 2026 12:57:12 -0700 (PDT)
 Received: from osama.. ([2a02:908:1b6:8980:55a4:d495:8d6f:1416])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb75fc1sm3109615e9.7.2026.04.30.12.50.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b76e5afesm13003924f8f.30.2026.04.30.12.57.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 12:50:22 -0700 (PDT)
+        Thu, 30 Apr 2026 12:57:12 -0700 (PDT)
 From: Osama Abdelkader <osama.abdelkader@gmail.com>
 To: luca.ceresoli@bootlin.com,
-	Jagan Teki <jagan@amarulasolutions.com>,
+	Peter Senna Tschudin <peter.senna@gmail.com>,
+	Ian Ray <ian.ray@ge.com>,
+	Martyn Welch <martyn.welch@collabora.co.uk>,
 	Andrzej Hajda <andrzej.hajda@intel.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Robert Foss <rfoss@kernel.org>,
@@ -88,14 +90,14 @@ To: luca.ceresoli@bootlin.com,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
-	Marek Vasut <marex@denx.de>,
+	Archit Taneja <architt@codeaurora.org>,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
 Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 1/2] drm/bridge: chipone-icn6211: use devm_drm_bridge_add in i2c probe
-Date: Thu, 30 Apr 2026 21:49:42 +0200
-Message-ID: <20260430194944.78119-1-osama.abdelkader@gmail.com>
+Subject: [PATCH v4 3/3] drm/bridge: megachips: remove bridge when irq request fails
+Date: Thu, 30 Apr 2026 21:56:59 +0200
+Message-ID: <20260430195700.80317-1-osama.abdelkader@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -104,7 +106,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9E054A778A
+X-Rspamd-Queue-Id: 9F9F44A7817
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
@@ -112,64 +114,93 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-242199-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242200-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[bootlin.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,denx.de,lists.freedesktop.org,vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[bootlin.com,gmail.com,ge.com,collabora.co.uk,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,linux.intel.com,suse.de,ffwll.ch,codeaurora.org,lists.freedesktop.org,vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[osamaabdelkader@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.991];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Use devm_drm_bridge_add() so the bridge is released if probe
-fails after registration, and drop drm_bridge_remove() in chipone_i2c_probe.
+If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
+bridge before returning.
+
+Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
+tied to the STDP4028 device while ge_b850v3_register() may complete from
+either I2C probe; devm would not unwind the bridge if the other client's
+probe fails.
 
 Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Fixes: 8dde6f7452a1 ("drm: bridge: icn6211: Add I2C configuration support")
+Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
 Cc: stable@vger.kernel.org
 ---
-v4: refresh the patch
-v3: split the patch into two, one for i2c probe (bugfix) and one for dsi probe,
-    and add Fixes and Cc tags
-v2: devm_drm_bridge_add instead of drm_bridge_add
+v4: update Fixes tag
+v3: add Fixes and Cc tags
+v2: IRQ failure path only (explicit drm_bridge_remove)
 ---
+ .../drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
- drivers/gpu/drm/bridge/chipone-icn6211.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/bridge/chipone-icn6211.c b/drivers/gpu/drm/bridge/chipone-icn6211.c
-index 814713c5bea9..553a1df4688d 100644
---- a/drivers/gpu/drm/bridge/chipone-icn6211.c
-+++ b/drivers/gpu/drm/bridge/chipone-icn6211.c
-@@ -758,7 +758,9 @@ static int chipone_i2c_probe(struct i2c_client *client)
- 	dev_set_drvdata(dev, icn);
- 	i2c_set_clientdata(client, icn);
+diff --git a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
+index c9e6505cbd88..2d02cc69f237 100644
+--- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
++++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
+@@ -251,7 +251,6 @@ static void ge_b850v3_lvds_remove(void)
+ 		goto out;
  
--	drm_bridge_add(&icn->bridge);
-+	ret = devm_drm_bridge_add(dev, &icn->bridge);
+ 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
+-
+ 	ge_b850v3_lvds_ptr = NULL;
+ out:
+ 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
+@@ -261,6 +260,7 @@ static int ge_b850v3_register(void)
+ {
+ 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
+ 	struct device *dev = &stdp4028_i2c->dev;
++	int ret;
+ 
+ 	/* drm bridge initialization */
+ 	ge_b850v3_lvds_ptr->bridge.ops = DRM_BRIDGE_OP_DETECT |
+@@ -277,11 +277,15 @@ static int ge_b850v3_register(void)
+ 	if (!stdp4028_i2c->irq)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&stdp4028_i2c->dev,
+-			stdp4028_i2c->irq, NULL,
+-			ge_b850v3_lvds_irq_handler,
+-			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+-			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
++	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
++					stdp4028_i2c->irq, NULL,
++					ge_b850v3_lvds_irq_handler,
++					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
 +	if (ret)
-+		return ret;
- 
- 	return chipone_dsi_host_attach(icn);
++		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
++
++	return ret;
  }
+ 
+ static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c)
 -- 
 2.43.0
 
