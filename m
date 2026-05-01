@@ -1,198 +1,258 @@
-Return-Path: <stable+bounces-242551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UExqAz4w9WlvJQIAu9opvQ
-	(envelope-from <stable+bounces-242551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:59:10 +0200
+	id 2C1kNuk29WkeJgIAu9opvQ
+	(envelope-from <stable+bounces-242553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 01:27:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2549F4B0219
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:59:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495634B0465
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 01:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58C3F3014C3D
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 22:59:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 644C4300B462
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 23:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF1837D11D;
-	Fri,  1 May 2026 22:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF6337E30D;
+	Fri,  1 May 2026 23:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nigauri-org.20251104.gappssmtp.com header.i=@nigauri-org.20251104.gappssmtp.com header.b="HoRayGCP"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="rq9yN7Yq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF20337C0F3
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 22:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5BE23E324
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 23:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777676346; cv=none; b=qDEngebyVbuIPTcwi5UPx9NFgYJkfB5bunQspXZ8f9ey8x6i8+S+7TkJC21JAjodvKL9WBoYRVAz5umeiIhGy1+VP0HJP/5QPLwTesY77t9Ju2kvZEjlc88jYvls8Nl3wFOWMv2UtXGbrnuAXgO/YBvBCAeLlgHQ96QCxZ17/xI=
+	t=1777678053; cv=none; b=N1tn60XTKTXkWU26k913RwkIOtC1vYWmpWNdgPDcQd9ErdhWFlsU+ozKdLhgD5ELAhDhfBQ+Hjf+ZN5QpJ0tMNyu/7MicXhh4WmMjhf33IBng0v6RWB4EGFm8YI9rhUCWZCHT6Zedqn4y8bCQOnCsgONYx3Id18mAiIXfyk60YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777676346; c=relaxed/simple;
-	bh=UlCiXbtXWuIqosOA2p9adzt3AbBoB6E1z4sBonjs93k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J9GIBJ/F3nw3NL4OTSmQY6uYKrADNgmsCVDLSYFSVNc0WlSkeuFzbHaRzujuQIAUv3hh+1fD0qCbiwb5E43YdD/6ArKiz5LYcXmzaHO6P534edvcTUMYSJav+HCqYrQ0L04mb6Ff20GxQrI8fb5REarSBemrDwTzxqC1jXR63Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20251104.gappssmtp.com header.i=@nigauri-org.20251104.gappssmtp.com header.b=HoRayGCP; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-824c9da9928so1098972b3a.3
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 15:59:03 -0700 (PDT)
+	s=arc-20240116; t=1777678053; c=relaxed/simple;
+	bh=+RX7L6fUat4Wp+AUHq2pgAIB6jS1bJbGELu7AFYBJ0w=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:From:To:Cc:
+	 References:In-Reply-To; b=AaI9u16vgB0sLPRLIqu2ccTPE1d1fQY913poTwKwa+T6MrAOq56YVxYsjvl6Tz6bgGb7oKq0TCVfOzHQa7h/6BIXTd2k+kEVp1+CHXb3FJ25sSXbSal2HUGlEMfkxWYL9Kcp7EMUIy2iYBRa4clz5vhIt1FEjeT04Ig3kBT3ooM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=rq9yN7Yq; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7dbccf6a23dso2128654a34.2
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 16:27:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nigauri-org.20251104.gappssmtp.com; s=20251104; t=1777676343; x=1778281143; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DB31jPvrwkXD7aZt/7u0HOms5gkrxnTUOkOsWGwy19Y=;
-        b=HoRayGCPPd4fGimgBwTN5pEZAaYvNuJ3/4ksBGVUFqMJLDY7dX8Aa8EschgjJccyTJ
-         AmLgfhMEVy2x0R3w81W35RdFLc3bAZ0EIK2E4Q9S4qNXHJezuVXT9HscU/Z+4j4P8kvk
-         GF2kH38W3MMrrvdogCOO0K0JeL15Ly2tNXmrW3SzOpAHW/fefa1LIhc3jRifPbEphX9c
-         juOOmI0jlJ+kzqRy+lYc/nPvgAa923EeudArz5FdimbGUCb8TxBi5alsgabXcyzEDZ66
-         FNvtfupN8BUB+eARFi8+poiXxUAhcE/fEXOdmZgYWu8BiQdB6xUSDu1Xkm+9aa0fjaaC
-         yd1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777676343; x=1778281143;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1777678050; x=1778282850; darn=vger.kernel.org;
+        h=in-reply-to:content-language:references:cc:to:from:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DB31jPvrwkXD7aZt/7u0HOms5gkrxnTUOkOsWGwy19Y=;
-        b=BJjU3tALqn0EHmXZZUy13nYaW/HtUzpnIKqDw0spjtci8A0Ocsa+9i1+8Wna5AvF7M
-         51XoCdygM8j74zFtXZ9/bGT8ulMGQhKcpwUTQGkBIcTDuNo+nn2bNpvqjaDHOBB7G4zw
-         OSNN056BY0TIxiYfBou2dPDZ8weQ/zhd0P4tS/m0Qi+Mjb3tsUDjexbI0/n74V4Pns5J
-         jCLG+vxR7tRyo+QVBAAoZ0ctv0FTldq7zQsXoX6g65/ogl4DZjl1BBDYnnEZm0AfgbZJ
-         /BKf3MJOTvGjxPWgseQLdTQSDA244c3+sMysRAFC1bWK+fVYS+F5uACsKafrfBLjfJP/
-         D/Wg==
-X-Gm-Message-State: AOJu0Yzz9D5ZJlLLKUiGbMdjdQOH2trc81F1kvo9mQBaJrnR0IBPvhdJ
-	LtK1yWizdzwjGeXUcASyXDHsobvKih34zJlQklGuFlxXPUt/bQksG4fjC3jJhscMGexmHqlw3Cl
-	FJQ==
-X-Gm-Gg: AeBDiev+8U9rMe89cNvr3WCLaMUxb2CAgs+Q1vYRC0KlAmXWZ7ehCWDBmUhgLyFTlf5
-	N0Ki0xSMbDh86VVQWlA1HmhnddCG81dZoGzVaNmJgk7omCtJYCu4pj0oSmzUQr8sQTXqbzpXZom
-	qe3XHxFg/6EiSVJPjWLI1CPfrzjNw1NDmhBfgjmdE4Fs7UOEPlEwm1GOh1j7BwLbTHnyxT23pvf
-	g5JIrQU7WT9VY2x0KpzhalPpXZiCofppR7Ncbucx5C2ue140uQjQOYqCtplEfnGwJ/MDwk2KHUJ
-	LFPhfK9vhAEK75hEw9cb6mzlQJVlvVPxkk8xJZ9F5oZsmsDbnBb0xGoI8xzBXP8yW1j7D30b87b
-	rHEzScDkqnQOL/sL++XruX8OelS0LaInNgdaJjjGDBOLHJ3NY7XhJVjvb/wXjEDt33Q80Yvebf8
-	d0Ep+C0cr/+UgjntMGgoJH/mHIytUmkuRl0LUAXlXCGN1OVp3/eaUGSVkXyahAdEItwBA=
-X-Received: by 2002:a05:6a00:1a86:b0:82f:6a64:deac with SMTP id d2e1a72fcca58-8352d20b29emr895393b3a.28.1777676342993;
-        Fri, 01 May 2026 15:59:02 -0700 (PDT)
-Received: from localhost (ae047133.dynamic.ppp.asahi-net.or.jp. [14.3.47.133])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b73affsm3571932b3a.55.2026.05.01.15.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 15:59:02 -0700 (PDT)
-From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-X-Google-Original-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: cip-dev@lists.cip-project.org,
-	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH for 5.10.y] phy: renesas: rcar-gen3-usb2: Fix the use of msleep during spinlock
-Date: Sat,  2 May 2026 07:58:59 +0900
-Message-ID: <20260501225859.504868-1-nobuhiro.iwamatsu.x90@mail.toshiba>
-X-Mailer: git-send-email 2.53.0
+        bh=XjrfMO63U95PdjGFZAI4vMipk855McCwbqiJx7KyHY8=;
+        b=rq9yN7Yq9453V4BzhB9RLQ8YyqQDd8AsmRlXX9iQbd8ZPa2dG85fPCo6qmGcGIX8gP
+         YdKY1VZt7fnwKzjfWzLx6pa4uvdLsSqFYDAHofNfNgZwlapoIl1Iu99GUiRpP+zWF7Ff
+         fRHRPp6ggRkuwywpN28zDu6aZx9UTQUkbieaZ1GkFw79+NzO8y8miGZ9xLFA5kfT1EIu
+         vDqGOiwr6GucMeMXaQNoCCF57j6rvIzEW78wniCuGbZlJ8niWGSEbMoGxp45HQCRRh5U
+         Is3ElxDmeFpXwn1MrsodwTVLH55865Y9L+dqRltp0dxZWBo+AZneV08WgNgzcPHui/xM
+         Swsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777678050; x=1778282850;
+        h=in-reply-to:content-language:references:cc:to:from:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XjrfMO63U95PdjGFZAI4vMipk855McCwbqiJx7KyHY8=;
+        b=k2DNYNZ0ddS5uhpqYoII8Xl6jrD4majJsl8gHXiI43t/8ZaA1ZIZfGh4yOMDbhzjjE
+         D/8vZqG4qrbwXdJpEX0jE8tFvSYHUE97vkk/w/5U1Zy/G33n2CWCzXGIPIR+cUyWgbwb
+         /6TeD8xGEMutmDMHCFujz9p0BVkgKtNw1MIWPnPptsL1VF8OCXaUKWNVTQryFnaVlcW7
+         yP5ej5EpZeHLEtxbOp0B0Qd/up0wf9FtAD2b5FcqF80mwWMptmdXjKO4QxWr0pLGItz8
+         jwPsgqi4UghAJD5MdZVuF4hXXdeaqRAOhof5Q7b4Kf4d2Huel82jK55h3/efwHkszOSj
+         RbnQ==
+X-Forwarded-Encrypted: i=1; AFNElJ93REWwP61p9hVSWafcEtxlZUaD9zg8SIKJ3WRlSbVdBWyptXG9FylggoI/Aw2lTo9j+7aWuUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5rt/B10z/z+b1c7M0PFvdPU7iret6QjLpWuAv6m4fXnUk07hQ
+	b2Kx1ToI7N4MYAdyiQhtuI+6EP9gtGf6eeF9BlV9TV+Ea/PDvYYLlqOD2CjEju72JR8=
+X-Gm-Gg: AeBDiesHkKxtFfMmSek5xwb6hC72XyEPgnMbANDa5Jix4RBPIGsVSgQFDeBZRLhYfua
+	+5xFUEMk/kAJQFKldj3stQK1DpemzmwkVpCXVq9nJC+5LSSpytcTJzXbSXTqhPUUUmhQAva5kco
+	vjjV4JKWIW6DX2Oud3QJ0GBB7UGXCPcxad4JDWyBcQy2OpKH3p7zJOUGZWGI2Ob26j+gO65ar9z
+	lNhm/FnMgP9zvhJIcB0pOYClzD/lnC9x6A7tXS2XsDI6EZG2WhiNUZ7KCusYgYAXfgH+Al84Aio
+	j7zk5uvqRjYQ7EaFnDhjnLO0Tgft2tkWxcos3bbyqLcaiLwoVuRNL1UlSBvSlynOM73PB/t/yOv
+	TLUibPoMXU34qZ1ObP0nz6wNL82lUsXzHXFpbnXwjbB9b2glFcc/67J8JYUAvSnCs3GahF2Y9bJ
+	oFc4h5lEMOBDm4ZOr54GEZOuRi3GQN/8yJhMEgnoDySIcu3fWa+t6kGhlXA7ZqjW39X6isOjXph
+	zM/ajtx+gX4gmnONYNE
+X-Received: by 2002:a05:6820:81c9:b0:67e:2988:15e1 with SMTP id 006d021491bc7-696979db1b7mr673500eaf.16.1777678049728;
+        Fri, 01 May 2026 16:27:29 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43454951a95sm3831017fac.7.2026.05.01.16.27.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 May 2026 16:27:28 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------tAlOktRJxkv9monnvnCUb0jV"
+Message-ID: <9b00a03b-ff87-4d09-be2a-5865e555bcd6@kernel.dk>
+Date: Fri, 1 May 2026 17:27:27 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2549F4B0219
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
+ io_poll_add() return value on update
+From: Jens Axboe <axboe@kernel.dk>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Ben Hutchings <ben@decadent.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com,
+ lvc-project@linuxtesting.org
+References: <20260501111233-b371eac52cd006bfddfbd9e5-pchelkin@ispras>
+ <58103791-4c19-441c-9d4f-7ae5f9c6151a@kernel.dk>
+ <20260502003658-e04f382bc8ed201a99b573e0-pchelkin@ispras>
+ <20260502005417-671675fb5906578c85c3fb4f-pchelkin@ispras>
+ <fb26a75a-cb2c-4ee6-92b9-4c488a2c7ba5@kernel.dk>
+ <20260502011444-849ff2d3f8fe48b07f48d496-pchelkin@ispras>
+ <5794c5cd-ff76-428a-830b-6aaff9d36089@kernel.dk>
+Content-Language: en-US
+In-Reply-To: <5794c5cd-ff76-428a-830b-6aaff9d36089@kernel.dk>
+X-Rspamd-Queue-Id: 495634B0465
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.94 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[nigauri-org.20251104.gappssmtp.com:s=20251104];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-242553-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[iwamatsu@nigauri.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242551-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[nigauri.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[nigauri-org.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email]
+	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kernel-dk.20251104.gappssmtp.com:dkim,kernel.dk:mid,kernel.dk:email]
 
-From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+This is a multi-part message in MIME format.
+--------------tAlOktRJxkv9monnvnCUb0jV
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This fixes an issue caused by the use of msleep during spinlock.
-In the original commit, msleep was changed to mdelay, but this fix was not
-carried over during the backport to 5.10.y tree.
+On 5/1/26 4:29 PM, Jens Axboe wrote:
+> On 5/1/26 4:26 PM, Fedor Pchelkin wrote:
+>>> @@ -6188,7 +6184,7 @@ static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags)
+>>>  		preq->result = ret2;
+>>>  
+>>>  	}
+>>> -	if (preq->result < 0)
+>>> +	if (ret2 < 0)
+>>>  		req_set_fail(preq);
+>>>  	io_req_complete(preq, preq->result);
+>>>  out:
+>>
+>> I'm really uncomfortable to raise this but - ret2 should be initialized in
+>> beginning of the function io_poll_update().
+> 
+> It's your second version... I'll send out a new set.
 
-This is a backporting error, so no fix is needed in the upstream.
+OK, here's the new set for both 5.10-stable and 5.15-stable. Ran it through the
+usual testing.
 
-```
-[   62.677594] BUG: scheduling while atomic: kworker/1:2/126/0x00000002
-[   62.683957] Modules linked in:
-[   62.687014] CPU: 1 PID: 126 Comm: kworker/1:2 Not tainted 5.10.253 #1
-[   62.693447] Hardware name: HopeRun HiHope RZ/G2M with sub board (DT)
-[   62.699812] Workqueue: events deferred_probe_work_func
-[   62.704948] Call trace:
-[   62.707397]  dump_backtrace+0x0/0x1c0
-[   62.711058]  show_stack+0x18/0x40
-[   62.714375]  dump_stack+0xe8/0x124
-[   62.717776]  __schedule_bug+0x54/0x70
-[   62.721436]  __schedule+0x6b4/0x710
-[   62.724920]  schedule+0x70/0x104
-[   62.728145]  schedule_timeout+0x80/0xf0
-[   62.728153]  msleep+0x30/0x44
-[   62.728165]  rcar_gen3_phy_usb2_init+0x180/0x1e0
-[   62.736946]  phy_init+0x64/0x100
-[   62.736955]  usb_phy_roothub_init+0x48/0xa0
-[   62.736962]  usb_add_hcd+0x54/0x6c0
-[   62.736974]  ehci_platform_probe+0x1ec/0x4b0
-[   62.744541]  platform_drv_probe+0x54/0xac
-[   62.744548]  really_probe+0xec/0x4f0
-[   62.744552]  driver_probe_device+0x58/0xec
-[   62.744556]  __device_attach_driver+0xb8/0x120
-[   62.744562]  bus_for_each_drv+0x78/0xd0
-[   62.744568]  __device_attach+0xa8/0x1c0
-[   62.744575]  device_initial_probe+0x14/0x20
-[   62.752315]  bus_probe_device+0x9c/0xa4
-[   62.752319]  deferred_probe_work_func+0x88/0xc0
-[   62.752327]  process_one_work+0x1cc/0x370
-[   62.759977]  worker_thread+0x218/0x480
-[   62.759984]  kthread+0x154/0x160
-[   62.759990]  ret_from_fork+0x10/0x18
-[   62.760115] ehci-platform ee080100.usb: EHCI Host Controller
-[   62.839982] ehci-platform ee080100.usb: new USB bus registered, assigned bus number 3
-```
+Let's hope we can put this one to bed now :-)
 
-Fixes: 0f86a559900f ("phy: renesas: rcar-gen3-usb2: Lock around hardware registers and driver data")
-Cc: stable@vger.kernel.org
-Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
----
-
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 5166a115879ea..90f2a0e5b2aa0 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -386,7 +386,7 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
- 	val = readl(usb2_base + USB2_ADPCTRL);
- 	writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
- 
--	msleep(20);
-+	mdelay(20);
- 
- 	writel(0xffffffff, usb2_base + USB2_OBINTSTA);
- 	writel(USB2_OBINT_BITS, usb2_base + USB2_OBINTEN);
 -- 
-2.53.0
+Jens Axboe
 
+--------------tAlOktRJxkv9monnvnCUb0jV
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-poll-fix-EPOLL_URING_WAKE-sometimes-not-bei.patch"
+Content-Disposition: attachment;
+ filename*0="0001-io_uring-poll-fix-EPOLL_URING_WAKE-sometimes-not-bei.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSAzOGViYWUzYjkzNDAzZTAzZDJlNmE0NGFmZDJkOTgwY2NlNDlkYjhjIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFR1ZSwgMjEgQXByIDIwMjYgMTY6NDE6MzIgLTA2MDAKU3ViamVjdDogW1BBVENIIDEv
+Ml0gaW9fdXJpbmcvcG9sbDogZml4IEVQT0xMX1VSSU5HX1dBS0Ugc29tZXRpbWVzIG5vdCBi
+ZWluZwogaG9ub3JlZAoKUmF0aGVyIHRoYW4gZG8gdGhlIG1hc2tpbmcgIG9ubHkgd2hlbiB3
+ZSBqdW1wIHN0cmFpZ2h0IHRvIGV4ZWN1dGlvbiwKbWFyayBpdCBhcyBFUE9MTE9ORVNIT1Qg
+cmVnYXJkbGVzcy4gVGhpcyBlbnN1cmVzIGl0IGRvZXNuJ3QgZ2V0IGxvc3QuCkFuZCBqdXN0
+IGtpbGwgdGhlIHBvbGwgZW50cnkgdXBmcm9udCwgaWYgbWFya2VkLiBUaGlzIGlzIGFuIG9w
+dGltaXphdGlvbgppbiBsYXRlciBrZXJuZWxzLCBidXQgaXQncyBhY3R1YWxseSByZXF1aXJl
+ZCBvbiB0aGUgb2xkZXIga2VybmVscyB0bwpub3RlIHRoZSBFUE9MTF9VUklOR19XQUtFIG1h
+c2sgY29ycmVjdGx5LgoKRml4ZXM6IGNjZjA2YjVhOTgxYyAoImlvX3VyaW5nOiBwYXNzIGlu
+IEVQT0xMX1VSSU5HX1dBS0UgZm9yIGV2ZW50ZmQgc2lnbmFsaW5nIGFuZCB3YWtldXBzIikK
+U2lnbmVkLW9mZi1ieTogSmVucyBBeGJvZSA8YXhib2VAa2VybmVsLmRrPgotLS0KIGlvX3Vy
+aW5nL2lvX3VyaW5nLmMgfCAxOSArKysrKysrKysrKystLS0tLS0tCiAxIGZpbGUgY2hhbmdl
+ZCwgMTIgaW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9pb191
+cmluZy9pb191cmluZy5jIGIvaW9fdXJpbmcvaW9fdXJpbmcuYwppbmRleCAzOGRlY2ZjMWE5
+MTQuLjRmMWRkYTdkNjhjMiAxMDA2NDQKLS0tIGEvaW9fdXJpbmcvaW9fdXJpbmcuYworKysg
+Yi9pb191cmluZy9pb191cmluZy5jCkBAIC01Nzk0LDE0ICs1Nzk0LDE5IEBAIHN0YXRpYyBp
+bnQgaW9fcG9sbF93YWtlKHN0cnVjdCB3YWl0X3F1ZXVlX2VudHJ5ICp3YWl0LCB1bnNpZ25l
+ZCBtb2RlLCBpbnQgc3luYywKIAlpZiAobWFzayAmJiAhKG1hc2sgJiBwb2xsLT5ldmVudHMp
+KQogCQlyZXR1cm4gMDsKIAorCS8qCisJICogSWYgd2UgdHJpZ2dlciBhIG11bHRpc2hvdCBw
+b2xsIG9mZiBvdXIgb3duIHdha2V1cCBwYXRoLAorCSAqIGRpc2FibGUgbXVsdGlzaG90IGFz
+IHRoZXJlIGlzIGEgY2lyY3VsYXIgZGVwZW5kZW5jeSBiZXR3ZWVuCisJICogQ1EgcG9zdGlu
+ZyBhbmQgdHJpZ2dlcmluZyB0aGUgZXZlbnQuCisJICovCisJaWYgKG1hc2sgJiBFUE9MTF9V
+UklOR19XQUtFKQorCQlwb2xsLT5ldmVudHMgfD0gRVBPTExPTkVTSE9UOworCiAJaWYgKGlv
+X3BvbGxfZ2V0X293bmVyc2hpcChyZXEpKSB7Ci0JCS8qCi0JCSAqIElmIHdlIHRyaWdnZXIg
+YSBtdWx0aXNob3QgcG9sbCBvZmYgb3VyIG93biB3YWtldXAgcGF0aCwKLQkJICogZGlzYWJs
+ZSBtdWx0aXNob3QgYXMgdGhlcmUgaXMgYSBjaXJjdWxhciBkZXBlbmRlbmN5IGJldHdlZW4K
+LQkJICogQ1EgcG9zdGluZyBhbmQgdHJpZ2dlcmluZyB0aGUgZXZlbnQuCi0JCSAqLwotCQlp
+ZiAobWFzayAmIEVQT0xMX1VSSU5HX1dBS0UpCi0JCQlwb2xsLT5ldmVudHMgfD0gRVBPTExP
+TkVTSE9UOworCQlpZiAobWFzayAmJiBwb2xsLT5ldmVudHMgJiBFUE9MTE9ORVNIT1QpIHsK
+KwkJCWxpc3RfZGVsX2luaXQoJnBvbGwtPndhaXQuZW50cnkpOworCQkJc21wX3N0b3JlX3Jl
+bGVhc2UoJnBvbGwtPmhlYWQsIE5VTEwpOworCQl9CiAKIAkJX19pb19wb2xsX2V4ZWN1dGUo
+cmVxLCBtYXNrKTsKIAl9Ci0tIAoyLjUzLjAKCg==
+--------------tAlOktRJxkv9monnvnCUb0jV
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0002-io_uring-poll-fix-backport-of-io_poll_add-changes.patch"
+Content-Disposition: attachment;
+ filename*0="0002-io_uring-poll-fix-backport-of-io_poll_add-changes.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSAxYTA3NGI2MTIzOTYxMzIzMWIwZDZjYjY4YTMzYjAwMWNhOGU0NmNlIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFR1ZSwgMjEgQXByIDIwMjYgMTY6NDQ6MDYgLTA2MDAKU3ViamVjdDogW1BBVENIIDIv
+Ml0gaW9fdXJpbmcvcG9sbDogZml4IGJhY2twb3J0IG9mIGlvX3BvbGxfYWRkKCkgY2hhbmdl
+cwoKVGhlIDUuMTUvNS4xMCBiYWNrcG9ydCBvZiA4NDIzMGFkMmQyYWYgaGFkIGEgZmV3IGlz
+c3VlcywgZHVlIHRvIHRoZQpvbGRlciBwb2xsIGJhc2UuIE5vdGFibHkgcmV0dXJuIHZhbHVl
+IGhhbmRsaW5nIF9faW9fYXJtX3BvbGxfaGFuZGxlcigpCmFuZCBpbiByZXR1cm4gX19pb19w
+b2xsX2FkZCgpIGFzIHdlbGwuIEZpeCB0aGVtIHVwLgoKUmVwb3J0ZWQtYnk6IEJlbiBIdXRj
+aGluZ3MgPGJlbkBkZWNhZGVudC5vcmcudWs+CkZpeGVzOiAzNDllZjVkMmU3YmYgKCJpb191
+cmluZy9wb2xsOiBjb3JyZWN0bHkgaGFuZGxlIGlvX3BvbGxfYWRkKCkgcmV0dXJuIHZhbHVl
+IG9uIHVwZGF0ZSIpClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5k
+az4KLS0tCiBpb191cmluZy9pb191cmluZy5jIHwgMTYgKysrKysrLS0tLS0tLS0tLQogMSBm
+aWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvaW9fdXJpbmcvaW9fdXJpbmcuYyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKaW5kZXgg
+NGYxZGRhN2Q2OGMyLi5jYjU0ZWJkYTBhOGEgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL2lvX3Vy
+aW5nLmMKKysrIGIvaW9fdXJpbmcvaW9fdXJpbmcuYwpAQCAtNjE0NCwyNiArNjE0NCwyMiBA
+QCBzdGF0aWMgaW50IF9faW9fcG9sbF9hZGQoc3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2ln
+bmVkIGludCBpc3N1ZV9mbGFncykKIAlpZiAoIXJldCAmJiBpcHQuZXJyb3IpCiAJCXJlcV9z
+ZXRfZmFpbChyZXEpOwogCXJldCA9IHJldCA/OiBpcHQuZXJyb3I7Ci0JaWYgKHJldCA+IDAp
+IHsKKwlpZiAocmV0KQogCQlfX2lvX3JlcV9jb21wbGV0ZShyZXEsIGlzc3VlX2ZsYWdzLCBy
+ZXQsIDApOwotCQlyZXR1cm4gcmV0OwotCX0KLQlyZXR1cm4gMDsKKwlyZXR1cm4gcmV0Owog
+fQogCiBzdGF0aWMgaW50IGlvX3BvbGxfYWRkKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNp
+Z25lZCBpbnQgaXNzdWVfZmxhZ3MpCiB7Ci0JaW50IHJldDsKLQotCXJldCA9IF9faW9fcG9s
+bF9hZGQocmVxLCBpc3N1ZV9mbGFncyk7Ci0JcmV0dXJuIHJldCA8IDAgPyByZXQgOiAwOwor
+CV9faW9fcG9sbF9hZGQocmVxLCBpc3N1ZV9mbGFncyk7CisJcmV0dXJuIDA7CiB9CiAKIHN0
+YXRpYyBpbnQgaW9fcG9sbF91cGRhdGUoc3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVk
+IGludCBpc3N1ZV9mbGFncykKIHsKIAlzdHJ1Y3QgaW9fcmluZ19jdHggKmN0eCA9IHJlcS0+
+Y3R4OwogCXN0cnVjdCBpb19raW9jYiAqcHJlcTsKLQlpbnQgcmV0MiwgcmV0ID0gMDsKKwlp
+bnQgcmV0MiA9IC1FQ0FOQ0VMRUQsIHJldCA9IDA7CiAKIAlpb19yaW5nX3N1Ym1pdF9sb2Nr
+KGN0eCwgIShpc3N1ZV9mbGFncyAmIElPX1VSSU5HX0ZfTk9OQkxPQ0spKTsKIApAQCAtNjE5
+NCw3ICs2MTkwLDcgQEAgc3RhdGljIGludCBpb19wb2xsX3VwZGF0ZShzdHJ1Y3QgaW9fa2lv
+Y2IgKnJlcSwgdW5zaWduZWQgaW50IGlzc3VlX2ZsYWdzKQogCQlwcmVxLT5yZXN1bHQgPSBy
+ZXQyOwogCiAJfQotCWlmIChwcmVxLT5yZXN1bHQgPCAwKQorCWlmIChyZXQyIDwgMCkKIAkJ
+cmVxX3NldF9mYWlsKHByZXEpOwogCWlvX3JlcV9jb21wbGV0ZShwcmVxLCBwcmVxLT5yZXN1
+bHQpOwogb3V0OgotLSAKMi41My4wCgo=
+
+--------------tAlOktRJxkv9monnvnCUb0jV--
 
