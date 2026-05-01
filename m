@@ -1,259 +1,176 @@
-Return-Path: <stable+bounces-242469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANzzAgvc9GmfFQIAu9opvQ
-	(envelope-from <stable+bounces-242469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 18:59:55 +0200
+	id cHRWOBjc9GmfFQIAu9opvQ
+	(envelope-from <stable+bounces-242470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 19:00:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777A24AE3FA
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 18:59:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ECB34AE409
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 19:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D75A6301BF7D
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 16:59:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 557AB301ECE6
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 16:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F103F167E;
-	Fri,  1 May 2026 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50327413237;
+	Fri,  1 May 2026 16:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U79kUGC1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewxSTGQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DA43D47BF
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 16:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E2B3F167E
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 16:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777654747; cv=none; b=MqxZpbhBwUCgNuO6ofzA5X5GUcqYst3RjvzH/zS1nXurbkB86VbMGaMxwOTu7qjLcg0Z5vkcSUXV+hF4NnfCRnbT65dbY/OscaWqBWSmCKs7A3xck/oC2mFMB0GGpspEx1zrgmwAXKsXZdwBhrGrX4CyeFJc6EVyxgLyP1Jm0zA=
+	t=1777654751; cv=none; b=pxpYHmauvUtEWd/3oJWFqkEgkV3S2GQdDiib3Qnklz0i/L0dZm7EK1pQ4QJgPpQNVv8ew4DSG3tbh95NCXZ8a8GQ4H7BjWMyJARmPytAysrrPifdeyYwl7Mqj9fUWKvvmGZrvZBzxXysp5fV2fl4DnyGuLokbcbPvLrD4Q8vQmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777654747; c=relaxed/simple;
-	bh=03eKvLKLhrDYWRPbmG2WTWedFNbaFD29J9GoMt35t5M=;
+	s=arc-20240116; t=1777654751; c=relaxed/simple;
+	bh=on344V+BshqhUdPgOK6GHu1hKkJ71ybb367w5kn63B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b53i0ewrhdE8yItIvvloDPBPMvGICvVQhJeIYEovS4aWMms2hf/al5AK9HBimK2pzq/hG/Rlwseo9HJYMKWfGEpXQVErCjdlOV165CxXL35kiQoTV903e8LvKxjvEoUrt6oivm1pPuUHh4A3TAMQizisSrnvw+9d04tSxFCJR/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U79kUGC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47C0C2BCB9;
-	Fri,  1 May 2026 16:59:05 +0000 (UTC)
+	 MIME-Version; b=K0dHDKGbaZh9Zj+zN/My9XB3ZGh53luItVbxRxWCBvDZ995c278dPN7zcmcMHrhZmSlNvieqIgLFnn0Ror4BfgGNXc8b8ZRFzesmhNqrI+JfC3gdO7Ow+oUC7DvtPYq6GbDYQYc4u8Q9zNdIN9Xno2BMSRfPZobRx+nNHdmoSbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewxSTGQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3AFC2BCC4;
+	Fri,  1 May 2026 16:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777654746;
-	bh=03eKvLKLhrDYWRPbmG2WTWedFNbaFD29J9GoMt35t5M=;
+	s=k20201202; t=1777654750;
+	bh=on344V+BshqhUdPgOK6GHu1hKkJ71ybb367w5kn63B0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U79kUGC1mbvUoLrbRZ4ehhYcJA81G24yO+AcHkjCK4NZV3zdjLsF7N5TGF+agJxro
-	 foo9+piAtenIDBMY8zihBu1VvH9Mc8MMkUXnjR7L8yztbc67peu41oZeZmpGWZUb/l
-	 fs7JOz4HQxOUEVl+GMN/tkhauOoyyAMwWAuKiy7wsQezdw6SIyqm72KjnXqn0bvFFI
-	 uYtYn57L0Ab/g1iIKDJ2XZMQjpP4oJZEGatDYhmCPRFNzG8pZuno7FfoSfPIH0gnLt
-	 1ler6gYrmAEYJdhqRU99yUrHomKbTm+C+S4eSdrw+0wuUnnJ6cPZsrxfXs8iDuJbYb
-	 WjA3eUAVl73Gg==
+	b=ewxSTGQcVfBypCYOsVIsjLr4Lf1euy+ZgvUjT2kNLx6+t30pUldpmLRiPGDqXJJO+
+	 0J90uxWpKi3sA8CbWBdJtQ9o3apGwq/1Xs9shl81cX/xAAfQFXTav+/uItFdNLovWA
+	 ip8v3n17VKEiqaWgFrPOUP9FOk++NHEO4VCb6d0uaeAkCkYJr6W5WNSG0qSiKTC9hx
+	 mJA5dJAMzHb3XbHpsQXqmmEqCCtZwg379+EyHngZHL6uCVChjTmSJBDhIP/WrWimBD
+	 QNOrgO0fR4nHHE/Tm4ZjHWC4t0GDdbqLRKx35NuwnU2w6ql9siQATjQeCSDpHPXe3Z
+	 dj3Vc3MYah8Dg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] ALSA: aoa: i2sbus: clear stale prepared state
-Date: Fri,  1 May 2026 12:59:01 -0400
-Message-ID: <20260501165901.3628210-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y] media: rc: ttusbir: respect DMA coherency rules
+Date: Fri,  1 May 2026 12:59:04 -0400
+Message-ID: <20260501165904.3629254-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260501165901.3628210-1-sashal@kernel.org>
-References: <2026050152-climate-underfed-1e83@gregkh>
- <20260501165901.3628210-1-sashal@kernel.org>
+In-Reply-To: <2026050122-heavily-consult-ca03@gregkh>
+References: <2026050122-heavily-consult-ca03@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 777A24AE3FA
+X-Rspamd-Queue-Id: 4ECB34AE409
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,intel.com,suse.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-242469-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242470-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,intel.com:email]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 5ed060d5491597490fb53ec69da3edc4b1e8c165 ]
+[ Upstream commit 50acaad3d202c064779db8dc3d010007347f59c7 ]
 
-The i2sbus PCM code uses pi->active to constrain the sibling stream to
-an already prepared duplex format and rate in i2sbus_pcm_open().
+Buffers must not share a cache line with other data structures.
+Allocate separately.
 
-That state is set from i2sbus_pcm_prepare(), but the current code only
-clears it on close. As a result, the sibling stream can inherit stale
-constraints after the prepared state has been torn down.
-
-Clear pi->active when hw_params() or hw_free() tears down the prepared
-state, and set it again only after prepare succeeds.
-
-Replace the stale FIXME in the duplex constraint comment with a description
-of the current driver behavior: i2sbus still programs a single shared
-transport configuration for both directions, so mixed formats are not
-supported in duplex mode.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Fixes: 0938069fa0897 ("[media] rc: Add support for the TechnoTrend USB IR Receiver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260331-aoa-i2sbus-clear-stale-active-v2-1-3764ae2889a1@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ kept kzalloc(sizeof(*tt), GFP_KERNEL) instead of kzalloc_obj() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/aoa/soundbus/i2sbus/pcm.c | 55 ++++++++++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 11 deletions(-)
+ drivers/media/rc/ttusbir.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/sound/aoa/soundbus/i2sbus/pcm.c b/sound/aoa/soundbus/i2sbus/pcm.c
-index 086c49d457c34..6190cd4c892b0 100644
---- a/sound/aoa/soundbus/i2sbus/pcm.c
-+++ b/sound/aoa/soundbus/i2sbus/pcm.c
-@@ -165,17 +165,16 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
- 	 * currently in use (if any). */
- 	hw->rate_min = 5512;
- 	hw->rate_max = 192000;
--	/* if the other stream is active, then we can only
--	 * support what it is currently using.
--	 * FIXME: I lied. This comment is wrong. We can support
--	 * anything that works with the same serial format, ie.
--	 * when recording 24 bit sound we can well play 16 bit
--	 * sound at the same time iff using the same transfer mode.
-+	/* If the other stream is already prepared, keep this stream
-+	 * on the same duplex format and rate.
-+	 *
-+	 * i2sbus_pcm_prepare() still programs one shared transport
-+	 * configuration for both directions, so mixed duplex formats
-+	 * are not supported here.
- 	 */
- 	if (other->active) {
--		/* FIXME: is this guaranteed by the alsa api? */
- 		hw->formats &= pcm_format_to_bits(i2sdev->format);
--		/* see above, restrict rates to the one we already have */
-+		/* Restrict rates to the one already in use. */
- 		hw->rate_min = i2sdev->rate;
- 		hw->rate_max = i2sdev->rate;
+diff --git a/drivers/media/rc/ttusbir.c b/drivers/media/rc/ttusbir.c
+index 560a26f3965cf..dde446a95eaa9 100644
+--- a/drivers/media/rc/ttusbir.c
++++ b/drivers/media/rc/ttusbir.c
+@@ -32,7 +32,7 @@ struct ttusbir {
+ 
+ 	struct led_classdev led;
+ 	struct urb *bulk_urb;
+-	uint8_t bulk_buffer[5];
++	u8 *bulk_buffer;
+ 	int bulk_out_endp, iso_in_endp;
+ 	bool led_on, is_led_on;
+ 	atomic_t led_complete;
+@@ -186,13 +186,16 @@ static int ttusbir_probe(struct usb_interface *intf,
+ 	struct rc_dev *rc;
+ 	int i, j, ret;
+ 	int altsetting = -1;
++	u8 *buffer;
+ 
+ 	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
++	buffer = kzalloc(5, GFP_KERNEL);
+ 	rc = rc_allocate_device(RC_DRIVER_IR_RAW);
+-	if (!tt || !rc) {
++	if (!tt || !rc || buffer) {
+ 		ret = -ENOMEM;
+ 		goto out;
  	}
-@@ -283,6 +282,23 @@ void i2sbus_wait_for_stop_both(struct i2sbus_dev *i2sdev)
++	tt->bulk_buffer = buffer;
+ 
+ 	/* find the correct alt setting */
+ 	for (i = 0; i < intf->num_altsetting && altsetting == -1; i++) {
+@@ -281,8 +284,8 @@ static int ttusbir_probe(struct usb_interface *intf,
+ 	tt->bulk_buffer[3] = 0x01;
+ 
+ 	usb_fill_bulk_urb(tt->bulk_urb, tt->udev, usb_sndbulkpipe(tt->udev,
+-		tt->bulk_out_endp), tt->bulk_buffer, sizeof(tt->bulk_buffer),
+-						ttusbir_bulk_complete, tt);
++			  tt->bulk_out_endp), tt->bulk_buffer, 5,
++			  ttusbir_bulk_complete, tt);
+ 
+ 	tt->led.name = "ttusbir:green:power";
+ 	tt->led.default_trigger = "rc-feedback";
+@@ -351,6 +354,7 @@ static int ttusbir_probe(struct usb_interface *intf,
+ 		kfree(tt);
+ 	}
+ 	rc_free_device(rc);
++	kfree(buffer);
+ 
+ 	return ret;
  }
- #endif
- 
-+static void i2sbus_pcm_clear_active(struct i2sbus_dev *i2sdev, int in)
-+{
-+	struct pcm_info *pi;
-+
-+	guard(mutex)(&i2sdev->lock);
-+
-+	get_pcm_info(i2sdev, in, &pi, NULL);
-+	pi->active = 0;
-+}
-+
-+static inline int i2sbus_hw_params(struct snd_pcm_substream *substream,
-+				   struct snd_pcm_hw_params *params, int in)
-+{
-+	i2sbus_pcm_clear_active(snd_pcm_substream_chip(substream), in);
-+	return 0;
-+}
-+
- static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
- {
- 	struct i2sbus_dev *i2sdev = snd_pcm_substream_chip(substream);
-@@ -291,14 +307,27 @@ static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
- 	get_pcm_info(i2sdev, in, &pi, NULL);
- 	if (pi->dbdma_ring.stopping)
- 		i2sbus_wait_for_stop(i2sdev, pi);
-+	i2sbus_pcm_clear_active(i2sdev, in);
- 	return 0;
+@@ -373,6 +377,7 @@ static void ttusbir_disconnect(struct usb_interface *intf)
+ 	}
+ 	usb_kill_urb(tt->bulk_urb);
+ 	usb_free_urb(tt->bulk_urb);
++	kfree(tt->bulk_buffer);
+ 	usb_set_intfdata(intf, NULL);
+ 	kfree(tt);
  }
- 
-+static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream,
-+				     struct snd_pcm_hw_params *params)
-+{
-+	return i2sbus_hw_params(substream, params, 0);
-+}
-+
- static int i2sbus_playback_hw_free(struct snd_pcm_substream *substream)
- {
- 	return i2sbus_hw_free(substream, 0);
- }
- 
-+static int i2sbus_record_hw_params(struct snd_pcm_substream *substream,
-+				   struct snd_pcm_hw_params *params)
-+{
-+	return i2sbus_hw_params(substream, params, 1);
-+}
-+
- static int i2sbus_record_hw_free(struct snd_pcm_substream *substream)
- {
- 	return i2sbus_hw_free(substream, 1);
-@@ -335,7 +364,6 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 		return -EINVAL;
- 
- 	runtime = pi->substream->runtime;
--	pi->active = 1;
- 	if (other->active &&
- 	    ((i2sdev->format != runtime->format)
- 	     || (i2sdev->rate != runtime->rate)))
-@@ -450,9 +478,11 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 
- 	/* early exit if already programmed correctly */
- 	/* not locking these is fine since we touch them only in this function */
--	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
--	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
-+	if (in_le32(&i2sdev->intfregs->serial_format) == sfr &&
-+	    in_le32(&i2sdev->intfregs->data_word_sizes) == dws) {
-+		pi->active = 1;
- 		return 0;
-+	}
- 
- 	/* let's notify the codecs about clocks going away.
- 	 * For now we only do mastering on the i2s cell... */
-@@ -490,6 +520,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 		if (cii->codec->switch_clock)
- 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
- 
-+	pi->active = 1;
- 	return 0;
- }
- 
-@@ -746,6 +777,7 @@ static snd_pcm_uframes_t i2sbus_playback_pointer(struct snd_pcm_substream
- static const struct snd_pcm_ops i2sbus_playback_ops = {
- 	.open =		i2sbus_playback_open,
- 	.close =	i2sbus_playback_close,
-+	.hw_params =	i2sbus_playback_hw_params,
- 	.hw_free =	i2sbus_playback_hw_free,
- 	.prepare =	i2sbus_playback_prepare,
- 	.trigger =	i2sbus_playback_trigger,
-@@ -814,6 +846,7 @@ static snd_pcm_uframes_t i2sbus_record_pointer(struct snd_pcm_substream
- static const struct snd_pcm_ops i2sbus_record_ops = {
- 	.open =		i2sbus_record_open,
- 	.close =	i2sbus_record_close,
-+	.hw_params =	i2sbus_record_hw_params,
- 	.hw_free =	i2sbus_record_hw_free,
- 	.prepare =	i2sbus_record_prepare,
- 	.trigger =	i2sbus_record_trigger,
 -- 
 2.53.0
 
