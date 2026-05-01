@@ -1,175 +1,169 @@
-Return-Path: <stable+bounces-242519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHqeCWoQ9WnIHwIAu9opvQ
-	(envelope-from <stable+bounces-242519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:43:22 +0200
+	id UPs9F3QR9WmTIAIAu9opvQ
+	(envelope-from <stable+bounces-242520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:47:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F934AF8FD
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8F24AF921
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBCC630179C6
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 20:43:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7077301991F
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 20:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AA342316D;
-	Fri,  1 May 2026 20:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FA6367F36;
+	Fri,  1 May 2026 20:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iv7jRP8B"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Diq3/lpn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B13421F1C
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 20:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C77126B756
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 20:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777668197; cv=none; b=JQLjT+pIt32roHykHjFTYIulIdHhGLJX44DvDoDJ9PmBZt2jLuJFbRsVoxdcNfaST321oxGTq4ZUtgXvR/IZgsyo8OPY/eHuKdCK1PR8o2JOAa5QB3Q9Q8cruuQNB8zry9QJKE0fCeYpxeAlMN6c9cnmupiueMaeXYRsNw/k6zY=
+	t=1777668436; cv=none; b=B2xyLv/rXK3mQaNZ6+fIi9AK3VRv9xSByttDjemTMNF8ZYg00uDEnxSPPiUe+eivNtplKfl0U6XARZZJx46E1HQjvQpO6vG0qfUVs3tWBgjPxx+nR19NDrNs6zmbRFNnQhW9VVa/RPHPfWjfnjn8NMF2tpf/nN+aeWaBXydhXVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777668197; c=relaxed/simple;
-	bh=vj1ylhChRhwpjQEiIxInW6WD3r3rx3cmjVsbBB+sdmE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YwFBV+9klNjh8+onZpw2l4Cza6kaFCDNtFU5vsozKJXg2gZ1n7cpueJKmyGjtDVd+lAL6zizYtQ7jw5Rcs/vQ2Mx/13Qu8jH2n9RoMgcxIwuunHlf/omtnnobUFbyavJ71evnOnRGXTjc3a9/eKBcTjNVly6MIx0xUn0tsdUKa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iv7jRP8B; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8acb3daf2aaso34096646d6.0
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 13:43:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777668195; x=1778272995; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p5E1HOqyqOzDx9CBzmKmUlb5e5nYghOLHEYeoL69u9Y=;
-        b=iv7jRP8BBnScCTRsBux7400E1uE9wPRxLQQLaaoE1/XN9GSl1Q2upUz+bOki0dMzuZ
-         dA4PccPdVmo/PjA6kzcOuWGMLNKprT78VYYxWtvmNJ0nL3mkkCyPKizGMvzPlBuMjlOh
-         hF7qasx0hWlLra74+7hOwGQ2CeXLLm1iOQ+xyrT49BJAsfQTU9JkduTchD507cfAQVbl
-         5Ik7VMjLHO5MRDWwxF2Cr1TmsmZF6J64+pfe/lROBgI18hAvNGGq9Qdgf6cLVGWQ7Qgr
-         pV5WhR6hM6JiPMfq9RhyoXj59RV+tNsiAFQ/64fpDYUvBiyl8/P1kJlNJaV7dydk7YcA
-         JdnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777668195; x=1778272995;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p5E1HOqyqOzDx9CBzmKmUlb5e5nYghOLHEYeoL69u9Y=;
-        b=mXB47xPExxMCE9lTvZEdrB+V6R/eG1VT/jlnrPoXKwW4uaHrddNl6J+fvMV689z+TH
-         jpr6qRtfI3V6ANis+vOnP812P7gpIbBJWWE7iQhD54qqYhYDf5XsP3H5Jct3v2lVydNK
-         cQP4YdZcZIuRl+n+MlONqvYS5GfwYRi6eVyX6UYa0lkRTrpLPUgr5UCgGDpxZ31/hyV+
-         RVPZxmCc7hKna0GNMcL4BTlmKNjSterGG7ubgrmPkpEz8N5N1t+e+NNawBZ5C7+VtrMx
-         80U+D0CTMK96Jih0sFxYIsknk2/s39yKFv3EJ51MKzaiHkZs4WpQI27Zl1dkwpcojs1I
-         /rYw==
-X-Forwarded-Encrypted: i=1; AFNElJ9r30PXw8t7/iTRhiNdrnp52p8Y9HeGwclTD8Ci47MMU7HidncL+nRwk2dKonz15oYa8oILQPw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUq6H1k+w5pEX/7UfFoNHEzvrMsHMQZe5+c2zPKrWbTQuh1cOV
-	PwAJHcf9lyBcdpH7GRdZJODs9iafWm6MlA1GmodyAI1ea+ee+EpLm+aB
-X-Gm-Gg: AeBDievcbgt8qwW3ajoga+HyGiPhdSUIKA8BZAI64Rogj0CgZFzHVVr2YIGx1DDj+cL
-	pi4nxCU8wI8nB79xjbsHYVuNdV9k38KvqQtobAGKJznTpBt/at2FH4lJFBOj7NDgA866jR40Rbc
-	SGLZLZVh+4ytuPHh41gCOH1E6qtuF7TwQF+XS+FjvBUXpDf4zTxurkardONyj3VeWsdvmqm+YEu
-	+lytEl0nL5HPQ+CLCbPfbJTcHHAWzEAEV74W2eN5JWMVr90qJ38O/XkxNB2iQDbe5juEXqxwM1w
-	mnc7R6DVhRwjiOAtT2qHCDlyEODA7s/06qNSdm7w5udVZdgZBz9fJ1Y9q1t3cEsZS/Bh+BYb5IZ
-	FRdNLBEWN+PYZ9AeF14Q01Nms9XZ73Myg/hN+1+PxuEIZ1RhR7KN/cOcuiJDCZbTxXCZyHYikAG
-	FkLcnvjcwdCiE6BMsZj06qSIAqoNW3+OtZDJEGjed+jfNyF5vVM0Of+x9VwKGK1X8+B5Y=
-X-Received: by 2002:a0c:f10c:0:b0:89c:de0e:263b with SMTP id 6a1803df08f44-8b6694eb760mr15323986d6.42.1777668195439;
-        Fri, 01 May 2026 13:43:15 -0700 (PDT)
-Received: from PF5YBGDS.localdomain ([163.114.130.5])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b5390ec38asm33730096d6.11.2026.05.01.13.43.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 13:43:14 -0700 (PDT)
-From: mike.marciniszyn@gmail.com
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: mike.marciniszyn@gmail.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Mike Marciniszyn <mmarcini@meta.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/fbdev-helper: Fix deletion of stub for drm_fb_helper_gem_is_fb()
-Date: Fri,  1 May 2026 16:43:13 -0400
-Message-ID: <20260501204313.127616-1-mike.marciniszyn@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1777668436; c=relaxed/simple;
+	bh=8wnO9B0Eu6mpNIqDouO4jaaMmliPGSkqOKx4553yYLY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=iJo2Xl4Z3cHM/fgeA66A2WvmteJ2ocT55lBqJ6EZyfaiZLZQpww5OvxJ4Ul7GVk1lsuPYtTS39CYSqX6MQ8ph/LDE2m6PDYZBubZ+BxNdW/DVq/kWQDk/94BZ6TBdpeIW/yZsv+9phdVtGm2oQpwv/K2ZAmJgRYJensQcsvKVy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Diq3/lpn; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Fri, 01 May 2026 22:46:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777668423;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8wnO9B0Eu6mpNIqDouO4jaaMmliPGSkqOKx4553yYLY=;
+	b=Diq3/lpntL7ul9Ajpu/jhcUuuR6F/rGVA/IArTkYSUWHSFh1q77ixK733DgwZcz+FEOIcu
+	HbYzg49Xwct6ybioc4jTSMUGwIZSysJWCk9a6iNsY4Kf7Jbk1LxhsqFmbLnIe+jmOsppap
+	XEbkUn6RnaGWx0uzUMpPncLnziE+IkY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Luka Gejak <luka.gejak@linux.dev>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
+ Kalle Valo <kvalo@kernel.org>
+CC: Yan-Hsuan Chuang <yhchuang@realtek.com>,
+ Brian Norris <briannorris@chromium.org>,
+ Stanislaw Gruszka <sgruszka@redhat.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, luka.gejak@linux.dev
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_wifi=3A_rtw88=3A_increase_TX?=
+ =?US-ASCII?Q?_report_timeout_to_fix_race_condition?=
+In-Reply-To: <72f6fffd-bd77-437f-a9d9-6a542a8b365b@gmail.com>
+References: <20260501150402.227788-1-luka.gejak@linux.dev> <72f6fffd-bd77-437f-a9d9-6a542a8b365b@gmail.com>
+Message-ID: <6CD170FE-CAED-4B91-AEED-A1AFB98FFE8A@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 77F934AF8FD
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: AB8F24AF921
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242519-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org,vger.kernel.org,meta.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-242520-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[gmail.com,realtek.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,amd.com,redhat.com,lunn.ch];
-	FROM_NO_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.991];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mikemarciniszyn@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid]
 
-From: Mike Marciniszyn <mmarcini@meta.com>
+On May 1, 2026 9:26:30 PM GMT+02:00, Bitterblue Smith <rtl8821cerfe2@gmail=
+=2Ecom> wrote:
+>On 01/05/2026 18:04, luka=2Egejak@linux=2Edev wrote:
+>> From: Luka Gejak <luka=2Egejak@linux=2Edev>
+>>=20
+>> The driver expects the firmware to report TX status within 500ms=2E
+>> However, a race condition exists when the hardware is under heavy TX
+>> load and is simultaneously interrupted by background scans or
+>> power-saving state transitions=2E During these events, the firmware may
+>> go off-channel for longer than 500ms, delaying the TX reports=2E
+>>=20
+Hi Bitterblue,
+thanks for the review=2E
+>
+>But power saving state transitions should not happen during heavy TX load=
+=2E
+>
+You are absolutely right that power save transitions don't happen=20
+during heavy TX=2E The issue is strictly tied to off-channel dwell time=2E
+I reliably trigger this on my rtl8723du (USB) by forcing background=20
+scans (iw dev wlanX scan) while under heavy iperf3 load=2E The firmware=20
+goes off-channel to scan, which delays the TX report well beyond the=20
+current 500ms threshold=2E
 
-When CONFIG_DRM_FBDEV_EMULATION  is not defined this error results
-when building amdgpu_display.c with CONFIG_DRM_AMDGPU:
+>> When this happens, the purge timer fires prematurely, dropping the
+>> tracking skbs from the queue and spamming the kernel log with:
+>> "failed to get tx report from firmware"=2E Dropping these tracking skbs
+>> prevents the driver from reporting TX status back to mac80211, which
+>> breaks rate control accounting and degrades performance=2E
+>>=20
+>
+>But mac80211 doesn't handle rate control for these chips=2E How much does
+>performance degrade?
+>
 
-error: call to undeclared function 'drm_fb_helper_gem_is_fb'; ISO C99 and
-later do not support implicit function
-declarations [-Wimplicit-function-declaration]
+I understand the firmware handles that internally=2E The performance=20
+degradation I am actually seeing is TCP window collapse, as the host=20
+stack interprets the dropped tracking skbs as packet loss=2E In my=20
+testing with iperf3, throughput drops from a steady 80-90 Mbps to=20
+near-zero for nearly 2 seconds following the scan before recovery=20
+begins=2E
 
- 1777 |  if (!drm_fb_helper_gem_is_fb(dev->fb_helper, fb->obj[0])) {
+>> Increase RTW_TX_PROBE_TIMEOUT to 2500ms=2E This timeout is large enough
+>> to comfortably accommodate the duration of full WiFi background scans
+>> and sleep transitions without incorrectly tripping the purge timer,
+>> while still eventually catching true firmware lockups=2E
+>>=20
+>
+>rtw88 supports many chips=2E Which one are you using?
+>
+>Perhaps provide a full description of the problem you encountered=2E
+>
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mike Marciniszyn <mmarcini@meta.com>
----
- include/drm/drm_fb_helper.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+=2E=2E=2E
 
-diff --git a/include/drm/drm_fb_helper.h b/include/drm/drm_fb_helper.h
-index bf391903443d..7f9ad421af3f 100644
---- a/include/drm/drm_fb_helper.h
-+++ b/include/drm/drm_fb_helper.h
-@@ -273,6 +273,13 @@ int drm_fb_helper_hotplug_event(struct drm_fb_helper *fb_helper);
- int drm_fb_helper_initial_config(struct drm_fb_helper *fb_helper);
- bool drm_fb_helper_gem_is_fb(const struct drm_fb_helper *fb_helper,
- 			     const struct drm_gem_object *obj);
-+#else
-+static inline bool drm_fb_helper_gem_is_fb(const struct drm_fb_helper *fb_helper,
-+					   const struct drm_gem_object *obj)
-+{
-+	return false;
-+}
-+
- #endif
+I also realize now that globally changing RTW_TX_PROBE_TIMEOUT to=20
+2500ms is too heavy-handed=2E Since this impacts all rtw88 chips,=20
+including PCIe variants where 500ms might be exactly what is needed to
+catch a real firmware lockup, the blast radius is too large=2E How would
+you prefer I handle this for the v2 patch? I can either implement a=20
+more conservative global bump, or make the timeout dynamic based on=20
+the HCI interface so USB devices get a longer timeout to accommodate=20
+the bus latency during scans=2E
 
- #endif
---
-2.43.0
-
+Best regards,
+Luka Gejak
 
