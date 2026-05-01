@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-242483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HRFOLDl9Gl1FgIAu9opvQ
-	(envelope-from <stable+bounces-242483-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 19:41:04 +0200
+	id iDSLHLPl9Gl1FgIAu9opvQ
+	(envelope-from <stable+bounces-242484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 19:41:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2384AE99B
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 19:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E64144AE9A4
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 19:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2696A3012310
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5699301388D
 	for <lists+stable@lfdr.de>; Fri,  1 May 2026 17:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CB03161BA;
-	Fri,  1 May 2026 17:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6908B302163;
+	Fri,  1 May 2026 17:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aypJq2V6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NHi4KQ1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB916302163
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 17:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF143164DF
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 17:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777657259; cv=none; b=CX5ZWJR0ahcVzg+nUkWA5221eKCjuLcS8E2J3fGh8DNu/R2yHWAXoPDqnbDTx8lIsZH8KQIEN8fDnVMSgAfDTa+1nzc8N7rBzeGx+c3mIOly6wkz8BbHVniVhLhUaJG0rl9Ixo87ROP5l9OBo8YOVoUcJPOrrQJI+FJGk1Nrc3g=
+	t=1777657261; cv=none; b=pIiXtF2syhTvhz3Ifq+4JRO7ym07q6/FtKacunbWdUJw3PvzvvXuIRLHjzGofOrtrq+LhivLTnVQGpvaNtGOghvAqzz0GmzHzc0Qw4Ffm5xiTCzHYhhsFWkCatxZY7pQoxa9uOrRX7iQNNNwVwhU9EinNo2zJp0rWsxh5qc8Xog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777657259; c=relaxed/simple;
-	bh=cbx6w2Hflze7q4rkuHdkhAFHOGuHSW1DuTLTXTclk/k=;
+	s=arc-20240116; t=1777657261; c=relaxed/simple;
+	bh=FoAi3//zlDQQqco+9JIIy0SkUFF/xVU8DRZ/6p1kWC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JoU5d/JjA/PFP1KuxqnNIu1B5O2fcrNzCVx087H7Lgem3hwjiR6oENEATAUk1SmXg2VHJZZG1Zv5f0ZN1+OaBfqRWhOGUUFzK7Gb+oKKhNUM0MEGA8yEq/CEBxVmBYM7/Co5nCeAqNzV5vbdh1QV/dPHWYYFuipCQsAZOuimgeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aypJq2V6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2ABC2BCB4;
-	Fri,  1 May 2026 17:40:58 +0000 (UTC)
+	 MIME-Version; b=pd5yk5L6qtOily7ko+tSZSvv5329UzVtk3LByAdmYeZKac/xJ+et75v3mul7NAe/NuFM/pMswIXRm6jiL12ttpPDkhzGNN7hwp5TBlIPKilIbVpWwyapG1mvKe0qrXOSj99ysWjjzJqgOQd5EH8DevUYFZTJ1gjtznlESIElmt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NHi4KQ1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53DBC2BCB9;
+	Fri,  1 May 2026 17:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777657259;
-	bh=cbx6w2Hflze7q4rkuHdkhAFHOGuHSW1DuTLTXTclk/k=;
+	s=k20201202; t=1777657260;
+	bh=FoAi3//zlDQQqco+9JIIy0SkUFF/xVU8DRZ/6p1kWC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aypJq2V6Os2xUiTid7+hIhK0ZdSCrltkGxhNor9AfWz9X1uwfKFT5TvL9io+5716O
-	 yOEv478Q7gna1cIvGtR/re6ixip5jpo5IS1IXBBa0yVmVVbxPZ9lkTgxkQ/+PeMdBG
-	 N/IL7slgXNGW0aRLopeE1heLjK/uGi5ZgwOMWLYBvlS6F1kEMbZBDU4fIswxvfRhf6
-	 MG9mY8hRjDquCcflat3Q0E9MFiZfTX/EJeq6jMW/fxRaKxgUNITBav0tLXvssWDo2d
-	 uQkMaGdUTZXxKqArxqiSxwVeMvHycUUzHAKcTE8leot3fkh2IrABcg1Rf2Jhgd1VnC
-	 iQfaSfEAhyWSA==
+	b=NHi4KQ1d5b5QXT3TvDkdSsuodp8UoUvYW8L+2iNfvuGL7Y3g2CaECbeB/mmKGo0+U
+	 I5x6W8q9hICch3t5/GbAuVaS7yXT+sURXNm/xj4yczOJkDiut9+e7cTl8M3ZYhCUHr
+	 9Wr1KORO4M5crKzJV5CoruDXBN+iYH+yTWroRr8b1svJNN1GyDJNlwdgqP67Q9w1Yj
+	 bRbVL8JiYSs/i/QWgSKhXBiDZ6DqFcoH7LLF8wXGJBiMqohXcozgESQhwjsoP0LZnw
+	 lI9sLBqtonaWz/9GWKzB2fxW8rzQ/eHMreSEdS5uuZXNg7OdM1Dl9OZNDhksegZDKZ
+	 piF6bvJFXHbyA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] ALSA: aoa: Use guard() for mutex locks
-Date: Fri,  1 May 2026 13:40:54 -0400
-Message-ID: <20260501174056.3862921-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()
+Date: Fri,  1 May 2026 13:40:55 -0400
+Message-ID: <20260501174056.3862921-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050121-sliced-purposely-b1ee@gregkh>
+In-Reply-To: <20260501174056.3862921-1-sashal@kernel.org>
 References: <2026050121-sliced-purposely-b1ee@gregkh>
+ <20260501174056.3862921-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4B2384AE99B
+X-Rspamd-Queue-Id: E64144AE9A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -79,9 +81,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242483-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242484-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,1050 +92,86 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,work.work:url,suse.de:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linux.dev:email]
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 1cb6ecbb372002ef9e531c5377e5f60122411e40 ]
+[ Upstream commit fd7df93013c5118812e63a52635dc6c3a805a1de ]
 
-Replace the manual mutex lock/unlock pairs with guard() for code
-simplification.
+In i2sbus_resume(), skip devices with an empty codec list, which avoids
+using an uninitialized 'sysclock_factor' in the 32-bit format path in
+i2sbus_pcm_prepare().
 
-Only code refactoring, and no behavior change.
+In i2sbus_pcm_prepare(), replace two list_for_each_entry() loops with a
+single list_first_entry() now that the codec list is guaranteed to be
+non-empty by all callers.
 
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20260310102921.210109-3-thorsten.blum@linux.dev
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250829151335.7342-14-tiwai@suse.de
-Stable-dep-of: fd7df93013c5 ("ALSA: aoa: Skip devices with no codecs in i2sbus_resume()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/aoa/codecs/onyx.c         | 104 +++++++++--------------------
- sound/aoa/codecs/tas.c          | 113 +++++++++++---------------------
- sound/aoa/core/gpio-feature.c   |  20 ++----
- sound/aoa/core/gpio-pmf.c       |  26 +++-----
- sound/aoa/soundbus/i2sbus/pcm.c |  76 +++++++--------------
- 5 files changed, 112 insertions(+), 227 deletions(-)
+ sound/aoa/soundbus/i2sbus/core.c |  3 +++
+ sound/aoa/soundbus/i2sbus/pcm.c  | 16 +++++-----------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/sound/aoa/codecs/onyx.c b/sound/aoa/codecs/onyx.c
-index 2d0f904aba00f..3c6b03f0d234a 100644
---- a/sound/aoa/codecs/onyx.c
-+++ b/sound/aoa/codecs/onyx.c
-@@ -121,10 +121,9 @@ static int onyx_snd_vol_get(struct snd_kcontrol *kcontrol,
- 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
- 	s8 l, r;
+diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
+index 51ed2f34b276d..d877718dda947 100644
+--- a/sound/aoa/soundbus/i2sbus/core.c
++++ b/sound/aoa/soundbus/i2sbus/core.c
+@@ -408,6 +408,9 @@ static int i2sbus_resume(struct macio_dev* dev)
+ 	int err, ret = 0;
+ 
+ 	list_for_each_entry(i2sdev, &control->list, item) {
++		if (list_empty(&i2sdev->sound.codec_list))
++			continue;
++
+ 		/* reset i2s bus format etc. */
+ 		i2sbus_pcm_prepare_both(i2sdev);
  
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_LEFT, &l);
- 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_RIGHT, &r);
--	mutex_unlock(&onyx->mutex);
- 
- 	ucontrol->value.integer.value[0] = l + VOLUME_RANGE_SHIFT;
- 	ucontrol->value.integer.value[1] = r + VOLUME_RANGE_SHIFT;
-@@ -145,15 +144,13 @@ static int onyx_snd_vol_put(struct snd_kcontrol *kcontrol,
- 	    ucontrol->value.integer.value[1] > -1 + VOLUME_RANGE_SHIFT)
- 		return -EINVAL;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_LEFT, &l);
- 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_RIGHT, &r);
- 
- 	if (l + VOLUME_RANGE_SHIFT == ucontrol->value.integer.value[0] &&
--	    r + VOLUME_RANGE_SHIFT == ucontrol->value.integer.value[1]) {
--		mutex_unlock(&onyx->mutex);
-+	    r + VOLUME_RANGE_SHIFT == ucontrol->value.integer.value[1])
- 		return 0;
--	}
- 
- 	onyx_write_register(onyx, ONYX_REG_DAC_ATTEN_LEFT,
- 			    ucontrol->value.integer.value[0]
-@@ -161,7 +158,6 @@ static int onyx_snd_vol_put(struct snd_kcontrol *kcontrol,
- 	onyx_write_register(onyx, ONYX_REG_DAC_ATTEN_RIGHT,
- 			    ucontrol->value.integer.value[1]
- 			     - VOLUME_RANGE_SHIFT);
--	mutex_unlock(&onyx->mutex);
- 
- 	return 1;
- }
-@@ -197,9 +193,8 @@ static int onyx_snd_inputgain_get(struct snd_kcontrol *kcontrol,
- 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
- 	u8 ig;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &ig);
--	mutex_unlock(&onyx->mutex);
- 
- 	ucontrol->value.integer.value[0] =
- 		(ig & ONYX_ADC_PGA_GAIN_MASK) + INPUTGAIN_RANGE_SHIFT;
-@@ -216,14 +211,13 @@ static int onyx_snd_inputgain_put(struct snd_kcontrol *kcontrol,
- 	if (ucontrol->value.integer.value[0] < 3 + INPUTGAIN_RANGE_SHIFT ||
- 	    ucontrol->value.integer.value[0] > 28 + INPUTGAIN_RANGE_SHIFT)
- 		return -EINVAL;
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &v);
- 	n = v;
- 	n &= ~ONYX_ADC_PGA_GAIN_MASK;
- 	n |= (ucontrol->value.integer.value[0] - INPUTGAIN_RANGE_SHIFT)
- 		& ONYX_ADC_PGA_GAIN_MASK;
- 	onyx_write_register(onyx, ONYX_REG_ADC_CONTROL, n);
--	mutex_unlock(&onyx->mutex);
- 
- 	return n != v;
- }
-@@ -251,9 +245,8 @@ static int onyx_snd_capture_source_get(struct snd_kcontrol *kcontrol,
- 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
- 	s8 v;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &v);
--	mutex_unlock(&onyx->mutex);
- 
- 	ucontrol->value.enumerated.item[0] = !!(v&ONYX_ADC_INPUT_MIC);
- 
-@@ -264,13 +257,12 @@ static void onyx_set_capture_source(struct onyx *onyx, int mic)
- {
- 	s8 v;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &v);
- 	v &= ~ONYX_ADC_INPUT_MIC;
- 	if (mic)
- 		v |= ONYX_ADC_INPUT_MIC;
- 	onyx_write_register(onyx, ONYX_REG_ADC_CONTROL, v);
--	mutex_unlock(&onyx->mutex);
- }
- 
- static int onyx_snd_capture_source_put(struct snd_kcontrol *kcontrol,
-@@ -311,9 +303,8 @@ static int onyx_snd_mute_get(struct snd_kcontrol *kcontrol,
- 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
- 	u8 c;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_DAC_CONTROL, &c);
--	mutex_unlock(&onyx->mutex);
- 
- 	ucontrol->value.integer.value[0] = !(c & ONYX_MUTE_LEFT);
- 	ucontrol->value.integer.value[1] = !(c & ONYX_MUTE_RIGHT);
-@@ -328,9 +319,9 @@ static int onyx_snd_mute_put(struct snd_kcontrol *kcontrol,
- 	u8 v = 0, c = 0;
- 	int err = -EBUSY;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	if (onyx->analog_locked)
--		goto out_unlock;
-+		return -EBUSY;
- 
- 	onyx_read_register(onyx, ONYX_REG_DAC_CONTROL, &v);
- 	c = v;
-@@ -341,9 +332,6 @@ static int onyx_snd_mute_put(struct snd_kcontrol *kcontrol,
- 		c |= ONYX_MUTE_RIGHT;
- 	err = onyx_write_register(onyx, ONYX_REG_DAC_CONTROL, c);
- 
-- out_unlock:
--	mutex_unlock(&onyx->mutex);
--
- 	return !err ? (v != c) : err;
- }
- 
-@@ -372,9 +360,8 @@ static int onyx_snd_single_bit_get(struct snd_kcontrol *kcontrol,
- 	u8 address = (pv >> 8) & 0xff;
- 	u8 mask = pv & 0xff;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, address, &c);
--	mutex_unlock(&onyx->mutex);
- 
- 	ucontrol->value.integer.value[0] = !!(c & mask) ^ polarity;
- 
-@@ -393,11 +380,10 @@ static int onyx_snd_single_bit_put(struct snd_kcontrol *kcontrol,
- 	u8 address = (pv >> 8) & 0xff;
- 	u8 mask = pv & 0xff;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	if (spdiflock && onyx->spdif_locked) {
- 		/* even if alsamixer doesn't care.. */
--		err = -EBUSY;
--		goto out_unlock;
-+		return -EBUSY;
- 	}
- 	onyx_read_register(onyx, address, &v);
- 	c = v;
-@@ -406,9 +392,6 @@ static int onyx_snd_single_bit_put(struct snd_kcontrol *kcontrol,
- 		c |= mask;
- 	err = onyx_write_register(onyx, address, c);
- 
-- out_unlock:
--	mutex_unlock(&onyx->mutex);
--
- 	return !err ? (v != c) : err;
- }
- 
-@@ -489,7 +472,7 @@ static int onyx_spdif_get(struct snd_kcontrol *kcontrol,
- 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
- 	u8 v;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_DIG_INFO1, &v);
- 	ucontrol->value.iec958.status[0] = v & 0x3e;
- 
-@@ -501,7 +484,6 @@ static int onyx_spdif_get(struct snd_kcontrol *kcontrol,
- 
- 	onyx_read_register(onyx, ONYX_REG_DIG_INFO4, &v);
- 	ucontrol->value.iec958.status[4] = v & 0x0f;
--	mutex_unlock(&onyx->mutex);
- 
- 	return 0;
- }
-@@ -512,7 +494,7 @@ static int onyx_spdif_put(struct snd_kcontrol *kcontrol,
- 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
- 	u8 v;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_DIG_INFO1, &v);
- 	v = (v & ~0x3e) | (ucontrol->value.iec958.status[0] & 0x3e);
- 	onyx_write_register(onyx, ONYX_REG_DIG_INFO1, v);
-@@ -527,7 +509,6 @@ static int onyx_spdif_put(struct snd_kcontrol *kcontrol,
- 	onyx_read_register(onyx, ONYX_REG_DIG_INFO4, &v);
- 	v = (v & ~0x0f) | (ucontrol->value.iec958.status[4] & 0x0f);
- 	onyx_write_register(onyx, ONYX_REG_DIG_INFO4, v);
--	mutex_unlock(&onyx->mutex);
- 
- 	return 1;
- }
-@@ -672,14 +653,13 @@ static int onyx_usable(struct codec_info_item *cii,
- 	struct onyx *onyx = cii->codec_data;
- 	int spdif_enabled, analog_enabled;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx_read_register(onyx, ONYX_REG_DIG_INFO4, &v);
- 	spdif_enabled = !!(v & ONYX_SPDIF_ENABLE);
- 	onyx_read_register(onyx, ONYX_REG_DAC_CONTROL, &v);
- 	analog_enabled =
- 		(v & (ONYX_MUTE_RIGHT|ONYX_MUTE_LEFT))
- 		 != (ONYX_MUTE_RIGHT|ONYX_MUTE_LEFT);
--	mutex_unlock(&onyx->mutex);
- 
- 	switch (ti->tag) {
- 	case 0: return 1;
-@@ -695,9 +675,8 @@ static int onyx_prepare(struct codec_info_item *cii,
- {
- 	u8 v;
- 	struct onyx *onyx = cii->codec_data;
--	int err = -EBUSY;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 
- #ifdef SNDRV_PCM_FMTBIT_COMPRESSED_16BE
- 	if (substream->runtime->format == SNDRV_PCM_FMTBIT_COMPRESSED_16BE) {
-@@ -706,10 +685,9 @@ static int onyx_prepare(struct codec_info_item *cii,
- 		if (onyx_write_register(onyx,
- 					ONYX_REG_DAC_CONTROL,
- 					v | ONYX_MUTE_RIGHT | ONYX_MUTE_LEFT))
--			goto out_unlock;
-+			return -EBUSY;
- 		onyx->analog_locked = 1;
--		err = 0;
--		goto out_unlock;
-+		return 0;
- 	}
- #endif
- 	switch (substream->runtime->rate) {
-@@ -719,8 +697,7 @@ static int onyx_prepare(struct codec_info_item *cii,
- 		/* these rates are ok for all outputs */
- 		/* FIXME: program spdif channel control bits here so that
- 		 *	  userspace doesn't have to if it only plays pcm! */
--		err = 0;
--		goto out_unlock;
-+		return 0;
- 	default:
- 		/* got some rate that the digital output can't do,
- 		 * so disable and lock it */
-@@ -728,16 +705,12 @@ static int onyx_prepare(struct codec_info_item *cii,
- 		if (onyx_write_register(onyx,
- 					ONYX_REG_DIG_INFO4,
- 					v & ~ONYX_SPDIF_ENABLE))
--			goto out_unlock;
-+			return -EBUSY;
- 		onyx->spdif_locked = 1;
--		err = 0;
--		goto out_unlock;
-+		return 0;
- 	}
- 
-- out_unlock:
--	mutex_unlock(&onyx->mutex);
--
--	return err;
-+	return -EBUSY;
- }
- 
- static int onyx_open(struct codec_info_item *cii,
-@@ -745,9 +718,8 @@ static int onyx_open(struct codec_info_item *cii,
- {
- 	struct onyx *onyx = cii->codec_data;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx->open_count++;
--	mutex_unlock(&onyx->mutex);
- 
- 	return 0;
- }
-@@ -757,11 +729,10 @@ static int onyx_close(struct codec_info_item *cii,
- {
- 	struct onyx *onyx = cii->codec_data;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	onyx->open_count--;
- 	if (!onyx->open_count)
- 		onyx->spdif_locked = onyx->analog_locked = 0;
--	mutex_unlock(&onyx->mutex);
- 
- 	return 0;
- }
-@@ -771,7 +742,7 @@ static int onyx_switch_clock(struct codec_info_item *cii,
- {
- 	struct onyx *onyx = cii->codec_data;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	/* this *MUST* be more elaborate later... */
- 	switch (what) {
- 	case CLOCK_SWITCH_PREPARE_SLAVE:
-@@ -783,7 +754,6 @@ static int onyx_switch_clock(struct codec_info_item *cii,
- 	default: /* silence warning */
- 		break;
- 	}
--	mutex_unlock(&onyx->mutex);
- 
- 	return 0;
- }
-@@ -794,27 +764,21 @@ static int onyx_suspend(struct codec_info_item *cii, pm_message_t state)
- {
- 	struct onyx *onyx = cii->codec_data;
- 	u8 v;
--	int err = -ENXIO;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 	if (onyx_read_register(onyx, ONYX_REG_CONTROL, &v))
--		goto out_unlock;
-+		return -ENXIO;
- 	onyx_write_register(onyx, ONYX_REG_CONTROL, v | ONYX_ADPSV | ONYX_DAPSV);
- 	/* Apple does a sleep here but the datasheet says to do it on resume */
--	err = 0;
-- out_unlock:
--	mutex_unlock(&onyx->mutex);
--
--	return err;
-+	return 0;
- }
- 
- static int onyx_resume(struct codec_info_item *cii)
- {
- 	struct onyx *onyx = cii->codec_data;
- 	u8 v;
--	int err = -ENXIO;
- 
--	mutex_lock(&onyx->mutex);
-+	guard(mutex)(&onyx->mutex);
- 
- 	/* reset codec */
- 	onyx->codec.gpio->methods->set_hw_reset(onyx->codec.gpio, 0);
-@@ -826,17 +790,13 @@ static int onyx_resume(struct codec_info_item *cii)
- 
- 	/* take codec out of suspend (if it still is after reset) */
- 	if (onyx_read_register(onyx, ONYX_REG_CONTROL, &v))
--		goto out_unlock;
-+		return -ENXIO;
- 	onyx_write_register(onyx, ONYX_REG_CONTROL, v & ~(ONYX_ADPSV | ONYX_DAPSV));
- 	/* FIXME: should divide by sample rate, but 8k is the lowest we go */
- 	msleep(2205000/8000);
- 	/* reset all values */
- 	onyx_register_init(onyx);
--	err = 0;
-- out_unlock:
--	mutex_unlock(&onyx->mutex);
--
--	return err;
-+	return 0;
- }
- 
- #endif /* CONFIG_PM */
-diff --git a/sound/aoa/codecs/tas.c b/sound/aoa/codecs/tas.c
-index ab89475b7715f..48c474de956d6 100644
---- a/sound/aoa/codecs/tas.c
-+++ b/sound/aoa/codecs/tas.c
-@@ -235,10 +235,9 @@ static int tas_snd_vol_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.integer.value[0] = tas->cached_volume_l;
- 	ucontrol->value.integer.value[1] = tas->cached_volume_r;
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -254,18 +253,15 @@ static int tas_snd_vol_put(struct snd_kcontrol *kcontrol,
- 	    ucontrol->value.integer.value[1] > 177)
- 		return -EINVAL;
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	if (tas->cached_volume_l == ucontrol->value.integer.value[0]
--	 && tas->cached_volume_r == ucontrol->value.integer.value[1]) {
--		mutex_unlock(&tas->mtx);
-+	 && tas->cached_volume_r == ucontrol->value.integer.value[1])
- 		return 0;
--	}
- 
- 	tas->cached_volume_l = ucontrol->value.integer.value[0];
- 	tas->cached_volume_r = ucontrol->value.integer.value[1];
- 	if (tas->hw_enabled)
- 		tas_set_volume(tas);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -285,10 +281,9 @@ static int tas_snd_mute_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.integer.value[0] = !tas->mute_l;
- 	ucontrol->value.integer.value[1] = !tas->mute_r;
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -297,18 +292,15 @@ static int tas_snd_mute_put(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	if (tas->mute_l == !ucontrol->value.integer.value[0]
--	 && tas->mute_r == !ucontrol->value.integer.value[1]) {
--		mutex_unlock(&tas->mtx);
-+	 && tas->mute_r == !ucontrol->value.integer.value[1])
- 		return 0;
--	}
- 
- 	tas->mute_l = !ucontrol->value.integer.value[0];
- 	tas->mute_r = !ucontrol->value.integer.value[1];
- 	if (tas->hw_enabled)
- 		tas_set_volume(tas);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -337,10 +329,9 @@ static int tas_snd_mixer_get(struct snd_kcontrol *kcontrol,
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 	int idx = kcontrol->private_value;
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.integer.value[0] = tas->mixer_l[idx];
- 	ucontrol->value.integer.value[1] = tas->mixer_r[idx];
--	mutex_unlock(&tas->mtx);
- 
- 	return 0;
- }
-@@ -351,19 +342,16 @@ static int tas_snd_mixer_put(struct snd_kcontrol *kcontrol,
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 	int idx = kcontrol->private_value;
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	if (tas->mixer_l[idx] == ucontrol->value.integer.value[0]
--	 && tas->mixer_r[idx] == ucontrol->value.integer.value[1]) {
--		mutex_unlock(&tas->mtx);
-+	 && tas->mixer_r[idx] == ucontrol->value.integer.value[1])
- 		return 0;
--	}
- 
- 	tas->mixer_l[idx] = ucontrol->value.integer.value[0];
- 	tas->mixer_r[idx] = ucontrol->value.integer.value[1];
- 
- 	if (tas->hw_enabled)
- 		tas_set_mixer(tas);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -396,9 +384,8 @@ static int tas_snd_drc_range_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.integer.value[0] = tas->drc_range;
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -411,16 +398,13 @@ static int tas_snd_drc_range_put(struct snd_kcontrol *kcontrol,
- 	    ucontrol->value.integer.value[0] > TAS3004_DRC_MAX)
- 		return -EINVAL;
- 
--	mutex_lock(&tas->mtx);
--	if (tas->drc_range == ucontrol->value.integer.value[0]) {
--		mutex_unlock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
-+	if (tas->drc_range == ucontrol->value.integer.value[0])
- 		return 0;
--	}
- 
- 	tas->drc_range = ucontrol->value.integer.value[0];
- 	if (tas->hw_enabled)
- 		tas3004_set_drc(tas);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -440,9 +424,8 @@ static int tas_snd_drc_switch_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.integer.value[0] = tas->drc_enabled;
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -451,16 +434,13 @@ static int tas_snd_drc_switch_put(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
--	if (tas->drc_enabled == ucontrol->value.integer.value[0]) {
--		mutex_unlock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
-+	if (tas->drc_enabled == ucontrol->value.integer.value[0])
- 		return 0;
--	}
- 
- 	tas->drc_enabled = !!ucontrol->value.integer.value[0];
- 	if (tas->hw_enabled)
- 		tas3004_set_drc(tas);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -486,9 +466,8 @@ static int tas_snd_capture_source_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.enumerated.item[0] = !!(tas->acr & TAS_ACR_INPUT_B);
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -500,7 +479,7 @@ static int tas_snd_capture_source_put(struct snd_kcontrol *kcontrol,
- 
- 	if (ucontrol->value.enumerated.item[0] > 1)
- 		return -EINVAL;
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	oldacr = tas->acr;
- 
- 	/*
-@@ -512,13 +491,10 @@ static int tas_snd_capture_source_put(struct snd_kcontrol *kcontrol,
- 	if (ucontrol->value.enumerated.item[0])
- 		tas->acr |= TAS_ACR_INPUT_B | TAS_ACR_B_MONAUREAL |
- 		      TAS_ACR_B_MON_SEL_RIGHT;
--	if (oldacr == tas->acr) {
--		mutex_unlock(&tas->mtx);
-+	if (oldacr == tas->acr)
- 		return 0;
--	}
- 	if (tas->hw_enabled)
- 		tas_write_reg(tas, TAS_REG_ACR, 1, &tas->acr);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -557,9 +533,8 @@ static int tas_snd_treble_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.integer.value[0] = tas->treble;
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -571,16 +546,13 @@ static int tas_snd_treble_put(struct snd_kcontrol *kcontrol,
- 	if (ucontrol->value.integer.value[0] < TAS3004_TREBLE_MIN ||
- 	    ucontrol->value.integer.value[0] > TAS3004_TREBLE_MAX)
- 		return -EINVAL;
--	mutex_lock(&tas->mtx);
--	if (tas->treble == ucontrol->value.integer.value[0]) {
--		mutex_unlock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
-+	if (tas->treble == ucontrol->value.integer.value[0])
- 		return 0;
--	}
- 
- 	tas->treble = ucontrol->value.integer.value[0];
- 	if (tas->hw_enabled)
- 		tas_set_treble(tas);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -608,9 +580,8 @@ static int tas_snd_bass_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tas *tas = snd_kcontrol_chip(kcontrol);
- 
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	ucontrol->value.integer.value[0] = tas->bass;
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -622,16 +593,13 @@ static int tas_snd_bass_put(struct snd_kcontrol *kcontrol,
- 	if (ucontrol->value.integer.value[0] < TAS3004_BASS_MIN ||
- 	    ucontrol->value.integer.value[0] > TAS3004_BASS_MAX)
- 		return -EINVAL;
--	mutex_lock(&tas->mtx);
--	if (tas->bass == ucontrol->value.integer.value[0]) {
--		mutex_unlock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
-+	if (tas->bass == ucontrol->value.integer.value[0])
- 		return 0;
--	}
- 
- 	tas->bass = ucontrol->value.integer.value[0];
- 	if (tas->hw_enabled)
- 		tas_set_bass(tas);
--	mutex_unlock(&tas->mtx);
- 	return 1;
- }
- 
-@@ -722,13 +690,13 @@ static int tas_switch_clock(struct codec_info_item *cii, enum clock_switch clock
- 		break;
- 	case CLOCK_SWITCH_SLAVE:
- 		/* Clocks are back, re-init the codec */
--		mutex_lock(&tas->mtx);
--		tas_reset_init(tas);
--		tas_set_volume(tas);
--		tas_set_mixer(tas);
--		tas->hw_enabled = 1;
--		tas->codec.gpio->methods->all_amps_restore(tas->codec.gpio);
--		mutex_unlock(&tas->mtx);
-+		scoped_guard(mutex, &tas->mtx) {
-+			tas_reset_init(tas);
-+			tas_set_volume(tas);
-+			tas_set_mixer(tas);
-+			tas->hw_enabled = 1;
-+			tas->codec.gpio->methods->all_amps_restore(tas->codec.gpio);
-+		}
- 		break;
- 	default:
- 		/* doesn't happen as of now */
-@@ -743,23 +711,21 @@ static int tas_switch_clock(struct codec_info_item *cii, enum clock_switch clock
-  * our i2c device is suspended, and then take note of that! */
- static int tas_suspend(struct tas *tas)
- {
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	tas->hw_enabled = 0;
- 	tas->acr |= TAS_ACR_ANALOG_PDOWN;
- 	tas_write_reg(tas, TAS_REG_ACR, 1, &tas->acr);
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
- static int tas_resume(struct tas *tas)
- {
- 	/* reset codec */
--	mutex_lock(&tas->mtx);
-+	guard(mutex)(&tas->mtx);
- 	tas_reset_init(tas);
- 	tas_set_volume(tas);
- 	tas_set_mixer(tas);
- 	tas->hw_enabled = 1;
--	mutex_unlock(&tas->mtx);
- 	return 0;
- }
- 
-@@ -802,14 +768,13 @@ static int tas_init_codec(struct aoa_codec *codec)
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&tas->mtx);
--	if (tas_reset_init(tas)) {
--		printk(KERN_ERR PFX "tas failed to initialise\n");
--		mutex_unlock(&tas->mtx);
--		return -ENXIO;
-+	scoped_guard(mutex, &tas->mtx) {
-+		if (tas_reset_init(tas)) {
-+			printk(KERN_ERR PFX "tas failed to initialise\n");
-+			return -ENXIO;
-+		}
-+		tas->hw_enabled = 1;
- 	}
--	tas->hw_enabled = 1;
--	mutex_unlock(&tas->mtx);
- 
- 	if (tas->codec.soundbus_dev->attach_codec(tas->codec.soundbus_dev,
- 						   aoa_get_card(),
-diff --git a/sound/aoa/core/gpio-feature.c b/sound/aoa/core/gpio-feature.c
-index 39bb409b27f6d..19ed0e6907da3 100644
---- a/sound/aoa/core/gpio-feature.c
-+++ b/sound/aoa/core/gpio-feature.c
-@@ -212,10 +212,9 @@ static void ftr_handle_notify(struct work_struct *work)
- 	struct gpio_notification *notif =
- 		container_of(work, struct gpio_notification, work.work);
- 
--	mutex_lock(&notif->mutex);
-+	guard(mutex)(&notif->mutex);
- 	if (notif->notify)
- 		notif->notify(notif->data);
--	mutex_unlock(&notif->mutex);
- }
- 
- static void gpio_enable_dual_edge(int gpio)
-@@ -341,19 +340,17 @@ static int ftr_set_notify(struct gpio_runtime *rt,
- 	if (!irq)
- 		return -ENODEV;
- 
--	mutex_lock(&notif->mutex);
-+	guard(mutex)(&notif->mutex);
- 
- 	old = notif->notify;
- 
--	if (!old && !notify) {
--		err = 0;
--		goto out_unlock;
--	}
-+	if (!old && !notify)
-+		return 0;
- 
- 	if (old && notify) {
- 		if (old == notify && notif->data == data)
- 			err = 0;
--		goto out_unlock;
-+		return err;
- 	}
- 
- 	if (old && !notify)
-@@ -362,16 +359,13 @@ static int ftr_set_notify(struct gpio_runtime *rt,
- 	if (!old && notify) {
- 		err = request_irq(irq, ftr_handle_notify_irq, 0, name, notif);
- 		if (err)
--			goto out_unlock;
-+			return err;
- 	}
- 
- 	notif->notify = notify;
- 	notif->data = data;
- 
--	err = 0;
-- out_unlock:
--	mutex_unlock(&notif->mutex);
--	return err;
-+	return 0;
- }
- 
- static int ftr_get_detect(struct gpio_runtime *rt,
-diff --git a/sound/aoa/core/gpio-pmf.c b/sound/aoa/core/gpio-pmf.c
-index 37866039d1ead..e76bde25e41af 100644
---- a/sound/aoa/core/gpio-pmf.c
-+++ b/sound/aoa/core/gpio-pmf.c
-@@ -74,10 +74,9 @@ static void pmf_handle_notify(struct work_struct *work)
- 	struct gpio_notification *notif =
- 		container_of(work, struct gpio_notification, work.work);
- 
--	mutex_lock(&notif->mutex);
-+	guard(mutex)(&notif->mutex);
- 	if (notif->notify)
- 		notif->notify(notif->data);
--	mutex_unlock(&notif->mutex);
- }
- 
- static void pmf_gpio_init(struct gpio_runtime *rt)
-@@ -154,19 +153,17 @@ static int pmf_set_notify(struct gpio_runtime *rt,
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&notif->mutex);
-+	guard(mutex)(&notif->mutex);
- 
- 	old = notif->notify;
- 
--	if (!old && !notify) {
--		err = 0;
--		goto out_unlock;
--	}
-+	if (!old && !notify)
-+		return 0;
- 
- 	if (old && notify) {
- 		if (old == notify && notif->data == data)
- 			err = 0;
--		goto out_unlock;
-+		return err;
- 	}
- 
- 	if (old && !notify) {
-@@ -178,10 +175,8 @@ static int pmf_set_notify(struct gpio_runtime *rt,
- 	if (!old && notify) {
- 		irq_client = kzalloc(sizeof(struct pmf_irq_client),
- 				     GFP_KERNEL);
--		if (!irq_client) {
--			err = -ENOMEM;
--			goto out_unlock;
--		}
-+		if (!irq_client)
-+			return -ENOMEM;
- 		irq_client->data = notif;
- 		irq_client->handler = pmf_handle_notify_irq;
- 		irq_client->owner = THIS_MODULE;
-@@ -192,17 +187,14 @@ static int pmf_set_notify(struct gpio_runtime *rt,
- 			printk(KERN_ERR "snd-aoa: gpio layer failed to"
- 					" register %s irq (%d)\n", name, err);
- 			kfree(irq_client);
--			goto out_unlock;
-+			return err;
- 		}
- 		notif->gpio_private = irq_client;
- 	}
- 	notif->notify = notify;
- 	notif->data = data;
- 
--	err = 0;
-- out_unlock:
--	mutex_unlock(&notif->mutex);
--	return err;
-+	return 0;
- }
- 
- static int pmf_get_detect(struct gpio_runtime *rt,
 diff --git a/sound/aoa/soundbus/i2sbus/pcm.c b/sound/aoa/soundbus/i2sbus/pcm.c
-index a9e502a6cdeb8..086c49d457c34 100644
+index 086c49d457c34..59cba5cb29434 100644
 --- a/sound/aoa/soundbus/i2sbus/pcm.c
 +++ b/sound/aoa/soundbus/i2sbus/pcm.c
-@@ -79,11 +79,10 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
- 	u64 formats = 0;
- 	unsigned int rates = 0;
- 	struct transfer_info v;
--	int result = 0;
- 	int bus_factor = 0, sysclock_factor = 0;
- 	int found_this;
+@@ -383,6 +383,9 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 	/* set stop command */
+ 	command->command = cpu_to_le16(DBDMA_STOP);
  
--	mutex_lock(&i2sdev->lock);
-+	guard(mutex)(&i2sdev->lock);
- 
- 	get_pcm_info(i2sdev, in, &pi, &other);
- 
-@@ -92,8 +91,7 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
- 
- 	if (pi->active) {
- 		/* alsa messed up */
--		result = -EBUSY;
--		goto out_unlock;
-+		return -EBUSY;
- 	}
- 
- 	/* we now need to assign the hw */
-@@ -117,10 +115,8 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
- 			ti++;
- 		}
- 	}
--	if (!masks_inited || !bus_factor || !sysclock_factor) {
--		result = -ENODEV;
--		goto out_unlock;
--	}
-+	if (!masks_inited || !bus_factor || !sysclock_factor)
-+		return -ENODEV;
- 	/* bus dependent stuff */
- 	hw->info = SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_MMAP_VALID |
- 		   SNDRV_PCM_INFO_INTERLEAVED | SNDRV_PCM_INFO_RESUME |
-@@ -194,15 +190,12 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
- 	hw->periods_max = MAX_DBDMA_COMMANDS;
- 	err = snd_pcm_hw_constraint_integer(pi->substream->runtime,
- 					    SNDRV_PCM_HW_PARAM_PERIODS);
--	if (err < 0) {
--		result = err;
--		goto out_unlock;
--	}
-+	if (err < 0)
-+		return err;
- 	list_for_each_entry(cii, &sdev->codec_list, list) {
- 		if (cii->codec->open) {
- 			err = cii->codec->open(cii, pi->substream);
- 			if (err) {
--				result = err;
- 				/* unwind */
- 				found_this = 0;
- 				list_for_each_entry_reverse(rev,
-@@ -214,14 +207,12 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
- 					if (rev == cii)
- 						found_this = 1;
- 				}
--				goto out_unlock;
-+				return err;
- 			}
- 		}
- 	}
- 
-- out_unlock:
--	mutex_unlock(&i2sdev->lock);
--	return result;
-+	return 0;
- }
- 
- #undef CHECK_RATE
-@@ -232,7 +223,7 @@ static int i2sbus_pcm_close(struct i2sbus_dev *i2sdev, int in)
- 	struct pcm_info *pi;
- 	int err = 0, tmp;
- 
--	mutex_lock(&i2sdev->lock);
-+	guard(mutex)(&i2sdev->lock);
- 
- 	get_pcm_info(i2sdev, in, &pi, NULL);
- 
-@@ -246,7 +237,6 @@ static int i2sbus_pcm_close(struct i2sbus_dev *i2sdev, int in)
- 
- 	pi->substream = NULL;
- 	pi->active = 0;
--	mutex_unlock(&i2sdev->lock);
- 	return err;
- }
- 
-@@ -330,33 +320,26 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 	int input_16bit;
- 	struct pcm_info *pi, *other;
- 	int cnt;
--	int result = 0;
- 	unsigned int cmd, stopaddr;
- 
--	mutex_lock(&i2sdev->lock);
-+	guard(mutex)(&i2sdev->lock);
- 
- 	get_pcm_info(i2sdev, in, &pi, &other);
- 
--	if (pi->dbdma_ring.running) {
--		result = -EBUSY;
--		goto out_unlock;
--	}
-+	if (pi->dbdma_ring.running)
-+		return -EBUSY;
- 	if (pi->dbdma_ring.stopping)
- 		i2sbus_wait_for_stop(i2sdev, pi);
- 
--	if (!pi->substream || !pi->substream->runtime) {
--		result = -EINVAL;
--		goto out_unlock;
--	}
-+	if (!pi->substream || !pi->substream->runtime)
-+		return -EINVAL;
- 
- 	runtime = pi->substream->runtime;
- 	pi->active = 1;
- 	if (other->active &&
- 	    ((i2sdev->format != runtime->format)
--	     || (i2sdev->rate != runtime->rate))) {
--		result = -EINVAL;
--		goto out_unlock;
--	}
-+	     || (i2sdev->rate != runtime->rate)))
-+		return -EINVAL;
- 
- 	i2sdev->format = runtime->format;
- 	i2sdev->rate = runtime->rate;
-@@ -412,10 +395,8 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 			bi.bus_factor = cii->codec->bus_factor;
- 			break;
- 		}
--		if (!bi.bus_factor) {
--			result = -ENODEV;
--			goto out_unlock;
++	cii = list_first_entry(&i2sdev->sound.codec_list,
++			       struct codec_info_item, list);
++
+ 	/* ok, let's set the serial format and stuff */
+ 	switch (runtime->format) {
+ 	/* 16 bit formats */
+@@ -390,13 +393,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 	case SNDRV_PCM_FORMAT_U16_BE:
+ 		/* FIXME: if we add different bus factors we need to
+ 		 * do more here!! */
+-		bi.bus_factor = 0;
+-		list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
+-			bi.bus_factor = cii->codec->bus_factor;
+-			break;
 -		}
-+		if (!bi.bus_factor)
-+			return -ENODEV;
+-		if (!bi.bus_factor)
+-			return -ENODEV;
++		bi.bus_factor = cii->codec->bus_factor;
  		input_16bit = 1;
  		break;
  	case SNDRV_PCM_FORMAT_S32_BE:
-@@ -426,8 +407,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 		input_16bit = 0;
- 		break;
- 	default:
--		result = -EINVAL;
--		goto out_unlock;
-+		return -EINVAL;
+@@ -410,10 +407,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 		return -EINVAL;
  	}
  	/* we assume all sysclocks are the same! */
- 	list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
-@@ -438,10 +418,8 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+-	list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
+-		bi.sysclock_factor = cii->codec->sysclock_factor;
+-		break;
+-	}
++	bi.sysclock_factor = cii->codec->sysclock_factor;
+ 
  	if (clock_and_divisors(bi.sysclock_factor,
  			       bi.bus_factor,
- 			       runtime->rate,
--			       &sfr) < 0) {
--		result = -EINVAL;
--		goto out_unlock;
--	}
-+			       &sfr) < 0)
-+		return -EINVAL;
- 	switch (bi.bus_factor) {
- 	case 32:
- 		sfr |= I2S_SF_SERIAL_FORMAT_I2S_32X;
-@@ -457,10 +435,8 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 		int err = 0;
- 		if (cii->codec->prepare)
- 			err = cii->codec->prepare(cii, &bi, pi->substream);
--		if (err) {
--			result = err;
--			goto out_unlock;
--		}
-+		if (err)
-+			return err;
- 	}
- 	/* codecs are fine with it, so set our clocks */
- 	if (input_16bit)
-@@ -476,7 +452,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 	/* not locking these is fine since we touch them only in this function */
- 	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
- 	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
--		goto out_unlock;
-+		return 0;
- 
- 	/* let's notify the codecs about clocks going away.
- 	 * For now we only do mastering on the i2s cell... */
-@@ -514,9 +490,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 		if (cii->codec->switch_clock)
- 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
- 
-- out_unlock:
--	mutex_unlock(&i2sdev->lock);
--	return result;
-+	return 0;
- }
- 
- #ifdef CONFIG_PM
 -- 
 2.53.0
 
