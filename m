@@ -1,228 +1,178 @@
-Return-Path: <stable+bounces-242327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OANDHSKN9Gn/CAIAu9opvQ
-	(envelope-from <stable+bounces-242327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:23:14 +0200
+	id yA4KKZKP9Gn/CAIAu9opvQ
+	(envelope-from <stable+bounces-242328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:33:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7494ABFB8
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:23:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B22A4AC0E0
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93481300BE3C
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:22:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C877730C7097
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B133A75BC;
-	Fri,  1 May 2026 11:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E68D39F179;
+	Fri,  1 May 2026 11:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sQWFvU2p"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bCKyhwHX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2843A6B75
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5220636AB72
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777634436; cv=none; b=jLj1PUS0sEUMz5fKc0rNyqX77OGtEd3+e9ovhO+bFrwJQn7qQz28JIZdG9aOa5kDYDDOGAfnNbi4Ml7Fho9iNhzI4U5fuWZCVY3RKq8fJjcjpQ1jMA4RD4Go/V1uGh2FPddel6ynpnipNkN5Y6dnfasoKFDqmPt2LfPFPsDIMnY=
+	t=1777634514; cv=none; b=A+kRCcWNB8EhFjhOGebSVy3cYjYrsA/vbAY1NwZ6YWcBVPPU+UQy3EXpgJpkfEzj/WMAY8JH2bwfixGkxqbZbr039BtCfF66CGPSmPJpkeM205QtZHP4EQC+jU6+9A1RelD7ZjCpj+Gcd+TwOsH8eByoZ7hfrCtDukLvtNCvoR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777634436; c=relaxed/simple;
-	bh=LwvNSAXXnSWzoHT3Wi0kz3QpPPutFGXNvtJ3F3liFfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PckPYoy0fM51+TxUObGA8QvW7gr+unlPaG1/JFZyOaTUlJPj8mGl9eR0UvY4HzyCbcEGiu+niDPm23nPHC2uJ3bh9njal3HPBCFut0K2j+U5nX5XIJXP3DT5FbuY2ZYhT0mkfMSWw0a139WHzzt1PfkLP8EKa9Q4BAwUhRYuIpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sQWFvU2p; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-835066ef130so898216b3a.1
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:20:34 -0700 (PDT)
+	s=arc-20240116; t=1777634514; c=relaxed/simple;
+	bh=qUux5fWnaB7vwSuaIK7yJ/xoTOk1kHLhaO5Fj32opLY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=T1/S8YWRlHPF5MSierIWSH1xZPfh45DNnF0ntDWkgwWAtCe8ATfwt106pst/Pdro0JkiXS0c8ql/vkoRWHq9LScTcx//tZX10qKCSHm+JQhlHaHdg3m9Kr4HFN1qVl5KjFIi74et9r/9RGf6jfVnMYVmHEBxX8T2x/TwWlBdrI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bCKyhwHX; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4411a36715dso1164000f8f.2
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:21:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777634433; x=1778239233; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZRWgA5OmDOPPbc7jmvxeovxvP/jnc1UOCkDIWNmHkgQ=;
-        b=sQWFvU2psz4r2lMyz69t4CeGPFUyCjKlSTMq4Int0RN//syyy3lw4JwO2RnvVjW4Wl
-         +5mJSF7d2AgRgy+HV6EmsNaeaJP7nmC3tam20fRTTk0/08G3lHjyWq0/pCKSmHQ4Hf9k
-         +WUBabu0SUFXTFVMdrp7ejYcdI763Ce9aCRyuAFo9/L2acF04NhbwtF7h4zHc9egItf0
-         ZiVCum/2Af1rpdHgHfSubEcAq5Ac8p+nD8F40ZZfeey/p1yEMOFga2sl3GYLreISLnTI
-         pjSDR1Eclsw12Tuw64xCao7oGGiiWWu/7f9O9GgsL+YHXv7v2Z36VerczQuQwNppL2na
-         96nw==
+        d=google.com; s=20251104; t=1777634511; x=1778239311; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OsvmNiIFOjSLSp4rcDSw+qNHN7ZNglz3VqzWWNlV7vU=;
+        b=bCKyhwHXoa2an2ZvtTZAWgZAckjcVwu/L0Pdj8xcKdZXzyndJz6qFK19tNwHY/VKKN
+         GlihEssAAdZGopoW446Jx8DGi6wMSYAsH5XYjmLZyL7sBeJDqAcLAkfoqZdzsHEHaXqt
+         xaqjz4rq2+nbfe4zUnLLY4q8xLVJgRX+pi7gTSRAbriIjHeE5v/otY2AYdT6+DW1yl1d
+         aJuBaG7gbx2VO/MkHr/8+J7IHM+6TxJx8HXN6h+bvZu31Vox5UNgLpfLKJ3e+i413Cfo
+         4AaNctjRnYjzA1eohtiG6DvrRF/aQMscuJEjVLmDvFVQkx6nQPUN+S1VTVdIdoouuc3T
+         AIew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777634433; x=1778239233;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZRWgA5OmDOPPbc7jmvxeovxvP/jnc1UOCkDIWNmHkgQ=;
-        b=LHHDB3jMlcAfVuC/QIJjAXXaCLubDZTjej/DF38SGr781gHKNkwLyuBYkjonVAdNz2
-         zKk4AMqi5lC0MYAO0btNXLo8+JoCgF6zLQGopBAhczkFtMCcwOQDxGzfoL4zImg9mYvq
-         3Oqf2p0AdVHyt/qY4YWJR4EK1jIgQsb1rS1aRvzSN+3fa4yzIPtXP1oGR2WrlJuVddCf
-         j+LEDXyQggnbPb4U+bylruopGsIsA+OEXFKt+toFB6L+BBokcEbQT1YrFmRR8BRj9rOQ
-         YbgpAXXCACVcbInfzMzEgQqqzT0aK3QgqCgcmQ+x0mIjiq/pt/EjOOOWqYlJ+wIzZRb9
-         jQmw==
-X-Forwarded-Encrypted: i=1; AFNElJ8SUF7BbahBUHJs4wdkifqTe0mWCWASa9uXYX9YxUASLQe2l5kvWk0FgM7CsJXgQr/cVvJ6DxE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyL3I0SrHyxJswIyObmP7cj3Y54jFTc6o5BeMQ0z/aQe+dmk9wr
-	2B1BYM2AyMKsrf2HRTfmAZJao5/E2alKttop5OV+BVrH9RnLpQjuMUq+
-X-Gm-Gg: AeBDievMDX2wXC5kSjsA3Ge1TvMnWUXoKbqYgjEEaxr5/jXyMmtstEkLlVTVJkGtn7E
-	5W/5h4rePXX//hociIvPOx8iqCMWDDyrqbKlCBQs+p7rjUBnXV7Nx1148JKekFk+4ose4PzFyFg
-	69/oLhFxmxNiAQI26Qr8GRA67+jt4AJDp7JihzycEyzKyeg51IyUPCQFKW1ZR4gxsa3psX+Kwjq
-	VVsD893XqI2e2ODxG8vCjq77EBFU54UTKV2/tO9SH/xfYkigoPps+gj2YSM8RylpHvyT9Fibt1C
-	rCAcPS5QDJJfsZ7qRTx2iGAdmwH5j2A86p3sHFR1pq7M5KF43EbCF8DUnvsI5pIAaSfk7f5hJlz
-	JphuON/RQOPf4w79Xa1HA5JxJyZKqBEWCT7IomlYaoYYavwo35ZYnHPsOgcvRMk1ukKCwIL1Nwo
-	Z8+4c4dUebjxGrYf5PT9QM5qtowlc+A8oSrr6rad2SRNJ38XnL/6QyNBskOIJXzRiZ
-X-Received: by 2002:a05:6a00:1794:b0:823:1c5f:1c43 with SMTP id d2e1a72fcca58-8351a570ea0mr2916454b3a.36.1777634433437;
-        Fri, 01 May 2026 04:20:33 -0700 (PDT)
-Received: from sprasad-dev1.corp.microsoft.com ([167.220.110.216])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8351587db67sm2331922b3a.13.2026.05.01.04.20.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 04:20:32 -0700 (PDT)
-From: nspmangalore@gmail.com
-X-Google-Original-From: sprasad@microsoft.com
-To: linux-cifs@vger.kernel.org,
-	smfrench@gmail.com,
-	pc@manguebit.org,
-	bharathsm@microsoft.com,
-	dhowells@redhat.com,
-	henrique.carvalho@suse.com,
-	ematsumiya@suse.de
-Cc: Shyam Prasad N <sprasad@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 03/19] cifs: invalidate cfid on unlink/rename/rmdir
-Date: Fri,  1 May 2026 16:50:06 +0530
-Message-ID: <20260501112023.338005-3-sprasad@microsoft.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260501112023.338005-1-sprasad@microsoft.com>
-References: <20260501112023.338005-1-sprasad@microsoft.com>
+        d=1e100.net; s=20251104; t=1777634511; x=1778239311;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OsvmNiIFOjSLSp4rcDSw+qNHN7ZNglz3VqzWWNlV7vU=;
+        b=QI28aQRga4mnByi69aZQQLhTvQAzqfmkl9mRqhnbvgmNzGXGzGi67Z3M3FY6LkeIZY
+         jOf6hlCKbAV146yyKtHAkzno8O6w7/wOxC4lYJJbrINBGsRMzr31lKXkv0vzjEduIpvI
+         ijVDmTuKfjHUoE3l/gcZasQYUu/kx3n+VKp3VpuBLwFgqTCySSwX6z4SO5ovpwr9SOfm
+         rJgZFw1P5+s/wyMBxzXe77PK+oUrKaPHe31yc9P9qnSPdzDd8slVStqw7KGiJbesyGWp
+         scfN/Xa1lm5rngeZ9RDpNP2dUTD9QAPwKXdAVcamXMQ4cIMIAmjVTSQO2vGTDnUQ2qGB
+         XAcQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/gyhlLsd1S83yegjxdSaocDI9Ziz6KI4e6cq0eYTcaOBx7mKpIHBPeihETyb6n8gL7mo+8h14=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNGvwkVceafANsJb+Hd9g2FsvlrqA3dggMw4iRxOrxaR1PVOIW
+	by1thmvzXPqz7nFVOLQ2pWGcKDlJgnM0LhPieLH4SmQz3Gk8bJhYv2tzmPmJLX3KfsN+Ycgzgv/
+	gog==
+X-Received: from wrbgg9.prod.google.com ([2002:a05:6000:2f89:b0:449:ba46:e362])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2f8a:b0:441:1cf9:4f06
+ with SMTP id ffacd0b85a97d-4493fed64c0mr11269061f8f.31.1777634510466; Fri, 01
+ May 2026 04:21:50 -0700 (PDT)
+Date: Fri,  1 May 2026 12:21:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B7494ABFB8
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260501112149.2824881-1-tabba@google.com>
+Subject: [PATCH v2 0/6] KVM: arm64: EL2 synchronisation and pKVM stage-2 error
+ propagation fixes
+From: Fuad Tabba <tabba@google.com>
+To: maz@kernel.org, oliver.upton@linux.dev
+Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	qperret@google.com, vdonnefort@google.com, tabba@google.com, 
+	catalin.marinas@arm.com, will@kernel.org, yaoyuan@linux.alibaba.com, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 2B22A4AC0E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242327-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,manguebit.org,microsoft.com,redhat.com,suse.com,suse.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-242328-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+Hi folks,
 
-Today we do not invalidate the cached_dirent or the entire
-parent cfid when a dentry in a dir has been removed/moved.
+V2 of the kvm/arm64 audit fixes [1].
 
-This change invalidates the parent cfid so that we don't serve
-directory contents from the cache.
+Changes since v1:
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
----
- fs/smb/client/inode.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+    Patch 1 (SCTLR_EL2.EIS|EOS): Fixes: tag corrected to 0a35bd285f43
+    ("arm64: Convert SCTLR_EL2 to sysreg infrastructure"); the commit
+    message now explains that the conversion auto-generated
+    SCTLR_EL2_RES1 to UL(0).  Code unchanged.
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 888f9e35f14b8..f0b76670b0921 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -28,6 +28,23 @@
- #include "cached_dir.h"
- #include "reparse.h"
- 
-+static void cifs_invalidate_cached_dir(struct cifs_tcon *tcon,
-+				       struct dentry *parent)
-+{
-+	struct cached_fid *parent_cfid = NULL;
-+
-+	if (!tcon || !parent)
-+		return;
-+
-+	if (!open_cached_dir_by_dentry(tcon, parent, &parent_cfid)) {
-+		mutex_lock(&parent_cfid->dirents.de_mutex);
-+		parent_cfid->dirents.is_valid = false;
-+		parent_cfid->dirents.is_failed = true;
-+		mutex_unlock(&parent_cfid->dirents.de_mutex);
-+		close_cached_dir(parent_cfid);
-+	}
-+}
-+
- /*
-  * Set parameters for the netfs library
-  */
-@@ -2067,6 +2084,9 @@ static int __cifs_unlink(struct inode *dir, struct dentry *dentry, bool sillyren
- 		cifs_set_file_info(inode, attrs, xid, full_path, origattr);
- 
- out_reval:
-+	if (!rc && dentry->d_parent)
-+		cifs_invalidate_cached_dir(tcon, dentry->d_parent);
-+
- 	if (inode) {
- 		cifs_inode = CIFS_I(inode);
- 		cifs_inode->time = 0;	/* will force revalidate to get info
-@@ -2378,7 +2398,6 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
- 	}
- 
- 	rc = server->ops->rmdir(xid, tcon, full_path, cifs_sb);
--	cifs_put_tlink(tlink);
- 
- 	cifsInode = CIFS_I(d_inode(direntry));
- 
-@@ -2388,6 +2407,8 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
- 		i_size_write(d_inode(direntry), 0);
- 		clear_nlink(d_inode(direntry));
- 		spin_unlock(&d_inode(direntry)->i_lock);
-+		if (direntry->d_parent)
-+			cifs_invalidate_cached_dir(tcon, direntry->d_parent);
- 	}
- 
- 	/* force revalidate to go get info when needed */
-@@ -2402,6 +2423,7 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
- 
- 	inode_set_ctime_current(d_inode(direntry));
- 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
-+	cifs_put_tlink(tlink);
- 
- rmdir_exit:
- 	free_dentry_path(page);
-@@ -2668,6 +2690,12 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 	}
- 
- 	/* force revalidate to go get info when needed */
-+	if (!rc) {
-+		cifs_invalidate_cached_dir(tcon, source_dentry->d_parent);
-+		if (target_dentry->d_parent != source_dentry->d_parent)
-+			cifs_invalidate_cached_dir(tcon, target_dentry->d_parent);
-+	}
-+
- 	CIFS_I(source_dir)->time = CIFS_I(target_dir)->time = 0;
- 
- cifs_rename_exit:
+    Patches 2-3 (NULL vcpu guard, __deactivate_fgt typo): unchanged.
+
+    Patch 4 (new): Seed selftest_vcpu's memcache to mirror
+    hyp-main.c's pkvm_refill_memcache() flow; required by the
+    pre-check in patches 5-6.
+
+    Patches 5-6 (host->guest share/donate, formerly v1 patches 5-6):
+    reworked to pre-check the vcpu memcache against
+    kvm_mmu_cache_min_pages() during the existing pre-check pass,
+    before any state mutation.  The WARN_ON() around
+    kvm_pgtable_stage2_map() then asserts an invariant the pre-check
+    pass establishes, rather than swallowing a reachable -ENOMEM.
+
+Dropped since v1:
+
+    - Patch 2 (HCR_EL2 sync): failure path not reachable.
+    - Patches 7-8 (guest->host share/unshare): the stage-2 map cannot
+      fail at those call sites (the leaf already exists).
+
+Carried `Reviewed-by` tag (thanks!) and added `Assisted-by:` tags.
+
+Note that with `review-prompts` in the `Assisted-by:` tags, I am
+referring to subsystem guides that I added to the base prompts [2],
+which I plan submit for upstreaming.
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/20260428103008.696141-1-tabba@google.com/
+[2] https://github.com/masoncl/review-prompts
+
+Fuad Tabba (6):
+  KVM: arm64: Make EL2 exception entry and exit context-synchronization
+    events
+  KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
+  KVM: arm64: Fix __deactivate_fgt macro parameter typo
+  KVM: arm64: Seed pkvm_ownership_selftest vcpu memcache
+  KVM: arm64: Pre-check vcpu memcache for host->guest share
+  KVM: arm64: Pre-check vcpu memcache for host->guest donate
+
+ arch/arm64/include/asm/sysreg.h         |  2 +-
+ arch/arm64/kvm/hyp/include/hyp/switch.h |  2 +-
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c   | 24 ++++++++++++++++++++++++
+ arch/arm64/kvm/hyp/nvhe/pkvm.c          | 16 +++++++++++++++-
+ arch/arm64/kvm/hyp/vhe/switch.c         |  3 ++-
+ 5 files changed, 43 insertions(+), 4 deletions(-)
+
 -- 
-2.43.0
+2.54.0.545.g6539524ca2-goog
 
 
