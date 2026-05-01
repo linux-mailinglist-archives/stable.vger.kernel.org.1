@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBIqG0uB9GmXBwIAu9opvQ
-	(envelope-from <stable+bounces-242274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:32:43 +0200
+	id UNWdD2eH9Gl3CAIAu9opvQ
+	(envelope-from <stable+bounces-242275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:58:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1722F4ABA9F
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:32:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8217D4ABCAD
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 185183017BC5
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 10:32:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE219300D33F
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 10:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430493859DC;
-	Fri,  1 May 2026 10:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FA33932CC;
+	Fri,  1 May 2026 10:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1xOt5tc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axtMz8v8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0765B2C0323
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 10:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15ED5392835
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 10:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777631559; cv=none; b=aKU67q8340IQKP4JWM1dyvMyO/LSRTN8BV/S9hnufQW8SUvSVztmaDFabBO7OETefBSm46nCFC4y0tXvfq3OZCABmzLvUtorSCmXLV1qXFzgfPFry2AhuqCPI54cSNE9fCDjXIB0zEtxjqj2KpxjXQSBxIWamr6NjKWPgo02p+s=
+	t=1777633115; cv=none; b=sJhaQoJ7UDz/cypsJLgvMzWTa5HPa6NWxNbuILHJMawXOtvwbn9ExV7PJ/QdCAF//b60fBwtpEnOG8AgW5Giw6KWEP3g1s9xbURLBqKag66tNMurQNp5RpjMiC2/+A3Uz0a2vgUfbTiAJNzmPQXS0ocphNaXyxUWDk4yQuAc1r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777631559; c=relaxed/simple;
-	bh=ZmlbbtX3kBBZdMs07glerMqKz7ltYAQ3hEPfMx7AILc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Rd7Dairfkms+fV0/LwzF07RYj1IpQr3amPiQhhVIMXnW6awsVR8nOafXsAHqUwuPCRxjdaQHnNNa0uL3F4sasYeJMUgFOuU9J+aEhmVbQaU7cXdd9cLtIy8N/IcwW4jjRT8GokORa2+dkFJQl+13nagOSQOEewCFLdoJdQP+BW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1xOt5tc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7FAC2BCB4;
-	Fri,  1 May 2026 10:32:38 +0000 (UTC)
+	s=arc-20240116; t=1777633115; c=relaxed/simple;
+	bh=cDzH5zaWQqLimFkQWA4aRNLP/V3LVK58GiNtUmWX++I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U8bXbVY7JUvNFKlVc4xhCNJXIJ6Qns7ZOLmhwqmvWWiXP2tm04nXOFUuid5b+x6FlAma1RFfmA0dumX5IAAHJMhG2LDeBjWDM72n6phX8o7Eq6kn2iAy2GboObSy1EzAllw2VsqIlznR60e/ByDL0ZDpZjezwmTzq+Yc+GG5FYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axtMz8v8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EAFC2BCB4;
+	Fri,  1 May 2026 10:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777631558;
-	bh=ZmlbbtX3kBBZdMs07glerMqKz7ltYAQ3hEPfMx7AILc=;
+	s=korg; t=1777633114;
+	bh=cDzH5zaWQqLimFkQWA4aRNLP/V3LVK58GiNtUmWX++I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=p1xOt5tchXtDGBlLADB1bVYbdZfCvoDsjQpVDrB4ilpydUjh9ih1bQUHLZXoIf3o0
-	 JFcHmlOzIIHUdjKTlMN6FvfMfbqvEoc1jwZil8IaGcct2DXNBUmasLa+0K8IKNoMit
-	 +f8J3DyAgMj7ZxXWClwL5JL3iS0YF6w27Y5rYNcc=
-Subject: FAILED: patch "[PATCH] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()" failed to apply to 5.10-stable tree
-To: thorsten.blum@linux.dev,tiwai@suse.de
+	b=axtMz8v8cJn52unazb2UsIQ8DfjMGelAAZZj7dI0c0PNp2d9weHK08ohFQamI7p8J
+	 uJ88v5moOxgwG3xUfMQirBsjQpET7eLNaTbdCNKdvDaKzajMkYK0A5/1EynnI2qqxV
+	 afRP5ANivfjeevDIgNotfQO6Lyq21RB1lUjUcH70=
+Subject: FAILED: patch "[PATCH] erofs: fix the out-of-bounds nameoff handling for trailing" failed to apply to 5.15-stable tree
+To: xiang@kernel.org,chao@kernel.org,danisjiang@gmail.com,hsiangkao@linux.alibaba.com,moonafterrain@outlook.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 01 May 2026 12:32:22 +0200
-Message-ID: <2026050122-sanitary-moonrise-f13e@gregkh>
+Date: Fri, 01 May 2026 12:58:32 +0200
+Message-ID: <2026050132-undercoat-undercoat-0f5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1722F4ABA9F
+X-Rspamd-Queue-Id: 8217D4ABCAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,44 +62,45 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242274-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242275-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linux.alibaba.com,outlook.com];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,sashiko.dev:url,outlook.com:email,gregkh:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x fd7df93013c5118812e63a52635dc6c3a805a1de
+git cherry-pick -x d18a3b5d337fa412a38e776e6b4b857a58836575
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050122-sanitary-moonrise-f13e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050132-undercoat-undercoat-0f5b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,79 +112,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fd7df93013c5118812e63a52635dc6c3a805a1de Mon Sep 17 00:00:00 2001
-From: Thorsten Blum <thorsten.blum@linux.dev>
-Date: Tue, 10 Mar 2026 11:29:20 +0100
-Subject: [PATCH] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()
+From d18a3b5d337fa412a38e776e6b4b857a58836575 Mon Sep 17 00:00:00 2001
+From: Gao Xiang <xiang@kernel.org>
+Date: Tue, 21 Apr 2026 15:59:52 +0800
+Subject: [PATCH] erofs: fix the out-of-bounds nameoff handling for trailing
+ dirents
 
-In i2sbus_resume(), skip devices with an empty codec list, which avoids
-using an uninitialized 'sysclock_factor' in the 32-bit format path in
-i2sbus_pcm_prepare().
+Currently we already have boundary-checks for nameoffs, but the trailing
+dirents are special since the namelens are calculated with strnlen()
+with unchecked nameoffs.
 
-In i2sbus_pcm_prepare(), replace two list_for_each_entry() loops with a
-single list_first_entry() now that the codec list is guaranteed to be
-non-empty by all callers.
+If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
+maxsize - nameoff can underflow, causing strnlen() to read past the
+directory block.
 
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+nameoff0 should also be verified to be a multiple of
+`sizeof(struct erofs_dirent)` as well [1].
+
+[1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
+
+Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20260310102921.210109-3-thorsten.blum@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
 
-diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
-index f974b96e98cd..22c956267f4e 100644
---- a/sound/aoa/soundbus/i2sbus/core.c
-+++ b/sound/aoa/soundbus/i2sbus/core.c
-@@ -405,6 +405,9 @@ static int i2sbus_resume(struct macio_dev* dev)
- 	int err, ret = 0;
+diff --git a/fs/erofs/dir.c b/fs/erofs/dir.c
+index e5132575b9d3..4aa52a5f204a 100644
+--- a/fs/erofs/dir.c
++++ b/fs/erofs/dir.c
+@@ -19,20 +19,18 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+ 		const char *de_name = (char *)dentry_blk + nameoff;
+ 		unsigned int de_namelen;
  
- 	list_for_each_entry(i2sdev, &control->list, item) {
-+		if (list_empty(&i2sdev->sound.codec_list))
-+			continue;
-+
- 		/* reset i2s bus format etc. */
- 		i2sbus_pcm_prepare_both(i2sdev);
+-		/* the last dirent in the block? */
+-		if (de + 1 >= end)
+-			de_namelen = strnlen(de_name, maxsize - nameoff);
+-		else
++		/* non-trailing dirent in the directory block? */
++		if (de + 1 < end)
+ 			de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
++		else if (maxsize <= nameoff)
++			goto err_bogus;
++		else
++			de_namelen = strnlen(de_name, maxsize - nameoff);
  
-diff --git a/sound/aoa/soundbus/i2sbus/pcm.c b/sound/aoa/soundbus/i2sbus/pcm.c
-index aff99003d833..97c807e67d56 100644
---- a/sound/aoa/soundbus/i2sbus/pcm.c
-+++ b/sound/aoa/soundbus/i2sbus/pcm.c
-@@ -383,6 +383,9 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 	/* set stop command */
- 	command->command = cpu_to_le16(DBDMA_STOP);
- 
-+	cii = list_first_entry(&i2sdev->sound.codec_list,
-+			       struct codec_info_item, list);
-+
- 	/* ok, let's set the serial format and stuff */
- 	switch (runtime->format) {
- 	/* 16 bit formats */
-@@ -390,13 +393,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 	case SNDRV_PCM_FORMAT_U16_BE:
- 		/* FIXME: if we add different bus factors we need to
- 		 * do more here!! */
--		bi.bus_factor = 0;
--		list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
--			bi.bus_factor = cii->codec->bus_factor;
--			break;
+-		/* a corrupted entry is found */
+-		if (nameoff + de_namelen > maxsize ||
+-		    de_namelen > EROFS_NAME_LEN) {
+-			erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+-				  EROFS_I(dir)->nid);
+-			DBG_BUGON(1);
+-			return -EFSCORRUPTED;
 -		}
--		if (!bi.bus_factor)
--			return -ENODEV;
-+		bi.bus_factor = cii->codec->bus_factor;
- 		input_16bit = 1;
- 		break;
- 	case SNDRV_PCM_FORMAT_S32_BE:
-@@ -410,10 +407,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 		return -EINVAL;
- 	}
- 	/* we assume all sysclocks are the same! */
--	list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
--		bi.sysclock_factor = cii->codec->sysclock_factor;
--		break;
--	}
-+	bi.sysclock_factor = cii->codec->sysclock_factor;
++		/* a corrupted entry is found (including negative namelen) */
++		if (!in_range32(de_namelen, 1, EROFS_NAME_LEN) ||
++		    nameoff + de_namelen > maxsize)
++			goto err_bogus;
  
- 	if (clock_and_divisors(bi.sysclock_factor,
- 			       bi.bus_factor,
+ 		if (!dir_emit(ctx, de_name, de_namelen,
+ 			      erofs_nid_to_ino64(EROFS_SB(dir->i_sb),
+@@ -42,6 +40,10 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+ 		ctx->pos += sizeof(struct erofs_dirent);
+ 	}
+ 	return 0;
++err_bogus:
++	erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
++	DBG_BUGON(1);
++	return -EFSCORRUPTED;
+ }
+ 
+ static int erofs_readdir(struct file *f, struct dir_context *ctx)
+@@ -88,7 +90,7 @@ static int erofs_readdir(struct file *f, struct dir_context *ctx)
+ 		}
+ 
+ 		nameoff = le16_to_cpu(de->nameoff);
+-		if (nameoff < sizeof(struct erofs_dirent) || nameoff >= bsz) {
++		if (!nameoff || nameoff >= bsz || (nameoff % sizeof(*de))) {
+ 			erofs_err(sb, "invalid de[0].nameoff %u @ nid %llu",
+ 				  nameoff, EROFS_I(dir)->nid);
+ 			err = -EFSCORRUPTED;
 
 
