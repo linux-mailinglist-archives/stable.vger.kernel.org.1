@@ -1,206 +1,229 @@
-Return-Path: <stable+bounces-242300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DocIICI9Gl3CAIAu9opvQ
-	(envelope-from <stable+bounces-242300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:03:28 +0200
+	id QFlaINyI9Gl3CAIAu9opvQ
+	(envelope-from <stable+bounces-242301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:05:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048704ABD8F
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:03:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B8C4ABDF7
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:04:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4B9B43016F30
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:03:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 932843008098
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0778739C015;
-	Fri,  1 May 2026 11:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DEA39B488;
+	Fri,  1 May 2026 11:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcQz8oOA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1qeBXEp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342A139B488
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A86F396B76
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777633372; cv=none; b=FS1pZeUrjF67AXSlFjdq3t21yIzTsKmb1dbCakSpDnoyi8CqM0knGzf1ILPNVPCzkDNQJ+Zr99bIhbMJP0GvQ3GXUAIxKHpFJ4ycjl0GFZSPeeSw5DLysq+dkqR4lGvVCEedfg5ugeGrG88d0gUbu+Bqs+a6Wtogfy9fGDHNZ90=
+	t=1777633398; cv=none; b=F94hKvYtwuy01aqZO6Wnlyond+EpHdFfmbk7oAkZCYK6B+QaTzVCx+rF2Sxokz2IJx8ZlAOLChO4Enlf9+y6pmnT72cnFlWckvzdknykx69q+jcqtur+gYM5j+DKOsT9hpxef3OExjuTMsmyZG44bV4tuxlVN3Ou9MU1+BIKM4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777633372; c=relaxed/simple;
-	bh=FO4uYCslB8uw9GgCcf+U9hU9S4PuFGJx/NZIUxdIVlg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kv1qQXY7XhSpjr3tSLBtCiVBB35/eaCNYaf6OvxyYX2uer9abMJs19wAucw/wCGA7gPngd7jYp/zg2XfVqL8UQ18kN+59xpGtWK9/z024ieWi2oGvFB4kwGAkLxkMUqj9nkBJQGCYocHXEVIQ2o9rPGxX7x4xIf+SSTqML5UVvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcQz8oOA; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so17630505e9.0
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:02:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777633370; x=1778238170; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q+0lxbCgi4fdg+cPkHoOKKRDCXmHxPZDe6bIN/WeBEA=;
-        b=AcQz8oOAmxnQUDjm5uUaNVvuuYCpcAtxBNHyQ5Xj1iNUV9bZDTELXiIrcy42birTc1
-         27oVCyfA8lB2jNO2d0x62MKc8by6ZEO+vUQRgHIMxrsZyP5nszSGkkOtkdyQkEsQxluY
-         9osBj66sxJqkt+lNkV6+4K/w5ADr1P2hH72fOxJfdsdq1qLJtXKdTPXtbdLZQ1CfbwPk
-         izek5UGxuUir6t7Kgb3NAnMLEDyIa4k0iB0mh2m2wYSG3Ln0ZzFk7gjENs+5QcQpRnVe
-         tdpFUMpUZxvhN5IOXsa4eFQqFkEnyrLf+CvEK0IwiAfbBuU5J9/fIsLVge0BahnwwtCa
-         sX1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777633370; x=1778238170;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=q+0lxbCgi4fdg+cPkHoOKKRDCXmHxPZDe6bIN/WeBEA=;
-        b=m5JyVkD7GrxTXgFXjV3aVeyXGIsSR/02HhpTHoksnpLt9J1GRcyTXmQLH58fO5mmeZ
-         zO2EQZxtcslTZcQECyzbV3RSV4PDmnI71OFxERqlOar/l374clKzxSKcASwqr+sMeBio
-         YEoJm2Vtb6ODsTdU/Rxm3HtJzPz1OMiAel5pqiLG7lODt83JrC8Kko6KG0Wjgf/9KdES
-         5nGvmrBXPf6CtqmisS9+lvVcXZhPFHG2u57MYHBE1wK/I+CEqEu2oozGuEkXOrZVILLN
-         KXu8GIevsj0nTEwoPrKQ3wxAvBD+4DIIt5EXO1J3A+9XTkJ14NkjANvB6mCiX+Ndg4mh
-         nPMw==
-X-Forwarded-Encrypted: i=1; AFNElJ9dVdpm1bchobyMEj8pxc/CI0UkqjuiOZU3yJcyC/Gv4dlZ2V/xV3svCllr8LWIrWCHvxICtkU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFSm7U0/ZPfUsBlDdOb/Fe2zcb2rlKp2elt5sJQ9uwMWOyB9D4
-	bx3D6QK7B1wjxhsSSHk/DgwyGZaBd5xXSe7Gp3mRTOCPsPFm3Lf+qwM=
-X-Gm-Gg: AeBDievhGtS3zVmwaorqYbWlJetjuI/Rvkpf5wpwpFVxHgVSJcoP+B1x/B3zL+jy++3
-	RIwSjqtABBsgIvwadA9UvG1eBJi8BGYqhbm8RoEoM2jZTAsREqLwmeU/BLqu6130VtDx69QXKoW
-	UzU3esdWPfPXlaVq+/XoiKScvdVPECxo2BG0WqH+IkrdMDmUk6ZNGIuiCJuYso77HhamgFKxWIU
-	bisbXFl26xwBt+b6usEpqefdrGv6u2J9G2Fw3WcttX1JfC4rKl1YfLtGp1DZG9l/97oI88lc3Ua
-	YfWsi3tJjFCOesL1+N20e++hZaTDGML6lU+xSEBiyWvXagOIsz8nWler76fPMbUsmKOKGkaeeWA
-	LGqu0mqxPgeLySwuiSMnUWEoUzOcw/X2arxVW0Kh97ad0iicvNrrEE+LYesrQKQHsz5ak7Y9KWH
-	vSFZRt0umZPX5txg==
-X-Received: by 2002:a05:600c:8710:b0:48a:581c:ead with SMTP id 5b1f17b1804b1-48a844448f9mr115645805e9.10.1777633369516;
-        Fri, 01 May 2026 04:02:49 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb3427fsm79491905e9.0.2026.05.01.04.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 04:02:49 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>,
-	syzbot+61a9d95630970eece39d@syzkaller.appspotmail.com
-Subject: [PATCH 3/3] jffs2: fix GC thread BUG_ON during reconfigure via fspick
-Date: Fri,  1 May 2026 11:02:46 +0000
-Message-ID: <20260501110246.50647-3-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260501110246.50647-1-tristmd@gmail.com>
-References: <20260501110246.50647-1-tristmd@gmail.com>
+	s=arc-20240116; t=1777633398; c=relaxed/simple;
+	bh=WsPB8BlGfPVWDuTNwS3AonC7LXwnCretEqbYZD+NcaY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MfZYWdMcpd/NAQ4CEUog9F8v6ZEj5IiD0GJTOEZ85edyqmftUZPd8T/PbV71WSdCcPb1MsJUKPQ3JiXkSDQkz/5kgYansZGRu5bvmusKrD3h3u5k1dFPic4nNjzCJYuHP4BHLWCJGreApC3lXbk+8dQu/EKCwyc1SXu2a+3OXfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1qeBXEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D747C2BCC4;
+	Fri,  1 May 2026 11:03:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777633397;
+	bh=WsPB8BlGfPVWDuTNwS3AonC7LXwnCretEqbYZD+NcaY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=x1qeBXEpd267R8nk2b1dGFTxeJoz8lIEbIYDw/wh0DRoRyYjlkvyS9wxmIL/S3+hX
+	 RZLGTgb+wjv+rfBZ3fDu/axSe39pJDsdFHILzDahrNiKkOs91PRXFazQQKxq9lNHb4
+	 tX8Uigb7TqgSynIreYJxPMl5dgzkAGmQBfAc6pCc=
+Subject: FAILED: patch "[PATCH] perf annotate: Use jump__delete when freeing LoongArch jumps" failed to apply to 6.18-stable tree
+To: rong.bao@csmantle.top,chenhuacai@kernel.org,kernel@xen0n.name,namhyung@kernel.org,wangrui@loongson.cn
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 01 May 2026 13:03:15 +0200
+Message-ID: <2026050115-composed-stand-38e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 048704ABD8F
+X-Rspamd-Queue-Id: 72B8C4ABDF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242300-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_FROM(0.00)[bounces-242301-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,61a9d95630970eece39d];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email,talencesecurity.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,csmantle.top:email,linux.dev:email]
 
-From: Tristan Madani <tristan@talencesecurity.com>
 
-jffs2_do_remount_fs() uses fc->sb_flags to decide whether to start
-the garbage collection thread.  However, when called via fspick(2)
-followed by fsconfig(FSCONFIG_CMD_RECONFIGURE), fc->sb_flags does
-not reflect the current mount state -- it only contains flags being
-explicitly changed (as indicated by fc->sb_flags_mask).
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-When fspick() is called with flags=0 on a read-only mount,
-fc->sb_flags has SB_RDONLY clear (since SB_RDONLY is not in
-sb_flags_mask).  This causes jffs2_start_garbage_collect_thread()
-to be called even though the filesystem remains read-only.  On the
-second reconfigure, BUG_ON(c->gc_task) fires because the thread
-from the first call is still running.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fix this by computing the effective read-only state using both
-fc->sb_flags and fc->sb_flags_mask.  Also unconditionally call
-jffs2_stop_garbage_collect_thread() before potentially restarting
-it, which is safe when gc_task is NULL and prevents the BUG_ON.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x a355eefc36c4481188249b067832b40a2c45fa5c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050115-composed-stand-38e1@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
-Reported-by: syzbot+61a9d95630970eece39d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=61a9d95630970eece39d
-Tested-by: syzbot+61a9d95630970eece39d@syzkaller.appspotmail.com
-Fixes: ec10a24f10c8f ("vfs: Convert jffs2 to use the new mount API")
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a355eefc36c4481188249b067832b40a2c45fa5c Mon Sep 17 00:00:00 2001
+From: Rong Bao <rong.bao@csmantle.top>
+Date: Mon, 13 Apr 2026 18:03:55 +0800
+Subject: [PATCH] perf annotate: Use jump__delete when freeing LoongArch jumps
+
+Currently, the initialization of loongarch_jump_ops does not contain an
+assignment to its .free field. This causes disasm_line__free() to fall
+through to ins_ops__delete() for LoongArch jump instructions.
+
+ins_ops__delete() will free ins_operands.source.raw and
+ins_operands.source.name, and these fields overlaps with
+ins_operands.jump.raw_comment and ins_operands.jump.raw_func_start.
+Since in loongarch_jump__parse(), these two fields are populated by
+strchr()-ing the same buffer, trying to free them will lead to undefined
+behavior.
+
+This invalid free usually leads to crashes:
+
+        Process 1712902 (perf) of user 1000 dumped core.
+        Stack trace of thread 1712902:
+        #0  0x00007fffef155c58 n/a (libc.so.6 + 0x95c58)
+        #1  0x00007fffef0f7a94 raise (libc.so.6 + 0x37a94)
+        #2  0x00007fffef0dd6a8 abort (libc.so.6 + 0x1d6a8)
+        #3  0x00007fffef145490 n/a (libc.so.6 + 0x85490)
+        #4  0x00007fffef1646f4 n/a (libc.so.6 + 0xa46f4)
+        #5  0x00007fffef164718 n/a (libc.so.6 + 0xa4718)
+        #6  0x00005555583a6764 __zfree (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x106764)
+        #7  0x000055555854fb70 disasm_line__free (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x2afb70)
+        #8  0x000055555853d618 annotated_source__purge (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x29d618)
+        #9  0x000055555852300c __hist_entry__tui_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28300c)
+        #10 0x0000555558526718 do_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x286718)
+        #11 0x000055555852ed94 evsel__hists_browse (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28ed94)
+        #12 0x000055555831fdd0 cmd_report (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x7fdd0)
+        #13 0x000055555839b644 handle_internal_command (/home/csmantle/dist/linux-arch/tools/perf/perf + 0xfb644)
+        #14 0x00005555582fe6ac main (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5e6ac)
+        #15 0x00007fffef0ddd90 n/a (libc.so.6 + 0x1dd90)
+        #16 0x00007fffef0ddf0c __libc_start_main (libc.so.6 + 0x1df0c)
+        #17 0x00005555582fed10 _start (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5ed10)
+        ELF object binary architecture: LoongArch
+
+... and it can be confirmed with Valgrind:
+
+        ==1721834== Invalid free() / delete / delete[] / realloc()
+        ==1721834==    at 0x4EA9014: free (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
+        ==1721834==    by 0x4106287: __zfree (zalloc.c:13)
+        ==1721834==    by 0x42ADC8F: disasm_line__free (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x429B737: annotated_source__purge (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42811EB: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==  Address 0x7d34303 is 35 bytes inside a block of size 62 alloc'd
+        ==1721834==    at 0x4EA59B8: malloc (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
+        ==1721834==    by 0x6B80B6F: strdup (strdup.c:42)
+        ==1721834==    by 0x42AD917: disasm_line__new (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42AE5A3: symbol__disassemble_objdump (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42AF0A7: symbol__disassemble (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x429B3CF: symbol__annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x429C233: symbol__annotate2 (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42804D3: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+
+This patch adds the missing free() specialization in loongarch_jump_ops,
+which prevents disasm_line__free() from invoking the default cleanup
+function.
+
+Fixes: fb7fd2a14a503b9a ("perf annotate: Move raw_comment and raw_func_start fields out of 'struct ins_operands'")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
- fs/jffs2/fs.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+Cc: WANG Rui <wangrui@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: loongarch@lists.linux.dev
+Signed-off-by: Rong Bao <rong.bao@csmantle.top>
+Tested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 
-diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-index 6ada8369a7622..33574312b7abe 100644
---- a/fs/jffs2/fs.c
-+++ b/fs/jffs2/fs.c
-@@ -396,28 +396,28 @@ void jffs2_dirty_inode(struct inode *inode, int flags)
- int jffs2_do_remount_fs(struct super_block *sb, struct fs_context *fc)
- {
- 	struct jffs2_sb_info *c = JFFS2_SB_INFO(sb);
-+	bool new_ro;
- 
- 	if (c->flags & JFFS2_SB_FLAG_RO && !sb_rdonly(sb))
- 		return -EROFS;
- 
--	/* We stop if it was running, then restart if it needs to.
--	   This also catches the case where it was stopped and this
--	   is just a remount to restart it.
--	   Flush the writebuffer, if necessary, else we loose it */
-+	new_ro = (fc->sb_flags_mask & SB_RDONLY) ?
-+		 (fc->sb_flags & SB_RDONLY) : sb_rdonly(sb);
-+
-+	jffs2_stop_garbage_collect_thread(c);
-+
- 	if (!sb_rdonly(sb)) {
--		jffs2_stop_garbage_collect_thread(c);
- 		mutex_lock(&c->alloc_sem);
- 		jffs2_flush_wbuf_pad(c);
- 		mutex_unlock(&c->alloc_sem);
- 	}
- 
--	if (!(fc->sb_flags & SB_RDONLY))
-+	if (!new_ro)
- 		jffs2_start_garbage_collect_thread(c);
- 
- 	fc->sb_flags |= SB_NOATIME;
- 	return 0;
+diff --git a/tools/perf/util/annotate-arch/annotate-loongarch.c b/tools/perf/util/annotate-arch/annotate-loongarch.c
+index 950f34e59e5c..c2addca77320 100644
+--- a/tools/perf/util/annotate-arch/annotate-loongarch.c
++++ b/tools/perf/util/annotate-arch/annotate-loongarch.c
+@@ -110,6 +110,7 @@ static int loongarch_jump__parse(const struct arch *arch, struct ins_operands *o
  }
--
- /* jffs2_new_inode: allocate a new inode and inocache, add it to the hash,
-    fill in the raw_inode while you're at it. */
- struct inode *jffs2_new_inode (struct inode *dir_i, umode_t mode, struct jffs2_raw_inode *ri)
--- 
-2.47.3
+ 
+ static const struct ins_ops loongarch_jump_ops = {
++	.free	   = jump__delete,
+ 	.parse	   = loongarch_jump__parse,
+ 	.scnprintf = jump__scnprintf,
+ 	.is_jump   = true,
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 4f5bd9153552..59ba88e1f744 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -452,7 +452,7 @@ int jump__scnprintf(const struct ins *ins, char *bf, size_t size,
+ 			 ops->target.offset);
+ }
+ 
+-static void jump__delete(struct ins_operands *ops __maybe_unused)
++void jump__delete(struct ins_operands *ops __maybe_unused)
+ {
+ 	/*
+ 	 * The ops->jump.raw_comment and ops->jump.raw_func_start belong to the
+diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
+index a6e478caf61a..25756e3f47e4 100644
+--- a/tools/perf/util/disasm.h
++++ b/tools/perf/util/disasm.h
+@@ -161,6 +161,8 @@ int jump__scnprintf(const struct ins *ins, char *bf, size_t size,
+ int mov__scnprintf(const struct ins *ins, char *bf, size_t size,
+ 		   struct ins_operands *ops, int max_ins_name);
+ 
++void jump__delete(struct ins_operands *ops);
++
+ int symbol__disassemble(struct symbol *sym, struct annotate_args *args);
+ 
+ char *expand_tabs(char *line, char **storage, size_t *storage_len);
 
 
