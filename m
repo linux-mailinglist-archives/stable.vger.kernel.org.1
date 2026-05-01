@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-242524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBneI+0W9Wl8IQIAu9opvQ
-	(envelope-from <stable+bounces-242524-lists+stable=lfdr.de@vger.kernel.org>)
+	id CVEZKe0W9WmVIQIAu9opvQ
+	(envelope-from <stable+bounces-242525-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:11:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE65C4AFBAA
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0414AFBAB
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D1EB33008CAB
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 21:11:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 55A27300B2AA
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 21:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381BA3D6693;
-	Fri,  1 May 2026 21:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20858423A9E;
+	Fri,  1 May 2026 21:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HE1gDgix"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilU9xnWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE19316197;
-	Fri,  1 May 2026 21:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D750D316192;
+	Fri,  1 May 2026 21:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777669864; cv=none; b=gf4ew6O/OoDf3vNY9MkzUkSGjERSPc3hQlkBkrGO2bbrTfLGz0oMZv+1LVhxC7R9GcfW4XYeqeTDXoFrG8KLCWCP0zW8N9399uKvCYBOxCUB5U4RPXsVFX2u7IKvdRkC2AaI55ZVX6oPmy4BZorLKKX0Qy6J9MHjMHCifJ/KmB0=
+	t=1777669864; cv=none; b=RopFzqE7HzygaadiRcImzg6fhtI+ZYUvVV21Wwf5OQJrv1IJ+Xkb3FCBtrnQOL9bAs+a4nPyUonAfQAICJpBKX4Z1AL3rt46XJGx3YkWO5BlM3NwQCoN2VGQ/1jN/UCbVaYkAE/7tX7njVa8euJYtz6zJ2a+7G+RHxtvJMOfB3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777669864; c=relaxed/simple;
-	bh=pwK0cKnbrke4wl7ygUciECKQPNSG1oPGsGcCARLHQOs=;
+	bh=7NrCLfHiSyMi92eTKRzZ/y+I0FTaYJDj7gmP3R0+aXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHNIi76HOCqpYS8D01MnbDk4hLwnTBxCbNP4QbzXX3HqN79kN5mwxhrSDSql39/RbHghrVPAYSeP9gG9gHBcOceQ4Co6wG3obnNLamXZEjsdj6UVxNPeD6WDtWXNKk7phIk/gv66VI3ukk75RlbY11eKhBwCZdrvDHqrbTNNlJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HE1gDgix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6C3C2BCB4;
-	Fri,  1 May 2026 21:11:02 +0000 (UTC)
+	 MIME-Version; b=thdBan4EjB61XbcypBNxI9ZqhUllzJ5At3CUl99IjQXDsdcIIXKaOLbex5t9D7l8wvCUQwPPyMSZW6/I85qLwwsT2G7ARUWpD98zXbIuZwseuyvAG5RorAMo4SUkfAcFhuFKD3D5V47/ovbgikPRKu71yuf5Abktzo9tKMOPKAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilU9xnWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B97C2BCB8;
+	Fri,  1 May 2026 21:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777669863;
-	bh=pwK0cKnbrke4wl7ygUciECKQPNSG1oPGsGcCARLHQOs=;
+	s=k20201202; t=1777669864;
+	bh=7NrCLfHiSyMi92eTKRzZ/y+I0FTaYJDj7gmP3R0+aXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HE1gDgixaTJAPQMMRfjOGc/LY2Jj07Qs9uhRZrbJXn48ZlTT9TLG27AGeeLoxzzlF
-	 y3iuOIRilQ2XrWGoBSQOKA7MKIoxjjVe3Vev01jMFWpeeCj8BuVTiG9YxWt1wyRSfb
-	 dKtdN3Dt4ECu5rX9rFX7a43vpBETrWhmu1ZhmEJIVqJQqBk1zNbYr4AM8l8HF8v4k2
-	 joY8zpHI8WwgEUBgUg7b/SuZHdXmI+O/I25v1AiX0DaFzhKMhi26C2CFn14pp3Gf+2
-	 0RBTC28cCGUpeuvV3WyqhkMeNZiI0PktgHHQv7HVFrenYhcIamNspVzgqzQXkPjqNS
-	 8hLkmiX4yZoBw==
+	b=ilU9xnWxqfV/JP7lha7zu0G4Z1vIIDEELCKQfF/OU3g7W+TkNQafCfHZm8LjEG1Bi
+	 BdcKRI1hL0fn4fXPc6QiBxehVZhPRnYc07MqXpawT/cDocABjIxXAq4HJuep/Q7aOw
+	 JCgAk8t+cORRzLxXuc8eM/eJ6R4GRNrxLPwQUC5OdobTTPp5q8sq5f5taETl9JKM4O
+	 s9/v0Cq8zMVFJcAtcDpisaNpncZfjrINeBd7NA/E3j99p5DYPJBey6eEXIPo4XXfYY
+	 35M9WAsrh2MlgvTMefg3/gFTYO4ZlBI4HY+oVvRjlJpVaMW2D7PcMm5UZ1I2KakqOe
+	 CbEQEB619CghQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Rong Bao <rong.bao@csmantle.top>,
@@ -52,12 +52,12 @@ Cc: Rong Bao <rong.bao@csmantle.top>,
 	WANG Xuerui <kernel@xen0n.name>,
 	loongarch@lists.linux.dev,
 	Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCH 6.18.y] perf annotate: Use jump__delete when freeing LoongArch jumps
-Date: Fri,  1 May 2026 17:10:59 -0400
-Message-ID: <20260501200000.item004-6.18@kernel.org>
+Subject: Re: [PATCH 6.12.y] perf annotate: Use jump__delete when freeing LoongArch jumps
+Date: Fri,  1 May 2026 17:11:00 -0400
+Message-ID: <20260501200000.item004-6.12@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260501122205.4089260-1-rong.bao@csmantle.top>
-References: <20260501122205.4089260-1-rong.bao@csmantle.top>
+In-Reply-To: <20260501123717.4109458-1-rong.bao@csmantle.top>
+References: <20260501123717.4109458-1-rong.bao@csmantle.top>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DE65C4AFBAA
+X-Rspamd-Queue-Id: 4B0414AFBAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242524-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242525-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -95,14 +95,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
 
-On Fri, 01 May 2026 20:22:05 +0800, Rong Bao wrote:
+On Fri, 01 May 2026 20:37:17 +0800, Rong Bao wrote:
 > [ Upstream commit a355eefc36c4481188249b067832b40a2c45fa5c ]
->
-> The forward-declaration of jump__delete() is added because the older
-> stable layout still has jump__delete static-only and the header export
-> from upstream c2addca77320 is not present.
 
-Thanks, queued for 6.18.y.
+Thanks, queued for 6.12.y.
 
 --
 Thanks,
