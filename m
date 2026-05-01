@@ -1,118 +1,240 @@
-Return-Path: <stable+bounces-242343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AAnBL2S9Gm7CQIAu9opvQ
-	(envelope-from <stable+bounces-242343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:47:09 +0200
+	id QObnD3aU9Gk7CgIAu9opvQ
+	(envelope-from <stable+bounces-242344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:54:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A974AC1D7
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:47:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B8F4AC24E
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:54:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8736230166F4
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:47:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3E9D5300847D
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A97F364927;
-	Fri,  1 May 2026 11:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8165539B97D;
+	Fri,  1 May 2026 11:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFuVJF6u"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNUa3qA3"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7E72DCF58
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407E839B965
+	for <Stable@vger.kernel.org>; Fri,  1 May 2026 11:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777636025; cv=none; b=Bwc+r8KIsACeY60Mk06J8qN5QbJs3gOl67fujt+UvIW268hrC1IcipqFMZZoCY0du5TgUMQN3fuvEvtyh+LD6YwuXPAZSfyigyCogXjIa8cW/wulBohLQQ3Lh1PIWSDB1jLsxIhz064JaM1kRbO+7ZHTwhVz7E68JjgAe1fTf0g=
+	t=1777636463; cv=none; b=ImzanTgIntiizFr2ASyGuLvnsaLxO9qRZhb0jKAlK/uSZ82EojEa73b6BE+uHlgG2ErJ0YVGwcGZ+OYecpjudxyCGPr4CgE1SV52UM3l5GZ0vZv9TfbqtPlB1sWJ+1EunJQikEWfy/SjIrsds95U0wB8zotkXwJkYxjrtsIHS9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777636025; c=relaxed/simple;
-	bh=LDZPg5lwJbkg/sBa4yvDhVwOBqDgHZcJegNCY4c7Azc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oq6fmaYpbZFDIhUYnQV/T4STP3fvakoa0o6KnocyndzNeVFH42paYizvt1z0dCJesyhJuTWcKDvuYOCo+SQWZwb7DesyFFDb0IsQU9iq4tlVu5ApVOe96Ar9KDOAwvD6miHDkVzQRxg+ycrzXloC/3BKzf+FSQ0Hm23MI2W9lSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFuVJF6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934EDC2BCB4;
-	Fri,  1 May 2026 11:47:04 +0000 (UTC)
+	s=arc-20240116; t=1777636463; c=relaxed/simple;
+	bh=0/IkcyVlhkvB4VXZTX2tQhpJOmv9cYcgOhgIqt7u7jM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ces/pJQHRsrXwaUmhJfMHJAybfH5xuKEtI17rSCbyI/PPsE3wtgI8Tfq+q9OGlljBJXxl2VceL9vPVfFnnaIV2ocE7Xnv/qiboxms1t/nnrSNoE2aqM/7cOd9FXFbJ2iPyU6nnU8SJx+LiQFQKlkdpcK5QB+PuMkFZgnQRIjSyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNUa3qA3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91777C2BCB4;
+	Fri,  1 May 2026 11:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777636024;
-	bh=LDZPg5lwJbkg/sBa4yvDhVwOBqDgHZcJegNCY4c7Azc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gFuVJF6upvQXGjFlfkFMMS0R1Bpkzjq5nU+p5xNRivmboKt3p4fz1mvlCez/VVbAo
-	 88uQ31keHh6F/IpH4NxUui3oD1F10ztM7Hf6rEwJuNM1xT9kVATRcIl5TKHQnbeArP
-	 +/DmT8nz5wrzjuTQH+6nMYTwYUqYYMFpEntbJQus=
-Date: Fri, 1 May 2026 13:47:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Helge Deller <deller@gmx.de>
-Cc: jpoimboe@kernel.org, petr.pavlu@suse.com, samitolvanen@google.com,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] module.lds.S: Fix modules on 32-bit
- parisc architecture" failed to apply to 7.0-stable tree
-Message-ID: <2026050155-kennel-caboose-2f30@gregkh>
-References: <2026050157-rewrite-overfeed-ad3b@gregkh>
- <ad114140-ac88-415c-beef-c36a1ba4516d@gmx.de>
+	s=korg; t=1777636462;
+	bh=0/IkcyVlhkvB4VXZTX2tQhpJOmv9cYcgOhgIqt7u7jM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ZNUa3qA3oheZOmUbK6GIlDhEA0kMoh0GsnN4X9+C92bNK4UPmq4XgP6OCqWDnVESC
+	 9p+qGy4ofir8XdDnfwqrRksfVzhkETZ/YDXpn2odukVdytNRQdNF4Na9Rkv/Tn9dHs
+	 /c2ubQmC9UuaNSwrVm4+i/LlsJVRl5dXqInK5r8w=
+Subject: FAILED: patch "[PATCH] iio: frequency: admv1013: fix NULL pointer dereference on str" failed to apply to 7.0-stable tree
+To: antoniu.miclaus@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,nuno.sa@analog.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 01 May 2026 13:54:20 +0200
+Message-ID: <2026050120-elderly-headache-15ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad114140-ac88-415c-beef-c36a1ba4516d@gmx.de>
-X-Rspamd-Queue-Id: 98A974AC1D7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 40B8F4AC24E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmx.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242343-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242344-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,gmx.de:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,gregkh:email,analog.com:email,intel.com:email,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On Fri, May 01, 2026 at 01:31:37PM +0200, Helge Deller wrote:
-> Hi Greg,
-> 
-> On 5/1/26 13:01, gregkh@linuxfoundation.org wrote:
-> > The patch below does not apply to the 7.0-stable tree.
-> Can you please cherry-pick this upstream commit first:
-> 
-> commit 4afc71bba8b7d7841681e7647ae02f5079aaf28f
-> Author: Joe Lawrence <joe.lawrence@redhat.com>
->     module.lds,codetag: force 0 sh_addr for sections
-> 
-> after that this commit applies cleanly:
-> commit 1221365f55281349da4f4ba41c05b57cd15f5c28
-> Author: Helge Deller <deller@gmx.de>
->     module.lds.S: Fix modules on 32-bit parisc architecture
-> 
-> 
-> Both are relevant for 7.0-stable only. No further downwards porting needed.
 
-That worked, thanks!
+The patch below does not apply to the 7.0-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+git checkout FETCH_HEAD
+git cherry-pick -x aac0a51b16700b403a55b67ba495de021db78763
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050120-elderly-headache-15ed@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From aac0a51b16700b403a55b67ba495de021db78763 Mon Sep 17 00:00:00 2001
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Date: Thu, 5 Mar 2026 11:14:48 +0200
+Subject: [PATCH] iio: frequency: admv1013: fix NULL pointer dereference on str
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+When device_property_read_string() fails, str is left uninitialized
+but the code falls through to strcmp(str, ...), dereferencing a garbage
+pointer. Replace manual read/strcmp with
+device_property_match_property_string() and consolidate the SE mode
+enums into a single sequential enum, mapping to hardware register
+values via a switch consistent with other bitfields in the driver.
+
+Several cleanup patches have been applied to this driver recently so
+this will need a manual backport.
+
+Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
+index 9202443ef445..b852378b3f68 100644
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -85,9 +85,9 @@ enum {
+ };
+ 
+ enum {
+-	ADMV1013_SE_MODE_POS = 6,
+-	ADMV1013_SE_MODE_NEG = 9,
+-	ADMV1013_SE_MODE_DIFF = 12
++	ADMV1013_SE_MODE_POS,
++	ADMV1013_SE_MODE_NEG,
++	ADMV1013_SE_MODE_DIFF,
+ };
+ 
+ struct admv1013_state {
+@@ -468,10 +468,23 @@ static int admv1013_init(struct admv1013_state *st, int vcm_uv)
+ 	if (ret)
+ 		return ret;
+ 
+-	data = FIELD_PREP(ADMV1013_QUAD_SE_MODE_MSK, st->quad_se_mode);
++	switch (st->quad_se_mode) {
++	case ADMV1013_SE_MODE_POS:
++		data = 6;
++		break;
++	case ADMV1013_SE_MODE_NEG:
++		data = 9;
++		break;
++	case ADMV1013_SE_MODE_DIFF:
++		data = 12;
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	ret = __admv1013_spi_update_bits(st, ADMV1013_REG_QUAD,
+-					 ADMV1013_QUAD_SE_MODE_MSK, data);
++					 ADMV1013_QUAD_SE_MODE_MSK,
++					 FIELD_PREP(ADMV1013_QUAD_SE_MODE_MSK, data));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -512,37 +525,33 @@ static void admv1013_powerdown(void *data)
+ 	admv1013_spi_update_bits(data, ADMV1013_REG_ENABLE, enable_reg_msk, enable_reg);
+ }
+ 
++static const char * const admv1013_input_modes[] = {
++	[ADMV1013_IQ_MODE] = "iq",
++	[ADMV1013_IF_MODE] = "if",
++};
++
++static const char * const admv1013_quad_se_modes[] = {
++	[ADMV1013_SE_MODE_POS] = "se-pos",
++	[ADMV1013_SE_MODE_NEG] = "se-neg",
++	[ADMV1013_SE_MODE_DIFF] = "diff",
++};
++
+ static int admv1013_properties_parse(struct admv1013_state *st)
+ {
+ 	int ret;
+-	const char *str;
+ 	struct device *dev = &st->spi->dev;
+ 
+ 	st->det_en = device_property_read_bool(dev, "adi,detector-enable");
+ 
+-	ret = device_property_read_string(dev, "adi,input-mode", &str);
+-	if (ret)
+-		st->input_mode = ADMV1013_IQ_MODE;
++	ret = device_property_match_property_string(dev, "adi,input-mode",
++						    admv1013_input_modes,
++						    ARRAY_SIZE(admv1013_input_modes));
++	st->input_mode = ret >= 0 ? ret : ADMV1013_IQ_MODE;
+ 
+-	if (!strcmp(str, "iq"))
+-		st->input_mode = ADMV1013_IQ_MODE;
+-	else if (!strcmp(str, "if"))
+-		st->input_mode = ADMV1013_IF_MODE;
+-	else
+-		return -EINVAL;
+-
+-	ret = device_property_read_string(dev, "adi,quad-se-mode", &str);
+-	if (ret)
+-		st->quad_se_mode = ADMV1013_SE_MODE_DIFF;
+-
+-	if (!strcmp(str, "diff"))
+-		st->quad_se_mode = ADMV1013_SE_MODE_DIFF;
+-	else if (!strcmp(str, "se-pos"))
+-		st->quad_se_mode = ADMV1013_SE_MODE_POS;
+-	else if (!strcmp(str, "se-neg"))
+-		st->quad_se_mode = ADMV1013_SE_MODE_NEG;
+-	else
+-		return -EINVAL;
++	ret = device_property_match_property_string(dev, "adi,quad-se-mode",
++						    admv1013_quad_se_modes,
++						    ARRAY_SIZE(admv1013_quad_se_modes));
++	st->quad_se_mode = ret >= 0 ? ret : ADMV1013_SE_MODE_DIFF;
+ 
+ 	ret = devm_regulator_bulk_get_enable(dev,
+ 					     ARRAY_SIZE(admv1013_vcc_regs),
+
 
