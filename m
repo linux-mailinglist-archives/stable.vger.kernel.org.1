@@ -1,188 +1,172 @@
-Return-Path: <stable+bounces-242286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHs/IyuI9Gl3CAIAu9opvQ
-	(envelope-from <stable+bounces-242286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:02:03 +0200
+	id WN5rCDOI9Gl3CAIAu9opvQ
+	(envelope-from <stable+bounces-242287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:02:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7A74ABD10
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:02:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676354ABD17
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6406C3001457
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:02:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECED6300D30A
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB29437DEBB;
-	Fri,  1 May 2026 11:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B95739A812;
+	Fri,  1 May 2026 11:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WY/GQMlI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eh+xpsBK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2CE35A38C
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42F53603E8
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777633320; cv=none; b=Vt1wwTgMDWQi0F2VU0tvBF68xgifVJizYye1Bp4kw/hV2MoI/BqadJR/KsH9EnP5R14q7HMJBFFFI/Qi3Q3vk2p+5fUrIShKi9EmOQgK+jk4ro9cS/RAA4M25dyMdLHOsfiKljq8mg5mpwzcPk5nPZVGFUuldqqEgWUhhiGfZvo=
+	t=1777633328; cv=none; b=A8EqxaFnmRKmV+bwtEj8GbQ+EpHXtnukRvwez9XYZq/wOsVGxH8GGX5DZ9GQDzhYiJ5up2xUFYtTda7VLUrtuLIL4LGDiN8wBBR6ybBEyBQIQ0iFr1Z252J9KB8swMgE2h01I0u/srG2S4MFaC+HOm0Arxo4/uEVyVMxcVGxfiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777633320; c=relaxed/simple;
-	bh=Sk0Z8HYmBNsL5aRU2kbK49ZI8sXck5J4D6GuWpkBBug=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OyyN4te7P+tqcb5ogn0jFdg2+xonKHDCD1ELvLavPLwj4r1+2Wvwt87g48we+YU2ClTi88qYot6lDviD5kf4rSKx1lg7bxRq1ED4UQmF3J5UxOmRWusGRCijnW68Q0FSfDJLdNrTyDNN9d9zslCuH1pZSN0ZabYV9NUPThs/Kpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WY/GQMlI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D993C2BCB4;
-	Fri,  1 May 2026 11:01:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777633320;
-	bh=Sk0Z8HYmBNsL5aRU2kbK49ZI8sXck5J4D6GuWpkBBug=;
-	h=Subject:To:Cc:From:Date:From;
-	b=WY/GQMlIusScy+UZ0iGqpwfatiVy0YEVQMWxl3cac439AWik9PTKy4BhCl8hmA8qx
-	 LFPp1I4jTS8vmhrSyc7m9dYXCVVjQTx7PWbYQk/JceceH+ZLbUii4O/wHDxDAn8h7w
-	 I/y1hcDeQE0PN9J8VkckincGRINKuaJ8qllchxiI=
-Subject: FAILED: patch "[PATCH] module.lds.S: Fix modules on 32-bit parisc architecture" failed to apply to 7.0-stable tree
-To: deller@gmx.de,jpoimboe@kernel.org,petr.pavlu@suse.com,samitolvanen@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 01 May 2026 13:01:57 +0200
-Message-ID: <2026050157-rewrite-overfeed-ad3b@gregkh>
+	s=arc-20240116; t=1777633328; c=relaxed/simple;
+	bh=i9aHcnR3UfI48HD1OS5y0W5JFsKaLanCbnnKA7TqlGk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EXvBf28PPJ60feFbblnYYMdsT7XafLlyZmHysQ6MTPCzAwAq/pxx+v/R4JipdwupQP03R0fYA/Gwkk+zdhKFoCOWZvjgYeKlD8+TC5Du2UJGQ6+Gg0A/ruRtfokQimsWRHBzNbmRt0fFA0bfQguIIcquurgLuxGeaKlCD59imiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eh+xpsBK; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43cfce3a195so955534f8f.2
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:02:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777633325; x=1778238125; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vqZidDCn5y4gCrfLbOWYKSzW8HkTpyANFAvcSFhaUEo=;
+        b=eh+xpsBKWMGSQe4n2zDtDjNOmg0sVLound5lvwUGctcIWWXFHTvgHzuv0/uKdDOORR
+         fZ1dNMmLhVeBGLLlnzqalf1NOyn3/pPI8AmjhIZcsaTR8+8jNGD7Eb4igvVWeplG5CQw
+         1SnN8UYvlvnOpR9y5/9nmE0LDAmglQllmUzu+aTI05w0P6YmHMW0oGOAHMoXedZzIg3j
+         4H51KFzm0BC3LhzdQgPP4vqi0AKD7L32gpET89tdY7DKuoE/FwfmVLbId0zdCzXrwyT7
+         G+wt2XcW11zKShxpvqHhYH5tEF6khqeqOelsxOr2zb6yMlSer5sYtKvCm3TsjC74bN+W
+         lpng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777633325; x=1778238125;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vqZidDCn5y4gCrfLbOWYKSzW8HkTpyANFAvcSFhaUEo=;
+        b=M7iBPnTxL2QVG872FGmwhujdSsC3TJfnVHpBNkRgwbOM9WFXW+TdhkzdNo8qzrRWgC
+         KY2kw/6EbclBCHzXVfw9mLlr6LfoXLYyj2sEBo5i1q0ftQb58lzGjY/y0RCqq4Cdngmf
+         6mhUg+MW3E+OSIW6TAylLlrde4B+BSOxFjJb/jmagY0Kc0Z3Y+CdRXZ+sfRmyxds++/p
+         ypnAZB9UEUk4bS+2aLcMwG/+NYyIR6hihakgE83qBhmQ4f7LQ+ogntOsr2k4TXN8hIP7
+         BvPml12BhN4SBq0RPcJYn9qusXjC7C1S2VSzmzVqkc221WsaWxpyCBSE7bdNbAgEhmN8
+         +weA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Mxkxsb+iI9YpfGrlhju9Jz+ZxbOM0ccePvFhnusP2EDClAj4/vM96gOYGjwK5uJnmHrV6rNM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb5d0CdrR/Bgp0ny+uMBocnjSQTZ3auVfuTt3XQzmeMGbl9dxi
+	RHP163H0U60kgG9mxaCJ0xTTwb5V9/7+KDboB0PvVrTf8d6lWiRcwPE=
+X-Gm-Gg: AeBDietMe0q3VwLlT2VqWjGq1VilCwXFMmZZuQvatfeoQt+ZV2JVRwtsFj5jGpJtM8v
+	PgTlX/HHmW/mL3x+g8eE9+nGlOYsUdbE13WAjtDlX3qsRe3nMMdzCNZl00HiKxn9cHS6Cb/RuRC
+	cHJL9kVx6boaFvyK7Qa+dg2QiRIgiDcjdBD7K0z1xWHPYX2iLk8K1+dD+SqepxOa6R9XixjOJFb
+	A35KQS9eHahEov1+q2O4sGwrLWnFgIy3lUItH1mqDOOqIBuPqDrb8aVhIeamFCDQYynwmk2TA6f
+	NyoXviS8YNvGzDSsy9ktDrKldfDF7FYAy9txYsWDuV+49dY+kp5W/638IEODRIlJtmEcqY/eZUD
+	1niCDJaY+vBoWruKoqT9spKYvw7G9kIPnqwlkusHe0pIi5ewrkVUjPCGf8xt1ri+S5R5DkLNAor
+	8HMEg=
+X-Received: by 2002:a05:600c:4fc5:b0:488:a723:ea53 with SMTP id 5b1f17b1804b1-48a83d77ec9mr115852605e9.7.1777633324796;
+        Fri, 01 May 2026 04:02:04 -0700 (PDT)
+Received: from debian.. ([2001:41d0:303:db6b::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8fede418sm13928485e9.6.2026.05.01.04.02.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 04:02:04 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tristan Madani <tristan@talencesecurity.com>,
+	syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+Subject: [PATCH] gfs2: fix use-after-free in gfs2_qd_dealloc
+Date: Fri,  1 May 2026 11:02:03 +0000
+Message-ID: <20260501110203.18771-1-tristmd@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1B7A74ABD10
+X-Rspamd-Queue-Id: 676354ABD17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242286-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,kernel.org,suse.com,google.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242287-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,42a37bf8045847d8f9d2];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,gmx.de:email,suse.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
+From: Tristan Madani <tristan@talencesecurity.com>
 
-The patch below does not apply to the 7.0-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+gfs2_qd_dealloc(), called as an RCU callback from gfs2_qd_dispose(),
+accesses the superblock object sdp through qd->qd_sbd after freeing qd.
+It does so to decrement sd_quota_count and wake up sd_kill_wait.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+However, by the time the RCU callback runs, gfs2_put_super() may have
+already freed sdp via free_sbd().  This can happen when
+gfs2_quota_cleanup() is called during unmount: it disposes of quota
+objects via call_rcu() and then waits on sd_kill_wait with a 60-second
+timeout.  If the timeout expires, or if gfs2_gl_hash_clear() triggers
+additional qd_put() calls that schedule more RCU callbacks after the
+wait completes, gfs2_put_super() will proceed to free the superblock
+while RCU callbacks referencing it are still pending.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1221365f55281349da4f4ba41c05b57cd15f5c28
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050157-rewrite-overfeed-ad3b@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+Add an rcu_barrier() before free_sbd() in gfs2_put_super() to ensure
+all pending RCU callbacks (including gfs2_qd_dealloc) have completed
+before the superblock is freed.
 
-Possible dependencies:
+Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
+Reported-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=42a37bf8045847d8f9d2
+Tested-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+---
+ fs/gfs2/super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1221365f55281349da4f4ba41c05b57cd15f5c28 Mon Sep 17 00:00:00 2001
-From: Helge Deller <deller@gmx.de>
-Date: Tue, 7 Apr 2026 22:07:22 +0200
-Subject: [PATCH] module.lds.S: Fix modules on 32-bit parisc architecture
-
-On the 32-bit parisc architecture, we always used the
--ffunction-sections compiler option to tell the compiler to put the
-functions into seperate text sections. This is necessary, otherwise
-"big" kernel modules like ext4 or ipv6 fail to load because some
-branches won't be able to reach their stubs.
-
-Commit 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related
-macros") broke this for parisc because all text sections will get
-unconditionally merged now.
-
-Introduce the ARCH_WANTS_MODULES_TEXT_SECTIONS config option which
-avoids the text section merge for modules, and fix this issue by
-enabling this option by default for 32-bit parisc.
-
-Fixes: 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related macros")
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: stable@vger.kernel.org # v6.19+
-Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 334b69505381..4eb2e51e28f1 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1127,6 +1127,13 @@ config ARCH_WANTS_MODULES_DATA_IN_VMALLOC
- 	  For architectures like powerpc/32 which have constraints on module
- 	  allocation and need to allocate module data outside of module area.
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index a2ea121331f18..4d854556b5299 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -643,6 +643,7 @@ static void gfs2_put_super(struct super_block *sb)
+ 	gfs2_delete_debugfs_file(sdp);
  
-+config ARCH_WANTS_MODULES_TEXT_SECTIONS
-+	bool
-+	help
-+	  For architectures like 32-bit parisc which require that functions in
-+	  modules have to keep code in own text sections (-ffunction-sections)
-+	  and to avoid merging all text into one big text section,
-+
- config ARCH_WANTS_EXECMEM_LATE
- 	bool
- 	help
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 3e929eb5a7fe..d3afac2f0d9b 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -8,6 +8,7 @@ config PARISC
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select ARCH_WANT_FRAME_POINTERS
-+	select ARCH_WANTS_MODULES_TEXT_SECTIONS if !64BIT
- 	select ARCH_HAS_CPU_CACHE_ALIASING
- 	select ARCH_HAS_DMA_ALLOC if PA11
- 	select ARCH_HAS_DMA_OPS
-diff --git a/scripts/module.lds.S b/scripts/module.lds.S
-index 2dc4c8c3e667..b62683061d79 100644
---- a/scripts/module.lds.S
-+++ b/scripts/module.lds.S
-@@ -40,9 +40,11 @@ SECTIONS {
- 	__kcfi_traps		0 : { KEEP(*(.kcfi_traps)) }
- #endif
+ 	gfs2_sys_fs_del(sdp);
++	rcu_barrier();
+ 	free_sbd(sdp);
+ }
  
-+#ifndef CONFIG_ARCH_WANTS_MODULES_TEXT_SECTIONS
- 	.text			0 : {
- 		*(.text .text.[0-9a-zA-Z_]*)
- 	}
-+#endif
- 
- 	.bss			0 : {
- 		*(.bss .bss.[0-9a-zA-Z_]*)
+-- 
+2.47.3
 
 
