@@ -1,221 +1,247 @@
-Return-Path: <stable+bounces-242320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cE0+CRCK9GnQCAIAu9opvQ
-	(envelope-from <stable+bounces-242320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:10:08 +0200
+	id gNA6FUmK9GnQCAIAu9opvQ
+	(envelope-from <stable+bounces-242323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:11:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781C24ABE90
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:10:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ABD4ABEA8
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B88003011C72
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:10:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C905301BA76
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9742D77E9;
-	Fri,  1 May 2026 11:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FF839526B;
+	Fri,  1 May 2026 11:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="MfTptZuR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qwgoRfh1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F56813D638
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC44129D26B
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777633805; cv=none; b=DQfzefVnSRwQZzEPajG1w/2BO2Wi/4Dn3bbkzxhTGrrtpC6bGbnEVoYzfwp/vqvL61dUgfIVaRfYwEceP1ox1a2njzDw7p522sDE6djGfLaaCRC1PavSuLYQixp58m5Y/Z94xke0Oc+0rN7nF7Tz2JVgeD9V62UKdZNibo9dpB8=
+	t=1777633857; cv=none; b=F9FfWmzsIlMe8Pwh5kDIVRv0r4nM3h6mDUy1RmtyPo4YBkKujqhqBsi0BLlIJ7DBCODMsJcgIwtAN3GjtJVDe1witR8jRbFWZtrwuDm5e40PSirto/vlk1byqZlr7JghW3Ey3E75YhYIeKryRM0JAEsu9vIS6PxYUwkzUjco1RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777633805; c=relaxed/simple;
-	bh=s2lMh/Nf2nePJINK6nBbyvJi5YrUub6zt98oJ0pH2eo=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=k0rhjNy4oMa9zC6OWvCcLQQBQ21d19ylqwoKMx+jeTS3/PcXJQNzs+jkQLL71IgqIUe+5+KGJYsYmA+oy9LsviOkzlHoGZKnpMtUKBFq4yRC4LgzBnZ69i9IPSaxINOey6cvt4zlzHysf/o8ScRipDayU+nBecHVVtrMZ6kZWEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=MfTptZuR; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-47c7b282d73so212134b6e.3
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:10:02 -0700 (PDT)
+	s=arc-20240116; t=1777633857; c=relaxed/simple;
+	bh=3Wcuv7vWXril4wnR8nrnNGWz346GKjDN1CfiXRWaVXg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FmS1o7KmYzbVqwx3XZUO+yNZByzz9w19xpRRF4nVmGP0qHRpr7S8jCtox3nzbXlYLgt8C6XC5sfddrHFMruXVVHpVD4oQowg4zH4ILcsIOAd9Cqv8ozcRCfUHSgo76z1wxZ43PWIVBykJElzlwx8HXT4P5k0DYtvNpOW3Vw1/fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qwgoRfh1; arc=none smtp.client-ip=74.125.82.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12ddbe104ccso1932200c88.0
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:10:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1777633802; x=1778238602; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KD6ZUrivrzz32rDvva9uvRueUxzgMSK/urb4fdGE0Ng=;
-        b=MfTptZuRSJpNcaRuDKaKcsmczCnLOxvnY7Jgy8RxLn8jOs84BJhEweOhAgEBDGb0ck
-         4aLkcMZlCBZ2wV4ehBb8x5py+8BmOOLTtNfdV+Bg0HipfDxv8eEq0ZsNoZJe70bNeV9j
-         hpDmgmBQMrNKTQs9nygZMaukJPGwQqB7RidnYh2nSc82/K8I79S3g9gXjmytFtP1H6bz
-         emVGUyZE0ca+A4ioV5v4uj4rBT50mYVqvrymSuyjy2hMUNoP9h8E/hA/xzj8xknHgHXY
-         5JexR0l1YbVFmes3BPf20xux3d1iqrkmiCsjiTMqztPprWH3cYhuBEKJQ+WQP9jr4shy
-         27AA==
+        d=gmail.com; s=20251104; t=1777633855; x=1778238655; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p8/WVfHESUffqanqnB+tvboreu3xWHPzbWiU3q5ebRc=;
+        b=qwgoRfh1kk3G23t+6ZpOqk7PiNtmaK8YnrASu25n/sMJcaB7K9s+v6pOFBrNRDRdgG
+         tVhO9WJN0L/RFybt2GgKd0klvcE4k21VSAAcr2RO+++jHTMW0M/HmiThgjqzsKFjFYCp
+         ioipJ3xUIuVzC7P4w1wTRhCYcv87e9d9ER1j/nJbPMm1DljaWcW0nFImxqRqCaYTlwGJ
+         Pv7t/rBvx7GwlWTqplPFXodfBEsMpSoYHPws8myzo81FQ71UYWF+nm3dSVnhWCbk4NBt
+         K6TsGnD0dPkB+9ED8K28j8KQYe25hViBHt12DOUlIdciTXnFWvEquUGHEDMaPP+lSKNG
+         KX3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777633802; x=1778238602;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KD6ZUrivrzz32rDvva9uvRueUxzgMSK/urb4fdGE0Ng=;
-        b=eCXcSehuzEP+yJ9OfrNjO0Oohja+Hv4lmj85olrubWVUKqFghFgFUsR8wfDv+jBJbQ
-         iQnyKMileImJM/0q31mcFbhDMeZdatUxvnGzLuHfgdJa4ffwQ8toYAgl9BJETGlThGPn
-         q+FihsJVWOonET7r10GXbmX0rlXYm+6033qvZ4mh28LYUo7miL3LkNbP8Cs+SDCXdFa8
-         QrXMrfoy3L8kac2Qs/429MNvYPj1HvsRhjBiglsBvQs2tgtqLnIVUDGEdRx0FQnq4lsj
-         wVvy2DjQh9J6JEU0Drr9iqQQbNdnqUXeFp9mhxTZOiXYOrXrKNWcj/Fs4ue1WOzx2pGj
-         xE6g==
-X-Gm-Message-State: AOJu0Yx6RMNRReMSx348wS+P50K0R9gfflZE4BYPo+3JWGFYjrv3fJ5f
-	/WoRtTi2FmY2knAodNeO3KHRSjgCQnA7w3M1RaETEieD8/0EfDNS73P8GA77UCA2n20fEajuy2O
-	HQ6BJ
-X-Gm-Gg: AeBDievzkWmYaHdIg9e9zR0iJGkD6qXjydz1agWTsZXHB6gE5YQ8JeTqB/KBTZ3UObH
-	YXgKRHvCs7MX4ccSlBbImeo6i2rrMFULwF7AEZJpsexDLDhnLjNQrC3isSnP388mRbN4/xE2GJU
-	UXAhCKYhBrqUdPSUaC7aDYF1X/ndMiZ0U+9c+ieqAwoa4d82Ry9txsYH4rfHKGhW89G8TkhUD+2
-	SLCF+AaoV+Nbr9oj0hHPbihD2xVBOWZwQPGUOulypkNZgtgxngnCocF4ax+eiteUilB/Md90wHp
-	CjR3OPHJIYFhLRjgn2Yr16cw4FEWx7CAvDBaoEN5JpJfk3B5IfbaEVbLcWtHRTF00Q6K1X9KQ5q
-	R0JdMu9T3vVWDd8361sifjG5vBXDTE5CiXxCxOfc95NPGvGgsHpoYnNkii/SvGRD2H2GLpXIZ0Z
-	E1fsNcqL5PD9UW7AIlFR6XfGDTHzV6C7E0s0OjxSkYVSumYLEWjdexbBSyLovcuURBhq1BrBhli
-	MsVVOpwnX6tRsDiC86c
-X-Received: by 2002:a05:6808:e8c:b0:467:16e4:d263 with SMTP id 5614622812f47-47c75796572mr1103686b6e.44.1777633801893;
-        Fri, 01 May 2026 04:10:01 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43454d324a4sm2412265fac.14.2026.05.01.04.10.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 May 2026 04:10:00 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------rytrB7wbBzmU0OQrBpHp2kWo"
-Message-ID: <8630d4bc-119c-46dd-a39f-d699e1b830be@kernel.dk>
-Date: Fri, 1 May 2026 05:10:00 -0600
+        d=1e100.net; s=20251104; t=1777633855; x=1778238655;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p8/WVfHESUffqanqnB+tvboreu3xWHPzbWiU3q5ebRc=;
+        b=iDGFjIOPReQOp0UCVeITGY8YczxhLR1M57aW97m9AX0FwHR8CjRh/wMxaxxH5IFAvU
+         bNoN35EigbZ2WwRzwVlTvWW7z8QEdLPsSBjJW7t9do30d/0EYxU1ZepzijkyEKx+9nkf
+         rVxJaSTZG966+boZ33zkTM1n3mgrkJOUezS8i5xORz8mdGO7SB2gtgc9y+GgX5/XlPnV
+         geMkJ0Vlb8qsqtDY0SD6BttiRKAtigCc6RUNWUIJrv3Qyrj8NubiDzZQYPNefXD66MqG
+         WQN0TEbi8ydsytq4kRw9gW0L+CHYDAiBjeV1wPctjnznEr8zKzPpG91FoaT6Dx+PfhCt
+         qk7A==
+X-Forwarded-Encrypted: i=1; AFNElJ9lZ3d6X7s2Z9c7Hro8Nv3804pX4CTT4Z82cf+qHum3fOwE6AowIFZuCtum7ZOULdWZxWh3K1U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxveOWDXtb5AVudcUG2HXFG+wmPTPQ4FYHkm1nwrXT7JG5B3InT
+	rEV+P8TuXVDMkb1raFrUBeIB5i6givNMnCc8k1Ah/AikVLDFDMeCZnA3
+X-Gm-Gg: AeBDievm7MmRrsjxlb2H80MAxQu4wRG8KrrEc0b+LB2/IQaFcr6GSSoVmKNBHfH1N0C
+	c1+KV6NMKuyZHIGLgh6vnO2/P37kolQ7Z2NS715RnmC6fP2pf4cVjliIsOjUy4Ubz1gBwRmX8MG
+	mxt0stIk7RPgdpXI82AIZDXENOBLmv9vEIekDe5SsANlo9OKMbbSjfYE0sIPAjYqBcPxXsQXXc5
+	WlK17bVtcOg00hjL21j8bNxCKFJVkoWxvCv6z7NloQsg7MBj9NFyBEjSnGDuF7nn/jdiVQtYaSX
+	IWWnH/iad7ZDtpA13tGoGBYhlFq6AgJq3iRL5I9jGTJm9FAbF27K7uDvZiHN1kz9EZhW/A6Djjj
+	wXoMv4dC9Pvw/MYWv7R/KDH9NBwMiOoONQQawXyuVMXz7WzixQp8z3Qvu0vtabkgrUWTwnFtO2q
+	8PPRw9CrBYbE7pWtj1LqsTfkb+3KVH4RnQtMqa/cVyD9EIX3OMI0H2+yYvNeUUFeQCSS6i06CqS
+	apnT2/oVkpDt156jLSfQBMgh9dqqvU7lg==
+X-Received: by 2002:a05:7022:1a85:b0:11b:923d:7753 with SMTP id a92af1059eb24-12deac47e55mr3671481c88.3.1777633854634;
+        Fri, 01 May 2026 04:10:54 -0700 (PDT)
+Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12df8279e57sm2628939c88.3.2026.05.01.04.10.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 04:10:53 -0700 (PDT)
+From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Fri, 01 May 2026 08:10:46 -0300
+Subject: [PATCH] ALSA: usb-audio: qcom: Check offload mapping failures
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/register: fix ring resizing with
- mixed/large" failed to apply to 6.18-stable tree
-To: gregkh@linuxfoundation.org, krisman@suse.de
-Cc: stable@vger.kernel.org
-References: <2026050117-strenuous-scrunch-c2ce@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2026050117-strenuous-scrunch-c2ce@gregkh>
-X-Rspamd-Queue-Id: 781C24ABE90
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260501-alsa-usb-qcom-offload-map-errors-v1-1-ea927afd42c0@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQrCQAxA0auUrA3UQat4FXGRTDI60nZqYkUov
+ bujLt/m/wVcLavDqVnA9JU9l7Fiu2kg3mi8KmaphtCGrt2FgNQ74eyMj1gGLCn1hQQHmlDNijm
+ KMHfC6bA/EtTMZJry+7c4X/72me8an98urOsHUE9eJYQAAAA=
+X-Change-ID: 20260422-alsa-usb-qcom-offload-map-errors-ddbb6dbf758a
+To: Takashi Iwai <tiwai@suse.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Mark Brown <broonie@kernel.org>, Wesley Cheng <quic_wcheng@quicinc.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Jaroslav Kysela <perex@perex.cz>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3601;
+ i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
+ bh=3Wcuv7vWXril4wnR8nrnNGWz346GKjDN1CfiXRWaVXg=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJlfuqzO8G9h5Z947LPZmziJD2uVMuKFc/4kalTL1AWkH
+ VMROK7YUcrCIMbFICumyLI6aZHlnq4HV+vjVnjAzGFlAhnCwMUpABPpCGT472Kx8WvbDn6bv4km
+ hvy6u1mV18ycvGHp8oQOnTNPeuNrGxn+8MmFcRs4KrG+q5paZWDo7DfTW51vC/vpTdmqzGoGjdu
+ ZAA==
+X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
+ fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
+X-Rspamd-Queue-Id: D7ABD4ABEA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.56 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-242320-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[kernel.dk];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-242323-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,suse.de:email,kernel-dk.20251104.gappssmtp.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-This is a multi-part message in MIME format.
---------------rytrB7wbBzmU0OQrBpHp2kWo
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+uaudio_transfer_buffer_setup() calls dma_get_sgtable() and then passes
+the sg_table to uaudio_iommu_map_xfer_buf() without checking whether sg
+table construction succeeded. If dma_get_sgtable() fails, the sg_table
+contents are not valid.
 
-On 5/1/26 5:08 AM, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.18-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 45cd95763e198d74d369ede43aef0b1955b8dea4
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050117-strenuous-scrunch-c2ce@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+uaudio_iommu_map_pa() also ignores iommu_map() failures for the event and
+transfer rings and still returns the allocated IOVA to the QMI response.
+That can expose an unmapped IOVA to the audio DSP. For transfer rings,
+the failed mapping also leaves the IOVA allocator state marked in use.
 
-Here's a backport for 6.18-stable.
+Check both operations. Free the coherent transfer buffer when sg table
+construction fails, free the sg table when transfer-buffer IOMMU mapping
+fails, and release the transfer-ring IOVA if iommu_map() fails. Also
+return the existing event-ring IOVA when the event ring is already mapped,
+matching the pre-split helper behavior.
 
--- 
-Jens Axboe
+Fixes: 326bbc348298 ("ALSA: usb-audio: qcom: Introduce QC USB SND offloading support")
+Fixes: 44499ecb4f28 ("ALSA: usb: qcom: Fix false-positive address space check")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+---
+ sound/usb/qcom/qc_audio_offload.c | 31 +++++++++++++++++++++++++------
+ 1 file changed, 25 insertions(+), 6 deletions(-)
 
---------------rytrB7wbBzmU0OQrBpHp2kWo
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-register-fix-ring-resizing-with-mixed-large.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-register-fix-ring-resizing-with-mixed-large.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
+diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audio_offload.c
+index 5f993b88448c..a0009503b2c5 100644
+--- a/sound/usb/qcom/qc_audio_offload.c
++++ b/sound/usb/qcom/qc_audio_offload.c
+@@ -565,6 +565,7 @@ static unsigned long uaudio_iommu_map_pa(enum mem_type mtype, bool dma_coherent,
+ 	unsigned long iova = 0;
+ 	bool map = true;
+ 	int prot = uaudio_iommu_map_prot(dma_coherent);
++	int ret;
+ 
+ 	switch (mtype) {
+ 	case MEM_EVENT_RING:
+@@ -582,10 +583,24 @@ static unsigned long uaudio_iommu_map_pa(enum mem_type mtype, bool dma_coherent,
+ 		dev_err(uaudio_qdev->data->dev, "unknown mem type %d\n", mtype);
+ 	}
+ 
+-	if (!iova || !map)
++	if (!iova)
+ 		return 0;
+ 
+-	iommu_map(uaudio_qdev->data->domain, iova, pa, size, prot, GFP_KERNEL);
++	if (!map)
++		return iova;
++
++	ret = iommu_map(uaudio_qdev->data->domain, iova, pa, size, prot,
++			GFP_KERNEL);
++	if (ret) {
++		dev_err(uaudio_qdev->data->dev,
++			"failed to map %zu bytes at iova 0x%08lx: %d\n",
++			size, iova, ret);
++		if (mtype == MEM_XFER_RING)
++			uaudio_put_iova(iova, size,
++					&uaudio_qdev->xfer_ring_list,
++					&uaudio_qdev->xfer_ring_iova_size);
++		return 0;
++	}
+ 
+ 	return iova;
+ }
+@@ -1054,15 +1069,17 @@ static int uaudio_transfer_buffer_setup(struct snd_usb_substream *subs,
+ 	if (!xfer_buf)
+ 		return -ENOMEM;
+ 
+-	dma_get_sgtable(subs->dev->bus->sysdev, &xfer_buf_sgt, xfer_buf,
+-			xfer_buf_dma, len);
++	ret = dma_get_sgtable(subs->dev->bus->sysdev, &xfer_buf_sgt, xfer_buf,
++			      xfer_buf_dma, len);
++	if (ret)
++		goto free_xfer_buf;
+ 
+ 	/* map the physical buffer into sysdev as well */
+ 	xfer_buf_dma_sysdev = uaudio_iommu_map_xfer_buf(dma_coherent,
+ 							len, &xfer_buf_sgt);
+ 	if (!xfer_buf_dma_sysdev) {
+ 		ret = -ENOMEM;
+-		goto unmap_sync;
++		goto free_sgt;
+ 	}
+ 
+ 	mem_info->dma = xfer_buf_dma;
+@@ -1073,7 +1090,9 @@ static int uaudio_transfer_buffer_setup(struct snd_usb_substream *subs,
+ 
+ 	return 0;
+ 
+-unmap_sync:
++free_sgt:
++	sg_free_table(&xfer_buf_sgt);
++free_xfer_buf:
+ 	usb_free_coherent(subs->dev, len, xfer_buf, xfer_buf_dma);
+ 
+ 	return ret;
 
-RnJvbSA1ODE4NDRlNGQzY2JlZmFkYTgwNDc1NDE3NGU0NGE0NGM2YzMyOTc4IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IE1vbiwgMjAgQXByIDIwMjYgMTM6NDE6MzggLTA2MDAKU3ViamVjdDogW1BBVENIXSBp
-b191cmluZy9yZWdpc3RlcjogZml4IHJpbmcgcmVzaXppbmcgd2l0aCBtaXhlZC9sYXJnZQog
-U1FFcy9DUUVzCgpDb21taXQgNDVjZDk1NzYzZTE5OGQ3NGQzNjllZGU0M2FlZjBiMTk1NWI4
-ZGVhNCB1cHN0cmVhbS4KClRoZSByaW5nIHJlc2l6aW5nIG9ubHkgcHJvcGVybHkgaGFuZGxl
-cyAibm9ybWFsIiBzaXplZCBTUUVzIG9yIENRRXMsIGlmCnRoZXJlIGFyZSBwZW5kaW5nIGVu
-dHJpZXMgYXJvdW5kIGEgcmVzaXplLiBUaGlzIG5vcm1hbGx5IHNob3VsZCBub3QgYmUKdGhl
-IGNhc2UsIGJ1dCB0aGUgY29kZSBpcyBzdXBwb3NlZCB0byBoYW5kbGUgdGhpcyByZWdhcmRs
-ZXNzLgoKRm9yIHRoZSBtaXhlZCBTUUUvQ1FFIGNhc2VzLCB0aGUgY3VycmVudCBjb3B5aW5n
-IHdvcmtzIGZpbmUgYXMgdGhleQphcmUgaW5kZXhlZCBpbiB0aGUgc2FtZSB3YXkuIEVhY2gg
-aGFsZiBpcyBqdXN0IGNvcGllZCBzZXBhcmF0ZWx5LiBCdXQKZm9yIGZpeGVkIGxhcmdlIFNR
-RXMgYW5kIENRRXMsIHRoZSBpdGVyYXRpb24gYW5kIGNvcHkgbmVlZCB0byB0YWtlIHRoYXQK
-aW50byBhY2NvdW50LgoKQ2M6IHN0YWJsZUBrZXJuZWwub3JnCkZpeGVzOiA3OWNmZTllNTlj
-MmEgKCJpb191cmluZy9yZWdpc3RlcjogYWRkIElPUklOR19SRUdJU1RFUl9SRVNJWkVfUklO
-R1MiKQpSZXZpZXdlZC1ieTogR2FicmllbCBLcmlzbWFuIEJlcnRhemkgPGtyaXNtYW5Ac3Vz
-ZS5kZT4KU2lnbmVkLW9mZi1ieTogSmVucyBBeGJvZSA8YXhib2VAa2VybmVsLmRrPgotLS0K
-IGlvX3VyaW5nL3JlZ2lzdGVyLmMgfCAzNiArKysrKysrKysrKysrKysrKysrKysrKysrKysr
-LS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAyOCBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9u
-cygtKQoKZGlmZiAtLWdpdCBhL2lvX3VyaW5nL3JlZ2lzdGVyLmMgYi9pb191cmluZy9yZWdp
-c3Rlci5jCmluZGV4IGZhYTQ0ZGQzMmNkNS4uNmM0ZWY0ODUyMTJkIDEwMDY0NAotLS0gYS9p
-b191cmluZy9yZWdpc3Rlci5jCisrKyBiL2lvX3VyaW5nL3JlZ2lzdGVyLmMKQEAgLTUxNCwx
-MCArNTE0LDIwIEBAIHN0YXRpYyBpbnQgaW9fcmVnaXN0ZXJfcmVzaXplX3JpbmdzKHN0cnVj
-dCBpb19yaW5nX2N0eCAqY3R4LCB2b2lkIF9fdXNlciAqYXJnKQogCWlmICh0YWlsIC0gb2xk
-X2hlYWQgPiBwLnNxX2VudHJpZXMpCiAJCWdvdG8gb3ZlcmZsb3c7CiAJZm9yIChpID0gb2xk
-X2hlYWQ7IGkgPCB0YWlsOyBpKyspIHsKLQkJdW5zaWduZWQgc3JjX2hlYWQgPSBpICYgKGN0
-eC0+c3FfZW50cmllcyAtIDEpOwotCQl1bnNpZ25lZCBkc3RfaGVhZCA9IGkgJiAocC5zcV9l
-bnRyaWVzIC0gMSk7Ci0KLQkJbi5zcV9zcWVzW2RzdF9oZWFkXSA9IG8uc3Ffc3Flc1tzcmNf
-aGVhZF07CisJCXVuc2lnbmVkIGluZGV4LCBkc3RfbWFzaywgc3JjX21hc2s7CisJCXNpemVf
-dCBzcV9zaXplOworCisJCWluZGV4ID0gaTsKKwkJc3Ffc2l6ZSA9IHNpemVvZihzdHJ1Y3Qg
-aW9fdXJpbmdfc3FlKTsKKwkJc3JjX21hc2sgPSBjdHgtPnNxX2VudHJpZXMgLSAxOworCQlk
-c3RfbWFzayA9IHAuc3FfZW50cmllcyAtIDE7CisJCWlmIChjdHgtPmZsYWdzICYgSU9SSU5H
-X1NFVFVQX1NRRTEyOCkgeworCQkJaW5kZXggPDw9IDE7CisJCQlzcV9zaXplIDw8PSAxOwor
-CQkJc3JjX21hc2sgPSAoY3R4LT5zcV9lbnRyaWVzIDw8IDEpIC0gMTsKKwkJCWRzdF9tYXNr
-ID0gKHAuc3FfZW50cmllcyA8PCAxKSAtIDE7CisJCX0KKwkJbWVtY3B5KCZuLnNxX3NxZXNb
-aW5kZXggJiBkc3RfbWFza10sICZvLnNxX3NxZXNbaW5kZXggJiBzcmNfbWFza10sIHNxX3Np
-emUpOwogCX0KIAlXUklURV9PTkNFKG4ucmluZ3MtPnNxLmhlYWQsIG9sZF9oZWFkKTsKIAlX
-UklURV9PTkNFKG4ucmluZ3MtPnNxLnRhaWwsIHRhaWwpOwpAQCAtNTM0LDEwICs1NDQsMjAg
-QEAgc3RhdGljIGludCBpb19yZWdpc3Rlcl9yZXNpemVfcmluZ3Moc3RydWN0IGlvX3Jpbmdf
-Y3R4ICpjdHgsIHZvaWQgX191c2VyICphcmcpCiAJCWdvdG8gb3V0OwogCX0KIAlmb3IgKGkg
-PSBvbGRfaGVhZDsgaSA8IHRhaWw7IGkrKykgewotCQl1bnNpZ25lZCBzcmNfaGVhZCA9IGkg
-JiAoY3R4LT5jcV9lbnRyaWVzIC0gMSk7Ci0JCXVuc2lnbmVkIGRzdF9oZWFkID0gaSAmIChw
-LmNxX2VudHJpZXMgLSAxKTsKLQotCQluLnJpbmdzLT5jcWVzW2RzdF9oZWFkXSA9IG8ucmlu
-Z3MtPmNxZXNbc3JjX2hlYWRdOworCQl1bnNpZ25lZCBpbmRleCwgZHN0X21hc2ssIHNyY19t
-YXNrOworCQlzaXplX3QgY3Ffc2l6ZTsKKworCQlpbmRleCA9IGk7CisJCWNxX3NpemUgPSBz
-aXplb2Yoc3RydWN0IGlvX3VyaW5nX2NxZSk7CisJCXNyY19tYXNrID0gY3R4LT5jcV9lbnRy
-aWVzIC0gMTsKKwkJZHN0X21hc2sgPSBwLmNxX2VudHJpZXMgLSAxOworCQlpZiAoY3R4LT5m
-bGFncyAmIElPUklOR19TRVRVUF9DUUUzMikgeworCQkJaW5kZXggPDw9IDE7CisJCQljcV9z
-aXplIDw8PSAxOworCQkJc3JjX21hc2sgPSAoY3R4LT5jcV9lbnRyaWVzIDw8IDEpIC0gMTsK
-KwkJCWRzdF9tYXNrID0gKHAuY3FfZW50cmllcyA8PCAxKSAtIDE7CisJCX0KKwkJbWVtY3B5
-KCZuLnJpbmdzLT5jcWVzW2luZGV4ICYgZHN0X21hc2tdLCAmby5yaW5ncy0+Y3Flc1tpbmRl
-eCAmIHNyY19tYXNrXSwgY3Ffc2l6ZSk7CiAJfQogCVdSSVRFX09OQ0Uobi5yaW5ncy0+Y3Eu
-aGVhZCwgb2xkX2hlYWQpOwogCVdSSVRFX09OQ0Uobi5yaW5ncy0+Y3EudGFpbCwgdGFpbCk7
-Ci0tIAoyLjUzLjAKCg==
+---
+base-commit: ab4a88fdef2813446e3af179a708d024622ff4fa
+change-id: 20260422-alsa-usb-qcom-offload-map-errors-ddbb6dbf758a
 
---------------rytrB7wbBzmU0OQrBpHp2kWo--
+Best regards,
+--  
+Cássio Gabriel <cassiogabrielcontato@gmail.com>
+
 
