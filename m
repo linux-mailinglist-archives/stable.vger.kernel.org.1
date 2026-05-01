@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qC7yIn6Y9GnTCgIAu9opvQ
-	(envelope-from <stable+bounces-242396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:11:42 +0200
+	id UOvJDlWZ9GlKCwIAu9opvQ
+	(envelope-from <stable+bounces-242398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:15:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2EB4AC449
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:11:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFC14AC471
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 309593014C77
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:11:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 208133000FDB
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C8739E6C9;
-	Fri,  1 May 2026 12:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C0836215A;
+	Fri,  1 May 2026 12:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EneuEz8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFPtDCaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABF0350D7D
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CA72D9EF0
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777637498; cv=none; b=AxMtTns3UcalYns+3xYC36BTSKSv7K2URQ9YtRdIw1habdMFirN5PnwTWW2WMeFbwzl0VMsSg5qZ+lCtFZ52YsQS34xuzmEyNydPybKxlJv9Riknx/d60aDUR78J7fDiFJKNyw+qXFgOBjIvxwdAtiZ/8nw7yVAXIRce/eb0tOg=
+	t=1777637713; cv=none; b=qjjpdR4+ysLSRxYcaRM9f7CuOHRPS5OJNGR/8a9+5kJz+I7XiMCgNg2vkkOCYbp6vqzJrgGgeeJIPfFUAivB5IZaqfLKFgBraeU+zd6/nfnQUhGMUHOAReEgGqJJE67r7/jaLyO+nkd8OlhEBkuiJTE6talAhuwqXH8yixH2UcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777637498; c=relaxed/simple;
-	bh=APpnEcFP8rLys0WGlUWHMbej8mF6EiRiZJbacxXUXyo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lPnUX4VerpYeBbEWp9aIbY8N+Nv7QbqKY9X74dZz2X3qFjHYEYK3ZiQUV/RhtZpj7yj/K51ilfrluuhIZZuaE+ibwQffXELG3qX5aw49JH/Xtbi38QFh+1iLYsWQUZbOYpRsWdoTbjtFM8kPTX9oUgAqg4Jpm2acxZnA92szS/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EneuEz8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D55C2BCB4;
-	Fri,  1 May 2026 12:11:38 +0000 (UTC)
+	s=arc-20240116; t=1777637713; c=relaxed/simple;
+	bh=OlBGiBI2om1A5sdT3aEz/yNnKYZUML7kAEb6lUr6erM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TFYYjVg5gCyXAWge9RxZ+YHW3JBHifzeVIpA5RVXZbdGN/U5XSTj92NGGFG3FtFVOnngH22T1Gn+9qr2Y1JJ1IHVI8hozHOzYvxZ/aUMVr78EJZZ6OXJ8Kb55U0LTiGAqWDQystsyTDHg9E1evo/AtvKtDuYP2YtaXklqt2lyqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFPtDCaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AE8C2BCB4;
+	Fri,  1 May 2026 12:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777637498;
-	bh=APpnEcFP8rLys0WGlUWHMbej8mF6EiRiZJbacxXUXyo=;
+	s=korg; t=1777637713;
+	bh=OlBGiBI2om1A5sdT3aEz/yNnKYZUML7kAEb6lUr6erM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EneuEz8jP0nxeJayCx7oe4b/j254qhKwpNYmwkAEpAWsDG+FR07XY397h3VIs1+up
-	 nG59c4qMH0iwsADzzzgC9e8eE0354qpsI8P3GHrMyvgYm9gdaSfqLTCAHd0Jte9dv1
-	 OmIW47ya/GGbkUrsbDeROdCJnNPlbQmThZaOx2fk=
-Subject: FAILED: patch "[PATCH] net: mctp: fix don't require received header reserved bits to" failed to apply to 5.15-stable tree
-To: yuanzm2@lenovo.com,jk@codeconstruct.com.au,kuba@kernel.org
+	b=PFPtDCaLiboOhdWIfRXc5rHcxyBdPN2RQa8lblDUVv/lCRd0vIwnV5a7229JDIfpY
+	 ooNah4ubtvhM/Vxf9DLgFxsHly/amsfBOfKKYvw5P3Ahk71A+BldzeE6xdhWDnU2j/
+	 Dt/Y4Scn4E8QuFgBjNssfL/Nx8r0lRLxr3KFDW3o=
+Subject: FAILED: patch "[PATCH] spi: fix resource leaks on device setup failure" failed to apply to 6.6-stable tree
+To: johan@kernel.org,broonie@kernel.org,saravanak@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 01 May 2026 14:11:24 +0200
-Message-ID: <2026050124-donation-unloved-dc45@gregkh>
+Date: Fri, 01 May 2026 14:15:02 +0200
+Message-ID: <2026050102-whimsical-willpower-501f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4A2EB4AC449
+X-Rspamd-Queue-Id: CCFC14AC471
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242396-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242398-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,25 +81,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lenovo.com:email,linuxfoundation.org:dkim,msgid.link:url,codeconstruct.com.au:email,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x a663bac71a2f0b3ac6c373168ca57b2a6e6381aa
+git cherry-pick -x db357034f7e0cf23f233f414a8508312dfe8fbbe
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050124-donation-unloved-dc45@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050102-whimsical-willpower-501f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,86 +111,128 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a663bac71a2f0b3ac6c373168ca57b2a6e6381aa Mon Sep 17 00:00:00 2001
-From: Yuan Zhaoming <yuanzm2@lenovo.com>
-Date: Fri, 17 Apr 2026 22:13:40 +0800
-Subject: [PATCH] net: mctp: fix don't require received header reserved bits to
- be zero
+From db357034f7e0cf23f233f414a8508312dfe8fbbe Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 10 Apr 2026 17:49:06 +0200
+Subject: [PATCH] spi: fix resource leaks on device setup failure
 
-From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
-the MCTP header contains a 4 bit reserved field, and 4 bit version.
+Make sure to call controller cleanup() if spi_setup() fails while
+registering a device to avoid leaking any resources allocated by
+setup().
 
-On our current receive path, we require those 4 reserved bits to be
-zero, but the 9500-8i card is non-conformant, and may set these
-reserved bits.
+Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Saravana Kannan <saravanak@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-DSP0236 states that the reserved bits must be written as zero, and
-ignored when read. While the device might not conform to the former,
-we should accept these message to conform to the latter.
-
-Relax our check on the MCTP version byte to allow non-zero bits in the
-reserved field.
-
-Fixes: 889b7da23abf ("mctp: Add initial routing framework")
-Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
-Cc: stable@vger.kernel.org
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260417141340.5306-1-yuanzhaoming901030@126.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index e1e0a69afdce..d8bf9074110d 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -26,6 +26,9 @@ struct mctp_hdr {
- #define MCTP_VER_MIN	1
- #define MCTP_VER_MAX	1
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a0b2bd3b8186..3e434a9885bc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -43,6 +43,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_stop);
  
-+/* Definitions for ver field */
-+#define MCTP_HDR_VER_MASK	GENMASK(3, 0)
+ #include "internals.h"
+ 
++static int __spi_setup(struct spi_device *spi, bool initial_setup);
 +
- /* Definitions for flags_seq_tag field */
- #define MCTP_HDR_FLAG_SOM	BIT(7)
- #define MCTP_HDR_FLAG_EOM	BIT(6)
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 26fb8c6bbad2..1f3dccbb7aed 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -441,6 +441,7 @@ static int mctp_dst_input(struct mctp_dst *dst, struct sk_buff *skb)
- 	unsigned long f;
- 	u8 tag, flags;
- 	int rc;
-+	u8 ver;
+ static DEFINE_IDR(spi_controller_idr);
  
- 	msk = NULL;
- 	rc = -EINVAL;
-@@ -467,7 +468,8 @@ static int mctp_dst_input(struct mctp_dst *dst, struct sk_buff *skb)
- 	netid = mctp_cb(skb)->net;
- 	skb_pull(skb, sizeof(struct mctp_hdr));
+ static void spidev_release(struct device *dev)
+@@ -743,7 +745,7 @@ static int __spi_add_device(struct spi_device *spi, struct spi_device *parent)
+ 	 * normally rely on the device being setup.  Devices
+ 	 * using SPI_CS_HIGH can't coexist well otherwise...
+ 	 */
+-	status = spi_setup(spi);
++	status = __spi_setup(spi, true);
+ 	if (status < 0) {
+ 		dev_err(dev, "can't setup %s, status %d\n",
+ 				dev_name(&spi->dev), status);
+@@ -4049,27 +4051,7 @@ static int spi_set_cs_timing(struct spi_device *spi)
+ 	return status;
+ }
  
--	if (mh->ver != 1)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto out;
+-/**
+- * spi_setup - setup SPI mode and clock rate
+- * @spi: the device whose settings are being modified
+- * Context: can sleep, and no requests are queued to the device
+- *
+- * SPI protocol drivers may need to update the transfer mode if the
+- * device doesn't work with its default.  They may likewise need
+- * to update clock rates or word sizes from initial values.  This function
+- * changes those settings, and must be called from a context that can sleep.
+- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
+- * effect the next time the device is selected and data is transferred to
+- * or from it.  When this function returns, the SPI device is deselected.
+- *
+- * Note that this call will fail if the protocol driver specifies an option
+- * that the underlying controller or its driver does not support.  For
+- * example, not all hardware supports wire transfers using nine bit words,
+- * LSB-first wire encoding, or active-high chipselects.
+- *
+- * Return: zero on success, else a negative error code.
+- */
+-int spi_setup(struct spi_device *spi)
++static int __spi_setup(struct spi_device *spi, bool initial_setup)
+ {
+ 	unsigned	bad_bits, ugly_bits;
+ 	int		status;
+@@ -4154,7 +4136,7 @@ int spi_setup(struct spi_device *spi)
+ 	status = spi_set_cs_timing(spi);
+ 	if (status) {
+ 		mutex_unlock(&spi->controller->io_mutex);
+-		return status;
++		goto err_cleanup;
+ 	}
  
- 	flags = mh->flags_seq_tag & (MCTP_HDR_FLAG_SOM | MCTP_HDR_FLAG_EOM);
-@@ -1317,6 +1319,7 @@ static int mctp_pkttype_receive(struct sk_buff *skb, struct net_device *dev,
- 	struct mctp_dst dst;
- 	struct mctp_hdr *mh;
- 	int rc;
-+	u8 ver;
+ 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
+@@ -4163,7 +4145,7 @@ int spi_setup(struct spi_device *spi)
+ 			mutex_unlock(&spi->controller->io_mutex);
+ 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
+ 				status);
+-			return status;
++			goto err_cleanup;
+ 		}
  
- 	rcu_read_lock();
- 	mdev = __mctp_dev_get(dev);
-@@ -1334,7 +1337,8 @@ static int mctp_pkttype_receive(struct sk_buff *skb, struct net_device *dev,
+ 		/*
+@@ -4199,6 +4181,37 @@ int spi_setup(struct spi_device *spi)
+ 			status);
  
- 	/* We have enough for a header; decode and route */
- 	mh = mctp_hdr(skb);
--	if (mh->ver < MCTP_VER_MIN || mh->ver > MCTP_VER_MAX)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto err_drop;
+ 	return status;
++
++err_cleanup:
++	if (initial_setup)
++		spi_cleanup(spi);
++
++	return status;
++}
++
++/**
++ * spi_setup - setup SPI mode and clock rate
++ * @spi: the device whose settings are being modified
++ * Context: can sleep, and no requests are queued to the device
++ *
++ * SPI protocol drivers may need to update the transfer mode if the
++ * device doesn't work with its default.  They may likewise need
++ * to update clock rates or word sizes from initial values.  This function
++ * changes those settings, and must be called from a context that can sleep.
++ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
++ * effect the next time the device is selected and data is transferred to
++ * or from it.  When this function returns, the SPI device is deselected.
++ *
++ * Note that this call will fail if the protocol driver specifies an option
++ * that the underlying controller or its driver does not support.  For
++ * example, not all hardware supports wire transfers using nine bit words,
++ * LSB-first wire encoding, or active-high chipselects.
++ *
++ * Return: zero on success, else a negative error code.
++ */
++int spi_setup(struct spi_device *spi)
++{
++	return __spi_setup(spi, false);
+ }
+ EXPORT_SYMBOL_GPL(spi_setup);
  
- 	/* source must be valid unicast or null; drop reserved ranges and
 
 
