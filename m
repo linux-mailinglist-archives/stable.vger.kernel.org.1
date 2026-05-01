@@ -1,141 +1,167 @@
-Return-Path: <stable+bounces-242451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLv6FzHB9GkDEQIAu9opvQ
-	(envelope-from <stable+bounces-242451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 17:05:21 +0200
+	id yM7fFdvB9GmYEQIAu9opvQ
+	(envelope-from <stable+bounces-242452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 17:08:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CB24AD7F7
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 17:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A2A4AD818
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 17:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 44D0D30146AE
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 15:05:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B437630143C3
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 15:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2283CE4A2;
-	Fri,  1 May 2026 15:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CE03CD8CD;
+	Fri,  1 May 2026 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oR+45DUd"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="CCvnpVsx"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B533B6BF9
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 15:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6471B3BF662;
+	Fri,  1 May 2026 15:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777647913; cv=none; b=tbwI48kPZI95/vaSVtoEpJkpr2AoIe/gotQPdUsHyMzEHywiLd22q9GT4PCZl69909EE1PC2OuS0j3uQ2RlPGQtXKZ209lbR7fnq2dL/CYuG3qMtZzErDmjlys1FLVtxFe1Sz1su+zFrw9YsgzFQcsTLgHZwzaS2qpn4CSGfCEo=
+	t=1777648084; cv=none; b=NbFsBhGVqB4Ja1Mda2KzfhMzKVaoaMfvZ5LYL5koAO0XjpU7eA8PgjywyEXxQW7paK/jvRUvvmpC/5jS5fN3e5KPMVGYpysM+kvq1Fey0Uos5j/kgZoghmXN3Npujq6/ZYn5qBBtvZE6/eqiO1qq/VqELadMm9RAQbB5iJIyVzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777647913; c=relaxed/simple;
-	bh=/y/gaHlznUUO1DZKGIHAKNrKkujCtryx6gsz82mEeJo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f7a/zz3/4gQ4NAWl9H5S5b1xAURpGhLdlmbfsci1oPEN5vZpSDdB8rKoOwtUZlHfUpLlxwlRYe7NLOv0C/DIH+JU5uqRTYei7oddIE7F/YhQrAaUqzSMt0yiywnAoJSOzjki4FcQ6MkYUt7wQsaOaHvvB/L5kzR64WJvTm4gDVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oR+45DUd; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777647900;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QXqyhe6SNX+aC9KuwAMEIvSlU49jdCuAN0y8S3VOMlA=;
-	b=oR+45DUdC6MPNsy498hVXyqCoIuXvI05arsk4DiRdjq36m0Cjq94Fcgb/+qM8x7jWzg/Ac
-	jNdGKo/SWVUsx9+rIJCFChit/A/Yg0izsaj68eikuaFznMDbdZyX5Y4uOBSG23sYeM9wRi
-	DDsjbaAMNqyg4kGqIw7YFL5YzQicRK8=
-From: luka.gejak@linux.dev
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: Yan-Hsuan Chuang <yhchuang@realtek.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Stanislaw Gruszka <sgruszka@redhat.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Luka Gejak <luka.gejak@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: rtw88: increase TX report timeout to fix race condition
-Date: Fri,  1 May 2026 17:04:02 +0200
-Message-ID: <20260501150402.227788-1-luka.gejak@linux.dev>
+	s=arc-20240116; t=1777648084; c=relaxed/simple;
+	bh=qoDHNXdsi0DnZC69MMDvUsZgKnEB5TOrg4oNxq6awUE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C9K0hp1wvlJ8Y1IwkVYJe0H5RRV+7OcxyUICO+wqY50lDi3rpj4PH0hRDiu7zDkcPKvE7zchf0TF9osF2v6ZrN5gnjXWm8NXDMrp27eS911Tm3N4rywrH9S5azoUW4pf/gwxeknjGlTKidjOyS+B+P0Q44jowwQ3EBqJc0aYCuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=CCvnpVsx; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F84F2A9A;
+	Fri,  1 May 2026 08:07:57 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A3B8E3F62B;
+	Fri,  1 May 2026 08:08:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777648082; bh=qoDHNXdsi0DnZC69MMDvUsZgKnEB5TOrg4oNxq6awUE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CCvnpVsxMfxf3cRxVy+bhKHRxeQOta7hKclZr4AjTfXE5bDghZ+yEodChYsAQgZIj
+	 RffENUr9wfbHxS8fO3NS8hJsd40zjbjcYBH1QYZTzTilQe/l8HmOaSBDrnzRXJkWGX
+	 Wtu4ezb75gn1o5JrkPjFlClmw2jdZbsuJCY9Ewz4=
+Message-ID: <b1be5378-1835-417c-aee5-c92253b340d0@arm.com>
+Date: Fri, 1 May 2026 16:07:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: D1CB24AD7F7
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH v2 1/6] KVM: arm64: Make EL2 exception entry and exit
+ context-synchronization events
+To: Fuad Tabba <tabba@google.com>
+Cc: maz@kernel.org, oliver.upton@linux.dev, james.morse@arm.com,
+ suzuki.poulose@arm.com, yuzenghui@huawei.com, qperret@google.com,
+ vdonnefort@google.com, catalin.marinas@arm.com, will@kernel.org,
+ yaoyuan@linux.alibaba.com, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260501112149.2824881-1-tabba@google.com>
+ <20260501112149.2824881-2-tabba@google.com>
+ <a7e2ac96-b710-40e5-a159-b49555bcf518@arm.com>
+ <CA+EHjTwgUF4AEw6WvxPiwMTtrTUEs1NjjuKso+VBChon2cdozQ@mail.gmail.com>
+Content-Language: en-US
+From: Ben Horgan <ben.horgan@arm.com>
+In-Reply-To: <CA+EHjTwgUF4AEw6WvxPiwMTtrTUEs1NjjuKso+VBChon2cdozQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 33A2A4AD818
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	XM_UA_NO_VERSION(0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-242452-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-242451-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[arm.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:dkim,linux.dev:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben.horgan@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:email,arm.com:dkim,arm.com:mid]
 
-From: Luka Gejak <luka.gejak@linux.dev>
+Hi Fuad,
 
-The driver expects the firmware to report TX status within 500ms.
-However, a race condition exists when the hardware is under heavy TX
-load and is simultaneously interrupted by background scans or
-power-saving state transitions. During these events, the firmware may
-go off-channel for longer than 500ms, delaying the TX reports.
+On 5/1/26 16:01, Fuad Tabba wrote:
+> Hi Ben,
+> 
+> On Fri, 1 May 2026 at 14:47, Ben Horgan <ben.horgan@arm.com> wrote:
+>>
+>> Hi Fuad,
+>>
+>> On 5/1/26 12:21, Fuad Tabba wrote:
+>>> SCTLR_EL2.EIS and SCTLR_EL2.EOS control whether exception entry and
+>>> exit at EL2 are Context Synchronisation Events (CSEs). Per ARM DDI
+>>> 0487 M.b D24.2.175 (p. D24-9754):
+>>>
+>>>   - !FEAT_ExS: the bit is RES1, so the entry/exit is unconditionally
+>>>     a CSE.
+>>>   - FEAT_ExS: the reset value is architecturally UNKNOWN; software
+>>>     must set the bit to make the entry/exit a CSE.
+>>>
+>>> INIT_SCTLR_EL2_MMU_ON in arch/arm64/include/asm/sysreg.h sets neither
+>>> bit. KVM/arm64 hot paths rely on ERET from EL2 being a CSE, and on
+>>> synchronous EL1->EL2 entry being a CSE, to elide explicit ISBs after
+>>> MSRs to context-switching system registers (HCR_EL2, ZCR_EL2,
+>>> ptrauth keys, etc.). On FEAT_ExS hardware those reliances are not
+>>> architecturally backed unless EOS=1 (and, for entry, EIS=1).
+>>>
+>>> Until commit 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg
+>>> infrastructure"), SCTLR_EL2_RES1 was a hand-rolled mask that
+>>> included BIT(11) (EOS) and BIT(22) (EIS), so INIT_SCTLR_EL2_MMU_ON
+>>> was setting both unconditionally. The conversion made
+>>> SCTLR_EL2_RES1 auto-generated; because the sysreg tooling only
+>>> models unconditionally-RES1 fields and EIS/EOS are RES1 only when
+>>> FEAT_ExS is absent, the auto-generated mask is UL(0). The seven
+>>> other bits dropped from the old mask (positions 4, 5, 16, 18, 23,
+>>> 28, 29) are unconditionally RES1 in the E2H=0 SCTLR_EL2 layout per
+>>> DDI 0487 M.b D24.2.175, so dropping them is harmless. EIS and EOS
+>>> are the only bits whose semantics changed for FEAT_ExS hardware
+>>> and where the kernel relies on the value being 1.
+>>>
+>>> Make the guarantee explicit: include SCTLR_ELx_EIS | SCTLR_ELx_EOS in
+>>> INIT_SCTLR_EL2_MMU_ON so that EL2 exception entry and exit are
+>>> unconditionally CSEs regardless of whether FEAT_ExS is implemented.
+>>> This matches the pairing in arch/arm64/kvm/config.c which treats EIS
+>>> and EOS together as RES1 under !FEAT_ExS.
+>>
+>> In v1 you also had this sentence:
+>>
+>> "INIT_SCTLR_EL2_MMU_OFF is left unchanged: that path is used during
+>> very early EL2 init and the EL2 MMU-off transition, neither of which
+>> relies on these bits in the same way."
+>>
+>> To me, it seems useful to keep that sentence as it makes it clear that INIT_SCTLR_EL2_MMU_OFF is purposely not changed.
+>> Or is there a reason why you dropped it? Perhaps it's just obvious to people more familiar with this code.
+> 
+> To be honest, I thought the commit message was quite long, and I
+> wanted to make it a bit more concise. I could re-introduce it if you
+> think it's helpful.
 
-When this happens, the purge timer fires prematurely, dropping the
-tracking skbs from the queue and spamming the kernel log with:
-"failed to get tx report from firmware". Dropping these tracking skbs
-prevents the driver from reporting TX status back to mac80211, which
-breaks rate control accounting and degrades performance.
+I don't really mind but it was useful in helping me understand your change.
 
-Increase RTW_TX_PROBE_TIMEOUT to 2500ms. This timeout is large enough
-to comfortably accommodate the duration of full WiFi background scans
-and sleep transitions without incorrectly tripping the purge timer,
-while still eventually catching true firmware lockups.
+Thanks,
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Cc: stable@vger.kernel.org
-Tested-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
----
- drivers/net/wireless/realtek/rtw88/tx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
-index d34cdeca16f1..95d15e4f5d34 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.h
-+++ b/drivers/net/wireless/realtek/rtw88/tx.h
-@@ -7,7 +7,7 @@
- 
- #define RTK_TX_MAX_AGG_NUM_MASK		0x1f
- 
--#define RTW_TX_PROBE_TIMEOUT		msecs_to_jiffies(500)
-+#define RTW_TX_PROBE_TIMEOUT		msecs_to_jiffies(2500)
- 
- struct rtw_tx_desc {
- 	__le32 w0;
--- 
-2.54.0
-
+Ben
 
