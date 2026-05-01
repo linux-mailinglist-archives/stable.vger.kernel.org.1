@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-242269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLSdCC2B9GmXBwIAu9opvQ
-	(envelope-from <stable+bounces-242269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:32:13 +0200
+	id 0BCnGDuB9GmXBwIAu9opvQ
+	(envelope-from <stable+bounces-242270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:32:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16BE4ABA7A
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:32:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72B44ABA82
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 12:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D51D301AAAA
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 10:32:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 835E23019118
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 10:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24122381B17;
-	Fri,  1 May 2026 10:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CC2325495;
+	Fri,  1 May 2026 10:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeAse2IR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCtQPxEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8512DA76C
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 10:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B8E2C0323
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 10:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777631529; cv=none; b=qYnSVuTt1+K6O15F79Phu4DVTpUJa1wpKB7jVMoZ3Lktx9yZGp2PhzO9NUNwTxO6JtlDEs8MOQPzuIbIJPfAeRKmTXgwPXjwdWT/JLXP+iw1xl2aFMde4ZJDgQ4DtegzoEL31/cjX/tNk4wtZ6bujKC6n4ZtdEI7JVkUKfzJo5I=
+	t=1777631543; cv=none; b=PGyHDompYEq2yps95U2UWEbwjmy7g6pCgNQuTsQwFWFmiwesv0QaJtoIcgj1272CNUBue+taJ7vo2/27o3J9xdd7lRTw3XgYMif2dlVWFs2Jrigr9db9Oo6DWLSw4tOzbsv7apCyETccBn2qEOoeTeGHGEK9oCWpCFRfCpFYaRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777631529; c=relaxed/simple;
-	bh=CDq2ugMvC2L63BnaKOeZcpNFfyuqq+uHFkqxX7G4L4I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a56BGZRpUkPQzBVU13LMHkC0qt2/bw16+B/0EqDgW7q0tmAX8NuFZqW5emP7KEzLCWbCX7EOzud55v8LwioAAeNRNnf2w0L3vReTfrhjJdMPdau8wyNUE5SDxGmAyALZzN1y5WUWc61OFHm/Hqhi7jrVckBJ7QY+VxYE1+st7T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeAse2IR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211F8C2BCB4;
-	Fri,  1 May 2026 10:32:08 +0000 (UTC)
+	s=arc-20240116; t=1777631543; c=relaxed/simple;
+	bh=3t/Uv+/bwbuP6n6nnhO91zpDh5c8zukWr4VGIOqzThc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iLjsY6hCtDgaRvqABxTEVtoXRjBj02eZnHp/EuJd8YMgWJhAwbWvwssF3u/38ZI/jqlIun5izEk+sIG0bqd2ZdvKBEAmck0oqdY917L59Hw6e4tpypGkSzEP3+0sEj2X0Y0mNpi2zsFzNMXyA4sxeMOaVYY6YFE703bwx3yrtLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCtQPxEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7F6C2BCB4;
+	Fri,  1 May 2026 10:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777631529;
-	bh=CDq2ugMvC2L63BnaKOeZcpNFfyuqq+uHFkqxX7G4L4I=;
+	s=korg; t=1777631542;
+	bh=3t/Uv+/bwbuP6n6nnhO91zpDh5c8zukWr4VGIOqzThc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TeAse2IRe9NQ/BMf3y0InXPjdzxQShVGnn4OlCgQU+Q1vkoG4lObvewqIUVUoWSFr
-	 /eLb4VYdEWZ610UT2Y9T0kre0HRzfrEbO7DpEVhfSh2NMO0M0XCDQO2ZsFD3lkoUhg
-	 Us5JYX98qB3yIc95roy/Qmsi3+bINmsTqf1m5cH0=
-Subject: FAILED: patch "[PATCH] ALSA: aoa: i2sbus: clear stale prepared state" failed to apply to 5.10-stable tree
-To: cassiogabrielcontato@gmail.com,lkp@intel.com,tiwai@suse.de
+	b=PCtQPxEmgqeNwhMH2sKqa6EXe1WZ3knfWKyF9byMG/W4Q/ccAgVUYsWmhsAWHwUec
+	 Vdp6Pz4Rigv+nz2AZ4V6KPQZ1vXfMpho9Kx5q3bQ3lp7iqqUgy5PDBaOhBEPLMneIG
+	 h4bMQ/wJjowMRP8eAL9nUELnDn4WDajF0i86+/C8=
+Subject: FAILED: patch "[PATCH] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()" failed to apply to 6.12-stable tree
+To: thorsten.blum@linux.dev,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 01 May 2026 12:31:53 +0200
-Message-ID: <2026050153-spookily-fool-bd46@gregkh>
+Date: Fri, 01 May 2026 12:32:20 +0200
+Message-ID: <2026050120-trustless-overcome-452a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B16BE4ABA7A
+X-Rspamd-Queue-Id: C72B44ABA82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,17 +62,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242270-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242269-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,intel.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -80,27 +79,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,msgid.link:url,suse.de:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5ed060d5491597490fb53ec69da3edc4b1e8c165
+git cherry-pick -x fd7df93013c5118812e63a52635dc6c3a805a1de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050153-spookily-fool-bd46@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050120-trustless-overcome-452a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,163 +111,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5ed060d5491597490fb53ec69da3edc4b1e8c165 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Tue, 31 Mar 2026 18:14:04 -0300
-Subject: [PATCH] ALSA: aoa: i2sbus: clear stale prepared state
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From fd7df93013c5118812e63a52635dc6c3a805a1de Mon Sep 17 00:00:00 2001
+From: Thorsten Blum <thorsten.blum@linux.dev>
+Date: Tue, 10 Mar 2026 11:29:20 +0100
+Subject: [PATCH] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()
 
-The i2sbus PCM code uses pi->active to constrain the sibling stream to
-an already prepared duplex format and rate in i2sbus_pcm_open().
+In i2sbus_resume(), skip devices with an empty codec list, which avoids
+using an uninitialized 'sysclock_factor' in the 32-bit format path in
+i2sbus_pcm_prepare().
 
-That state is set from i2sbus_pcm_prepare(), but the current code only
-clears it on close. As a result, the sibling stream can inherit stale
-constraints after the prepared state has been torn down.
+In i2sbus_pcm_prepare(), replace two list_for_each_entry() loops with a
+single list_first_entry() now that the codec list is guaranteed to be
+non-empty by all callers.
 
-Clear pi->active when hw_params() or hw_free() tears down the prepared
-state, and set it again only after prepare succeeds.
-
-Replace the stale FIXME in the duplex constraint comment with a description
-of the current driver behavior: i2sbus still programs a single shared
-transport configuration for both directions, so mixed formats are not
-supported in duplex mode.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
 Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260331-aoa-i2sbus-clear-stale-active-v2-1-3764ae2889a1@gmail.com
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20260310102921.210109-3-thorsten.blum@linux.dev
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 
+diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
+index f974b96e98cd..22c956267f4e 100644
+--- a/sound/aoa/soundbus/i2sbus/core.c
++++ b/sound/aoa/soundbus/i2sbus/core.c
+@@ -405,6 +405,9 @@ static int i2sbus_resume(struct macio_dev* dev)
+ 	int err, ret = 0;
+ 
+ 	list_for_each_entry(i2sdev, &control->list, item) {
++		if (list_empty(&i2sdev->sound.codec_list))
++			continue;
++
+ 		/* reset i2s bus format etc. */
+ 		i2sbus_pcm_prepare_both(i2sdev);
+ 
 diff --git a/sound/aoa/soundbus/i2sbus/pcm.c b/sound/aoa/soundbus/i2sbus/pcm.c
-index 97c807e67d56..63004ece94f9 100644
+index aff99003d833..97c807e67d56 100644
 --- a/sound/aoa/soundbus/i2sbus/pcm.c
 +++ b/sound/aoa/soundbus/i2sbus/pcm.c
-@@ -165,17 +165,16 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
- 	 * currently in use (if any). */
- 	hw->rate_min = 5512;
- 	hw->rate_max = 192000;
--	/* if the other stream is active, then we can only
--	 * support what it is currently using.
--	 * FIXME: I lied. This comment is wrong. We can support
--	 * anything that works with the same serial format, ie.
--	 * when recording 24 bit sound we can well play 16 bit
--	 * sound at the same time iff using the same transfer mode.
-+	/* If the other stream is already prepared, keep this stream
-+	 * on the same duplex format and rate.
-+	 *
-+	 * i2sbus_pcm_prepare() still programs one shared transport
-+	 * configuration for both directions, so mixed duplex formats
-+	 * are not supported here.
- 	 */
- 	if (other->active) {
--		/* FIXME: is this guaranteed by the alsa api? */
- 		hw->formats &= pcm_format_to_bits(i2sdev->format);
--		/* see above, restrict rates to the one we already have */
-+		/* Restrict rates to the one already in use. */
- 		hw->rate_min = i2sdev->rate;
- 		hw->rate_max = i2sdev->rate;
- 	}
-@@ -283,6 +282,23 @@ void i2sbus_wait_for_stop_both(struct i2sbus_dev *i2sdev)
- }
- #endif
+@@ -383,6 +383,9 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 	/* set stop command */
+ 	command->command = cpu_to_le16(DBDMA_STOP);
  
-+static void i2sbus_pcm_clear_active(struct i2sbus_dev *i2sdev, int in)
-+{
-+	struct pcm_info *pi;
++	cii = list_first_entry(&i2sdev->sound.codec_list,
++			       struct codec_info_item, list);
 +
-+	guard(mutex)(&i2sdev->lock);
-+
-+	get_pcm_info(i2sdev, in, &pi, NULL);
-+	pi->active = 0;
-+}
-+
-+static inline int i2sbus_hw_params(struct snd_pcm_substream *substream,
-+				   struct snd_pcm_hw_params *params, int in)
-+{
-+	i2sbus_pcm_clear_active(snd_pcm_substream_chip(substream), in);
-+	return 0;
-+}
-+
- static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
- {
- 	struct i2sbus_dev *i2sdev = snd_pcm_substream_chip(substream);
-@@ -291,14 +307,27 @@ static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
- 	get_pcm_info(i2sdev, in, &pi, NULL);
- 	if (pi->dbdma_ring.stopping)
- 		i2sbus_wait_for_stop(i2sdev, pi);
-+	i2sbus_pcm_clear_active(i2sdev, in);
- 	return 0;
- }
- 
-+static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream,
-+				     struct snd_pcm_hw_params *params)
-+{
-+	return i2sbus_hw_params(substream, params, 0);
-+}
-+
- static int i2sbus_playback_hw_free(struct snd_pcm_substream *substream)
- {
- 	return i2sbus_hw_free(substream, 0);
- }
- 
-+static int i2sbus_record_hw_params(struct snd_pcm_substream *substream,
-+				   struct snd_pcm_hw_params *params)
-+{
-+	return i2sbus_hw_params(substream, params, 1);
-+}
-+
- static int i2sbus_record_hw_free(struct snd_pcm_substream *substream)
- {
- 	return i2sbus_hw_free(substream, 1);
-@@ -335,7 +364,6 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 	/* ok, let's set the serial format and stuff */
+ 	switch (runtime->format) {
+ 	/* 16 bit formats */
+@@ -390,13 +393,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 	case SNDRV_PCM_FORMAT_U16_BE:
+ 		/* FIXME: if we add different bus factors we need to
+ 		 * do more here!! */
+-		bi.bus_factor = 0;
+-		list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
+-			bi.bus_factor = cii->codec->bus_factor;
+-			break;
+-		}
+-		if (!bi.bus_factor)
+-			return -ENODEV;
++		bi.bus_factor = cii->codec->bus_factor;
+ 		input_16bit = 1;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_S32_BE:
+@@ -410,10 +407,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
  		return -EINVAL;
+ 	}
+ 	/* we assume all sysclocks are the same! */
+-	list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
+-		bi.sysclock_factor = cii->codec->sysclock_factor;
+-		break;
+-	}
++	bi.sysclock_factor = cii->codec->sysclock_factor;
  
- 	runtime = pi->substream->runtime;
--	pi->active = 1;
- 	if (other->active &&
- 	    ((i2sdev->format != runtime->format)
- 	     || (i2sdev->rate != runtime->rate)))
-@@ -444,9 +472,11 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 
- 	/* early exit if already programmed correctly */
- 	/* not locking these is fine since we touch them only in this function */
--	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
--	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
-+	if (in_le32(&i2sdev->intfregs->serial_format) == sfr &&
-+	    in_le32(&i2sdev->intfregs->data_word_sizes) == dws) {
-+		pi->active = 1;
- 		return 0;
-+	}
- 
- 	/* let's notify the codecs about clocks going away.
- 	 * For now we only do mastering on the i2s cell... */
-@@ -484,6 +514,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
- 		if (cii->codec->switch_clock)
- 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
- 
-+	pi->active = 1;
- 	return 0;
- }
- 
-@@ -728,6 +759,7 @@ static snd_pcm_uframes_t i2sbus_playback_pointer(struct snd_pcm_substream
- static const struct snd_pcm_ops i2sbus_playback_ops = {
- 	.open =		i2sbus_playback_open,
- 	.close =	i2sbus_playback_close,
-+	.hw_params =	i2sbus_playback_hw_params,
- 	.hw_free =	i2sbus_playback_hw_free,
- 	.prepare =	i2sbus_playback_prepare,
- 	.trigger =	i2sbus_playback_trigger,
-@@ -796,6 +828,7 @@ static snd_pcm_uframes_t i2sbus_record_pointer(struct snd_pcm_substream
- static const struct snd_pcm_ops i2sbus_record_ops = {
- 	.open =		i2sbus_record_open,
- 	.close =	i2sbus_record_close,
-+	.hw_params =	i2sbus_record_hw_params,
- 	.hw_free =	i2sbus_record_hw_free,
- 	.prepare =	i2sbus_record_prepare,
- 	.trigger =	i2sbus_record_trigger,
+ 	if (clock_and_divisors(bi.sysclock_factor,
+ 			       bi.bus_factor,
 
 
