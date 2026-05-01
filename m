@@ -1,248 +1,322 @@
-Return-Path: <stable+bounces-242245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id XDzkDMxt9GlcBQIAu9opvQ
-	(envelope-from <stable+bounces-242245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:09:32 +0200
+	id yEWeNaxr9GkoBQIAu9opvQ
+	(envelope-from <stable+bounces-242244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:00:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1826D4AB2A2
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:09:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 410F94AB265
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA5B33008CAC
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 09:09:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 931E8301C116
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 09:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46BC37DEA9;
-	Fri,  1 May 2026 09:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AE1378D7F;
+	Fri,  1 May 2026 09:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Hc9LBJ2Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IGgDNO1A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B736937D126
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 09:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777626564; cv=none; b=rMN8afPuJ1NhPWskH1CUiRvOqH/0vaeVxGkqhxFxTpA2mGVytPfCkg2pVSl4ADLH6SZHYhIQjC9kbOcjagPiv22s3R9TDMVvBx3azfxkPnsfx1GcSp9u8NbR/HMsjHaKPbMq6vLrnEQFMUlNMhSlBi9e1GKKEgfoP3w4qz7vu/8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777626564; c=relaxed/simple;
-	bh=xdtE/DCkochWviPR4LA8Fpn5j454tT/ivRr7H1oKanI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=AuS2jru0e+Ko8x63wB5NjJ50+AkQUN1BKYeuKrmZKOC0uuXv/G67zCP2K6iam2RlQSx1cvH0I2+kfL+0BySKmHQBd89nb2jXxNNwoTbOnyZU1baJMPD08X+kteeNzJyhEWSD5HVUGwMQ7VNk4T0gDMMgMHkdeOYFLiv/uSE5SHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Hc9LBJ2Z; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.6])
-	by mail.ispras.ru (Postfix) with ESMTPSA id BD60640ACE03;
-	Fri,  1 May 2026 08:54:18 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BD60640ACE03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1777625658;
-	bh=NwIekQkMHoKLiqQPg0K6ummhL2Oz3biAx42coufr5V4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Hc9LBJ2Za3CK5zQv9X3SQBx56j6b0/vUIsyCG2/K/r+PcYcvTz6hA10sw9R1dWa//
-	 EG9eg29FyeBC4DxTj3TRnztG6Hk+EZ58NeRFeFt0u6aghGQrV1EYf51Eo1OFPi3J25
-	 jMYmqz8n6AUSKnoAPJKqhDfWj5BvRvffdNPh7a8w=
-Date: Fri, 1 May 2026 11:54:18 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Ben Hutchings <ben@decadent.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, patches@lists.linux.dev, 
-	syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com, lvc-project@linuxtesting.org
-Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
- io_poll_add() return value on update
-Message-ID: <20260501111233-b371eac52cd006bfddfbd9e5-pchelkin@ispras>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FFC377EBC
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 09:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777626024; cv=pass; b=cyRGYN9tRYIm/AMBU7HwzSeZcdQzOSPbaCQPkbhBzKsvnaJZQ0WZVUQim18b/8EerXqGmmUHDbYfXq28yh7BYv7/MZqDxPPlX5qVNi509r2MCJ+tM/QJZyQa7+wrKUzElB9I0+I71R+w+e2MNEdO8J3rkVvMzc1XydIIdQIRI9Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777626024; c=relaxed/simple;
+	bh=rMNKaelWNJ8TacIzkrZFc0W8S9f8+e3TIJL1mwoKk7g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RBA1uLsvJ/yRcZ/CQxROiMTq5pUX2Gq2U8+KLlnFs/ITMHDkNvOyZ+WtsFCK65980eJk7vIYf/6jOWRmhNlPKTkaF0zsNKsNiLC46SYyUd8oPPNqUz0P6xIgnZI1+U8QkGOWnuYEzjRO9owTFVaObouVWbkgLKTsh2A3USfi4Jk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IGgDNO1A; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-677f7c29af6so3275292a12.2
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 02:00:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777626021; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aROpVUODqpjCslhnW+yyXP1LnH0qNoU/Uu4X3nP4mHahD6Op+hx7sDqblJdR7QQVlW
+         K0p2HHM4nYPZAIBsLTHR4f/BAFIOBTUS5gtP3Yzzr+obUycBiaLmvu+0jRCBCJ44qAzA
+         z0CbE/oMRAOLtJGuHs8xFCA4oy3yhchVNEF/XDzXOTqeO2KZYakFrTmbAFRCSeGA6kG2
+         MD+82+lSx/rJnlrOkmJds5uZ06PNYU3uIm/a6RjynHyVAgo15zSxPPEPxUtE3u2PUFfs
+         FIqnTLEPriCCQ/sGSf3j3ZJPxckIWKdNFBUHzbWXt2MfS30KR4oj9LJe5rvkr+VkUI7y
+         KIpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2DNZL79JSBv3IL0MAKYq+jXCJbajoFW7/zvPIXUOZm4=;
+        fh=DkofwfYNRnTDd0HAVUIbyDvE7+NO+FIUeWO7HyzA3zQ=;
+        b=W5aRhtUqYXrqveYesVoYHbK9tx5wl37V4nNmt1/RDHHMIJKqrUCkv3D674BAKfRBTg
+         pPKycZ/Vm3iS9letYgEp9/RuuD91YDuq9RgxKy0zHtCECmjbvZGPWc651RWraZ7Jv8E6
+         00/zhqWEBGQeyU/f5Qcda7UNA/wZ9ApoTSWShwBmsmRt03o329iTEDc5iTcSyLgqTWsG
+         v5hmH+VjoNGgyHkgUxUMh1R2D44ZJ39ni537NA+6OkzfBuP5dM2xz6ms6DU6DiH8796r
+         BeQKjHNN+ldMr0uKQ6Mhfe68cWCcB1K5oHVv8qiUtBm/qiZarbgmgNcuZzliIYjyicrC
+         aMcA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777626021; x=1778230821; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2DNZL79JSBv3IL0MAKYq+jXCJbajoFW7/zvPIXUOZm4=;
+        b=IGgDNO1A8ftgxfowpPJ69+8kjNh3Aa5/vBE3lE+2JlQ2o60L2ocJLBkq1gdXp1LbnY
+         ent5fqGWcyY0sq02OXiumWPb5Fg+syJF5ndKXBokqUAbnmu+15/mocbTtGnItIVq1j41
+         SGRzx2t/S2YIKldX6BWtxIsXXCO2KaLPWFn8xJAl/qjR9vX3fuGXjf+beXo7BIH6FOOZ
+         kcvWmMivpPOqipUkgqDBoLcOCsAnLCN12mZAlS7lrXhrOpQ22ID9A4uGivMImE6SZYB/
+         Nsrti1RFU19Wz3of+iHYiO0TnXzKjX1D/Fj6S7CCt1yEcPxi9ygzw7zQa1SHUKw7DKJu
+         XOHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777626021; x=1778230821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2DNZL79JSBv3IL0MAKYq+jXCJbajoFW7/zvPIXUOZm4=;
+        b=qZF2LBLo0jEwpDdjhXMCpNHl0etqFK5+BaoMgG34O5ozeI8+auFdc3gJk2mlIiE8Kz
+         lrI1o+7J8dVjdOuxBT2dgB7uMDcsUyt+QaDyHASg62rVoVGDMUfMHy0LRH454U4Rakbh
+         LoofFU5LT6fETDhTCkiKpSo6EvYTM+O9mKW6a7kb5X04yrI+VGdaY70Pmv5AZYZ1WsOd
+         uQVJXIDmM6+yhTpuxnhcGRC9hKnnxgamg0UOMMzhjX61OJJvInBZVeC9D9J3qNCTLNsl
+         HNnlO5AdXNruvk1CT2co0fqNpvKoxOv0iWPuL2kE9KzkuUQn49uXmLADWhFRuFeR5oSh
+         pJgw==
+X-Forwarded-Encrypted: i=1; AFNElJ/or1C/mhajv63Bt1AKDrPBvAamsytO8Z+8NZKKGL8ML4mfptbWLWAIDKve3ARVLSKnnB71C90=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPCsbtecIIf99+KiiuIBOMoQ2i/t4dKJAFDN1WTDCzfwde0d4E
+	JEMw299J3ycqup2lQpYqCvyx6eO420qU3IW2abGr3ctKyTAiCxi+4CJu1oF27GyEdcv5qf8RSpE
+	azKfG8Qil3JHdnaFCLO3VpGQDitwSaZs=
+X-Gm-Gg: AeBDieslknKNo/eYkmh4h3bq3UmpIb+Dnn7PSTc9Sb2oi23ZjaHWrhWp/bSGXaA/07f
+	7jjVLmii4k2I7g/Hnr8GeRxQrJTFWAoa37K8r+UjRoRMIwQD7eymAYjPxG8oK1/ceeaoh7Jp3Cb
+	f3dJUrhrw/iUBrpIW7GmpjMzwjIA3YPqk4McFAlXUEQK+SCr9zBTBlGKbcIf7YwWBSVWrgofp9H
+	1nZAsY8kZgO9s2Zp3wsU4K4RPFzj5+ho1xq/qN5ZzPmPCBe974kPtKuDOAubp81XL0a5Cegdp4J
+	o9IXt1cvtt4wxG5N
+X-Received: by 2002:a17:907:26c9:b0:bae:d29c:4e28 with SMTP id
+ a640c23a62f3a-bbac4cd2331mr403876166b.12.1777626020162; Fri, 01 May 2026
+ 02:00:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-X-Rspamd-Queue-Id: 1826D4AB2A2
+References: <20260428160804.281745-1-sprasad@microsoft.com>
+ <20260428160804.281745-3-sprasad@microsoft.com> <d43b1d1023d13746819a780f65da9341@manguebit.org>
+In-Reply-To: <d43b1d1023d13746819a780f65da9341@manguebit.org>
+From: Shyam Prasad N <nspmangalore@gmail.com>
+Date: Fri, 1 May 2026 14:30:08 +0530
+X-Gm-Features: AVHnY4IOoNnpCXPfdkS6WxhMvsIxS21lj0SdS3Rdi0XAOv0tNaGt6C4zzPChomg
+Message-ID: <CANT5p=rMDk9nGPVeU8hKV6SUNWOo_kkL1uoRiOd845AEowgYyA@mail.gmail.com>
+Subject: Re: [PATCH v3 03/19] cifs: invalidate cfid on unlink/rename/rmdir
+To: Paulo Alcantara <pc@manguebit.org>
+Cc: linux-cifs@vger.kernel.org, smfrench@gmail.com, bharathsm@microsoft.com, 
+	dhowells@redhat.com, henrique.carvalho@suse.com, ematsumiya@suse.de, 
+	Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 410F94AB265
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242245-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242244-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,microsoft.com,redhat.com,suse.com,suse.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ispras.ru:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel.dk:email]
+	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,manguebit.org:email]
 
-Hi Jens,
+On Tue, Apr 28, 2026 at 10:58=E2=80=AFPM Paulo Alcantara <pc@manguebit.org>=
+ wrote:
+>
+> nspmangalore@gmail.com writes:
+>
+> > From: Shyam Prasad N <sprasad@microsoft.com>
+> >
+> > Today we do not invalidate the cached_dirent or the entire
+> > parent cfid when a dentry in a dir has been removed/moved.
+> >
+> > This change invalidates the parent cfid so that we don't serve
+> > directory contents from the cache.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+> > ---
+> >  fs/smb/client/inode.c | 40 ++++++++++++++++++++++++++++++++++++++--
+> >  1 file changed, 38 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+> > index 888f9e35f14b8..e077df844c819 100644
+> > --- a/fs/smb/client/inode.c
+> > +++ b/fs/smb/client/inode.c
+> > @@ -28,6 +28,23 @@
+> >  #include "cached_dir.h"
+> >  #include "reparse.h"
+> >
+> > +static void cifs_invalidate_cached_dir(struct cifs_tcon *tcon,
+> > +                                    struct dentry *parent)
+> > +{
+> > +     struct cached_fid *parent_cfid =3D NULL;
+> > +
+> > +     if (!tcon || !parent)
+> > +             return;
+>
+> The NULL check for @tcon is unnecessary.  This seems to be called only
+> with a valid @tcon.
+>
+Hi Paulo,
+Thanks for the review.
+I would let the null check be. For future callers who may miss the check.
+> > +
+> > +     if (!open_cached_dir_by_dentry(tcon, parent, &parent_cfid)) {
+> > +             mutex_lock(&parent_cfid->dirents.de_mutex);
+> > +             parent_cfid->dirents.is_valid =3D false;
+> > +             parent_cfid->dirents.is_failed =3D true;
+> > +             mutex_unlock(&parent_cfid->dirents.de_mutex);
+> > +             close_cached_dir(parent_cfid);
+> > +     }
+> > +}
+> > +
+> >  /*
+> >   * Set parameters for the netfs library
+> >   */
+> > @@ -322,7 +339,7 @@ cifs_unix_basic_to_fattr(struct cifs_fattr *fattr, =
+FILE_UNIX_BASIC_INFO *info,
+> >                               fattr->cf_uid =3D uid;
+> >               }
+> >       }
+> > -
+> > +
+>
+> Why are you adding a blank newline?
+Looks like an empty line with a tab was removed. Will add back the tab.
+>
+> >       fattr->cf_gid =3D cifs_sb->ctx->linux_gid;
+> >       if (!(sbflags & CIFS_MOUNT_OVERR_GID)) {
+> >               u64 id =3D le64_to_cpu(info->Gid);
+> > @@ -2067,6 +2084,9 @@ static int __cifs_unlink(struct inode *dir, struc=
+t dentry *dentry, bool sillyren
+> >               cifs_set_file_info(inode, attrs, xid, full_path, origattr=
+);
+> >
+> >  out_reval:
+> > +     if (!rc && dentry->d_parent)
+> > +             cifs_invalidate_cached_dir(tcon, dentry->d_parent);
+>
+> The non-NULL check of @dentry->d_parent is unnecessary.
+> cifs_invalidate_cached_dir() already handles it.
+Will do this change.
+>
+> > +
+> >       if (inode) {
+> >               cifs_inode =3D CIFS_I(inode);
+> >               cifs_inode->time =3D 0;   /* will force revalidate to get=
+ info
+> > @@ -2378,7 +2398,6 @@ int cifs_rmdir(struct inode *inode, struct dentry=
+ *direntry)
+> >       }
+> >
+> >       rc =3D server->ops->rmdir(xid, tcon, full_path, cifs_sb);
+> > -     cifs_put_tlink(tlink);
+> >
+> >       cifsInode =3D CIFS_I(d_inode(direntry));
+> >
+> > @@ -2388,6 +2407,8 @@ int cifs_rmdir(struct inode *inode, struct dentry=
+ *direntry)
+> >               i_size_write(d_inode(direntry), 0);
+> >               clear_nlink(d_inode(direntry));
+> >               spin_unlock(&d_inode(direntry)->i_lock);
+> > +             if (direntry->d_parent)
+> > +                     cifs_invalidate_cached_dir(tcon, direntry->d_pare=
+nt);
+>
+> Ditto.
+>
+> >       }
+> >
+> >       /* force revalidate to go get info when needed */
+> > @@ -2402,6 +2423,7 @@ int cifs_rmdir(struct inode *inode, struct dentry=
+ *direntry)
+> >
+> >       inode_set_ctime_current(d_inode(direntry));
+> >       inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+> > +     cifs_put_tlink(tlink);
+> >
+> >  rmdir_exit:
+> >       free_dentry_path(page);
+> > @@ -2501,6 +2523,8 @@ cifs_rename2(struct mnt_idmap *idmap, struct inod=
+e *source_dir,
+> >       struct cifs_sb_info *cifs_sb;
+> >       struct tcon_link *tlink;
+> >       struct cifs_tcon *tcon;
+> > +     struct dentry *source_parent;
+> > +     struct dentry *target_parent;
+> >       bool rehash =3D false;
+> >       unsigned int xid;
+> >       int rc, tmprc;
+> > @@ -2532,6 +2556,8 @@ cifs_rename2(struct mnt_idmap *idmap, struct inod=
+e *source_dir,
+> >       if (IS_ERR(tlink))
+> >               return PTR_ERR(tlink);
+> >       tcon =3D tlink_tcon(tlink);
+> > +     source_parent =3D source_dentry->d_parent ? dget(source_dentry->d=
+_parent) : NULL;
+> > +     target_parent =3D target_dentry->d_parent ? dget(target_dentry->d=
+_parent) : NULL;
+>
+> Why do you need to dget() ->d_parent?
+Good point. Considering this is a rename callback, I think this dget
+on parent is redundant. Will fix it.
+>
+> >       server =3D tcon->ses->server;
+> >
+> >       page1 =3D alloc_dentry_path();
+> > @@ -2668,11 +2694,21 @@ cifs_rename2(struct mnt_idmap *idmap, struct in=
+ode *source_dir,
+> >       }
+> >
+> >       /* force revalidate to go get info when needed */
+> > +     if (!rc) {
+> > +             cifs_invalidate_cached_dir(tcon, source_parent);
+> > +             if (target_parent !=3D source_parent)
+> > +                     cifs_invalidate_cached_dir(tcon, target_parent);
+> > +     }
+> > +
+> >       CIFS_I(source_dir)->time =3D CIFS_I(target_dir)->time =3D 0;
+> >
+> >  cifs_rename_exit:
+> >       if (rehash)
+> >               d_rehash(target_dentry);
+> > +     if (target_parent)
+> > +             dput(target_parent);
+> > +     if (source_parent)
+> > +             dput(source_parent);
+>
+> The non-NULL checks are unnecessary.  dput() already handles NULL
+> dentries.
 
-the patch has some issues even after "[PATCH 2/2] io_uring/poll: fix
-backport of io_poll_add() changes" has been applied.  Please see below.
-
-Jens Axboe wrote:
-> From: Jens Axboe <axboe@kernel.dk>
-> 
-> Commit 84230ad2d2afbf0c44c32967e525c0ad92e26b4e upstream.
-> 
-> When the core of io_uring was updated to handle completions
-> consistently and with fixed return codes, the POLL_REMOVE opcode
-> with updates got slightly broken. If a POLL_ADD is pending and
-> then POLL_REMOVE is used to update the events of that request, if that
-> update causes the POLL_ADD to now trigger, then that completion is lost
-> and a CQE is never posted.
-> 
-> Additionally, ensure that if an update does cause an existing POLL_ADD
-> to complete, that the completion value isn't always overwritten with
-> -ECANCELED. For that case, whatever io_poll_add() set the value to
-> should just be retained.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 97b388d70b53 ("io_uring: handle completions in the core")
-
-This commit is not present in 5.10/5.15 in any form, to my mind.  That
-is, io_uring changes were imported in big chunks there without preserving
-upstream git history in some places but still I can't find whether the
-changes of the mentioned Fixes-commit are present in those old kernels.
-
-So either the Fixes tag is not completely correct or this patch can just
-be reverted from 5.10/5.15 stables.
-
-> Reported-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-> Tested-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  io_uring/io_uring.c |   26 +++++++++++++++++++-------
->  1 file changed, 19 insertions(+), 7 deletions(-)
-> 
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -5980,7 +5980,7 @@ static int io_poll_add_prep(struct io_ki
->  	return 0;
->  }
->  
-> -static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
-> +static int __io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
->  {
->  	struct io_poll_iocb *poll = &req->poll;
->  	struct io_poll_table ipt;
-> @@ -5992,11 +5992,21 @@ static int io_poll_add(struct io_kiocb *
->  	if (!ret && ipt.error)
->  		req_set_fail(req);
->  	ret = ret ?: ipt.error;
-> -	if (ret)
-> +	if (ret > 0) {
->  		__io_req_complete(req, issue_flags, ret, 0);
-> +		return ret;
-> +	}
->  	return 0;
->  }
->  
-> +static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
-> +{
-> +	int ret;
-> +
-> +	ret = __io_poll_add(req, issue_flags);
-> +	return ret < 0 ? ret : 0;
-> +}
-> +
->  static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags)
->  {
->  	struct io_ring_ctx *ctx = req->ctx;
-> @@ -6012,6 +6022,7 @@ static int io_poll_update(struct io_kioc
->  		ret = preq ? -EALREADY : -ENOENT;
->  		goto out;
->  	}
-> +	preq->result = -ECANCELED;
->  	spin_unlock(&ctx->completion_lock);
->  
->  	if (req->poll_update.update_events || req->poll_update.update_user_data) {
-> @@ -6024,16 +6035,17 @@ static int io_poll_update(struct io_kioc
->  		if (req->poll_update.update_user_data)
->  			preq->user_data = req->poll_update.new_user_data;
->  
-> -		ret2 = io_poll_add(preq, issue_flags);
-> +		ret2 = __io_poll_add(preq, issue_flags);
->  		/* successfully updated, don't complete poll request */
->  		if (!ret2)
->  			goto out;
-> +		preq->result = ret2;
-> +
->  	}
-> -	req_set_fail(preq);
-> -	io_req_complete(preq, -ECANCELED);
-> +	if (preq->result < 0)
-> +		req_set_fail(preq);
-> +	io_req_complete(preq, preq->result);
-
-preq->result is of unsigned type in 5.10/5.15 kernels so the check for
-negative values is a no-op here.  Also as Ben pointed out in the initial
-report, __io_poll_add() already does complete a request if it returns
-non-zero result.  Not sure if completing it twice is good.  The extra
-patch from this thread doesn't address these issues.
-
-I wonder whether these lines may be moved in the else-branch here like
-
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 8b0dfea96ee0..1e3835bdaa9f 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -6036,10 +6036,10 @@ static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags)
-                        goto out;
-                preq->result = ret2;
- 
--       }
--       if (preq->result < 0)
-+       } else {
-                req_set_fail(preq);
--       io_req_complete(preq, preq->result);
-+               io_req_complete(preq, preq->result);
-+       }
- out:
-        /* complete update request, we're done with it */
-        io_req_complete(req, ret);
 
 
-but, again, then the __io_poll_add() surrounding logic doesn't become
-clear enough:
-
-	ret2 = __io_poll_add(preq, issue_flags);
-	/* successfully updated, don't complete poll request */
-	if (!ret2)
-		goto out;
-	preq->result = ret2;
-
-
-Thus currently I'm for reverting this patch if there is no bug it might
-fix in 5.10/5.15.
-
-
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
---
-Thanks,
-Fedor
+--=20
+Regards,
+Shyam
 
