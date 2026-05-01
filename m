@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAK6FmWY9GnTCgIAu9opvQ
-	(envelope-from <stable+bounces-242392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:11:17 +0200
+	id EPRFFXGY9GnTCgIAu9opvQ
+	(envelope-from <stable+bounces-242393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:11:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B1E4AC42A
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:11:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A094AC433
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 46221300898B
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:11:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 11B2530098B3
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C418A39E6C9;
-	Fri,  1 May 2026 12:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A97339E6C9;
+	Fri,  1 May 2026 12:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LI5ea2OZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnByiEq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88527350D7D
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3821353ED9
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777637472; cv=none; b=HS9fmlC9e/IKzjgAamOuHq8Y+dVzeViHYavlt/ZN95bqgRstIIPodvB1t90QOEHW1wR6R1FETnk0z90reRxDDXXhiOcEFUEmuZsVkb/dDGcZqSwgmcXCfM+2XOoy4lUx+Bdd/8Te7xZqcFwBXujO/5G9Cdop//RgkuP6ccqNVoE=
+	t=1777637485; cv=none; b=UiA7C1HNTNQcmpiXocgGnd8iZo6OfwvkGeUPQDDQny9k9/v/zHop0kfUCwZGd2L/N/etQMfC0lsKSHbH331ympldaiLz0YtZtR3uUMSDwqEKgc52VT4zlrw/YEsI1fbsdpcWLMEnfg2ptcQnJod87ZXXytgitqdpLwfcVOSZUh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777637472; c=relaxed/simple;
-	bh=F/fgEb+c2EVxH4l6EOytzamjYSm+n0bngtevI4f7iLc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pnqitJvXaXfYxz+Xm/Osb2pYcMKRoJ9we7NSZ6TZKABjYxSQLrygPzK3Vbsv+teDpt/DMcUbM9/oyO5TcdsUai2d6jt1k3YoDSPg3sxzbloGUwjW11X08vihM/ki2I5HCsXxKZ8DCtVHq0jXdOuToVXusylJ/+0fMDMkxjID64U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LI5ea2OZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B76C2BCB4;
-	Fri,  1 May 2026 12:11:11 +0000 (UTC)
+	s=arc-20240116; t=1777637485; c=relaxed/simple;
+	bh=+JSAbdAcv8j6ni2lQdnsXX4u9m47Ps23AvR9NfHulgc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qo+Ab2lXOmCSSjQFTugQIpsGDX3KFgrtCRXktIMsXg/Ho/RQIbUecgA6eC3IaCLbEqpkIXBsBLm3qCOFdDg5zU91rjKot+SXt3LO5IALKu+xwJTNDBujlMNChV+e7T8GqvUTify2dn5g8BvwopyML+loJqFKjEe9D3xNlBZ0pRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnByiEq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793BBC2BCB4;
+	Fri,  1 May 2026 12:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777637472;
-	bh=F/fgEb+c2EVxH4l6EOytzamjYSm+n0bngtevI4f7iLc=;
+	s=korg; t=1777637484;
+	bh=+JSAbdAcv8j6ni2lQdnsXX4u9m47Ps23AvR9NfHulgc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LI5ea2OZTBbuq1/WLuO9asAdA9EcJwEVMZw/sdYPT527IB3iLR3BwKUDbIrE9G2cw
-	 K1LgLfbgM2JXm+cY+vcJ8gcw5Okh3Mc3NghtHr2UjpDwTRRY0d2NZaMQwkgMTN6iYj
-	 lW3GlqZICDx5Y+qvABwYGaCgGRosYJoBK1PzxBGs=
-Subject: FAILED: patch "[PATCH] net: bridge: use a stable FDB dst snapshot in RCU readers" failed to apply to 5.10-stable tree
-To: zcliangcn@gmail.com,bird@lzu.edu.cn,enjou1224z@gmail.com,idosch@nvidia.com,n05ec@lzu.edu.cn,pabeni@redhat.com,razor@blackwall.org,tomapufckgml@gmail.com,yifanwucs@gmail.com,yuantan098@gmail.com
+	b=vnByiEq6XTOQnaVjyvn8bU9xEZjxQ7aawljS32ePevLcOIdgPvgFuNEpqhT7tZ+FY
+	 V0t1ow3xnnFYK7syC+DsRhBNA75deuMnzAcUirrTgFhU25l6LQ8I/8ojYPlYKCYRcV
+	 lT/+SfuWVWrtzbMWL3BeIe89fHprZKpzpjMLG2eQ=
+Subject: FAILED: patch "[PATCH] net: mctp: fix don't require received header reserved bits to" failed to apply to 6.12-stable tree
+To: yuanzm2@lenovo.com,jk@codeconstruct.com.au,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 01 May 2026 14:11:02 +0200
-Message-ID: <2026050102-shorty-outfit-b79f@gregkh>
+Date: Fri, 01 May 2026 14:11:22 +0200
+Message-ID: <2026050122-herring-charting-9169@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E5B1E4AC42A
+X-Rspamd-Queue-Id: E4A094AC433
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242392-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lzu.edu.cn,nvidia.com,redhat.com,blackwall.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-242393-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,msgid.link:url,lenovo.com:email,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,codeconstruct.com.au:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x df4601653201de21b487c3e7fffd464790cab808
+git cherry-pick -x a663bac71a2f0b3ac6c373168ca57b2a6e6381aa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050102-shorty-outfit-b79f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050122-herring-charting-9169@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,171 +111,86 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From df4601653201de21b487c3e7fffd464790cab808 Mon Sep 17 00:00:00 2001
-From: Zhengchuan Liang <zcliangcn@gmail.com>
-Date: Mon, 13 Apr 2026 17:08:46 +0800
-Subject: [PATCH] net: bridge: use a stable FDB dst snapshot in RCU readers
+From a663bac71a2f0b3ac6c373168ca57b2a6e6381aa Mon Sep 17 00:00:00 2001
+From: Yuan Zhaoming <yuanzm2@lenovo.com>
+Date: Fri, 17 Apr 2026 22:13:40 +0800
+Subject: [PATCH] net: mctp: fix don't require received header reserved bits to
+ be zero
 
-Local FDB entries can be rewritten in place by `fdb_delete_local()`, which
-updates `f->dst` to another port or to `NULL` while keeping the entry
-alive. Several bridge RCU readers inspect `f->dst`, including
-`br_fdb_fillbuf()` through the `brforward_read()` sysfs path.
+From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
+the MCTP header contains a 4 bit reserved field, and 4 bit version.
 
-These readers currently load `f->dst` multiple times and can therefore
-observe inconsistent values across the check and later dereference.
-In `br_fdb_fillbuf()`, this means a concurrent local-FDB update can change
-`f->dst` after the NULL check and before the `port_no` dereference,
-leading to a NULL-ptr-deref.
+On our current receive path, we require those 4 reserved bits to be
+zero, but the 9500-8i card is non-conformant, and may set these
+reserved bits.
 
-Fix this by taking a single `READ_ONCE()` snapshot of `f->dst` in each
-affected RCU reader and using that snapshot for the rest of the access
-sequence. Also publish the in-place `f->dst` updates in `fdb_delete_local()`
-with `WRITE_ONCE()` so the readers and writer use matching access patterns.
+DSP0236 states that the reserved bits must be written as zero, and
+ignored when read. While the device might not conform to the former,
+we should accept these message to conform to the latter.
 
-Fixes: 960b589f86c7 ("bridge: Properly check if local fdb entry can be deleted in br_fdb_change_mac_address")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/6570fabb85ecadb8baaf019efe856f407711c7b9.1776043229.git.zcliangcn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Relax our check on the MCTP version byte to allow non-zero bits in the
+reserved field.
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index 0c8a06cdd46f..deb1ab1f24b0 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -201,11 +201,12 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
+Fixes: 889b7da23abf ("mctp: Add initial routing framework")
+Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
+Cc: stable@vger.kernel.org
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20260417141340.5306-1-yuanzhaoming901030@126.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index e1e0a69afdce..d8bf9074110d 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -26,6 +26,9 @@ struct mctp_hdr {
+ #define MCTP_VER_MIN	1
+ #define MCTP_VER_MAX	1
  
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
- 			if ((p && (p->flags & BR_PROXYARP)) ||
--			    (f->dst && (f->dst->flags & BR_PROXYARP_WIFI)) ||
--			    br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			    (dst && (dst->flags & BR_PROXYARP_WIFI)) ||
-+			    br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (!vid)
- 					br_arp_send(br, p, skb->dev, sip, tip,
- 						    sha, n->ha, sha, 0, 0);
-@@ -469,9 +470,10 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
--			if (br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			if (br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n,
- 						   skb->vlan_proto,
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index e2c17f620f00..6eb3ab69a514 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -236,6 +236,7 @@ struct net_device *br_fdb_find_port(const struct net_device *br_dev,
- 				    const unsigned char *addr,
- 				    __u16 vid)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct net_device *dev = NULL;
- 	struct net_bridge *br;
-@@ -248,8 +249,11 @@ struct net_device *br_fdb_find_port(const struct net_device *br_dev,
- 	br = netdev_priv(br_dev);
- 	rcu_read_lock();
- 	f = br_fdb_find_rcu(br, addr, vid);
--	if (f && f->dst)
--		dev = f->dst->dev;
-+	if (f) {
-+		dst = READ_ONCE(f->dst);
-+		if (dst)
-+			dev = dst->dev;
-+	}
- 	rcu_read_unlock();
- 
- 	return dev;
-@@ -346,7 +350,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 		vg = nbp_vlan_group(op);
- 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
- 		    (!vid || br_vlan_find(vg, vid))) {
--			f->dst = op;
-+			WRITE_ONCE(f->dst, op);
- 			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 			return;
- 		}
-@@ -357,7 +361,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 	/* Maybe bridge device has same hw addr? */
- 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
- 	    (!vid || (v && br_vlan_should_use(v)))) {
--		f->dst = NULL;
-+		WRITE_ONCE(f->dst, NULL);
- 		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 		return;
- 	}
-@@ -928,6 +932,7 @@ int br_fdb_test_addr(struct net_device *dev, unsigned char *addr)
- int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 		   unsigned long maxnum, unsigned long skip)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct __fdb_entry *fe = buf;
- 	unsigned long delta;
-@@ -944,7 +949,8 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 			continue;
- 
- 		/* ignore pseudo entry for local MAC address */
--		if (!f->dst)
-+		dst = READ_ONCE(f->dst);
-+		if (!dst)
- 			continue;
- 
- 		if (skip) {
-@@ -956,8 +962,8 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 		memcpy(fe->mac_addr, f->key.addr.addr, ETH_ALEN);
- 
- 		/* due to ABI compat need to split into hi/lo */
--		fe->port_no = f->dst->port_no;
--		fe->port_hi = f->dst->port_no >> 8;
-+		fe->port_no = dst->port_no;
-+		fe->port_hi = dst->port_no >> 8;
- 
- 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
- 		if (!test_bit(BR_FDB_STATIC, &f->flags)) {
-@@ -1083,9 +1089,11 @@ int br_fdb_dump(struct sk_buff *skb,
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
-+		const struct net_bridge_port *dst = READ_ONCE(f->dst);
++/* Definitions for ver field */
++#define MCTP_HDR_VER_MASK	GENMASK(3, 0)
 +
- 		if (*idx < ctx->fdb_idx)
- 			goto skip;
--		if (filter_dev && (!f->dst || f->dst->dev != filter_dev)) {
-+		if (filter_dev && (!dst || dst->dev != filter_dev)) {
- 			if (filter_dev != dev)
- 				goto skip;
- 			/* !f->dst is a special case for bridge
-@@ -1093,10 +1101,10 @@ int br_fdb_dump(struct sk_buff *skb,
- 			 * Therefore need a little more filtering
- 			 * we only want to dump the !f->dst case
- 			 */
--			if (f->dst)
-+			if (dst)
- 				goto skip;
- 		}
--		if (!filter_dev && f->dst)
-+		if (!filter_dev && dst)
- 			goto skip;
+ /* Definitions for flags_seq_tag field */
+ #define MCTP_HDR_FLAG_SOM	BIT(7)
+ #define MCTP_HDR_FLAG_EOM	BIT(6)
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 26fb8c6bbad2..1f3dccbb7aed 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -441,6 +441,7 @@ static int mctp_dst_input(struct mctp_dst *dst, struct sk_buff *skb)
+ 	unsigned long f;
+ 	u8 tag, flags;
+ 	int rc;
++	u8 ver;
  
- 		err = fdb_fill_info(skb, br, f,
+ 	msk = NULL;
+ 	rc = -EINVAL;
+@@ -467,7 +468,8 @@ static int mctp_dst_input(struct mctp_dst *dst, struct sk_buff *skb)
+ 	netid = mctp_cb(skb)->net;
+ 	skb_pull(skb, sizeof(struct mctp_hdr));
+ 
+-	if (mh->ver != 1)
++	ver = mh->ver & MCTP_HDR_VER_MASK;
++	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
+ 		goto out;
+ 
+ 	flags = mh->flags_seq_tag & (MCTP_HDR_FLAG_SOM | MCTP_HDR_FLAG_EOM);
+@@ -1317,6 +1319,7 @@ static int mctp_pkttype_receive(struct sk_buff *skb, struct net_device *dev,
+ 	struct mctp_dst dst;
+ 	struct mctp_hdr *mh;
+ 	int rc;
++	u8 ver;
+ 
+ 	rcu_read_lock();
+ 	mdev = __mctp_dev_get(dev);
+@@ -1334,7 +1337,8 @@ static int mctp_pkttype_receive(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	/* We have enough for a header; decode and route */
+ 	mh = mctp_hdr(skb);
+-	if (mh->ver < MCTP_VER_MIN || mh->ver > MCTP_VER_MAX)
++	ver = mh->ver & MCTP_HDR_VER_MASK;
++	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
+ 		goto err_drop;
+ 
+ 	/* source must be valid unicast or null; drop reserved ranges and
 
 
