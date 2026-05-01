@@ -1,188 +1,151 @@
-Return-Path: <stable+bounces-242295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEPLBIWI9Gl3CAIAu9opvQ
-	(envelope-from <stable+bounces-242295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:03:33 +0200
+	id CG3eOKiI9Gl3CAIAu9opvQ
+	(envelope-from <stable+bounces-242296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:04:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0914ABD96
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:03:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1504ABDB3
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57F9B3008D2F
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:02:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3FF7304EA6A
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF36E39B4AE;
-	Fri,  1 May 2026 11:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FBB39C009;
+	Fri,  1 May 2026 11:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARtVswET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iq94K9SG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472CD18DB01
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6500739C001
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777633354; cv=none; b=BRo0AfL5t3lqS8YNm82nJGXCh2w2ZBffdVFLp5IrxFrgQszmQzYNcI8/alwZBUp9pLSNhWbFSrv7yg2n4iEh/nDYkm6uSCiZNQ7VvU+4qj9/e4gKwdu4AnhMrGrbqecJ4lw1x2Kfs9JfJ1QwhiHWDOO1HVbgN+L8N6cPul7swqQ=
+	t=1777633356; cv=none; b=KgXrEYfRN1yJil1+uwdHtgdvjVlAGlyMHZye0DICd4QoxmFVTvkMbzaIUYcHNUWhAfeA41SxvCnFvM5tCP3KQM43HobZxhavJPhO6mPjIrX3ENMKVZmJzgd0nyftluiUzPT+yZBwu10+RcriduuyWHcT68shQFgRoCul1OHLWdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777633354; c=relaxed/simple;
-	bh=BMlgiKuNUB87uCclPwjrQJNkQdhuSRNK/Uz+046IXJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cIOMSc/E5yOoK377SXjeUrByXsO5l0JvN0oeMMThXJuoJ7F0NASBpiDFOg8y+1LzxqNWkZyyRx3rRlylGrkHbX/nJ92JBpu9TCO2ipo+VYLfGSG2b+tdg1RYFhp5rfj+gtktI1El8U8SdVuRny+Rndl5ZQpdTiUwKeOD7C7nLU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARtVswET; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso21067275e9.3
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:02:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777633352; x=1778238152; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JSMUlgDj9Yg4wJLFghvuChRmTRTTzjZGS4h4LzcAju4=;
-        b=ARtVswETxobMFA8V/Js2/1mg/4fG0VlM9sMCl6g7XRtwRTHNF/7uP+3jweLtwCja4Z
-         /WDfiVSQLMS7DGsJ2L9hDJcmiaaInCBa/DNQoH04bRelGVmN2JLz1pFs/NATUvShOyYt
-         /iYupK8O+EFikkC/zvwMsVc3HgDfZOzmJE/gNNVmKh8WQ176W9I/Tei6zWl1D5aXGda5
-         yJj4fpLfkZRVQ2hxlz+JGVeIkcltnnc0VK/vdie94PvdvgXJdMe1QZjCRqVgL29fbF98
-         DR6ghWMBk6nGgam6E/J4nFEz+O97XgRZYOIsJ7cQIMo1lgwfQqHuVSnQKcI+YB4Qt1ka
-         Nkpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777633352; x=1778238152;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JSMUlgDj9Yg4wJLFghvuChRmTRTTzjZGS4h4LzcAju4=;
-        b=qyFLxhXqtSZVAcEHP0rVxz0vAVvNiIM6yAa+c2h3iEQPWZ7CSyzozIqgYJQAJ6SL0R
-         c0ETy6JTHDPkhq9N0cY5152U59XemuUoaxj4s2u8HOTPWYud0kiSSzaBzbmfUs2JhV0m
-         GreA/37vnsDAHKw3Vfar8HKBbUKqgGKpmQTUjiV5fsnPpdPyBmbXlwjOzw020XJwFOku
-         PwVORb8+nA0+gwy+Cjdka1wQFWgmguG3I0lHCzl5w9gIyPFqCVrUcEkymTODvqyDbo0M
-         TQTYxDe9j93pkn4B2SNHw+d2H/W/FLaxW8itvbZIxS+hQ+n8fcMs2pfKCIwGnUNJgn5h
-         My1A==
-X-Forwarded-Encrypted: i=1; AFNElJ+qS6oaDn5tR814ty+YkO9YzfVru2tIOrGRjKiiqrwOHNSaxYcSPi3Lhtp2+XoWXojb98reXWI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+IK/+8qVbRwfO09QftGPU02hdyF/eCGQ9aKjRWFbYMBqIyXZD
-	5lZdIP3OJjuLw2Zyii1XfzuQkSnZATR6/oSjGj8wRnq022IdqQRFZUs=
-X-Gm-Gg: AeBDievE2/aYNYUmgxqqcLkf3CkxyeFlYhes/Kyelz1+I4zVQzflgHb2U/+1yzD7Hr0
-	K958pn2iToyRIAbv/q5cf2hFWvph60XbN0ZTD4kzZVJi+VC6gp4TMv4SxjKeEH41zEUcfn6iWEN
-	y5DlOICTOORtzXar4vI8oIeFPLfCqkijoApOzDj2S9e3CMSomuTB346FQdSw100oifveN5fj2bC
-	tKr1/M4qjztdqP8OHxgSpQiEdxB4/oDeDFleJk4hJvw7Y7Je5EtMUkiHi1be4Gx6KYILwK1Q40i
-	QQCD3cHlvjeLClC4tYC4x6lGcsCbQ+jAI0Wq3wMKn35ezSg/TCTIljaw1RDHO5H1ZhByjGPUPLT
-	hMSmkQR7AET/FufG49aE8PMfdaIbLrMUrsTamXeBlyfgpiCaNZLe0LtUey8dUG6Z33dBX1mW6ga
-	mV9fI=
-X-Received: by 2002:a05:600c:c4b7:b0:489:1fa4:50c6 with SMTP id 5b1f17b1804b1-48a8447b30bmr105729195e9.20.1777633351503;
-        Fri, 01 May 2026 04:02:31 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a986aa70dsm4457999f8f.25.2026.05.01.04.02.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 04:02:30 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: Dave Kleikamp <shaggy@kernel.org>
-Cc: jfs-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>,
-	syzbot+aa6df9d3b383bf5f047f@syzkaller.appspotmail.com
-Subject: [PATCH] jfs: validate lv bounds in diWrite to prevent slab-out-of-bounds
-Date: Fri,  1 May 2026 11:02:30 +0000
-Message-ID: <20260501110230.38407-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1777633356; c=relaxed/simple;
+	bh=glOQBQm7HtFbEWLCaL/6EIg3p26x3apOof2dPg04V5c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d+ebtd59WcRD2IqPidZOTIthdvLSMQsweRz7OG/KfD2OgkIQVLAUhZjoqnMWco19uAVp5D3hGV7M5kTgrZcF75HHd6ksBZD0fl5knr20+kYRvmAolaNpaOx3la69xw7j8fVs2F4iIhWcwXRU1dPubvXR6JTDPJqq1GAw3e66Vf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iq94K9SG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2AEC2BCB7;
+	Fri,  1 May 2026 11:02:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777633356;
+	bh=glOQBQm7HtFbEWLCaL/6EIg3p26x3apOof2dPg04V5c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Iq94K9SGSZfbG6WmbQXhtDebmky0UsC+t+w+iYfZ5nGD4bBOmByMVLhZhZrBMcNvS
+	 MnIzwxe6KdqRHsRiyWXrt/4wEjus7IfINnZ+VeqtN3611rm7lCsVKJeWDYXAqVqOQo
+	 Npbf9X9eNy/g1yGME9KWMXYhxXO6LmIBiDiRBYRg=
+Subject: FAILED: patch "[PATCH] nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is" failed to apply to 5.15-stable tree
+To: bob.beckett@collabora.com,kbusch@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 01 May 2026 13:02:33 +0200
+Message-ID: <2026050133-dipped-hedge-8292@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E0914ABD96
+X-Rspamd-Queue-Id: 7B1504ABDB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-242295-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-242296-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,aa6df9d3b383bf5f047f];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email,talencesecurity.com:email]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email]
 
-From: Tristan Madani <tristan@talencesecurity.com>
 
-diWrite() copies btree root data from the in-memory inode to the
-on-disk dinode using lv->offset and lv->length from the transaction
-lock without bounds checking.  When a corrupted JFS filesystem image
-provides inconsistent dtree or xtree metadata, the transaction log
-entries can reference slots beyond the root node boundaries
-(DTROOTMAXSLOT or XTROOTMAXSLOT), causing a slab-out-of-bounds write
-in the subsequent memcpy.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-For example, with a crafted directory inode where the dtree metadata
-produces lv->offset + lv->length > DTROOTMAXSLOT (9), the memcpy in
-the dtree copy loop writes 32 bytes past the dinode boundary into
-adjacent slab memory.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Add bounds validation before each memcpy in both the xtree and dtree
-copy loops to ensure lv->offset + lv->length does not exceed
-XTROOTMAXSLOT (18) or DTROOTMAXSLOT (9) respectively.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 40f0496b617b431f8d2dd94d7f785c1121f8a68a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050133-dipped-hedge-8292@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Reported-by: syzbot+aa6df9d3b383bf5f047f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=aa6df9d3b383bf5f047f
-Tested-by: syzbot+aa6df9d3b383bf5f047f@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 40f0496b617b431f8d2dd94d7f785c1121f8a68a Mon Sep 17 00:00:00 2001
+From: Robert Beckett <bob.beckett@collabora.com>
+Date: Fri, 20 Mar 2026 19:22:08 +0000
+Subject: [PATCH] nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is
+ set
+
+The NVM Command Set Identify Controller data may report a non-zero
+Write Zeroes Size Limit (wzsl). When present, nvme_init_non_mdts_limits()
+unconditionally overrides max_zeroes_sectors from wzsl, even if
+NVME_QUIRK_DISABLE_WRITE_ZEROES previously set it to zero.
+
+This effectively re-enables write zeroes for devices that need it
+disabled, defeating the quirk. Several Kingston OM* drives rely on
+this quirk to avoid firmware issues with write zeroes commands.
+
+Check for the quirk before applying the wzsl override.
+
+Fixes: 5befc7c26e5a ("nvme: implement non-mdts command limits")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
- fs/jfs/jfs_imap.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
+Assisted-by: claude-opus-4-6-v1
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index b84ba4d7dfb44..70d6a33597273 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -726,6 +726,11 @@ int diWrite(tid_t tid, struct inode *ip)
- 		xp = &dp->di_xtroot;
- 		lv = ilinelock->lv;
- 		for (n = 0; n < ilinelock->index; n++, lv++) {
-+			if (lv->offset + lv->length > XTROOTMAXSLOT) {
-+				jfs_err("diWrite: xtree lv out of bounds");
-+				release_metapage(mp);
-+				return -EIO;
-+			}
- 			memcpy(&xp->xad[lv->offset], &p->xad[lv->offset],
- 			       lv->length << L2XTSLOTSIZE);
- 		}
-@@ -750,6 +755,11 @@ int diWrite(tid_t tid, struct inode *ip)
- 		xp = (dtpage_t *) & dp->di_dtroot;
- 		lv = ilinelock->lv;
- 		for (n = 0; n < ilinelock->index; n++, lv++) {
-+			if (lv->offset + lv->length > DTROOTMAXSLOT) {
-+				jfs_err("diWrite: dtree lv out of bounds");
-+				release_metapage(mp);
-+				return -EIO;
-+			}
- 			memcpy(&xp->slot[lv->offset], &p->slot[lv->offset],
- 			       lv->length << L2DTSLOTSIZE);
- 		}
--- 
-2.47.3
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index d2256fa95685..b42d8768d297 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3419,7 +3419,7 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
+ 
+ 	ctrl->dmrl = id->dmrl;
+ 	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
+-	if (id->wzsl)
++	if (id->wzsl && !(ctrl->quirks & NVME_QUIRK_DISABLE_WRITE_ZEROES))
+ 		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
+ 
+ free_data:
 
 
