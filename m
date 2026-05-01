@@ -1,228 +1,180 @@
-Return-Path: <stable+bounces-242489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id /3IfLi/19GmaGAIAu9opvQ
-	(envelope-from <stable+bounces-242489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 20:47:11 +0200
+	id YNSuMG319GlPGAIAu9opvQ
+	(envelope-from <stable+bounces-242490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 20:48:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E944AEEEC
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 20:47:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3676C4AEF02
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 20:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95C7A3027694
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 18:43:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A456F301C593
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 18:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D9C3CD8D2;
-	Fri,  1 May 2026 18:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF32F3FADEF;
+	Fri,  1 May 2026 18:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="XGON0lWH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FSSz+Ixx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26D336B04E
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 18:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777661027; cv=none; b=mME/GXgYAToH/6u3yKeKCtgX92q6k0FFettETqekF9XlEXpDR2dtP9Leg8jz3cIdKSC22C8o6yuhia/QWm9hc729X4esgq5PDIgEvn0KdYIg3iGISS1bYbAWxb6WfsQf1RFiAGI6RBiciNjBwD9XHHZc86eTCWRteFAH2iP1byY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777661027; c=relaxed/simple;
-	bh=2dFQtxEBStWKwzBnikgKADbJcEf1D54n3gMLhcCj368=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lhX0W/rWwBlQeygXxFj0c8HP82P5Zek89c8hqAra+eYJH5ACo+MlnkVD6+MvlMaOsukrqbtk+7qm46xf/6qEwPxhDbKYjxKYh2fzMfbETvaneZcG5nNHyBxWlBTbc8owNPdwLBKrDTMxY4gK4JdAgrNRvKpDlzpazDmQq1Ju5ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=XGON0lWH; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50d75bfb259so14584501cf.1
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 11:43:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E623D6474
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 18:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777661105; cv=pass; b=qWu+Lxj46VrlLUlbDFALzeoO9/+hvvK8f0Xl1id9r4xjeaAdu5CBYRcNuYwY1pJl3NbhKHuXQX+8TZG2u/S2eVQ1wWbHEhQP2TjbHNicRL0VcEgUqMrfscxJqjWaxY7RPW9kW+w9aEdk9/jgJNPkmFuIBi4KVh1tseDITDIGZ3k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777661105; c=relaxed/simple;
+	bh=y8JApZbbblyyxqwWAbL2Lm0l+Wn6ap7FN9cMqj6rFno=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=roJMP8M0ZPhL4IjHbxyxGGKM5Xe9M63mjvo4bckTK1T388ny6RvcS0lz4stswQYhpAunpDMqMZjIOdRDCYDhZxkdsYIJPY6+m54H+IWkDBOuOEChQgYVpiO1dkmFnSzyt+SRX8Ee1d2QFiqHZCxgTn4WZHGTxbpxYE++4ncTmzM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FSSz+Ixx; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1270fc2bdf2so1862c88.0
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 11:45:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777661103; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iXGZidx/gK3q2sDSQfaNc3YHKo94ljJCNhbmH+0r7ntQ8q1c4PuTvfEVSTyW3HYTJ+
+         +YJZPfbJ1wzFirwWuGRTDQIV2j0k0H1ltTjDZf9gdft+MLktBlMfJrhB8+qYfO7YyvEB
+         adfU1DvvPrhZvUtAN8roLrWykg4gC0d8uxi+60N3ybte5Wnpsq2ctY5ZMLUXLoSnFekC
+         hBUhNLVotdKuWY9CP8TueCgTPuVc4WRysqEIDKHsPxABksZxavwWlMRBpeGiItrLCnBe
+         VIzj/kuR6SGql1+PUD6u2PlVJ8mazETA8jz93+Ba2BFQ4H794PmnZHIJoNbnLoIyWioD
+         3dRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=y8JApZbbblyyxqwWAbL2Lm0l+Wn6ap7FN9cMqj6rFno=;
+        fh=DzQqFMXq4dcsxWcB2xWfSEkN/9raEYBTQ1GZBhgErfU=;
+        b=I3hVX4wofNq8LYQOEOs1syPiulsYv6iwG9kFYFA3bGDWJevg0rmWz7Zq36XjX+hOHI
+         XZVy+5m3QGHqqj30h5cnXRTTko02olEt+O5NoiBpPK2+kJM2Dl66D9CfAu8V/xzygYiI
+         zVt94eQ7MOKMVCR/28oOVuwkBhKdxeCda/ekn+AR2pwXRcnLf5z/aPGCL8ugR5eC4uus
+         46omsdrQ9+GldxU/hXhlJ4RlAKWBP4jRrTAwcbedK3ohMdPk/IqCnhP7LFBRn44WDNPl
+         w8g87ArI8gAfXkwcn47IWjxkSyTxjffaFqDijSyYrgPILQvw0HIQkmQXWxXjT/I8BzxG
+         eDxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1777661025; x=1778265825; darn=vger.kernel.org;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ulsFcfU93D70Sa+J1hAyL4OPSDEMDmywDdF1UctN/Y4=;
-        b=XGON0lWHdpT77nm9b4LnkHRFGZCpv0393vDSYZgAl7hMVphUKPy7RfzqlCDVv7obFD
-         tONvKkUnRfLgdavbynPitxU/FhO+GYdKPgtfv520Wc8EIcBvDJlM+ziVeY9yIa+bVw0W
-         StfDR1n3S7F0+KbnlsfmbDNw/ESX0Fz5WVoK18dWZliMgiqzLPKVtJ1JfBJRPpMjMslZ
-         VQMNJyDjqePY8xLyuIBoBLdKEc74L+KElVlKDzf9DGpN1oeAmj37pUfi8CH90CaJERs6
-         PO/IY9rHBb316DNwH//OdbfP4W+4DnrEII1fs/CcU2BmEnZw+5m7YUru4V3aMdgsJkBV
-         azgQ==
+        d=google.com; s=20251104; t=1777661103; x=1778265903; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y8JApZbbblyyxqwWAbL2Lm0l+Wn6ap7FN9cMqj6rFno=;
+        b=FSSz+IxxgXxy4O3GKOz8MbQ2fR9FAllITZJtV2qkCvmuOWiOzji2ZNEjqVHtx1lOgr
+         mH9w/grjWbx0YDrU4OlrAuNxgUGJFTg6YrhqyCy8ApU6Fc6sqtnRa23QwXwxVELkWjdR
+         rOzA3AgMv+nHxjt3GI4kIaRHzwdcxNKtEAXy464LdHxoNWMagdBnQdwAi9ri/hwRkw1z
+         j1IneRztdoMKMeRiI4ah8G0QUafd+ZLjHAuP89ulwIGu0KpYlOLVqxXuVUjz9Z2kOgGW
+         aVtZx8baW2bAZEZHbV+V57gzSwXv8cUilMGU9yL2EgS1QzDIKFf2o92At/f9kCWd7pKv
+         dWxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777661025; x=1778265825;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ulsFcfU93D70Sa+J1hAyL4OPSDEMDmywDdF1UctN/Y4=;
-        b=R6kBsjCpNCd/NwAxnZlYJZeAAfyeo+0xF7M95MBtkBMJWpFQwmohFaeQaZjUtCIkw4
-         XtpNARLHQNJANE5NvmK6lXRUeX3IizMocebJIHG+7on0gqSwIodOIeqKqwgDXevcsWtJ
-         MxCO45Glp2MtwfjeiUP4wIUD/rFOhScMHtfJ86L5sW6IXIZXDc7grc8uRLoliOaNRIFO
-         Zudj/JaLalGnGFox8WiPSDB6PXhqZgCvHoP81WI5Qoi3fY+yAx/Uhgi+Vg3LjBlv9CAs
-         cLwYvkMk0XCZMp2ofbewZr8A60xJeMaxd2a99gPD/PQMcM1y8g4xCAOSb3Ivb46WC13i
-         zT5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/WG+zUI88M4L9qjtCfJuzvZD/JHhBiLNyJBQ5WksYqjLGdSjkH3LO11voLXRgIICQKMehzifM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUo6uc5tBQ1VS1fdwcvZfnkVrCWyacv1VGx4z+VVuvuFD3nNBd
-	lDGueaP2WMQjRJ/DTljIvW9rAfSiyZ+4VcVqSHXoIAXwpSG76Lju69itLkkIjzODt/U=
-X-Gm-Gg: AeBDiesfoqODViqFKwxjvhbjZXQ25cuDDm8xDknfoR9lrKj32S+5uNhEzktwtBZAm2F
-	VfUQkIlUOOp/nsu2ttToKtvn+fva7FWp5X0ZnTDJi1tFJMfFcKFg9rbz3E4j4/5foRx8O0ivHFU
-	TmgTeYlgNRgVAlqnmZvv+WwV3cY0qL5RalNqp2v2kY0PIvxZzjpzAsZ6Ay4x3BxMWg6EsgTzyhg
-	9qCBOkLsIzBrUenkmWkIGhET/iqNPY2uNkNM6jHgRWqyQ9bqmYz+SQSKTbd/ghXOSou0k+ugCQn
-	CvY+NMRfQrGgNFKRenMqw6GyYjYDmPfqh+Qw1O1n/1y7RxMMYVbRq/DVVAHQzWNNW/CB43Lu2E5
-	gQAFeCeiCaAjd3EAX6Ir62VQc0vYRZ3uH5zKSrKng4HXrEOWKPKM35mvVoGmNbDrTxNmi8KyeRB
-	iBIRFN2dYBoCE0n5BsTIi+nFFXhHQmx5i6TtXbYEMMTznSucXb/Lg64Q==
-X-Received: by 2002:a05:622a:4805:b0:50e:5ffd:dec2 with SMTP id d75a77b69052e-5104be45024mr6935901cf.1.1777661024659;
-        Fri, 01 May 2026 11:43:44 -0700 (PDT)
-Received: from [192.168.42.160] (mtl.collabora.ca. [66.171.169.34])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51041ddb598sm18992271cf.13.2026.05.01.11.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 11:43:43 -0700 (PDT)
-Message-ID: <fae38f0f4ab8e8176cb6c5a37246e7aa5b5409d8.camel@ndufresne.ca>
-Subject: Re: [PATCH v2] media: mediatek: vcodec: free working buf in
- vdec_vp9_slice_setup_single()
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, tiffany.lin@mediatek.com, 
-	andrew-ct.chen@mediatek.com, yunfei.dong@mediatek.com, mchehab@kernel.org, 
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
-	laurent.pinchart@ideasonboard.com, hverkuil+cisco@kernel.org, 
-	p.zabel@pengutronix.de, benjamin.gaignard@collabora.com, 
-	xiaoyong.lu@mediatek.com, mingjia.zhang@mediatek.com
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	stable@vger.kernel.org
-Date: Fri, 01 May 2026 14:43:42 -0400
-In-Reply-To: <20260429070119.181876-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20260429070119.181876-1-lihaoxiang@isrc.iscas.ac.cn>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-aMrOnipeNucjfzPvuk1Q"
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+        d=1e100.net; s=20251104; t=1777661103; x=1778265903;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y8JApZbbblyyxqwWAbL2Lm0l+Wn6ap7FN9cMqj6rFno=;
+        b=a2DQH38dFxZcu1MFb1GkFQvZgSmoorvq5mnc+7OuvGU1T6nsm260N5dFOQqBixK7tg
+         VbWwTSodGitWjVWApb2i+xUpvzGzzv33OufdEtlS+YGU0ASuua8WjXrVfyx4sJ1UC3ps
+         6biMs4rhuYjD//rEiXpztu0+ik0jhvvFlVOvXzhzAu+gYtHAD1qgIGZHzhCLnS5p8Xff
+         9pH47IjS955yb/IfsGrwjKOD9R8RYB4wl041p66yBQzcDt7QtYduu93m3jluKnhkaebb
+         xGbDlbR49EGmFHXhbdTs73xdFaA3RrGM6X2hdD5PRrdZs4ewQmYqAxcVCj3HkWW2mDLM
+         GL/w==
+X-Forwarded-Encrypted: i=1; AFNElJ+SzHoUia4VTSxUmJOHJMXI9GwlTy4FJCqVpM6Y46zG2w7VXzPNxU/xEUCMSwUrzMQvK4k0Jqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi8dCxRvFjKzXdis9/2x5FFPA7YdVnJ78nEWDV3EywngZoR+wv
+	GEkkofKpA2oxXk37hoboUnE1YWWOls2RNMeY6MAvX3K9lQ7FyNSB9gzQg+Q1GNKK5/bDSlKjSXb
+	FU0UDYX2o5kXyME2B+E5cIADKxvnHrNKLBuAsQL31
+X-Gm-Gg: AeBDieun2NR7nx7pt9aZtMaa/HrePnBaW+cY0QwG9+ypqDrfhPrve1+b6x9OYVfDg4A
+	XdsRbf0ru8U4bJtMsgAkyHWFtBWEpUKFzq5SNRkTqVX9MudGlgh/ShoORvhiKzD9gedcuBvEfqP
+	0eFRCUjSkqvHUcdoGjL+UpX/GiGSRd4Zly+9BDl1KwgHffm67S133iP51o4BgHPHQRctwHAmacA
+	t4AXYdZD5n7KE1bhBn0rycRLyzaZJGVp99+XuV0WKjdrzOlr8Se7DYjBOHugJbXrVWSkEVktXMy
+	frKP2Dy8ZmhykwzjCgkllmzAhceY
+X-Received: by 2002:a05:7022:1b0a:b0:128:e4d0:c641 with SMTP id
+ a92af1059eb24-12dfda8d22fmr16489c88.19.1777661102744; Fri, 01 May 2026
+ 11:45:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 10E944AEEEC
+References: <20260429000623.3356606-1-avagin@google.com> <7c2681ee-a53c-402c-8947-e7a74f8720c8@intel.com>
+In-Reply-To: <7c2681ee-a53c-402c-8947-e7a74f8720c8@intel.com>
+From: Andrei Vagin <avagin@google.com>
+Date: Fri, 1 May 2026 11:44:51 -0700
+X-Gm-Features: AVHnY4K0jflN9sHgtdZPpJ1my8yZ3lva3UfcNzS_XcohnR6f1jM2kLF2_2cqSIU
+Message-ID: <CAEWA0a5zwHKP51V90A3J960e3o3pdVkSUMYwRJaxiD-fkP-JcQ@mail.gmail.com>
+Subject: Re: [PATCH] Revert "x86/fpu: Refine and simplify the magic number
+ check during signal return"
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	criu@lists.linux.dev, x86@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3676C4AEF02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242489-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_TO(0.00)[isrc.iscas.ac.cn,mediatek.com,kernel.org,gmail.com,collabora.com,ideasonboard.com,pengutronix.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-242490-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[avagin@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ndufresne.ca:mid,iscas.ac.cn:email,ndufresne-ca.20251104.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
 
+On Wed, Apr 29, 2026 at 12:26=E2=80=AFAM Chang S. Bae <chang.seok.bae@intel=
+.com> wrote:
+>
+> On 4/28/2026 5:06 PM, Andrei Vagin wrote:
+> >
+> > The reverted commit broke applications that construct signal frames in
+> > userspace (such as CRIU and gVisor) if the frame's xstate size is
+> > smaller than the kernel's fpstate->user_size.
+>
+> In the extended state area, the sigframe embeds the hardware-defined
+> XSAVE format. If CPU A and CPU B support different XSTATE features, the
+> layout (size and offsets) differ across systems. However, within a
+> system, the layout is invariant. Userspace can query CPUID to obtain the
+> exact offset and sizes, which effectively defines the ABI.
 
---=-aMrOnipeNucjfzPvuk1Q
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I've been thinking about this more, and I believe the claim that XSAVE
+offsets can differ across CPUs for the same feature is inaccurate. The
+XSAVE standard format uses fixed offsets specifically to allow migration
+between different CPU generations. If a feature exists on both the
+source and destination CPUs, its data resides at the exact same byte
+offset.
 
-Le mercredi 29 avril 2026 =C3=A0 15:01 +0800, Haoxiang Li a =C3=A9crit=C2=
-=A0:
-> Add an error path label in vdec_vp9_slice_setup_single()
-> and call vdec_vp9_slice_free_working_buffer() to free
-> working buffer.
->=20
-> Fixes: b0f407c19648 ("media: mediatek: vcodec: add vp9 decoder driver for
-> mt8186")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> ---
-> Changes in v2:
-> =C2=A0- Remove vdec_vp9_slice_setup_prob_buffer()'s return
-> =C2=A0=C2=A0 value, since it never fails. Thanks, Nicolas!
-> ---
-> =C2=A0.../mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c=C2=A0=C2=A0 =
-| 9 ++++-----
-> =C2=A01 file changed, 4 insertions(+), 5 deletions(-)
->=20
-> diff --git
-> a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if=
-.c
-> b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if=
-.c
-> index cd1935014d76..d034d84ad7f1 100644
-> ---
-> a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if=
-.c
-> +++
-> b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if=
-.c
-> @@ -1808,17 +1808,16 @@ static int vdec_vp9_slice_setup_single(struct
-> vdec_vp9_slice_instance *instance,
-> =C2=A0
-> =C2=A0	vdec_vp9_slice_setup_single_buffer(instance, pfc, vsi, bs, fb);
-> =C2=A0	vdec_vp9_slice_setup_seg_buffer(instance, vsi, &instance->seg[0]);
-> -
-> -	ret =3D vdec_vp9_slice_setup_prob_buffer(instance, vsi);
+This design is what makes virtual machine migration possible.
+Hypervisors cannot "translate" XSTATE data hidden in guest memory, so it
+relies on these invariant offsets. The CRIU case is very similar: when a
+process is in a signal handler, its state is saved on the stack as an
+opaque block of memory.
 
-Same as previous patch.
+If a future CPU uses different offsets for existing features, it would brea=
+k
+VM migration. Backward compatibility in this area should be a requirement
+even for hardware. If we look at existing CPUs, they follow this principle.
 
-regards,
-Nicolas
-
-> -	if (ret)
-> -		goto err;
-> +	vdec_vp9_slice_setup_prob_buffer(instance, vsi);
-> =C2=A0
-> =C2=A0	ret =3D vdec_vp9_slice_setup_tile_buffer(instance, vsi, bs);
-> =C2=A0	if (ret)
-> -		goto err;
-> +		goto alloc_err;
-> =C2=A0
-> =C2=A0	return 0;
-> =C2=A0
-> +alloc_err:
-> +	vdec_vp9_slice_free_working_buffer(instance);
-> =C2=A0err:
-> =C2=A0	return ret;
-> =C2=A0}
-
---=-aMrOnipeNucjfzPvuk1Q
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCafT0XwAKCRDZQZRRKWBy
-9DtqAQC1Dg6Zdwpp1TbLyQpoV3dfXpp0ZnEkO20SH8pEBubrUgD+MoWNudTp/uFM
-Wq9Gi27dGGRSf9vDASBpXnzMdkgrVQQ=
-=o8rD
------END PGP SIGNATURE-----
-
---=-aMrOnipeNucjfzPvuk1Q--
+Thanks,
+Andrei
 
