@@ -1,121 +1,176 @@
-Return-Path: <stable+bounces-242432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPanJ8mu9GlGDgIAu9opvQ
-	(envelope-from <stable+bounces-242432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:46:49 +0200
+	id QJQ8Ev2u9GlGDgIAu9opvQ
+	(envelope-from <stable+bounces-242433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:47:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2E74ACDBC
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:46:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B65314ACDC5
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C57AE301CA4F
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 13:46:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9CF173010B82
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 13:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021E73A63F8;
-	Fri,  1 May 2026 13:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0626F3B19B2;
+	Fri,  1 May 2026 13:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDIWzTqM"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="b6X4zW3y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B1A175A7B;
-	Fri,  1 May 2026 13:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8FF3939C9;
+	Fri,  1 May 2026 13:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777643201; cv=none; b=dB8ls84D205asuAyQq9FRxH0bOPuv8F8TivJWa2KeS/r2eMEBxDEnunaj/QJ1t63n3ejR3rXNq7sSdRoKM42m0II+4Aj/iLKowC+zaYC0Ll1UXVhxI/yDq2YarQ/LmeiS4X9uJTF/12aunIo7F0K67IjDwA8SBDjVmsjXDc9v8U=
+	t=1777643257; cv=none; b=srfWzn3VLHhqeklCYN/TxbNE9MSxR2XxQByb+MGAIU9hMC/On1UC/t6zwLMVolNMyzQjWeY9qH8bE96uF21dSMJGaSvib7atGaGB9gfG3WVaZAIbbSUiVKewk6djD9u0E4xsGUuINdKoBTr+efdPQUu3LPSUywinmBS/kg2dFaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777643201; c=relaxed/simple;
-	bh=DXShWkKHOypxgrHx51c+Dn3bDwcz+9RfvpjNu7ri7iA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ATVyqpH3vQCRW9Co8b3RWMRmLheP2PUdXW19jV44gqf+LqT32rlYnspmWzYPDK3yYtzaMaGmG7pyLwC+HKjwpKTSO6zl8B6imcwjB1hkDANVIY+BSCGD2sNjJyOdbK42KPtUd/az9HxeFFdnKkrJuBm+lWxLC30OeYS3gWF+ZyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDIWzTqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BB5C2BCB4;
-	Fri,  1 May 2026 13:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777643201;
-	bh=DXShWkKHOypxgrHx51c+Dn3bDwcz+9RfvpjNu7ri7iA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aDIWzTqMtUmF/uEIAFcaZxO61bnWUc4w+fETV4yHkCWrWityyCnJnu7mqNiK/S+0d
-	 9v5pPV82UKxCPYMwot/DfeQRPkVoo88x1qH8pXCJdRhX2GTs3eQ9QXufJ3X6KJ5blF
-	 QHiXoB93Szw+ZZwZkFfIAa+r36wrhA3MwNY9vs/g77EOlhgE/gOUEzdwHYiZv9dNCj
-	 DzD58SaHXwusVtgCbirmUlm4X8qzrFJFii42sJ8zZVf+3n4qPWhViBTAn5MqzM0GPu
-	 hMp3HXi9W2z4VEnpX2UllyYRAnpUBsnhXsS/NZXKtkCUqUkl/1tVcdZYebHJORU2YN
-	 ocdHlpVVieE9w==
-Date: Fri, 1 May 2026 14:46:36 +0100
-From: Simon Horman <horms@kernel.org>
-To: mike.marciniszyn@gmail.com
-Cc: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: eth: fbnic: Fix addr validation in pcs write
-Message-ID: <20260501134636.GE15617@horms.kernel.org>
-References: <20260429150049.1643-1-mike.marciniszyn@gmail.com>
+	s=arc-20240116; t=1777643257; c=relaxed/simple;
+	bh=rwgXGr1STx/LEHE1ouffCIS69kHVohj7ROm+8Hh7vEg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rGmU67TnAAHNU4zOBj20vFWzRwEt2E+JfRSHvWM4OqwUslMR6sPYx556HhxrCom/Ef40LCVsrCiOSsqvY2zR+JH0jOKh07aOypxzfh7zrpsyDUi6T6Ix2/CWETm/PavEOM/xhn5EtrIzDPl+SQ7/YjE2UFf3H2k9wUqXon3pLBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=b6X4zW3y; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4CD2C176A;
+	Fri,  1 May 2026 06:47:30 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0FB5E3F62B;
+	Fri,  1 May 2026 06:47:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777643255; bh=rwgXGr1STx/LEHE1ouffCIS69kHVohj7ROm+8Hh7vEg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=b6X4zW3yp5qT6RabLlXDQVO/FeL7tPN2xjUmAxUqOuHLBhfKm042NUohm2aji/+WR
+	 JXlvItA0VhST3veBOd24n4TpwRBypzfIiq0UjILPpKh+oQ7G2jDOi9Th/SzhmBj2wi
+	 Mp8ScD8Qpzo9B9QD9wBvCHhHiQzQuAJaeSRIIU/4=
+Message-ID: <a7e2ac96-b710-40e5-a159-b49555bcf518@arm.com>
+Date: Fri, 1 May 2026 14:47:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260429150049.1643-1-mike.marciniszyn@gmail.com>
-X-Rspamd-Queue-Id: 3F2E74ACDBC
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH v2 1/6] KVM: arm64: Make EL2 exception entry and exit
+ context-synchronization events
+To: Fuad Tabba <tabba@google.com>, maz@kernel.org, oliver.upton@linux.dev
+Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
+ qperret@google.com, vdonnefort@google.com, catalin.marinas@arm.com,
+ will@kernel.org, yaoyuan@linux.alibaba.com,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260501112149.2824881-1-tabba@google.com>
+ <20260501112149.2824881-2-tabba@google.com>
+Content-Language: en-US
+From: Ben Horgan <ben.horgan@arm.com>
+In-Reply-To: <20260501112149.2824881-2-tabba@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B65314ACDC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242432-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
+	XM_UA_NO_VERSION(0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-242433-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben.horgan@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[horms.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,alibaba.com:email,arm.com:dkim,arm.com:mid]
 
-On Wed, Apr 29, 2026 at 11:00:49AM -0400, mike.marciniszyn@gmail.com wrote:
-> From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
+Hi Fuad,
+
+On 5/1/26 12:21, Fuad Tabba wrote:
+> SCTLR_EL2.EIS and SCTLR_EL2.EOS control whether exception entry and
+> exit at EL2 are Context Synchronisation Events (CSEs). Per ARM DDI
+> 0487 M.b D24.2.175 (p. D24-9754):
 > 
-> This patch contains a fix for addr validation in fbnic_mdio_write_pcs().
+>   - !FEAT_ExS: the bit is RES1, so the entry/exit is unconditionally
+>     a CSE.
+>   - FEAT_ExS: the reset value is architecturally UNKNOWN; software
+>     must set the bit to make the entry/exit a CSE.
+> 
+> INIT_SCTLR_EL2_MMU_ON in arch/arm64/include/asm/sysreg.h sets neither
+> bit. KVM/arm64 hot paths rely on ERET from EL2 being a CSE, and on
+> synchronous EL1->EL2 entry being a CSE, to elide explicit ISBs after
+> MSRs to context-switching system registers (HCR_EL2, ZCR_EL2,
+> ptrauth keys, etc.). On FEAT_ExS hardware those reliances are not
+> architecturally backed unless EOS=1 (and, for entry, EIS=1).
+> 
+> Until commit 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg
+> infrastructure"), SCTLR_EL2_RES1 was a hand-rolled mask that
+> included BIT(11) (EOS) and BIT(22) (EIS), so INIT_SCTLR_EL2_MMU_ON
+> was setting both unconditionally. The conversion made
+> SCTLR_EL2_RES1 auto-generated; because the sysreg tooling only
+> models unconditionally-RES1 fields and EIS/EOS are RES1 only when
+> FEAT_ExS is absent, the auto-generated mask is UL(0). The seven
+> other bits dropped from the old mask (positions 4, 5, 16, 18, 23,
+> 28, 29) are unconditionally RES1 in the E2H=0 SCTLR_EL2 layout per
+> DDI 0487 M.b D24.2.175, so dropping them is harmless. EIS and EOS
+> are the only bits whose semantics changed for FEAT_ExS hardware
+> and where the kernel relies on the value being 1.
+> 
+> Make the guarantee explicit: include SCTLR_ELx_EIS | SCTLR_ELx_EOS in
+> INIT_SCTLR_EL2_MMU_ON so that EL2 exception entry and exit are
+> unconditionally CSEs regardless of whether FEAT_ExS is implemented.
+> This matches the pairing in arch/arm64/kvm/config.c which treats EIS
+> and EOS together as RES1 under !FEAT_ExS.
 
-Hi Mike,
+In v1 you also had this sentence:
 
-I think this warrants a bit more explanation: Why should addr 2 be
-accepted? What happens from a user-perspective when it is not?
+"INIT_SCTLR_EL2_MMU_OFF is left unchanged: that path is used during
+very early EL2 init and the EL2 MMU-off transition, neither of which
+relies on these bits in the same way."
+
+To me, it seems useful to keep that sentence as it makes it clear that INIT_SCTLR_EL2_MMU_OFF is purposely not changed.
+Or is there a reason why you dropped it? Perhaps it's just obvious to people more familiar with this code.
+
+Thanks,
+
+Ben
 
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: d0ce9fd7eae0 ("fbnic: Add SW shim for MDIO interface to PMD and PCS")
-> Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+> Fixes: 0a35bd285f43 ("arm64: Convert SCTLR_EL2 to sysreg infrastructure")
+> Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+> Assisted-by: Gemini:gemini-3.1-pro review-prompts
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+>  arch/arm64/include/asm/sysreg.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> index 736561480f36..7aa08d59d494 100644
+> --- a/arch/arm64/include/asm/sysreg.h
+> +++ b/arch/arm64/include/asm/sysreg.h
+> @@ -844,7 +844,7 @@
+>  #define INIT_SCTLR_EL2_MMU_ON						\
+>  	(SCTLR_ELx_M  | SCTLR_ELx_C | SCTLR_ELx_SA | SCTLR_ELx_I |	\
+>  	 SCTLR_ELx_IESB | SCTLR_ELx_WXN | ENDIAN_SET_EL2 |		\
+> -	 SCTLR_ELx_ITFSB | SCTLR_EL2_RES1)
+> +	 SCTLR_ELx_ITFSB | SCTLR_ELx_EIS | SCTLR_ELx_EOS | SCTLR_EL2_RES1)
+>  
+>  #define INIT_SCTLR_EL2_MMU_OFF \
+>  	(SCTLR_EL2_RES1 | ENDIAN_SET_EL2)
 
-...
-
--- 
-pw-bot: changes-requested
 
