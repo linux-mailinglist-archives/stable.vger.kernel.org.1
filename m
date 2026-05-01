@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-242513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBNxFbgB9WnAHAIAu9opvQ
-	(envelope-from <stable+bounces-242513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 21:40:40 +0200
+	id AB0tEGUC9WnAHAIAu9opvQ
+	(envelope-from <stable+bounces-242509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 21:43:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84A54AF3AB
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 21:40:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CDA4AF48B
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 21:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE73530074B6
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 19:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E51B3040AB2
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 19:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414A93F0AA6;
-	Fri,  1 May 2026 19:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6311421F05;
+	Fri,  1 May 2026 19:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TZDLjysJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LF03sxsd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NcEptR6Q";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jUvm1upa"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269AB421EF6;
-	Fri,  1 May 2026 19:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE95421EF3;
+	Fri,  1 May 2026 19:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777664423; cv=none; b=WJ4s74YIouYQLKd9sIoD0F/Hl69g8aa50qn6Qw2k0v6I4IUgosUsem3BJOambWGCyZT0j0JSlBZsPnuYDHJCqvSl0Qndt3BSXNkpQoUDrEGfnYRAoJtP/ngD+Sem2BqyxFu2acjxd7xJoAyeyb6+Nos2JNF7tgfd5nhTn7nd3Xc=
+	t=1777664421; cv=none; b=RGQeciCaxXmA75oCIEGdrFNVm6jsZnRPYgtlQgfEH9v0eL0hngEjZzzLtx+TpQ5Kmg5xYVfthB1AHM3sd7Xhc5FDgVtaDUIglQ85wgvj1mcasfI6DkkKiuEdZGHRAV2I2XJJ2EkG6gC69Ie+R7JwXnjHPWUyX4Vyddl0hFMF51M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777664423; c=relaxed/simple;
-	bh=f7FJKOMeBMZ3cnU8TYJscePC+eA/SX3Ywaxk0CMiXC0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=hqffhHCUQ3qfNiqLl7YAn3m37tlV9+T4EOxwJfZnlQuBAwpqQWE5u8Z3DxM1R7ALJ3MUMSOi5Zj5ld5PYSFDpdaZBE3VGNBkIQ5zRNkkfEZiIcidccTxE/ciQ5xyAVw4+CU6WzfgSJMZq1sAckpLvr/7exNBVxgGmE27MrCpRvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TZDLjysJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LF03sxsd; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1777664421; c=relaxed/simple;
+	bh=MGiV2CQ9Vyb1E7EiYJIUlE7qW+N8hPZ8TkR+ZZeuiNU=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=aMFf0S+VnkRwTRl+Fn24B6ISgTGWpfPESWFSJEoJwNxVVctDT1t3a5q6/Xea3Lo3h8GUzlSIf0CKWkAA2NFnIoybbdSiaINMVrcOifGgpBYPDu4Fm6Kuo3lCUq++0hVHzJmQfRHDXuNeVVfJS7QfXrCbyXwzXd3Q1GC9QP28wlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NcEptR6Q; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jUvm1upa; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 01 May 2026 19:40:12 -0000
+Date: Fri, 01 May 2026 19:40:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1777664413;
+	s=2020; t=1777664415;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=gaOEb4/o4Zrdes4ibBmwp1gLB5QRJxLES8IpV8nQ+jY=;
-	b=TZDLjysJrh4f0RDRX03yJvViVT5CMBEWzlIDOojITjXlenSFWfsnSO1Ux2EbdM7BogwvhU
-	Pr1kLA46g46jHqlx9c53sfyDhN7wuHbwU42dgAP3CbLpY1y0A+uXf0CKtsQjWwodDyu0q/
-	lqqSnyARlOarFyuoEcs40/Y1D8EYoRE+1hbEu2JChB7ou897UfGhjAta/2NONbjJT34qWS
-	3sCULjpLLrEu9AHRVVMfdjBRnOOS5vqejiYhcmj4Uz0eXoCegnJ3h0sqIh+iXonKDNol87
-	E/EhYyJooCJaxE7zdgmlx8NtE/n6Lj5cvgi0iVpE85h+4y2uFJMJf04fecnFBw==
+	bh=bCxq4gU32b2iMbrPi+qlZo5QhD3trT5POc/fEIVJrWU=;
+	b=NcEptR6QGEIK0bSkuGozkaRIfCv5tHfvv/9FL/zZQmPEiopshhkRRHTc+/saU3gx/Tn4D7
+	IzyL+hFXgnYKO90cWKPRdKVBvVPw/Xk7XvnpPtROvx4WeNbGH9xoNr0m8Yiej7YT9RONJH
+	0kg+olZKLYRtSSKlNk3CnNu1W7vesXEAbeQI2ogHhagBsYXjluwdTtw2xwUS45Vkw+fRvJ
+	xmRpUMUp5aqjjunV2YLewfXcjsh1aDrqqZ+qZguorT3SlxqiXffmtCf5fwhlnEhkSpwwTd
+	EWyN2rSHKktZpWstkXxNfyl2bbo0LDc2BoiCtyPujdC8gCObpAuM/bNvziozIw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1777664413;
+	s=2020e; t=1777664415;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=gaOEb4/o4Zrdes4ibBmwp1gLB5QRJxLES8IpV8nQ+jY=;
-	b=LF03sxsdHQMRz3uD8EgoONzYPgsHTF8DVfBRfdqddqNi0Wqlh49KZnqlaxTcHk3khHXDMf
-	MKuqymf2AzCiUdDg==
+	bh=bCxq4gU32b2iMbrPi+qlZo5QhD3trT5POc/fEIVJrWU=;
+	b=jUvm1upa627iU/RGwmegYRriUfB6Zx0tvo04f6+dawKb2Nt48wIJgFNUYdW70shqZssE/i
+	hJnSwPZEQpvmbpBA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] selftests/rseq: Make registration flexible for
- legacy and optimized mode
-Cc: Thomas Gleixner <tglx@kernel.org>,
+Subject: [tip: sched/urgent] selftests/rseq: Skip tests if time slice
+ extensions are not available
+Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Dmitry Vyukov <dvyukov@google.com>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
@@ -70,14 +70,14 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177766441235.3521451.18401337633080944295.tip-bot2@tip-bot2>
+Message-ID: <177766441363.3521451.6800092404605701602.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E84A54AF3AB
+X-Rspamd-Queue-Id: A0CDA4AF48B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -85,11 +85,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242513-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242509-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
@@ -105,193 +105,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:replyto]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,msgid.link:url,vger.kernel.org:replyto]
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     cafe058ea0d4502cda60a6f139399b42280b3e2d
-Gitweb:        https://git.kernel.org/tip/cafe058ea0d4502cda60a6f139399b42280=
-b3e2d
-Author:        Thomas Gleixner <tglx@kernel.org>
-AuthorDate:    Sun, 26 Apr 2026 18:13:54 +02:00
+Commit-ID:     ca124bccc9b7aea3e355e8ab71003f78320de3b9
+Gitweb:        https://git.kernel.org/tip/ca124bccc9b7aea3e355e8ab71003f78320=
+de3b9
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 25 Apr 2026 15:46:06 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 01 May 2026 21:32:21 +02:00
 
-selftests/rseq: Make registration flexible for legacy and optimized mode
+selftests/rseq: Skip tests if time slice extensions are not available
 
-rseq_register_current_thread() either uses the glibc registered RSEQ region
-or registers it's own region with the legacy size of 32 bytes.
+Don't fail, skip the test if the extensions are not enabled at compile or
+runtime.
 
-That worked so far, but becomes a problem when the kernel implements a
-distinction between legacy and performance optimized behavior based on the
-registration size as that does not allow to test both modes with the self
-test suite.
-
-Add two arguments to the function. One to enforce that the registration is
-not using libc provided mode and one to tell the registration to use the
-legacy size and not the kernel advertised size.
-
-Rename it and make the original one a inline wrapper which preserves the
-existing behavior.
-
-Fixes: 566d8015f7ee ("rseq: Avoid CPU/MM CID updates when no event pending")
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Fixes: 830969e7821a ("selftests/rseq: Implement time slice extension test")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 Tested-by: Dmitry Vyukov <dvyukov@google.com>
-Link: https://patch.msgid.link/20260428224427.677889423%40kernel.org
+Link: https://patch.msgid.link/20260428224427.597838491%40kernel.org
 Cc: stable@vger.kernel.org
 ---
- tools/testing/selftests/rseq/rseq-abi.h |  7 +++-
- tools/testing/selftests/rseq/rseq.c     | 39 +++++++++++-------------
- tools/testing/selftests/rseq/rseq.h     |  8 ++++-
- 3 files changed, 31 insertions(+), 23 deletions(-)
+ tools/testing/selftests/rseq/slice_test.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/rseq/rseq-abi.h b/tools/testing/selftest=
-s/rseq/rseq-abi.h
-index ecef315..5f4ea21 100644
---- a/tools/testing/selftests/rseq/rseq-abi.h
-+++ b/tools/testing/selftests/rseq/rseq-abi.h
-@@ -192,9 +192,14 @@ struct rseq_abi {
- 	struct rseq_abi_slice_ctrl slice_ctrl;
-=20
- 	/*
-+	 * Place holder to push the size above 32 bytes.
-+	 */
-+	__u8 __reserved;
-+
-+	/*
- 	 * Flexible array member at end of structure, after last feature field.
- 	 */
- 	char end[];
--} __attribute__((aligned(4 * sizeof(__u64))));
-+} __attribute__((aligned(256)));
-=20
- #endif /* _RSEQ_ABI_H */
-diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rs=
-eq/rseq.c
-index a736727..be0d0a9 100644
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -56,6 +56,7 @@ ptrdiff_t rseq_offset;
-  * unsuccessful.
-  */
- unsigned int rseq_size =3D -1U;
-+static unsigned int rseq_alloc_size;
-=20
- /* Flags used during rseq registration.  */
- unsigned int rseq_flags;
-@@ -115,29 +116,17 @@ bool rseq_available(void)
- 	}
- }
-=20
--/* The rseq areas need to be at least 32 bytes. */
--static
--unsigned int get_rseq_min_alloc_size(void)
--{
--	unsigned int alloc_size =3D rseq_size;
--
--	if (alloc_size < ORIG_RSEQ_ALLOC_SIZE)
--		alloc_size =3D ORIG_RSEQ_ALLOC_SIZE;
--	return alloc_size;
--}
--
- /*
-  * Return the feature size supported by the kernel.
-  *
-  * Depending on the value returned by getauxval(AT_RSEQ_FEATURE_SIZE):
-  *
-- * 0:   Return ORIG_RSEQ_FEATURE_SIZE (20)
-+ *   0: Return ORIG_RSEQ_FEATURE_SIZE (20)
-  * > 0: Return the value from getauxval(AT_RSEQ_FEATURE_SIZE).
-  *
-  * It should never return a value below ORIG_RSEQ_FEATURE_SIZE.
-  */
--static
--unsigned int get_rseq_kernel_feature_size(void)
-+static unsigned int get_rseq_kernel_feature_size(void)
+diff --git a/tools/testing/selftests/rseq/slice_test.c b/tools/testing/selfte=
+sts/rseq/slice_test.c
+index 357122d..77e668f 100644
+--- a/tools/testing/selftests/rseq/slice_test.c
++++ b/tools/testing/selftests/rseq/slice_test.c
+@@ -124,6 +124,13 @@ FIXTURE_SETUP(slice_ext)
  {
- 	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
+ 	cpu_set_t affinity;
 =20
-@@ -152,15 +141,24 @@ unsigned int get_rseq_kernel_feature_size(void)
- 		return ORIG_RSEQ_FEATURE_SIZE;
- }
++	if (rseq_register_current_thread())
++		SKIP(return, "RSEQ not supported\n");
++
++	if (prctl(PR_RSEQ_SLICE_EXTENSION, PR_RSEQ_SLICE_EXTENSION_SET,
++		  PR_RSEQ_SLICE_EXT_ENABLE, 0, 0))
++		SKIP(return, "Time slice extension not supported\n");
++
+ 	ASSERT_EQ(sched_getaffinity(0, sizeof(affinity), &affinity), 0);
 =20
--int rseq_register_current_thread(void)
-+int __rseq_register_current_thread(bool nolibc, bool legacy)
- {
-+	unsigned int size;
- 	int rc;
-=20
- 	if (!rseq_ownership) {
- 		/* Treat libc's ownership as a successful registration. */
--		return 0;
-+		return nolibc ? -EBUSY : 0;
+ 	/* Pin it on a single CPU. Avoid CPU 0 */
+@@ -137,11 +144,6 @@ FIXTURE_SETUP(slice_ext)
+ 		break;
  	}
--	rc =3D sys_rseq(&__rseq.abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
-+
-+	/* The minimal allocation size is 32, which is the legacy allocation size */
-+	size =3D get_rseq_kernel_feature_size();
-+	if (legacy || size < ORIG_RSEQ_ALLOC_SIZE)
-+		rseq_alloc_size =3D ORIG_RSEQ_ALLOC_SIZE;
-+	else
-+		rseq_alloc_size =3D size;
-+
-+	rc =3D sys_rseq(&__rseq.abi, rseq_alloc_size, 0, RSEQ_SIG);
- 	if (rc) {
- 		/*
- 		 * After at least one thread has registered successfully
-@@ -179,9 +177,8 @@ int rseq_register_current_thread(void)
- 	 * The first thread to register sets the rseq_size to mimic the libc
- 	 * behavior.
- 	 */
--	if (RSEQ_READ_ONCE(rseq_size) =3D=3D 0) {
--		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
--	}
-+	if (RSEQ_READ_ONCE(rseq_size) =3D=3D 0)
-+		RSEQ_WRITE_ONCE(rseq_size, size);
 =20
- 	return 0;
- }
-@@ -194,7 +191,7 @@ int rseq_unregister_current_thread(void)
- 		/* Treat libc's ownership as a successful unregistration. */
- 		return 0;
- 	}
--	rc =3D sys_rseq(&__rseq.abi, get_rseq_min_alloc_size(), RSEQ_ABI_FLAG_UNREG=
-ISTER, RSEQ_SIG);
-+	rc =3D sys_rseq(&__rseq.abi, rseq_alloc_size, RSEQ_ABI_FLAG_UNREGISTER, RSE=
-Q_SIG);
- 	if (rc)
- 		return -1;
- 	return 0;
-diff --git a/tools/testing/selftests/rseq/rseq.h b/tools/testing/selftests/rs=
-eq/rseq.h
-index f51a5fd..c62ebb9 100644
---- a/tools/testing/selftests/rseq/rseq.h
-+++ b/tools/testing/selftests/rseq/rseq.h
-@@ -8,6 +8,7 @@
- #ifndef RSEQ_H
- #define RSEQ_H
-=20
-+#include <assert.h>
- #include <stdint.h>
- #include <stdbool.h>
- #include <pthread.h>
-@@ -142,7 +143,12 @@ static inline struct rseq_abi *rseq_get_abi(void)
-  * succeed. A restartable sequence executed from a non-registered
-  * thread will always fail.
-  */
--int rseq_register_current_thread(void);
-+int __rseq_register_current_thread(bool nolibc, bool legacy);
-+
-+static inline int rseq_register_current_thread(void)
-+{
-+	return __rseq_register_current_thread(false, false);
-+}
-=20
- /*
-  * Unregister rseq for current thread.
+-	ASSERT_EQ(rseq_register_current_thread(), 0);
+-
+-	ASSERT_EQ(prctl(PR_RSEQ_SLICE_EXTENSION, PR_RSEQ_SLICE_EXTENSION_SET,
+-			PR_RSEQ_SLICE_EXT_ENABLE, 0, 0), 0);
+-
+ 	self->noise_params.noise_nsecs =3D variant->noise_nsecs;
+ 	self->noise_params.sleep_nsecs =3D variant->sleep_nsecs;
+ 	self->noise_params.run =3D 1;
 
