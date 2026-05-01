@@ -1,192 +1,156 @@
-Return-Path: <stable+bounces-242517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAJfEIAN9WnIHwIAu9opvQ
-	(envelope-from <stable+bounces-242517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:30:56 +0200
+	id 4CoEN/gP9WnIHwIAu9opvQ
+	(envelope-from <stable+bounces-242518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:41:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7964AF7C7
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C00D4AF8DF
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 22:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEFA63015CB9
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 20:30:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30F58301CFA9
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 20:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1567F421F07;
-	Fri,  1 May 2026 20:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872B242316F;
+	Fri,  1 May 2026 20:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FGO+jCXH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qEi8ltVY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC3D421895
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 20:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075DB413225
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 20:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777667444; cv=none; b=jaR3zd5qjrtHKxmaR+OWnrZjQy74pjUPBPYtTijspbYH3E5rsPNmiaA6i3VSZdHj2GG60a/76uuIf7r6Gs8r0N6ORC331cz2IlHT5qZHYZ6rryPG4C+spFbo6bCY8J5YgbRCmvLnIMyQ+IqgZntGbj6nDgDgzV9zI1e4waL6Ihc=
+	t=1777668070; cv=none; b=GmcuscS+nC+5UQ6hSwYXWjIYMWaN3cMp+QOC5tp6aEEELd1i1fARw2+JaJ9+9o8EcwILB8+Yi27IaGMW/ecEYNNaMs0J/j9WobpzTivtWagsIMRxYm7mBz+4V11RKcTQ3QiOvfjrFzkd5j4mx/vKUm2aL7wGDfkyfPxjfJLmVQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777667444; c=relaxed/simple;
-	bh=v5qF9oUjFKKNNHiaZ/cDzrCvSYhthuRxEl4ePROAuGI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=etSHOdF3E7KTaR2+5Jx3aUBylv65ptgR0m7kQ5QSegZIfcvcxQN31RGOhF+PAe2Wgv1jf3eMA/jLeDE/yGP5Qo2hFBIZnG+3SxjiqTl6hZXEjBkQkRh0syeuMg26Wzj5FATNMNFD4WVnJYheyOns+FWtW1UwWZ2+UPqxm6sFvAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FGO+jCXH; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1777668070; c=relaxed/simple;
+	bh=VAGwlkfOhO8vq5+QQLvGj7XDBS7ATS4VX2eI2mgwUus=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sfAGsgMSGnyS+Ag2BL84B2MX2c6y80Sz1StDi+4ns9potvBkIPXEsoqJ1BOgDcErckcw4ezXClmPYP/ugaTgUI69uYoQeM0EJvB3qFNaUp5ktUUzlRkLM9+qWZmEltErtgoIO4quWsbjA23/DpOf62R6+CTlLHBGzi6yUue8ZAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qEi8ltVY; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82f9fdfc965so1029065b3a.1
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 13:30:42 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so23393315e9.2
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 13:41:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777667442; x=1778272242; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
+        d=gmail.com; s=20251104; t=1777668067; x=1778272867; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qVBnu6Q/tQcYvEy05j8zTeFYSonQvouDAQt7Xng1rGU=;
-        b=FGO+jCXHSKDpIfZTzi+KqeQj1n2RE+xbiek+qNmJE4PdwTd714zf5EQvYG57oIi6Oi
-         tZ9UxnPr/9Xbpud32rn/Z1BnaaZ/sKZELwdT2oRc/N8Ha/vE28DQfIsPHwy4xqyOguWT
-         L3l7oGbbQukeSzast7sN4t8wVpyQrESwJStsqRuHp6NTwdZ+mXvFNE/SroyTjrI9QPjD
-         y5NzCZAikmvok/G26FdM8VeGryxnBvexH065x/hW399eHtojC+sON90MlK5c4SmeOggK
-         slhFI51+7FhLP68Yhn/L5Q+/YbC0OKAYGLLdmOt2T5TwR51z5Jtqu4MKAAf6/a34N2vS
-         n6eg==
+        bh=VAGwlkfOhO8vq5+QQLvGj7XDBS7ATS4VX2eI2mgwUus=;
+        b=qEi8ltVY5FPEkzaV0Cs9mYwRsvjaa8SVo60MZY0QFhFnG6FzppCD07Ig8oFLUFCBbH
+         puGD2nsRT7C5GnHb//5Az6G1obFAXi/gAlcuPX8h9ntj0DNsW1CZeuKAALjO/Hhvac9t
+         FmBk6RXdOlM0X+r/1iwngpC8pEKFe3FcIgyaoOwCO1ZGBj1EEZ9zl+Hz4AKfVdVllvM5
+         qpXddun6F14obLU40djU92xYXpovRtbDpeaj2SYRk/FcztH1pkcPdosmgEDdi+YQ5mWx
+         hHx/qpD1IQIGBBInApPHgk5mPsFY6kuiyqmAWxbbfBETeq3dCSihVsbftqa28pXx+Y1/
+         a6KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777667442; x=1778272242;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
+        d=1e100.net; s=20251104; t=1777668067; x=1778272867;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qVBnu6Q/tQcYvEy05j8zTeFYSonQvouDAQt7Xng1rGU=;
-        b=ovrLTQm4B3Xww5jSB7uM7i7EEPUtjjob1pgYNFI8i8+SG5ZWWTd/Ninlmtdy+oy/Td
-         xD4AJuhf4miNrrZ/i4Hb3rt+16nI5Xr74OcOxPXWYxTLF1dB0j1/ncINiJ70cfkN0P7k
-         IoPlTyAXhaNn7VyOWiGjQUzpxV5MjPXE6bXHDvgO7sYsAx7J2/EN0ZFUYvKNu0G0yFfp
-         F0WE/BKIPPumT9CNUoiLfPCMiGCiq3PN0VY8AFCOAYyDiAnoU2nGqqIlp+SHG6i9T07V
-         CcLNqd49TVrO8g+d87qdzp04FifXhURoGUbvApngiSj52hNiI6OkRgreL5UaG70uW2Op
-         stng==
-X-Forwarded-Encrypted: i=1; AFNElJ8/FVwzw88881H1Q3cgE21Si1uARuMrHd0rEjncXTUleCbW6EGhjBNRHePGLqx1FiHjaETOoQA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUKyLcPPYkaPBDiKqyJi0PKrepOFshVsesVu0CuKdn8sRSxJiq
-	KztjOOLligirgOU0xrne+3uOkJS1wJK1NvpmdHuRfY9biQNObvaUWWtt
-X-Gm-Gg: AeBDiet6HOQJ+fKB6Dq8YTMe3Dh91Gd/vglAKxIH9n1xy0nnXedSrcaMs5+cGnuwwBT
-	/2LqVGPtL/fOikhqg9hAJOO4XsDlis0wNy6ar23j2epdcGpBddLtzDfT/w/GADjeuhgHeyFp42P
-	92JRWf8SBcIvDN9utFH6/+CqYS5qco5lIoNekmVC7UkNn5hJXARVjx/Db/EEnC5HAhOX9T5FDv3
-	Fbp8MORAwQeIIE7VKdodS/a2ZRXbR2Z8LG/1YqyJbu3kCau5R+NiF67kzQdUcNjCwo6m1lAQVME
-	jYL8FM1iJc41O2RUsE91/CsTeNBLuw/rVTd49k29NtC6UFkY0HTiV7vfWL80JqxP1LCdD2GKpBY
-	1B8rlDw4Y1gCizrw8DZcw5Faub6MPQzCJKYmtHf7URI2FuwLz0Qb/MjG+e2giy4aWvTBhteUQO6
-	EfgLzQWINSXXQhA0WFc9gsACTaDRBT2yU5pi6yZ7F9m6TkFHy82VuCCfHFSzepJcUs1akOIU67
-X-Received: by 2002:a05:6a00:330b:b0:827:4343:4c1 with SMTP id d2e1a72fcca58-8352d20b2a9mr661002b3a.29.1777667442262;
-        Fri, 01 May 2026 13:30:42 -0700 (PDT)
-Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b84aedsm3230595b3a.57.2026.05.01.13.30.38
+        bh=VAGwlkfOhO8vq5+QQLvGj7XDBS7ATS4VX2eI2mgwUus=;
+        b=pSip6QhDJlcPbvZ/qmTGdy43+wXaUXkzu7sS+IrIoqkct7Ufg04FdaBjlefmC0TdkS
+         95N+2z09aRT9Sq4kh70mttvEDfbewdCaG9d4eFEqHZibf19DdFYhZjV7F4H0XKLdtpCr
+         IRaicM20XsNdDXTrrUmkkz80XAjEzDT1kd0gCGEbrej2jDV7Svzd1rKDYAvEdgdGpl/Z
+         EVhw1+d7VHv+baQazLMs/ofWaPBjVlparDsOd0At99PtodpuOudzPE9PZspsfp+XXDUR
+         Zf03mongzEFjlPOHvcqtVxmVGIKPeSbE3KyLCjwrImMB2Ocfzie9dwYrOa8tXx3uy7rJ
+         e1nw==
+X-Forwarded-Encrypted: i=1; AFNElJ+iF/yK8GqERXKYdBIRnJD8PUMiE0pA2rl27uLIA2YBULMuAcI8BWajkNlxMfNphp/Fpg0jV/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNkPfO/rEPt/WyLUcqXY0h1jFxOpy1A/E3XOSIZBcOv0GbzSc8
+	VqYQl4Gk5Pfa9vfbymvgKz2ji737aRRZCNVQd1zaTR/PdcUPSUv9bro=
+X-Gm-Gg: AeBDiesLdmB7gD84V0aN4b/3KKl/rcXWD6zifaeicLGfG7gnkCzK4WPiBn8liI4nc8y
+	M+ZdWmyXHJgvVRXOdYhXEABYFb148XWo1bI9TK7le+eny7No5xoI++iIR5ai2jWDYYkUu4V5ahb
+	zCTtxOPXd6cxBxGVr/BH7djVKA5KwF6AiuXT6l6GmY91e18vTECZO0r9IAXIjjWhoQz5A+mXbOq
+	pBRedK3DBxnMInivOxPMZBE95JfxaTUKsfFBq9zyzoBtGIQBlYSN3CgmycF9XEa/o4UR85LU7bt
+	schjtD11YdXITbProWiVecddEubNqC4WJkTQ09h0fXMCGJ+qSJ1T4pSfYi+ITR2+PKAVGDrqDb0
+	/ds6J9S4mmPdqd5dxYTyEHFc4R6xRqDMxpWg23kg3gcdOjdR5SJJQ7TrSWVzFgQlZ7MSPkAID4R
+	ccEAbTgTukaNw=
+X-Received: by 2002:a05:6000:2383:b0:43d:c95c:4259 with SMTP id ffacd0b85a97d-44bb5b4e054mr1421092f8f.30.1777668067195;
+        Fri, 01 May 2026 13:41:07 -0700 (PDT)
+Received: from debian ([2001:41d0:303:db6b::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a986aa3a5sm7882383f8f.26.2026.05.01.13.41.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 13:30:41 -0700 (PDT)
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Felix Gu <ustc.gu@gmail.com>,
-	linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: [PATCH v2] i2c: sun6i-p2wi: fix of_node reference leak in probe
-Date: Sat,  2 May 2026 02:00:02 +0530
-Message-Id: <20260501203002.3382428-1-shitalkumar.gandhi@cambiumnetworks.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260201-p2wi-v1-1-e0ec9cda82b3@gmail.com>
-References: <20260201-p2wi-v1-1-e0ec9cda82b3@gmail.com>
+        Fri, 01 May 2026 13:41:06 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+To: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
+ netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] netfilter: ip_tables: guard
+ ipt_unregister_table_pre_exit against NULL ops
+Date: Fri, 01 May 2026 20:41:05 -0000
+Message-ID: <177766806589.1898033.5646188235412407059@gmail.com>
+In-Reply-To: <afPUr2oksLlaMcOj@strlen.de>
+References: <20260429175613.1459342-1-tristmd@gmail.com>
+ <177750472539.3004201.15967003942391945312@talencesecurity.com>
+ <177750474339.3016150.13196470704394042910@talencesecurity.com>
+ <afNYqx41pBCyDnjR@strlen.de>
+ <177758578919.118018.11758358602621428742@gmail.com>
+ <afPUr2oksLlaMcOj@strlen.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9B7964AF7C7
+X-Rspamd-Queue-Id: 8C00D4AF8DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-242517-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,sholland.org,vger.kernel.org,lists.infradead.org,lists.linux.dev,cambiumnetworks.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shitalgandhi45@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-242518-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-of_get_next_available_child() returns a device_node pointer with an
-incremented reference count.  The reference taken in p2wi_probe() for
-the optional child node was dropped on neither the early return when
-the "reg" property is missing/invalid nor on the success path, so a
-reference is leaked once on every successful probe and twice on every
-failed one.
+On Thu, 1 May 2026 Florian Westphal wrote:
+> If we have races between a thread calling ipt_register_table
+> and the netns cleanup path there is nothing we could ever do to
+> fix it: we are tearing down a live network namespace.
+> Something else must be going on.
 
-Use the scoped __free(device_node) cleanup helper at the point of
-acquisition so the reference is dropped automatically on every exit
-path.
+I agree, this one is unusual. I tried multiple PoC approaches
+without success -- all I have is the syzkaller crash I shared,
+no reliable reproducer. Syzkaller itself could not minimize it
+either.
 
-Suggested-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://lore.kernel.org/linux-i2c/20260201-p2wi-v1-1-e0ec9cda82b3@gmail.com/
-Fixes: 3e833490fae5 ("i2c: sunxi: add P2WI (Push/Pull 2 Wire Interface) controller support")
+That said, the crash is real -- KASAN shows ops=NULL in
+pre_exit during cleanup_net -- so something is reaching that
+path. The V2 guard handles it regardless of the root cause:
+if ops is NULL in pre_exit, we should not pass it to
+nf_unregister_net_hooks.
 
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
----
-Changes since v1 (Felix Gu, https://lore.kernel.org/linux-i2c/20260201-p2wi-v1-1-e0ec9cda82b3@gmail.com/):
-  - Reword the commit message to make explicit that the leak is of an
-    of_node *reference*, not of an allocation.
-  - checkpatch --strict --codespell: clean.
-  - Build-tested: x86_64 allmodconfig (CONFIG_I2C_SUN6I_P2WI=m via
-    COMPILE_TEST) and arm sunxi_defconfig.  No new warnings.
-  - Runtime test: not performed; no Allwinner A31 hardware available.
+I will share any PoC/repro if I get one.
 
- drivers/i2c/busses/i2c-sun6i-p2wi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-sun6i-p2wi.c b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-index fb5280b8cf7f..652b37b57159 100644
---- a/drivers/i2c/busses/i2c-sun6i-p2wi.c
-+++ b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-@@ -184,7 +184,6 @@ static int p2wi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
--	struct device_node *childnp;
- 	unsigned long parent_clk_freq;
- 	u32 clk_freq = I2C_MAX_STANDARD_MODE_FREQ;
- 	struct p2wi *p2wi;
-@@ -223,7 +222,8 @@ static int p2wi_probe(struct platform_device *pdev)
- 	 * In this case the target_addr is set to -1 and won't be checked when
- 	 * launching a P2WI transfer.
- 	 */
--	childnp = of_get_next_available_child(np, NULL);
-+	struct device_node *childnp __free(device_node) =
-+		of_get_next_available_child(np, NULL);
- 	if (childnp) {
- 		ret = of_property_read_u32(childnp, "reg", &target_addr);
- 		if (ret) {
--- 
-2.25.1
-
+Thanks,
+Tristan
 
