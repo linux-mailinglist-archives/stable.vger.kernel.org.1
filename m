@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-242331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBHFDrOP9Gn/CAIAu9opvQ
-	(envelope-from <stable+bounces-242331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:34:11 +0200
+	id eE4kGrmP9Gn/CAIAu9opvQ
+	(envelope-from <stable+bounces-242332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:34:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877D94AC106
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:34:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179E24AC114
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DD1F30D0D1A
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:23:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E086E30D32D6
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A653A3E68;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBAB3A3E98;
 	Fri,  1 May 2026 11:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vHfB7CXn"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZEiGNOFx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874BD3A1E7F
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEEF3A2568
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777634518; cv=none; b=RYpN43DX3HptWE2mkeZCb+8Mpun9JP1xVsPYnJ+HdgUHZy36e6iE62wft2wUACW3Qp5BiEz7c+NMCUHW2e7EcmFCsv9oBL7dxUVJQZBbzNojj7ZXsQjcXnYxUpggo+chLLcTvyhYDXPT8Tjb/Jk03C1D5RtdoqBcHuiLeTI4GEw=
+	t=1777634518; cv=none; b=fN7JKEkdPAqEXxOiCjvdTSeEo0u2vkj0hf6n9CT+EIkk59q+6yPFMVruhW1gPggWB9gs9aHLo4RSMQU4vlL2+i9UOrxtren+OcCK0XaXw2YPnGqq/uawn/m609s433kXrIB0aaQMDY2YtXAanFcZ114jytbRe5wltEqIF/QULV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777634518; c=relaxed/simple;
-	bh=W4DGq5FQ3yG9XVJf1X8noklkNaBHnhoJ5jehTTSaoHU=;
+	bh=WNOrRSdjW6v3MCflD6MesgXjVe7HTEIv6WOiAqLeuXs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tth9alVyF3c2gBtgNocTLQi5iPs68hEFDvB6gF9ZFwksskZ9YyXT3BY79AvJk74abCUPFsXhYXuDKOXRC8YSqRdVm1VhdgGGJDO3Sboflloj+z77+Ouo2GD5GuBRR5HP9lRZfaSnnZRA/76COk2UrVmTkUek3NUUrt5cVFUdxBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vHfB7CXn; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=eIg6jL/S7azFH/mTZMh7VK7Za2iW3enRt1+D7vL5vSj0Q2yiJ/eLCsxKlE9uj9o7e5WBHR1pv0X58OZ+oXcLnBZd7b97nWsOePst7oPcf0JiO8heOdv9z6TSQ+X5a52XULsvyGh0gjacW+dvNP+okJf2sr+u9lnjPlkeWRU4qu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZEiGNOFx; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43cfedb10a8so1066587f8f.1
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:21:56 -0700 (PDT)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso19975355e9.1
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:21:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777634515; x=1778239315; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777634516; x=1778239316; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pkGXruA+MAauMM9ApRELF9QcQ1O0uA1Qqp7VMYhHPII=;
-        b=vHfB7CXnA6HLfD/TQSlsdnUza/QkrhrPkWjeLuLrUwN1rj3Ql5BWVHMNtfDNgFtWM/
-         mk8gzq6ZzILMF3Qmi/FB+RyjSqwXd2EcQa+xC2p7YIQPeN2dPBBzXfi6KUgnhPdGkzTJ
-         R4cygR6MTJVgwD/vjj/4Rvf/z10Eon/uXTolBp0PKA5bZLxC03M15luMl3U0F/aXlLG5
-         /vTXLfq7Yn6bL/vbRNZlNXkj2PYFS7s17e2Bbe/rLWwU+X3x3Zxwq/t+caHgqHWoUGMD
-         yaV128rNrKUBbqSCuDAAFy8blYpp+9Q+d7Jt58E4t6YeYbCl8P5fimfljiw7D3jKuExh
-         OStQ==
+        bh=aYwcKF+O9BRV6I0nh/EUmrDeLL0Ut6fk04SddS0PCXg=;
+        b=ZEiGNOFxmeyWksOgyCaEDkowsKSIiloV/zAB44LYxbnkp2L3yLXjOyGTNb0zGZa2iY
+         EgwRpsBxRBD7uYziDYXDeuR4wgJBIe+QrLN0NVzI5iXOOWzFYe83Up3p75mBimwjhwa5
+         xgj+WOTQrZvRR4sYKhTQzWNtVqW0T22DuXo1DkOxN9rLLKu4TeNsVJawN6vQmQnNamk3
+         c21HwxU+7mythsHQkSC4YGNw9qUfaNGpp4KLbN/BgkMDjr9EyaPFaHeTq643qZQbiUBg
+         RexycvPhm4vWM5KcZpZ8oK83rGIJxmswZVh998L/wcUSDPltyTcDIcl/kz9noXY6oWTV
+         WfsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777634515; x=1778239315;
+        d=1e100.net; s=20251104; t=1777634516; x=1778239316;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pkGXruA+MAauMM9ApRELF9QcQ1O0uA1Qqp7VMYhHPII=;
-        b=nAHI1FgSZuzQuY8jo8AioW4F7y/yxQOVNvQAZGixCEcbr8eGG//Hxb0YyJSPihJ+XI
-         X9BQRGcOL8tW/65uz88IQ4RHC4R4c8uIVu26iVJ44gz3g+cJDE88VQ0lHdiSk0SIFVPS
-         IF6i5WyPZMYgdnZCESIYFqDKJEfifJEfm1FpmYx2WRwXWBHh/R2ChBR+/9zOGW6Ok/Jq
-         z4FPR9Bqqy3wtjoyQIegNQp2NYDoidRSq+sTNlQBMcdNdSpf0w9SLoQlqhmDJ9LB9LVO
-         j+CyKa1ozJCqNg/Qa5GJ1C/DiJ3nRsC7Ncb2bxZGWvfbrodDe1U+3vnMvj/jOh82SIQw
-         5WjA==
-X-Forwarded-Encrypted: i=1; AFNElJ+YHFTeIxjDNcv7ohNleYVCJIQUqIoq7y+tYMDSIn0ylPG5dY34fGhVwxqCYety8tcM0mqQcx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUklTQfCuHQhk0i2x2022w+AgnBeC1+JA311ANqdMNI47Mb9zE
-	E1J+nEPW1JQ/P6VXzIH3WAYTbtC2xXS6/IGjefRxf3WQy6iMp49H2G4TV8kf6BESWyC0Mal2uch
-	qLQ==
-X-Received: from wrcz10.prod.google.com ([2002:a05:6000:454a:b0:44a:2a68:f4aa])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:24c5:b0:43d:71f4:7ed5
- with SMTP id ffacd0b85a97d-4493cc3fdffmr11707041f8f.17.1777634514643; Fri, 01
- May 2026 04:21:54 -0700 (PDT)
-Date: Fri,  1 May 2026 12:21:46 +0100
+        bh=aYwcKF+O9BRV6I0nh/EUmrDeLL0Ut6fk04SddS0PCXg=;
+        b=FA4XwVfmMmWwh2g1eoVg+uHab+6vmwU7JPflroA/lezkjs/OEJjuDHSuOKMbcx+Qv+
+         ssvFMmMnd6/3lnYXlk7P2HCDXprKwmsIWPRx0asvyXAAbjNve6OcX6Ru12qaMRVmdRsF
+         gYa2j9Eku3Yd7AEGcTe9tfF2atna9V2OzKe8RgUWVAebKzTJh8xxFYlcPxKXeNRnkwdU
+         9Z9IcmVVhrshYGbtALCjWd1g/cYKEKjdSfUJPnVOSXiyXH402AiL3YrceM2i0qYxugIl
+         BOulZnDHFOzit5Vjm8+7RKdU/J+H9QLF4jbI9LzTC5vJVbe+TfdSXyEfJN+QjcEdiwp6
+         xmJA==
+X-Forwarded-Encrypted: i=1; AFNElJ8rBak4FwVk1IECsGewM2/GIWbnB2U6OGMx4s2HtHGsVS9e/Aa+F/YxlYzDjLhMrNnvS1gsYh4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDnuCsiANRRMQZFXlAkPrLaQhEtAdTZOzzdVmFXmMp558zfOcT
+	Kr0gOTu/QGwgDLvy8tjGiGuDU+lo6mR5K1x7mTUIhExRFrcWBcH8JlIKqy5ROvlDMDLCOmbUFVI
+	tXA==
+X-Received: from wmog7.prod.google.com ([2002:a05:600c:3107:b0:488:a71c:cf48])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4594:b0:48a:52f2:a0f1
+ with SMTP id 5b1f17b1804b1-48a8444fac4mr110930795e9.18.1777634515632; Fri, 01
+ May 2026 04:21:55 -0700 (PDT)
+Date: Fri,  1 May 2026 12:21:47 +0100
 In-Reply-To: <20260501112149.2824881-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260501112149.2824881-1-tabba@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260501112149.2824881-4-tabba@google.com>
-Subject: [PATCH v2 3/6] KVM: arm64: Fix __deactivate_fgt macro parameter typo
+Message-ID: <20260501112149.2824881-5-tabba@google.com>
+Subject: [PATCH v2 4/6] KVM: arm64: Seed pkvm_ownership_selftest vcpu memcache
 From: Fuad Tabba <tabba@google.com>
 To: maz@kernel.org, oliver.upton@linux.dev
 Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
@@ -86,7 +86,7 @@ Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
 	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 877D94AC106
+X-Rspamd-Queue-Id: 179E24AC114
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -94,18 +94,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-242331-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242332-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
@@ -116,40 +116,58 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-__deactivate_fgt() declares its first parameter as "htcxt" but the body
-references "hctxt". The parameter is unused; the macro silently captures
-"hctxt" from the enclosing scope. Both existing callers
-(__deactivate_traps_hfgxtr() and __deactivate_traps_ich_hfgxtr()) happen
-to define a local "struct kvm_cpu_context *hctxt", so the macro works
-by coincidence.
+The hypercall handlers call pkvm_refill_memcache() to top up the
+hyp_vcpu memcache before invoking __pkvm_host_{share,donate}_guest().
+pkvm_ownership_selftest invokes those functions directly with a
+static selftest_vcpu that has an empty memcache.
 
-A future caller without an "hctxt" local in scope, or naming it
-differently, would compile but bind to the wrong context. Align the
-parameter name with the sibling __activate_fgt() macro.
+Seed selftest_vcpu's memcache from the prepopulated selftest
+pages, leaving the remainder for selftest_vm.pool. Required by
+the memcache-sufficiency pre-check added in the following
+patches.
 
-The "vcpu" parameter remains unused in the body, kept for API symmetry
-with __activate_fgt() (which uses it).
-
-Fixes: f5a5a406b4b8 ("KVM: arm64: Propagate and handle Fine-Grained UNDEF bits")
 Assisted-by: Gemini:gemini-3.1-pro review-prompts
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- arch/arm64/kvm/hyp/include/hyp/switch.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/hyp/nvhe/pkvm.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-index 98b2976837b1..bf0eb5e43427 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -245,7 +245,7 @@ static inline void __activate_traps_ich_hfgxtr(struct kvm_vcpu *vcpu)
- 	__activate_fgt(hctxt, vcpu, ICH_HFGITR_EL2);
- }
+diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+index 7ed96d64d611..deee7947d694 100644
+--- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
++++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+@@ -751,16 +751,30 @@ static struct pkvm_hyp_vcpu selftest_vcpu = {
+ struct pkvm_hyp_vcpu *init_selftest_vm(void *virt)
+ {
+ 	struct hyp_page *p = hyp_virt_to_page(virt);
++	unsigned long min_pages, seeded = 0;
+ 	int i;
  
--#define __deactivate_fgt(htcxt, vcpu, reg)				\
-+#define __deactivate_fgt(hctxt, vcpu, reg)				\
- 	do {								\
- 		write_sysreg_s(ctxt_sys_reg(hctxt, reg),		\
- 			       SYS_ ## reg);				\
+ 	selftest_vm.kvm.arch.mmu.vtcr = host_mmu.arch.mmu.vtcr;
+ 	WARN_ON(kvm_guest_prepare_stage2(&selftest_vm, virt));
+ 
++	/*
++	 * Mirror pkvm_refill_memcache() for the share/donate pre-checks;
++	 * the selftest invokes those functions directly and would
++	 * otherwise see an empty memcache.
++	 */
++	min_pages = kvm_mmu_cache_min_pages(&selftest_vm.kvm.arch.mmu);
++
+ 	for (i = 0; i < pkvm_selftest_pages(); i++) {
+ 		if (p[i].refcount)
+ 			continue;
+ 		p[i].refcount = 1;
+-		hyp_put_page(&selftest_vm.pool, hyp_page_to_virt(&p[i]));
++		if (seeded < min_pages) {
++			push_hyp_memcache(&selftest_vcpu.vcpu.arch.pkvm_memcache,
++					  hyp_page_to_virt(&p[i]), hyp_virt_to_phys);
++			seeded++;
++		} else {
++			hyp_put_page(&selftest_vm.pool, hyp_page_to_virt(&p[i]));
++		}
+ 	}
+ 
+ 	selftest_vm.kvm.arch.pkvm.handle = __pkvm_reserve_vm();
 -- 
 2.54.0.545.g6539524ca2-goog
 
