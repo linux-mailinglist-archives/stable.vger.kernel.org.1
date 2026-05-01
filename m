@@ -1,195 +1,137 @@
-Return-Path: <stable+bounces-242530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WN2ACD8c9WlOIgIAu9opvQ
-	(envelope-from <stable+bounces-242530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:33:51 +0200
+	id KLYYLIMd9WlqIgIAu9opvQ
+	(envelope-from <stable+bounces-242531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:39:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12994AFD22
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A23C4AFD53
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1941330065FD
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 21:33:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A7B33004D26
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 21:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7161C36E483;
-	Fri,  1 May 2026 21:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDC8346E55;
+	Fri,  1 May 2026 21:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="w/QRcQ0u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpL0xOq1"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEC330C366
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 21:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B752874FB;
+	Fri,  1 May 2026 21:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777671224; cv=none; b=ih556YE25Vr9uIfTy4dboOQ2FZhbbXgm0lPSB63gHOqIezATdjkwvsWOKL6Q6zhGrIg5URjcQLBCl985cVLvF9YbpnkXpul1RwWKc9UzP2PdFrseF6lS2lnPt5VPq3v2ors72QNpPA+TMo9hth9aDtWY2q0zOn9dQzkixFzKwJc=
+	t=1777671553; cv=none; b=F1i6ds3qPDTc796m1rsERflesdCCgd66vyWCjCNK5nSAow8PLf3k1uobEHFjsZusgyTvzjcsnlPRpR4p6gVah+m29jVTztJu001kyd49MoztVEU2mNdmdc+drFuHg740isiMeRz/yqnYurbOuDg5qj1q5q4iF5PsLqPftT2pbsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777671224; c=relaxed/simple;
-	bh=VBCdIfMdhRSGjRAFYSHsv7WfE9XYU5ZakY5w6z/akKE=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=pMA7kPx54/4eb3ji/mqA+TnTwoJUXmCNL/5GxrPg4FKEZlPvVMS7B1yUnfOYzSZpDa855r5XJPn+WSMYIJw0Vz8bAvEzlZH6dXM1jjGX+1UlpoinOuMErXnnC1bGlStGLruvbujIqgNdfJSkD0SzHls6zgDdMB/ZfSuuSFldcjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=w/QRcQ0u; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 01 May 2026 23:33:21 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777671209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VBCdIfMdhRSGjRAFYSHsv7WfE9XYU5ZakY5w6z/akKE=;
-	b=w/QRcQ0uyU3yvbMHSfXcx5jZNEJ7F/CFIQNT7CId4NSpVX0tVbHq7EMDTeyxuRfpEq+Gzw
-	VQ0ooAYAtpyscY1LSFJS57186mwjUzn2aO5MSWG77WINbz12w45KGuEWWOWKZKK3SKYHQJ
-	G8NnAJvMD151og9HLW2cnfB7C9nkZxU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Luka Gejak <luka.gejak@linux.dev>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
- Kalle Valo <kvalo@kernel.org>
-CC: Yan-Hsuan Chuang <yhchuang@realtek.com>,
- Brian Norris <briannorris@chromium.org>,
- Stanislaw Gruszka <sgruszka@redhat.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, luka.gejak@linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_wifi=3A_rtw88=3A_increase_TX?=
- =?US-ASCII?Q?_report_timeout_to_fix_race_condition?=
-In-Reply-To: <bc0a9969-b386-42d1-ada2-99ac39e394f3@gmail.com>
-References: <20260501150402.227788-1-luka.gejak@linux.dev> <72f6fffd-bd77-437f-a9d9-6a542a8b365b@gmail.com> <6CD170FE-CAED-4B91-AEED-A1AFB98FFE8A@linux.dev> <bc0a9969-b386-42d1-ada2-99ac39e394f3@gmail.com>
-Message-ID: <39E7B292-F03C-4307-B0BE-62DEC191FED8@linux.dev>
+	s=arc-20240116; t=1777671553; c=relaxed/simple;
+	bh=IZ4fMqegu5iKE8cxWQbd1JhDfA6xQ/yHQeOrJcQf+68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mm5+GgKI8wpnfapwdK2UgPe6m4DBBAZHfexFx50p49QMXwv0Tni5RRsiagP1GMAFjEJV1bDpPBIeeCCx+2HThrStK0tfgBCceo3uI68QKYYUpOxaUK+tp16Z0TwSKD4cI/MtRb3bJXkA1xAXXDkvPcC4Pc0s71oZwuVa97M88zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpL0xOq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7823AC2BCB4;
+	Fri,  1 May 2026 21:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777671552;
+	bh=IZ4fMqegu5iKE8cxWQbd1JhDfA6xQ/yHQeOrJcQf+68=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TpL0xOq1ja8r7/RpfQgHVLfSj5uIVZW+drXKO1vyEJAPdMDONTwfTBzhyop/4dQjk
+	 w2DDxccgFytfc+ASNlY4MJR3xBt7yeAM3nGeNfSeyn8nfMSk+lrMJ/+8DIDhp9uQKO
+	 P0R0E6ZcZBgOFTkDUQmyE+pcLAOV++3WAHqBogQUqtThAjTl0Vm75CCG3FZz+mUyw5
+	 ErfkIEP9iQbtakHVl/zgKU5mGuTuWbgn4TLEN0L+skPvOC+qIDV+VRcdDkWLjA4d2d
+	 F5lYRPz9PQkvKygqqPiGC3sj0AEGdcvmR0NfozTt4QNl2eKY0ooLfjYT5HScDaxiQq
+	 BbPOp/pqFYLnA==
+Date: Fri, 1 May 2026 17:39:10 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Ben Hutchings <ben@decadent.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com,
+	lvc-project@linuxtesting.org, Fedor Pchelkin <pchelkin@ispras.ru>
+Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
+ io_poll_add() return value on update
+Message-ID: <afUdfo_lfJJX_2pG@laps>
+References: <20260413155819.042779211@linuxfoundation.org>
+ <20260501111233-b371eac52cd006bfddfbd9e5-pchelkin@ispras>
+ <20260501200000.item005-revert@kernel.org>
+ <6eb47d20-ed49-45f6-90f1-41c15fa99896@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B12994AFD22
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <6eb47d20-ed49-45f6-90f1-41c15fa99896@kernel.dk>
+X-Rspamd-Queue-Id: 5A23C4AFD53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	TAGGED_FROM(0.00)[bounces-242530-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242531-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,realtek.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[]
 
-On May 1, 2026 11:28:38 PM GMT+02:00, Bitterblue Smith <rtl8821cerfe2@gmail=
-=2Ecom> wrote:
->On 01/05/2026 23:46, Luka Gejak wrote:
->> On May 1, 2026 9:26:30 PM GMT+02:00, Bitterblue Smith <rtl8821cerfe2@gm=
-ail=2Ecom> wrote:
->>> On 01/05/2026 18:04, luka=2Egejak@linux=2Edev wrote:
->>>> From: Luka Gejak <luka=2Egejak@linux=2Edev>
->>>>
->>>> The driver expects the firmware to report TX status within 500ms=2E
->>>> However, a race condition exists when the hardware is under heavy TX
->>>> load and is simultaneously interrupted by background scans or
->>>> power-saving state transitions=2E During these events, the firmware m=
-ay
->>>> go off-channel for longer than 500ms, delaying the TX reports=2E
->>>>
->> Hi Bitterblue,
->> thanks for the review=2E
+On Fri, May 01, 2026 at 03:23:33PM -0600, Jens Axboe wrote:
+>On 5/1/26 3:11 PM, Sasha Levin wrote:
+>> On Fri, 01 May 2026 11:54:18 +0300, Fedor Pchelkin wrote:
+>>> The Fixes: tag of upstream 84230ad2d2afb points to 97b388d70b53
+>>> ("io_uring: handle completions in the core", v5.19), which is NOT
+>>> present in 5.10 or 5.15. Additionally, in 5.10/5.15 'preq->result'
+>>> is unsigned so the 'if (preq->result < 0)' check is a no-op, and
+>>> __io_poll_add() already completes the request when it returns
+>>> non-zero, leading to a potential double-completion.
 >>>
->>> But power saving state transitions should not happen during heavy TX l=
-oad=2E
->>>
->> You are absolutely right that power save transitions don't happen=20
->> during heavy TX=2E The issue is strictly tied to off-channel dwell time=
-=2E
->> I reliably trigger this on my rtl8723du (USB) by forcing background=20
->> scans (iw dev wlanX scan) while under heavy iperf3 load=2E The firmware=
-=20
->> goes off-channel to scan, which delays the TX report well beyond the=20
->> current 500ms threshold=2E
->>=20
->>>> When this happens, the purge timer fires prematurely, dropping the
->>>> tracking skbs from the queue and spamming the kernel log with:
->>>> "failed to get tx report from firmware"=2E Dropping these tracking sk=
-bs
->>>> prevents the driver from reporting TX status back to mac80211, which
->>>> breaks rate control accounting and degrades performance=2E
->>>>
->>>
->>> But mac80211 doesn't handle rate control for these chips=2E How much d=
-oes
->>> performance degrade?
->>>
->>=20
->> I understand the firmware handles that internally=2E The performance=20
->> degradation I am actually seeing is TCP window collapse, as the host=20
->> stack interprets the dropped tracking skbs as packet loss=2E In my=20
->> testing with iperf3, throughput drops from a steady 80-90 Mbps to=20
->> near-zero for nearly 2 seconds following the scan before recovery=20
->> begins=2E
->>=20
->>>> Increase RTW_TX_PROBE_TIMEOUT to 2500ms=2E This timeout is large enou=
-gh
->>>> to comfortably accommodate the duration of full WiFi background scans
->>>> and sleep transitions without incorrectly tripping the purge timer,
->>>> while still eventually catching true firmware lockups=2E
->>>>
->>>
->>> rtw88 supports many chips=2E Which one are you using?
->>>
->>> Perhaps provide a full description of the problem you encountered=2E
->>>
->>=20
->> =2E=2E=2E
->>=20
->> I also realize now that globally changing RTW_TX_PROBE_TIMEOUT to=20
->> 2500ms is too heavy-handed=2E Since this impacts all rtw88 chips,=20
->> including PCIe variants where 500ms might be exactly what is needed to
->> catch a real firmware lockup, the blast radius is too large=2E How woul=
-d
->> you prefer I handle this for the v2 patch? I can either implement a=20
->> more conservative global bump, or make the timeout dynamic based on=20
->> the HCI interface so USB devices get a longer timeout to accommodate=20
->> the bus latency during scans=2E
->>=20
->> Best regards,
->> Luka Gejak
+>>> I would suggest to revert the patch from these trees because there
+>>> appears to be no real bug to fix.
+>>
+>> Agreed. I've reverted both the original backport and the followup
+>> "fix backport" commit on 5.10 and 5.15.
 >
->No idea, I'm just asking some questions=2E=2E=2E
+>Please hold off, I have fully tested these. It's quite possible they are
+>wonky in certain ways, but they currently fix a livelock as well that
+>you can hit on 5.10/15 which is arguably worse. Double claim + complete
+>should be handled by the poll grab side, I'm _assuming_ more cosmetic
+>than anything else.
 >
->Actually, I have one more: what version of the driver did you test?
->
->My quick test with RTL8723DU doesn't show any "failed to get tx report
->from firmware" when scanning while running iperf3=2E Does it take a long
->time to trigger?
+>Please refrain from dropping patches until they have been confirmed by
+>someone that actually knows the code. I've been busy today and haven't
+>had time to look into this one just yet. You're just making more work
+>for me by dropping this you have little insight into.
 
-I am testing against the latest wireless-next tree=2E
-You are correct that it is an intermittent race condition, which=20
-explains why it doesn't appear in every test run=2E To reproduce this, I
-use a script to sustain heavy TX load while forcing background scans=20
-in a loop=2E Under this stress, it typically manifests after a few=20
-minutes of operation=2E
-Best regards,
-Luka Gejak
+I haven't realized that this was a custom backport - I thought that they were
+pulled in without the Fixes commit being present.
+
+I'll drop the revert, luckily this wasn't pushed to stable-queue yet.
+
+-- 
+Thanks,
+Sasha
 
