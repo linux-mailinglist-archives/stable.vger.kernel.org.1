@@ -1,184 +1,159 @@
-Return-Path: <stable+bounces-242231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Nb7NUoQ9Gmq+AEAu9opvQ
-	(envelope-from <stable+bounces-242231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 04:30:34 +0200
+	id S95NCFoW9GlV+QEAu9opvQ
+	(envelope-from <stable+bounces-242232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 04:56:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727D34A9CFF
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 04:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9112A4A9DBA
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 04:56:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A95230191A1
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 02:30:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87AF8301A1F5
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 02:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C787C40DFBD;
-	Fri,  1 May 2026 02:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0D32EA732;
+	Fri,  1 May 2026 02:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="SVEGhQRI"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pR1/V6/q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E7218FC97
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 02:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B85D285C91
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 02:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777602628; cv=none; b=Y/OGgZH/yjMQwCNPwHVHMFJiumaL55OAjWK1681zOxvw1294d7cZ5+/+gS6He9wryX4g28INT12wTJpWdcuXcJZFa4aLYySW3vayDTZh74+EzAprTsyJlZOk8HXqplVhxstWVV0VP4Kmh8GgnX5CmpjLbQJGVPfkT8l+x3uW3w0=
+	t=1777604177; cv=none; b=pP0Ms0KX6kImhzuxcO1hb+jUZwODflBe/Fx67eu42LZWKbRUJ+4KDarioo7wgUT9iaTyrUyjDPfBnbMSkpr79B/a4voUjRJ0X/HPsUg+aSEs+T+vad0HG9vkh7JE+OGJCirEYkUcQGQcAjTObzl0u0gYNt7CANyiFVsHmIPQshI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777602628; c=relaxed/simple;
-	bh=CCVLitUCXLPN2FSJlQnFI3bLmon5s0+imal7KRJRIBc=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=BfV7ZmrbnZfKPtj8eYulgQbsH4zWEznNTDgHF3gKpx6y0iN77Xk1cQscyzH96XDgEc0gm/CfHPPQCiShLvBSacFuVp9wZAIV1Su7+dhjpGA57ruQmfaU6HlhWs8NY8N6zzvfCfH/6Keoq7qFmNJ2rHhlVkDTWZWSfZZaYLAQ+Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=SVEGhQRI; arc=none smtp.client-ip=74.125.82.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ecf9e398f4so2053227eec.1
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 19:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1777602626; x=1778207426; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tLEL5vbDTAiRBXdyxorD7aRbERYA4NBYbmFsTRD9Fb0=;
-        b=SVEGhQRIqtpriYNYJLgJFi1+yK8hfJKZ5khVDfuVSeI+WfcTylJ+P2W+mBRUCPhq4A
-         WJZk/ZCeGJIteZyIGxzY5EpnQapG7G3JWGKnFrBfh++RwbI6ohO44Z/FKWHgOIWQvnTk
-         xlH8Y9TGVgM5yb5rS1SGoMO8MZFfgsYZYU/oOewdM5PsYwtM/euJorskXKTwiHVaID3W
-         7JI/IskMpKTYrdyTecsaeSJW6Ur1Y1kQuh1+bVj7GZdeplOBef09r3mtEqZ5oAkVmZZ4
-         K3EFpKnUlQA0jy52WTQnstDYLT154dCb/3bKNbG1Fangfgi9M4hXEn7nVjVGR6a5kFQ3
-         bsbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777602626; x=1778207426;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tLEL5vbDTAiRBXdyxorD7aRbERYA4NBYbmFsTRD9Fb0=;
-        b=R1hJBet48Il8M/OBE8S+5sPKYIxxWReauSBb+QlsZLifmw6F7xAL2VC/RF2qWtOaCD
-         hXg2ItxsjvyFEqEFY0lrnEIRSrrIPoWajJ/c83XOwkg40iKrvTRw+sdHygWDxzVWYW7K
-         9VHTedDGIagaA2z3wELnjIuTr1xG6jHgz/DENEGQDBzPCSifVcKVpv+XgY+Lw/63Cqp2
-         Fo49vwfP1ksoc/60hRPu5AzRrrkcdmpOg3DmW7yx4ls9uNuLfev0NxqjX3mPS56Ip8NA
-         aq8cKLl0fIZoeN2kqRXrCGj7PwCoFQ0glTpYqv/EaV4F7u3e4483ABJpekRo0gmCW3Sn
-         a7Cg==
-X-Gm-Message-State: AOJu0Yye/EPKw7XRd4Rl7/yLOv/qus2CxTJanWYb28o7MKUc4zUsAXvx
-	WBzMd/Vp4G0b9JeyPu4AXkGvCdkeZm1EW0OkUs5h0XIXdKBSSb6G3G+ASDzuJ/3Cr4I+e7ftlx/
-	udAQ3
-X-Gm-Gg: AeBDiesqTebViVpJ1DYWarTGTcqBtkDUXWidGuMQz47CafSv6QhK0MbTEXUdYThGpV+
-	J5TmApizjKzoW6PsB4GjABPGnM6nfpiMvLnDCe5QDyJWOrtVtFQ1zGmIY5iaQl61DHAQ5Q+3igg
-	vWS9/fZv2Ns9rVa4WxBrAp5bZud1XpQhrlacZ3QvLx27XbXT5eI++BpeahSKSEbwiWoYGkgnRjL
-	99Jp/EfN6KjVb4Yt5SP03QFaVys5frK+lR4j372KL57V4SS09I4sPx5du5DPfH4vpztS4a7ra26
-	Ljnov3AX9jk2e1KxH2svchjaHJGaD79e3w6JaRBI+yBUEKSsfedW14lDKsfQ06Hznynpxpc9zNw
-	zyNdOSWp28W0XiF09G2JBNiAJyp/OW+RxkyfVirlwIZCiWfLMeo5dSHGtJQN95P/iCW5N8WXZ8H
-	WWR2KlrfMc1K9mPp4y8ESjrunvQ6s=
-X-Received: by 2002:a05:7300:7b95:b0:2be:a2d8:e9e3 with SMTP id 5a478bee46e88-2ed3e67dd57mr3148927eec.29.1777602626439;
-        Thu, 30 Apr 2026 19:30:26 -0700 (PDT)
-Received: from 997d03828cfd ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee38d79eb9sm3822131eec.8.2026.04.30.19.30.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 19:30:25 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1777604177; c=relaxed/simple;
+	bh=OzFf8IXRVbYQTRERWmhi4Gau4qI+ard8q8aBvde/xAg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=PLm1S9b3mTln2b5aL6MdV5j272T4HoD62THuVrn7UcWggyrq2zZSH4w/D28fcMRp49BG4wGVqk1GfTwkchK31ke9AXYWt15yNgXDJNILoYsy8K4ALjEpc4tiLErd0kxOtDSz/3SiR07jbDmPj6VrHlzbocTNcoW/Td/ugSpb0NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pR1/V6/q; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777604163;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OzFf8IXRVbYQTRERWmhi4Gau4qI+ard8q8aBvde/xAg=;
+	b=pR1/V6/qpV+GN44kVDka7D4dqFdY2WTJYK/vqPYvWOHqMaJHINcU1ag8cD+x4K6EX5Q+K9
+	8vOYFOCmwwZYjnajkk3cPsRC+X7Sh/xq1gbXeL7lEy2lDw7Pkqt1xi09L1D/wafbwNt+d9
+	BZtjVjMHrD7JWlEe3MId1ZvkKP0r8lY=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [STATUS] stable/linux-6.6.y -
- 258cf62a6dfde3c6a39d120a56a298f2ed6a8901
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Fri, 01 May 2026 02:30:25 -0000
-Message-ID: <177760262535.770.5525529487086970378@997d03828cfd>
-X-Rspamd-Queue-Id: 727D34A9CFF
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison
+ accounting lookup
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260430085058.f566bdc2aa5c19a54936da30@linux-foundation.org>
+Date: Fri, 1 May 2026 10:55:06 +0800
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Muchun Song <songmuchun@bytedance.com>,
+ Vishal Verma <vishal.l.verma@intel.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>,
+ Dan Williams <djbw@kernel.org>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org,
+ driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rafael J Wysocki <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <89000C13-1AAD-489A-B70F-73ED909EF4DD@linux.dev>
+References: <20260429101134.1358607-1-usama.arif@linux.dev>
+ <b67ff3f9-8661-45cc-b408-6a7b611d31c1@kernel.org>
+ <C2C5188E-76BF-444C-BF2D-8BDC1410BC61@linux.dev>
+ <20260430085058.f566bdc2aa5c19a54936da30@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 9112A4A9DBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
-	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242231-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernelci.org:+];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242232-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,linux.dev,suse.de,huawei.com,bytedance.com,intel.com,gmail.com,kvack.org,vger.kernel.org,lists.linux.dev,linuxfoundation.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,kernelci.org:dkim,kernelci.org:url,lists.linux.dev:replyto,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid,linux-foundation.org:email]
 
 
 
+> On Apr 30, 2026, at 23:50, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Thu, 30 Apr 2026 15:59:33 +0800 Muchun Song <muchun.song@linux.dev> =
+wrote:
+>=20
+>>>> Lockdep would flag this as sleeping while atomic when acquiring =
+mutex I think.
+>>>=20
+>>> Another thought would be, that we always call the inc/sub from =
+memory failure
+>>> code while we hold a folio reference and the page is not poisoned =
+yet.
+>>>=20
+>>> That way, memory offlining cannot continue and the memory block =
+cannot go away.
+>>>=20
+>>> So we'd let out page reference keep the memory block alive.
+>>=20
+>> It seems unnecessary to hold lock_device_hotplug if the user already =
+holds a
+>> refcount on the page. I'd like to drop this patch.
+>=20
+> Dropped, thanks.
 
+Thank you so much for helping me with this.
 
-Hello,
+Thanks,
+Muchun.
 
-Status summary for stable/linux-6.6.y
+>=20
+> mm-hotfixes-unstable still has
+>=20
+> "mm/memory_hotplug: fix memory block reference leak on remove"
+> and
+> "drivers/base/memory: fix memory block reference leak in poison =
+accounting"
 
-Dashboard:
-https://d.kernelci.org/c/stable/linux-6.6.y/258cf62a6dfde3c6a39d120a56a298f2ed6a8901/
-
-giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-branch: linux-6.6.y
-commit hash: 258cf62a6dfde3c6a39d120a56a298f2ed6a8901
-origin: maestro
-test start time: 2026-04-30 10:07:26.380000+00:00
-
-Builds:	   44 ✅    0 ❌    0 ⚠️
-Boots: 	   59 ✅    0 ❌    0 ⚠️
-Tests: 	 4663 ✅ 1613 ❌ 1468 ⚠️
-
-### POSSIBLE REGRESSIONS
-    
-Hardware: mt8195-cherry-tomato-r2
-  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
-    - Architecture/compiler: arm64/gcc-14
-      - kernelci_watchdog_reset.wdt-reset.wdt-get-timeout
-      last run: https://d.kernelci.org/test/maestro:69f33d5e800b539063e9e6cf
-      history:  > ✅  > ❌  
-            
-
-
-### FIXED REGRESSIONS
-    
-Hardware: mt8183-kukui-jacuzzi-juniper-sku16
-  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
-    - Architecture/compiler: arm64/gcc-14
-      - kernelci_wifi_basic
-      last run: https://d.kernelci.org/test/maestro:69f33b65800b539063e9b26e
-      history:  > ❌  > ✅  
-            
-
-
-### UNSTABLE TESTS
-
-  No unstable tests observed.
-
-
-Sent every day if there were changes in the past 24 hours.
-Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
