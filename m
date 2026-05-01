@@ -1,159 +1,198 @@
-Return-Path: <stable+bounces-242550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDJiFaAv9WlaJQIAu9opvQ
-	(envelope-from <stable+bounces-242550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:56:32 +0200
+	id UExqAz4w9WlvJQIAu9opvQ
+	(envelope-from <stable+bounces-242551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:59:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06224B01FE
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:56:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2549F4B0219
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4AD773010B88
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 22:56:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58C3F3014C3D
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 22:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7345E37D120;
-	Fri,  1 May 2026 22:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF1837D11D;
+	Fri,  1 May 2026 22:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="bNiUm6zU"
+	dkim=pass (2048-bit key) header.d=nigauri-org.20251104.gappssmtp.com header.i=@nigauri-org.20251104.gappssmtp.com header.b="HoRayGCP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB580371D0A
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 22:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF20337C0F3
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 22:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777676182; cv=none; b=I7BZPNglFFdwLSBUkMDIyfyuVGiCkOF/8pbTwUqBxKkBJVOpFHq9ChIvlTdHlCNMlSkSPlFZ4z3fMGKoz1UXyVZy+NHu7mNkM4zwOa03VS2mbM184obZwAqDwJ7bOHXfqbrEsgHTvch5AOaKAHIA+vCZ1OnaeotQwWsb5xlN4ns=
+	t=1777676346; cv=none; b=qDEngebyVbuIPTcwi5UPx9NFgYJkfB5bunQspXZ8f9ey8x6i8+S+7TkJC21JAjodvKL9WBoYRVAz5umeiIhGy1+VP0HJP/5QPLwTesY77t9Ju2kvZEjlc88jYvls8Nl3wFOWMv2UtXGbrnuAXgO/YBvBCAeLlgHQ96QCxZ17/xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777676182; c=relaxed/simple;
-	bh=Owr5h3gzlY/Xiqy7mXJ2kR/F19ZgaYQwIpoq3SHk7jM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F16a03n3fM3kfdiBhFuOxsMEEH5BFPjIbDnkx46cLd8Aaxc1RYTHvi4+xNg5wjhvX5gTTfeWrrZd/4RfAYahyr9pVTfdjaveHt5QduhaWEYOFSIt74iPH02S64y6F/C5aAKUaxWPBz9fc7dRdBti/vffSSUAXzTdFAkzmQN0jis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=bNiUm6zU; arc=none smtp.client-ip=209.85.160.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40ea36b56b7so1910315fac.3
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 15:56:20 -0700 (PDT)
+	s=arc-20240116; t=1777676346; c=relaxed/simple;
+	bh=UlCiXbtXWuIqosOA2p9adzt3AbBoB6E1z4sBonjs93k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J9GIBJ/F3nw3NL4OTSmQY6uYKrADNgmsCVDLSYFSVNc0WlSkeuFzbHaRzujuQIAUv3hh+1fD0qCbiwb5E43YdD/6ArKiz5LYcXmzaHO6P534edvcTUMYSJav+HCqYrQ0L04mb6Ff20GxQrI8fb5REarSBemrDwTzxqC1jXR63Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20251104.gappssmtp.com header.i=@nigauri-org.20251104.gappssmtp.com header.b=HoRayGCP; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-824c9da9928so1098972b3a.3
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 15:59:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1777676180; x=1778280980; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Me/g3PMG3J7omC4T2W3PlajfSg9iKUkl73mok83FKA4=;
-        b=bNiUm6zUENQ9yA0NmV31fpqNXsFLqkdVPUlaSq5EUZ7KsWLD+4+OFoaQr3F3Hlo/fu
-         9HCFlHDhaNuKfFKtyFv2izAvmx2SlZV09MBY1mTTyMK8upLCET++PNiUTt5eUZihsK2Y
-         KOIxfrETzrZhRlw48ziAQbdIsgMT9OP0pV2CY1qv4ALnGh2DORm/h7ujuNMBvjH4bQpv
-         Gm0vUH6VpZIHNYVU0quOiAO80+m4Jn71JunTC1cvM7QTG9D0O6Y2JQQOKTk/6kpBVYO5
-         j2AUwrOBAMcdEQAXfQem1zLkwf2U/Fo7QRHlXzR3Xk9CyaoH3RBaap/4jWPZ24hugsNL
-         G62g==
+        d=nigauri-org.20251104.gappssmtp.com; s=20251104; t=1777676343; x=1778281143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DB31jPvrwkXD7aZt/7u0HOms5gkrxnTUOkOsWGwy19Y=;
+        b=HoRayGCPPd4fGimgBwTN5pEZAaYvNuJ3/4ksBGVUFqMJLDY7dX8Aa8EschgjJccyTJ
+         AmLgfhMEVy2x0R3w81W35RdFLc3bAZ0EIK2E4Q9S4qNXHJezuVXT9HscU/Z+4j4P8kvk
+         GF2kH38W3MMrrvdogCOO0K0JeL15Ly2tNXmrW3SzOpAHW/fefa1LIhc3jRifPbEphX9c
+         juOOmI0jlJ+kzqRy+lYc/nPvgAa923EeudArz5FdimbGUCb8TxBi5alsgabXcyzEDZ66
+         FNvtfupN8BUB+eARFi8+poiXxUAhcE/fEXOdmZgYWu8BiQdB6xUSDu1Xkm+9aa0fjaaC
+         yd1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777676180; x=1778280980;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Me/g3PMG3J7omC4T2W3PlajfSg9iKUkl73mok83FKA4=;
-        b=EtvyGr+8iOyRK0fqjvdUbrbw2zLP4GrXs6Ypuq547hTHIpae73ltyYnh14HDZJ7mL5
-         cl62idHhq37Gfq4m4Qz/IBWig2GWrwvlnnoSyS2l0utcq6K+q6at3t/xYPFmhEtFL5g5
-         ctSdE6a1qCs3N+EC+nnADfHxQLiZh69qqgMCWU2CDx+QhyqC3zCtQo7YVk9L2qZ++vsW
-         zLFy5BzAZi4iz2/sKlG/u5vg89SQJCEzou+ybdk+V48fPPjtj//aADSY9X14by+8RlwH
-         16L9HQ+z+CgPbhu5S23c21l4cW4OpMRygSvlpg1tcga2Y0IgtnMThOTbwBIuCP1eKyJJ
-         P0UQ==
-X-Forwarded-Encrypted: i=1; AFNElJ81srTi5MDryAkVRKA9h4sqG+BQU1xB6yv8UEj9WGjBTuHIbiOFiAZsJiZP6ML9IZqHOqx3xR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaEe23n5YH9q+2rgqZZK4UnHc1/L0eiNKLZGf8qNC+F4XGTyQT
-	JbmGUZTbAs2kKX5FupTHv1OUnbnCn0lr6LVfRKQxVkom+me+j532myPO0QqrUpmDz44=
-X-Gm-Gg: AeBDies5bAR9BOlFdLgNSwrm8I3+MuNyo/brHFAp4L3259gk/aMfuZ8elNhePc3tfs7
-	ufXgujXPIb9S27sO/lH7hQH0CsPRUXRqEvYjlDuvysh3QEjVL3pSyvLklJiovqXBJrTa+Ts2nzA
-	5wt2G/1/xfYLxk0rRpZIV5jHZsp9wF/skcO3MoJ48p6ah2pkYC/8GKm56edztmoHkRqaTLmiuQv
-	+vjS5WhbkmmVrNO1nguLKNmq38QHvJcEmyRNOS/JRy/is18InAk0OSeT+kXeWmnbpUsqAlAPoY5
-	67pSqCmWGHnV4duZlsu6BYjo95rSt91g8KYpZST+gcRqyqXhmFOtyA8NjadegL/ptpLaiRAEzUJ
-	OM8ZpyaQTm11qzEC56nB+8deYevwHlmnuDSKQgc+b0FAx6aOlNuF+YlpdLyYeXIYubyhTKTC2KU
-	2yaanjAEcnZuS67HYQTzPSKnLxrC5izkcMTq3dgjr6Ac+mPhx/7KeZjbiH4zQL1dCp+2mPZntEA
-	Qf4si2sELDnMoNOAPJaGyuceOSOmiQ=
-X-Received: by 2002:a05:6808:1787:b0:467:2a6e:adb3 with SMTP id 5614622812f47-47c892314ddmr754162b6e.23.1777676179890;
-        Fri, 01 May 2026 15:56:19 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-47c763b2ef3sm2178246b6e.2.2026.05.01.15.56.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 May 2026 15:56:19 -0700 (PDT)
-Message-ID: <3f1b30e7-d6a4-4e77-a05c-6d041f93824e@kernel.dk>
-Date: Fri, 1 May 2026 16:56:18 -0600
+        d=1e100.net; s=20251104; t=1777676343; x=1778281143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DB31jPvrwkXD7aZt/7u0HOms5gkrxnTUOkOsWGwy19Y=;
+        b=BJjU3tALqn0EHmXZZUy13nYaW/HtUzpnIKqDw0spjtci8A0Ocsa+9i1+8Wna5AvF7M
+         51XoCdygM8j74zFtXZ9/bGT8ulMGQhKcpwUTQGkBIcTDuNo+nn2bNpvqjaDHOBB7G4zw
+         OSNN056BY0TIxiYfBou2dPDZ8weQ/zhd0P4tS/m0Qi+Mjb3tsUDjexbI0/n74V4Pns5J
+         jCLG+vxR7tRyo+QVBAAoZ0ctv0FTldq7zQsXoX6g65/ogl4DZjl1BBDYnnEZm0AfgbZJ
+         /BKf3MJOTvGjxPWgseQLdTQSDA244c3+sMysRAFC1bWK+fVYS+F5uACsKafrfBLjfJP/
+         D/Wg==
+X-Gm-Message-State: AOJu0Yzz9D5ZJlLLKUiGbMdjdQOH2trc81F1kvo9mQBaJrnR0IBPvhdJ
+	LtK1yWizdzwjGeXUcASyXDHsobvKih34zJlQklGuFlxXPUt/bQksG4fjC3jJhscMGexmHqlw3Cl
+	FJQ==
+X-Gm-Gg: AeBDiev+8U9rMe89cNvr3WCLaMUxb2CAgs+Q1vYRC0KlAmXWZ7ehCWDBmUhgLyFTlf5
+	N0Ki0xSMbDh86VVQWlA1HmhnddCG81dZoGzVaNmJgk7omCtJYCu4pj0oSmzUQr8sQTXqbzpXZom
+	qe3XHxFg/6EiSVJPjWLI1CPfrzjNw1NDmhBfgjmdE4Fs7UOEPlEwm1GOh1j7BwLbTHnyxT23pvf
+	g5JIrQU7WT9VY2x0KpzhalPpXZiCofppR7Ncbucx5C2ue140uQjQOYqCtplEfnGwJ/MDwk2KHUJ
+	LFPhfK9vhAEK75hEw9cb6mzlQJVlvVPxkk8xJZ9F5oZsmsDbnBb0xGoI8xzBXP8yW1j7D30b87b
+	rHEzScDkqnQOL/sL++XruX8OelS0LaInNgdaJjjGDBOLHJ3NY7XhJVjvb/wXjEDt33Q80Yvebf8
+	d0Ep+C0cr/+UgjntMGgoJH/mHIytUmkuRl0LUAXlXCGN1OVp3/eaUGSVkXyahAdEItwBA=
+X-Received: by 2002:a05:6a00:1a86:b0:82f:6a64:deac with SMTP id d2e1a72fcca58-8352d20b29emr895393b3a.28.1777676342993;
+        Fri, 01 May 2026 15:59:02 -0700 (PDT)
+Received: from localhost (ae047133.dynamic.ppp.asahi-net.or.jp. [14.3.47.133])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b73affsm3571932b3a.55.2026.05.01.15.59.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 15:59:02 -0700 (PDT)
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+X-Google-Original-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: cip-dev@lists.cip-project.org,
+	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH for 5.10.y] phy: renesas: rcar-gen3-usb2: Fix the use of msleep during spinlock
+Date: Sat,  2 May 2026 07:58:59 +0900
+Message-ID: <20260501225859.504868-1-nobuhiro.iwamatsu.x90@mail.toshiba>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable] io_uring/poll: ensure EPOLL_ONESHOT is propagated
- for EPOLL_URING_WAKE
-To: Kai Aizen <kai.aizen.dev@gmail.com>, stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, io-uring@vger.kernel.org
-References: <20260501225250.90152-1-kai.aizen.dev@gmail.com>
- <20260501225250.90152-4-kai.aizen.dev@gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260501225250.90152-4-kai.aizen.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F06224B01FE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2549F4B0219
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[nigauri-org.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242550-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[iwamatsu@nigauri.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242551-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[nigauri.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[nigauri-org.20251104.gappssmtp.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20251104.gappssmtp.com:dkim,kernel.dk:mid,kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email]
 
-On 5/1/26 4:51 PM, Kai Aizen wrote:
-> From: Jens Axboe <axboe@kernel.dk>
-> 
-> [ Upstream commit 1967f0b1cafdde37aa9e08e6021c14bcc484b7a5 ]
-> 
-> Commit aacf2f9f382c ("io_uring: fix req->apoll_events") addressed
-> synchronization issues between poll->events and req->apoll_events.
-> However, a subsequent commit failed to maintain this consistency in the
-> EPOLL_URING_WAKE code path.
-> 
-> The patch ensures that when EPOLLONESHOT is set during regular
-> EPOLL_URING_WAKE handling, it's applied to both poll->events and
-> req->apoll_events. This prevents a condition where "IORING_CQE_F_MORE
-> is set in the previous CQE, while no more CQEs will be generated for
-> this request."
-> 
-> Backport notes:
->   This patch applies cleanly and identically to linux-6.18.y,
->   linux-6.12.y, linux-6.6.y, and linux-6.1.y.  The io_poll_wake()
->   EPOLL_URING_WAKE branch is byte-identical to the upstream pre-patch
->   state across all four trees.
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
 
-OK with me, thanks.
+This fixes an issue caused by the use of msleep during spinlock.
+In the original commit, msleep was changed to mdelay, but this fix was not
+carried over during the backport to 5.10.y tree.
 
+This is a backporting error, so no fix is needed in the upstream.
+
+```
+[   62.677594] BUG: scheduling while atomic: kworker/1:2/126/0x00000002
+[   62.683957] Modules linked in:
+[   62.687014] CPU: 1 PID: 126 Comm: kworker/1:2 Not tainted 5.10.253 #1
+[   62.693447] Hardware name: HopeRun HiHope RZ/G2M with sub board (DT)
+[   62.699812] Workqueue: events deferred_probe_work_func
+[   62.704948] Call trace:
+[   62.707397]  dump_backtrace+0x0/0x1c0
+[   62.711058]  show_stack+0x18/0x40
+[   62.714375]  dump_stack+0xe8/0x124
+[   62.717776]  __schedule_bug+0x54/0x70
+[   62.721436]  __schedule+0x6b4/0x710
+[   62.724920]  schedule+0x70/0x104
+[   62.728145]  schedule_timeout+0x80/0xf0
+[   62.728153]  msleep+0x30/0x44
+[   62.728165]  rcar_gen3_phy_usb2_init+0x180/0x1e0
+[   62.736946]  phy_init+0x64/0x100
+[   62.736955]  usb_phy_roothub_init+0x48/0xa0
+[   62.736962]  usb_add_hcd+0x54/0x6c0
+[   62.736974]  ehci_platform_probe+0x1ec/0x4b0
+[   62.744541]  platform_drv_probe+0x54/0xac
+[   62.744548]  really_probe+0xec/0x4f0
+[   62.744552]  driver_probe_device+0x58/0xec
+[   62.744556]  __device_attach_driver+0xb8/0x120
+[   62.744562]  bus_for_each_drv+0x78/0xd0
+[   62.744568]  __device_attach+0xa8/0x1c0
+[   62.744575]  device_initial_probe+0x14/0x20
+[   62.752315]  bus_probe_device+0x9c/0xa4
+[   62.752319]  deferred_probe_work_func+0x88/0xc0
+[   62.752327]  process_one_work+0x1cc/0x370
+[   62.759977]  worker_thread+0x218/0x480
+[   62.759984]  kthread+0x154/0x160
+[   62.759990]  ret_from_fork+0x10/0x18
+[   62.760115] ehci-platform ee080100.usb: EHCI Host Controller
+[   62.839982] ehci-platform ee080100.usb: new USB bus registered, assigned bus number 3
+```
+
+Fixes: 0f86a559900f ("phy: renesas: rcar-gen3-usb2: Lock around hardware registers and driver data")
+Cc: stable@vger.kernel.org
+Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+---
+
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 5166a115879ea..90f2a0e5b2aa0 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -386,7 +386,7 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
+ 	val = readl(usb2_base + USB2_ADPCTRL);
+ 	writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
+ 
+-	msleep(20);
++	mdelay(20);
+ 
+ 	writel(0xffffffff, usb2_base + USB2_OBINTSTA);
+ 	writel(USB2_OBINT_BITS, usb2_base + USB2_OBINTEN);
 -- 
-Jens Axboe
+2.53.0
 
 
