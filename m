@@ -1,151 +1,150 @@
-Return-Path: <stable+bounces-242247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242248-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBEOM45u9GlrBQIAu9opvQ
-	(envelope-from <stable+bounces-242247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:12:46 +0200
+	id yFnSEIZv9GmKBQIAu9opvQ
+	(envelope-from <stable+bounces-242248-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:16:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697B34AB2F9
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:12:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45724AB3AB
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 11:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B35D3022A89
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 09:12:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4722C3019141
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 09:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A9237E2E4;
-	Fri,  1 May 2026 09:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A523803E3;
+	Fri,  1 May 2026 09:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYOZysQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd8kzN+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B23366DB5;
-	Fri,  1 May 2026 09:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4413037FF65
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 09:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777626729; cv=none; b=Rqr/O0O0mK7GHT/7n7uDQyUb/VENvGjYvOeNZR01Cot3UN7Vh/6sQ8zXGGzTgmcsWd9W1YxJTl75XgwfCJSaNyQ6s7yUgw/j50LAQ2vPz0FFO08u+uuaLUlmol39FhtwiN2NGrZv3+K/ZFfrZpwBVGwFsMMD72ao13BHVDbj0DU=
+	t=1777626994; cv=none; b=QMY1/hs1ZfmkX9u+Lsm0IxxI3mPYxt3/2wm989uFsD6rErfdF5499PowEJ7mW01dzhCCxBUFDcIcDT/fJTaZ7zaePh7b0+bO+ADtR647RJDx/OKVXdXnyokyDRHaZmzEiwXqtqwzg+SDvbuspuTR/OKBieXQ0NOybSzIH8Y8PzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777626729; c=relaxed/simple;
-	bh=NOrf6mzvHrRgZjfbm7D186ZX9Ny1YSByLo/xre4YKqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EG9nb/tWpOiCCmIfgHHY8EmMDAF/JLxndmDD3UqkhHJ4XjB3/sZV361izxp3TeRzvCKa4Tb7FvExQmHwL79Mhxgb7fSWTvbkU0S3d5IfyvdXmakUfV4bztGSk/sJFCF7fY9q/gfzNt2IeLwwWg7w4+mugBc699Tz3l5pRdCRes8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYOZysQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B2AC2BCC4;
-	Fri,  1 May 2026 09:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777626729;
-	bh=NOrf6mzvHrRgZjfbm7D186ZX9Ny1YSByLo/xre4YKqQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cYOZysQz+19iJ00qjZ0CCHDAAI1rZoXgodL2k49ovZfoyVMzq6TYwUo9AMhhou8f/
-	 KzaTjjZoDWtufssBEWinn0hZAnByGj14f9KwOH2DlrHrllAc2Uoyn2Is6scBa+4cm8
-	 xuaArVJY9DhMzi61QJmlNb/7cgxXSFrGwBzcqMYF8dBerkrjUdOyOkxP9U0NGY6n4t
-	 0yCAY6oz4b98qRTJ8qM+W+IXG1zXZqKU60mt9gaLhwW3229jXOHTBMbT/NmAgJIFeA
-	 28Vi705FQAWlhfXF46InVyr/eJwaostreDjw72tN6CPca+PlUyBqf27BbhJag2l38T
-	 NCWO+4HjyXb9Q==
-Date: Fri, 1 May 2026 10:12:02 +0100
-From: Simon Horman <horms@kernel.org>
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: mana: Optimize irq affinity for low vcpu
- configs
-Message-ID: <20260501091202.GA15617@horms.kernel.org>
-References: <20260429090640.1790104-1-shradhagupta@linux.microsoft.com>
+	s=arc-20240116; t=1777626994; c=relaxed/simple;
+	bh=49HKBn5I18pTC4rE/J6ItuGG2p14ap5zYkq6ylATXYc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TuJQL/qN4w1NVmYs+LNYTaKybXtvazlxOjj1XoIPEzenhKdvq/wGIR8Db50k1zifYlYngHIhLQeJbjprOmzGfo8Z8QtLzuZvdqsqEsm35ro4G4VR25tyLOn8DJK9Py0yhgOkSHTLzTfBFCr9RLpXNT/Vgty9El+C//JliG6jAig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd8kzN+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5E9C2BCB4;
+	Fri,  1 May 2026 09:16:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777626993;
+	bh=49HKBn5I18pTC4rE/J6ItuGG2p14ap5zYkq6ylATXYc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Hd8kzN+b0Q34ufbYHPgvO1M8ACDvFGHZLMlExomVmDQtx4Xti86VxfOu+p/jRJAae
+	 7fWc9bq4rLyRD2VSreO4WnERSDUZlm8+QDrBogM6XLFlH+az0R54OQtYrbx7bjVaXY
+	 a6YIr1K7WiRTU2dvyPnKtTGd1xwjwr5bJGsoZAL0=
+Subject: FAILED: patch "[PATCH] phy: qcom: m31-eusb2: clear PLL_EN during init" failed to apply to 6.18-stable tree
+To: elson.serrao@oss.qualcomm.com,konrad.dybcio@oss.qualcomm.com,vkoul@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 01 May 2026 11:16:31 +0200
+Message-ID: <2026050131-exfoliate-garter-519b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260429090640.1790104-1-shradhagupta@linux.microsoft.com>
-X-Rspamd-Queue-Id: 697B34AB2F9
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A45724AB3AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242247-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242248-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,horms.kernel.org:mid]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,qualcomm.com:email]
 
-On Wed, Apr 29, 2026 at 02:06:37AM -0700, Shradha Gupta wrote:
-> In mana driver, the number of IRQs allocated is capped by the
-> min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-> than the vcpu count, we want to utilize all the vCPUs, irrespective of
-> their NUMA/core bindings.
-> 
-> This is important, especially in the envs where number of vCPUs are so
-> few that the softIRQ handling overhead on two IRQs on the same vCPU is
-> much more than their overheads if they were spread across sibling vCPUs.
-> 
-> This behaviour is more evident with dynamic IRQ allocation. Since MANA
-> IRQs are assigned at a later stage compared to static allocation, other
-> device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-> weights become imbalanced, causing multiple MANA IRQs to land on the
-> same vCPU, while some vCPUs have none.
-> 
-> In such cases when many parallel TCP connections are tested, the
-> throughput drops significantly.
 
-...
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> ---
-> Changes in v2
->  * Removed the unused skip_first_cpu variable
->  * fixed exit condition in irq_setup_linear() with len == 0
->  * changed return type of irq_setup_linear() as it will always be 0
->  * removed the unnecessary rcu_read_lock() in irq_setup_linear()
->  * added appropriate comments to indicate expected behaviour when
->    IRQs are more than or equal to num_online_cpus()
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x 520a98bdf7ae0130e22d8adced3d69a2e211b41f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050131-exfoliate-garter-519b@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 520a98bdf7ae0130e22d8adced3d69a2e211b41f Mon Sep 17 00:00:00 2001
+From: Elson Serrao <elson.serrao@oss.qualcomm.com>
+Date: Tue, 17 Feb 2026 12:11:30 -0800
+Subject: [PATCH] phy: qcom: m31-eusb2: clear PLL_EN during init
+
+The driver currently sets bit 0 of USB_PHY_CFG1 (PLL_EN) during PHY
+initialization. According to the M31 EUSB2 PHY hardware documentation,
+this bit is intended only for test/debug scenarios and does not control
+mission mode operation. Keeping PLL_EN asserted causes the PHY to draw
+additional current during USB bus suspend. Clearing this bit results in
+lower suspend power consumption without affecting normal operation.
+
+Update the driver to leave PLL_EN cleared as recommended by the hardware
+documentation.
+
+Fixes: 9c8504861cc4 ("phy: qcom: Add M31 based eUSB2 PHY driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Elson Serrao <elson.serrao@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260217201130.2804550-1-elson.serrao@oss.qualcomm.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+
+diff --git a/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c b/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
+index 95cd3175926d..68f1ba8fec4a 100644
+--- a/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
++++ b/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
+@@ -83,7 +83,7 @@ static const struct m31_phy_tbl_entry m31_eusb2_setup_tbl[] = {
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG0, UTMI_PHY_CMN_CTRL_OVERRIDE_EN, 1),
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_UTMI_CTRL5, POR, 1),
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_HS_PHY_CTRL_COMMON0, PHY_ENABLE, 1),
+-	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG1, PLL_EN, 1),
++	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG1, PLL_EN, 0),
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_FSEL_SEL, FSEL_SEL, 1),
+ };
+ 
+
 
