@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBzXOg6Y9GnTCgIAu9opvQ
-	(envelope-from <stable+bounces-242381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:09:50 +0200
+	id CPZyIDGY9GnTCgIAu9opvQ
+	(envelope-from <stable+bounces-242382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:10:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FDF4AC3B7
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:09:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3F34AC3EF
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF0C530098AB
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:09:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C28F7301AA50
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273463A1680;
-	Fri,  1 May 2026 12:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8EC3A1680;
+	Fri,  1 May 2026 12:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGHgVRFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEFSA3a3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00CA24DCF9
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AF024DCF9
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777637387; cv=none; b=Gj1WHPs9o/0kX1E/UwAKW4GnIA58NqFoVLHkVhohrKeoRCndQAPsL7DiOE61US9yKPhkfGaIwWj0+K5FlV+tBQUlpzn567E0AZxOj3EByIrnzqjbItz0Nos602oBoMtkSyrv3g5VX+3yFDRHVJ7oFaadZDdmGh3I5W0bgF+GRXI=
+	t=1777637394; cv=none; b=TgCJ970nDWTgxOQTVGCeIENVwcW0Vu9ZEJZ0lnDSFEJIRlVVUNqe4/r331JUIwLHe543vOua5Q/YTiEUkn/J+BbwDDrClIhSZp+d+5RenFKmvCYDBhxhCsBeUK2EIAf2UN5o2JWyoR3Va6UUGenb9gRu1VjrLvHx9Qe6QuzZU7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777637387; c=relaxed/simple;
-	bh=ImlxTeldCMvNRoCMeQTPqJw+//aVR0XczT+E4u7vMqI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZxYKaN8c+0QIPfc/es8ive7Uol336EYh74HNhqA52dCDznb67efziyyXnLWpamSIbqIXYM6YahRU7dMItZXru8XsXKPiziKx7jY/8H3MPDyB7+6iD6HXhjhgb1+3Wy6USvKc+0MlVgw37FWLvPKAzogr39voYOlo3q4+4t8MbY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGHgVRFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76539C2BCB4;
-	Fri,  1 May 2026 12:09:47 +0000 (UTC)
+	s=arc-20240116; t=1777637394; c=relaxed/simple;
+	bh=6JkZUslNlfeXCmccTLMqtvORUrt6fGP4l/Fx4q8aVgo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ar66A3tcLf8fiRxpHOKvYDPOIkBRr+J256D6VPTymUVmp42aqJk1gY8qA70r8LtTl+tfnA0Hh56nOJBW/Y3twPRM9oW/jzFEZWeIsZyzuKA8BU0AF+e5K2CO9zvg9KjpMy1gCVuGi0qrfOjQitib3Ovk0fxZLUQY6zfe0/8GwN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEFSA3a3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F03C2BCB4;
+	Fri,  1 May 2026 12:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777637387;
-	bh=ImlxTeldCMvNRoCMeQTPqJw+//aVR0XczT+E4u7vMqI=;
+	s=korg; t=1777637393;
+	bh=6JkZUslNlfeXCmccTLMqtvORUrt6fGP4l/Fx4q8aVgo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cGHgVRFm+Gxao7Ef1+0TdZFgj82/3hAOWGj/DP9rMB/vShy8oGxmcrvY7jcCJXW6x
-	 Jp4mQlI7VhIglmj7W5hzPS062f+xrfIs3ZzLE/5guzrIo8rdp+mT2GitPoMUCFB1Pe
-	 XxeBLnnaXRPs+p9D2IQ225q+KG475pkIm7fkRr60=
-Subject: FAILED: patch "[PATCH] net: qrtr: ns: Free the node during ctrl_cmd_bye()" failed to apply to 5.10-stable tree
+	b=cEFSA3a39zoroQ/jB6TSE9MzIeMxo+ERM5rF4SuG5vP/k9geljE8GwRmhnIVXB7XF
+	 0NhUVEeIAizYHHDU7Ik9DCHyESxLFl8bPdHYa/6Ty65lx5QM64f2wd7PmpPMrVGRCU
+	 +ic8erwPmEgeuVVATwN7S9pVKwvw5JZ1w988ccIU=
+Subject: FAILED: patch "[PATCH] net: qrtr: ns: Limit the total number of nodes" failed to apply to 6.18-stable tree
 To: manivannan.sadhasivam@oss.qualcomm.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 01 May 2026 14:09:41 +0200
-Message-ID: <2026050141-sudden-student-ae9d@gregkh>
+Date: Fri, 01 May 2026 14:09:51 +0200
+Message-ID: <2026050151-blooper-pang-c22e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97FDF4AC3B7
+X-Rspamd-Queue-Id: DF3F34AC3EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,13 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,gregkh:server fail,qualcomm.com:server fail,sto.lore.kernel.org:server fail,msgid.link:server fail];
-	TAGGED_FROM(0.00)[bounces-242381-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242382-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -82,25 +81,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:dkim,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gregkh:email,linuxfoundation.org:dkim]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 68efba36446a7774ea5b971257ade049272a07ac
+git cherry-pick -x 27d5e84e810b0849d08b9aec68e48570461ce313
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050141-sudden-student-ae9d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050151-blooper-pang-c22e@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,72 +111,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 68efba36446a7774ea5b971257ade049272a07ac Mon Sep 17 00:00:00 2001
+From 27d5e84e810b0849d08b9aec68e48570461ce313 Mon Sep 17 00:00:00 2001
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Date: Thu, 9 Apr 2026 23:04:14 +0530
-Subject: [PATCH] net: qrtr: ns: Free the node during ctrl_cmd_bye()
+Date: Thu, 9 Apr 2026 23:04:15 +0530
+Subject: [PATCH] net: qrtr: ns: Limit the total number of nodes
 
-A node sends the BYE packet when it is about to go down. So the nameserver
-should advertise the removal of the node to all remote and local observers
-and free the node finally. But currently, the nameserver doesn't free the
-node memory even after processing the BYE packet. This causes the node
-memory to leak.
+Currently, the nameserver doesn't limit the number of nodes it handles.
+This can be an attack vector if a malicious client starts registering
+random nodes, leading to memory exhaustion.
 
-Hence, remove the node from Xarray list and free the node memory during
-both success and failure case of ctrl_cmd_bye().
+Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
+chosen based on the current platform requirements. If requirement changes
+in the future, this limit can be increased.
 
 Cc: stable@vger.kernel.org
 Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-3-00a8a5ff2b51@oss.qualcomm.com
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 5b08d4d4840a..1b9a90240a68 100644
+index 1b9a90240a68..c0418764470b 100644
 --- a/net/qrtr/ns.c
 +++ b/net/qrtr/ns.c
-@@ -359,7 +359,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+@@ -71,12 +71,16 @@ struct qrtr_node {
+ 	u32 server_count;
+ };
+ 
+-/* Max server, lookup limits are chosen based on the current platform requirements.
+- * If the requirement changes in the future, these values can be increased.
++/* Max nodes, server, lookup limits are chosen based on the current platform
++ * requirements. If the requirement changes in the future, these values can be
++ * increased.
+  */
++#define QRTR_NS_MAX_NODES   64
+ #define QRTR_NS_MAX_SERVERS 256
+ #define QRTR_NS_MAX_LOOKUPS 64
+ 
++static u8 node_count;
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
  	struct qrtr_node *node;
- 	unsigned long index;
- 	struct kvec iv;
--	int ret;
-+	int ret = 0;
+@@ -85,6 +89,11 @@ static struct qrtr_node *node_get(unsigned int node_id)
+ 	if (node)
+ 		return node;
  
- 	iv.iov_base = &pkt;
- 	iv.iov_len = sizeof(pkt);
-@@ -374,8 +374,10 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
- 
- 	/* Advertise the removal of this client to all local servers */
- 	local_node = node_get(qrtr_ns.local_node);
--	if (!local_node)
--		return 0;
-+	if (!local_node) {
-+		ret = 0;
-+		goto delete_node;
++	if (node_count >= QRTR_NS_MAX_NODES) {
++		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
++		return NULL;
 +	}
- 
- 	memset(&pkt, 0, sizeof(pkt));
- 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
-@@ -392,10 +394,18 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
- 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
- 		if (ret < 0 && ret != -ENODEV) {
- 			pr_err("failed to send bye cmd\n");
--			return ret;
-+			goto delete_node;
- 		}
++
+ 	/* If node didn't exist, allocate and insert it to the tree */
+ 	node = kzalloc_obj(*node);
+ 	if (!node)
+@@ -98,6 +107,8 @@ static struct qrtr_node *node_get(unsigned int node_id)
+ 		return NULL;
  	}
--	return 0;
+ 
++	node_count++;
 +
-+	/* Ignore -ENODEV */
-+	ret = 0;
-+
-+delete_node:
-+	xa_erase(&nodes, from->sq_node);
-+	kfree(node);
-+
-+	return ret;
+ 	return node;
  }
  
- static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+@@ -404,6 +415,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ delete_node:
+ 	xa_erase(&nodes, from->sq_node);
+ 	kfree(node);
++	node_count--;
+ 
+ 	return ret;
+ }
 
 
