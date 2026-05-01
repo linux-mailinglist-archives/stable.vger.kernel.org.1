@@ -1,179 +1,142 @@
-Return-Path: <stable+bounces-242338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMGnEqqP9Gn/CAIAu9opvQ
-	(envelope-from <stable+bounces-242338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:34:02 +0200
+	id OCBZHCyQ9Gn/CAIAu9opvQ
+	(envelope-from <stable+bounces-242340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:36:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276494AC0FF
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:34:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBBB4AC148
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 13:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BEDA43004F01
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:33:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 90302301649B
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 11:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A065D39EF09;
-	Fri,  1 May 2026 11:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6B4346770;
+	Fri,  1 May 2026 11:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FuwyeX9U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8A8Zjeo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1403F3947B0
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F6F33A71A
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 11:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777635192; cv=none; b=fdELJ7kLQIPZFrSDQBsmv9eXNKuVHGZ5rj1RPu+2GjwfwN9dS6jW1hm1m6ET3Wqhh+oXyP0BEJ+xKItOQO2k0xSTprmRlUsT+ZiFTxsKAl4U/0R3SwEB0n4m3m23CMz4/d2GUfcJsvCQbI/r7ZtOCujeHia1XziMP8zA8DGMGlM=
+	t=1777635367; cv=none; b=iEJ3C6jwhuI1ajl6uPBarG00jBHv0HEqNl/xGwV+6/0Nvm0muLwdW7ON+HPU7ABc4jxWRuB2sQRp1OKJZmn/XWyxgrDYQURuTdxE+0PXjm8vktGqRf+zqLrq+/uX8XbsUP2isIkvmYv4u2JXQ0WhC2GbyadqSpEaaKC7KLRNnaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777635192; c=relaxed/simple;
-	bh=maPN0uAGh5T9TmRwUDufwkMVbmorC5oANIGuNmwR7ek=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e2BDrGzarBFU0dXe0ku3DAjNCQKcehydgM8MeseUAQIxoAzzhx+tWDPzMH/5xvVzWhhZfP44/R6KAG0gwxZEKfoWz1LMO8Lng0n+H6zR+PNKO6E79NwHTopV+wbgmP8JybCuGeprLpdgo9H9Fg445buT3Lu0Cnljvc1ttZOLQbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FuwyeX9U; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a4113ab355so1916998e87.1
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 04:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1777635187; x=1778239987; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1kcPDoUx1Q/YaISrAn+S58ePlDUIO7Y3t/DDUcj1x4Y=;
-        b=FuwyeX9UgcMIM4AW2mDRMHVqdlSsYKq1SloYu1Bm4Et1u2Of/VBjY5XQT1JLiBm7Xh
-         Ujp2EgH8yIpFsgoLGDdzjw0g+UQ9vei1jrz2CcMk/zCNnbLyb/GzjbMELqBVM3UIIxge
-         /uDPKD++FEnmmtWBSreNNhwIO0/UMsOdd//Ec=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777635187; x=1778239987;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1kcPDoUx1Q/YaISrAn+S58ePlDUIO7Y3t/DDUcj1x4Y=;
-        b=ACmYJpIFa7lqL2OeuPWfNW9snOaOX6UBNhN/MeW55VAXdO5SM0ViGr5ll39+YHJCfg
-         VeJNd8JyFIrSF2vFbO5XdVOLaH03EwDd5U6EDbJDq+ngsYG9S6BHefRFFjLaJkFOQaxj
-         ZlTf1Ib0/onCuw6LDFKDBZ70FYrnql9NhyVTWTbaRUIGi6a2LDBvM0LUtzmitzxpKYQ5
-         lusVIOAKsRF2377XcQpPz6+TZOsRwNJwNpk+2pJ+ROMDr7jVq/3DEbU0KJ1oOVl9T57h
-         TuEfX8jGlcYsvx4uJ8CLt0LIDBq3kEvR6Z6shb2kG9hvmGV9gwRLdAOQuBk/vEzzdabn
-         p60w==
-X-Forwarded-Encrypted: i=1; AFNElJ95bPHLw9LhPJXWfzblfjqJOkbH7J9HxQyuxN0ibUfqcMqCpPRoktspBrGaTGxxZ+a2RF1Pgbc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9O3xbMJWRyyI1tb9xRJXZAkE1FV3HKOkWxI87u9Yo7MRf/Fvy
-	QPmzUX7LV+VF+cWuxfFgqXKggx1xdm0TVDvEUDrKrQBreS3ejJS9SF0TemdPP5qGqQ==
-X-Gm-Gg: AeBDievT78JMmq9YXSgk0qKqJ9/f91T8LIe4A3zVgAilP4jh9yn5zSBoQNmoh7gUHV/
-	ss7xSoSegXINwcG/bmYXx3Zij1H4pKVKAdrvo15mzNZLepOSBvFci9c4pvr8dE6PbaUHq9lH8vT
-	NXEKcvb29oigq186bCPflaFlqyJ7IHRghzEIU7/5zPFhaz/2/Tns3N+CwmEIycLOKoQWK2ZkM0y
-	FvzFL7v14EDd31ABmYoVhOSwEM7PKce8Y5oCRml5nVgMe6jZlYZBvJakpZ+f5WGVafvLRbzk1a8
-	X95+9ceYaQ590OAj+/y6SevBP+zw6hJ1AsALBvQkevL+BkTgQXDD0+e+e/9xbhcz1Po2rMTRP7L
-	uJQfZEIO+kvMZSHIbKr+Dngu/QzWd49SSm/sKBsBd4i+OVIlu7tQIKqGSMqPpMerrDPFIZtL3e5
-	h7aBLkQ1hU1Eyi8x4tujfXjHwQ9u99GopRp6vS1gmwVwaqFqmQGiOvhdq+/7OtNADPwTA3eOrMj
-	0l+Ark9nE+eLYK1YQ==
-X-Received: by 2002:a05:6512:10cc:b0:5a3:cd94:df73 with SMTP id 2adb3069b0e04-5a8522dda2emr2212355e87.38.1777635187389;
-        Fri, 01 May 2026 04:33:07 -0700 (PDT)
-Received: from ribalda.c.googlers.com (52.163.228.35.bc.googleusercontent.com. [35.228.163.52])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a85c346c02sm429166e87.74.2026.05.01.04.33.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 04:33:05 -0700 (PDT)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Fri, 01 May 2026 11:32:51 +0000
-Subject: [PATCH v2 6/6] media: amlogic-c3: Add validations for ae and awb
- config
+	s=arc-20240116; t=1777635367; c=relaxed/simple;
+	bh=9HVpsbL8E8yo0qmv6OTXdm6/WIHOoQwSMDbptxMWxf8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HAfs85MINJ+fCr2Gv3wgzh/J2HpBIGE9UoZTn+NqhnsiOTqSQbNlo+G5hI6u86/ATEN62lwz08nSLB4Y1CUgNX80drxHaviTDWKnRzMpDqf85HevMzXJCCATuMXeiEnnWjlcGnVsjdLK0/wnxR7oluc4K8KuYuehU/Vc3JL8sBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8A8Zjeo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CB7C2BCB4;
+	Fri,  1 May 2026 11:36:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777635366;
+	bh=9HVpsbL8E8yo0qmv6OTXdm6/WIHOoQwSMDbptxMWxf8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=p8A8ZjeoJvkAltWy1yUSWLne3EXV6MBkNXbgGaJBrhETS01fLfDTWybL0rnxk8g1N
+	 dELMJ06kK5VOUZDccc8P/qFq0zfjmcI7xULwsusTcuKdaMiMf0i6NpyuVaPXKrOOcE
+	 kh9WQfJWqDRJuqBaVAfHMyTz9SAak2DjSzSm56yg=
+Subject: FAILED: patch "[PATCH] io_uring/zcrx: clear RQ headers on init" failed to apply to 7.0-stable tree
+To: asml.silence@gmail.com,axboe@kernel.dk
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 01 May 2026 13:35:56 +0200
+Message-ID: <2026050156-cranial-student-076a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260501-smatch-7-1-v2-6-a2fcfb2531ac@chromium.org>
-References: <20260501-smatch-7-1-v2-0-a2fcfb2531ac@chromium.org>
-In-Reply-To: <20260501-smatch-7-1-v2-0-a2fcfb2531ac@chromium.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Hans Verkuil <hverkuil@kernel.org>, Nas Chung <nas.chung@chipsnmedia.com>, 
- Jackson Lee <jackson.lee@chipsnmedia.com>, 
- Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Keke Li <keke.li@amlogic.com>, Yong Zhi <yong.zhi@intel.com>, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-staging@lists.linux.dev, 
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, 
- Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Rspamd-Queue-Id: 276494AC0FF
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CDBBB4AC148
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242338-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[chromium.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-242340-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.dk];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,samsung];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,chromium.org:email,chromium.org:dkim,chromium.org:mid]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,kernel.dk:email]
 
-Avoid invalid memory access if the zones_num is bigger than
-zone_weight.
 
-This patch fixes the following smatch errors:
-drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:111 c3_isp_params_awb_wt() error: buffer overflow 'cfg->zone_weight' 768 <= u32max
-drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:111 c3_isp_params_awb_wt() error: buffer overflow 'cfg->zone_weight' 768 <= u32max
-drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:227 c3_isp_params_ae_wt() error: buffer overflow 'cfg->zone_weight' 255 <= u32max
-drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:227 c3_isp_params_ae_wt() error: buffer overflow 'cfg->zone_weight' 255 <= u32max
+The patch below does not apply to the 7.0-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4f02cc4071a18c78bfff571d796edef055d57daa
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050156-cranial-student-076a@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4f02cc4071a18c78bfff571d796edef055d57daa Mon Sep 17 00:00:00 2001
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Tue, 21 Apr 2026 09:46:44 +0100
+Subject: [PATCH] io_uring/zcrx: clear RQ headers on init
+
+It might be unexpected to users if the RQ head/tail after a ring
+creation are not zeroed, fix that.
 
 Cc: stable@vger.kernel.org
-Fixes: fb2e135208f3 ("media: platform: Add C3 ISP driver")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
- drivers/media/platform/amlogic/c3/isp/c3-isp-params.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Fixes: 6f377873cb239 ("io_uring/zcrx: add interface queue and refill queue")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://patch.msgid.link/331f94663c3e8f021ffa3cb770ca2844a07d4855.1776760911.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c b/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
-index 6f9ca7a7dd88..aec3eed0e443 100644
---- a/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
-+++ b/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
-@@ -104,6 +104,8 @@ static void c3_isp_params_awb_wt(struct c3_isp_device *isp,
- 	c3_isp_write(isp, ISP_AWB_BLK_WT_ADDR, 0);
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index fab3693ecb0d..2eb09219f0a0 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -396,6 +396,7 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
+ 	ifq->rq.ring = (struct io_uring *)ptr;
+ 	ifq->rq.rqes = (struct io_uring_zcrx_rqe *)(ptr + off);
  
- 	zones_num = cfg->horiz_zones_num * cfg->vert_zones_num;
-+	if (zones_num > C3_ISP_AWB_MAX_ZONES)
-+		zones_num = C3_ISP_AWB_MAX_ZONES;
++	memset(ifq->rq.ring, 0, sizeof(*ifq->rq.ring));
+ 	return 0;
+ }
  
- 	/* Need to write 8 weights at once */
- 	for (i = 0; i < zones_num / 8; i++) {
-@@ -220,6 +222,8 @@ static void c3_isp_params_ae_wt(struct c3_isp_device *isp,
- 	c3_isp_write(isp, ISP_AE_BLK_WT_ADDR, 0);
- 
- 	zones_num = cfg->horiz_zones_num * cfg->vert_zones_num;
-+	if (zones_num > C3_ISP_AE_MAX_ZONES)
-+		zones_num = C3_ISP_AE_MAX_ZONES;
- 
- 	/* Need to write 8 weights at once */
- 	for (i = 0; i < zones_num / 8; i++) {
-
--- 
-2.54.0.545.g6539524ca2-goog
 
 
