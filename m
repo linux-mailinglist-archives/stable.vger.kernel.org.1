@@ -1,84 +1,85 @@
-Return-Path: <stable+bounces-242528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id XZh2IBcb9WkoIgIAu9opvQ
-	(envelope-from <stable+bounces-242528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:28:55 +0200
+	id kWR/Gx4c9WlOIgIAu9opvQ
+	(envelope-from <stable+bounces-242529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:33:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FC94AFCF1
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A6A4AFD13
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB1F6300A761
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 21:28:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B9FE300A629
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 21:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41F436DA18;
-	Fri,  1 May 2026 21:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B26C213E89;
+	Fri,  1 May 2026 21:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y+DhV/62"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="ez8R+x0o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1243019DC
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 21:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403AA2874FB
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 21:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777670923; cv=none; b=tSmHdgm92eHZZ7NPr0sle5gSBWZbkXr09U4wayeGxiGG6DZ8EtOPqbyED4OQ10tHswjMz7vB2LdVg362VLYpBaU32FKoDcj8aMWHMF0DZMiOIfKMwN8gfW1pUGzkPhj0PaA+Yj8prhQgLUFdguyb/q4LCWUeKLLZFC+9PmFhPCs=
+	t=1777671194; cv=none; b=XeKvDF+7ZU1td3XDQpZ+mv7lfE5KiGbslSNJz+Eyw/wluWloJmUj/G/8T6DBm6jeLKYTDestg8t2PA0hmDd4KB2aIQM4G+iCmaywOOOsxm/sc0XmjIDaWu+IPICor93m1stHnxVTI3hASE9zbcYoJoRHDP6vXE6KxCpFCJL0dik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777670923; c=relaxed/simple;
-	bh=Qwwy+DUf6iPTgesOu7Pi9+zFZbkCGqSm+hqB/dFkyOI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CZV85fJJAYSzywsiRbRYrlGfokD1y42d+PTXfmolAHWo0rGm4j+q/aYgT44cSDFiWOnbPzmIqxGwHVykaIrEu9zBHmX+hxsbiG/IGkvfglS0gnMblPuhoc7+kkIXdzsGnk9EyFpi4oiSg0dUR6nUCVMlipKk8F1Gg+xF9nzg1TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y+DhV/62; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso20174455e9.2
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 14:28:42 -0700 (PDT)
+	s=arc-20240116; t=1777671194; c=relaxed/simple;
+	bh=Mj0E3J34d5phtM5sQPs3cAukaXDcoxZZzTYXSlBZlgg=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=ZAmBC+LjkcVWBEIG1gqBoFjG29ZbQDZaulav8J6RyvJ+zMZGdZFyqB9h22/1xO+EQZlN8olziCp0YXxeBNfnxxNdmnIQG1XMTJBy0GllP0jKvMxCz9kxLco7/in5ZtTh0wSWhrgJWn3AzxOyRFIPBliaixBfoC08exf9fp/fSio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=ez8R+x0o; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dcd17e19b6so1326995a34.1
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 14:33:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777670921; x=1778275721; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q93wGvbwq5yzcLn4p5cmncjwFXks3Eo2eFbWnIa1BT4=;
-        b=Y+DhV/62fEsNG9HMuiV/3+W6m9eu3hxlZJji5WoAw6w9Ih0m0pkLdtxgjTVEmEp7+N
-         FcWS17+1Me2Wn0egz0jYz3VEgUpAdsRgsk/KI9Z9ZYGzfyboMD5nmYxAHMgI/F+e5Y6f
-         7icya+ljIwHIG3vrTEeiCr4kifW8BqBrsv4k+GTZdPPlaSMYmrGUpSphbkyPThTn7YKv
-         PGxgEAV7Rb0hV7y9CC6z4dllebNQVJI0TbM1t8vuJE23xWEggvtiFErr3nLg4Ju1rleJ
-         SLlCYQ+yf9CPb8YsmW83jR+Cp1AX5IBvQw5Eis4LeICV758wIaam/4rNtTepCYGV7fhe
-         xMcQ==
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1777671191; x=1778275991; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jqo/S64QjQ2tROyU1wOybG/D2kuxZ6ciFJ7oklmPXqw=;
+        b=ez8R+x0oz1/c1zchjxsebM6+iFn8/60NNHeee8cl+i8/UFy+SRy5JTpy89zGgIF9bD
+         e0T3HPGdfZvtJA1DyezwuB0JMKx2kjIriX3J/CYsjvebl4FqipOJg32fp3JuJujbvq/a
+         F7SyGCexYB5nVV3lrMF0Diof4VZmfg6a9xpwBDtNX+qWzMaPgGJI2/852nClXNsN4aEO
+         9YzGRTETyzgN8oR5P2lP/+yZJTjXSGxi4sBkXR6uEKXBzqz23rUtfepUVuNStL+0KOLP
+         resc+Fpm/dffAHCIC4BinOrBXzn7iskrjMu4HD+TX0amufaP+wvPCv/GltMuxDqpNH5i
+         uxZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777670921; x=1778275721;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q93wGvbwq5yzcLn4p5cmncjwFXks3Eo2eFbWnIa1BT4=;
-        b=Xf2hRSbxj96KkMRpTl3ON6r0cFNd9kiWHo/g0jtKsO8jczyIyY+AKEa/mnGqyC8wKz
-         2npJNLF23fsiGOIjYBkdY2/xVPAZbp37I2wiJR/nvk3Zm1m114yTC/w4RH6GhbyfoUYK
-         E2Gi8IwvpUtXQhWPCt9lYPFZkNk0Kw3KxkUrt7CxPCbvtS91hxm6TZE/YEUmWR4vyRoh
-         sWXl7HYB/CrR1KcpxAkaST64LdeIyTlaaDs/JUroCjsbN+C2Kw2brtScXVTtwSO6SQgp
-         /nAaB1RWKQCtlMVgDoSijX0UsouBlpPV92sGV5HI+fq8O2+c5hpNIrMFCCc/cSf3gOyS
-         u/aQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/SgCxqpqqGoKnMIQCzGuW6eYtX/QWIWtrifJe4FRKmRfdd4ujQRR7OxDsIwqlBGwoCUhjj4oI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ3rp0cX7V87XUguRY4eNv0DzTIe6swkvUAbCP0XLz0iz8hknY
-	4KNnTDUiBH9gT2A4vci+tfMrQ5nuZqhkciQsLvLMciA1qsVgZQynKhA69xIt1A==
-X-Gm-Gg: AeBDiesR9YCzKDAIsuKaRJzDKphYueCEnaAEVPo+yazmSFxwudgMJ/aWuHCBYpQhaTI
-	RWsF8LmB5DDbTevnoggyPBh2PZfZCyTk9JCfN6JD1AKIl8HILIx1z88eRVef0BgzVbvRvq1NLbs
-	Nsdo8gFShe11kejXQbjflraZlzdFK5VBlcfELp3MtRs6V578RrFWZEy9fP5g3mHTnX7usaMWHzw
-	Mq840ebcDPsByZbSn99E/SkyI7sdg1RaUIyf6Z9JI/WkXTcUXtylnyDVWnUwl+g0+Izi7hBP5fC
-	fm7sS2L19397Q+jGcmtaDchQJcMUv/1Tvwz6FdgrJWj/E1ZRWq+eIxLX/2Fs22HkwRI4sm16OD+
-	Irm6wvDxh8wDw5JIKWsINqjb/v4r1QDfZ8dgenAe12jxfznjtGv0nwqsGckbTXcMmUxB9QOFtmB
-	o8MD5Mm1nTVvpSGsWPusmy0HUglVUpYc5X5xvlFgnh
-X-Received: by 2002:a05:600c:c0c2:b0:48a:76a3:2b9b with SMTP id 5b1f17b1804b1-48a9865ea56mr8151665e9.17.1777670920716;
-        Fri, 01 May 2026 14:28:40 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81b99127sm149092285e9.0.2026.05.01.14.28.39
+        d=1e100.net; s=20251104; t=1777671191; x=1778275991;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jqo/S64QjQ2tROyU1wOybG/D2kuxZ6ciFJ7oklmPXqw=;
+        b=bu9TI2pzJedEwTOSEj572B78KKj2UZ3eyktOlJT5V4Pk/TOsryN9FOdlRng325BUNn
+         H2hCbCSCNAFBXlAU9ADjjZBEO0Ay0kgiLcEF9g8ewTESfshA7jWBsDufCcFfgGENMuM7
+         SzKK1NUP/3zgGxmlHcPpnmcwDdr6j07Uah7AqloX1x4WXLIKXHXPeuZ3OMwDQD2xF3Uk
+         DtO4+YX6d9xB68gFStKZ5QF5p3W2zfJxa3tEA6jmz4jbDOXVsF6IpnmV1zj36J/ZRP9A
+         XZZk2i8PId2VG6MllW3r4nRQcTWjtOwQtVRnW3xFWesShAwMOYTtyWeHvC6qhs55HUUk
+         mpwg==
+X-Forwarded-Encrypted: i=1; AFNElJ9L2pKfLKcgDNzIgEqs7ZesGLWIIJm4GeKOv2sUFaSzzCMIvwtKJmbqOCdpD0PTj1rjiRWAFYQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrcwMOZo+CLdo9Iubxw3qYOdHXbYJTh4tmFidhDg9eInOkErgs
+	ILrglltT1PRRSBrwj54t7vTwmmeVYEtL0ABwECZMVLHjILllatbRpveiTxcBJlF7O4g=
+X-Gm-Gg: AeBDiev6onJA4ovngToR/+h2GQa+Ca/WGf4Tnb0K0riAM1oJ2mVOAiX3tcB7zdgUboD
+	hzQ/nxecDzltWMTB2XkbPKj4SlGznxZLzi4PWqezLEgByJydAB3w+sSrERA+wEcUocSMq8liaRg
+	0grQoZNMlm2F1OIc0afa9mGMNs9tdUTWQacnpz+b6ByUEvEskn0WxDrrfkawgv8ZHvTpt6/UTr5
+	Xhi9IbGDv05kqwRQPLILCQHr1PeJ63vLJa1y6cUNfwxsnh91/mAJNWc4BXDd8kwhFZsPJ6AWwjQ
+	G9UaRMY7TM5r3JCyWaCaUKd926B8/COuaGt3Lb1MarXKuC6cyn1QlrdEYE93jFsKLlgD5Mn3G0L
+	L7UO1/KJ1bWvk5os4XeW0nPrctePRlBHiD98N6saneXk62I7jW8dBgGF3PmzutBZCeQSrwY7dI7
+	FtquLF8Y+PQDPzGuBt8MmHCHm9DvhXub51t2Mup0CF47Jlk1u4RH78V2NDL5aMxKrGMA+uKFlql
+	8N47fe7aSzrgMeQ2heK
+X-Received: by 2002:a05:6820:88f:b0:696:702f:6172 with SMTP id 006d021491bc7-696979f6c9amr452210eaf.24.1777671191071;
+        Fri, 01 May 2026 14:33:11 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6968945d4fbsm2043932eaf.5.2026.05.01.14.33.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 May 2026 14:28:40 -0700 (PDT)
-Message-ID: <bc0a9969-b386-42d1-ada2-99ac39e394f3@gmail.com>
-Date: Sat, 2 May 2026 00:28:38 +0300
+        Fri, 01 May 2026 14:33:10 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------j5tERgBqSLXJJAxTmFu7xhnp"
+Message-ID: <58103791-4c19-441c-9d4f-7ae5f9c6151a@kernel.dk>
+Date: Fri, 1 May 2026 15:33:09 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,123 +87,250 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtw88: increase TX report timeout to fix race
- condition
-To: Luka Gejak <luka.gejak@linux.dev>, Ping-Ke Shih <pkshih@realtek.com>,
- Kalle Valo <kvalo@kernel.org>
-Cc: Yan-Hsuan Chuang <yhchuang@realtek.com>,
- Brian Norris <briannorris@chromium.org>,
- Stanislaw Gruszka <sgruszka@redhat.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260501150402.227788-1-luka.gejak@linux.dev>
- <72f6fffd-bd77-437f-a9d9-6a542a8b365b@gmail.com>
- <6CD170FE-CAED-4B91-AEED-A1AFB98FFE8A@linux.dev>
+Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
+ io_poll_add() return value on update
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Ben Hutchings <ben@decadent.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com,
+ lvc-project@linuxtesting.org
+References: <20260501111233-b371eac52cd006bfddfbd9e5-pchelkin@ispras>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <6CD170FE-CAED-4B91-AEED-A1AFB98FFE8A@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 32FC94AFCF1
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20260501111233-b371eac52cd006bfddfbd9e5-pchelkin@ispras>
+X-Rspamd-Queue-Id: B1A6A4AFD13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.94 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242528-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	TAGGED_FROM(0.00)[bounces-242529-lists,stable=lfdr.de];
+	HAS_ATTACHMENT(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
+	TO_DN_SOME(0.00)[]
 
-On 01/05/2026 23:46, Luka Gejak wrote:
-> On May 1, 2026 9:26:30 PM GMT+02:00, Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> On 01/05/2026 18:04, luka.gejak@linux.dev wrote:
->>> From: Luka Gejak <luka.gejak@linux.dev>
->>>
->>> The driver expects the firmware to report TX status within 500ms.
->>> However, a race condition exists when the hardware is under heavy TX
->>> load and is simultaneously interrupted by background scans or
->>> power-saving state transitions. During these events, the firmware may
->>> go off-channel for longer than 500ms, delaying the TX reports.
->>>
-> Hi Bitterblue,
-> thanks for the review.
->>
->> But power saving state transitions should not happen during heavy TX load.
->>
-> You are absolutely right that power save transitions don't happen 
-> during heavy TX. The issue is strictly tied to off-channel dwell time.
-> I reliably trigger this on my rtl8723du (USB) by forcing background 
-> scans (iw dev wlanX scan) while under heavy iperf3 load. The firmware 
-> goes off-channel to scan, which delays the TX report well beyond the 
-> current 500ms threshold.
-> 
->>> When this happens, the purge timer fires prematurely, dropping the
->>> tracking skbs from the queue and spamming the kernel log with:
->>> "failed to get tx report from firmware". Dropping these tracking skbs
->>> prevents the driver from reporting TX status back to mac80211, which
->>> breaks rate control accounting and degrades performance.
->>>
->>
->> But mac80211 doesn't handle rate control for these chips. How much does
->> performance degrade?
->>
-> 
-> I understand the firmware handles that internally. The performance 
-> degradation I am actually seeing is TCP window collapse, as the host 
-> stack interprets the dropped tracking skbs as packet loss. In my 
-> testing with iperf3, throughput drops from a steady 80-90 Mbps to 
-> near-zero for nearly 2 seconds following the scan before recovery 
-> begins.
-> 
->>> Increase RTW_TX_PROBE_TIMEOUT to 2500ms. This timeout is large enough
->>> to comfortably accommodate the duration of full WiFi background scans
->>> and sleep transitions without incorrectly tripping the purge timer,
->>> while still eventually catching true firmware lockups.
->>>
->>
->> rtw88 supports many chips. Which one are you using?
->>
->> Perhaps provide a full description of the problem you encountered.
->>
-> 
-> ...
-> 
-> I also realize now that globally changing RTW_TX_PROBE_TIMEOUT to 
-> 2500ms is too heavy-handed. Since this impacts all rtw88 chips, 
-> including PCIe variants where 500ms might be exactly what is needed to
-> catch a real firmware lockup, the blast radius is too large. How would
-> you prefer I handle this for the v2 patch? I can either implement a 
-> more conservative global bump, or make the timeout dynamic based on 
-> the HCI interface so USB devices get a longer timeout to accommodate 
-> the bus latency during scans.
-> 
-> Best regards,
-> Luka Gejak
+This is a multi-part message in MIME format.
+--------------j5tERgBqSLXJJAxTmFu7xhnp
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-No idea, I'm just asking some questions...
+On 5/1/26 2:54 AM, Fedor Pchelkin wrote:
+> Hi Jens,
+> 
+> the patch has some issues even after "[PATCH 2/2] io_uring/poll: fix
+> backport of io_poll_add() changes" has been applied.  Please see below.
+> 
+> Jens Axboe wrote:
+>> From: Jens Axboe <axboe@kernel.dk>
+>>
+>> Commit 84230ad2d2afbf0c44c32967e525c0ad92e26b4e upstream.
+>>
+>> When the core of io_uring was updated to handle completions
+>> consistently and with fixed return codes, the POLL_REMOVE opcode
+>> with updates got slightly broken. If a POLL_ADD is pending and
+>> then POLL_REMOVE is used to update the events of that request, if that
+>> update causes the POLL_ADD to now trigger, then that completion is lost
+>> and a CQE is never posted.
+>>
+>> Additionally, ensure that if an update does cause an existing POLL_ADD
+>> to complete, that the completion value isn't always overwritten with
+>> -ECANCELED. For that case, whatever io_poll_add() set the value to
+>> should just be retained.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 97b388d70b53 ("io_uring: handle completions in the core")
+> 
+> This commit is not present in 5.10/5.15 in any form, to my mind.  That
+> is, io_uring changes were imported in big chunks there without preserving
+> upstream git history in some places but still I can't find whether the
+> changes of the mentioned Fixes-commit are present in those old kernels.
+> 
+> So either the Fixes tag is not completely correct or this patch can just
+> be reverted from 5.10/5.15 stables.
 
-Actually, I have one more: what version of the driver did you test?
+The fixes tag is wrong.
 
-My quick test with RTL8723DU doesn't show any "failed to get tx report
-from firmware" when scanning while running iperf3. Does it take a long
-time to trigger?
+>> Reported-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+>> Tested-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> ---
+>>  io_uring/io_uring.c |   26 +++++++++++++++++++-------
+>>  1 file changed, 19 insertions(+), 7 deletions(-)
+>>
+>> --- a/io_uring/io_uring.c
+>> +++ b/io_uring/io_uring.c
+>> @@ -5980,7 +5980,7 @@ static int io_poll_add_prep(struct io_ki
+>>  	return 0;
+>>  }
+>>  
+>> -static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+>> +static int __io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+>>  {
+>>  	struct io_poll_iocb *poll = &req->poll;
+>>  	struct io_poll_table ipt;
+>> @@ -5992,11 +5992,21 @@ static int io_poll_add(struct io_kiocb *
+>>  	if (!ret && ipt.error)
+>>  		req_set_fail(req);
+>>  	ret = ret ?: ipt.error;
+>> -	if (ret)
+>> +	if (ret > 0) {
+>>  		__io_req_complete(req, issue_flags, ret, 0);
+>> +		return ret;
+>> +	}
+>>  	return 0;
+>>  }
+>>  
+>> +static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = __io_poll_add(req, issue_flags);
+>> +	return ret < 0 ? ret : 0;
+>> +}
+>> +
+>>  static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags)
+>>  {
+>>  	struct io_ring_ctx *ctx = req->ctx;
+>> @@ -6012,6 +6022,7 @@ static int io_poll_update(struct io_kioc
+>>  		ret = preq ? -EALREADY : -ENOENT;
+>>  		goto out;
+>>  	}
+>> +	preq->result = -ECANCELED;
+>>  	spin_unlock(&ctx->completion_lock);
+>>  
+>>  	if (req->poll_update.update_events || req->poll_update.update_user_data) {
+>> @@ -6024,16 +6035,17 @@ static int io_poll_update(struct io_kioc
+>>  		if (req->poll_update.update_user_data)
+>>  			preq->user_data = req->poll_update.new_user_data;
+>>  
+>> -		ret2 = io_poll_add(preq, issue_flags);
+>> +		ret2 = __io_poll_add(preq, issue_flags);
+>>  		/* successfully updated, don't complete poll request */
+>>  		if (!ret2)
+>>  			goto out;
+>> +		preq->result = ret2;
+>> +
+>>  	}
+>> -	req_set_fail(preq);
+>> -	io_req_complete(preq, -ECANCELED);
+>> +	if (preq->result < 0)
+>> +		req_set_fail(preq);
+>> +	io_req_complete(preq, preq->result);
+
+This should all be handled in the fixup patch - yes this one ended up
+being broken, but that's why there's the followup fix.
+
+Now this is all pretty broken because some patches ended up in 5.15 and
+some in 5.10 and honestly I've almost lost track at this point. Sasha
+spotted some that were dropped in some broken commit from Greg. For
+5.15, the two attached are what I recently asked for to be added. 5.10
+should ALWAYS get the exact same patches as 5.15, because of the whole
+sale backport that was done years ago. I always ask for that explicitly
+in the emails. But looks like that wasn't always done...
+
+5.10 doesn't look like it ever got what is sha
+349ef5d2e7bfb292e7000e6041a984ab56eccf28 in 5.15-stable, hence the fixup
+can be merged with queueing that backport.
+
+Sigh...
+
+-- 
+Jens Axboe
+--------------j5tERgBqSLXJJAxTmFu7xhnp
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-poll-fix-EPOLL_URING_WAKE-sometimes-not-bei.patch"
+Content-Disposition: attachment;
+ filename*0="0001-io_uring-poll-fix-EPOLL_URING_WAKE-sometimes-not-bei.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA3ZmRmZmZjZTUwOGYzOGQ4OTMzOGU4YmJlZDQyMWRkOTFkZGZjYjNmIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFR1ZSwgMjEgQXByIDIwMjYgMTY6NDE6MzIgLTA2MDAKU3ViamVjdDogW1BBVENIIDEv
+Ml0gaW9fdXJpbmcvcG9sbDogZml4IEVQT0xMX1VSSU5HX1dBS0Ugc29tZXRpbWVzIG5vdCBi
+ZWluZwogbWFza2VkIGluCgpSYXRoZXIgdGhhbiBkbyBpdCBvbmx5IHdoZW4gd2UganVtcCBz
+dHJhaWdodCB0byBleGVjdXRpb24sIG1hcmsgaXQKcmVnYXJkbGVzcy4gVGhpcyBlbnN1cmVz
+IGl0IGRvZXNuJ3QgZ2V0IGxvc3QuCgpGaXhlczogY2NmMDZiNWE5ODFjICgiaW9fdXJpbmc6
+IHBhc3MgaW4gRVBPTExfVVJJTkdfV0FLRSBmb3IgZXZlbnRmZCBzaWduYWxpbmcgYW5kIHdh
+a2V1cHMiKQpTaWduZWQtb2ZmLWJ5OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+Ci0t
+LQogaW9fdXJpbmcvaW9fdXJpbmcuYyB8IDE3ICsrKysrKysrLS0tLS0tLS0tCiAxIGZpbGUg
+Y2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
+L2lvX3VyaW5nL2lvX3VyaW5nLmMgYi9pb191cmluZy9pb191cmluZy5jCmluZGV4IDM4ZGVj
+ZmMxYTkxNC4uZGI1YzlmYmRlYzNiIDEwMDY0NAotLS0gYS9pb191cmluZy9pb191cmluZy5j
+CisrKyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKQEAgLTU3OTQsMTcgKzU3OTQsMTYgQEAgc3Rh
+dGljIGludCBpb19wb2xsX3dha2Uoc3RydWN0IHdhaXRfcXVldWVfZW50cnkgKndhaXQsIHVu
+c2lnbmVkIG1vZGUsIGludCBzeW5jLAogCWlmIChtYXNrICYmICEobWFzayAmIHBvbGwtPmV2
+ZW50cykpCiAJCXJldHVybiAwOwogCi0JaWYgKGlvX3BvbGxfZ2V0X293bmVyc2hpcChyZXEp
+KSB7Ci0JCS8qCi0JCSAqIElmIHdlIHRyaWdnZXIgYSBtdWx0aXNob3QgcG9sbCBvZmYgb3Vy
+IG93biB3YWtldXAgcGF0aCwKLQkJICogZGlzYWJsZSBtdWx0aXNob3QgYXMgdGhlcmUgaXMg
+YSBjaXJjdWxhciBkZXBlbmRlbmN5IGJldHdlZW4KLQkJICogQ1EgcG9zdGluZyBhbmQgdHJp
+Z2dlcmluZyB0aGUgZXZlbnQuCi0JCSAqLwotCQlpZiAobWFzayAmIEVQT0xMX1VSSU5HX1dB
+S0UpCi0JCQlwb2xsLT5ldmVudHMgfD0gRVBPTExPTkVTSE9UOworCS8qCisJICogSWYgd2Ug
+dHJpZ2dlciBhIG11bHRpc2hvdCBwb2xsIG9mZiBvdXIgb3duIHdha2V1cCBwYXRoLAorCSAq
+IGRpc2FibGUgbXVsdGlzaG90IGFzIHRoZXJlIGlzIGEgY2lyY3VsYXIgZGVwZW5kZW5jeSBi
+ZXR3ZWVuCisJICogQ1EgcG9zdGluZyBhbmQgdHJpZ2dlcmluZyB0aGUgZXZlbnQuCisJICov
+CisJaWYgKG1hc2sgJiBFUE9MTF9VUklOR19XQUtFKQorCQlwb2xsLT5ldmVudHMgfD0gRVBP
+TExPTkVTSE9UOwogCisJaWYgKGlvX3BvbGxfZ2V0X293bmVyc2hpcChyZXEpKQogCQlfX2lv
+X3BvbGxfZXhlY3V0ZShyZXEsIG1hc2spOwotCX0KIAlyZXR1cm4gMTsKIH0KIAotLSAKMi41
+My4wCgo=
+--------------j5tERgBqSLXJJAxTmFu7xhnp
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0002-io_uring-poll-fix-backport-of-io_poll_add-changes.patch"
+Content-Disposition: attachment;
+ filename*0="0002-io_uring-poll-fix-backport-of-io_poll_add-changes.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA3YTYxYzM4YzRkNmFlM2Q1Y2JlNmVmYTA2ODg1YjFjYTgyMWExMjljIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFR1ZSwgMjEgQXByIDIwMjYgMTY6NDQ6MDYgLTA2MDAKU3ViamVjdDogW1BBVENIIDIv
+Ml0gaW9fdXJpbmcvcG9sbDogZml4IGJhY2twb3J0IG9mIGlvX3BvbGxfYWRkKCkgY2hhbmdl
+cwoKVGhlIDUuMTUvNS4xMCBiYWNrcG9ydCBvZiA4NDIzMGFkMmQyYWYgaGFkIGEgZmV3IGlz
+c3VlcywgZHVlIHRvIHRoZQpvbGRlciBwb2xsIGJhc2UuIE5vdGFibHkgcmV0dXJuIHZhbHVl
+IGhhbmRsaW5nIF9faW9fYXJtX3BvbGxfaGFuZGxlcigpCmFuZCBpbiByZXR1cm4gX19pb19w
+b2xsX2FkZCgpIGFzIHdlbGwuIEZpeCB0aGVtIHVwLgoKUmVwb3J0ZWQtYnk6IEJlbiBIdXRj
+aGluZ3MgPGJlbkBkZWNhZGVudC5vcmcudWs+CkZpeGVzOiAzNDllZjVkMmU3YmYgKCJpb191
+cmluZy9wb2xsOiBjb3JyZWN0bHkgaGFuZGxlIGlvX3BvbGxfYWRkKCkgcmV0dXJuIHZhbHVl
+IG9uIHVwZGF0ZSIpClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5k
+az4KLS0tCiBpb191cmluZy9pb191cmluZy5jIHwgMTIgKysrKy0tLS0tLS0tCiAxIGZpbGUg
+Y2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
+L2lvX3VyaW5nL2lvX3VyaW5nLmMgYi9pb191cmluZy9pb191cmluZy5jCmluZGV4IGRiNWM5
+ZmJkZWMzYi4uMDc1MTllOWE2OTVjIDEwMDY0NAotLS0gYS9pb191cmluZy9pb191cmluZy5j
+CisrKyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKQEAgLTYxMzgsMTkgKzYxMzgsMTUgQEAgc3Rh
+dGljIGludCBfX2lvX3BvbGxfYWRkKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBp
+bnQgaXNzdWVfZmxhZ3MpCiAJaWYgKCFyZXQgJiYgaXB0LmVycm9yKQogCQlyZXFfc2V0X2Zh
+aWwocmVxKTsKIAlyZXQgPSByZXQgPzogaXB0LmVycm9yOwotCWlmIChyZXQgPiAwKSB7CisJ
+aWYgKHJldCkKIAkJX19pb19yZXFfY29tcGxldGUocmVxLCBpc3N1ZV9mbGFncywgcmV0LCAw
+KTsKLQkJcmV0dXJuIHJldDsKLQl9Ci0JcmV0dXJuIDA7CisJcmV0dXJuIHJldDsKIH0KIAog
+c3RhdGljIGludCBpb19wb2xsX2FkZChzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5zaWduZWQg
+aW50IGlzc3VlX2ZsYWdzKQogewotCWludCByZXQ7Ci0KLQlyZXQgPSBfX2lvX3BvbGxfYWRk
+KHJlcSwgaXNzdWVfZmxhZ3MpOwotCXJldHVybiByZXQgPCAwID8gcmV0IDogMDsKKwlfX2lv
+X3BvbGxfYWRkKHJlcSwgaXNzdWVfZmxhZ3MpOworCXJldHVybiAwOwogfQogCiBzdGF0aWMg
+aW50IGlvX3BvbGxfdXBkYXRlKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBpbnQg
+aXNzdWVfZmxhZ3MpCi0tIAoyLjUzLjAKCg==
+
+--------------j5tERgBqSLXJJAxTmFu7xhnp--
 
