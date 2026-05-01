@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-242427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFpiNE2o9GkbDQIAu9opvQ
-	(envelope-from <stable+bounces-242427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:19:09 +0200
+	id WOEGOE+o9GkbDQIAu9opvQ
+	(envelope-from <stable+bounces-242428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:19:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2064AC9F1
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:19:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A62A4AC9FA
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:19:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BE2F3019F10
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 13:19:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E47930120F8
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 13:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A243A5E76;
-	Fri,  1 May 2026 13:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69841285072;
+	Fri,  1 May 2026 13:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rDlSP9qe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIBqelb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0E614A619
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 13:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D04114A619
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 13:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777641541; cv=none; b=Ty/cBTrCI5Jx9mOLBAGtj8xm0vQbZq+01AfZFo+uSB/BBxBvFiejNimoZ6B1pE3R3qvFCnl01MqsQqp9pjEG4zaoWyhKg0wapaW9EyfpQX/+GpL4kMxV+V65TGFjodxenVtv3YxQl+eFPa1XxHPQ2Xz0R6q0PIkq1Fb15ENZis8=
+	t=1777641547; cv=none; b=HJZblr2kD+2Ggy3PAJXWneGiHC13W9slQ+gNlQVsJEmFojPmAddexQ0WX7phcEGYd3Yie2Lxx9v4/FLCOZepZhsPhUEzk2c5IqIhIkWZFZEVQkh781l4naJHzw9HIP8TRevc313ONVliumYZwdm5F14r97YIUE0c02lTcKSY01Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777641541; c=relaxed/simple;
-	bh=P+bKNktE1A2/VtVciNY9uX+ntikG8SLCGFqqVZfXZUA=;
+	s=arc-20240116; t=1777641547; c=relaxed/simple;
+	bh=pR5qLyNqSyrUOtyH/w7wl7WCeQFopD8HhywXCu+Pa34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lomzNIqYCH/BagVE30FN6/aTjmGgHG+UU3BlPlouJXx5FPVtnZuyx5/bd4H+x0efREuujQT4u4CHRyDtibKfm7UzVwmw7MgYG5hF2Az16wpOtAzAv8hJyyTf6deskKymi24tvP7nFNi4hQnSf1KblJcvGxAOq6vFIlxJ9jmDkvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rDlSP9qe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F0CC2BCC6;
-	Fri,  1 May 2026 13:19:00 +0000 (UTC)
+	 MIME-Version; b=faQiVVYktEnNbG3HNQAZS60X5ayvfMoMcLKLuf7WWssahutS79KqxPmHpfMbXGY0uW7E8EbBgo326Q76lKCEoZpSVU9J5EssvF6Yb/juS1zOugtAW5aj2w4BOclBDpuqmHBPHroZC5BoX+B7avYXc5Yg1Yq8B41/hyFqveik93s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIBqelb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29A6C2BCB4;
+	Fri,  1 May 2026 13:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777641541;
-	bh=P+bKNktE1A2/VtVciNY9uX+ntikG8SLCGFqqVZfXZUA=;
+	s=k20201202; t=1777641546;
+	bh=pR5qLyNqSyrUOtyH/w7wl7WCeQFopD8HhywXCu+Pa34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rDlSP9qeTuvw7/OemxJLzikSoSwhttCpCOyLq1um98DpyxCYpZk+t8tcvwGHsZ7l6
-	 5OPXnJK16gMJUbbKR+L4jJYYyldwInL1CT7En+gw8PjxZ+Zryg5jXlz+IpuvkMz/Tt
-	 OcdR37WPvn5381mzrM6WnwZD0oQK84fIoEa0hKWJJhMdLspYaYmI+oMoS5oNlade4l
-	 Gcf2afasX7UEoiEM1otojooDhsjyyS1A90Sm97+s3xx8W76g8Oa2yPRdL+dZYwRf01
-	 uBe1LO2LseUC+5z5WAM6c3BF5KlEF0UcEd7ymzro6vU9Ew9Fhk5oUhV/R6GcYXwfdd
-	 N/9hvARDmVnXA==
+	b=XIBqelb9Ez2v2Zg3jVDyQGzyIiB+yEgeVj6AdbbAn6Koma/FQ7FAgaYnVUSSEqBQb
+	 xhp/1D9mB9aqpXVWVYFFTaKHkIgIbTltVGuAUuUVyIgTcM/nxqBdYk9JP6R04CHfqr
+	 //Nt3Cq7DoL8SMXYnsvDrLnhRgoaUQHmi7pYQ65DdQkRU0IKfg3F9zNjaiOM3Z3d9g
+	 +VFqzJB53oNz2DJzPo3znYlVt9EEcackaaNm+NNxL72Id2x+WMLC83zPJua0kK9Qvt
+	 tCrJCCKNKSAa9RCJoWPewjxKDHqq7zQxJMhQjGyQ21+gbFmof70zpk2uZSl4xdQU2K
+	 cHbBV1n0zCQxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Elson Serrao <elson.serrao@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Sean Young <sean@mess.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] phy: qcom: m31-eusb2: clear PLL_EN during init
-Date: Fri,  1 May 2026 09:18:56 -0400
-Message-ID: <20260501131857.3242270-2-sashal@kernel.org>
+Subject: [PATCH 7.0.y 1/2] media: rc: fix race between unregister and urb/irq callbacks
+Date: Fri,  1 May 2026 09:19:02 -0400
+Message-ID: <20260501131904.3244754-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260501131857.3242270-1-sashal@kernel.org>
-References: <2026050131-exfoliate-garter-519b@gregkh>
- <20260501131857.3242270-1-sashal@kernel.org>
+In-Reply-To: <2026050121-heap-divided-c620@gregkh>
+References: <2026050121-heap-divided-c620@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,75 +64,789 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C2064AC9F1
+X-Rspamd-Queue-Id: 5A62A4AC9FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242427-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242428-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gmx.de:email,iscas.ac.cn:email]
 
-From: Elson Serrao <elson.serrao@oss.qualcomm.com>
+From: Sean Young <sean@mess.org>
 
-[ Upstream commit 520a98bdf7ae0130e22d8adced3d69a2e211b41f ]
+[ Upstream commit dccc0c3ddf8f16071736f98a7d6dd46a2d43e037 ]
 
-The driver currently sets bit 0 of USB_PHY_CFG1 (PLL_EN) during PHY
-initialization. According to the M31 EUSB2 PHY hardware documentation,
-this bit is intended only for test/debug scenarios and does not control
-mission mode operation. Keeping PLL_EN asserted causes the PHY to draw
-additional current during USB bus suspend. Clearing this bit results in
-lower suspend power consumption without affecting normal operation.
+Some rc device drivers have a race condition between rc_unregister_device()
+and irq or urb callbacks. This is because rc_unregister_device() does two
+things, it marks the device as unregistered so no new commands can be
+issued and then it calls rc_free_device(). This means the driver has no
+chance to cancel any pending urb callbacks or interrupts after the device
+has been marked as unregistered. Those callbacks may access struct rc_dev
+or its members (e.g. struct ir_raw_event_ctrl), which have been freed by
+rc_free_device().
 
-Update the driver to leave PLL_EN cleared as recommended by the hardware
-documentation.
+This change removes the implicit call to rc_free_device() from
+rc_unregister_device(). This means that device drivers can call
+rc_unregister_device() in their remove or disconnect function, then cancel
+all the urbs and interrupts before explicitly calling rc_free_device().
 
-Fixes: 9c8504861cc4 ("phy: qcom: Add M31 based eUSB2 PHY driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Elson Serrao <elson.serrao@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260217201130.2804550-1-elson.serrao@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Note this is an alternative fix for an issue found by Haotian Zhang, see
+the Closes: tags.
+
+Reported-by: Haotian Zhang <vulab@iscas.ac.cn>
+Closes: https://lore.kernel.org/linux-media/20251114101432.2566-1-vulab@iscas.ac.cn/
+Closes: https://lore.kernel.org/linux-media/20251114101418.2548-1-vulab@iscas.ac.cn/
+Closes: https://lore.kernel.org/linux-media/20251114101346.2530-1-vulab@iscas.ac.cn/
+Closes: https://lore.kernel.org/linux-media/20251114090605.2413-1-vulab@iscas.ac.cn/
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Stable-dep-of: 50acaad3d202 ("media: rc: ttusbir: respect DMA coherency rules")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-m31-eusb2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/sil-sii8620.c        | 1 +
+ drivers/hid/hid-picolcd_cir.c               | 1 +
+ drivers/media/cec/core/cec-core.c           | 2 +-
+ drivers/media/common/siano/smsir.c          | 1 +
+ drivers/media/i2c/ir-kbd-i2c.c              | 2 ++
+ drivers/media/pci/bt8xx/bttv-input.c        | 3 ++-
+ drivers/media/pci/cx23885/cx23885-input.c   | 1 +
+ drivers/media/pci/cx88/cx88-input.c         | 3 ++-
+ drivers/media/pci/dm1105/dm1105.c           | 1 +
+ drivers/media/pci/mantis/mantis_input.c     | 1 +
+ drivers/media/pci/saa7134/saa7134-input.c   | 1 +
+ drivers/media/pci/smipcie/smipcie-ir.c      | 1 +
+ drivers/media/pci/ttpci/budget-ci.c         | 1 +
+ drivers/media/rc/ati_remote.c               | 6 +++---
+ drivers/media/rc/ene_ir.c                   | 2 +-
+ drivers/media/rc/fintek-cir.c               | 3 ++-
+ drivers/media/rc/igorplugusb.c              | 1 +
+ drivers/media/rc/iguanair.c                 | 1 +
+ drivers/media/rc/img-ir/img-ir-hw.c         | 3 ++-
+ drivers/media/rc/img-ir/img-ir-raw.c        | 3 ++-
+ drivers/media/rc/imon.c                     | 3 ++-
+ drivers/media/rc/ir-hix5hd2.c               | 2 +-
+ drivers/media/rc/ir_toy.c                   | 1 +
+ drivers/media/rc/ite-cir.c                  | 2 +-
+ drivers/media/rc/mceusb.c                   | 1 +
+ drivers/media/rc/rc-ir-raw.c                | 5 -----
+ drivers/media/rc/rc-loopback.c              | 1 +
+ drivers/media/rc/rc-main.c                  | 6 +-----
+ drivers/media/rc/redrat3.c                  | 4 +++-
+ drivers/media/rc/st_rc.c                    | 2 +-
+ drivers/media/rc/streamzap.c                | 7 ++++---
+ drivers/media/rc/sunxi-cir.c                | 1 +
+ drivers/media/rc/ttusbir.c                  | 2 +-
+ drivers/media/rc/winbond-cir.c              | 2 +-
+ drivers/media/rc/xbox_remote.c              | 5 +++--
+ drivers/media/usb/au0828/au0828-input.c     | 1 +
+ drivers/media/usb/dvb-usb-v2/dvb_usb_core.c | 1 +
+ drivers/media/usb/dvb-usb/dvb-usb-remote.c  | 6 ++++--
+ drivers/media/usb/em28xx/em28xx-input.c     | 1 +
+ drivers/staging/media/av7110/av7110_ir.c    | 1 +
+ include/media/rc-core.h                     | 2 --
+ 41 files changed, 58 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c b/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
-index 95cd3175926d5..68f1ba8fec4ad 100644
---- a/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
-@@ -83,7 +83,7 @@ static const struct m31_phy_tbl_entry m31_eusb2_setup_tbl[] = {
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG0, UTMI_PHY_CMN_CTRL_OVERRIDE_EN, 1),
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_UTMI_CTRL5, POR, 1),
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_HS_PHY_CTRL_COMMON0, PHY_ENABLE, 1),
--	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG1, PLL_EN, 1),
-+	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG1, PLL_EN, 0),
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_FSEL_SEL, FSEL_SEL, 1),
- };
+diff --git a/drivers/gpu/drm/bridge/sil-sii8620.c b/drivers/gpu/drm/bridge/sil-sii8620.c
+index d3f238b1f2a94..982306eb4f0a7 100644
+--- a/drivers/gpu/drm/bridge/sil-sii8620.c
++++ b/drivers/gpu/drm/bridge/sil-sii8620.c
+@@ -2221,6 +2221,7 @@ static void sii8620_detach(struct drm_bridge *bridge)
+ 		return;
  
+ 	rc_unregister_device(ctx->rc_dev);
++	rc_free_device(ctx->rc_dev);
+ }
+ 
+ static int sii8620_is_packing_required(struct sii8620 *ctx,
+diff --git a/drivers/hid/hid-picolcd_cir.c b/drivers/hid/hid-picolcd_cir.c
+index d6faa0e00f95a..6d4c636e1c9f7 100644
+--- a/drivers/hid/hid-picolcd_cir.c
++++ b/drivers/hid/hid-picolcd_cir.c
+@@ -134,5 +134,6 @@ void picolcd_exit_cir(struct picolcd_data *data)
+ 
+ 	data->rc_dev = NULL;
+ 	rc_unregister_device(rdev);
++	rc_free_device(rdev);
+ }
+ 
+diff --git a/drivers/media/cec/core/cec-core.c b/drivers/media/cec/core/cec-core.c
+index 1953ce559ecaf..0fcd3b5e60c8d 100644
+--- a/drivers/media/cec/core/cec-core.c
++++ b/drivers/media/cec/core/cec-core.c
+@@ -338,8 +338,8 @@ int cec_register_adapter(struct cec_adapter *adap,
+ 	res = cec_devnode_register(&adap->devnode, adap->owner);
+ 	if (res) {
+ #ifdef CONFIG_MEDIA_CEC_RC
+-		/* Note: rc_unregister also calls rc_free */
+ 		rc_unregister_device(adap->rc);
++		rc_free_device(adap->rc);
+ 		adap->rc = NULL;
+ #endif
+ 		return res;
+diff --git a/drivers/media/common/siano/smsir.c b/drivers/media/common/siano/smsir.c
+index af07fed21ae12..283770d583d56 100644
+--- a/drivers/media/common/siano/smsir.c
++++ b/drivers/media/common/siano/smsir.c
+@@ -92,6 +92,7 @@ int sms_ir_init(struct smscore_device_t *coredev)
+ void sms_ir_exit(struct smscore_device_t *coredev)
+ {
+ 	rc_unregister_device(coredev->ir.dev);
++	rc_free_device(coredev->ir.dev);
+ 
+ 	pr_debug("\n");
+ }
+diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
+index 5588cdd7ec20d..6047453170043 100644
+--- a/drivers/media/i2c/ir-kbd-i2c.c
++++ b/drivers/media/i2c/ir-kbd-i2c.c
+@@ -355,6 +355,7 @@ static void ir_work(struct work_struct *work)
+ 		mutex_unlock(&ir->lock);
+ 		if (rc == -ENODEV) {
+ 			rc_unregister_device(ir->rc);
++			rc_free_device(ir->rc);
+ 			ir->rc = NULL;
+ 			return;
+ 		}
+@@ -972,6 +973,7 @@ static void ir_remove(struct i2c_client *client)
+ 	i2c_unregister_device(ir->tx_c);
+ 
+ 	rc_unregister_device(ir->rc);
++	rc_free_device(ir->rc);
+ }
+ 
+ static const struct i2c_device_id ir_kbd_id[] = {
+diff --git a/drivers/media/pci/bt8xx/bttv-input.c b/drivers/media/pci/bt8xx/bttv-input.c
+index 373b6c6817d76..f704476506e07 100644
+--- a/drivers/media/pci/bt8xx/bttv-input.c
++++ b/drivers/media/pci/bt8xx/bttv-input.c
+@@ -572,8 +572,9 @@ void bttv_input_fini(struct bttv *btv)
+ 	if (btv->remote == NULL)
+ 		return;
+ 
+-	bttv_ir_stop(btv);
+ 	rc_unregister_device(btv->remote->dev);
++	bttv_ir_stop(btv);
++	rc_free_device(btv->remote->dev);
+ 	kfree(btv->remote);
+ 	btv->remote = NULL;
+ }
+diff --git a/drivers/media/pci/cx23885/cx23885-input.c b/drivers/media/pci/cx23885/cx23885-input.c
+index ffbbeca8a8e5f..554767b8ef2bf 100644
+--- a/drivers/media/pci/cx23885/cx23885-input.c
++++ b/drivers/media/pci/cx23885/cx23885-input.c
+@@ -402,6 +402,7 @@ void cx23885_input_fini(struct cx23885_dev *dev)
+ 	if (dev->kernel_ir == NULL)
+ 		return;
+ 	rc_unregister_device(dev->kernel_ir->rc);
++	rc_free_device(dev->kernel_ir->rc);
+ 	kfree(dev->kernel_ir->phys);
+ 	kfree(dev->kernel_ir->name);
+ 	kfree(dev->kernel_ir);
+diff --git a/drivers/media/pci/cx88/cx88-input.c b/drivers/media/pci/cx88/cx88-input.c
+index e958eecb29c5c..5d9ce4f9af011 100644
+--- a/drivers/media/pci/cx88/cx88-input.c
++++ b/drivers/media/pci/cx88/cx88-input.c
+@@ -509,8 +509,9 @@ int cx88_ir_fini(struct cx88_core *core)
+ 	if (!ir)
+ 		return 0;
+ 
+-	cx88_ir_stop(core);
+ 	rc_unregister_device(ir->dev);
++	cx88_ir_stop(core);
++	rc_free_device(ir->dev);
+ 	kfree(ir);
+ 
+ 	/* done */
+diff --git a/drivers/media/pci/dm1105/dm1105.c b/drivers/media/pci/dm1105/dm1105.c
+index de05d8b0f9dc5..bbd24769ae56b 100644
+--- a/drivers/media/pci/dm1105/dm1105.c
++++ b/drivers/media/pci/dm1105/dm1105.c
+@@ -763,6 +763,7 @@ static int dm1105_ir_init(struct dm1105_dev *dm1105)
+ static void dm1105_ir_exit(struct dm1105_dev *dm1105)
+ {
+ 	rc_unregister_device(dm1105->ir.dev);
++	rc_free_device(dm1105->ir.dev);
+ }
+ 
+ static int dm1105_hw_init(struct dm1105_dev *dev)
+diff --git a/drivers/media/pci/mantis/mantis_input.c b/drivers/media/pci/mantis/mantis_input.c
+index 34c0d979240fd..edb4cacf55d22 100644
+--- a/drivers/media/pci/mantis/mantis_input.c
++++ b/drivers/media/pci/mantis/mantis_input.c
+@@ -72,5 +72,6 @@ EXPORT_SYMBOL_GPL(mantis_input_init);
+ void mantis_input_exit(struct mantis_pci *mantis)
+ {
+ 	rc_unregister_device(mantis->rc);
++	rc_free_device(mantis->rc);
+ }
+ EXPORT_SYMBOL_GPL(mantis_input_exit);
+diff --git a/drivers/media/pci/saa7134/saa7134-input.c b/drivers/media/pci/saa7134/saa7134-input.c
+index 5b71014157808..7f6680de31564 100644
+--- a/drivers/media/pci/saa7134/saa7134-input.c
++++ b/drivers/media/pci/saa7134/saa7134-input.c
+@@ -834,6 +834,7 @@ void saa7134_input_fini(struct saa7134_dev *dev)
+ 		return;
+ 
+ 	rc_unregister_device(dev->remote->dev);
++	rc_free_device(dev->remote->dev);
+ 	kfree(dev->remote);
+ 	dev->remote = NULL;
+ }
+diff --git a/drivers/media/pci/smipcie/smipcie-ir.c b/drivers/media/pci/smipcie/smipcie-ir.c
+index c0604d9c70119..0bbe4fa2d5a84 100644
+--- a/drivers/media/pci/smipcie/smipcie-ir.c
++++ b/drivers/media/pci/smipcie/smipcie-ir.c
+@@ -181,5 +181,6 @@ void smi_ir_exit(struct smi_dev *dev)
+ 
+ 	rc_unregister_device(rc_dev);
+ 	smi_ir_stop(ir);
++	rc_free_device(rc_dev);
+ 	ir->rc_dev = NULL;
+ }
+diff --git a/drivers/media/pci/ttpci/budget-ci.c b/drivers/media/pci/ttpci/budget-ci.c
+index 3709c0fb23b07..8b496b959d7ea 100644
+--- a/drivers/media/pci/ttpci/budget-ci.c
++++ b/drivers/media/pci/ttpci/budget-ci.c
+@@ -249,6 +249,7 @@ static void msp430_ir_deinit(struct budget_ci *budget_ci)
+ 	cancel_work_sync(&budget_ci->ir.msp430_irq_bh_work);
+ 
+ 	rc_unregister_device(budget_ci->ir.dev);
++	rc_free_device(budget_ci->ir.dev);
+ }
+ 
+ static int ciintf_read_attribute_mem(struct dvb_ca_en50221 *ca, int slot, int address)
+diff --git a/drivers/media/rc/ati_remote.c b/drivers/media/rc/ati_remote.c
+index 78abe810a88e7..51d85de24fae3 100644
+--- a/drivers/media/rc/ati_remote.c
++++ b/drivers/media/rc/ati_remote.c
+@@ -921,7 +921,6 @@ static int ati_remote_probe(struct usb_interface *interface,
+ 	input_free_device(input_dev);
+  exit_unregister_device:
+ 	rc_unregister_device(rc_dev);
+-	rc_dev = NULL;
+  exit_kill_urbs:
+ 	usb_kill_urb(ati_remote->irq_urb);
+ 	usb_kill_urb(ati_remote->out_urb);
+@@ -941,18 +940,19 @@ static void ati_remote_disconnect(struct usb_interface *interface)
+ 	struct ati_remote *ati_remote;
+ 
+ 	ati_remote = usb_get_intfdata(interface);
+-	usb_set_intfdata(interface, NULL);
+ 	if (!ati_remote) {
+ 		dev_warn(&interface->dev, "%s - null device?\n", __func__);
+ 		return;
+ 	}
+ 
++	rc_unregister_device(ati_remote->rdev);
++	usb_set_intfdata(interface, NULL);
+ 	usb_kill_urb(ati_remote->irq_urb);
+ 	usb_kill_urb(ati_remote->out_urb);
+ 	if (ati_remote->idev)
+ 		input_unregister_device(ati_remote->idev);
+-	rc_unregister_device(ati_remote->rdev);
+ 	ati_remote_free_buffers(ati_remote);
++	rc_free_device(ati_remote->rdev);
+ 	kfree(ati_remote);
+ }
+ 
+diff --git a/drivers/media/rc/ene_ir.c b/drivers/media/rc/ene_ir.c
+index f8120605501ab..6f7dccc965e7f 100644
+--- a/drivers/media/rc/ene_ir.c
++++ b/drivers/media/rc/ene_ir.c
+@@ -1090,7 +1090,6 @@ static int ene_probe(struct pnp_dev *pnp_dev, const struct pnp_device_id *id)
+ 	release_region(dev->hw_io, ENE_IO_SIZE);
+ exit_unregister_device:
+ 	rc_unregister_device(rdev);
+-	rdev = NULL;
+ exit_free_dev_rdev:
+ 	rc_free_device(rdev);
+ 	kfree(dev);
+@@ -1110,6 +1109,7 @@ static void ene_remove(struct pnp_dev *pnp_dev)
+ 	ene_rx_restore_hw_buffer(dev);
+ 	spin_unlock_irqrestore(&dev->hw_lock, flags);
+ 
++	rc_free_device(dev->rdev);
+ 	free_irq(dev->irq, dev);
+ 	release_region(dev->hw_io, ENE_IO_SIZE);
+ 	kfree(dev);
+diff --git a/drivers/media/rc/fintek-cir.c b/drivers/media/rc/fintek-cir.c
+index f7cfa8a073ebc..5055dfc3f4651 100644
+--- a/drivers/media/rc/fintek-cir.c
++++ b/drivers/media/rc/fintek-cir.c
+@@ -568,6 +568,7 @@ static void fintek_remove(struct pnp_dev *pdev)
+ 	struct fintek_dev *fintek = pnp_get_drvdata(pdev);
+ 	unsigned long flags;
+ 
++	rc_unregister_device(fintek->rdev);
+ 	spin_lock_irqsave(&fintek->fintek_lock, flags);
+ 	/* disable CIR */
+ 	fintek_disable_cir(fintek);
+@@ -580,7 +581,7 @@ static void fintek_remove(struct pnp_dev *pdev)
+ 	free_irq(fintek->cir_irq, fintek);
+ 	release_region(fintek->cir_addr, fintek->cir_port_len);
+ 
+-	rc_unregister_device(fintek->rdev);
++	rc_free_device(fintek->rdev);
+ 
+ 	kfree(fintek);
+ }
+diff --git a/drivers/media/rc/igorplugusb.c b/drivers/media/rc/igorplugusb.c
+index e034c93d57cf0..5ceb5ca44e235 100644
+--- a/drivers/media/rc/igorplugusb.c
++++ b/drivers/media/rc/igorplugusb.c
+@@ -242,6 +242,7 @@ static void igorplugusb_disconnect(struct usb_interface *intf)
+ 	usb_set_intfdata(intf, NULL);
+ 	usb_unpoison_urb(ir->urb);
+ 	usb_free_urb(ir->urb);
++	rc_free_device(ir->rc);
+ 	kfree(ir->buf_in);
+ }
+ 
+diff --git a/drivers/media/rc/iguanair.c b/drivers/media/rc/iguanair.c
+index c508f2536243e..0c5b8befb0af3 100644
+--- a/drivers/media/rc/iguanair.c
++++ b/drivers/media/rc/iguanair.c
+@@ -500,6 +500,7 @@ static void iguanair_disconnect(struct usb_interface *intf)
+ 	usb_set_intfdata(intf, NULL);
+ 	usb_kill_urb(ir->urb_in);
+ 	usb_kill_urb(ir->urb_out);
++	rc_free_device(ir->rc);
+ 	usb_free_urb(ir->urb_in);
+ 	usb_free_urb(ir->urb_out);
+ 	usb_free_coherent(ir->udev, MAX_IN_PACKET, ir->buf_in, ir->dma_in);
+diff --git a/drivers/media/rc/img-ir/img-ir-hw.c b/drivers/media/rc/img-ir/img-ir-hw.c
+index 63f6f5b36838d..f30adf4d8444d 100644
+--- a/drivers/media/rc/img-ir/img-ir-hw.c
++++ b/drivers/media/rc/img-ir/img-ir-hw.c
+@@ -1118,9 +1118,10 @@ void img_ir_remove_hw(struct img_ir_priv *priv)
+ 	struct rc_dev *rdev = hw->rdev;
+ 	if (!rdev)
+ 		return;
++	rc_unregister_device(rdev);
+ 	img_ir_set_decoder(priv, NULL, 0);
+ 	hw->rdev = NULL;
+-	rc_unregister_device(rdev);
++	rc_free_device(rdev);
+ #ifdef CONFIG_COMMON_CLK
+ 	if (!IS_ERR(priv->clk))
+ 		clk_notifier_unregister(priv->clk, &hw->clk_nb);
+diff --git a/drivers/media/rc/img-ir/img-ir-raw.c b/drivers/media/rc/img-ir/img-ir-raw.c
+index 92fb7b555a0f6..f1460d4acf3e8 100644
+--- a/drivers/media/rc/img-ir/img-ir-raw.c
++++ b/drivers/media/rc/img-ir/img-ir-raw.c
+@@ -136,6 +136,7 @@ void img_ir_remove_raw(struct img_ir_priv *priv)
+ 	if (!rdev)
+ 		return;
+ 
++	rc_unregister_device(rdev);
+ 	/* switch off and disable raw (edge) interrupts */
+ 	spin_lock_irq(&priv->lock);
+ 	raw->rdev = NULL;
+@@ -145,7 +146,7 @@ void img_ir_remove_raw(struct img_ir_priv *priv)
+ 	img_ir_write(priv, IMG_IR_IRQ_CLEAR, IMG_IR_IRQ_EDGE);
+ 	spin_unlock_irq(&priv->lock);
+ 
+-	rc_unregister_device(rdev);
++	rc_free_device(rdev);
+ 
+ 	timer_delete_sync(&raw->timer);
+ }
+diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
+index 7e92161105d53..310c9fc9ae91c 100644
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -2541,9 +2541,10 @@ static void imon_disconnect(struct usb_interface *interface)
+ 
+ 	if (ifnum == 0) {
+ 		ictx->dev_present_intf0 = false;
++		rc_unregister_device(ictx->rdev);
+ 		usb_kill_urb(ictx->rx_urb_intf0);
+ 		input_unregister_device(ictx->idev);
+-		rc_unregister_device(ictx->rdev);
++		rc_free_device(ictx->rdev);
+ 		if (ictx->display_supported) {
+ 			if (ictx->display_type == IMON_DISPLAY_TYPE_LCD)
+ 				usb_deregister_dev(interface, &imon_lcd_class);
+diff --git a/drivers/media/rc/ir-hix5hd2.c b/drivers/media/rc/ir-hix5hd2.c
+index edc46828509c8..1b061e4a3dcfa 100644
+--- a/drivers/media/rc/ir-hix5hd2.c
++++ b/drivers/media/rc/ir-hix5hd2.c
+@@ -331,7 +331,6 @@ static int hix5hd2_ir_probe(struct platform_device *pdev)
+ 
+ regerr:
+ 	rc_unregister_device(rdev);
+-	rdev = NULL;
+ clkerr:
+ 	clk_disable_unprepare(priv->clock);
+ err:
+@@ -346,6 +345,7 @@ static void hix5hd2_ir_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(priv->clock);
+ 	rc_unregister_device(priv->rdev);
++	rc_free_device(priv->rdev);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+diff --git a/drivers/media/rc/ir_toy.c b/drivers/media/rc/ir_toy.c
+index d6472de5da87d..089833e411786 100644
+--- a/drivers/media/rc/ir_toy.c
++++ b/drivers/media/rc/ir_toy.c
+@@ -536,6 +536,7 @@ static void irtoy_disconnect(struct usb_interface *intf)
+ 	usb_free_urb(ir->urb_out);
+ 	usb_kill_urb(ir->urb_in);
+ 	usb_free_urb(ir->urb_in);
++	rc_free_device(ir->rc);
+ 	kfree(ir->in);
+ 	kfree(ir->out);
+ 	kfree(ir);
+diff --git a/drivers/media/rc/ite-cir.c b/drivers/media/rc/ite-cir.c
+index bf544517c67a9..bde2a70512310 100644
+--- a/drivers/media/rc/ite-cir.c
++++ b/drivers/media/rc/ite-cir.c
+@@ -1414,7 +1414,6 @@ static int ite_probe(struct pnp_dev *pdev, const struct pnp_device_id
+ 	release_region(itdev->cir_addr, itdev->params->io_region_size);
+ exit_unregister_device:
+ 	rc_unregister_device(rdev);
+-	rdev = NULL;
+ exit_free_dev_rdev:
+ 	rc_free_device(rdev);
+ 	kfree(itdev);
+@@ -1439,6 +1438,7 @@ static void ite_remove(struct pnp_dev *pdev)
+ 	release_region(dev->cir_addr, dev->params->io_region_size);
+ 
+ 	rc_unregister_device(dev->rdev);
++	rc_free_device(dev->rdev);
+ 
+ 	kfree(dev);
+ }
+diff --git a/drivers/media/rc/mceusb.c b/drivers/media/rc/mceusb.c
+index ed55e9ec3c570..06222eee17540 100644
+--- a/drivers/media/rc/mceusb.c
++++ b/drivers/media/rc/mceusb.c
+@@ -1850,6 +1850,7 @@ static void mceusb_dev_disconnect(struct usb_interface *intf)
+ 	usb_free_urb(ir->urb_in);
+ 	usb_free_coherent(dev, ir->len_in, ir->buf_in, ir->dma_in);
+ 	usb_put_dev(dev);
++	rc_free_device(ir->rc);
+ 
+ 	kfree(ir);
+ }
+diff --git a/drivers/media/rc/rc-ir-raw.c b/drivers/media/rc/rc-ir-raw.c
+index 2e269ef5e26be..ba24c2f22d39f 100644
+--- a/drivers/media/rc/rc-ir-raw.c
++++ b/drivers/media/rc/rc-ir-raw.c
+@@ -648,9 +648,6 @@ int ir_raw_event_register(struct rc_dev *dev)
+ 
+ void ir_raw_event_free(struct rc_dev *dev)
+ {
+-	if (!dev)
+-		return;
+-
+ 	kfree(dev->raw);
+ 	dev->raw = NULL;
+ }
+@@ -674,8 +671,6 @@ void ir_raw_event_unregister(struct rc_dev *dev)
+ 
+ 	lirc_bpf_free(dev);
+ 
+-	ir_raw_event_free(dev);
+-
+ 	/*
+ 	 * A user can be calling bpf(BPF_PROG_{QUERY|ATTACH|DETACH}), so
+ 	 * ensure that the raw member is null on unlock; this is how
+diff --git a/drivers/media/rc/rc-loopback.c b/drivers/media/rc/rc-loopback.c
+index 78ac09b3cbd34..53d0540717b36 100644
+--- a/drivers/media/rc/rc-loopback.c
++++ b/drivers/media/rc/rc-loopback.c
+@@ -263,6 +263,7 @@ static int __init loop_init(void)
+ static void __exit loop_exit(void)
+ {
+ 	rc_unregister_device(loopdev.dev);
++	rc_free_device(loopdev.dev);
+ }
+ 
+ module_init(loop_init);
+diff --git a/drivers/media/rc/rc-main.c b/drivers/media/rc/rc-main.c
+index 821607504008a..dda3479ea3add 100644
+--- a/drivers/media/rc/rc-main.c
++++ b/drivers/media/rc/rc-main.c
+@@ -1611,6 +1611,7 @@ static void rc_dev_release(struct device *device)
+ {
+ 	struct rc_dev *dev = to_rc_dev(device);
+ 
++	ir_raw_event_free(dev);
+ 	kfree(dev);
+ }
+ 
+@@ -1773,7 +1774,6 @@ struct rc_dev *devm_rc_allocate_device(struct device *dev,
+ 	}
+ 
+ 	rc->dev.parent = dev;
+-	rc->managed_alloc = true;
+ 	*dr = rc;
+ 	devres_add(dev, dr);
+ 
+@@ -2042,11 +2042,7 @@ void rc_unregister_device(struct rc_dev *dev)
+ 	device_del(&dev->dev);
+ 
+ 	ida_free(&rc_ida, dev->minor);
+-
+-	if (!dev->managed_alloc)
+-		rc_free_device(dev);
+ }
+-
+ EXPORT_SYMBOL_GPL(rc_unregister_device);
+ 
+ /*
+diff --git a/drivers/media/rc/redrat3.c b/drivers/media/rc/redrat3.c
+index 3b917a2a89188..3f828a564e192 100644
+--- a/drivers/media/rc/redrat3.c
++++ b/drivers/media/rc/redrat3.c
+@@ -1131,11 +1131,13 @@ static void redrat3_dev_disconnect(struct usb_interface *intf)
+ {
+ 	struct usb_device *udev = interface_to_usbdev(intf);
+ 	struct redrat3_dev *rr3 = usb_get_intfdata(intf);
++	struct rc_dev *rc = rr3->rc;
+ 
+ 	usb_set_intfdata(intf, NULL);
+-	rc_unregister_device(rr3->rc);
++	rc_unregister_device(rc);
+ 	led_classdev_unregister(&rr3->led);
+ 	redrat3_delete(rr3, udev);
++	rc_free_device(rc);
+ }
+ 
+ static int redrat3_dev_suspend(struct usb_interface *intf, pm_message_t message)
+diff --git a/drivers/media/rc/st_rc.c b/drivers/media/rc/st_rc.c
+index 6b70bac5f45d6..0ba06bfc9e14b 100644
+--- a/drivers/media/rc/st_rc.c
++++ b/drivers/media/rc/st_rc.c
+@@ -203,6 +203,7 @@ static void st_rc_remove(struct platform_device *pdev)
+ 	device_init_wakeup(&pdev->dev, false);
+ 	clk_disable_unprepare(rc_dev->sys_clock);
+ 	rc_unregister_device(rc_dev->rdev);
++	rc_free_device(rc_dev->rdev);
+ }
+ 
+ static int st_rc_open(struct rc_dev *rdev)
+@@ -334,7 +335,6 @@ static int st_rc_probe(struct platform_device *pdev)
+ 	return ret;
+ rcerr:
+ 	rc_unregister_device(rdev);
+-	rdev = NULL;
+ clkerr:
+ 	clk_disable_unprepare(rc_dev->sys_clock);
+ err:
+diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
+index 5a18603f9a95c..7103da57c19f1 100644
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -388,15 +388,16 @@ static void streamzap_disconnect(struct usb_interface *interface)
+ 	struct streamzap_ir *sz = usb_get_intfdata(interface);
+ 	struct usb_device *usbdev = interface_to_usbdev(interface);
+ 
+-	usb_set_intfdata(interface, NULL);
+-
+ 	if (!sz)
+ 		return;
+ 
+-	usb_kill_urb(sz->urb_in);
+ 	rc_unregister_device(sz->rdev);
++	usb_set_intfdata(interface, NULL);
++
++	usb_kill_urb(sz->urb_in);
+ 	usb_free_urb(sz->urb_in);
+ 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
++	rc_free_device(sz->rdev);
+ 
+ 	kfree(sz);
+ }
+diff --git a/drivers/media/rc/sunxi-cir.c b/drivers/media/rc/sunxi-cir.c
+index 92ef4e7c6f69f..cb4c56bf0752a 100644
+--- a/drivers/media/rc/sunxi-cir.c
++++ b/drivers/media/rc/sunxi-cir.c
+@@ -371,6 +371,7 @@ static void sunxi_ir_remove(struct platform_device *pdev)
+ 	struct sunxi_ir *ir = platform_get_drvdata(pdev);
+ 
+ 	rc_unregister_device(ir->rc);
++	rc_free_device(ir->rc);
+ 	sunxi_ir_hw_exit(&pdev->dev);
+ }
+ 
+diff --git a/drivers/media/rc/ttusbir.c b/drivers/media/rc/ttusbir.c
+index 110a469001146..a2a64a860264b 100644
+--- a/drivers/media/rc/ttusbir.c
++++ b/drivers/media/rc/ttusbir.c
+@@ -333,7 +333,6 @@ static int ttusbir_probe(struct usb_interface *intf,
+ 	return 0;
+ out3:
+ 	rc_unregister_device(rc);
+-	rc = NULL;
+ out2:
+ 	led_classdev_unregister(&tt->led);
+ out:
+@@ -373,6 +372,7 @@ static void ttusbir_disconnect(struct usb_interface *intf)
+ 	}
+ 	usb_kill_urb(tt->bulk_urb);
+ 	usb_free_urb(tt->bulk_urb);
++	rc_free_device(tt->rc);
+ 	usb_set_intfdata(intf, NULL);
+ 	kfree(tt);
+ }
+diff --git a/drivers/media/rc/winbond-cir.c b/drivers/media/rc/winbond-cir.c
+index 515469dd82d4c..8e804661a6215 100644
+--- a/drivers/media/rc/winbond-cir.c
++++ b/drivers/media/rc/winbond-cir.c
+@@ -1132,7 +1132,6 @@ wbcir_probe(struct pnp_dev *device, const struct pnp_device_id *dev_id)
+ 	release_region(data->wbase, WAKEUP_IOMEM_LEN);
+ exit_unregister_device:
+ 	rc_unregister_device(data->dev);
+-	data->dev = NULL;
+ exit_free_rc:
+ 	rc_free_device(data->dev);
+ exit_unregister_led:
+@@ -1163,6 +1162,7 @@ wbcir_remove(struct pnp_dev *device)
+ 	wbcir_set_bits(data->wbase + WBCIR_REG_WCEIR_EV_EN, 0x00, 0x07);
+ 
+ 	rc_unregister_device(data->dev);
++	rc_free_device(data->dev);
+ 
+ 	led_classdev_unregister(&data->led);
+ 
+diff --git a/drivers/media/rc/xbox_remote.c b/drivers/media/rc/xbox_remote.c
+index 3e3da70cf8da0..c64123e9d16a5 100644
+--- a/drivers/media/rc/xbox_remote.c
++++ b/drivers/media/rc/xbox_remote.c
+@@ -277,14 +277,15 @@ static void xbox_remote_disconnect(struct usb_interface *interface)
+ 	struct xbox_remote *xbox_remote;
+ 
+ 	xbox_remote = usb_get_intfdata(interface);
+-	usb_set_intfdata(interface, NULL);
+ 	if (!xbox_remote) {
+ 		dev_warn(&interface->dev, "%s - null device?\n", __func__);
+ 		return;
+ 	}
+ 
+-	usb_kill_urb(xbox_remote->irq_urb);
+ 	rc_unregister_device(xbox_remote->rdev);
++	usb_set_intfdata(interface, NULL);
++	usb_kill_urb(xbox_remote->irq_urb);
++	rc_free_device(xbox_remote->rdev);
+ 	usb_free_urb(xbox_remote->irq_urb);
+ 	kfree(xbox_remote);
+ }
+diff --git a/drivers/media/usb/au0828/au0828-input.c b/drivers/media/usb/au0828/au0828-input.c
+index 7dec1a360da6a..81d0165a3064d 100644
+--- a/drivers/media/usb/au0828/au0828-input.c
++++ b/drivers/media/usb/au0828/au0828-input.c
+@@ -357,6 +357,7 @@ void au0828_rc_unregister(struct au0828_dev *dev)
+ 		return;
+ 
+ 	rc_unregister_device(ir->rc);
++	rc_free_device(ir->rc);
+ 
+ 	/* done */
+ 	kfree(ir);
+diff --git a/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c b/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
+index 600cff8a4abdc..bd86d250433df 100644
+--- a/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
++++ b/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
+@@ -187,6 +187,7 @@ static int dvb_usbv2_remote_exit(struct dvb_usb_device *d)
+ 	if (d->rc_dev) {
+ 		cancel_delayed_work_sync(&d->rc_query_work);
+ 		rc_unregister_device(d->rc_dev);
++		rc_free_device(d->rc_dev);
+ 		d->rc_dev = NULL;
+ 	}
+ 
+diff --git a/drivers/media/usb/dvb-usb/dvb-usb-remote.c b/drivers/media/usb/dvb-usb/dvb-usb-remote.c
+index 65e2c9e2cdc99..6dc11718dfb98 100644
+--- a/drivers/media/usb/dvb-usb/dvb-usb-remote.c
++++ b/drivers/media/usb/dvb-usb/dvb-usb-remote.c
+@@ -347,10 +347,12 @@ int dvb_usb_remote_exit(struct dvb_usb_device *d)
+ {
+ 	if (d->state & DVB_USB_STATE_REMOTE) {
+ 		cancel_delayed_work_sync(&d->rc_query_work);
+-		if (d->props.rc.mode == DVB_RC_LEGACY)
++		if (d->props.rc.mode == DVB_RC_LEGACY) {
+ 			input_unregister_device(d->input_dev);
+-		else
++		} else {
+ 			rc_unregister_device(d->rc_dev);
++			rc_free_device(d->rc_dev);
++		}
+ 	}
+ 	d->state &= ~DVB_USB_STATE_REMOTE;
+ 	return 0;
+diff --git a/drivers/media/usb/em28xx/em28xx-input.c b/drivers/media/usb/em28xx/em28xx-input.c
+index 20fdd59b55185..ab61d9a29b10e 100644
+--- a/drivers/media/usb/em28xx/em28xx-input.c
++++ b/drivers/media/usb/em28xx/em28xx-input.c
+@@ -853,6 +853,7 @@ static int em28xx_ir_fini(struct em28xx *dev)
+ 		goto ref_put;
+ 
+ 	rc_unregister_device(ir->rc);
++	rc_free_device(ir->rc);
+ 
+ 	kfree(ir->i2c_client);
+ 
+diff --git a/drivers/staging/media/av7110/av7110_ir.c b/drivers/staging/media/av7110/av7110_ir.c
+index 68b3979ba5f20..fdae467fd7ab8 100644
+--- a/drivers/staging/media/av7110/av7110_ir.c
++++ b/drivers/staging/media/av7110/av7110_ir.c
+@@ -151,6 +151,7 @@ int av7110_ir_init(struct av7110 *av7110)
+ void av7110_ir_exit(struct av7110 *av7110)
+ {
+ 	rc_unregister_device(av7110->ir.rcdev);
++	rc_free_device(av7110->ir.rcdev);
+ }
+ 
+ //MODULE_AUTHOR("Holger Waechtler <holger@convergence.de>, Oliver Endriss <o.endriss@gmx.de>");
+diff --git a/include/media/rc-core.h b/include/media/rc-core.h
+index 35c7a0546f02e..7c964b5ad7926 100644
+--- a/include/media/rc-core.h
++++ b/include/media/rc-core.h
+@@ -81,7 +81,6 @@ struct lirc_fh {
+ /**
+  * struct rc_dev - represents a remote control device
+  * @dev: driver model's view of this device
+- * @managed_alloc: devm_rc_allocate_device was used to create rc_dev
+  * @registered: set to true by rc_register_device(), false by
+  *	rc_unregister_device
+  * @idle: used to keep track of RX state
+@@ -156,7 +155,6 @@ struct lirc_fh {
+  */
+ struct rc_dev {
+ 	struct device			dev;
+-	bool				managed_alloc;
+ 	bool				registered;
+ 	bool				idle;
+ 	bool				encode_wakeup;
 -- 
 2.53.0
 
