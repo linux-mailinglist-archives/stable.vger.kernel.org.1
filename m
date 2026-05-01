@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-242235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242236-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIj7FZIq9Glp+wEAu9opvQ
-	(envelope-from <stable+bounces-242235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 06:22:42 +0200
+	id 4EsUKcwq9Glp+wEAu9opvQ
+	(envelope-from <stable+bounces-242236-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 06:23:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CC94AA4AF
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 06:22:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03ACB4AA4BF
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 06:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EAFD3072841
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 04:13:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A48430745C9
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 04:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B199B30C345;
-	Fri,  1 May 2026 04:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2F12FB965;
+	Fri,  1 May 2026 04:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aU4dpX23"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EvSfAXZo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E7D30BB94
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 04:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF67E304BCB
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 04:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777608745; cv=none; b=A1Uef0RvH7opXNz/pjLuoZJBLMFduyCBMBlpX0QktQjzGrW6ri3PvK3DIAUisSPEyjTKSKziZoO7dzuq3yow9zSovMPxnfhgVdjUW3RHdl3ZZGQTg/FnsyMgEpxYEhTRUiiejmxmK4MkpwEvGZy8/A1LGQzPxkdcwcF0tsPdX3k=
+	t=1777608750; cv=none; b=SSADdfnlXe8qy3p0J2mdQScx/gapZykhJkptda65ZHGgo73q6nNzsDMVavB3odP8cfRe/uPt4dS+fllbn5GXoB1iOVb1Hu6HrDAIplt9gzpexEilGYbi7djfwJXb/iKuH8ibji08s25ZL3btY8B8eX350mPOGeJMJx6eCA7IusE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777608745; c=relaxed/simple;
-	bh=yTxnDirvmnH5LGk1im4CZr5o+rO8DwmekAa/5S50bt4=;
+	s=arc-20240116; t=1777608750; c=relaxed/simple;
+	bh=Z2tXO/TODik6ZuM5fgaciL/nr8ovAug6a5249/dhZ1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3aC9NtTB8qBZ/4R5O/kE3PatEcYjd/S96Y2T+A8OjyqChOTQ3Fiuek8BFNdPGNcQATGXmaR7NuajTCWoXDVBxxthQxbULvKxI1BhKfMSEH4I9gAqTHznym5Rf6qQwz3TIyPTasuvA9KnYYMoWV22X/8If2JDo1QAVWRyArqVAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aU4dpX23; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=gw7rF/YPMQlc/pLmKHbsN17HTyoPLiN5DvTKQb8tmJiyQoKROmeIOP5zGZSAZYCRRVTTvskgfPXNlNMqfQFY1U5TQBhfqC3mnwNXAj3MPXy+jTOXlazKvN6CNr0vd+xgWUJgi5ZTt9Qul9QjLWnm/95ZsL5L1yMX3BigzGPc884=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EvSfAXZo; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8296d553142so1110684b3a.3
-        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 21:12:24 -0700 (PDT)
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c76bde70ec9so616730a12.2
+        for <stable@vger.kernel.org>; Thu, 30 Apr 2026 21:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777608744; x=1778213544; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777608748; x=1778213548; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t0UuqUvbVXxe7PO3IdsW6Ps33YC23onFgbsbMbzoM7M=;
-        b=aU4dpX232Zx83qBZozzV8NNyNHSHipEWPFQE1bsAYUrugqMIyuhUYGiy0I3awW11xI
-         YSBnMbKrLVGlMeFzROcH4m5w0ZE5CxiJzhrHUMnLThw1vKncxTJHpoT2EgUjUxfXyaUR
-         KCvAB/amIr+XvV6Y7MRdsa4NZZafNtIMb7xU64AJBnme59/vftbgDYboWvISjW3gmk6D
-         AEQDHaIxgvEoSdODa3rPpWjkDPxP3cwob9xNcEF/IBsx2oG/UqEkKFHvrTYAFYJocNkV
-         mdo/k1e/g+xmza4Wj3HI73DyJAEmJ4GO6ngoRlhUH8CUt/zzBENeRo29lRmnlLUnc4Ep
-         Tk7g==
+        bh=dF2w3z4/59cYB6Oy2yDdp9rDcfrHGTFcj+1xeJe6XK4=;
+        b=EvSfAXZoRO1VrT3k6sVua0KgFCU8a9D2LK8EtiC5FTVY6C9pGkVvAb50x26xUJqD3D
+         vcdcDKDzpVjjKIkp5sX+VYx9YSvJBJtWL8PUdlqveKa2rc2K/pOnlJ9nWMLYqbfdcfop
+         rcqQUrmb0eBtyM7r0ktBH4uMefHsrNMjb5ecrM4fG0jSuXx1rK1xhkvGsAm4++QiBq/f
+         LlUQQt5jnMntkNJ/OrjlEaTFLupq25YWMDJdQdiSk48v7P/RnOlvkV4GpivWqlVnIHDm
+         2cAk9/BQ6rX9yv40ffT3GgR69LFKHo0iWrDGLPEe/WYvevgBNWjNlmCjpd0ErMp83BFU
+         pCMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777608744; x=1778213544;
+        d=1e100.net; s=20251104; t=1777608748; x=1778213548;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=t0UuqUvbVXxe7PO3IdsW6Ps33YC23onFgbsbMbzoM7M=;
-        b=V/zbBSVB4eofOHDXYOFNnkohariD5JEz5pJxxCAFgIc/2HcstMtUgsbWivY9kSmr05
-         KzGEN5+lGhYF6AynpgZp7hbk3vb3dCL0bpY1D9V9HWcApBgSfphj8vimafnI/bhcS3Mk
-         68ozgfxHfO9TzT98dCX0gQRK7hXBhH1ir+59NChoU7vlEmDRPo2lRZdplkGDS721FtAD
-         UrxBzeU/GHDfLDXMCjNqTKcDARWtnDDVZf9o0mtG8Ju+Y0mZXtg77iBtA4dm5dbsLh0Q
-         8UZ2Y0eUydCuF4ncguW6sm8YbH4R6wx/XcN0YgzjAyFUxDpFb9Tr3nC7U2hj+IAhAcIP
-         fi9A==
-X-Forwarded-Encrypted: i=1; AFNElJ/uN5NjIx73r4ywpLV8d3EfQM+kgLPNQOhPyClShW24Q0EXZET2rmUlMh26M06wK0CGx8JvNvA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj3kE4RxF9DglFPEpbeMVoL0o3nX1sLGNqgXZKLrr37AXkZmSy
-	PEJs7rBepyZn1wdv3BuOXBUEKfuQ504JWLt12RqNmjozXEeOELozzXEa
-X-Gm-Gg: AeBDieujy/qdB6kSzGXSFz+AWSsjrq4bdzxDZqZOYktAF4JxMC8HfA9UtvxX/MZib3K
-	O5CrDle1vKWNQV3o9/uj4DkmWxY6ieef5Li5r5NQcEBs4n2TpjmztsioIAWwyKQtyjToJPsMQEF
-	eiFQExrwK6M1xx1otZxGggOQGXlSGUtHyrpDVdVgc5NQhaYv23m47miy8ZJXUNDuG0+D/+FB9D6
-	8li6lNtbk1Kx+xppQUsRZFGuEXiZJAVmX8zvqTWpAZE6ebMrPHQCP0Fbf2fKWMXcapq9AwV7Kcv
-	1en3Sl6C6KcitkOlsqWDj5EpqMqh1y85Di9Zr9BMxEswtJS1KoaS/4yO7NYCRF320Fu+S+PR0f+
-	oejtZ07MhVam3QUYevxQ172BVVjiUBqhIczVqSCchLR1I1sjgje4IsF/MPowb06/D/13OiENW9h
-	/f+cavzny+9g0cnGMQNnttKwLDTLPK+b7u+NYYfge8vPrpzUwwnC6Opfi5mbI00f8=
-X-Received: by 2002:a05:6a00:181f:b0:82c:6b23:6d10 with SMTP id d2e1a72fcca58-834fdb58c54mr6377026b3a.3.1777608743787;
-        Thu, 30 Apr 2026 21:12:23 -0700 (PDT)
+        bh=dF2w3z4/59cYB6Oy2yDdp9rDcfrHGTFcj+1xeJe6XK4=;
+        b=WUYhgXQ6UBCCi0821erApt8gssVn+I15zyMbPjhuINCY7Y+F7aw64+ZXF1tuqHr/Gs
+         l/jMOa5FseXpO22A7XMiKE/okfGf/hMiAgKYQ5aoCpULez6OFC8OYCG8znkMxHT4EXUJ
+         KarzwVIBhLQK7/IM2aUTfIhNmMeHfHDtBdzGqrh+sHz1BkMIfeNqIfUfGWkaPVleUxMn
+         p6Tog1eqxin2FTFi/NhalpF/II4Q5brK0KWVY0DFi6Hd/ALmDSQRbTQjkK9+XpuOoMBP
+         2IHy7zI949wAxpqIg2JOqPSn7uRhL+j0Q0vwt3xR/rzenSWzq6iZljcvsdMAD/g2fMNB
+         o4QA==
+X-Forwarded-Encrypted: i=1; AFNElJ+EEPdcA71/YkqGKeLyYGiZXf12eeFmTVSILo9CcJa3ipezY0Fsci0H/JFGuKcRYswx9SJRy7s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf4Hxdd6XwQapnVAZ6FsRDsRgeisOZoVOXCnV/g68QU2i70bca
+	EztQQonHlAzizdK0Or2dunE6eEQcKrJETOvaJy8PjvicmqLlkKwVbSfw
+X-Gm-Gg: AeBDietc9/f6uP9P+QD3qWxZm/plN6OGLQpyjQmeHGk1A9y+AT/LjIIyIBZA5C+R0Wu
+	yBD3C1W1KSwqvTDuEEE2+amxvXktD2wsGes6ZWWtUxQKYHedNXavv38rw6v+MGK/rU0aEdDRrzI
+	VD9k/c3h3X9deh19ro5Y/hJl7nIJmd9I8bwgu5Aq5H+LI3HYVMs/tmCxoHe/fLYsf+biraDdPKh
+	lMPSeEGewxmrXXrIFLyzBgbg7irL8I/4dJgQMz0yESh71zPIAWN/4lRnSoz6MomJo2pJeP5XJ71
+	/jXCRxcsLQWzOGLt6GOqzE3Jdj7fRD6Xiu6hO5JZvVCAJWwVP0YOiLnwJgm42ZOybhMcY5GIikh
+	xa337FJc0f9XinLknjwEg2gv/Q5mJzBtRacPem7qJrTpNjr8mmH26HBbMzpbdUmylv+h8yA9CrE
+	VdMbkNrHyk1znvpX5HgAWAKnRxY15x3nXylZ/vwaHf2J6Rts0zLuw3FY1Q5f+Bzf8=
+X-Received: by 2002:a05:6a20:5483:b0:395:ce56:4448 with SMTP id adf61e73a8af0-3a3cf68b511mr6112736637.25.1777608748275;
+        Thu, 30 Apr 2026 21:12:28 -0700 (PDT)
 Received: from localhost.localdomain ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b485eesm1159428b3a.48.2026.04.30.21.12.19
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b485eesm1159428b3a.48.2026.04.30.21.12.24
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 30 Apr 2026 21:12:22 -0700 (PDT)
+        Thu, 30 Apr 2026 21:12:27 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org,
 	Haren Myneni <haren@linux.ibm.com>
@@ -85,10 +85,11 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/9] pseries/papr-hvpipe: Prevent kernel stack memory leak to userspace
-Date: Fri,  1 May 2026 09:41:41 +0530
-Message-ID: <7bfe03b65a282c856ed8182d1871bb973c0b78f2.1777606826.git.ritesh.list@gmail.com>
+Subject: [PATCH v3 3/9] pseries/papr-hvpipe: Fix null ptr deref in papr_hvpipe_dev_create_handle()
+Date: Fri,  1 May 2026 09:41:42 +0530
+Message-ID: <31ad94bc89d44156ee700c5bd006cb47a748e3cb.1777606826.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1777606826.git.ritesh.list@gmail.com>
 References: <cover.1777606826.git.ritesh.list@gmail.com>
@@ -99,67 +100,161 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C7CC94AA4AF
+X-Rspamd-Queue-Id: 03ACB4AA4BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242235-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242236-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-The hdr variable is allocated on the stack and only hdr.version and
-hdr.flags are initialized explicitly. Because the struct papr_hvpipe_hdr
-contains reserved padding bytes (reserved[3] and reserved2[40]), these
-could leak the uninitialized bytes to userspace after copy_to_user().
+commit 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()"),
+changed the create handle to FD_PREPARE(), but it caused kernel
+null-ptr-deref because after call to retain_and_null_ptr(src_info),
+src_info is re-used for adding it to the global list.
 
-This patch fixes that by initializing the whole struct to 0.
+Getting the following kernel panic in papr_hvpipe_dev_create_handle()
+when trying to add src_info to the list.
+ Kernel attempted to write user page (0) - exploit attempt? (uid: 0)
+ BUG: Kernel NULL pointer dereference on write at 0x00000000
+ Faulting instruction address: 0xc0000000001b44a0
+ Oops: Kernel access of bad area, sig: 11 [#1]
+ ...
+ Call Trace:
+ papr_hvpipe_dev_ioctl+0x1f4/0x48c (unreliable)
+ sys_ioctl+0x528/0x1064
+ system_call_exception+0x128/0x360
+ system_call_vectored_common+0x15c/0x2ec
 
+Now, the error handling with FD_PREPARE's file cleanup and __free(kfree) auto
+cleanup is getting too convoluted. This is mainly because we need to
+ensure only 1 user get the srcID handle. To simplify this, we allocate
+prepare the src_info in the beginning and add it to the global list
+under a spinlock after checking that no duplicates exist.
+
+This simplify the error handling where if the FD_ADD fails, we can
+simply remove the src_info from the list and consume any pending msg in
+hvpipe to be cleared, after src_info became visible in the global list.
+
+Cc: Christian Brauner <brauner@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: cebdb522fd3ed ("powerpc/pseries: Receive payload with ibm,receive-hvpipe-msg RTAS")
+Fixes: 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()")
+Reported-by: Haren Myneni <haren@linux.ibm.com>
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/platforms/pseries/papr-hvpipe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/papr-hvpipe.c | 57 ++++++++++----------
+ 1 file changed, 30 insertions(+), 27 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-index c41d45e1986d..3392874ebdf6 100644
+index 3392874ebdf6..402781299497 100644
 --- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
 +++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -327,7 +327,7 @@ static ssize_t papr_hvpipe_handle_read(struct file *file,
+@@ -480,23 +480,10 @@ static const struct file_operations papr_hvpipe_handle_ops = {
+ 
+ static int papr_hvpipe_dev_create_handle(u32 srcID)
  {
+-	struct hvpipe_source_info *src_info __free(kfree) = NULL;
++	struct hvpipe_source_info *src_info;
++	int fd;
+ 	unsigned long flags;
  
- 	struct hvpipe_source_info *src_info = file->private_data;
--	struct papr_hvpipe_hdr hdr;
-+	struct papr_hvpipe_hdr hdr = {};
- 	long ret;
+-	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+-	/*
+-	 * Do not allow more than one process communicates with
+-	 * each source.
+-	 */
+-	src_info = hvpipe_find_source(srcID);
+-	if (src_info) {
+-		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-		pr_err("pid(%d) is already using the source(%d)\n",
+-				src_info->tsk->pid, srcID);
+-		return -EALREADY;
+-	}
+-	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-
+ 	src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
+ 	if (!src_info)
+ 		return -ENOMEM;
+@@ -505,26 +492,42 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ 	src_info->tsk = current;
+ 	init_waitqueue_head(&src_info->recv_wqh);
  
+-	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
+-		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
+-				      (void *)src_info, O_RDWR));
+-	if (fdf.err)
+-		return fdf.err;
+-
+-	retain_and_null_ptr(src_info);
+-	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
  	/*
+-	 * If two processes are executing ioctl() for the same
+-	 * source ID concurrently, prevent the second process to
+-	 * acquire FD.
++	 * Do not allow more than one process communicates with
++	 * each source.
+ 	 */
++	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	if (hvpipe_find_source(srcID)) {
+ 		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
++		pr_err("pid(%d) could not get the source(%d)\n",
++				src_info->tsk->pid, srcID);
++		kfree(src_info);
+ 		return -EALREADY;
+ 	}
+ 	list_add(&src_info->list, &hvpipe_src_list);
+ 	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-	return fd_publish(fdf);
++
++	fd = FD_ADD(O_RDONLY | O_CLOEXEC,
++		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
++				      (void *)src_info, O_RDWR));
++	if (fd < 0) {
++		spin_lock_irqsave(&hvpipe_src_list_lock, flags);
++		list_del(&src_info->list);
++		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
++		/*
++		 * if we fail to add FD, that means no userspace program is
++		 * polling. In that case if there is a msg pending because the
++		 * interrupt was fired after the src_info was added to the
++		 * global list, then let's consume it here, to unblock the
++		 * hvpipe
++		 */
++		if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE)
++			hvpipe_rtas_recv_msg(NULL, 0);
++		kfree(src_info);
++		return fd;
++	}
++
++	return fd;
+ }
+ 
+ /*
 -- 
 2.39.5
 
