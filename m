@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-242525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CVEZKe0W9WmVIQIAu9opvQ
-	(envelope-from <stable+bounces-242525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:11:09 +0200
+	id OHrkLPEW9WmVIQIAu9opvQ
+	(envelope-from <stable+bounces-242526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:11:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0414AFBAB
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F94AFBB5
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 23:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 55A27300B2AA
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1C40300BE3F
 	for <lists+stable@lfdr.de>; Fri,  1 May 2026 21:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20858423A9E;
-	Fri,  1 May 2026 21:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C0E359A99;
+	Fri,  1 May 2026 21:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilU9xnWx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZyoPfPSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D750D316192;
-	Fri,  1 May 2026 21:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E051C425CD7;
+	Fri,  1 May 2026 21:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777669864; cv=none; b=RopFzqE7HzygaadiRcImzg6fhtI+ZYUvVV21Wwf5OQJrv1IJ+Xkb3FCBtrnQOL9bAs+a4nPyUonAfQAICJpBKX4Z1AL3rt46XJGx3YkWO5BlM3NwQCoN2VGQ/1jN/UCbVaYkAE/7tX7njVa8euJYtz6zJ2a+7G+RHxtvJMOfB3M=
+	t=1777669865; cv=none; b=ETNwyP9Goh9/aVXlaVZfRYVeCX7gSsAOuL3GVBSEP6ehQi4PmxnH/E/DTmg/5RqoTIYhraYueqYhDOU7XTAaZuZX93xqaJox2eUG922JJnFN8+BF91LB+ZgusucVTZNpHD3XxH547H1fJjggWYTGNoWOJUUry07DUFAuJJ5aKqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777669864; c=relaxed/simple;
-	bh=7NrCLfHiSyMi92eTKRzZ/y+I0FTaYJDj7gmP3R0+aXI=;
+	s=arc-20240116; t=1777669865; c=relaxed/simple;
+	bh=VI1zz9K0tGpoQmh+UzGw5dgiQHxDITp2U1Z5MAkkSxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thdBan4EjB61XbcypBNxI9ZqhUllzJ5At3CUl99IjQXDsdcIIXKaOLbex5t9D7l8wvCUQwPPyMSZW6/I85qLwwsT2G7ARUWpD98zXbIuZwseuyvAG5RorAMo4SUkfAcFhuFKD3D5V47/ovbgikPRKu71yuf5Abktzo9tKMOPKAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilU9xnWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B97C2BCB8;
-	Fri,  1 May 2026 21:11:03 +0000 (UTC)
+	 MIME-Version; b=LwHM25ZctZ3GssUqgE/BI1pyk7/idZF0BL1DQ8I935EpFzNnCoKASMciPQYI9K9KFM2t0BbA16Z7jj6V1MVo0NEDjdUwM/B6QVvHnfA8szuykOTXi5tnn0aybfNyqBNs061+uEoWqddb+c+HOs+a2GEzHqyYpIsEJGY59bMNhj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZyoPfPSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E27C2BCB4;
+	Fri,  1 May 2026 21:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777669864;
-	bh=7NrCLfHiSyMi92eTKRzZ/y+I0FTaYJDj7gmP3R0+aXI=;
+	s=k20201202; t=1777669865;
+	bh=VI1zz9K0tGpoQmh+UzGw5dgiQHxDITp2U1Z5MAkkSxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilU9xnWxqfV/JP7lha7zu0G4Z1vIIDEELCKQfF/OU3g7W+TkNQafCfHZm8LjEG1Bi
-	 BdcKRI1hL0fn4fXPc6QiBxehVZhPRnYc07MqXpawT/cDocABjIxXAq4HJuep/Q7aOw
-	 JCgAk8t+cORRzLxXuc8eM/eJ6R4GRNrxLPwQUC5OdobTTPp5q8sq5f5taETl9JKM4O
-	 s9/v0Cq8zMVFJcAtcDpisaNpncZfjrINeBd7NA/E3j99p5DYPJBey6eEXIPo4XXfYY
-	 35M9WAsrh2MlgvTMefg3/gFTYO4ZlBI4HY+oVvRjlJpVaMW2D7PcMm5UZ1I2KakqOe
-	 CbEQEB619CghQ==
+	b=ZyoPfPStjMgbsd7dYKOV3VyC3omA1OSBl8JRZWBuaf+hAvRr7rbBsooeWlGVfKvRv
+	 c8/kEa2KmraJRGKrQ1zgNH0p+tkkEzXkhRraDy8Yh4zePevKhks9M2uk/T9UgMtc/r
+	 IdoGm1tfP9+H8rQS9QRJ1IYAMjVVt2g9/jj7VmZBb1cXpLx0IU4q/tXmbqHq/Oq7AF
+	 Mjxgtaf87xRHMTG3uWs7rS7WEhhF6HSWKKflSKX+tLd0fwuOd2uArYSyXG9WwbNZR5
+	 84dBNFZJxOcEk9byc7XjXSRsB2ivqMNDjYVZa4nCbmM4DVGfKQS0rapg7+dbUklY/S
+	 hPol5udkcb/rQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Rong Bao <rong.bao@csmantle.top>,
-	WANG Rui <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	loongarch@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCH 6.12.y] perf annotate: Use jump__delete when freeing LoongArch jumps
-Date: Fri,  1 May 2026 17:11:00 -0400
-Message-ID: <20260501200000.item004-6.12@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Ben Hutchings <ben@decadent.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com,
+	lvc-project@linuxtesting.org,
+	Fedor Pchelkin <pchelkin@ispras.ru>
+Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle io_poll_add() return value on update
+Date: Fri,  1 May 2026 17:11:01 -0400
+Message-ID: <20260501200000.item005-revert@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260501123717.4109458-1-rong.bao@csmantle.top>
-References: <20260501123717.4109458-1-rong.bao@csmantle.top>
+In-Reply-To: <20260501111233-b371eac52cd006bfddfbd9e5-pchelkin@ispras>
+References: <20260413155819.042779211@linuxfoundation.org> <20260501111233-b371eac52cd006bfddfbd9e5-pchelkin@ispras>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,10 +66,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4B0414AFBAB
+X-Rspamd-Queue-Id: 0A3F94AFBB5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
@@ -77,28 +79,37 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242525-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-242526-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
 
-On Fri, 01 May 2026 20:37:17 +0800, Rong Bao wrote:
-> [ Upstream commit a355eefc36c4481188249b067832b40a2c45fa5c ]
+On Fri, 01 May 2026 11:54:18 +0300, Fedor Pchelkin wrote:
+> The Fixes: tag of upstream 84230ad2d2afb points to 97b388d70b53
+> ("io_uring: handle completions in the core", v5.19), which is NOT
+> present in 5.10 or 5.15. Additionally, in 5.10/5.15 'preq->result'
+> is unsigned so the 'if (preq->result < 0)' check is a no-op, and
+> __io_poll_add() already completes the request when it returns
+> non-zero, leading to a potential double-completion.
+>
+> I would suggest to revert the patch from these trees because there
+> appears to be no real bug to fix.
 
-Thanks, queued for 6.12.y.
+Agreed. I've reverted both the original backport and the followup
+"fix backport" commit on 5.10 and 5.15.
 
 --
 Thanks,
