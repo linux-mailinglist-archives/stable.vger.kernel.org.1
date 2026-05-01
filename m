@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-242555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNeDMfE29WkeJgIAu9opvQ
-	(envelope-from <stable+bounces-242555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 01:27:45 +0200
+	id QJFAB/029WkeJgIAu9opvQ
+	(envelope-from <stable+bounces-242557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 01:27:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8101F4B047C
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 01:27:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7494B0491
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 01:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EAAD3019C82
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 23:27:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5C3A300DCEB
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 23:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CA037EFF4;
-	Fri,  1 May 2026 23:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1597737F75A;
+	Fri,  1 May 2026 23:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbPjHL1x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1hYrbF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956741A8F7B
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 23:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA8B37EFF4
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 23:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777678059; cv=none; b=LrWSmUjOOd7YMaQPzAWnOObuzFQRtJuz9yWuiNCmy3sHbYvYq2fc3E7P3cOi4+RDXgcXd1XbVEQBPK2lyurP19tEyi705ao9rbWLKJkWY/0/b6dQ4GZiPOuMB0CEp5ayowE/vsule8w2HvRvVtzTLvvXrhzySRVKcFAvMgG8w14=
+	t=1777678067; cv=none; b=EcB3UTmQngDontpHoyde+kAOaaypnRH+Nq2uBUzCDLLiKoRX0GKRKljmUsH0GOiQoYyiJgbxlPe5t7ixs8cwVPzC44DKOJp2LhMoUSAtMzkBRQHcjvzP0KuhRUWaKW9bPIqIp5obz3r5aHOdioZsuVDlxW7f9TESDTRi4YCMGWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777678059; c=relaxed/simple;
-	bh=g2yvkeso3Y6A9tQWJSwtfEfybm8+PGgkvVOE1TpuOU8=;
+	s=arc-20240116; t=1777678067; c=relaxed/simple;
+	bh=OYgvjTfox/Vm9bBAITuXcXNCC5dhadTkIWMXFbeYvl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVLTU/AQBQcyjK7KL/Tc45eS/DlXyUgze1So9DMaKi2f80XnS/OopsWJEJIFckRyoi4s6hhCO5/ZFXQSdkZ1HRdcJNyXuffpKQWkMroIAM/D91BnpBWo17jBUvGMch2dSMPHTjTpS8s7QT3cG30ko8eAsr8Wgf+w0ZrXvsaijcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbPjHL1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABEFC2BCC6;
-	Fri,  1 May 2026 23:27:38 +0000 (UTC)
+	 MIME-Version; b=CZ+g/k2R5lYo7vo5oTPgozRRzCD8va/5qaAnjUZGG+SnSRYgE0wQ8PzKnox1hUMDPUIPeqT+m33hRwYVgsxY7BVW85bjvHmLMVJeXhhFqFrTo29+83Bhj3RQLKWPvS55dfkYVva7Y33RFlL67/3mKGLTqjta7M85jw9UPm6QSA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1hYrbF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3C9C2BCB4;
+	Fri,  1 May 2026 23:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777678059;
-	bh=g2yvkeso3Y6A9tQWJSwtfEfybm8+PGgkvVOE1TpuOU8=;
+	s=k20201202; t=1777678066;
+	bh=OYgvjTfox/Vm9bBAITuXcXNCC5dhadTkIWMXFbeYvl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EbPjHL1xeHm5pDq2pWN6PP5yILOOtc2spaday/YDEjcyca2GIeriATwLN+kXDHBV8
-	 Qm8/fmsGSS2xukm2Jnq7qFO5CmFtp+Pc8SIccVIjkTodE9DHS8Hk3pLTPWMFP5BZHt
-	 j9nS0hCKspcmYsk2VAmNGApEGlg89KHMhxEYqLGb3EO+luC+w4w8So2ypN3rlvxlym
-	 tugpBN7wv5e37hZcJ2JgghS1ol0xZtBnYhTTf8fzcBBt7+GwViCvo+hjfEvhmepQWQ
-	 HWDpk59zAnwqWr7vC/30IY0MAdHArbeUwyMCQAycQlCAx013XI6bMUHF2NP2YoJqP7
-	 oINsCUHXtenOg==
+	b=P1hYrbF3u5hlBqrCSyfpsHn/feI1ZrCpMJjTIlygHraHDHKGYMbmudH9anqezwvvv
+	 UZQhyazUo3F5VlUM/+o8zTzHwp2N6J4bq+8SscUWUDlEFA7ny90feWEEM6y9nkyM5z
+	 JdFZVS6L2h4C4wpIjBD9Iy7yWqcLvCbyZSmZUJ3vDv+PR565PzXk8gOZiemPMbcM+d
+	 EPZNOdvm1mCxd5nFo6R2q4INqY20eSZXXQD62pZuUEyUhofVxxIfNsGB1hOi2yjW4J
+	 28wKd+qvZiXsH2ClyGMLxq1ue5ZMMvSohThTWgPe3UiASchsEkGunKhywOxAo1UsRw
+	 lg6PnYGWELg1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: James Kim <james010kim@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+Cc: Tom Yan <tom.ty89@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] mtd: docg3: fix use-after-free in docg3_release()
-Date: Fri,  1 May 2026 19:27:36 -0400
-Message-ID: <20260501232736.4099049-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] nvme: fix interpretation of DMRSL
+Date: Fri,  1 May 2026 19:27:43 -0400
+Message-ID: <20260501232744.4102493-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260501232736.4099049-1-sashal@kernel.org>
-References: <2026050108-ozone-wiry-64b4@gregkh>
- <20260501232736.4099049-1-sashal@kernel.org>
+In-Reply-To: <2026050133-dipped-hedge-8292@gregkh>
+References: <2026050133-dipped-hedge-8292@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,82 +62,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8101F4B047C
+X-Rspamd-Queue-Id: CE7494B0491
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,bootlin.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242555-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,lst.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242557-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.989];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-From: James Kim <james010kim@gmail.com>
+From: Tom Yan <tom.ty89@gmail.com>
 
-[ Upstream commit ca19808bc6fac7e29420d8508df569b346b3e339 ]
+[ Upstream commit 1a86924e4f464757546d7f7bdc469be237918395 ]
 
-In docg3_release(), the docg3 pointer is obtained from
-cascade->floors[0]->priv before the loop that calls
-doc_release_device() on each floor. doc_release_device() frees the
-docg3 struct via kfree(docg3) at line 1881. After the loop,
-docg3->cascade->bch dereferences the already-freed pointer.
+DMRSLl is in the unit of logical blocks, while max_discard_sectors is
+in the unit of "linux sector".
 
-Fix this by accessing cascade->bch directly, which is equivalent
-since docg3->cascade points back to the same cascade struct, and
-is already available as a local variable. This also removes the
-now-unused docg3 local variable.
-
-Fixes: c8ae3f744ddc ("lib/bch: Rework a little bit the exported function names")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Kim <james010kim@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Tom Yan <tom.ty89@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 40f0496b617b ("nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is set")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/docg3.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 6 ++++--
+ drivers/nvme/host/nvme.h | 1 +
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index a2b643af70194..e37fb11556479 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -2049,7 +2049,6 @@ static int __init docg3_probe(struct platform_device *pdev)
- static void docg3_release(struct platform_device *pdev)
- {
- 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
--	struct docg3 *docg3 = cascade->floors[0]->priv;
- 	int floor;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index f3071bd11fdd3..1e0a7baa77f56 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1736,6 +1736,9 @@ static void nvme_config_discard(struct gendisk *disk, struct nvme_ns *ns)
+ 	if (blk_queue_flag_test_and_set(QUEUE_FLAG_DISCARD, queue))
+ 		return;
  
- 	doc_unregister_sysfs(pdev, cascade);
-@@ -2057,7 +2056,7 @@ static void docg3_release(struct platform_device *pdev)
- 		if (cascade->floors[floor])
- 			doc_release_device(cascade->floors[floor]);
++	if (ctrl->dmrsl && ctrl->dmrsl <= nvme_sect_to_lba(ns, UINT_MAX))
++		ctrl->max_discard_sectors = nvme_lba_to_sect(ns, ctrl->dmrsl);
++
+ 	blk_queue_max_discard_sectors(queue, ctrl->max_discard_sectors);
+ 	blk_queue_max_discard_segments(queue, ctrl->max_discard_segments);
  
--	bch_free(docg3->cascade->bch);
-+	bch_free(cascade->bch);
- }
+@@ -2948,8 +2951,7 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
  
- #ifdef CONFIG_OF
+ 	if (id->dmrl)
+ 		ctrl->max_discard_segments = id->dmrl;
+-	if (id->dmrsl)
+-		ctrl->max_discard_sectors = le32_to_cpu(id->dmrsl);
++	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
+ 	if (id->wzsl)
+ 		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
+ 
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index c6cd3d65065c8..1a394ab8098ad 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -299,6 +299,7 @@ struct nvme_ctrl {
+ #endif
+ 	u16 crdt[3];
+ 	u16 oncs;
++	u32 dmrsl;
+ 	u16 oacs;
+ 	u16 nssa;
+ 	u16 nr_streams;
 -- 
 2.53.0
 
