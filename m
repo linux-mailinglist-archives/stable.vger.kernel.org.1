@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-242413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCTDBX6c9GloCwIAu9opvQ
-	(envelope-from <stable+bounces-242413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:28:46 +0200
+	id oBZTLZSc9GloCwIAu9opvQ
+	(envelope-from <stable+bounces-242414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:29:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701B34AC645
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A794AC64C
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 14:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8954B302F9AE
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:24:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39B953019814
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 12:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FF43A2560;
-	Fri,  1 May 2026 12:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD47D3A255D;
+	Fri,  1 May 2026 12:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTTzLsLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ypw3DsOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2703A2540
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E642248B4
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 12:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777638267; cv=none; b=oJjTWfwzswK/zLIlULZOwlP/zUqmvI/Q2znnOwDDI1N30TEpAqKw1uzRLvLSzjyr6zqteE1Hd41Eq1w4Ze3fQxYQmAgTbHw9dT0zWUaxxOFR8/0smzlnxHoFnF2ibqeVzL6D/c7dCzUQS9xC3rxhTPSvrCte24EQLLW89FTpra8=
+	t=1777638359; cv=none; b=fE57VRWau/p9/kgp9UuQ99FP3Hy0gK1AvcFXhF4LosOVp5MP2lRflFWL+DZkdtit4FKTrgt1qlswNz/ibFs4YjrfCYz5sRgrSvMLJsOHa2jEV4lDjxihoCsnKWoyucaqEKI+ICUAv/Qpoux2QpvuR+qgS9dXxbUnRnRt6nPZDPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777638267; c=relaxed/simple;
-	bh=1TUB8tS8sj3kSRCdo4wyYFQIPUyrelOMWPP4ca2vJJo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uuEc//p5ZKQ9OFCZj7ryxRt4qsJcmVFl31NeVYYKZDFLZnE7GtELHvUBHyH1v0Af1I/md1AyAu9JO/gnuXU7IKx9/kHSTglYX46UueHsg0meSk2kdYzXuPEc3NBwRlJqGirRnFPguC1F/hso9a/hud36YPCfcuofDq/db10UTW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTTzLsLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2AAC2BCB4;
-	Fri,  1 May 2026 12:24:26 +0000 (UTC)
+	s=arc-20240116; t=1777638359; c=relaxed/simple;
+	bh=BD1njWrFIsRGqlkeaC8LL5NP6MuNJn7qOY+oItqaEFs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mG7xDkxPVt52YvlgDulxJKgPL0L4bvNjbiu5tRjVCXT22Po09nxcRmRPfDNSsXseqW0W2xEHVL+CbErG5U0HYyuVnnn7uQukOaiw7jpJXMF8iSvpGby4BIq7UlpZslb2CXAxY1xwsYtDqG6IA8ksm2nLbou7v3mvWb0WYBHp3h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ypw3DsOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34D0C2BCB4;
+	Fri,  1 May 2026 12:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777638267;
-	bh=1TUB8tS8sj3kSRCdo4wyYFQIPUyrelOMWPP4ca2vJJo=;
+	s=korg; t=1777638359;
+	bh=BD1njWrFIsRGqlkeaC8LL5NP6MuNJn7qOY+oItqaEFs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rTTzLsLIM339JH/rLuBuNYwDiajM/bwVZNt+OIdmz+hjoNLh4wy3Cfn0H7mcvGpUj
-	 CXChXM05ALFJbiX4+Lq87JgnQlmYD+5EsnYm/qYnjBpWP7C77ap0jA0K/Zkb0Unxlb
-	 +SdbW+gwpPqe6d26CBC7W6aYoDqBN8IVYFEtXVe4=
-Subject: FAILED: patch "[PATCH] power: supply: axp288_charger: Do not cancel work before" failed to apply to 5.10-stable tree
-To: krzysztof.kozlowski@oss.qualcomm.com,johannes.goede@oss.qualcomm.com,sebastian.reichel@collabora.com,wens@kernel.org
+	b=Ypw3DsOHIXlwgS1WhzraGaj0e7l1R7Zd9Tq+oIj1cbCj9ZMgDJKH2mC1B2FO2PNck
+	 mkuMQq73bHxpQ8pbdMrs8iIMpRU6c9Ra4PogN1tLMyH2H1aRHkZkTbcqdYUzturd+D
+	 PHdcyGXAQe8of0AcyQODFTxb0fQO+sUFCv17Z6EA=
+Subject: FAILED: patch "[PATCH] hwmon: (powerz) Avoid cacheline sharing for DMA buffer" failed to apply to 6.12-stable tree
+To: linux@weissschuh.net,linux@roeck-us.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 01 May 2026 14:24:24 +0200
-Message-ID: <2026050124-sandstorm-slapstick-e3f8@gregkh>
+Date: Fri, 01 May 2026 14:25:56 +0200
+Message-ID: <2026050156-defendant-fretful-734b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 701B34AC645
+X-Rspamd-Queue-Id: 18A794AC64C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -67,11 +67,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242413-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242414-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -79,27 +79,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:dkim,msgid.link:url]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 658342fd75b582cbb06544d513171c3d645faead
+git cherry-pick -x 3023c050af3600bf451153335dea5e073c9a3088
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050124-sandstorm-slapstick-e3f8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050156-defendant-fretful-734b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,83 +111,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 658342fd75b582cbb06544d513171c3d645faead Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Fri, 20 Feb 2026 18:49:39 +0100
-Subject: [PATCH] power: supply: axp288_charger: Do not cancel work before
- initializing it
+From 3023c050af3600bf451153335dea5e073c9a3088 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Wed, 8 Apr 2026 20:45:50 +0200
+Subject: [PATCH] hwmon: (powerz) Avoid cacheline sharing for DMA buffer
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Driver registered devm handler to cancel_work_sync() before even the
-work was initialized, thus leading to possible warning from
-kernel/workqueue.c on (!work->func) check, if the error path was hit
-before the initialization happened.
+Depending on the architecture the transfer buffer may share a cacheline
+with the following mutex. As the buffer may be used for DMA, that is
+problematic.
 
-Use devm_work_autocancel() on each work item independently, which
-handles the initialization and handler to cancel work.
+Use the high-level DMA helpers to make sure that cacheline sharing can
+not happen.
 
-Fixes: 165c2357744e ("power: supply: axp288_charger: Properly stop work on probe-error / remove")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
-Link: https://patch.msgid.link/20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Also drop the comment, as the helpers are documentation enough.
 
-diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
-index ac05942e4e6a..ca52c2c82b2c 100644
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -10,6 +10,7 @@
- #include <linux/acpi.h>
- #include <linux/bitops.h>
- #include <linux/module.h>
-+#include <linux/devm-helpers.h>
+https://sashiko.dev/#/message/20260408175814.934BFC19421%40smtp.kernel.org
+
+Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
+Cc: stable@vger.kernel.org # ca085faabb42: dma-mapping: add __dma_from_device_group_begin()/end()
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20260408-powerz-cacheline-alias-v1-1-1254891be0dd@weissschuh.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+
+diff --git a/drivers/hwmon/powerz.c b/drivers/hwmon/powerz.c
+index 96438f5f05d4..6e1359144cab 100644
+--- a/drivers/hwmon/powerz.c
++++ b/drivers/hwmon/powerz.c
+@@ -6,6 +6,7 @@
+ 
+ #include <linux/completion.h>
  #include <linux/device.h>
- #include <linux/regmap.h>
- #include <linux/workqueue.h>
-@@ -821,14 +822,6 @@ static int charger_init_hw_regs(struct axp288_chrg_info *info)
- 	return 0;
- }
++#include <linux/dma-mapping.h>
+ #include <linux/hwmon.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+@@ -33,7 +34,9 @@ struct powerz_sensor_data {
+ } __packed;
  
--static void axp288_charger_cancel_work(void *data)
--{
--	struct axp288_chrg_info *info = data;
--
--	cancel_work_sync(&info->otg.work);
--	cancel_work_sync(&info->cable.work);
--}
--
- static int axp288_charger_probe(struct platform_device *pdev)
- {
- 	int ret, i, pirq;
-@@ -911,12 +904,12 @@ static int axp288_charger_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Cancel our work on cleanup, register this before the notifiers */
--	ret = devm_add_action(dev, axp288_charger_cancel_work, info);
-+	ret = devm_work_autocancel(dev, &info->cable.work,
-+				   axp288_charger_extcon_evt_worker);
- 	if (ret)
- 		return ret;
- 
- 	/* Register for extcon notification */
--	INIT_WORK(&info->cable.work, axp288_charger_extcon_evt_worker);
- 	info->cable.nb.notifier_call = axp288_charger_handle_cable_evt;
- 	ret = devm_extcon_register_notifier_all(dev, info->cable.edev,
- 						&info->cable.nb);
-@@ -926,8 +919,12 @@ static int axp288_charger_probe(struct platform_device *pdev)
- 	}
- 	schedule_work(&info->cable.work);
- 
-+	ret = devm_work_autocancel(dev, &info->otg.work,
-+				   axp288_charger_otg_evt_worker);
-+	if (ret)
-+		return ret;
-+
- 	/* Register for OTG notification */
--	INIT_WORK(&info->otg.work, axp288_charger_otg_evt_worker);
- 	info->otg.id_nb.notifier_call = axp288_charger_handle_otg_evt;
- 	if (info->otg.cable) {
- 		ret = devm_extcon_register_notifier(dev, info->otg.cable,
+ struct powerz_priv {
+-	char transfer_buffer[64];	/* first member to satisfy DMA alignment */
++	__dma_from_device_group_begin();
++	char transfer_buffer[64];
++	__dma_from_device_group_end();
+ 	struct mutex mutex;
+ 	struct completion completion;
+ 	struct urb *urb;
 
 
