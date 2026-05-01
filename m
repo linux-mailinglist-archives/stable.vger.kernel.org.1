@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-242425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGAfJBCn9GngDAIAu9opvQ
-	(envelope-from <stable+bounces-242425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:13:52 +0200
+	id kHqYL0eo9GkbDQIAu9opvQ
+	(envelope-from <stable+bounces-242426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:19:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111584AC967
-	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:13:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 690504AC9EA
+	for <lists+stable@lfdr.de>; Fri, 01 May 2026 15:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B4FD301586B
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 13:13:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6444630089BF
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 13:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC417386C30;
-	Fri,  1 May 2026 13:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7FA355F35;
+	Fri,  1 May 2026 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jf6LnEWA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LozZSXGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804CF2248B4
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 13:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FA6285072
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777641227; cv=none; b=TlzElY8PbApZOERFqArb2BR8SIlzZZvzhhinzqVF0O/PKt9lWsT9CMp3r6hAI2mv74PWv5nlmr19IcXXlqUu3n6ciQyhXCVzj9BqN2J7RQDDh8sBfPKjaTj6Gx2LhkfjVCNXd6PBStDvH1xv6xuRKdn5OSTQzr/2feYlo2Vbtw0=
+	t=1777641540; cv=none; b=sos+8DorwUcTJAMq+sS0imnTwDUkfyArg22F/tkQGYJ9fY9ch0eLZh2nIa9cGo8fWPF8mOAuDXnuq9Ef6vzL4K9JALHosleqddMObs1/yq2hNqElyOV5skMoedusRZ57meGdVxCGS6y9SlB4FuOlbcCRexOAzpomrrfA2PckteM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777641227; c=relaxed/simple;
-	bh=BQHAAtXMp9JwNQOsg/qpBmseiH6npvTAPx94EKaZqQ0=;
+	s=arc-20240116; t=1777641540; c=relaxed/simple;
+	bh=p47eQOiLjEYJnkJpsjgabXWThQjkxRbY63B9AUUNHuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8n/87/iLqfvg7mRdvc984JK6ifau264PA3KaZcrT7VL7hBcRVSfpQ2PMSv/NShNpDTyeSjeJ+rmsqAFWwju1s7EjzJVZdwtel9b5yjHomFstJkcIPpVF4Pq4P4A3fjhxTd/5Nat1zHqNufGQg26qRxM6SK2Fd/9wEo2d4YpZq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jf6LnEWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBE7C2BCB4;
-	Fri,  1 May 2026 13:13:46 +0000 (UTC)
+	 MIME-Version; b=GWoi2bEr36zzwbHLWpUpmeTFtnTvtF6cWNuv2ev0cZ/VhnEVcZpw5/kLZGRCKpq1vmLEKU4GmCjPMfMxFEdZ4MS+vpZM6sXQhI9G7t0jMLGy9Thcf92juBRkklJBtQSYE0bIr33wQrb17EMDMCZrqdI2pbx5h5byRvZM81Ovdpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LozZSXGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC083C2BCB4;
+	Fri,  1 May 2026 13:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777641227;
-	bh=BQHAAtXMp9JwNQOsg/qpBmseiH6npvTAPx94EKaZqQ0=;
+	s=k20201202; t=1777641540;
+	bh=p47eQOiLjEYJnkJpsjgabXWThQjkxRbY63B9AUUNHuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jf6LnEWAcEBq6GmBja1XdQtdxFDprLvoHFTYuKvOcicNYsCVNIDQJ+rct2eQXTHsg
-	 pfTRmXHvGuuoo+nIbnOuPg7DysbypA2kyJNy8PKvq4rH+VR632W0eV48XwyBWkU699
-	 iMXd4oFKOCof13zJRwRABC4nP/rEq8zJvv4HJBBSybYGQamPGPGw/Z9T0i1naPIcDo
-	 +wOOBlUqNt7dT28UBhXmYqPV1Yg1XN41OTgSKB9lp7HNSmm67kcRQHlpn2NmRGvEpr
-	 X8aqPFB5TgFCYZzDihSIF8QDp9A5HnXbGhGLDLyDb0QgQ27MW14wNYZKv6lKcKEYEt
-	 8wA27v6GM+0cg==
+	b=LozZSXGsDqpu0A4xuJ0hE5dqWdHPdtAmQkd/XWaHSLPpoVI5K9FjQfmYbDP/sE17A
+	 7oXmGKJfC1QQLTSbWFBkvmTKsQi1e+Ns63R0RUa0visu32MiTz2WzB+O8SxcVlTujk
+	 O8sjjUGWobfsPVvBOeZXxeJ3ymP+5mACf1dCKbmhBgzrRDIUbWqwVkAaZ/+XC+dcrl
+	 wccEM801xmr80F/FyYJuPpqM7J1byTD+0Fy28qV5wG7+ybARMPy5Uo2ygj8c4CO/pZ
+	 BI4nKByaXQwFHkzIEhQiD0d6p8xKzkxLOJg61oAiYCGK5x7ULeI2exWVME/CErlwdN
+	 frJ7NZom/09/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Daniel Hodges <git@danielhodges.dev>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+Cc: Ronak Raheja <ronak.raheja@oss.qualcomm.com>,
+	Wesley Cheng <wesley.cheng@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] PCI: epf-mhi: Return 0, not remaining timeout, when eDMA ops complete
-Date: Fri,  1 May 2026 09:13:44 -0400
-Message-ID: <20260501131344.3233285-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] phy: qcom: m31-eusb2: Update init sequence to set PHY_ENABLE
+Date: Fri,  1 May 2026 09:18:55 -0400
+Message-ID: <20260501131857.3242270-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050137-lesser-shaping-0e62@gregkh>
-References: <2026050137-lesser-shaping-0e62@gregkh>
+In-Reply-To: <2026050131-exfoliate-garter-519b@gregkh>
+References: <2026050131-exfoliate-garter-519b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,88 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 111584AC967
+X-Rspamd-Queue-Id: 690504AC9EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242425-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242426-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 
-From: Daniel Hodges <git@danielhodges.dev>
+From: Ronak Raheja <ronak.raheja@oss.qualcomm.com>
 
-[ Upstream commit 36bfc3642b19a98f1302aed4437c331df9b481f0 ]
+[ Upstream commit 7044ed6749c8a7d49e67b2f07f42da2f29d26be6 ]
 
-pci_epf_mhi_edma_read() and pci_epf_mhi_edma_write() start DMA
-operations and wait for completion with a timeout.
+Certain platforms may not have the PHY_ENABLE bit set on power on reset.
+Update the current sequence to explicitly write to enable the PHY_ENABLE
+bit.  This ensures that regardless of the platform, the PHY is properly
+enabled.
 
-On successful completion, they previously returned the remaining
-timeout, which callers may treat as an error.  In particular,
-mhi_ep_ring_add_element(), which calls pci_epf_mhi_edma_write() via
-mhi_cntrl->write_sync(), interprets any non-zero return value as
-failure.
-
-Return 0 on success instead of the remaining timeout to prevent
-mhi_ep_ring_add_element() from treating successful completion as an
-error.
-
-Fixes: 7b99aaaddabb ("PCI: epf-mhi: Add eDMA support")
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-[mani: changed commit log as per https://lore.kernel.org/linux-pci/20260227191510.GA3904799@bhelgaas]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206200529.10784-1-git@danielhodges.dev
+Signed-off-by: Ronak Raheja <ronak.raheja@oss.qualcomm.com>
+Signed-off-by: Wesley Cheng <wesley.cheng@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20250920032158.242725-1-wesley.cheng@oss.qualcomm.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 520a98bdf7ae ("phy: qcom: m31-eusb2: clear PLL_EN during init")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-mhi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-m31-eusb2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-index 87154992ea11b..e5a7d1735649a 100644
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -331,6 +331,8 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl,
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
+diff --git a/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c b/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
+index 0a0d2d9fc8464..95cd3175926d5 100644
+--- a/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
++++ b/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
+@@ -25,6 +25,7 @@
+ #define POR				BIT(1)
  
- err_unmap:
-@@ -402,6 +404,8 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl,
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
- 
- err_unmap:
+ #define USB_PHY_HS_PHY_CTRL_COMMON0	(0x54)
++#define PHY_ENABLE			BIT(0)
+ #define SIDDQ_SEL			BIT(1)
+ #define SIDDQ				BIT(2)
+ #define FSEL				GENMASK(6, 4)
+@@ -81,6 +82,7 @@ struct m31_eusb2_priv_data {
+ static const struct m31_phy_tbl_entry m31_eusb2_setup_tbl[] = {
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG0, UTMI_PHY_CMN_CTRL_OVERRIDE_EN, 1),
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_UTMI_CTRL5, POR, 1),
++	M31_EUSB_PHY_INIT_CFG(USB_PHY_HS_PHY_CTRL_COMMON0, PHY_ENABLE, 1),
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG1, PLL_EN, 1),
+ 	M31_EUSB_PHY_INIT_CFG(USB_PHY_FSEL_SEL, FSEL_SEL, 1),
+ };
 -- 
 2.53.0
 
