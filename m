@@ -1,89 +1,93 @@
-Return-Path: <stable+bounces-242542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMI1MqIu9WknJQIAu9opvQ
-	(envelope-from <stable+bounces-242542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:52:18 +0200
+	id mIRFKqgu9WknJQIAu9opvQ
+	(envelope-from <stable+bounces-242543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:52:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332634B0179
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:52:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438074B0180
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 00:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 852AF301993E
-	for <lists+stable@lfdr.de>; Fri,  1 May 2026 22:51:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 364C8301E599
+	for <lists+stable@lfdr.de>; Fri,  1 May 2026 22:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D578037CD48;
-	Fri,  1 May 2026 22:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B1537D13B;
+	Fri,  1 May 2026 22:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AVcdqueX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BcaDPRqA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B73A36D9F1
-	for <stable@vger.kernel.org>; Fri,  1 May 2026 22:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D4237C924
+	for <stable@vger.kernel.org>; Fri,  1 May 2026 22:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777675918; cv=none; b=puM1b5Zag3w3o1QHUwlSPNUFUNoOq79qoUOfkhCTxKNwM/kn0WI9rYXh185dKjtF7yPgx9YOZ11At1gAZl518alE0Qj4NdGeHgo6RYFyIb3vv6J9bxbdB2SOMXwCGwL5JhyKETT2WQPj10jucHrixc/xBeRLpuoRCeJwIkG4T8k=
+	t=1777675919; cv=none; b=Ebb98vZFxYxXALviIvC92D2btO6xaAFDX+AbrJ2ZyFMH4b1bNVogXYY6Kvw2XPrj2VUPijZLDtrJdJALtOQE0CmmFLHee9CJUfCXRVpuTvUQDXTMTR7lfE1ehDjHMHcJhSRiqLyQVFegVuhBB4ZMWxww23WH/EZ9BZKHX10VdQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777675918; c=relaxed/simple;
-	bh=tnJHWk4nf2mYfKUuV5x/4sxYrJMv68q5OStwMd5/TRU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Famsu4E3efwzaUFSj5apENDMFrm0WvIaECgE9jNxHrIxwgFEOBgAIuyItvgg7mvaiYyDFpnslXKFTXBY7yXeSZgnmtF+5qnCMV0Xx1krHDQIkPpiAxwuuc/i7I9GdfC8xXawQ4Y0JLMwqVSizjbKd6G8TJwDBJtbZHJ8yAMTtgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AVcdqueX; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1777675919; c=relaxed/simple;
+	bh=sj+0TveqgFbria1WecUz8+lNLyXt3YQquh2jnrnlr9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TV2h6lYJTCCqZnICj94PbJnKuWujsroK1xuEBA88uE8F+uxiQ0f+xMpFHqoAQM7O7KKx9mqhW6PtgMakyDyZ8Q5rCoQH6eqPPjZ+4JJFPxOTVuN2CaVrx/5Qtjl9wFtBypMPDwYcSzJJEt57QX704VGc9eE3B24uplq0WeNNiqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BcaDPRqA; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43d75312379so1939091f8f.1
-        for <stable@vger.kernel.org>; Fri, 01 May 2026 15:51:57 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso26293715e9.3
+        for <stable@vger.kernel.org>; Fri, 01 May 2026 15:51:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777675915; x=1778280715; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J1+oq8yG/702XyhqprRUDciM6mgbO37f+hUJLoyTzWw=;
-        b=AVcdqueXQRRyEptaEhBGt2KYkYPjwDLjylWfJ8GJj9H6p6z+y7n/mA0qSpgzRlX7/F
-         XaeLHQ7r3sjvXRA20/Hkb1Ji7RdIqvii47c72B+NUuYfGSfmMgxZ0h3NuYRRDn56zprM
-         qRLGbnEq08Sjcv0He0hxqcm6ofgXx8xQQyI/BBT06pKMkeMrlwNWEzxokZhvoWzoBWhX
-         N/ApV4ioT2qWGwyK0gdiHxD4EPfin5WLLiCjewWAokR9tHLiTKJvnnqn50kRZkFD0gHg
-         KUcr5jwpyd4s0OSVF8lGLxNFFhZVFgTmCqiI7GLoahpQqYj0e3Prl7Pthd5WDmNk1Swd
-         Frzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777675915; x=1778280715;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777675917; x=1778280717; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J1+oq8yG/702XyhqprRUDciM6mgbO37f+hUJLoyTzWw=;
-        b=tZF5msznYm1VnIjg3YDFYgC2AufkV1I0p5N9rC/dQUtxDjyq357JA32k4UFjIz1I3G
-         unCaz1vuQDAYEny8W/+MHaJsnkmZI1xBbpXVSze/rCFbbbIAiDO1WhjTkWySeC29rpQa
-         T1YxSl10h9A1MhpHedpRQZwXdVg51vu6UPRNWcBOxsx062mw/45NYSeK9dgtEXP7COZt
-         j63SU98AVyUT0mv1XfXIwfJz7KcIpz7E2ptOOY0m4lOEAekyd3s7HLerFb/BUdDXXdj1
-         MoxcFVqwUiGzPNkFsl3Z9dUX0XIY2VYj/6HOoN6dNPFRSj00qSv4MeWAjeQlW/DNSs87
-         Qfaw==
-X-Gm-Message-State: AOJu0YwCLvIVnB6lhs/0iBFmk8NrG6QrgjabGNj8M/I5cADzuw//KvyK
-	UMaDDAkp2VsOX2Mi/ngos0ntS+JJoPB5E/bVpwcHLWnZhMASHWAB+hwZfMNoNt3E
-X-Gm-Gg: AeBDieuHkA01wBQ+j+WgO8sGfLUpkgEXWJd+P00UrF4ranMsrQ6AGjkeOaBnOsI6Kuc
-	VzKKXxIGHpERfBJ4JaQHlZsQVGSB3uWU+OkPPiQ4zD35RV3G5OoFQTUMUWBhkRyIUVy3W6NMtSk
-	fgZnkfPvFnCxj1c6QnIDzyNNiOZWH7oXJUmvhzNHZWh3RjMZorBaPe4zX9o8x/fBojC2Eu+GJhS
-	Fbe7MFj+J46ukZg9z2RL93ISPx4eP2dbgY5yh0jnApDMz/9imVwYBHrcBHeMAwWxjffS/4Yr0S6
-	bycLa4g+4hpDGfl6ScCeNWzfx3LgforiLwO9BSDdPZrrrw6mrL2Ho6WvRyKVwkiTrjvGuGpH51J
-	UlnV+xxxQc0Xl0ezbz2K2EysK4IU1TE33eQyZbLDfwH0747+WfD3FTQhmDgwneeaRUhSeuQLquQ
-	M2Q+kUHBa2GkbWaw5UenRVzJ9+oUNy+YpyQXgTeAB1Dgtm8uTMdn+xQC2v9mN+4aKxrpunm4A0I
-	bkjuUTJK++cvyc3Rz4GEhUY3IKpSFHr207A
-X-Received: by 2002:a05:6000:2103:b0:43e:ab40:28d with SMTP id ffacd0b85a97d-4494dc52adbmr8406170f8f.2.1777675915356;
-        Fri, 01 May 2026 15:51:55 -0700 (PDT)
+        bh=gwNDW+V2ZInjYz2679mwWIRItMIlkpJfBjr27qXLa8Y=;
+        b=BcaDPRqAJprjabvBPa/5BvjjlFoy/dYedfKc7LRO7Wy3ok0CDJPqvZ7z7Wu97uVRUs
+         DUAznbWzZ+VCo6032MIFtSi7ekTkYliIeb7FWGHKr9E8TDyj3XNg3FXE9u44AjFuGURI
+         R90PmCWFtTYM5Q3ptKQWxxt9k6TXu0hwfCz3AzvR86mKds+3lCacZXWovfxfOHwLObQ2
+         UqjkIO+PYAwFsxcTYWpvkEwKXsJoBAyddscHkVEIWx95+k9vWvw4Oi9ubAa2PYJLAXmd
+         1dnowyhq3EztmjmKWm6c9lA3fWNE8Y2OdbjfZHtrFRCAX+7aK/b5wDwsToskcqGavj3j
+         w4wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777675917; x=1778280717;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gwNDW+V2ZInjYz2679mwWIRItMIlkpJfBjr27qXLa8Y=;
+        b=NLx5ePbbKGllYLQAXMVqCSV2/eVQmH6e5lOTvrDToLRGi2NrcWrd4MCOXxvCcF1jKI
+         D0aPjA4wSdyYo/MzpsOsPiT7Ix6RYZP9ITspTgooUBgMvdgoHL0OdjgY+Wp6Ovu2cMJS
+         uND7SxlMSxCazYYV2nI/g4LnBgy+AGN2KxQ7hl9Hlf7V9MlLND1vriur2SeMNk6gbuKC
+         FZ6htpwfPQTp79mPDeMSdE7eAnVj1oN+2PLRHbn7g2Vug2IMsETvI1b6X2YMI8iaBUa8
+         dzECB1XtbfD1chTrqNH4XgvEzSvlPDaFvyP/aJK68uqJWbtXVflCxfb7LWQG+HvPHJoW
+         lGAw==
+X-Gm-Message-State: AOJu0Yxp0yQUyGzIw7aMegvTjNVWHejcBvjFfiHSNsAwgxkrVIgBsHc7
+	LC7A2MdkNrUT2H0SC2BB4XQgelZFjEG6YUzwS6Ig1TL23rM6I6rCRpnN7ucrOY2L
+X-Gm-Gg: AeBDietQAeaZKzq02H2egrvZQb84a4Bg2PQE/RyVT8TfV6OfAIPQMZU+HILY2IMNZtK
+	4SrRBSM/OsRAKk1sT/eJr+MrVnUw2B8HoNf1fofCqXYYEWC1dSMQV+fSEwb1tycGYgTZ/Ug6eB+
+	HX1j2BuYVUK9+GmOSmrQgHz0NOOrpx18kL20mt82EI12Q691aMAzENg6AAE4Ddincnlzufp3yVk
+	TTOq8vngB4EvDHEJR8gvuREYUo4ZW4Y/thFqrhHIz7tptvYjGhEjHA1ojOMRxw3YFOCi+ouAtLr
+	hVrb8yxBvc1E6BZYkU26uyY/CcCa/ahhB3aUSf4LMmck7d0w/0zvuY972N/lCzFvDNxGHIh8ymb
+	7KXmNj7QCDdUAboHV1Wzp5PeA64XwYbhRUgBQnzA8annzff4fcXJ3DuCKdx2kk18fKqiyPXHrdB
+	VY1/IJ5Bn53ssb1+4UUDP3mldYLcDjMO6UIQoPlcMNYqGh6qr4VGMSmBFlYROIkxiY+r9myJvdV
+	hswAKMOzblhJGoeitL3eCDT4g==
+X-Received: by 2002:a05:6000:40c7:b0:43d:6787:992f with SMTP id ffacd0b85a97d-44bb37c7fabmr1783295f8f.10.1777675916470;
+        Fri, 01 May 2026 15:51:56 -0700 (PDT)
 Received: from localhost.localdomain ([77.124.36.154])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b76fd0sm8040341f8f.35.2026.05.01.15.51.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b76fd0sm8040341f8f.35.2026.05.01.15.51.55
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 01 May 2026 15:51:55 -0700 (PDT)
+        Fri, 01 May 2026 15:51:56 -0700 (PDT)
 From: Kai Aizen <kai.aizen.dev@gmail.com>
 To: stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org,
 	linkinjeon@kernel.org,
 	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org
-Subject: [PATCH 6.6.y] ksmbd: add chann_lock to protect ksmbd_chann_list xarray
-Date: Sat,  2 May 2026 01:51:50 +0300
-Message-ID: <20260501225152.90136-1-kai.aizen.dev@gmail.com>
+Subject: [PATCH 6.1.y] ksmbd: add chann_lock to protect ksmbd_chann_list xarray
+Date: Sat,  2 May 2026 01:51:51 +0300
+Message-ID: <20260501225152.90136-2-kai.aizen.dev@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260501225152.90136-1-kai.aizen.dev@gmail.com>
+References: <20260501225152.90136-1-kai.aizen.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,14 +95,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 332634B0179
+X-Rspamd-Queue-Id: 438074B0180
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -107,10 +111,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-242542-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242543-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
@@ -133,20 +137,19 @@ multi-channel sessions (between lookup_chann_list() and ksmbd_chann_del).
 Adds rw_semaphore chann_lock to struct ksmbd_session and protects
 all xa_load/xa_store/xa_erase accesses.
 
-Backport notes for linux-6.6.y:
-  - File paths and surrounding context are identical to mainline at the
-    time of the fix.  The xa_store call sites in
-    ntlm_authenticate / krb5_authenticate use the older form
-    `xa_store(..., GFP_KERNEL)` rather than the newer
-    `old = xa_store(..., KSMBD_DEFAULT_GFP)`; the lock-wrap is
-    structurally identical.
+Backport notes for linux-6.1.y:
+  - The smb client/server consolidation has already happened by 6.1.y;
+    file paths are fs/smb/server/, identical to mainline.
+  - The xa_store call sites use the older form
+    `xa_store(..., GFP_KERNEL)` with no captured `old`, but the
+    surrounding context for the lock-wrap is identical.
 
 CVE: CVE-2026-23226
-Cc: stable@vger.kernel.org # 6.6.y
+Cc: stable@vger.kernel.org # 6.1.y
 Reported-by: Igor Stepansky <igor.stepansky@orca.security>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-[backport for linux-6.6.y, verified 2026-05-01]
+[backport for linux-6.1.y, verified 2026-05-01]
 ---
  fs/smb/server/mgmt/user_session.c |  5 +++++
  fs/smb/server/mgmt/user_session.h |  1 +
@@ -181,7 +184,7 @@ diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session
  	if (!chann)
  		return -ENOENT;
 
-@@ -451,6 +455,7 @@ static struct ksmbd_session *__session_create(int protocol)
+@@ -417,6 +421,7 @@ static struct ksmbd_session *__session_create(int protocol)
  	rwlock_init(&sess->tree_conns_lock);
  	atomic_set(&sess->refcnt, 2);
  	init_rwsem(&sess->rpc_lock);
@@ -203,7 +206,7 @@ diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session
 diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -80,7 +80,13 @@ static inline bool check_session_id(struct ksmbd_conn *conn, u64 id)
+@@ -79,7 +79,13 @@ static inline bool check_session_id(struct ksmbd_conn *conn, u64 id)
 
  struct channel *lookup_chann_list(struct ksmbd_session *sess, struct ksmbd_conn *conn)
  {
@@ -218,7 +221,7 @@ diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
  }
 
  /**
-@@ -1559,7 +1565,9 @@ static int ntlm_authenticate(struct ksmbd_work *work,
+@@ -1567,7 +1573,9 @@ static int ntlm_authenticate(struct ksmbd_work *work,
  				return -ENOMEM;
 
  			chann->conn = conn;
@@ -228,7 +231,7 @@ diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
  		}
  	}
 
-@@ -1652,7 +1660,9 @@ static int krb5_authenticate(struct ksmbd_work *work,
+@@ -1660,7 +1668,9 @@ static int krb5_authenticate(struct ksmbd_work *work,
  				return -ENOMEM;
 
  			chann->conn = conn;
