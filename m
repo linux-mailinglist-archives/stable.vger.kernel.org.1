@@ -1,90 +1,60 @@
-Return-Path: <stable+bounces-242592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EH2ENAbX9WmyPgIAu9opvQ
-	(envelope-from <stable+bounces-242592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 12:50:46 +0200
+	id yHMrOejg9Wm8QAIAu9opvQ
+	(envelope-from <stable+bounces-242594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 13:32:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704D04B1B35
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 12:50:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEAFA4B1CEF
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 13:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 226433015732
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 10:50:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 034933003BC7
+	for <lists+stable@lfdr.de>; Sat,  2 May 2026 11:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86ECC33439F;
-	Sat,  2 May 2026 10:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1122A337107;
+	Sat,  2 May 2026 11:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qLTFQYUI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzm3rxP0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE3F30EF7D
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 10:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C988830E84A
+	for <stable@vger.kernel.org>; Sat,  2 May 2026 11:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777719033; cv=none; b=euMP1NdELpL9DdR1c9dvcFwWM6mErgwr7xcEl9HwPAEE9Kvm9Thr+c59ohUyGnIHoCTs6YoylcD1xcJ08AnTqex51VQzOKWmLcagev1bJejSj6z0mzKcXOIfCt8+/NDhBCeaQtV5+la4jCsB76RtcOz6GCR8O2MT7OeUYtk6n6s=
+	t=1777721570; cv=none; b=s+9WGrY8S/GkuAZYm7sGkh6Fqf3DYKYYcxVKS4AcgEaRDCX2IsBYn2GvHD/w+5ZvhF+NxJhjbYlDSfRhBkZCRsxR6I7fkzsfDYJxxoR6AMcN3UELzaJ0BTur45ztVLIsHKZ8MJBkVueB+1bfDSKYPxKFUQ4f6WMQPsC9LPQj818=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777719033; c=relaxed/simple;
-	bh=T0LW7yB+RCgEQIoEqn/+YxOuIPaN4zMuZoZmeMEwP4I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fytJpfyA8q3TqqV6YOnmZhygpMV12oRoBaCsNb9y6C/9nLz90rhBwaca0PsUFteH9nN6E0rs7BbQFBMG0AlC9QlhG30oRTNf15LEygLQWzmW2m53byoPKfENdv8d2rKxONQxFEmxfdHgBJZEaYgbfUAk6ef69rFAvJf7QvH6j+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qLTFQYUI; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35fb262f92cso623510a91.2
-        for <stable@vger.kernel.org>; Sat, 02 May 2026 03:50:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777719030; x=1778323830; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ExtEosiCiZz24wtaV6XMqbxMv7x6yLKAIrTwUeohUmY=;
-        b=qLTFQYUILhckXeJPwZQz3bRQZqdrUPr1R7CaQIzkjTVKO5e1t59qNtmxO93CFynsZk
-         BP2uY65hHHK3D0mjg5/JUhYar9ABGc2t4Af7O4Ob0lF3syHLwPRZWclM1XPgEUpuuGHi
-         phXp6P+A1kLNWiz9Z4A0FQlTkgd4uutYL1us+gYMVjZCSX5Iy6u/CvpZb3xWtF9/7lq/
-         09/562JFFk6+8DbT2sqgf67BF++6CA88yEyUQeUgb3fluxWk2CGbyt1w6EsjFUt0I3qq
-         2ibRi67Bjb8Mw+UnlrFkK5CATWeWyMNzcvTsAZjdzMHTdVcHfJmgIpLw0HXksoRcRKTE
-         RoUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777719030; x=1778323830;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ExtEosiCiZz24wtaV6XMqbxMv7x6yLKAIrTwUeohUmY=;
-        b=sYlqxsdTyQqwjCZOdMuddIujhWW9ecNnirwguVmZNk69W4ne5xG3kp4Avg/TYC7EZV
-         aVvoFSlJ61FbvcISu2mTyHqLbMYgLaU9XD9YnOPywo+/yxiZJQnCD24tuz1AlINi9hh5
-         y/L89yvhOZ2FxdRe1toyjDXA82birGT9AjhH8fJLsMhlnt28XCVyjZQOaPx/AHr/ZU3Q
-         IAj+13QdweUlhtWtrnx/CNvIbDo4Mjz8150JsYq7sRhr9++SG711BTiPleDVkuzK1YSm
-         Rz0zQ2ukxO9+LGIyZr8DgjmVikUovLVvsXYWRb2cZJCmkCVu+m7l785uVLOoutC5/nbe
-         JQAw==
-X-Forwarded-Encrypted: i=1; AFNElJ/ocoTFzbdCii6ib03iRWQKT3gtkUDfTQQ35VSYWTUmeZTFT79XTOGSX4UP1+u4pdWtkyKZNFQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYxXX7BMJw/2R0bTtXLCBDB/pLJ4n9yRId28rEKksjsfmX2kMR
-	ywsfNDi+IofOI0RaIQV88Qke4MrKiDdLrR9d3D32AScHcZPCyKcrIW07
-X-Gm-Gg: AeBDietqOp38IOZegX7ihrOvXrlR8Q4Pu/vmoO+q9/y5dwImT/74kWL7FS49DyKxnPf
-	k9j47ySc1F+r5mfZFW7FUeBSdKxjnouUpkxYpkZwZN0CnRtU6L4oFLMQ+sTaV4vF5sFlBi4RiLY
-	+sBQJZCir/6dS8YLmzu5jVg4F7RcAAc7gzn9KOEUB7Dc+uruZYc3RbrNeGp8VZEjJr95al0/6xF
-	9/zQqumuZmOjtjxVJMvosT0ws6DOtKzUJuR7y9qg433dmm5jA/ywH1OhYWw/XeavOrKekg875tu
-	c8+VbwdYxIfRhAftjyrZD+mEzltYLl7YyJNWWpVTzhU2WdiXOoUV+B8eV2JhLPeDkcIUMg2RIwP
-	N5iIbBzWslqEEaELWo913nUP2puiw0ZSFTwtXsiimHgOmoz9xyVfKYSBXK4/rd/Ji2icblKD73H
-	URgD992rNE8tt464I/sgFOZ4d5ERZo
-X-Received: by 2002:a17:90a:d407:b0:362:be3b:c8d4 with SMTP id 98e67ed59e1d1-3650ce10197mr1415546a91.3.1777719030297;
-        Sat, 02 May 2026 03:50:30 -0700 (PDT)
-Received: from kali ([103.195.202.195])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7ffbbbf298sm4482616a12.13.2026.05.02.03.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 03:50:30 -0700 (PDT)
-From: Pavitra Jha <jhapavitra98@gmail.com>
-To: almaz.alexandrovich@paragon-software.com
-Cc: ntfs3@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	Pavitra Jha <jhapavitra98@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] fs/ntfs3: fix Out-Of-Bounds write in log_replay() via unvalidated data_off
-Date: Sat,  2 May 2026 06:50:07 -0400
-Message-ID: <20260502105008.21827-1-jhapavitra98@gmail.com>
+	s=arc-20240116; t=1777721570; c=relaxed/simple;
+	bh=CzOIK8yr0Ox4/96sOMfnWlZ9FE1gbFS4FyUF19xstqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m2FNxOnSX+LEo0lvbUkb5LeIVAQAAChAXd1axvsXCxvZxHQ3OFBRwhN6cMN+qFJFaFIoU9YB0Y7aMSfw5oQ891iU+Ydb0o+Fn45dn1LveIN9KH9H8eCiur/fh7shMlyFNbesJ0mVZ7gEqwYkPIYIUHo6gsTXwPb/rDTw+yhHfAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzm3rxP0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8FCC19425;
+	Sat,  2 May 2026 11:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777721570;
+	bh=CzOIK8yr0Ox4/96sOMfnWlZ9FE1gbFS4FyUF19xstqk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kzm3rxP0LvJ8hcZwogw1iDSARHxPabC5SYq5zAxMeV0CpcPRehSB9BIgOhiXlGYu0
+	 luuqYypf+QLDDzPGRilANU7B7WpUilLyHnouGmRnzvz0QCAMmFR+CMMXGicBareEEW
+	 xSgF+VU1+k/Yv3oNZVg4npVbHkNqbCLq8RsdWY3pRuUSP5jS4EOV8mrJ3/SFvBwG0U
+	 A3+OMmXNl2HWYQNnBU8tlITtEo22/kEgAyF3gYb9qDD6+hV6eSP2vR6ACMhpbkubii
+	 LHB/EomZX0rPWtUVc20TqySoa1NOhkbXaADyFwkKMZI+dlPClTt8svQNv8b+U4B1jt
+	 aaRQNj5+va1LQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: James Kim <james010kim@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] mtd: docg3: fix use-after-free in docg3_release()
+Date: Sat,  2 May 2026 07:32:48 -0400
+Message-ID: <20260502113248.404359-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050109-veal-endurance-5d34@gregkh>
+References: <2026050109-veal-endurance-5d34@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,90 +62,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 704D04B1B35
+X-Rspamd-Queue-Id: CEAFA4B1CEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linuxfoundation.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-242592-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,bootlin.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-242594-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-log_replay() applies UpdateRecordDataRoot and UpdateRecordDataAllocation
-redo operations using a destination pointer derived from the on-disk field
-e->view.data_off, which is a 16-bit value read from attacker-controlled
-filesystem data:
+From: James Kim <james010kim@gmail.com>
 
-    memmove(Add2Ptr(e, le16_to_cpu(e->view.data_off)), data, dlen);
+[ Upstream commit ca19808bc6fac7e29420d8508df569b346b3e339 ]
 
-Neither check_if_index_root() nor check_if_root_index() validate
-data_off against e->size. A crafted NTFS image can set data_off to
-0xFFFF, causing memmove() to write attacker-controlled data out of
-bounds of the NTFS_DE entry and its backing allocation.
+In docg3_release(), the docg3 pointer is obtained from
+cascade->floors[0]->priv before the loop that calls
+doc_release_device() on each floor. doc_release_device() frees the
+docg3 struct via kfree(docg3) at line 1881. After the loop,
+docg3->cascade->bch dereferences the already-freed pointer.
 
-The same unvalidated pattern exists in UpdateRecordDataAllocation.
+Fix this by accessing cascade->bch directly, which is equivalent
+since docg3->cascade points back to the same cascade struct, and
+is already available as a local variable. This also removes the
+now-unused docg3 local variable.
 
-ntfs3_bad_de_range() already exists to validate data_off and dlen
-against e->size. Call it before each memmove(), bailing to dirty_vol on
-violation. This mirrors the fix applied to DeleteIndexEntryRoot in
-commit b2bc7c44ed17
-("fs/ntfs3: Fix slab-out-of-bounds read in DeleteIndexEntryRoot").
-
-Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
+Fixes: c8ae3f744ddc ("lib/bch: Rework a little bit the exported function names")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Signed-off-by: James Kim <james010kim@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/devices/docg3.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 272e45276..c0237f7d0 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -3487,6 +3487,9 @@ static int do_action(struct ntfs_log *log, struct OPEN_ATTR_ENRTY *oe,
+diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
+index fa42473d04c1b..378239c7513e0 100644
+--- a/drivers/mtd/devices/docg3.c
++++ b/drivers/mtd/devices/docg3.c
+@@ -2042,7 +2042,6 @@ static int __init docg3_probe(struct platform_device *pdev)
+ static int docg3_release(struct platform_device *pdev)
+ {
+ 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
+-	struct docg3 *docg3 = cascade->floors[0]->priv;
+ 	int floor;
  
- 		e = Add2Ptr(attr, le16_to_cpu(lrh->attr_off));
+ 	doc_unregister_sysfs(pdev, cascade);
+@@ -2050,7 +2049,7 @@ static int docg3_release(struct platform_device *pdev)
+ 		if (cascade->floors[floor])
+ 			doc_release_device(cascade->floors[floor]);
  
-+		if (ntfs3_bad_de_range(e, dlen))
-+			goto dirty_vol;
-+
- 		memmove(Add2Ptr(e, le16_to_cpu(e->view.data_off)), data, dlen);
+-	bch_free(docg3->cascade->bch);
++	bch_free(cascade->bch);
+ 	return 0;
+ }
  
- 		mi->dirty = true;
-@@ -3679,6 +3682,9 @@ static int do_action(struct ntfs_log *log, struct OPEN_ATTR_ENRTY *oe,
- 			goto dirty_vol;
- 		}
- 
-+		if (ntfs3_bad_de_range(e, dlen))
-+			goto dirty_vol;
-+
- 		memmove(Add2Ptr(e, le16_to_cpu(e->view.data_off)), data, dlen);
- 
- 		a_dirty = true;
 -- 
 2.53.0
 
