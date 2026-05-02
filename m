@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-242580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IemRMnVp9WnkKwIAu9opvQ
-	(envelope-from <stable+bounces-242580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 05:03:17 +0200
+	id qJ9eO3Zp9WnkKwIAu9opvQ
+	(envelope-from <stable+bounces-242581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 05:03:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5424B0BC7
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 05:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C59E4B0BCE
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 05:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9799830182B7
+	by sea.lore.kernel.org (Postfix) with ESMTP id B605B3019183
 	for <lists+stable@lfdr.de>; Sat,  2 May 2026 03:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A712C21C4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53F92C3257;
 	Sat,  2 May 2026 03:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IfdC1xmE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZnbe85Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668751DD525;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DED1DF254;
 	Sat,  2 May 2026 03:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777690992; cv=none; b=I3g8dWEOjKgFbydE4exarr8w4p7AXDPX3NDeLfUB8iffhMfx3j5EIKYem77HPvLOwC1FdDdSrQhks/UX9h6kmoRrGKTV5wWkCT/X0ouZf1XSY94zcos3Sqmr0H2WeVofbG68leS+H2mFrZqQ/Z1hIokp5JbHWA860mj/d7toH8I=
+	t=1777690992; cv=none; b=JpfAMuXDbAd3EIHxQoeDcZHvLFPgvTgMbVSDOj1t0zqSw+weX4i3zTUrzJMOoRxrpe0dTiKVAz7FwaPTk5QIKwC7R0I8vPXQuNkLC/2ncTzM108eSMJv6ATaeR/3HWutnlr1ceOxUO7qzf2l2zJhGFK8+500zTX01sko+rRLZa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777690992; c=relaxed/simple;
-	bh=DkVXAVtci6HZK/4C+c6Uw3FjYfJRWS/pb+WUKadHw9o=;
+	bh=j83UTaRXI02JJLNVmbvlpCUXJZPlMChkl8adf2Y/198=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEwTHn5KVlLw36kBYqOeJI6d8N8VkpXi6WIKAzbRZx5TcTCy+umSw9t2pmOY4dsGQCzqJSd97xkRKEdjH0Tdylvm+xcf4AnBUD/gJusznF4fbPbAetNYatq+vPJirjd79jGVtNyS66ZiO71YbeSsIVWWq9JZpWopyQugXPmcvFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IfdC1xmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF07DC2BCB4;
-	Sat,  2 May 2026 03:03:11 +0000 (UTC)
+	 MIME-Version; b=LlFUCPfjxAsDMNriG6uMJHicdAGz3FCpsx5YNqCpcDicMU7A25K+IYgmAFbbK5kasjVtANaq8f9UqYvM5cCsv5HgSf7rQTTcG4zJbq1IxnEjQoeqGBsVN3jqllRaO7IERNGarp2zCWY/xEXb6IfmDjb/51FBwYR5g0oPTiYXjA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZnbe85Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B1CC2BCB7;
+	Sat,  2 May 2026 03:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777690992;
-	bh=DkVXAVtci6HZK/4C+c6Uw3FjYfJRWS/pb+WUKadHw9o=;
+	bh=j83UTaRXI02JJLNVmbvlpCUXJZPlMChkl8adf2Y/198=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfdC1xmEKPuQtBKw4g5aM5hHK2HNQjO60MP2c8o/xTz3SPS3MS9LqRoXEzBWkejgf
-	 aJwEhLLtal6bJCGzOFaS74xzTanHpGqlwdPy1VoRHq4biuMlF9qhCIoPjNrf3sLHE2
-	 HAuMqxEKT7/73NDyGooVTKToVCIt/fbgMVU3/eQEjp1wSXUkj2KwgfSPc5JxWgBUbk
-	 mk6X6D/MuW4dmaKSix1/o3aD2bzw64SdUt7tKS6TfjxigksdUUuMcNswQo2HeROFms
-	 +qDySVABIbbwE5xliwDOWpl0fxIaZ++X/l/+VPgt2Z4COOHmAgHx9SlfQKsTBEX0rq
-	 CdoV5hFY95XtQ==
+	b=TZnbe85QwIbcyqshk/kh8m/RHQ1ydTddBX/sfXjXtTVa391EXXLcMUnxMdgue3WHf
+	 i5NS3PSntkY2usvAuoTFSGoHRFBmH/ISefNXLkF/3ZC5yVVFrsVYkdK1VBCnl2rjG+
+	 4mnUstiaur0aDgDxN/v1D0UIVA3ED1lquHH/Sv9iM4YHk8lrdz6hvB5kAaHgqDKFPi
+	 dcY3QnMA/tJgW3eHikFxaqR20IHfNAIssZx7k8y2xoZ3NRtnBZVMDbycbAanziMibl
+	 jM9FZTPFrTVSlKxvNRlBBzOvp605bDnqh8E7FjolORsCOmEfMfkDFbUTZ4aHZb+asg
+	 IBcAk+hwohMbw==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
 	SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 1/2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race
-Date: Fri,  1 May 2026 20:02:56 -0700
-Message-ID: <20260502030257.127460-1-sj@kernel.org>
+Subject: [PATCH 2/2] mm/damon/core: fix damos_walk() vs kdamond_fn() exit race
+Date: Fri,  1 May 2026 20:02:57 -0700
+Message-ID: <20260502030257.127460-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026050141-likewise-trapeze-f1cc@gregkh>
+In-Reply-To: <20260502030257.127460-1-sj@kernel.org>
 References: <2026050141-likewise-trapeze-f1cc@gregkh>
+ <20260502030257.127460-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2A5424B0BC7
+X-Rspamd-Queue-Id: 9C59E4B0BCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -71,7 +72,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242580-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242581-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
@@ -91,126 +92,75 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Patch series "mm/damon/core: fix damon_call()/damos_walk() vs kdmond exit
-race".
+When kdamond_fn() main loop is finished, the function cancels remaining
+damos_walk() request and unset the damon_ctx->kdamond so that API callers
+and API functions themselves can show the context is terminated.
+damos_walk() adds the caller's request to the queue first.  After that, it
+shows if the kdamond of the damon_ctx is still running (damon_ctx->kdamond
+is set).  Only if the kdamond is running, damos_walk() starts waiting for
+the kdamond's handling of the newly added request.
 
-damon_call() and damos_walk() can leak memory and/or deadlock when they
-race with kdamond terminations.  Fix those.
-
-This patch (of 2);
-
-When kdamond_fn() main loop is finished, the function cancels all
-remaining damon_call() requests and unset the damon_ctx->kdamond so that
-API callers and API functions themselves can know the context is
-terminated.  damon_call() adds the caller's request to the queue first.
-After that, it shows if the kdamond of the damon_ctx is still running
-(damon_ctx->kdamond is set).  Only if the kdamond is running, damon_call()
-starts waiting for the kdamond's handling of the newly added request.
-
-The damon_call() requests registration and damon_ctx->kdamond unset are
-protected by different mutexes, though.  Hence, damon_call() could race
+The damos_walk() requests registration and damon_ctx->kdamond unset are
+protected by different mutexes, though.  Hence, damos_walk() could race
 with damon_ctx->kdamond unset, and result in deadlocks.
 
-For example, let's suppose kdamond successfully finished the damon_call()
-requests cancelling.  Right after that, damon_call() is called for the
+For example, let's suppose kdamond successfully finished the damow_walk()
+request cancelling.  Right after that, damos_walk() is called for the
 context.  It registers the new request, and shows the context is still
 running, because damon_ctx->kdamond unset is not yet done.  Hence the
-damon_call() caller starts waiting for the handling of the request.
+damos_walk() caller starts waiting for the handling of the request.
 However, the kdamond is already on the termination steps, so it never
-handles the new request.  As a result, the damon_call() caller threads
+handles the new request.  As a result, the damos_walk() caller thread
 infinitely waits.
 
 Fix this by introducing another damon_ctx field, namely
-call_controls_obsolete.  It is protected by the
-damon_ctx->call_controls_lock, which protects damon_call() requests
+walk_control_obsolete.  It is protected by the
+damon_ctx->walk_control_lock, which protects damos_walk() request
 registration.  Initialize (unset) it in kdamond_fn() before letting
-damon_start() returns and set it just before the cancelling of remaining
-damon_call() requests is executed.  damon_call() reads the obsolete field
-under the lock and avoids adding a new request.
+damon_start() returns and set it just before the cancelling of the
+remaining damos_walk() request is executed.  damos_walk() reads the
+obsolete field under the lock and avoids adding a new request.
 
 After this change, only requests that are guaranteed to be handled or
 cancelled are registered.  Hence the after-registration DAMON context
 termination check is no longer needed.  Remove it together.
 
-Note that the deadlock will not happen when damon_call() is called for
-repeat mode request.  In tis case, damon_call() returns instead of waiting
-for the handling when the request registration succeeds and it shows the
-kdamond is running.  However, if the request also has dealloc_on_cancel,
-the request memory would be leaked.
-
 The issue is found by sashiko [1].
 
-Link: https://lore.kernel.org/20260327233319.3528-1-sj@kernel.org
-Link: https://lore.kernel.org/20260327233319.3528-2-sj@kernel.org
+Link: https://lore.kernel.org/20260327233319.3528-3-sj@kernel.org
 Link: https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org [1]
-Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
+Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org> # 6.14.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 55da81663b9642dd046b26dd6f1baddbcf337c1e)
+(cherry picked from commit 33c3f6c2b48cd84b441dba1ee3e62290e53930f4)
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
  include/linux/damon.h |  1 +
- mm/damon/core.c       | 45 ++++++++++++++-----------------------------
- 2 files changed, 15 insertions(+), 31 deletions(-)
+ mm/damon/core.c       | 21 ++++++++++++++-------
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 1a8a79d7e4e8d..6fe6f7fcf83d8 100644
+index 6fe6f7fcf83d8..40ac2d13f2279 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -781,6 +781,7 @@ struct damon_ctx {
- 
- 	/* lists of &struct damon_call_control */
- 	struct list_head call_controls;
-+	bool call_controls_obsolete;
+@@ -785,6 +785,7 @@ struct damon_ctx {
  	struct mutex call_controls_lock;
  
  	struct damos_walk_control *walk_control;
++	bool walk_control_obsolete;
+ 	struct mutex walk_control_lock;
+ 
+ 	/*
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 87b6c9c2d6471..3fb199a47fa9e 100644
+index 3fb199a47fa9e..a7234afadcd9a 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -1431,35 +1431,6 @@ bool damon_is_running(struct damon_ctx *ctx)
- 	return running;
- }
- 
--/*
-- * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
-- *				      an inactive context.
-- * @ctx:	The inactive DAMON context.
-- * @control:	Control variable of the call request.
-- *
-- * This function is called in a case that @control is added to @ctx but @ctx is
-- * not running (inactive).  See if @ctx handled @control or not, and cleanup
-- * @control if it was not handled.
-- *
-- * Returns 0 if @control was handled by @ctx, negative error code otherwise.
-- */
--static int damon_call_handle_inactive_ctx(
--		struct damon_ctx *ctx, struct damon_call_control *control)
--{
--	struct damon_call_control *c;
--
--	mutex_lock(&ctx->call_controls_lock);
--	list_for_each_entry(c, &ctx->call_controls, list) {
--		if (c == control) {
--			list_del(&control->list);
--			mutex_unlock(&ctx->call_controls_lock);
--			return -EINVAL;
--		}
--	}
--	mutex_unlock(&ctx->call_controls_lock);
--	return 0;
--}
--
- /**
-  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-  * @ctx:	DAMON context to call the function for.
-@@ -1477,6 +1448,10 @@ static int damon_call_handle_inactive_ctx(
-  * synchronization.  The return value of the function will be saved in
-  * &damon_call_control->return_code.
+@@ -1495,6 +1495,10 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+  * passed at least one &damos->apply_interval_us, kdamond marks the request as
+  * completed so that damos_walk() can wakeup and return.
   *
 + * Note that this function should be called only after damon_start() with the
 + * @ctx has succeeded.  Otherwise, this function could fall into an indefinite
@@ -218,42 +168,51 @@ index 87b6c9c2d6471..3fb199a47fa9e 100644
 + *
   * Return: 0 on success, negative error code otherwise.
   */
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
-@@ -1487,10 +1462,12 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
- 	INIT_LIST_HEAD(&control->list);
- 
- 	mutex_lock(&ctx->call_controls_lock);
-+	if (ctx->call_controls_obsolete) {
-+		mutex_unlock(&ctx->call_controls_lock);
+ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
+@@ -1502,19 +1506,16 @@ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
+ 	init_completion(&control->completion);
+ 	control->canceled = false;
+ 	mutex_lock(&ctx->walk_control_lock);
++	if (ctx->walk_control_obsolete) {
++		mutex_unlock(&ctx->walk_control_lock);
 +		return -ECANCELED;
 +	}
- 	list_add_tail(&control->list, &ctx->call_controls);
- 	mutex_unlock(&ctx->call_controls_lock);
--	if (!damon_is_running(ctx))
--		return damon_call_handle_inactive_ctx(ctx, control);
- 	if (control->repeat)
- 		return 0;
+ 	if (ctx->walk_control) {
+ 		mutex_unlock(&ctx->walk_control_lock);
+ 		return -EBUSY;
+ 	}
+ 	ctx->walk_control = control;
+ 	mutex_unlock(&ctx->walk_control_lock);
+-	if (!damon_is_running(ctx)) {
+-		mutex_lock(&ctx->walk_control_lock);
+-		if (ctx->walk_control == control)
+-			ctx->walk_control = NULL;
+-		mutex_unlock(&ctx->walk_control_lock);
+-		return -EINVAL;
+-	}
  	wait_for_completion(&control->completion);
-@@ -2640,6 +2617,9 @@ static int kdamond_fn(void *data)
- 
- 	pr_debug("kdamond (%d) starts\n", current->pid);
- 
-+	mutex_lock(&ctx->call_controls_lock);
-+	ctx->call_controls_obsolete = false;
-+	mutex_unlock(&ctx->call_controls_lock);
+ 	if (control->canceled)
+ 		return -ECANCELED;
+@@ -2620,6 +2621,9 @@ static int kdamond_fn(void *data)
+ 	mutex_lock(&ctx->call_controls_lock);
+ 	ctx->call_controls_obsolete = false;
+ 	mutex_unlock(&ctx->call_controls_lock);
++	mutex_lock(&ctx->walk_control_lock);
++	ctx->walk_control_obsolete = false;
++	mutex_unlock(&ctx->walk_control_lock);
  	complete(&ctx->kdamond_started);
  	kdamond_init_ctx(ctx);
  
-@@ -2749,6 +2729,9 @@ static int kdamond_fn(void *data)
- 	if (ctx->ops.cleanup)
- 		ctx->ops.cleanup(ctx);
- 	kfree(ctx->regions_score_histogram);
-+	mutex_lock(&ctx->call_controls_lock);
-+	ctx->call_controls_obsolete = true;
-+	mutex_unlock(&ctx->call_controls_lock);
+@@ -2733,6 +2737,9 @@ static int kdamond_fn(void *data)
+ 	ctx->call_controls_obsolete = true;
+ 	mutex_unlock(&ctx->call_controls_lock);
  	kdamond_call(ctx, true);
++	mutex_lock(&ctx->walk_control_lock);
++	ctx->walk_control_obsolete = true;
++	mutex_unlock(&ctx->walk_control_lock);
  
  	pr_debug("kdamond (%d) finishes\n", current->pid);
+ 	mutex_lock(&ctx->kdamond_lock);
 -- 
 2.47.3
 
