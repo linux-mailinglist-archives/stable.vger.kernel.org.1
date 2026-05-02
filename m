@@ -1,256 +1,352 @@
-Return-Path: <stable+bounces-242608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHXWLyII9mk3RwIAu9opvQ
-	(envelope-from <stable+bounces-242608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 16:20:18 +0200
+	id eFRlDz4M9mnSRwIAu9opvQ
+	(envelope-from <stable+bounces-242609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 16:37:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBCA4B2498
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 16:20:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CDD4B284A
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 16:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85189301547F
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 14:19:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 614D5300C9A2
+	for <lists+stable@lfdr.de>; Sat,  2 May 2026 14:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D262833D4FB;
-	Sat,  2 May 2026 14:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8893603CA;
+	Sat,  2 May 2026 14:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d2HU+sIs"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="atxmPAks"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C50E26D4DD
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 14:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0812147E5;
+	Sat,  2 May 2026 14:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777731592; cv=none; b=ZIgj1TrSIkz2O0x1WgYAxLNvlgIGpKVO9G8UJZI68b+VpAcFrkFhwOCFDIVpCQhcCub/U8SlORmlVvTwdcf2T018GUnABd7knqYos8Euvt9Nk+gsxsVh99byU8H2rr36FggAHrBVXfIG06B5/y+NbC4Vz9gPaYfqQ45ysnuPfTo=
+	t=1777732666; cv=none; b=DNSCbyL73oU1uhG3BXvqu2/basa9NXwkt02akiIjeIYL8XT3+ANGBO5cz1odAZRf0kQqq3DtEVLTQJK8H9B0aKG89SS8B19LE7XWQbAkYh2vlEKaYQh92dGiHZDUkJG0Jf5PV90JKyjX22/0eo5Sm9VbJWqD11mnSkuqx0vqlko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777731592; c=relaxed/simple;
-	bh=k+AkJcSPR6GWTz3BEXN8/5jElc3fjNG4wrYl2Mb984o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BvzxgMRw566pH0o0lAjfKN+7K+EaywfS6wk9cs7IMHE3USu9CDBP6uVdl4Y2vE26lGl963GlagGWqwk5WNLO+Yfk5fxYhxAn0OE9FkIYYI3Gr1PT7Oy/EX6j1Qcea/4sCL1kiax+0NOnPmO+1QMIKkW7XZZ1SJoH1+BBpqkknos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d2HU+sIs; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43eb05b1875so1400824f8f.3
-        for <stable@vger.kernel.org>; Sat, 02 May 2026 07:19:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777731589; x=1778336389; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G+Xccp0tlIqEgZ2YXrZ9jc4pOkvj1KBEkw6Ll1vuHko=;
-        b=d2HU+sIsZoZg9npnGPacoaM+MoqmTPfMdI/nO/UijPBT4o9RSvdUn/x4YiLD6aV/Fq
-         0Bx7iCgNNJ+wubn5i8Ke/nYn9YuWVJ//EYkzzqvsoUIxJ5bVrxGycTwuraGetBNBQT1+
-         Bios4ooy1v0FDnFqUpRtQGckt3E87eKeOAHpF9bo9FzHQpQylhdQTsqNSKABjOZpY17k
-         8oY6nL5AuX79v417fPKY+Y/kdS2qP6BGWNfH5cu5hjUZ21UU062GwSWQYB1o9b9Q9n0i
-         BJZXYi3BnBWDABtGn+SQfLLiXtHeMXrwDvjWzKoLuBBXD5Bym05PyQBRZXrpgvl0XBPZ
-         osWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777731589; x=1778336389;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G+Xccp0tlIqEgZ2YXrZ9jc4pOkvj1KBEkw6Ll1vuHko=;
-        b=Cw2rDoDTmbOrw6pQCZOqaU6ANKSu/7dA0LLQY+mnsnsFhd2U2Q1YydPfo0wRl8Xcsx
-         /O1hVXMKZAAabMUxLypFta/e3sMA7U9kazZkndKqRJLKCxgYvshavOZtx7BC95MW4jBr
-         TvgLsHfJ3AE2JH5MpQAu4EDrR5wb0ONKA6Rw11tu0+ui0S8G2+oUYQtapnMCUbpp8lU4
-         wrE/Hh1C5vnRYvUfPDPBONLXHd1oc8LKHaB+cRd8jMqVJDK9ZwI+2SCQrveHg0QmUEFm
-         Q3RdCcORKt3f6jVqsFllxiqWAj7CiwwHoGxkwT62bNy2U9TjwYaIxXgQSLWueA6hqywG
-         BsYg==
-X-Forwarded-Encrypted: i=1; AFNElJ8N4E9TOMiLycjMqT9yo+KvGBSfZ9IwAWc8/yF0SBoiethFVEWOnj5oxV2q6e7Yi3qYCWpO5hU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3cBtdFZ9h9ijdSUZxgohojQJ139rrmF2kcB41UJHSB3oG9Rna
-	x1e8nDfE2sDk/qWylg65HjF3wC2Rp6b28Xm/sW63czjnsFLKvBQCu7Tb
-X-Gm-Gg: AeBDievlqZ3lg0CpNx7lgEH3ie/Ca7+EcuHI12SCN9x8qsgrSo0bTyZiZwOsF13T3vp
-	f+nQsmRC1evojG94NHHvr28XMhDwGpCAnV86okYFdWYQfMNnGaLLW+ErVSERe8gzGnXy9QtXgr9
-	9JGB9kfwDtam+4prewRpfukg84odDzjWomu/FPSlpIyaJXHjyY4RYOBQJpWcqIrkDyi77Sw6Jji
-	Sz2ID93KnJtmGstYMomwkmI9wAyseuFNNIAQpIYkCww7ncrBSxsEmeaCTuo1eWtOfG8AQzU+kkQ
-	QY9m6tYVyYsCMY1Xob+pKOS24bg0iUBmpqqC80PeZ8BEReRikysSIehTBeQ6HKf6W5REPzR9zZ6
-	SI3Qwv56Ypg+qJS30pgoNsau00GzsXlhh30cg9v9rl4nXSQgS+Wz6b1t3HfNG2DstMbMNdVEeJx
-	SmWHo/y+rjszwc1YrwJ/n2TgKB3z0iC7u3MQG2o1rUZlLWfo++P28RJIm3b1w8duqVXTu8Qe8pz
-	25Ve93Mfs7acexioDoERA==
-X-Received: by 2002:a05:6000:61e:b0:43d:7b90:fa23 with SMTP id ffacd0b85a97d-44bb65df7c8mr5021767f8f.29.1777731588443;
-        Sat, 02 May 2026 07:19:48 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44b638ac434sm8272788f8f.36.2026.05.02.07.19.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 07:19:48 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: daniel.zahka@gmail.com,
-	kuba@kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	raeds@nvidia.com,
-	kees@kernel.org,
-	cratiu@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
+	s=arc-20240116; t=1777732666; c=relaxed/simple;
+	bh=LEQe2YbkQj+mi2OhpKmjpSMllqTYTT6bM4ztTFGlvso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TKbUKK+seV1cC8+I4PxyZ4+HpJfm25Cv9bWNGQ69t/yOVAL1Jqcd0ajQxQhvw2W3blyYQN1hvuSE2n/5JPYv66yly95yktN4Khl837+XZAi78evuWNv10HSjd04mtyLTuiBxGq9vK+UWVU9iUMkW+v+4zGQ+qiX0/cCkHyWThZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=atxmPAks; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id F026220B7168; Sat,  2 May 2026 07:37:43 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F026220B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777732663;
+	bh=Uq1yNrQcNlA09D6p6p0loXVnQh+IG/BFNNn2Tx6Dlew=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=atxmPAks2+huZo6OTXzB4oKzFmp7YxwR2tQ/uoVDQ3xhcXWrgmih2dSjbN/0fJMCR
+	 AFx0EfxHWp4Pd+gewHdvW6aMxZbSsWSoLXOYvQSNrepsH48Coi7tkatFiE+H7HA6UG
+	 Px9sMHyHC4nXsUrMaJggn8vhLKzs8n3CnV+5fVpY=
+Date: Sat, 2 May 2026 07:37:43 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v3] psp: strip variable-length PSP header in psp_dev_rcv()
-Date: Sat,  2 May 2026 15:19:45 +0100
-Message-ID: <20260502141945.14484-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+Subject: Re: [PATCH net v2] net: mana: Optimize irq affinity for low vcpu
+ configs
+Message-ID: <afYMN6vbiX7Rzss+@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260429090640.1790104-1-shradhagupta@linux.microsoft.com>
+ <afTTPLClWwIMWTOh@yury>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5FBCA4B2498
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afTTPLClWwIMWTOh@yury>
+X-Rspamd-Queue-Id: F0CDD4B284A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,google.com,redhat.com,kernel.org,nvidia.com,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-242608-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242609-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.991];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
 
-psp_dev_rcv() unconditionally removes a fixed PSP_ENCAP_HLEN, even
-when psph->hdrlen indicates that the PSP header carries optional
-fields. A frame whose PSP header advertises a non-zero VC or any
-extension would therefore be silently mis-decapsulated: option bytes
-would spill into the inner packet head and downstream parsing would
-fail on a corrupted skb.
+On Fri, May 01, 2026 at 12:22:20PM -0400, Yury Norov wrote:
+> On Wed, Apr 29, 2026 at 02:06:37AM -0700, Shradha Gupta wrote:
+> > In mana driver, the number of IRQs allocated is capped by the
+> > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
+> > than the vcpu count, we want to utilize all the vCPUs, irrespective of
+> > their NUMA/core bindings.
+> > 
+> > This is important, especially in the envs where number of vCPUs are so
+> > few that the softIRQ handling overhead on two IRQs on the same vCPU is
+> > much more than their overheads if they were spread across sibling vCPUs.
+> > 
+> > This behaviour is more evident with dynamic IRQ allocation. Since MANA
+> > IRQs are assigned at a later stage compared to static allocation, other
+> > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
+> > weights become imbalanced, causing multiple MANA IRQs to land on the
+> > same vCPU, while some vCPUs have none.
+> > 
+> > In such cases when many parallel TCP connections are tested, the
+> > throughput drops significantly.
+> > 
+> > Test envs:
+> > =======================================================
+> > Case 1: without this patch
+> > =======================================================
+> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > 
+> > 	TYPE		effective vCPU aff
+> > =======================================================
+> > IRQ0:	HWC		0
+> > IRQ1:	mana_q1		0
+> > IRQ2:	mana_q2		2
+> > IRQ3:	mana_q3		0
+> > IRQ4:	mana_q4		3
+> > 
+> > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > vCPU		0	1	2	3
+> > =======================================================
+> > pass 1:		38.85	0.03	24.89	24.65
+> > pass 2:		39.15	0.03	24.57	25.28
+> > pass 3:		40.36	0.03	23.20	23.17
+> > 
+> > =======================================================
+> > Case 2: with this patch
+> > =======================================================
+> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > 
+> >         TYPE            effective vCPU aff
+> > =======================================================
+> > IRQ0:   HWC             0
+> > IRQ1:   mana_q1         0
+> > IRQ2:   mana_q2         1
+> > IRQ3:   mana_q3         2
+> > IRQ4:   mana_q4         3
+> > 
+> > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > vCPU            0       1       2       3
+> > =======================================================
+> > pass 1:         15.42	15.85	14.99	14.51
+> > pass 2:         15.53	15.94	15.81	15.93
+> > pass 3:         16.41	16.35	16.40	16.36
+> > 
+> > =======================================================
+> > Throughput Impact(in Gbps, same env)
+> > =======================================================
+> > TCP conn	with patch	w/o patch
+> > 20480		15.65		7.73
+> > 10240		15.63		8.93
+> > 8192		15.64		9.69
+> > 6144		15.64		13.16
+> > 4096		15.69		15.75
+> > 2048		15.69		15.83
+> > 1024		15.71		15.28
+> > 
+> > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
+> > Cc: stable@vger.kernel.org
+> > Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> > ---
+> > Changes in v2
+> >  * Removed the unused skip_first_cpu variable
+> >  * fixed exit condition in irq_setup_linear() with len == 0
+> >  * changed return type of irq_setup_linear() as it will always be 0
+> >  * removed the unnecessary rcu_read_lock() in irq_setup_linear()
+> >  * added appropriate comments to indicate expected behaviour when
+> >    IRQs are more than or equal to num_online_cpus()
+> > ---
+> >  .../net/ethernet/microsoft/mana/gdma_main.c   | 47 ++++++++++++++++---
+> >  1 file changed, 40 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > index 098fbda0d128..d740d1dc43da 100644
+> > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > @@ -167,6 +167,8 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
+> >  	} else {
+> >  		/* If dynamic allocation is enabled we have already allocated
+> >  		 * hwc msi
+> > +		 * Also, we make sure in this case the following is always true
+> > +		 * (num_msix_usable - 1 HWC) <= num_online_cpus()
+> >  		 */
+> >  		gc->num_msix_usable = min(resp.max_msix, num_online_cpus() + 1);
+> >  	}
+> > @@ -1672,11 +1674,24 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
+> >  	return 0;
+> >  }
+> >  
+> > +/* should be called with cpus_read_lock() held */
+> > +static void irq_setup_linear(unsigned int *irqs, unsigned int len)
+> > +{
+> > +	int cpu;
+> > +
+> > +	for_each_online_cpu(cpu) {
+> > +		if (len == 0)
+> > +			break;
+> > +
+> > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
+> > +		len--;
+> > +	}
+> > +}
+> > +
+> >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  {
+> >  	struct gdma_context *gc = pci_get_drvdata(pdev);
+> >  	struct gdma_irq_context *gic;
+> > -	bool skip_first_cpu = false;
+> >  	int *irqs, irq, err, i;
+> >  
+> >  	irqs = kmalloc_objs(int, nvec);
+> 
+> So what about WARN_ON() and nvec adjustment before kmalloc?
+Hey Yury,
 
-Compute the full PSP header length from psph->hdrlen, pull the
-optional bytes into the linear region, and strip the whole header
-when decapsulating. Optional fields (VC, ...) are still ignored,
-just discarded with the rest of the header instead of leaking.
-crypt_offset and the VIRT flag are intentionally not validated here
-- callers know their device's PSP implementation and can decide.
+I am still a bit unsure about the WARN_ON() before kmalloc, as after
+that also, in the same function till we take the cpus_read_lock() the
+num_online_cpus() can change(or reduce). That's why I introduced the
+dev_dbg() to capture hot-remove edge case.
 
-Both in-tree callers gate on hardware-validated PSP, so this is a
-correctness fix rather than a reachable corruption path under
-current configurations.
+Do you still think it adds more value?
+> 
+> > @@ -1722,13 +1737,31 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
+> >  	 */
+> >  	cpus_read_lock();
+> > -	if (gc->num_msix_usable <= num_online_cpus())
+> > -		skip_first_cpu = true;
+> > +	if (gc->num_msix_usable <= num_online_cpus()) {
+> > +		err = irq_setup(irqs, nvec, gc->numa_node, true);
+> > +		if (err) {
+> > +			cpus_read_unlock();
+> > +			goto free_irq;
+> 
+> One thing puzzles me: if you skip first CPU with this 'true', and the
+> gc->num_msix_usable == num_online_cpus(), it's one more than you can
+> distribute. What do I miss?
+> 
 
-Fixes: 0eddb8023cee ("psp: provide decapsulation and receive helper for drivers")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
-v2 -> v3 (per Daniel Zahka):
-  - drop Suggested-by trailer
-  - rename psp_hdr_len -> psp_hlen, retype to int, fold onto the
-    existing int declaration line to keep the reverse christmas tree
-  - drop the (u32) cast on psph->hdrlen
-  - no functional change; carry forward Reviewed-by tags from v2
+Let me explain this case a bit better then,
 
- net/psp/psp_main.c | 42 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 31 insertions(+), 11 deletions(-)
+- num_msix_usable = HWC IRQ + Queue IRQ
+- nvec in this functions is only Queue IRQ (HWC already setup)
 
-diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
-index 9508b6c38003..e45549f08eef 100644
---- a/net/psp/psp_main.c
-+++ b/net/psp/psp_main.c
-@@ -263,15 +263,16 @@ EXPORT_SYMBOL(psp_dev_encapsulate);
- 
- /* Receive handler for PSP packets.
-  *
-- * Presently it accepts only already-authenticated packets and does not
-- * support optional fields, such as virtualization cookies. The caller should
-- * ensure that skb->data is pointing to the mac header, and that skb->mac_len
-- * is set. This function does not currently adjust skb->csum (CHECKSUM_COMPLETE
-- * is not supported).
-+ * Accepts only already-authenticated packets. The full PSP header is
-+ * stripped according to psph->hdrlen; any optional fields it advertises
-+ * (virtualization cookies, etc.) are ignored and discarded along with the
-+ * rest of the header. The caller should ensure that skb->data is pointing
-+ * to the mac header, and that skb->mac_len is set. This function does not
-+ * currently adjust skb->csum (CHECKSUM_COMPLETE is not supported).
-  */
- int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
- {
--	int l2_hlen = 0, l3_hlen, encap;
-+	int l2_hlen = 0, l3_hlen, encap, psp_hlen;
- 	struct psp_skb_ext *pse;
- 	struct psphdr *psph;
- 	struct ethhdr *eth;
-@@ -312,18 +313,36 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
- 	if (unlikely(uh->dest != htons(PSP_DEFAULT_UDP_PORT)))
- 		return -EINVAL;
- 
--	pse = skb_ext_add(skb, SKB_EXT_PSP);
--	if (!pse)
-+	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
-+				 sizeof(struct udphdr));
-+
-+	/* Strip the full PSP header per psph->hdrlen; VC/options are pulled
-+	 * into the linear region only so they can be discarded with the
-+	 * rest of the header.
-+	 */
-+	psp_hlen = (psph->hdrlen + 1) * 8;
-+
-+	if (unlikely(psp_hlen < sizeof(struct psphdr)))
-+		return -EINVAL;
-+
-+	if (psp_hlen > sizeof(struct psphdr) &&
-+	    !pskb_may_pull(skb, l2_hlen + l3_hlen +
-+				sizeof(struct udphdr) + psp_hlen))
- 		return -EINVAL;
- 
- 	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
- 				 sizeof(struct udphdr));
-+
-+	pse = skb_ext_add(skb, SKB_EXT_PSP);
-+	if (!pse)
-+		return -EINVAL;
-+
- 	pse->spi = psph->spi;
- 	pse->dev_id = dev_id;
- 	pse->generation = generation;
- 	pse->version = FIELD_GET(PSPHDR_VERFL_VERSION, psph->verfl);
- 
--	encap = PSP_ENCAP_HLEN;
-+	encap = sizeof(struct udphdr) + psp_hlen;
- 	encap += strip_icv ? PSP_TRL_SIZE : 0;
- 
- 	if (proto == htons(ETH_P_IP)) {
-@@ -340,8 +359,9 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
- 		ipv6h->payload_len = htons(ntohs(ipv6h->payload_len) - encap);
- 	}
- 
--	memmove(skb->data + PSP_ENCAP_HLEN, skb->data, l2_hlen + l3_hlen);
--	skb_pull(skb, PSP_ENCAP_HLEN);
-+	memmove(skb->data + sizeof(struct udphdr) + psp_hlen,
-+		skb->data, l2_hlen + l3_hlen);
-+	skb_pull(skb, sizeof(struct udphdr) + psp_hlen);
- 
- 	if (strip_icv)
- 		pskb_trim(skb, skb->len - PSP_TRL_SIZE);
--- 
-2.53.0
+When num_online_cpus == num_msix_usable:
+- nvec = num_online_cpus - 1
+- first CPU is already assigned to HWC IRQ, so skip it
+- Queue IRQs fit in the remaining CPUs
 
+please let me know if I did not get your question right
+
+> > +		}
+> > +	} else {
+> > +		/*
+> > +		 * When num_msix_usable are more than num_online_cpus, we try to
+> > +		 * make sure we are using all vcpus. In such a case NUMA or
+> > +		 * CPU core affinity does not matter.
+> 
+> If it doesn't matter, why don't you assign each IRQ to all CPUs then?
+> In theory, the system would have most of flexibility to balance them.
+> 
+
+Okay, let me fix the comment and elaborate on this. It doesn't matter
+because in such a case we want to anyway exhaust and distribute the
+Queue IRQs to all vCPUs.
+We don't want to rely on the system's balancer in this case as it could
+be skewed by other devices' IRQ weights
+
+> > +		 * Note: in this case the total mana IRQ should always be
+> > +		 * num_online_cpus + 1. The first HWC IRQ is already handled
+> > +		 * in HWC setup calls
+> > +		 * However, if CPUs went offline since num_msix_usable was
+> > +		 * computed, nvec count will be more than num_online_cpus().
+> > +		 * In such cases remaining extra IRQs will retain their default
+> > +		 * affinity.
+> > +		 */
+> > +		if (nvec > num_online_cpus())
+> > +			dev_dbg(&pdev->dev,
+> > +				"IRQ count %d exceeds online CPU count %d. Some IRQs will share CPU\n",
+> 
+> I'd better say 'some IRQs will share the default CPU', and in the
+> perfect world, I'd like to see:
+> 
+>         'The IRQs #4-12 will share the default CPU #0'
+> 
+> type of message.
+
+Sure, that makes more sense. Will make the change in next version
+> 
+> > +				nvec, num_online_cpus());
+>                 
+> It's not that straightforward as it should be. In one case 
+> 
+>         nvec > num_online_cpus()
+> 
+> is a problem, while in another - not. It looks already suspicious. So
+> when you throw a warning, you should mention it, I believe.
+> 
+> In the
+> 
+>         gc->num_msix_usable <= num_online_cpus()
+> 
+> case, when nvec is too big, would'n 'some IRQs share some CPU' just
+> as well? If so, you again should throw a message.
+
+let me try to cleanly address this too, in the next version. May be even
+a seperate patch.
+
+Thanks Yury.
+> 
+> > -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> > -	if (err) {
+> > -		cpus_read_unlock();
+> > -		goto free_irq;
+> > +		irq_setup_linear(irqs, nvec);
+> >  	}
+> >  
+> >  	cpus_read_unlock();
+> > 
+> > base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
+> > -- 
+> > 2.34.1
 
