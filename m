@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-242625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJZ3ER6J9mkUWAIAu9opvQ
-	(envelope-from <stable+bounces-242625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:30:38 +0200
+	id UcqkBJyP9mmvWQIAu9opvQ
+	(envelope-from <stable+bounces-242626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:58:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7164B3A6F
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:30:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96AE4B3B40
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC3373008506
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 23:30:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E187B3001FBC
+	for <lists+stable@lfdr.de>; Sat,  2 May 2026 23:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666D8305968;
-	Sat,  2 May 2026 23:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32770287257;
+	Sat,  2 May 2026 23:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niqoVllm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDQ6Hk/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077FE30E858
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 23:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA90E5474F
+	for <stable@vger.kernel.org>; Sat,  2 May 2026 23:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777764633; cv=none; b=j0un4CrDaq0TCnvfWTQfa5B0SF8vXwnsKZT3PkbvbWFOea1o4dW1Ei1Gy77BFgnm87Wgvu7IaZDMDOpx1q5WsyVp0SkulOrDbDGkWzEqVDlsb+Zt8BMohf/7XSRl6Min7J8nEoafwQX0qtV2p3TYgqe5XAToCIRo8jKwM8iz8nA=
+	t=1777766293; cv=none; b=Clp3kKA5UaR0qffp/xOK46wegpQhAd+BwEpIMgJR/5b4CoIZeTHKTO0mBw8mGGNxVYhEmWlk6BFkGQGbpISJuh2GKvIG1qwWhGNPmD5EAmRcZjK9jx59Iszag+AFZ/VuTag7f6TLuanHQOJQlHOH92G/kj23M2d5M6pyaJiXAWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777764633; c=relaxed/simple;
-	bh=xUf+0LdeY20mGqxOuC717Vm4z5lXPodDpViV5wtnQ7Q=;
+	s=arc-20240116; t=1777766293; c=relaxed/simple;
+	bh=pc/cW4p0pN2S1WiPQVHNPjA770AiyScG/MswEPkqoeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACBedcXZ1+zhh47hidG7QGQvBR7Z97tYwVM3OVV1fw6vVs9p7j1AVzw80NXLrcZWtLEhyjEPCQFp/QD+Zxn8WOnAXVmuJe4NE6aM1fA2v5QSG/sd9V53j7h1FvRUN4BDGpqqIeoeqjaxwI1SK7IUoNXwZlDhJgqzhckHFxByhlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niqoVllm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549EDC19425;
-	Sat,  2 May 2026 23:30:27 +0000 (UTC)
+	 MIME-Version; b=q7cOnhxcop9/jcX8GaTCQ6Xh++TYTXgelbJSSOM6IImSoY+8FCt+IuaAoZelS5HCmhxKDKSQIoeKJ1TMe1hCwS/Nri+2iEbDxFCenyg4A9rfKFvpEvTT5mqjhiCrDo/3EdXzZE6WSo7TvZNNGYqTOGp/u8KfIdCLOY0TbM0XKr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDQ6Hk/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD91C19425;
+	Sat,  2 May 2026 23:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777764632;
-	bh=xUf+0LdeY20mGqxOuC717Vm4z5lXPodDpViV5wtnQ7Q=;
+	s=k20201202; t=1777766292;
+	bh=pc/cW4p0pN2S1WiPQVHNPjA770AiyScG/MswEPkqoeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=niqoVllmIT40/WqTnYsL2zWzUaOLA/vXzU3fDq1pWry7W7xAQp6DJtlNbKmgU6UVr
-	 vvgw/fMUxwIn/os5Dzx0FhHPvJ8aoJ7JEiuyqFE6m1z0nQ9dPbBHlBlvYawIw9xLN7
-	 N9SEL850wcfpaEvdIn70dg9yVXDENsAsP8ylcOvM0kWMzelULn6BXpjZTU9koCfo8c
-	 v5glXqYSAe6BwcAF5UHBESC72cEHsUAAVFBPAJTcbXTLbVdygktocpBZiaLMZ8uP7r
-	 38kaytrJMXrmd+s9/Nm4KYLhWWiV4VPmdOUExha5XmZbmna4g1ylsJaiM6RBg9Y+D4
-	 FAe8v+zL2sCuA==
+	b=CDQ6Hk/oD4oS7i/2Qt1u4mfmyry2hsNg3W3wBjqyMJwEbdNd0kzOvEHn2yLLjFjO6
+	 LUWBTbruti6Jpvk+06GA7Xj0+4Z9zAItifYcuo2b0WFu7/oZeBQrN7meSpyI2udN4I
+	 upjkidsHwTkbpXtgRt4ZHSWWDYM44PSik3q4MZg3y+mSvmPLS0PdZHi4U5jRWu6k0G
+	 /9Q6MLB3EgBWDS/3RjhHCytcCazL6FhIWdIw74ke3L913xcqivD+lkgDVWF16yRI0+
+	 s+mH1hRk5vnqQ+tZhNbjkgWsd9nCCrphqIEaE62o+vG5e9p/0rM1fVsmhJSRzATslX
+	 IyzbJOkuCKy4g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Joseph Salisbury <joseph.salisbury@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Cc: Naman Jain <namjain@linux.microsoft.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] sched: Use u64 for bandwidth ratio calculations
-Date: Sat,  2 May 2026 19:30:19 -0400
-Message-ID: <20260502233019.915219-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] block: relax pgmap check in bio_add_page for compatible zone device pages
+Date: Sat,  2 May 2026 19:57:59 -0400
+Message-ID: <20260502235759.921576-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050159-quadrant-kilogram-1f30@gregkh>
-References: <2026050159-quadrant-kilogram-1f30@gregkh>
+In-Reply-To: <2026050150-reheat-spinout-eedf@gregkh>
+References: <2026050150-reheat-spinout-eedf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BD7164B3A6F
+X-Rspamd-Queue-Id: E96AE4B3B40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -70,19 +71,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242625-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-242626-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,80 +91,123 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,kernel.dk:email]
 
-From: Joseph Salisbury <joseph.salisbury@oracle.com>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-[ Upstream commit c6e80201e057dfb7253385e60bf541121bf5dc33 ]
+[ Upstream commit 41c665aae2b5dbecddddcc8ace344caf630cc7a4 ]
 
-to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
-runtime values, but it returns unsigned long.  tg_rt_schedulable() also
-stores the current group limit and the accumulated child sum in unsigned
-long.
+bio_add_page() and bio_integrity_add_page() reject pages from different
+dev_pagemaps entirely, returning 0 even when those pages have compatible
+DMA mapping requirements. This forces callers to start a new bio when
+buffers span pgmap boundaries, even though the pages could safely coexist
+as separate bvec entries.
 
-On 32-bit builds, large bandwidth ratios can be truncated and the RT
-group sum can wrap when enough siblings are present.  That can let an
-overcommitted RT hierarchy pass the schedulability check, and it also
-narrows the helper result for other callers.
+This matters for guests where memory is registered through
+devm_memremap_pages() with MEMORY_DEVICE_GENERIC in multiple calls,
+creating separate dev_pagemaps for each chunk. When a direct I/O buffer
+spans two such chunks, bio_add_page() rejects the second page, forcing an
+unnecessary bio split or I/O failure.
 
-Return u64 from to_ratio() and use u64 for the RT group totals so
-bandwidth ratios are preserved and compared at full width on both 32-bit
-and 64-bit builds.
+Introduce zone_device_pages_compatible() in blk.h to check whether two
+pages can coexist in the same bio as separate bvec entries. The block DMA
+iterator (blk_dma_map_iter_start) caches the P2PDMA mapping state from the
+first segment and applies it to all others, so P2PDMA pages from different
+pgmaps must not be mixed, and neither must P2PDMA and non-P2PDMA pages.
+All other combinations (MEMORY_DEVICE_GENERIC pages from different pgmaps,
+or MEMORY_DEVICE_GENERIC with normal RAM) use the same dma_map_phys path
+and are safe.
 
-Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
-Assisted-by: Codex:GPT-5
-Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Replace the blanket zone_device_pages_have_same_pgmap() rejection with
+zone_device_pages_compatible(), while keeping
+zone_device_pages_have_same_pgmap() as a merge guard.
+Pages from different pgmaps can be added as separate bvec entries but
+must not be coalesced into the same segment, as that would make
+it impossible to recover the correct pgmap via page_pgmap().
+
+Fixes: 49580e690755 ("block: add check when merging zone device pages")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@oracle.com
-[ dropped `extern` keyword from `to_ratio()` declaration ]
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260410153414.4159050-3-namjain@linux.microsoft.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ restructured combined `if` into explicit `bv` block ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c  | 2 +-
- kernel/sched/rt.c    | 2 +-
- kernel/sched/sched.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ block/bio-integrity.c |  2 ++
+ block/bio.c           | 14 +++++++++-----
+ block/blk.h           | 19 +++++++++++++++++++
+ 3 files changed, 30 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index c4a9797e9effd..d558e43aedcf2 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4823,7 +4823,7 @@ void sched_post_fork(struct task_struct *p)
- 	uclamp_post_fork(p);
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 15e444b2fcc12..dc6a9b0fab369 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -134,6 +134,8 @@ int bio_integrity_add_page(struct bio *bio, struct page *page,
+ 		struct bio_vec *bv = &bip->bip_vec[bip->bip_vcnt - 1];
+ 		bool same_page = false;
+ 
++		if (!zone_device_pages_compatible(bv->bv_page, page))
++			return 0;
+ 		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
+ 					   &same_page)) {
+ 			bip->bip_iter.bi_size += len;
+diff --git a/block/bio.c b/block/bio.c
+index b197abbaebc46..14aefb1905454 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1098,11 +1098,15 @@ int bio_add_page(struct bio *bio, struct page *page,
+ 	if (bio->bi_iter.bi_size > UINT_MAX - len)
+ 		return 0;
+ 
+-	if (bio->bi_vcnt > 0 &&
+-	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
+-				page, len, offset, &same_page)) {
+-		bio->bi_iter.bi_size += len;
+-		return len;
++	if (bio->bi_vcnt > 0) {
++		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++
++		if (!zone_device_pages_compatible(bv->bv_page, page))
++			return 0;
++		if (bvec_try_merge_page(bv, page, len, offset, &same_page)) {
++			bio->bi_iter.bi_size += len;
++			return len;
++		}
+ 	}
+ 
+ 	if (bio->bi_vcnt >= bio->bi_max_vecs)
+diff --git a/block/blk.h b/block/blk.h
+index 67915b04b3c17..676c91c19940d 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -102,6 +102,25 @@ static inline bool biovec_phys_mergeable(struct request_queue *q,
+ 	return true;
  }
  
--unsigned long to_ratio(u64 period, u64 runtime)
-+u64 to_ratio(u64 period, u64 runtime)
++/*
++ * Check if two pages from potentially different zone device pgmaps can
++ * coexist as separate bvec entries in the same bio.
++ *
++ * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
++ * state from the first segment and applies it to all subsequent segments, so
++ * P2PDMA pages from different pgmaps must not be mixed in the same bio.
++ *
++ * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
++ * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
++ */
++static inline bool zone_device_pages_compatible(const struct page *a,
++						const struct page *b)
++{
++	if (is_pci_p2pdma_page(a) || is_pci_p2pdma_page(b))
++		return zone_device_pages_have_same_pgmap(a, b);
++	return true;
++}
++
+ static inline bool __bvec_gap_to_prev(const struct queue_limits *lim,
+ 		struct bio_vec *bprv, unsigned int offset)
  {
- 	if (runtime == RUNTIME_INF)
- 		return BW_UNIT;
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 0b420a65b31dc..46d2250b72359 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2776,7 +2776,7 @@ static int tg_rt_schedulable(struct task_group *tg, void *data)
- {
- 	struct rt_schedulable_data *d = data;
- 	struct task_group *child;
--	unsigned long total, sum = 0;
-+	u64 total, sum = 0;
- 	u64 period, runtime;
- 
- 	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index e1913e253221b..65ff0254659ac 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2463,7 +2463,7 @@ extern void init_dl_entity(struct sched_dl_entity *dl_se);
- #define RATIO_SHIFT		8
- #define MAX_BW_BITS		(64 - BW_SHIFT)
- #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
--unsigned long to_ratio(u64 period, u64 runtime);
-+u64 to_ratio(u64 period, u64 runtime);
- 
- extern void init_entity_runnable_average(struct sched_entity *se);
- extern void post_init_entity_util_avg(struct task_struct *p);
 -- 
 2.53.0
 
