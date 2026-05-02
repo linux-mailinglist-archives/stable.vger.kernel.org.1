@@ -1,179 +1,214 @@
-Return-Path: <stable+bounces-242623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEZ+J+Vy9mloVAIAu9opvQ
-	(envelope-from <stable+bounces-242623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 23:55:49 +0200
+	id aMW2IA2J9mkUWAIAu9opvQ
+	(envelope-from <stable+bounces-242624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:30:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DA94B38F5
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 23:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F03E64B3A60
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69DBF300AC0A
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 21:55:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2F4C3008514
+	for <lists+stable@lfdr.de>; Sat,  2 May 2026 23:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10B37C0FA;
-	Sat,  2 May 2026 21:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF962F25F5;
+	Sat,  2 May 2026 23:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NOVGlMyC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1myPiXR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184DB33D6CA
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 21:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F93C3128B2
+	for <stable@vger.kernel.org>; Sat,  2 May 2026 23:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777758925; cv=none; b=BrLI58tX1YzJHypskEeiReJyrEbT196c1bPmDJwkVij+LMoRu57zlK1QBf5TeM8/OX0w71farrOqndObxTfSl7XQOI1HTsh5uXhCOMVKYDEeRDyNCaTIPnGDOxCgx45LP11iMmDDPTbZ1h/4qP7cOkw2ozmC5OZu7s64Xki7xQU=
+	t=1777764616; cv=none; b=fHAH23LCAHsfNqESK2aj7iBoOb3iJFrGRP9wuFrpBUXMPxuRgbizQmzMaNWflDLtZGWlsAFQm2TCL5QrOId8QI33GPvC+Pbmg5ghF7/ZOHjRgQCb1HhAoPSZ4w1FA+KRbtoEoqyTyXrU+UES0SgNZ+KY+T4yWK2QCmgE3QR6a2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777758925; c=relaxed/simple;
-	bh=yrsqX7PWvFqc7WXIAaXKeO3CvketME8kxLMBs4Qgdsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AjHd2KPuDpDNKGi41366wl3McBr3Btzj4PWQy7jBM3vflaPyBREomwqKmlXWPVsPShEGmBl16WulPp0ln6Ug8GLZ8Pbx6MKjPbWqEOUA7LrDAcoVJW3ZpO7AWZpy7aHD5jfJXvY8jEHsSnnWKb5nnHOEX+JGSUt54t4DSXAnb1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NOVGlMyC; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so46933705e9.2
-        for <stable@vger.kernel.org>; Sat, 02 May 2026 14:55:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777758922; x=1778363722; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pw2jZRLYzOlZ7sxfl/+h5eD7AhFBQmZQktoNUjcMaC8=;
-        b=NOVGlMyCFyx+Ljn45IbOkjBYJjJHbJJjIma58szJsFWHJ6IEQc8YSHre5SirTWj7R6
-         lviv9/zj4p3MwtGoMbCFyTHnnmAnLpetaF+zx/r5dOVMLv9V4Ofco9pZrR+wZUid0G0C
-         e1LqHPJcDOQJDE85cjkfrI0ek596WRhRHu+Ms6RphqwvcrQaNhQSCjGu3g4hN/d/nsFw
-         9sGs5XUEJON1HZp21+NMMxz/cSaxNmMGshmzQ6znrXiHCKXg36ewI/OZO3EDRDJoaAJB
-         GwiqL0XjZ0iGIx+tg4ycOBGU2ud/0v7nT3XDf3tNVpvFWct/Y7CcPlG3Je8jwX93CfOO
-         idhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777758922; x=1778363722;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pw2jZRLYzOlZ7sxfl/+h5eD7AhFBQmZQktoNUjcMaC8=;
-        b=RtGJMbu808cNpPX48bp/B8GRwCHzu/hjeWX/8BKgo+J57kisO3vfQPyzmaB8077VWY
-         5mk6NqgVQldxXVsPjFVVDN3hwsYX1VhiyFf4V0YWUtE0qM82FjXOapiW+ZdMDb60OC1v
-         +MHcns6V3LHiQStWUcELd0gBuw0QYB/HbGQb35hV8rPAlZCsLimHzvjaJSKP5c93d7aV
-         wJcwWYynTD08GykZPJut5L8RQDtpHYsZsv/DkFlDo3357/IvNwaDRJgTyswkc85yM42F
-         y/nn2w5kcplAkGmYlYti3HtxFdyQ7pVhbg3z2IB0ORdYcu9Be7fDSr+qmsZbp/QcCmgP
-         DCSA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ih/dNByQlGxWSgRWVPF8dOS2TSUKfZfg78OgaOLXYZcAm1GvXMGVLGcFcQq7fHGPApi2e8lA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl4BAqfqBtfrUmcR4FISQmcvDC+iD0zADj5ZDBhfaNoEwGCbc3
-	xBloGpLv7pV6BUTjifi3/13l1a4dEI0tNFdonffhmH1zN/aEcEZdXAKW
-X-Gm-Gg: AeBDievNVUBS8TTKuuoig4rGwkh44CJ5xK3FNHKGQ/OywJ6T5PiLEAyDi5FfRJFARDF
-	kcgUIRV1hKbmOhi5g2UCw6qSpaJJAohUfwIEGV2BI/h2vywZJNEy5h6bS9NSHlXZaXhxxzRmVAt
-	acdFzJAqpC0FTtOQd3U81Bb8y5FSc4GPWQR+yF+zbGMytzApxprPk3p7CYnY5SEhmE+6ZEXxrqN
-	jN82Rp2eo30eV6lJcvYJyK/qMzdrzUstNFCeKIW0xv3U3eaRL7Is55ilVHiNewHzGQtPDZ94qnG
-	b7bfGe+4pI/DAZ+tAn0D6ePqD9xmLCj8woE1lbIEhpygCcsughp44afJBlsVY6PGqdjmHcwuJ1t
-	5Afdqe81F3ciz5O46dEBetOR7yYLwl8VRMPxWVHaQXG2RoDduEupxZPaC+0vccY2I3LkpvF/d+S
-	HncUECwZXaLVwNvjat3xjQiyTJAXaJ99OBH4+/I9VwRAEhFw==
-X-Received: by 2002:a05:600c:c101:b0:488:8c89:cfaa with SMTP id 5b1f17b1804b1-48a9852f492mr46167455e9.3.1777758922338;
-        Sat, 02 May 2026 14:55:22 -0700 (PDT)
-Received: from foxbook (bgt227.neoplus.adsl.tpnet.pl. [83.28.83.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82301ad1sm344248525e9.9.2026.05.02.14.55.21
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sat, 02 May 2026 14:55:22 -0700 (PDT)
-Date: Sat, 2 May 2026 23:55:17 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Desnes Nunes <desnesn@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- gregkh@linuxfoundation.org, mathias.nyman@intel.com, stable@vger.kernel.org
-Subject: Re: [PATCH RFT RFC] usb: xhci: Kill hosts with HCE or HSE on
- command timeout
-Message-ID: <20260502235517.089ba5bf.michal.pecio@gmail.com>
-In-Reply-To: <CACaw+eyKh7buHDoDyTOe8O65FP5cSXYdzCcQvwqKw=1DwX26oA@mail.gmail.com>
-References: <20260430014817.2006885-1-desnesn@redhat.com>
-	<20260430104850.352bd946.michal.pecio@gmail.com>
-	<CACaw+exdPSVSfdAob7+d-xH=JEjBbPpY_z1cPPU6rzXx4wUZpA@mail.gmail.com>
-	<20260430235453.2288c973.michal.pecio@gmail.com>
-	<CACaw+ewwM_5eqyGW5=+THwHsYPs7u3NT096AFQdt6x4E6HcWtA@mail.gmail.com>
-	<20260502114644.76e6b5a3.michal.pecio@gmail.com>
-	<CACaw+eyKh7buHDoDyTOe8O65FP5cSXYdzCcQvwqKw=1DwX26oA@mail.gmail.com>
+	s=arc-20240116; t=1777764616; c=relaxed/simple;
+	bh=03cksnxuqjHRMr787oTx/fQYgc8VBb8lCDrrKxpzS9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ohmlRM3+nv1HJ5voCM2bD5c/4+5XF9hpnxyS6HmNpFNqmg0GI1H6UqgWCJCoyJE9eq78X/LrrDxmUzIWwG/8nBCZN0o+BjkcbyAQ8bYyvBLFvuh224mBOx1fZheX5Wa7wv/3wKAtBoz4XvWyQdyMvr1ql03cES8P0+j43ZCuePc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1myPiXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53A6C19425;
+	Sat,  2 May 2026 23:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777764616;
+	bh=03cksnxuqjHRMr787oTx/fQYgc8VBb8lCDrrKxpzS9A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D1myPiXRxOY/s3FqhNoCEijEt/tA7BfB60tXD/y6983PuEjwij+DC7nYBCkopXDt/
+	 7NreavGf2jY6vwNgPl5/5M6tqTbcPSuUYqgD9EAR5PdvJEevdlTgs40VqDDCdgItf3
+	 hM0XE6IGSd6JSaWhsRjhTwuTXtoQOCgwYoPI4MjhY+/Y91iOmdimhW4SXxBep51DVg
+	 C5UfiHMpIzFgCAgSaXMGjBxjPsaE22qYuvhL3+s9D85Sb33FSQcKpro/InHK2BRv63
+	 OZR3wHc7GZ5YajDMCnKZTCqPPAFEaoKCcQZZeRhedDwXnhHoeu5oasl9jdzJh2djJr
+	 coDvNoVdwZXqQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Naman Jain <namjain@linux.microsoft.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] block: relax pgmap check in bio_add_page for compatible zone device pages
+Date: Sat,  2 May 2026 19:30:00 -0400
+Message-ID: <20260502233000.914887-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050149-moonlike-issue-7246@gregkh>
+References: <2026050149-moonlike-issue-7246@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 62DA94B38F5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F03E64B3A60
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242623-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242624-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lst.de:email]
 
-On Sat, 2 May 2026 08:38:34 -0300, Desnes Nunes wrote:
-> > diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-> > index e5823650850a..3041deb67b57 100644
-> > --- a/drivers/usb/host/xhci-ring.c
-> > +++ b/drivers/usb/host/xhci-ring.c
-> > @@ -1761,13 +1761,15 @@ void xhci_handle_command_timeout(struct work_struct *work)
-> >         /* mark this command to be cancelled */
-> >         xhci->current_cmd->status = COMP_COMMAND_ABORTED;
-> >
-> > -       /* Make sure command ring is running before aborting it */
-> > +       /* check for crashed or disconnected chip */
-> >         hw_ring_state = xhci_read_64(xhci, &xhci->op_regs->cmd_ring);
-> > -       if (hw_ring_state == ~(u64)0) {
-> > +       if (hw_ring_state == ~(u64)0 || usbsts & (STS_FATAL | STS_HCE)) {
-> > +               xhci_info(xhci, "kill the damn thing\n");
-> >                 xhci_hc_died(xhci);
-> >                 goto time_out_completed;
-> >         }
-> >
-> > +       /* Make sure command ring is running before aborting it */
-> >         if ((xhci->cmd_ring_state & CMD_RING_STATE_RUNNING) &&
-> >             (hw_ring_state & CMD_RING_RUNNING))  {
-> >                 /* Prevent new doorbell, and start command abort */  
-> 
-> FYI, sorry to be the bearer of bad news, but this also panics the
-> system as soon as I run `echo c > /proc/sysrq-trigger`.
+From: Naman Jain <namjain@linux.microsoft.com>
 
-Is this not what's supposed to happen?
+[ Upstream commit 41c665aae2b5dbecddddcc8ace344caf630cc7a4 ]
 
-Sorry, that complaint is so odd that I thought I'm seeing another case
-of debugging being outsourced to an AI chatbot, which forgot that panic
-is triggered intentionally here. Now I'm just confused.
+bio_add_page() and bio_integrity_add_page() reject pages from different
+dev_pagemaps entirely, returning 0 even when those pages have compatible
+DMA mapping requirements. This forces callers to start a new bio when
+buffers span pgmap boundaries, even though the pages could safely coexist
+as separate bvec entries.
 
-> Kdump doesn't run and no vmcore is produced:
+This matters for guests where memory is registered through
+devm_memremap_pages() with MEMORY_DEVICE_GENERIC in multiple calls,
+creating separate dev_pagemaps for each chunk. When a direct I/O buffer
+spans two such chunks, bio_add_page() rejects the second page, forcing an
+unnecessary bio split or I/O failure.
 
-Is the kdump kernel not launched, or does it crash during boot?
-The latter would make sense if there is some problem with the code.
+Introduce zone_device_pages_compatible() in blk.h to check whether two
+pages can coexist in the same bio as separate bvec entries. The block DMA
+iterator (blk_dma_map_iter_start) caches the P2PDMA mapping state from the
+first segment and applies it to all others, so P2PDMA pages from different
+pgmaps must not be mixed, and neither must P2PDMA and non-P2PDMA pages.
+All other combinations (MEMORY_DEVICE_GENERIC pages from different pgmaps,
+or MEMORY_DEVICE_GENERIC with normal RAM) use the same dma_map_phys path
+and are safe.
 
-But I don't understand how patching xhci-hcd could possibly have
-any effect on the former. Does this new code execute at all? Does
-"kill the damn thing" ever appear in dmesg?
+Replace the blanket zone_device_pages_have_same_pgmap() rejection with
+zone_device_pages_compatible(), while keeping
+zone_device_pages_have_same_pgmap() as a merge guard.
+Pages from different pgmaps can be added as separate bvec entries but
+must not be coalesced into the same segment, as that would make
+it impossible to recover the correct pgmap via page_pgmap().
 
-Regards,
-Michal
+Fixes: 49580e690755 ("block: add check when merging zone device pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260410153414.4159050-3-namjain@linux.microsoft.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ restructured combined `if` into explicit `bv` block ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ block/bio-integrity.c |  2 ++
+ block/bio.c           | 14 +++++++++-----
+ block/blk.h           | 19 +++++++++++++++++++
+ 3 files changed, 30 insertions(+), 5 deletions(-)
+
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 456026c4a3c96..6641ecbf69678 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -167,6 +167,8 @@ int bio_integrity_add_page(struct bio *bio, struct page *page,
+ 		struct bio_vec *bv = &bip->bip_vec[bip->bip_vcnt - 1];
+ 		bool same_page = false;
+ 
++		if (!zone_device_pages_compatible(bv->bv_page, page))
++			return 0;
+ 		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
+ 					   &same_page)) {
+ 			bip->bip_iter.bi_size += len;
+diff --git a/block/bio.c b/block/bio.c
+index b919f3fa2f2d4..a081e2ddf9cf8 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1155,11 +1155,15 @@ int bio_add_page(struct bio *bio, struct page *page,
+ 	if (bio->bi_iter.bi_size > UINT_MAX - len)
+ 		return 0;
+ 
+-	if (bio->bi_vcnt > 0 &&
+-	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
+-				page, len, offset, &same_page)) {
+-		bio->bi_iter.bi_size += len;
+-		return len;
++	if (bio->bi_vcnt > 0) {
++		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++
++		if (!zone_device_pages_compatible(bv->bv_page, page))
++			return 0;
++		if (bvec_try_merge_page(bv, page, len, offset, &same_page)) {
++			bio->bi_iter.bi_size += len;
++			return len;
++		}
+ 	}
+ 
+ 	if (bio->bi_vcnt >= bio->bi_max_vecs)
+diff --git a/block/blk.h b/block/blk.h
+index e7d7c5c636524..8af4f7101c8a8 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -124,6 +124,25 @@ static inline bool biovec_phys_mergeable(struct request_queue *q,
+ 	return true;
+ }
+ 
++/*
++ * Check if two pages from potentially different zone device pgmaps can
++ * coexist as separate bvec entries in the same bio.
++ *
++ * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
++ * state from the first segment and applies it to all subsequent segments, so
++ * P2PDMA pages from different pgmaps must not be mixed in the same bio.
++ *
++ * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
++ * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
++ */
++static inline bool zone_device_pages_compatible(const struct page *a,
++						const struct page *b)
++{
++	if (is_pci_p2pdma_page(a) || is_pci_p2pdma_page(b))
++		return zone_device_pages_have_same_pgmap(a, b);
++	return true;
++}
++
+ static inline bool __bvec_gap_to_prev(const struct queue_limits *lim,
+ 		struct bio_vec *bprv, unsigned int offset)
+ {
+-- 
+2.53.0
+
 
