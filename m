@@ -1,158 +1,200 @@
-Return-Path: <stable+bounces-242589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIh/OLLH9Wm8OwIAu9opvQ
-	(envelope-from <stable+bounces-242589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 11:45:22 +0200
+	id MBtJIBHI9Wm8OwIAu9opvQ
+	(envelope-from <stable+bounces-242590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 11:46:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E0A4B18D5
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 11:45:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44894B18FF
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 11:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC52D3011799
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 09:45:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91BCD3010C05
+	for <lists+stable@lfdr.de>; Sat,  2 May 2026 09:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69E531064E;
-	Sat,  2 May 2026 09:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCC930AD0A;
+	Sat,  2 May 2026 09:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G3RIta4S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MP2O6I6U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AADB1D95A3
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 09:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1231DDC1D
+	for <stable@vger.kernel.org>; Sat,  2 May 2026 09:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777715115; cv=none; b=VopmRIormgj/i0hv5Yo2QkjPug4e/s2RO5CxwDGbZu/Fu2Mtu0JXodsl6+t2V47xU5LtX6H+Z+T4X27e+3hCnInF3pqboSnPW9Wb/bexAghw2Dx+H8IMjBQ7atEwlMmb4rPN9SXr+rlA3T1FMLkV/qVrwuES1FLwWnF3sGALmCo=
+	t=1777715214; cv=none; b=ebLPgCKeJZddxvD3+pYSInwBf8ovwY4GsD1qIeU0qCuXrcBNZ5FpeeAsRMAH4rQvxr6Nv5JZ6DWoy5mexVGngx4wFcJWmYjzHI5xt1YoZMZ7CZK6I4Wi/bUf10Yy5hgt2Vi6uYJxP0l3qlk1BlLHbs9OgUMBPOi5gOQir9hDK0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777715115; c=relaxed/simple;
-	bh=tQaOSTmRG8h+Q60TQrv4Ps1DXYna/JcS4+Wi1K4sznA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JO9rS+PJUNU8e8i6KJgXnBA13OPUtds38zblu3amEWW5Wf021NqApdC63XF6dUDRrubAeKIloWKS0VJZkMAV8usGEes+IMSD1WDjncwIt/s6BuqS8IdpzlueU65+NfciF55l5Uv2qNrv9Eg3oW1z/iK/km0YH6wWPZ/5/w+bS30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G3RIta4S; arc=none smtp.client-ip=209.85.222.182
+	s=arc-20240116; t=1777715214; c=relaxed/simple;
+	bh=DPiNTEITt1TPBpjArvFJpFpEyHTx0vdtATFnbHgPgfU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TzEDVcPe3JjIXKWEr8UDu4Br7zkS+VpYJfWZQIitYXBIcj7C+eidzBHrsSePqkZ+X+ma6MfjMVwntD9wBnoKUiEG9wMIh4m9GJijNJqmYxVRYJhL7y6RYsIO6w8A9hgste9/oajP88ZtJaH+ksfLBe9LD7m7br89QrDv01uOp74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MP2O6I6U; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8ef45a6d9dfso295022585a.0
-        for <stable@vger.kernel.org>; Sat, 02 May 2026 02:45:11 -0700 (PDT)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-44a14580111so1277260f8f.0
+        for <stable@vger.kernel.org>; Sat, 02 May 2026 02:46:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777715111; x=1778319911; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tQaOSTmRG8h+Q60TQrv4Ps1DXYna/JcS4+Wi1K4sznA=;
-        b=G3RIta4SbEe728iWpoGF26UeJ4CJffYNebybl7tV4EcJGxvlXG2CU0ykufo1lv4RHS
-         xqZdNXiMMYrATW/wfKUkM7dG5YJNeizCgssMicfmz4VKBxO/Nna0c0LWRHhSzNA36G2A
-         a8KvKAO4ezzGiymHhiK+0bEzQlZqqHv+WdsX6wzLhdGM0rSAKBMjcewupv/C/6aCwT/A
-         YzASZcMxQ9B3KAfzvzh49Q7Ar1iDbpZGAhGlVJYNSQ32i2WTNjv97/D7nIn355VDUrs1
-         wuudXFa54UkyDHQz9pvagFbvkWLvCxMPeOBSJRBZCb7BIKGu712rhENsmz6EAX8M14m0
-         W58w==
+        d=gmail.com; s=20251104; t=1777715211; x=1778320011; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ezmD1eosO8J8L5bV2blwD7uKVAJ5uRnCIe2hKB1QaCg=;
+        b=MP2O6I6UmkMu+yWeLeSdXoUwOAlMSjK4K9IympeZv4SCa8wB4CWZAwZoY/hzIZpP2U
+         OMuXbB3PskdWK3w7ugNJ/lE/Yqj7fOqV4s3R26NigI8nW6srpOCBRv1eSMFHVl7Ptpb3
+         KuOsnHNBNnNMcB9qZqjERcYVNV+uj/9jtgJBe1KQZKtqu3M0+NUaPqk7s9e6/VAwzT14
+         Av57RaZeFOAhskc3eTbOxpe/ZEfBosxnZ399ZYK3Zsy9POuvbnY2OvnxxZdWEi5xiTNd
+         1e3TGxj3pgeHhHQ6iobs/Hi/8McrRTcTpCsSEvgmCcxRXTeYFzOHjpABo1s93sGRH9xC
+         X8Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777715111; x=1778319911;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tQaOSTmRG8h+Q60TQrv4Ps1DXYna/JcS4+Wi1K4sznA=;
-        b=ks3N4UTZXl8+3Exy94QrPwt2grleRvCIJLRKSghGJvcbyXm5Ka4ESQ1+csct1eBlS5
-         7wHYE81rYMPkI4weE1l+E8Zw0ePO65ptAz6HXo06J+Qq6nfgBtasGRJfsy5kOg9lQ6ln
-         Bj63PkLqabMQQQz4boQZboHYw8Nqr8WBjaRtLGRhkXYJbV3Yns3ANAk56+3pYzUQILbt
-         rXSuwQ0JSLvHIMpxziLHw5lytcx51wM+HKl9i0VDpULuxbkdBZRoUwNu7iC0vbqUwSHG
-         RMA8YbQl+su938o0HeRiEk8GV078/w0naj6TaBEGYdEPlyfMwkkYdOAN4k9qL4vVKfDG
-         xtjg==
-X-Forwarded-Encrypted: i=1; AFNElJ9eRO3aQdKzOOzAgPechKAJlybAyLMD59VJYljMEGIgroDDXcrzT56KS2D/IatnC9apGcjwv14=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyimMcpC0uieh8hNYhUBvQPDFLJpx+s+4F6waXNDagOO9sqqAOI
-	G/fp8j3HJLIUdw1hoAazOv5K0Vzl4zQo/nYVdtYHmKK00xIAYnqFO0WD
-X-Gm-Gg: AeBDietqc2nauR6hyG5+Fw5lBp20Y8IbIJKrYmtORmZVpzD24zgZt4qhvTHzlIbh42E
-	V4KZ0Q/Fxr2Z54cg8dPZ9CBeyybH3GNO9egcULCYyUuD7Lo76Yfm29y98DzKkQFPrLpUKSzfhnc
-	rlbkzchbH3drGxTWfgkCgvocbfGk2oC6vO2qL1noKj7OG2wp1Ly9FhzMx0NbzvVWjpeWcK+GKHH
-	dyoAFyrQu3pTeujfwBLMVCBotJaMDAglkwwkNQPTJMDE72TgGOPCAx6i+B0qH1lzRfpg1STfWvq
-	9HFJxV8kgSSOeCn/tfxIi+b3vsA28rHwF/JNQYs283Y11rtO30vLhWxiqHkGTh70YxXILgfdeAX
-	btEoD+BGQIa+JPZjT5+Z2SsSud4Vii16mBbtldg370ZpOlGTYd+MxBGbWJbXa66oHUdj2yp6RYd
-	5nR9wG7oOWeQJr7Zz2BhPZpN2RLN0JeLFJStv2eRLUA8OJ6I+0CeFgkJ4AHQCp59GqBLA=
-X-Received: by 2002:a05:620a:371a:b0:8ee:7dcf:ac75 with SMTP id af79cd13be357-8fd15dd0b63mr450795785a.18.1777715110658;
-        Sat, 02 May 2026 02:45:10 -0700 (PDT)
-Received: from PF5YBGDS.localdomain ([163.114.130.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c9229c8sm475713985a.36.2026.05.02.02.45.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 02:45:10 -0700 (PDT)
-Date: Sat, 2 May 2026 05:45:08 -0400
-From: Mike Marciniszyn <mike.marciniszyn@gmail.com>
-To: Simon Horman <horms@kernel.org>
-Cc: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: eth: fbnic: Fix addr validation in pcs write
-Message-ID: <afXHpPPKhayawr9x@PF5YBGDS.localdomain>
-References: <20260429150049.1643-1-mike.marciniszyn@gmail.com>
- <20260501134636.GE15617@horms.kernel.org>
+        d=1e100.net; s=20251104; t=1777715211; x=1778320011;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ezmD1eosO8J8L5bV2blwD7uKVAJ5uRnCIe2hKB1QaCg=;
+        b=MHgEYl/61ZR10Cy7xP/XYVWT0JrpuTwtAk9ckENBNQHJmcJPx3Gza9X8imi8uO7WM9
+         UqYdDuL7kUaP7raO+WCbI+Tk/uglj8ayv0Dz6svXuSz+dhZnKXMeqH01395JowNEQxHD
+         JlQEBm83avegZLZAo0nnLkXYHHaIKWtB5962STTb6AnU85SEcqtyElQ+eXKx9EC/StQD
+         v9Ixqp6TrOnt4034pULRRcBO88JChWAzUu8Ljd8BO9n8airENzhX3KBWO6JL4Tx+9f90
+         7zvANNKoluiLG61iOVKvuZ1v5VUMIOkKaDRJSn0xVnIiZGy1kZ7fM1Nza3rUak5J2Vli
+         62wA==
+X-Forwarded-Encrypted: i=1; AFNElJ8LVad5fvJq4ozM3eerYJu8cPa/R8tpoG6NvCchzMF9J9seOcZCMKcAXzTdyi8xeMfR/AkdxiY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKOQ59uQq18xyaHFiC1hlVD+u62Tjx+jEEL+5cbAWRIGFTjKKE
+	+d7vJWFSonYzmcBAK6L8jPTscBf3ChBqT82IpAwYT2FwVuUk+CemDr1X
+X-Gm-Gg: AeBDietW8hVdnkArO2qx4GMu3nM8ypJEVDQDB3rUKDIzze95Y0t12YZhOfHPPFs9amR
+	r1IWcjygQrscd4vjRzb66lDF0PG5JtZtclJuh69cDXUMhEZEvLgRCVZXn1O2Gg8KVmkBgKo3jcC
+	5TKT7gSMmWxg/gw0QkOnk3LyrdgB/XP8PdFURMERblSmQAcLfieITiI5jbvmNcJgVRl+vPHZtL/
+	TBab7Jgx74ptfzCsJHnnPUGqbTu9e8L060ee4vq6oFyhMEv9omOYHZYnGzn1K/yAva5jS+0aP8a
+	P+WGKU/bfW/huG3kJjfZuatnCbiYj/DGPbkRodKbFcQVxjmwNeVTCgUIk1xytY4q8r+ZEsmIak3
+	k+H8cv6HOiu68Rc5Rm+8fYgQ1/Jw2g3dfC26nTWfFE1S8GJ06CxaYvbne1Ud2vduSTanHgCcoYn
+	dh4a3lLaRvAmieJT/1xQBBoZJVfAy97jukNWpd/ZO+mpj9tg==
+X-Received: by 2002:a05:6000:40c7:b0:43b:5672:efe with SMTP id ffacd0b85a97d-44bb36d17efmr4004334f8f.9.1777715211096;
+        Sat, 02 May 2026 02:46:51 -0700 (PDT)
+Received: from foxbook (bgt227.neoplus.adsl.tpnet.pl. [83.28.83.227])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a8ea7d035sm9943933f8f.5.2026.05.02.02.46.50
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sat, 02 May 2026 02:46:50 -0700 (PDT)
+Date: Sat, 2 May 2026 11:46:44 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Desnes Nunes <desnesn@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ gregkh@linuxfoundation.org, mathias.nyman@intel.com, stable@vger.kernel.org
+Subject: [PATCH RFT RFC] usb: xhci: Kill hosts with HCE or HSE on command
+ timeout
+Message-ID: <20260502114644.76e6b5a3.michal.pecio@gmail.com>
+In-Reply-To: <CACaw+ewwM_5eqyGW5=+THwHsYPs7u3NT096AFQdt6x4E6HcWtA@mail.gmail.com>
+References: <20260430014817.2006885-1-desnesn@redhat.com>
+	<20260430104850.352bd946.michal.pecio@gmail.com>
+	<CACaw+exdPSVSfdAob7+d-xH=JEjBbPpY_z1cPPU6rzXx4wUZpA@mail.gmail.com>
+	<20260430235453.2288c973.michal.pecio@gmail.com>
+	<CACaw+ewwM_5eqyGW5=+THwHsYPs7u3NT096AFQdt6x4E6HcWtA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260501134636.GE15617@horms.kernel.org>
-X-Rspamd-Queue-Id: A6E0A4B18D5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D44894B18FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242589-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242590-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mikemarciniszyn@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[PF5YBGDS.localdomain:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Fri, May 01, 2026 at 02:46:36PM +0100, Simon Horman wrote:
-> On Wed, Apr 29, 2026 at 11:00:49AM -0400, mike.marciniszyn@gmail.com wrote:
-> > From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
+On Fri, 1 May 2026 11:09:27 -0300, Desnes Nunes wrote:
+> On Thu, Apr 30, 2026 at 6:55=E2=80=AFPM Michal Pecio <michal.pecio@gmail.=
+com> wrote:
+> > When xhci_handle_command_timeout() logs USBSTS, does it help to add:
 > >
-> > This patch contains a fix for addr validation in fbnic_mdio_write_pcs().
->
-> Hi Mike,
->
-> I think this warrants a bit more explanation: Why should addr 2 be
-> accepted? What happens from a user-perspective when it is not?
->
+> > if (usbsts & STS_FATAL) {
+> >         xhci_halt(xhci);
+> >         xhci_hc_died(xhci);
+> >         goto time_out_completed;
+> > }
+> > It may not be perfect solution (race conditions?) but it could hint
+> > that we are on the right track, if it works. =20
+>=20
+> This panicked the system as soon as I hit `echo c > /proc/sysrq-trigger`:
+>=20
+> [  141.683476] sysrq: Trigger a crash
+> [  141.686970] Kernel panic - not syncing: sysrq triggered crash
 
-The DW IP part has two distinct PCS address ranges cooresponding
-to the C45 PCS registers.
+Damn, that sucks. Any chance it's not a problem with my proposed change
+but some sort of issue on your side?
 
-The shim translates the PCS mmd/addr/regno into specific CSR writes
-to one of two zero-relative addr values into one of those two
-ranges.
+Anyway, I think the patch below might cover it. It works for me in the
+sense that the bus does get killed, without ill effect. I tested on
+VL805 where HSE is easily triggered by disabling XHCI_TRB_OVERFETCH.
+However, the patch isn't necessary here - VL805 doesn't clear CRCR.CRR
+on HSE, so normal abort path is taken and times out, then hc_died().
 
-This patch fixes a one off in the test that could allow an invalid
-CSR write if an addr == 2 was called.
+Can somebody serious confirm if this issue actually exists in the first
+place, and whether the patch solves it?
 
-I can update the commit message to reflect the above?
+Hello Redhat, anyone alive there? Or only stochastic parrots?
 
-Mike
+Mathias, do you remember what's the point of the "Command timeout on
+stopped ring" branch? Can it happen in any case other than dead chip?
+
+I also wonder if it wouldn't make sense to just hc_died() on every
+command timeout except Address Device. We rely on Stop Endpoint
+timeouts to kill chips which go unresponsive without setting HCE/HSE,
+because sooner or later somebody loses patience and unlinks an URB,
+but this story (real or hallucinated, but plausible) shows that this
+may not help when there are no devices created yet.
+
+---
+
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index e5823650850a..3041deb67b57 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1761,13 +1761,15 @@ void xhci_handle_command_timeout(struct work_struct=
+ *work)
+ 	/* mark this command to be cancelled */
+ 	xhci->current_cmd->status =3D COMP_COMMAND_ABORTED;
+=20
+-	/* Make sure command ring is running before aborting it */
++	/* check for crashed or disconnected chip */
+ 	hw_ring_state =3D xhci_read_64(xhci, &xhci->op_regs->cmd_ring);
+-	if (hw_ring_state =3D=3D ~(u64)0) {
++	if (hw_ring_state =3D=3D ~(u64)0 || usbsts & (STS_FATAL | STS_HCE)) {
++		xhci_info(xhci, "kill the damn thing\n");
+ 		xhci_hc_died(xhci);
+ 		goto time_out_completed;
+ 	}
+=20
++	/* Make sure command ring is running before aborting it */
+ 	if ((xhci->cmd_ring_state & CMD_RING_STATE_RUNNING) &&
+ 	    (hw_ring_state & CMD_RING_RUNNING))  {
+ 		/* Prevent new doorbell, and start command abort */
 
