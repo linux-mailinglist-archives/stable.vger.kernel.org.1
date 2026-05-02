@@ -1,212 +1,260 @@
-Return-Path: <stable+bounces-242579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 68NQFZlo9Wm7KwIAu9opvQ
-	(envelope-from <stable+bounces-242579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 04:59:37 +0200
+	id IemRMnVp9WnkKwIAu9opvQ
+	(envelope-from <stable+bounces-242580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 05:03:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F904B0B9D
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 04:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5424B0BC7
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 05:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 603863016CA4
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 02:59:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9799830182B7
+	for <lists+stable@lfdr.de>; Sat,  2 May 2026 03:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF4B2C1788;
-	Sat,  2 May 2026 02:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A712C21C4;
+	Sat,  2 May 2026 03:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VgedaovP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IfdC1xmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED272C11D7
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 02:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668751DD525;
+	Sat,  2 May 2026 03:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777690773; cv=none; b=EF22w9jKF8i4LQWzVJv+odqKgDJZIOuJfPi2C8ey3WzUa841GF/YwYGjiqu3mGoOD/dJSMm/NeAYNSChGIAR1GD8tsLJmR3IkMK+KzugAFPuDrrfAXdqloOR10vfycjFUm3lNJQ35xenMmtvcV67ce8/UFFhenQvA1G4dWF51JU=
+	t=1777690992; cv=none; b=I3g8dWEOjKgFbydE4exarr8w4p7AXDPX3NDeLfUB8iffhMfx3j5EIKYem77HPvLOwC1FdDdSrQhks/UX9h6kmoRrGKTV5wWkCT/X0ouZf1XSY94zcos3Sqmr0H2WeVofbG68leS+H2mFrZqQ/Z1hIokp5JbHWA860mj/d7toH8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777690773; c=relaxed/simple;
-	bh=Gep9kLWQM9tlejhuAhTtp6HB3asG19A6jnFp+37kL/s=;
+	s=arc-20240116; t=1777690992; c=relaxed/simple;
+	bh=DkVXAVtci6HZK/4C+c6Uw3FjYfJRWS/pb+WUKadHw9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aH2t/ML6CvV4ix34TFIUci3hTUbVFuS1WVe0uNnWc+AOmKPuGo46dYxdLG5rckO++9vvORxWWNN7bEZeVFqfwQ/byS/ZyYr9cT+2mJUriHdQo4aDMdcshkRogKzwwgnuiQOed89H+IUVSMTBUHVyftXNWQZVoFi6+ru190n9rtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VgedaovP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8278CC2BCB4;
-	Sat,  2 May 2026 02:59:32 +0000 (UTC)
+	 MIME-Version; b=fEwTHn5KVlLw36kBYqOeJI6d8N8VkpXi6WIKAzbRZx5TcTCy+umSw9t2pmOY4dsGQCzqJSd97xkRKEdjH0Tdylvm+xcf4AnBUD/gJusznF4fbPbAetNYatq+vPJirjd79jGVtNyS66ZiO71YbeSsIVWWq9JZpWopyQugXPmcvFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IfdC1xmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF07DC2BCB4;
+	Sat,  2 May 2026 03:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777690773;
-	bh=Gep9kLWQM9tlejhuAhTtp6HB3asG19A6jnFp+37kL/s=;
+	s=k20201202; t=1777690992;
+	bh=DkVXAVtci6HZK/4C+c6Uw3FjYfJRWS/pb+WUKadHw9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgedaovPLzvlt0bp+bhqnAsjc0qgW6cPgijRxZntqDpdcvVmbAwU9c1yqp43YvKXM
-	 riTugLsBATgbHNwgvRAPXbm6vTgaJRgivrMiv93dPXqPtRV7mwUU2lyRIc9Q+b0Ygo
-	 guAI0bvAMfc3fDuUlSELLbei6zoKHmzbwXIvwsPzpFOCzPTK/zJNcV70oErYYxKl/b
-	 fPxvBE4PT6D7edVf4ziVn1r5F7XW69lypf2b5ijDUPeZugQVHEengEt35xI6UH/Ek2
-	 qjeiB7radqKzclPuE4K36qgpJu59QJeU6KwnNlw2Ikc+r91nGi9vabtAuB+yG86c/2
-	 jFCRzk7lGqmvA==
-From: Sasha Levin <sashal@kernel.org>
+	b=IfdC1xmEKPuQtBKw4g5aM5hHK2HNQjO60MP2c8o/xTz3SPS3MS9LqRoXEzBWkejgf
+	 aJwEhLLtal6bJCGzOFaS74xzTanHpGqlwdPy1VoRHq4biuMlF9qhCIoPjNrf3sLHE2
+	 HAuMqxEKT7/73NDyGooVTKToVCIt/fbgMVU3/eQEjp1wSXUkj2KwgfSPc5JxWgBUbk
+	 mk6X6D/MuW4dmaKSix1/o3aD2bzw64SdUt7tKS6TfjxigksdUUuMcNswQo2HeROFms
+	 +qDySVABIbbwE5xliwDOWpl0fxIaZ++X/l/+VPgt2Z4COOHmAgHx9SlfQKsTBEX0rq
+	 CdoV5hFY95XtQ==
+From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
-Cc: Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] RDMA/mana_ib: Disable RX steering on RSS QP destroy
-Date: Fri,  1 May 2026 22:59:23 -0400
-Message-ID: <20260502025930.238469-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050132-kinetic-idealize-dece@gregkh>
-References: <2026050132-kinetic-idealize-dece@gregkh>
+Cc: damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 1/2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race
+Date: Fri,  1 May 2026 20:02:56 -0700
+Message-ID: <20260502030257.127460-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026050141-likewise-trapeze-f1cc@gregkh>
+References: <2026050141-likewise-trapeze-f1cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A8F904B0B9D
+X-Rspamd-Queue-Id: 2A5424B0BC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242579-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242580-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
 
-From: Long Li <longli@microsoft.com>
+Patch series "mm/damon/core: fix damon_call()/damos_walk() vs kdmond exit
+race".
 
-[ Upstream commit dbeb256e8dd87233d891b170c0b32a6466467036 ]
+damon_call() and damos_walk() can leak memory and/or deadlock when they
+race with kdamond terminations.  Fix those.
 
-When an RSS QP is destroyed (e.g. DPDK exit), mana_ib_destroy_qp_rss()
-destroys the RX WQ objects but does not disable vPort RX steering in
-firmware. This leaves stale steering configuration that still points to
-the destroyed RX objects.
+This patch (of 2);
 
-If traffic continues to arrive (e.g. peer VM is still transmitting) and
-the VF interface is subsequently brought up (mana_open), the firmware
-may deliver completions using stale CQ IDs from the old RX objects.
-These CQ IDs can be reused by the ethernet driver for new TX CQs,
-causing RX completions to land on TX CQs:
+When kdamond_fn() main loop is finished, the function cancels all
+remaining damon_call() requests and unset the damon_ctx->kdamond so that
+API callers and API functions themselves can know the context is
+terminated.  damon_call() adds the caller's request to the queue first.
+After that, it shows if the kdamond of the damon_ctx is still running
+(damon_ctx->kdamond is set).  Only if the kdamond is running, damon_call()
+starts waiting for the kdamond's handling of the newly added request.
 
-  WARNING: mana_poll_tx_cq+0x1b8/0x220 [mana]  (is_sq == false)
-  WARNING: mana_gd_process_eq_events+0x209/0x290 (cq_table lookup fails)
+The damon_call() requests registration and damon_ctx->kdamond unset are
+protected by different mutexes, though.  Hence, damon_call() could race
+with damon_ctx->kdamond unset, and result in deadlocks.
 
-Fix this by disabling vPort RX steering before destroying RX WQ objects.
-Note that mana_fence_rqs() cannot be used here because the fence
-completion is delivered on the CQ, which is polled by user-mode (e.g.
-DPDK) and not visible to the kernel driver.
+For example, let's suppose kdamond successfully finished the damon_call()
+requests cancelling.  Right after that, damon_call() is called for the
+context.  It registers the new request, and shows the context is still
+running, because damon_ctx->kdamond unset is not yet done.  Hence the
+damon_call() caller starts waiting for the handling of the request.
+However, the kdamond is already on the termination steps, so it never
+handles the new request.  As a result, the damon_call() caller threads
+infinitely waits.
 
-Refactor the disable logic into a shared mana_disable_vport_rx() in
-mana_en, exported for use by mana_ib, replacing the duplicate code.
-The ethernet driver's mana_dealloc_queues() is also updated to call
-this common function.
+Fix this by introducing another damon_ctx field, namely
+call_controls_obsolete.  It is protected by the
+damon_ctx->call_controls_lock, which protects damon_call() requests
+registration.  Initialize (unset) it in kdamond_fn() before letting
+damon_start() returns and set it just before the cancelling of remaining
+damon_call() requests is executed.  damon_call() reads the obsolete field
+under the lock and avoids adding a new request.
 
-Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/20260325194100.1929056-1-longli@microsoft.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-[ kept early-return error handling and used unquoted NET_MANA namespace in EXPORT_SYMBOL_NS ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After this change, only requests that are guaranteed to be handled or
+cancelled are registered.  Hence the after-registration DAMON context
+termination check is no longer needed.  Remove it together.
+
+Note that the deadlock will not happen when damon_call() is called for
+repeat mode request.  In tis case, damon_call() returns instead of waiting
+for the handling when the request registration succeeds and it shows the
+kdamond is running.  However, if the request also has dealloc_on_cancel,
+the request memory would be leaked.
+
+The issue is found by sashiko [1].
+
+Link: https://lore.kernel.org/20260327233319.3528-1-sj@kernel.org
+Link: https://lore.kernel.org/20260327233319.3528-2-sj@kernel.org
+Link: https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org [1]
+Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.14.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 55da81663b9642dd046b26dd6f1baddbcf337c1e)
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- drivers/infiniband/hw/mana/qp.c               | 15 +++++++++++++++
- drivers/net/ethernet/microsoft/mana/mana_en.c | 11 ++++++++++-
- include/net/mana/mana.h                       |  1 +
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ include/linux/damon.h |  1 +
+ mm/damon/core.c       | 45 ++++++++++++++-----------------------------
+ 2 files changed, 15 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
-index 4b3b5b274e849..8009a339bf9ca 100644
---- a/drivers/infiniband/hw/mana/qp.c
-+++ b/drivers/infiniband/hw/mana/qp.c
-@@ -449,6 +449,21 @@ static int mana_ib_destroy_qp_rss(struct mana_ib_qp *qp,
- 	ndev = mc->ports[qp->port - 1];
- 	mpc = netdev_priv(ndev);
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 1a8a79d7e4e8d..6fe6f7fcf83d8 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -781,6 +781,7 @@ struct damon_ctx {
  
-+	/* Disable vPort RX steering before destroying RX WQ objects.
-+	 * Otherwise firmware still routes traffic to the destroyed queues,
-+	 * which can cause bogus completions on reused CQ IDs when the
-+	 * ethernet driver later creates new queues on mana_open().
-+	 *
-+	 * Unlike the ethernet teardown path, mana_fence_rqs() cannot be
-+	 * used here because the fence completion CQE is delivered on the
-+	 * CQ which is polled by userspace (e.g. DPDK), so there is no way
-+	 * for the kernel to wait for fence completion.
-+	 *
-+	 * This is best effort — if it fails there is not much we can do,
-+	 * and mana_cfg_vport_steering() already logs the error.
-+	 */
-+	mana_disable_vport_rx(mpc);
-+
- 	for (i = 0; i < (1 << ind_tbl->log_ind_tbl_size); i++) {
- 		ibwq = ind_tbl->ind_tbl[i];
- 		wq = container_of(ibwq, struct mana_ib_wq, ibwq);
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index b56a337b1e212..343f6e879af39 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2380,6 +2380,13 @@ static void mana_rss_table_init(struct mana_port_context *apc)
- 			ethtool_rxfh_indir_default(i, apc->num_queues);
+ 	/* lists of &struct damon_call_control */
+ 	struct list_head call_controls;
++	bool call_controls_obsolete;
+ 	struct mutex call_controls_lock;
+ 
+ 	struct damos_walk_control *walk_control;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 87b6c9c2d6471..3fb199a47fa9e 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1431,35 +1431,6 @@ bool damon_is_running(struct damon_ctx *ctx)
+ 	return running;
  }
  
-+int mana_disable_vport_rx(struct mana_port_context *apc)
-+{
-+	return mana_cfg_vport_steering(apc, TRI_STATE_FALSE, false, false,
-+				       false);
-+}
-+EXPORT_SYMBOL_NS(mana_disable_vport_rx, NET_MANA);
-+
- int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
- 		    bool update_hash, bool update_tab)
- {
-@@ -2620,12 +2627,14 @@ static int mana_dealloc_queues(struct net_device *ndev)
- 	 */
+-/*
+- * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
+- *				      an inactive context.
+- * @ctx:	The inactive DAMON context.
+- * @control:	Control variable of the call request.
+- *
+- * This function is called in a case that @control is added to @ctx but @ctx is
+- * not running (inactive).  See if @ctx handled @control or not, and cleanup
+- * @control if it was not handled.
+- *
+- * Returns 0 if @control was handled by @ctx, negative error code otherwise.
+- */
+-static int damon_call_handle_inactive_ctx(
+-		struct damon_ctx *ctx, struct damon_call_control *control)
+-{
+-	struct damon_call_control *c;
+-
+-	mutex_lock(&ctx->call_controls_lock);
+-	list_for_each_entry(c, &ctx->call_controls, list) {
+-		if (c == control) {
+-			list_del(&control->list);
+-			mutex_unlock(&ctx->call_controls_lock);
+-			return -EINVAL;
+-		}
+-	}
+-	mutex_unlock(&ctx->call_controls_lock);
+-	return 0;
+-}
+-
+ /**
+  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+  * @ctx:	DAMON context to call the function for.
+@@ -1477,6 +1448,10 @@ static int damon_call_handle_inactive_ctx(
+  * synchronization.  The return value of the function will be saved in
+  * &damon_call_control->return_code.
+  *
++ * Note that this function should be called only after damon_start() with the
++ * @ctx has succeeded.  Otherwise, this function could fall into an indefinite
++ * wait.
++ *
+  * Return: 0 on success, negative error code otherwise.
+  */
+ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+@@ -1487,10 +1462,12 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+ 	INIT_LIST_HEAD(&control->list);
  
- 	apc->rss_state = TRI_STATE_FALSE;
--	err = mana_config_rss(apc, TRI_STATE_FALSE, false, false);
-+	err = mana_disable_vport_rx(apc);
- 	if (err) {
- 		netdev_err(ndev, "Failed to disable vPort: %d\n", err);
- 		return err;
- 	}
+ 	mutex_lock(&ctx->call_controls_lock);
++	if (ctx->call_controls_obsolete) {
++		mutex_unlock(&ctx->call_controls_lock);
++		return -ECANCELED;
++	}
+ 	list_add_tail(&control->list, &ctx->call_controls);
+ 	mutex_unlock(&ctx->call_controls_lock);
+-	if (!damon_is_running(ctx))
+-		return damon_call_handle_inactive_ctx(ctx, control);
+ 	if (control->repeat)
+ 		return 0;
+ 	wait_for_completion(&control->completion);
+@@ -2640,6 +2617,9 @@ static int kdamond_fn(void *data)
  
-+	mana_fence_rqs(apc);
-+
- 	mana_destroy_vport(apc);
+ 	pr_debug("kdamond (%d) starts\n", current->pid);
  
- 	return 0;
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 7892b79854f62..d716771a7262c 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -437,6 +437,7 @@ struct mana_port_context {
- netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);
- int mana_config_rss(struct mana_port_context *ac, enum TRI_STATE rx,
- 		    bool update_hash, bool update_tab);
-+int mana_disable_vport_rx(struct mana_port_context *apc);
++	mutex_lock(&ctx->call_controls_lock);
++	ctx->call_controls_obsolete = false;
++	mutex_unlock(&ctx->call_controls_lock);
+ 	complete(&ctx->kdamond_started);
+ 	kdamond_init_ctx(ctx);
  
- int mana_alloc_queues(struct net_device *ndev);
- int mana_attach(struct net_device *ndev);
+@@ -2749,6 +2729,9 @@ static int kdamond_fn(void *data)
+ 	if (ctx->ops.cleanup)
+ 		ctx->ops.cleanup(ctx);
+ 	kfree(ctx->regions_score_histogram);
++	mutex_lock(&ctx->call_controls_lock);
++	ctx->call_controls_obsolete = true;
++	mutex_unlock(&ctx->call_controls_lock);
+ 	kdamond_call(ctx, true);
+ 
+ 	pr_debug("kdamond (%d) finishes\n", current->pid);
 -- 
-2.53.0
+2.47.3
 
 
