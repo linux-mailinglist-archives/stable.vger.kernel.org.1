@@ -1,186 +1,211 @@
-Return-Path: <stable+bounces-242572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGA8L4pd9Wm+KgIAu9opvQ
-	(envelope-from <stable+bounces-242572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 04:12:26 +0200
+	id WKbeJ5td9Wm+KgIAu9opvQ
+	(envelope-from <stable+bounces-242573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 04:12:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239A14B0A94
-	for <lists+stable@lfdr.de>; Sat, 02 May 2026 04:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1104B0A9C
+	for <lists+stable@lfdr.de>; Sat, 02 May 2026 04:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D278E30177A1
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 02:12:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C461630179D0
+	for <lists+stable@lfdr.de>; Sat,  2 May 2026 02:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CD018E02A;
-	Sat,  2 May 2026 02:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6025E20C00C;
+	Sat,  2 May 2026 02:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KF8+SWGO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTzKjIBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09B329CE1
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 02:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234C4155C97
+	for <stable@vger.kernel.org>; Sat,  2 May 2026 02:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777687944; cv=none; b=fS2SQkt/0BGrYQzmy51f/a5RGpdEG5G2/4kCtjRMNDHXMZXeSKyjtW+QMOL8iFdInoMCafsDg++8FvJ0MpzVQr0Q/zwZvw4BH+SbfiZwHx6VCM7bacF25OpSWgG016ZGuV3FvgFIYOZiIVdfstXZtmue4U5gNb59pj8FdSSNyKA=
+	t=1777687961; cv=none; b=VzdXJZ7yzI0CtAtYFTj8FD+bDIbpQyI9+JuJd59RCqVsU+ma166E784YhHcHvSdEK8lz5TUOgIVY58gU2zsISxgqLl9zVrqlGuF0CJk39oFrLIsr7VtckfodiGUZvs+Umw5QoT/OLADLAxeIuJ0dl/7ZXPMj/ZnS+me34Vjkn2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777687944; c=relaxed/simple;
-	bh=atoGxdPsFlWXGcFHo+pEw1E6jcec5yewRHJvdSydrSw=;
+	s=arc-20240116; t=1777687961; c=relaxed/simple;
+	bh=iSEFrnpuhnI4Qfaa116HnTtBS7sm750QLZYleIT1JP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RguENfTFuYud3eFDl/hs4fDIXbIO2OYPU62fUN3REyKZ+dKwKgns+mYOoE69OGtUQz0JeL//KWf//Lw82b9OU8RDDikxmt41YpfQwMNQAK5Y+vPMyQ8R36+nKTo66Umm7g/DCJNP1xwboN5sv6NXaaYjXCLjQhVnndXSSvD5hFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KF8+SWGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245CCC2BCB4;
-	Sat,  2 May 2026 02:12:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MNaqIJsC9Jnehfy6Jf0i4LxA/SGW9jk9zJ2AvXXB2LjGZygWADs7WavGwAHzvrPskFSSt4m4mtpAzgGBzrjsiqbBVb8nUfFNIphTW7iylCY+s2ev0wDmnUNUR+Bo5hW8vrcmeBmTBvEgtAD006xun8m21pfn+ohzRYnVMB70Y7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTzKjIBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D980C2BCB4;
+	Sat,  2 May 2026 02:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777687943;
-	bh=atoGxdPsFlWXGcFHo+pEw1E6jcec5yewRHJvdSydrSw=;
+	s=k20201202; t=1777687960;
+	bh=iSEFrnpuhnI4Qfaa116HnTtBS7sm750QLZYleIT1JP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KF8+SWGOjtMhV0eSKqeqHDUhVqiuMzp0ysXzW1rPPJCF8+IS9FPpQ6gbKfeSpyln0
-	 FcKjo14K5nNO1wU0kyPsW8RH9FST67gJvJOIj4ULCBYqo+SDzhVhudqhpL24oavqAc
-	 w3bOHvSSakXz0YAjGLKh+swrh6jrRxz29UvzhbDwxtoKStJitGJs8deiQVFnDh9swA
-	 wMmecTn1W1rP26EEAHeR0/IZolErNjEBOSMijji/TDfpeYxcW6u8UeBf3HqS77SNI5
-	 /231TSoqSs1oRzp0IBC86OsdLUPQX3cVcy/QDataazwf4IBhHT3fcSwkOMpB/O6ECF
-	 pYfdh94xxd7YA==
+	b=bTzKjIBlBGmXu0kcvXL0jIC3ILNpp29oSyUkteH1NBQO6WH1BLTd91vPK77QLl3Ll
+	 x8pmVF6k+2OqZbxMd9R6XOQD1Don7Q+PM1QlDUGa2bCWinjPyGRy2p7L7Pd7usU3wB
+	 55ZCvuLzP4PyDQ2fP7zGidQSKEcao7UpqXxk7nLnuP69xqUs3cOdFlTLGMBmFues4m
+	 5zajX+P+gwZYEo3ytYDk9QLebcgCALEol4vw+zTKR57JlyydWNApdzN7YsCW7GUa/6
+	 gqvN8Kn1umg+mFTp/CjG5DdCVyPHKKZjL5tXaOKwZONgSDFDFq59mDLRRNWan6/W6y
+	 0BMQRh6Cgq9kw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] media: rc: igorplugusb: heed coherency rules
-Date: Fri,  1 May 2026 22:12:21 -0400
-Message-ID: <20260502021221.4166866-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] RDMA/mana_ib: Disable RX steering on RSS QP destroy
+Date: Fri,  1 May 2026 22:12:37 -0400
+Message-ID: <20260502021238.4167696-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050125-qualifier-whole-b10c@gregkh>
-References: <2026050125-qualifier-whole-b10c@gregkh>
+In-Reply-To: <2026050131-tanning-savor-298d@gregkh>
+References: <2026050131-tanning-savor-298d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 239A14B0A94
+X-Rspamd-Queue-Id: 1E1104B0A9C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242572-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242573-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.993];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mess.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit eac69475b01fe1e861dfe3960b57fa95671c132e ]
+[ Upstream commit dbeb256e8dd87233d891b170c0b32a6466467036 ]
 
-In a control request, the USB request structure
-can be subject to DMA on some HCs. Hence it must obey
-the rules for DMA coherency. Allocate it separately.
+When an RSS QP is destroyed (e.g. DPDK exit), mana_ib_destroy_qp_rss()
+destroys the RX WQ objects but does not disable vPort RX steering in
+firmware. This leaves stale steering configuration that still points to
+the destroyed RX objects.
 
-Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
+If traffic continues to arrive (e.g. peer VM is still transmitting) and
+the VF interface is subsequently brought up (mana_open), the firmware
+may deliver completions using stale CQ IDs from the old RX objects.
+These CQ IDs can be reused by the ethernet driver for new TX CQs,
+causing RX completions to land on TX CQs:
+
+  WARNING: mana_poll_tx_cq+0x1b8/0x220 [mana]  (is_sq == false)
+  WARNING: mana_gd_process_eq_events+0x209/0x290 (cq_table lookup fails)
+
+Fix this by disabling vPort RX steering before destroying RX WQ objects.
+Note that mana_fence_rqs() cannot be used here because the fence
+completion is delivered on the CQ, which is polled by user-mode (e.g.
+DPDK) and not visible to the kernel driver.
+
+Refactor the disable logic into a shared mana_disable_vport_rx() in
+mana_en, exported for use by mana_ib, replacing the duplicate code.
+The ethernet driver's mana_dealloc_queues() is also updated to call
+this common function.
+
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ replaced kzalloc_obj() with kzalloc(sizeof(*ir->request), GFP_KERNEL) ]
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/20260325194100.1929056-1-longli@microsoft.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[ kept early-return error handling and used unquoted NET_MANA namespace in EXPORT_SYMBOL_NS ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/igorplugusb.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/mana/qp.c               | 15 +++++++++++++++
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 11 ++++++++++-
+ include/net/mana/mana.h                       |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/rc/igorplugusb.c b/drivers/media/rc/igorplugusb.c
-index 3e9988ee785f0..2ac19f283f4b9 100644
---- a/drivers/media/rc/igorplugusb.c
-+++ b/drivers/media/rc/igorplugusb.c
-@@ -14,6 +14,7 @@
- #include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/slab.h>
- #include <linux/usb.h>
- #include <linux/usb/input.h>
- #include <media/rc-core.h>
-@@ -34,7 +35,7 @@ struct igorplugusb {
- 	struct device *dev;
+diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
+index 48fef989318b4..84b8666af606c 100644
+--- a/drivers/infiniband/hw/mana/qp.c
++++ b/drivers/infiniband/hw/mana/qp.c
+@@ -601,6 +601,21 @@ static int mana_ib_destroy_qp_rss(struct mana_ib_qp *qp,
+ 	ndev = mana_ib_get_netdev(qp->ibqp.device, qp->port);
+ 	mpc = netdev_priv(ndev);
  
- 	struct urb *urb;
--	struct usb_ctrlrequest request;
-+	struct usb_ctrlrequest *request;
- 
- 	struct timer_list timer;
- 
-@@ -123,7 +124,7 @@ static void igorplugusb_cmd(struct igorplugusb *ir, int cmd)
- {
- 	int ret;
- 
--	ir->request.bRequest = cmd;
-+	ir->request->bRequest = cmd;
- 	ir->urb->transfer_flags = 0;
- 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
- 	if (ret)
-@@ -165,13 +166,17 @@ static int igorplugusb_probe(struct usb_interface *intf,
- 	if (!ir)
- 		return -ENOMEM;
- 
-+	ir->request = kzalloc(sizeof(*ir->request), GFP_KERNEL);
-+	if (!ir->request)
-+		goto fail;
++	/* Disable vPort RX steering before destroying RX WQ objects.
++	 * Otherwise firmware still routes traffic to the destroyed queues,
++	 * which can cause bogus completions on reused CQ IDs when the
++	 * ethernet driver later creates new queues on mana_open().
++	 *
++	 * Unlike the ethernet teardown path, mana_fence_rqs() cannot be
++	 * used here because the fence completion CQE is delivered on the
++	 * CQ which is polled by userspace (e.g. DPDK), so there is no way
++	 * for the kernel to wait for fence completion.
++	 *
++	 * This is best effort — if it fails there is not much we can do,
++	 * and mana_cfg_vport_steering() already logs the error.
++	 */
++	mana_disable_vport_rx(mpc);
 +
- 	ir->dev = &intf->dev;
- 
- 	timer_setup(&ir->timer, igorplugusb_timer, 0);
- 
--	ir->request.bRequest = GET_INFRACODE;
--	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
--	ir->request.wLength = cpu_to_le16(sizeof(ir->buf_in));
-+	ir->request->bRequest = GET_INFRACODE;
-+	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
-+	ir->request->wLength = cpu_to_le16(sizeof(ir->buf_in));
- 
- 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!ir->urb)
-@@ -223,6 +228,7 @@ static int igorplugusb_probe(struct usb_interface *intf,
- 	rc_free_device(ir->rc);
- 	usb_free_urb(ir->urb);
- 	del_timer(&ir->timer);
-+	kfree(ir->request);
- 
- 	return ret;
- }
-@@ -236,6 +242,7 @@ static void igorplugusb_disconnect(struct usb_interface *intf)
- 	usb_set_intfdata(intf, NULL);
- 	usb_kill_urb(ir->urb);
- 	usb_free_urb(ir->urb);
-+	kfree(ir->request);
+ 	for (i = 0; i < (1 << ind_tbl->log_ind_tbl_size); i++) {
+ 		ibwq = ind_tbl->ind_tbl[i];
+ 		wq = container_of(ibwq, struct mana_ib_wq, ibwq);
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 969dd44303569..e527139936dee 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2392,6 +2392,13 @@ static void mana_rss_table_init(struct mana_port_context *apc)
+ 			ethtool_rxfh_indir_default(i, apc->num_queues);
  }
  
- static const struct usb_device_id igorplugusb_table[] = {
++int mana_disable_vport_rx(struct mana_port_context *apc)
++{
++	return mana_cfg_vport_steering(apc, TRI_STATE_FALSE, false, false,
++				       false);
++}
++EXPORT_SYMBOL_NS(mana_disable_vport_rx, NET_MANA);
++
+ int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
+ 		    bool update_hash, bool update_tab)
+ {
+@@ -2676,12 +2683,14 @@ static int mana_dealloc_queues(struct net_device *ndev)
+ 	 */
+ 
+ 	apc->rss_state = TRI_STATE_FALSE;
+-	err = mana_config_rss(apc, TRI_STATE_FALSE, false, false);
++	err = mana_disable_vport_rx(apc);
+ 	if (err) {
+ 		netdev_err(ndev, "Failed to disable vPort: %d\n", err);
+ 		return err;
+ 	}
+ 
++	mana_fence_rqs(apc);
++
+ 	mana_destroy_vport(apc);
+ 
+ 	return 0;
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index ac9a4b0bd49bf..ab10b0cc1dc2d 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -473,6 +473,7 @@ struct mana_port_context {
+ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);
+ int mana_config_rss(struct mana_port_context *ac, enum TRI_STATE rx,
+ 		    bool update_hash, bool update_tab);
++int mana_disable_vport_rx(struct mana_port_context *apc);
+ 
+ int mana_alloc_queues(struct net_device *ndev);
+ int mana_attach(struct net_device *ndev);
 -- 
 2.53.0
 
