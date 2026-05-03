@@ -1,284 +1,188 @@
-Return-Path: <stable+bounces-242653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EsXgDaAq92lndAIAu9opvQ
-	(envelope-from <stable+bounces-242653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 12:59:44 +0200
+	id KcziE1Ur92mjdAIAu9opvQ
+	(envelope-from <stable+bounces-242654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:02:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7F14B530C
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 12:59:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95764B531A
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0192730073FF
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 10:59:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BCE7300146B
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 11:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8F72EBDFA;
-	Sun,  3 May 2026 10:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10A12EACEF;
+	Sun,  3 May 2026 11:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iwg2POE0"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H5Yq4a+I"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C360E296BA9
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 10:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4FB40DFD0
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 11:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777805980; cv=none; b=owXHLIQ1z1UcfxUGSexqAOPxljH6M+a22SUgO6x6axIYXcnowsld+3POACsnf3u1demVuI+Wg1+jh0s31iU7Kw3tG0iAmLk0w2ZTNu9SZ7rt+cjR9BgK7FKOf+cmYuTzbtRfFWYZReo0932puMcYKPZyvkXzLBshaFFTPhoejeQ=
+	t=1777806160; cv=none; b=g/6I3S5cM/VWtuhpp5UBdOHFTUKAm3wzCbivoPiNKmlrG2S9CupGEjg7k+fnyDAKs3nOgY/+KEJ+xa2f8nHJrzk4esSgdgclktGmmg/Z3yPP5D7RW7aC6764TyPjTTLrw0HsKE7qS1lUE7Jn0hA/FQyBA1tiO3Y4+t+1M9nEdCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777805980; c=relaxed/simple;
-	bh=aUzG075nRQIBmRCW6kdva+KOrHQSVo2HT0jDGxchvhU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4d0eHKiitQG3eyBqdSjt8ZdfHs+S0GOlq9EhGe1a0SELbuSraLutq6dj+qqdCm2iQrqg1c7z2+nnrjSzwiyr9+7C7YspzTwXeByKuYS1eitlhRmy+i2f5Q6HJfw6Kifi2C3sijYYDn3rQXl/s1xhk+x8zv3OAlY3xGofPOqjPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iwg2POE0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFC0C2BCB4;
-	Sun,  3 May 2026 10:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777805980;
-	bh=aUzG075nRQIBmRCW6kdva+KOrHQSVo2HT0jDGxchvhU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iwg2POE0mC+4eKaq0vfOqG2N/UjdOYOe2IbCFq1y9mEwBJgvRGc/NOH6do+b8VfRb
-	 BBQj1g4oyg+GrxKrcqjjwnu3Wfe622hPJESvZf4Fxq+Tmq5nBxSNWvdBdo7MdKACAi
-	 BTzacHyqlmBC+1t9n3AxvE6kic+OnwcLd1thgm6xULpZ4rP6LKEZNnZwYF1zMYuqZl
-	 XlwZMGlzEmyy9HAxqV0JQaFHRWPWbs295umNYUP1nCen9sLk03KABW3wvaKuqvh9va
-	 1t5amed1mPQ19N4ulRv1PWfY05A9zWmv9K7USAj93UtgSA6Q2fYsWCna10DlGAQo8H
-	 KhE2DJi7YSEpg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] rxrpc: Fix potential UAF after skb_unshare() failure
-Date: Sun,  3 May 2026 06:59:34 -0400
-Message-ID: <20260503105934.1030665-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050101-dizzy-vividly-dc7b@gregkh>
-References: <2026050101-dizzy-vividly-dc7b@gregkh>
+	s=arc-20240116; t=1777806160; c=relaxed/simple;
+	bh=8d3bGKH1aJFZEACewe5lQlAx62hibO8Qt/j/aLAFEto=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fk85pA+iAY4H2aGtATCT3u27xRayRzfkLRRmSh7hY2fwO4aJBK6Uch7GHfahB4a+V9iVgE82NLdhn5kIdBNL/aR9c2OL6T0i/P3l9gNgYKT490oFKS2rvwTmQW1pLs24ZMIQ8B8fbHgXMijyFbCL70ydPDpNec46oCDkBCFlfhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H5Yq4a+I; arc=none smtp.client-ip=185.70.43.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1777806148; x=1778065348;
+	bh=SKE3Ugo/mIRiVSapBF5o7vZtk+cyx8mm6MO2sc2wIuM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=H5Yq4a+I0WmL/03WeQRebNKCo7zPgm2viJekK4dXYeWgkclhRK1Rkey+prKsiOSSr
+	 0oExsAYEzc/a6Ql8Qrp6qqE/CWsw7NvbFf5MkwbyPeDRFeCXMkqYV33asS0sDJnjZS
+	 5gTPSkyMHG0sJqE8cADV0OuEz6zWF0wqwOVVOqHP3+ZiqZ15/tvEXgghMJMh5oUY7C
+	 5vfh37Ubcjw3buD3ynCV/rWRqSIjuoQPNSakzMk+60lxoGLxqBt2bnGBze0LY5lYgH
+	 pRetARARdjZ0DhAkdIm1fD0p3thI6nbwuRhmFsp194ZyiWCYBWwpiDdFVYTIeaz6QS
+	 lskp3le1IqHGg==
+Date: Sun, 03 May 2026 11:02:25 +0000
+To: gregkh@linuxfoundation.org
+From: 0nsec <0nsec@proton.me>
+Cc: security@kernel.org, herbert@gondor.apana.org.au, stable@vger.kernel.org, Muhammad Bilal <meatuni001@gmail.com>
+Subject: [PATCH] crypto: af_alg - convert inflight to atomic_t to fix data race
+Message-ID: <20260503110135.382130-1-0nsec@proton.me>
+In-Reply-To: <2026050335-spiny-lullaby-2559@gregkh>
+References: <rM7uJ0oBopViOraMoC0Ya0_hMtNwV4CLor-vdwN4vIH7BOKqCuuC0OWUOQoOS-0XOcJmSIT5vhR4UmZlIJxD7mllIkq1UVqEop3T0e4bjis=@proton.me> <2026050304-greeting-prankster-910b@gregkh> <QACE4BCfRIeL8Dm_ETPxjem791yvR3Lj6Iw3ArtLWxEU5FwAmjTCS6DZA_hdQfyhi2MYJTIu-p36nDpUwQbhWwxc1X2LgZSCMikbNFdOGCE=@proton.me> <2026050328-civic-monoxide-0a54@gregkh> <20260503095345.375711-1-0nsec@proton.me> <2026050335-spiny-lullaby-2559@gregkh>
+Feedback-ID: 179448204:user:proton
+X-Pm-Message-ID: 3291e979550fd0b55219deac2ee39d070d0ffcb5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9B7F14B530C
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D95764B531A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[kernel.org,gondor.apana.org.au,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242653-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242654-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,auristor.com:email]
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[0nsec@proton.me,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[proton.me:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,proton.me:dkim,proton.me:mid]
 
-From: David Howells <dhowells@redhat.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-[ Upstream commit 1f2740150f904bfa60e4bad74d65add3ccb5e7f8 ]
+The inflight field in struct af_alg_ctx guards the invariant that only
+one AIO crypto request may be in flight at a time.  It is declared as a
+plain unsigned int but accessed from two unsynchronized contexts:
+process context under lock_sock() and the async crypto completion
+callback which runs without any socket lock.
 
-If skb_unshare() fails to unshare a packet due to allocation failure in
-rxrpc_input_packet(), the skb pointer in the parent (rxrpc_io_thread())
-will be NULL'd out.  This will likely cause the call to
-trace_rxrpc_rx_done() to oops.
+Data race under the C11 memory model.  On weakly-ordered architectures
+the store in the completion path could be observed out of order relative
+to the preceding areq free, widening the window for state confusion
+between a completing first request and a newly allocated second one.
 
-Fix this by moving the unsharing down to where rxrpc_input_call_event()
-calls rxrpc_input_call_packet().  There are a number of places prior to
-that where we ignore DATA packets for a variety of reasons (such as the
-call already being complete) for which an unshare is then avoided.
+Convert inflight to atomic_t.  Use atomic_xchg() for the check-and-set
+in af_alg_alloc_areq() so check and set are one atomic operation,
+eliminating the TOCTOU that separate atomic_read + atomic_set would
+leave.  The ENOMEM rollback path must also clear inflight since
+atomic_xchg() sets it before the allocation attempt; without this a
+failed allocation permanently blocks further AIO on that socket.
 
-And with that, rxrpc_input_packet() doesn't need to take a pointer to the
-pointer to the packet, so change that to just a pointer.
+Follows the precedent of af955bf15d2c ("crypto: af_alg - Fix race
+around ctx->rcvused by making it atomic_t").  The inflight field
+introduced in 67b164a871af repeated the same locking gap.
 
-Fixes: 2d1faf7a0ca3 ("rxrpc: Simplify skbuff accounting in receive path")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to per-skb rxrpc_input_call_event() signature ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CVE-2025-71113 fixed uninitialized garbage in inflight via memset.
+That is a distinct bug.  This race exists independently.
+
+Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requ=
+ests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
 ---
- include/trace/events/rxrpc.h |  4 ++--
- net/rxrpc/ar-internal.h      |  1 -
- net/rxrpc/call_event.c       | 24 ++++++++++++++++++++++--
- net/rxrpc/io_thread.c        | 24 ++----------------------
- net/rxrpc/skbuff.c           |  9 ---------
- 5 files changed, 26 insertions(+), 36 deletions(-)
+ crypto/af_alg.c         | 10 +++++-----
+ include/crypto/if_alg.h |  2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 3eb806f7bc6a5..b6669a576fd58 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -126,8 +126,7 @@
- 	E_(rxrpc_call_poke_timer_now,		"Timer-now")
- 
- #define rxrpc_skb_traces \
--	EM(rxrpc_skb_eaten_by_unshare,		"ETN unshare  ") \
--	EM(rxrpc_skb_eaten_by_unshare_nomem,	"ETN unshar-nm") \
-+	EM(rxrpc_skb_get_call_rx,		"GET call-rx  ") \
- 	EM(rxrpc_skb_get_conn_secured,		"GET conn-secd") \
- 	EM(rxrpc_skb_get_conn_work,		"GET conn-work") \
- 	EM(rxrpc_skb_get_last_nack,		"GET last-nack") \
-@@ -152,6 +151,7 @@
- 	EM(rxrpc_skb_see_recvmsg,		"SEE recvmsg  ") \
- 	EM(rxrpc_skb_see_reject,		"SEE reject   ") \
- 	EM(rxrpc_skb_see_rotate,		"SEE rotate   ") \
-+	EM(rxrpc_skb_see_unshare_nomem,		"SEE unshar-nm") \
- 	E_(rxrpc_skb_see_version,		"SEE version  ")
- 
- #define rxrpc_local_traces \
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 1494d162444dd..63cd5217b4ee3 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1260,7 +1260,6 @@ int rxrpc_server_keyring(struct rxrpc_sock *, sockptr_t, int);
- void rxrpc_kernel_data_consumed(struct rxrpc_call *, struct sk_buff *);
- void rxrpc_new_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_see_skb(struct sk_buff *, enum rxrpc_skb_trace);
--void rxrpc_eaten_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_get_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_free_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_purge_queue(struct sk_buff_head *);
-diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-index 7bbb685047667..81d77b7449f7e 100644
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -342,8 +342,28 @@ bool rxrpc_input_call_event(struct rxrpc_call *call, struct sk_buff *skb)
- 	if (skb && skb->mark == RXRPC_SKB_MARK_ERROR)
- 		goto out;
- 
--	if (skb)
--		rxrpc_input_call_packet(call, skb);
-+	if (skb) {
-+		struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+		if (sp->hdr.securityIndex != 0 &&
-+		    skb_cloned(skb)) {
-+			/* Unshare the packet so that it can be modified for
-+			 * in-place decryption.
-+			 */
-+			struct sk_buff *nskb = skb_copy(skb, GFP_ATOMIC);
-+
-+			if (nskb) {
-+				rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
-+				rxrpc_input_call_packet(call, nskb);
-+				rxrpc_free_skb(nskb, rxrpc_skb_put_input);
-+			} else {
-+				/* OOM - Drop the packet. */
-+				rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
-+			}
-+		} else {
-+			rxrpc_input_call_packet(call, skb);
-+		}
-+	}
- 
- 	/* If we see our async-event poke, check for timeout trippage. */
- 	now = ktime_get_real();
-diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
-index 83c5f715c6b73..8270cac0488d9 100644
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -178,13 +178,12 @@ static bool rxrpc_extract_abort(struct sk_buff *skb)
- /*
-  * Process packets received on the local endpoint
-  */
--static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff **_skb)
-+static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff *skb)
- {
- 	struct rxrpc_connection *conn;
- 	struct sockaddr_rxrpc peer_srx;
- 	struct rxrpc_skb_priv *sp;
- 	struct rxrpc_peer *peer = NULL;
--	struct sk_buff *skb = *_skb;
- 	bool ret = false;
- 
- 	skb_pull(skb, sizeof(struct udphdr));
-@@ -230,25 +229,6 @@ static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff **_skb)
- 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_call);
- 		if (sp->hdr.seq == 0)
- 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_seq);
--
--		/* Unshare the packet so that it can be modified for in-place
--		 * decryption.
--		 */
--		if (sp->hdr.securityIndex != 0) {
--			skb = skb_unshare(skb, GFP_ATOMIC);
--			if (!skb) {
--				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare_nomem);
--				*_skb = NULL;
--				return just_discard;
--			}
--
--			if (skb != *_skb) {
--				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare);
--				*_skb = skb;
--				rxrpc_new_skb(skb, rxrpc_skb_new_unshared);
--				sp = rxrpc_skb(skb);
--			}
--		}
- 		break;
- 
- 	case RXRPC_PACKET_TYPE_CHALLENGE:
-@@ -490,7 +470,7 @@ int rxrpc_io_thread(void *data)
- 			switch (skb->mark) {
- 			case RXRPC_SKB_MARK_PACKET:
- 				skb->priority = 0;
--				if (!rxrpc_input_packet(local, &skb))
-+				if (!rxrpc_input_packet(local, skb))
- 					rxrpc_reject_packet(local, skb);
- 				trace_rxrpc_rx_done(skb->mark, skb->priority);
- 				rxrpc_free_skb(skb, rxrpc_skb_put_input);
-diff --git a/net/rxrpc/skbuff.c b/net/rxrpc/skbuff.c
-index 3bcd6ee803960..e2169d1a14b5f 100644
---- a/net/rxrpc/skbuff.c
-+++ b/net/rxrpc/skbuff.c
-@@ -46,15 +46,6 @@ void rxrpc_get_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
- 	skb_get(skb);
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 5a00c18eb..3e62b7e6d 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1102,7 +1102,7 @@ void af_alg_free_resources(struct af_alg_async_req *a=
+req)
+ =09sock_kfree_s(sk, areq, areq->areqlen);
+=20
+ =09ctx =3D alg_sk(sk)->private;
+-=09ctx->inflight =3D false;
++=09atomic_set(&ctx->inflight, 0);
  }
- 
--/*
-- * Note the dropping of a ref on a socket buffer by the core.
-- */
--void rxrpc_eaten_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
--{
--	int n = atomic_inc_return(&rxrpc_n_rx_skbs);
--	trace_rxrpc_skb(skb, 0, n, why);
--}
+ EXPORT_SYMBOL_GPL(af_alg_free_resources);
+=20
+@@ -1176,17 +1176,17 @@ struct af_alg_async_req *af_alg_alloc_areq(struct s=
+ock *sk,
+ =09struct af_alg_async_req *areq;
+=20
+ =09/* Only one AIO request can be in flight. */
+-=09if (ctx->inflight)
++=09if (atomic_xchg(&ctx->inflight, 1))
+ =09=09return ERR_PTR(-EBUSY);
+=20
+ =09areq =3D sock_kmalloc(sk, areqlen, GFP_KERNEL);
+-=09if (unlikely(!areq))
++=09if (unlikely(!areq)) {
++=09=09atomic_set(&ctx->inflight, 0);
+ =09=09return ERR_PTR(-ENOMEM);
++=09}
+=20
+ =09memset(areq, 0, areqlen);
+=20
+-=09ctx->inflight =3D true;
 -
- /*
-  * Note the destruction of a socket buffer.
-  */
--- 
-2.53.0
+ =09areq->areqlen =3D areqlen;
+ =09areq->sk =3D sk;
+ =09areq->first_rsgl.sgl.sgt.sgl =3D areq->first_rsgl.sgl.sgl;
+diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
+index 0cc8fa749..b3b1908dd 100644
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -160,7 +160,7 @@ struct af_alg_ctx {
+=20
+ =09unsigned int len;
+=20
+-=09unsigned int inflight;
++=09atomic_t inflight;
+ };
+=20
+ int af_alg_register_type(const struct af_alg_type *type);
+--=20
+2.54.0
+
 
 
