@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242785-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNlWGLU/92k2dwIAu9opvQ
-	(envelope-from <stable+bounces-242783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:29:41 +0200
+	id El1AM2lC92mkdwIAu9opvQ
+	(envelope-from <stable+bounces-242785-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:41:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D954B5C1E
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:29:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024B04B5D21
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 655A93001CE7
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:29:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3741E3007CBE
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89C12D2495;
-	Sun,  3 May 2026 12:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD63C3B893B;
+	Sun,  3 May 2026 12:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU8dUcql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktfCmoYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC8213D891
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BB321D3F4
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777811375; cv=none; b=hEmzvMfZ1dZDQiUlu4BcRC1dF5EBLpJhTejIPBkCFKtMAg+x/+1kiFYD2D9AePxtH4fXisG47aEwCDzI6eiNFjiK4SCuCzv/poGi5EBS6U2KBIV+GJFP7s4dufYG8k5BRmotgxFPId3bKnMES5qSUw27a1AfRBO9Y5zOOdBSVcs=
+	t=1777812069; cv=none; b=B19Vomx/wf9uoHJN0PODLnOOlWT2ZJgJfX+1/QQXRu7TjjNZBPAzP5RIyi3qTdpb5EvRG4X2EiL/8ulrF4Zzun+5n4xx1LPFJUO91+ekk+KvOH0/Y4iDWA5baug+Q88KolG3vxTqJLVZChsTBLq5i3behpvgQNoNiA9K7Hs13Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777811375; c=relaxed/simple;
-	bh=Vu5tjpMttDMa7ZdyLMZ0U30QnxGEohnL769YJ162KBw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FEMoWzoA3Xi+3wUdFaOwh8stXMeXgoVR/ODY6qMO5+YPbPeomfl1372TsgoG16T7HVDV80zcIXrkt4gaN6aw53bMHLFzuI3Br0ueuYkjMkDvH7rd71H/yJhLeVVH+EJswV8sBz855PA5JbxyRsIE++KeUvC/BM6meWVapAUVGvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU8dUcql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BCEC2BCB4;
-	Sun,  3 May 2026 12:29:35 +0000 (UTC)
+	s=arc-20240116; t=1777812069; c=relaxed/simple;
+	bh=EseE2dvo3wAcClAtK08ti6hWrKsbWnknzVS4vlRMuNA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WoKlQpDQzDVuAbvSzjrm+xcg59HRDimCFC5OUu42A0dvr+hNYN9UaWA6l1zUUB+lhnDBiwTv1dRK7yt+dUyWe70+01wLfpTrDndvrw/K5FqR25LbzRgx1CzbBo/eYMBp8H0T667gk2NgTcIJ2RO/ebTI3Xunwp1P4IrPnIW+WMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktfCmoYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F5EC2BCB4;
+	Sun,  3 May 2026 12:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777811375;
-	bh=Vu5tjpMttDMa7ZdyLMZ0U30QnxGEohnL769YJ162KBw=;
+	s=korg; t=1777812069;
+	bh=EseE2dvo3wAcClAtK08ti6hWrKsbWnknzVS4vlRMuNA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yU8dUcqlxZSzrTQwVHezV4Ka3G9dRuPELNrfx2Zg+PSsIOGO6Zptj+vhDZjkWWGWL
-	 s9WZgZYvamHQh2D4yjw8PCs48oSR+9IwH5UAooTk9ZPqkvxJ+xczLZs2HYs8vGk1pB
-	 +euSojCDivXyJMH31dTCSuKX2ifd6xirPtqueMXc=
-Subject: FAILED: patch "[PATCH] KVM: nSVM: Drop the non-architectural consistency check for" failed to apply to 6.12-stable tree
-To: yosry@kernel.org,seanjc@google.com
+	b=ktfCmoYZyKUGw6OFE4RM0ghUhdIzPjS63iEn5YudvVEDFnzozTebMpgVuyohx/MPc
+	 ztrci7uHu6Yo6y3uX4ZUL7jeCIOfWE5QyWlKLEz7Ix1fk+CnZ4OG2PdoB7AvA2JeCV
+	 3EbFZsQLXhg69oSJSGyLC4gWIOcyui3X1kakyPxk=
+Subject: FAILED: patch "[PATCH] mm/damon/core: disallow time-quota setting zero esz" failed to apply to 6.18-stable tree
+To: sj@kernel.org,akpm@linux-foundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 14:29:25 +0200
-Message-ID: <2026050325-clip-sample-d7e0@gregkh>
+Date: Sun, 03 May 2026 14:41:06 +0200
+Message-ID: <2026050306-june-passerby-c0a0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 66D954B5C1E
+X-Rspamd-Queue-Id: 024B04B5D21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242783-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242785-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -79,27 +79,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,linux-foundation.org:email]
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x e0b6f031d64c086edd563e7af9c0c0a2261dd2a4
+git cherry-pick -x 8bbde987c2b84f80da0853f739f0a920386f8b99
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050325-clip-sample-d7e0@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050306-june-passerby-c0a0@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,67 +111,87 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e0b6f031d64c086edd563e7af9c0c0a2261dd2a4 Mon Sep 17 00:00:00 2001
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Mar 2026 00:34:08 +0000
-Subject: [PATCH] KVM: nSVM: Drop the non-architectural consistency check for
- NP_ENABLE
+From 8bbde987c2b84f80da0853f739f0a920386f8b99 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Mon, 6 Apr 2026 17:31:52 -0700
+Subject: [PATCH] mm/damon/core: disallow time-quota setting zero esz
 
-KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
-SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
-On first glance, it seems like the check should actually be for
-guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
-host to support NPTs but the guest CPUID to not advertise it.
+When the throughput of a DAMOS scheme is very slow, DAMOS time quota can
+make the effective size quota smaller than damon_ctx->min_region_sz.  In
+the case, damos_apply_scheme() will skip applying the action, because the
+action is tried at region level, which requires >=min_region_sz size.
+That is, the quota is effectively exceeded for the quota charge window.
 
-However, the consistency check is not architectural to begin with. The
-APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
-that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
-if X86_FEATURE_NPT is not available for L1, so sanitize it when copying
-from the VMCB12 to KVM's cache.
+Because no action will be applied, the total_charged_sz and
+total_charged_ns are also not updated.  damos_set_effective_quota() will
+try to update the effective size quota before starting the next charge
+window.  However, because the total_charged_sz and total_charged_ns have
+not updated, the throughput and effective size quota are also not changed.
+Since effective size quota can only be decreased, other effective size
+quota update factors including DAMOS quota goals and size quota cannot
+make any change, either.
 
-Apart from the consistency check, NP_ENABLE in VMCB12 is currently
-ignored because the bit is actually copied from VMCB01 to VMCB02, not
-from VMCB12.
+As a result, the scheme is unexpectedly deactivated until the user notices
+and mitigates the situation.  The users can mitigate this situation by
+changing the time quota online or re-install the scheme.  While the
+mitigation is somewhat straightforward, finding the situation would be
+challenging, because DAMON is not providing good observabilities for that.
+Even if such observability is provided, doing the additional monitoring
+and the mitigation is somewhat cumbersome and not aligned to the intention
+of the time quota.  The time quota was intended to help reduce the user's
+administration overhead.
 
-Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-15-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fix the problem by setting time quota-modified effective size quota be at
+least min_region_sz always.
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 0d447d044101..2ed6530e7bd1 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -348,9 +348,6 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 	if (CC(control->asid == 0))
- 		return false;
+The issue was discovered [1] by sashiko.
+
+Link: https://lore.kernel.org/20260407003153.79589-1-sj@kernel.org
+Link: https://lore.kernel.org/20260405192504.110014-1-sj@kernel.org [1]
+Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 3e1890d64d06..3703f62a876b 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2228,7 +2228,8 @@ static unsigned long damos_quota_score(struct damos_quota *quota)
+ /*
+  * Called only if quota->ms, or quota->sz are set, or quota->goals is not empty
+  */
+-static void damos_set_effective_quota(struct damos_quota *quota)
++static void damos_set_effective_quota(struct damos_quota *quota,
++		struct damon_ctx *ctx)
+ {
+ 	unsigned long throughput;
+ 	unsigned long esz = ULONG_MAX;
+@@ -2254,6 +2255,7 @@ static void damos_set_effective_quota(struct damos_quota *quota)
+ 		else
+ 			throughput = PAGE_SIZE * 1024;
+ 		esz = min(throughput * quota->ms, esz);
++		esz = max(ctx->min_region_sz, esz);
+ 	}
  
--	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
--		return false;
--
- 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
- 					   MSRPM_SIZE)))
- 		return false;
-@@ -431,6 +428,11 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
- 	nested_svm_sanitize_intercept(vcpu, to, SKINIT);
- 	nested_svm_sanitize_intercept(vcpu, to, RDPRU);
+ 	if (quota->sz && quota->sz < esz)
+@@ -2290,7 +2292,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	/* First charge window */
+ 	if (!quota->total_charged_sz && !quota->charged_from) {
+ 		quota->charged_from = jiffies;
+-		damos_set_effective_quota(quota);
++		damos_set_effective_quota(quota, c);
+ 	}
  
-+	/* Always clear SVM_NESTED_CTL_NP_ENABLE if the guest cannot use NPTs */
-+	to->nested_ctl          = from->nested_ctl;
-+	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
-+		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
-+
- 	to->iopm_base_pa        = from->iopm_base_pa;
- 	to->msrpm_base_pa       = from->msrpm_base_pa;
- 	to->tsc_offset          = from->tsc_offset;
-@@ -444,7 +446,6 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
- 	to->exit_info_2         = from->exit_info_2;
- 	to->exit_int_info       = from->exit_int_info;
- 	to->exit_int_info_err   = from->exit_int_info_err;
--	to->nested_ctl          = from->nested_ctl;
- 	to->event_inj           = from->event_inj;
- 	to->event_inj_err       = from->event_inj_err;
- 	to->next_rip            = from->next_rip;
+ 	/* New charge window starts */
+@@ -2303,7 +2305,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 		quota->charged_sz = 0;
+ 		if (trace_damos_esz_enabled())
+ 			cached_esz = quota->esz;
+-		damos_set_effective_quota(quota);
++		damos_set_effective_quota(quota, c);
+ 		if (trace_damos_esz_enabled() && quota->esz != cached_esz)
+ 			damos_trace_esz(c, s, quota);
+ 	}
 
 
