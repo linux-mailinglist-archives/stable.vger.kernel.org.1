@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0G1BHKI892k2dwIAu9opvQ
-	(envelope-from <stable+bounces-242737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:16:34 +0200
+	id 2B/ZFa4892k2dwIAu9opvQ
+	(envelope-from <stable+bounces-242739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:16:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DADA4B59BB
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:16:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1F94B59CB
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2758300579F
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:16:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 76F653001861
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEF828002B;
-	Sun,  3 May 2026 12:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7133C30C61F;
+	Sun,  3 May 2026 12:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1a5+vsCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofDvUP+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F29D16A956
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE3C16A956
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777810590; cv=none; b=YI/3T1VQIX+VyHegMrgrPiWdN//V1r76Z6bjSOz0tYTN1YBXyMyxp2NuWGa+l9sAoHRV61xW6sOGwBVuPJW1vssk9Kt0P6gWcil08pxD8ZCNPvENwJ2fz3LF8CzC9V7LXXn2jvR/izfuATArC6xfmTOpTNh9SkkVodyFYoVXMQ4=
+	t=1777810601; cv=none; b=ufoB7fwyTynU2v7xXOlStTyYyHITkLaQrfr65HKInSc7IpnBxjrTd37pM9VN5XF6d1xv7CtEsDoGxjcsbVLxvFcqquNx1JzvbwX7OeQY/qNcrDcikaCO3O0K9GmEeaFXrVi9DS9OziR3MmmZj7PzN6KN8bK622s5dWCrZFFM24A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777810590; c=relaxed/simple;
-	bh=cTKQ6IxJc1vREqOnN0bown8FAB/083uZ6bE1ZSoEFGA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LyTAlA3otMesq1xPgQpX7hsS2UkI6OrZBxjBsMI28eyJXfHsYckXOLHpzWAmy7ZyDTNYxYNMNGCDEsOyTzyXgqnY0ih5Pmm3CPywPVrbSfjAYA4w0C5cz1+WKSPzVFIZ2o2p25Nq123akJl3Gj5HRCTFdJspgbLcOrPnKvhSJEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1a5+vsCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C0AC2BCB4;
-	Sun,  3 May 2026 12:16:29 +0000 (UTC)
+	s=arc-20240116; t=1777810601; c=relaxed/simple;
+	bh=yn7gAYDiS1PgAUlA+5GGBkVCy6CGTPH51u66vo5QzvU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oVev5FNZf0QL2v/AhTiAzi/D4eVsBxt6a+b7CXeCWLwP/2G/JsyktgrcCo1ZVHDNmsHZcI6Abaa5E6b9pP5iFA2XtYnWjEFmJUa5C24sDlX5xitfn2RZoTyiQoBzH5AuGiQFK1yX6eTrmsLNyifgc0LNLRp13mgi5d2DSsV5+Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofDvUP+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E59C2BCB4;
+	Sun,  3 May 2026 12:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777810589;
-	bh=cTKQ6IxJc1vREqOnN0bown8FAB/083uZ6bE1ZSoEFGA=;
+	s=korg; t=1777810600;
+	bh=yn7gAYDiS1PgAUlA+5GGBkVCy6CGTPH51u66vo5QzvU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1a5+vsCio8AO6RHimS6fuxg7Q3eeFqs4mSRMxFU+1CJGvovnYwLfSZlSmMWVirWUW
-	 c7TqBZiQsoPDcm2QkkdFRHSyFn2eNZLLSSD3wcCFIhGtJRBBRt7okV0x2HE1uCJLaz
-	 PjbB96DLizYsakRoI3vSDRnW4pMw0t3ofr+1r/zQ=
-Subject: FAILED: patch "[PATCH] KVM: nSVM: Refactor checking LBRV enablement in vmcb12 into a" failed to apply to 5.10-stable tree
+	b=ofDvUP+YQHgRAjIZgYJeyN9dXztwBSH6HtmoWSmstzwQXUpqa/JY9K/9cc14pDdi5
+	 UbA3zmwQNnukMIXtvod/Qln690nKPsxd1sTmiUVIorWPZ0iH+uztgQB8XpeqZ++vc5
+	 8KdSqsqyoJc/tivs3HHPvTGMFk9dvXwPXgetDAqY=
+Subject: FAILED: patch "[PATCH] KVM: nSVM: Refactor writing vmcb12 on nested #VMEXIT as a" failed to apply to 6.12-stable tree
 To: yosry@kernel.org,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 14:16:15 +0200
-Message-ID: <2026050315-showplace-delegator-2681@gregkh>
+Date: Sun, 03 May 2026 14:16:38 +0200
+Message-ID: <2026050338-supremacy-ecology-e8fb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0DADA4B59BB
+X-Rspamd-Queue-Id: 5D1F94B59CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242737-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242739-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,25 +81,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 290c8d82023ab0e1d2782d37136541e017174d7c
+git cherry-pick -x dcf3648ab71437b504abbfdc4e74622a0f1a56e3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050315-showplace-delegator-2681@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050338-supremacy-ecology-e8fb@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,58 +111,142 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 290c8d82023ab0e1d2782d37136541e017174d7c Mon Sep 17 00:00:00 2001
+From dcf3648ab71437b504abbfdc4e74622a0f1a56e3 Mon Sep 17 00:00:00 2001
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Mar 2026 00:34:00 +0000
-Subject: [PATCH] KVM: nSVM: Refactor checking LBRV enablement in vmcb12 into a
+Date: Tue, 3 Mar 2026 00:34:01 +0000
+Subject: [PATCH] KVM: nSVM: Refactor writing vmcb12 on nested #VMEXIT as a
  helper
 
-Refactor the vCPU cap and vmcb12 flag checks into a helper. The
-unlikely() annotation is dropped, it's unlikely (huh) to make a
-difference and the CPU will probably predict it better on its own.
+Move mapping vmcb12 and updating it out of nested_svm_vmexit() into a
+helper, no functional change intended.
 
 CC: stable@vger.kernel.org
 Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-7-yosry@kernel.org
+Link: https://patch.msgid.link/20260303003421.2185681-8-yosry@kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 7a472d7c6e98..d419fd516fa9 100644
+index d419fd516fa9..8c01916cb154 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -640,6 +640,12 @@ void nested_vmcb02_compute_g_pat(struct vcpu_svm *svm)
- 	svm->nested.vmcb02.ptr->save.g_pat = svm->vmcb01.ptr->save.g_pat;
+@@ -1124,36 +1124,20 @@ void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
+ 	to_vmcb->save.sysenter_eip = from_vmcb->save.sysenter_eip;
  }
  
-+static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
-+{
-+	return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
-+		(to_svm(vcpu)->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK);
+-int nested_svm_vmexit(struct vcpu_svm *svm)
++static int nested_svm_vmexit_update_vmcb12(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm_vcpu *vcpu = &svm->vcpu;
+-	struct vmcb *vmcb01 = svm->vmcb01.ptr;
++	struct vcpu_svm *svm = to_svm(vcpu);
+ 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
+-	struct vmcb *vmcb12;
+ 	struct kvm_host_map map;
++	struct vmcb *vmcb12;
+ 	int rc;
+ 
+ 	rc = kvm_vcpu_map(vcpu, gpa_to_gfn(svm->nested.vmcb12_gpa), &map);
+-	if (rc) {
+-		if (rc == -EINVAL)
+-			kvm_inject_gp(vcpu, 0);
+-		return 1;
+-	}
++	if (rc)
++		return rc;
+ 
+ 	vmcb12 = map.hva;
+ 
+-	/* Exit Guest-Mode */
+-	leave_guest_mode(vcpu);
+-	svm->nested.vmcb12_gpa = 0;
+-	WARN_ON_ONCE(svm->nested.nested_run_pending);
+-
+-	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+-
+-	/* in case we halted in L2 */
+-	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
+-
+-	/* Give the current vmcb to the guest */
+-
+ 	vmcb12->save.es     = vmcb02->save.es;
+ 	vmcb12->save.cs     = vmcb02->save.cs;
+ 	vmcb12->save.ss     = vmcb02->save.ss;
+@@ -1190,10 +1174,48 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+ 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
+ 
++	if (nested_vmcb12_has_lbrv(vcpu))
++		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
++
+ 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
+ 	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
+ 	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
+ 
++	trace_kvm_nested_vmexit_inject(vmcb12->control.exit_code,
++				       vmcb12->control.exit_info_1,
++				       vmcb12->control.exit_info_2,
++				       vmcb12->control.exit_int_info,
++				       vmcb12->control.exit_int_info_err,
++				       KVM_ISA_SVM);
++
++	kvm_vcpu_unmap(vcpu, &map);
++	return 0;
 +}
 +
- static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12)
- {
- 	bool new_vmcb12 = false;
-@@ -704,8 +710,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12
- 		vmcb_mark_dirty(vmcb02, VMCB_DR);
- 	}
- 
--	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
--		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
-+	if (nested_vmcb12_has_lbrv(vcpu)) {
- 		/*
- 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
- 		 * svm_set_msr's definition of reserved bits.
-@@ -1233,8 +1238,7 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
++int nested_svm_vmexit(struct vcpu_svm *svm)
++{
++	struct kvm_vcpu *vcpu = &svm->vcpu;
++	struct vmcb *vmcb01 = svm->vmcb01.ptr;
++	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
++	int rc;
++
++	rc = nested_svm_vmexit_update_vmcb12(vcpu);
++	if (rc) {
++		if (rc == -EINVAL)
++			kvm_inject_gp(vcpu, 0);
++		return 1;
++	}
++
++	/* Exit Guest-Mode */
++	leave_guest_mode(vcpu);
++	svm->nested.vmcb12_gpa = 0;
++	WARN_ON_ONCE(svm->nested.nested_run_pending);
++
++	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
++
++	/* in case we halted in L2 */
++	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
++
+ 	if (!kvm_pause_in_guest(vcpu->kvm)) {
+ 		vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
+ 		vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
+@@ -1238,9 +1260,7 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
  	if (!nested_exit_on_intr(svm))
  		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
  
--	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
--		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
-+	if (nested_vmcb12_has_lbrv(vcpu)) {
- 		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
- 	} else {
+-	if (nested_vmcb12_has_lbrv(vcpu)) {
+-		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+-	} else {
++	if (!nested_vmcb12_has_lbrv(vcpu)) {
  		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
+ 		vmcb_mark_dirty(vmcb01, VMCB_LBR);
+ 	}
+@@ -1296,15 +1316,6 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+ 	svm->vcpu.arch.dr7 = DR7_FIXED_1;
+ 	kvm_update_dr7(&svm->vcpu);
+ 
+-	trace_kvm_nested_vmexit_inject(vmcb12->control.exit_code,
+-				       vmcb12->control.exit_info_1,
+-				       vmcb12->control.exit_info_2,
+-				       vmcb12->control.exit_int_info,
+-				       vmcb12->control.exit_int_info_err,
+-				       KVM_ISA_SVM);
+-
+-	kvm_vcpu_unmap(vcpu, &map);
+-
+ 	nested_svm_transition_tlb_flush(vcpu);
+ 
+ 	nested_svm_uninit_mmu_context(vcpu);
 
 
