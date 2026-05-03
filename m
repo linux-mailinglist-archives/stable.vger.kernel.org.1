@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id El1AM2lC92mkdwIAu9opvQ
-	(envelope-from <stable+bounces-242785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:41:13 +0200
+	id sJfIF/BC92mkdwIAu9opvQ
+	(envelope-from <stable+bounces-242786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:43:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024B04B5D21
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:41:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F174B5D50
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3741E3007CBE
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E4CB300B041
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD63C3B893B;
-	Sun,  3 May 2026 12:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE143B8935;
+	Sun,  3 May 2026 12:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktfCmoYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MksvOaSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BB321D3F4
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5A23B894D
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777812069; cv=none; b=B19Vomx/wf9uoHJN0PODLnOOlWT2ZJgJfX+1/QQXRu7TjjNZBPAzP5RIyi3qTdpb5EvRG4X2EiL/8ulrF4Zzun+5n4xx1LPFJUO91+ekk+KvOH0/Y4iDWA5baug+Q88KolG3vxTqJLVZChsTBLq5i3behpvgQNoNiA9K7Hs13Wo=
+	t=1777812180; cv=none; b=oIdVTzeYJ/XIqbIWKWYeatIT8OWLYeYR5NdksfgMh7QfF6N9csN8v9WO0nrTscTDmpdS3I2ES4V0bQgvrQ0na8mzavxoZw3Ya6p2WEf4lFBX5W7DYes6B4E1bPp5lJFdMuXm4+CdE6t58jH0Qf2j6QOm5bIU8WrqcMvqQ1GpgyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777812069; c=relaxed/simple;
-	bh=EseE2dvo3wAcClAtK08ti6hWrKsbWnknzVS4vlRMuNA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WoKlQpDQzDVuAbvSzjrm+xcg59HRDimCFC5OUu42A0dvr+hNYN9UaWA6l1zUUB+lhnDBiwTv1dRK7yt+dUyWe70+01wLfpTrDndvrw/K5FqR25LbzRgx1CzbBo/eYMBp8H0T667gk2NgTcIJ2RO/ebTI3Xunwp1P4IrPnIW+WMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktfCmoYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F5EC2BCB4;
-	Sun,  3 May 2026 12:41:08 +0000 (UTC)
+	s=arc-20240116; t=1777812180; c=relaxed/simple;
+	bh=9E4P+vJUK6lbzPyC0y41xwhbJUtAiMxk/0m7CWTBQ4w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i5eHKRvbbxnAFb7ovaz2pzcxfY4ZGqs3U26M5X6t07cpYnjACJGBFi8tsRh6EnC6l32Qh8KSd+h/scwGpFz/58eOgEzVh1JdPuBYshU/dVSdMpDneXDd9ZvBQK5roMZGgQFWARuaxAtKou3jzOBWibbu53qEYS3ueJIx8NnNcTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MksvOaSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867FEC2BCB4;
+	Sun,  3 May 2026 12:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777812069;
-	bh=EseE2dvo3wAcClAtK08ti6hWrKsbWnknzVS4vlRMuNA=;
+	s=korg; t=1777812179;
+	bh=9E4P+vJUK6lbzPyC0y41xwhbJUtAiMxk/0m7CWTBQ4w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ktfCmoYZyKUGw6OFE4RM0ghUhdIzPjS63iEn5YudvVEDFnzozTebMpgVuyohx/MPc
-	 ztrci7uHu6Yo6y3uX4ZUL7jeCIOfWE5QyWlKLEz7Ix1fk+CnZ4OG2PdoB7AvA2JeCV
-	 3EbFZsQLXhg69oSJSGyLC4gWIOcyui3X1kakyPxk=
-Subject: FAILED: patch "[PATCH] mm/damon/core: disallow time-quota setting zero esz" failed to apply to 6.18-stable tree
+	b=MksvOaSzLSo4c7J2EFQt0BBqK54tyiFCAbyiu/JEJXrfuWpqfuBaCmfSO3oEigTkw
+	 6c/BUaew9yhzj4XhEoPOzTEJm2g8TIrG21TCMN4aCLcf0pSc9utEwelESGFW2AyYHZ
+	 fIZtSlOyjebb4ZrASpis/YLrIb4T3HP8kAdZ3U40=
+Subject: FAILED: patch "[PATCH] mm/damon/core: disallow non-power of two min_region_sz on" failed to apply to 6.18-stable tree
 To: sj@kernel.org,akpm@linux-foundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 14:41:06 +0200
-Message-ID: <2026050306-june-passerby-c0a0@gregkh>
+Date: Sun, 03 May 2026 14:42:57 +0200
+Message-ID: <2026050357-senator-aroma-1859@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 024B04B5D21
+X-Rspamd-Queue-Id: A8F174B5D50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242785-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242786-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,10 +81,10 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linux-foundation.org:email]
 
 
 The patch below does not apply to the 6.18-stable tree.
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8bbde987c2b84f80da0853f739f0a920386f8b99
+git cherry-pick -x 95093e5cb4c5b50a5b1a4b79f2942b62744bd66a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050306-june-passerby-c0a0@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050357-senator-aroma-1859@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,87 +111,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8bbde987c2b84f80da0853f739f0a920386f8b99 Mon Sep 17 00:00:00 2001
+From 95093e5cb4c5b50a5b1a4b79f2942b62744bd66a Mon Sep 17 00:00:00 2001
 From: SeongJae Park <sj@kernel.org>
-Date: Mon, 6 Apr 2026 17:31:52 -0700
-Subject: [PATCH] mm/damon/core: disallow time-quota setting zero esz
+Date: Sat, 11 Apr 2026 14:36:36 -0700
+Subject: [PATCH] mm/damon/core: disallow non-power of two min_region_sz on
+ damon_start()
 
-When the throughput of a DAMOS scheme is very slow, DAMOS time quota can
-make the effective size quota smaller than damon_ctx->min_region_sz.  In
-the case, damos_apply_scheme() will skip applying the action, because the
-action is tried at region level, which requires >=min_region_sz size.
-That is, the quota is effectively exceeded for the quota charge window.
+Commit d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region") introduced
+a bug that allows unaligned DAMON region address ranges.  Commit
+c80f46ac228b ("mm/damon/core: disallow non-power of two min_region_sz")
+fixed it, but only for damon_commit_ctx() use case.  Still, DAMON sysfs
+interface can emit non-power of two min_region_sz via damon_start().  Fix
+the path by adding the is_power_of_2() check on damon_start().
 
-Because no action will be applied, the total_charged_sz and
-total_charged_ns are also not updated.  damos_set_effective_quota() will
-try to update the effective size quota before starting the next charge
-window.  However, because the total_charged_sz and total_charged_ns have
-not updated, the throughput and effective size quota are also not changed.
-Since effective size quota can only be decreased, other effective size
-quota update factors including DAMOS quota goals and size quota cannot
-make any change, either.
+The issue was discovered by sashiko [1].
 
-As a result, the scheme is unexpectedly deactivated until the user notices
-and mitigates the situation.  The users can mitigate this situation by
-changing the time quota online or re-install the scheme.  While the
-mitigation is somewhat straightforward, finding the situation would be
-challenging, because DAMON is not providing good observabilities for that.
-Even if such observability is provided, doing the additional monitoring
-and the mitigation is somewhat cumbersome and not aligned to the intention
-of the time quota.  The time quota was intended to help reduce the user's
-administration overhead.
-
-Fix the problem by setting time quota-modified effective size quota be at
-least min_region_sz always.
-
-The issue was discovered [1] by sashiko.
-
-Link: https://lore.kernel.org/20260407003153.79589-1-sj@kernel.org
-Link: https://lore.kernel.org/20260405192504.110014-1-sj@kernel.org [1]
-Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+Link: https://lore.kernel.org/20260411213638.77768-1-sj@kernel.org
+Link: https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org [1]
+Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
 Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.16.x
+Cc: <stable@vger.kernel.org> # 6.18.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3e1890d64d06..3703f62a876b 100644
+index 3703f62a876b..c107d74c77e7 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2228,7 +2228,8 @@ static unsigned long damos_quota_score(struct damos_quota *quota)
- /*
-  * Called only if quota->ms, or quota->sz are set, or quota->goals is not empty
-  */
--static void damos_set_effective_quota(struct damos_quota *quota)
-+static void damos_set_effective_quota(struct damos_quota *quota,
-+		struct damon_ctx *ctx)
- {
- 	unsigned long throughput;
- 	unsigned long esz = ULONG_MAX;
-@@ -2254,6 +2255,7 @@ static void damos_set_effective_quota(struct damos_quota *quota)
- 		else
- 			throughput = PAGE_SIZE * 1024;
- 		esz = min(throughput * quota->ms, esz);
-+		esz = max(ctx->min_region_sz, esz);
- 	}
+@@ -1368,6 +1368,11 @@ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive)
+ 	int i;
+ 	int err = 0;
  
- 	if (quota->sz && quota->sz < esz)
-@@ -2290,7 +2292,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	/* First charge window */
- 	if (!quota->total_charged_sz && !quota->charged_from) {
- 		quota->charged_from = jiffies;
--		damos_set_effective_quota(quota);
-+		damos_set_effective_quota(quota, c);
- 	}
- 
- 	/* New charge window starts */
-@@ -2303,7 +2305,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 		quota->charged_sz = 0;
- 		if (trace_damos_esz_enabled())
- 			cached_esz = quota->esz;
--		damos_set_effective_quota(quota);
-+		damos_set_effective_quota(quota, c);
- 		if (trace_damos_esz_enabled() && quota->esz != cached_esz)
- 			damos_trace_esz(c, s, quota);
- 	}
++	for (i = 0; i < nr_ctxs; i++) {
++		if (!is_power_of_2(ctxs[i]->min_region_sz))
++			return -EINVAL;
++	}
++
+ 	mutex_lock(&damon_lock);
+ 	if ((exclusive && nr_running_ctxs) ||
+ 			(!exclusive && running_exclusive_ctxs)) {
 
 
