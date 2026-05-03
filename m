@@ -1,98 +1,236 @@
-Return-Path: <stable+bounces-242805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCRqDemI92kDiwIAu9opvQ
-	(envelope-from <stable+bounces-242805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:42:01 +0200
+	id SIDJJ8iL92l8iwIAu9opvQ
+	(envelope-from <stable+bounces-242806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:54:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875414B6D27
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:42:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063D44B6D8A
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF4E83001871
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 17:41:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41BE33007371
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 17:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190E03630B9;
-	Sun,  3 May 2026 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDFA3876DE;
+	Sun,  3 May 2026 17:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ld1KFfXm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzw+uEFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FA7253B58
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F04294A10
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777830114; cv=none; b=GVh8m/Uw9TtNJDlPY6Qcmy+vW+87Qdg+9m15S63EuJ7/O112remitI3VRNlgf9LjLR1DYtXW2lhKnDD3x/1vD2WFbACp4yS+rLCcy3bEO6h6MgOl/e4LeBGsuo6G2RegrorPAVj+GPF2Zh+EW5/ZAUpmz13KzkxSM7Gcl4gCLFU=
+	t=1777830851; cv=none; b=ZR4TPeT+TSOvchVhU4gBFeimDcSt+/+K7E8/QtsxKAr3veZe8ALDiHnIsWJbKQnAWB8WSNwDM00K9w5oU7rTaX9bda5pEs9YWXxxIq2fy/9E9zVfdk8lw+6q5PbSbGwaEqy5LdIMwHlRb8qdP1kJTtuPQs/AUTVaPAjNbIxXZ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777830114; c=relaxed/simple;
-	bh=3zJp+AnV/+L6qJzij5vf/HZ7+9DoJhh/2Nl7k7PNvoQ=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=fgbVEVxMoFR74ndeHt75075l29V7EFEHuRkQzGWUDSm4gGJRkGVbBXj6gQJDlGlt3986L+xJpx0m7Ipz7p6f+w31A86kA3tTZOwCbudNjviPMSQPSSfjxG7gDJLUJVEiS4pCIu/XtpXNg/fuS4yazGT8mUfymYlFUHJpVKtASic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ld1KFfXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6900EC2BCB4
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:41:54 +0000 (UTC)
+	s=arc-20240116; t=1777830851; c=relaxed/simple;
+	bh=vZix6njdv2p1CVHPQk3N5+z8QTc46xF0Umj6dJoNSss=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pLhXPGMoJvftAbjP6tFRuB90sYJn4QRfPjZUt8tWI23m4WQR6AFrMKdMlKE8UvHv/bp4JQa9Ia/1OloqDO3BPf39eA58ctFXoGXpkQwvDiAyoK0aTmfjDjF1q7/s+InaVOrADfUR2n330pPgkCfKYXJAKo4BhjOK1HSFdEStHrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzw+uEFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2008C2BCFB
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777830114;
-	bh=3zJp+AnV/+L6qJzij5vf/HZ7+9DoJhh/2Nl7k7PNvoQ=;
-	h=Date:From:To:Subject:From;
-	b=ld1KFfXmz6U7ueteKMfam2cZ+NsUadHqDitjAg8rlrzVcdG8aEBrBb9ySbUNw6k09
-	 oCv5Of1twalr+k29qikLs+zBHyHYdI+TLZ7PtjJf2N1W67AF6ZQDOHQ+H0vLFK1JzS
-	 ajuXe0gN3zLPudKkN7xTIq8EQ7KnjaQkzHQYhA58tNAQhAr3vRA4qLNrsxRXWSFtB1
-	 AyoaCIwHGOHYbUyMCXvMarNWlpcziS5EJzeLabtuk3QX9Vvyzxxw4z8co8FjGiPYCn
-	 JQ0S8k03Zvz4QIDMlVHOLpb/ioT+PXhi+O3igUXqpvDukGHQsH1UVRmhj469OSryxJ
-	 OTPGHgkbXsldQ==
-Date: Sun, 3 May 2026 17:41:52 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: stable@vger.kernel.org
-Subject: Apply "crypto: authencesn - reject short ahash digests during
- instance creation"
-Message-ID: <20260503174152.GA1036833@google.com>
+	s=k20201202; t=1777830850;
+	bh=vZix6njdv2p1CVHPQk3N5+z8QTc46xF0Umj6dJoNSss=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fzw+uEFQ1htYzOl+xFJqUU+e7m4wKFi685C/CP8i1VOOvuHtLSJP+gW2oAn56LhFE
+	 Hj6oAPcSoEty8SFElbgQhmfO0Gpkja/vOoqkQSBVBfSQ8r/JnwW6qWXTiclf+fMbuo
+	 IqoXiRG+V/Nln17tZ/g9SHdwwmIcBXQahmHH3n3u2HDyCbdF8z1VYHY8S8PhVwR6yn
+	 xNQZmayPAw4tk7idT/+b+O0UItKuH3AXnbyXFPeH+VSBg3dvHEWTH0Bmq8K8wBU+QJ
+	 BNJ2Ufhw7VmHeS5Qo41wPK7rXmlNL6n0zzMIXynggnKT2ngA9WRnJ5ZIlgUQUH+oSk
+	 qjXAeptDzK32w==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-38e9653b580so37620811fa.2
+        for <stable@vger.kernel.org>; Sun, 03 May 2026 10:54:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8R1ZiU1zRDQsx+czb4YHS4702kSrkJiunAo3z4YPBptv1KiJxDbBm3MUwqOPTG7g6CaJgOCYI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn9VztX1B51YKgfWZPAEUsD60t4yxPglIBF4WnAarLEp+xXdt+
+	cZMvlqHiXLsI9afdVHUKaZLawNfeOiKrfdQViBNWLJqQGY2WVddEqZ9S2ruKVlcAGMFvG9yPH7W
+	13GFDxg4Cr28jLgf+4RMVZodaoHa4Xyg=
+X-Received: by 2002:a2e:7c0b:0:b0:393:71d3:d019 with SMTP id
+ 38308e7fff4ca-393784e5ffbmr21655141fa.15.1777830848881; Sun, 03 May 2026
+ 10:54:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 875414B6D27
+References: <20260503-mt7925-tdls-fixes-v1-0-dde847e21081@gmail.com> <20260503-mt7925-tdls-fixes-v1-1-dde847e21081@gmail.com>
+In-Reply-To: <20260503-mt7925-tdls-fixes-v1-1-dde847e21081@gmail.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Sun, 3 May 2026 12:53:57 -0500
+X-Gmail-Original-Message-ID: <CAGp9LzogKfGovfDw+=m4BkqWAakFTStXH20cQ_FA_5-zo+rmGA@mail.gmail.com>
+X-Gm-Features: AVHnY4KyXQ7oHCi5bs4lLYBGHsaGNKAAiWN14GcaixGFGQwp3VhrQVd9985J61o
+Message-ID: <CAGp9LzogKfGovfDw+=m4BkqWAakFTStXH20cQ_FA_5-zo+rmGA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] wifi: mt76: mt792x: disable HW TX/RX encap offload to
+ fix TDLS direct-link
+To: ElXreno <elxreno@gmail.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Soul Huang <Soul.Huang@mediatek.com>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, 
+	Deren Wu <deren.wu@mediatek.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 063D44B6D8A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242805-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242806-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-Please cherry-pick 5db6ef9847717 ("crypto: authencesn - reject short
-ahash digests during instance creation") to all stable and LTS kernels.
+Hi ElXreno,
 
-This one does have 'Cc: stable@kernel.org' already.  But I thought I'd
-call it out specifically, given that it's in the same problematic file.
+On Sat, May 2, 2026 at 8:40=E2=80=AFPM ElXreno <elxreno@gmail.com> wrote:
+>
+> On MediaTek MT7925 (Connac3), QoS Data frames whose destination WCID
+> is a TDLS direct-link peer are silently dropped after submission to
+> firmware via the HW_80211_ENCAP TX path. The driver sees submit and
+> complete counts match (firmware reports success on TX queue
+> submission), but the frames never reach the PHY. iw counters show
+> tx_packets growing, tx_failed =3D 0, tx_retries low; on the air,
+> nothing.
+>
+> This breaks TDLS direct-link as soon as a peer auto-initiates one
+> (Samsung phones do this aggressively when both peers share a BSS and
+> traffic exceeds a threshold). Pattern is:
+>
+>   1. Any sustained direct traffic between two STAs sharing the BSS
+>      reaches the auto-TDLS threshold within ~1 s.
+>   2. Peer initiates TDLS; mac80211 routes data frames to the TDLS-peer
+>      WCID and the AP stops forwarding peer-to-peer traffic per the
+>      802.11z spec.
+>   3. Direct-link frames are accepted by firmware, completed in the TX
+>      descriptor pool, but never PHY-transmitted.
+>   4. TCP collapses; the peer eventually tears down the TDLS link with
+>      reason WLAN_REASON_TDLS_TEARDOWN_UNSPECIFIED. Cycle repeats.
+>
+> Effective TCP throughput drops from ~300 Mbit/s (AP route) to ~6
+> Mbit/s with TDLS active.
+>
+> Verified on mt7925e (PCIe) at 5 GHz HE NSS 2 MCS 11 80 MHz and at
+> 2.4 GHz 802.11n HT NSS 2 MCS 15. With this patch, TDLS direct link
+> sustains ~750 Mbit/s and ~130 Mbit/s respectively.
+>
+> mt76 advertises WIPHY_FLAG_SUPPORTS_TDLS via the shared
+> mt76_register_phy_helper() but does not provide TDLS-aware
+> firmware-facing peer setup: no CONNECTION_TDLS constant in
+> mt76_connac_mcu.h, no STA_REC_TDLS TLV, no TDLS bit in
+> mt76_wcid_flags, and no TDLS-specific code in
+> mt7925_mac_write_txwi_8023(). TDLS peers are registered as
+> CONNECTION_INFRA_STA with peer_addr set to the peer's MAC and
+> nothing else. The proprietary out-of-tree MediaTek driver carries an
+> explicit cfg80211_tdls.c (PTK/TK install paths, etc.) with no
+> in-tree equivalent. Whether the underlying gap is in the firmware
+> HW_ENCAP path or in mt76's missing TDLS-aware setup is unclear from
+> the kernel side; the software-encap path sidesteps it either way.
+>
+> Work around the issue by not advertising SUPPORTS_TX_ENCAP_OFFLOAD
+> and SUPPORTS_RX_DECAP_OFFLOAD in mt792x_init_wiphy(). mac80211 then
+> takes the software 802.11 encap path, which submits already-formed
+> 802.11 frames via a different firmware path that handles all WCIDs
+> correctly, including TDLS peers.
+>
+> mt792x_init_wiphy() is shared with the Connac2 family (mt7921/22/20/02),
+> which uses the same firmware HW_ENCAP path; the disable is applied
+> globally to cover the likely-affected chips. If Connac2 is later
+> confirmed unaffected, the disable can be narrowed with is_mt7925().
+>
+> Fixes: 5c14a5f944b9 ("mt76: mt7921: introduce mt7921e support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ElXreno <elxreno@gmail.com>
+> Assisted-by: Claude:claude-opus-4-7 bpftrace
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt792x_core.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/n=
+et/wireless/mediatek/mt76/mt792x_core.c
+> index 152cfcca2f90..f9610c6c1597 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+> @@ -681,8 +681,14 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+>
+>         ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+>         ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+> -       ieee80211_hw_set(hw, SUPPORTS_TX_ENCAP_OFFLOAD);
+> -       ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
+> +       /* HW TX/RX 802.11 encap offload is intentionally NOT advertised:
+> +        * the firmware HW_80211_ENCAP path silently drops QoS Data frame=
+s
+> +        * whose destination WCID is a TDLS direct-link peer, breaking TD=
+LS
+> +        * data flow. The mac80211 software encap path submits already-fo=
+rmed
+> +        * 802.11 frames, which the firmware handles correctly for all WC=
+IDs.
+> +        * Re-add SUPPORTS_TX_ENCAP_OFFLOAD / SUPPORTS_RX_DECAP_OFFLOAD h=
+ere
+> +        * once the firmware HW_ENCAP path is fixed.
+> +        */
 
-- Eric
+I do not think disabling TX/RX encap offload globally in
+mt792x_init_wiphy() is the right fix.
+
+The reported failure is specific to TDLS direct-link peers, while this
+change affects all normal STA/AP/P2P data paths and all mt792x chips,
+including mt7925/mt7921/22/20/02. This is too broad for a TDLS-specific iss=
+ue.
+
+The commit message already points out that mt76 lacks TDLS-aware
+firmware-facing peer setup, and also mentions that the proprietary
+out-of-tree MediaTek driver has an explicit cfg80211_tdls.c
+implementation. If that driver supports TDLS on top of the firmware HW
+encap model, I think we should try to align the in-tree driver with that
+design by adding the missing TDLS-aware firmware-facing peer setup,
+instead of disabling HW encap globally.
+
+In particular, I would prefer to first check whether adding
+CONNECTION_TDLS / proper TDLS peer setup on top of the current code is
+enough to fix the issue.
+
+Please avoid removing SUPPORTS_TX_ENCAP_OFFLOAD and
+SUPPORTS_RX_DECAP_OFFLOAD globally from mt792x_init_wiphy().
+
+>         ieee80211_hw_set(hw, WANT_MONITOR_VIF);
+>         ieee80211_hw_set(hw, SUPPORTS_PS);
+>         ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+>
+> --
+> 2.53.0
+>
+>
 
