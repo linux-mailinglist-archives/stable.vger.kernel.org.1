@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-242796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FyTApla92kNggIAu9opvQ
-	(envelope-from <stable+bounces-242796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:24:25 +0200
+	id UIk9LyVZ92mxgQIAu9opvQ
+	(envelope-from <stable+bounces-242795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:18:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737B64B6091
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:24:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61C54B6017
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 18246300B3C3
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 14:18:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 176C43006822
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 14:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E3C3CCFA6;
-	Sun,  3 May 2026 14:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7A43CCA16;
+	Sun,  3 May 2026 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b="ceOFliCP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXnxKxD/"
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7E03CCA19;
-	Sun,  3 May 2026 14:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CE83B6347
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 14:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777817877; cv=none; b=m1im6iHTzyAAUbsiJHeKwv7ri1jC+acehyFaQvDMH4n+7zystW8AyukcQL6WRBZpORgvB59NqnvzbknsSqRZUfCB9mfs02lP8j0InffnA3Kki6o3LeHD2CGvJzRSWkqHDhn6ksGZY+FBtu9484Tb/BAwciwJZ+i8s6scVHj840Y=
+	t=1777817851; cv=none; b=hCdYiQOUQdTdiub9zGMBaMgsn8CFypt0Grcu/XX7AQivM3i3U/Bet+iRtmPfe3ZWh54eEWso4OCbWFmVCSxLgYORaJmdBdio0rbCR2FcP0EzG8SX7lAsDXzvMMi7UqHUXHZfLPbsFsAFus/sCBLksqSfIdL5GFIOv0W0CUJSjOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777817877; c=relaxed/simple;
-	bh=G8WhrViqZVp0/f8PtsUG9cP4gPGLdc1zjS0z6BmiEh0=;
+	s=arc-20240116; t=1777817851; c=relaxed/simple;
+	bh=JcOwAeWxWC3AjsNuOCFjgkz2au8gfAfu0nkNIMWYtog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tA0NjBGLdHC2hfwMGKMDiDkeZQoydmALOLMXiAEmLrIfd2BNpCN7Niq8koQq/vuJ/1ki+thVAj/df3dMMpOofrfpp3yaHJZfoErS1fQoeblnEoZoE1YdYYndeGbijjXMYOpfiZfFku8y5uq9PaxBkcBtTss1Y3BRGo/Rks+j0Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn; spf=pass smtp.mailfrom=stu.xidian.edu.cn; dkim=fail (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b=ceOFliCP reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.xidian.edu.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=stu.xidian.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=uFdS4EjUMcBjmFcrFxUqHiVLklajdDY94y
-	iVL9A6lig=; b=ceOFliCPZ0TvmFpO4mHmXWJKvsDrCuYTKoUAYP3nPMChJg2R/M
-	vMQZG6eI5oNlxff1uCbjvEiGTC+azKXVksXRuEU4DzqHp8hpra9TUpa5A3jVWREc
-	N6HVCev1v7FROTschr/uSOj3UVXiB6Wc6jvo5i3eLDhANPsxwRd71xr68=
-Received: from Jason.localdomain (unknown [113.200.174.116])
-	by hzbj-edu-front-4.icoremail.net (Coremail) with SMTP id BrQMCkBW_rnqWPdp1wnmAQ--.36047S2;
-	Sun, 03 May 2026 22:17:18 +0800 (CST)
-From: zisenye@stu.xidian.edu.cn
-To: smfrench@gmail.com,
-	linkinjeon@kernel.org,
-	pc@manguebit.org,
-	ronniesahlberg@gmail.com,
-	sprasad@microsoft.com,
-	tom@talpey.com,
-	bharathsm@microsoft.com,
-	senozhatsky@chromium.org,
-	dhowells@redhat.com,
-	gregkh@linuxfoundation.org,
-	chenxiaosong@chenxiaosong.com,
-	stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Subject: [PATCH v3 1/1] smb/client: fix out-of-bounds read in smb2_compound_op()
-Date: Sun,  3 May 2026 22:17:13 +0800
-Message-ID: <20260503141713.3266571-1-zisenye@stu.xidian.edu.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260503134333.3260640-1-zisenye@stu.xidian.edu.cn>
-References: <20260503134333.3260640-1-zisenye@stu.xidian.edu.cn>
+	 MIME-Version; b=JCs8vP9nFXlKr6ax3d5HrTFdVnZFCCSR92iTCjLItZ0AcnJhXmfFd1v7Zo93RqOuBYSHIdYDHwKtiMHA03qwwmimmmXU/0/blTEBwnKzI/+eCw7rq/bgs0hiIihz9YvFeTVaxldCuDN/fzhbqNfzZ71Xo2Fr5v1j8uWmOO9hCxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXnxKxD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FD8C2BCB4;
+	Sun,  3 May 2026 14:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777817851;
+	bh=JcOwAeWxWC3AjsNuOCFjgkz2au8gfAfu0nkNIMWYtog=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XXnxKxD/H60gSU4tLmPqcJcDoceC6H6eGyo/2Nyw/Fzu0SZTXAcwg3awyzWVuBliR
+	 qfNSVkNa9U9NKvlS8Bow2wZAbhsQsbZSN4cdLo8hRfqrrtMzYYZQIoopXnUBEk2zQz
+	 Xf0u1+TCzYn40ZYpSi7qKoUWBIS+qyysHnWR1FRa4MEYYfe6pmNwUEwisG9Kws3Xgg
+	 /EFhB7BgxLhWS3AHVQ+juSfh87FMX7C/wlRiKwg11wDXcpII17HAOzlZoZCLTBzMKo
+	 ANFUX6STfpZ3+khbyU3ON6xpYPGHnXClF9LpGoltnjTgdhZofwjDO4cDRE8WY6GRmr
+	 HjTFTC96remRA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
+Date: Sun,  3 May 2026 10:17:23 -0400
+Message-ID: <20260503141723.1081399-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050142-gag-tasting-5084@gregkh>
+References: <2026050142-gag-tasting-5084@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,95 +67,131 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:BrQMCkBW_rnqWPdp1wnmAQ--.36047S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KFy3Xr43KrWkGFW3tF1kKrg_yoW8Gw4Dpr
-	4qga15Cr13twnrCw4kGw1Du3yFka4UArsxCFWjv3yfCanxAr97Ka4qyr92gr1Fkws5uFyS
-	9F4qyay293yUCFDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Gb7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-	C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v2
-	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
-	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUnFoGPUUUUU==
-X-CM-SenderInfo: ysvqjiqsrsjkus6v33wo0lvxldqovvfxof0/1tbiAgUCEGn2FOdbKgAAsI
-X-Rspamd-Queue-Id: 737B64B6091
-X-Rspamd-Action: add header
+X-Rspamd-Queue-Id: B61C54B6017
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [6.34 / 15.00];
-	SEM_URIBL(3.50)[xidian.edu.cn:email];
-	DMARC_POLICY_QUARANTINE(1.50)[xidian.edu.cn : SPF not aligned (relaxed),quarantine];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-242796-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,manguebit.org,microsoft.com,talpey.com,chromium.org,redhat.com,linuxfoundation.org,chenxiaosong.com,vger.kernel.org];
-	GREYLIST(0.00)[pass,body];
-	MIME_TRACE(0.00)[0:+];
-	R_DKIM_PERMFAIL(0.00)[stu.xidian.edu.cn:s=dkim];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_NEQ_ENVFROM(0.00)[zisenye@stu.xidian.edu.cn,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[stu.xidian.edu.cn:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.290];
-	TO_DN_NONE(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-242795-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email]
-X-Spam: Yes
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,sashiko.dev:url,infradead.org:email]
 
-From: Zisen Ye <zisenye@stu.xidian.edu.cn>
+From: David Howells <dhowells@redhat.com>
 
-If a server sends a truncated response but a large OutputBufferLength, and
-terminates the EA list early, check_wsl_eas() returns success without
-validating that the entire OutputBufferLength fits within iov_len.
+[ Upstream commit 24481a7f573305706054c59e275371f8d0fe919f ]
 
-Then smb2_compound_op() does:
-    memcpy(idata->wsl.eas, data[0], size[0]);
+The security operations that verify the RESPONSE packets decrypt bits of it
+in place - however, the sk_buff may be shared with a packet sniffer, which
+would lead to the sniffer seeing an apparently corrupt packet (actually
+decrypted).
 
-Where size[0] is OutputBufferLength. If iov_len is smaller than size[0],
-memcpy can read beyond the end of the rsp_iov allocation and leak adjacent
-kernel heap memory.
+Fix this by handing a copy of the packet off to the specific security
+handler if the packet was cloned.
 
-Link: https://lore.kernel.org/linux-cifs/d998240c-aca9-420d-9dbd-f5ba24af19e0@chenxiaosong.com/
-Fixes: ea41367b2a60 ("smb: client: introduce SMB2_OP_QUERY_WSL_EA")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zisen Ye <zisenye@stu.xidian.edu.cn>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260422161438.2593376-5-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/trace/events/rxrpc.h |  2 ++
+ net/rxrpc/conn_event.c       | 29 ++++++++++++++++++++++++++++-
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 286912616c73..28e01d02be03 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -121,6 +121,9 @@ static int check_wsl_eas(struct kvec *rsp_iov)
- 	ea = (void *)((u8 *)rsp_iov->iov_base +
- 		      le16_to_cpu(rsp->OutputBufferOffset));
- 	end = (u8 *)rsp_iov->iov_base + rsp_iov->iov_len;
-+	if ((u8 *)ea + outlen > end)
-+		return -EINVAL;
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 3eb806f7bc6a5..c5533176d770d 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -146,12 +146,14 @@
+ 	EM(rxrpc_skb_put_jumbo_subpacket,	"PUT jumbo-sub") \
+ 	EM(rxrpc_skb_put_last_nack,		"PUT last-nack") \
+ 	EM(rxrpc_skb_put_purge,			"PUT purge    ") \
++	EM(rxrpc_skb_put_response_copy,		"PUT resp-cpy ") \
+ 	EM(rxrpc_skb_put_rotate,		"PUT rotate   ") \
+ 	EM(rxrpc_skb_put_unknown,		"PUT unknown  ") \
+ 	EM(rxrpc_skb_see_conn_work,		"SEE conn-work") \
+ 	EM(rxrpc_skb_see_recvmsg,		"SEE recvmsg  ") \
+ 	EM(rxrpc_skb_see_reject,		"SEE reject   ") \
+ 	EM(rxrpc_skb_see_rotate,		"SEE rotate   ") \
++	EM(rxrpc_skb_see_unshare_nomem,		"SEE unshar-nm") \
+ 	E_(rxrpc_skb_see_version,		"SEE version  ")
+ 
+ #define rxrpc_local_traces \
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 6ef2dc1aa8cc2..6d7b064661d88 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -226,6 +226,33 @@ static void rxrpc_call_is_secure(struct rxrpc_call *call)
+ 		rxrpc_notify_socket(call);
+ }
+ 
++static int rxrpc_verify_response(struct rxrpc_connection *conn,
++				 struct sk_buff *skb)
++{
++	int ret;
 +
- 	for (;;) {
- 		if ((u8 *)ea > end - sizeof(*ea))
- 			return -EINVAL;
++	if (skb_cloned(skb)) {
++		/* Copy the packet if shared so that we can do in-place
++		 * decryption.
++		 */
++		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
++
++		if (nskb) {
++			rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
++			ret = conn->security->verify_response(conn, nskb);
++			rxrpc_free_skb(nskb, rxrpc_skb_put_response_copy);
++		} else {
++			/* OOM - Drop the packet. */
++			rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
++			ret = -ENOMEM;
++		}
++	} else {
++		ret = conn->security->verify_response(conn, skb);
++	}
++
++	return ret;
++}
++
+ /*
+  * connection-level Rx packet processor
+  */
+@@ -253,7 +280,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 		}
+ 		spin_unlock(&conn->state_lock);
+ 
+-		ret = conn->security->verify_response(conn, skb);
++		ret = rxrpc_verify_response(conn, skb);
+ 		if (ret < 0)
+ 			return ret;
+ 
 -- 
 2.53.0
 
