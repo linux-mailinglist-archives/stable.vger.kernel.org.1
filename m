@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-242759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAt5DzI992k6dwIAu9opvQ
-	(envelope-from <stable+bounces-242759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:18:58 +0200
+	id AEYvEjw992k2dwIAu9opvQ
+	(envelope-from <stable+bounces-242760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:19:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE924B5A6D
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A91B24B5A75
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DC4A30067A5
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:18:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B136300694A
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A7A349AF5;
-	Sun,  3 May 2026 12:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9474349AF5;
+	Sun,  3 May 2026 12:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2B1iBHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeS8H+Z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C42626CE11
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D47A26CE11
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777810735; cv=none; b=mBlVXpTtSqnfXHcx2OVe6NTMhNK30aMY01aE5EVU4jcJsn61k2LAdtgI0bPuyC4jA8tI3yqxis9B3nnagbQOSavkgixoSQLzwSriGNf60wzy8WDls3JP+GUOH/mxiAgJsaisuV4RUlGWEmipqNSTaap8BTemI8w9W2qf92cV+Pk=
+	t=1777810745; cv=none; b=gErO6gST4MC1Kb+ZHBmww9DqSRbUGFhmEWQEDNIrd8gRB8PPVemPAoyYizGPuqXB7Y0F8GHFVZiCy8ZBlVl88HlAgMga3UxsJmGY7SxYN0eYgPkbLE133ojJXBXqZOqa39mWDK9r68hwV8bzhdDnMqMCb1KU7KEvkwjIVe0fPbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777810735; c=relaxed/simple;
-	bh=qeE5+kd+UEatjYuSHBvk/Rm8YfuMyAD5PeftIuaq0N0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XsLrVGi28E+btCEdhH08lRYBhrSgvEvVjhdT3kIAQOfJgcINb3jMwWwsGkma+CHC72gAv9RmZ+ofZ2UL1QS0XzvA571s1UWjkQSES58gSOfHtWYxl5QiLJPOzVnLBjFL3kH23410cW5ZRmZLhFkpQkeeXHIm6SJg2u7KJp5bJfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2B1iBHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AF7C2BCB4;
-	Sun,  3 May 2026 12:18:54 +0000 (UTC)
+	s=arc-20240116; t=1777810745; c=relaxed/simple;
+	bh=/O3Qui2NJTQvXXTWLudE4Stmr0108IW6fOhK3079IN8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P/MseEBxxseplc8Iw0rrXkDdrQxloYm/qLMNYaGKsfTay+NjTPM72QYNTYl/ywgk6aYvA1Hm85yIECbyN+96pRFmxaY3DY6MBkXKvFJA0dpsbcP6fsQu+NIRk/wF7eXu+5FOiZijpfSSFUhu8gO3+UO5vS42UaHLYBV6m9nGYdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeS8H+Z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02065C2BCB4;
+	Sun,  3 May 2026 12:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777810735;
-	bh=qeE5+kd+UEatjYuSHBvk/Rm8YfuMyAD5PeftIuaq0N0=;
+	s=korg; t=1777810745;
+	bh=/O3Qui2NJTQvXXTWLudE4Stmr0108IW6fOhK3079IN8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=N2B1iBHYkQOlkWXqR/gsEfl4iEkb7WxZOwUR4gCqybPrLCgPkR8ezTqpi7D1wBfcT
-	 R9hQnQFRxkkQWIEDPrTWexPV8GBslWfPHfWTXey7/0qhepBMla3tSVvzAQE4B6hLLu
-	 +5CXm7uve86F/GmmGgzIa3KVz0J3edF8pcyJE6Pc=
-Subject: FAILED: patch "[PATCH] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4," failed to apply to 5.10-stable tree
+	b=DeS8H+Z/Ck1/AClNH+zpqCw1Nriod+fMoxyqHARyzZgyQZiKTgwearP49jQGC3WUS
+	 b1OnozSvpt0bTGGjLhUP7HV2sgWTb1UkTq7YCjmDyEtU6Pe+A6VqmZawHKtbCH2BU3
+	 9BaS4dn4aEjrDfyng7rFCEpXwg1z+AbZeQH4d+j4=
+Subject: FAILED: patch "[PATCH] KVM: nSVM: Drop the non-architectural consistency check for" failed to apply to 5.15-stable tree
 To: yosry@kernel.org,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 14:18:44 +0200
-Message-ID: <2026050344-throwback-dilation-fc45@gregkh>
+Date: Sun, 03 May 2026 14:19:02 +0200
+Message-ID: <2026050302-unmarked-securely-1973@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CCE924B5A6D
+X-Rspamd-Queue-Id: A91B24B5A75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242759-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242760-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -84,22 +84,22 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cr0.pg:url,linuxfoundation.org:dkim,gregkh:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gregkh:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 96bd3e76a171a8e21a6387e54e4c420a81968492
+git cherry-pick -x e0b6f031d64c086edd563e7af9c0c0a2261dd2a4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050344-throwback-dilation-fc45@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050302-unmarked-securely-1973@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,70 +111,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 96bd3e76a171a8e21a6387e54e4c420a81968492 Mon Sep 17 00:00:00 2001
+From e0b6f031d64c086edd563e7af9c0c0a2261dd2a4 Mon Sep 17 00:00:00 2001
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Mar 2026 00:34:10 +0000
-Subject: [PATCH] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4,
- and CS
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 3 Mar 2026 00:34:08 +0000
+Subject: [PATCH] KVM: nSVM: Drop the non-architectural consistency check for
+ NP_ENABLE
 
-According to the APM Volume #2, 15.5, Canonicalization and Consistency
-Checks (24593—Rev. 3.42—March 2024), the following condition (among
-others) results in a #VMEXIT with VMEXIT_INVALID (aka SVM_EXIT_ERR):
+KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
+SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
+On first glance, it seems like the check should actually be for
+guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
+host to support NPTs but the guest CPUID to not advertise it.
 
-  EFER.LME, CR0.PG, CR4.PAE, CS.L, and CS.D are all non-zero.
+However, the consistency check is not architectural to begin with. The
+APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
+that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
+if X86_FEATURE_NPT is not available for L1, so sanitize it when copying
+from the VMCB12 to KVM's cache.
 
-In the list of consistency checks done when EFER.LME and CR0.PG are set,
-add a check that CS.L and CS.D are not both set, after the existing
-check that CR4.PAE is set.
+Apart from the consistency check, NP_ENABLE in VMCB12 is currently
+ignored because the bit is actually copied from VMCB01 to VMCB02, not
+from VMCB12.
 
-This is functionally a nop because the nested VMRUN results in
-SVM_EXIT_ERR in HW, which is forwarded to L1, but KVM makes all
-consistency checks before a VMRUN is actually attempted.
-
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
+Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-17-yosry@kernel.org
+Link: https://patch.msgid.link/20260303003421.2185681-15-yosry@kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index a59b976c16db..50180565bcfc 100644
+index 0d447d044101..2ed6530e7bd1 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -391,6 +391,10 @@ static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu,
- 		    CC(!(save->cr0 & X86_CR0_PE)) ||
- 		    CC(!kvm_vcpu_is_legal_cr3(vcpu, save->cr3)))
- 			return false;
-+
-+		if (CC((save->cs.attrib & SVM_SELECTOR_L_MASK) &&
-+		       (save->cs.attrib & SVM_SELECTOR_DB_MASK)))
-+			return false;
- 	}
+@@ -348,9 +348,6 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 	if (CC(control->asid == 0))
+ 		return false;
  
- 	/* Note, SVM doesn't have any additional restrictions on CR4. */
-@@ -486,6 +490,8 @@ static void __nested_copy_vmcb_save_to_cache(struct vmcb_save_area_cached *to,
- 	 * Copy only fields that are validated, as we need them
- 	 * to avoid TOC/TOU races.
- 	 */
-+	to->cs = from->cs;
-+
- 	to->efer = from->efer;
- 	to->cr0 = from->cr0;
- 	to->cr3 = from->cr3;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 7629cb37c930..0a5d5a4453b7 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -140,6 +140,7 @@ struct kvm_vmcb_info {
- };
+-	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
+-		return false;
+-
+ 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
+ 					   MSRPM_SIZE)))
+ 		return false;
+@@ -431,6 +428,11 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	nested_svm_sanitize_intercept(vcpu, to, SKINIT);
+ 	nested_svm_sanitize_intercept(vcpu, to, RDPRU);
  
- struct vmcb_save_area_cached {
-+	struct vmcb_seg cs;
- 	u64 efer;
- 	u64 cr4;
- 	u64 cr3;
++	/* Always clear SVM_NESTED_CTL_NP_ENABLE if the guest cannot use NPTs */
++	to->nested_ctl          = from->nested_ctl;
++	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
++		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
++
+ 	to->iopm_base_pa        = from->iopm_base_pa;
+ 	to->msrpm_base_pa       = from->msrpm_base_pa;
+ 	to->tsc_offset          = from->tsc_offset;
+@@ -444,7 +446,6 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	to->exit_info_2         = from->exit_info_2;
+ 	to->exit_int_info       = from->exit_int_info;
+ 	to->exit_int_info_err   = from->exit_int_info_err;
+-	to->nested_ctl          = from->nested_ctl;
+ 	to->event_inj           = from->event_inj;
+ 	to->event_inj_err       = from->event_inj_err;
+ 	to->next_rip            = from->next_rip;
 
 
