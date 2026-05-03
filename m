@@ -1,133 +1,170 @@
-Return-Path: <stable+bounces-242650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJSZDqom92nfcwIAu9opvQ
-	(envelope-from <stable+bounces-242650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 12:42:50 +0200
+	id WO/yM1Uq92lbdAIAu9opvQ
+	(envelope-from <stable+bounces-242652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 12:58:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6FC4B5255
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 12:42:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9084B5304
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 12:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 139413006F0A
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 10:42:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A646530086FD
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 10:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5139322FE0E;
-	Sun,  3 May 2026 10:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29ABE2FE074;
+	Sun,  3 May 2026 10:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyb41lV4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAKPOB8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150AB39FD4
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 10:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71BB296BA9
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 10:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777804967; cv=none; b=ejLGaJO1Ztie8IGiRYYdH9/ri/7T158b+gFyFsIffw9c0h0jTLL+cFTc9sbJxdNwLR8CsW7Z6htE4FDyZw4t/MTui1nw/n4MoqVOuXNDsSNh+usunoCZNp+GI/sPWxz7Z5aAbS3OpkzGXONOfiiAA1wjgRlSmnQ5wxRJWJx+Muw=
+	t=1777805905; cv=none; b=Dakqvm80WnrWSHN3l313EtbJjZuXFPWwzccMQd5tCOH9TLK8GDcvcdKC6fJfBhmhjt/epQ+iHGeX+Us3Ey6S6YaFbZa+naR6ryONujVLzfljFSUzJshkG5X0375bkdv3BFE4P/5gwYPJeNxSv0XjMKoyg9KgwLonjXVH3wylH+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777804967; c=relaxed/simple;
-	bh=2UoZJXAv/JH4kdpPqz1xJEgRz5xTTq9osGYSA2+ESs8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JNEGPCdun2SqatDhqMoMJ/plpTBI0YZ/7yCBS4dAKEUTw5F2tVsKVG9+YSo41b/VzAkBNj/vfKK7aCCThVPSJ3wut1Uk2gn/zESwloIiH4Hl6WS9FhHEZhuRbUPcG/sBSgFoXmc7k/WEOUdvcVVrlaOey6LcjhCmTBG3jWeYyak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyb41lV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49297C2BCB4;
-	Sun,  3 May 2026 10:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777804966;
-	bh=2UoZJXAv/JH4kdpPqz1xJEgRz5xTTq9osGYSA2+ESs8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kyb41lV4hBNfr6EmeIQCzE1O7srIFCQ1TT0lXyjMMiv4mbaweZMqfvlkEmzRQXwFL
-	 jhERtpeZ0xTAJ6ryV0Gfrmyrg2ikZkUJlxHVs14Hol8DO290DkoNE1d5A1lIv3ChL6
-	 25nbav+2BZYIldIKu6XYOdtGOa2KDJa9BPibPtAI=
-Date: Sun, 3 May 2026 12:42:05 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: 0nsec <0nsec@proton.me>
-Cc: security@kernel.org, herbert@gondor.apana.org.au,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: af_alg - convert inflight to atomic_t to fix
- data race
-Message-ID: <2026050335-spiny-lullaby-2559@gregkh>
-References: <rM7uJ0oBopViOraMoC0Ya0_hMtNwV4CLor-vdwN4vIH7BOKqCuuC0OWUOQoOS-0XOcJmSIT5vhR4UmZlIJxD7mllIkq1UVqEop3T0e4bjis=@proton.me>
- <2026050304-greeting-prankster-910b@gregkh>
- <QACE4BCfRIeL8Dm_ETPxjem791yvR3Lj6Iw3ArtLWxEU5FwAmjTCS6DZA_hdQfyhi2MYJTIu-p36nDpUwQbhWwxc1X2LgZSCMikbNFdOGCE=@proton.me>
- <2026050328-civic-monoxide-0a54@gregkh>
- <20260503095345.375711-1-0nsec@proton.me>
+	s=arc-20240116; t=1777805905; c=relaxed/simple;
+	bh=G3Lg6JphC9wEi0FjVbKBYtzSBTmcYYh/W+BgkJITN5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EsRSwIvsJmkMDb9ZRGfZGqLgMwAe1BFxNyiq/X96pwtwgB28XHs2KKY7eV+6TCNqsR1Nvg8ncxwQKsv2+dXmp4iU0jeGdCBWVUysLOZprQfEycfuafwDVYBnl8mj64fdcmkl4FSQ3mHcWNEaerhw+Flt/doUqiqhpLaE3NAR3cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAKPOB8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53983C2BCB4;
+	Sun,  3 May 2026 10:58:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777805905;
+	bh=G3Lg6JphC9wEi0FjVbKBYtzSBTmcYYh/W+BgkJITN5I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sAKPOB8dTzcETKC59QS3BY7ymATVXMJU2cqXXjg6ob7yvIz++kG5tPVyP2vstsSkp
+	 2KmCAIqRxQf2wQvcSnfPnG18oBfy4U9L1cJYyr8n9b63hcRUmG+c10k6nSvo6tNx4B
+	 a8eIyRo6jiodkGLW3f78eEB3vMz9v0VMmvAgYd8GWHnbYYOElvwErG4LZeACi2Jb51
+	 modm3gQIy+wJQhoh+4yleSVXmS+8Doi4PZWz83FOvBjKMa53ToLQpbHnW72BOjElmP
+	 TO0+empvTXyTG8ECqw/OmNPLF5QkWWFHMzhT9AC0MF8+1bzEXUVvcuMa5UT20dY+sR
+	 tMxqwcY60C1Ww==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Jake Lamberson <lamberson.jake@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] ALSA: core: Fix potential data race at fasync handling
+Date: Sun,  3 May 2026 06:58:21 -0400
+Message-ID: <20260503105821.1029617-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050119-morale-scanning-6fc9@gregkh>
+References: <2026050119-morale-scanning-6fc9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260503095345.375711-1-0nsec@proton.me>
-X-Rspamd-Queue-Id: 7E6FC4B5255
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3C9084B5304
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[suse.de,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-242652-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242650-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,linuxfoundation.org:dkim]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Sun, May 03, 2026 at 09:54:27AM +0000, 0nsec wrote:
-> The inflight field in struct af_alg_ctx guards the invariant that only
-> one AIO crypto request may be in flight at a time.  It is declared as a
-> plain unsigned int but accessed from two unsynchronized contexts:
-> process context under lock_sock() and the async crypto completion
-> callback which runs without any socket lock.
-> 
-> Data race under the C11 memory model.  On weakly-ordered architectures
-> the store in the completion path could be observed out of order relative
-> to the preceding areq free, widening the window for state confusion
-> between a completing first request and a newly allocated second one.
-> 
-> Convert inflight to atomic_t.  Use atomic_xchg() for the check-and-set
-> in af_alg_alloc_areq() so check and set are one atomic operation,
-> eliminating the TOCTOU that separate atomic_read + atomic_set would
-> leave.  The ENOMEM rollback path must also clear inflight since
-> atomic_xchg() sets it before the allocation attempt; without this a
-> failed allocation permanently blocks further AIO on that socket.
-> 
-> Follows the precedent of af955bf15d2c ("crypto: af_alg - Fix race
-> around ctx->rcvused by making it atomic_t").  The inflight field
-> introduced in 67b164a871af repeated the same locking gap.
-> 
-> CVE-2025-71113 fixed uninitialized garbage in inflight via memset.
-> That is a distinct bug.  This race exists independently.
-> 
-> Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: 0nsec <0nsec@proton.me>
+From: Takashi Iwai <tiwai@suse.de>
 
-We need a real name for the author and signed off by line.
+[ Upstream commit 8146cd333d235ed32d48bb803fdf743472d7c783 ]
 
-thanks,
+In snd_fasync_work_fn(), which is the offload work for traversing and
+processing the pending fasync list, the call of kill_fasync() is done
+outside the snd_fasync_lock for avoiding deadlocks.  The problem is
+that its the references of fasync->on, fasync->signal and fasync->poll
+are done there also outside the lock.  Since these may be modified by
+snd_kill_fasync() call concurrently from other process, inconsistent
+values might be passed to kill_fasync().  Although there shouldn't be
+critical UAF, it's still better to be addressed.
 
-greg k-h
+This patch moves the kill_fasync() argument evaluations inside the
+snd_fasync_lock for avoiding the data races above.  The handling in
+fasync->on flag is optimized in the loop to skip directly.
+
+Also, for more clarity, snd_fasync_free() takes the lock and unlink
+the pending entry more directly instead of clearing fasync->on flag.
+
+Reported-by: Jake Lamberson <lamberson.jake@gmail.com>
+Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260420061721.3253644-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ replaced scoped_guard(spinlock_irq, &snd_fasync_lock) with explicit spin_lock_irq()/spin_unlock_irq() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/core/misc.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/sound/core/misc.c b/sound/core/misc.c
+index d32a19976a2b9..edd29fcde4200 100644
+--- a/sound/core/misc.c
++++ b/sound/core/misc.c
+@@ -171,14 +171,18 @@ static LIST_HEAD(snd_fasync_list);
+ static void snd_fasync_work_fn(struct work_struct *work)
+ {
+ 	struct snd_fasync *fasync;
++	int signal, poll;
+ 
+ 	spin_lock_irq(&snd_fasync_lock);
+ 	while (!list_empty(&snd_fasync_list)) {
+ 		fasync = list_first_entry(&snd_fasync_list, struct snd_fasync, list);
+ 		list_del_init(&fasync->list);
++		if (!fasync->on)
++			continue;
++		signal = fasync->signal;
++		poll = fasync->poll;
+ 		spin_unlock_irq(&snd_fasync_lock);
+-		if (fasync->on)
+-			kill_fasync(&fasync->fasync, fasync->signal, fasync->poll);
++		kill_fasync(&fasync->fasync, signal, poll);
+ 		spin_lock_irq(&snd_fasync_lock);
+ 	}
+ 	spin_unlock_irq(&snd_fasync_lock);
+@@ -234,7 +238,11 @@ void snd_fasync_free(struct snd_fasync *fasync)
+ {
+ 	if (!fasync)
+ 		return;
+-	fasync->on = 0;
++
++	spin_lock_irq(&snd_fasync_lock);
++	list_del_init(&fasync->list);
++	spin_unlock_irq(&snd_fasync_lock);
++
+ 	flush_work(&snd_fasync_work);
+ 	kfree(fasync);
+ }
+-- 
+2.53.0
+
 
