@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-242781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LZWOMY992k2dwIAu9opvQ
-	(envelope-from <stable+bounces-242781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:21:26 +0200
+	id KJKEG1RA92k2dwIAu9opvQ
+	(envelope-from <stable+bounces-242782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:32:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4F04B5B0B
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D19374B5C77
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70D8C30071FA
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:21:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6610300AB3A
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558BE3AE6FA;
-	Sun,  3 May 2026 12:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932503A875A;
+	Sun,  3 May 2026 12:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMLX/la+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3dV3xFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1855339936E
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568FA3B6BE6
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777810879; cv=none; b=en2v4+pdZVuPx0LB+HhSH2UueLyoU3wKE3s2F62EyDUP1HWitOuLh1WkSJHtnkoVXdUxGoqPblRVFJSQcQ8lqzJwLl8GzQ3p0gbn+fmMpCAJKHf6MuFTU2rXEjmCDva2b2hmrRAPyX8RErM4of86AvGqJttAKuu+FPBOvku1+/E=
+	t=1777811367; cv=none; b=AT+SXR1AaGfYBIauSbOOnMKLe4LMA1Ea6sIN2DoL4pM6Z+XQ/oXtcGGk1wxR8MfOS1RV41L85DuwcQ4a44wMurcO/KKNA3vy2U+uM9u7nzazRB0YGkcpSUd4BET4c1Pk0s2ltm1Kcr9pbk7qtRFodrJq3KAmR9zIXLwlBoAlksg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777810879; c=relaxed/simple;
-	bh=REc+2v3VmCSHISgD6hdw5cGD7Cd4wXwCckHu03GWHDs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NQJJ1c2VN70C3vaKXaJm/WR++/Nu7uv4H2e2Gt1KOKtGxmp/UEG/bUpfIt6W7FWDJOYAIJ6UBOwFuUYnaBZil+PewtcdZ9mikWd9gerSP54BK6K6X61Ka+qLVrLQ5HUpOk1UuRi3JvcYl1YXH4BAIZB6Sl4O/IwoqxqSsFufRRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMLX/la+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5475C2BCB4;
-	Sun,  3 May 2026 12:21:18 +0000 (UTC)
+	s=arc-20240116; t=1777811367; c=relaxed/simple;
+	bh=VvHj7IPHg3RYoAmfkvQnZqnL7o+mkriofWTpAzQ6vAQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lohWhUUmT/zp1BTytx5RdT8ntOsX3bsgaHL/4SMesZsFV/tJoCFfBtJniEnbHrGzJS5qAnLoy2ksAZ4HhQPm+B8ZbXBSMjtI77Zw2CYrqNolwIdJqfk3YtJC3SFVNt+EeP855uL13i2rPlQYPNcFzng8jxOn9pMformkNTDcSb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3dV3xFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB84C2BCB4;
+	Sun,  3 May 2026 12:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777810879;
-	bh=REc+2v3VmCSHISgD6hdw5cGD7Cd4wXwCckHu03GWHDs=;
+	s=korg; t=1777811367;
+	bh=VvHj7IPHg3RYoAmfkvQnZqnL7o+mkriofWTpAzQ6vAQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uMLX/la+o2mKEHM5tUq250wZ6Yi8sjhE82jnXdrzeJCLxL76bHfeYrLmhqlVtyoee
-	 nA8STIdoACwV4bFhCPhAt3RaUrou7G8C614Pu0ZIfEImNpUquIefBX9dXR5XGE3Hae
-	 P5wunA7Vk3mjLZvePvhdHRH8ZgYPXgexSpnm/93M=
-Subject: FAILED: patch "[PATCH] KVM: nSVM: Add missing consistency check for EVENTINJ" failed to apply to 5.10-stable tree
+	b=R3dV3xFlk4iGA9mZ1eiofbZj7zC+oXLIuncaBtIOTLTUmBvCNFgBZX/ZvS/vkFrZ+
+	 iYaAv7Dm6qjTLP6j21txbYExgsj3zQ4c0wYabBfJ2rHgo9zJyMV0I2UnGh7yTIZ1Di
+	 cIUSGoefDsJVSfY9314sLo4KJKDfuChnEyTAoe6g=
+Subject: FAILED: patch "[PATCH] KVM: nSVM: Drop the non-architectural consistency check for" failed to apply to 6.1-stable tree
 To: yosry@kernel.org,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 14:20:50 +0200
-Message-ID: <2026050350-sharpness-bacterium-249d@gregkh>
+Date: Sun, 03 May 2026 14:29:24 +0200
+Message-ID: <2026050324-undertake-willfully-b40d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B4F04B5B0B
+X-Rspamd-Queue-Id: D19374B5C77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242781-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242782-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -84,22 +84,22 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gregkh:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,msgid.link:url]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7e79f71bca5cf536f92effc7227bd044c2722c11
+git cherry-pick -x e0b6f031d64c086edd563e7af9c0c0a2261dd2a4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050350-sharpness-bacterium-249d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050324-undertake-willfully-b40d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,113 +111,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e79f71bca5cf536f92effc7227bd044c2722c11 Mon Sep 17 00:00:00 2001
+From e0b6f031d64c086edd563e7af9c0c0a2261dd2a4 Mon Sep 17 00:00:00 2001
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Mar 2026 00:34:11 +0000
-Subject: [PATCH] KVM: nSVM: Add missing consistency check for EVENTINJ
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 3 Mar 2026 00:34:08 +0000
+Subject: [PATCH] KVM: nSVM: Drop the non-architectural consistency check for
+ NP_ENABLE
 
-According to the APM Volume #2, 15.20 (24593—Rev. 3.42—March 2024):
+KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
+SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
+On first glance, it seems like the check should actually be for
+guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
+host to support NPTs but the guest CPUID to not advertise it.
 
-  VMRUN exits with VMEXIT_INVALID error code if either:
-  • Reserved values of TYPE have been specified, or
-  • TYPE = 3 (exception) has been specified with a vector that does not
-    correspond to an exception (this includes vector 2, which is an NMI,
-    not an exception).
+However, the consistency check is not architectural to begin with. The
+APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
+that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
+if X86_FEATURE_NPT is not available for L1, so sanitize it when copying
+from the VMCB12 to KVM's cache.
 
-Add the missing consistency checks to KVM. For the second point, inject
-VMEXIT_INVALID if the vector is anything but the vectors defined by the
-APM for exceptions. Reserved vectors are also considered invalid, which
-matches the HW behavior. Vector 9 (i.e. #CSO) is considered invalid
-because it is reserved on modern CPUs, and according to LLMs no CPUs
-exist supporting SVM and producing #CSOs.
+Apart from the consistency check, NP_ENABLE in VMCB12 is currently
+ignored because the bit is actually copied from VMCB01 to VMCB02, not
+from VMCB12.
 
-Defined exceptions could be different between virtual CPUs as new CPUs
-define new vectors. In a best effort to dynamically define the valid
-vectors, make all currently defined vectors as valid except those
-obviously tied to a CPU feature: SHSTK -> #CP and SEV-ES -> #VC. As new
-vectors are defined, they can similarly be tied to corresponding CPU
-features.
-
-Invalid vectors on specific (e.g. old) CPUs that are missed by KVM
-should be rejected by HW anyway.
-
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
-CC: stable@vger.kernel.org
+Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
+Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-18-yosry@kernel.org
+Link: https://patch.msgid.link/20260303003421.2185681-15-yosry@kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 50180565bcfc..1c5f0f08bb8c 100644
+index 0d447d044101..2ed6530e7bd1 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -339,6 +339,54 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
- 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
- }
- 
-+static bool nested_svm_event_inj_valid_exept(struct kvm_vcpu *vcpu, u8 vector)
-+{
-+	/*
-+	 * Vectors that do not correspond to a defined exception are invalid
-+	 * (including #NMI and reserved vectors). In a best effort to define
-+	 * valid exceptions based on the virtual CPU, make all exceptions always
-+	 * valid except those obviously tied to a CPU feature.
-+	 */
-+	switch (vector) {
-+	case DE_VECTOR: case DB_VECTOR: case BP_VECTOR: case OF_VECTOR:
-+	case BR_VECTOR: case UD_VECTOR: case NM_VECTOR: case DF_VECTOR:
-+	case TS_VECTOR: case NP_VECTOR: case SS_VECTOR: case GP_VECTOR:
-+	case PF_VECTOR: case MF_VECTOR: case AC_VECTOR: case MC_VECTOR:
-+	case XM_VECTOR: case HV_VECTOR: case SX_VECTOR:
-+		return true;
-+	case CP_VECTOR:
-+		return guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK);
-+	case VC_VECTOR:
-+		return guest_cpu_cap_has(vcpu, X86_FEATURE_SEV_ES);
-+	}
-+	return false;
-+}
-+
-+/*
-+ * According to the APM, VMRUN exits with SVM_EXIT_ERR if SVM_EVTINJ_VALID is
-+ * set and:
-+ * - The type of event_inj is not one of the defined values.
-+ * - The type is SVM_EVTINJ_TYPE_EXEPT, but the vector is not a valid exception.
-+ */
-+static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_inj)
-+{
-+	u32 type = event_inj & SVM_EVTINJ_TYPE_MASK;
-+	u8 vector = event_inj & SVM_EVTINJ_VEC_MASK;
-+
-+	if (!(event_inj & SVM_EVTINJ_VALID))
-+		return true;
-+
-+	if (type != SVM_EVTINJ_TYPE_INTR && type != SVM_EVTINJ_TYPE_NMI &&
-+	    type != SVM_EVTINJ_TYPE_EXEPT && type != SVM_EVTINJ_TYPE_SOFT)
-+		return false;
-+
-+	if (type == SVM_EVTINJ_TYPE_EXEPT &&
-+	    !nested_svm_event_inj_valid_exept(vcpu, vector))
-+		return false;
-+
-+	return true;
-+}
-+
- static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 				       struct vmcb_ctrl_area_cached *control)
- {
-@@ -364,6 +412,9 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+@@ -348,9 +348,6 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 	if (CC(control->asid == 0))
  		return false;
- 	}
  
-+	if (CC(!nested_svm_check_event_inj(vcpu, control->event_inj)))
-+		return false;
+-	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
+-		return false;
+-
+ 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
+ 					   MSRPM_SIZE)))
+ 		return false;
+@@ -431,6 +428,11 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	nested_svm_sanitize_intercept(vcpu, to, SKINIT);
+ 	nested_svm_sanitize_intercept(vcpu, to, RDPRU);
+ 
++	/* Always clear SVM_NESTED_CTL_NP_ENABLE if the guest cannot use NPTs */
++	to->nested_ctl          = from->nested_ctl;
++	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
++		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
 +
- 	return true;
- }
- 
+ 	to->iopm_base_pa        = from->iopm_base_pa;
+ 	to->msrpm_base_pa       = from->msrpm_base_pa;
+ 	to->tsc_offset          = from->tsc_offset;
+@@ -444,7 +446,6 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	to->exit_info_2         = from->exit_info_2;
+ 	to->exit_int_info       = from->exit_int_info;
+ 	to->exit_int_info_err   = from->exit_int_info_err;
+-	to->nested_ctl          = from->nested_ctl;
+ 	to->event_inj           = from->event_inj;
+ 	to->event_inj_err       = from->event_inj_err;
+ 	to->next_rip            = from->next_rip;
 
 
