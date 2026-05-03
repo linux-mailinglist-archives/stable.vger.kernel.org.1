@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-242795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIk9LyVZ92mxgQIAu9opvQ
-	(envelope-from <stable+bounces-242795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:18:13 +0200
+	id MIQRHLhc92ljggIAu9opvQ
+	(envelope-from <stable+bounces-242797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:33:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61C54B6017
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:18:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B954B6137
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 176C43006822
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 14:17:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE2093003D07
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 14:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7A43CCA16;
-	Sun,  3 May 2026 14:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0D61A680B;
+	Sun,  3 May 2026 14:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXnxKxD/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sD+r6dF8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CE83B6347
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 14:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6E778F4F
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 14:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777817851; cv=none; b=hCdYiQOUQdTdiub9zGMBaMgsn8CFypt0Grcu/XX7AQivM3i3U/Bet+iRtmPfe3ZWh54eEWso4OCbWFmVCSxLgYORaJmdBdio0rbCR2FcP0EzG8SX7lAsDXzvMMi7UqHUXHZfLPbsFsAFus/sCBLksqSfIdL5GFIOv0W0CUJSjOQ=
+	t=1777818803; cv=none; b=LZQkPPTS6HAu9W7Jk5aIZZqn5LN3U488erX6pbUaq8Jh2gjYEn65g65pfmT0ORIXf7izfYJ2Jae97kg2RxRCfVvv0h6Tfl7Ym2fnEFfy4sKnp68QDN0ulaNbMqERdRH0WfqSaI2njED1f+bVqSn+fjKUkQi6mAxciZQL8fZeA+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777817851; c=relaxed/simple;
-	bh=JcOwAeWxWC3AjsNuOCFjgkz2au8gfAfu0nkNIMWYtog=;
+	s=arc-20240116; t=1777818803; c=relaxed/simple;
+	bh=rWw1b9B6OugRkPPkwf3R4M/zvmxoS/aeyUu38w6RFwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCs8vP9nFXlKr6ax3d5HrTFdVnZFCCSR92iTCjLItZ0AcnJhXmfFd1v7Zo93RqOuBYSHIdYDHwKtiMHA03qwwmimmmXU/0/blTEBwnKzI/+eCw7rq/bgs0hiIihz9YvFeTVaxldCuDN/fzhbqNfzZ71Xo2Fr5v1j8uWmOO9hCxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXnxKxD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FD8C2BCB4;
-	Sun,  3 May 2026 14:17:28 +0000 (UTC)
+	 MIME-Version; b=QDQBtZf/eIEG1fJDu9t2EOWkR59C20g+QINohuxGgKY0buDOtx9872UVmH2b0n0rLWiT/uGfo8PJdRgDI/UUDnxAndKbqe1SswIKIBA+TWAeeGF0NU4eES+WaIynPH3/DQov6RElSSe5WQtP2Tr++AxDhZK6qZHXpFhL93oq1UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sD+r6dF8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD935C2BCB4;
+	Sun,  3 May 2026 14:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777817851;
-	bh=JcOwAeWxWC3AjsNuOCFjgkz2au8gfAfu0nkNIMWYtog=;
+	s=k20201202; t=1777818802;
+	bh=rWw1b9B6OugRkPPkwf3R4M/zvmxoS/aeyUu38w6RFwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXnxKxD/H60gSU4tLmPqcJcDoceC6H6eGyo/2Nyw/Fzu0SZTXAcwg3awyzWVuBliR
-	 qfNSVkNa9U9NKvlS8Bow2wZAbhsQsbZSN4cdLo8hRfqrrtMzYYZQIoopXnUBEk2zQz
-	 Xf0u1+TCzYn40ZYpSi7qKoUWBIS+qyysHnWR1FRa4MEYYfe6pmNwUEwisG9Kws3Xgg
-	 /EFhB7BgxLhWS3AHVQ+juSfh87FMX7C/wlRiKwg11wDXcpII17HAOzlZoZCLTBzMKo
-	 ANFUX6STfpZ3+khbyU3ON6xpYPGHnXClF9LpGoltnjTgdhZofwjDO4cDRE8WY6GRmr
-	 HjTFTC96remRA==
+	b=sD+r6dF8xOM2KrvqmrT+SMVM3mkAqeOh/BGG9a8LkeqX1H7FM/cvaMwdydCnTujx1
+	 r+lGklf9gKgF+BgQTHtCu8OcjStTpJaTz2fd7emcvsYCYR/bSLfvtSdYAI+MfSAjkR
+	 divBjWgIaqEAysbW4vsopoY/KwjE+fXdnFKT1hGoeZKygCFLN2/FUaSOO2Ti3o3rvj
+	 PL9sNFMBYhVh9+MdzgV76/Fg8NS3fw/zGKNOWUgDhTPdGFyJZGqpumXyf3TV+4zHvR
+	 19IhG7BUqGtsWTJlbFoeHr30Zq9Vju40m3wSohx6y1pIMMfUPosYVODkqs4s9mnaKE
+	 56hTwQ9hJdanQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -54,12 +54,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
-Date: Sun,  3 May 2026 10:17:23 -0400
-Message-ID: <20260503141723.1081399-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
+Date: Sun,  3 May 2026 10:33:17 -0400
+Message-ID: <20260503143317.1089945-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050142-gag-tasting-5084@gregkh>
-References: <2026050142-gag-tasting-5084@gregkh>
+In-Reply-To: <2026050141-endearing-facedown-3f88@gregkh>
+References: <2026050141-endearing-facedown-3f88@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B61C54B6017
+X-Rspamd-Queue-Id: 04B954B6137
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -75,13 +75,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242795-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242797-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -95,8 +95,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,sashiko.dev:url,infradead.org:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,auristor.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
 From: David Howells <dhowells@redhat.com>
 
@@ -127,10 +127,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 30 insertions(+), 1 deletion(-)
 
 diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 3eb806f7bc6a5..c5533176d770d 100644
+index 6965099dda89f..e8a5beca79cff 100644
 --- a/include/trace/events/rxrpc.h
 +++ b/include/trace/events/rxrpc.h
-@@ -146,12 +146,14 @@
+@@ -145,12 +145,14 @@
  	EM(rxrpc_skb_put_jumbo_subpacket,	"PUT jumbo-sub") \
  	EM(rxrpc_skb_put_last_nack,		"PUT last-nack") \
  	EM(rxrpc_skb_put_purge,			"PUT purge    ") \
