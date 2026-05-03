@@ -1,65 +1,98 @@
-Return-Path: <stable+bounces-242788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMy8DVNW92nDgAIAu9opvQ
-	(envelope-from <stable+bounces-242788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:06:11 +0200
+	id OIHbFZBY92mEgQIAu9opvQ
+	(envelope-from <stable+bounces-242790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:15:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD294B5EE2
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:06:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB134B5F95
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 16:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37D40300953C
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 14:06:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC32E300F97F
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 14:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C901242D62;
-	Sun,  3 May 2026 14:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BA73CCFC2;
+	Sun,  3 May 2026 14:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0GcBWbQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rOIkYowp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304E01B4224
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 14:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7654B3CCA03
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 14:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777817167; cv=none; b=SaaZXeVO9ooOk8V+WEnLWIZ6/NVxogCQV3lAss3zmHxr6dmanUydj/jRqEXUIl/jyR3jPXlvmIqNWThv3dYDAs7tHgeIsdUVK4i4tcC2rA6K4QCBZJDXlB1LKMTC2SC5h1vLw5xl00fojMNFaT9d49PaeRDtKNPuBRH6EIlN+rI=
+	t=1777817732; cv=none; b=i5eRjvktHbbAChB+c6QHj0qYyJ1CjF4yuprvIXTulJWKKOkxbMbHVzrkREaAGM8rggb8z0ZHo5YDVllHhgqiIFtLKpuwgw2te1Ergq1PRVYH4EmLsun5D46nSYfquyOaUs53ijAaAuqFV1uxcUX3XBobJurzsLqDopHs+2GgCho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777817167; c=relaxed/simple;
-	bh=BlYk7Vbw6PmdqTZcCbxDGoJzhru5HdyFtu7jnB0mAFo=;
+	s=arc-20240116; t=1777817732; c=relaxed/simple;
+	bh=/3d3YUB84LBvSg8RhpQQfhKFPCfmZHQblYjmVcQdYRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdPb1HMLq/OdFhC91iXbdRAmQyTFmZjoQ2CfT36ipgv/Tq68Ih69h6GjgF2YLjd/5oGfEzypnEyzlmX4S5Oy8w5BlKJp7oxsx/WrYVxQTmm8QnQtk2jgziTAKhG1fWscRaQM1mDPOTRPn3lwMlUDDtPF2mfHX0yhuxxAcXt/VUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0GcBWbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90134C2BCB4;
-	Sun,  3 May 2026 14:06:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777817166;
-	bh=BlYk7Vbw6PmdqTZcCbxDGoJzhru5HdyFtu7jnB0mAFo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0GcBWbQSvGy+sLQogWtcD5t6A9CMGhb9pesrML+l2O3lEjGB2a9pL7WkBTKJapjL
-	 M9yrm19af54U8OjUNwD1ToifLJtS+FzUvovggzUdRDZVMjO32rBLqDyxx8UlZd5VGL
-	 aO3HIZu4kyS3qoTz7C0Jt4j9jMsvOdPRPQT3/7fS/BX0hlBJy7KsYHQHVOPRs9Zmu2
-	 y7Twi21fYg9yWNx3ECNTaFKO9nk4jt/gJTTY0buRguuwToPYKeahwnHlZwGApT+l8q
-	 rNPAYxJ3849FB9GQuSqev7e9ufs7R3PyhcMjF4xlAO05kyYGMlRZq4a25kVAlooh5o
-	 pKNXst45Pf4sQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] rxrpc: Fix potential UAF after skb_unshare() failure
-Date: Sun,  3 May 2026 10:06:00 -0400
-Message-ID: <20260503140600.1070829-1-sashal@kernel.org>
+	 MIME-Version; b=f1rimYOLYGW0l2GBifup3frRLxnQyALS7d0apDMmN9g9/MIAgkwDc0f9lZljuuQ8RlIiWdkUGrN51aJVMpLW9gAIUexBMPWFlnYeXKFjm1pvaINhbf6f1PLxCaoNXz//klaNdTGTRQWWhGA5zJ/erGR1EpBt9u8h68E4lLtlqbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rOIkYowp; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8d933da14f0so358285885a.2
+        for <stable@vger.kernel.org>; Sun, 03 May 2026 07:15:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777817730; x=1778422530; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SPYl+D5Z/0OwSvKuu86ylxC+ZLb/TAcjdwtykkm9EUA=;
+        b=rOIkYowpOoO7Jc3pacQKgnoZRJpVMZesXCTv7xuRmBtGD6z5TCroZvtBC7llf8OL6R
+         cVKXTwkyoDHnXL/lg5GnMtaeYLfSPJpurBqnI7sZt1eNvWK3qCeannswuNKsB+rTAXNY
+         tFFkB/oDfqe/G+0zAXlMWGzfq3IM9N3FCSHCTYTa5Tt9utoXhfTjq0bkvp63aLjH19dX
+         1izhf4+Vd4KRbEsDBzhiT+Kw9nY9ifFbefK0vz6knVzJkSif91vCzVOF5z1tpfDcu7jF
+         /JEcXULktTIaAiDv4YnVgyzm3FnNDs6ezY05BpTgQtwH5wOtGyYV0OeFQi1+XNUZSj0n
+         IQBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777817730; x=1778422530;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SPYl+D5Z/0OwSvKuu86ylxC+ZLb/TAcjdwtykkm9EUA=;
+        b=lTMRSHN05Oph9NOg5vXWTaao+HAsAL0v/hmnvm3y6UXWX6u3QOag2fXpq2CJeh7+xn
+         KFezXqY2HVsNFi7IDvtkNd31gl5ZzmNE+LZj2Ljh80RbuZguOcnr5kYpdiLqQFXvAej2
+         jqk2JDSoX5bfjqpb2skv4efLfCGOIyubXJbQrqEl2/FXD0v8jHjD3NMAAMfmJj5u2ZbW
+         +h6P0qM3NVoqLApNo2iH0IniMCMJTC+CIe25P7pB/MN6Jy/z/S8E5EBMPyz/Lp16gqCL
+         oMS2ak1r37cNbnnn8HgIGWbwKgmhl+RM6BEnrYdPis2wFY18fL6049Bnhtc2y5zHl66X
+         VXZA==
+X-Forwarded-Encrypted: i=1; AFNElJ9f7JBzSgQMzYi1/+TLVaQEqoH7NmxJB23vD8fx1zJI8RNAzAn628oF2WKxTIWEu6KS3JFQP6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfSM/i8aeTWy5KEFS9HgRiIPVdGo68xyctcmk+hRbV8raGW6Rm
+	6oSDVSsmbZyeKH5IkvXmcFu+XPIHKyFT6ePUPu3IR7PqlnfJeTb0uiav
+X-Gm-Gg: AeBDievceNqe8vHjXJNHhDXCVLvUqL5UJoRQfMjCSC5+z/dszZO35GlIQ7zO2GfQRZI
+	6nn6TmA6UY/ztK3OXYR9T6FL0aMn04FKjxIsAqBzKYaGEeJT1VBJWh/wMOKE5iRSbL1huz/kBmZ
+	CpuXuP0KPHXNsUMvBqXzWJGVi9jcfxZ1YVOeo08rQTovNy4DQ97wPdY1BhmFGMVucN9E06ZzGeL
+	AgeuHY1WYkewpydk8rdPAJcWFfgEhSVoZRn+SFJP8AlBn1rx/6Zkd979fY/UYpmrcvqSTgGkL5y
+	nXVjWv17RfiQlSJYvUS4NEcZoLJehi7for0UnasJwXW29QCOAKZc6PKfa3IT7/k/4yG6/AGKuGI
+	KP+NTSxhUKO9/qj1GdSHeKGSVYw10+b5BxRuDEuwP4ghxMDQvc/zD2wxSnnzIe1/17LQqce+eWh
+	s1OfbL9VBDhw+d001UFN53tJKUHCJvMUaXeySWPCOv3gOsD2wuSUPi+8pr0XBidX7TLxz7jH9VL
+	XhZR83mmwBMNQt8CMeQ7q21NXTO3Do=
+X-Received: by 2002:a05:620a:400a:b0:8ee:21b3:2eb5 with SMTP id af79cd13be357-8fd155f2302mr958377685a.6.1777817727083;
+        Sun, 03 May 2026 07:15:27 -0700 (PDT)
+Received: from server1 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2938e0b9sm766261985a.9.2026.05.03.07.15.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2026 07:15:26 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Mika Westerberg <westeri@kernel.org>,
+	linux-usb@vger.kernel.org
+Cc: Andreas Noever <andreas.noever@gmail.com>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Michael Jamet <michael.jamet@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 0/4] thunderbolt: harden XDomain property parser
+Date: Sun,  3 May 2026 10:15:04 -0400
+Message-ID: <cover.1777817011.git.michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050105-bless-arrogant-1e69@gregkh>
-References: <2026050105-bless-arrogant-1e69@gregkh>
+In-Reply-To: <20260415123221.225149-1-michael.bommarito@gmail.com>
+References: <20260415123221.225149-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,215 +100,132 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7BD294B5EE2
+X-Rspamd-Queue-Id: BFB134B5F95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242788-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242790-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,intel.com,linuxfoundation.org,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,msgid.link:url,infradead.org:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-From: David Howells <dhowells@redhat.com>
+Caught a few more cases, so this addresses both your cosmetic asks
+on v2 and the more material changes noted in each patch below.
 
-[ Upstream commit 1f2740150f904bfa60e4bad74d65add3ccb5e7f8 ]
+Three independent memory-safety defects in drivers/thunderbolt/property.c
+are reachable when an untrusted Thunderbolt/USB4 XDomain peer responds
+to a PROPERTIES_REQUEST during host-to-host discovery.  The peer
+supplies up to TB_XDP_PROPERTIES_MAX_LENGTH (500) dwords of attacker-
+controlled property block which the local host passes to
+tb_property_parse_dir() as part of the control-plane exchange that
+runs before any tunnels are set up.
 
-If skb_unshare() fails to unshare a packet due to allocation failure in
-rxrpc_input_packet(), the skb pointer in the parent (rxrpc_io_thread())
-will be NULL'd out.  This will likely cause the call to
-trace_rxrpc_rx_done() to oops.
+Patches 1-3 are one bug per patch: u32 overflow in
+tb_property_entry_valid(), short-dir_len OOB+underflow in
+__tb_property_parse_dir(), and unbounded recursion in the same.
+Patch 4 is three KUnit regression cases exercising all three.
 
-Fix this by moving the unsharing down to where rxrpc_input_call_event()
-calls rxrpc_input_call_packet().  There are a number of places prior to
-that where we ignore DATA packets for a variety of reasons (such as the
-call already being complete) for which an unshare is then avoided.
+All three defects are OOB-read or DoS at worst.  No controlled OOB
+write is reachable through the parser; parse_dwdata()'s destination
+is a freshly kcalloc'd buffer sized by entry->length.
 
-And with that, rxrpc_input_packet() doesn't need to take a pointer to the
-pointer to the packet, so change that to just a pointer.
+Operators who do not need XDomain host-to-host discovery can disable
+the path entirely with thunderbolt.xdomain=0 on the kernel command
+line.
 
-Fixes: 2d1faf7a0ca3 ("rxrpc: Simplify skbuff accounting in receive path")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Relocated the unshare/skb_copy block from rxrpc_input_call_event()'s rx_queue dequeue loop to existing `if (skb) rxrpc_input_call_packet()` site, and substituted rxrpc_skb_put_call_rx with rxrpc_skb_put_input. ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/trace/events/rxrpc.h |  3 +--
- net/rxrpc/ar-internal.h      |  1 -
- net/rxrpc/call_event.c       | 23 +++++++++++++++++++++--
- net/rxrpc/io_thread.c        | 24 ++----------------------
- net/rxrpc/skbuff.c           |  9 ---------
- 5 files changed, 24 insertions(+), 36 deletions(-)
+Reproduced on v7.0-rc7 + CONFIG_KASAN=y + CONFIG_USB4_KUNIT_TEST=y
+via the KUnit suite in patch 4.  Pre-fix on a v7.0-rc7 + patch 4
+kernel: u32_wrap fails with a KASAN use-after-free trace in
+__tb_property_parse_dir() (the parser reads ~16 GiB past the
+block); recursion fails with KASAN + an Oops on RIP=0 as the
+parser exhausts its guard page.  dir_len_underflow returns NULL
+on pre-fix because the downstream content_len = dir_len - 4
+underflow makes the entry walk bail at tb_property_entry_valid();
+the UUID kmemdup over-read is silent here because KASAN-Generic's
+slab redzones do not flag a 4-byte over-read into the
+kmalloc-chunk tail.  Treat dir_len_underflow as the post-fix
+invariant pin; u32_wrap and recursion are the active pre-fix
+detectors.
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 6965099dda89f..94071243c4223 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -125,8 +125,6 @@
- 	E_(rxrpc_call_poke_timer_now,		"Timer-now")
- 
- #define rxrpc_skb_traces \
--	EM(rxrpc_skb_eaten_by_unshare,		"ETN unshare  ") \
--	EM(rxrpc_skb_eaten_by_unshare_nomem,	"ETN unshar-nm") \
- 	EM(rxrpc_skb_get_conn_secured,		"GET conn-secd") \
- 	EM(rxrpc_skb_get_conn_work,		"GET conn-work") \
- 	EM(rxrpc_skb_get_last_nack,		"GET last-nack") \
-@@ -151,6 +149,7 @@
- 	EM(rxrpc_skb_see_recvmsg,		"SEE recvmsg  ") \
- 	EM(rxrpc_skb_see_reject,		"SEE reject   ") \
- 	EM(rxrpc_skb_see_rotate,		"SEE rotate   ") \
-+	EM(rxrpc_skb_see_unshare_nomem,		"SEE unshar-nm") \
- 	E_(rxrpc_skb_see_version,		"SEE version  ")
- 
- #define rxrpc_local_traces \
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index f4512761f572d..1db479f3d6d3c 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1269,7 +1269,6 @@ int rxrpc_server_keyring(struct rxrpc_sock *, sockptr_t, int);
- void rxrpc_kernel_data_consumed(struct rxrpc_call *, struct sk_buff *);
- void rxrpc_new_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_see_skb(struct sk_buff *, enum rxrpc_skb_trace);
--void rxrpc_eaten_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_get_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_free_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_purge_queue(struct sk_buff_head *);
-diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-index 0f78544d043be..c8a4a4c979eb6 100644
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -456,8 +456,27 @@ bool rxrpc_input_call_event(struct rxrpc_call *call, struct sk_buff *skb)
- 		resend = true;
- 	}
- 
--	if (skb)
--		rxrpc_input_call_packet(call, skb);
-+	if (skb) {
-+		struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+		if (sp->hdr.securityIndex != 0 && skb_cloned(skb)) {
-+			/* Unshare the packet so that it can be modified by
-+			 * in-place decryption.
-+			 */
-+			struct sk_buff *nskb = skb_copy(skb, GFP_ATOMIC);
-+
-+			if (nskb) {
-+				rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
-+				rxrpc_input_call_packet(call, nskb);
-+				rxrpc_free_skb(nskb, rxrpc_skb_put_input);
-+			} else {
-+				/* OOM - Drop the packet. */
-+				rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
-+			}
-+		} else {
-+			rxrpc_input_call_packet(call, skb);
-+		}
-+	}
- 
- 	rxrpc_transmit_some_data(call);
- 
-diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
-index 0491f2bbf61e0..f542eda13ff0b 100644
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -167,13 +167,12 @@ static bool rxrpc_extract_abort(struct sk_buff *skb)
- /*
-  * Process packets received on the local endpoint
-  */
--static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff **_skb)
-+static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff *skb)
- {
- 	struct rxrpc_connection *conn;
- 	struct sockaddr_rxrpc peer_srx;
- 	struct rxrpc_skb_priv *sp;
- 	struct rxrpc_peer *peer = NULL;
--	struct sk_buff *skb = *_skb;
- 	bool ret = false;
- 
- 	skb_pull(skb, sizeof(struct udphdr));
-@@ -219,25 +218,6 @@ static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff **_skb)
- 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_call);
- 		if (sp->hdr.seq == 0)
- 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_seq);
--
--		/* Unshare the packet so that it can be modified for in-place
--		 * decryption.
--		 */
--		if (sp->hdr.securityIndex != 0) {
--			skb = skb_unshare(skb, GFP_ATOMIC);
--			if (!skb) {
--				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare_nomem);
--				*_skb = NULL;
--				return just_discard;
--			}
--
--			if (skb != *_skb) {
--				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare);
--				*_skb = skb;
--				rxrpc_new_skb(skb, rxrpc_skb_new_unshared);
--				sp = rxrpc_skb(skb);
--			}
--		}
- 		break;
- 
- 	case RXRPC_PACKET_TYPE_CHALLENGE:
-@@ -479,7 +459,7 @@ int rxrpc_io_thread(void *data)
- 			switch (skb->mark) {
- 			case RXRPC_SKB_MARK_PACKET:
- 				skb->priority = 0;
--				if (!rxrpc_input_packet(local, &skb))
-+				if (!rxrpc_input_packet(local, skb))
- 					rxrpc_reject_packet(local, skb);
- 				trace_rxrpc_rx_done(skb->mark, skb->priority);
- 				rxrpc_free_skb(skb, rxrpc_skb_put_input);
-diff --git a/net/rxrpc/skbuff.c b/net/rxrpc/skbuff.c
-index 3bcd6ee803960..e2169d1a14b5f 100644
---- a/net/rxrpc/skbuff.c
-+++ b/net/rxrpc/skbuff.c
-@@ -46,15 +46,6 @@ void rxrpc_get_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
- 	skb_get(skb);
- }
- 
--/*
-- * Note the dropping of a ref on a socket buffer by the core.
-- */
--void rxrpc_eaten_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
--{
--	int n = atomic_inc_return(&rxrpc_n_rx_skbs);
--	trace_rxrpc_skb(skb, 0, n, why);
--}
--
- /*
-  * Note the destruction of a socket buffer.
-  */
+Post-fix (all four patches): all three pass cleanly with KASAN
+active.
+
+Changes since v2
+----------------
+
+Material:
+
+  - Patch 2/4: move "dir_len < 4" reject before the UUID kmemdup
+    in the non-root parse path.  v2 placed it after, so a crafted
+    entry with dir_offset near end of block and dir_len in 0..3
+    OOB-read up to 4 dwords past the block before the reject ran
+    (dir_offset=497, dir_len=3, block_len=500 reads
+    block[497..501]).  Both that OOB and the original
+    content_len = dir_len - 4 underflow now hit the same gate.
+
+  - Patch 4/4: tighten dir_len_underflow's buffer (7 dwords,
+    kmalloc-32) and reposition the entry (e->value=4) to focus the
+    UUID kmemdup on the chunk tail.  KASAN-Generic does not flag
+    the 4-byte over-read into the tail, so the test remains a
+    post-fix invariant pin (documented above); v2's wider buffer
+    obscured even the post-fix-pin shape.
+
+  - Patches 1/4, 2/4, 3/4: fix Fixes: SHA.  v2 used e69b6c02b4c3
+    ("net: Add support for networking over Thunderbolt cable"),
+    the wrong commit.  Correct is cdae7c07e3e3 ("thunderbolt: Add
+    support for XDomain properties").
+
+Cosmetic (per v2 review):
+
+  - Lowercase 0xffffff00 in 1/4 and 4/4 commit messages, and 4/4
+    code + comments.
+  - Patch 4/4: hoist the on-wire entry layout into a single shared
+    struct tb_test_property_entry instead of re-declaring an
+    anonymous struct in each of the three tests.
+  - Patch 4/4: use TB_PROPERTY_TYPE_DATA / TB_PROPERTY_TYPE_DIRECTORY
+    constants from <linux/thunderbolt.h> instead of bare 0x64 / 0x44.
+  - Patch 4/4: convert all multi-line block comments to put the
+    opening "/*" on its own line per the thunderbolt subsystem's
+    coding style.
+
+
+Michael Bommarito (4):
+  thunderbolt: property: reject u32 wrap in tb_property_entry_valid()
+  thunderbolt: property: reject dir_len < 4 to prevent size_t underflow
+  thunderbolt: property: cap recursion depth in
+    __tb_property_parse_dir()
+  thunderbolt: test: add KUnit regression tests for XDomain property
+    parser
+
+ drivers/thunderbolt/property.c |  32 +++++---
+ drivers/thunderbolt/test.c     | 132 +++++++++++++++++++++++++++++++++
+ 2 files changed, 155 insertions(+), 9 deletions(-)
+
 -- 
 2.53.0
 
