@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GO8KCk292kwdgIAu9opvQ
-	(envelope-from <stable+bounces-242687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:48:57 +0200
+	id GONGIi0292kwdgIAu9opvQ
+	(envelope-from <stable+bounces-242689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:49:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440964B5627
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3E94B5635
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F0CC73008E22
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 11:48:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15448300828D
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 11:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FC82E093A;
-	Sun,  3 May 2026 11:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B4F2E093A;
+	Sun,  3 May 2026 11:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnBpw9ua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpzqF+BR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8D3223323
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 11:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B69C2C032E
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 11:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777808931; cv=none; b=oB93MzmcLgjmHBMLQcmziWfvZE1bJz5h95iJZPEdM0imZY0FI2wRRJ+ZPHGgicV37kjs9JzlHQ4kQZ25G6Pxbcv84i/3Brr6/HLSbC1g85lAVvVYE49nA9Eg1WtzP4IWWN6hj8stykV9QppmpsKwGojr2LCnAEdpnwdwsID6slE=
+	t=1777808937; cv=none; b=JsaqJC0NCkPe3dl+wQfocU39Lnu2RsCSZOA7U7OnwFz4za9hPUsdJ6KMrBqTUJ9eqRJm/qck6DKUiTdEgt/FgGfmnlRWTIUTZc2K3kZlbiAHpCA1xx4P6J8arr0i1aIGfl2mWRqDsi3to55I1/u5mZZGJvVQPs0XuYx/CvkYNvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777808931; c=relaxed/simple;
-	bh=RKbVovMz7PtkGIMzZqYkd7PvaHifAVrpoBLAQ4CaECE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dUCfvcDMSp3/UzhTjFhDBD/J+9W2KmuASDl5EiWiySDNxa3KqgSAkh9GDjGIMTaI2FzMBjehyDoYktx3FHEaEEnciUwutZm23hocSZuq+vMShdXW2RIBfSUsCgBjWRF9r4w6HA6bfbA3TT54mEZKHvvGKIavmeO2D0uUDp3P0X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnBpw9ua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F4EC2BCB4;
-	Sun,  3 May 2026 11:48:50 +0000 (UTC)
+	s=arc-20240116; t=1777808937; c=relaxed/simple;
+	bh=JFu4mmq8I8bCCfu5glDH4Iuzn5XP4VUpLxGXfreK2Zs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FtWS2jsUNmRQ3FlKeX9oqKeTlOX3ws9pR9rojJsIhStWfk9dj+2JgyZTQbhUlz5/XrXukl8VlqorucB/XYt5J82tpofaPk+HkUBULnbKUXsO7wnegYIMysGEfVo2I33w3oxTf5D/cjUv5FCk3SjElksJRvoaS77TsQAgbmj0ZCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpzqF+BR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8DEC2BCB4;
+	Sun,  3 May 2026 11:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777808931;
-	bh=RKbVovMz7PtkGIMzZqYkd7PvaHifAVrpoBLAQ4CaECE=;
+	s=korg; t=1777808936;
+	bh=JFu4mmq8I8bCCfu5glDH4Iuzn5XP4VUpLxGXfreK2Zs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SnBpw9uai5hxPo43l0+8pJ1BGwTS7qmzTgFABXIp8216BLYOB3IvrV/edpiPY8kE5
-	 kSnQTGyP8+dFG4S0rnPLIXDeF26MwVoDUJiScCtXfX+5USapUSKus7XQz1RImzuedQ
-	 KDuilausgToXxe3Y+rA3bMmfSsSbpStmWTBTLNmE=
-Subject: FAILED: patch "[PATCH] mm/mseal: update VMA end correctly on merge" failed to apply to 6.18-stable tree
-To: ljs@kernel.org,akpm@linux-foundation.org,antonius@bluedragonsec.com,david@kernel.org,jannh@google.com,jeffxu@chromium.org,liam.howlett@oracle.com,pfalcato@suse.de,stable@vger.kernel.org,vbabka@kernel.org
+	b=UpzqF+BR96aLK4+qZp/BqeXA7N1oKcb504euS2UHg1jRyyEV8iJ3WYw3wa/dqif8S
+	 RB2WlnyM37A0XCdMNBWd1K6FyZO1BKWC+DcosD0WnE5lQTIjitCvCF8pnmI0TsVssM
+	 fysp+5qe1xn+yAAtorehhUtgP787cJs/BD8XzVXI=
+Subject: FAILED: patch "[PATCH] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()" failed to apply to 7.0-stable tree
+To: david@kernel.org,akpm@linux-foundation.org,liam.howlett@oracle.com,ljs@kernel.org,mhocko@suse.com,peterx@redhat.com,rppt@kernel.org,stable@vger.kernel.org,surenb@google.com,vbabka@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 13:48:40 +0200
-Message-ID: <2026050340-flashy-tipoff-8188@gregkh>
+Date: Sun, 03 May 2026 13:48:45 +0200
+Message-ID: <2026050345-curtsy-basis-8bb5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 440964B5627
+X-Rspamd-Queue-Id: 3D3E94B5635
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242687-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242689-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -84,22 +84,22 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email]
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 7.0-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5ac9c7c2efd0d3c0c2d3bc6e9cd900d3ab6af27a
+git cherry-pick -x 26e7888a0c89e36332c1e897e4887f69e1e9c751
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050340-flashy-tipoff-8188@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050345-curtsy-basis-8bb5@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,69 +111,98 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5ac9c7c2efd0d3c0c2d3bc6e9cd900d3ab6af27a Mon Sep 17 00:00:00 2001
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Date: Fri, 27 Mar 2026 17:31:04 +0000
-Subject: [PATCH] mm/mseal: update VMA end correctly on merge
+From 26e7888a0c89e36332c1e897e4887f69e1e9c751 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Mon, 23 Mar 2026 21:20:18 +0100
+Subject: [PATCH] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
 
-Previously we stored the end of the current VMA in curr_end, and then upon
-iterating to the next VMA updated curr_start to curr_end to advance to the
-next VMA.
+follow_pfnmap_start() suffers from two problems:
 
-However, this doesn't take into account the fact that a VMA might be
-updated due to a merge by vma_modify_flags(), which can result in curr_end
-being stale and thus, upon setting curr_start to curr_end, ending up with
-an incorrect curr_start on the next iteration.
+(1) We are not re-fetching the pmd/pud after taking the PTL
 
-Resolve the issue by setting curr_end to vma->vm_end unconditionally to
-ensure this value remains updated should this occur.
+Therefore, we are not properly stabilizing what the lock actually
+protects.  If there is concurrent zapping, we would indicate to the
+caller that we found an entry, however, that entry might already have
+been invalidated, or contain a different PFN after taking the lock.
 
-While we're here, eliminate this entire class of bug by simply setting
-const curr_[start/end] to be clamped to the input range and VMAs, which
-also happens to simplify the logic.
+Properly use pmdp_get() / pudp_get() after taking the lock.
 
-Link: https://lkml.kernel.org/r/20260327173104.322405-1-ljs@kernel.org
-Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Reported-by: Antonius <antonius@bluedragonsec.com>
-Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
-Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jeff Xu <jeffxu@chromium.org>
+(2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
+
+pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
+
+There is no real guarantee that pmd_leaf()/pud_leaf() returns something
+reasonable on non-present entries.  Most architectures indeed either
+perform a present check or make it work by smart use of flags.
+
+However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
+and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd().  Whereby
+pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not do
+that.
+
+Let's check pmd_present()/pud_present() before assuming "the is a present
+PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page table
+handling code that traverses user page tables does.
+
+Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP, (1)
+is likely more relevant than (2).  It is questionable how often (1) would
+actually trigger, but let's CC stable to be sure.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org
+Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/mseal.c b/mm/mseal.c
-index 316b5e1dec78..ac58643181f7 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct *mm,
- 		unsigned long start, unsigned long end)
- {
- 	struct vm_area_struct *vma, *prev;
--	unsigned long curr_start = start;
- 	VMA_ITERATOR(vmi, mm, start);
+diff --git a/mm/memory.c b/mm/memory.c
+index 6d54e5ec82f2..425e852a2eb7 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6824,11 +6824,16 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
  
- 	/* We know there are no gaps so this will be non-NULL. */
-@@ -66,6 +65,7 @@ static int mseal_apply(struct mm_struct *mm,
- 		prev = vma;
- 
- 	for_each_vma_range(vmi, vma, end) {
-+		const unsigned long curr_start = MAX(vma->vm_start, start);
- 		const unsigned long curr_end = MIN(vma->vm_end, end);
- 
- 		if (!(vma->vm_flags & VM_SEALED)) {
-@@ -79,7 +79,6 @@ static int mseal_apply(struct mm_struct *mm,
+ 	pudp = pud_offset(p4dp, address);
+ 	pud = pudp_get(pudp);
+-	if (pud_none(pud))
++	if (!pud_present(pud))
+ 		goto out;
+ 	if (pud_leaf(pud)) {
+ 		lock = pud_lock(mm, pudp);
+-		if (!unlikely(pud_leaf(pud))) {
++		pud = pudp_get(pudp);
++
++		if (unlikely(!pud_present(pud))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pud_leaf(pud))) {
+ 			spin_unlock(lock);
+ 			goto retry;
  		}
+@@ -6840,9 +6845,16 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
  
- 		prev = vma;
--		curr_start = curr_end;
- 	}
- 
- 	return 0;
+ 	pmdp = pmd_offset(pudp, address);
+ 	pmd = pmdp_get_lockless(pmdp);
++	if (!pmd_present(pmd))
++		goto out;
+ 	if (pmd_leaf(pmd)) {
+ 		lock = pmd_lock(mm, pmdp);
+-		if (!unlikely(pmd_leaf(pmd))) {
++		pmd = pmdp_get(pmdp);
++
++		if (unlikely(!pmd_present(pmd))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pmd_leaf(pmd))) {
+ 			spin_unlock(lock);
+ 			goto retry;
+ 		}
 
 
