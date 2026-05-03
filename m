@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-242815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNZKGZSe92nmjgIAu9opvQ
-	(envelope-from <stable+bounces-242815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 21:14:28 +0200
+	id GPiIDJqe92nmjgIAu9opvQ
+	(envelope-from <stable+bounces-242816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 21:14:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8B44B714D
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 21:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AFC4B7156
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 21:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C795300879A
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 19:14:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90F5330087AE
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 19:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09FD34846A;
-	Sun,  3 May 2026 19:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFF237C105;
+	Sun,  3 May 2026 19:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DTMKQKl8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kL6+pMGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E592BDC29
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 19:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDEF3793B3
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 19:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777835661; cv=none; b=R6FIY4PEfhay9UojmsNRB0JjRqEBWWnOBcNm3VkbmsGXPTi8+nqJm38k3hEwsCJWdLyHDgbfTxp6OGTKBMDqMKloh/ViExEkC71Iqujp3QKdhp2vyFztEDGTlY1CzsJjXSA6YNUNKsiHWKD5pFRzeDaqkPfoh/W0e6xPqp4KEr0=
+	t=1777835664; cv=none; b=GHARHqw7LlCkTe4UrnsQEJRzbnI2q+Xwirxo9ybMnmpL9DMQEM2Xtcgm8qN5qN2ASzmoUZo5wU6XEXSYuE8+kVnal96zdBSBgsXsgGtflilA5sT7jEBb7kQxkvxyuM0LW/0Pf9F5+VYCZLGk7Q/5kibRqO3/Nr/5bogcnB97wpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777835661; c=relaxed/simple;
-	bh=OYcf7noJjMrNPMXoo9K6LIjQ6Y7yZ4L+g/d7zjWeXr0=;
+	s=arc-20240116; t=1777835664; c=relaxed/simple;
+	bh=LxWEgEZbFVqRnBekVGDqjwEWFZEjKWmSXJz9+kiBL0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGpGRVk3hydJwhk76uWSTUU4sWtRD9WdrIF/RLHyV7sZibq/8yEJsuOUKsUo7Rh+o5F5LGnQg2k5I+OXZ8vtC1QfF/X5VNxq+pLBv/EWohiafsLtphDNqemv0zcEWrAgAfJyDMKOiapL5lGzlirWfPC2lUmDzB2em7ZFJ6YS/Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DTMKQKl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFA4C2BCB9;
-	Sun,  3 May 2026 19:14:18 +0000 (UTC)
+	 MIME-Version; b=ZSIQB7wYwwFc4AY3dqtIVOw3t06jJvNGdw66BEBzhZpr9PUqNJ07j8hNGhHldSFKInONYhVYWP58IYYFaDqfcG5rv4ZOua2PNY5tW7pwlMKgVZxuImYtvNzXoHwJ/l0W4aCN/yHadfseAU9oSiKrygZh0x75Hogs2mvXXIMThGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kL6+pMGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD6BC2BCB4;
+	Sun,  3 May 2026 19:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777835661;
-	bh=OYcf7noJjMrNPMXoo9K6LIjQ6Y7yZ4L+g/d7zjWeXr0=;
+	s=k20201202; t=1777835663;
+	bh=LxWEgEZbFVqRnBekVGDqjwEWFZEjKWmSXJz9+kiBL0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTMKQKl8o3vKvb8meo25IJwaKyDqUOfe9GS+saeauvXWmWhFXBlanPAernj7Yv3b9
-	 xUZmQLUIRSt+JNLcmcrz+ZHMT47paXyEdB+nILPOHdZ8HnxCZbzyrhiA+Rty+YMeY2
-	 Jc3wqSuTfYDXmXVLMaPXelq7kW5hcj4s/Xcy8Ag/Xvj73OgQnalvJxG8kxV72DUYhm
-	 dCJknoPmDJymtKm7+gdf6N9splyLff6WgZZ5vKCl1oqkze6cC6pIAhjRR7P6njKZFk
-	 Y8ocQMTD9a1PFRX6mbflBDpR9eqxkoQ1HOMuPYudfoWgN3e89y34QO9ZcDF4vkVocM
-	 KkVs1SEBpc5rw==
+	b=kL6+pMGBChq69sOhpgkm1D/50wOIQO6vJ+SLXdNwTu6Uc1Z9tNLdEdX2JudRZTgbz
+	 8BmE663IPJ41w3C0eW6qAw97GcIXjlxlZX9LQChaY3FcyxOSS+e0cMheL4kTZS++n/
+	 M6Senee3JZoJV44mD5EJZ9cX8V8ioH1TbJtk1s2gO7VIKTClXB0IjIogb9bNwdAiWF
+	 j/mmfE3zq7JsHePL4EKNmCvPgpozoRmkZFP53NdrVmEvdnZIuq8sUzRJMe4/AJ3ntm
+	 aVJsq/El9no6EiHv7mao8TdoklLUZuYz9fZXfMPJBqANrhU4x4WkStnHWfUiOM720M
+	 1l99SaxuP2tmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
-Date: Sun,  3 May 2026 15:14:16 -0400
-Message-ID: <20260503191416.1286222-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] net: qrtr: ns: Limit the maximum number of lookups
+Date: Sun,  3 May 2026 15:14:19 -0400
+Message-ID: <20260503191419.1286355-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050110-amplify-sadly-0de4@gregkh>
-References: <2026050110-amplify-sadly-0de4@gregkh>
+In-Reply-To: <2026050117-stallion-fanning-5196@gregkh>
+References: <2026050117-stallion-fanning-5196@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,112 +62,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E8B44B714D
+X-Rspamd-Queue-Id: 30AFC4B7156
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242815-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242816-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-From: David Howells <dhowells@redhat.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 24481a7f573305706054c59e275371f8d0fe919f ]
+[ Upstream commit 5640227d9a21c6a8be249a10677b832e7f40dc55 ]
 
-The security operations that verify the RESPONSE packets decrypt bits of it
-in place - however, the sk_buff may be shared with a packet sniffer, which
-would lead to the sniffer seeing an apparently corrupt packet (actually
-decrypted).
+Current code does no bound checking on the number of lookups a client can
+perform. Though the code restricts the lookups to local clients, there is
+still a possibility of a malicious local client sending a flood of
+NEW_LOOKUP messages over the same socket.
 
-Fix this by handing a copy of the packet off to the specific security
-handler if the packet was cloned.
+Fix this issue by limiting the maximum number of lookups to 64 globally.
+Since the nameserver allows only atmost one local observer, this global
+lookup count will ensure that the lookups stay within the limit.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-5-dhowells@redhat.com
+Note that, limit of 64 is chosen based on the current platform
+requirements. If requirement changes in the future, this limit can be
+increased.
+
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-2-00a8a5ff2b51@oss.qualcomm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted callback signature to include `_abort_code` ]
+[ adapted comment block to only mention QRTR_NS_MAX_LOOKUPS and kept kzalloc() instead of kzalloc_obj() due to missing prerequisite commits ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_event.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ net/qrtr/ns.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 5d91ef562ff78..09438850f9a5a 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -285,6 +285,34 @@ static void rxrpc_call_is_secure(struct rxrpc_call *call)
- 	}
- }
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3de9350cbf307..2a039153136cf 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -22,6 +22,7 @@ static struct {
+ 	struct socket *sock;
+ 	struct sockaddr_qrtr bcast_sq;
+ 	struct list_head lookups;
++	u32 lookup_count;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
+ 	int local_node;
+@@ -69,6 +70,11 @@ struct qrtr_node {
+ 	struct xarray servers;
+ };
  
-+static int rxrpc_verify_response(struct rxrpc_connection *conn,
-+				 struct sk_buff *skb,
-+				 u32 *_abort_code)
-+{
-+	int ret;
++/* Max lookup limit is chosen based on the current platform requirements. If the
++ * requirement changes in the future, this value can be increased.
++ */
++#define QRTR_NS_MAX_LOOKUPS 64
 +
-+	if (skb_cloned(skb)) {
-+		/* Copy the packet if shared so that we can do in-place
-+		 * decryption.
-+		 */
-+		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
-+
-+		if (nskb) {
-+			rxrpc_new_skb(nskb, rxrpc_skb_unshared);
-+			ret = conn->security->verify_response(conn, nskb, _abort_code);
-+			rxrpc_free_skb(nskb, rxrpc_skb_freed);
-+		} else {
-+			/* OOM - Drop the packet. */
-+			rxrpc_see_skb(skb, rxrpc_skb_unshared_nomem);
-+			ret = -ENOMEM;
-+		}
-+	} else {
-+		ret = conn->security->verify_response(conn, skb, _abort_code);
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -417,6 +423,7 @@ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+ 
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
+ 	}
+ 
+ 	/* Remove the server belonging to this port but don't broadcast
+@@ -534,6 +541,11 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 	if (from->sq_node != qrtr_ns.local_node)
+ 		return -EINVAL;
+ 
++	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
++		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
++		return -ENOSPC;
 +	}
 +
-+	return ret;
-+}
-+
- /*
-  * connection-level Rx packet processor
-  */
-@@ -337,7 +365,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 							    _abort_code);
+ 	lookup = kzalloc(sizeof(*lookup), GFP_KERNEL);
+ 	if (!lookup)
+ 		return -ENOMEM;
+@@ -542,6 +554,7 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 	lookup->service = service;
+ 	lookup->instance = instance;
+ 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
++	qrtr_ns.lookup_count++;
  
- 	case RXRPC_PACKET_TYPE_RESPONSE:
--		ret = conn->security->verify_response(conn, skb, _abort_code);
-+		ret = rxrpc_verify_response(conn, skb, _abort_code);
- 		if (ret < 0)
- 			return ret;
+ 	memset(&filter, 0, sizeof(filter));
+ 	filter.service = service;
+@@ -582,6 +595,7 @@ static void ctrl_cmd_del_lookup(struct sockaddr_qrtr *from,
+ 
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
+ 	}
+ }
  
 -- 
 2.53.0
