@@ -1,72 +1,64 @@
-Return-Path: <stable+bounces-242803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMRSG/+B92n3iQIAu9opvQ
-	(envelope-from <stable+bounces-242803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:12:31 +0200
+	id oCRqDemI92kDiwIAu9opvQ
+	(envelope-from <stable+bounces-242805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:42:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785044B6BDE
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 875414B6D27
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3A8263002D11
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 17:12:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF4E83001871
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 17:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F8337C113;
-	Sun,  3 May 2026 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190E03630B9;
+	Sun,  3 May 2026 17:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G26YuI+x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ld1KFfXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7912D3630B9;
-	Sun,  3 May 2026 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FA7253B58
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777828329; cv=none; b=ABDDpmy69dTaEkdpURHu36EkQqVYnHjv9TVbkKwnPqLscxAzykBMRAOrqfX39dbXlqzoVel2nKiBd5cVG8GF4ZutvvtFKjBYyfS+MCiWb0hGOMYD7e+BxZ3zOq5ZkklnwjjiR49hm0/h86O3DL9KPWXdDQa47HG4dUwzDhj2gkE=
+	t=1777830114; cv=none; b=GVh8m/Uw9TtNJDlPY6Qcmy+vW+87Qdg+9m15S63EuJ7/O112remitI3VRNlgf9LjLR1DYtXW2lhKnDD3x/1vD2WFbACp4yS+rLCcy3bEO6h6MgOl/e4LeBGsuo6G2RegrorPAVj+GPF2Zh+EW5/ZAUpmz13KzkxSM7Gcl4gCLFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777828329; c=relaxed/simple;
-	bh=VSVVTCxUpqH6gUJP/+1230YPiKCL5WEfgYBGdHK6SeY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=JK/aYWEPDMnDzVhavfYPtdnci6smV5qHnTX4vrSZfptNBiBQVS05kEotfcMn3XMhmXeuVFBrxnZ4KUQBZGAiTYtz0MIqaLimwBkAkjALKZaSaN0qqiONxC6lp3pWVhrtK9OGQPvsodwYSz8KrQ5V4lTUtIag1QkJlixkd46GEXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G26YuI+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFB9C2BCB4;
-	Sun,  3 May 2026 17:12:05 +0000 (UTC)
+	s=arc-20240116; t=1777830114; c=relaxed/simple;
+	bh=3zJp+AnV/+L6qJzij5vf/HZ7+9DoJhh/2Nl7k7PNvoQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fgbVEVxMoFR74ndeHt75075l29V7EFEHuRkQzGWUDSm4gGJRkGVbBXj6gQJDlGlt3986L+xJpx0m7Ipz7p6f+w31A86kA3tTZOwCbudNjviPMSQPSSfjxG7gDJLUJVEiS4pCIu/XtpXNg/fuS4yazGT8mUfymYlFUHJpVKtASic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ld1KFfXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6900EC2BCB4
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777828329;
-	bh=VSVVTCxUpqH6gUJP/+1230YPiKCL5WEfgYBGdHK6SeY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=G26YuI+x4jF+WpcAccWSTOdC0H9T9YrHmwMMoUBP9+YB1/C3etZyOdIrlyGK4QwHc
-	 2aROAFAYy6+I7rmVbu6VsZlk9mBPweYtLk31xneG2o31DBN+95HHVLPhodcER0S9sV
-	 eOzFd9UuvYV7DoCF+K1K3AFRqKovgDE8T/fPkAf84e3Dw3GCrHHN2IC8j8njysPCSq
-	 ltzzVEsCRDj75IWPPXNawl5vAXTdZ77j1jamfJk4+bXztI48WCEi8+/IVPAP1CzBGM
-	 TS3Qa2wu0iSHpH8tSoiYpci8JYW63dUuPcuiiNW3T2Yl3UaoRlWkcNB0hzxYXvGEGt
-	 aD89jy2KRxlrg==
-From: Vinod Koul <vkoul@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Stephen Boyd <swboyd@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
- Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-In-Reply-To: <20260427-edp_phy-v5-0-3bb876824475@oss.qualcomm.com>
-References: <20260427-edp_phy-v5-0-3bb876824475@oss.qualcomm.com>
-Subject: Re: [PATCH v5 0/5] phy: qcom: edp: Add DP/eDP switch for phys
-Message-Id: <177782832516.123780.10745485778034358012.b4-ty@kernel.org>
-Date: Sun, 03 May 2026 22:42:05 +0530
+	s=k20201202; t=1777830114;
+	bh=3zJp+AnV/+L6qJzij5vf/HZ7+9DoJhh/2Nl7k7PNvoQ=;
+	h=Date:From:To:Subject:From;
+	b=ld1KFfXmz6U7ueteKMfam2cZ+NsUadHqDitjAg8rlrzVcdG8aEBrBb9ySbUNw6k09
+	 oCv5Of1twalr+k29qikLs+zBHyHYdI+TLZ7PtjJf2N1W67AF6ZQDOHQ+H0vLFK1JzS
+	 ajuXe0gN3zLPudKkN7xTIq8EQ7KnjaQkzHQYhA58tNAQhAr3vRA4qLNrsxRXWSFtB1
+	 AyoaCIwHGOHYbUyMCXvMarNWlpcziS5EJzeLabtuk3QX9Vvyzxxw4z8co8FjGiPYCn
+	 JQ0S8k03Zvz4QIDMlVHOLpb/ioT+PXhi+O3igUXqpvDukGHQsH1UVRmhj469OSryxJ
+	 OTPGHgkbXsldQ==
+Date: Sun, 3 May 2026 17:41:52 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: stable@vger.kernel.org
+Subject: Apply "crypto: authencesn - reject short ahash digests during
+ instance creation"
+Message-ID: <20260503174152.GA1036833@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 785044B6BDE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 875414B6D27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -77,55 +69,30 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242803-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242805-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_ONE(0.00)[1];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vkoul@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
+Please cherry-pick 5db6ef9847717 ("crypto: authencesn - reject short
+ahash digests during instance creation") to all stable and LTS kernels.
 
-On Mon, 27 Apr 2026 14:35:18 +0800, Yongxing Mou wrote:
-> Currently the PHY selects the DP/eDP configuration tables in a fixed way,
-> choosing the table when enable. This driver has known issues:
-> 1. The selected table does not match the actual platform mode.
-> 2. It cannot support both modes at the same time.
-> 
-> As discussed here[1], this series:
-> 1. Cleans up duplicated and incorrect tables based on the HPG.
-> 2. Fixes the LDO programming error in eDP mode.
-> 3. Adds DP/eDP mode switching support.
-> 
-> [...]
+This one does have 'Cc: stable@kernel.org' already.  But I thought I'd
+call it out specifically, given that it's in the same problematic file.
 
-Applied, thanks!
-
-[1/5] phy: qcom: edp: Unify generic DP/eDP swing and pre-emphasis tables
-      commit: fd672888cccd6b855154efe0ac78e7ce3e8ab088
-[2/5] phy: qcom: edp: Add eDP/DP mode switch support
-      commit: 3011c365a329cf2db6d55e8d684550dc88350436
-[3/5] phy: qcom: edp: Add SC7280/SC8180X swing/pre-emphasis tables
-      commit: 3d22594d6f842814b7718600486fe3ce9453abf0
-[4/5] phy: qcom: edp: Fix AUX_CFG8 programming for DP mode
-      commit: bf237a9fcbbf9d658522f7315ffc04bf2d49be42
-[5/5] phy: qcom: edp: Add PHY-specific LDO config for eDP low vdiff
-      commit: 519a228ee40d1be3453d1da339b4577c3785e333
-
-Best regards,
--- 
-~Vinod
-
-
+- Eric
 
