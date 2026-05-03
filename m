@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKmwFCU892k2dwIAu9opvQ
-	(envelope-from <stable+bounces-242732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:14:29 +0200
+	id yJC0EH4892k2dwIAu9opvQ
+	(envelope-from <stable+bounces-242733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:15:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C534B5949
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:14:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C1C4B599F
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0E6830028C4
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:14:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 027A7300953F
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBCE3AF647;
-	Sun,  3 May 2026 12:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7926B35DA61;
+	Sun,  3 May 2026 12:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3iBPBKa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFJa0B9Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D7F3AEF59
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9052BB17
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777810464; cv=none; b=ke4KN9qQ1MIKwqOfophOtg62CMDisOv3AYC7anlKudI+NlkzgyjGuK57WOmBkTxpb90+3rJ0NsriwFjzUrL/dzYo3AG6k4OgqC57gRFbTRcDlZVQPIARpLXBUnxtAdrRJ5SWPgmCoRqnmqEcvRyYYdknIhpzQ8/yKh2WE0DvofY=
+	t=1777810547; cv=none; b=NNqR1EB6hTc0+zgVNISrAwA2dQfVT/jgvpNLtqS/t2L7b2h/FXyCbJUF9GL0LxD8Vp2Qcpy2L4jL2K6ISDu1+j6+2+FEDNNmz1fKlIs4pa8CncLIQsbJGkfEeSVlqyaZjTbo6DsyLJRWrnHVfuqQgqhJAXuWhgcIkKLSSs/IsMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777810464; c=relaxed/simple;
-	bh=TW5sAnBsrhZWBBrIuB35Q8r2kSIlL/dlI7PCvJL7R8Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LXZtIeb7MSYll+IyvTMByZ+vJM43/NrgmkFuyaKgBVQfRCTlVRwyOMPBQacX4CLD84FsxK3ckEDkTziHI1Lv/XuKEt8kvFNyhYM8o0FcxKB8f0yEL4m4yIXuVYnvfuIboTbXnD87FE31HCHAzmR5Bcv5nnIoy90jEgHaYlkuNU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3iBPBKa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC43C2BCB4;
-	Sun,  3 May 2026 12:14:23 +0000 (UTC)
+	s=arc-20240116; t=1777810547; c=relaxed/simple;
+	bh=lRmPm726OgOk1W+RIVQ5TzLmAYG8Sdb2OddZtoINiG4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hnEvCZ2/VxPHbuRZCyaioGJIVj1eFW81dzRl2vP4QOpR83dmUzErGqZ7Qm91WZiT/7ytoUNEkMQa/4Rs3V6mrb6c4a8WPA6Nf1xN8ARQP+s3ugmsvGr2tVDeHQs/0/ZP/7nBc9DUAzsQTc4f0j66FBVj0P8MGZDFKswML4AmUyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFJa0B9Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB6DC2BCB4;
+	Sun,  3 May 2026 12:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777810464;
-	bh=TW5sAnBsrhZWBBrIuB35Q8r2kSIlL/dlI7PCvJL7R8Q=;
+	s=korg; t=1777810546;
+	bh=lRmPm726OgOk1W+RIVQ5TzLmAYG8Sdb2OddZtoINiG4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=v3iBPBKayghz12QGkU20nvwrQTr/etg0fiCfNi4kT+HAAc2E1raCa0VwZg8+Oyplp
-	 tomIjHUa7E1Uc0P3vQ7YEsNzyTeTuy28FDiszoecCE+JPdSo7PM5JMfeSC70O7mUY6
-	 9WhDP4V50tx3qSssh/UgvD2M4ym3ALSZ0SjtIUxs=
-Subject: FAILED: patch "[PATCH] KVM: SVM: Switch svm_copy_lbrs() to a macro" failed to apply to 5.10-stable tree
+	b=bFJa0B9Z+I8TNU6q/gvI6KG730AAfhsdMNrXjrJlxI0UYzO/wsav0JGv39wLfcBUa
+	 lUIi4h4EnLaPJriJu1lU6VwegFitth6PsF+ZEvNLYSZZY9iKY2MLaKqiySTaH9VopN
+	 NO3LKjqV6aDtzTmeXHewZ1mhKOWhFgRwVkL5Dgro=
+Subject: FAILED: patch "[PATCH] KVM: nSVM: Always inject a #GP if mapping VMCB12 fails on" failed to apply to 5.10-stable tree
 To: yosry@kernel.org,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 14:14:07 +0200
-Message-ID: <2026050307-huskiness-sternum-1c73@gregkh>
+Date: Sun, 03 May 2026 14:15:44 +0200
+Message-ID: <2026050344-cabdriver-landmark-9233@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 81C534B5949
+X-Rspamd-Queue-Id: D0C1C4B599F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242732-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242733-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,10 +81,10 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,msgid.link:url]
 
 
 The patch below does not apply to the 5.10-stable tree.
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 361dbe8173c460a2bf8aee23920f6c2dbdcabb94
+git cherry-pick -x 01ddcdc55e097ca38c28ae656711b8e6d1df71f8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050307-huskiness-sternum-1c73@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050344-cabdriver-landmark-9233@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,95 +111,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 361dbe8173c460a2bf8aee23920f6c2dbdcabb94 Mon Sep 17 00:00:00 2001
+From 01ddcdc55e097ca38c28ae656711b8e6d1df71f8 Mon Sep 17 00:00:00 2001
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Mar 2026 00:33:56 +0000
-Subject: [PATCH] KVM: SVM: Switch svm_copy_lbrs() to a macro
+Date: Tue, 3 Mar 2026 00:33:59 +0000
+Subject: [PATCH] KVM: nSVM: Always inject a #GP if mapping VMCB12 fails on
+ nested VMRUN
 
-In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
-without a containing 'struct vmcb', and later even 'struct
-vmcb_save_area_cached', make it a macro.
+nested_svm_vmrun() currently only injects a #GP if kvm_vcpu_map() fails
+with -EINVAL. But it could also fail with -EFAULT if creating a host
+mapping failed. Inject a #GP in all cases, no reason to treat failure
+modes differently.
 
-Macros are generally not preferred compared to functions, mainly due to
-type-safety. However, in this case it seems like having a simple macro
-copying a few fields is better than copy-pasting the same 5 lines of
-code in different places.
-
-Cc: stable@vger.kernel.org
+Fixes: 8c5fbf1a7231 ("KVM/nSVM: Use the new mapping API for mapping guest memory")
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-3-yosry@kernel.org
+Link: https://patch.msgid.link/20260303003421.2185681-6-yosry@kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 0a35c815f4d2..9c64d036e30b 100644
+index 2b1066ce23f5..7a472d7c6e98 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -710,10 +710,10 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12
- 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
- 		 * svm_set_msr's definition of reserved bits.
- 		 */
--		svm_copy_lbrs(vmcb02, vmcb12);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb12->save);
- 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
- 	} else {
--		svm_copy_lbrs(vmcb02, vmcb01);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
- 	}
- 	vmcb_mark_dirty(vmcb02, VMCB_LBR);
- 	svm_update_lbrv(&svm->vcpu);
-@@ -1233,9 +1233,9 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
- 
- 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
- 		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
--		svm_copy_lbrs(vmcb12, vmcb02);
-+		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
- 	} else {
--		svm_copy_lbrs(vmcb01, vmcb02);
-+		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
- 		vmcb_mark_dirty(vmcb01, VMCB_LBR);
+@@ -1010,12 +1010,9 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
  	}
  
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 9b4f5a46d550..7170f2f623af 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -841,15 +841,6 @@ static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
- 	 */
- }
+ 	vmcb12_gpa = svm->vmcb->save.rax;
+-	ret = kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map);
+-	if (ret == -EINVAL) {
++	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map)) {
+ 		kvm_inject_gp(vcpu, 0);
+ 		return 1;
+-	} else if (ret) {
+-		return kvm_skip_emulated_instruction(vcpu);
+ 	}
  
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
--{
--	to_vmcb->save.dbgctl		= from_vmcb->save.dbgctl;
--	to_vmcb->save.br_from		= from_vmcb->save.br_from;
--	to_vmcb->save.br_to		= from_vmcb->save.br_to;
--	to_vmcb->save.last_excp_from	= from_vmcb->save.last_excp_from;
--	to_vmcb->save.last_excp_to	= from_vmcb->save.last_excp_to;
--}
--
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
- {
- 	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index ebd7b36b1ceb..44d767cd1d25 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -713,8 +713,16 @@ static inline void *svm_vcpu_alloc_msrpm(void)
- 	return svm_alloc_permissions_map(MSRPM_SIZE, GFP_KERNEL_ACCOUNT);
- }
- 
-+#define svm_copy_lbrs(to, from)					\
-+do {								\
-+	(to)->dbgctl		= (from)->dbgctl;		\
-+	(to)->br_from		= (from)->br_from;		\
-+	(to)->br_to		= (from)->br_to;		\
-+	(to)->last_excp_from	= (from)->last_excp_from;	\
-+	(to)->last_excp_to	= (from)->last_excp_to;		\
-+} while (0)
-+
- void svm_vcpu_free_msrpm(void *msrpm);
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
- void svm_enable_lbrv(struct kvm_vcpu *vcpu);
- void svm_update_lbrv(struct kvm_vcpu *vcpu);
- 
+ 	ret = kvm_skip_emulated_instruction(vcpu);
 
 
