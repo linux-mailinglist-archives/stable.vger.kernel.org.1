@@ -1,90 +1,61 @@
-Return-Path: <stable+bounces-242637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPLRKenE9mnBYQIAu9opvQ
-	(envelope-from <stable+bounces-242637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 05:45:45 +0200
+	id o6X+Ei/O9mkiYwIAu9opvQ
+	(envelope-from <stable+bounces-242638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 06:25:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2B84B4530
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 05:45:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FBB4B4656
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 06:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C33AB300A3A9
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 03:45:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D68E23001F93
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 04:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5422773E4;
-	Sun,  3 May 2026 03:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3170B2D2495;
+	Sun,  3 May 2026 04:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ri736iXX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bb5XgPwu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF84D19AD5C
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 03:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA00E1D7E41
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 04:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777779943; cv=none; b=oN3f47FT64nM0hz6WYju1V1nrHmSPMOX6syyYPBkiwOeu78ZLrkE0DEDz51UoCXtGTL7zCibydPUe5eVGAqoIHIT3S0ajmaIkUip9Ppd2IIAkFxcJ07z7c8CG7iZ9A+4o5OIZwLJGF54ZkR5gWNzHOSG3G5AjB96mwRGLRJQsK0=
+	t=1777782312; cv=none; b=Ti75pOQ6mxIwG5JMRGsbmCxhO7zytJMZxvxX6FYZgxjG6MB80A45VsBFX6C8yv2nt90qyg5BDmPANNZU+9uQ0oRic4PSS+bNiUXlZQB6sxL5/IKRE0U8D8TYDiHMcFfjGTm0rivkFH7/3GOlZ4gwjDjNoRRWZdUrUKucZOH+RrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777779943; c=relaxed/simple;
-	bh=aoAj+gQoahG7S0iVGgSJk+XtiNbNUZMUxTlAg3Z79l8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XemToGaQS4PRdFLDsYN2sHQ6QPUtyP3LuGvvaIZDTRycC1jgibU7CnD2NlXKxWnoi794og6oh1kp8RwN8GPIvh7MEYaSyPYjyJXGTdtM73wuBcphaLK+FUpjCWO7FarVHH+0tzaCqq2FxPrBwcxkvyWrRWJgrrth98LM6gDSGJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ri736iXX; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-365212191f6so342991a91.3
-        for <stable@vger.kernel.org>; Sat, 02 May 2026 20:45:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777779941; x=1778384741; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SI2MBPlJf9O7ukydYqfXIQUzeildkAOurtWd8SQi+24=;
-        b=Ri736iXXYT1WketKV3Moi47Ly0on4iCVAw200Da4+RTbTu1QHGHPmCY4te9LBXgSRZ
-         7JFkM+7dauEU5KjK0cK7f5LRzFud6QW0aQ17QNd9MnW9wGFZSYLqmSeFFH62EzR8Ix/Y
-         mRgSMUEIKGigKQq3/tn3YLqohBtTcIHaO3QcGyAoNiNXIeGPNF6nGce98jDMYMnX+Nji
-         32wwU73FmsN01HwXQqSfPoinuRQS+kIW4jp81/JaW5DIGMCn7MpfJrZoae8dxEoSL0vq
-         Q7kunI4yefXemS4jhpI9dFq2eyfCBXo0rTHhxEG0BbksjV950h8gkgOT2Ne7C3NBQ+vQ
-         ATdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777779941; x=1778384741;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SI2MBPlJf9O7ukydYqfXIQUzeildkAOurtWd8SQi+24=;
-        b=N/IaMzF1r8PvD0VPGO5kbkR2wPayHZ/1hsW8FczpDDfofojTcBSiLoCUpbbzJhmC4b
-         OK9b2i4e9nBLuTpQ5NAnUi7RLEd5kdwSPGzW4Kh/5caT0h1cEaEXm+05eiUlWg0PPCZH
-         qPiwoVI2Oja8Ik61ELLHxZjuPaoQPEeSvQcGyAolE8Q/sWDKT6hqHOHrUt77rYbA4GMc
-         ORN6IzUd+n3paQ/iRWw/6R8805jhzQef9OfHspy4sRnAMIzuiSwDGro5qDQYdh3/yscu
-         r7+DUt/JliHIFRQU1j5mWV+28NpTqtJCwaDJpi7aDg6mnbz7HKhMgdrSkev1QgE6g+QY
-         KD5w==
-X-Forwarded-Encrypted: i=1; AFNElJ9ghzZGm94QTaE0r8S4vBtkB1nYR2clSHyrm2Lx3woxZyxYcldccOkzepOUPOyRhsjHFVJS+rg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQUnP4JeRMzeVESHCvQX6lTNXdBqdG2H9BVRAiOXrL1emRMgWe
-	q+Ctq9Vhd24BkbiFVCL6mqXIebFDFfWg+ltaeP7TmXNgK4tnZ8g9ILB8
-X-Gm-Gg: AeBDietyeqk+NQyKr3GluiSEaNFFomeHwmX76wFp+yuei6gkD7sFzRn49sNaS2Rtc2j
-	EnmUR7vSKMn1e1emtYJVFLSMiRI0AddZd5nEz+F0ieeMVhoX9oDZ2xt5DjY0APGudi8Ul05qpik
-	07LpnJ/wOgg1aw4eoP9Io6h2OUF8w86NeMXXuFOHYYwUwESjnMuWSazMrpAfrnBbxfhHpHJOFWq
-	OW1aZVZE2ZeEK/vr4geLYJGTbuBBie08HCibYxqcnif2Tfyv6S4ikmMb+rypYoZYAxUwomGXzLE
-	drl9ynfeobLN3eRueHYaLrLYTexStkk4gPMN2mX+fduKU7N+i/L8d//C+NP8yhC148kQGKGrhC0
-	yK9vZKqbqUYwAShT6xni5TcG4eK2RjC0m4GTUBLHNqWfGZyYT2/MZ8CLo0ALc74lNpGdIeeaocp
-	fe0Ql087Y4dz2+3swwAIorKO7zUXJMGHpTfXvgzEghjfOp5WvUHq3+vdKS40onOQVU
-X-Received: by 2002:a17:90b:5887:b0:35e:581c:6bca with SMTP id 98e67ed59e1d1-3650cd25673mr5014165a91.3.1777779941198;
-        Sat, 02 May 2026 20:45:41 -0700 (PDT)
-Received: from jester ([159.192.33.28])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf54203sm10082989a91.7.2026.05.02.20.45.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 20:45:40 -0700 (PDT)
-From: Jonas Emilsson <jonas.emilsson@gmail.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Jonas Emilsson <jonas.emilsson@gmail.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Lyude Paul <lyude@redhat.com>,
-	stable@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org
-Subject: [PATCH] drm/dp_mst: Handle torn-down topology gracefully in drm_dp_mst_topology_queue_probe()
-Date: Sun,  3 May 2026 05:45:33 +0200
-Message-ID: <20260503034533.1023686-1-jonas.emilsson@gmail.com>
-X-Mailer: git-send-email 2.51.2
+	s=arc-20240116; t=1777782312; c=relaxed/simple;
+	bh=V+EOqq9qYi4AMv7pFUMpujIl0oVH1GDKkDhe2ojm7CM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XqnO3htZO0zNcbiKfcpxhHEwcTqQNEsv6MtXwDUsT/2EyyhggdpGHpi3BOGH7C/UrvVepEKFthCEZtJAVK3VO6yyzmLH7PpVVZycoJKcsSPmyfnYqt4N9lXlwc647x66ei1xU/M76aBAgIEbKM/rb/ghmMRPnTqBO7hsgKdX4NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bb5XgPwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C1FC2BCB4;
+	Sun,  3 May 2026 04:25:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777782311;
+	bh=V+EOqq9qYi4AMv7pFUMpujIl0oVH1GDKkDhe2ojm7CM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Bb5XgPwu/KS1EkHdsXlMKgvmb+tNdJpCZhEshUAcXsq4lpp1Jjl9GDTR+QzXnrPcD
+	 uCVm+vmZo7FeD772I99J0PH514u90flJd+5NdwSCZ9sAkx/ygDQc0iQGqQRCxmkjcm
+	 /nuaNKLeP0RxKCRfWVAjy5KEtnPOR/B9a3lvUMREKdIXyK3WR+e+PUxsHW3XLKrHGa
+	 D/cAgZ36P59vDae+pWlZyHA3P9xan19PmPFKRxdKsSwwL4eyElMxlkkdRrodkCI+Wl
+	 K+xdU9p9mUwvYJtpCTGTZdZ07QvyLV5WCg67XzNtzU+1QnksQeu1HGn57yZMM4EWU3
+	 N6zjjj8RJUisw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] iio: frequency: admv1013: add dev variable
+Date: Sun,  3 May 2026 00:24:54 -0400
+Message-ID: <20260503042456.979738-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050123-unsteady-compost-e4bf@gregkh>
+References: <2026050123-unsteady-compost-e4bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,84 +63,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0F2B84B4530
+X-Rspamd-Queue-Id: 42FBB4B4656
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,intel.com,redhat.com,vger.kernel.org,lists.freedesktop.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242637-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonasemilsson@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242638-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email]
 
-A hotplug or link-loss event can tear down the MST topology
-(setting mgr->mst_state = false and mgr->mst_primary = NULL) concurrently
-with a caller invoking drm_dp_mst_topology_queue_probe(). Since the check
-is already performed under mgr->lock, the condition is not a programming
-error but a valid race -- the topology was valid when the caller decided
-to call this function, but was torn down before the lock was acquired.
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-Replace the drm_WARN_ON() with a graceful early return. This eliminates
-spurious kernel warnings and the resulting compositor crashes observed
-when connecting/disconnecting DP MST monitors, while keeping the correct
-behavior of doing nothing when MST is not active. A drm_dbg_mst() trace
-is added so the skipped probe remains observable under MST debug logging.
+[ Upstream commit e61b5bb0e91390adee41eaddc0a1a7d55d5652b2 ]
 
-The existing WARN_ON(mgr->mst_primary) in drm_dp_mst_topology_mgr_set_mst()
-already catches the case where the topology is initialized twice, so no
-diagnostic coverage is lost.
+Introduce a local struct device pointer in functions that reference
+&spi->dev for device-managed resource calls and device property reads,
+improving code readability.
 
-Fixes: dbaeef363ea5 ("drm/dp_mst: Add a helper to queue a topology probe")
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: stable@vger.kernel.org
-Cc: intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Jonas Emilsson <jonas.emilsson@gmail.com>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: aac0a51b1670 ("iio: frequency: admv1013: fix NULL pointer dereference on str")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/frequency/admv1013.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index 8757972e8..0cb341ce1 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3738,8 +3738,10 @@ void drm_dp_mst_topology_queue_probe(struct drm_dp_mst_topology_mgr *mgr)
+diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
+index d8e8d541990f8..d29e288da011a 100644
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -518,11 +518,11 @@ static int admv1013_properties_parse(struct admv1013_state *st)
  {
- 	mutex_lock(&mgr->lock);
-
--	if (drm_WARN_ON(mgr->dev, !mgr->mst_state || !mgr->mst_primary))
-+	if (!mgr->mst_state || !mgr->mst_primary) {
-+		drm_dbg_mst(mgr->dev, "queue_probe skipped: topology torn down\n");
- 		goto out_unlock;
-+	}
-
- 	drm_dp_mst_topology_mgr_invalidate_mstb(mgr->mst_primary);
+ 	int ret;
+ 	const char *str;
+-	struct spi_device *spi = st->spi;
++	struct device *dev = &st->spi->dev;
+ 
+-	st->det_en = device_property_read_bool(&spi->dev, "adi,detector-enable");
++	st->det_en = device_property_read_bool(dev, "adi,detector-enable");
+ 
+-	ret = device_property_read_string(&spi->dev, "adi,input-mode", &str);
++	ret = device_property_read_string(dev, "adi,input-mode", &str);
+ 	if (ret)
+ 		st->input_mode = ADMV1013_IQ_MODE;
+ 
+@@ -533,7 +533,7 @@ static int admv1013_properties_parse(struct admv1013_state *st)
+ 	else
+ 		return -EINVAL;
+ 
+-	ret = device_property_read_string(&spi->dev, "adi,quad-se-mode", &str);
++	ret = device_property_read_string(dev, "adi,quad-se-mode", &str);
+ 	if (ret)
+ 		st->quad_se_mode = ADMV1013_SE_MODE_DIFF;
+ 
+@@ -546,11 +546,11 @@ static int admv1013_properties_parse(struct admv1013_state *st)
+ 	else
+ 		return -EINVAL;
+ 
+-	ret = devm_regulator_bulk_get_enable(&st->spi->dev,
++	ret = devm_regulator_bulk_get_enable(dev,
+ 					     ARRAY_SIZE(admv1013_vcc_regs),
+ 					     admv1013_vcc_regs);
+ 	if (ret) {
+-		dev_err_probe(&spi->dev, ret,
++		dev_err_probe(dev, ret,
+ 			      "Failed to request VCC regulators\n");
+ 		return ret;
+ 	}
+@@ -562,9 +562,10 @@ static int admv1013_probe(struct spi_device *spi)
+ {
+ 	struct iio_dev *indio_dev;
+ 	struct admv1013_state *st;
++	struct device *dev = &spi->dev;
+ 	int ret, vcm_uv;
+ 
+-	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+@@ -581,20 +582,20 @@ static int admv1013_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "vcm");
++	ret = devm_regulator_get_enable_read_voltage(dev, "vcm");
+ 	if (ret < 0)
+-		return dev_err_probe(&spi->dev, ret,
++		return dev_err_probe(dev, ret,
+ 				     "failed to get the common-mode voltage\n");
+ 
+ 	vcm_uv = ret;
+ 
+-	st->clkin = devm_clk_get_enabled(&spi->dev, "lo_in");
++	st->clkin = devm_clk_get_enabled(dev, "lo_in");
+ 	if (IS_ERR(st->clkin))
+-		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
++		return dev_err_probe(dev, PTR_ERR(st->clkin),
+ 				     "failed to get the LO input clock\n");
+ 
+ 	st->nb.notifier_call = admv1013_freq_change;
+-	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
++	ret = devm_clk_notifier_register(dev, st->clkin, &st->nb);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -606,11 +607,11 @@ static int admv1013_probe(struct spi_device *spi)
+ 		return ret;
+ 	}
+ 
+-	ret = devm_add_action_or_reset(&spi->dev, admv1013_powerdown, st);
++	ret = devm_add_action_or_reset(dev, admv1013_powerdown, st);
+ 	if (ret)
+ 		return ret;
+ 
+-	return devm_iio_device_register(&spi->dev, indio_dev);
++	return devm_iio_device_register(dev, indio_dev);
+ }
+ 
+ static const struct spi_device_id admv1013_id[] = {
 -- 
-2.51.2
+2.53.0
 
 
