@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-242666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOrPODY192nQdQIAu9opvQ
-	(envelope-from <stable+bounces-242666-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:44:54 +0200
+	id sDy9ClE192nQdQIAu9opvQ
+	(envelope-from <stable+bounces-242667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:45:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8724B5559
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DCE4B5560
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80C933005665
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 11:44:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D63C30073F6
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 11:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34643112DA;
-	Sun,  3 May 2026 11:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58F838DD3;
+	Sun,  3 May 2026 11:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zz4wfeNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewfWXYTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72F740DFA3
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 11:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D6440DFA3
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 11:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777808690; cv=none; b=I6RXY+3ZlnAHe5HzKkwdNteXDT5w1omDyXLeGSVNmq7kYgouQS0haM+HK0VszPPadRxknogin5UWiUzkAfRiK+9DRS0aPgttpPAiUljzDDdPDlQubEToA5PGOzwdrCpQh2pa4SXAvqYkkuM7+lVmnyJLF3WEBZvpXLHGg1aoK2s=
+	t=1777808716; cv=none; b=afcfcF/wz/zBZCOxVSwirrenzuia+mQ7CpuOeP8pa+XRnsQCtO9AEEHYCWXOWgtPHt7Z+7bU7Xc3jvXl+ZTpmFKqzm7yXPyW4YIaUx3xqzSajr0NTi4z9vFRtn/5FhwVh3MmZWG+3nR6mP1wYo0UEiujH2BOnN0U8RuSgs2Odtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777808690; c=relaxed/simple;
-	bh=cst8Ch1D41xm5apujxA77OFmltpje96XLRk2eQdtlGM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SSYuzMX6kXeVwt8mw1HI//dfQXbepbbasW+nWsDFKdWnui0VVjziViK4+eUxuWwjOwvy3XODJdxhq3QZYQyVHpM0bA6A6Gn5Z6GZuL5IG9J8ZWxDamQCIC5hbBlysngm3TwbY1oR+vUXVUhqKL2FgdsrRy3hXixKoljjNUAtviY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz4wfeNf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD52C2BCB4;
-	Sun,  3 May 2026 11:44:49 +0000 (UTC)
+	s=arc-20240116; t=1777808716; c=relaxed/simple;
+	bh=WrIjYAS6NT3wcQnlFibwFgKkgIKzvmiw/xDNDSR0pAw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aRDEvrx88njSSGFAG76Q30Suv8a4cAaOCQtg9JjmoVA2Vr8RKboEoD2nMX8iq8a6NrtaKpzqwDfbxcRbEQfa/q0GYIfB/B8cZ5ayfC/g8xiwi6hisGrbToh4Th1BjEq7sruGJ4+5iTEXvOTWAygeWzGxIQ8a93J9qMYj2nPxvg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewfWXYTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C00C2BCB4;
+	Sun,  3 May 2026 11:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777808690;
-	bh=cst8Ch1D41xm5apujxA77OFmltpje96XLRk2eQdtlGM=;
+	s=korg; t=1777808716;
+	bh=WrIjYAS6NT3wcQnlFibwFgKkgIKzvmiw/xDNDSR0pAw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zz4wfeNfTj0I40DykhF3kmFlHzGgBeYcKArcEq5/h/XSZCyXsDd6hT/hyNHFUZ5Ng
-	 hYSE50UWlJ2bsRDpVzRVforBMOXLm8eKv0kXAGv8ugR0wcKq6QY2JtrdUx3Mhf4g+y
-	 UWGN4KxamlHooAqRynO2izLnX4O9gJxEAwAWdGrc=
-Subject: FAILED: patch "[PATCH] crypto: qat - fix firmware loading failure for GEN6 devices" failed to apply to 6.18-stable tree
-To: suman.kumar.chakraborty@intel.com,andriy.shevchenko@intel.com,giovanni.cabiddu@intel.com,herbert@gondor.apana.org.au
+	b=ewfWXYTqJTTPs0wnqppoPGS59ZbVBC9G0nLrv3dpIBdovAu4fTZg7hNIZDQ2Wt4A8
+	 SrNcOsDS8/kEMC2vXQf3dDfHOhhzVnzPpnl83rrJ/egLWrIBbDzV62tYp9fgUAhvsU
+	 oOEIoks4AywNlFNf3LNwjSnG3S6bAae5hsaiKzzQ=
+Subject: FAILED: patch "[PATCH] xfs: fix a resource leak in xfs_alloc_buftarg()" failed to apply to 6.6-stable tree
+To: lihaoxiang@isrc.iscas.ac.cn,cem@kernel.org,djwong@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 13:44:40 +0200
-Message-ID: <2026050339-trapped-replace-1e60@gregkh>
+Date: Sun, 03 May 2026 13:45:13 +0200
+Message-ID: <2026050313-manmade-batting-5838@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9A8724B5559
+X-Rspamd-Queue-Id: 93DCE4B5560
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -67,11 +67,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242666-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242667-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -79,27 +79,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,intel.com:email,linuxfoundation.org:dkim]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim]
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x e7dcb722bb75bb3f3992f580a8728a794732fd7a
+git cherry-pick -x 29a7b2614357393b176ef06ba5bc3ff5afc8df69
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050339-trapped-replace-1e60@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050313-manmade-batting-5838@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,90 +111,31 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e7dcb722bb75bb3f3992f580a8728a794732fd7a Mon Sep 17 00:00:00 2001
-From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Date: Thu, 5 Mar 2026 08:58:59 +0000
-Subject: [PATCH] crypto: qat - fix firmware loading failure for GEN6 devices
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 29a7b2614357393b176ef06ba5bc3ff5afc8df69 Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Wed, 1 Apr 2026 12:02:41 +0800
+Subject: [PATCH] xfs: fix a resource leak in xfs_alloc_buftarg()
 
-QAT GEN6 hardware requires a minimum 3 us delay during the acceleration
-engine reset sequence to ensure the hardware fully settles.
-Without this delay, the firmware load may fail intermittently.
+In the error path, call fs_put_dax() to drop the DAX
+device reference.
 
-Add a delay after placing the AE into reset and before clearing the reset,
-matching the hardware requirements and ensuring stable firmware loading.
-Earlier generations remain unaffected.
-
-Fixes: 17fd7514ae68 ("crypto: qat - add qat_6xxx driver")
-Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+Fixes: 6f643c57d57c ("xfs: implement ->notify_failure() for XFS")
 Cc: stable@vger.kernel.org
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c b/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
-index f9f1018a2823..09d4f547e082 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: (BSD-3-Clause OR GPL-2.0-only)
- /* Copyright(c) 2014 - 2020 Intel Corporation */
-+#include <linux/delay.h>
- #include <linux/firmware.h>
- #include <linux/pci.h>
- #include "adf_cfg.h"
-@@ -162,8 +163,14 @@ int adf_ae_stop(struct adf_accel_dev *accel_dev)
- static int adf_ae_reset(struct adf_accel_dev *accel_dev, int ae)
- {
- 	struct adf_fw_loader_data *loader_data = accel_dev->fw_loader;
-+	unsigned long reset_delay;
+diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
+index ee8c3944015a..580d40a5ee57 100644
+--- a/fs/xfs/xfs_buf.c
++++ b/fs/xfs/xfs_buf.c
+@@ -1756,6 +1756,7 @@ xfs_alloc_buftarg(
+ 	return btp;
  
- 	qat_hal_reset(loader_data->fw_loader);
-+
-+	reset_delay = loader_data->fw_loader->chip_info->reset_delay_us;
-+	if (reset_delay)
-+		fsleep(reset_delay);
-+
- 	if (qat_hal_clr_reset(loader_data->fw_loader))
- 		return -EFAULT;
- 
-diff --git a/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h b/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
-index 6887930c7995..e74cafa95f1c 100644
---- a/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
-+++ b/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
-@@ -27,6 +27,7 @@ struct icp_qat_fw_loader_chip_info {
- 	int mmp_sram_size;
- 	bool nn;
- 	bool lm2lm3;
-+	u16 reset_delay_us;
- 	u32 lm_size;
- 	u32 icp_rst_csr;
- 	u32 icp_rst_mask;
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_hal.c b/drivers/crypto/intel/qat/qat_common/qat_hal.c
-index 0f5a2690690a..1c3d1311f1c7 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_hal.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_hal.c
-@@ -20,6 +20,7 @@
- #define RST_CSR_QAT_LSB			20
- #define RST_CSR_AE_LSB			0
- #define MC_TIMESTAMP_ENABLE		(0x1 << 7)
-+#define MIN_RESET_DELAY_US		3
- 
- #define IGNORE_W1C_MASK ((~(1 << CE_BREAKPOINT_BITPOS)) & \
- 	(~(1 << CE_CNTL_STORE_PARITY_ERROR_BITPOS)) & \
-@@ -713,8 +714,10 @@ static int qat_hal_chip_init(struct icp_qat_fw_loader_handle *handle,
- 		handle->chip_info->wakeup_event_val = 0x80000000;
- 		handle->chip_info->fw_auth = true;
- 		handle->chip_info->css_3k = true;
--		if (handle->pci_dev->device == PCI_DEVICE_ID_INTEL_QAT_6XXX)
-+		if (handle->pci_dev->device == PCI_DEVICE_ID_INTEL_QAT_6XXX) {
- 			handle->chip_info->dual_sign = true;
-+			handle->chip_info->reset_delay_us = MIN_RESET_DELAY_US;
-+		}
- 		handle->chip_info->tgroup_share_ustore = true;
- 		handle->chip_info->fcu_ctl_csr = FCU_CONTROL_4XXX;
- 		handle->chip_info->fcu_sts_csr = FCU_STATUS_4XXX;
+ error_free:
++	fs_put_dax(btp->bt_daxdev, mp);
+ 	kfree(btp);
+ 	return ERR_PTR(error);
+ }
 
 
