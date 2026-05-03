@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +x11DHI392nQdgIAu9opvQ
-	(envelope-from <stable+bounces-242679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:54:26 +0200
+	id sDjEAhg292nQdQIAu9opvQ
+	(envelope-from <stable+bounces-242680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:48:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AEF4B568D
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:54:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF6D4B55F1
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 13:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 86459300797E
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 11:48:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 023553001A76
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 11:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AE1319847;
-	Sun,  3 May 2026 11:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B42634B67F;
+	Sun,  3 May 2026 11:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHx3YXgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWCg9K6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C5B2E093A
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 11:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C7C34A3C1
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 11:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777808906; cv=none; b=dHm8dp09vPmbTIg5IgAirMktwLaUZ3PfkPZtxsu444Tt57pld6O9o5RvIt1QZfIygQMh4MrqXSl2GWL+PzX+oDl5CLjxnfUpy7sIapV4g3mtusNTBASzFLmS4IikLZp4+Y+NR+0CJbY+L1cgztlp5xChjeQ1b0Zu29rhS4Jb7dk=
+	t=1777808912; cv=none; b=oZ2cyOSxDj3ZDbfJ/8v1IXtCtPVCRYX77yySmAfgL3c/Wc0byTKE1xF4uEaJoG65YeIBTMumUjQnyT/T9dMo88u0Eg3TE4DqiMwAicB3PgdbiOnjnAQ2kyZ/Z7mbR/+Wf2H3Ex6brsLSHbZj/HpQP/6PJ3VyQhC6Wkw/A6+u3CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777808906; c=relaxed/simple;
-	bh=3BQmFoNBU5tMjC1C37bKkk0zz6h69OBMBF30nd5Ot0M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=o8LP3CcadNscu90foS+GU68P1WyvaIVE9pwG6O1S90PmgDxIeS8L6yf00DSXJRMTuXkj0pzz8Ehb2OnuGeVx7f4dZQWz3Q+nRBG+oYe1m7IRDiGQTvGSXcuKbpyyLlmU34CuZ4InwOUXUsZ7svO8C8kGPVoNVsOt95zHNsYwIME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHx3YXgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7184C2BCB4;
-	Sun,  3 May 2026 11:48:25 +0000 (UTC)
+	s=arc-20240116; t=1777808912; c=relaxed/simple;
+	bh=HACukljVRwcNuWKk3Fg9xavBYxsndSa32r3M+6IDqvA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ic9mHQrTgDyt79lYGiKm39OLVWD09O5iqC+CCgciAtJaF+IvPmNi9Zj+4HfdZcOgn3wHekSpPbwxchYEgfJWsjbda8x6h6NZ78/kc6gonor0KpnuDkQfYN1IXfjBuIYXYWMeZyUrVnebSH/q4AEXJjvMk4eOFOuAzMV4LpsHhdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWCg9K6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A48C2BCB4;
+	Sun,  3 May 2026 11:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777808906;
-	bh=3BQmFoNBU5tMjC1C37bKkk0zz6h69OBMBF30nd5Ot0M=;
+	s=korg; t=1777808912;
+	bh=HACukljVRwcNuWKk3Fg9xavBYxsndSa32r3M+6IDqvA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RHx3YXgn13Y+5cawMAxuAPilDfIfGvZLh6G9i/ssoKsbewMThmhm8jkx9Qr3WKyHx
-	 +wEv696w1sBWjds1LJfnin+D31rKKCWP19+EMNfqwbk3kz8tMmFC4wYBUizYfx5JIt
-	 Tg0xJoqbohxEFUHddoF98OjBcGC/2hmSMO1daqTQ=
-Subject: FAILED: patch "[PATCH] mm/swap: fix swap cache memcg accounting" failed to apply to 7.0-stable tree
-To: alex@ghiti.fr,akpm@linux-foundation.org,baohua@kernel.org,bhe@redhat.com,chrisl@kernel.org,hannes@cmpxchg.org,kasong@tencent.com,nphamcs@gmail.com,shikemeng@huaweicloud.com,stable@vger.kernel.org
+	b=oWCg9K6biBRiIQteL1viNOi6vzzdBSerm1ELTL5SfoCkOP1EL86M5VLXNNS50xL9U
+	 opSLlXZ8q3GKz+yPn/bomi7XJ1mfdE2ZTb11mSSeNiEfSpfrlqeBQDVj66WmoecQ2B
+	 +jIzlZ/5V/J1YfUI0e90iB46DRT4/xbZdosWVfs8=
+Subject: FAILED: patch "[PATCH] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()" failed to apply to 7.0-stable tree
+To: tujinjiang@huawei.com,akpm@linux-foundation.org,baohua@kernel.org,david@kernel.org,liam.howlett@oracle.com,ljs@kernel.org,mhocko@suse.com,rppt@kernel.org,ryan.roberts@arm.com,stable@vger.kernel.org,sunnanyong@huawei.com,surenb@google.com,vbabka@kernel.org,wangkefeng.wang@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 13:48:23 +0200
-Message-ID: <2026050323-multiple-goatskin-d808@gregkh>
+Date: Sun, 03 May 2026 13:48:30 +0200
+Message-ID: <2026050330-carve-reshuffle-0b5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,42 +54,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 83AEF4B568D
-X-Rspamd-Action: add header
+X-Rspamd-Queue-Id: 0CF6D4B55F1
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [7.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SEM_URIBL(3.50)[huaweicloud.com:email];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242679-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	GREYLIST(0.00)[pass,body];
-	FREEMAIL_TO(0.00)[ghiti.fr,linux-foundation.org,kernel.org,redhat.com,cmpxchg.org,tencent.com,gmail.com,huaweicloud.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242680-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Spam: Yes
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
 
 The patch below does not apply to the 7.0-stable tree.
@@ -101,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9acbe135588e25070e963c0f066019cbeeb30c07
+git cherry-pick -x 4ff07459db888054f68575646d7fe04f31f1e56d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050323-multiple-goatskin-d808@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050330-carve-reshuffle-0b5b@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -116,61 +111,121 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9acbe135588e25070e963c0f066019cbeeb30c07 Mon Sep 17 00:00:00 2001
-From: Alexandre Ghiti <alex@ghiti.fr>
-Date: Fri, 20 Mar 2026 06:05:59 +0100
-Subject: [PATCH] mm/swap: fix swap cache memcg accounting
+From 4ff07459db888054f68575646d7fe04f31f1e56d Mon Sep 17 00:00:00 2001
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Date: Thu, 19 Mar 2026 09:25:41 +0800
+Subject: [PATCH] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
 
-The swap readahead path was recently refactored and while doing this, the
-order between the charging of the folio in the memcg and the addition of
-the folio in the swap cache was inverted.
+On arm64 server, we found folio that get from migration entry isn't locked
+in softleaf_to_folio().  This issue triggers when mTHP splitting and
+zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
+in softleaf_to_folio().  The race is as follows:
 
-Since the accounting of the folio is done while adding the folio to the
-swap cache and the folio is not charged in the memcg yet, the accounting
-is then done at the node level, which is wrong.
+	CPU0                                             CPU1
 
-Fix this by charging the folio in the memcg before adding it to the swap cache.
+deferred_split_scan()                              zap_nonpresent_ptes()
+  lock folio
+  split_folio()
+    unmap_folio()
+      change ptes to migration entries
+    __split_folio_to_order()                         softleaf_to_folio()
+      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
+      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
+      prep_compound_page() for tail pages
 
-Link: https://lkml.kernel.org/r/20260320050601.1833108-1-alex@ghiti.fr
-Fixes: 2732acda82c9 ("mm, swap: use swap cache as the swap in synchronize layer")
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-Acked-by: Kairui Song <kasong@tencent.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Chris Li <chrisl@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Baoquan He <bhe@redhat.com>
+In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
+are visible before the tail page becomes non-compound.  smp_wmb() should
+be paired with smp_rmb() in softleaf_to_folio(), which is missed.  As a
+result, if zap_nonpresent_ptes() accesses migration entry that stores tail
+pfn, softleaf_to_folio() may see the updated compound_head of tail page
+before page->flags.
+
+This issue will trigger VM_WARN_ON_ONCE() in pfn_swap_entry_folio()
+because of the race between folio split and zap_nonpresent_ptes()
+leading to a folio incorrectly undergoing modification without a folio
+lock being held.
+
+This is a BUG_ON() before commit 93976a20345b ("mm: eliminate further
+swapops predicates"), which in merged in v6.19-rc1.
+
+To fix it, add missing smp_rmb() if the softleaf entry is migration entry
+in softleaf_to_folio() and softleaf_to_page().
+
+[tujinjiang@huawei.com: update function name and comments]
+  Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
+Link: https://lkml.kernel.org/r/20260319012541.4158561-1-tujinjiang@huawei.com
+Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 Cc: Barry Song <baohua@kernel.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 6313b59d7eab..1415a5c54a43 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -472,6 +472,10 @@ static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
+diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+index a9ff94b744f2..05673d3529e7 100644
+--- a/include/linux/leafops.h
++++ b/include/linux/leafops.h
+@@ -363,6 +363,23 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
+ 	return swp_offset(entry) & SWP_PFN_MASK;
+ }
  
- 	__folio_set_locked(folio);
- 	__folio_set_swapbacked(folio);
++static inline void softleaf_migration_sync(softleaf_t entry,
++		struct folio *folio)
++{
++	/*
++	 * Ensure we do not race with split, which might alter tail pages into new
++	 * folios and thus result in observing an unlocked folio.
++	 * This matches the write barrier in __split_folio_to_order().
++	 */
++	smp_rmb();
 +
-+	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry))
-+		goto failed;
++	/*
++	 * Any use of migration entries may only occur while the
++	 * corresponding page is locked
++	 */
++	VM_WARN_ON_ONCE(!folio_test_locked(folio));
++}
 +
- 	for (;;) {
- 		ret = swap_cache_add_folio(folio, entry, &shadow);
- 		if (!ret)
-@@ -492,11 +496,6 @@ static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
- 			goto failed;
- 	}
+ /**
+  * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
+  * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
+@@ -374,11 +391,8 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
+ 	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
  
--	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry)) {
--		swap_cache_del_folio(folio);
--		goto failed;
--	}
--
- 	memcg1_swapin(entry, folio_nr_pages(folio));
- 	if (shadow)
- 		workingset_refault(folio, shadow);
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-	/*
+-	 * Any use of migration entries may only occur while the
+-	 * corresponding page is locked
+-	 */
+-	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
++	if (softleaf_is_migration(entry))
++		softleaf_migration_sync(entry, page_folio(page));
+ 
+ 	return page;
+ }
+@@ -394,12 +408,8 @@ static inline struct folio *softleaf_to_folio(softleaf_t entry)
+ 	struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
+ 
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-	/*
+-	 * Any use of migration entries may only occur while the
+-	 * corresponding folio is locked.
+-	 */
+-	VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
+-			!folio_test_locked(folio));
++	if (softleaf_is_migration(entry))
++		softleaf_migration_sync(entry, folio);
+ 
+ 	return folio;
+ }
 
 
