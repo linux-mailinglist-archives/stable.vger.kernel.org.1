@@ -1,236 +1,204 @@
-Return-Path: <stable+bounces-242806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIDJJ8iL92l8iwIAu9opvQ
-	(envelope-from <stable+bounces-242806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:54:16 +0200
+	id AHwCGOyL92l8iwIAu9opvQ
+	(envelope-from <stable+bounces-242807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:54:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063D44B6D8A
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5154B6DA1
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 19:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41BE33007371
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 17:54:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9516D3007362
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 17:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDFA3876DE;
-	Sun,  3 May 2026 17:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72A32F5321;
+	Sun,  3 May 2026 17:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzw+uEFQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AsEdHRg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F04294A10
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB8D2773C3
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777830851; cv=none; b=ZR4TPeT+TSOvchVhU4gBFeimDcSt+/+K7E8/QtsxKAr3veZe8ALDiHnIsWJbKQnAWB8WSNwDM00K9w5oU7rTaX9bda5pEs9YWXxxIq2fy/9E9zVfdk8lw+6q5PbSbGwaEqy5LdIMwHlRb8qdP1kJTtuPQs/AUTVaPAjNbIxXZ9o=
+	t=1777830870; cv=none; b=OORg/dKn3ZByapEYJ0iYxegUYDfQS0/CllXkFqmWvr+0EVB5h6QfS1gcVG9r5G061uRCYzNc5eErMukd2IhXeMYdD4vsuBvzFu8zwraqWsI+Mh5UdwLT4rUG0YnONsSx9ehQGqZvfi5sqcuhhVQzkrRzf8AUB3Z6c56eTNIhGtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777830851; c=relaxed/simple;
-	bh=vZix6njdv2p1CVHPQk3N5+z8QTc46xF0Umj6dJoNSss=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pLhXPGMoJvftAbjP6tFRuB90sYJn4QRfPjZUt8tWI23m4WQR6AFrMKdMlKE8UvHv/bp4JQa9Ia/1OloqDO3BPf39eA58ctFXoGXpkQwvDiAyoK0aTmfjDjF1q7/s+InaVOrADfUR2n330pPgkCfKYXJAKo4BhjOK1HSFdEStHrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzw+uEFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2008C2BCFB
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 17:54:10 +0000 (UTC)
+	s=arc-20240116; t=1777830870; c=relaxed/simple;
+	bh=gW0czXoY+lMhFLZ8xa+BDABQoOc2gfYhNVVNvbxihmg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BfmoHQShlEWiONpGrTOIC/K12i7sr0Ddv57lZ4oWpnC69HfflNdMFRyVeh9m+Gd2zBIc+qNOC7ELRUK01VxiMO4qO+RZ4sUyRCBYUQqbT1QmVW8/KxS14l0TD9hmOupWw7IMpgzAWRwaf2b5aAtyD+n0Xlwz5VWB/9Xgo0nOoYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AsEdHRg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD701C2BCB4;
+	Sun,  3 May 2026 17:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777830850;
-	bh=vZix6njdv2p1CVHPQk3N5+z8QTc46xF0Umj6dJoNSss=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fzw+uEFQ1htYzOl+xFJqUU+e7m4wKFi685C/CP8i1VOOvuHtLSJP+gW2oAn56LhFE
-	 Hj6oAPcSoEty8SFElbgQhmfO0Gpkja/vOoqkQSBVBfSQ8r/JnwW6qWXTiclf+fMbuo
-	 IqoXiRG+V/Nln17tZ/g9SHdwwmIcBXQahmHH3n3u2HDyCbdF8z1VYHY8S8PhVwR6yn
-	 xNQZmayPAw4tk7idT/+b+O0UItKuH3AXnbyXFPeH+VSBg3dvHEWTH0Bmq8K8wBU+QJ
-	 BNJ2Ufhw7VmHeS5Qo41wPK7rXmlNL6n0zzMIXynggnKT2ngA9WRnJ5ZIlgUQUH+oSk
-	 qjXAeptDzK32w==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-38e9653b580so37620811fa.2
-        for <stable@vger.kernel.org>; Sun, 03 May 2026 10:54:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8R1ZiU1zRDQsx+czb4YHS4702kSrkJiunAo3z4YPBptv1KiJxDbBm3MUwqOPTG7g6CaJgOCYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn9VztX1B51YKgfWZPAEUsD60t4yxPglIBF4WnAarLEp+xXdt+
-	cZMvlqHiXLsI9afdVHUKaZLawNfeOiKrfdQViBNWLJqQGY2WVddEqZ9S2ruKVlcAGMFvG9yPH7W
-	13GFDxg4Cr28jLgf+4RMVZodaoHa4Xyg=
-X-Received: by 2002:a2e:7c0b:0:b0:393:71d3:d019 with SMTP id
- 38308e7fff4ca-393784e5ffbmr21655141fa.15.1777830848881; Sun, 03 May 2026
- 10:54:08 -0700 (PDT)
+	s=k20201202; t=1777830870;
+	bh=gW0czXoY+lMhFLZ8xa+BDABQoOc2gfYhNVVNvbxihmg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AsEdHRg28UIJ/+562x5EfT99ZvkYnXhwI5ciz0d2bczBguAqvi1TN+7wQ9IZdQtln
+	 wsmpa/uoz0xCEahwdI1Vm0ADovkNG1PKOw9ERKtK+loFBEMFpG5QedlmoBfc+Kb2eN
+	 Qh1qFpvI/r30ctdMa0BIBuNmO8um0Ym+Mm2Uon44d5rcWw3VFqwFs2YEYzRZFMXIq+
+	 u9wUXMQ9vw7DRs24zIHqkW8zie/IlbvcGoTaUMYG82b0bGIKkvt1o3JCzpkjB4hhsm
+	 BAF37T1JZi2p24H+VlcSF1wRA0LiO3rfXJ6bvRzHQ3v8ssVt0n3qpDigLPTtFUr3+y
+	 jmX4rZcdzKfMQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] net: qrtr: ns: Limit the maximum server registration per node
+Date: Sun,  3 May 2026 13:54:25 -0400
+Message-ID: <20260503175425.1150300-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050100-vividness-glaring-4e8c@gregkh>
+References: <2026050100-vividness-glaring-4e8c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260503-mt7925-tdls-fixes-v1-0-dde847e21081@gmail.com> <20260503-mt7925-tdls-fixes-v1-1-dde847e21081@gmail.com>
-In-Reply-To: <20260503-mt7925-tdls-fixes-v1-1-dde847e21081@gmail.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Sun, 3 May 2026 12:53:57 -0500
-X-Gmail-Original-Message-ID: <CAGp9LzogKfGovfDw+=m4BkqWAakFTStXH20cQ_FA_5-zo+rmGA@mail.gmail.com>
-X-Gm-Features: AVHnY4KyXQ7oHCi5bs4lLYBGHsaGNKAAiWN14GcaixGFGQwp3VhrQVd9985J61o
-Message-ID: <CAGp9LzogKfGovfDw+=m4BkqWAakFTStXH20cQ_FA_5-zo+rmGA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] wifi: mt76: mt792x: disable HW TX/RX encap offload to
- fix TDLS direct-link
-To: ElXreno <elxreno@gmail.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Soul Huang <Soul.Huang@mediatek.com>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, 
-	Deren Wu <deren.wu@mediatek.com>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 063D44B6D8A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AD5154B6DA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242806-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242807-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
 
-Hi ElXreno,
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-On Sat, May 2, 2026 at 8:40=E2=80=AFPM ElXreno <elxreno@gmail.com> wrote:
->
-> On MediaTek MT7925 (Connac3), QoS Data frames whose destination WCID
-> is a TDLS direct-link peer are silently dropped after submission to
-> firmware via the HW_80211_ENCAP TX path. The driver sees submit and
-> complete counts match (firmware reports success on TX queue
-> submission), but the frames never reach the PHY. iw counters show
-> tx_packets growing, tx_failed =3D 0, tx_retries low; on the air,
-> nothing.
->
-> This breaks TDLS direct-link as soon as a peer auto-initiates one
-> (Samsung phones do this aggressively when both peers share a BSS and
-> traffic exceeds a threshold). Pattern is:
->
->   1. Any sustained direct traffic between two STAs sharing the BSS
->      reaches the auto-TDLS threshold within ~1 s.
->   2. Peer initiates TDLS; mac80211 routes data frames to the TDLS-peer
->      WCID and the AP stops forwarding peer-to-peer traffic per the
->      802.11z spec.
->   3. Direct-link frames are accepted by firmware, completed in the TX
->      descriptor pool, but never PHY-transmitted.
->   4. TCP collapses; the peer eventually tears down the TDLS link with
->      reason WLAN_REASON_TDLS_TEARDOWN_UNSPECIFIED. Cycle repeats.
->
-> Effective TCP throughput drops from ~300 Mbit/s (AP route) to ~6
-> Mbit/s with TDLS active.
->
-> Verified on mt7925e (PCIe) at 5 GHz HE NSS 2 MCS 11 80 MHz and at
-> 2.4 GHz 802.11n HT NSS 2 MCS 15. With this patch, TDLS direct link
-> sustains ~750 Mbit/s and ~130 Mbit/s respectively.
->
-> mt76 advertises WIPHY_FLAG_SUPPORTS_TDLS via the shared
-> mt76_register_phy_helper() but does not provide TDLS-aware
-> firmware-facing peer setup: no CONNECTION_TDLS constant in
-> mt76_connac_mcu.h, no STA_REC_TDLS TLV, no TDLS bit in
-> mt76_wcid_flags, and no TDLS-specific code in
-> mt7925_mac_write_txwi_8023(). TDLS peers are registered as
-> CONNECTION_INFRA_STA with peer_addr set to the peer's MAC and
-> nothing else. The proprietary out-of-tree MediaTek driver carries an
-> explicit cfg80211_tdls.c (PTK/TK install paths, etc.) with no
-> in-tree equivalent. Whether the underlying gap is in the firmware
-> HW_ENCAP path or in mt76's missing TDLS-aware setup is unclear from
-> the kernel side; the software-encap path sidesteps it either way.
->
-> Work around the issue by not advertising SUPPORTS_TX_ENCAP_OFFLOAD
-> and SUPPORTS_RX_DECAP_OFFLOAD in mt792x_init_wiphy(). mac80211 then
-> takes the software 802.11 encap path, which submits already-formed
-> 802.11 frames via a different firmware path that handles all WCIDs
-> correctly, including TDLS peers.
->
-> mt792x_init_wiphy() is shared with the Connac2 family (mt7921/22/20/02),
-> which uses the same firmware HW_ENCAP path; the disable is applied
-> globally to cover the likely-affected chips. If Connac2 is later
-> confirmed unaffected, the disable can be narrowed with is_mt7925().
->
-> Fixes: 5c14a5f944b9 ("mt76: mt7921: introduce mt7921e support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ElXreno <elxreno@gmail.com>
-> Assisted-by: Claude:claude-opus-4-7 bpftrace
-> ---
->  drivers/net/wireless/mediatek/mt76/mt792x_core.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/n=
-et/wireless/mediatek/mt76/mt792x_core.c
-> index 152cfcca2f90..f9610c6c1597 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> @@ -681,8 +681,14 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
->
->         ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
->         ieee80211_hw_set(hw, HAS_RATE_CONTROL);
-> -       ieee80211_hw_set(hw, SUPPORTS_TX_ENCAP_OFFLOAD);
-> -       ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
-> +       /* HW TX/RX 802.11 encap offload is intentionally NOT advertised:
-> +        * the firmware HW_80211_ENCAP path silently drops QoS Data frame=
-s
-> +        * whose destination WCID is a TDLS direct-link peer, breaking TD=
-LS
-> +        * data flow. The mac80211 software encap path submits already-fo=
-rmed
-> +        * 802.11 frames, which the firmware handles correctly for all WC=
-IDs.
-> +        * Re-add SUPPORTS_TX_ENCAP_OFFLOAD / SUPPORTS_RX_DECAP_OFFLOAD h=
-ere
-> +        * once the firmware HW_ENCAP path is fixed.
-> +        */
+[ Upstream commit d5ee2ff98322337951c56398e79d51815acbf955 ]
 
-I do not think disabling TX/RX encap offload globally in
-mt792x_init_wiphy() is the right fix.
+Current code does no bound checking on the number of servers added per
+node. A malicious client can flood NEW_SERVER messages and exhaust memory.
 
-The reported failure is specific to TDLS direct-link peers, while this
-change affects all normal STA/AP/P2P data paths and all mt792x chips,
-including mt7925/mt7921/22/20/02. This is too broad for a TDLS-specific iss=
-ue.
+Fix this issue by limiting the maximum number of server registrations to
+256 per node. If the NEW_SERVER message is received for an old port, then
+don't restrict it as it will get replaced. While at it, also rate limit
+the error messages in the failure path of qrtr_ns_worker().
 
-The commit message already points out that mt76 lacks TDLS-aware
-firmware-facing peer setup, and also mentions that the proprietary
-out-of-tree MediaTek driver has an explicit cfg80211_tdls.c
-implementation. If that driver supports TDLS on top of the firmware HW
-encap model, I think we should try to align the in-tree driver with that
-design by adding the missing TDLS-aware firmware-facing peer setup,
-instead of disabling HW encap globally.
+Note that the limit of 256 is chosen based on the current platform
+requirements. If requirement changes in the future, this limit can be
+increased.
 
-In particular, I would prefer to first check whether adding
-CONNECTION_TDLS / proper TDLS peer setup on top of the current code is
-enough to fix the issue.
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-1-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/qrtr/ns.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-Please avoid removing SUPPORTS_TX_ENCAP_OFFLOAD and
-SUPPORTS_RX_DECAP_OFFLOAD globally from mt792x_init_wiphy().
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3de9350cbf307..9166c26349259 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -67,8 +67,14 @@ struct qrtr_server {
+ struct qrtr_node {
+ 	unsigned int id;
+ 	struct xarray servers;
++	u32 server_count;
+ };
+ 
++/* Max server limit is chosen based on the current platform requirements. If the
++ * requirement changes in the future, this value can be increased.
++ */
++#define QRTR_NS_MAX_SERVERS 256
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -229,6 +235,17 @@ static struct qrtr_server *server_add(unsigned int service,
+ 	if (!service || !port)
+ 		return NULL;
+ 
++	node = node_get(node_id);
++	if (!node)
++		return NULL;
++
++	/* Make sure the new servers per port are capped at the maximum value */
++	old = xa_load(&node->servers, port);
++	if (!old && node->server_count >= QRTR_NS_MAX_SERVERS) {
++		pr_err_ratelimited("QRTR client node %u exceeds max server limit!\n", node_id);
++		return NULL;
++	}
++
+ 	srv = kzalloc(sizeof(*srv), GFP_KERNEL);
+ 	if (!srv)
+ 		return NULL;
+@@ -238,10 +255,6 @@ static struct qrtr_server *server_add(unsigned int service,
+ 	srv->node = node_id;
+ 	srv->port = port;
+ 
+-	node = node_get(node_id);
+-	if (!node)
+-		goto err;
+-
+ 	/* Delete the old server on the same port */
+ 	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
+ 	if (old) {
+@@ -252,6 +265,8 @@ static struct qrtr_server *server_add(unsigned int service,
+ 		} else {
+ 			kfree(old);
+ 		}
++	} else {
++		node->server_count++;
+ 	}
+ 
+ 	trace_qrtr_ns_server_add(srv->service, srv->instance,
+@@ -292,6 +307,7 @@ static int server_del(struct qrtr_node *node, unsigned int port, bool bcast)
+ 	}
+ 
+ 	kfree(srv);
++	node->server_count--;
+ 
+ 	return 0;
+ }
+@@ -670,7 +686,7 @@ static void qrtr_ns_worker(struct work_struct *work)
+ 		}
+ 
+ 		if (ret < 0)
+-			pr_err("failed while handling packet from %d:%d",
++			pr_err_ratelimited("failed while handling packet from %d:%d",
+ 			       sq.sq_node, sq.sq_port);
+ 	}
+ 
+-- 
+2.53.0
 
->         ieee80211_hw_set(hw, WANT_MONITOR_VIF);
->         ieee80211_hw_set(hw, SUPPORTS_PS);
->         ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
->
-> --
-> 2.53.0
->
->
 
