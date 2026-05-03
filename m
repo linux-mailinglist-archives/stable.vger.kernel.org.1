@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMRvGFxA92k2dwIAu9opvQ
-	(envelope-from <stable+bounces-242784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:32:28 +0200
+	id qNlWGLU/92k2dwIAu9opvQ
+	(envelope-from <stable+bounces-242783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:29:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22534B5C7E
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:32:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D954B5C1E
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55CA6301907E
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:29:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 655A93001CE7
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E283A875A;
-	Sun,  3 May 2026 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89C12D2495;
+	Sun,  3 May 2026 12:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBETVAvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU8dUcql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CB528002B
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC8213D891
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777811378; cv=none; b=u6i3iI+pQM3xQV//BHjsMjQAbNB8A6pRezMxFZtZJdBzECtaXAZgkvs7WYPzI2HEXlVF8xKhy4o2vH85onwMeylFyYrBtgnszwaBxM1wIazmA11V8ouWrOX96KZbpBsKtang1i2VAOhFaq+EKJJDlRdoKp6qYGGIpCX0OvotNRY=
+	t=1777811375; cv=none; b=hEmzvMfZ1dZDQiUlu4BcRC1dF5EBLpJhTejIPBkCFKtMAg+x/+1kiFYD2D9AePxtH4fXisG47aEwCDzI6eiNFjiK4SCuCzv/poGi5EBS6U2KBIV+GJFP7s4dufYG8k5BRmotgxFPId3bKnMES5qSUw27a1AfRBO9Y5zOOdBSVcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777811378; c=relaxed/simple;
-	bh=C7UVfon5oWN8zdQb5UhpOk3GxNEzKaZog3CXX7vwWZ8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=scMvxd5DhCFRI5EzwsM+8LdJjJ5m7bKUpY/crYRXgN3KfrT+CGFVvJ9gSz6kSGGk4ou0D2brUSNWNTXFwiCCZKmZMFq4Xxu9k2odmTHGTcXA7+EQJVSeDrrsHhlh+4IMOvY+ecm1nNdFB3nnerIfTAUkzMpppF/RdWFMas4fBKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBETVAvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB462C2BCB4;
-	Sun,  3 May 2026 12:29:37 +0000 (UTC)
+	s=arc-20240116; t=1777811375; c=relaxed/simple;
+	bh=Vu5tjpMttDMa7ZdyLMZ0U30QnxGEohnL769YJ162KBw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FEMoWzoA3Xi+3wUdFaOwh8stXMeXgoVR/ODY6qMO5+YPbPeomfl1372TsgoG16T7HVDV80zcIXrkt4gaN6aw53bMHLFzuI3Br0ueuYkjMkDvH7rd71H/yJhLeVVH+EJswV8sBz855PA5JbxyRsIE++KeUvC/BM6meWVapAUVGvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU8dUcql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BCEC2BCB4;
+	Sun,  3 May 2026 12:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777811378;
-	bh=C7UVfon5oWN8zdQb5UhpOk3GxNEzKaZog3CXX7vwWZ8=;
+	s=korg; t=1777811375;
+	bh=Vu5tjpMttDMa7ZdyLMZ0U30QnxGEohnL769YJ162KBw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NBETVAvf2Um7orBSxxN0Q0B45HGBjUsoJl5bO+HHTvqVN+/NG95y7xHaDbzJ2/wPm
-	 7+43MvismoiH/ZWLwKGxRT7hzc+w5F4+JAkzvHpp5uM8uOHuuPkqKiJybDpXcwJvwz
-	 Q8sQQ0l8IWSldTbTHtALOhNhXgWDMUi6C/hkg5Is=
-Subject: FAILED: patch "[PATCH] KVM: nSVM: Drop the non-architectural consistency check for" failed to apply to 6.6-stable tree
+	b=yU8dUcqlxZSzrTQwVHezV4Ka3G9dRuPELNrfx2Zg+PSsIOGO6Zptj+vhDZjkWWGWL
+	 s9WZgZYvamHQh2D4yjw8PCs48oSR+9IwH5UAooTk9ZPqkvxJ+xczLZs2HYs8vGk1pB
+	 +euSojCDivXyJMH31dTCSuKX2ifd6xirPtqueMXc=
+Subject: FAILED: patch "[PATCH] KVM: nSVM: Drop the non-architectural consistency check for" failed to apply to 6.12-stable tree
 To: yosry@kernel.org,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Sun, 03 May 2026 14:29:25 +0200
-Message-ID: <2026050325-defendant-litigator-7d30@gregkh>
+Message-ID: <2026050325-clip-sample-d7e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B22534B5C7E
+X-Rspamd-Queue-Id: 66D954B5C1E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242784-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242783-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,25 +81,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
 git cherry-pick -x e0b6f031d64c086edd563e7af9c0c0a2261dd2a4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050325-defendant-litigator-7d30@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050325-clip-sample-d7e0@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
