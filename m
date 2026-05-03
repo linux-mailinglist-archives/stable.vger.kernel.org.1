@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-242627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qa40AJyP9mmtWQIAu9opvQ
-	(envelope-from <stable+bounces-242627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:58:20 +0200
+	id qKjkGvCW9mntWgIAu9opvQ
+	(envelope-from <stable+bounces-242628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 02:29:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A774B3B41
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 01:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E8A4B3D6C
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 02:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A266300A38D
-	for <lists+stable@lfdr.de>; Sat,  2 May 2026 23:58:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 272B630038CD
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 00:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75C5287257;
-	Sat,  2 May 2026 23:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FA6191F84;
+	Sun,  3 May 2026 00:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ao5MqEUl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2fEoG1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3D75474F
-	for <stable@vger.kernel.org>; Sat,  2 May 2026 23:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACE81519B4
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 00:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777766295; cv=none; b=jjvLF8kUY7a8Rdg5wjdxCM/iszGKtDBCs8jf7oDqeEA2YdwHlUpo8Yoa5IiAAA548VaQ46rd/+4x3p/DjoV3izqwjMaKmTUrnzJdgeOQfb35WCqBiB0AJnlohH/SL4U8O3l9GBrLLPWTGcFHm3vqzoNuePszBZT1CIS/eMRlneQ=
+	t=1777768017; cv=none; b=qI4SUgA7YdduawiUR8tNijZIZFah80XSPTi0Y0Qu6xl0Uy4+voDV4QKqyMDGvMjEdd39sCVr48sNyeE3ETlvAWrdpQuo0aJ1PliwwIzdYTyq4bXSTsdza5RNJ9PjDwd0dieNQcXANGlB+/QcRrVBKg18pulSIZ/jbEf2O3mOPyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777766295; c=relaxed/simple;
-	bh=JNjzz6+izX1Yk5EDvjl5tI0NE6lEFbCpi+liD5ko5ic=;
+	s=arc-20240116; t=1777768017; c=relaxed/simple;
+	bh=N3N15RJlnvo/7Gj7aIafJOUPijQDapoSTYuFNY11DdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3m51KBQcyfqPZqB6jnf0fAQCxxJfT2zB0AciFtGIe/cZhefDo8SWR73nFMpiICz/SaRH4iF1ckHYAJp0/bnhiAfSdOXrjh0RQ1V1Uj58zvCGOysp5Yp+WJNfr/hyzBQP+jo5BRFl15Yg+t3EG07ePDjU97UCmvAp1i1QnIwIy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ao5MqEUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BD3C2BCB8;
-	Sat,  2 May 2026 23:58:10 +0000 (UTC)
+	 MIME-Version; b=O0G2Ca54FxsD9IHWhyKr7krB6wslqU7FJbcZhJINJ9HiuiAmB3ta4umehM0VnZsxrFXF1aRFAgSL0wQ0h3eApHRqzcAbfNJKNUgWRpwfsTfg8ntrYLfvf0i81QFxjjJi0zgJaRT3IuWB6PZLVQkbeDS1g8f6UE7/l0cI/xVrQzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2fEoG1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C36C19425;
+	Sun,  3 May 2026 00:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777766295;
-	bh=JNjzz6+izX1Yk5EDvjl5tI0NE6lEFbCpi+liD5ko5ic=;
+	s=k20201202; t=1777768016;
+	bh=N3N15RJlnvo/7Gj7aIafJOUPijQDapoSTYuFNY11DdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ao5MqEUl3AOKtOuqJxMtk+78GVUHapLnlHNuXPVwp0NnKepQQ7g0D45vEHvSI3D7l
-	 DBj81FxyPYntyeFHOt8Xfb7YsEWR2tpdjj2rqenN1/57DMbYZiFt5M8kPg6WTyL22i
-	 vSXWwyHrMTmIhMrgCc9lwa7M45BPDHS/ScJ4y9PIfxlZtMFZJKu6sgJ3eImiWYIK7z
-	 CrU52obycjaYxoPN4vPlSsm+2SeHwqk6vPnwUu1ze74+awFovwIchPW3gGo3OoMw0e
-	 ber0UkXFdEmmEdshXPuPW9xvD7SBY3/7jG72l++B0FxoDLcjYtFi6hqnSyT4OoO14x
-	 61d591TQmRxKQ==
+	b=K2fEoG1qBuJ9hEpSFKpwLE5V7pX2xs0s7Kcgsd0bKu22gEWkszxE8TiIz85h6nCRk
+	 c3tQ5qo3VoZkU0gulC4pqNGf6lMTM9U+UHux/lwp0btzMnrtaAGNKeXucn+zSWlQJp
+	 LDrH6dce/YFrmIKa4x7gV6Q5s5TQZK9h3vqpDtZ+KkPJaBhTTDBX36ZAFaoZZXa6+E
+	 QzRhBH5fHjakWWB0p6NFyZEU/SepSXYP0Rh09qu2X72q7ovBLgdQsCVGMKjsgqhIkC
+	 HJv9rOB237p7xG28TiUJ0Y8WTI2HzLihCaunqmAdMvD7vmhqQSE1VKhbHbczPtDkfe
+	 9TG+ZqC176ezA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Joseph Salisbury <joseph.salisbury@oracle.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] sched: Use u64 for bandwidth ratio calculations
-Date: Sat,  2 May 2026 19:58:03 -0400
-Message-ID: <20260502235803.921618-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] sched: Use u64 for bandwidth ratio calculations
+Date: Sat,  2 May 2026 20:26:45 -0400
+Message-ID: <20260503002645.929471-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050100-bonded-fled-538b@gregkh>
-References: <2026050100-bonded-fled-538b@gregkh>
+In-Reply-To: <2026050100-liability-disabled-1a31@gregkh>
+References: <2026050100-liability-disabled-1a31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 70A774B3B41
+X-Rspamd-Queue-Id: D9E8A4B3D6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242627-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242628-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,infradead.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,infradead.org:email,msgid.link:url]
 
 From: Joseph Salisbury <joseph.salisbury@oracle.com>
 
@@ -126,10 +126,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 09ffe1b966431..56111b42da2a9 100644
+index c1d219289872a..c4e9fac7507a9 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4692,7 +4692,7 @@ void sched_post_fork(struct task_struct *p)
+@@ -4491,7 +4491,7 @@ void sched_post_fork(struct task_struct *p)
  	uclamp_post_fork(p);
  }
  
@@ -139,10 +139,10 @@ index 09ffe1b966431..56111b42da2a9 100644
  	if (runtime == RUNTIME_INF)
  		return BW_UNIT;
 diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 99e5d37b3f6eb..49e19ed896f8c 100644
+index c5122e5f258e4..22b71e37c97d3 100644
 --- a/kernel/sched/rt.c
 +++ b/kernel/sched/rt.c
-@@ -2768,7 +2768,7 @@ static int tg_rt_schedulable(struct task_group *tg, void *data)
+@@ -2606,7 +2606,7 @@ static int tg_rt_schedulable(struct task_group *tg, void *data)
  {
  	struct rt_schedulable_data *d = data;
  	struct task_group *child;
@@ -152,10 +152,10 @@ index 99e5d37b3f6eb..49e19ed896f8c 100644
  
  	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 6f66a9b1aaa98..a6c2b8f3045ee 100644
+index 8eba31190d305..f58040a51e334 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -2371,7 +2371,7 @@ extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
+@@ -2340,7 +2340,7 @@ extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
  #define RATIO_SHIFT		8
  #define MAX_BW_BITS		(64 - BW_SHIFT)
  #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
