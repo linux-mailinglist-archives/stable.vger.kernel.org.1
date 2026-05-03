@@ -1,243 +1,274 @@
-Return-Path: <stable+bounces-242824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGe4ICnS92kBmgIAu9opvQ
-	(envelope-from <stable+bounces-242824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 00:54:33 +0200
+	id UIisIC3g92lfnQIAu9opvQ
+	(envelope-from <stable+bounces-242825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 01:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC724B7BA8
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 00:54:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2826F4B7CB1
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 01:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB150300F9ED
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 22:54:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 861F03001FD2
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 23:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B83C3B6342;
-	Sun,  3 May 2026 22:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C313CEBB7;
+	Sun,  3 May 2026 23:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="NdcC3gzQ"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="D0zo53Qs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F061E3A75B9
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 22:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777848862; cv=pass; b=inlHFHiRSO1BoOEcS/23KXLm14Tm8f9t8IRNWiL9ZrfUmn4HqSSBfz7botQ93ewqCAnD+1Jwyz0UmtyQZG6m6il0saUVgtscX2wg1pos5Yk/GE+pgSe8vUMAmSPhdbKrNiNRYiw52TYH2ab++BAOOnxTIN9EstEimptVxIFvJ14=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777848862; c=relaxed/simple;
-	bh=HHUqSrSbpan1HpTwDObpiGld6DV6AUvdUllNygldI6s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QEas9F5dJ9rFrQdIV9DQyNujUYVciY8CxBMk/pL8jG/6JZV0RRRMOOb8oOzIHsYjp6HGvKIb9iNo0+giY/zzeQBv1yNGKWq+w3gk5vC3TAMFB/faFI3nqPbiHkQ9Zni/L1kWPoZ1dl+aKn/G0AFlC1YixMIPEYKaUAr0DvxEW1o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=NdcC3gzQ; arc=pass smtp.client-ip=74.125.224.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jphein.com
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-65890a6ca20so2903040d50.0
-        for <stable@vger.kernel.org>; Sun, 03 May 2026 15:54:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777848860; cv=none;
-        d=google.com; s=arc-20240605;
-        b=b6EGWwjMFoYG07JaQ0Z+1sEx6/Y1cxv8eLE4MU9a9L7hoDp8FJqCONfH7kH2iu1w1m
-         kUXM0EoRIQEuCUJ212QgXA2lU1+rEGarFo/X3gdCxfWhKZjPWLi5o85Ivpaex9Aq8BDM
-         CHEnmLTopbWPbXpHbX30PbwCd/3N81XBWhqHgNG3mIvkkG94L01PHGKVI1NTaSYQqoqh
-         DLfYi27bJQ+K8WlUT3YnvbLvnqK/iwOea6RxEQsDKgMuzZiu+erHgCZcmBN5DcaST56w
-         tzt8sB373fAHwIyUY7Db6kukCndlqkeWYnvvNtoef4bwfRAuqy8BDCzHMLm9KyatPAYo
-         ac8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HHUqSrSbpan1HpTwDObpiGld6DV6AUvdUllNygldI6s=;
-        fh=eMhrlYf3lWj4bn7XCrT7Qk/ujdFA2LfWQOF3/JJUFkg=;
-        b=M9Inkq+syX0dce0DJD1w5EuyzpANwfb1wzZyeppPhwZTL1Dev3doa1kts+k0lxCwXk
-         D6r4HDVVWbojIwmnfOzL2Cl5XrWOmscDSE7ETWiqOwKKPFBUvaSv+P0PN7MryjCep49Z
-         RBsGRY+6HPQm+kg2Wh5XUNhrQg6JXSbk0uIj6jAvs36H4UtaOv4BKiQrTp/7Y5/7JT51
-         mEVycLXNwS3dWAFX7Ed4ICuLUiQ3ZvZxecBs48urnK2YijKaXThzzfCYqPiLUSGHRDnY
-         nw9bSNZ6yi5qkqwjYwHyT/Xmq2wY7trGKsk/QQyH3mmLvLzC+jiK5EZf+nbYDl6h0e3b
-         ly7Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jphein.com; s=google; t=1777848860; x=1778453660; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HHUqSrSbpan1HpTwDObpiGld6DV6AUvdUllNygldI6s=;
-        b=NdcC3gzQADkEdZyAJtOeJ+IVs6BMc4gGSL0sDMVyVTZ6oxQnk/oF7sWHTXo1Tf+Yi6
-         U4bzRNXVRESDJBo1DFzPvc2IcOhwx3rX+vHueT5iYwdTaY8+XN2YO3kOBh8T6/6nfFM+
-         nZqXsZQosBrlLpPqcv/HN532w4+ScpHKUIhpG5bXadLN8yKEYYmq2xtoY8Shq1o2FQ9N
-         M3VzPvr7o5kK+PUEeB1I3LqXSy2/djlRhP80zAZ6pxxOB4ICfdbueF+UcY0Yl0ChkXhe
-         Xy0z+Nc5PkF8aHkDkCFSiWGWwht0PZ8J1sZtQ5KOpIHtPL1KNruroUMbX5B6ALS5rWPH
-         KDeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777848860; x=1778453660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HHUqSrSbpan1HpTwDObpiGld6DV6AUvdUllNygldI6s=;
-        b=B4sLuDiTEmYAZXxa2a4ox5PNNIfCcJFxbWsJWU3NJpZ3yigo/RstkcrCF/mapnmulA
-         A5QIVdLjjtdVOrKnrVTx2q7EDCkSa+XHmft/yLvpsuRRRyVI+9w6a5948oOLrEOiMXf+
-         8lO8jhwR0F/ZENtMHrbimOVNRS7i0oM+8LfCceovP0D3kaFtNJ9LLONs5T12i0U+kxlL
-         6a2GC1gzhKfkYAjDdA0qmRXfd8wz1ZttW8PBBQSMEyflGAFIexaYuqiOBxuTSLSbOrYl
-         78GGRhsm0HuOGtMc85zyiTewIQE5cNoXAzq6OC6HVUSIF+sKwjD1A2FNPeip6TqjPLIT
-         ++Tw==
-X-Forwarded-Encrypted: i=1; AFNElJ+rfOxcZtmhDwq03XPnvIGXBXbnv+UIvjy2CagZ8r/LGDT1qsj1cM3wQRmj9L8yQbutUkIviQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjHThf27DYcgR5j4cw4PqUHqEHahbYvv0OcP9ZK2dlTYIwNJ+9
-	x6o/fvP4dy3zebw7sOiwKtBu6bx53Zi3CzBOYB7yZL6/dgVyuvVU64+y2xuTlhROTuVfaz0KBIL
-	u125RHY01hfjBiqP7G6/MsKPUd2aeUhNDXemIPda+
-X-Gm-Gg: AeBDieuAq0SuDX9YT3HiZuTvyoKKyuNBkYcHlSwd40J0R6Jd8s7BNMm4aYc+ONRQ1I1
-	pncBVuHQzUJ7HAn7VoijfV+D6lIBMl0Sym/bgmasVIwtamXXb8mclRrZBRJ6xFVbmi/LG+FBARQ
-	+jq+76S6nf6SFFemHQ9fX8YcYbIz3+UGuZkMCxWm/slTIELq1myH774fZnxKGGrUbvqqYUmsRg7
-	aNGBfaIZLBDU/tzz6Lp4Wk+9YY8hbHQmEmvTaneHtPG4HjE1nkjnCntHTW3wuXj2YHdTadc1cI8
-	YlYnFDtN+A66gz6sYFyPmLuKKd0dnejrWqmOB7up97/DcoRZFahBjPVpZ41T7iyvSGy7eHImEHh
-	t
-X-Received: by 2002:a53:b426:0:b0:651:9720:744c with SMTP id
- 956f58d0204a3-65c3dbeec96mr6188357d50.63.1777848859718; Sun, 03 May 2026
- 15:54:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9048B2F290A;
+	Sun,  3 May 2026 23:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777852458; cv=none; b=N0fUN6u4toP07cYhk6wdzL3RC5S7XQWny9aJBN0iiXbmZuJw4y7/CNMakikupLImVrRTx21B/i0lFEJGQBIn7Qeh3l3WRevvTBoW5ZczKo+ZWNxkPAWg6um2ryyX4EdVIJZdj52/BXDg45CMsapjRghRbKafCSYGEdoJz4FQ6Rg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777852458; c=relaxed/simple;
+	bh=+/9ZPV3Ls9eTRutrc+DL0VDyzqbT5fjfYQVWFfKkG5w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W2m39Wg3SXhfFZP4qPG6dXSEl558iYaNBYq7A6rG1deo+dSB6W2iHQRzo2JMFk1zT6C7jNVZnGo3kNp5Sv+kofga7Ncz8Dwe38gQ1eWmRM+Dk+6f3Z1r4IGU1dG+yjIsAEh8hAiNxzKE1ReDXgJOP2kzADapRIx62rBiaCjgAeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=D0zo53Qs; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4g81p65LJmz9tG7;
+	Mon,  4 May 2026 01:54:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1777852446;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gbT4vaB0sGuZY+4GMUSVBAGk/Ihyd7fLiazH/3ZH0s8=;
+	b=D0zo53Qsh702xSh0m5k8p4O2pTS+UgiX1AGKooGRUl3H87e9zen1B6sH4XZM+UJKY6cHNB
+	EikRdJLcIXX1VuhyFoIoDgjOOtkli0U4epL9avpopoWM4Ze4vMM3lVVf0uvGt2J2imgFlQ
+	WHUS+BUt1L0q1veGiHrdFHDzWMyCCM7OzuoOdAWuK5jJtG7STZaix5SC0Ui6Eyg85SIUh7
+	wGuwgS5BJky592LuAJhqAuKgbVQVzBnDF7+j5yf2kPDHCns/TzObUHrlnVrI9QWzcvK5Lc
+	OEi0SfjVH7NaN1MXNGx/B/cGQ+vwBf+KHt3wOgqJ5u1v68fJkRJ24og2XD3iew==
+Message-ID: <66d050f4-5d21-43e0-af8e-39a0d6c4b0ec@mailbox.org>
+Date: Mon, 4 May 2026 01:54:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331003806.212565-1-jp@jphein.com> <20260331003806.212565-3-jp@jphein.com>
- <CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
- <20260409100247.7cfb62d1.michal.pecio@gmail.com> <20260409221749.5e6bccab.michal.pecio@gmail.com>
- <c4275422-a9b4-4519-95f9-1163a7912709@linux.intel.com> <CAD5VvzCEV_XbHc_Gby7mFPBSgSebqKDKJf3VC8HNRrD+xWaTJg@mail.gmail.com>
- <20260413100545.71796c66.michal.pecio@gmail.com> <20260427083553.36ff4731.michal.pecio@gmail.com>
-In-Reply-To: <20260427083553.36ff4731.michal.pecio@gmail.com>
-From: Jeffrey Hein <jp@jphein.com>
-Date: Sun, 3 May 2026 15:54:08 -0700
-X-Gm-Features: AVHnY4LhPRw4XrdZjjt_olrWEaNJISf_JWRrz01TpDM2605apcllR8Yxymswj_U
-Message-ID: <CAD5VvzBKvK3Z0HLoNx0VEbgyzQVq1CHwMKpCEpdC8zs8OowTNw@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
- fragile firmware
-To: Michal Pecio <michal.pecio@gmail.com>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Ricardo Ribalda <ribalda@chromium.org>, 
-	Alan Stern <stern@rowland.harvard.edu>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-media@vger.kernel.org, 
-	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CEC724B7BA8
+Subject: Re: [PATCH] PCI: rcar-gen4: Limit Max_Read_Request_Size and
+ Max_Payload_Size to 256 Bytes
+To: Koichiro Den <den@valinux.co.jp>
+Cc: linux-pci@vger.kernel.org, stable@vger.kernel.org,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Magnus Damm <magnus.damm@gmail.com>, Manivannan Sadhasivam
+ <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+References: <20260425233845.459175-1-marek.vasut+renesas@mailbox.org>
+ <oeb2uiudm7afzzzy3f5rykzctfnxlsydit6ww5raohcbxo3v34@hmnqr2ud42kq>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <oeb2uiudm7afzzzy3f5rykzctfnxlsydit6ww5raohcbxo3v34@hmnqr2ud42kq>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: af6812f820f262f57a6
+X-MBO-RS-META: 5w83fjf7ysioag1tbj4ec9i8bw4c39he
+X-Rspamd-Queue-Id: 2826F4B7CB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[jphein.com,reject];
-	R_DKIM_ALLOW(-0.20)[jphein.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242824-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242825-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,glider.be,gmail.com,renesas.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jp@jphein.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[jphein.com:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dmesg.post:url,jphein.com:dkim,jphein.com:url,mail.gmail.com:mid]
+	FROM_NEQ_ENVFROM(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mailbox.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Hi Michal,
+On 4/28/26 9:00 AM, Koichiro Den wrote:
 
-Both tests done. Intel xHCI 0000:00:14.0 (8086:a36d, Cannon Lake),
-kernel 6.17.0-20-generic stock, stock uvcvideo. Two Razer Kiyo Pro
-units (1532:0e05, fw 8.21) on root ports 2-1 and 2-2.
+Hello Den-san,
 
-hammerint (2026-04-29): 60s per Kiyo. Kiyo 2-1 logged 413,738
-submit/cancel cycles on EP 0x85 IN; Kiyo 2-2 logged 416,350. Both
-timed out cleanly (rc 124 -- didn't kill the HC). Zero xhci_hc_died,
-zero "event condition 198", no command timeouts in dmesg.
+> The patch makes sense to me. Let me ask two questions:
+> 
+> 1. Could r8a779f0 (R-Car S4-8) be handled as well, perhaps by adding a separate
+>     .additional_common_init() implementation for it?
+> 
+>     As far as I can see, the r8a779f0 match data currently does not use
+>     rcar_gen4_pcie_additional_common_init().
 
-Caveat: usbcore.quirks=3D1532:0e05:k was on the cmdline that boot.
-Hammerint runs the link at full throttle so it never gets idle enough
-to attempt LPM transitions -- NO_LPM should be inert here -- but I can
-re-run without quirks if you want a clean reading.
+I will address this one in V2, thank you for pointing that out.
 
-stream-mmap loop (2026-05-03): 300s per Kiyo, MJPG 1920x1080 @ 30fps,
-no quirks on cmdline. Kiyo 2-1: 134 open-fmt-stream-close cycles on
-/dev/video0. Kiyo 2-2: 92 on /dev/video2. Both clean, dmesg.post empty
-of fatal patterns.
+> 2. Did you also happen to test V4H/V4M in endpoint (EP) mode, with the local
+>     eDMA engine issuing MRd requests toward host memory?
 
-So Intel survives both reproducers in the windows tested. Doesn't
-disprove your "looks like a HW bug" framing -- consistent with Intel's
-xHCI ring tolerating the cancel/resubmit pattern that kills ASMedia.
-The cascade path is silicon-dependent.
+I was not able to test this configuration.
 
-Note on scope: neither test exercises the rapid-SET_CUR pattern
-(settings spam during a video call) that triggers the firmware lockup
-in real-world use. That separate trigger does crash Intel --
-stress-test-kiyo.sh hits hc_died around round ~25 on stock kernel --
-and CTRL_THROTTLE in the patch series addresses it. So the patch
-series argument doesn't change.
+Is it possible to perform this test with a single device, by having the 
+eDMA do local-memory-read-to-local-memory-write transfers, maybe using 
+PIPE_LOOPBACK/LOOPBACK_ENABLE bits, or do I need two devices with NTB 
+connection between them ?
 
-Side note: the same v4l2-ctl focus_absolute reproducer is reported on
-Linux ARM (Pi), Windows, and macOS by another user (Razer Insider) --
-supports the firmware-bug framing. Reffed in the v8 upstream report.
+In case it is the later, could you please briefly describe the S4 NTB 
+setup you use, so I could try to replicate it locally ?
 
-For v8: CTRL_THROTTLE addresses the trigger (rapid SET_CUR -> firmware
-lockup), not the xHCI-side cascade. The xHCI side is your territory.
+> Your commit message
+>     describes an NVMe device as the requester, but I'm wondering whether the same
+>     256B limit was also verified for the R-Car EP DMA requester path.
 
-Forensics: https://github.com/jphein/kiyo-xhci-fix (raw run output
-lives in gitignored results/ dirs locally; happy to send SUMMARY.log +
-dmesg dumps off-list if useful).
+This part I currently can not answer, I'm sorry.
 
-JP
+...
 
-Jeffrey Pine Hein
-Just plain helpful.
-jphein.com =E2=98=80=EF=B8=8F techempower.org
-(530) 798-4099
+I made the following two observations in the meantime.
 
+First, I wrote two SSDs, Crucial P5 Plus SSD without HMPRE (without host 
+memory buffer) and XPG GAMMIX P55 with HMPRE (with host memory buffer) 
+with 4 GiB of random data on another system (iMX8M Plus, ARM64 with DWC 
+PCIe controller too), then I did a read back and compared the data, the 
+writen and read-back data matched.
 
+Then I plugged both SSDs into V4H Sparrow Hawk _without_ this patch, and 
+I did read back of data:
 
+- Crucial P5 Plus SSD without HMPRE (without host memory buffer)
+   -> Data read back match data written on iMX8M Plus, OK
+- XPG GAMMIX P55 with HMPRE (with host memory buffer)
+   -> Data read back match data written on iMX8M Plus, OK
 
-On Sun, Apr 26, 2026 at 11:36=E2=80=AFPM Michal Pecio <michal.pecio@gmail.c=
-om> wrote:
->
-> On Mon, 13 Apr 2026 10:05:45 +0200, Michal Pecio wrote:
-> > Question: can you kill it by starting some video application to set
-> > the camera up, closing it and then running this loop?
-> >
-> > while :; do v4l2-ctl -d /dev/video0 --stream-mmap --stream-count=3D1; d=
-one
->
-> Hi again,
->
-> Any chance you could try it? And also the attached test program:
->
-> cc -lusb-1.0 hammerint.c -o hammerint
-> sudo ./hammerint 1532 0e05 0 85
->
-> Initial arguments are VID:PID of the device, next is the number of
-> an interface containing some interrupt endpoint and then the endpoint
-> address (including 8_ if IN).
->
-> I tried with a variety of SuperSpeed devices (UVC, NICs, hubs) and this
-> reliably breaks ASMedia HCs within seconds. If the same is the case on
-> Intel then it's a bigger problem than just UVC.
->
-> The video streaming loop breaks even more controllers. I have some
-> general idea how the streaming case could be dealt with, but not so
-> much the interrupt one. Maybe rate limiting. I found that avoiding
-> Set TR Dequeue to Link TRBs reduces failure rate, but not to zero.
->
-> Long ago I also looked at the issued command sequences and I haven't
-> noticed obvious errors or spec violations. Looks like a HW bug.
->
-> Regards,
-> Michal
+Then I wrote 512 Byte of data into the Crucial P5 Plus SSD without HMPRE 
+on V4H Sparrow Hawk and did read back again.
+   -> Data read back does NOT match data written, NG
+
+That would indicate that:
+- WRITE transfers from SSD to DRAM are OK
+- READ transfers from DRAM to SSD are corrupted at 256 Bytes boundary
+
+That would indicate that we need _at_least_ the 256 Bytes limit, likely 
+on both MPS and MRRS.
+
+Second, I got a report of another SSD for which this patch is not 
+sufficient. I currently do not have access to that SSD, but I will ask 
+for access and investigate. That may shed some light on the 128 Byte 
+limit below.
+
+> (*) The background for my question 2:
+> 
+>     I only have access to S4 Spider boards. In my RC <-> EP setup, where the EP
+>     side uses the local eDMA engine to issue MRd requests toward the RC, 256-byte
+>     MRd requests still appear to corrupt the transferred data.
+
+Is the corruption deterministic in some way, i.e. are the same bytes of 
+the transferred data corrupted every time, or is the corruption "random" ?
+
+Does the corruption happen even on singular MRd transfer, or does it 
+happen only when a lot of traffic is sent across the NTB link? I wonder 
+if this corruption might be DRAM bandwidth related, i.e. whether the DMA 
+does possibly saturate the DRAM controller with write requests and make 
+the system run out of DRAM bandwidth.
+
+> With the following
+>     change on top of your patch, my DMA-read tests become stable:
+
+[...]
+
+>     One detail which might be important is that limiting only MPS does not appear
+>     to be sufficient in my setup. MPS=128B with MRRS=256B still seems broken,
+>     while MPS=128B with MRRS=128B works fine. I wonder whether this is because
+>     the "MPS" term in the min(MRRS, MPS) limit for DMA read transfers may
+>     effectively be tied to the DMA read buffer segment size / MPSS rather than
+>     only to DevCtl.MPS. I'm not sure about this yet though.
+
+I think setting MPS=128B MRRS=256B only leads to the transfer being 
+split into 2 x 128B TLPs sent across the PCIe link, but in the end, 2 x 
+128 Bytes of data are received (in some order) into the read segment 
+buffer and reordered, and 1 x 256 Bytes are written from read segment 
+buffer into the memory as a single write.
+
+In case of MPS=256B MRRS=256B, only one 256B TLP is sent across the 
+link, 1 x 256 Bytes of data are received into the read segment buffer 
+with no reordering necessary, and 1 x 256 Bytes are still written from 
+read segment buffer into the memory as a single write.
+
+=> For MPS=128B/MPS=256B and MRRS=256B, there is difference in the
+    transfer format between PCIe and DMA, but there is no difference
+    between DMA and DRAM .
+
+But in case of MRRS=128B and transfer of 256 Bytes, 2 x 128 Bytes of 
+data are received into (separate? (*)) entries in read segment buffer, 
+and 2 x 128 Bytes are written from (separate?) entries in read segment 
+buffer into the memory as two separate writes . Could this different 
+memory write pattern be responsible for the (lack of) corruption ?
+
+Do you know whether the data are corrupted on the PCIe-to-DMA side (when 
+the data are received from the PCIe side and written into the read 
+buffer segment) or on the DMA-to-DRAM side (on read from read segment 
+buffer or on write into DRAM) ?
+
+(*) Since the read segment buffer has 16 x 256 Byte segments, with 16 
+DMA tags and never more than 16 MRd requests in flight, I think it is 
+likely that each MRd data land in separate read segment buffer segment. 
+But this information comes from another datasheet, not V4H one.
+
+>     One more thing I noticed in the manuals:
+> 
+>       R-Car S4 R19UH0161EJ0130 Rev.1.30 Jun. 16, 2025:
+>         Type00 MPSS initial = 256B, PCI R, Internal R/W
+>         Type01 MPSS initial = 128B, PCI R, Internal R
+> 
+>       R-Car V4H R19UH0186EJ0130 Rev.1.30 Apr. 21, 2025
+>         Type00 MPSS initial = 256B, PCI R, Internal R
+>         Type01 MPSS initial = 128B, PCI R, Internal R/W
+> 
+>     I'm still unsure, but this difference might be relevant. In particular, in
+>     V4H/V4M RC mode your patch programs DevCtl.MPS to 256B, but does not change
+>     Type01 MPSS. I wonder if the Type01 MPSS should also be updated to 256B first
+>     on SoCs where the manual says it is writable from the internal bus, or if I'm
+>     missing something here.
+
+This is a very good point.
+
+The R-Car S4 RM Rev.1.20 lists Type00 MPSS as Internal R and Type01 MPSS 
+as Internal R/W. This was updated in RM Rev.1.30 to Type 00 Internal R/W 
+and Type 01 Internal R. It is possible this change is going to be added 
+into the V4H RM in the future too. That would likely imply, that Type01 
+MPSS is not programmable.
+
+I don't think Type1 affects RC operation, but does it affect NTB ?
+
+[...]
+
+Thank you for your help!
+
+-- 
+Best regards,
+Marek Vasut
 
