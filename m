@@ -1,153 +1,210 @@
-Return-Path: <stable+bounces-242786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJfIF/BC92mkdwIAu9opvQ
-	(envelope-from <stable+bounces-242786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:43:28 +0200
+	id WIuGLJRM92lieQIAu9opvQ
+	(envelope-from <stable+bounces-242787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 15:24:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F174B5D50
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 14:43:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49ACF4B5E35
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 15:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E4CB300B041
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 12:43:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FFFA300AB12
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 13:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE143B8935;
-	Sun,  3 May 2026 12:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7433CB2D0;
+	Sun,  3 May 2026 13:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MksvOaSz"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vp9qxu1m";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JMnckAOp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5A23B894D
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 12:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAC03CAE7D;
+	Sun,  3 May 2026 13:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777812180; cv=none; b=oIdVTzeYJ/XIqbIWKWYeatIT8OWLYeYR5NdksfgMh7QfF6N9csN8v9WO0nrTscTDmpdS3I2ES4V0bQgvrQ0na8mzavxoZw3Ya6p2WEf4lFBX5W7DYes6B4E1bPp5lJFdMuXm4+CdE6t58jH0Qf2j6QOm5bIU8WrqcMvqQ1GpgyA=
+	t=1777814666; cv=none; b=Tj69GvaeMFw8c9Adb/v7nL22PyBF1xa2HeOKgRpBNJHocFJ/aeckmrAR+tHki1OfE4ATV5rGk9tRxAzmwGo10C09iz8zrm4YLMuEISYqdfcRDnteljVNO3H/x2kqa2tuYPvmkAvxbfbg/7PMKkGwuBWc0YJbhlt7SvZCKH9PATY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777812180; c=relaxed/simple;
-	bh=9E4P+vJUK6lbzPyC0y41xwhbJUtAiMxk/0m7CWTBQ4w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i5eHKRvbbxnAFb7ovaz2pzcxfY4ZGqs3U26M5X6t07cpYnjACJGBFi8tsRh6EnC6l32Qh8KSd+h/scwGpFz/58eOgEzVh1JdPuBYshU/dVSdMpDneXDd9ZvBQK5roMZGgQFWARuaxAtKou3jzOBWibbu53qEYS3ueJIx8NnNcTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MksvOaSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867FEC2BCB4;
-	Sun,  3 May 2026 12:42:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777812179;
-	bh=9E4P+vJUK6lbzPyC0y41xwhbJUtAiMxk/0m7CWTBQ4w=;
-	h=Subject:To:Cc:From:Date:From;
-	b=MksvOaSzLSo4c7J2EFQt0BBqK54tyiFCAbyiu/JEJXrfuWpqfuBaCmfSO3oEigTkw
-	 6c/BUaew9yhzj4XhEoPOzTEJm2g8TIrG21TCMN4aCLcf0pSc9utEwelESGFW2AyYHZ
-	 fIZtSlOyjebb4ZrASpis/YLrIb4T3HP8kAdZ3U40=
-Subject: FAILED: patch "[PATCH] mm/damon/core: disallow non-power of two min_region_sz on" failed to apply to 6.18-stable tree
-To: sj@kernel.org,akpm@linux-foundation.org,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 May 2026 14:42:57 +0200
-Message-ID: <2026050357-senator-aroma-1859@gregkh>
+	s=arc-20240116; t=1777814666; c=relaxed/simple;
+	bh=hXJkb9zeGBnqy8Bqmj5jsUWVyNOcIs9SNKVV5AIb5VM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BUm/N/20PRUCusxN37XAIkBeoLJgCfrpuW8GSjni/EuCsHhT5RwGYIBFJHYrr6DQHKqkWf9BQKP7S7fRxlvab2wxe27RK0CgcHxVHzmyFFkj1Un3AcLsS9BgJpRwViISCetRcpIwnGzsTOXcvXdaAhnGjmK7V15ldvr9wyycv8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vp9qxu1m; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JMnckAOp; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1777814656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tz8my8xNlqK7bwfmWQRlThnku6PbexVIGoppmPblUuk=;
+	b=Vp9qxu1mT/Oh2DbsI8QMvVXYSiRlU6u4bjDfoV/yTMq8J3WS2mAHx1tWP4tNmNmEK/N7mw
+	l5AdP4IwCTdzgV9adKYAzO7ffWy0WcU3u3cCB5sZB8q2Xk9gohFFQN6995mMAL3C1RhNup
+	Exm/qr0JNtawUgNmzpxI5Z4WBRUIHYiMxBDLF7Pp0v+AEgD08FZyYtxNTP4UMwIeyxn/l4
+	lrW7i9hzaxFuuE9xs3uUiLacHD7s8/sFjNf05V6brOJiHtBTP5L9VaHHkb4Dy6uI/o4cA9
+	4BU1brqlbx6g5/0oskH1IJrcemnruoDuO6SlG39uSGvePWnYdkPMDTE/Skoo9g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1777814656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tz8my8xNlqK7bwfmWQRlThnku6PbexVIGoppmPblUuk=;
+	b=JMnckAOp+EHGs30bBWElkNK1KSD9wAP5DDGdbEycT/kSpN+bTLhVUPu8Lcj49TLIeCDL38
+	R9uZw3v3eCTc9RAw==
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, Soheil Hassas Yeganeh
+ <soheil@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara
+ <jack@suse.cz>, Shuah Khan <shuah@kernel.org>, Davidlohr Bueso
+ <dave@stgolabs.net>, Khazhismel Kumykov <khazhy@google.com>, Willem de
+ Bruijn <willemb@google.com>, Eric Dumazet <edumazet@google.com>, Jens
+ Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
+In-Reply-To: <xbotidrmois5ygxtqtwqzczkt76wcc7uw5cz5lptda53coaavj@pzvxcpe534cu>
+References: <cover.1752824628.git.namcao@linutronix.de>
+ <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+ <CACSApvZT5F4F36jLWEc5v_AbqZVQpmH1W7UK21tB9nPu=OtmBA@mail.gmail.com>
+ <20250718085948.3xXGcxeQ@linutronix.de>
+ <20260429-november-speisen-3084d769d316@brauner>
+ <87340exm2o.fsf@yellow.woof>
+ <xbotidrmois5ygxtqtwqzczkt76wcc7uw5cz5lptda53coaavj@pzvxcpe534cu>
+Date: Sun, 03 May 2026 15:24:14 +0200
+Message-ID: <87cxzc62yp.fsf@yellow.woof>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A8F174B5D50
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 49ACF4B5E35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242786-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-242787-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linux-foundation.org:email]
+	FREEMAIL_TO(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[namcao@linutronix.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
+Mateusz Guzik <mjguzik@gmail.com> writes:
+> Strictly speaking more error prone than the seq approach, but should be
+> faster on weaker-ordered archs thanks to avoided fences.
+>
+> I'm definitely not going to protest the seqc route.
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Linus probably wouldn't be thrilled if I break epoll again, so let's
+stay with the simpler seqcount route.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Nam
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x 95093e5cb4c5b50a5b1a4b79f2942b62744bd66a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050357-senator-aroma-1859@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 95093e5cb4c5b50a5b1a4b79f2942b62744bd66a Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Sat, 11 Apr 2026 14:36:36 -0700
-Subject: [PATCH] mm/damon/core: disallow non-power of two min_region_sz on
- damon_start()
-
-Commit d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region") introduced
-a bug that allows unaligned DAMON region address ranges.  Commit
-c80f46ac228b ("mm/damon/core: disallow non-power of two min_region_sz")
-fixed it, but only for damon_commit_ctx() use case.  Still, DAMON sysfs
-interface can emit non-power of two min_region_sz via damon_start().  Fix
-the path by adding the is_power_of_2() check on damon_start().
-
-The issue was discovered by sashiko [1].
-
-Link: https://lore.kernel.org/20260411213638.77768-1-sj@kernel.org
-Link: https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org [1]
-Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3703f62a876b..c107d74c77e7 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1368,6 +1368,11 @@ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive)
- 	int i;
- 	int err = 0;
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index a3090b446af1..22c3f0186476 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -38,6 +38,7 @@
+ #include <linux/compat.h>
+ #include <linux/rculist.h>
+ #include <linux/capability.h>
++#include <linux/seqlock.h>
+ #include <net/busy_poll.h>
  
-+	for (i = 0; i < nr_ctxs; i++) {
-+		if (!is_power_of_2(ctxs[i]->min_region_sz))
-+			return -EINVAL;
-+	}
+ /*
+@@ -190,6 +191,9 @@ struct eventpoll {
+ 	/* Lock which protects rdllist and ovflist */
+ 	spinlock_t lock;
+ 
++	/* Protect switching between rdllist and ovflist */
++	seqcount_spinlock_t seq;
 +
- 	mutex_lock(&damon_lock);
- 	if ((exclusive && nr_running_ctxs) ||
- 			(!exclusive && running_exclusive_ctxs)) {
-
+ 	/* RB tree root used to store monitored fd structs */
+ 	struct rb_root_cached rbr;
+ 
+@@ -382,8 +386,17 @@ static inline struct epitem *ep_item_from_wait(wait_queue_entry_t *p)
+  */
+ static inline int ep_events_available(struct eventpoll *ep)
+ {
+-	return !list_empty_careful(&ep->rdllist) ||
+-		READ_ONCE(ep->ovflist) != EP_UNACTIVE_PTR;
++	bool events_available;
++	unsigned int seq;
++
++	do {
++		seq = read_seqcount_begin(&ep->seq);
++
++		events_available = !list_empty_careful(&ep->rdllist) ||
++				   READ_ONCE(ep->ovflist) != EP_UNACTIVE_PTR;
++	} while (read_seqcount_retry(&ep->seq, seq));
++
++	return events_available;
+ }
+ 
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+@@ -735,8 +748,12 @@ static void ep_start_scan(struct eventpoll *ep, struct list_head *txlist)
+ 	 */
+ 	lockdep_assert_irqs_enabled();
+ 	spin_lock_irq(&ep->lock);
++	write_seqcount_begin(&ep->seq);
++
+ 	list_splice_init(&ep->rdllist, txlist);
+ 	WRITE_ONCE(ep->ovflist, NULL);
++
++	write_seqcount_end(&ep->seq);
+ 	spin_unlock_irq(&ep->lock);
+ }
+ 
+@@ -768,6 +785,9 @@ static void ep_done_scan(struct eventpoll *ep,
+ 			ep_pm_stay_awake(epi);
+ 		}
+ 	}
++
++	write_seqcount_begin(&ep->seq);
++
+ 	/*
+ 	 * We need to set back ep->ovflist to EP_UNACTIVE_PTR, so that after
+ 	 * releasing the lock, events will be queued in the normal way inside
+@@ -779,6 +799,9 @@ static void ep_done_scan(struct eventpoll *ep,
+ 	 * Quickly re-inject items left on "txlist".
+ 	 */
+ 	list_splice(txlist, &ep->rdllist);
++
++	write_seqcount_end(&ep->seq);
++
+ 	__pm_relax(ep->ws);
+ 
+ 	if (!list_empty(&ep->rdllist)) {
+@@ -1155,6 +1178,7 @@ static int ep_alloc(struct eventpoll **pep)
+ 
+ 	mutex_init(&ep->mtx);
+ 	spin_lock_init(&ep->lock);
++	seqcount_spinlock_init(&ep->seq, &ep->lock);
+ 	init_waitqueue_head(&ep->wq);
+ 	init_waitqueue_head(&ep->poll_wait);
+ 	INIT_LIST_HEAD(&ep->rdllist);
 
