@@ -1,237 +1,175 @@
-Return-Path: <stable+bounces-242636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCBmIfHC9mlsYQIAu9opvQ
-	(envelope-from <stable+bounces-242636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 05:37:21 +0200
+	id qPLRKenE9mnBYQIAu9opvQ
+	(envelope-from <stable+bounces-242637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 05:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4A14B449C
-	for <lists+stable@lfdr.de>; Sun, 03 May 2026 05:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2B84B4530
+	for <lists+stable@lfdr.de>; Sun, 03 May 2026 05:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF977300B05B
-	for <lists+stable@lfdr.de>; Sun,  3 May 2026 03:36:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C33AB300A3A9
+	for <lists+stable@lfdr.de>; Sun,  3 May 2026 03:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E1D2D839C;
-	Sun,  3 May 2026 03:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5422773E4;
+	Sun,  3 May 2026 03:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bBkG/S+d";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FNrz04ET"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ri736iXX"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DF024E4A8
-	for <stable@vger.kernel.org>; Sun,  3 May 2026 03:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777779404; cv=pass; b=LHlSbMrLs+v4MBnvkQ8Hi8N82FoVmoJeHt2T2FqC7igNU3FCRk7iyACZfuozmU0u/gNmqXtrAF2XI33P7rg8VLe3ssPZ8MPnxGhI/oDwpFvXHBHxOpgqSuMESMh7WfJGXD77zTd41AC/1o1Wq4BLd2ufDUY9/ln8WVVCZntfkhw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777779404; c=relaxed/simple;
-	bh=tUydmwkNKViZy7RWTMXdSuRd5OkjMnnrGh50lyioA8g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=THQ08cRCkxLH60Clrt4wgQKHrSec19LBWm47hycr1ZnFeUAu3EXdesRwvxKZ1CeCnizloutcr/arMGJ6M8mpvVfLRHNI3RIUvpmlWe8pcz3/YEo0g/OHvkDImj1OKbpfbkNqe8s9wfotLHc4DmsNhxSAyw0RZ8asvCy4w+GXe00=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bBkG/S+d; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FNrz04ET; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777779401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q0OWAJn8muYcHbaFRLc3IDvQHdIxLvENWnakgrL5hdI=;
-	b=bBkG/S+dx6B64hak395LKasQNKEV+YxL4ZM7oJYFRK6Rbefd/8LS2BbqkJhv86Cktj5Lam
-	JP8PjatvSQPaoCFAHPssIbuAVtN1GQHpdNW3bxCsNz4yF0Obc871Svl53Ij14E5NYv49Nh
-	VLUU4swoU1f+WUagIDmi0wZL2d7iSxM=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-O-FM3qSeNKuO_ImSK5WdIA-1; Sat, 02 May 2026 23:36:40 -0400
-X-MC-Unique: O-FM3qSeNKuO_ImSK5WdIA-1
-X-Mimecast-MFC-AGG-ID: O-FM3qSeNKuO_ImSK5WdIA_1777779399
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-696266291d6so4074338eaf.1
-        for <stable@vger.kernel.org>; Sat, 02 May 2026 20:36:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777779399; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WkS+qasYRW2qOOTmrC5X7XIcD2q8iEYR43dx1E+p7srhcb0pum1bLJfpiEXjBjB2Yu
-         uqqsCHodJXf/4Bsowsv4OT6sRBYFvGSL9AsXULyvhQLD2R7lZrP65Q3Yk1drIElnJagB
-         ilXYOG7gvm9ko1tF6RiwnhwsUxVph7zqtLzJ534BPTrwqtoP3VdPy4iIJwWcvNiqLtsD
-         lGfp6RsYq3hr2GR/Kdu/nIMGudcvmOb0D5qwxQgeNtClqqH6hQTLFCfYtq0OwvUc2101
-         zXeZDOGGZslAT4k3YVaY0ccoHNF36NkcojBYd08GQcWrl4yd37fg2ofq0Te7hoy2o6EC
-         2EVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q0OWAJn8muYcHbaFRLc3IDvQHdIxLvENWnakgrL5hdI=;
-        fh=sUpdCm+bmSPxNgYJ+ltvA7JgCkJOnf9dAgJl3bdZmkY=;
-        b=eZhLDhGooy1vSWfLNbClXxj8LqZPnuZN+BI58+vpRNmzzmb9/jcH3mrUzf7WGzOJ5K
-         l2vjv3ozIjQN72BvhzSFuf6M+YKYikNtqvynWnje0eLbZgQQXNGNyTgBBIqkIzSlWgTw
-         le0Z0wBkMV9msYUgoI1vB0PObi4wT+uWwL41f/0h9/ChPThpIrMFjIMCYf2sDN4Ldou2
-         7NJGpf+L5+ZUQWI3ziv6t8hdB3MgcijeY6HBZlukiLJjURXL+EgjWXDA85YWhpS6Ji7r
-         W7JdQGj5DOd5LpvWcJwIZ6TrQMHwyVIA05K6P7quZBJjCEiBjBSQsVFiUcMoiMEdcbUt
-         xojg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF84D19AD5C
+	for <stable@vger.kernel.org>; Sun,  3 May 2026 03:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777779943; cv=none; b=oN3f47FT64nM0hz6WYju1V1nrHmSPMOX6syyYPBkiwOeu78ZLrkE0DEDz51UoCXtGTL7zCibydPUe5eVGAqoIHIT3S0ajmaIkUip9Ppd2IIAkFxcJ07z7c8CG7iZ9A+4o5OIZwLJGF54ZkR5gWNzHOSG3G5AjB96mwRGLRJQsK0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777779943; c=relaxed/simple;
+	bh=aoAj+gQoahG7S0iVGgSJk+XtiNbNUZMUxTlAg3Z79l8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XemToGaQS4PRdFLDsYN2sHQ6QPUtyP3LuGvvaIZDTRycC1jgibU7CnD2NlXKxWnoi794og6oh1kp8RwN8GPIvh7MEYaSyPYjyJXGTdtM73wuBcphaLK+FUpjCWO7FarVHH+0tzaCqq2FxPrBwcxkvyWrRWJgrrth98LM6gDSGJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ri736iXX; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-365212191f6so342991a91.3
+        for <stable@vger.kernel.org>; Sat, 02 May 2026 20:45:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777779399; x=1778384199; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q0OWAJn8muYcHbaFRLc3IDvQHdIxLvENWnakgrL5hdI=;
-        b=FNrz04ETKSwVn2sLOSVxA+61+lBmKpipMuY9N2TAz1MhJNCuCzR8RBXce33PQKAyeK
-         B96ZCh/nVLJYpZ9ytFt/nwaePduTEIkS4DFZxMi5XKiPUKqw5EUHsgYoiVeeslqDv0yQ
-         idnk3NQ6Ev6/mi9iE5d4/GlLEfwGbH6xnSLEcKF9c6xcLifTnRlPpw9XhiGxjvgZ/i3z
-         ZygPdv0sDC9rNnkyCWcIqN0vSmCtwZK3jgRbiluosp+SeKZZv9dFzHNnb1guxSUBjjXa
-         88fOQSsL83ACD8sKo1kr8f6XfYh8uEy65OtGH/uG6G31DTSgU/vmkQvWRfhH6a37NRLJ
-         ed6g==
+        d=gmail.com; s=20251104; t=1777779941; x=1778384741; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SI2MBPlJf9O7ukydYqfXIQUzeildkAOurtWd8SQi+24=;
+        b=Ri736iXXYT1WketKV3Moi47Ly0on4iCVAw200Da4+RTbTu1QHGHPmCY4te9LBXgSRZ
+         7JFkM+7dauEU5KjK0cK7f5LRzFud6QW0aQ17QNd9MnW9wGFZSYLqmSeFFH62EzR8Ix/Y
+         mRgSMUEIKGigKQq3/tn3YLqohBtTcIHaO3QcGyAoNiNXIeGPNF6nGce98jDMYMnX+Nji
+         32wwU73FmsN01HwXQqSfPoinuRQS+kIW4jp81/JaW5DIGMCn7MpfJrZoae8dxEoSL0vq
+         Q7kunI4yefXemS4jhpI9dFq2eyfCBXo0rTHhxEG0BbksjV950h8gkgOT2Ne7C3NBQ+vQ
+         ATdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777779399; x=1778384199;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q0OWAJn8muYcHbaFRLc3IDvQHdIxLvENWnakgrL5hdI=;
-        b=XCnlEJYa9eQNNRAIbiqHRuJVbCdwyI3BudEnzdDQNqyTNK3m3urcRfVLKd55FnWp2Y
-         mhXV+JWfthlPgYT1ku49By7r/CiXVyL5JvpUwog4MbUKeL+Fu2cVukdoKRQEkHKE0nzz
-         bhjW6uMH8BqJG0RrkKtYhBZnIi38jTWDGs8xi6fqc9AdtniNMp+YOmZJMr3dmlSDsz4i
-         cORvDzovawgav3CZVnOuiI6BCOkCNh+MrZT3UjiMvr65NTaHJk+I9fi1Ir8GYoEeVKlR
-         KA+/NAMunn4OwwqsdPl1DVlWN4Wr2rQCtOol5OuAKCIAcvX/TYJsqn51n/3ArbbDVw2c
-         vHOQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/1a5ZgGdgd/DhnfzOkHEmT3gNncF+itqaWlV06sOAmq05FQ2VpJEtMCjb0cj+RjQVCva6MRgs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPv8pRvdRJOXEBxDNJaoNIRWnJwYUk4FnN5afLgb/SEUpo2ZlV
-	L34ogzVnnSwstPGHJi4uGo/sqpB8S3LmpqBFgWdoYkhpFhum78vHK0w91My4oD83RpEGKz61WHW
-	F/9yIwOqH7o1j/QOi9PZvxdU74euVhCSTZd89mWhzBhxPkzFP9g51RGp0TIFPOG+IBLfk5OCql5
-	3U4p9kicIzPqFr3BXD3saXWnYsWvJnDXEg
-X-Gm-Gg: AeBDiest4exhOv62HqqEovNwDza3W5WlLb2NelY1VtDEuiuDFtU3y61WF7gQCJWEJxn
-	F6YlFNac+9awZByKlsYHm4l5cwd8x4hNbN2nsOdgPpDGlTF0STktSMNTOrBocuhsb/KLhgMFANN
-	8gOzaM/c6goryRwHe325ytCCME5MUXgyiuH+rxAJ2RTXY+IVtcWoc3vVqE9o0mrhr159Kc6eNUy
-	jb7+wTziqZYKWphfWI/aIgxb2fhMhOVuRfGv6eZ04MV2XSm
-X-Received: by 2002:a05:6820:81c9:b0:696:637e:4820 with SMTP id 006d021491bc7-696979f55d3mr2541000eaf.27.1777779398938;
-        Sat, 02 May 2026 20:36:38 -0700 (PDT)
-X-Received: by 2002:a05:6820:81c9:b0:696:637e:4820 with SMTP id
- 006d021491bc7-696979f55d3mr2540994eaf.27.1777779398545; Sat, 02 May 2026
- 20:36:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777779941; x=1778384741;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SI2MBPlJf9O7ukydYqfXIQUzeildkAOurtWd8SQi+24=;
+        b=N/IaMzF1r8PvD0VPGO5kbkR2wPayHZ/1hsW8FczpDDfofojTcBSiLoCUpbbzJhmC4b
+         OK9b2i4e9nBLuTpQ5NAnUi7RLEd5kdwSPGzW4Kh/5caT0h1cEaEXm+05eiUlWg0PPCZH
+         qPiwoVI2Oja8Ik61ELLHxZjuPaoQPEeSvQcGyAolE8Q/sWDKT6hqHOHrUt77rYbA4GMc
+         ORN6IzUd+n3paQ/iRWw/6R8805jhzQef9OfHspy4sRnAMIzuiSwDGro5qDQYdh3/yscu
+         r7+DUt/JliHIFRQU1j5mWV+28NpTqtJCwaDJpi7aDg6mnbz7HKhMgdrSkev1QgE6g+QY
+         KD5w==
+X-Forwarded-Encrypted: i=1; AFNElJ9ghzZGm94QTaE0r8S4vBtkB1nYR2clSHyrm2Lx3woxZyxYcldccOkzepOUPOyRhsjHFVJS+rg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQUnP4JeRMzeVESHCvQX6lTNXdBqdG2H9BVRAiOXrL1emRMgWe
+	q+Ctq9Vhd24BkbiFVCL6mqXIebFDFfWg+ltaeP7TmXNgK4tnZ8g9ILB8
+X-Gm-Gg: AeBDietyeqk+NQyKr3GluiSEaNFFomeHwmX76wFp+yuei6gkD7sFzRn49sNaS2Rtc2j
+	EnmUR7vSKMn1e1emtYJVFLSMiRI0AddZd5nEz+F0ieeMVhoX9oDZ2xt5DjY0APGudi8Ul05qpik
+	07LpnJ/wOgg1aw4eoP9Io6h2OUF8w86NeMXXuFOHYYwUwESjnMuWSazMrpAfrnBbxfhHpHJOFWq
+	OW1aZVZE2ZeEK/vr4geLYJGTbuBBie08HCibYxqcnif2Tfyv6S4ikmMb+rypYoZYAxUwomGXzLE
+	drl9ynfeobLN3eRueHYaLrLYTexStkk4gPMN2mX+fduKU7N+i/L8d//C+NP8yhC148kQGKGrhC0
+	yK9vZKqbqUYwAShT6xni5TcG4eK2RjC0m4GTUBLHNqWfGZyYT2/MZ8CLo0ALc74lNpGdIeeaocp
+	fe0Ql087Y4dz2+3swwAIorKO7zUXJMGHpTfXvgzEghjfOp5WvUHq3+vdKS40onOQVU
+X-Received: by 2002:a17:90b:5887:b0:35e:581c:6bca with SMTP id 98e67ed59e1d1-3650cd25673mr5014165a91.3.1777779941198;
+        Sat, 02 May 2026 20:45:41 -0700 (PDT)
+Received: from jester ([159.192.33.28])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf54203sm10082989a91.7.2026.05.02.20.45.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 May 2026 20:45:40 -0700 (PDT)
+From: Jonas Emilsson <jonas.emilsson@gmail.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Jonas Emilsson <jonas.emilsson@gmail.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Lyude Paul <lyude@redhat.com>,
+	stable@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org
+Subject: [PATCH] drm/dp_mst: Handle torn-down topology gracefully in drm_dp_mst_topology_queue_probe()
+Date: Sun,  3 May 2026 05:45:33 +0200
+Message-ID: <20260503034533.1023686-1-jonas.emilsson@gmail.com>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430014817.2006885-1-desnesn@redhat.com> <20260430104850.352bd946.michal.pecio@gmail.com>
- <CACaw+exdPSVSfdAob7+d-xH=JEjBbPpY_z1cPPU6rzXx4wUZpA@mail.gmail.com>
- <20260430235453.2288c973.michal.pecio@gmail.com> <CACaw+ewwM_5eqyGW5=+THwHsYPs7u3NT096AFQdt6x4E6HcWtA@mail.gmail.com>
- <20260502114644.76e6b5a3.michal.pecio@gmail.com> <CACaw+eyKh7buHDoDyTOe8O65FP5cSXYdzCcQvwqKw=1DwX26oA@mail.gmail.com>
- <20260502235517.089ba5bf.michal.pecio@gmail.com>
-In-Reply-To: <20260502235517.089ba5bf.michal.pecio@gmail.com>
-From: Desnes Nunes <desnesn@redhat.com>
-Date: Sun, 3 May 2026 00:36:27 -0300
-X-Gm-Features: AVHnY4JrHk59WE05_dg9TKwGgt1QjyIQVcj0PtqyhuDEWMRv0JtTFXsQeGGmvRs
-Message-ID: <CACaw+ewOTVh49tnkz+cRr0SD_Z-LmYrMWhFUrsik6YF83mPBtA@mail.gmail.com>
-Subject: Re: [PATCH RFT RFC] usb: xhci: Kill hosts with HCE or HSE on command timeout
-To: Michal Pecio <michal.pecio@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	gregkh@linuxfoundation.org, mathias.nyman@intel.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0E4A14B449C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0F2B84B4530
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242636-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,intel.com,redhat.com,vger.kernel.org,lists.freedesktop.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242637-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonasemilsson@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[desnesn@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email]
 
-Hello Michal,
+A hotplug or link-loss event can tear down the MST topology
+(setting mgr->mst_state = false and mgr->mst_primary = NULL) concurrently
+with a caller invoking drm_dp_mst_topology_queue_probe(). Since the check
+is already performed under mgr->lock, the condition is not a programming
+error but a valid race -- the topology was valid when the caller decided
+to call this function, but was torn down before the lock was acquired.
 
-On Sat, May 2, 2026 at 6:55=E2=80=AFPM Michal Pecio <michal.pecio@gmail.com=
-> wrote:
->
-> On Sat, 2 May 2026 08:38:34 -0300, Desnes Nunes wrote:
-> > > diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-rin=
-g.c
-> > > index e5823650850a..3041deb67b57 100644
-> > > --- a/drivers/usb/host/xhci-ring.c
-> > > +++ b/drivers/usb/host/xhci-ring.c
-> > > @@ -1761,13 +1761,15 @@ void xhci_handle_command_timeout(struct work_=
-struct *work)
-> > >         /* mark this command to be cancelled */
-> > >         xhci->current_cmd->status =3D COMP_COMMAND_ABORTED;
-> > >
-> > > -       /* Make sure command ring is running before aborting it */
-> > > +       /* check for crashed or disconnected chip */
-> > >         hw_ring_state =3D xhci_read_64(xhci, &xhci->op_regs->cmd_ring=
-);
-> > > -       if (hw_ring_state =3D=3D ~(u64)0) {
-> > > +       if (hw_ring_state =3D=3D ~(u64)0 || usbsts & (STS_FATAL | STS=
-_HCE)) {
-> > > +               xhci_info(xhci, "kill the damn thing\n");
-> > >                 xhci_hc_died(xhci);
-> > >                 goto time_out_completed;
-> > >         }
-> > >
-> > > +       /* Make sure command ring is running before aborting it */
-> > >         if ((xhci->cmd_ring_state & CMD_RING_STATE_RUNNING) &&
-> > >             (hw_ring_state & CMD_RING_RUNNING))  {
-> > >                 /* Prevent new doorbell, and start command abort */
-> >
-> > FYI, sorry to be the bearer of bad news, but this also panics the
-> > system as soon as I run `echo c > /proc/sysrq-trigger`.
->
-> Is this not what's supposed to happen?
->
-> Sorry, that complaint is so odd that I thought I'm seeing another case
-> of debugging being outsourced to an AI chatbot, which forgot that panic
-> is triggered intentionally here. Now I'm just confused.
+Replace the drm_WARN_ON() with a graceful early return. This eliminates
+spurious kernel warnings and the resulting compositor crashes observed
+when connecting/disconnecting DP MST monitors, while keeping the correct
+behavior of doing nothing when MST is not active. A drm_dbg_mst() trace
+is added so the skipped probe remains observable under MST debug logging.
 
-No, guess you actually saw a case of poor explanation on my end -
-apologies for not explaining the outcome properly.
+The existing WARN_ON(mgr->mst_primary) in drm_dp_mst_topology_mgr_set_mst()
+already catches the case where the topology is initialized twice, so no
+diagnostic coverage is lost.
 
-What I tried poorly to explain was that the system simply hanged after
-I intentionally triggered the panic with a sysrq - both times.
-Nothing happens after the sysrq panic stack trace.
+Fixes: dbaeef363ea5 ("drm/dp_mst: Add a helper to queue a topology probe")
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org
+Cc: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Jonas Emilsson <jonas.emilsson@gmail.com>
+---
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> > Kdump doesn't run and no vmcore is produced:
-> Is the kdump kernel not launched, or does it crash during boot?
-> The latter would make sense if there is some problem with the code.
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 8757972e8..0cb341ce1 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3738,8 +3738,10 @@ void drm_dp_mst_topology_queue_probe(struct drm_dp_mst_topology_mgr *mgr)
+ {
+ 	mutex_lock(&mgr->lock);
 
-Kdump kernel didn't launch at all, thus no vmcore was produced.
+-	if (drm_WARN_ON(mgr->dev, !mgr->mst_state || !mgr->mst_primary))
++	if (!mgr->mst_state || !mgr->mst_primary) {
++		drm_dbg_mst(mgr->dev, "queue_probe skipped: topology torn down\n");
+ 		goto out_unlock;
++	}
 
-> But I don't understand how patching xhci-hcd could possibly have
-> any effect on the former. Does this new code execute at all? Does
-> "kill the damn thing" ever appear in dmesg?
-
-Both kernels booted normally: the first one checking HSE after USBSTS
-was logged on xhci_handle_command_timeout(), as well as this new code
-checking for ring state or the HSE and HCE bits.
-Since kdump didn't start, the message "kill the damn thing" never got
-a chance to appear on crashkernel's dmesg.
-
-Best Regards,
-
-Desnes
+ 	drm_dp_mst_topology_mgr_invalidate_mstb(mgr->mst_primary);
+-- 
+2.51.2
 
 
