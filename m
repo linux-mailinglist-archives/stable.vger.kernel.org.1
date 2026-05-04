@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDuJC62q+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:21 +0200
+	id gCQ5E0ew+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DD94BF094
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E292B4BFE73
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32F71315C63C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9196F308F9A9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562EC1ADC83;
-	Mon,  4 May 2026 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD5F3DFC60;
+	Mon,  4 May 2026 14:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+WN1qSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktLoHdV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186793DEAF2;
-	Mon,  4 May 2026 14:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511A73DF019;
+	Mon,  4 May 2026 14:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903632; cv=none; b=DojCNRp02Z2LSvEhZTYkCly8kjCQ0OUaZZlCF1/Fzvjp3clBgdcJFzln2aUThs+iy9temzo5TTPcQzOmsfw/77o0JWBctN7YV0YFZkavO8HV2UtMnYBboqsmSBOwyfkoa/Dsh8kA1OUWze+bKfshHsW8EAEAMAoloa7PrxACaNk=
+	t=1777904708; cv=none; b=ISYQDO7l8bLcm4H6yYNjySGA/FwQ7L5urbUPhgIQF4v8JVVRa3foh/cle/kWq1qliLzO/TtYeG3XRI1jjcSXXBnUDqbrWetZ9hXoEoFS0fDU5n2k0g9F9SsJ9rjpQ0tLn3ONpedSnuk9NlOCeUrOiPrYBwdKDfVbVO14rnYOf3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903632; c=relaxed/simple;
-	bh=Y/o632ILq4xwgUJuZ3iSv/m6ce8cJl7qjAjHOCUeYOs=;
+	s=arc-20240116; t=1777904708; c=relaxed/simple;
+	bh=Mi9KzfC/eX7RPJFHfGJ8X7rHPMnxRrdRefyIwtXLF8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2j20uVRqvgCZs2ndaTRFuWKwENZAaD7QRBjgFTpwdT9Qp7WcbqGUo4bszZVSzUy0FKv5sOCJK1+ajkej6ESwhDFM8Ia+kI1RkPV9xQVYMErgW98jT+HDi6Dq3D/bsTYMlxxKYkGDEIdeZNAedt94ncTsLuw+I3Z3GZQ2BZUZ9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+WN1qSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D38C2BCB8;
-	Mon,  4 May 2026 14:07:11 +0000 (UTC)
+	 MIME-Version; b=LCtUkXzPmCmDp4QorGvARe70ubb5RAECPybi8a2+pAtUgpa6cWrvDzC83hpQ3f+Y8dHjwsb7SE5s5FtiaCo8hOMbTEl+nCX0hg/Sx2Pn1JQwCXTOe3yh+W77z1BsITi4k17YtVnOHbJDaobLuhypKiiCnqwzGQVIVwjIikWA05E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktLoHdV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CF9C2BCF4;
+	Mon,  4 May 2026 14:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903631;
-	bh=Y/o632ILq4xwgUJuZ3iSv/m6ce8cJl7qjAjHOCUeYOs=;
+	s=korg; t=1777904708;
+	bh=Mi9KzfC/eX7RPJFHfGJ8X7rHPMnxRrdRefyIwtXLF8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+WN1qSX+ahoiKrqAwNEKezMs4+w3nI2DmTV05zJaUSxKQgfysTB4cjGqhzshZSU9
-	 IhEbMr+6eUnOZQEeNllprPm4MAjaMdnAvSzGEf9DbDW51hhN7DfeYyh2aP4eLBxNIw
-	 Mc/jc4I/L2XK/aKK8+8c4jFy+R45lhmlqPRsXQgo=
+	b=ktLoHdV0eiNDvbYxXbBn60if144P9tfw3ekZDo6bPxIXujZma3fyDOZT1VJeo86iX
+	 CQIpZixTkv4TrRpB0V4RYro0X3b7mr3KdlQFQ32FVc0l9tsglxOEvkoMN+eTU+e8D6
+	 IMH8OVbTqr79s5sUqrxwcJcB1Ctl3nql6wF8X15Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Gaertner <tob.gaertner@me.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 7.0 278/307] ntfs3: add buffer boundary checks to run_unpack()
+	Chia-Ming Chang <chiamingc@synology.com>,
+	robbieko <robbieko@synology.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.12 144/215] inotify: fix watch count leak when fsnotify_add_inode_mark_locked() fails
 Date: Mon,  4 May 2026 15:52:43 +0200
-Message-ID: <20260504135153.256056740@linuxfoundation.org>
+Message-ID: <20260504135135.418163785@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A3DD94BF094
+X-Rspamd-Queue-Id: E292B4BFE73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243339-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,paragon-software.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243760-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,me.com:email,paragon-software.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.cz:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,synology.com:email,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Gaertner <tob.gaertner@me.com>
+From: Chia-Ming Chang <chiamingc@synology.com>
 
-commit b62567bca47408e6739dee75f02a2113548af875 upstream.
+commit 6a320935fa4293e9e599ec9f85dc9eb3be7029f8 upstream.
 
-run_unpack() checks `run_buf < run_last` at the top of the while loop
-but then reads size_size and offset_size bytes via run_unpack_s64()
-without verifying they fit within the remaining buffer.  A crafted NTFS
-image with truncated run data in an MFT attribute triggers an OOB heap
-read of up to 15 bytes when the filesystem is mounted.
+When fsnotify_add_inode_mark_locked() fails in inotify_new_watch(),
+the error path calls inotify_remove_from_idr() but does not call
+dec_inotify_watches() to undo the preceding inc_inotify_watches().
+This leaks a watch count, and repeated failures can exhaust the
+max_user_watches limit with -ENOSPC even when no watches are active.
 
-Add boundary checks before each run_unpack_s64() call to ensure the
-declared field size does not exceed the remaining buffer.
+Prior to commit 1cce1eea0aff ("inotify: Convert to using per-namespace
+limits"), the watch count was incremented after fsnotify_add_mark_locked()
+succeeded, so this path was not affected. The conversion moved
+inc_inotify_watches() before the mark insertion without adding the
+corresponding rollback.
 
-Found by fuzzing with a source-patched harness (LibAFL + QEMU).
+Add the missing dec_inotify_watches() call in the error path.
 
-Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Fixes: 1cce1eea0aff ("inotify: Convert to using per-namespace limits")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tobias Gaertner <tob.gaertner@me.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
+Signed-off-by: robbieko <robbieko@synology.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://patch.msgid.link/20260224093442.3076294-1-chiamingc@synology.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/run.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/notify/inotify/inotify_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -1008,6 +1008,9 @@ int run_unpack(struct runs_tree *run, st
- 		if (size_size > sizeof(len))
- 			return -EINVAL;
+--- a/fs/notify/inotify/inotify_user.c
++++ b/fs/notify/inotify/inotify_user.c
+@@ -621,6 +621,7 @@ static int inotify_new_watch(struct fsno
+ 	if (ret) {
+ 		/* we failed to get on the inode, get off the idr */
+ 		inotify_remove_from_idr(group, tmp_i_mark);
++		dec_inotify_watches(group->inotify_data.ucounts);
+ 		goto out_err;
+ 	}
  
-+		if (run_buf + size_size > run_last)
-+			return -EINVAL;
-+
- 		len = run_unpack_s64(run_buf, size_size, 0);
- 		/* Skip size_size. */
- 		run_buf += size_size;
-@@ -1020,6 +1023,9 @@ int run_unpack(struct runs_tree *run, st
- 		else if (offset_size <= sizeof(s64)) {
- 			s64 dlcn;
- 
-+			if (run_buf + offset_size > run_last)
-+				return -EINVAL;
-+
- 			/* Initial value of dlcn is -1 or 0. */
- 			dlcn = (run_buf[offset_size - 1] & 0x80) ? (s64)-1 : 0;
- 			dlcn = run_unpack_s64(run_buf, offset_size, dlcn);
 
 
 
