@@ -1,268 +1,162 @@
-Return-Path: <stable+bounces-243917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAc3DCkJ+Wlt4gIAu9opvQ
-	(envelope-from <stable+bounces-243917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 23:01:29 +0200
+	id SHMtMHUM+Wks4wIAu9opvQ
+	(envelope-from <stable+bounces-243918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 23:15:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D224C3D7E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 23:01:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00E54C3EE1
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 23:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5734301BC17
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 21:01:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 87908300BD4D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 21:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225E233DEE0;
-	Mon,  4 May 2026 21:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F79345CDC;
+	Mon,  4 May 2026 21:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LG6dzEnw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Daz3v3kM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B5C3246E8
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 21:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777928484; cv=pass; b=FrX1Zphe7yQU0FDf9yPbbVV63qduJs2tQIpXmX1RK+RJPpZY70bl+WY4XQ8ZH0Gw3SYTvogLF9oDwLv0/ObUDitNlYosxihMIdSW2xKCqqKWtvhiaRkRzgw0Sy8wHM3K053W16rOMWe7untfIGrAgqFOjrKGk3XBZrGFPhC7/Bk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777928484; c=relaxed/simple;
-	bh=/3bqiJNOiZkkfxcU8atfmQsAsjGnwRbgWwcVIsZznbM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EUFa9M/PKy9kDtfPefC/QgU6kFWC62FqI92PtRTb0k1kJiyESBvti3PUSvbKu5cumuQnAV8IFqsp/ad+cYS5JJsUVj7loNedROfP2XhOaE1QwRwUtXb0SAVx3fZFkcuhRSb6vTs2qZCbGhU99khtqpe93KvrFNUcYMFJfXQHD4I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LG6dzEnw; arc=pass smtp.client-ip=74.125.82.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8F1344D8E
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 21:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777929319; cv=none; b=ufCw5RQNerOa/EECEhLjAlU1Kp/63NzhRgnT3OITyX7bD6tDNarhzlVIjo0+MvJg5InU980yRGH4oJlmcKk14fU+4Z8wLfJ8Qhlegfo2sz80K6ilJBug+pnoTesqa74VBmj6rWRnwWXxQgakEQAL/JYSA22bokfHczfEIki+11g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777929319; c=relaxed/simple;
+	bh=ZcwHhiQBeuto3+aHd1WgPtJBNLW6SzFA30xH3EUIueA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bJI6yM4J9bUcWukAnwuoMLFqxqym8jHrQyjtr1NvwHeZEe3wYYbGJH23OZC0kCt0nsAEjHf3uL28vSbA4p8Rd7t+KCt/KrLeS82h6wc7Th7J0yQN78z2rrW9XEYFCfq6r81JbOd1xjyNIkVwdtB07g/dZa5eumgni7d02oBlzWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Daz3v3kM; arc=none smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12dca45c95fso192439c88.3
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 14:01:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777928483; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JHVCUvBviXCCD+SPuk+VRPj/ap0YRibfrVxf+k/s53l559JQoUnrL/0emfnuSv08GD
-         X235mA56W7V3YNXzpm+LkjGPmzs+bp9pInpqNBq+YODbX+G+lgntWnbA/dD4IfLc354I
-         sacW5injPKaAFAP7p/X+hzc1LrpgHqM9r7mgHlR9ooD4MN9KLSK7UqJrbAfWwdX2InBZ
-         seD5YExzqojoPfyJiWRnPq1jcXpH/wuxk3xd/+qF2rgiYVmDWAXyTr02p1vr5lnnhCzF
-         qd52yRaK07UpLQh9KkSQu1w1wsvDPUjZdztebNEjpEIgzjHFRJdA7arDrdVdnKl8fgiV
-         A9ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Thsb2YMTJJSc0LZ57FKsAw40wawxv4IlNMBLLhTxtBs=;
-        fh=14SCPQBH1kAFZXQ2+FoltjkCRP4dFeULj4rnTCzD7uE=;
-        b=LUYOhylpiNiJcbNldmAqCifkygHCOEFWBg3WdyOoyULE4FK2QTwCkNMU3HuTi6u/aW
-         UQskovoor/uY+sWf3HkpI83HHN0W5ZnkWkgXohS6Chp9o/1vSTN8xCue/Pyrw0WOcVia
-         NAjkIbAcS0VoGsioP0DHQgVUy8t0/hWPjTshg+swUbriYlA0vTpTPSnkzklXanSIgY4G
-         EYLakJCiKbauJuMOe2y5LC901WB9CJ2uNe22uX64clyWtUG7zejvjP4lWFB/5FuKLzeC
-         2uflGDYTbm6wpVbVcehLRSi7WK0oHs2FVUNbNziD7BIbNBnyKsV11GJUSH9FyMv8+UKC
-         Yofw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2ba895adfeaso4910295eec.0
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 14:15:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777928483; x=1778533283; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Thsb2YMTJJSc0LZ57FKsAw40wawxv4IlNMBLLhTxtBs=;
-        b=LG6dzEnw1he9wztVrzbvBxhT9Jmn7thxF/4dWElIs9+ZxGk2V7CimvfZpghQaItzWF
-         MvuSkxBy0gEB5ESFn2YI3/XfT++sX1Fop2kB/rfn+ZW/pqgpV3At1/Wj3cvFfTh/zwzH
-         j2TavFizxue9IobqqhBEwunw/S/8blqiBFIptP1G28di49e6NQNQCfinv4BjNn4HleIb
-         zKgMYgEjR/uuSBuywivEDuO8vaWp8SRrS5qPvoFy1wl2Tk4LrcA2jMWRKNeBBtnGKzUg
-         jg248irRpdlDDcN5IV4WVvGidoqm22JBzFL0qRVuR+4D/1iMD19kiAuLdmaIoAjgCi1c
-         PxIw==
+        d=gmail.com; s=20251104; t=1777929316; x=1778534116; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T6M6O6vS5rinWV9bCog50NLyMYBW362x5+Rc5/13V6w=;
+        b=Daz3v3kMJQ80Iwc4CSJ97RH+eFdm7AVSigI1gGlE7ojUjvQmiCEY9Bl5xZ0I9GYFZO
+         YURR0At5/TQC+7KjqRQHdEh2LfFztVWACd8V30To+gx2G/crHuzce0SPVBfg0CJgJwiH
+         l86soDXp6COWBeojTTTceTAuInnOkOJXgD6qNgFHvPqh4slXrmKo1VUZiJ/wftiOE2Dh
+         kYl0p7k/+ws4Rr+FVBr9/jD/m8ZkyawvCVfRKTwTbC2SonygQG05BUc6FFImnVFcbEqH
+         xWXZhiGUZIZlTmpaD8yhlrUQg4bZi1VlT7NUOfZzVZlB7sDzpj8V8rxFWHU23uubpLQM
+         o8oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777928483; x=1778533283;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Thsb2YMTJJSc0LZ57FKsAw40wawxv4IlNMBLLhTxtBs=;
-        b=sYoimGur08ypqg9t9RUZcblN2F0gOaUccKrPGet1qcnqrAubczbCPxQHZeoo1JrN6V
-         7zYLzaK/ZFA9KsDUcMnlrT04lZqg0hwrLcGtts5UAUBUOI++aAwjff8UzQCEA0YCgrIc
-         LKxms4Y2QHDzNVQh1h6/tfjWSh1YjsEcdUh3BPiCgLVVFMPcz2yYtTdZoAdUAuv3wicJ
-         pfGxwFR/mDC136Zr1mXG7keTCSrxANJ20FXnv9zk3Cb1sPyZeatYXxwFCw1gbLrbYKLB
-         /w1s2tTjiz/NwicSrUj4b94Nwd1Hcuz8OmG1BTElZ48sPjpafJnBpm5YtCjJWXuhZSv7
-         IgRg==
-X-Forwarded-Encrypted: i=1; AFNElJ/vt8MINtLs1f8qq1qep9EZMrqoaPVlN2Q51hHb5a01y29sdtez/oLcb0Ly77e/ubHRYjixrLo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEf4q4TBmdhBSDru849Oi9zaQO8AKYJchfSArA4UhWSvZp2cG1
-	hPhtJknblFw6hHxu/h028UfrgtcBSDbQ+CiUCqmlOV2J/h6NonU2P5FiSavWqH8rC9Lv0CQajbu
-	PQTgYFJNf3fxKJsmTEi4/76uOzLcT40g=
-X-Gm-Gg: AeBDiesu7IB5gHLBzw/52fc+WeArZpZixMk3KZu1EnWMDVtLa8m2RazuHJ5DdkNqNfH
-	X8/grI+SiKfKYQP8cJv1q2RbouQOQz/e13rvDQ5MdhkBW3xwlnJVbZm0VBJutJCjcge6YX2vTTW
-	GknPxl+1CT5psTAlsC+5hgJ1/gI87tVfCcP16v4DW+hhNmEynWZD+lrIQPPQu80uT1q+jKiAoR0
-	o2uOkY24XN8FtPZiiqz0BhD6oIVrNJgmRpEqXSU8YIW7o97sis/I90IMFwnn3l3dLDpQBemMExu
-	0IveCdktfK7KbvIw7zrYrtclnGYJ1vmQYhHGIPrdEwkYqQiYoss3USR61y9/7u3nVvIeocytQFm
-	SITJI
-X-Received: by 2002:a05:7022:e25:b0:12d:b4e2:f566 with SMTP id
- a92af1059eb24-12dfd83b7c7mr2122042c88.4.1777928482451; Mon, 04 May 2026
- 14:01:22 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777929316; x=1778534116;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T6M6O6vS5rinWV9bCog50NLyMYBW362x5+Rc5/13V6w=;
+        b=J89OZ+AIxc1SOZIh9UZOH/mr2H8HyoP3uSuZwyJoRg22KDbh/+fBHLCoyzLkWxNOb7
+         llajNfrxTfO4M2Is+n4Oh0a8ikbDLKFCVo8BTCcAhoeHlKY7PghWujc1KhYXYnVJ0cPA
+         KglVIDcyqL8O6JfVpPO9qtA0YGIFKU6JnUvMnyYz7cFpECiFZXH/EKcUQZmifyfjPuUI
+         k/sY9QYoSXzb0Iq6ZcGid68g4hXEmVOOswKKRpzYd5fidwO+cwAUc52/Je++kTyfcUP7
+         yQS+2jG6eZml/wXaQMOWKg3tg2eZ+pFOAbdANRkgw7+VHmoqrRGVZ+sP9hFjIM8ewjxn
+         KuIw==
+X-Forwarded-Encrypted: i=1; AFNElJ96esTghxqTBr8KqMohu4FDtMJwnosyrIMubl7ftkg25ymtzMK36Q/0+ujm/7gCqpxOykggYRc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvOvTK9eMdpT/G+K4UujNGldaiX9xs30UjQK86mi/CZ9cRPKl2
+	2oYhck5lNQiZ4kD4UQ+87lIHY581arAMOnv2xiJb2FuerxYsh4Rh5c8i
+X-Gm-Gg: AeBDieuMnYxlf1UHOF8tYMW2MJhDryCHDDmvkme//Ic+SFP+0wHAFmei4GfXWXO4fnX
+	mkyT4QzCjbWdtd2AJjRTrcxFciwsZ+Cz9F9Jd6xRsIpa6EMcomkA2Z/nLAO6X9zqU7Avb/72jN1
+	mJyZ494s9Xd8k2NAMzcjNy+aReupKFOhRmpes1cIbbz/uMBBLIgVQtK0uG6Q9YU0eagsMcwMYHZ
+	utWs18d7JS8u3ic/PmKqGWTVSgBLTVeAOn/z2SBIT7tRx2RF25S8AwEQMQIJSeNZGObq80PLnfb
+	J3cAFYIRjzgBDrL/EHXd9PUXisnJkBSqd7IzDSJf8/DMrKvdfcGJoeTRT873d5yLsYOwpUoXGz2
+	SF2FuAh4fsVAHopi4+4KYyRWiV/6Q7hNarq3+v6PzrBFrE2ijgpZHx1eusWMmZ8xZOH0F8z8XYP
+	+OStFQNqO44hvBzs8I6JlyS1rSi0apdvMFvFk3yhmIDfup8IChCTRMhdQyYDIQ1VkG13Cs1u4=
+X-Received: by 2002:a05:7300:7fa2:b0:2ed:e14:7f58 with SMTP id 5a478bee46e88-2efba7ab309mr5110790eec.34.1777929315837;
+        Mon, 04 May 2026 14:15:15 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee38e71bccsm16830760eec.11.2026.05.04.14.15.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2026 14:15:15 -0700 (PDT)
+Message-ID: <a0173ef4-c77d-4d25-9f51-b232cf75bf54@gmail.com>
+Date: Mon, 4 May 2026 14:15:13 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260504201905.90667-1-mikhail.v.gavrilov@gmail.com>
-In-Reply-To: <20260504201905.90667-1-mikhail.v.gavrilov@gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 4 May 2026 17:01:10 -0400
-X-Gm-Features: AVHnY4K3R7rLIgAJ8Xi2UhaK6C4FSDUkZrXR39UcFFKVuMCB3HxIJ4w7zD9DYJk
-Message-ID: <CADnq5_MiPNMMz3aE59bXdx11e_MBqS5SnkcC_YMUYvRtwiEokQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: Wrap DCN32 phantom-plane allocation in DC_RUN_WITH_PREEMPTION_ENABLED
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: harry.wentland@amd.com, sunpeng.li@amd.com, alexander.deucher@amd.com, 
-	christian.koenig@amd.com, siqueira@igalia.com, airlied@gmail.com, 
-	simona@ffwll.ch, ardb@kernel.org, hamza.mahfooz@amd.com, 
-	aurabindo.pillai@amd.com, Roman.Li@amd.com, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 82D224C3D7E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/275] 6.18.27-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260504135142.929052779@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C00E54C3EE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243917-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-243918-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexdeucher@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[amd.com,igalia.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org,vger.kernel.org];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On Mon, May 4, 2026 at 4:29=E2=80=AFPM Mikhail Gavrilov
-<mikhail.v.gavrilov@gmail.com> wrote:
->
-> dcn32_validate_bandwidth() wraps dcn32_internal_validate_bw() with
-> DC_FP_START()/DC_FP_END(). On x86 non-RT, DC_FP_START expands into
-> kernel_fpu_begin() which takes fpregs_lock(), i.e. local_bh_disable().
-> Allocations done inside this region must therefore not sleep.
->
-> The legacy DML1 path through dcn32_full_validate_bw_helper() ->
-> dcn32_add_phantom_pipes() -> dcn32_enable_phantom_plane() unconditionally
-> calls dc_state_create_phantom_plane() -> dc_create_plane_state(), which
-> performs kvzalloc(sizeof(struct dc_plane_state)). On a recent kernel
-> sizeof(struct dc_plane_state) is 343736 bytes (335 KiB), well above the
-> PAGE_ALLOC_COSTLY_ORDER threshold, so __kvmalloc_node() takes the vmalloc
-> path. __get_vm_area_node() then trips its BUG_ON(in_interrupt()) because
-> SOFTIRQ_DISABLE_OFFSET is set in preempt_count:
->
->   kernel BUG at mm/vmalloc.c:3206!
->   RIP: __get_vm_area_node+0x257/0x2d0
->   Workqueue: events_unbound commit_work
->   Call Trace:
->    __vmalloc_node_range_noprof+0x22b/0x570
->    __kvmalloc_node_noprof+0x3d0/0xb40
->    dc_create_plane_state+0x35/0x290 [amdgpu]
->    dc_state_create_phantom_plane+0x1a/0x120 [amdgpu]
->    dcn32_enable_phantom_plane+0x101/0x780 [amdgpu]
->    dcn32_add_phantom_pipes+0x47/0x460 [amdgpu]
->    dcn32_full_validate_bw_helper.constprop.0+0xa46/0x1d70 [amdgpu]
->    dcn32_internal_validate_bw+0x49c/0x1600 [amdgpu]
->    dml1_validate+0x20f/0x800 [amdgpu]
->    dcn32_validate_bandwidth+0x317/0x540 [amdgpu]
->    dc_validate_with_context+0xd34/0x1d30 [amdgpu]
->    dc_commit_streams+0x7ca/0x1810 [amdgpu]
->    amdgpu_dm_commit_streams+0xfd4/0x1e60 [amdgpu]
->    amdgpu_dm_atomic_commit_tail+0x29e/0x3520 [amdgpu]
->    commit_tail+0x204/0x4b0
->    process_one_work+0x8fd/0x16a0
->
-> Per-CPU __preempt_count on the crashing CPU at panic time was 0x202:
-> SOFTIRQ_DISABLE_OFFSET (0x200) from fpregs_lock() plus two preempt holds
-> from dc_fpu_begin() and kernel_fpu_begin().
->
-> The DML2 paths already wrap their large vzalloc()s in
-> DC_RUN_WITH_PREEMPTION_ENABLED() to handle this case (see
-> drivers/gpu/drm/amd/display/dc/dml2_0/dml21/dml21_wrapper.c:26 and
-> drivers/gpu/drm/amd/display/dc/dml2_0/dml2_wrapper.c:24). Apply the same
-> guard to the DML1 phantom-plane allocation in dcn32_enable_phantom_plane(=
-).
->
-> This is a separate class of issue from "drm/amd/display: Fix unsafe uses
-> of kernel mode FPU" by Ard Biesheuvel, which addressed callers entering
-> DC FP compilation units without DC_FP_START. The bug fixed here is the
-> inverse: a sleeping allocator invoked from within an active DC_FP_START
-> region.
->
-> Reproducer (RX 7900 XTX, single 4K HDMI display, DCN 3.2): launch any
-> workload that produces rapid atomic modeset commits. The most reliable
-> trigger observed is launching Rise of the Tomb Raider via Proton and
-> repeatedly pressing the Super key during the level loading screen;
-> crash occurs within ~4 minutes uptime. Random crashes are also observed
-> during routine fullscreen toggles (image viewers, chat applications).
->
-> Hardware verified clean: memtest86+ 4 passes, stressapptest -W -m 32
-> 4 hours, both pass with 0 errors. KASAN active, no reports under load.
->
-> Fixes: 235c67634230 ("drm/amd/display: add DCN32/321 specific files for D=
-isplay Core")
-> Cc: stable@vger.kernel.org # v6.0+
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+On 5/4/26 06:49, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.27 release.
+> There are 275 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 06 May 2026 13:50:54 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.27-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/4470
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Alex
-
-> ---
->  .../drm/amd/display/dc/resource/dcn32/dcn32_resource.c    | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource=
-.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-> index 82f81b586986..3751f7a94a05 100644
-> --- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-> +++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-> @@ -92,9 +92,14 @@
->  #include "dml/dcn32/dcn32_fpu.h"
->
->  #include "dc_state_priv.h"
-> +#include "dc_fpu.h"
->
->  #include "dml2_0/dml2_wrapper.h"
->
-> +#if !defined(DC_RUN_WITH_PREEMPTION_ENABLED)
-> +#define DC_RUN_WITH_PREEMPTION_ENABLED(code) code
-> +#endif
-> +
->  #define DC_LOGGER_INIT(logger)
->
->  enum dcn32_clk_src_array_id {
-> @@ -1684,7 +1689,8 @@ static void dcn32_enable_phantom_plane(struct dc *d=
-c,
->                 if (curr_pipe->top_pipe && curr_pipe->top_pipe->plane_sta=
-te =3D=3D curr_pipe->plane_state)
->                         phantom_plane =3D prev_phantom_plane;
->                 else
-> -                       phantom_plane =3D dc_state_create_phantom_plane(d=
-c, context, curr_pipe->plane_state);
-> +                       DC_RUN_WITH_PREEMPTION_ENABLED(phantom_plane =3D
-> +                               dc_state_create_phantom_plane(dc, context=
-, curr_pipe->plane_state));
->
->                 if (!phantom_plane)
->                         continue;
-> --
-> 2.54.0
->
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
