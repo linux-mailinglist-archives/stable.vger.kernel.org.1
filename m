@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-243057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GD3GNPyl+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:20 +0200
+	id 0I7TIqWl+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3506B4BE367
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8854BE298
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D8751305BF17
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 42DB4301082D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0123DB642;
-	Mon,  4 May 2026 13:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106263DC4D5;
+	Mon,  4 May 2026 13:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tpiq1/I3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRUnodNf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8133DDDD2;
-	Mon,  4 May 2026 13:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DF22E2F0E;
+	Mon,  4 May 2026 13:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902907; cv=none; b=C8/a3MgngEAgzcdb1l+OQzyymSV2PMqpe/V2b8U3u9tFrgr/8VlIEYh0hZRRQnsvCggt7ezMItrUvq+ru1WyGtVOz0bmouhE57aODY8OcugfRoYqD1jmlxihpp1OukhbLEZBwp+fTivYRQvZ313OS/UR0ZK356GUBCavTe7I8VU=
+	t=1777902909; cv=none; b=oGGE8cXbi3eRnS7wh4PMz96LWGrEJxLOcgZxz8FCihz3GKNCDSfeetJwbD5lPqPwHfqm5CLyrikYSOc2qJInp4ing2PMqoj4Jwf23WOV7gYsMx5cRvLszOjXK4HdLy+wWi9bfyJ2NTC43NIyMkWS2S8Dy54e1MQEnmA1x8lrhKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902907; c=relaxed/simple;
-	bh=7VzrL5s3lZIrntnzYGWOoTl2gj4phFO3LoKlNI6UkEw=;
+	s=arc-20240116; t=1777902909; c=relaxed/simple;
+	bh=ZzT6g+KrMqS+1Obuin2H7A6Pb9SMEgv95NxzT/1xa8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koqzjnzfPGfYCAapJ5I1UDRDc1EYA9iBvk+eWV/6dFR5h0C2QrDn6qQLZmt2T+pIJYJ9fOo+Wlgbf2MPMgvmQbCoVpc23GOa95jMtC4wf/QZv6K2d6DBEMwyU5uIziSRWgjjKw111ongBv8P7g7swyFyht+VGTW/xxYAPit+spU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tpiq1/I3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F43C2BCF5;
-	Mon,  4 May 2026 13:55:06 +0000 (UTC)
+	 MIME-Version; b=hH+VoyCHgsa4Z8VIcWNYJ4uCwnZ+ec2ZQDZIhrQQNMr8NYfGLgg6iBLJ2dVTI+Q1kAihu1g9qDYDmxPgt4iyJB+MhFgVoFoubtBRhodH5iRm0bVmNdoWMUzftv9OFLGhTYKps3tc6TiQrUR3L5QgQ6Iegt5tH+xbZBOmn7M2ymE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRUnodNf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB18C2BCF4;
+	Mon,  4 May 2026 13:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902906;
-	bh=7VzrL5s3lZIrntnzYGWOoTl2gj4phFO3LoKlNI6UkEw=;
+	s=korg; t=1777902909;
+	bh=ZzT6g+KrMqS+1Obuin2H7A6Pb9SMEgv95NxzT/1xa8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tpiq1/I3JxsOCMjYuy3bh5FQCMIfSns/RcgdyQb8DLiB7pyo8/Nd/idAXjX1E6T/d
-	 ct50u9Fysxm/rNBY5MFKeKgB8dRdIX75KltOgx/giH8+9SQ+KSQtwWjb1XyG9uvN8J
-	 kJdTt7qV+GJbYHKD3vPwNHQmUCfR9bkOurED0loQ=
+	b=oRUnodNfJtSGNDrGRz6gx85hvjgKFaNFODVi14uIgb6dqgStHqwtuaaSweoU1kVF6
+	 m7Dk//Kle4D08x0lwxijA0Q1RBtbudGEK2mrhxZWex046VL9A4wYWi5j6OnAQZvkmx
+	 DX5fIktHzWnFxjb4G++l7g3m9qognrrPOhHogljU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 7.0 004/307] usb: xhci: Make usb_host_endpoint.hcpriv survive endpoint_disable()
-Date: Mon,  4 May 2026 15:48:09 +0200
-Message-ID: <20260504135142.989117448@linuxfoundation.org>
+	Peter Chen <peter.chen@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 7.0 005/307] usb: chipidea: otg: not wait vbus drop if use role_switch
+Date: Mon,  4 May 2026 15:48:10 +0200
+Message-ID: <20260504135143.027487860@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
 References: <20260504135142.814938198@linuxfoundation.org>
@@ -63,101 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3506B4BE367
+X-Rspamd-Queue-Id: 7E8854BE298
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243057-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243058-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nxp.com:email]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 25e531b422dc2ac90cdae3b6e74b5cdeb081440d upstream.
+commit a4e99587102a83ee911c670752fbca694c7e557f upstream.
 
-xHCI hardware maintains its endpoint state between add_endpoint()
-and drop_endpoint() calls followed by successful check_bandwidth().
-So does the driver.
+The usb role switch will update ID and VBUS states at the same time, and
+vbus will not drop when execute data role swap in Type-C usecase. So lets
+not wait vbus drop in usb role switch case too.
 
-Core may call endpoint_disable() during xHCI endpoint life, so don't
-clear host_ep->hcpriv then, because this breaks endpoint_reset().
-
-If a driver calls usb_set_interface(), submits URBs which make host
-sequence state non-zero and calls usb_clear_halt(), the device clears
-its sequence state but xhci_endpoint_reset() bails out. The next URB
-malfunctions: USB2 loses one packet, USB3 gets Transaction Error or
-may not complete at all on some (buggy?) HCs from ASMedia and AMD.
-This is triggered by uvcvideo on bulk video devices.
-
-The code was copied from ehci_endpoint_disable() but it isn't needed
-here - hcpriv should only be NULL on emulated root hub endpoints.
-It might prevent resetting and inadvertently enabling a disabled and
-dropped endpoint, but core shouldn't try to reset dropped endpoints.
-
-Document xhci requirements regarding hcpriv. They are currently met.
-
-Fixes: 18b74067ac78 ("xhci: Fix use-after-free regression in xhci clear hub TT implementation")
+Fixes: e1b5d2bed67c ("usb: chipidea: core: handle usb role switch in a common way")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20260402131342.2628648-26-mathias.nyman@linux.intel.com
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260402071457.2516021-3-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.c |    1 -
- include/linux/usb.h     |    3 ++-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/otg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -3285,7 +3285,6 @@ rescan:
- 		xhci_dbg(xhci, "endpoint disable with ep_state 0x%x\n",
- 			 ep->ep_state);
- done:
--	host_ep->hcpriv = NULL;
- 	spin_unlock_irqrestore(&xhci->lock, flags);
- }
+--- a/drivers/usb/chipidea/otg.c
++++ b/drivers/usb/chipidea/otg.c
+@@ -187,8 +187,8 @@ void ci_handle_id_switch(struct ci_hdrc
  
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -55,7 +55,8 @@ struct ep_device;
-  * @eusb2_isoc_ep_comp: eUSB2 isoc companion descriptor for this endpoint
-  * @urb_list: urbs queued to this endpoint; maintained by usbcore
-  * @hcpriv: for use by HCD; typically holds hardware dma queue head (QH)
-- *	with one or more transfer descriptors (TDs) per urb
-+ *	with one or more transfer descriptors (TDs) per urb; must be preserved
-+ *	by core while BW is allocated for the endpoint
-  * @ep_dev: ep_device for sysfs info
-  * @extra: descriptors following this endpoint in the configuration
-  * @extralen: how many bytes of "extra" are valid
+ 		ci_role_stop(ci);
+ 
+-		if (role == CI_ROLE_GADGET &&
+-				IS_ERR(ci->platdata->vbus_extcon.edev))
++		if (role == CI_ROLE_GADGET && !ci->role_switch &&
++		    IS_ERR(ci->platdata->vbus_extcon.edev))
+ 			/*
+ 			 * Wait vbus lower than OTGSC_BSV before connecting
+ 			 * to host. If connecting status is from an external
 
 
 
