@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-243727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IONzAbqs+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:06 +0200
+	id cOwNLPyp+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91934BF72B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F07E4BEE77
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A3BD30314F2
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:23:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBA0E303D2EC
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17173D3334;
-	Mon,  4 May 2026 14:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E23D3DEAFA;
+	Mon,  4 May 2026 14:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKfc+uST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxXXdOnd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7417D3DE456;
-	Mon,  4 May 2026 14:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EF63DEAED;
+	Mon,  4 May 2026 14:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904622; cv=none; b=uFzyS6iaAT9renPjmrzy7bjDyPod5xfAuEJVHo4UnvDU5VrqA+bQCUIHzgPfUQ+iZ/UOs6m02f56+Ssn1HC319Cwa2/IIVhYLoAk6T28RhCXWbh/MFzKlTxOTb5L8gTzV5KRLZR4HvJbv6wCTCuW8huexvU0Ho0/mwEk9kZr7P8=
+	t=1777903549; cv=none; b=tqAdzv8rAgLNgbPuIeFwPMIJyo0MUc8mh4578VHYF5NjwPoZjfpZQHGq2z95AooMM0Sj+QyqScjxxurhqUmDkrBLGdL9w3pZ8guzbj5VDkeH2SAeuypDeyDshMrbXUu+//0Sz3aKAqHAPV49cGDo3MSmjrlml5eAlWfoGjFtdvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904622; c=relaxed/simple;
-	bh=AbQgoQH/2PcIFtf8Cqlt4qo8buUAsha4ado2AwiqF6I=;
+	s=arc-20240116; t=1777903549; c=relaxed/simple;
+	bh=VGaKw8sL1qQ0g9NqhRfrxoQDpJwVjvmzB7M5f20j2aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMX1I8708bciqB9vrCf6aaxZ0YM+Bh/c/4eYaQnkf8Y5HLSUq704Z17/RBlpV4x/5W/pIZWSRivZ6ZoEguvaIRICqhnyUgpqfjSK7oJCgc14JGYVmC8etRFHeEt3hc26Ci8jep0jOXicsK69WKhIYNuBgUiTg2FYyje1ccCuwFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKfc+uST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092B7C2BCB8;
-	Mon,  4 May 2026 14:23:41 +0000 (UTC)
+	 MIME-Version; b=J2NcWqYQZDgfo5Q6MutRjfgzrPoj+wxO9KRdJwoIlZn+MJvndid12TAFBRj51DtXHD8URTnNoFLcg6toGusAOqt3fk6ooYCD8gLWq6u581VVAzvDp6Y7NsXJSMj16iGyCiPCEg0hRBMev64UkkuOMPCYz/ZVkHpSb4Tvf6D/X48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxXXdOnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB40C2BCB8;
+	Mon,  4 May 2026 14:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904622;
-	bh=AbQgoQH/2PcIFtf8Cqlt4qo8buUAsha4ado2AwiqF6I=;
+	s=korg; t=1777903549;
+	bh=VGaKw8sL1qQ0g9NqhRfrxoQDpJwVjvmzB7M5f20j2aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKfc+uST56/U1wL9CCPpjNmfcIIyKh6Na5wNl4zzofGgPuQVgkTkzUL5Zk8kbOo8F
-	 MnAoF9Lfg2ulN7JJlxKp6RXoA8Sbbmy8IL2CyxWtcVr/6AbmNxoBafNErqwrSvtBjb
-	 Mc4UfDfvghc/FoZeVUw6h3EXM+7EkNT4pAzqRG+U=
+	b=VxXXdOndOmxleLsLqOYB0YJnDe9ftamzlztRlK7o45GwVr2B9DQv7KORrEZTIkFUT
+	 onv8gtay7ATwphhbW7lswpIdDp8q0re+vhm2DcL8eNd17xmP5PPELPvgTEAPhppE3S
+	 usJi1uN/zv8W+BcTENcuaa810fqIvwpXoPeCxeiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Justinien Bouron <jbouron@amazon.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.12 111/215] tpm: Fix auth session leak in tpm2_get_random() error path
+	Gayatri Kammela <Gayatri.Kammela@amd.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Subject: [PATCH 7.0 245/307] x86/cpu: Disable FRED when PTI is forced on
 Date: Mon,  4 May 2026 15:52:10 +0200
-Message-ID: <20260504135134.203878245@linuxfoundation.org>
+Message-ID: <20260504135152.048133994@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +65,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D91934BF72B
+X-Rspamd-Queue-Id: 1F07E4BEE77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243307-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243727-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,alien8.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gunnar Kudrjavets <gunnarku@amazon.com>
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-commit 666c1a2ca603d8314231200bf8bbb3a81bd64c6b upstream.
+commit 932d922285ef4d0d655a6f5def2779ae86ca0d73 upstream.
 
-When tpm_buf_fill_hmac_session() fails inside the do-while loop in
-tpm2_get_random(), the function returns directly after destroying the
-buffer, without ending the auth session via tpm2_end_auth_session().
+FRED and PTI were never intended to work together. No FRED hardware is
+vulnerable to Meltdown and all of it should have LASS anyway.
+Nevertheless, if you boot a system with pti=on and fred=on, the kernel
+tries to do what is asked of it and dies a horrible death on the first
+attempt to run userspace (since it never switches to the user page
+tables).
 
-This leaks the TPM auth session resource. All other error paths within
-the loop correctly reach the 'out' label which calls both
-tpm_buf_destroy() and tpm2_end_auth_session().
+Disable FRED when PTI is forced on, and print a warning about it.
 
-Fix this by replacing the early return with a goto to the existing 'out'
-label, which already handles both cleanup operations. The redundant
-tpm_buf_destroy() call is removed since 'out' takes care of it.
+A quick brain dump about what a FRED+PTI implementation would look like
+is below. I'm not sure it would make any sense to do it, but never say
+never. All I know is that it's way too complicated to be worth it today.
 
-Cc: stable@vger.kernel.org # v6.19+
-Fixes: 6e9722e9a7bf ("tpm2-sessions: Fix out of range indexing in name_size")
-Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Reviewed-by: Justinien Bouron <jbouron@amazon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+<brain dump>
+The SWITCH_TO_USER/KERNEL_CR3 bits are simple to fix (or at least we
+have the assembly tools to do it already), as is sticking the FRED entry
+text in .entry.text (it's not in there today).
+
+The nasty part is the stacks. Today, the CPU pops into the kernel on
+MSR_IA32_FRED_RSP0 which is normal old kernel memory and not mapped to
+userspace. The hardware pushes gunk on to MSR_IA32_FRED_RSP0, which is
+currently the task stacks. MSR_IA32_FRED_RSP0 would need to point
+elsewhere, probably cpu_entry_stack(). Then, start playing games with
+stacks on entry/exit, including copying gunk to and from the task stack.
+
+While I'd *like* to have PTI everywhere, I'm not sure it's worth mucking
+up the FRED code with PTI kludges. If a user wants fast entry/exit, they
+use FRED. If you want PTI (and sekuritay), you certainly don't care
+about fast entry and FRED isn't going to help you *all* that much, so
+you can just stay with the IDT.
+
+Plus, FRED hardware should have LASS which gives you a similar security
+profile to PTI without the CR3 munging.
+</brain dump>
+
+Reported-by: Gayatri Kammela <Gayatri.Kammela@amd.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://patch.msgid.link/20260421163136.E7C6788A@davehans-spike.ostc.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm2-cmd.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/mm/pti.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -338,10 +338,8 @@ int tpm2_get_random(struct tpm_chip *chi
- 						NULL, 0);
- 		tpm_buf_append_u16(&buf, num_bytes);
- 		err = tpm_buf_fill_hmac_session(chip, &buf);
--		if (err) {
--			tpm_buf_destroy(&buf);
--			return err;
--		}
-+		if (err)
-+			goto out;
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -105,6 +105,11 @@ void __init pti_check_boottime_disable(v
+ 		pr_debug("PTI enabled, disabling INVLPGB\n");
+ 		setup_clear_cpu_cap(X86_FEATURE_INVLPGB);
+ 	}
++
++	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
++		pr_debug("PTI enabled, disabling FRED\n");
++		setup_clear_cpu_cap(X86_FEATURE_FRED);
++	}
+ }
  
- 		err = tpm_transmit_cmd(chip, &buf,
- 				       offsetof(struct tpm2_get_random_out,
+ static int __init pti_parse_cmdline(char *arg)
 
 
 
