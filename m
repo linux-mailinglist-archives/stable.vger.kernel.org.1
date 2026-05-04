@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-243586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHBvNgCu+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:32 +0200
+	id KA4LHoew+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:43:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679724BFA2B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02094BFF04
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E0BF313A481
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0792730A3ACC
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267DD3DE452;
-	Mon,  4 May 2026 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAAB3DEAEC;
+	Mon,  4 May 2026 14:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJxo3tyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaiwC2DK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF9B3DE43C;
-	Mon,  4 May 2026 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9E63DEAD3;
+	Mon,  4 May 2026 14:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904264; cv=none; b=ufYAZJy4HBuuiAPKXhbbc1x+w2YclOPVHJ6zFbPWOpKSH5pcSRPWBvC6oxR/M+Jrp+zqP0BoT8IiBXsHVBVEoxkHelZb/Fjx3UkdY0/IaBOUtOg3zcMrK3ViC1IvhyDVSXdetRG50RxuDP2R0029yBbKWdbpPZUHlDrMoKXXzEE=
+	t=1777904795; cv=none; b=bZAxzUcxHuReCBmZ8FXxV4RxEc2nceKw12qmZiV49hBQSlzBuXHmVDqGxTtUDe3IR17larvLJYMa9kp8j54jya122jBe5BLZEtyU5IIO+HqBcXTKlZP9dj/f+5gODFJdfQDvxAZoGpUDZK4aIWh61p/yRIWSb26WWMFFa6QApYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904264; c=relaxed/simple;
-	bh=lMfI71fBHIrrN1iOoakXayfaW3Kz5Z8DUtZtrIViK7w=;
+	s=arc-20240116; t=1777904795; c=relaxed/simple;
+	bh=jXWpQgccxca/1JZ37xyH/8yD+O8bejF4wc5nP7K9/xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rrc8x8CnWixnqTk13KC2LebCpbZtvjQef4dn+OUlkB4d5bHR9QKh4AIcTbdlyV2cSeItOOU2bcVToBvUgXPR8SXVt0wjEMeME32AtMwIPmWoqPukIIF5n80OGJBk4ct49tP7YAgWlmklp4DvTClN/IdByvbM5TUSTZxS+XyH/+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJxo3tyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727FCC2BCC4;
-	Mon,  4 May 2026 14:17:44 +0000 (UTC)
+	 MIME-Version; b=H9cixLHgJhtzySwarHfmGRxUU8s1+0nb5l8wk9PraaKWTs1ZIHhrT+XYFdZLAMtZQDuTEY5GXzXpCYssdsXn/cOKd/pdK+lg4XE/E9cFJMQqYFy4D7mISvz4OPX/2OaBS1pZUCtZDsF4h342j6zii2eRsq4fpcWTg8TfFdL5INE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaiwC2DK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309CEC2BCB8;
+	Mon,  4 May 2026 14:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904264;
-	bh=lMfI71fBHIrrN1iOoakXayfaW3Kz5Z8DUtZtrIViK7w=;
+	s=korg; t=1777904795;
+	bh=jXWpQgccxca/1JZ37xyH/8yD+O8bejF4wc5nP7K9/xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJxo3tyZr2li6ZkBbRT5XjBlZGOBXkiXxS9qYHMDPwhZB909hYMS6xXppgYzskAbq
-	 gasdEw8CSnkKN4ImsYujSoot5Fg9dTZdYjCvYGoUowHLIim9c0tglwz81QztTEpTwL
-	 ZupsW8Ysjicu2r3Fqrpx3MfpZsenwyQyQbJ59QpU=
+	b=QaiwC2DKaeeyee2rXWFPNzunkj72X7xMtiJPCKCDxJ3AZfiZVXK+nLcw7lVHbiras
+	 3zWZTROfgGxjLe7l4N1ArNrzh1Gj8LnlsW+YahnyUzIp+ojT619+cIT1UjbJLzM5Zf
+	 wnuhmH8FPlnvAuFUmHAsQOTzdGRQKKgDx8kF4uow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 248/275] arm64: mm: Fix rodata=full block mapping support for realm guests
-Date: Mon,  4 May 2026 15:53:08 +0200
-Message-ID: <20260504135152.254199061@linuxfoundation.org>
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Keenan Dong <keenanat2000@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.12 170/215] rtmutex: Use waiter::task instead of current in remove_waiter()
+Date: Mon,  4 May 2026 15:53:09 +0200
+Message-ID: <20260504135136.394866572@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,215 +67,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 679724BFA2B
+X-Rspamd-Queue-Id: E02094BFF04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org];
+	TAGGED_FROM(0.00)[bounces-243794-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243586-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lzu.edu.cn:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Keenan Dong <keenanat2000@gmail.com>
 
-[ Upstream commit f12b435de2f2bb09ce406467020181ada528844c ]
+commit 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 upstream.
 
-Commit a166563e7ec37 ("arm64: mm: support large block mapping when
-rodata=full") enabled the linear map to be mapped by block/cont while
-still allowing granular permission changes on BBML2_NOABORT systems by
-lazily splitting the live mappings. This mechanism was intended to be
-usable by realm guests since they need to dynamically share dma buffers
-with the host by "decrypting" them - which for Arm CCA, means marking
-them as shared in the page tables.
+remove_waiter() is used by the slowlock paths, but it is also used for
+proxy-lock rollback in rt_mutex_start_proxy_lock() when invoked from
+futex_requeue().
 
-However, it turns out that the mechanism was failing for realm guests
-because realms need to share their dma buffers (via
-__set_memory_enc_dec()) much earlier during boot than
-split_kernel_leaf_mapping() was able to handle. The report linked below
-showed that GIC's ITS was one such user. But during the investigation I
-found other callsites that could not meet the
-split_kernel_leaf_mapping() constraints.
+In the latter case waiter::task is not current, but remove_waiter()
+operates on current for the dequeue operation. That results in several
+problems:
 
-The problem is that we block map the linear map based on the boot CPU
-supporting BBML2_NOABORT, then check that all the other CPUs support it
-too when finalizing the caps. If they don't, then we stop_machine() and
-split to ptes. For safety, split_kernel_leaf_mapping() previously
-wouldn't permit splitting until after the caps were finalized. That
-ensured that if any secondary cpus were running that didn't support
-BBML2_NOABORT, we wouldn't risk breaking them.
+  1) the rbtree dequeue happens without waiter::task::pi_lock being held
 
-I've fix this problem by reducing the black-out window where we refuse
-to split; there are now 2 windows. The first is from T0 until the page
-allocator is inititialized. Splitting allocates memory for the page
-allocator so it must be in use. The second covers the period between
-starting to online the secondary cpus until the system caps are
-finalized (this is a very small window).
+  2) the waiter task's pi_blocked_on state is not cleared, which leaves a
+     dangling pointer primed for UAF around.
 
-All of the problematic callers are calling __set_memory_enc_dec() before
-the secondary cpus come online, so this solves the problem. However, one
-of these callers, swiotlb_update_mem_attributes(), was trying to split
-before the page allocator was initialized. So I have moved this call
-from arch_mm_preinit() to mem_init(), which solves the ordering issue.
+  3) rt_mutex_adjust_prio_chain() operates on the wrong top priority waiter
+     task
 
-I've added warnings and return an error if any attempt is made to split
-in the black-out windows.
+Use waiter::task instead of current in all related operations in
+remove_waiter() to cure those problems.
 
-Note there are other issues which prevent booting all the way to user
-space, which will be fixed in subsequent patches.
+[ tglx: Fixup rt_mutex_adjust_prio_chain(), add a comment and amend the
+  	changelog ]
 
-Reported-by: Jinjiang Tu <tujinjiang@huawei.com>
-Closes: https://lore.kernel.org/all/0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com/
-Fixes: a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full")
+Fixes: 8161239a8bcc ("rtmutex: Simplify PI algorithm and make highest prio task get lock")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ adjusted context to use `__ASSEMBLY__` instead of `__ASSEMBLER__` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/mmu.h |    2 +
- arch/arm64/mm/init.c         |    9 +++++++-
- arch/arm64/mm/mmu.c          |   45 ++++++++++++++++++++++++++++++-------------
- 3 files changed, 42 insertions(+), 14 deletions(-)
+ kernel/locking/rtmutex.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/include/asm/mmu.h
-+++ b/arch/arm64/include/asm/mmu.h
-@@ -112,5 +112,7 @@ void kpti_install_ng_mappings(void);
- static inline void kpti_install_ng_mappings(void) {}
- #endif
- 
-+extern bool page_alloc_available;
-+
- #endif	/* !__ASSEMBLY__ */
- #endif
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -357,7 +357,6 @@ void __init arch_mm_preinit(void)
- 	}
- 
- 	swiotlb_init(swiotlb, flags);
--	swiotlb_update_mem_attributes();
- 
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can be
-@@ -384,6 +383,14 @@ void __init arch_mm_preinit(void)
- 	}
- }
- 
-+bool page_alloc_available __ro_after_init;
-+
-+void __init mem_init(void)
-+{
-+	page_alloc_available = true;
-+	swiotlb_update_mem_attributes();
-+}
-+
- void free_initmem(void)
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1531,20 +1531,23 @@ static bool rtmutex_spin_on_owner(struct
+  *
+  * Must be called with lock->wait_lock held and interrupts disabled. It must
+  * have just failed to try_to_take_rt_mutex().
++ *
++ * When invoked from rt_mutex_start_proxy_lock() waiter::task != current !
+  */
+ static void __sched remove_waiter(struct rt_mutex_base *lock,
+ 				  struct rt_mutex_waiter *waiter)
  {
- 	void *lm_init_begin = lm_alias(__init_begin);
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -774,30 +774,51 @@ static inline bool force_pte_mapping(voi
- }
+ 	bool is_top_waiter = (waiter == rt_mutex_top_waiter(lock));
+ 	struct task_struct *owner = rt_mutex_owner(lock);
++	struct task_struct *waiter_task = waiter->task;
+ 	struct rt_mutex_base *next_lock;
  
- static DEFINE_MUTEX(pgtable_split_lock);
-+static bool linear_map_requires_bbml2;
+ 	lockdep_assert_held(&lock->wait_lock);
  
- int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
- {
- 	int ret;
- 
- 	/*
--	 * !BBML2_NOABORT systems should not be trying to change permissions on
--	 * anything that is not pte-mapped in the first place. Just return early
--	 * and let the permission change code raise a warning if not already
--	 * pte-mapped.
--	 */
--	if (!system_supports_bbml2_noabort())
--		return 0;
--
--	/*
- 	 * If the region is within a pte-mapped area, there is no need to try to
- 	 * split. Additionally, CONFIG_DEBUG_PAGEALLOC and CONFIG_KFENCE may
- 	 * change permissions from atomic context so for those cases (which are
- 	 * always pte-mapped), we must not go any further because taking the
--	 * mutex below may sleep.
-+	 * mutex below may sleep. Do not call force_pte_mapping() here because
-+	 * it could return a confusing result if called from a secondary cpu
-+	 * prior to finalizing caps. Instead, linear_map_requires_bbml2 gives us
-+	 * what we need.
- 	 */
--	if (force_pte_mapping() || is_kfence_address((void *)start))
-+	if (!linear_map_requires_bbml2 || is_kfence_address((void *)start))
- 		return 0;
- 
-+	if (!system_supports_bbml2_noabort()) {
-+		/*
-+		 * !BBML2_NOABORT systems should not be trying to change
-+		 * permissions on anything that is not pte-mapped in the first
-+		 * place. Just return early and let the permission change code
-+		 * raise a warning if not already pte-mapped.
-+		 */
-+		if (system_capabilities_finalized())
-+			return 0;
-+
-+		/*
-+		 * Boot-time: split_kernel_leaf_mapping_locked() allocates from
-+		 * page allocator. Can't split until it's available.
-+		 */
-+		if (WARN_ON(!page_alloc_available))
-+			return -EBUSY;
-+
-+		/*
-+		 * Boot-time: Started secondary cpus but don't know if they
-+		 * support BBML2_NOABORT yet. Can't allow splitting in this
-+		 * window in case they don't.
-+		 */
-+		if (WARN_ON(num_online_cpus() > 1))
-+			return -EBUSY;
+-	raw_spin_lock(&current->pi_lock);
+-	rt_mutex_dequeue(lock, waiter);
+-	current->pi_blocked_on = NULL;
+-	raw_spin_unlock(&current->pi_lock);
++	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
++		rt_mutex_dequeue(lock, waiter);
++		waiter_task->pi_blocked_on = NULL;
 +	}
-+
+ 
  	/*
- 	 * Ensure start and end are at least page-aligned since this is the
- 	 * finest granularity we can split to.
-@@ -897,8 +918,6 @@ static int range_split_to_ptes(unsigned
- 	return ret;
+ 	 * Only update priority if the waiter was the highest priority
+@@ -1580,7 +1583,7 @@ static void __sched remove_waiter(struct
+ 	raw_spin_unlock_irq(&lock->wait_lock);
+ 
+ 	rt_mutex_adjust_prio_chain(owner, RT_MUTEX_MIN_CHAINWALK, lock,
+-				   next_lock, NULL, current);
++				   next_lock, NULL, waiter_task);
+ 
+ 	raw_spin_lock_irq(&lock->wait_lock);
  }
- 
--static bool linear_map_requires_bbml2 __initdata;
--
- u32 idmap_kpti_bbml2_flag;
- 
- static void __init init_idmap_kpti_bbml2_flag(void)
 
 
 
