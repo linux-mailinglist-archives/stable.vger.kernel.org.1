@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JcCDg6p+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:26 +0200
+	id CDxPK6eo+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D60BF4BEB97
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73FB4BEA36
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4DFD301A14C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF6DD304BD8E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA903A7F4C;
-	Mon,  4 May 2026 14:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA5F3D3308;
+	Mon,  4 May 2026 14:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8+JAr4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzku472Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518883AA4F8;
-	Mon,  4 May 2026 14:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1BF3A3822;
+	Mon,  4 May 2026 14:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903848; cv=none; b=hQ4gBdknWkn1cd2OK8ms6TcQ7GtpuknKcBl0VgRrhjexDH5aS+6RYSD+cVGupq2ue2r2k0iUKCkpg61YztdKmDeEnQpdZHJ2VBO1HvnCeSPOtVgoKQHe/QZzHcq0MfiOQUjreHJxYPF+wR1cufDtEPNDxAN5CEjbXnLBj1hrzVw=
+	t=1777903278; cv=none; b=XHlQmBAFcLKVCukIKacTrs5VwpsJhssTONy8uoNNT326EuJgJ8U+4WNNXg2wCugDj7FSnHc7tsKKSRQUEcPTCRzu+6KxF4KcQHfHKTMAq/+5WFrNmCye+RIeHx0C3nXQ4AkptFt487wR8ZC1d1vSpjDFp438OqXO65AXvOQpOKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903848; c=relaxed/simple;
-	bh=6kTPrl0ngUrpTNPk6xY/KK5bQR9qEqB2hA/I3GDbNmM=;
+	s=arc-20240116; t=1777903278; c=relaxed/simple;
+	bh=5B112vYQmrbo+xi7qioZZ/MLRlDBJ0/pIEEGlcJ9eSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrZsdjyISvBDUoUxxLLH7PrO/N8CW0OBbNzxupBzjPh6LPlrOPIhTKni/o7nZmYiq7+lb69wY86H+n9kNxqrddFNPMNh/fRT3YXkmC6xzJxvUA9YEU8mB+tbq8FKxK18zoTrzAggNkK8WZ8UoS0uXRR3p9kSQTnugjCoTt66bQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8+JAr4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB67CC2BCB8;
-	Mon,  4 May 2026 14:10:47 +0000 (UTC)
+	 MIME-Version; b=LwVjmUSIsVq1oGpbQHsudUyCbKsig29YrXtEPku+1TlnpFgnbBEjpLxltOU4akJIZdT4Ssg46Y/LOmP01K8Xvs1sFBUeqwkowCorNAf2+5/SDL3kncB1XVDl4pnwdvnSEVdkU7WDy1edzuA96vL7Opcmo8Z86f33cI53XjGJ9q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzku472Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04858C2BCB8;
+	Mon,  4 May 2026 14:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903848;
-	bh=6kTPrl0ngUrpTNPk6xY/KK5bQR9qEqB2hA/I3GDbNmM=;
+	s=korg; t=1777903278;
+	bh=5B112vYQmrbo+xi7qioZZ/MLRlDBJ0/pIEEGlcJ9eSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q8+JAr4iWTIOxZgs61pLH6v9sXwUgmDflmiTyvN6Z2VD3Mm5rjpnVwhh40pPKhiKJ
-	 CNQobpZ5VDdizPBUIO83rC7ZREDArG3NV0KHefp5eEHqfdpGsH8VZkpGW9J0v499GO
-	 peWkwcaYyuz/X/i4D+Ty+Kyy2whRva8DOAjALZ/U=
+	b=xzku472ZyO7/oQguIoPn6ng0VbmWvTUdFTQx5x2ekRcPBRNwccM/fRYilP3MfVpdz
+	 +DFeVKA6/5fzUK3ziRRn0Ikf5iXUjZ3r4uGWgbCK5xtba4voFNuEVsNP5KfKJBI9Lf
+	 C+EE92x7s/e7YsgtkQxlCNMAi5AHvUIK4WYxzfbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>
-Subject: [PATCH 6.18 084/275] reset: rzv2h-usb2phy: Keep PHY clock enabled for entire device lifetime
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 139/307] net: qrtr: ns: Free the node during ctrl_cmd_bye()
 Date: Mon,  4 May 2026 15:50:24 +0200
-Message-ID: <20260504135146.043235227@linuxfoundation.org>
+Message-ID: <20260504135148.013234518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D60BF4BEB97
+X-Rspamd-Queue-Id: B73FB4BEA36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,187 +80,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243424-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243202-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email,renesas.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 8889b289ce1bd11a5102b9617742a1b93bb4843e upstream.
+commit 68efba36446a7774ea5b971257ade049272a07ac upstream.
 
-The driver was disabling the USB2 PHY clock immediately after register
-initialization in probe() and after each reset operation. This left the
-PHY unclocked even though it must remain active for USB functionality.
+A node sends the BYE packet when it is about to go down. So the nameserver
+should advertise the removal of the node to all remote and local observers
+and free the node finally. But currently, the nameserver doesn't free the
+node memory even after processing the BYE packet. This causes the node
+memory to leak.
 
-The behavior appeared to work only when another driver
-(e.g., USB controller) had already enabled the clock, making operation
-unreliable and hardware-dependent. In configurations where this driver
-is the sole clock user, USB functionality would fail.
-
-Fix this by:
-- Enabling the clock once in probe() via pm_runtime_resume_and_get()
-- Removing all pm_runtime_put() calls from assert/deassert/status
-- Registering a devm cleanup action to release the clock at removal
-- Removed rzv2h_usbphy_assert_helper() and its call in
-  rzv2h_usb2phy_reset_probe()
-
-This ensures the PHY clock remains enabled for the entire device lifetime,
-preventing instability and aligning with hardware requirements.
+Hence, remove the node from Xarray list and free the node memory during
+both success and failure case of ctrl_cmd_bye().
 
 Cc: stable@vger.kernel.org
-Fixes: e3911d7f865b ("reset: Add USB2PHY port reset driver for Renesas RZ/V2H(P)")
-Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-3-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/reset/reset-rzv2h-usb2phy.c |   64 ++++++++++--------------------------
- 1 file changed, 18 insertions(+), 46 deletions(-)
+ net/qrtr/ns.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/reset/reset-rzv2h-usb2phy.c
-+++ b/drivers/reset/reset-rzv2h-usb2phy.c
-@@ -49,9 +49,10 @@ static inline struct rzv2h_usb2phy_reset
- 	return container_of(rcdev, struct rzv2h_usb2phy_reset_priv, rcdev);
- }
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -360,7 +360,7 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 	struct qrtr_node *node;
+ 	unsigned long index;
+ 	struct kvec iv;
+-	int ret;
++	int ret = 0;
  
--/* This function must be called only after pm_runtime_resume_and_get() has been called */
--static void rzv2h_usbphy_assert_helper(struct rzv2h_usb2phy_reset_priv *priv)
-+static int rzv2h_usbphy_reset_assert(struct reset_controller_dev *rcdev,
-+				     unsigned long id)
- {
-+	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
- 	const struct rzv2h_usb2phy_reset_of_data *data = priv->data;
+ 	iv.iov_base = &pkt;
+ 	iv.iov_len = sizeof(pkt);
+@@ -375,8 +375,10 @@ static int ctrl_cmd_bye(struct sockaddr_
  
- 	scoped_guard(spinlock, &priv->lock) {
-@@ -60,24 +61,6 @@ static void rzv2h_usbphy_assert_helper(s
+ 	/* Advertise the removal of this client to all local servers */
+ 	local_node = node_get(qrtr_ns.local_node);
+-	if (!local_node)
+-		return 0;
++	if (!local_node) {
++		ret = 0;
++		goto delete_node;
++	}
+ 
+ 	memset(&pkt, 0, sizeof(pkt));
+ 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
+@@ -393,10 +395,18 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
+ 		if (ret < 0 && ret != -ENODEV) {
+ 			pr_err("failed to send bye cmd\n");
+-			return ret;
++			goto delete_node;
+ 		}
  	}
- 
- 	usleep_range(11, 20);
--}
--
--static int rzv2h_usbphy_reset_assert(struct reset_controller_dev *rcdev,
--				     unsigned long id)
--{
--	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
--	struct device *dev = priv->dev;
--	int ret;
--
--	ret = pm_runtime_resume_and_get(dev);
--	if (ret) {
--		dev_err(dev, "pm_runtime_resume_and_get failed\n");
--		return ret;
--	}
--
--	rzv2h_usbphy_assert_helper(priv);
--
--	pm_runtime_put(dev);
- 
- 	return 0;
- }
-@@ -87,14 +70,6 @@ static int rzv2h_usbphy_reset_deassert(s
- {
- 	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
- 	const struct rzv2h_usb2phy_reset_of_data *data = priv->data;
--	struct device *dev = priv->dev;
--	int ret;
--
--	ret = pm_runtime_resume_and_get(dev);
--	if (ret) {
--		dev_err(dev, "pm_runtime_resume_and_get failed\n");
--		return ret;
--	}
- 
- 	scoped_guard(spinlock, &priv->lock) {
- 		writel(data->reset_deassert_val, priv->base + data->reset_reg);
-@@ -102,8 +77,6 @@ static int rzv2h_usbphy_reset_deassert(s
- 		writel(data->reset_release_val, priv->base + data->reset_reg);
- 	}
- 
--	pm_runtime_put(dev);
--
- 	return 0;
- }
- 
-@@ -111,20 +84,10 @@ static int rzv2h_usbphy_reset_status(str
- 				     unsigned long id)
- {
- 	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
--	struct device *dev = priv->dev;
--	int ret;
- 	u32 reg;
- 
--	ret = pm_runtime_resume_and_get(dev);
--	if (ret) {
--		dev_err(dev, "pm_runtime_resume_and_get failed\n");
--		return ret;
--	}
--
- 	reg = readl(priv->base + priv->data->reset_reg);
- 
--	pm_runtime_put(dev);
--
- 	return (reg & priv->data->reset_status_bits) == priv->data->reset_status_bits;
- }
- 
-@@ -141,6 +104,11 @@ static int rzv2h_usb2phy_reset_of_xlate(
- 	return 0;
- }
- 
-+static void rzv2h_usb2phy_reset_pm_runtime_put(void *data)
-+{
-+	pm_runtime_put(data);
-+}
+-	return 0;
 +
- static int rzv2h_usb2phy_reset_probe(struct platform_device *pdev)
- {
- 	const struct rzv2h_usb2phy_reset_of_data *data;
-@@ -175,14 +143,14 @@ static int rzv2h_usb2phy_reset_probe(str
- 	if (error)
- 		return dev_err_probe(dev, error, "pm_runtime_resume_and_get failed\n");
- 
-+	error = devm_add_action_or_reset(dev, rzv2h_usb2phy_reset_pm_runtime_put,
-+					 dev);
-+	if (error)
-+		return dev_err_probe(dev, error, "unable to register cleanup action\n");
++	/* Ignore -ENODEV */
++	ret = 0;
 +
- 	for (unsigned int i = 0; i < data->init_val_count; i++)
- 		writel(data->init_vals[i].val, priv->base + data->init_vals[i].reg);
- 
--	/* keep usb2phy in asserted state */
--	rzv2h_usbphy_assert_helper(priv);
--
--	pm_runtime_put(dev);
--
- 	priv->rcdev.ops = &rzv2h_usbphy_reset_ops;
- 	priv->rcdev.of_reset_n_cells = 0;
- 	priv->rcdev.nr_resets = 1;
-@@ -190,7 +158,11 @@ static int rzv2h_usb2phy_reset_probe(str
- 	priv->rcdev.of_node = dev->of_node;
- 	priv->rcdev.dev = dev;
- 
--	return devm_reset_controller_register(dev, &priv->rcdev);
-+	error = devm_reset_controller_register(dev, &priv->rcdev);
-+	if (error)
-+		return dev_err_probe(dev, error, "could not register reset controller\n");
++delete_node:
++	xa_erase(&nodes, from->sq_node);
++	kfree(node);
 +
-+	return 0;
++	return ret;
  }
  
- /*
+ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
 
 
 
