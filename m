@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2H8EIU+o+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:15 +0200
+	id qJ5uJwWr+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D994BE960
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4234BF177
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5CE8303FDE2
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE5D7302F397
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F023DD519;
-	Mon,  4 May 2026 13:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA08A3DE454;
+	Mon,  4 May 2026 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQnl0gZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEhYrKtS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC2D3A7F4C;
-	Mon,  4 May 2026 13:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5A83D9029;
+	Mon,  4 May 2026 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903192; cv=none; b=Cg0P6BXz6BoveCTKMNt7ElpYWPZEr3HfxNJGSM5GcPhsNZu497aIrBSn+7/UVFA/FtfZXFmzaSrK+KtKWcqMNd4HEpMhkcKI3oPRbKojpArwB8oxErzdx+5Sb35Tnd81k7YtNLBN1YiCmDRnk2iWT+1TxLhW/A/jl0ruJeX28ms=
+	t=1777903737; cv=none; b=e1vXfnPlSnQOsUhd7rTl4OZATxSSAm8xVoWPmc2xEKIWuEHSs4DFpd53p4NMHT5twC6eCdxdfZVqtbr/LjX4Nn5yGjU597g6pdM7EQidiSnmrWZCl1/PIc94JA2Rh12q03WiZf/1obGmcvdbKV8P79X60WaWkCAUkrafs9OaSG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903192; c=relaxed/simple;
-	bh=5D7bN/QVMZTTahc/A2Nbv8jUARaIZeu69whFhT4XrHw=;
+	s=arc-20240116; t=1777903737; c=relaxed/simple;
+	bh=4dPFEwQA/k9Vr4zyyZWu7SvWI4UMbTYfZiYPzM4HPSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBSNtJAL8ETGE8djou8y3HS4pnP5Dc6nQp43pfQrZBpz+lV6GjBEeVJszekvvo+CQhK53n3LuGfjK7cT07mGfYuTuT0gzvo2yUeStqDSoKgFvAnAjZPkDLPJr491irPFDO9RnSMXoe2QpD9V/YWthABjw9op4peJz+OI4vkW/vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQnl0gZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E99C2BCB8;
-	Mon,  4 May 2026 13:59:52 +0000 (UTC)
+	 MIME-Version; b=i5w2gESh9XeuwiB6dDT2V5YUivD0oBqd01arm7Wr74QltcbMEOeOuWo5oAFlWgswTjPW+oNkq5oLjsXCRQ6nsuvBzZjghszFPCNfkoKC6x2ag4aeAflqdq/FLh7PyaY2zq42m0B49NPzlW9XUOhbZhQlh3RWw8PhKc4GDVqWTYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEhYrKtS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0436EC2BCB8;
+	Mon,  4 May 2026 14:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903192;
-	bh=5D7bN/QVMZTTahc/A2Nbv8jUARaIZeu69whFhT4XrHw=;
+	s=korg; t=1777903737;
+	bh=4dPFEwQA/k9Vr4zyyZWu7SvWI4UMbTYfZiYPzM4HPSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQnl0gZbxDNmzPMEBwqLXlz2aKJAPtorPQ2ahyR4h8Yqs0wyp7Ss86JJvbSlGolgK
-	 8BkAEiJMN2N0hoJee9B9Q3aXVYDTKLXfc8ixVo2jVIHpISpX2TCgbeLgtOEy5T5IEx
-	 /ASVHd0/G8dPCsgiVPjGF/v9sthLJwF115OukBuY=
+	b=aEhYrKtS9pDdjQgb7RcLnN6tuEypH8OObcgrHTIXbABLuv3RMDKD8XHhqKSiVMyQC
+	 rR7TwB1hgHGQxf5fKhlR1mtHmrQCaO4KmKyxh51s+QpJYNsTSDqv19vPQDxAt3BlGM
+	 vWwIK6YHZp/luLjNUAR6IVCyRKTnRNpe1le3pP/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Liebold <simonlie@amazon.de>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 7.0 097/307] selftests/mqueue: Fix incorrectly named file
+	Wentao Liang <vulab@iscas.ac.cn>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.18 042/275] of: unittest: fix use-after-free in of_unittest_changeset()
 Date: Mon,  4 May 2026 15:49:42 +0200
-Message-ID: <20260504135146.463940657@linuxfoundation.org>
+Message-ID: <20260504135144.503833157@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F2D994BE960
+X-Rspamd-Queue-Id: EE4234BF177
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243169-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243381-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,48 +92,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,iscas.ac.cn:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Liebold <simonlie@amazon.de>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 64fac99037689020ad97e472ae898e96ea3616dc upstream.
+commit faecdd423c27f0d6090156a435ba9dbbac0eaddb upstream.
 
-Commit 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
-intended to increase the timeout for mq_perf_tests from the default
-kselftest limit of 45 seconds to 180 seconds.
+The variable 'parent' is assigned the value of 'nchangeset' earlier in the
+function, meaning both point to the same struct device_node. The call to
+of_node_put(nchangeset) can decrement the reference count to zero and
+free the node if there are no other holders. After that, the code still
+uses 'parent' to check for the presence of a property and to read a
+string property, leading to a use-after-free.
 
-Unfortunately, the file storing this information was incorrectly named
-`setting` instead of `settings`, causing the kselftest runner not to
-pick up the limit and keep using the default 45 seconds limit.
+Fix this by moving the of_node_put() call after the last access to
+'parent', avoiding the UAF.
 
-Fix this by renaming it to `settings` to ensure that the kselftest
-runner uses the increased timeout of 180 seconds for this test.
-
-Fixes: 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
-Cc: <stable@vger.kernel.org> # 5.10.y
-Signed-off-by: Simon Liebold <simonlie@amazon.de>
-Link: https://lore.kernel.org/r/20260312140200.2224850-1-simonlie@amazon.de
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 1c668ea65506 ("of: unittest: Use of_property_present()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260409022233.418103-1-vulab@iscas.ac.cn
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mqueue/{setting => settings} | 0
- tools/testing/selftests/mqueue/setting  |    1 -
- tools/testing/selftests/mqueue/settings |    1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename tools/testing/selftests/mqueue/{setting => settings} (100%)
+ drivers/of/unittest.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/tools/testing/selftests/mqueue/setting
-+++ /dev/null
-@@ -1 +0,0 @@
--timeout=180
---- /dev/null
-+++ b/tools/testing/selftests/mqueue/settings
-@@ -0,0 +1 @@
-+timeout=180
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -896,8 +896,6 @@ static void __init of_unittest_changeset
+ 
+ 	unittest(!of_changeset_apply(&chgset), "apply failed\n");
+ 
+-	of_node_put(nchangeset);
+-
+ 	/* Make sure node names are constructed correctly */
+ 	unittest((np = of_find_node_by_path("/testcase-data/changeset/n2/n21")),
+ 		 "'%pOF' not added\n", n21);
+@@ -919,6 +917,7 @@ static void __init of_unittest_changeset
+ 	if (!ret)
+ 		unittest(strcmp(propstr, "hello") == 0, "original value not in updated property after revert");
+ 
++	of_node_put(nchangeset);
+ 	of_changeset_destroy(&chgset);
+ 
+ 	of_node_put(n1);
 
 
 
