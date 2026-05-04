@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-243639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EClNATOr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:35 +0200
+	id YObLAYOo+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE594BF20D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0F84BE9DD
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22D183025E69
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 246833047BC0
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3383DE443;
-	Mon,  4 May 2026 14:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7343D904D;
+	Mon,  4 May 2026 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Em8eSXf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wevn0jLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E70C315785;
-	Mon,  4 May 2026 14:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110A3B19D1;
+	Mon,  4 May 2026 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904398; cv=none; b=eaAj3VeIMvqm46GXhshNhIgkXwME8QwmkAN6SpK6lK3ZHgU0W1D/65qkQ+uMiE8Funh0+jzFUw84lKQ/s7+f8Mg95O3utGXzp3SKRr6RRmqEYu86PuvxRDgZRJ9ceAilaWyMcjbaaIdzuJlYTNRQ5NMPw7iy/l1GumlrxDYWrjU=
+	t=1777903239; cv=none; b=J1dTm93b5bcR0ofaWfKz1xtB1DkDUkiy3x+X1bO8dpdEnPPIWkFbsXupB7gEZSwIGfNV2v8eZYFoWzx4GQcBDpaPwsjrqt2W6Zgo9xqL5WbNs1+h5y33+mKFiGvR1cb2CQsZiqKxsuyuyshrFbHhpVdkt7ICJ7PfOiqahDAZkGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904398; c=relaxed/simple;
-	bh=uykBgZ8JIVZkVV5UFdvhX5h3aqPOnmv3bWY6ze+o//Q=;
+	s=arc-20240116; t=1777903239; c=relaxed/simple;
+	bh=g9VQ3of46AZBsyud49PAMfRXzcISOCE3tdZV23MPod8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P12IyGQJef5sKO2wKf/Zram4hkJklpXtWjAl9KMbIHQB5NpRIkQrBQK2tgrZZuNQWrLYDqXv1S24pZk+RmJBemWSMo8ef3ABqqae1RqT/PSsDGeyXdqzvzr1mqZG3KM6BUKN8kItiCsGJ9qL/BGQzqytcx8ufAl7EAYqbXxykv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Em8eSXf7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3447CC2BCB8;
-	Mon,  4 May 2026 14:19:58 +0000 (UTC)
+	 MIME-Version; b=aOJvmmrRcMrxCUv7w7OYKOXhh5/IbckyNxrki2QGfTHqfGJq9m75qTwEf0no8v+ms6+DUjwBotYI30ah0+Gq22rp4WAS8CbPQEgOxH8b+eHSwJgz94Q02q01KcGz/GuEtPqBxts1vq+CEzG+N//7go5+qTRmMwNEVkK69YPOmtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wevn0jLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24556C2BCB8;
+	Mon,  4 May 2026 14:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904398;
-	bh=uykBgZ8JIVZkVV5UFdvhX5h3aqPOnmv3bWY6ze+o//Q=;
+	s=korg; t=1777903239;
+	bh=g9VQ3of46AZBsyud49PAMfRXzcISOCE3tdZV23MPod8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Em8eSXf7rLZX4+gX8Vh22YE2jyyHuqkv4+McDpQw8WfJnWv/gCphfvGasCZhb7wx1
-	 P4JM407jRMUKpkUudmlPTyNoVhmD5KYsX5ZjXJVqPGT2S8AAIvORY7L9c9TrhMZCx2
-	 kU4xi3BJhd86NVmubweNJFnXxcZf8A4REdkL4IHQ=
+	b=Wevn0jLHbPGvdfLkeGhwqIt42Y7pldKPMJHZjFmwfgvay2tJK/im04hYU5qGqyggc
+	 ixCj2CfOCxm0Pn+SQn6W4WGb0glHN//OBuXGaLRBXW4bwYSMGj8AQ5WA9sdfGcA33o
+	 PVxxj7SdhqZq6zS9E2l9/R77fRsdGsLsvELPFw+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/215] rust: init: fix `clippy::undocumented_unsafe_blocks` warnings
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Daniel J Blueman <daniel@quora.org>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 7.0 157/307] apparmor: Fix string overrun due to missing termination
 Date: Mon,  4 May 2026 15:50:42 +0200
-Message-ID: <20260504135131.023603491@linuxfoundation.org>
+Message-ID: <20260504135148.746705776@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +64,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ACE594BF20D
+X-Rspamd-Queue-Id: 7A0F84BE9DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243639-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243187-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,garyguo.net:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,canonical.com:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Daniel J Blueman <daniel@quora.org>
 
-The stable backport in commit acc105db0826 ("rust: pin-init:
-add references to previously initialized fields") introduced some
-`clippy::undocumented_unsafe_blocks` warnings [1], e.g.
+commit 828bf7929bedcb79b560b5b4e44f22abee07d31b upstream.
 
-    error: unsafe block missing a safety comment
-        --> rust/kernel/init/macros.rs:1015:25
+When booting Ubuntu 26.04 with Linux 7.0-rc4 on an ARM64 Qualcomm
+Snapdragon X1 we see a string buffer overrun:
 
-As well as:
+BUG: KASAN: slab-out-of-bounds in aa_dfa_match (security/apparmor/match.c:535)
+Read of size 1 at addr ffff0008901cc000 by task snap-update-ns/2120
 
-    --> rust/kernel/init/macros.rs:1243:45
-    --> rust/kernel/init/macros.rs:1286:22
-    --> rust/kernel/init/macros.rs:1374:45
+CPU: 5 UID: 60578 PID: 2120 Comm: snap-update-ns Not tainted 7.0.0-rc4+ #22 PREEMPTLAZY
+Hardware name: LENOVO 83ED/LNVNB161216, BIOS NHCN60WW 09/11/2025
+Call trace:
+show_stack (arch/arm64/kernel/stacktrace.c:501) (C)
+dump_stack_lvl (lib/dump_stack.c:122)
+print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
+kasan_report (mm/kasan/report.c:597)
+__asan_report_load1_noabort (mm/kasan/report_generic.c:378)
+aa_dfa_match (security/apparmor/match.c:535)
+match_mnt_path_str (security/apparmor/mount.c:244 security/apparmor/mount.c:336)
+match_mnt (security/apparmor/mount.c:371)
+aa_bind_mount (security/apparmor/mount.c:447 (discriminator 4))
+apparmor_sb_mount (security/apparmor/lsm.c:719 (discriminator 1))
+security_sb_mount (security/security.c:1062 (discriminator 31))
+path_mount (fs/namespace.c:4101)
+__arm64_sys_mount (fs/namespace.c:4172 fs/namespace.c:4361 fs/namespace.c:4338 fs/namespace.c:4338)
+invoke_syscall.constprop.0 (arch/arm64/kernel/syscall.c:35 arch/arm64/kernel/syscall.c:49)
+el0_svc_common.constprop.0 (./include/linux/thread_info.h:142 (discriminator 2) arch/arm64/kernel/syscall.c:140 (discriminator 2))
+do_el0_svc (arch/arm64/kernel/syscall.c:152)
+el0_svc (arch/arm64/kernel/entry-common.c:80 arch/arm64/kernel/entry-common.c:725)
+el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:744)
+el0t_64_sync (arch/arm64/kernel/entry.S:596)
 
-After discussing it with Benno and Gary, we decided to clean the build
-log by doing a minimal targeted stable commit.
+Allocated by task 2120:
+kasan_save_stack (mm/kasan/common.c:58)
+kasan_save_track (./arch/arm64/include/asm/current.h:19 mm/kasan/common.c:70 mm/kasan/common.c:79)
+kasan_save_alloc_info (mm/kasan/generic.c:571)
+__kasan_kmalloc (mm/kasan/common.c:419)
+__kmalloc_noprof (./include/linux/kasan.h:263 mm/slub.c:5260 mm/slub.c:5272)
+aa_get_buffer (security/apparmor/lsm.c:2201)
+aa_bind_mount (security/apparmor/mount.c:442)
+apparmor_sb_mount (security/apparmor/lsm.c:719 (discriminator 1))
+security_sb_mount (security/security.c:1062 (discriminator 31))
+path_mount (fs/namespace.c:4101)
+__arm64_sys_mount (fs/namespace.c:4172 fs/namespace.c:4361 fs/namespace.c:4338 fs/namespace.c:4338)
+invoke_syscall.constprop.0 (arch/arm64/kernel/syscall.c:35 arch/arm64/kernel/syscall.c:49)
+el0_svc_common.constprop.0 (./include/linux/thread_info.h:142 (discriminator 2) arch/arm64/kernel/syscall.c:140 (discriminator 2))
+do_el0_svc (arch/arm64/kernel/syscall.c:152)
+el0_svc (arch/arm64/kernel/entry-common.c:80 arch/arm64/kernel/entry-common.c:725)
+el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:744)
+el0t_64_sync (arch/arm64/kernel/entry.S:596)
 
-Thus, depending on the case:
+The buggy address belongs to the object at ffff0008901ca000
+which belongs to the cache kmalloc-rnd-06-8k of size 8192
+The buggy address is located 0 bytes to the right of
+allocated 8192-byte region [ffff0008901ca000, ffff0008901cc000)
 
-  - Reorder the attributes so that the existing `// SAFETY:` comments
-    may be seen by Clippy.
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9101c8
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:-1 pincount:0
+flags: 0x8000000000000040(head|zone=2)
+page_type: f5(slab)
+raw: 8000000000000040 ffff000800016c40 fffffdffe2d14e10 ffff000800015c70
+raw: 0000000000000000 0000000800010001 00000000f5000000 0000000000000000
+head: 8000000000000040 ffff000800016c40 fffffdffe2d14e10 ffff000800015c70
+head: 0000000000000000 0000000800010001 00000000f5000000 0000000000000000
+head: 8000000000000003 fffffdffe2407201 fffffdffffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
 
-  - Add a placeholder `// SAFETY: TODO.` comment.
+Memory state around the buggy address:
+ffff0008901cbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ffff0008901cbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff0008901cc000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+^
+ffff0008901cc080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ffff0008901cc100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
 
-Cc: Benno Lossin <lossin@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>
-Fixes: acc105db0826 ("rust: pin-init: add references to previously initialized fields")
-Link: https://lore.kernel.org/stable/20260421111111.57059-1-ojeda@kernel.org/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was introduced by previous incorrect conversion from strcpy(). Fix it
+by adding the missing terminator.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Signed-off-by: Daniel J Blueman <daniel@quora.org>
+Fixes: 93d4dbdc8da0 ("apparmor: Replace deprecated strcpy in d_namespace_path")
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/init/macros.rs | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ security/apparmor/path.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index e477e4de817bf..d6e27c5221155 100644
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -1012,6 +1012,7 @@ macro_rules! __pin_data {
-                         self,
-                         slot: &'__slot mut $p_type,
-                     ) -> ::core::pin::Pin<&'__slot mut $p_type> {
-+                        // SAFETY: TODO.
-                         unsafe { ::core::pin::Pin::new_unchecked(slot) }
-                     }
-                 )*
-@@ -1235,11 +1236,11 @@ macro_rules! __init_internal {
-         // Unaligned fields will cause the compiler to emit E0793. We do not support
-         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-         // `ptr::write` below has the same requirement.
-+        #[allow(unused_variables, unused_assignments)]
-         // SAFETY:
-         // - the project function does the correct field projection,
-         // - the field has been initialized,
-         // - the reference is only valid until the end of the initializer.
--        #[allow(unused_variables, unused_assignments)]
-         let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
+diff --git a/security/apparmor/path.c b/security/apparmor/path.c
+index 65a0ca5cc1bd..2494e8101538 100644
+--- a/security/apparmor/path.c
++++ b/security/apparmor/path.c
+@@ -164,14 +164,16 @@ static int d_namespace_path(const struct path *path, char *buf, char **name,
+ 	}
  
-         // Create the drop guard:
-@@ -1278,11 +1279,11 @@ macro_rules! __init_internal {
-         // Unaligned fields will cause the compiler to emit E0793. We do not support
-         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-         // `ptr::write` below has the same requirement.
-+        #[allow(unused_variables, unused_assignments)]
-         // SAFETY:
-         // - the field is not structurally pinned, since the line above must compile,
-         // - the field has been initialized,
-         // - the reference is only valid until the end of the initializer.
--        #[allow(unused_variables, unused_assignments)]
-         let $field = unsafe { &mut (*$slot).$field };
+ out:
+-	/* Append "/" to directory paths, except for root "/" which
+-	 * already ends in a slash.
++	/* Append "/" to directory paths and reterminate string, except for
++	 * root "/" which already ends in a slash.
+ 	 */
+ 	if (!error && isdir) {
+ 		bool is_root = (*name)[0] == '/' && (*name)[1] == '\0';
  
-         // Create the drop guard:
-@@ -1366,11 +1367,11 @@ macro_rules! __init_internal {
-         // Unaligned fields will cause the compiler to emit E0793. We do not support
-         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-         // `ptr::write` below has the same requirement.
-+        #[allow(unused_variables, unused_assignments)]
-         // SAFETY:
-         // - the project function does the correct field projection,
-         // - the field has been initialized,
-         // - the reference is only valid until the end of the initializer.
--        #[allow(unused_variables, unused_assignments)]
-         let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
+-		if (!is_root)
++		if (!is_root) {
+ 			buf[aa_g_path_max - 2] = '/';
++			buf[aa_g_path_max - 1] = '\0';
++		}
+ 	}
  
-         // Create the drop guard:
+ 	return error;
 -- 
-2.53.0
+2.54.0
 
 
 
