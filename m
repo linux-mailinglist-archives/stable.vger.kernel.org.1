@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-243389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOpLMiGr+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:17 +0200
+	id iJBjLlWo+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94EA4BF1D4
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D603D4BE97B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2F6983008C81
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0AED4303405B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527D53D3334;
-	Mon,  4 May 2026 14:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69D53DD519;
+	Mon,  4 May 2026 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwoJiVOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSngP45x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D4135A3AD;
-	Mon,  4 May 2026 14:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ADF3D5645;
+	Mon,  4 May 2026 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903758; cv=none; b=ALXNnxWCW4cDeEkWRUFsv6xbKemy2DCgdb94OGLeJvVAiLyx/NJowWHr3xoyHhRYW2L47wIjzINOzox4wpDPq8TOXB0FaEWtTn4RPMV38sCgOztRaTbhFeVahNuqGCwabE4c2YyeosmbX4WKaEqxlBLj/b5BT//mIFpTdABN8L0=
+	t=1777903187; cv=none; b=i7jjYUrlb7QkE9cYtkc6QpGTLlu5d76m6Fg57qzFMybYVMsQ5/69W7oCVCyrMtJixNbChgwHJXpPkM2Gqw4dGJ8hoWoIo7HfFH/6NWdAzS8DFKclZYbWNLqvFXnZDiUnT255ehbWVuYklPMeTxtdL49TInDmFmDV8BLq6aFbi+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903758; c=relaxed/simple;
-	bh=3SwAWJXLidYO2x76g5TrNV7iGroDrBqhLGTBOFySX5o=;
+	s=arc-20240116; t=1777903187; c=relaxed/simple;
+	bh=Qh2rb6ZhO4P4Mh9T8lM1sxS4DNsqJUV7XxpVJX8qaSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNGUZd2hgEtkovarqTx9B0u+qe+hvlFIkrHyznM2q4kChGa2yhohPWylTgYcY0FrgZciFu9L6+1YAyTZ9jLQSJE8aybzTHVLxMEIOV0gVM8OIH9gZqKuoyZz2TLYW/JjRLw5cm6UBh0WrHiiAat58LIttDl8kbZOahfHaDFMGCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwoJiVOQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECD6C2BCB8;
-	Mon,  4 May 2026 14:09:17 +0000 (UTC)
+	 MIME-Version; b=AIL1HG1SahpmtHF47Z1OGu+fP8wf7St6NWHURkqRYU1qiQwoNBekzHKp+A3TjQXdrANeJrhrbzCjYXYubhF2OhayPLhGBI3L2r2+IrDB9LND8l3itEqrS2683IeJ9PIsdiY62MGSYXmsOydZPGxS/7CBHoc2gp2/zXebeyuih/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSngP45x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA2BC2BCB8;
+	Mon,  4 May 2026 13:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903758;
-	bh=3SwAWJXLidYO2x76g5TrNV7iGroDrBqhLGTBOFySX5o=;
+	s=korg; t=1777903187;
+	bh=Qh2rb6ZhO4P4Mh9T8lM1sxS4DNsqJUV7XxpVJX8qaSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwoJiVOQq9KQPI0beaCkjj8YW2HUbdT66wJDFXEvCOdMe6s3dXoziGcvqi0Ad9Gxs
-	 ZF5pJqv7OSzo9eU1Ej1FR5BcK3zvUWyniQijIBc1NwjJ0laS8T8dARBX5Nffj4pM9t
-	 VEK1e8LFtKCJqKxomjPIq+Ytp+yzeqL/RUUIL+cI=
+	b=lSngP45xCDhUKTsLFohXzTXgbeDR3BAlIzHgbmjHR3T2T6PeC6uR4L1CF3Fg6WnS/
+	 FmC7IuoM9+8QkwlYX9RaqqnM4wthdAFQHjjggac0zrlRruc5hJw3m/XBL22kJqb0qx
+	 W0hIN0JDGfxJVGZDkS3oQz1O1fQpF3MtV6l/UExw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 049/275] net: caif: clear client service pointer on teardown
-Date: Mon,  4 May 2026 15:49:49 +0200
-Message-ID: <20260504135144.758833829@linuxfoundation.org>
+	Matthew Brost <matthew.brost@intel.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 105/307] mm/zone_device: do not touch device folio after calling ->folio_free()
+Date: Mon,  4 May 2026 15:49:50 +0200
+Message-ID: <20260504135146.762878552@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,99 +68,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E94EA4BF1D4
+X-Rspamd-Queue-Id: D603D4BE97B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243389-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-243167-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,nvidia.com,gmail.com,kernel.org,suse.de,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,intel.com:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit f7cf8ece8cee3c1ee361991470cdb1eb65ab02e8 upstream.
+commit 39928984956037cabd304321cb8f342e47421db5 upstream.
 
-`caif_connect()` can tear down an existing client after remote shutdown by
-calling `caif_disconnect_client()` followed by `caif_free_client()`.
-`caif_free_client()` releases the service layer referenced by
-`adap_layer->dn`, but leaves that pointer stale.
+The contents of a device folio can immediately change after calling
+->folio_free(), as the folio may be reallocated by a driver with a
+different order.  Instead of touching the folio again to extract the
+pgmap, use the local stack variable when calling percpu_ref_put_many().
 
-When the socket is later destroyed, `caif_sock_destructor()` calls
-`caif_free_client()` again and dereferences the freed service pointer.
-
-Clear the client/service links before releasing the service object so
-repeated teardown becomes harmless.
-
-Fixes: 43e369210108 ("caif: Move refcount from service layer to sock and dev.")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Link: https://patch.msgid.link/9f3d37847c0037568aae698ca23cd47c6691acb0.1775897577.git.zcliangcn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/20260410230346.4009855-1-matthew.brost@intel.com
+Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/caif/cfsrvl.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ mm/memremap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/caif/cfsrvl.c
-+++ b/net/caif/cfsrvl.c
-@@ -191,10 +191,20 @@ bool cfsrvl_phyid_match(struct cflayer *
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -454,7 +454,7 @@ void free_zone_device_folio(struct folio
+ 		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
+ 			break;
+ 		pgmap->ops->folio_free(folio);
+-		percpu_ref_put_many(&folio->pgmap->ref, nr);
++		percpu_ref_put_many(&pgmap->ref, nr);
+ 		break;
  
- void caif_free_client(struct cflayer *adap_layer)
- {
-+	struct cflayer *serv_layer;
- 	struct cfsrvl *servl;
--	if (adap_layer == NULL || adap_layer->dn == NULL)
-+
-+	if (!adap_layer)
-+		return;
-+
-+	serv_layer = adap_layer->dn;
-+	if (!serv_layer)
- 		return;
--	servl = container_obj(adap_layer->dn);
-+
-+	layer_set_dn(adap_layer, NULL);
-+	layer_set_up(serv_layer, NULL);
-+
-+	servl = container_obj(serv_layer);
- 	servl->release(&servl->layer);
- }
- EXPORT_SYMBOL(caif_free_client);
+ 	case MEMORY_DEVICE_GENERIC:
 
 
 
