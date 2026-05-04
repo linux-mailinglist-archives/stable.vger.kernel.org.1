@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-243341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJlMKhep+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:35 +0200
+	id wN8wJVOw+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ACAD4BEBB3
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 099C14BFE90
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 515DE304243E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16C6F30904D6
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3B73DE44E;
-	Mon,  4 May 2026 14:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2863E1204;
+	Mon,  4 May 2026 14:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEfx8ejv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bvfp6g5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D68D35A3AD;
-	Mon,  4 May 2026 14:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A353E0C7C;
+	Mon,  4 May 2026 14:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903637; cv=none; b=F+dWI1sc2tgnOCJK9bHKoW6GJ89ELx9BTJwaBGo3LtMt9xQNeMLA6DGhDqkPA5XrDmMXL0nOuGePIacM/yeugs6ler37MHBv/6k4NnTHVwYwVj2T1ige8sYyBCDLOF1D3NQn8nUfg9/q4rz1Fk0XObJIM/V6IIBx2TzM7LJSL1Q=
+	t=1777904716; cv=none; b=oksOklgdEivIcb2WnRPaHzHgofJGGIo4dW7+jbt90RG4KAvTE2GzGq0d4+D7QTb07E4MgK7Sn4u4gnqtTR4Js/e3hY4AfvHC+j3gIM79JPv22kosFex8JfTdzlov6gjFmrMiryqo+/Yb/K5gVZUt0DMGHDzEYWWTOHAqmI2d40A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903637; c=relaxed/simple;
-	bh=CfQckcrVFMyyDitjyj3XAUxNw/SCQuiapWo+WhoAtus=;
+	s=arc-20240116; t=1777904716; c=relaxed/simple;
+	bh=c6CXzDWKiroBIwxkt9DE55MuIPaYnIGyU06EzMQkFGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQn9SsV1No/zUelVt+q3ujqVX9Mg1C8gtm7QleneUbLjo5rNlsV0bVofxPMxAlJmry7l8waMY0LO8OISEMA6A1XzYRvAqh39objcqo3jBTd+e76thJDSy1X0AzWCslLUnzAXoON1CguGqjw44pLRIlxA9Xj+RxusNLYUn1wV3Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEfx8ejv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F7AC2BCB8;
-	Mon,  4 May 2026 14:07:16 +0000 (UTC)
+	 MIME-Version; b=WLkgiqkOkOVZwfYFC32WwCxmOqJayrump2rEVQ6BmWnYOCS6pJ/kFer3zMb28k5BlbRQdID4pHZUkJYalVFg3r/vLkHnwaSRXjWrtE2RyNnsK56UkzfNA8FjLoDOg//BtGbBonqoAxyJ4g4Uar1Mft0DmjaRcIAmAccVk+OpXlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bvfp6g5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA63C2BCB8;
+	Mon,  4 May 2026 14:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903636;
-	bh=CfQckcrVFMyyDitjyj3XAUxNw/SCQuiapWo+WhoAtus=;
+	s=korg; t=1777904715;
+	bh=c6CXzDWKiroBIwxkt9DE55MuIPaYnIGyU06EzMQkFGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FEfx8ejvpC2bjKOpklF0W+i9FWtC+FyM/ouUYtogaTObGhNt/n+Bwrf7oLtKDFzCN
-	 KAoalWyqXmmDzdNFIxbq7Vq4c5MHiAmQQqbUabBs/k3oCsER6OLtTEcXR+vL3s8ICj
-	 FIR0MCbFW/SBeLmsoTD8sFRKq0yjqREMQb4j8lrU=
+	b=Bvfp6g5iceyXPkhR3fegNbjmRhSKMId2ywFPbRhikGB2qy+g1LJpNcZ9oNfPTBGKs
+	 5OfGjFUMwTA00M1BhfYwA/85smwWj99yBg9Gx9nFF9wY9cz/lncrly6KgTsUGB4ncQ
+	 O6kwIhsTN149wkre11x1fB8BEwtDMu6QCV1jvJWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 7.0 280/307] rtmutex: Use waiter::task instead of current in remove_waiter()
-Date: Mon,  4 May 2026 15:52:45 +0200
-Message-ID: <20260504135153.328066978@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Zhenzhong Wu <jt26wzz@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 147/215] tcp: call sk_data_ready() after listener migration
+Date: Mon,  4 May 2026 15:52:46 +0200
+Message-ID: <20260504135135.535632679@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,120 +65,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3ACAD4BEBB3
+X-Rspamd-Queue-Id: 099C14BFE90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org];
-	TAGGED_FROM(0.00)[bounces-243341-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-243763-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Zhenzhong Wu <jt26wzz@gmail.com>
 
-commit 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 upstream.
+commit 3864c6ba1e041bc75342353a70fa2a2c6f909923 upstream.
 
-remove_waiter() is used by the slowlock paths, but it is also used for
-proxy-lock rollback in rt_mutex_start_proxy_lock() when invoked from
-futex_requeue().
+When inet_csk_listen_stop() migrates an established child socket from
+a closing listener to another socket in the same SO_REUSEPORT group,
+the target listener gets a new accept-queue entry via
+inet_csk_reqsk_queue_add(), but that path never notifies the target
+listener's waiters. A nonblocking accept() still works because it
+checks the queue directly, but poll()/epoll_wait() waiters and
+blocking accept() callers can also remain asleep indefinitely.
 
-In the latter case waiter::task is not current, but remove_waiter()
-operates on current for the dequeue operation. That results in several
-problems:
+Call READ_ONCE(nsk->sk_data_ready)(nsk) after a successful migration
+in inet_csk_listen_stop().
 
-  1) the rbtree dequeue happens without waiter::task::pi_lock being held
+However, after inet_csk_reqsk_queue_add() succeeds, the ref acquired
+in reuseport_migrate_sock() is effectively transferred to
+nreq->rsk_listener. Another CPU can then dequeue nreq via accept()
+or listener shutdown, hit reqsk_put(), and drop that listener ref.
+Since listeners are SOCK_RCU_FREE, wrap the post-queue_add()
+dereferences of nsk in rcu_read_lock()/rcu_read_unlock(), which also
+covers the existing sock_net(nsk) access in that path.
 
-  2) the waiter task's pi_blocked_on state is not cleared, which leaves a
-     dangling pointer primed for UAF around.
+The reqsk_timer_handler() path does not need the same changes for two
+reasons: half-open requests become readable only after the final ACK,
+where tcp_child_process() already wakes the listener; and once nreq is
+visible via inet_ehash_insert(), the success path no longer touches
+nsk directly.
 
-  3) rt_mutex_adjust_prio_chain() operates on the wrong top priority waiter
-     task
-
-Use waiter::task instead of current in all related operations in
-remove_waiter() to cure those problems.
-
-[ tglx: Fixup rt_mutex_adjust_prio_chain(), add a comment and amend the
-  	changelog ]
-
-Fixes: 8161239a8bcc ("rtmutex: Simplify PI algorithm and make highest prio task get lock")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Fixes: 54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets in accept queues.")
 Cc: stable@vger.kernel.org
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260422024554.130346-2-jt26wzz@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/rtmutex.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/ipv4/inet_connection_sock.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1535,20 +1535,23 @@ static bool rtmutex_spin_on_owner(struct
-  *
-  * Must be called with lock->wait_lock held and interrupts disabled. It must
-  * have just failed to try_to_take_rt_mutex().
-+ *
-+ * When invoked from rt_mutex_start_proxy_lock() waiter::task != current !
-  */
- static void __sched remove_waiter(struct rt_mutex_base *lock,
- 				  struct rt_mutex_waiter *waiter)
- {
- 	bool is_top_waiter = (waiter == rt_mutex_top_waiter(lock));
- 	struct task_struct *owner = rt_mutex_owner(lock);
-+	struct task_struct *waiter_task = waiter->task;
- 	struct rt_mutex_base *next_lock;
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1486,16 +1486,19 @@ void inet_csk_listen_stop(struct sock *s
+ 			if (nreq) {
+ 				refcount_set(&nreq->rsk_refcnt, 1);
  
- 	lockdep_assert_held(&lock->wait_lock);
++				rcu_read_lock();
+ 				if (inet_csk_reqsk_queue_add(nsk, nreq, child)) {
+ 					__NET_INC_STATS(sock_net(nsk),
+ 							LINUX_MIB_TCPMIGRATEREQSUCCESS);
+ 					reqsk_migrate_reset(req);
++					READ_ONCE(nsk->sk_data_ready)(nsk);
+ 				} else {
+ 					__NET_INC_STATS(sock_net(nsk),
+ 							LINUX_MIB_TCPMIGRATEREQFAILURE);
+ 					reqsk_migrate_reset(nreq);
+ 					__reqsk_free(nreq);
+ 				}
++				rcu_read_unlock();
  
--	raw_spin_lock(&current->pi_lock);
--	rt_mutex_dequeue(lock, waiter);
--	current->pi_blocked_on = NULL;
--	raw_spin_unlock(&current->pi_lock);
-+	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
-+		rt_mutex_dequeue(lock, waiter);
-+		waiter_task->pi_blocked_on = NULL;
-+	}
- 
- 	/*
- 	 * Only update priority if the waiter was the highest priority
-@@ -1584,7 +1587,7 @@ static void __sched remove_waiter(struct
- 	raw_spin_unlock_irq(&lock->wait_lock);
- 
- 	rt_mutex_adjust_prio_chain(owner, RT_MUTEX_MIN_CHAINWALK, lock,
--				   next_lock, NULL, current);
-+				   next_lock, NULL, waiter_task);
- 
- 	raw_spin_lock_irq(&lock->wait_lock);
- }
+ 				/* inet_csk_reqsk_queue_add() has already
+ 				 * called inet_child_forget() on failure case.
 
 
 
