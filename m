@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gM8AN8io+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:16 +0200
+	id UOLlFPGv+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF144BEA8D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DB24BFDE1
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C59B30B6113
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 382C8301FB3E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAE23DDDD6;
-	Mon,  4 May 2026 14:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC883DE452;
+	Mon,  4 May 2026 14:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zj4EEO5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CX9tAk02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837953DA5C7;
-	Mon,  4 May 2026 14:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324243D9DBB;
+	Mon,  4 May 2026 14:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903398; cv=none; b=X1QVfce6RVhT0LGjgjSFEMgcAjQT/R9CF9OWD4x6qz0PmcrGiJA+0BEaowcOWrEk6CRL8xEXyATq+yk0hpcEUsJ72Oa8E3IxKn7MZdT2krUmwS4G3Eo0moq16aDRPmLCcRrKhJOgUYSdsGF2d9NJ3HtLZyyue6ZRHcHyGnhd8ms=
+	t=1777904558; cv=none; b=XI9iTyaQZ9Mq11t20dKs1P+kGd8ApWFJtDbKzSVUevNINsPgACEiXS3CdEX09qTOal86w//f2Co7o+5lCi8H8mkRE0HJeC3iZba8dcVEeQu/kR1h8iX5KEUId8P9tUyEQTznu/aA7tl36VmJG2bJ4U/tAmlE6+gLH8kTKYSBXWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903398; c=relaxed/simple;
-	bh=h+OWwQOLVJC3z4FGMbVfeIcBH/jnOKnLIln6jwaOBqQ=;
+	s=arc-20240116; t=1777904558; c=relaxed/simple;
+	bh=lEx0UlY26muFrkRT44Zvif6Vlq63AXO/xUU2myDgYd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvdzOxR9t3k06Tlr4CM2Nt0xiAk2vbKYuCfwUmbhIIVgm06JlYTAOtVi4S2hKCALaiuLFRa3y+iHGGV629ZGNXNTN9jmIXJEh443jVIjWPWzRjQimgy7HFCyNnJKFr5cs247XEHCfyoO6XtFOdQf3FCIxOegUVRuF0hQGYuSs6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zj4EEO5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6574C2BCB8;
-	Mon,  4 May 2026 14:03:17 +0000 (UTC)
+	 MIME-Version; b=qtYz/9luhw/tgI0ep1RRUv4RXuYBqDVcwkmxuHNIcKtF2o5loWdWbKzB0w1C5DamQxTvjlW+TFjpBRyb00+SkXCdpH2Fa6vDWG1JFG/HKjpGVRiLGbVJtd9F590B9Rv5ht/eot7mLPoPulB0IBf+Dm+ZsmBhh5/TgMjNjOQ7kbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CX9tAk02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA673C2BCB8;
+	Mon,  4 May 2026 14:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903398;
-	bh=h+OWwQOLVJC3z4FGMbVfeIcBH/jnOKnLIln6jwaOBqQ=;
+	s=korg; t=1777904558;
+	bh=lEx0UlY26muFrkRT44Zvif6Vlq63AXO/xUU2myDgYd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zj4EEO5qHdYf4JK99WYrHcRHq9gEZMOSYUmb2sYlUxOU4Kc4/gZ+yA28z7+DbTjd5
-	 x0fjrvKVEWBhx2gX8j2cG03n1ZDGK8RNF8xJtinMKUi8zbpkUpZRzJbG4CN+T6VfkL
-	 gxiT5IdYRMG8oMqpaol7KgXtlRz5FblrPV4HZoCE=
+	b=CX9tAk02FUAFb1cm28oFpcBFdmduCOAktbOcYolgpjjuVKrS1tHCqH5cOvm4t7oWz
+	 nIvTR08mouwRZSR0XRassowll7kXEIeCnAzCi0X/h7k/zen3ZrKpeILWMGIn5KWE3s
+	 ZK4u2JTZoIfM2t/fL3+Acg+vx2w/+m9Jipd71WVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 219/307] KVM: nSVM: Triple fault if restore host CR3 fails on nested #VMEXIT
+	Robert Marko <robert.marko@sartura.hr>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.12 085/215] arm64: dts: marvell: uDPU: add ethernet aliases
 Date: Mon,  4 May 2026 15:51:44 +0200
-Message-ID: <20260504135151.104371282@linuxfoundation.org>
+Message-ID: <20260504135133.266264429@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5EF144BEA8D
+X-Rspamd-Queue-Id: 46DB24BFDE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,156 +80,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243248-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243702-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sartura.hr:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Robert Marko <robert.marko@sartura.hr>
 
-commit 5d291ef0585ed880ed4dd71ea1a5965e0a65fb53 upstream.
+commit 38f09c97340cd23f976242e6cb1e7aa4c8ed28d0 upstream.
 
-If loading L1's CR3 fails on a nested #VMEXIT, nested_svm_vmexit()
-returns an error code that is ignored by most callers, and continues to
-run L1 with corrupted state. A sane recovery is not possible in this
-case, and HW behavior is to cause a shutdown. Inject a triple fault
-instead, and do not return early from nested_svm_vmexit(). Continue
-cleaning up the vCPU state (e.g. clear pending exceptions), to handle
-the failure as gracefully as possible.
+On eDPU plus, which is an updated revision of eDPU which uses an external
+MV88E6361 switch we are relying on U-Boot to detect the board, and then
+enable and disable the required nodes for that revision.
 
->From the APM:
+However, it seems that I missed adding the required aliases for ethernet
+controllers, and this worked as in OpenWrt we had added those locally.
 
-  Upon #VMEXIT, the processor performs the following actions in order to
-  return to the host execution context:
-
-  ...
-
-  if (illegal host state loaded, or exception while loading host state)
-      shutdown
-  else
-      execute first host instruction following the VMRUN
-
-Remove the return value of nested_svm_vmexit(), which is mostly
-unchecked anyway.
-
-Fixes: d82aaef9c88a ("KVM: nSVM: use nested_svm_load_cr3() on guest->host switch")
-CC: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-10-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org
+Fixes: 660b8b2f3944 ("arm64: dts: marvell: eDPU: add support for version with external switch")
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |   10 +++-------
- arch/x86/kvm/svm/svm.c    |   11 ++---------
- arch/x86/kvm/svm/svm.h    |    6 +++---
- 3 files changed, 8 insertions(+), 19 deletions(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1202,12 +1202,11 @@ static int nested_svm_vmexit_update_vmcb
- 	return 0;
- }
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+@@ -15,6 +15,11 @@
+ #include "armada-372x.dtsi"
  
--int nested_svm_vmexit(struct vcpu_svm *svm)
-+void nested_svm_vmexit(struct vcpu_svm *svm)
- {
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
- 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
- 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
--	int rc;
- 
- 	rc = nested_svm_vmexit_update_vmcb12(vcpu);
- 	if (rc) {
-@@ -1330,9 +1329,8 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 
- 	nested_svm_uninit_mmu_context(vcpu);
- 
--	rc = nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true);
--	if (rc)
--		return 1;
-+	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true))
-+		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
- 
- 	/*
- 	 * Drop what we picked up for L2 via svm_complete_interrupts() so it
-@@ -1357,8 +1355,6 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 	 */
- 	if (kvm_apicv_activated(vcpu->kvm))
- 		__kvm_vcpu_update_apicv(vcpu);
--
--	return 0;
- }
- 
- static void nested_svm_triple_fault(struct kvm_vcpu *vcpu)
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2233,13 +2233,9 @@ static int emulate_svm_instr(struct kvm_
- 		[SVM_INSTR_VMSAVE] = vmsave_interception,
+ / {
++	aliases {
++		ethernet0 = &eth0;
++		ethernet1 = &eth1;
++	};
++
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
  	};
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	int ret;
- 
- 	if (is_guest_mode(vcpu)) {
--		/* Returns '1' or -errno on failure, '0' on success. */
--		ret = nested_svm_simple_vmexit(svm, guest_mode_exit_codes[opcode]);
--		if (ret)
--			return ret;
-+		nested_svm_simple_vmexit(svm, guest_mode_exit_codes[opcode]);
- 		return 1;
- 	}
- 	return svm_instr_handlers[opcode](vcpu);
-@@ -4872,7 +4868,6 @@ static int svm_enter_smm(struct kvm_vcpu
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct kvm_host_map map_save;
--	int ret;
- 
- 	if (!is_guest_mode(vcpu))
- 		return 0;
-@@ -4892,9 +4887,7 @@ static int svm_enter_smm(struct kvm_vcpu
- 	svm->vmcb->save.rsp = vcpu->arch.regs[VCPU_REGS_RSP];
- 	svm->vmcb->save.rip = vcpu->arch.regs[VCPU_REGS_RIP];
- 
--	ret = nested_svm_simple_vmexit(svm, SVM_EXIT_SW);
--	if (ret)
--		return ret;
-+	nested_svm_simple_vmexit(svm, SVM_EXIT_SW);
- 
- 	/*
- 	 * KVM uses VMCB01 to store L1 host state while L2 runs but
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -793,14 +793,14 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
- void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
- 			  struct vmcb_save_area *from_save);
- void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
--int nested_svm_vmexit(struct vcpu_svm *svm);
-+void nested_svm_vmexit(struct vcpu_svm *svm);
- 
--static inline int nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
-+static inline void nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
- {
- 	svm->vmcb->control.exit_code	= exit_code;
- 	svm->vmcb->control.exit_info_1	= 0;
- 	svm->vmcb->control.exit_info_2	= 0;
--	return nested_svm_vmexit(svm);
-+	nested_svm_vmexit(svm);
- }
- 
- int nested_svm_exit_handled(struct vcpu_svm *svm);
 
 
 
