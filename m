@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-243437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KDNCeqp+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:06 +0200
+	id yERaLwyr+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75DD4BEE69
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5274BF192
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 305EB300DEFF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C20A301A163
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FDA35A3AD;
-	Mon,  4 May 2026 14:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4177C3DE42B;
+	Mon,  4 May 2026 14:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GV/43oot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vXtVaXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDF33A7F4C;
-	Mon,  4 May 2026 14:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009B2315785;
+	Mon,  4 May 2026 14:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903881; cv=none; b=t/AwKmUboODfeWKr6ef8/qJNyRhrjs+aPIflO9j5CkeZgfFOlT6tsRHyKooZGyRaZvJnJGPKryJmqbPcnCWwJFRtIDO+obnemg3SuxmGKYhlZfzSHSjYvqSJxD+/S7+mBPYr1dzTrwz9MaCiL9DGlCIIghtniFS7t5qYr/ezm3c=
+	t=1777904391; cv=none; b=oght4DLdVqSMtIl80tYhb0D3r+10SyED3lzHsu8QIQwlrryixL/xizbcaj1N1pm2bWgW2Yzkh3NkaG/Guil2/9Qc/fFM+uKKVEdDEA76A9g/5FkiFM1n9NAcE7P8xW2PdxFybmHtMUCq41Zs+U0KLrsX9PkMBokhdrDO93wRQJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903881; c=relaxed/simple;
-	bh=RI8dDWjxDXOzGo9U95at712ZI+4DatNGTDy8P+oOtNk=;
+	s=arc-20240116; t=1777904391; c=relaxed/simple;
+	bh=EKv+RifZg7DCkm76bD05njyW7hxGAQloEeNfOV5I7h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9Bvlma+MV0HalHuzvRxQYHNblUIfhApARHQbrlThgCHjMrt/v7O98+gloD118LM+MdKgEqQyAFnpotXa1qgTEakthJ8Kyqt9UZECS3Vsja2uJUwpHyiC18deJ5ViTkfNM3b+oF3iBgy4YwSRUhJjhxRG/tvoUPFijDs0l55gnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GV/43oot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6560BC2BCB8;
-	Mon,  4 May 2026 14:11:21 +0000 (UTC)
+	 MIME-Version; b=gXy+UT3lOI3pqlmnQiH9X0Q4LGQ/KFwDTQnOIZCBSRKnPBiGbHvaonwSIFsx0rnY8VS/jG8y6SqdTNPfkXiAY7ICwVfrQjJgWhs/R1KOHysLOihE6n1YMlHrtoKOS9xm9DMVFKeuXSKTStc+E+PbdxzQrt9XbxsvMh3kdx1FtQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vXtVaXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847A7C2BCB8;
+	Mon,  4 May 2026 14:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903881;
-	bh=RI8dDWjxDXOzGo9U95at712ZI+4DatNGTDy8P+oOtNk=;
+	s=korg; t=1777904390;
+	bh=EKv+RifZg7DCkm76bD05njyW7hxGAQloEeNfOV5I7h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GV/43ootvsa0Q4YxKSb00mtSHGzAzdRg+Rtcno61S2yNuP8a9uRuP9Z3I/6Pjkf71
-	 snvPK0p5HeJjXjEVr9gYrjdEIJaLoNnSV9h8hwR5Yr6OF6qHzclQfGAt4fQKAdLwZZ
-	 G5MJZzz6xJJ8ZDIbyuwYKyVIAtJF2rl2L7JevTGU=
+	b=2vXtVaXIf7+q0fNyDbjTSE24exdAcJGWbtA448NzkpFz6kgQEPCYR5/BCcK5cJnUh
+	 AgKfW/3JZp5sa7fBcPCi39ED1g1rlOrINC6vH8CSOwzBknF0AjoyJLy2P2qFYto+Uq
+	 N1Y25vR4CjgWPV0Bq9AUoitf5Jogr8tw/pFv8m+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jake Lamberson <lamberson.jake@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 099/275] ALSA: core: Fix potential data race at fasync handling
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 020/215] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
 Date: Mon,  4 May 2026 15:50:39 +0200
-Message-ID: <20260504135146.594611638@linuxfoundation.org>
+Message-ID: <20260504135130.914998069@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +68,168 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B75DD4BEE69
+X-Rspamd-Queue-Id: 3D5274BF192
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243437-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243636-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-commit 8146cd333d235ed32d48bb803fdf743472d7c783 upstream.
+commit 48478b9f791376b4b89018d7afdfd06865498f65 upstream.
 
-In snd_fasync_work_fn(), which is the offload work for traversing and
-processing the pending fasync list, the call of kill_fasync() is done
-outside the snd_fasync_lock for avoiding deadlocks.  The problem is
-that its the references of fasync->on, fasync->signal and fasync->poll
-are done there also outside the lock.  Since these may be modified by
-snd_kill_fasync() call concurrently from other process, inconsistent
-values might be passed to kill_fasync().  Although there shouldn't be
-critical UAF, it's still better to be addressed.
+During a memory hot remove operation, both linear and vmemmap mappings for
+the memory range being removed, get unmapped via unmap_hotplug_range() but
+mapped pages get freed only for vmemmap mapping. This is just a sequential
+operation where each table entry gets cleared, followed by a leaf specific
+TLB flush, and then followed by memory free operation when applicable.
 
-This patch moves the kill_fasync() argument evaluations inside the
-snd_fasync_lock for avoiding the data races above.  The handling in
-fasync->on flag is optimized in the loop to skip directly.
+This approach was simple and uniform both for vmemmap and linear mappings.
+But linear mapping might contain CONT marked block memory where it becomes
+necessary to first clear out all entire in the range before a TLB flush.
+This is as per the architecture requirement. Hence batch all TLB flushes
+during the table tear down walk and finally do it in unmap_hotplug_range().
 
-Also, for more clarity, snd_fasync_free() takes the lock and unlink
-the pending entry more directly instead of clearing fasync->on flag.
+Prior to this fix, it was hypothetically possible for a speculative access
+to a higher address in the contiguous block to fill the TLB with shattered
+entries for the entire contiguous range after a lower address had already
+been cleared and invalidated. Due to the table entries being shattered, the
+subsequent TLB invalidation for the higher address would not then clear the
+TLB entries for the lower address, meaning stale TLB entries could persist.
 
-Reported-by: Jake Lamberson <lamberson.jake@gmail.com>
-Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260420061721.3253644-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Besides it also helps in improving the performance via TLBI range operation
+along with reduced synchronization instructions. The time spent executing
+unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
+in KVM guest.
+
+This scheme is not applicable during vmemmap mapping tear down where memory
+needs to be freed and hence a TLB flush is required after clearing out page
+table entry.
+
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Cc: stable@vger.kernel.org
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/misc.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/arm64/mm/mmu.c |   36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
---- a/sound/core/misc.c
-+++ b/sound/core/misc.c
-@@ -100,14 +100,18 @@ static LIST_HEAD(snd_fasync_list);
- static void snd_fasync_work_fn(struct work_struct *work)
- {
- 	struct snd_fasync *fasync;
-+	int signal, poll;
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -869,10 +869,14 @@ static void unmap_hotplug_pte_range(pmd_
  
- 	spin_lock_irq(&snd_fasync_lock);
- 	while (!list_empty(&snd_fasync_list)) {
- 		fasync = list_first_entry(&snd_fasync_list, struct snd_fasync, list);
- 		list_del_init(&fasync->list);
-+		if (!fasync->on)
-+			continue;
-+		signal = fasync->signal;
-+		poll = fasync->poll;
- 		spin_unlock_irq(&snd_fasync_lock);
--		if (fasync->on)
--			kill_fasync(&fasync->fasync, fasync->signal, fasync->poll);
-+		kill_fasync(&fasync->fasync, signal, poll);
- 		spin_lock_irq(&snd_fasync_lock);
- 	}
- 	spin_unlock_irq(&snd_fasync_lock);
-@@ -158,7 +162,10 @@ void snd_fasync_free(struct snd_fasync *
- {
- 	if (!fasync)
- 		return;
--	fasync->on = 0;
-+
-+	scoped_guard(spinlock_irq, &snd_fasync_lock)
-+		list_del_init(&fasync->list);
-+
- 	flush_work(&snd_fasync_work);
- 	kfree(fasync);
+ 		WARN_ON(!pte_present(pte));
+ 		__pte_clear(&init_mm, addr, ptep);
+-		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-		if (free_mapped)
++		if (free_mapped) {
++			/* CONT blocks are not supported in the vmemmap */
++			WARN_ON(pte_cont(pte));
++			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+ 			free_hotplug_page_range(pte_page(pte),
+ 						PAGE_SIZE, altmap);
++		}
++		/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 	} while (addr += PAGE_SIZE, addr < end);
  }
+ 
+@@ -893,15 +897,14 @@ static void unmap_hotplug_pmd_range(pud_
+ 		WARN_ON(!pmd_present(pmd));
+ 		if (pmd_sect(pmd)) {
+ 			pmd_clear(pmdp);
+-
+-			/*
+-			 * One TLBI should be sufficient here as the PMD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				/* CONT blocks are not supported in the vmemmap */
++				WARN_ON(pmd_cont(pmd));
++				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+ 				free_hotplug_page_range(pmd_page(pmd),
+ 							PMD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pmd_table(pmd));
+@@ -926,15 +929,12 @@ static void unmap_hotplug_pud_range(p4d_
+ 		WARN_ON(!pud_present(pud));
+ 		if (pud_sect(pud)) {
+ 			pud_clear(pudp);
+-
+-			/*
+-			 * One TLBI should be sufficient here as the PUD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
+ 				free_hotplug_page_range(pud_page(pud),
+ 							PUD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pud_table(pud));
+@@ -964,6 +964,7 @@ static void unmap_hotplug_p4d_range(pgd_
+ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+ 				bool free_mapped, struct vmem_altmap *altmap)
+ {
++	unsigned long start = addr;
+ 	unsigned long next;
+ 	pgd_t *pgdp, pgd;
+ 
+@@ -985,6 +986,9 @@ static void unmap_hotplug_range(unsigned
+ 		WARN_ON(!pgd_present(pgd));
+ 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
+ 	} while (addr = next, addr < end);
++
++	if (!free_mapped)
++		flush_tlb_kernel_range(start, end);
+ }
+ 
+ static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
 
 
 
