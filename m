@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wD4TFjir+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:40 +0200
+	id kFqLOcWt+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:31:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB354BF21D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B8C4BF9A5
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBD6D30ACE3A
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AED253075216
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A28E3DDDDA;
-	Mon,  4 May 2026 14:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF8C3E0C4C;
+	Mon,  4 May 2026 14:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luqYkZhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTCyMOyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4E83DDDD7;
-	Mon,  4 May 2026 14:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEA03E0C41;
+	Mon,  4 May 2026 14:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903483; cv=none; b=NnExnkmpXAISAqBJwIPFQWr0cNHNdDGneFAfJhKkSstI6qEk0fuEwQyjePVZL2H3YVBmgFA2X/tP5Iwnr9j4sfycG41BwCAg5ffBnUnYBu6oPg2YoQN4deTwOKAAzkdwP11qR5jsunKlhlg2KNBtUQcr8vX9NySvZKxQYsndEx4=
+	t=1777904646; cv=none; b=TbyjZdGtpIcLAK0GkUuL4iUIqYtyfgkdadDwa5eZ3Pbf3nkSdozPdqeVGWE1xmz6zPLlu+PGkGg1m5QPaspELIZeI8ZQ+X5B0VE0ZO1dNj4scrt3XGS4K1Qg4yQ1hwQGd//PNMms7MuTeBvXr2nFVRLMRpEH2VTywIwbo58Lu8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903483; c=relaxed/simple;
-	bh=znD6k7zJud0Qo9KLaJanpn5er1wddyEAsf7kzh9fZRk=;
+	s=arc-20240116; t=1777904646; c=relaxed/simple;
+	bh=d3sfEsDC4qMzxPXH5MK2UXK8pztquaNfFdBhROYDPC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAeR/njG3pcjUg/Z6mwGFNemKEJw7wlsvmnB7tkjRpfTmDua3rVXX09zlziSsF4DnTZVDGKOsuOZQdpgDjsU9gBe2zXvV1VMEVADLm+as31/9Tfk29ycW3sbOZV2Fkc0+HpLWLerwGZNOH9kRcJGzPpWIpLN/Ex4H5FHptOtls8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luqYkZhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7826C2BCB8;
-	Mon,  4 May 2026 14:04:42 +0000 (UTC)
+	 MIME-Version; b=HaADkM2/82/GihurWZR8+NolVkYDRJMt7wuu1MfB+E6rZl+3Rsrsae6j+3MayEocvNAxiBB77dD4YSs2AB3XGFM0pHYOUODFVAiMOZVpyzke0ag+aCFH92C0lpcaak3es3KDfFSjn35Fjp6bQR/9beJAgtTGII17fLcbnGjac3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTCyMOyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4AFC2BCC4;
+	Mon,  4 May 2026 14:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903483;
-	bh=znD6k7zJud0Qo9KLaJanpn5er1wddyEAsf7kzh9fZRk=;
+	s=korg; t=1777904646;
+	bh=d3sfEsDC4qMzxPXH5MK2UXK8pztquaNfFdBhROYDPC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luqYkZhG0jeWdUVUTdkpX4PTIbfsuIfJV1uuFxGySHED2yLTr2x2To9k/8SDonNCQ
-	 6D5gL6CbthC19lX68gryAhsW/rCxDYyKtTkY/8YNF/rzDFtHDn1YIa+QxbHRWAP3PW
-	 aybwRW8Xl8zzliuWqOzfDo8c/6oBPPyp3WxK4MTs=
+	b=oTCyMOyoO8mhBD+af6KlZEkAICYdhexLJ+/Mf+AyZR/k6T5HRFrWK3naLxgjKUBTU
+	 WboRu8NG2inucuwOBxuwvZNDD3LnAf6jjFuzEwagT/8rJndWFtEUwujvyHdrsCO/fZ
+	 shB7Fa4ks9xpoqjvAzMNMcoSFZ8vUYkN6GvoRPEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Barre <pierre@barre.sh>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 7.0 252/307] 9p: fix access mode flags being ORed instead of replaced
-Date: Mon,  4 May 2026 15:52:17 +0200
-Message-ID: <20260504135152.302979445@linuxfoundation.org>
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 119/215] KVM: nSVM: Mark all of vmcb02 dirty when restoring nested state
+Date: Mon,  4 May 2026 15:52:18 +0200
+Message-ID: <20260504135134.501480334@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7BB354BF21D
+X-Rspamd-Queue-Id: 69B8C4BF9A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,72 +80,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243281-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243736-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,crudebyte.com:email,barre.sh:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Barre <pierre@barre.sh>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit da2346a48a5a1fed86c3fe3d73c0b60e7b3027c9 upstream.
+commit e63fb1379f4b9300a44739964e69549bebbcdca4 upstream.
 
-Since commit 1f3e4142c0eb ("9p: convert to the new mount API"),
-v9fs_apply_options() applies parsed mount flags with |= onto flags
-already set by v9fs_session_init(). For 9P2000.L, session_init sets
-V9FS_ACCESS_CLIENT as the default, so when the user mounts with
-"access=user", both bits end up set. Access mode checks compare
-against exact values, so having both bits set matches neither mode.
+When restoring a vCPU in guest mode, any state restored before
+KVM_SET_NESTED_STATE (e.g. KVM_SET_SREGS) will mark the corresponding
+dirty bits in vmcb01, as it is the active VMCB before switching to
+vmcb02 in svm_set_nested_state().
 
-This causes v9fs_fid_lookup() to fall through to the default switch
-case, using INVALID_UID (nobody/65534) instead of current_fsuid()
-for all fid lookups. Root is then unable to chown or perform other
-privileged operations.
+Hence, mark all fields in vmcb02 dirty in svm_set_nested_state() to
+capture any previously restored fields.
 
-Fix by clearing the access mask before applying the user's choice.
-
-Fixes: 1f3e4142c0eb ("9p: convert to the new mount API")
-Signed-off-by: Pierre Barre <pierre@barre.sh>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Message-ID: <0ddc72da-d196-4f01-8755-0086f670e779@app.fastmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260210010806.3204289-1-yosry.ahmed@linux.dev
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/9p/v9fs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kvm/svm/nested.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index 057487efaaeb..acda42499ca9 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -413,7 +413,11 @@ static void v9fs_apply_options(struct v9fs_session_info *v9ses,
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1755,6 +1755,12 @@ static int svm_set_nested_state(struct k
+ 	nested_vmcb02_prepare_control(svm, svm->vmcb->save.rip, svm->vmcb->save.cs.base);
+ 
  	/*
- 	 * Note that we must |= flags here as session_init already
- 	 * set basic flags. This adds in flags from parsed options.
-+	 * Default access flags must be cleared if session options
-+	 * changes them to avoid mangling the setting.
- 	 */
-+	if (ctx->session_opts.flags & V9FS_ACCESS_MASK)
-+		v9ses->flags &= ~V9FS_ACCESS_MASK;
- 	v9ses->flags |= ctx->session_opts.flags;
- #ifdef CONFIG_9P_FSCACHE
- 	v9ses->cachetag = ctx->session_opts.cachetag;
--- 
-2.54.0
-
++	 * Any previously restored state (e.g. KVM_SET_SREGS) would mark fields
++	 * dirty in vmcb01 instead of vmcb02, so mark all of vmcb02 dirty here.
++	 */
++	vmcb_mark_all_dirty(svm->vmcb);
++
++	/*
+ 	 * While the nested guest CR3 is already checked and set by
+ 	 * KVM_SET_SREGS, it was set when nested state was yet loaded,
+ 	 * thus MMU might not be initialized correctly.
 
 
 
