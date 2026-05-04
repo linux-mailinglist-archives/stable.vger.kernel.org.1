@@ -1,69 +1,66 @@
-Return-Path: <stable+bounces-243098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAzAJdim+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:00 +0200
+	id UEoXAyam+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDB84BE5EC
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:01:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9276D4BE3DF
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4203303EEB6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:56:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF5443023A49
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3969D3D75CE;
-	Mon,  4 May 2026 13:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D89D3DC4AB;
+	Mon,  4 May 2026 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okx1ATrJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hekm80xI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F078D34753C;
-	Mon,  4 May 2026 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103A53A63EC;
+	Mon,  4 May 2026 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903013; cv=none; b=EN8cl7pACtft6VK++r6fyh3ifUN44HJHaSbHiGaYv0iz0QA6qdMR/Nogj3DwFoQgHN7nUQ+4/USbqpb5Bi9Wpvp+9CeftLC05s7Yz9OG3xG+kWSZOVm4CBeBlJAbCvXC3NRSaFcLvJcFOz1V0TkiCJSpZ/uGGtTaJEAy1vglEJw=
+	t=1777902925; cv=none; b=oEWxv4COLaZ5UnVE14pmYUaIw69KiOeCea+0WjZKrW5QWYcizrmxG10wVfOJ4XVTg2NXPllARxu2yGfr2ZL+rEb8is8mDGpFGfWfWTym5sZHU5G6XCO25cEi1+buiEBTr1o855b12ywBwMlaM0BQbYQHfH8qLj/a/LqKQxwiqlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903013; c=relaxed/simple;
-	bh=Rl/bOniHYplsBODF3rvz+StMlzHRVpgB2ZYq+654xlk=;
+	s=arc-20240116; t=1777902925; c=relaxed/simple;
+	bh=SBQB6OiSAswYQIIh0PQgRKZeDsz0kVfFCQ0Pu4grYsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5bGhQLoNB5kp5r+Q2bmm93rZ9JStb0euGLSn1sP1EJZGC9mykaGhvgQajeP/uqNjIXaGOSTO2P8+jTckkaQHtrXrJQBtVOuK7V8yugIl8Ij64z60gi7dsM8Ka2FyQ52+QEUuT6NzOjnf9vtSs1Q81nT6n/bzFQHMty0vGH9b4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okx1ATrJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A686C2BCB8;
-	Mon,  4 May 2026 13:56:52 +0000 (UTC)
+	 MIME-Version; b=b/yi9idkFzibMibpM/+28tpWByAVMZzK8pZRa70sMYAXJkJyDmFtU35+ksVpIJ5Fea/ZxcNq/HpgH+ww19oxrntnBMfO6r5hpBpj5Hwzxji2ufQZgmqOcKcbQOTmSunyI8NBkbDbwu3oK0jxLwMX7EQUEBo7cZe5h7ei1KhfmiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hekm80xI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E5CC2BCB8;
+	Mon,  4 May 2026 13:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903012;
-	bh=Rl/bOniHYplsBODF3rvz+StMlzHRVpgB2ZYq+654xlk=;
+	s=korg; t=1777902924;
+	bh=SBQB6OiSAswYQIIh0PQgRKZeDsz0kVfFCQ0Pu4grYsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Okx1ATrJA+9Bq6QeBfyVCWbwPyFUiR9yc5yXn78QBemOOH5NacYJZy//b1aTw4iAh
-	 5WwT4rUlEcEJTVI26/y81ERc4P4nedrBMwVjvJ7za+V8kdUw4VyjA+NOQA3ZZ7WWVT
-	 XqS/pfmkqH5soVAsh2wMpx94qFbiY99rdQ49ptBs=
+	b=Hekm80xIJr196Df3xsto3xBTI6Dr0hYWA32j2Q6AqrSUPz3O7T2jWYlFYWOixNvRZ
+	 zTglSMcnKbYTUVY/FolMjQVqsIGV+FKhUu7/rJlhwHsIySUazIoUPctLRzw0wRggWy
+	 dMzkzmkrAr2A9XFv5IXj3nUrUntHA1KJlRPDRMG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Usama Arif <usama.arif@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	SeongJae Park <sj@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Rakie Kim <rakie.kim@sk.com>,
+	Anthony Yznaga <anthony.yznaga@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Jason A. Donenfeld" <jason@zx2c4.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 027/307] mm: migrate: requeue destination folio on deferred split queue
-Date: Mon,  4 May 2026 15:48:32 +0200
-Message-ID: <20260504135143.854779113@linuxfoundation.org>
+Subject: [PATCH 7.0 028/307] mm: prevent droppable mappings from being locked
+Date: Mon,  4 May 2026 15:48:33 +0200
+Message-ID: <20260504135143.891411157@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
 References: <20260504135142.814938198@linuxfoundation.org>
@@ -77,136 +74,159 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5CDB84BE5EC
+X-Rspamd-Queue-Id: 9276D4BE3DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,cmpxchg.org,nvidia.com,kernel.org,gmail.com,sk.com,gourry.net,linux.alibaba.com,intel.com,infradead.org,redhat.com,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243098-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[sj.kernel.org:query timed out];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243064-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usama.arif@linux.dev>
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
 
-commit a2e0c0668a3486f96b86c50e02872c8e94fd4f9c upstream.
+commit d239462787b072c78eb19fc1f155c3d411256282 upstream.
 
-During folio migration, __folio_migrate_mapping() removes the source folio
-from the deferred split queue, but the destination folio is never
-re-queued.  This causes underutilized THPs to escape the shrinker after
-NUMA migration, since they silently drop off the deferred split list.
+Droppable mappings must not be lockable.  There is a check for VMAs with
+VM_DROPPABLE set in mlock_fixup() along with checks for other types of
+unlockable VMAs which ensures this when calling mlock()/mlock2().
 
-Fix this by recording whether the source folio was on the deferred split
-queue and its partially mapped state before move_to_new_folio() unqueues
-it, and re-queuing the destination folio after a successful migration if
-it was.
+For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.  In
+apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set, the
+current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
+applied to it.  VM_LOCKONFAULT is also applied if MCL_ONFAULT is also set.
+When these flags are set as default in this manner they are cleared in
+__mmap_complete() for new mappings that do not support mlock.  A check for
+VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
+mappings created with VM_LOCKED set.  To fix this and reduce that chance
+of similar bugs in the future, introduce and use vma_supports_mlock().
 
-By the time migrate_folio_move() runs, partially mapped folios without a
-pin have already been split by migrate_pages_batch().  So only two cases
-remain on the deferred list at this point:
-  1. Partially mapped folios with a pin (split failed).
-  2. Fully mapped but potentially underused folios.  The recorded
-     partially_mapped state is forwarded to deferred_split_folio() so that
-     the destination folio is correctly re-queued in both cases.
-
-Because THPs are removed from the deferred_list, THP shinker cannot
-split the underutilized THPs in time.  As a result, users will show
-less free memory than before.
-
-Link: https://lkml.kernel.org/r/20260312104723.1351321-1-usama.arif@linux.dev
-Fixes: dafff3f4c850 ("mm: split underused THPs")
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
+Link: https://lkml.kernel.org/r/20260310155821.17869-1-anthony.yznaga@oracle.com
+Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+Suggested-by: David Hildenbrand <david@kernel.org>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Tested-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/migrate.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ include/linux/hugetlb_inline.h    |    2 +-
+ mm/internal.h                     |   10 ++++++++++
+ mm/mlock.c                        |   10 ++++++----
+ mm/vma.c                          |    4 +---
+ tools/testing/vma/include/stubs.h |    5 +++++
+ 5 files changed, 23 insertions(+), 8 deletions(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1358,6 +1358,8 @@ static int migrate_folio_move(free_folio
- 	int rc;
- 	int old_page_state = 0;
- 	struct anon_vma *anon_vma = NULL;
-+	bool src_deferred_split = false;
-+	bool src_partially_mapped = false;
- 	struct list_head *prev;
+--- a/include/linux/hugetlb_inline.h
++++ b/include/linux/hugetlb_inline.h
+@@ -30,7 +30,7 @@ static inline bool is_vma_hugetlb_flags(
  
- 	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
-@@ -1371,6 +1373,12 @@ static int migrate_folio_move(free_folio
- 		goto out_unlock_both;
+ #endif
+ 
+-static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
++static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
+ {
+ 	return is_vm_hugetlb_flags(vma->vm_flags);
+ }
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1217,6 +1217,16 @@ static inline struct file *maybe_unlock_
  	}
- 
-+	if (folio_order(src) > 1 &&
-+	    !data_race(list_empty(&src->_deferred_list))) {
-+		src_deferred_split = true;
-+		src_partially_mapped = folio_test_partially_mapped(src);
-+	}
+ 	return fpin;
+ }
 +
- 	rc = move_to_new_folio(dst, src, mode);
- 	if (rc)
++static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
++{
++	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
++		return false;
++	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
++		return false;
++	return vma != get_gate_vma(current->mm);
++}
++
+ #else /* !CONFIG_MMU */
+ static inline void unmap_mapping_folio(struct folio *folio) { }
+ static inline void mlock_new_folio(struct folio *folio) { }
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -472,10 +472,12 @@ static int mlock_fixup(struct vma_iterat
+ 	int ret = 0;
+ 	vm_flags_t oldflags = vma->vm_flags;
+ 
+-	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
+-	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
+-	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
+-		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
++	if (newflags == oldflags || vma_is_secretmem(vma) ||
++	    !vma_supports_mlock(vma))
++		/*
++		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
++		 * For secretmem, don't allow the memory to be unlocked.
++		 */
  		goto out;
-@@ -1391,6 +1399,15 @@ static int migrate_folio_move(free_folio
- 	if (old_page_state & PAGE_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
  
-+	/*
-+	 * Requeue the destination folio on the deferred split queue if
-+	 * the source was on the queue.  The source is unqueued in
-+	 * __folio_migrate_mapping(), so we recorded the state from
-+	 * before move_to_new_folio().
-+	 */
-+	if (src_deferred_split)
-+		deferred_split_folio(dst, src_partially_mapped);
+ 	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2589,9 +2589,7 @@ static void __mmap_complete(struct mmap_
+ 
+ 	vm_stat_account(mm, vma->vm_flags, map->pglen);
+ 	if (vm_flags & VM_LOCKED) {
+-		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
+-					is_vm_hugetlb_page(vma) ||
+-					vma == get_gate_vma(mm))
++		if (!vma_supports_mlock(vma))
+ 			vm_flags_clear(vma, VM_LOCKED_MASK);
+ 		else
+ 			mm->locked_vm += map->pglen;
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -426,3 +426,8 @@ static inline void vma_adjust_trans_huge
+ }
+ 
+ static inline void hugetlb_split(struct vm_area_struct *, unsigned long) {}
 +
- out_unlock_both:
- 	folio_unlock(dst);
- 	folio_set_owner_migrate_reason(dst, reason);
++static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
++{
++	return false;
++}
 
 
 
