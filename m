@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GG/FF3iq+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:28 +0200
+	id mAYqMmus+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E5F4BEFCB
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550724BF5CA
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43649306C4EB
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4787B3085B84
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605503DE422;
-	Mon,  4 May 2026 14:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED59A3DE44F;
+	Mon,  4 May 2026 14:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRgV0Swz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns9fhvao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231B33D5667;
-	Mon,  4 May 2026 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FAC315785;
+	Mon,  4 May 2026 14:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904034; cv=none; b=jt/G4+xz+r2Ul4BkZY7tZjR69HR9OF3yB8XM5EDmh5+aRPdemmrai52qJsqn2Z4r/KAokGD/36vPQz6czke/zPu0ahU8vcfruupc/8c5IfT3n+6nYP2IFhPsRSTaoTaK1BLsHzJAk59zbSmfzWg1BEP3WI+pfsycyf8pMm0Iwn4=
+	t=1777904537; cv=none; b=K3P9sgBprNxIWBBv14GGpjdqVRHltKzfX9Uh4nwD+vi24qC2JjElQH4zyoMZQq18JlvcZtv+r1010UyeaZui65CC8LIQUeVKbe7+pagEhx5lo2E8TGXPG/NkA7CZibAGxBJLCFvnWeJ4YPDKa9jE962kxYG0ikT/WFOjQv7QDIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904034; c=relaxed/simple;
-	bh=XIZYbP36/gvuOaxBUJgPeas7wqOnlGe2h8srBKIr+jk=;
+	s=arc-20240116; t=1777904537; c=relaxed/simple;
+	bh=/SBitkrimu1MfgfMlqP7N7iz4FbstsdVA2WNcD1FhC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfKvnkiQQddIkPUgtG+EfkIP7p51azsz3CZYEcOTDJ9MKJXKl/GEKPK8JA/3WlOMnB1vQL67oJ56oEmYTbfdvYdtiyd0OD3a5K2EI2NXHIw1PwnbVG+EfNwBoe9qeP5uwRXd/9EQtq6zclxobObPWR1lnSgogEQdkVJFfPdAyWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRgV0Swz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E779C2BCF4;
-	Mon,  4 May 2026 14:13:53 +0000 (UTC)
+	 MIME-Version; b=s3cCPzGRjCTdr9o4E3AZ1v27OHHPGv/bc9twI9GsfQpyT8wTdFdsmTX4ge5syYIvM1XsONH4E9SqytH5tc1R2G7NyAOTihWNejR9ED0nKTqdA5hbIJml4nOGYnfTeZ/caqyDP9QNK1PYJN1keYryPOZ7KxaU5Vewf3jwpzqVKrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns9fhvao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C6EC2BCB8;
+	Mon,  4 May 2026 14:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904033;
-	bh=XIZYbP36/gvuOaxBUJgPeas7wqOnlGe2h8srBKIr+jk=;
+	s=korg; t=1777904537;
+	bh=/SBitkrimu1MfgfMlqP7N7iz4FbstsdVA2WNcD1FhC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRgV0SwzblkxtXFTG3srMEwsNXem02NIvavk88+UsMSjXFHT4eeFWJKDmDQLbGPLv
-	 JdzXF5RlfMxe+U257X2HTEDHSpzQQg598l7Y4LlnMe3KBfdZ7rk6QVdKShcz9e5kRc
-	 8MuIT8WhWQvwacTl4GH/S0oZbGE1Tq7E7t+3We7A=
+	b=Ns9fhvao9Z4WAn9pUmdZp1ztv6sfMr7S/4DGSkD6sM0givE9dXicp2X+c+xlej/Wd
+	 Z2VMslr+VcGNbvr6BC7t0ZQudWY40pGaccbFQH6NEFjGcJA1krz43iZYAVqHt5HqMh
+	 l1EoV82flM101pM10Mp3ru6Yt/RB9R5ESbQxPL3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Justinien Bouron <jbouron@amazon.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.18 156/275] tpm: Fix auth session leak in tpm2_get_random() error path
-Date: Mon,  4 May 2026 15:51:36 +0200
-Message-ID: <20260504135148.753058002@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 078/215] ALSA: pcmtest: fix reference leak on failed device registration
+Date: Mon,  4 May 2026 15:51:37 +0200
+Message-ID: <20260504135133.014115179@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +63,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 12E5F4BEFCB
+X-Rspamd-Queue-Id: 550724BF5CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243694-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243496-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gunnar Kudrjavets <gunnarku@amazon.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 666c1a2ca603d8314231200bf8bbb3a81bd64c6b upstream.
+commit 4ff036f95238f02c87e5d7c0a9d93748582a8950 upstream.
 
-When tpm_buf_fill_hmac_session() fails inside the do-while loop in
-tpm2_get_random(), the function returns directly after destroying the
-buffer, without ending the auth session via tpm2_end_auth_session().
+When platform_device_register() fails in mod_init(), the embedded struct
+device in pcmtst_pdev has already been initialized by
+device_initialize(), but the failure path returns the error without
+dropping the device reference for the current platform device:
 
-This leaks the TPM auth session resource. All other error paths within
-the loop correctly reach the 'out' label which calls both
-tpm_buf_destroy() and tpm2_end_auth_session().
+  mod_init()
+    -> platform_device_register(&pcmtst_pdev)
+       -> device_initialize(&pcmtst_pdev.dev)
+       -> setup_pdev_dma_masks(&pcmtst_pdev)
+       -> platform_device_add(&pcmtst_pdev)
 
-Fix this by replacing the early return with a goto to the existing 'out'
-label, which already handles both cleanup operations. The redundant
-tpm_buf_destroy() call is removed since 'out' takes care of it.
+This leads to a reference leak when platform_device_register() fails.
+Fix this by calling platform_device_put() before returning the error.
 
-Cc: stable@vger.kernel.org # v6.19+
-Fixes: 6e9722e9a7bf ("tpm2-sessions: Fix out of range indexing in name_size")
-Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Reviewed-by: Justinien Bouron <jbouron@amazon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Fixes: 315a3d57c64c5 ("ALSA: Implement the new Virtual PCM Test Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260415193138.3861297-1-lgs201920130244@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm2-cmd.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/drivers/pcmtest.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -275,10 +275,8 @@ int tpm2_get_random(struct tpm_chip *chi
- 						NULL, 0);
- 		tpm_buf_append_u16(&buf, num_bytes);
- 		err = tpm_buf_fill_hmac_session(chip, &buf);
--		if (err) {
--			tpm_buf_destroy(&buf);
--			return err;
--		}
-+		if (err)
-+			goto out;
- 
- 		err = tpm_transmit_cmd(chip, &buf,
- 				       offsetof(struct tpm2_get_random_out,
+--- a/sound/drivers/pcmtest.c
++++ b/sound/drivers/pcmtest.c
+@@ -755,8 +755,10 @@ static int __init mod_init(void)
+ 	if (err)
+ 		return err;
+ 	err = platform_device_register(&pcmtst_pdev);
+-	if (err)
++	if (err) {
++		platform_device_put(&pcmtst_pdev);
+ 		return err;
++	}
+ 	err = platform_driver_register(&pcmtst_pdrv);
+ 	if (err)
+ 		platform_device_unregister(&pcmtst_pdev);
 
 
 
