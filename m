@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-243396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPTXE52p+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:49 +0200
+	id 8Ia3MBWm+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD5E4BEDB5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F78F4BE3A7
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8118D30305B7
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDAEF30363BC
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514573DE422;
-	Mon,  4 May 2026 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CA03D6481;
+	Mon,  4 May 2026 13:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8w8u1Po"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k55SnBLt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F533DC4D5;
-	Mon,  4 May 2026 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527C23DCD95;
+	Mon,  4 May 2026 13:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903776; cv=none; b=NUY03d1a6XH/vtpUSQk2+CZyQ9S5i2H/HByfwDwvvy2/izfR43rtZdEqGl0P6Vxq2aYWlL+6cNTyli18EuJ+OEt63gIZrGGF3cksvUKUwbbsqFqGGlo/rTyqPpvu4b1+4ce6SvROzlDXPvDdnAmioTd0D6L8fGRzwc8sH/tKssQ=
+	t=1777903038; cv=none; b=PTjl++DDBFvxl48Fon+xgbAPtG1l8axDWLrUd8BuRK8BYZ2fHAm87yZ/HUzbn0UVhuF80JXv4zSaEELRr3SWOPGLhStHUwC0h+J5CrsspkPZVc2cJmJknw+CuIikAWhcJw83R265KKkfS8Dh6CHZSWtClOskuftEzJvA0NnW5wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903776; c=relaxed/simple;
-	bh=SySnAUkaAOS3W9qGBmVip3o7SkcmN1EsdS0AHdd/JAk=;
+	s=arc-20240116; t=1777903038; c=relaxed/simple;
+	bh=HeYFmKrV2q9qk6Et/PvJA8xOx/Di3cQNN2NTUZdm4gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuHofqpj7B31gig+0w0LU2pfytWEmJOrWFL6LK+X8hxfBfWdraHqU5wE+4oYzolj+JGLnwQgceS8lmpB4yAcyh6ls3k6LOQbz4/0iSaMRxYj08O2SjaWE88BaxXRKBr4PPEBO5JHUMPSudixSFpOCcKqyeq2laHIhuXS56TS0uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8w8u1Po; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B195C2BCB8;
-	Mon,  4 May 2026 14:09:35 +0000 (UTC)
+	 MIME-Version; b=jpfEBC03i0MPg0JuGa5/sZF0Kb/D/IvoG1ciD4ZDGoprqbwzNhLal9etoHAVHs2YtPhAlHPB4M8kFKD9v6L/p9aFTDtJROZzmKfBOxe144s7kk4wO6Wrehst/66FnQb0j12nuLsf0wg1Kt4xkm/TeiljFAKJZ1yOY+hIYo55d4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k55SnBLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC521C2BCB8;
+	Mon,  4 May 2026 13:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903775;
-	bh=SySnAUkaAOS3W9qGBmVip3o7SkcmN1EsdS0AHdd/JAk=;
+	s=korg; t=1777903038;
+	bh=HeYFmKrV2q9qk6Et/PvJA8xOx/Di3cQNN2NTUZdm4gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8w8u1PoRoPozytjrZwjjJ9lWOeDR1xo4pYO4ffECqNcjTisNx0HOU22TMzDUb6yi
-	 ulwmXXX5KUNy3uZrEhobGuOcSrKZudD4BJdVgI8OkFSN1/wIT3T30zvMp1W71ckD3u
-	 enjM6CxVUX57XuyI1b9/UYhIyEC7HdoWnr1oPPUk=
+	b=k55SnBLtVZLrGyKlrLazvXWxq0TW+oRcHm3HZIYPkMoUvJLh7hUsYxk28rQ19rp3s
+	 dlWfQ+4LF/EL4doSJPbKlNP1TcezJzirZsrjp15B0r28E4mwVGmOMxwSN3KraPwis5
+	 2i9aOCfkZJytkLDtzbErfTcZ6ZvKatr9ni5F+QRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 025/275] ocfs2: split transactions in dio completion to avoid credit exhaustion
+	Marek Vasut <marex@nabladev.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 7.0 080/307] mfd: stpmic1: Attempt system shutdown twice in case PMIC is confused
 Date: Mon,  4 May 2026 15:49:25 +0200
-Message-ID: <20260504135143.873721942@linuxfoundation.org>
+Message-ID: <20260504135145.822091629@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,217 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DFD5E4BEDB5
+X-Rspamd-Queue-Id: 3F78F4BE3A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243396-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,suse.cz,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243108-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,nabladev.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Marek Vasut <marex@nabladev.com>
 
-commit d647c5b2fbf81560818dacade360abc8c00a9665 upstream.
+commit ffdc5c51f8bcd0e5e8255ca275a0a3b958475d99 upstream.
 
-During ocfs2 dio operations, JBD2 may report warnings via following
-call trace:
-ocfs2_dio_end_io_write
- ocfs2_mark_extent_written
-  ocfs2_change_extent_flag
-   ocfs2_split_extent
-    ocfs2_try_to_merge_extent
-     ocfs2_extend_rotate_transaction
-      ocfs2_extend_trans
-       jbd2__journal_restart
-        start_this_handle
-         output: JBD2: kworker/6:2 wants too many credits credits:5450 rsv_credits:0 max:5449
+Attempt to shut down again, in case the first attempt failed.
+The STPMIC1 might get confused and the first regmap_update_bits()
+returns with -ETIMEDOUT / -110 . If that or similar transient
+failure occurs, try to shut down again. If the second attempt
+fails, there is some bigger problem, report it to user.
 
-To prevent exceeding the credits limit, modify ocfs2_dio_end_io_write() to
-handle extents in a batch of transaction.
-
-Additionally, relocate ocfs2_del_inode_from_orphan().  The orphan inode
-should only be removed from the orphan list after the extent tree update
-is complete.  This ensures that if a crash occurs in the middle of extent
-tree updates, we won't leave stale blocks beyond EOF.
-
-This patch also changes the logic for updating the inode size and removing
-orphan, making it similar to ext4_dio_write_end_io().  Both operations are
-performed only when everything looks good.
-
-Finally, thanks to Jans and Joseph for providing the bug fix prototype and
-suggestions.
-
-Link: https://lkml.kernel.org/r/20260402134328.27334-2-heming.zhao@suse.com
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Suggested-by: Jan Kara <jack@suse.cz>
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 6e9df38f359a ("mfd: stpmic1: Add PMIC poweroff via sys-off handler")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260122111423.62591-1-marex@nabladev.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/aops.c |   74 ++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 45 insertions(+), 29 deletions(-)
+ drivers/mfd/stpmic1.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -37,6 +37,8 @@
- #include "namei.h"
- #include "sysfile.h"
+--- a/drivers/mfd/stpmic1.c
++++ b/drivers/mfd/stpmic1.c
+@@ -16,6 +16,8 @@
  
-+#define OCFS2_DIO_MARK_EXTENT_BATCH 200
+ #include <dt-bindings/mfd/st,stpmic1.h>
+ 
++#define STPMIC1_MAX_RETRIES 2
 +
- static int ocfs2_symlink_get_block(struct inode *inode, sector_t iblock,
- 				   struct buffer_head *bh_result, int create)
+ #define STPMIC1_MAIN_IRQ 0
+ 
+ static const struct regmap_range stpmic1_readable_ranges[] = {
+@@ -121,9 +123,23 @@ static const struct regmap_irq_chip stpm
+ static int stpmic1_power_off(struct sys_off_data *data)
  {
-@@ -2278,7 +2280,7 @@ static int ocfs2_dio_end_io_write(struct
- 	struct ocfs2_alloc_context *meta_ac = NULL;
- 	handle_t *handle = NULL;
- 	loff_t end = offset + bytes;
--	int ret = 0, credits = 0;
-+	int ret = 0, credits = 0, batch = 0;
- 
- 	ocfs2_init_dealloc_ctxt(&dealloc);
- 
-@@ -2295,18 +2297,6 @@ static int ocfs2_dio_end_io_write(struct
- 		goto out;
- 	}
- 
--	/* Delete orphan before acquire i_rwsem. */
--	if (dwc->dw_orphaned) {
--		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
--
--		end = end > i_size_read(inode) ? end : 0;
--
--		ret = ocfs2_del_inode_from_orphan(osb, inode, di_bh,
--				!!end, end);
--		if (ret < 0)
--			mlog_errno(ret);
--	}
--
- 	down_write(&oi->ip_alloc_sem);
- 	di = (struct ocfs2_dinode *)di_bh->b_data;
- 
-@@ -2327,24 +2317,25 @@ static int ocfs2_dio_end_io_write(struct
- 
- 	credits = ocfs2_calc_extend_credits(inode->i_sb, &di->id2.i_list);
- 
--	handle = ocfs2_start_trans(osb, credits);
--	if (IS_ERR(handle)) {
--		ret = PTR_ERR(handle);
--		mlog_errno(ret);
--		goto unlock;
--	}
--	ret = ocfs2_journal_access_di(handle, INODE_CACHE(inode), di_bh,
--				      OCFS2_JOURNAL_ACCESS_WRITE);
--	if (ret) {
--		mlog_errno(ret);
--		goto commit;
--	}
--
- 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
-+		if (!handle) {
-+			handle = ocfs2_start_trans(osb, credits);
-+			if (IS_ERR(handle)) {
-+				ret = PTR_ERR(handle);
-+				mlog_errno(ret);
-+				goto unlock;
-+			}
-+			ret = ocfs2_journal_access_di(handle, INODE_CACHE(inode), di_bh,
-+					OCFS2_JOURNAL_ACCESS_WRITE);
-+			if (ret) {
-+				mlog_errno(ret);
-+				goto commit;
-+			}
-+		}
- 		ret = ocfs2_assure_trans_credits(handle, credits);
- 		if (ret < 0) {
- 			mlog_errno(ret);
--			break;
-+			goto commit;
- 		}
- 		ret = ocfs2_mark_extent_written(inode, &et, handle,
- 						ue->ue_cpos, 1,
-@@ -2352,19 +2343,44 @@ static int ocfs2_dio_end_io_write(struct
- 						meta_ac, &dealloc);
- 		if (ret < 0) {
- 			mlog_errno(ret);
--			break;
-+			goto commit;
-+		}
+ 	struct stpmic1 *ddata = data->cb_data;
++	int ret;
 +
-+		if (++batch == OCFS2_DIO_MARK_EXTENT_BATCH) {
-+			ocfs2_commit_trans(osb, handle);
-+			handle = NULL;
-+			batch = 0;
- 		}
- 	}
- 
- 	if (end > i_size_read(inode)) {
-+		if (!handle) {
-+			handle = ocfs2_start_trans(osb, credits);
-+			if (IS_ERR(handle)) {
-+				ret = PTR_ERR(handle);
-+				mlog_errno(ret);
-+				goto unlock;
-+			}
-+		}
- 		ret = ocfs2_set_inode_size(handle, inode, di_bh, end);
- 		if (ret < 0)
- 			mlog_errno(ret);
- 	}
-+
- commit:
--	ocfs2_commit_trans(osb, handle);
-+	if (handle)
-+		ocfs2_commit_trans(osb, handle);
- unlock:
- 	up_write(&oi->ip_alloc_sem);
-+
-+	/* everything looks good, let's start the cleanup */
-+	if (!ret && dwc->dw_orphaned) {
-+		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
-+
-+		ret = ocfs2_del_inode_from_orphan(osb, inode, di_bh, 0, 0);
-+		if (ret < 0)
-+			mlog_errno(ret);
++	/*
++	 * Attempt to shut down again, in case the first attempt failed.
++	 * The STPMIC1 might get confused and the first regmap_update_bits()
++	 * returns with -ETIMEDOUT / -110 . If that or similar transient
++	 * failure occurs, try to shut down again. If the second attempt
++	 * fails, there is some bigger problem, report it to user.
++	 */
++	for (int retries = 0; retries < STPMIC1_MAX_RETRIES; retries++) {
++		ret = regmap_update_bits(ddata->regmap, MAIN_CR, SOFTWARE_SWITCH_OFF,
++					 SOFTWARE_SWITCH_OFF);
++		if (!ret)
++			return NOTIFY_DONE;
 +	}
- 	ocfs2_inode_unlock(inode, 1);
- 	brelse(di_bh);
- out:
+ 
+-	regmap_update_bits(ddata->regmap, MAIN_CR,
+-			   SOFTWARE_SWITCH_OFF, SOFTWARE_SWITCH_OFF);
++	dev_err(ddata->dev, "Failed to access PMIC I2C bus (%d)\n", ret);
+ 
+ 	return NOTIFY_DONE;
+ }
 
 
 
