@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEp7CdGp+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:41 +0200
+	id gHXhFIum+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F0B4BEE25
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 663644BE526
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 601DF30229F7
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B826F3021BF2
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0C33D8129;
-	Mon,  4 May 2026 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CD03DEAD6;
+	Mon,  4 May 2026 13:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jt1QEosA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyJlNm8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF8E3B19D1;
-	Mon,  4 May 2026 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972563DE434;
+	Mon,  4 May 2026 13:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903856; cv=none; b=bYu7kRARAtnKOq0sOheXpmo4T478KPfC79QYsrH+junS7giLJtuJtTvu4gQiZLJGJy0d/UDuEYRiSosQqug2JojfENeQUzLvOIMWotjrRXg6YtWNqvzUHHSK1N1ax77+N2bC/1jmi1lDp9dhZTxYEDJpjr1j6QhtfbQv/siKz/M=
+	t=1777903115; cv=none; b=ugMsOFZ9TJJ4XGHSO7fRr2+86VP/t4W+nrBfEkJkBiNknmPCtvcG3ezFkBKo4PfD9yUkjkSJFSL7NsNwflQA5AkWYLjxxNsHKj00KEEki3xU/1DAxQ/SYrJ8hKCavjs/KWfk5Ti3ZEzkD1F6AndZhiFKb6mYhcreTGQmTYBrkZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903856; c=relaxed/simple;
-	bh=8H6nPpO5KXG3CA2TRdc4/JmZmyBoloZxmu+pqwgvqwk=;
+	s=arc-20240116; t=1777903115; c=relaxed/simple;
+	bh=zloFy9tzYUX/JNcCii7Bf5h2Wp5odGBJ2AzSE3SC4PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gL3ouvEPIaYoQrwole3plaJfRBZjq1qYiKNc2Sz9r7+/aJJK8PKdm38BpPbt7ktTbVQlklmbn8CgieE938tOFAbPkiXx6OUM9Srl0siN/qqeGoCA+T9/0+aaH/VftNuxirt2OZlPQbLqbwTEXY9Kiro/z2LP3TZmxtsINH2vqAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jt1QEosA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A22C2BCB8;
-	Mon,  4 May 2026 14:10:55 +0000 (UTC)
+	 MIME-Version; b=sy22QpEntxgceGmarb++T/xGdINc/Xrir65tTprjlmc+nXNkeS8gpGrRjOdG5ybmgjBNydEZF0uchkCV7o8hU2NZoKObcOF60nNZDyw16o7/pLlaPz1F5aj3akEnNBSlOBrOyXXhBXOhr4Wj/sAh2gBs+YyeQ42k5HEbx8iNaOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyJlNm8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9D3C2BCB8;
+	Mon,  4 May 2026 13:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903856;
-	bh=8H6nPpO5KXG3CA2TRdc4/JmZmyBoloZxmu+pqwgvqwk=;
+	s=korg; t=1777903115;
+	bh=zloFy9tzYUX/JNcCii7Bf5h2Wp5odGBJ2AzSE3SC4PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jt1QEosAcZ7QKOc0nRH62svSqTS3Z2E7pPNrfu8qiHcgzxRyvUTxtxjUc5UzcNMf5
-	 eUStQcTCaJJKGiR4YY6a3xurc4+/uDUcXrcuO4V0kJtiYqWOkFKMYTXORqm5EkTRTl
-	 YI7WFp+W5mcqQtvVH0I/xqDScmMGsJm8X3gd7DuA=
+	b=TyJlNm8DtekGDz/zHlxCTg1MOV9XGWL6Zu+rIgVqXaMT7dzZgCofSEEWLHYzC+WWq
+	 ti4xeIf6ffFPiYyUIeDQ86w+RKbcll55kwU/ZZa/pzcv7hkRhZZJxreKcEaan7geqg
+	 hNpmE2n9EwcrxczaibSCQft6AnIrDjX8XMZE/b+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Hodges <git@danielhodges.dev>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 6.18 055/275] PCI: epf-mhi: Return 0, not remaining timeout, when eDMA ops complete
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 7.0 110/307] iio: adc: ti-ads7950: use iio_push_to_buffers_with_ts_unaligned()
 Date: Mon,  4 May 2026 15:49:55 +0200
-Message-ID: <20260504135144.980276760@linuxfoundation.org>
+Message-ID: <20260504135146.948839901@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C3F0B4BEE25
+X-Rspamd-Queue-Id: 663644BE526
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243427-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243138-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -93,61 +93,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,danielhodges.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,baylibre.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Hodges <git@danielhodges.dev>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 36bfc3642b19a98f1302aed4437c331df9b481f0 upstream.
+commit 7806c060cceb2d6895efbb6cff2f2f17cf1ec5de upstream.
 
-pci_epf_mhi_edma_read() and pci_epf_mhi_edma_write() start DMA
-operations and wait for completion with a timeout.
+Use iio_push_to_buffers_with_ts_unaligned() to avoid unaligned access
+when writing the timestamp in the rx_buf.
 
-On successful completion, they previously returned the remaining
-timeout, which callers may treat as an error.  In particular,
-mhi_ep_ring_add_element(), which calls pci_epf_mhi_edma_write() via
-mhi_cntrl->write_sync(), interprets any non-zero return value as
-failure.
+The previous implementation would have been fine on architectures that
+support 4-byte alignment of 64-bit integers but could cause issues on
+architectures that require 8-byte alignment.
 
-Return 0 on success instead of the remaining timeout to prevent
-mhi_ep_ring_add_element() from treating successful completion as an
-error.
-
-Fixes: 7b99aaaddabb ("PCI: epf-mhi: Add eDMA support")
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-[mani: changed commit log as per https://lore.kernel.org/linux-pci/20260227191510.GA3904799@bhelgaas]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206200529.10784-1-git@danielhodges.dev
+Fixes: 902c4b2446d4 ("iio: adc: New driver for TI ADS7950 chips")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-mhi.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/adc/ti-ads7950.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -367,6 +367,8 @@ static int pci_epf_mhi_edma_read(struct
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
+--- a/drivers/iio/adc/ti-ads7950.c
++++ b/drivers/iio/adc/ti-ads7950.c
+@@ -47,8 +47,6 @@
+ #define TI_ADS7950_MAX_CHAN	16
+ #define TI_ADS7950_NUM_GPIOS	4
  
- err_unmap:
-@@ -438,6 +440,8 @@ static int pci_epf_mhi_edma_write(struct
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
+-#define TI_ADS7950_TIMESTAMP_SIZE (sizeof(int64_t) / sizeof(__be16))
+-
+ /* val = value, dec = left shift, bits = number of bits of the mask */
+ #define TI_ADS7950_EXTRACT(val, dec, bits) \
+ 	(((val) >> (dec)) & ((1 << (bits)) - 1))
+@@ -105,8 +103,7 @@ struct ti_ads7950_state {
+ 	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+-	u16 rx_buf[TI_ADS7950_MAX_CHAN + 2 + TI_ADS7950_TIMESTAMP_SIZE]
+-		__aligned(IIO_DMA_MINALIGN);
++	u16 rx_buf[TI_ADS7950_MAX_CHAN + 2] __aligned(IIO_DMA_MINALIGN);
+ 	u16 tx_buf[TI_ADS7950_MAX_CHAN + 2];
+ 	u16 single_tx;
+ 	u16 single_rx;
+@@ -313,8 +310,10 @@ static irqreturn_t ti_ads7950_trigger_ha
+ 	if (ret < 0)
+ 		goto out;
  
- err_unmap:
+-	iio_push_to_buffers_with_timestamp(indio_dev, &st->rx_buf[2],
+-					   iio_get_time_ns(indio_dev));
++	iio_push_to_buffers_with_ts_unaligned(indio_dev, &st->rx_buf[2],
++					      sizeof(*st->rx_buf) *
++					      TI_ADS7950_MAX_CHAN,
++					      iio_get_time_ns(indio_dev));
+ 
+ out:
+ 	mutex_unlock(&st->slock);
 
 
 
