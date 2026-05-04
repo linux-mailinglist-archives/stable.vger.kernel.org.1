@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yE4XLBir+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:08 +0200
+	id oE+/D+2m+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC83D4BF1AF
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C31F4BE635
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A9BD53069DFE
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3DB1C302A7F9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B283B7742;
-	Mon,  4 May 2026 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1CA3DE44B;
+	Mon,  4 May 2026 13:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJ0aK/be"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crnlE7NV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEAF40DFD4;
-	Mon,  4 May 2026 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D803DE422;
+	Mon,  4 May 2026 13:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903742; cv=none; b=m4CS+tPhPj69im4op2CI4uzSW0L2ilqpH1fQy6alkO5k6MLDlRXg7IRFqHc5gaohcv2bp0sRCwnF3hSo4d4TfYrlytACpiPHNJ/f4ede8wzA1Y/WkkvU9Tnz6ke7zqQgOKJj5ahZ+e2gA4jHCcc24XJKe+8MHLVdfJzQL1U/ZXk=
+	t=1777903161; cv=none; b=h55AzSjIAxhEgIAXWEvxlxo+7QuB2e3b9JYW1hOlkPSvPriSiCJFbkp86C0FnrAPxUzw8/e+RbAgZvXpLLc5x8u+gXyjdYepc47Y3BgxmSnzIGmnCeyICbHuX/IWSila0x87qxJltAxDLF6Beic8xZ9s6Z8fshRZgdq04KXUMis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903742; c=relaxed/simple;
-	bh=LzzIJ5xmK/yZvHdwhNTjFWW9GYEwfAdyXbE8b+e6tJ0=;
+	s=arc-20240116; t=1777903161; c=relaxed/simple;
+	bh=2OlnaVn5cAuMPyCS0r8yL13pgztFe2ZjOEOheOSSHRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaT1NqyBp1G/SOlgdWqxNav71peTfJhdjfFQ/AB4Qq1EfV+lJaCLVeppDnZrBT0OwUz0sfMgAZfaHFEW+8wlQqmhcB0mD1mv9ylrmr2iXY4q+Rd/VGW0kqdXjY0PUkGuzvvsq4Mbr0kjxjpeb4IYgE+S2iEQS3l5o9LhdKjG70I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJ0aK/be; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A0AC2BCB8;
-	Mon,  4 May 2026 14:09:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zy6FfJyQJN0Vouk0bwZVfQN2uKXeEmECukkchfV7Bj0kYPGICBn/q+zYYAJWa8g65Bdl7oPAgxGpUPNEo/KFs2BVO6yvVoorDTqbeMTs+rKQBkS8jtn5gstadQ5HsRa2KsGRfdNVvmAsyqgls0V9b4i5aECE9Hw8AzNeyijIS0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crnlE7NV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686BCC2BCB8;
+	Mon,  4 May 2026 13:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903742;
-	bh=LzzIJ5xmK/yZvHdwhNTjFWW9GYEwfAdyXbE8b+e6tJ0=;
+	s=korg; t=1777903161;
+	bh=2OlnaVn5cAuMPyCS0r8yL13pgztFe2ZjOEOheOSSHRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJ0aK/beVx/zC/Pb4LxAwsKny8xt7DzepBs5ctgSc0JIIKGnsyS55KPmDVXZsXC9t
-	 mlWyO3Qd8nxzkBwet9RF8JI7vRmT2WQkLlfNqJtRAfSLqJRbfSjT37aYuYCSVzfg8Z
-	 RXl32sT5Z2VVFpwvzLW8nf+uIQ7+QfTltQTLhVNo=
+	b=crnlE7NVZATIbu5+XHEcco9y6mvAzDOOH4qceHrdCsJ3/rAvU+EWRWMXQxEeD47nh
+	 uVOjUN9vu0z+J8Gq7kSuJq5sAFFsPPnJzCzVn6Hy9OYwYxiW8wUNvHw9USbWcF62Ap
+	 Etv13Q+J47pX6fnZNd5i/YFJLwxF0f3Z8nQVShiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 044/275] hwmon: (powerz) Fix missing usb_kill_urb() on signal interrupt
-Date: Mon,  4 May 2026 15:49:44 +0200
-Message-ID: <20260504135144.578997502@linuxfoundation.org>
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 7.0 100/307] selftests/landlock: Drain stale audit records on init
+Date: Mon,  4 May 2026 15:49:45 +0200
+Message-ID: <20260504135146.576625327@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,159 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CC83D4BF1AF
+X-Rspamd-Queue-Id: 9C31F4BE635
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243157-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243383-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,digikod.net];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,roeck-us.net:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit b66437cb20a2d9ef201f40b675569f8ea7787c9f upstream.
+commit 3647a4977fb73da385e5a29b9775a4749733470d upstream.
 
-wait_for_completion_interruptible_timeout() returns -ERESTARTSYS when
-interrupted. This needs to abort the URB and return an error. No data
-has been received from the device so any reads from the transfer
-buffer are invalid.
+Non-audit Landlock tests generate audit records as side effects when
+audit_enabled is non-zero (e.g. from boot configuration).  These records
+accumulate in the kernel audit backlog while no audit daemon socket is
+open.  When the next test opens a new netlink socket and registers as
+the audit daemon, the stale backlog is delivered, causing baseline
+record count checks to fail spuriously.
 
-The original code tests !ret, which only catches the timeout case (0).
-On signal delivery (-ERESTARTSYS), !ret is false so the function skips
-usb_kill_urb() and falls through to read from the unfilled transfer
-buffer.
+Fix this by draining all pending records in audit_init() right after
+setting the receive timeout.  The 1-usec SO_RCVTIMEO causes audit_recv()
+to return -EAGAIN once the backlog is empty, naturally terminating the
+drain loop.
 
-Fix by capturing the return value into a long (matching the function
-return type) and handling signal (negative) and timeout (zero) cases
-with separate checks that both call usb_kill_urb() before returning.
+Domain deallocation records are emitted asynchronously from a work
+queue, so they may still arrive after the drain.  Remove records.domain
+== 0 checks that are not preceded by audit_match_record() calls, which
+would otherwise consume stale records before the count.  Document this
+constraint above audit_count_records().
 
-Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
+Increasing the drain timeout to catch in-flight deallocation records was
+considered but rejected: a longer timeout adds latency to every
+audit_init() call even when no stale record is pending, and any fixed
+timeout is still not guaranteed to catch all records under load.
+Removing the unprotected checks is simpler and avoids the spurious
+failures.
+
+Cc: Günther Noack <gnoack@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260410002521.422645-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20260402192608.1458252-4-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/powerz.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/testing/selftests/landlock/audit.h                     |   19 +++++++++++
+ tools/testing/selftests/landlock/audit_test.c                |    2 -
+ tools/testing/selftests/landlock/ptrace_test.c               |    1 
+ tools/testing/selftests/landlock/scoped_abstract_unix_test.c |    1 
+ 4 files changed, 19 insertions(+), 4 deletions(-)
 
---- a/drivers/hwmon/powerz.c
-+++ b/drivers/hwmon/powerz.c
-@@ -106,6 +106,7 @@ static void powerz_usb_cmd_complete(stru
+--- a/tools/testing/selftests/landlock/audit.h
++++ b/tools/testing/selftests/landlock/audit.h
+@@ -338,6 +338,15 @@ struct audit_records {
+ 	size_t domain;
+ };
  
- static int powerz_read_data(struct usb_device *udev, struct powerz_priv *priv)
++/*
++ * WARNING: Do not assert records.domain == 0 without a preceding
++ * audit_match_record() call.  Domain deallocation records are emitted
++ * asynchronously from kworker threads and can arrive after the drain in
++ * audit_init(), corrupting the domain count.  A preceding audit_match_record()
++ * call consumes stale records while scanning, making the assertion safe in
++ * practice because stale deallocation records arrive before the expected access
++ * records.
++ */
+ static int audit_count_records(int audit_fd, struct audit_records *records)
  {
-+	long rc;
- 	int ret;
+ 	struct audit_message msg;
+@@ -391,6 +400,16 @@ static int audit_init(void)
+ 	if (err)
+ 		return -errno;
  
- 	if (!priv->urb)
-@@ -127,8 +128,14 @@ static int powerz_read_data(struct usb_d
- 	if (ret)
- 		return ret;
- 
--	if (!wait_for_completion_interruptible_timeout
--	    (&priv->completion, msecs_to_jiffies(5))) {
-+	rc = wait_for_completion_interruptible_timeout(&priv->completion,
-+						       msecs_to_jiffies(5));
-+	if (rc < 0) {
-+		usb_kill_urb(priv->urb);
-+		return rc;
-+	}
++	/*
++	 * Drains stale audit records that accumulated in the kernel backlog
++	 * while no audit daemon socket was open.  This happens when non-audit
++	 * Landlock tests generate records while audit_enabled is non-zero (e.g.
++	 * from boot configuration), or when domain deallocation records arrive
++	 * asynchronously after a previous test's socket was closed.
++	 */
++	while (audit_recv(fd, NULL) == 0)
++		;
 +
-+	if (rc == 0) {
- 		usb_kill_urb(priv->urb);
- 		return -EIO;
- 	}
+ 	return fd;
+ }
+ 
+--- a/tools/testing/selftests/landlock/audit_test.c
++++ b/tools/testing/selftests/landlock/audit_test.c
+@@ -733,7 +733,6 @@ TEST_F(audit_flags, signal)
+ 		} else {
+ 			EXPECT_EQ(1, records.access);
+ 		}
+-		EXPECT_EQ(0, records.domain);
+ 
+ 		/* Updates filter rules to match the drop record. */
+ 		set_cap(_metadata, CAP_AUDIT_CONTROL);
+@@ -922,7 +921,6 @@ TEST_F(audit_exec, signal_and_open)
+ 	/* Tests that there was no denial until now. */
+ 	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+ 	EXPECT_EQ(0, records.access);
+-	EXPECT_EQ(0, records.domain);
+ 
+ 	/*
+ 	 * Wait for the child to do a first denied action by layer1 and
+--- a/tools/testing/selftests/landlock/ptrace_test.c
++++ b/tools/testing/selftests/landlock/ptrace_test.c
+@@ -342,7 +342,6 @@ TEST_F(audit, trace)
+ 	/* Makes sure there is no superfluous logged records. */
+ 	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+ 	EXPECT_EQ(0, records.access);
+-	EXPECT_EQ(0, records.domain);
+ 
+ 	yama_ptrace_scope = get_yama_ptrace_scope();
+ 	ASSERT_LE(0, yama_ptrace_scope);
+--- a/tools/testing/selftests/landlock/scoped_abstract_unix_test.c
++++ b/tools/testing/selftests/landlock/scoped_abstract_unix_test.c
+@@ -312,7 +312,6 @@ TEST_F(scoped_audit, connect_to_child)
+ 	/* Makes sure there is no superfluous logged records. */
+ 	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+ 	EXPECT_EQ(0, records.access);
+-	EXPECT_EQ(0, records.domain);
+ 
+ 	ASSERT_EQ(0, pipe2(pipe_child, O_CLOEXEC));
+ 	ASSERT_EQ(0, pipe2(pipe_parent, O_CLOEXEC));
 
 
 
