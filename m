@@ -1,134 +1,153 @@
-Return-Path: <stable+bounces-243036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NF3LOOk+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:53:39 +0200
+	id yLvTG+eu+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:36:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B144BE154
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA3D4BFC18
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8154330164B4
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:52:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65444309CE1A
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33803DA7D7;
-	Mon,  4 May 2026 13:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF813E1CE3;
+	Mon,  4 May 2026 14:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MZIc41sZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFqky4Rp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1313DE425
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 13:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8153DFC93;
+	Mon,  4 May 2026 14:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902770; cv=none; b=t4pRgJrsIE+4VrqSTGsKxR9fzsi9GVdVskF8MIgagmDPvRMPjTsjIA6HFvVD7a8O/CiEUtaa6MWA8Fi1S/RTuNq7kjkz4YcwknEf13TQIH/kFVbTCDUhfGUGr7A3oScnjF9kiQZpEuViZfjVFoSF+F6MviKHSTwqLb3gyAjxni4=
+	t=1777904762; cv=none; b=ND96jV2oz+zjnMEqZzDKlZhyC/wbBc+2LX/OatMBf70DZGDIuRh8BgF3Jb2W0WyxkDGZzgB+r03haYaRE83IwJLJiWSbjmHBMYEC8EUqd2FEndaglYiCj8DQX3DWd57DXxXFS7n60ICO1Awfan2+6PsuG8k9gBctcfdCLDNjSRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902770; c=relaxed/simple;
-	bh=EnKBfyuObT8bqP9o5rdUDsYVc9jpV+QkAnEpaBnIASA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Dzbd0Dfo19lvm1bYwEH1QCd8fdagUpDvpNm2BfgFadcxcz0+0OkM0M78mbYJvSTELHPkIKr/shLxrHnSc5QCKVODvgIyOCA+8/2+vfonoDk9Z9fEU9rNKpL3i0706vPPy/a5+Q6bnFFtxfc51hS4euoUOiSe4Nu+auGCyn5bQN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MZIc41sZ; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9063DC5D72E;
-	Mon,  4 May 2026 13:53:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F6135FD5F;
-	Mon,  4 May 2026 13:52:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2EA3211AD20F1;
-	Mon,  4 May 2026 15:52:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777902758; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=PMEhp+w9Nspq/lfo78XgrxWdY0LVag6tZoHKrUtgTdk=;
-	b=MZIc41sZtRjrn7OAEgYMGmWUtTfF9aNBGixF0VDB/D9RGBwHknRA2NnPgZinjYdi7hpvU/
-	O0+NzjYE8WD5P7uJu1qtpVVk3oZ65aLtsVQnfqG6ulrgx5CPV7oA3W3QkD2cPlTTf8U6/k
-	SoG4OqCuFhFJ8vxMNoXWI8FhuKqEhe8uA+GGBodv5JGDEgdLDdPKYXtjM3jkEuIvtmXuqf
-	GXkyZCfW8QRHXKZhBwipatBz0Npmwbf/f6BYM6c7QkgbtBsHrkEztP3MIgRQyVHggwGweW
-	5+1Hi97C6V6tgXn2eqmt/yAcKVVUTYBW1MJqLO8wCA5uBGiJXSKPoqeKnVb7JA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Lee Jones <lee@kernel.org>, Valery Borovsky <vebohr@gmail.com>
-Cc: Ben Dooks <ben@fluff.org.uk>, Vincent Sanders <vince@arm.linux.org.uk>, 
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260504124841.443496-1-vebohr@gmail.com>
-References: <6b4a9f5ae8a316b6f07f72f2fe3f0b8fc5f18dff.1777889235.git.vebohr@gmail.com>
- <20260504124841.443496-1-vebohr@gmail.com>
-Subject: Re: [PATCH v2] mfd: sm501: fix reference leak on failed device
- registration
-Message-Id: <177790275684.156214.6563585281874262911.b4-ty@bootlin.com>
-Date: Mon, 04 May 2026 15:52:36 +0200
+	s=arc-20240116; t=1777904762; c=relaxed/simple;
+	bh=z6U2JsyCQUKy/QdzUKB6Jw+m8Vc7Z6QgsbM7Hu+FtRg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f6ALnnkU2AdrX3wKCJK5dK7dHN9aseYHBzwlb5i6TziawlP4n7Zi4GK3noZXQNqRTibQdku30nx2cUCogpq7Wki9k8gD4R6t2f4+R/AjoXAZnZwM+Jm7J82WSegWjG+QqNdpv1M9NQwce/7u/DJ7CeCei4Um+MwR6h/jZ+zelnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFqky4Rp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC675C2BCB8;
+	Mon,  4 May 2026 14:26:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777904762;
+	bh=z6U2JsyCQUKy/QdzUKB6Jw+m8Vc7Z6QgsbM7Hu+FtRg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=zFqky4Rp4E3h9TQmaDq0PX8slJMBkfmPQwoZoxQo/5tzVV863uLzqUw6qmSes/jer
+	 e/LWraixpnJHvYjQbVsFdRcP9fZCBRaHQlv0NbtKQMstuj38Eo1caBTgjYb31VjxQE
+	 t1rLu4m9dlOJ8CfeYyOKuwgV2z6Kk5JPlDK5i0sM=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Sohei Koyama <skoyama@ddn.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 137/215] ext4: fix missing brelse() in ext4_xattr_inode_dec_ref_all()
+Date: Mon,  4 May 2026 15:52:36 +0200
+Message-ID: <20260504135135.158163803@linuxfoundation.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 09B144BE154
+X-Rspamd-Queue-Id: DBA3D4BFC18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243036-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-243781-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ddn.com,dilger.ca,gmail.com,huawei.com,linux.alibaba.com,mit.edu];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:dkim,bootlin.com:mid]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,alibaba.com:email,huawei.com:email]
 
-On Mon, 04 May 2026 15:48:41 +0300, Valery Borovsky wrote:
-> When platform_device_register() fails in sm501_register_device(), the
-> platform device allocated by sm501_create_subdev() has its struct device
-> initialized by device_initialize() inside platform_device_register(). The
-> error path logs the error but returns without dropping the device reference,
-> leaking the memory allocated by sm501_create_subdev():
-> 
->   sm501_register_device()
->     -> platform_device_register(pdev)
->        -> device_initialize(&pdev->dev)   /* kref = 1 */
->        -> platform_device_add(pdev)       /* fails */
->     <- dev_err() called, kref still 1, sm501_device_release never called
-> 
-> [...]
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Applied to mtd/next, thanks!
+------------------
 
-[1/1] mfd: sm501: fix reference leak on failed device registration
-      commit: faa9bba3fe2f37e7dcb26d4501d890fbfd7df160
+From: Sohei Koyama <skoyama@ddn.com>
 
-Patche(s) should be available on mtd/linux.git and will be
-part of the next PR (provided that no robot complains by then).
+commit 77d059519382bd66283e6a4e83ee186e87e7708f upstream.
 
-Kind regards,
-Miquèl
+The commit c8e008b60492 ("ext4: ignore xattrs past end")
+introduced a refcount leak in when block_csum is false.
+
+ext4_xattr_inode_dec_ref_all() calls ext4_get_inode_loc() to
+get iloc.bh, but never releases it with brelse().
+
+Fixes: c8e008b60492 ("ext4: ignore xattrs past end")
+Signed-off-by: Sohei Koyama <skoyama@ddn.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Link: https://patch.msgid.link/20260406074830.8480-1-skoyama@ddn.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/ext4/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1165,7 +1165,7 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
+ {
+ 	struct inode *ea_inode;
+ 	struct ext4_xattr_entry *entry;
+-	struct ext4_iloc iloc;
++	struct ext4_iloc iloc = { .bh = NULL };
+ 	bool dirty = false;
+ 	unsigned int ea_ino;
+ 	int err;
+@@ -1260,6 +1260,8 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
+ 			ext4_warning_inode(parent,
+ 					   "handle dirty metadata err=%d", err);
+ 	}
++
++	brelse(iloc.bh);
+ }
+ 
+ /*
+
 
 
