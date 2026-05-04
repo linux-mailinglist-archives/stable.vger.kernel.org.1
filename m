@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-243782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MhRL4ix+GlizAIAu9opvQ
-	(envelope-from <stable+bounces-243782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:36 +0200
+	id aJz2E86o+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBC54C0035
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1355F4BEAA0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8AA8C304725C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6A28B303A20D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB9E3E1232;
-	Mon,  4 May 2026 14:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CE93DFC70;
+	Mon,  4 May 2026 14:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wn9hY/mb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSB+2/S+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C588D3D8129;
-	Mon,  4 May 2026 14:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B783DFC6C;
+	Mon,  4 May 2026 14:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904764; cv=none; b=dhlh9Yp37bMjmWZ1+tnaw1thHkzXzb5n2SK2YNWcKkbk+UPAtsTvG2BMoTY8IlXUDfBfPzFJENkOHmR2D1BiMlDvFIYyp4/cUC+1/9rzZ6kTnBWBm/w7vn8FwcgRB8K0SSAehujVrwBtHqsHZTElvBMvcoBMDNtauyxJxjeQHM4=
+	t=1777903603; cv=none; b=e0Ly0TYATSSmvIGCoEj/SQshCjWdXigNUNcPnQuAX82hS9SaQQuYnjWxhBS3QwPelj6SS9OQJVvxP9SAg2WY8ClJvKX7vO7Qd+G8/XDTmRcOfw+qnxZQipneuoyBNbGonFfVSB45Zes/uuQEzSOB9W842DeHIRFlz/4hv3z4xfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904764; c=relaxed/simple;
-	bh=dfVIj/Rny9Y/RWbk5gYnTFYemo7zUl/yZiyVXirIhpg=;
+	s=arc-20240116; t=1777903603; c=relaxed/simple;
+	bh=KkQTA4/rjpEr3f68YbApfRc1xiMoRPUS5q/5tQ7dECg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JaLQwFPc9O3vtJpVlQoaZU57aNiPf5Mlcb3+OUiKUbS91Nfabqhynf2KhseB9vSHuW3YFxMNiHzeSMNflmcE4H15Hz8eVCqboqa6IN7bN30QUpvRdDDHxcXVm+j42+e5moGWaw0oT9E7XFbnarXqrnelxYnm/z/SgqOYE+KEcqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wn9hY/mb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599F8C2BCB8;
-	Mon,  4 May 2026 14:26:04 +0000 (UTC)
+	 MIME-Version; b=t6INzKdB8VBVlz8znERt+CAOqF8U3hU+MB370seKXKUCMJJWIYiIt7q8TN+AlGEOM3xmKSScr+RDywWO+5pcCGVNydhg2mmUJrCoNdXyh5fVI8g1AVC6/WuebWOfYuVcS+FevGCXY13wPFVglD2mcyn9gBdIk2ALTWzVWgcER2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSB+2/S+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2D1C2BCC4;
+	Mon,  4 May 2026 14:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904764;
-	bh=dfVIj/Rny9Y/RWbk5gYnTFYemo7zUl/yZiyVXirIhpg=;
+	s=korg; t=1777903603;
+	bh=KkQTA4/rjpEr3f68YbApfRc1xiMoRPUS5q/5tQ7dECg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wn9hY/mbRq5LATTWtBAUjH2KUTmbL2dI2N6loLJZX0mjVk4xBQ9ERpKKPKsTxD57B
-	 sX7Qa/Ua2IeebmL2adoQHfdQgHzdntQk8/JtFpyHcmJGD6A/hfEs14mp8Hy98OW0jU
-	 wZ6+oDRgvefT2zXNNQOnlxzy6qW09n3LFt5YbsjE=
+	b=gSB+2/S+mu6/nunuCZYypoRQeKtPm0uHdZzEX5l7I2hLUtQGo5nI/gAkighcc+dG+
+	 i4Fr4b22gXfhwTznGZ0Sj+zXR2ocCLeDUwb4jH5VIpCriRam5t8e6V3VADzmswKkV8
+	 a1PAu7wkU8ngidkcod6isxTrHTFnajO0EGTdD14M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 164/215] dm mirror: fix integer overflow in create_dirty_log()
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 298/307] ipv6: rpl: reserve mac_len headroom when recompressed SRH grows
 Date: Mon,  4 May 2026 15:53:03 +0200
-Message-ID: <20260504135136.167301937@linuxfoundation.org>
+Message-ID: <20260504135153.996299021@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +63,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ACBC54C0035
+X-Rspamd-Queue-Id: 1355F4BEAA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com];
-	TAGGED_FROM(0.00)[bounces-243782-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-243328-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 4c788c6f921b22f9b6c3f316c4a071c05683e7de upstream.
+commit 9e6bf146b55999a095bb14f73a843942456d1adc upstream.
 
-The argument count calculation in create_dirty_log() performs
-`*args_used = 2 + param_count` before validating against argc. When a
-user provides a param_count close to UINT_MAX via the device mapper
-table string, this unsigned addition wraps around to a small value,
-causing the subsequent `argc < *args_used` check to be bypassed.
+ipv6_rpl_srh_rcv() decompresses an RFC 6554 Source Routing Header, swaps
+the next segment into ipv6_hdr->daddr, recompresses, then pulls the old
+header and pushes the new one plus the IPv6 header back.  The
+recompressed header can be larger than the received one when the swap
+reduces the common-prefix length the segments share with daddr (CmprI=0,
+CmprE>0, seg[0][0] != daddr[0] gives the maximum +8 bytes).
 
-The overflowed param_count is then passed as argc to dm_dirty_log_create(),
-where it can cause out-of-bounds reads on the argv array.
+pskb_expand_head() was gated on segments_left == 0, so on earlier
+segments the push consumed unchecked headroom.  Once skb_push() leaves
+fewer than skb->mac_len bytes in front of data,
+skb_mac_header_rebuild()'s call to:
 
-Fix by comparing param_count against argc - 2 before performing the
-addition, following the same pattern used by parse_features() in the
-same file. Since argc >= 2 is already guaranteed, the subtraction is
-safe.
+	skb_set_mac_header(skb, -skb->mac_len);
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+will store (data - head) - mac_len into the u16 mac_header field, which
+wraps to ~65530, and the following memmove() writes mac_len bytes ~64KiB
+past skb->head.
+
+A single AF_INET6/SOCK_RAW/IPV6_HDRINCL packet over lo with a two
+segment type-3 SRH (CmprI=0, CmprE=15) reaches headroom 8 after one
+pass; KASAN reports a 14-byte OOB write in ipv6_rthdr_rcv.
+
+Fix this by expanding the head whenever the remaining room is less than
+the push size plus mac_len, and request that much extra so the rebuilt
+MAC header fits afterwards.
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Cc: stable <stable@kernel.org>
+Reported-by: Anthropic
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026042133-gout-unvented-1bd9@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid1.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/exthdrs.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/md/dm-raid1.c
-+++ b/drivers/md/dm-raid1.c
-@@ -993,13 +993,13 @@ static struct dm_dirty_log *create_dirty
- 		return NULL;
- 	}
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -491,6 +491,7 @@ static int ipv6_rpl_srh_rcv(struct sk_bu
+ 	struct net *net = dev_net(skb->dev);
+ 	struct inet6_dev *idev;
+ 	struct ipv6hdr *oldhdr;
++	unsigned int chdr_len;
+ 	unsigned char *buf;
+ 	int accept_rpl_seg;
+ 	int i, err;
+@@ -592,8 +593,10 @@ looped_back:
+ 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
+ 	skb_postpull_rcsum(skb, oldhdr,
+ 			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
+-	if (unlikely(!hdr->segments_left)) {
+-		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
++	chdr_len = sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3);
++	if (unlikely(!hdr->segments_left ||
++		     skb_headroom(skb) < chdr_len + skb->mac_len)) {
++		if (pskb_expand_head(skb, chdr_len + skb->mac_len, 0,
+ 				     GFP_ATOMIC)) {
+ 			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
+ 			kfree_skb(skb);
+@@ -603,7 +606,7 @@ looped_back:
  
--	*args_used = 2 + param_count;
--
--	if (argc < *args_used) {
-+	if (param_count > argc - 2) {
- 		ti->error = "Insufficient mirror log arguments";
- 		return NULL;
+ 		oldhdr = ipv6_hdr(skb);
  	}
- 
-+	*args_used = 2 + param_count;
-+
- 	dl = dm_dirty_log_create(argv[0], ti, mirror_flush, param_count,
- 				 argv + 2);
- 	if (!dl) {
+-	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
++	skb_push(skb, chdr_len);
+ 	skb_reset_network_header(skb);
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
 
 
 
