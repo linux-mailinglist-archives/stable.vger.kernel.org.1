@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Jw8Nvys+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:12 +0200
+	id WFJ2Ed6v+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26A84BF802
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17CC4BFDC3
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1FC21304C932
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D64C7302429D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1061C68F;
-	Mon,  4 May 2026 14:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACA63DFC9B;
+	Mon,  4 May 2026 14:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/QenA+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKSX3tQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E26C3DE425;
-	Mon,  4 May 2026 14:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDF83E3C50;
+	Mon,  4 May 2026 14:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904154; cv=none; b=Lb4L8xFioGglxW9N0XYIhbjbNzNl0kJVq1CSDUVsRoFsOk5tXh0laMaQf3ODPnc59VFFnnsUbBGaonWtCghUVwPY7ZKVGcLhu0rgtEjytS9nkXCN3VcfaHCddqu7Y7VzRoATj3jfiavWfftTfPLMw1Jv5ggVibzjIb/F8BpvQP8=
+	t=1777904664; cv=none; b=Xs7XlU2Jst02zbTPpo1b76av28x8+9kNOMcWpdJ5zLrI+yOF1qjWluY+2tpX6UZoj/tI9mpoiyHFmDVW5HM/KUdFo+JWdN7jPxKT4B/enYtA/8DXzMVdvshyVFAYG0b49fNjc1Q3oqul/uB+xmqJ/CmUA/sL1NNyxtZJb1JopIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904154; c=relaxed/simple;
-	bh=YMTC/wzjQdRaNt0QlRX/1HCPaoJbDF4Q2MGGiT6Z1ZQ=;
+	s=arc-20240116; t=1777904664; c=relaxed/simple;
+	bh=+/tDT/f/XWJe3uteUCbfG+91K3+Blr0eZTm3WIc8lvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkhLf/lLQ/jv+LbmrxKwp5x9gOJ4nbPnEwhn9oo5/Df2Oyjfjh6d1/iByWnpuOa3iEEgtbG4WZqRv/rKMi3zJy212xND5pRnql2r25W8HFsca0UmhifQz5GyKQxsKfazwmh1l7R8yUEnbVwQtIbOBnK7GfXC7SsyEkO2R36hbI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/QenA+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24648C2BCB8;
-	Mon,  4 May 2026 14:15:53 +0000 (UTC)
+	 MIME-Version; b=jmQvMAwFJT/B7XD76sBg5VAt7tCF3tRRhxHGQUPVQhk7qCrHrfdABNlJ94su34/gp58FlymUPnAlRmZop0z8djJA9lIKn5LrsfIUrj2fCsqbhGjpOSAC1EVjVDJ2ILqA10cvebccgH+Wo2nmPkQ+Fr4c+4W3M8lm1HILQ82Al6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKSX3tQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CA6C2BCB8;
+	Mon,  4 May 2026 14:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904154;
-	bh=YMTC/wzjQdRaNt0QlRX/1HCPaoJbDF4Q2MGGiT6Z1ZQ=;
+	s=korg; t=1777904664;
+	bh=+/tDT/f/XWJe3uteUCbfG+91K3+Blr0eZTm3WIc8lvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/QenA+yB2BnG4AyKCOU6/doFfO5CqKOcGi5tum+JM/nkakBNA+yaKKt/vZl8Vk0w
-	 9lYJGvo1nZVyjAmKtxf7u9rM2DzODHEsn2gbi7QG0pmfMHW7zHrbAERmHMOucLVZbE
-	 bn/YiYMM5y8gF88bNoPAQ1qeO7E1DNLuxcOY4iLg=
+	b=CKSX3tQwOzYhf71n1i8cZ79cIJAJGj6m6DbLlUMiKKr8M9yqQFCf921sVtngFmJEo
+	 RjpSEDiF9Wf9qNu319hmdA61wTdfQvdr2RoymTMTCZ6LEGIXBFwIFoV9QoZ4O5vXwi
+	 vrab/DYAteroyXCR3KRNUaQtZU0Mr/ESEyrmlR10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.18 205/275] md/raid5: validate payload size before accessing journal metadata
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 126/215] KVM: nSVM: Always inject a #GP if mapping VMCB12 fails on nested VMRUN
 Date: Mon,  4 May 2026 15:52:25 +0200
-Message-ID: <20260504135150.693801360@linuxfoundation.org>
+Message-ID: <20260504135134.753090093@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,179 +63,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F26A84BF802
+X-Rspamd-Queue-Id: C17CC4BFDC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243543-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243743-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,fnnas.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit b0cc3ae97e893bf54bbce447f4e9fd2e0b88bff9 upstream.
+commit 01ddcdc55e097ca38c28ae656711b8e6d1df71f8 upstream.
 
-r5c_recovery_analyze_meta_block() and
-r5l_recovery_verify_data_checksum_for_mb() iterate over payloads in a
-journal metadata block using on-disk payload size fields without
-validating them against the remaining space in the metadata block.
+nested_svm_vmrun() currently only injects a #GP if kvm_vcpu_map() fails
+with -EINVAL. But it could also fail with -EFAULT if creating a host
+mapping failed. Inject a #GP in all cases, no reason to treat failure
+modes differently.
 
-A corrupted journal contains payload sizes extending beyond the PAGE_SIZE
-boundary can cause out-of-bounds reads when accessing payload fields or
-computing offsets.
-
-Add bounds validation for each payload type to ensure the full payload
-fits within meta_size before processing.
-
-Fixes: b4c625c67362 ("md/r5cache: r5cache recovery: part 1")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://lore.kernel.org/linux-raid/SYBPR01MB78815E78D829BB86CD7C8015AF5FA@SYBPR01MB7881.ausprd01.prod.outlook.com/
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Fixes: 8c5fbf1a7231 ("KVM/nSVM: Use the new mapping API for mapping guest memory")
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-6-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5-cache.c |   48 ++++++++++++++++++++++++++++++++---------------
- 1 file changed, 33 insertions(+), 15 deletions(-)
+ arch/x86/kvm/svm/nested.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -2002,15 +2002,27 @@ r5l_recovery_verify_data_checksum_for_mb
- 		return -ENOMEM;
- 
- 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
-+		sector_t payload_len;
-+
- 		payload = (void *)mb + mb_offset;
- 		payload_flush = (void *)mb + mb_offset;
- 
- 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) {
-+			payload_len = sizeof(struct r5l_payload_data_parity) +
-+				(sector_t)sizeof(__le32) *
-+				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 			if (r5l_recovery_verify_data_checksum(
- 				    log, ctx, page, log_offset,
- 				    payload->checksum[0]) < 0)
- 				goto mismatch;
- 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_PARITY) {
-+			payload_len = sizeof(struct r5l_payload_data_parity) +
-+				(sector_t)sizeof(__le32) *
-+				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 			if (r5l_recovery_verify_data_checksum(
- 				    log, ctx, page, log_offset,
- 				    payload->checksum[0]) < 0)
-@@ -2023,22 +2035,18 @@ r5l_recovery_verify_data_checksum_for_mb
- 				    payload->checksum[1]) < 0)
- 				goto mismatch;
- 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
--			/* nothing to do for R5LOG_PAYLOAD_FLUSH here */
-+			payload_len = sizeof(struct r5l_payload_flush) +
-+				(sector_t)le32_to_cpu(payload_flush->size);
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 		} else /* not R5LOG_PAYLOAD_DATA/PARITY/FLUSH */
- 			goto mismatch;
- 
--		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
--			mb_offset += sizeof(struct r5l_payload_flush) +
--				le32_to_cpu(payload_flush->size);
--		} else {
--			/* DATA or PARITY payload */
-+		if (le16_to_cpu(payload->header.type) != R5LOG_PAYLOAD_FLUSH) {
- 			log_offset = r5l_ring_add(log, log_offset,
- 						  le32_to_cpu(payload->size));
--			mb_offset += sizeof(struct r5l_payload_data_parity) +
--				sizeof(__le32) *
--				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
- 		}
--
-+		mb_offset += payload_len;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -865,12 +865,9 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
  	}
  
- 	put_page(page);
-@@ -2089,6 +2097,7 @@ r5c_recovery_analyze_meta_block(struct r
- 	log_offset = r5l_ring_add(log, ctx->pos, BLOCK_SECTORS);
- 
- 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
-+		sector_t payload_len;
- 		int dd;
- 
- 		payload = (void *)mb + mb_offset;
-@@ -2097,6 +2106,12 @@ r5c_recovery_analyze_meta_block(struct r
- 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
- 			int i, count;
- 
-+			payload_len = sizeof(struct r5l_payload_flush) +
-+				(sector_t)le32_to_cpu(payload_flush->size);
-+			if (mb_offset + payload_len >
-+			    le32_to_cpu(mb->meta_size))
-+				return -EINVAL;
-+
- 			count = le32_to_cpu(payload_flush->size) / sizeof(__le64);
- 			for (i = 0; i < count; ++i) {
- 				stripe_sect = le64_to_cpu(payload_flush->flush_stripes[i]);
-@@ -2110,12 +2125,17 @@ r5c_recovery_analyze_meta_block(struct r
- 				}
- 			}
- 
--			mb_offset += sizeof(struct r5l_payload_flush) +
--				le32_to_cpu(payload_flush->size);
-+			mb_offset += payload_len;
- 			continue;
- 		}
- 
- 		/* DATA or PARITY payload */
-+		payload_len = sizeof(struct r5l_payload_data_parity) +
-+			(sector_t)sizeof(__le32) *
-+			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+		if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+			return -EINVAL;
-+
- 		stripe_sect = (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) ?
- 			raid5_compute_sector(
- 				conf, le64_to_cpu(payload->location), 0, &dd,
-@@ -2180,9 +2200,7 @@ r5c_recovery_analyze_meta_block(struct r
- 		log_offset = r5l_ring_add(log, log_offset,
- 					  le32_to_cpu(payload->size));
- 
--		mb_offset += sizeof(struct r5l_payload_data_parity) +
--			sizeof(__le32) *
--			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+		mb_offset += payload_len;
+ 	vmcb12_gpa = svm->vmcb->save.rax;
+-	ret = kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map);
+-	if (ret == -EINVAL) {
++	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map)) {
+ 		kvm_inject_gp(vcpu, 0);
+ 		return 1;
+-	} else if (ret) {
+-		return kvm_skip_emulated_instruction(vcpu);
  	}
  
- 	return 0;
+ 	ret = kvm_skip_emulated_instruction(vcpu);
 
 
 
