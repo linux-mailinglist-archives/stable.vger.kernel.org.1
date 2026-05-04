@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-243120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNJcMmOm+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:03 +0200
+	id ANvpHGap+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7514BE49F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AA64BED06
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 634A43040957
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C6BA302AB7D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AEB3DDDCC;
-	Mon,  4 May 2026 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3BC3D5645;
+	Mon,  4 May 2026 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ABUa2Oa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnvfbHUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352863DDDC1;
-	Mon,  4 May 2026 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B931ADC83;
+	Mon,  4 May 2026 14:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903069; cv=none; b=axkTlyu0jJT3GwtdlYrhKwYUwyJHG1QoldhEGGILB4gpSNhkD5Bhn8NChOhpWLlVQsXP1hQ91pXkZ+YzRIiQPqcH5tKeeWngSMV8xPWs24a/8wdfWH/tmZ1ACUEUX1dxeUm6uR1cCrqfqGfHs2bagQ3DIzPsOHkNj970xQGtqe0=
+	t=1777903722; cv=none; b=oDJ4F7/souJWW4F81SEVogb0hytGdQf6y5N+j0ubG2Y51qZmq/UyfpnJwFDMjdFw9qWg17+QIUD6sVqBHsAPTrYPl2klgo0NZtr/bELaQAFrD2XO/XwWXWEJrT0VZrTsjf3zEpueYpK8O5lhwv7xotd0Vlnn5pY2XXc3YFnIY5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903069; c=relaxed/simple;
-	bh=B2T/veBEy0ozUy+0kBCJd1IPlxnQGi1Y9ZRSTttDjqc=;
+	s=arc-20240116; t=1777903722; c=relaxed/simple;
+	bh=LYr9vpALDQtLyMx8ZUC39r+IGlCsYLmDXvpDSTCE8io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OV2bNxu7pSsMAFAcyZwJgOQJb2cNu7pmFcLWw724EeRewOgcQHhBFqutSmQOOMTTiPxkF7yOWt6m+VCsTbN1PCLoCfxUdaBZzXbRM8x+9ZUGF7ErY2OlcYHfItxsum32QCK4ZnOprIkuglXoHtiASjut+H0/ZeXuW+BeOQ1IXCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ABUa2Oa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02CAC2BCB8;
-	Mon,  4 May 2026 13:57:48 +0000 (UTC)
+	 MIME-Version; b=F9mhAfiBuXimJMjUvLKFH8uHLjH33yF+BdI5yHtdCMgBWVM1dT0DYMXT+TexGAYHD+tsTp3n17jJ46yBGYXh93utDWOdhRNoqhj3J7cTVtnISY7weMvhIOetLuA1f1UfWFX9vRIPNdUDsLYlcGPemkGNWdQc3qTobnfSbs4jbJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnvfbHUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88956C2BCB8;
+	Mon,  4 May 2026 14:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903069;
-	bh=B2T/veBEy0ozUy+0kBCJd1IPlxnQGi1Y9ZRSTttDjqc=;
+	s=korg; t=1777903721;
+	bh=LYr9vpALDQtLyMx8ZUC39r+IGlCsYLmDXvpDSTCE8io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ABUa2Oa8UctSWWfzSwbmRZr5yHT5cXeUUYCU2BD8DMOf66VJ8oqipKjNoJYy1L3q
-	 lW3UyQ7BP7ceAmsoeyFqpWBmIXNGJtSb1Rpyg8KGngO6GJClOBcdDi8yXkzgx0Xdgh
-	 pMK2/1OJKhxwEmdfiRsdgL7ylO1uby1xtH0I/2Mo=
+	b=wnvfbHUxz4W5FMrWq+T5/h6a8v7BUQJRIM8/B2dnbsauqw6MKjyZ6NwvwzUUjbiU8
+	 i8OM9v+DEPosb8oZbGKRresMkNsJ8nCORSR5JhuWmqC2JUdq2SzNO8HsUtUP8JXl+R
+	 +JVkoufV9DJWumzHj9zJl3OutefHt2YRoE/fQ7m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Franz Schnyder <franz.schnyder@toradex.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH 7.0 091/307] PCI: imx6: Fix reference clock source selection for i.MX95
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 036/275] spi: imx: fix use-after-free on unbind
 Date: Mon,  4 May 2026 15:49:36 +0200
-Message-ID: <20260504135146.237563968@linuxfoundation.org>
+Message-ID: <20260504135144.279500037@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +64,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B7514BE49F
+X-Rspamd-Queue-Id: 11AA64BED06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243120-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243374-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,msgid.link:url,toradex.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pengutronix.de:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Franz Schnyder <franz.schnyder@toradex.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 88cc4cbe08bba27bb58888d25d336774aa0ccab1 upstream.
+commit 1c78c2002380a1fe31bfb01a3d5f29809e55a096 upstream.
 
-In the PCIe PHY init for the i.MX95, the reference clock source selection
-uses a conditional instead of always passing the mask. This currently
-breaks functionality if the internal refclk is used.
+The SPI subsystem frees the controller and any subsystem allocated
+driver data as part of deregistration (unless the allocation is device
+managed).
 
-To fix this issue, always pass IMX95_PCIE_REF_USE_PAD as the mask and clear
-bit if external refclk is not used. This essentially swaps the parameters.
+Take another reference before deregistering the controller so that the
+driver data is not freed until the driver is done with it.
 
-Fixes: d8574ce57d76 ("PCI: imx6: Add external reference clock input mode support")
-Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260325093118.684142-1-fra.schnyder@gmail.com
+Fixes: 307c897db762 ("spi: spi-imx: replace struct spi_imx_data::bitbang by pointer to struct spi_controller")
+Cc: stable@vger.kernel.org	# 5.19
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260324082326.901043-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -268,8 +268,8 @@ static int imx95_pcie_init_phy(struct im
- 			IMX95_PCIE_PHY_CR_PARA_SEL);
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1965,6 +1965,8 @@ static void spi_imx_remove(struct platfo
+ 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(controller);
+ 	int ret;
  
- 	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_GEN_CTRL,
--			   ext ? IMX95_PCIE_REF_USE_PAD : 0,
--			   IMX95_PCIE_REF_USE_PAD);
-+			   IMX95_PCIE_REF_USE_PAD,
-+			   ext ? IMX95_PCIE_REF_USE_PAD : 0);
- 	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_0,
- 			   IMX95_PCIE_REF_CLKEN,
- 			   ext ? 0 : IMX95_PCIE_REF_CLKEN);
++	spi_controller_get(controller);
++
+ 	spi_unregister_controller(controller);
+ 
+ 	ret = pm_runtime_get_sync(spi_imx->dev);
+@@ -1978,6 +1980,8 @@ static void spi_imx_remove(struct platfo
+ 	pm_runtime_disable(spi_imx->dev);
+ 
+ 	spi_imx_sdma_exit(spi_imx);
++
++	spi_controller_put(controller);
+ }
+ 
+ static int spi_imx_runtime_resume(struct device *dev)
 
 
 
