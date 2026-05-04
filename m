@@ -1,73 +1,57 @@
-Return-Path: <stable+bounces-243802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFu3NaCx+GlizAIAu9opvQ
-	(envelope-from <stable+bounces-243802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:48:00 +0200
+	id 6LFAL3ur+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BB24C0071
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B974BF319
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C097330C47D3
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E10E6301E64B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE9F3E0233;
-	Mon,  4 May 2026 14:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728793DE43C;
+	Mon,  4 May 2026 14:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIqy70e2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSD7rkm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466C83DE45C;
-	Mon,  4 May 2026 14:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36448315785;
+	Mon,  4 May 2026 14:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904817; cv=none; b=XZ8+B89CvWHb02vx01Tswhk0oXzwq9YwKTlJ4hDPtT/ZMohI6KrGRdwd+uGQT9i77LAVM/yNNnUUw5c9bc73DsYnCJi/SBE4zoILTQV7jJVDcnTlO9gXwv49JwBMK6LLjOycPGIeXIWTz/6LgS2vLSYTU0W1IVwcuDvWu0ogsp0=
+	t=1777904329; cv=none; b=YrDf6APsfPDBM3xaTpKkWzDDtJQKzJR0ooINOWGvkGMe4xxCzW6lvrS74Db+PBpA6vicA2vbvMVF6lS55TOhWSZ4klLKmiqRY5hvlEiGeUFt8JlLJweCeSKEXsu2yP4Ni7OTHvrz32AKokjLWE/uKbtmSf0F3BsIkWfzg2bmx3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904817; c=relaxed/simple;
-	bh=0ywskFgVfzHvwY7Qirf/amwJQTquNzzpKeGLNzKp2WU=;
+	s=arc-20240116; t=1777904329; c=relaxed/simple;
+	bh=GLSs3PybfFJEkHiLzuhsDQRJJ68//RknywCbVrXZdMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+zidx+Z0R1ylhWkR3/berAD69b8LVJbTSFpdZ0wLEVLH0m2kcgktzeQBPLzAC45ONshe4TkbQboSNMU6bELQO4ExMZD2avPmWBBf3PxOzRtR89DUDIXWzZBQgLEgmaMZMrbDDk/daSWRQ9VUq3pOpiAZlKXmIsklZLriLyyCZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIqy70e2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA8EC2BCB8;
-	Mon,  4 May 2026 14:26:56 +0000 (UTC)
+	 MIME-Version; b=rfQt1y6z5hzJdsCUqA9PPr+rl4f6gq87lNSwLxlvYKh8f88V6rY5eW2C7fmrZxYbxSVNEAJo1MwoO0VMTSWCS91gpgOkRzn7kaOUzGFLV0A8B8nLpKx6sosvvJ8N81k2B5AD0rWBzTcK32t9AQj1fORoDSGJCJC8cIMLx4MV70I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSD7rkm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18C3C2BCB8;
+	Mon,  4 May 2026 14:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904817;
-	bh=0ywskFgVfzHvwY7Qirf/amwJQTquNzzpKeGLNzKp2WU=;
+	s=korg; t=1777904329;
+	bh=GLSs3PybfFJEkHiLzuhsDQRJJ68//RknywCbVrXZdMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIqy70e2UhlloKnLW00uvQIXC2BcfntfiPrGLOoknGROYHbeIJHCgOdzHsoS5OGYl
-	 Sd+nGlG0u8d9LLf46kiYnr7sV3cXbO6loBQpCuHpVJnmrQPtdkQJMgd/gQByuzYUyI
-	 ZAdsX7VHlGBv47pJpG8xA8ViJzV4LkIFViTFd2VU=
+	b=tSD7rkm/737eW65GxABoeDczNE2HSho2jnfw243eg3Aj8MFRow2DthFcldHtxmF/g
+	 K7GbF2USNeMGS9d7jvWn+3avBHtFTnPO07iOrjrsww787/b6Q8SMHyOyaZHLAyt8P8
+	 iQVMhWLsWA0TKe9f8b4gzyjbj4QxohgATcue/tE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Usama Arif <usama.arif@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	SeongJae Park <sj@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/215] mm: migrate: requeue destination folio on deferred split queue
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 265/275] ALSA: caiaq: Fix potentially leftover ep1_in_urb at error path
 Date: Mon,  4 May 2026 15:53:25 +0200
-Message-ID: <20260504135137.063295324@linuxfoundation.org>
+Message-ID: <20260504135152.885340177@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,136 +62,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D9BB24C0071
+X-Rspamd-Queue-Id: 93B974BF319
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-243802-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,cmpxchg.org,nvidia.com,kernel.org,gmail.com,sk.com,gourry.net,linux.alibaba.com,intel.com,infradead.org,redhat.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243611-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usama.arif@linux.dev>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a2e0c0668a3486f96b86c50e02872c8e94fd4f9c ]
+commit 0a7b5221b5b51cc798fcfc3be00d02eade149d69 upstream.
 
-During folio migration, __folio_migrate_mapping() removes the source folio
-from the deferred split queue, but the destination folio is never
-re-queued.  This causes underutilized THPs to escape the shrinker after
-NUMA migration, since they silently drop off the deferred split list.
+The previous fix for handling the error from setup_card() missed that
+an internal URB cdev->ep1_in_urb might have been already submitted
+beforehand.  In the normal case, this URB gets killed at the
+disconnection, but in the error path, we didn't do it, hence there can
+be a potential leak.
 
-Fix this by recording whether the source folio was on the deferred split
-queue and its partially mapped state before move_to_new_folio() unqueues
-it, and re-queuing the destination folio after a successful migration if
-it was.
+Fix it in the error path for setup_card(), too.
 
-By the time migrate_folio_move() runs, partially mapped folios without a
-pin have already been split by migrate_pages_batch().  So only two cases
-remain on the deferred list at this point:
-  1. Partially mapped folios with a pin (split failed).
-  2. Fully mapped but potentially underused folios.  The recorded
-     partially_mapped state is forwarded to deferred_split_folio() so that
-     the destination folio is correctly re-queued in both cases.
-
-Because THPs are removed from the deferred_list, THP shinker cannot
-split the underutilized THPs in time.  As a result, users will show
-less free memory than before.
-
-Link: https://lkml.kernel.org/r/20260312104723.1351321-1-usama.arif@linux.dev
-Fixes: dafff3f4c850 ("mm: split underused THPs")
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Fixes: 28abd224db4a ("ALSA: caiaq: Handle probe errors properly")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20260427123819.890185-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/migrate.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ sound/usb/caiaq/device.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1345,6 +1345,8 @@ static int migrate_folio_move(free_folio
- 	int rc;
- 	int old_page_state = 0;
- 	struct anon_vma *anon_vma = NULL;
-+	bool src_deferred_split = false;
-+	bool src_partially_mapped = false;
- 	struct list_head *prev;
+--- a/sound/usb/caiaq/device.c
++++ b/sound/usb/caiaq/device.c
+@@ -514,7 +514,7 @@ static int init_card(struct snd_usb_caia
+ 	card->private_free = card_free;
+ 	err = setup_card(cdev);
+ 	if (err < 0)
+-		return err;
++		goto err_kill_urb;
  
- 	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
-@@ -1358,6 +1360,12 @@ static int migrate_folio_move(free_folio
- 		goto out_unlock_both;
- 	}
+ 	return 0;
  
-+	if (folio_order(src) > 1 &&
-+	    !data_race(list_empty(&src->_deferred_list))) {
-+		src_deferred_split = true;
-+		src_partially_mapped = folio_test_partially_mapped(src);
-+	}
-+
- 	rc = move_to_new_folio(dst, src, mode);
- 	if (rc)
- 		goto out;
-@@ -1378,6 +1386,15 @@ static int migrate_folio_move(free_folio
- 	if (old_page_state & PAGE_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
- 
-+	/*
-+	 * Requeue the destination folio on the deferred split queue if
-+	 * the source was on the queue.  The source is unqueued in
-+	 * __folio_migrate_mapping(), so we recorded the state from
-+	 * before move_to_new_folio().
-+	 */
-+	if (src_deferred_split)
-+		deferred_split_folio(dst, src_partially_mapped);
-+
- out_unlock_both:
- 	folio_unlock(dst);
- 	set_page_owner_migrate_reason(&dst->page, reason);
 
 
 
