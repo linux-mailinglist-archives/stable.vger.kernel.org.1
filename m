@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOM7GDep+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:07 +0200
+	id eOSgFn2o+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C584BEC53
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06CC4BE9CF
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B344301A14C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3428E304704B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A166F3D3334;
-	Mon,  4 May 2026 14:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F7C378D8C;
+	Mon,  4 May 2026 14:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hw7oLTyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxW4bC2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655E535A3AD;
-	Mon,  4 May 2026 14:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4F83D3334;
+	Mon,  4 May 2026 14:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903884; cv=none; b=NUfyUyc9u2PPXENAarV/QOb0014WuQkoMse0M+vpS+0yPUYsLMmZtDDgSBCW8fcOSrzS42jhvwgzZn3SaOEaEt67aTaLzi85Zs1AfJwytjvZS4CSeyEmojGqLk7hryajyMQpdXMp6r5mZuULoltv9IVe9vjCRmYyKJ1xDv5ehTk=
+	t=1777903234; cv=none; b=TCz8nP9Iztg0/M8AW6M6dcnV6BauFb47t6Oqx6fNFvwwhX0P9I0oHaIWbaxrheaPDDxla7nq1zgQlhOyAnSl6fCwRt34j9+d8ky0amlmCGLBcv87JvSwnLK7PlonyWOCp/r/tGvDTjLqhLM9t0/7lGrX+1EhTO6lxTOKWt9lO04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903884; c=relaxed/simple;
-	bh=19S/jtxAlszEUA3/fBQ7JbdVIYj9RciJ814gyHeN/Yc=;
+	s=arc-20240116; t=1777903234; c=relaxed/simple;
+	bh=LFkrb7KTtq7jndwvoPgvtMnSCjbk54w++xdjQIpXo9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UuVNHHj5vBVcHqtbw4d6Z/tI4iIYCt5ACatc77UI2HluQnwSfXSYxFZeBkvnRjhp+Wwv1PQodtP1fjSCEBJ+fuw+4tPwf/1BB/QZu5zyxziNOlH6hJReiwzWPE8hEN7eQDJQYM8HUiFPbkn7C5TLRxbWq05h9cbjZaBVzHQ7WVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hw7oLTyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C89C2BCB8;
-	Mon,  4 May 2026 14:11:23 +0000 (UTC)
+	 MIME-Version; b=s0mMM+g4jsijXdqXhA5FWif/usZiwJTnWHwHcacbhzLGKn/GcFdcV8M3eyZi3Wp00aJmxatE8y6EcacdYbM47UJ0daYVteJSV1LnPaGtIEWFkakqNaTg9yMuqWHJO2HLqwX/d9QbQbkw/NGaNIK5xCVGYGFWPX0cfSiHzVYex4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxW4bC2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008E6C2BCB8;
+	Mon,  4 May 2026 14:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903884;
-	bh=19S/jtxAlszEUA3/fBQ7JbdVIYj9RciJ814gyHeN/Yc=;
+	s=korg; t=1777903234;
+	bh=LFkrb7KTtq7jndwvoPgvtMnSCjbk54w++xdjQIpXo9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hw7oLTyIsevyJS6H92D9bGNs9fSLt4RS7k9f2dpWz4l2l47ArnKgLhC21SqvcPHAT
-	 L8fBS9YQiq4UQl1jBO1f2DDBRH6LHXdVCtphm7mryyIHLpbnGQniKkkXKVbvgd5AGk
-	 nnR9OYstTBpbaJ6UwspM8f0Ro96QSbrpxIwNVh4c=
+	b=HxW4bC2bXk0clPCBBtzC4+2FBVKm2ksJu9qi1Rv/IwXsPBqA/bRY50INOFBRRdASS
+	 XkBbdVI871/btv7we+suWaY6XWsUQIBGxdfzxrbC3bJa23LrlF5lbsKMtux8UCItke
+	 lCl3dkVj4lv3pMreGVgrjxvBvHO3dsZODifHmDJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 100/275] ALSA: caiaq: Fix control_put() result and cache rollback
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 7.0 155/307] libceph: Prevent potential null-ptr-deref in ceph_handle_auth_reply()
 Date: Mon,  4 May 2026 15:50:40 +0200
-Message-ID: <20260504135146.631871185@linuxfoundation.org>
+Message-ID: <20260504135148.620606870@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,159 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 12C584BEC53
+X-Rspamd-Queue-Id: C06CC4BE9CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243438-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243185-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tu-ilmenau.de:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit a3542d1b30f92307f545f2def14e8d988dffdff0 upstream.
+commit 5199c125d25aeae8615c4fc31652cc0fe624338e upstream.
 
-control_put() always returns 1 and updates cdev->control_state[]
-before sending the USB command. It also ignores transport errors
-from usb_bulk_msg(), snd_usb_caiaq_send_command(), and
-snd_usb_caiaq_send_command_bank().
+If a message of type CEPH_MSG_AUTH_REPLY contains a zero value for both
+protocol and result, this is currently not treated as an error. In case
+of ac->negotiating == true and ac->protocol > 0, this leads to setting
+ac->protocol = 0 and ac->ops = NULL. Thereafter, the check for
+ac->protocol != protocol returns false, and init_protocol() is not
+called. Subsequently, ac->ops->handle_reply() is called, which leads to
+a null pointer dereference, because ac->ops is still NULL.
 
-That breaks the ALSA .put() contract and can leave control_get()
-reporting a cached value the device never accepted.
+This patch changes the check for ac->protocol != protocol to
+!ac->protocol, as this also includes the case when the protocol was set
+to zero in the message. This causes the message to be treated as
+containing a bad auth protocol.
 
-Return 0 for unchanged values, propagate transport failures,
-and restore the cached byte when the write fails.
-
-Fixes: 8e3cd08ed8e59 ("[ALSA] caiaq - add control API and more input features")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/control.c |   54 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 17 deletions(-)
+ net/ceph/auth.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/caiaq/control.c
-+++ b/sound/usb/caiaq/control.c
-@@ -87,6 +87,7 @@ static int control_put(struct snd_kcontr
- 	struct snd_usb_caiaqdev *cdev = caiaqdev(chip->card);
- 	int pos = kcontrol->private_value;
- 	int v = ucontrol->value.integer.value[0];
-+	int ret;
- 	unsigned char cmd;
- 
- 	switch (cdev->chip.usb_id) {
-@@ -103,6 +104,10 @@ static int control_put(struct snd_kcontr
- 
- 	if (pos & CNT_INTVAL) {
- 		int i = pos & ~CNT_INTVAL;
-+		unsigned char old = cdev->control_state[i];
-+
-+		if (old == v)
-+			return 0;
- 
- 		cdev->control_state[i] = v;
- 
-@@ -113,10 +118,11 @@ static int control_put(struct snd_kcontr
- 			cdev->ep8_out_buf[0] = i;
- 			cdev->ep8_out_buf[1] = v;
- 
--			usb_bulk_msg(cdev->chip.dev,
--				     usb_sndbulkpipe(cdev->chip.dev, 8),
--				     cdev->ep8_out_buf, sizeof(cdev->ep8_out_buf),
--				     &actual_len, 200);
-+			ret = usb_bulk_msg(cdev->chip.dev,
-+					   usb_sndbulkpipe(cdev->chip.dev, 8),
-+					   cdev->ep8_out_buf,
-+					   sizeof(cdev->ep8_out_buf),
-+					   &actual_len, 200);
- 		} else if (cdev->chip.usb_id ==
- 			USB_ID(USB_VID_NATIVEINSTRUMENTS, USB_PID_MASCHINECONTROLLER)) {
- 
-@@ -128,21 +134,36 @@ static int control_put(struct snd_kcontr
- 				offset = MASCHINE_BANK_SIZE;
- 			}
- 
--			snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
--					cdev->control_state + offset,
--					MASCHINE_BANK_SIZE);
-+			ret = snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
-+							      cdev->control_state + offset,
-+							      MASCHINE_BANK_SIZE);
- 		} else {
--			snd_usb_caiaq_send_command(cdev, cmd,
--					cdev->control_state, sizeof(cdev->control_state));
-+			ret = snd_usb_caiaq_send_command(cdev, cmd,
-+							 cdev->control_state,
-+							 sizeof(cdev->control_state));
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -245,7 +245,7 @@ int ceph_handle_auth_reply(struct ceph_a
+ 			ac->protocol = 0;
+ 			ac->ops = NULL;
  		}
--	} else {
--		if (v)
--			cdev->control_state[pos / 8] |= 1 << (pos % 8);
--		else
--			cdev->control_state[pos / 8] &= ~(1 << (pos % 8));
- 
--		snd_usb_caiaq_send_command(cdev, cmd,
--				cdev->control_state, sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[i] = old;
-+			return ret;
-+		}
-+	} else {
-+		int idx = pos / 8;
-+		unsigned char mask = 1 << (pos % 8);
-+		unsigned char old = cdev->control_state[idx];
-+		unsigned char val = v ? (old | mask) : (old & ~mask);
-+
-+		if (old == val)
-+			return 0;
-+
-+		cdev->control_state[idx] = val;
-+		ret = snd_usb_caiaq_send_command(cdev, cmd,
-+						 cdev->control_state,
-+						 sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[idx] = old;
-+			return ret;
-+		}
- 	}
- 
- 	return 1;
-@@ -640,4 +661,3 @@ int snd_usb_caiaq_control_init(struct sn
- 
- 	return ret;
- }
--
+-		if (ac->protocol != protocol) {
++		if (!ac->protocol) {
+ 			ret = init_protocol(ac, protocol);
+ 			if (ret) {
+ 				pr_err("auth protocol '%s' init failed: %d\n",
 
 
 
