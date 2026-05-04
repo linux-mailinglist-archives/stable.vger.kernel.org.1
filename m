@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPDOHAOp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:15 +0200
+	id 6PtFOtSo+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082C34BEB58
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F044D4BEAB6
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82EF03020ECA
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4942F301B730
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69813AA4F8;
-	Mon,  4 May 2026 14:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CED33D5667;
+	Mon,  4 May 2026 14:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUbLfuPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTIQU12d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995F235A3AD;
-	Mon,  4 May 2026 14:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5049F3D3308;
+	Mon,  4 May 2026 14:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903840; cv=none; b=Bv9dQn0PqM2odpZ20OE3CSB1Zh34blh/YQwafv/Deg098bfRS3qLy4/81ZsOaAtdUOopEL7vZ75iXoJHkSPhGRtLyScOWOdQLLbkwnWin4JZPHFHLOeV3FOeBTObRRIYxUpgSoYZwTmaglIhyvIK/hME8IL717KWjLssk9m/Y8M=
+	t=1777903273; cv=none; b=fxrO7FgLIo2Z3q4HGy+9Nghp9uqq8Dzvu368ilx1R6PljGEB+UyBSdEXXi2ldG4tL/5f3kkyevN9aDqgFZRM9V7A7wTA6VBNmBZRk4/3YhsS2DTzlmCjFtrvm7GojCoHmhWnfcrCDqm8K8+7Qsynx7DK/WPWQSb2aWsaEcAgh1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903840; c=relaxed/simple;
-	bh=UBUit4U5UgBIIPMyJnc8InctffwEZT5JZs/xmXCCYxg=;
+	s=arc-20240116; t=1777903273; c=relaxed/simple;
+	bh=YO/mXTW63Iy/j8cWILf+uDjdcgRg4LpR8Ti9kiEazwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSugALcJGZcD7VYaMd85rSBjE/2D3cpvDVD0ZNGRMZVNKaLe877D56FWUYH4FRtdM5LaBQ3kzAGEnCtURkA7K+66y7g4psQVyFs+kcHKBx1EmGDjJFxzrLYJ3IJhcUXOoDGyv8RAGBobAIf77gaH7KLIWN/ZPbvgE8Hotjc6Tlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUbLfuPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B5EC2BCB8;
-	Mon,  4 May 2026 14:10:39 +0000 (UTC)
+	 MIME-Version; b=Sl1qGLlBkTylpzfGBMnRhW+ulw/ivrhq4JlbYWt2pWBa3NRblwvwaJBemBXH95uXJHXm1RD43axESjrJ2Uz8EMiqp0f4H/Pe9x2WLbTG6Mg05GcBIh+SGsRLfUp33iRdp7LH+QWQk8vi1Poy63/39NehuoLC5pz0+4c+LQyZ9TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTIQU12d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9ED0C2BCB8;
+	Mon,  4 May 2026 14:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903840;
-	bh=UBUit4U5UgBIIPMyJnc8InctffwEZT5JZs/xmXCCYxg=;
+	s=korg; t=1777903273;
+	bh=YO/mXTW63Iy/j8cWILf+uDjdcgRg4LpR8Ti9kiEazwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUbLfuPy3zGF1aD7rvqXDKuwAu+a4xB672M8+K9h6MLTXgWX4PfntKaJH/J4FDn13
-	 ybZJvUOIoeF/J7nsotleRqw9O/1DXevVZPeQfPj84r14tkWkHng0r3nsAI0RU1qKkW
-	 jDRdDkm7FcQ1FW01Zi5xAC7w8SY8TowkcnghHO3I=
+	b=oTIQU12dsnw2cVUcClPp1CMm0xIdSniVxzFaQ+P+GnQYL9iOVbERxj83OD7M63jcC
+	 eMELVjys0u+4MuO0PNOpcDW1pRNjhJu41sqJciHUxI2NlRXkUcfQkfIApI53P0Ds10
+	 +xJeUGDrhzp23U9nJO29UMazwQYV7uEJAIQWqzNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 6.18 081/275] PCI: cadence: Use cdns_pcie_read_sz() for byte or word read access
-Date: Mon,  4 May 2026 15:50:21 +0200
-Message-ID: <20260504135145.934354592@linuxfoundation.org>
+	Yiming Qian <yimingqian591@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 137/307] net: qrtr: ns: Limit the maximum server registration per node
+Date: Mon,  4 May 2026 15:50:22 +0200
+Message-ID: <20260504135147.940331446@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +65,142 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 082C34BEB58
+X-Rspamd-Queue-Id: F044D4BEAB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-243200-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243421-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,ti.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit d9cf7154deed71a4f23e81101571c79cdc77be00 upstream.
+commit d5ee2ff98322337951c56398e79d51815acbf955 upstream.
 
-The commit 18ac51ae9df9 ("PCI: cadence: Implement capability search
-using PCI core APIs") assumed all the platforms using Cadence PCIe
-controller support byte and word register accesses. This is not true
-for all platforms (e.g., TI J721E SoC, which only supports dword
-register accesses).
+Current code does no bound checking on the number of servers added per
+node. A malicious client can flood NEW_SERVER messages and exhaust memory.
 
-This causes capability searches via cdns_pcie_find_capability() to fail
-on such platforms.
+Fix this issue by limiting the maximum number of server registrations to
+256 per node. If the NEW_SERVER message is received for an old port, then
+don't restrict it as it will get replaced. While at it, also rate limit
+the error messages in the failure path of qrtr_ns_worker().
 
-Fix this by using cdns_pcie_read_sz() for config read functions, which
-properly handles size-aligned accesses. Remove the now-unused byte and
-word read wrapper functions (cdns_pcie_readw and cdns_pcie_readb).
+Note that the limit of 256 is chosen based on the current platform
+requirements. If requirement changes in the future, this limit can be
+increased.
 
-Fixes: 18ac51ae9df9 ("PCI: cadence: Implement capability search using PCI core APIs")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260402085545.284457-1-a-garg7@ti.com
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-1-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence.h |   56 +++++++++++---------------
- 1 file changed, 25 insertions(+), 31 deletions(-)
+ net/qrtr/ns.c |   26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -362,37 +362,6 @@ static inline u32 cdns_pcie_readl(struct
- 	return readl(pcie->reg_base + reg);
- }
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -68,8 +68,14 @@ struct qrtr_server {
+ struct qrtr_node {
+ 	unsigned int id;
+ 	struct xarray servers;
++	u32 server_count;
+ };
  
--static inline u16 cdns_pcie_readw(struct cdns_pcie *pcie, u32 reg)
--{
--	return readw(pcie->reg_base + reg);
--}
--
--static inline u8 cdns_pcie_readb(struct cdns_pcie *pcie, u32 reg)
--{
--	return readb(pcie->reg_base + reg);
--}
--
--static inline int cdns_pcie_read_cfg_byte(struct cdns_pcie *pcie, int where,
--					  u8 *val)
--{
--	*val = cdns_pcie_readb(pcie, where);
--	return PCIBIOS_SUCCESSFUL;
--}
--
--static inline int cdns_pcie_read_cfg_word(struct cdns_pcie *pcie, int where,
--					  u16 *val)
--{
--	*val = cdns_pcie_readw(pcie, where);
--	return PCIBIOS_SUCCESSFUL;
--}
--
--static inline int cdns_pcie_read_cfg_dword(struct cdns_pcie *pcie, int where,
--					   u32 *val)
--{
--	*val = cdns_pcie_readl(pcie, where);
--	return PCIBIOS_SUCCESSFUL;
--}
--
- static inline u32 cdns_pcie_read_sz(void __iomem *addr, int size)
++/* Max server limit is chosen based on the current platform requirements. If the
++ * requirement changes in the future, this value can be increased.
++ */
++#define QRTR_NS_MAX_SERVERS 256
++
+ static struct qrtr_node *node_get(unsigned int node_id)
  {
- 	void __iomem *aligned_addr = PTR_ALIGN_DOWN(addr, 0x4);
-@@ -433,6 +402,31 @@ static inline void cdns_pcie_write_sz(vo
- 	writel(val, aligned_addr);
- }
+ 	struct qrtr_node *node;
+@@ -230,6 +236,17 @@ static struct qrtr_server *server_add(un
+ 	if (!service || !port)
+ 		return NULL;
  
-+static inline int cdns_pcie_read_cfg_byte(struct cdns_pcie *pcie, int where,
-+					  u8 *val)
-+{
-+	void __iomem *addr = pcie->reg_base + where;
++	node = node_get(node_id);
++	if (!node)
++		return NULL;
 +
-+	*val = cdns_pcie_read_sz(addr, 0x1);
-+	return PCIBIOS_SUCCESSFUL;
-+}
++	/* Make sure the new servers per port are capped at the maximum value */
++	old = xa_load(&node->servers, port);
++	if (!old && node->server_count >= QRTR_NS_MAX_SERVERS) {
++		pr_err_ratelimited("QRTR client node %u exceeds max server limit!\n", node_id);
++		return NULL;
++	}
 +
-+static inline int cdns_pcie_read_cfg_word(struct cdns_pcie *pcie, int where,
-+					  u16 *val)
-+{
-+	void __iomem *addr = pcie->reg_base + where;
-+
-+	*val = cdns_pcie_read_sz(addr, 0x2);
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+static inline int cdns_pcie_read_cfg_dword(struct cdns_pcie *pcie, int where,
-+					   u32 *val)
-+{
-+	*val = cdns_pcie_readl(pcie, where);
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
- /* Root Port register access */
- static inline void cdns_pcie_rp_writeb(struct cdns_pcie *pcie,
- 				       u32 reg, u8 value)
+ 	srv = kzalloc_obj(*srv);
+ 	if (!srv)
+ 		return NULL;
+@@ -239,10 +256,6 @@ static struct qrtr_server *server_add(un
+ 	srv->node = node_id;
+ 	srv->port = port;
+ 
+-	node = node_get(node_id);
+-	if (!node)
+-		goto err;
+-
+ 	/* Delete the old server on the same port */
+ 	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
+ 	if (old) {
+@@ -253,6 +266,8 @@ static struct qrtr_server *server_add(un
+ 		} else {
+ 			kfree(old);
+ 		}
++	} else {
++		node->server_count++;
+ 	}
+ 
+ 	trace_qrtr_ns_server_add(srv->service, srv->instance,
+@@ -293,6 +308,7 @@ static int server_del(struct qrtr_node *
+ 	}
+ 
+ 	kfree(srv);
++	node->server_count--;
+ 
+ 	return 0;
+ }
+@@ -671,7 +687,7 @@ static void qrtr_ns_worker(struct work_s
+ 		}
+ 
+ 		if (ret < 0)
+-			pr_err("failed while handling packet from %d:%d",
++			pr_err_ratelimited("failed while handling packet from %d:%d",
+ 			       sq.sq_node, sq.sq_port);
+ 	}
+ 
 
 
 
