@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABNkFb2s+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:09 +0200
+	id KEHbLtGs+GkixwIAu9opvQ
+	(envelope-from <stable+bounces-243731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DC74BF74A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D154BF78F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92F8A30F0D6F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98DD43056348
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190D93DE44F;
-	Mon,  4 May 2026 14:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF743DEACB;
+	Mon,  4 May 2026 14:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9wbOafD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsNZJJdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B111A6827;
-	Mon,  4 May 2026 14:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF183DE45B;
+	Mon,  4 May 2026 14:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904236; cv=none; b=a10WOyod+Tmgc+yrp9xSVXvdi57uJHV8dQRiISKOkdDAcjKwneagp37jRPbRr7VyskhVokRyaKP0CwUT3cCBhiKLRvf+6y59xiLNhOtMxVX5NL04Iazo4qvysMwRp1+cuPpqU0zDhNbgyHIYjTLEYwhptBxIunuURX3BPoC8KlA=
+	t=1777904633; cv=none; b=b8+NgGofXnW3r4/6efPIzOpU8RJJYo1Lbiqngd7TVrQDuXfj/p2HnBu15/ZrWmifNZRiziDBhITN5IFuYNaqFYEtT8gJxGfxtihelHDQ8io5j7pKxXS13OaEpf/jI7TJGtKyCTqPy59g9J/t2oFf0AEIPNR7YCFBHRBROGACucM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904236; c=relaxed/simple;
-	bh=6SPqRyDTUveaaTCyywob/awJC5BnV/XFO7o+9q8nFOM=;
+	s=arc-20240116; t=1777904633; c=relaxed/simple;
+	bh=o0EvhjJOPCVCSX8EtpokkI30wG3VG0ozP7Qedapq6kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGAq1CUNBQRHHhuheK+ZSqTo3vyTsU+1cMAk1V7foA7mG12WLlOvIvnm6FLDKJ2DtU9LB1COow86KR7zfFPL5346riH/2oGWX11mvxE5tApwkE4wPqRj01Oz6y6kncwT6qqR/XQtD/GLHtSQoKxZqJfsSm6NazF7kIozUguNnBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9wbOafD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE6EC2BCB8;
-	Mon,  4 May 2026 14:17:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s7oEdMWCMLw1mHvF59Vco5YtVA2AYaKBisaqL7Xfcj8Zyc3dGyWWj7Vae8/baSYj3f89O8gzfupJ9YjHqsCX5uMoEXWkFdqVhmG9JqzCgYdRFaXIRWXWMBpNqZceGulbcjfjmPGSNzv5EsdXJNXEpJIlc8t/NNgiV4UEJw0k6/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsNZJJdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C23C2BCF5;
+	Mon,  4 May 2026 14:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904236;
-	bh=6SPqRyDTUveaaTCyywob/awJC5BnV/XFO7o+9q8nFOM=;
+	s=korg; t=1777904633;
+	bh=o0EvhjJOPCVCSX8EtpokkI30wG3VG0ozP7Qedapq6kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9wbOafDQACQbYX50ZUm7WG531RNFg+IyHTqVEEZMzsf6palYpUfcr3ofGuY/sCO5
-	 TmWH96CaO7nMpXwWOM/+5dVvafknpGJbtxxNwDeQXeFmhAGr2b9RcdOll4CgNuc76F
-	 v563qEqJ7SX3V9ZBZs6nWAZdSvKm9xOA1RP/j/g4=
+	b=hsNZJJdP+R4z4ewCKTI1BrLrfr6W5ZhppkXZuCxqaVxiErSsp2BHVO7hgrUAGtYm0
+	 Af1wkFaRfaFICP8GfFvYhkFSL/59BblTV+xPNjbJcZqKWLLrrcwB46eWzsn0ahFciq
+	 FMwDMr2ZIRlX/a1przA+zR/ZU1rMZwUIwNWvbTvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 193/275] KVM: nSVM: Always intercept VMMCALL when L2 is active
-Date: Mon,  4 May 2026 15:52:13 +0200
-Message-ID: <20260504135150.248166214@linuxfoundation.org>
+	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Johan Hovold <johan@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.12 115/215] rtc: ntxec: fix OF node reference imbalance
+Date: Mon,  4 May 2026 15:52:14 +0200
+Message-ID: <20260504135134.353550699@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7DC74BF74A
+X-Rspamd-Queue-Id: 70D154BF78F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243731-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243575-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.net,kernel.org,bootlin.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 33d3617a52f9930d22b2af59f813c2fbdefa6dd5 upstream.
+commit 30c4d2f26bb3538c328035cea2e6265c8320539e upstream.
 
-Always intercept VMMCALL now that KVM properly synthesizes a #UD as
-appropriate, i.e. when L1 doesn't want to intercept VMMCALL, to avoid
-putting L2 into an infinite #UD loop if KVM_X86_QUIRK_FIX_HYPERCALL_INSN
-is enabled.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-By letting L2 execute VMMCALL natively and thus #UD, for all intents and
-purposes KVM morphs the VMMCALL intercept into a #UD intercept (KVM always
-intercepts #UD).  When the hypercall quirk is enabled, KVM "emulates"
-VMMCALL in response to the #UD by trying to fixup the opcode to the "right"
-vendor, then restarts the guest, without skipping the VMMCALL.  As a
-result, the guest sees an endless stream of #UDs since it's already
-executing the correct vendor hypercall instruction, i.e. the emulator
-doesn't anticipate that the #UD could be due to lack of interception, as
-opposed to a truly undefined opcode.
+Fix this by using the intended helper for reusing OF nodes.
 
-Fixes: 0d945bd93511 ("KVM: SVM: Don't allow nested guest to VMMCALL into host")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://patch.msgid.link/20260304002223.1105129-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 435af89786c6 ("rtc: New driver for RTC in Netronix embedded controller")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260407122717.2676774-1-johan@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/hyperv.h |    4 ----
- arch/x86/kvm/svm/nested.c |    7 -------
- 2 files changed, 11 deletions(-)
+ drivers/rtc/rtc-ntxec.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/hyperv.h
-+++ b/arch/x86/kvm/svm/hyperv.h
-@@ -51,10 +51,6 @@ static inline bool nested_svm_is_l2_tlb_
- void svm_hv_inject_synthetic_vmexit_post_tlb_flush(struct kvm_vcpu *vcpu);
- #else /* CONFIG_KVM_HYPERV */
- static inline void nested_svm_hv_update_vm_vp_ids(struct kvm_vcpu *vcpu) {}
--static inline bool nested_svm_l2_tlb_flush_enabled(struct kvm_vcpu *vcpu)
--{
--	return false;
--}
- static inline bool nested_svm_is_l2_tlb_flush_hcall(struct kvm_vcpu *vcpu)
- {
- 	return false;
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -159,13 +159,6 @@ void recalc_intercepts(struct vcpu_svm *
- 			vmcb_clr_intercept(c, INTERCEPT_VINTR);
- 	}
+--- a/drivers/rtc/rtc-ntxec.c
++++ b/drivers/rtc/rtc-ntxec.c
+@@ -110,7 +110,7 @@ static int ntxec_rtc_probe(struct platfo
+ 	struct rtc_device *dev;
+ 	struct ntxec_rtc *rtc;
  
--	/*
--	 * We want to see VMMCALLs from a nested guest only when Hyper-V L2 TLB
--	 * flush feature is enabled.
--	 */
--	if (!nested_svm_l2_tlb_flush_enabled(&svm->vcpu))
--		vmcb_clr_intercept(c, INTERCEPT_VMMCALL);
--
- 	for (i = 0; i < MAX_INTERCEPT; i++)
- 		c->intercepts[i] |= g->intercepts[i];
+-	pdev->dev.of_node = pdev->dev.parent->of_node;
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
  
+ 	rtc = devm_kzalloc(&pdev->dev, sizeof(*rtc), GFP_KERNEL);
+ 	if (!rtc)
 
 
 
