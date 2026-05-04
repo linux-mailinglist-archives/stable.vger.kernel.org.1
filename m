@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YObLAYOo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:07 +0200
+	id 2AWiEa+r+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0F84BE9DD
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CE64BF3A1
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 246833047BC0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8BCE430216E9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7343D904D;
-	Mon,  4 May 2026 14:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DCC3D9029;
+	Mon,  4 May 2026 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wevn0jLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVfo1l6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110A3B19D1;
-	Mon,  4 May 2026 14:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA3D3D5645;
+	Mon,  4 May 2026 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903239; cv=none; b=J1dTm93b5bcR0ofaWfKz1xtB1DkDUkiy3x+X1bO8dpdEnPPIWkFbsXupB7gEZSwIGfNV2v8eZYFoWzx4GQcBDpaPwsjrqt2W6Zgo9xqL5WbNs1+h5y33+mKFiGvR1cb2CQsZiqKxsuyuyshrFbHhpVdkt7ICJ7PfOiqahDAZkGI=
+	t=1777903889; cv=none; b=lajgjFDp5myBFp3JZWVYXpEZj07+lVVx3TXEqPmibpMaylQZaZAmQUFAZlkiCTg0uiSDQ2fPvQkPJkghET5CyIXHl55A5ZIfFGOa/MgJ7ndZ9weyewasU0N+vSHdz9752N06lspmkpb/vP7246dtgK/WxNPvr3m7TDkzZ6qv0bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903239; c=relaxed/simple;
-	bh=g9VQ3of46AZBsyud49PAMfRXzcISOCE3tdZV23MPod8=;
+	s=arc-20240116; t=1777903889; c=relaxed/simple;
+	bh=fNjPB1mN7YXDL7yl93fV5bZ4wT1cNbApK2z93+Dpjng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOJvmmrRcMrxCUv7w7OYKOXhh5/IbckyNxrki2QGfTHqfGJq9m75qTwEf0no8v+ms6+DUjwBotYI30ah0+Gq22rp4WAS8CbPQEgOxH8b+eHSwJgz94Q02q01KcGz/GuEtPqBxts1vq+CEzG+N//7go5+qTRmMwNEVkK69YPOmtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wevn0jLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24556C2BCB8;
-	Mon,  4 May 2026 14:00:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SbQbDqLoLMxkQD4iifSegVGfYZQ/UnxqKTL5tHQX7y9+DjFCV5r0YdcuiCp8KRLkj8+bIBkjWTQFe4xE3qcG8hqXcoy7pKd2EwIV+aSytW276ozt1Yy3sGcPsAKdQOleN1lGLDv6wZcxhfciHfBLDY+3d/w1iNuJLUozzNLYv3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVfo1l6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23341C2BCB8;
+	Mon,  4 May 2026 14:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903239;
-	bh=g9VQ3of46AZBsyud49PAMfRXzcISOCE3tdZV23MPod8=;
+	s=korg; t=1777903889;
+	bh=fNjPB1mN7YXDL7yl93fV5bZ4wT1cNbApK2z93+Dpjng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wevn0jLHbPGvdfLkeGhwqIt42Y7pldKPMJHZjFmwfgvay2tJK/im04hYU5qGqyggc
-	 ixCj2CfOCxm0Pn+SQn6W4WGb0glHN//OBuXGaLRBXW4bwYSMGj8AQ5WA9sdfGcA33o
-	 PVxxj7SdhqZq6zS9E2l9/R77fRsdGsLsvELPFw+U=
+	b=wVfo1l6SBLuW0rC/IQTMVEgluxHNqDqzAk8c140yiBcZck1eo7lZG1MaOOR+Bodua
+	 e5IW6lPiD2w4+is3bikxbSj3ZpNp5DQ23uX/Xey7bTosRUqkdE/lx5RxvNLTlPZhjA
+	 A627jFqF6btr+VbCxBLYROceIJS6O66d8pNh+UQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Daniel J Blueman <daniel@quora.org>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 7.0 157/307] apparmor: Fix string overrun due to missing termination
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 102/275] ALSA: 6fire: Fix input volume change detection
 Date: Mon,  4 May 2026 15:50:42 +0200
-Message-ID: <20260504135148.746705776@linuxfoundation.org>
+Message-ID: <20260504135146.704891336@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A0F84BE9DD
+X-Rspamd-Queue-Id: 56CE64BF3A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243440-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243187-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,canonical.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel J Blueman <daniel@quora.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 828bf7929bedcb79b560b5b4e44f22abee07d31b upstream.
+commit dc88eef8f55e85e92d016cdf7e291f5560efd79b upstream.
 
-When booting Ubuntu 26.04 with Linux 7.0-rc4 on an ARM64 Qualcomm
-Snapdragon X1 we see a string buffer overrun:
+usb6fire_control_input_vol_put() stores the analog capture volume
+as a signed offset in rt->input_vol[] (-15..+15), but it compares
+the cached value against the user-visible mixer value (0..30)
+before subtracting 15.
 
-BUG: KASAN: slab-out-of-bounds in aa_dfa_match (security/apparmor/match.c:535)
-Read of size 1 at addr ffff0008901cc000 by task snap-update-ns/2120
+This mixes two domains in the change detection path. Since the
+runtime is zero-initialized, the visible default is 15; writing 0
+right after probe is ignored, while writing 15 is reported as a
+change even though the cached value remains 0.
 
-CPU: 5 UID: 60578 PID: 2120 Comm: snap-update-ns Not tainted 7.0.0-rc4+ #22 PREEMPTLAZY
-Hardware name: LENOVO 83ED/LNVNB161216, BIOS NHCN60WW 09/11/2025
-Call trace:
-show_stack (arch/arm64/kernel/stacktrace.c:501) (C)
-dump_stack_lvl (lib/dump_stack.c:122)
-print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-kasan_report (mm/kasan/report.c:597)
-__asan_report_load1_noabort (mm/kasan/report_generic.c:378)
-aa_dfa_match (security/apparmor/match.c:535)
-match_mnt_path_str (security/apparmor/mount.c:244 security/apparmor/mount.c:336)
-match_mnt (security/apparmor/mount.c:371)
-aa_bind_mount (security/apparmor/mount.c:447 (discriminator 4))
-apparmor_sb_mount (security/apparmor/lsm.c:719 (discriminator 1))
-security_sb_mount (security/security.c:1062 (discriminator 31))
-path_mount (fs/namespace.c:4101)
-__arm64_sys_mount (fs/namespace.c:4172 fs/namespace.c:4361 fs/namespace.c:4338 fs/namespace.c:4338)
-invoke_syscall.constprop.0 (arch/arm64/kernel/syscall.c:35 arch/arm64/kernel/syscall.c:49)
-el0_svc_common.constprop.0 (./include/linux/thread_info.h:142 (discriminator 2) arch/arm64/kernel/syscall.c:140 (discriminator 2))
-do_el0_svc (arch/arm64/kernel/syscall.c:152)
-el0_svc (arch/arm64/kernel/entry-common.c:80 arch/arm64/kernel/entry-common.c:725)
-el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:744)
-el0t_64_sync (arch/arm64/kernel/entry.S:596)
+Normalize the user value before comparing it with the cached offset.
 
-Allocated by task 2120:
-kasan_save_stack (mm/kasan/common.c:58)
-kasan_save_track (./arch/arm64/include/asm/current.h:19 mm/kasan/common.c:70 mm/kasan/common.c:79)
-kasan_save_alloc_info (mm/kasan/generic.c:571)
-__kasan_kmalloc (mm/kasan/common.c:419)
-__kmalloc_noprof (./include/linux/kasan.h:263 mm/slub.c:5260 mm/slub.c:5272)
-aa_get_buffer (security/apparmor/lsm.c:2201)
-aa_bind_mount (security/apparmor/mount.c:442)
-apparmor_sb_mount (security/apparmor/lsm.c:719 (discriminator 1))
-security_sb_mount (security/security.c:1062 (discriminator 31))
-path_mount (fs/namespace.c:4101)
-__arm64_sys_mount (fs/namespace.c:4172 fs/namespace.c:4361 fs/namespace.c:4338 fs/namespace.c:4338)
-invoke_syscall.constprop.0 (arch/arm64/kernel/syscall.c:35 arch/arm64/kernel/syscall.c:49)
-el0_svc_common.constprop.0 (./include/linux/thread_info.h:142 (discriminator 2) arch/arm64/kernel/syscall.c:140 (discriminator 2))
-do_el0_svc (arch/arm64/kernel/syscall.c:152)
-el0_svc (arch/arm64/kernel/entry-common.c:80 arch/arm64/kernel/entry-common.c:725)
-el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:744)
-el0t_64_sync (arch/arm64/kernel/entry.S:596)
-
-The buggy address belongs to the object at ffff0008901ca000
-which belongs to the cache kmalloc-rnd-06-8k of size 8192
-The buggy address is located 0 bytes to the right of
-allocated 8192-byte region [ffff0008901ca000, ffff0008901cc000)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9101c8
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:-1 pincount:0
-flags: 0x8000000000000040(head|zone=2)
-page_type: f5(slab)
-raw: 8000000000000040 ffff000800016c40 fffffdffe2d14e10 ffff000800015c70
-raw: 0000000000000000 0000000800010001 00000000f5000000 0000000000000000
-head: 8000000000000040 ffff000800016c40 fffffdffe2d14e10 ffff000800015c70
-head: 0000000000000000 0000000800010001 00000000f5000000 0000000000000000
-head: 8000000000000003 fffffdffe2407201 fffffdffffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-ffff0008901cbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-ffff0008901cbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff0008901cc000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-^
-ffff0008901cc080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-ffff0008901cc100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-
-This was introduced by previous incorrect conversion from strcpy(). Fix it
-by adding the missing terminator.
-
+Fixes: 06bb4e743501 ("ALSA: snd-usb-6fire: add analog input volume control")
 Cc: stable@vger.kernel.org
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Signed-off-by: Daniel J Blueman <daniel@quora.org>
-Fixes: 93d4dbdc8da0 ("apparmor: Replace deprecated strcpy in d_namespace_path")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260416-alsa-6fire-input-volume-change-detection-v1-1-ec78299168df@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/path.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/usb/6fire/control.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/security/apparmor/path.c b/security/apparmor/path.c
-index 65a0ca5cc1bd..2494e8101538 100644
---- a/security/apparmor/path.c
-+++ b/security/apparmor/path.c
-@@ -164,14 +164,16 @@ static int d_namespace_path(const struct path *path, char *buf, char **name,
+--- a/sound/usb/6fire/control.c
++++ b/sound/usb/6fire/control.c
+@@ -290,15 +290,17 @@ static int usb6fire_control_input_vol_pu
+ 		struct snd_ctl_elem_value *ucontrol)
+ {
+ 	struct control_runtime *rt = snd_kcontrol_chip(kcontrol);
++	int vol0 = ucontrol->value.integer.value[0] - 15;
++	int vol1 = ucontrol->value.integer.value[1] - 15;
+ 	int changed = 0;
+ 
+-	if (rt->input_vol[0] != ucontrol->value.integer.value[0]) {
+-		rt->input_vol[0] = ucontrol->value.integer.value[0] - 15;
++	if (rt->input_vol[0] != vol0) {
++		rt->input_vol[0] = vol0;
+ 		rt->ivol_updated &= ~(1 << 0);
+ 		changed = 1;
  	}
- 
- out:
--	/* Append "/" to directory paths, except for root "/" which
--	 * already ends in a slash.
-+	/* Append "/" to directory paths and reterminate string, except for
-+	 * root "/" which already ends in a slash.
- 	 */
- 	if (!error && isdir) {
- 		bool is_root = (*name)[0] == '/' && (*name)[1] == '\0';
- 
--		if (!is_root)
-+		if (!is_root) {
- 			buf[aa_g_path_max - 2] = '/';
-+			buf[aa_g_path_max - 1] = '\0';
-+		}
+-	if (rt->input_vol[1] != ucontrol->value.integer.value[1]) {
+-		rt->input_vol[1] = ucontrol->value.integer.value[1] - 15;
++	if (rt->input_vol[1] != vol1) {
++		rt->input_vol[1] = vol1;
+ 		rt->ivol_updated &= ~(1 << 1);
+ 		changed = 1;
  	}
- 
- 	return error;
--- 
-2.54.0
-
 
 
 
