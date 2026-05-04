@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-243257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPGGGdeo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:31 +0200
+	id qDPQKxaw+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1264BEAB5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB4F4BFE24
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23EDC3074BDC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C9EC301050E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD903DDDD6;
-	Mon,  4 May 2026 14:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8759F3DE44F;
+	Mon,  4 May 2026 14:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETlOl078"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMzt85Ql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E91A2D8DDF;
-	Mon,  4 May 2026 14:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC40315785;
+	Mon,  4 May 2026 14:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903421; cv=none; b=SPJfslZCh9vSAmCMbzDdk2fH+3gAGiTsEpmkGu9S8AbKU3wcCipbeVCoVWBlo6Vqu3/VKsudHJMJEcj7nXkiVeK1teyEKr8muindtI9YlSbLT1tsfYm1ASU6j8mIa22/ZO7v3t16hX/TkpYDyq2XVIhqViVtoLEmCf8Tk1Gu/78=
+	t=1777904581; cv=none; b=mPOc+KszjA6Hv+lR4k1hr86fQg8e/LKqHfmEqZDio2F5UBRRKY/lMRt+YD+nvTmRfXBrWZTBM77+emTaVZ9Y5exNbYZQPH+Hg4e+7Y2M8RcBN20mDwskwF41AneXGjBv4R2LLTRUzzGISsUUvgorAKSaLu1n6kktdBkir5WLyXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903421; c=relaxed/simple;
-	bh=j8rj+PfAnDoVpK4PgMfW7un/R+zR7VrPBttzlst0Lag=;
+	s=arc-20240116; t=1777904581; c=relaxed/simple;
+	bh=A5q/6YS05nWRUfHaxhfP4T5SOeZiBFRd+9BvWDU6ZHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jg5uq3TGQmFjetlxB7sR5btp2bjMUYcbbUuclVjmOiFLd8C5iwRfDc9C/xdNdeNRRRDc9BEAQkglSzFcvp6BamV+Zyl2xJrVLry9j2oHucYSEhFUXGxznb6RGLtRiupYi3j6DZ5i0ShtkWY99/3ine0LvNxiE1PECY+ljrVHplA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETlOl078; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77E0C2BCB8;
-	Mon,  4 May 2026 14:03:40 +0000 (UTC)
+	 MIME-Version; b=Htawua8ye2eMD7y6TLbw1JX9Hqrt39kQlyuKmVbD+mUEe8WZNfgFEa9/wBFNareywlAvBbffZ5UsTWgS7AmgYtIwK9XxI8hCu1YQva299PRy/nPemIqy5hTcDwBE9YLh/hiUSKlhXH0hU+E/9eu1Enxsy8EXmnVgI2agI3lNit4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMzt85Ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3371C2BCB8;
+	Mon,  4 May 2026 14:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903421;
-	bh=j8rj+PfAnDoVpK4PgMfW7un/R+zR7VrPBttzlst0Lag=;
+	s=korg; t=1777904581;
+	bh=A5q/6YS05nWRUfHaxhfP4T5SOeZiBFRd+9BvWDU6ZHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETlOl0786B+UCYQhyvxPtAZf+ynnaW4LpkskxmnfxPumq736yl78F+pSQaCBmmf76
-	 PUaIde/FcYV8jGdvxT0TyCa64ItrLZkS1CW75H3VuXoO99301SZvEM2YlrQKfeDu10
-	 FDm/u1Cdv+qwlofoxuT4UMxrpzpc3cUNi6T71N+g=
+	b=zMzt85QlZoauTcvk636eTf/aiMkSijfdw+22D7d6T98nGrnZ+TvJUvDzL21PhNS+6
+	 aFlI+Wgv0xiaCmQSiRQ2Al81rGrN501LgS5HdVE5Y2cgNcGDztCdTJ50orTuTMmc0N
+	 Lnxe0FIL6CyGihoYjeS0N9XcOk9jSnV/0YHzcGf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Kevin Cheng <chengkev@google.com>,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH 7.0 227/307] KVM: nSVM: Raise #UD if unhandled VMMCALL isnt intercepted by L1
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 6.12 093/215] drm/arcpgu: fix device node leak
 Date: Mon,  4 May 2026 15:51:52 +0200
-Message-ID: <20260504135151.398368148@linuxfoundation.org>
+Message-ID: <20260504135133.555039739@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,177 +63,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1B1264BEAB5
+X-Rspamd-Queue-Id: BDB4F4BFE24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243257-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243711-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Cheng <chengkev@google.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit c36991c6f8d2ab56ee67aff04e3c357f45cfc76c upstream.
+commit ad3ac32a3893a2bbcad545efc005a8e4e7ecf10c upstream.
 
-Explicitly synthesize a #UD for VMMCALL if L2 is active, L1 does NOT want
-to intercept VMMCALL, nested_svm_l2_tlb_flush_enabled() is true, and the
-hypercall is something other than one of the supported Hyper-V hypercalls.
-When all of the above conditions are met, KVM will intercept VMMCALL but
-never forward it to L1, i.e. will let L2 make hypercalls as if it were L1.
+This function gets a device_node reference via
+of_graph_get_remote_port_parent() and stores it in encoder_node, but never
+puts that reference. Add it.
 
-The TLFS says a whole lot of nothing about this scenario, so go with the
-architectural behavior, which says that VMMCALL #UDs if it's not
-intercepted.
+There used to be a of_node_put(encoder_node) but it has been removed by
+mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
+arcpgu_drm_hdmi_init").
 
-Opportunistically do a 2-for-1 stub trade by stub-ifying the new API
-instead of the helpers it uses.  The last remaining "single" stub will
-soon be dropped as well.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Fixes: 3f4a812edf5c ("KVM: nSVM: hyper-v: Enable L2 TLB flush")
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kevin Cheng <chengkev@google.com>
-Link: https://patch.msgid.link/20260228033328.2285047-5-chengkev@google.com
-[sean: rewrite changelog and comment, tag for stable, remove defunct stubs]
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://patch.msgid.link/20260304002223.1105129-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://patch.msgid.link/20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/hyperv.h     |    8 --------
- arch/x86/kvm/svm/hyperv.h |   11 +++++++++++
- arch/x86/kvm/svm/nested.c |    4 +---
- arch/x86/kvm/svm/svm.c    |   19 ++++++++++++++++++-
- 4 files changed, 30 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/tiny/arcpgu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/hyperv.h
-+++ b/arch/x86/kvm/hyperv.h
-@@ -305,14 +305,6 @@ static inline bool kvm_hv_has_stimer_pen
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -248,7 +248,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
+ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
  {
- 	return false;
- }
--static inline bool kvm_hv_is_tlb_flush_hcall(struct kvm_vcpu *vcpu)
--{
--	return false;
--}
--static inline bool guest_hv_cpuid_has_l2_tlb_flush(struct kvm_vcpu *vcpu)
--{
--	return false;
--}
- static inline int kvm_hv_verify_vp_assist(struct kvm_vcpu *vcpu)
- {
- 	return 0;
---- a/arch/x86/kvm/svm/hyperv.h
-+++ b/arch/x86/kvm/svm/hyperv.h
-@@ -41,6 +41,13 @@ static inline bool nested_svm_l2_tlb_flu
- 	return hv_vcpu->vp_assist_page.nested_control.features.directhypercall;
- }
- 
-+static inline bool nested_svm_is_l2_tlb_flush_hcall(struct kvm_vcpu *vcpu)
-+{
-+	return guest_hv_cpuid_has_l2_tlb_flush(vcpu) &&
-+	       nested_svm_l2_tlb_flush_enabled(vcpu) &&
-+	       kvm_hv_is_tlb_flush_hcall(vcpu);
-+}
-+
- void svm_hv_inject_synthetic_vmexit_post_tlb_flush(struct kvm_vcpu *vcpu);
- #else /* CONFIG_KVM_HYPERV */
- static inline void nested_svm_hv_update_vm_vp_ids(struct kvm_vcpu *vcpu) {}
-@@ -48,6 +55,10 @@ static inline bool nested_svm_l2_tlb_flu
- {
- 	return false;
- }
-+static inline bool nested_svm_is_l2_tlb_flush_hcall(struct kvm_vcpu *vcpu)
-+{
-+	return false;
-+}
- static inline void svm_hv_inject_synthetic_vmexit_post_tlb_flush(struct kvm_vcpu *vcpu) {}
- #endif /* CONFIG_KVM_HYPERV */
- 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1711,9 +1711,7 @@ int nested_svm_exit_special(struct vcpu_
- 	}
- 	case SVM_EXIT_VMMCALL:
- 		/* Hyper-V L2 TLB flush hypercall is handled by L0 */
--		if (guest_hv_cpuid_has_l2_tlb_flush(vcpu) &&
--		    nested_svm_l2_tlb_flush_enabled(vcpu) &&
--		    kvm_hv_is_tlb_flush_hcall(vcpu))
-+		if (nested_svm_is_l2_tlb_flush_hcall(vcpu))
- 			return NESTED_EXIT_HOST;
- 		break;
- 	default:
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -52,6 +52,7 @@
- #include "svm.h"
- #include "svm_ops.h"
- 
-+#include "hyperv.h"
- #include "kvm_onhyperv.h"
- #include "svm_onhyperv.h"
- 
-@@ -3249,6 +3250,22 @@ static int bus_lock_exit(struct kvm_vcpu
- 	return 0;
- }
- 
-+static int vmmcall_interception(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * Inject a #UD if L2 is active and the VMMCALL isn't a Hyper-V TLB
-+	 * hypercall, as VMMCALL #UDs if it's not intercepted, and this path is
-+	 * reachable if and only if L1 doesn't want to intercept VMMCALL or has
-+	 * enabled L0 (KVM) handling of Hyper-V L2 TLB flush hypercalls.
-+	 */
-+	if (is_guest_mode(vcpu) && !nested_svm_is_l2_tlb_flush_hcall(vcpu)) {
-+		kvm_queue_exception(vcpu, UD_VECTOR);
-+		return 1;
-+	}
-+
-+	return kvm_emulate_hypercall(vcpu);
-+}
-+
- static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- 	[SVM_EXIT_READ_CR0]			= cr_interception,
- 	[SVM_EXIT_READ_CR3]			= cr_interception,
-@@ -3299,7 +3316,7 @@ static int (*const svm_exit_handlers[])(
- 	[SVM_EXIT_TASK_SWITCH]			= task_switch_interception,
- 	[SVM_EXIT_SHUTDOWN]			= shutdown_interception,
- 	[SVM_EXIT_VMRUN]			= vmrun_interception,
--	[SVM_EXIT_VMMCALL]			= kvm_emulate_hypercall,
-+	[SVM_EXIT_VMMCALL]			= vmmcall_interception,
- 	[SVM_EXIT_VMLOAD]			= vmload_interception,
- 	[SVM_EXIT_VMSAVE]			= vmsave_interception,
- 	[SVM_EXIT_STGI]				= stgi_interception,
+ 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
+-	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
++	struct device_node *encoder_node __free(device_node) = NULL;
++	struct device_node *endpoint_node = NULL;
+ 	struct drm_connector *connector = NULL;
+ 	struct drm_device *drm = &arcpgu->drm;
+ 	struct resource *res;
 
 
 
