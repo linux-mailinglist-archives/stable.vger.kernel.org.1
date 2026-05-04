@@ -1,182 +1,188 @@
-Return-Path: <stable+bounces-243896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGMjKTrn+GnR2wIAu9opvQ
-	(envelope-from <stable+bounces-243896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:36:42 +0200
+	id KHwzN8rp+GlZ3AIAu9opvQ
+	(envelope-from <stable+bounces-243897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:47:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D604C2A2E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:36:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5824C2BD2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC7D2301CDBA
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 18:36:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2205B303A538
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 18:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653413E558E;
-	Mon,  4 May 2026 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2E03E558E;
+	Mon,  4 May 2026 18:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usurPhpb"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="qhTFskNe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D96281357;
-	Mon,  4 May 2026 18:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11E31C861D;
+	Mon,  4 May 2026 18:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777919787; cv=none; b=Yyt701fNqODrIlb9py2qy2s5QLGPjhQZK/BJ3XkBtMWHj9py+xptwlAyVPZP5l1TWsD1Lp4crWeBZTWwmDs3KaItQUqzWzWVXM4z+2Ezf1xcbvjiJJ/OY/1qGWFFj5fdFslE/eoOAvRxjDqFiE2F1P73VE2FvxcUQPJeAT6tjR4=
+	t=1777920432; cv=none; b=dsP7LIYI8u/7AyPmMhsWQzqPNAtqyx8pW6i9HKv0INrlFpBhv2hptG/VhzLBw7kMen/+xyiyq3wMGiUsfUKJmSCSHe3Gn6wFaP/dT/450FqaPUQOA4KCca1E8JwN+RogKEx9tXGNSkhmStPcy1Y8f/JtAhfZsDoPXkKP2deJuOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777919787; c=relaxed/simple;
-	bh=bRqSCWHEuIynO/9H0a1C015nwBsHdjF4zCRJ5hbbg8o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pVyU0+FLEiKIBf2AgOU1yB9M5WXyuewbbVnu5IsviQVZuK1TULiVF0rFNYd0a1qjVJqY5cC6Xy3qZHmjVvlD0xdsMoGc9HkE++Pe4mwdmFJfudEBbwS0N2t7dqKUVJHXIg8BCRTRUG1TOSMtOFAsRPifEeQHw55UL+S7RPaIWDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usurPhpb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACACC2BCB8;
-	Mon,  4 May 2026 18:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777919786;
-	bh=bRqSCWHEuIynO/9H0a1C015nwBsHdjF4zCRJ5hbbg8o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=usurPhpbtninSMp+rORevQ9NQkMOR0lJe0JozaqZSjLPVmG6+QkOs86AqqJg0bS6B
-	 QWJf+xyhLJKgCtYXMTw+A/SfWgv31pG/oAsz9nDnEPzbPhJBN9Yec3ZIo7mnOop5BM
-	 EjIHtQTiodwVVIJ+fyGlXps1oI9SolzALVXCtOxY4GNlx4TctZAkST6ppZX+4nqYGm
-	 3EWDvha0UoRb4zzwvGc3KkkpfoMo+b/0GF4NqN3uguSi80MPMj3BCDIBP5WL4sxIKL
-	 qn4KNkamACV2NbcBzddkXocwcasilOw03nxba6eciypkDu71raxLhUJRiUBh5eKt4G
-	 RY0oXb0kL5hmg==
-Message-ID: <8e5ad1bc-e404-4247-8a38-aa2a51df24bb@kernel.org>
-Date: Mon, 4 May 2026 20:36:22 +0200
+	s=arc-20240116; t=1777920432; c=relaxed/simple;
+	bh=ooKABG1UIQOpk4XDvQ4ZgGq/90gV3GBvhbEteUW3Twc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uVB1JDbyt/3mUU+fDJBjREcB1TjAIP3CB5uhLcwMfsMrbJScitpOi9GO2vNjmllGzPCjzVlekyi1exGksHdtHl7i0qdI7Z+2it4+H5Jptn7GI/t2SHi8YfRlYqQHBhuMJeVuRRllrcpjmDQ2Seoq9LLyt9k7Nbjuby25LdPdCI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=qhTFskNe; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 88F3C206B0;
+	Mon,  4 May 2026 20:47:06 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id luXGHua3mgxr; Mon,  4 May 2026 20:47:05 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 94ED9201C7;
+	Mon,  4 May 2026 20:47:05 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 94ED9201C7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1777920425;
+	bh=FWNtkGtwPwLmCrtO0zvAOI2hWRI1VUsAUbFF5tXWqRU=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=qhTFskNec/vQImAFLA2y97fVLplDsH6ywhmahKyMfbbh14KrwNFFjN80Ee7GEn10G
+	 uFJvpjdHdxVmIS6j2066PSKmf7RbZM1YoQcjOSLe4xG+qhzDDUOuJkIKGmmk82hKE/
+	 AehhoFsYt9uVrd4cTusT4Zbq9A91HUPVvLVWwGx+vZj6bDFbDlbJsreV52b1IDnhK6
+	 NPE7Sp7UsoHNPsmwCgmnpNugMy4DdehflDVVkv4+Kj6bwEBkrZ4S6iDkdtbZGkynnS
+	 DcUqK3rez3XIl+Ko4zLzcLPvTgJ/m3UHUnTkyjBF4071aC0WWK5HdcaiWGksi9cQSA
+	 Oc55mmLQ99jMg==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 4 May
+ 2026 20:47:05 +0200
+Received: (nullmailer pid 3576883 invoked by uid 1000);
+	Mon, 04 May 2026 18:47:04 -0000
+Date: Mon, 4 May 2026 20:47:04 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+CC: HexRabbit <h3xrabbit@gmail.com>, <netdev@vger.kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Herbert Xu
+	<herbert@gondor.apana.org.au>, Simon Horman <horms@kernel.org>, "David S .
+ Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net v2] xfrm: esp: avoid in-place decrypt on shared skb
+ frags
+Message-ID: <afjpqNXYFVfZjQl5@secunet.com>
+References: <20260504152712.76305-1-h3xrabbit@gmail.com>
+ <afje62FxYMuTUpSb@v4bel>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/7] firmware: samsung: acpm: Fix cross-thread RX
- length corruption
-To: Tudor Ambarus <tudor.ambarus@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org,
- andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com,
- stable@vger.kernel.org
-References: <20260504-acpm-fixes-sashiko-reports-v4-0-529246be6b2b@linaro.org>
- <20260504-acpm-fixes-sashiko-reports-v4-1-529246be6b2b@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260504-acpm-fixes-sashiko-reports-v4-1-529246be6b2b@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 41D604C2A2E
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <afje62FxYMuTUpSb@v4bel>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
+X-Rspamd-Queue-Id: 8C5824C2BD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[secunet.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[secunet.com:s=202301];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-243896-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243897-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linuxfoundation.org,gondor.apana.org.au,kernel.org,davemloft.net,google.com,redhat.com,nvidia.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:dkim,secunet.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[steffen.klassert@secunet.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[secunet.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-On 04/05/2026 12:15, Tudor Ambarus wrote:
-> Sashiko identified a cross-thread RX length corruption bug when
-> reviewing the thermal addition to ACPM [1].
+On Tue, May 05, 2026 at 03:01:15AM +0900, Hyunwoo Kim wrote:
+> On Mon, May 04, 2026 at 11:27:12PM +0800, HexRabbit wrote:
+> > From: Kuan-Ting Chen <h3xrabbit@gmail.com>
+> > 
+> > MSG_SPLICE_PAGES can attach pages from a pipe directly to an skb. TCP
+> > marks such skbs with SKBFL_SHARED_FRAG after skb_splice_from_iter(),
+> > so later paths that may modify packet data can first make a private
+> > copy. The IPv4/IPv6 datagram append paths did not set this flag when
+> > splicing pages into UDP skbs.
+> > 
+> > That leaves an ESP-in-UDP packet made from shared pipe pages looking
+> > like an ordinary uncloned nonlinear skb. ESP input then takes the no-COW
+> > fast path for uncloned skbs without a frag_list and decrypts in place
+> > over data that is not owned privately by the skb.
+> > 
+> > Mark IPv4/IPv6 datagram splice frags with SKBFL_SHARED_FRAG, matching
+> > TCP. Also make ESP input fall back to skb_cow_data() when the flag is
+> > present, so ESP does not decrypt externally backed frags in place.
+> > Private nonlinear skb frags still use the existing fast path.
+> > 
+> > This intentionally does not change ESP output. In esp_output_head(),
+> > the path that appends the ESP trailer to existing skb tailroom without
+> > calling skb_cow_data() is not reachable for nonlinear skbs:
+> > skb_tailroom() returns zero when skb->data_len is nonzero, while ESP
+> > tailen is positive. Thus ESP output will either use the separate
+> > destination-frag path or fall back to skb_cow_data().
+> > 
+> > Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
+> > Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
+> > Fixes: 7da0dde68486 ("ip, udp: Support MSG_SPLICE_PAGES")
+> > Fixes: 6d8192bd69bb ("ip6, udp6: Support MSG_SPLICE_PAGES")
+> > Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+> > Reported-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
 > 
-> When multiple threads concurrently send IPC requests, the ACPM polling
-> mechanism can encounter responses belonging to other threads. To drain
-> the queue, the driver saves these concurrent responses into an internal
-> cache (`rx_data->cmd`) to be retrieved later by the owning thread.
-> 
-> Previously, the driver incorrectly used `xfer->rxcnt` (the expected
-> receive length of the *current* polling thread) when copying data for
-> *other* threads into this cache. If the threads expected responses of
-> different lengths, this resulted in buffer underflows (leading to reads
-> of uninitialized memory) or potential buffer overflows.
-> 
-> Fix this by replacing the boolean `response` flag in
-> `struct acpm_rx_data` with `rxcnt`, caching the exact expected receive
-> length for each specific transaction during transfer preparation. Use
-> this cached length when saving concurrent responses.
-> 
-> Consequently, ensure that `xfer->rxcnt` is explicitly zeroed in driver
-> helpers (e.g., `acpm_dvfs_set_xfer`) for fire-and-forget messages to
-> prevent uninitialized stack garbage from being interpreted as a massive
-> expected receive length.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
-> Closes: https://sashiko.dev/#/patchset/20260420-acpm-tmu-v3-0-3dc8e93f0b26%40linaro.org [1]
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+> I dynamically tested this patch and confirm it resolves the
+> issue. Clean work.
 
-I think parallel credits for Titouan Ameline would be suitable here.
-If there is going to be new version, please also add:
+Feel free to add a Tested-by: tag.
 
-Reported-by: Titouan Ameline <titouan.ameline@gmail.com>
-Closes: https://lore.kernel.org/r/20260426210255.73674-1-titouan.ameline@gmail.com/
+> One correction request before merge -- please drop the
+> second Reported-by tag (your own) from the trailer.
+> 
+> The report and patch for this issue were already posted on
+> the public netdev ML 6 days ago, i.e., the bug was already
+> publicly reported:
+> 
+>   https://lore.kernel.org/all/afLDKSvAvMwGh7Fy@v4bel/
+> 
+> Credit for patch authorship is adequately covered by
+> Signed-off-by alone. Setting aside that your work proceeded
+> independently rather than as a review of my earlier
+> submission, the trailer should conform to convention to
+> avoid future misunderstanding.
 
+The issue was reported independently, so both Reported-by tags
+are valid. But indeed the Signed-off-by tag should cover the
+second one. I've applied it to the testing branch of the ipsec
+tree to make it available to our test systems. I can still fix
+the tags on request, no need for a v3.
 
-Best regards,
-Krzysztof
+> No objections to the patch itself.
+
+Thanks a lot for your effort!
 
