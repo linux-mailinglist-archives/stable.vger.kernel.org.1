@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-243596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFrCN2Cr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:20 +0200
+	id oEsUKmGv+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265434BF2B1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5484E4BFCBF
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2AB11300089D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6C0253041C71
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6123DEAD3;
-	Mon,  4 May 2026 14:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745AF3DEAF2;
+	Mon,  4 May 2026 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8hMPlJH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oc1KTHp6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A743DE43C;
-	Mon,  4 May 2026 14:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D8B3DEADB;
+	Mon,  4 May 2026 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904290; cv=none; b=gQjcQnAxJJygbxVoHct7UCEHl0v3NYzGJkg1x1JK9ACnpcOnPz14uq7n+vYupbwyS+3lI1ftXrpvHpCFRByuvYjSIUfX7d1+xR0WtdTlH+/mbAPEZ/D3jeIjcDX/gXQ4ZYuIO8Y1xnukga9FT/FBACsFJ66B60jkEtB7XvN345E=
+	t=1777904798; cv=none; b=FdYEgTV3J0m3uZAHuGuNZQ/DFsnj9w6GvPYwjxw3nyJ0pMx94tdeJ8WscqYG+N7Gpv3olgXH9sJhwgIcyiCLbe1e335k73R3H38hOVzVSRCr2fNqeD0IZcU6T29I4fWz6zQHIrHRVBIwTlj3Tw1m8AV0sqdOg9CFfaeaMeL15p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904290; c=relaxed/simple;
-	bh=KTAmzVQvtdjlciH3egnfUT8GXLYvnaylOLcW4sldHlY=;
+	s=arc-20240116; t=1777904798; c=relaxed/simple;
+	bh=OVcI8O9K7/0H2Ns/eIAkmdB7o09FYBS5srAGscAPTpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h47HpDK0DBFOGdQ+ugP/lFk+kxm6LfW17XveipVSoTzilkYgcC1UWP55VnNzE2Pb1PTqK4xJ/J5nkCOf7D5eEV20MHpNr82RzGRzCff5i6KQj3tLj4B6cJN/flKRxZVfaHOVCSsWDN4spKOB1vWcWKtnqRJkCdfa9zLdTMQllLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8hMPlJH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227BEC2BCB8;
-	Mon,  4 May 2026 14:18:09 +0000 (UTC)
+	 MIME-Version; b=fnJzKLcIDdb3lURBr5L7M3x1qp+wSLqwOW6ZCzbBMoFR1GSLovHq4ctkqckAo54O1pNTSjzYPVuJ2O6rfs9fnglvr7/HBqEn/azQws8TaQaYLmP6uM+2HjFKdJqVwTLDDNjiaUUkFjcUy/hD4r2HmDfvIKFucOZkiAq8JxQWt7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oc1KTHp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C109BC2BCB8;
+	Mon,  4 May 2026 14:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904290;
-	bh=KTAmzVQvtdjlciH3egnfUT8GXLYvnaylOLcW4sldHlY=;
+	s=korg; t=1777904798;
+	bh=OVcI8O9K7/0H2Ns/eIAkmdB7o09FYBS5srAGscAPTpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8hMPlJH1Nw0Tp3QydllbRO8z3p14klMjXuQEDedJkz2HALC3I/B1BuLxR9Ue9e0A
-	 iL6Lnw27Al9LTvAtz/oCLPNta66wZe/Pnt0zGUDgBv3NNTK+wiCw9QsSN9jWQZ6XH5
-	 qDGMPqOD8FTcLG1df/TZgSBVIMNGPBfjlSUsf3uo=
+	b=Oc1KTHp6o3fwwhSdf0rjON3oZzpQ7u5cwNVweNp9PoY7Rhktn7xCyfw/fo8qCIjdX
+	 /Jq3J0wTu+eEmdfCiWPjQLyI2fCrYHSEfgHjoFJMUTV3u1VTiweIxJWOXcMNfIkr6O
+	 35c6ZIsVSI3Dg9xMaKBrLVLin47IwO1Q88Sqg5YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 257/275] media: rc: igorplugusb: heed coherency rules
-Date: Mon,  4 May 2026 15:53:17 +0200
-Message-ID: <20260504135152.585719834@linuxfoundation.org>
+Subject: [PATCH 6.12 179/215] ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()
+Date: Mon,  4 May 2026 15:53:18 +0200
+Message-ID: <20260504135136.748034376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,119 +65,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 265434BF2B1
+X-Rspamd-Queue-Id: 5484E4BFCBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243596-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-243795-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,mess.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit eac69475b01fe1e861dfe3960b57fa95671c132e ]
+[ Upstream commit def036ef87f8641c1c525d5ae17438d7a1006491 ]
 
-In a control request, the USB request structure
-can be subject to DMA on some HCs. Hence it must obey
-the rules for DMA coherency. Allocate it separately.
+rcount is intended to be connection-specific: 2 for curr_conn, 1 for
+every other connection sharing the same session.  However, it is
+initialised only once before the hash iteration and is never reset.
+After the loop visits curr_conn, later sibling connections are also
+checked against rcount == 2, so a sibling with req_running == 1 is
+incorrectly treated as idle.  This makes the outcome depend on the
+hash iteration order: whether a given sibling is checked against the
+loose (< 2) or the strict (< 1) threshold is decided by whether it
+happens to be visited before or after curr_conn.
 
-Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
+The function's contract is "wait until every connection sharing this
+session is idle" so that destroy_previous_session() can safely tear
+the session down.  The latched rcount violates that contract and
+reopens the teardown race window the wait logic was meant to close:
+destroy_previous_session() may proceed before sibling channels have
+actually quiesced, overlapping session teardown with in-flight work
+on those connections.
+
+Recompute rcount inside the loop so each connection is compared
+against its own threshold regardless of iteration order.
+
+This is a code-inspection fix for an iteration-order-dependent logic
+error; a targeted reproducer would require SMB3 multichannel with
+in-flight work on a sibling channel landing after curr_conn in hash
+order, which is not something that can be triggered reliably.
+
+Fixes: 76e98a158b20 ("ksmbd: fix race condition between destroy_previous_session() and smb2 operations()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ replaced kzalloc_obj(*ir->request, GFP_KERNEL) with kzalloc(sizeof(*ir->request), GFP_KERNEL) ]
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/igorplugusb.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/smb/server/connection.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/media/rc/igorplugusb.c
-+++ b/drivers/media/rc/igorplugusb.c
-@@ -34,7 +34,7 @@ struct igorplugusb {
- 	struct device *dev;
- 
- 	struct urb *urb;
--	struct usb_ctrlrequest request;
-+	struct usb_ctrlrequest *request;
- 
- 	struct timer_list timer;
- 
-@@ -122,7 +122,7 @@ static void igorplugusb_cmd(struct igorp
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -180,7 +180,7 @@ int ksmbd_conn_wait_idle_sess_id(struct
  {
- 	int ret;
+ 	struct ksmbd_conn *conn;
+ 	int rc, retry_count = 0, max_timeout = 120;
+-	int rcount = 1, bkt;
++	int rcount, bkt;
  
--	ir->request.bRequest = cmd;
-+	ir->request->bRequest = cmd;
- 	ir->urb->transfer_flags = 0;
- 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
- 	if (ret && ret != -EPERM)
-@@ -164,13 +164,17 @@ static int igorplugusb_probe(struct usb_
- 	if (!ir)
- 		return -ENOMEM;
- 
-+	ir->request = kzalloc(sizeof(*ir->request), GFP_KERNEL);
-+	if (!ir->request)
-+		goto fail;
-+
- 	ir->dev = &intf->dev;
- 
- 	timer_setup(&ir->timer, igorplugusb_timer, 0);
- 
--	ir->request.bRequest = GET_INFRACODE;
--	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
--	ir->request.wLength = cpu_to_le16(MAX_PACKET);
-+	ir->request->bRequest = GET_INFRACODE;
-+	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
-+	ir->request->wLength = cpu_to_le16(MAX_PACKET);
- 
- 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!ir->urb)
-@@ -228,6 +232,7 @@ fail:
- 	usb_free_urb(ir->urb);
- 	rc_free_device(ir->rc);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- 
- 	return ret;
- }
-@@ -243,6 +248,7 @@ static void igorplugusb_disconnect(struc
- 	usb_unpoison_urb(ir->urb);
- 	usb_free_urb(ir->urb);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- }
- 
- static const struct usb_device_id igorplugusb_table[] = {
+ retry_idle:
+ 	if (retry_count >= max_timeout)
+@@ -189,8 +189,7 @@ retry_idle:
+ 	down_read(&conn_list_lock);
+ 	hash_for_each(conn_list, bkt, conn, hlist) {
+ 		if (conn->binding || xa_load(&conn->sessions, sess_id)) {
+-			if (conn == curr_conn)
+-				rcount = 2;
++			rcount = (conn == curr_conn) ? 2 : 1;
+ 			if (atomic_read(&conn->req_running) >= rcount) {
+ 				rc = wait_event_timeout(conn->req_running_q,
+ 					atomic_read(&conn->req_running) < rcount,
 
 
 
