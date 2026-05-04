@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-243723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEtsGzCw+GkPzAIAu9opvQ
-	(envelope-from <stable+bounces-243723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:52 +0200
+	id uHb7KsCn+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792384BFE56
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793C14BE80F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 94850302B2D8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:23:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C6167300D342
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5623DE44F;
-	Mon,  4 May 2026 14:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3257337881B;
+	Mon,  4 May 2026 14:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6KRhreT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arWyyjYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A993D8129;
-	Mon,  4 May 2026 14:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD6D3D9029;
+	Mon,  4 May 2026 14:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904612; cv=none; b=pltxgNQTYREFnJgE8wjqnbNL5bEjkKeSs2TwG8TfuAhcZhInpSWf7POhedmW1jhPkVHyM7MKv7K3P0+xYmCtPgePc1VgJ5wcnM85X4b2DFhk0kM14cHu3gBhRMIa6O1oLewccjM3Sal4Ksxggebj2aKd30dTzT9wESkOIhRlgvc=
+	t=1777903441; cv=none; b=ndN4jaa9JQCNKCFAY9fjr7Y5Br48unlsg67dh/+5zVGqY3NkTiDUleXfM40dLLL5NVWnvEmNC2inP9ifYmEDfXul+mwlGLBP5PNSYTWjP6Boya5S1D3a0jyF3T9yIgxwY/3eUSP4W7tHQRIztgk/7JeFuDPr5iVqUt65/HS09yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904612; c=relaxed/simple;
-	bh=DrRbax55KN5O/5r897wz4KOFXMgeBbCwQ0iYvJn2y2E=;
+	s=arc-20240116; t=1777903441; c=relaxed/simple;
+	bh=ByCjKDhEcoAzDrkX6plxsCQ78aFim1upKjhtsCwYM/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLrwnV9ohI5eZOlzYs5xKKSAIJuyJQQqgufkGsvf8+dYl8WFJULznVuFmHuujbqakMOeH2qXNDOelX/w/oyR8E2KFWA4OPngNXL01HTpuN8CiOCzIKRhCkZh75ogcro1iKUEZV9lqXp87ekaLIt8/RtBU5F4aZu3StW5Y2lPaXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6KRhreT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1CAC2BCB8;
-	Mon,  4 May 2026 14:23:31 +0000 (UTC)
+	 MIME-Version; b=CT5awVwZ+f04iOw+JcIY2WE3r5xadEfwy36x5+Pr2KNFr0p/nDgze7RFcPlcFsdFcvgVXDmgDjp8/r2WAZuzCvcy80D2lWlPG3I1vBxgGx1FqA3diszemTDMCbIiJG2Q0D/ov2kKm4gfkh5kzdN74JvHqoFf6CzxL3VcizMPktc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arWyyjYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C5BC2BCB8;
+	Mon,  4 May 2026 14:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904612;
-	bh=DrRbax55KN5O/5r897wz4KOFXMgeBbCwQ0iYvJn2y2E=;
+	s=korg; t=1777903441;
+	bh=ByCjKDhEcoAzDrkX6plxsCQ78aFim1upKjhtsCwYM/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6KRhreTnz5nAzqvi8fRJqcC7BwardcQAw/vHV4RD0DwD8atedFxyFIJxznyGMdV9
-	 cgU0JF62irx/sFJh1tmHJ0UYzRCXkslunEp2Mhxw9DMRZgwxfZ85qZf6xzuVPVWbhM
-	 ir+B4xv8tafjeDLb1iEiN/iuDYwwXPe9dEjvXTnw=
+	b=arWyyjYLcbfM9tCwzx2mQm0oYMZL3m7MSQ2WoyRgal2FHHeSmTiqW/srlHUD4ZrBr
+	 14VJAmv0BaUai1B7GI4B7wmBJyukK6hMaUMZTDvA4Dww4NBJImJDFtyuIDQF0DcZUo
+	 OL2hLBWQ2k1M+AUNjXWwiRmnq6h7pwZAOO56VWm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 099/215] LoongArch: Show CPU vulnerabilites correctly
-Date: Mon,  4 May 2026 15:51:58 +0200
-Message-ID: <20260504135133.771410119@linuxfoundation.org>
+	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
+	Hendrik Donner <hd@os-cillation.de>,
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>
+Subject: [PATCH 7.0 234/307] mtd: spi-nor: sst: Fix write enable before AAI sequence
+Date: Mon,  4 May 2026 15:51:59 +0200
+Message-ID: <20260504135151.651034533@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 792384BFE56
+X-Rspamd-Queue-Id: 793C14BE80F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243723-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243265-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,loongson.cn:email,cc-sw.com:url]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,dicortech.com:email,os-cillation.de:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 
-commit 37e57e8ad96cdec4a57b55fd10bef50f7370a954 upstream.
+commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 upstream.
 
-Most LoongArch processors are vulnerable to Spectre-V1 Proof-of-Concept
-(PoC). And the generic mechanism, __user pointer sanitization, can be
-used as a mitigation. This means to use array_index_nospec() to prevent
-out of boundry access in syscall and other critical paths.
+When writing to SST flash starting at an odd address, a single byte is
+first programmed using the byte program (BP) command. After this
+operation completes, the flash hardware automatically clears the Write
+Enable Latch (WEL) bit.
 
-Implement the arch-specific cpu_show_spectre_v1() to show CPU Spectre-V1
-vulnerabilites correctly.
+If an AAI (Auto Address Increment) word program sequence follows, it
+requires WEL to be set. Without re-enabling writes, the AAI sequence
+fails.
 
+Add spi_nor_write_enable() after the odd-address byte program when more
+data needs to be written. Use a local boolean for clarity.
+
+Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
 Cc: stable@vger.kernel.org
-Link: https://cc-sw.com/chinese-loongarch-architecture-evaluation-part-3-of-3/
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+Tested-by: Hendrik Donner <hd@os-cillation.de>
+Reviewed-by: Hendrik Donner <hd@os-cillation.de>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/cpu-probe.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/spi-nor/sst.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/arch/loongarch/kernel/cpu-probe.c
-+++ b/arch/loongarch/kernel/cpu-probe.c
-@@ -7,6 +7,7 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/ptrace.h>
-+#include <linux/cpu.h>
- #include <linux/smp.h>
- #include <linux/stddef.h>
- #include <linux/export.h>
-@@ -352,3 +353,9 @@ void cpu_probe(void)
+--- a/drivers/mtd/spi-nor/sst.c
++++ b/drivers/mtd/spi-nor/sst.c
+@@ -203,6 +203,8 @@ static int sst_nor_write(struct mtd_info
  
- 	cpu_report();
- }
+ 	/* Start write from odd address. */
+ 	if (to % 2) {
++		bool needs_write_enable = (len > 1);
 +
-+ssize_t cpu_show_spectre_v1(struct device *dev,
-+			    struct device_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "Mitigation: __user pointer sanitization\n");
-+}
+ 		/* write one byte. */
+ 		ret = sst_nor_write_data(nor, to, 1, buf);
+ 		if (ret < 0)
+@@ -210,6 +212,17 @@ static int sst_nor_write(struct mtd_info
+ 
+ 		to++;
+ 		actual++;
++
++		/*
++		 * Byte program clears the write enable latch. If more
++		 * data needs to be written using the AAI sequence,
++		 * re-enable writes.
++		 */
++		if (needs_write_enable) {
++			ret = spi_nor_write_enable(nor);
++			if (ret)
++				goto out;
++		}
+ 	}
+ 
+ 	/* Write out most of the data here. */
 
 
 
