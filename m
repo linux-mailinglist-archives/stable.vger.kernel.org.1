@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IUTI86o+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:22 +0200
+	id CC6wNy+s+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4674BEA9F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C054BF50C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B10AB301B1C8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9D68307728B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75053D904D;
-	Mon,  4 May 2026 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F9829E116;
+	Mon,  4 May 2026 14:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO/J0tDN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkCiLxLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5CB3D3308;
-	Mon,  4 May 2026 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5131A6827;
+	Mon,  4 May 2026 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903265; cv=none; b=neZISPyUJ6CN4OF6F8UbhlC/5vbbyKxUpD/AyxKedduKYoABdD3ClFCa0CAPn3BAXjbme0/s5k+X4cna8RsngrfNNLLt0lK6yMp6KSPPKnBH6Scufoevh9AywJASD35t5x16bb8TptRw2c9kXeeCsVeTIDcD7qpYmkcxtUmGf5k=
+	t=1777904507; cv=none; b=NKlnk8/fJ9Q7Tm6/vKKhIpy7OGW6xkrkg+68BdNf9YyzKVQZajNw4iiHNc9u/zV7jOeM5yJXKVHKXTEy+jGEmV94YR1OxY54SP4oNY0WX5+U60Empv9q7CXwSI+0xYw/JxEPl3+nc4703vG5cbCLy8N6tBAI5rpfcmCdhwv4MWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903265; c=relaxed/simple;
-	bh=ZkktuPNKgwBHIvoUO8O4rH7xhOo6lZvhO4lQHMoOLZ4=;
+	s=arc-20240116; t=1777904507; c=relaxed/simple;
+	bh=6abax6E2vDbHtbdYTo7OhpJ0fZ1ilEde8A9afziTe58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyKaGvgk72LqC2qmJRX3GPV0dIc7KpFLhtcSE62not6cZIE2MimZ/xGKbypmMCvJHH5EvujbYDuzqK60MaaiZerLesgWu08hgOdoG+CrVbE4ryon9c3ReMA7d76xmwjtwrnAu6oDl++rgA1U3I56TuijwuUbLQ0q6AHcM4A4ams=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO/J0tDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22576C2BCB8;
-	Mon,  4 May 2026 14:01:04 +0000 (UTC)
+	 MIME-Version; b=dgyY0+wdgY7EmK2+Z35UJAKe4joRnVbQ1kbeRULulhTe/9Skrwc/ivx3OUoA4Yf4FWgVPYCKQbyhA4CaPfKq8G9PZVynQ/Gy0A0ZQ13fGHOdVXEiPe2vow8bQRVG/Q5Y9IqZ/sTdlWJDFmQv687y711aherjlmsBHLsL3pIg9+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkCiLxLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BAFC2BCB8;
+	Mon,  4 May 2026 14:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903265;
-	bh=ZkktuPNKgwBHIvoUO8O4rH7xhOo6lZvhO4lQHMoOLZ4=;
+	s=korg; t=1777904506;
+	bh=6abax6E2vDbHtbdYTo7OhpJ0fZ1ilEde8A9afziTe58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BO/J0tDNNmLtEpYxgSBtlVL5rxwmYdmMZNW9BOqE8pJ+UuU9Kc6MVNzOXAJQNSBVl
-	 S2o3hQhkAYhpK2Ey7PAhThj/XYQi/c7Xa/jMOueHq4XUbDfIc2Mr3B6uZU7aKEs8Ks
-	 MoykzUyTnC3FqU9aqacxBeIefXWjO2e7ow6rsLa4=
+	b=dkCiLxLXAoOzFB7sgeHi130CsLz+f4lpz3T8J/v8VqaTxEUe80wkhVh8Gvcl5KnJo
+	 Wsy9Oh9R7bmPMnUwcOv6GYiAPLWyiyATZu6GmlEl7HZUcQ1NdtTjb2PGqIIWLukWz1
+	 8mqbJ8MZq1Qbo5ZOu1OhSJMVcgaVjJQ/TQlb8ypk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Scally <dan.scally+renesas@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 166/307] media: rzv2h-ivc: Revise default VBLANK formula
+	Johannes Berg <johannes@sipsolutions.net>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 032/215] um: drivers: call kernel_strrchr() explicitly in cow_user.c
 Date: Mon,  4 May 2026 15:50:51 +0200
-Message-ID: <20260504135149.110185859@linuxfoundation.org>
+Message-ID: <20260504135131.348480612@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +64,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AB4674BEA9F
+X-Rspamd-Queue-Id: 72C054BF50C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243197-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243682-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ideasonboard.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Scally <dan.scally+renesas@ideasonboard.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 38104fe60ebb6b6cb66e3e9ef0a5c12f1260b1bc upstream.
+commit 91e901c65b4da02a6fd543e3f0049829ae9645b7 upstream.
 
-The vertical blanking settings for the IVC block are dependent on
-settings in the ISP. This was originally set to calculate as the
-worst-case possible value, but it seems that this can cause the IVC
-block to hang. Instead calculate the vblank to match the default
-settings (which are currently all the driver sets anyway).
+Building ARCH=um on glibc >= 2.43 fails:
 
+  arch/um/drivers/cow_user.c: error: implicit declaration of
+  function 'strrchr' [-Wimplicit-function-declaration]
+
+glibc 2.43's C23 const-preserving strrchr() macro does not survive
+UML's global -Dstrrchr=kernel_strrchr remap from arch/um/Makefile.
+Call kernel_strrchr() directly in cow_user.c so the source no longer
+depends on the -D rewrite.
+
+Fixes: 2c51a4bc0233 ("um: fix strrchr() problems")
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
 Cc: stable@vger.kernel.org
-Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
-Signed-off-by: Daniel Scally <dan.scally+renesas@ideasonboard.com>
-Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260408070102.2325572-1-michael.bommarito@gmail.com
+[remove unnecessary 'extern']
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/um/drivers/cow_user.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-+++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-@@ -24,7 +24,7 @@
- #include <media/videobuf2-dma-contig.h>
+--- a/arch/um/drivers/cow_user.c
++++ b/arch/um/drivers/cow_user.c
+@@ -15,6 +15,12 @@
+ #include "cow.h"
+ #include "cow_sys.h"
  
- #define RZV2H_IVC_FIXED_HBLANK			0x20
--#define RZV2H_IVC_MIN_VBLANK(hts)		max(0x1b, 15 + (120501 / (hts)))
-+#define RZV2H_IVC_MIN_VBLANK(hts)		max(0x1b, 70100 / (hts))
++/*
++ * arch/um/Makefile remaps strrchr to kernel_strrchr; call the kernel
++ * name directly to avoid glibc >= 2.43's C23 strrchr macro.
++ */
++char *kernel_strrchr(const char *, int);
++
+ #define PATH_LEN_V1 256
  
- struct rzv2h_ivc_buf {
- 	struct vb2_v4l2_buffer vb;
+ /* unsigned time_t works until year 2106 */
+@@ -153,7 +159,7 @@ static int absolutize(char *to, int size
+ 			   errno);
+ 		return -1;
+ 	}
+-	slash = strrchr(from, '/');
++	slash = kernel_strrchr(from, '/');
+ 	if (slash != NULL) {
+ 		*slash = '\0';
+ 		if (chdir(from)) {
 
 
 
