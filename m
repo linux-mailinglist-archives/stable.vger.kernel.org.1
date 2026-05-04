@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPO8BH6s+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:06 +0200
+	id +CzgJ5Wy+Gl2zAIAu9opvQ
+	(envelope-from <stable+bounces-243770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:52:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641924BF612
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7E74C01B2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95488308E52A
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:16:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CC6130C0594
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859EE3DEAC4;
-	Mon,  4 May 2026 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA053DFC78;
+	Mon,  4 May 2026 14:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2OlwnjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaEhM499"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4927B315785;
-	Mon,  4 May 2026 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B0F3DFC6F;
+	Mon,  4 May 2026 14:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904180; cv=none; b=MVhSPirbNMcaELVB3teXoNpoaafk1GP+Qz58k1d5C5Gthd1ae5inQaqJ5kjQcupf8nA3AonNaj3A/i7on2mrrsc3vhrfZevh3PTE72D4RNrMQPzfxj61z2zis+BWt5IGDLlwLd/TyXeJG0O1VKnK+4nuNPKZdz9/0qveCp7TPCI=
+	t=1777904734; cv=none; b=DILWEosF38AIfyaOkDnNEBz9q7YtOltwTd68wc8FHjIsjztLgeEK1X1utszOoJWhx4Xws34Bho7RMpS6J1+xAObRh4e10bQ15hWb+mef26R+v6b9sq13ogl7XbNWVR/UgQL/38iWyA016IQYZw6cvNlsVSfQMqwBWti7pzBxZlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904180; c=relaxed/simple;
-	bh=KmisXqjCh+1afvwi/hs8eXMiRTlm1+0CkB/jGX/mEr4=;
+	s=arc-20240116; t=1777904734; c=relaxed/simple;
+	bh=S68Ba26USXEJktIhVekGeBUIQhykpWoFBm6Wp4ucs8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3fKAz9/qyo4NyRA+rqOwV5F18A5QNqUVXkiMnD5UF9Wqf/459oN360YDzs4PywQAAYoWuI1tTqDSijpebX+WVVKL344upZLnGjXM0MU7UQN2F+H8iBNuIvHi0uG0Pf/AoV2cPKzt9guOGPHSQKnkgaOz+W0z8xOqnYvRuh+Kho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2OlwnjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D406BC2BCB8;
-	Mon,  4 May 2026 14:16:19 +0000 (UTC)
+	 MIME-Version; b=G3jsIESU80JZMbkEnIG0ffvj8tL+EGSk4TkEhXDDeRjUTNwYuMPexzAZxxSRvzsPSTWkXCIKhBDZAgPab5wd4jkQYgitJ7a9py7ta5qW0fAyduKdf7Jjy3fQaXoC/szrjXiOdVd1aYD3xNQfQPQMI0vpci5lQQjTjaVJTy/K+4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaEhM499; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90686C2BCB8;
+	Mon,  4 May 2026 14:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904180;
-	bh=KmisXqjCh+1afvwi/hs8eXMiRTlm1+0CkB/jGX/mEr4=;
+	s=korg; t=1777904733;
+	bh=S68Ba26USXEJktIhVekGeBUIQhykpWoFBm6Wp4ucs8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2OlwnjDKiCoheFnPowY6s6/iGjtxfcxn93v6IwDJs5hafbT37kfRFVhtMOOWRe2M
-	 9kgRMlZmOLJOHlO0jOSIVFqyPvogBHOwfn7sN0JMLgZS7KLf1g9RD97v3FS4FjUkEd
-	 7qaEUk0XeJ7GkJTgWbzHWNXXey8kS3iw7yw2r3cw=
+	b=TaEhM4997+kVi8wbh22WEBwp+5krsN8Qv+SPM29UkQOlfx6s0zVD1xnsaqNftz/lX
+	 va3XXrzP2AzV3xsxnaH5yMPeRBNLMUTy19HFob3jeCYrkzXcaoUcnkdtZeR4QRfOpU
+	 +b2SI9+QmThIq3TlCcuaRb5zvSUeiZEeVzkhXPbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.18 214/275] mptcp: sync the msk->sndbuf at accept() time
-Date: Mon,  4 May 2026 15:52:34 +0200
-Message-ID: <20260504135151.022829547@linuxfoundation.org>
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 136/215] ext4: fix bounds check in check_xattrs() to prevent out-of-bounds access
+Date: Mon,  4 May 2026 15:52:35 +0200
+Message-ID: <20260504135135.121971387@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +63,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 641924BF612
+X-Rspamd-Queue-Id: CB7E74C01B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243770-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mit.edu];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243553-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kylinos.cn:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
+commit eceafc31ea7b42c984ece10d79d505c0bb6615d5 upstream.
 
-On passive MPTCP connections, the msk sndbuf is not updated correctly.
+The bounds check for the next xattr entry in check_xattrs() uses
+(void *)next >= end, which allows next to point within sizeof(u32)
+bytes of end. On the next loop iteration, IS_LAST_ENTRY() reads 4
+bytes via *(__u32 *)(entry), which can overrun the valid xattr region.
 
-The root cause is an order issue in the accept path:
+For example, if next lands at end - 1, the check passes since
+next < end, but IS_LAST_ENTRY() reads 4 bytes starting at end - 1,
+accessing 3 bytes beyond the valid region.
 
-- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
-  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
+Fix this by changing the check to (void *)next + sizeof(u32) > end,
+ensuring there is always enough space for the IS_LAST_ENTRY() read
+on the subsequent iteration.
 
-- Later, tcp_child_process() -> tcp_init_transfer() ->
-  tcp_sndbuf_expand() grows the ssk sndbuf.
-
-So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
-expanded and the msk ends up with a much smaller sndbuf than the
-subflow:
-
-  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
-
-Fix this by moving the __mptcp_propagate_sndbuf() call from
-mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
-__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
-been fully expanded by tcp_sndbuf_expand().
-
-Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+Fixes: 3478c83cf26b ("ext4: improve xattr consistency checking and error reporting")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/all/20260224231429.31361-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260328150038.349497-1-kartikey406@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    2 +-
+ fs/ext4/xattr.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3428,7 +3428,6 @@ struct sock *mptcp_sk_clone_init(const s
- 	 * uses the correct data
- 	 */
- 	mptcp_copy_inaddrs(nsk, ssk);
--	__mptcp_propagate_sndbuf(nsk, ssk);
- 
- 	mptcp_rcv_space_init(msk, ssk);
- 	msk->rcvq_space.time = mptcp_stamp();
-@@ -4038,6 +4037,7 @@ static int mptcp_stream_accept(struct so
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -226,7 +226,7 @@ check_xattrs(struct inode *inode, struct
+ 	/* Find the end of the names list */
+ 	while (!IS_LAST_ENTRY(e)) {
+ 		struct ext4_xattr_entry *next = EXT4_XATTR_NEXT(e);
+-		if ((void *)next >= end) {
++		if ((void *)next + sizeof(u32) > end) {
+ 			err_str = "e_name out of bounds";
+ 			goto errout;
  		}
- 
- 		mptcp_rps_record_subflows(msk);
-+		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
- 
- 		/* Do late cleanup for the first subflow as necessary. Also
- 		 * deal with bad peers not doing a complete shutdown.
 
 
 
