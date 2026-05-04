@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aH6DJyCs+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:32 +0200
+	id WFfKMEqs+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF1D4BF4DD
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4004BF56B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14D7930714F1
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A75503074466
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518FC3DEFFF;
-	Mon,  4 May 2026 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873233D75D7;
+	Mon,  4 May 2026 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnb7wJ0m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTQG2taj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1469F3DEFF6;
-	Mon,  4 May 2026 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2843AA4F8;
+	Mon,  4 May 2026 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904494; cv=none; b=ohgx2IGtpMDZUHTbyj6og5+cJJKHA49kz+Qnj7O16tAdJE9tHh3wzHvnS/xERr1vGlF4uQ2Vrd1xRPRxxSyLfJS5l4tEuXnJ0nC7VYS24WSoURvyXN9gT0MxUsAKpqAPQBufzAJ0OiASe2eDis9D0MGU9m2dkGNrBhlrsLNc+bE=
+	t=1777903982; cv=none; b=MKOvdBOhqvo2vPyBhXwoEZuq6j18WD4prL+gS8DnYJsAj+SQLEWzY4quAT2bmAZPiT/K2Ay1DKCCWM0A6KT0lX21ASVYnSp1HENpGapH3kj1oxZaTvN344zFGy95RiSH+wAvIUqhpEhybI6ApeZz0vcQxgISp7hhu39RgT2E9v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904494; c=relaxed/simple;
-	bh=8LUwWvbm1RwuVIv24bTBFVKuV6+/U5BE0rSw/NwU958=;
+	s=arc-20240116; t=1777903982; c=relaxed/simple;
+	bh=joTP3DRAqXEgL/A+M1+Cw11g5tW+BFOJiPfrU9tN9Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TcLPI3Ixwg1s4NIq2uZRii6XKg5H5g8rwSKsEOJzkLdFGOEcWkX7/NWqNALXH3LqIv/vfhC+xGFJ95CWoTLwvkxclENL1Duefw7SmRBQZQXRmwdjHFkEuvdp+qCRcNoxm3Def+dXNO3LgcDpjH5rsRsrbxUNyWsaS3/Xy6IABM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnb7wJ0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E950C2BCB8;
-	Mon,  4 May 2026 14:21:33 +0000 (UTC)
+	 MIME-Version; b=ON7C9Sk4JdHzRObSeAKe8qltLwli6yuol6m9gWoUvWKnXTLmK+RV+/gIsZ04H6SvFCPU7E1rjqBsZu8uH03VWCZBSVIBm6m0bfTsRXu4MrgsefE4Bq/7GnrtaYR2cfsooSnXxzPvl7RosiXOSY3O6TusRVJBL4+TOEqxgJfdbnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTQG2taj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6212C2BCB8;
+	Mon,  4 May 2026 14:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904494;
-	bh=8LUwWvbm1RwuVIv24bTBFVKuV6+/U5BE0rSw/NwU958=;
+	s=korg; t=1777903982;
+	bh=joTP3DRAqXEgL/A+M1+Cw11g5tW+BFOJiPfrU9tN9Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnb7wJ0mZHSry7kpzIX2KdF9hEGluo+WC4IFiDo8PvNFCkMYoom2++99zM7IuXL8L
-	 z6Wa4Ce/VQ418mv7+8bylx3nbs8Z0OPMv01l2d9f/zPQBzUxylC6avfMF00/gOWmlK
-	 uQ3XTCQZjQZPolMHMs1d48rtdickyrTz8zaiLUU4=
+	b=qTQG2tajtDkGeiDR+Wznhgf4oybvmnjAKPjUopwpqMU8HnM4S+xClc0Gtg+UJI9Pb
+	 YF9dhwgkYboqUJCtWNeXLHaCco7CWnEpJFWCQAmUgWJMRLlRW6do1t3Zw30EYyWXO9
+	 6C0z71M9iK2P+PcgJ0j4UMzpwjTSXWR3lbi2JSzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 059/215] mfd: stpmic1: Attempt system shutdown twice in case PMIC is confused
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.18 138/275] power: supply: axp288_charger: Do not cancel work before initializing it
 Date: Mon,  4 May 2026 15:51:18 +0200
-Message-ID: <20260504135132.331248321@linuxfoundation.org>
+Message-ID: <20260504135148.030302291@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +65,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2FF1D4BF4DD
+X-Rspamd-Queue-Id: EC4004BF56B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243476-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243677-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nabladev.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-commit ffdc5c51f8bcd0e5e8255ca275a0a3b958475d99 upstream.
+commit 658342fd75b582cbb06544d513171c3d645faead upstream.
 
-Attempt to shut down again, in case the first attempt failed.
-The STPMIC1 might get confused and the first regmap_update_bits()
-returns with -ETIMEDOUT / -110 . If that or similar transient
-failure occurs, try to shut down again. If the second attempt
-fails, there is some bigger problem, report it to user.
+Driver registered devm handler to cancel_work_sync() before even the
+work was initialized, thus leading to possible warning from
+kernel/workqueue.c on (!work->func) check, if the error path was hit
+before the initialization happened.
 
+Use devm_work_autocancel() on each work item independently, which
+handles the initialization and handler to cancel work.
+
+Fixes: 165c2357744e ("power: supply: axp288_charger: Properly stop work on probe-error / remove")
 Cc: stable@vger.kernel.org
-Fixes: 6e9df38f359a ("mfd: stpmic1: Add PMIC poweroff via sys-off handler")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260122111423.62591-1-marex@nabladev.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+Link: https://patch.msgid.link/20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/stpmic1.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/power/supply/axp288_charger.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
---- a/drivers/mfd/stpmic1.c
-+++ b/drivers/mfd/stpmic1.c
-@@ -16,6 +16,8 @@
- 
- #include <dt-bindings/mfd/st,stpmic1.h>
- 
-+#define STPMIC1_MAX_RETRIES 2
-+
- #define STPMIC1_MAIN_IRQ 0
- 
- static const struct regmap_range stpmic1_readable_ranges[] = {
-@@ -121,9 +123,23 @@ static const struct regmap_irq_chip stpm
- static int stpmic1_power_off(struct sys_off_data *data)
- {
- 	struct stpmic1 *ddata = data->cb_data;
-+	int ret;
-+
-+	/*
-+	 * Attempt to shut down again, in case the first attempt failed.
-+	 * The STPMIC1 might get confused and the first regmap_update_bits()
-+	 * returns with -ETIMEDOUT / -110 . If that or similar transient
-+	 * failure occurs, try to shut down again. If the second attempt
-+	 * fails, there is some bigger problem, report it to user.
-+	 */
-+	for (int retries = 0; retries < STPMIC1_MAX_RETRIES; retries++) {
-+		ret = regmap_update_bits(ddata->regmap, MAIN_CR, SOFTWARE_SWITCH_OFF,
-+					 SOFTWARE_SWITCH_OFF);
-+		if (!ret)
-+			return NOTIFY_DONE;
-+	}
- 
--	regmap_update_bits(ddata->regmap, MAIN_CR,
--			   SOFTWARE_SWITCH_OFF, SOFTWARE_SWITCH_OFF);
-+	dev_err(ddata->dev, "Failed to access PMIC I2C bus (%d)\n", ret);
- 
- 	return NOTIFY_DONE;
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -10,6 +10,7 @@
+ #include <linux/acpi.h>
+ #include <linux/bitops.h>
+ #include <linux/module.h>
++#include <linux/devm-helpers.h>
+ #include <linux/device.h>
+ #include <linux/regmap.h>
+ #include <linux/workqueue.h>
+@@ -821,14 +822,6 @@ static int charger_init_hw_regs(struct a
+ 	return 0;
  }
+ 
+-static void axp288_charger_cancel_work(void *data)
+-{
+-	struct axp288_chrg_info *info = data;
+-
+-	cancel_work_sync(&info->otg.work);
+-	cancel_work_sync(&info->cable.work);
+-}
+-
+ static int axp288_charger_probe(struct platform_device *pdev)
+ {
+ 	int ret, i, pirq;
+@@ -911,12 +904,12 @@ static int axp288_charger_probe(struct p
+ 	}
+ 
+ 	/* Cancel our work on cleanup, register this before the notifiers */
+-	ret = devm_add_action(dev, axp288_charger_cancel_work, info);
++	ret = devm_work_autocancel(dev, &info->cable.work,
++				   axp288_charger_extcon_evt_worker);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/* Register for extcon notification */
+-	INIT_WORK(&info->cable.work, axp288_charger_extcon_evt_worker);
+ 	info->cable.nb.notifier_call = axp288_charger_handle_cable_evt;
+ 	ret = devm_extcon_register_notifier_all(dev, info->cable.edev,
+ 						&info->cable.nb);
+@@ -926,8 +919,12 @@ static int axp288_charger_probe(struct p
+ 	}
+ 	schedule_work(&info->cable.work);
+ 
++	ret = devm_work_autocancel(dev, &info->otg.work,
++				   axp288_charger_otg_evt_worker);
++	if (ret)
++		return ret;
++
+ 	/* Register for OTG notification */
+-	INIT_WORK(&info->otg.work, axp288_charger_otg_evt_worker);
+ 	info->otg.id_nb.notifier_call = axp288_charger_handle_otg_evt;
+ 	if (info->otg.cable) {
+ 		ret = devm_extcon_register_notifier(dev, info->otg.cable,
 
 
 
