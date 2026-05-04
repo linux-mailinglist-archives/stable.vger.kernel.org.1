@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-243247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIXSK0Sp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:20 +0200
+	id SOPIGn6s+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA7E4BEC87
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBE04BF613
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9DBC306D0F8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B71330237EB
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E618C3DE42E;
-	Mon,  4 May 2026 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D380C3DE43C;
+	Mon,  4 May 2026 14:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUEpyqfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGnDkHw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83E03DD53E;
-	Mon,  4 May 2026 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974F335A3AD;
+	Mon,  4 May 2026 14:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903395; cv=none; b=S30spP2wofirDaf59L1FBp/5Wew0OFS7NvrFun2CYZS+wOJlwNCoMe8KSZnnDhUHo1u3qBJrXqhwg72lEB4y/RQRQ+iJyGV1s55AgTvtqWTQYI8UJ8aH6MZ3OoZjFS0BgEJUn0lJp0Tmb119BEZCoziIZPGsnZSbBrJNtfcYs88=
+	t=1777904555; cv=none; b=sfyWcfreVCsK0RkPIuO3xmN8jh3jCaG+c4jWkZLALUn1DVdeu90ECGanlExJDp9wbogd6vvzc/82qbpIDF7dcnUFTL7/s97/QT597Sejw+lEdmCwwlpmOoDhZc4shFiX2Tr/CJB7aM72P9kZzV5EoIgg5HDY3sQ7YtMG13RINf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903395; c=relaxed/simple;
-	bh=ASkSwF7qY7bOXbONCD1z7og88rcatYyweG6rqDS2V2A=;
+	s=arc-20240116; t=1777904555; c=relaxed/simple;
+	bh=nEW906glEijVT/6W7eyzpCzjL8sXjMoRBKOkOj63gkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itW8hzMvYVEQzSlH4G2iLMCEOgnaPdRK5DX8YEqDKATZi5BSc+UIAWSgaIQLxpKicnlCzvRgcUHdgHzemfjoxGl/K6fZvUwc2FzRRkXd18eq+eXBRL5uDu/2/AbY4Z5lUdkCpTR3i0xZoo7KaaapjnTbmhwQQfS9GwmBCgp2CpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUEpyqfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA7BC2BCC4;
-	Mon,  4 May 2026 14:03:15 +0000 (UTC)
+	 MIME-Version; b=oxKW0lrgi1fOmmdB59nFZS0VBUvIpBJW31e0GxiHkpPdBCXWtcbMm7Uqer9paaFUwcfNmEcDtyscAP2wXaT366U0K5t7IsqfSRFlMdyOcshfgCdPRLCtQEXoBBPfQDDSj2E7fJQCEbKB4OU3shWjeziOXOQyWXniy1gjDbr4Z6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGnDkHw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC08C2BCB8;
+	Mon,  4 May 2026 14:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903395;
-	bh=ASkSwF7qY7bOXbONCD1z7og88rcatYyweG6rqDS2V2A=;
+	s=korg; t=1777904555;
+	bh=nEW906glEijVT/6W7eyzpCzjL8sXjMoRBKOkOj63gkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUEpyqfdxcyZl3E/gk1HWYLOFYKsItqelOqHwwITOBQCqN53Kgq9fDk3Sf3ZTbtYj
-	 aDOLZP9mZfrrCydIuqs022tB+Oa1vdjqdqUqN0U/Ewc83wYezDQPPX0ca6FIIMdu90
-	 z0rD3Lm1AhpxhwCIBrfGHKsBOGXTvESh1VZmc9LI=
+	b=YGnDkHw6FZwdYg0Qjc/xBX+jrGiPZbUxAJCQKclvDCGGvzXdFBlOBRb0ksfyH5i8k
+	 YlO5kajY1SM3V/L1OjGzlkhie1z2qr0EjZ+7gJabuXBrf0iAL+Tlc+nFdQWEUhhK4s
+	 Flrx0XznJm7Ichoe9Fttllpt1u1iOiIomVz81M1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 218/307] KVM: nSVM: Refactor writing vmcb12 on nested #VMEXIT as a helper
+	Yiyang Chen <cyyzero16@gmail.com>,
+	Balbir Singh <bsingharora@gmail.com>,
+	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
+	Fan Yu <fan.yu9@zte.com.cn>,
+	Wang Yaxin <wang.yaxin@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 084/215] tools/accounting: handle truncated taskstats netlink messages
 Date: Mon,  4 May 2026 15:51:43 +0200
-Message-ID: <20260504135151.066842877@linuxfoundation.org>
+Message-ID: <20260504135133.230388830@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +67,218 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4FA7E4BEC87
+X-Rspamd-Queue-Id: DBBE04BF613
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,uni-hamburg.de,zte.com.cn,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-243701-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243247-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uni-hamburg.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,zte.com.cn:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Yiyang Chen <cyyzero16@gmail.com>
 
-commit dcf3648ab71437b504abbfdc4e74622a0f1a56e3 upstream.
+commit cc82b3dcc6a8fa259fbda12ab00d6fc00908a49e upstream.
 
-Move mapping vmcb12 and updating it out of nested_svm_vmexit() into a
-helper, no functional change intended.
+procacct and getdelays use a fixed receive buffer for taskstats generic
+netlink messages.  A multi-threaded process exit can emit a single
+PID+TGID notification large enough to exceed that buffer on newer kernels.
 
-CC: stable@vger.kernel.org
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-8-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Switch to recvmsg() so MSG_TRUNC is detected explicitly, increase the
+message buffer size, and report truncated datagrams clearly instead of
+misparsing them as fatal netlink errors.
+
+Also print the taskstats version in debug output to make version
+mismatches easier to diagnose while inspecting taskstats traffic.
+
+Link: https://lkml.kernel.org/r/520308bb4cbbaf8dc2c7296b5f60f11e12fb30a5.1774810498.git.cyyzero16@gmail.com
+Signed-off-by: Yiyang Chen <cyyzero16@gmail.com>
+Cc: Balbir Singh <bsingharora@gmail.com>
+Cc: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
+Cc: Fan Yu <fan.yu9@zte.com.cn>
+Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |   77 ++++++++++++++++++++++++++--------------------
- 1 file changed, 44 insertions(+), 33 deletions(-)
+ tools/accounting/getdelays.c |   41 +++++++++++++++++++++++++++++++++++++----
+ tools/accounting/procacct.c  |   40 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 73 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1134,36 +1134,20 @@ void svm_copy_vmloadsave_state(struct vm
- 	to_vmcb->save.sysenter_eip = from_vmcb->save.sysenter_eip;
+--- a/tools/accounting/getdelays.c
++++ b/tools/accounting/getdelays.c
+@@ -59,7 +59,7 @@ int print_task_context_switch_counts;
+ 	}
+ 
+ /* Maximum size of response requested or message sent */
+-#define MAX_MSG_SIZE	1024
++#define MAX_MSG_SIZE	2048
+ /* Maximum number of cpus expected to be specified in a cpumask */
+ #define MAX_CPUS	32
+ 
+@@ -114,6 +114,32 @@ error:
+ 	return -1;
  }
  
--int nested_svm_vmexit(struct vcpu_svm *svm)
-+static int nested_svm_vmexit_update_vmcb12(struct kvm_vcpu *vcpu)
- {
--	struct kvm_vcpu *vcpu = &svm->vcpu;
--	struct vmcb *vmcb01 = svm->vmcb01.ptr;
-+	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
--	struct vmcb *vmcb12;
- 	struct kvm_host_map map;
-+	struct vmcb *vmcb12;
- 	int rc;
- 
- 	rc = kvm_vcpu_map(vcpu, gpa_to_gfn(svm->nested.vmcb12_gpa), &map);
--	if (rc) {
--		if (rc == -EINVAL)
--			kvm_inject_gp(vcpu, 0);
--		return 1;
--	}
-+	if (rc)
-+		return rc;
- 
- 	vmcb12 = map.hva;
- 
--	/* Exit Guest-Mode */
--	leave_guest_mode(vcpu);
--	svm->nested.vmcb12_gpa = 0;
--	WARN_ON_ONCE(svm->nested.nested_run_pending);
--
--	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
--
--	/* in case we halted in L2 */
--	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
--
--	/* Give the current vmcb to the guest */
--
- 	vmcb12->save.es     = vmcb02->save.es;
- 	vmcb12->save.cs     = vmcb02->save.cs;
- 	vmcb12->save.ss     = vmcb02->save.ss;
-@@ -1200,10 +1184,48 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
- 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
- 
-+	if (nested_vmcb12_has_lbrv(vcpu))
-+		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
-+
- 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
- 	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
- 	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
- 
-+	trace_kvm_nested_vmexit_inject(vmcb12->control.exit_code,
-+				       vmcb12->control.exit_info_1,
-+				       vmcb12->control.exit_info_2,
-+				       vmcb12->control.exit_int_info,
-+				       vmcb12->control.exit_int_info_err,
-+				       KVM_ISA_SVM);
-+
-+	kvm_vcpu_unmap(vcpu, &map);
-+	return 0;
-+}
-+
-+int nested_svm_vmexit(struct vcpu_svm *svm)
++static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
 +{
-+	struct kvm_vcpu *vcpu = &svm->vcpu;
-+	struct vmcb *vmcb01 = svm->vmcb01.ptr;
-+	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
-+	int rc;
++	struct sockaddr_nl nladdr;
++	struct iovec iov = {
++		.iov_base = msg,
++		.iov_len = sizeof(*msg),
++	};
++	struct msghdr hdr = {
++		.msg_name = &nladdr,
++		.msg_namelen = sizeof(nladdr),
++		.msg_iov = &iov,
++		.msg_iovlen = 1,
++	};
++	int ret;
 +
-+	rc = nested_svm_vmexit_update_vmcb12(vcpu);
-+	if (rc) {
-+		if (rc == -EINVAL)
-+			kvm_inject_gp(vcpu, 0);
-+		return 1;
++	ret = recvmsg(sd, &hdr, 0);
++	if (ret < 0)
++		return -1;
++	if (hdr.msg_flags & MSG_TRUNC) {
++		errno = EMSGSIZE;
++		return -1;
 +	}
 +
-+	/* Exit Guest-Mode */
-+	leave_guest_mode(vcpu);
-+	svm->nested.vmcb12_gpa = 0;
-+	WARN_ON_ONCE(svm->nested.nested_run_pending);
++	return ret;
++}
 +
-+	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
-+
-+	/* in case we halted in L2 */
-+	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
-+
- 	if (!kvm_pause_in_guest(vcpu->kvm)) {
- 		vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
- 		vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
-@@ -1248,9 +1270,7 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 	if (!nested_exit_on_intr(svm))
- 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
  
--	if (nested_vmcb12_has_lbrv(vcpu)) {
--		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
--	} else {
-+	if (!nested_vmcb12_has_lbrv(vcpu)) {
- 		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
- 		vmcb_mark_dirty(vmcb01, VMCB_LBR);
+ static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
+ 	     __u8 genl_cmd, __u16 nla_type,
+@@ -465,12 +491,16 @@ int main(int argc, char *argv[])
  	}
-@@ -1306,15 +1326,6 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 	svm->vcpu.arch.dr7 = DR7_FIXED_1;
- 	kvm_update_dr7(&svm->vcpu);
  
--	trace_kvm_nested_vmexit_inject(vmcb12->control.exit_code,
--				       vmcb12->control.exit_info_1,
--				       vmcb12->control.exit_info_2,
--				       vmcb12->control.exit_int_info,
--				       vmcb12->control.exit_int_info_err,
--				       KVM_ISA_SVM);
--
--	kvm_vcpu_unmap(vcpu, &map);
--
- 	nested_svm_transition_tlb_flush(vcpu);
+ 	do {
+-		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
++		rep_len = recv_taskstats_msg(nl_sd, &msg);
+ 		PRINTF("received %d bytes\n", rep_len);
  
- 	nested_svm_uninit_mmu_context(vcpu);
+ 		if (rep_len < 0) {
+-			fprintf(stderr, "nonfatal reply error: errno %d\n",
+-				errno);
++			if (errno == EMSGSIZE)
++				fprintf(stderr,
++					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
++			else
++				fprintf(stderr, "nonfatal reply error: errno %d\n",
++					errno);
+ 			continue;
+ 		}
+ 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
+@@ -512,6 +542,9 @@ int main(int argc, char *argv[])
+ 							printf("TGID\t%d\n", rtid);
+ 						break;
+ 					case TASKSTATS_TYPE_STATS:
++						PRINTF("version %u\n",
++						       ((struct taskstats *)
++							NLA_DATA(na))->version);
+ 						if (print_delays)
+ 							print_delayacct((struct taskstats *) NLA_DATA(na));
+ 						if (print_io_accounting)
+--- a/tools/accounting/procacct.c
++++ b/tools/accounting/procacct.c
+@@ -71,7 +71,7 @@ int print_task_context_switch_counts;
+ 	}
+ 
+ /* Maximum size of response requested or message sent */
+-#define MAX_MSG_SIZE	1024
++#define MAX_MSG_SIZE	2048
+ /* Maximum number of cpus expected to be specified in a cpumask */
+ #define MAX_CPUS	32
+ 
+@@ -121,6 +121,32 @@ error:
+ 	return -1;
+ }
+ 
++static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
++{
++	struct sockaddr_nl nladdr;
++	struct iovec iov = {
++		.iov_base = msg,
++		.iov_len = sizeof(*msg),
++	};
++	struct msghdr hdr = {
++		.msg_name = &nladdr,
++		.msg_namelen = sizeof(nladdr),
++		.msg_iov = &iov,
++		.msg_iovlen = 1,
++	};
++	int ret;
++
++	ret = recvmsg(sd, &hdr, 0);
++	if (ret < 0)
++		return -1;
++	if (hdr.msg_flags & MSG_TRUNC) {
++		errno = EMSGSIZE;
++		return -1;
++	}
++
++	return ret;
++}
++
+ 
+ static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
+ 	     __u8 genl_cmd, __u16 nla_type,
+@@ -239,6 +265,8 @@ void handle_aggr(int mother, struct nlat
+ 			PRINTF("TGID\t%d\n", rtid);
+ 			break;
+ 		case TASKSTATS_TYPE_STATS:
++			PRINTF("version %u\n",
++			       ((struct taskstats *)NLA_DATA(na))->version);
+ 			if (mother == TASKSTATS_TYPE_AGGR_PID)
+ 				print_procacct((struct taskstats *) NLA_DATA(na));
+ 			if (fd) {
+@@ -348,12 +376,16 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	do {
+-		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
++		rep_len = recv_taskstats_msg(nl_sd, &msg);
+ 		PRINTF("received %d bytes\n", rep_len);
+ 
+ 		if (rep_len < 0) {
+-			fprintf(stderr, "nonfatal reply error: errno %d\n",
+-				errno);
++			if (errno == EMSGSIZE)
++				fprintf(stderr,
++					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
++			else
++				fprintf(stderr, "nonfatal reply error: errno %d\n",
++					errno);
+ 			continue;
+ 		}
+ 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
 
 
 
