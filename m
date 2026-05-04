@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ALMLh+r+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:15 +0200
+	id iDbTCU+o+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8D14BF1C6
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8FD4BE95F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 871FC300BD57
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B4E5330324D4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E8B3D3334;
-	Mon,  4 May 2026 14:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C0C3DE42D;
+	Mon,  4 May 2026 13:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrBpOex+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVycIrb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F711ADC83;
-	Mon,  4 May 2026 14:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774B140DFD4;
+	Mon,  4 May 2026 13:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903755; cv=none; b=NLcXqyRTbTWEkiWRf+MHXyVIQc13+5TNPX1zEH77UxJyVqa7B3Hm3gCQnMJz0jy7qcfm6/UxBnwVTysaeV65NYlLM6Mn+ACE9eyNAkGrMADHfsH3y23m3e9Jpd8palfqtnaqQCYXncBKYRHvC7JlIR4carLow40J5TYivXewvGE=
+	t=1777903182; cv=none; b=Zx2KNK0NaET1TLqu3xzcBMWAbq60zwr0aJ+UBjzr2XIz3DH9j1qR0EyywEz8UXH5h3J3W53UtI2NUP43fzBNDeiVNfjzsDThy3TtqGAdjb4dojZytg9LkDVeUhsHaVUEa7VV2UjyEuA4gxqFPdnSmzEFtoXUfUrcl1XADzqynts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903755; c=relaxed/simple;
-	bh=zZg0iAf4Xe56S6A0ttXnkZGnCyeRiqoJsJ1N0E+tqvc=;
+	s=arc-20240116; t=1777903182; c=relaxed/simple;
+	bh=m9EEmi/D3WjWL7xl1zaxIg9fpq4o3RdDtWQh3cA9Zp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsTd8KR3s+iDLu4pN1s38Y7I/XWZu+ENdfrOjTJ0VSFMdBGxJoG4X51RLZqlaU1pNi1NmwU75fU6waKWzN88wSrC49wRGpKNE6bfNPxlJaBuNI8Wum9jrcn+2qjTZgEOGJWEoHxyszWk/+1m98Tz1KS9mzYRPuHhO5DhtQ2/IHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrBpOex+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD89C2BCB8;
-	Mon,  4 May 2026 14:09:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mlfac3MN4Y80tJ55wBFPXppheQb8Xtshl13e6tLb8r74Vw3erR7Kok4eDjDWCx6QcyfS6Nt6HvJz7HwsqwQYQZDfQ/1Rej6hgLlglnnGYkyhpd7ytbpEwv4aH1aY5YubdWsoLsxHgQFJI5mlIqckxzir7C7s5uIGz8gM6nkB9s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVycIrb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C621C2BCB8;
+	Mon,  4 May 2026 13:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903755;
-	bh=zZg0iAf4Xe56S6A0ttXnkZGnCyeRiqoJsJ1N0E+tqvc=;
+	s=korg; t=1777903182;
+	bh=m9EEmi/D3WjWL7xl1zaxIg9fpq4o3RdDtWQh3cA9Zp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrBpOex+YFTV60Stw1d2tV8UOsfYnH8PkAYbYou84Lb+7s0u2iioPKJzyWs/VB7ge
-	 s3EB6brTJtl5pTfx1+rPOcgnoCM0ZcpXqyr72lHRD1xmYmJV8G53mbHvnGpjFT4qaN
-	 I0pXBck5IpNK0NvICSCnle00BTrOtjN+FHbFxoYI=
+	b=HVycIrb+fsBer/P3o8J5HARHVDFVUZi6JK1Tdv1aOBp0UsenpGHnfv9pU1X7ed/ZQ
+	 864+WmyYSh4q6cnIQeNdMjIZcnXQh0rzr0l1nkYipprIk3yOM59ALzzrd1e5vMfKTS
+	 w3Uleq+SvA48kUht+gCwdYgvdEgeQ1Uk9ZZxdyw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziqing Chen <chenziqing@xiaomi.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 048/275] ALSA: control: Validate buf_len before strnlen() in snd_ctl_elem_init_enum_names()
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 7.0 103/307] selftests/landlock: Skip stale records in audit_match_record()
 Date: Mon,  4 May 2026 15:49:48 +0200
-Message-ID: <20260504135144.723152413@linuxfoundation.org>
+Message-ID: <20260504135146.687891554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,288 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CC8D14BF1C6
+X-Rspamd-Queue-Id: 2B8FD4BE95F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243388-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243165-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[digikod.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msg.data:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqing Chen <chenziqing@xiaomi.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit e0da8a8cac74f4b9f577979d131f0d2b88a84487 upstream.
+commit 07c2572a87573b2a2f0fd6b9f538cd1aeef2eee7 upstream.
 
-snd_ctl_elem_init_enum_names() advances pointer p through the names
-buffer while decrementing buf_len. If buf_len reaches zero but items
-remain, the next iteration calls strnlen(p, 0).
+Domain deallocation records are emitted asynchronously from kworker
+threads (via free_ruleset_work()).  Stale deallocation records from a
+previous test can arrive during the current test's deallocation read
+loop and be picked up by audit_match_record() instead of the expected
+record, causing a domain ID mismatch.  The audit.layers test (which
+creates 16 nested domains) is particularly vulnerable because it reads
+16 deallocation records in sequence, providing a large window for stale
+records to interleave.
 
-While strnlen(p, 0) returns 0 and would hit the existing name_len == 0
-error path, CONFIG_FORTIFY_SOURCE's fortified strnlen() first checks
-maxlen against __builtin_dynamic_object_size(). When Clang loses track
-of p's object size inside the loop, this triggers a BRK exception panic
-before the return value is examined.
+The same issue affects audit_flags.signal, where deallocation records
+from a previous test (audit.layers) can leak into the next test and be
+picked up by audit_match_record() instead of the expected record.
 
-Add a buf_len == 0 guard at the loop entry to prevent calling fortified
-strnlen() on an exhausted buffer.
+Fix this by continuing to read records when the type matches but the
+content pattern does not.  Stale records are silently consumed, and the
+loop only stops when both type and pattern match (or the socket times
+out with -EAGAIN).
 
-Found by kernel fuzz testing through Xiaomi Smartphone.
+Additionally, extend matches_log_domain_deallocated() with an
+expected_domain_id parameter.  When set, the regex pattern includes the
+specific domain ID as a literal hex value, so that deallocation records
+for a different domain do not match the pattern at all.  This handles
+the case where the stale record has the same denial count as the
+expected one (e.g. both have denials=1), which the type+pattern loop
+alone cannot distinguish.  Callers that already know the expected domain
+ID (from a prior denial or allocation record) now pass it to filter
+precisely.
 
-Fixes: 8d448162bda5 ("ALSA: control: add support for ENUMERATED user space controls")
+When expected_domain_id is set, matches_log_domain_deallocated() also
+temporarily increases the socket timeout to audit_tv_dom_drop (1 second)
+to wait for the asynchronous kworker deallocation, and restores
+audit_tv_default afterward.  This removes the need for callers to manage
+the timeout switch manually.
+
+Cc: Günther Noack <gnoack@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ziqing Chen <chenziqing@xiaomi.com>
-Link: https://patch.msgid.link/20260414132437.261304-1-chenziqing@xiaomi.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
+Link: https://lore.kernel.org/r/20260402192608.1458252-5-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/control.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/landlock/audit.h      |   84 +++++++++++++++++++-------
+ tools/testing/selftests/landlock/audit_test.c |   34 ++++------
+ 2 files changed, 78 insertions(+), 40 deletions(-)
 
---- a/sound/core/control.c
-+++ b/sound/core/control.c
-@@ -1574,6 +1574,10 @@ static int snd_ctl_elem_init_enum_names(
- 	/* check that there are enough valid names */
- 	p = names;
- 	for (i = 0; i < ue->info.value.enumerated.items; ++i) {
-+		if (buf_len == 0) {
-+			kvfree(names);
-+			return -EINVAL;
+--- a/tools/testing/selftests/landlock/audit.h
++++ b/tools/testing/selftests/landlock/audit.h
+@@ -249,9 +249,9 @@ static __maybe_unused char *regex_escape
+ static int audit_match_record(int audit_fd, const __u16 type,
+ 			      const char *const pattern, __u64 *domain_id)
+ {
+-	struct audit_message msg;
++	struct audit_message msg, last_mismatch = {};
+ 	int ret, err = 0;
+-	bool matches_record = !type;
++	int num_type_match = 0;
+ 	regmatch_t matches[2];
+ 	regex_t regex;
+ 
+@@ -259,21 +259,35 @@ static int audit_match_record(int audit_
+ 	if (ret)
+ 		return -EINVAL;
+ 
+-	do {
++	/*
++	 * Reads records until one matches both the expected type and the
++	 * pattern.  Type-matching records with non-matching content are
++	 * silently consumed, which handles stale domain deallocation records
++	 * from a previous test emitted asynchronously by kworker threads.
++	 */
++	while (true) {
+ 		memset(&msg, 0, sizeof(msg));
+ 		err = audit_recv(audit_fd, &msg);
+-		if (err)
++		if (err) {
++			if (num_type_match) {
++				printf("DATA: %s\n", last_mismatch.data);
++				printf("ERROR: %d record(s) matched type %u"
++				       " but not pattern: %s\n",
++				       num_type_match, type, pattern);
++			}
+ 			goto out;
 +		}
- 		name_len = strnlen(p, buf_len);
- 		if (name_len == 0 || name_len >= 64 || name_len == buf_len) {
- 			kvfree(names);
++
++		if (type && msg.header.nlmsg_type != type)
++			continue;
+ 
+-		if (msg.header.nlmsg_type == type)
+-			matches_record = true;
+-	} while (!matches_record);
+-
+-	ret = regexec(&regex, msg.data, ARRAY_SIZE(matches), matches, 0);
+-	if (ret) {
+-		printf("DATA: %s\n", msg.data);
+-		printf("ERROR: no match for pattern: %s\n", pattern);
+-		err = -ENOENT;
++		ret = regexec(&regex, msg.data, ARRAY_SIZE(matches), matches,
++			      0);
++		if (!ret)
++			break;
++
++		num_type_match++;
++		last_mismatch = msg;
+ 	}
+ 
+ 	if (domain_id) {
+@@ -316,21 +330,49 @@ static int __maybe_unused matches_log_do
+ 				  domain_id);
+ }
+ 
+-static int __maybe_unused matches_log_domain_deallocated(
+-	int audit_fd, unsigned int num_denials, __u64 *domain_id)
++/*
++ * Matches a domain deallocation record.  When expected_domain_id is non-zero,
++ * the pattern includes the specific domain ID so that stale deallocation
++ * records from a previous test (with a different domain ID) are skipped by
++ * audit_match_record(), and the socket timeout is temporarily increased to
++ * audit_tv_dom_drop to wait for the asynchronous kworker deallocation.
++ */
++static int __maybe_unused
++matches_log_domain_deallocated(int audit_fd, unsigned int num_denials,
++			       __u64 expected_domain_id, __u64 *domain_id)
+ {
+ 	static const char log_template[] = REGEX_LANDLOCK_PREFIX
+ 		" status=deallocated denials=%u$";
+-	char log_match[sizeof(log_template) + 10];
+-	int log_match_len;
++	static const char log_template_with_id[] =
++		"^audit([0-9.:]\\+): domain=\\(%llx\\)"
++		" status=deallocated denials=%u$";
++	char log_match[sizeof(log_template_with_id) + 32];
++	int log_match_len, err;
++
++	if (expected_domain_id)
++		log_match_len = snprintf(log_match, sizeof(log_match),
++					 log_template_with_id,
++					 (unsigned long long)expected_domain_id,
++					 num_denials);
++	else
++		log_match_len = snprintf(log_match, sizeof(log_match),
++					 log_template, num_denials);
+ 
+-	log_match_len = snprintf(log_match, sizeof(log_match), log_template,
+-				 num_denials);
+ 	if (log_match_len >= sizeof(log_match))
+ 		return -E2BIG;
+ 
+-	return audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
+-				  domain_id);
++	if (expected_domain_id)
++		setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO,
++			   &audit_tv_dom_drop, sizeof(audit_tv_dom_drop));
++
++	err = audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
++				 domain_id);
++
++	if (expected_domain_id)
++		setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO, &audit_tv_default,
++			   sizeof(audit_tv_default));
++
++	return err;
+ }
+ 
+ struct audit_records {
+--- a/tools/testing/selftests/landlock/audit_test.c
++++ b/tools/testing/selftests/landlock/audit_test.c
+@@ -139,23 +139,24 @@ TEST_F(audit, layers)
+ 	    WEXITSTATUS(status) != EXIT_SUCCESS)
+ 		_metadata->exit_code = KSFT_FAIL;
+ 
+-	/* Purges log from deallocated domains. */
+-	EXPECT_EQ(0, setsockopt(self->audit_fd, SOL_SOCKET, SO_RCVTIMEO,
+-				&audit_tv_dom_drop, sizeof(audit_tv_dom_drop)));
++	/*
++	 * Purges log from deallocated domains.  Records arrive in LIFO order
++	 * (innermost domain first) because landlock_put_hierarchy() walks the
++	 * chain sequentially in a single kworker context.
++	 */
+ 	for (i = ARRAY_SIZE(*domain_stack) - 1; i >= 0; i--) {
+ 		__u64 deallocated_dom = 2;
+ 
+ 		EXPECT_EQ(0, matches_log_domain_deallocated(self->audit_fd, 1,
++							    (*domain_stack)[i],
+ 							    &deallocated_dom));
+ 		EXPECT_EQ((*domain_stack)[i], deallocated_dom)
+ 		{
+ 			TH_LOG("Failed to match domain %llx (#%d)",
+-			       (*domain_stack)[i], i);
++			       (unsigned long long)(*domain_stack)[i], i);
+ 		}
+ 	}
+ 	EXPECT_EQ(0, munmap(domain_stack, sizeof(*domain_stack)));
+-	EXPECT_EQ(0, setsockopt(self->audit_fd, SOL_SOCKET, SO_RCVTIMEO,
+-				&audit_tv_default, sizeof(audit_tv_default)));
+ 	EXPECT_EQ(0, close(ruleset_fd));
+ }
+ 
+@@ -271,13 +272,9 @@ TEST_F(audit, thread)
+ 	EXPECT_EQ(0, close(pipe_parent[1]));
+ 	ASSERT_EQ(0, pthread_join(thread, NULL));
+ 
+-	EXPECT_EQ(0, setsockopt(self->audit_fd, SOL_SOCKET, SO_RCVTIMEO,
+-				&audit_tv_dom_drop, sizeof(audit_tv_dom_drop)));
+-	EXPECT_EQ(0, matches_log_domain_deallocated(self->audit_fd, 1,
+-						    &deallocated_dom));
++	EXPECT_EQ(0, matches_log_domain_deallocated(
++			     self->audit_fd, 1, denial_dom, &deallocated_dom));
+ 	EXPECT_EQ(denial_dom, deallocated_dom);
+-	EXPECT_EQ(0, setsockopt(self->audit_fd, SOL_SOCKET, SO_RCVTIMEO,
+-				&audit_tv_default, sizeof(audit_tv_default)));
+ }
+ 
+ /*
+@@ -753,22 +750,21 @@ TEST_F(audit_flags, signal)
+ 
+ 	if (variant->restrict_flags &
+ 	    LANDLOCK_RESTRICT_SELF_LOG_SAME_EXEC_OFF) {
++		/*
++		 * No deallocation record: denials=0 never matches a real
++		 * record.
++		 */
+ 		EXPECT_EQ(-EAGAIN,
+-			  matches_log_domain_deallocated(self->audit_fd, 0,
++			  matches_log_domain_deallocated(self->audit_fd, 0, 0,
+ 							 &deallocated_dom));
+ 		EXPECT_EQ(deallocated_dom, 2);
+ 	} else {
+-		EXPECT_EQ(0, setsockopt(self->audit_fd, SOL_SOCKET, SO_RCVTIMEO,
+-					&audit_tv_dom_drop,
+-					sizeof(audit_tv_dom_drop)));
+ 		EXPECT_EQ(0, matches_log_domain_deallocated(self->audit_fd, 2,
++							    *self->domain_id,
+ 							    &deallocated_dom));
+ 		EXPECT_NE(deallocated_dom, 2);
+ 		EXPECT_NE(deallocated_dom, 0);
+ 		EXPECT_EQ(deallocated_dom, *self->domain_id);
+-		EXPECT_EQ(0, setsockopt(self->audit_fd, SOL_SOCKET, SO_RCVTIMEO,
+-					&audit_tv_default,
+-					sizeof(audit_tv_default)));
+ 	}
+ }
+ 
 
 
 
