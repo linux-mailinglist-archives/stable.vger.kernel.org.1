@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-243633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJrSFwKt+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:18 +0200
+	id SAO5AKir+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78414BF820
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F180A4BF391
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B7A83045EE0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0CE96301F4DC
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDA935A3AD;
-	Mon,  4 May 2026 14:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACD43D8129;
+	Mon,  4 May 2026 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbatHP+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZGMVVlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CF5315785;
-	Mon,  4 May 2026 14:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6BF35A3AD;
+	Mon,  4 May 2026 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904383; cv=none; b=By1aZmbWW9CkSJtQNiacA9jvT4b3T1fvp5ErECf1sk4l5RE2JiaN7a7A1nu9dpE5X8FU/QgUbdZng8AEKVG3cM6ZB5sw00K/syWR3Se+AIqh3UZfV1fLF/qfcInus3agbZbpbgWUHLe9TVnsZdpFC49pE9soS+wPm6nTr3bJNsA=
+	t=1777903876; cv=none; b=Jf4wOX7wsnyx2lgh8p2ustyISu5yWoDQRrlIzII48nKYMnq7Gt3PjajhMOUOwQtLG9ScOtEEQQdIAJ8cCNgHQ8It/uVKWwsmGL7sdVCHQKWfS+oQ21yIEX/2QLTzJ0h074D+QGusGPu07IwZF9KWdvl5b8VLxlyey7I146VDA90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904383; c=relaxed/simple;
-	bh=zU1jOws7vpwhazwW/zcaTiZoOn+HKRqKZQ6pWN8GtS4=;
+	s=arc-20240116; t=1777903876; c=relaxed/simple;
+	bh=isTnf/BsiYdD5n36GgicDAa6eNIuWSUTdxWQQyA+6SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2Qd46216bg7i1+hnjrE87WQYLj9rVrMs2eKHYXl36BFd2zSYuAf8SXGMNZudce55wwle+bqm2aZdHCZeMCj91UEFy4nPMEEXJPRlpfV3lt8q66wwiTsmSm35i96w5oDuBO8wgHFO6E9NDx5FhDc7k1XmmgqgpajQNWQXkFxu4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbatHP+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6BAC2BCF4;
-	Mon,  4 May 2026 14:19:42 +0000 (UTC)
+	 MIME-Version; b=IF4Yxu8pLx9qEHp25yzwLwB0BC1/DbOvaKPBtG2TL5r2IYntERoimhOQy2+5POmAsaVIsnFN5JlvIU5VGc44WYx2bCscGMDWZVHD3CVO6vIf82WVioUsgwXc9oEaq3mYN3Ehf+bChof8cXAX3IQtE2za3pkbXDx4ZvEtNh289+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZGMVVlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325B0C2BCB8;
+	Mon,  4 May 2026 14:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904383;
-	bh=zU1jOws7vpwhazwW/zcaTiZoOn+HKRqKZQ6pWN8GtS4=;
+	s=korg; t=1777903876;
+	bh=isTnf/BsiYdD5n36GgicDAa6eNIuWSUTdxWQQyA+6SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbatHP+OqjeYh9x+srUmvjpfwUu4DOR/hTk13n+ciVKk5X3/OQ2q1eu9QMPJgJo4z
-	 wdPhRI9Ey0/EeNvwWWKZ/cFV9CIIuYJsx2+pKjxhxhROnexuUsLA4blWg4fhyyS1vV
-	 iLrJly4EEO+tcQcg3iWqV4M2IwtoDS3wC8FZV9Sg=
+	b=hZGMVVlzfIwBIQ1ISrnO3neSAG06Bx4Vif0Qqsl47wMG/+Hx5OqL1iviisSklYunk
+	 W757Alzi8uuVT904oOeIvxBZv/foXSCSLE3W/4foL2jvBMnUC/YYTPgjD/m5x8Brt4
+	 5artAvT43f2m54nXafmGzl9xPU4CJZeBySgdwA/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 018/215] kbuild: rust: allow `clippy::uninlined_format_args`
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Longxuan Yu <ylong030@ucr.edu>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 097/275] io_uring/poll: fix signed comparison in io_poll_get_ownership()
 Date: Mon,  4 May 2026 15:50:37 +0200
-Message-ID: <20260504135130.840131480@linuxfoundation.org>
+Message-ID: <20260504135146.522617945@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +70,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C78414BF820
+X-Rspamd-Queue-Id: F180A4BF391
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243633-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-243435-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,ucr.edu,kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,rust-lang.github.io:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,ucr.edu:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,kernel.dk:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Longxuan Yu <ylong030@ucr.edu>
 
-commit 10eea3c147141c90cf409b8df56d245c9d7f88d9 upstream.
+commit 326941b22806cbf2df1fbfe902b7908b368cce42 upstream.
 
-Clippy in Rust 1.88.0 (only) reports [1]:
+io_poll_get_ownership() uses a signed comparison to check whether
+poll_refs has reached the threshold for the slowpath:
 
-    warning: variables can be used directly in the `format!` string
-       --> rust/macros/module.rs:112:23
-        |
-    112 |         let content = format!("{param}:{content}", param = param, content = content);
-        |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-        = note: `-W clippy::uninlined-format-args` implied by `-W clippy::all`
-        = help: to override `-W clippy::all` add `#[allow(clippy::uninlined_format_args)]`
-    help: change this to
-        |
-    112 -         let content = format!("{param}:{content}", param = param, content = content);
-    112 +         let content = format!("{param}:{content}");
+    if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
 
-    warning: variables can be used directly in the `format!` string
-       --> rust/macros/module.rs:198:14
-        |
-    198 |         t => panic!("Unsupported parameter type {}", t),
-        |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-        = note: `-W clippy::uninlined-format-args` implied by `-W clippy::all`
-        = help: to override `-W clippy::all` add `#[allow(clippy::uninlined_format_args)]`
-    help: change this to
-        |
-    198 -         t => panic!("Unsupported parameter type {}", t),
-    198 +         t => panic!("Unsupported parameter type {t}"),
-        |
+atomic_read() returns int (signed). When IO_POLL_CANCEL_FLAG
+(BIT(31)) is set in poll_refs, the value becomes negative in
+signed arithmetic, so the >= 128 comparison always evaluates to
+false and the slowpath is never taken.
 
-The reason it only triggers in that version is that the lint was moved
-from `pedantic` to `style` in Rust 1.88.0 and then back to `pedantic`
-in Rust 1.89.0 [2][3].
+Fix this by casting the atomic_read() result to unsigned int
+before the comparison, so that the cancel flag is treated as a
+large positive value and correctly triggers the slowpath.
 
-In the first case, the suggestion is fair and a pure simplification, thus
-we will clean it up separately.
-
-To keep the behavior the same across all versions, and since the lint
-does not work for all macros (e.g. custom ones like `pr_info!`), disable
-it globally.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://lore.kernel.org/rust-for-linux/CANiq72=drAtf3y_DZ-2o4jb6Az9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com/ [1]
-Link: https://github.com/rust-lang/rust-clippy/pull/15287 [2]
-Link: https://github.com/rust-lang/rust-clippy/issues/15151 [3]
-Link: https://patch.msgid.link/20260331205849.498295-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: a26a35e9019f ("io_uring: make poll refs more robust")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://patch.msgid.link/3a3508b08bcd7f1bc3beff848ae6e1d73d355043.1775965597.git.ylong030@ucr.edu
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ io_uring/poll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -459,6 +459,7 @@ export rust_common_flags := --edition=20
- 			    -Aclippy::needless_lifetimes \
- 			    -Wclippy::no_mangle_with_rust_abi \
- 			    -Wclippy::undocumented_unsafe_blocks \
-+			    -Aclippy::uninlined_format_args \
- 			    -Wclippy::unnecessary_safety_comment \
- 			    -Wclippy::unnecessary_safety_doc \
- 			    -Wrustdoc::missing_crate_level_docs \
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -93,7 +93,7 @@ static bool io_poll_get_ownership_slowpa
+  */
+ static inline bool io_poll_get_ownership(struct io_kiocb *req)
+ {
+-	if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
++	if (unlikely((unsigned int)atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
+ 		return io_poll_get_ownership_slowpath(req);
+ 	return !(atomic_fetch_inc(&req->poll_refs) & IO_POLL_REF_MASK);
+ }
 
 
 
