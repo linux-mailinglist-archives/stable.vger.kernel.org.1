@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAYfGyGp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:45 +0200
+	id 0HzQI5Kr+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE544BEBE1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C994BF353
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4516A3062C2D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C6F63037BEE
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405A83D904D;
-	Mon,  4 May 2026 14:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DC13DEAC0;
+	Mon,  4 May 2026 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+9BIqDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5+/Asnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0417437881B;
-	Mon,  4 May 2026 14:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF5A29E116;
+	Mon,  4 May 2026 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903370; cv=none; b=ssQnl8tvtYXsHoFUMbVOJukuLmHS9h7lpaGCci5BwsqaGGt8+r/huS2eECqp3KLifwPX4acaLqlAoKHRnv4AtuH9S34cOKD4dPaYdQv37G8nxszefHfWMSqnnFHxW0EgjQu4W+5mOn1f4Ii5uG+HdtlXzyTy5N3Mi+/cazIatwc=
+	t=1777904442; cv=none; b=QI8eXZdLtCQJ5PlLu0Tt8alvhqEwKGWQoiEkxS2eOEXp2IemLagOizBWEr8GsnpxI+xX4RHH6c2VXTV8x9biFdEBGl4bdjYDo+LI/PXK9/xlgmxWYNm6JJKsJkBSxj/aTUD5B3qtEUsb2EKSN2G0SBnvI3H55xwIpfFTPqMcGno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903370; c=relaxed/simple;
-	bh=m6MGNC2gm34X2/9er+i5vAFENiEa9soBgDf0yyjBPYQ=;
+	s=arc-20240116; t=1777904442; c=relaxed/simple;
+	bh=zm3ZHPVTAHWJLoJbDGMVCtOWrZbIH7tF+Q4Q3iYl12s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhSy7s3qzHbKT9xmb1pFC6YzjneMg79uJTm8VTO96LGfVrzpwi76khjwS6NVKLSW+zugWXCLBMYCPIB/QIZWLQ0+IqjbrA1Rm5ZLyUX0Dei6eCymAbfxwz/vXP3q6PAfPo2MPQTXsSlnsQhCJGwxswyPQIR/Lm7zZuPk/MqxIDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+9BIqDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB21C2BCB8;
-	Mon,  4 May 2026 14:02:49 +0000 (UTC)
+	 MIME-Version; b=FWX9w1/LBFEOmM5jss7NJpx9+3uLDixBRlsQIFzJAyGAU0/FSPfaorEXnbTTPSDUBbBNUx8E9DX2BUyNx2fo4B8qJFn1og35gnAim77A89DpSPGDEHunc7As0AwV0jBlWbK4bHM9AjCVk+7wKgcnIHf+Ik3Ke/BOvziOSAVdGy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5+/Asnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DCFC2BCB8;
+	Mon,  4 May 2026 14:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903369;
-	bh=m6MGNC2gm34X2/9er+i5vAFENiEa9soBgDf0yyjBPYQ=;
+	s=korg; t=1777904442;
+	bh=zm3ZHPVTAHWJLoJbDGMVCtOWrZbIH7tF+Q4Q3iYl12s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+9BIqDRuRKN2tKA4k7i0COIGRQiVhGFyzfMlLa+JjPAx2lAVuCT+v1SwVhZBh359
-	 ycxqGltpeQDNq3WhAPUNHHk+3TMUVN4NRc0fmje9qwWM9UYgltc6eTt1BHuFYK0Ilv
-	 pH6tfa7OeTrpmYJhojgzdSneiv3jNDlwIo3JlQo4=
+	b=v5+/AsnfsQ92GZ+HuJeNi0ng+1ufml3q9qSFjlaWcj7XoHje3fJa2UZT3Ab/xsqZj
+	 Eyzy7SUkSXk0OoRMCNUgklYNTgkE/UqKFx7pvTcc+xa9xqQcVOU5M3aYTkLLkNs+BG
+	 TBc/55L8LcAyckYH3JhCBdEvf02x5EfRg97r+fbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 7.0 175/307] arm64: dts: ti: am62-verdin: Enable pullup for eMMC data pins
+	Ziqing Chen <chenziqing@xiaomi.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 041/215] ALSA: control: Validate buf_len before strnlen() in snd_ctl_elem_init_enum_names()
 Date: Mon,  4 May 2026 15:51:00 +0200
-Message-ID: <20260504135149.449787730@linuxfoundation.org>
+Message-ID: <20260504135131.682571255@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1CE544BEBE1
+X-Rspamd-Queue-Id: 24C994BF353
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243237-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243656-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,65 +91,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ti.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,xiaomi.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Ziqing Chen <chenziqing@xiaomi.com>
 
-commit d5325810814ee995debfa0b6c4a22e0391598bef upstream.
+commit e0da8a8cac74f4b9f577979d131f0d2b88a84487 upstream.
 
-Verdin AM62 board does not have external pullups on eMMC DAT1-DAT7 pins.
-Enable internal pullups on DAT1-DAT7 considering:
+snd_ctl_elem_init_enum_names() advances pointer p through the names
+buffer while decrementing buf_len. If buf_len reaches zero but items
+remain, the next iteration calls strnlen(p, 0).
 
- - without a host-side pullup, these lines rely solely on the eMMC
-   device's internal pullup (R_int, 10kohm-150kohm per JEDEC), which may
-   exceed the recommended 50kohm max for 1.8V VCCQ
- - JEDEC JESD84-B51 Table 200 requires host-side pullups (R_DAT,
-   10kohm-100kohm) on all data lines to prevent bus floating
+While strnlen(p, 0) returns 0 and would hit the existing name_len == 0
+error path, CONFIG_FORTIFY_SOURCE's fortified strnlen() first checks
+maxlen against __builtin_dynamic_object_size(). When Clang loses track
+of p's object size inside the loop, this triggers a BRK exception panic
+before the return value is examined.
 
-Fixes: 316b80246b16 ("arm64: dts: ti: add verdin am62")
+Add a buf_len == 0 guard at the loop entry to prevent calling fortified
+strnlen() on an exhausted buffer.
+
+Found by kernel fuzz testing through Xiaomi Smartphone.
+
+Fixes: 8d448162bda5 ("ALSA: control: add support for ENUMERATED user space controls")
 Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://patch.msgid.link/20260320073032.10427-1-francesco@dolcini.it
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Ziqing Chen <chenziqing@xiaomi.com>
+Link: https://patch.msgid.link/20260414132437.261304-1-chenziqing@xiaomi.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ sound/core/control.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-@@ -572,16 +572,16 @@
- 	/* On-module eMMC */
- 	pinctrl_sdhci0: main-mmc0-default-pins {
- 		pinctrl-single,pins = <
--			AM62X_IOPAD(0x220, PIN_INPUT, 0) /*  (Y3) MMC0_CMD  */
--			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1) MMC0_CLK  */
--			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2) MMC0_DAT0 */
--			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (AA1) MMC0_DAT1 */
--			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (AA3) MMC0_DAT2 */
--			AM62X_IOPAD(0x208, PIN_INPUT, 0) /*  (Y4) MMC0_DAT3 */
--			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (AB2) MMC0_DAT4 */
--			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (AC1) MMC0_DAT5 */
--			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (AD2) MMC0_DAT6 */
--			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (AC2) MMC0_DAT7 */
-+			AM62X_IOPAD(0x220, PIN_INPUT,        0) /*  (Y3) MMC0_CMD  */
-+			AM62X_IOPAD(0x218, PIN_INPUT,        0) /* (AB1) MMC0_CLK  */
-+			AM62X_IOPAD(0x214, PIN_INPUT,        0) /* (AA2) MMC0_DAT0 */
-+			AM62X_IOPAD(0x210, PIN_INPUT_PULLUP, 0) /* (AA1) MMC0_DAT1 */
-+			AM62X_IOPAD(0x20c, PIN_INPUT_PULLUP, 0) /* (AA3) MMC0_DAT2 */
-+			AM62X_IOPAD(0x208, PIN_INPUT_PULLUP, 0) /*  (Y4) MMC0_DAT3 */
-+			AM62X_IOPAD(0x204, PIN_INPUT_PULLUP, 0) /* (AB2) MMC0_DAT4 */
-+			AM62X_IOPAD(0x200, PIN_INPUT_PULLUP, 0) /* (AC1) MMC0_DAT5 */
-+			AM62X_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (AD2) MMC0_DAT6 */
-+			AM62X_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (AC2) MMC0_DAT7 */
- 		>;
- 	};
- 
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1574,6 +1574,10 @@ static int snd_ctl_elem_init_enum_names(
+ 	/* check that there are enough valid names */
+ 	p = names;
+ 	for (i = 0; i < ue->info.value.enumerated.items; ++i) {
++		if (buf_len == 0) {
++			kvfree(names);
++			return -EINVAL;
++		}
+ 		name_len = strnlen(p, buf_len);
+ 		if (name_len == 0 || name_len >= 64 || name_len == buf_len) {
+ 			kvfree(names);
 
 
 
