@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EL3+EDWs+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:53 +0200
+	id wIRNOx+o+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D9F4BF521
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A384BE8D0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BCED309B173
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8423D303D70B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA1E40DFD4;
-	Mon,  4 May 2026 14:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6B23DE42F;
+	Mon,  4 May 2026 13:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kur4b9td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kp2Ru+vM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1471ADC83;
-	Mon,  4 May 2026 14:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC6D3DDDDA;
+	Mon,  4 May 2026 13:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903753; cv=none; b=umE0xP0AA30vpHmo98osKZHvIR05Njr3MxEu+7ozZVdTQ/cPIrje7Ko9zc68MjvZLVj0kCTbHi6wY8dtqInwOIhrIt5a77sMGf2gDlLpN4o27Q7o/ddfsTkIZ+TqEgtcB853TJVaFfXxIzba/RExtidYbs3qrJY382vkuK+eKNI=
+	t=1777903180; cv=none; b=qT28jlkvEoyk4aLD6E3/Hl2bUCR07PHEhwkTye2V1K45YP+SflZN0DuSmRZBmqLQtOD0LlceqPJxeM774KStCjB2BrVmQTOSFwhyz/7d3NgcSQg5Zk6Doe8luuxgKIf/UCsA5SjL2RF6/keNP4h/AU+UMvAq7GcAtBszRFKLlPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903753; c=relaxed/simple;
-	bh=qweiCAOkq/zMFkEXU5VcmYQUzBELs3mdGW3ZuXpQaSE=;
+	s=arc-20240116; t=1777903180; c=relaxed/simple;
+	bh=JK4slfr9CgWK5baufDJET563mICcSabfdIPQy5tT0rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=od9g3nwQkZNIqk9hGbuFR/vQ636SSQY+D0hskRctzFWPm59us53ESvJF5kaJH7UrSTjSdIMkItUcQ1Kp53f1uYq/6yCn5F/EUw8Fj37rSU6pkgeBxbAajhT6GGlAV66TgWY3tVgLDpU3k4MRWOtXl7CzSomPw/wmTLNT3vSQKK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kur4b9td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FC7C2BCB8;
-	Mon,  4 May 2026 14:09:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NayaK7OpiOE6nwDy+zbAgEmaFZs52BTxCyjTsz8DKK0e72TY6ugr5W1kO7Sw8GYh/dRyIWRJ47CsAaiTVNeVshWH8f7AdEJjAPZVtRlkDjeO5dwXyKw0PL9nNouETugtaESjmJl6RUmBsoh9Dp6ktJXqB7j8UhIxYwrxPwMszZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kp2Ru+vM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BDDC2BCB8;
+	Mon,  4 May 2026 13:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903752;
-	bh=qweiCAOkq/zMFkEXU5VcmYQUzBELs3mdGW3ZuXpQaSE=;
+	s=korg; t=1777903179;
+	bh=JK4slfr9CgWK5baufDJET563mICcSabfdIPQy5tT0rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kur4b9tdax8UgL1DQyYjzBXurNLNWKMz3WtasnaIgWxpHvQaqew2RYJxnS6VFSIkQ
-	 v2vsnLept84ldSoR0Luqq1fokj+CzjMLxZiyS87u9RAHQegA3dHqH2wus82Uh4M9Ld
-	 7EUjtP3tAtmxseaDQC4QjQA+LN5WbWPjEBum1tlo=
+	b=Kp2Ru+vMMr1XJvwxFKPbt1Al7ZuyK5VD/C3+ZMGSXEGDhII0sxFMs1fc1m2ufpaRR
+	 JJ5aYb8xQA4We745b5yc1TeEAaflnmK5l27wvK2uxa/3kkL81oUX/QN9sePgL4clXg
+	 bp41HuI5OMR2taBxZu8giD888tm0jneYZAs3Lq1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 047/275] media: amphion: Fix race between m2m job_abort and device_run
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 7.0 102/307] selftests/landlock: Fix snprintf truncation checks in audit helpers
 Date: Mon,  4 May 2026 15:49:47 +0200
-Message-ID: <20260504135144.687355951@linuxfoundation.org>
+Message-ID: <20260504135146.649630049@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A3D9F4BF521
+X-Rspamd-Queue-Id: 68A384BE8D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243387-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243164-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,digikod.net];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,collabora.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,digikod.net:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit 8cd35ceadcfc8c5da2eb7f7ce24525ce9d4ee62e upstream.
+commit b566f7a4f0e4f15f78f2e5fac273fa954991e03a upstream.
 
-Fix kernel panic caused by race condition where v4l2_m2m_ctx_release()
-frees m2m_ctx while v4l2_m2m_try_run() is about to call device_run
-with the same context.
+snprintf() returns the number of characters that would have been
+written, excluding the terminating NUL byte.  When the output is
+truncated, this return value equals or exceeds the buffer size.  Fix
+matches_log_domain_allocated() and matches_log_domain_deallocated() to
+detect truncation with ">=" instead of ">".
 
-Race sequence:
-  v4l2_m2m_try_run():           v4l2_m2m_ctx_release():
-    lock/unlock                   v4l2_m2m_cancel_job()
-                                    job_abort()
-                                      v4l2_m2m_job_finish()
-                                  kfree(m2m_ctx)  <- frees ctx
-    device_run()  <- use-after-free crash at 0x538
-
-Crash trace:
-  Unable to handle kernel read from unreadable memory at virtual address
-  0000000000000538
-  v4l2_m2m_try_run+0x78/0x138
-  v4l2_m2m_device_run_work+0x14/0x20
-
-The amphion vpu driver does not rely on the m2m framework's device_run
-callback to perform encode/decode operations.
-
-Fix the race by preventing m2m framework job scheduling entirely:
-- Add job_ready callback returning 0 (no jobs ready for m2m framework)
-- Remove job_abort callback to avoid the race condition
-
-Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Cc: Günther Noack <gnoack@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20260402192608.1458252-2-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/amphion/vpu_v4l2.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ tools/testing/selftests/landlock/audit.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -448,17 +448,14 @@ static void vpu_m2m_device_run(void *pri
- {
- }
+--- a/tools/testing/selftests/landlock/audit.h
++++ b/tools/testing/selftests/landlock/audit.h
+@@ -309,7 +309,7 @@ static int __maybe_unused matches_log_do
  
--static void vpu_m2m_job_abort(void *priv)
-+static int vpu_m2m_job_ready(void *priv)
- {
--	struct vpu_inst *inst = priv;
--	struct v4l2_m2m_ctx *m2m_ctx = inst->fh.m2m_ctx;
--
--	v4l2_m2m_job_finish(m2m_ctx->m2m_dev, m2m_ctx);
-+	return 0;
- }
+ 	log_match_len =
+ 		snprintf(log_match, sizeof(log_match), log_template, pid);
+-	if (log_match_len > sizeof(log_match))
++	if (log_match_len >= sizeof(log_match))
+ 		return -E2BIG;
  
- static const struct v4l2_m2m_ops vpu_m2m_ops = {
- 	.device_run = vpu_m2m_device_run,
--	.job_abort = vpu_m2m_job_abort
-+	.job_ready = vpu_m2m_job_ready,
- };
+ 	return audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
+@@ -326,7 +326,7 @@ static int __maybe_unused matches_log_do
  
- static int vpu_vb2_queue_setup(struct vb2_queue *vq,
+ 	log_match_len = snprintf(log_match, sizeof(log_match), log_template,
+ 				 num_denials);
+-	if (log_match_len > sizeof(log_match))
++	if (log_match_len >= sizeof(log_match))
+ 		return -E2BIG;
+ 
+ 	return audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
 
 
 
