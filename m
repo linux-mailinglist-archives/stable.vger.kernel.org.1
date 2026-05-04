@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-243009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBEuLoqN+GkVwgIAu9opvQ
-	(envelope-from <stable+bounces-243009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:14:02 +0200
+	id SDKoBYKN+GkVwgIAu9opvQ
+	(envelope-from <stable+bounces-243010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:13:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3094BCC9D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:14:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF894BCC7D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 473C3301C12F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:13:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 08DDB300826E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3C43CF049;
-	Mon,  4 May 2026 12:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9A13CF675;
+	Mon,  4 May 2026 12:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZ8N5eNT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3WLX3l0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36F23CEBBA
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B06E3CF054
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777896822; cv=none; b=RhKH0mY2EL2kZ5IvWPCB8Msl71+15wV9rwADvrtNFIdWQQI9J12B12xC4asIVmS+6oE/ZydwyJmnckQiqdZjExKnLH4t6DMK+SvmEoHGeLV7Mzq6Y+E3M4c9pG37ukSzBcWJylG+XYfBy3GDlV0lKmTZlZfcS0YMtkc1uR5a8e8=
+	t=1777896823; cv=none; b=sE0V/yxBU2hnZnGqEE8e3vYbLI87OIMeM/9WEVqyqm8h923rGYj4smK2Pq+/4kwIJDHWOgpmV04Kuu8OXp1YfRgMCnjfn/Y41klTmqfbE8u3rmVYNqHC4Jdr8zXhb5A7adEyB+npj93T5AP0yFR4csuGgNJvBWLUjzAabADMnlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777896822; c=relaxed/simple;
-	bh=Egdo5vrSXhRUuwvCP13xWBmy+e12kq8TwbonylRp/1I=;
+	s=arc-20240116; t=1777896823; c=relaxed/simple;
+	bh=XNNpH1F5wvOWEqcIvtiZ7uYlDMRnhSh/liAy8ctj5SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Obu3sCI0mKcGo5EdHZmLuqrQGh7UKCPIIIy+Oy6qnqlwXo/UMi6M3obF+tl6bc+rY7cs+BSE5pCLUMS7L7w4mI3MtvwbsyKpO3ouVIpC7qzNssVMKKtOD1yRLclk88cd6ZqznxV3NUs7tErfaGCuHwc9s4cbPSUu9bjWiVvHdw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZ8N5eNT; arc=none smtp.client-ip=74.125.224.50
+	 MIME-Version; b=CN3TelmDf5GWAEnsgrdFQ7MZggv05JEkHvbUVyl0urCNJphPq43v8GZTn2Z+Zm5YU1gmvydJGBHiIsdZeO/Qny2QGv0Zg92fKVeP7KCYX+YTC6oFifL3S74RFliA705yqwHI1gcwhFet9t9NGcK3ASXXIJYoWIiKuGg1bXd29Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D3WLX3l0; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-651bc8f864fso2615417d50.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 05:13:40 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-79a535e7c00so45102437b3.3
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 05:13:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777896820; x=1778501620; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777896821; x=1778501621; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/70r6IqZMUzMPLl+F4JoQGxVMmdN9u1Qh2Ykml3WfQY=;
-        b=ZZ8N5eNTxmG2M6cMkJCHmZjJxcbyazwHJ2F9x7BD4h6bBXjSwvzVOCbpdG8Kv35uhF
-         U4Ci5jjKTwgozMmkZEPA+mBmaTvCXzqrMjIRi4fTjsSSizkcM8ys9D3afpkV1t0L+WbV
-         a9yJXmbkHAMJScUtamenb6tH3rW7UzKrTno6zB7Ya50zTEtF/HTpUoZ2nXlOzt6NKzFG
-         45wpnJH5mVgGyT0+G+94bpjXk6YRudke0RnnZKNheiE1+nTP+tVDPqI+0ni/+gGA3KfM
-         sL7GKxArHVVfsuPWKEnOJrt1wdT5xgIyIFrdOEjK+rbDO51DTY9t1tC/3YNx9Ipv7ewq
-         z16Q==
+        bh=XM5dGgpkjSsxJQtB3BR2yd0n4llyOuuMJ1LAIAlQ75o=;
+        b=D3WLX3l0AXcCNKZlUurWw4ZDO6UmsrO3V+pAw+JcDjPiDgH1mfO1eKnP278z4z9Utm
+         GTfenXEI86lMRF0ZNNcZ+Fzo1v8jRqpnYsYUSOykZYfGjCSEDtk0SeYUvLHFdQJEfkRB
+         joK04IpR055SgY+vgSeiauf9YgunWmaN0BCXOJo7fh26tApJK04oiE2j0JubBaSnhGmr
+         VFI7D6QFr60XDJ2prFxPTQfr2Ap1Q4NG9xpwK4pCUIZp5Mug6WIdhTvKeRUJaJZu28G8
+         EpjiJZx/xnf72aml5K1h8e4c54Hb/Zi+nY6DMM//Er0u+Q46Y0DuIuPqCjuAwhNo/qqk
+         /sfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777896820; x=1778501620;
+        d=1e100.net; s=20251104; t=1777896821; x=1778501621;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/70r6IqZMUzMPLl+F4JoQGxVMmdN9u1Qh2Ykml3WfQY=;
-        b=K4/WuPy4kUYUOGiquiMzT2ecNQNiWV0ru1MCl4INJH8tt7S9S/0MDEghu7/cfv/HTc
-         qfHBfJfBnpvriuG+0kLRQz1jHBQvJAW2O/WtXXwrP5aOJmiA9UI5X3aGY//Ebcx4uNyd
-         +64A4aZCKx+6cfYYFAdF3iyaFN8JPUjpb5KhlN/+9yQe6fsNwGxoVgwtaW0vibz0QBs2
-         dP/Ahi6XuG7svLnkWCgMmBSTIAA6evHBsHep4xN306+KjRpeEctOLOVcfkDw+bF8Y0b0
-         2PmtO0nGhZQ8v0p0rqfAVu2gef9XI3xIoU88YmV5UGWdV7krfwVfDIZv+Dhdg7KrKDkf
-         71PQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Fed0D3BDGLHOAhboQ3aSlcuXejs7/HYRBEawO6+kBTT8xi4dM31p85OzTinmj0aktHLWnEYU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8QkuLeEF4F9BT9yZl2ysYLWTx1B17lsEkSpYWYLlOg4N5TH0U
-	fQBkVon96642DeMeGxcerTZdg2Uvqv1BR+CvA5mLeWglWWA5mBCkYlxI
-X-Gm-Gg: AeBDiese0sM4HTVE6Nk0e6rn7ugeDkZcV7rdYihU/UjgJdIr+h+Iv0M36/wWVXnbmVE
-	SGz6liF7G9lLJoJFFCUgilO1hrx3KAHVrZORXkrCbzLoMi9bApY4KJVlGU5Ft8pjaqMM540Wyyl
-	ueQW7MsOAZMHlbSyyOMc3SwE1o+KSV8Igo/NzHdfPknB6DenpUlDrLMyVZIF8VMo2LfcA9oI/g1
-	LfxONJSZeXiX8/uWhtQqXZBz0OMiZBK2HI4YM6FqbhdK4j10djOOqzkm9hyj4u+PB4BTEBS6rpv
-	BfrE1zR/1+mmmpiEn6YJXoFkoVpH5cMiHHYnkQvJRQDvi9tRl2pPamy53M+K600hjfujQY3H4Ke
-	CtPtky1Iywu7p7WyvkOjPAWjUeE2TZLphrl3c2V/Aatr7ltONBaJFJzTJIJkk8gpLJ2enuWKWhL
-	4solqS7cEvcwF2Cfk+YvAP8ZCOA9kc2XzlpGTFmwDO0TLoK8NUL/ztRmKIND65gHirCQ==
-X-Received: by 2002:a05:690c:e3c5:b0:7ba:154:87d1 with SMTP id 00721157ae682-7bd770dbe69mr97087697b3.33.1777896819793;
-        Mon, 04 May 2026 05:13:39 -0700 (PDT)
+        bh=XM5dGgpkjSsxJQtB3BR2yd0n4llyOuuMJ1LAIAlQ75o=;
+        b=ZbQS7QhQUIP4s0nl4ylk4gvNy+Uf2ai0dy2YckLnrNxpOaCtKBp0tOLev9gbQmNoro
+         a9tnQVugYdsvQ8OH0vtzcBhXY8pJu/4hp1RPxU4c5HmhME7zUBV80zPaPjlh604+GfC0
+         xUW0jSgK2QLztVof+Z5QiByZWawqFbrv/0EInvNgatXMnB/ynRsPDoUb+NZsu9otkaPb
+         /OSMFrJK4cXfUDaazqFWxUiUZnSJRTd3xv1Q2Vk9lvmM6YOOOcCnW85cPvaUvl0+KgmH
+         38vTNEk3AY149zDpsocaqcfXzURECwIAylJF9ip3vFtAi3YzpuwNRyHvFnvm1qL+MO52
+         ASrw==
+X-Forwarded-Encrypted: i=1; AFNElJ+xqrcQ4VZvGceXkGJBDpnrNWSBcqgixnMN2JIGd5rDpxreqpP9eLf1zMYaoaHpB/iJaoy9ru4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNWRqFSmFbmXPfPiULsO+SHab7e668Jt0Y7hmgpRMy0Q/irCAb
+	T1nDydutr8sa8aGU2Y/yHo9YTTt+85hmoBOjnTOK/RrUVoLRf31YiG5A
+X-Gm-Gg: AeBDiet3HD5BXsvuYY69Dz0zZwCMi5hausE+8EfcJA3JfH6gjDBSsCTIBTRcnaW1xC8
+	cqluCwqVF8WL1qEOMqEvgDGOT1HRF5LScWU3urCSUnU/D+c3HdxfS06ttEGZnMCQkXTzx4rUwSc
+	PaLRG+pKxrOb50ywJLgJqJGXqCDU6Yz3U3y+O9/v6jfhF/XjJgDYES6W6IbW7030+pgQis69ekq
+	HLsUQ6u6GuGYicuvikUvEtdAjO6p6XE4xyLON04eDS1uO3dunsB1lb8nr1W2DFgTBvz96gtuLWx
+	O4Hq48p+kBTiFUJqZxvDmDg/J9hjGwbLJjA93PVXCIMUQVbgk1z2sJ1EO1pth3qj6/Oj4E6SBls
+	wOoDv6zxwR3kHy3JCGcwrMwF5r8EXc84pDP/LvcqxYCGvNE9N7l6Aqw93QPksf79A771J9Kxjsj
+	ihr+NzkOu1aOugJmLa/XID2uWcl2wNsl5w0/4G54GWW+xgHB5zhRyYYUE=
+X-Received: by 2002:a05:690c:a01c:b0:7b8:bc4e:ac3 with SMTP id 00721157ae682-7bd77104b4emr88139017b3.26.1777896821391;
+        Mon, 04 May 2026 05:13:41 -0700 (PDT)
 Received: from ubuntu-linux-2404.ts.net ([186.151.100.108])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd665464ccsm48417937b3.11.2026.05.04.05.13.38
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd665464ccsm48417937b3.11.2026.05.04.05.13.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 05:13:39 -0700 (PDT)
+        Mon, 04 May 2026 05:13:40 -0700 (PDT)
 From: Sebastian Alba Vives <sebasjosue84@gmail.com>
 To: yilun.xu@linux.intel.com,
 	gregkh@linuxfoundation.org
@@ -85,9 +85,9 @@ Cc: linux-fpga@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Sebastian Alba Vives <sebasjosue84@gmail.com>
-Subject: [PATCH v5 2/3] fpga: dfl-afu: validate DMA mapping length in afu_dma_map_region()
-Date: Mon,  4 May 2026 06:13:31 -0600
-Message-ID: <20260504121332.1053563-2-sebasjosue84@gmail.com>
+Subject: [PATCH v5 3/3] fpga: microchip-spi: fix zero header_size OOB read in mpf_ops_parse_header()
+Date: Mon,  4 May 2026 06:13:32 -0600
+Message-ID: <20260504121332.1053563-3-sebasjosue84@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260504121332.1053563-1-sebasjosue84@gmail.com>
 References: <20260504121332.1053563-1-sebasjosue84@gmail.com>
@@ -98,7 +98,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7C3094BCC9D
+X-Rspamd-Queue-Id: EBF894BCC7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -107,13 +107,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,microchip.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-243009-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243010-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -128,50 +128,54 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-afu_ioctl_dma_map() accepts a 64-bit length from userspace via
-DFL_FPGA_PORT_DMA_MAP ioctl without an upper bound check. The value
-is passed to afu_dma_pin_pages() where npages is derived as
-length >> PAGE_SHIFT and passed to pin_user_pages_fast() which takes
-int nr_pages, causing implicit truncation if length is very large.
+mpf_ops_parse_header() reads header_size from the bitstream at
+MPF_HEADER_SIZE_OFFSET (24). When header_size is zero, the expression
+*(buf + header_size - 1) reads one byte before the buffer start.
 
-Validate map.length at the ioctl entry point before calling
-afu_dma_map_region(), rejecting values whose page count exceeds
-INT_MAX.
+Since initial_header_size is set to 71 in mpf_ops, the fpga-mgr core
+guarantees the buffer is always large enough to reach MPF_HEADER_SIZE_OFFSET.
+The only real gap is the zero header_size case, which cannot be resolved
+by providing a larger buffer, so return -EINVAL.
 
+Fixes: 5f8d4a9008307 ("fpga: microchip-spi: add Microchip MPF FPGA manager")
+Cc: stable@vger.kernel.org
 Signed-off-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
 ---
 Changes in v5:
-  - Resubmit as full series with v5 corrections to patches 1/3 and 3/3.
-    No changes to this patch.
+  - Drop the count < MPF_HEADER_SIZE_OFFSET + 1 check. Since
+    initial_header_size = 71 is set in mpf_ops, the fpga-mgr core
+    already guarantees the buffer covers MPF_HEADER_SIZE_OFFSET.
+    Only the zero header_size case remains as a genuine bug.
+    Suggested by Xu Yilun.
 Changes in v4:
-  - Resubmit as full series per maintainer request.
+  - Reduce to two minimal fixes: minimum count check and -EINVAL for
+    zero header_size (superseded by v5).
 Changes in v3:
-  - Move validation to afu_ioctl_dma_map() at the ioctl entry point,
-    before crossing the userspace/kernel boundary, instead of deep in
-    afu_dma_pin_pages(). Suggested by Greg Kroah-Hartman.
+  - Add overflow check for 32-bit in component size loop.
 Changes in v2:
-  - Added cap at INT_MAX in afu_dma_pin_pages() (superseded by v3).
+  - Return -EINVAL for header_size == 0, -EAGAIN in block loop,
+    add count check before MPF_HEADER_SIZE_OFFSET read.
 ---
- drivers/fpga/dfl-afu-main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/fpga/microchip-spi.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/fpga/dfl-afu-main.c b/drivers/fpga/dfl-afu-main.c
-index 3bf8e73..097a97e 100644
---- a/drivers/fpga/dfl-afu-main.c
-+++ b/drivers/fpga/dfl-afu-main.c
-@@ -723,6 +723,9 @@ afu_ioctl_dma_map(struct dfl_feature_dev_data *fdata, void __user *arg)
- 	if (map.argsz < minsz || map.flags)
+diff --git a/drivers/fpga/microchip-spi.c b/drivers/fpga/microchip-spi.c
+index dca1a5d..cc8f6d7 100644
+--- a/drivers/fpga/microchip-spi.c
++++ b/drivers/fpga/microchip-spi.c
+@@ -115,9 +115,6 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
  		return -EINVAL;
+ 	}
  
-+	if (map.length >> PAGE_SHIFT > (u64)INT_MAX)
-+		return -EINVAL;
-+
- 	ret = afu_dma_map_region(fdata, map.user_addr, map.length, &map.iova);
- 	if (ret)
- 		return ret;
+-	if (count < MPF_HEADER_SIZE_OFFSET + 1)
+-		return -EINVAL;
+-
+ 	header_size = *(buf + MPF_HEADER_SIZE_OFFSET);
+ 	if (!header_size)
+ 		return -EINVAL;
 -- 
 2.43.0
 
