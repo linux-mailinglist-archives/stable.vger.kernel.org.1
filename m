@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-242841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uItDFB4x+GlBrQIAu9opvQ
-	(envelope-from <stable+bounces-242841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 07:39:42 +0200
+	id gxdPHxIz+GmsrQIAu9opvQ
+	(envelope-from <stable+bounces-242842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 07:48:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F417A4B895F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 07:39:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C339F4B8AC2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 07:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5421830022F0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 05:39:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC7F6300736F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 05:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C8C23D7C2;
-	Mon,  4 May 2026 05:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911452773C3;
+	Mon,  4 May 2026 05:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FsAXLlp7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVuUCPkM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAF21A6830
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 05:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551601D6195
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 05:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777873179; cv=none; b=RnDchTTOAYxj8y3QrgzqhDbPLHyc+jmQ+Iv63JAG548giKPA1uSbHiS1rC0rW9B50xXTwhnmr5VtRHhfvuL7oEYRXNsa0hj3w30ukVvDQicN6+uQqJPwt/mP4Dq0GJah2ewPq6WqxzfbVQZpPKnLBUl2qN99gxtoIza3V3I7aOs=
+	t=1777873678; cv=none; b=g6H0cCKdUuIpFfbE0fsnYwYzcbTquzxjoMmF6fjA1QSBWk6HVz90VDetqL2WvJPMO1BBxNGv38TC//uVFlYBx54MdgdF0WQNVdtoXuOQrfwSdlGrbll2Fe2hYPzpqVEupSQGRYY+R+teo51EWF9fgd9GAp3VmxJZsLC/NLwOzSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777873179; c=relaxed/simple;
-	bh=id9+iWMpaC3OfLB/KLTKRhoDnXIdrK9EvD7XA2qc4eg=;
+	s=arc-20240116; t=1777873678; c=relaxed/simple;
+	bh=ulSe+//P7AfGb5fY+eeKOwa/LpHXjTeWiUhYvLNHrlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZtZ/CL6QmlTLE9OEiZ8qbgyEZ/tnyVXLiT4lx296K5+2c6iRue442k9UkawdKx2QRDIODhTbqEYk5WeGufxT0XiNGXxQzCi4XMqpBwWa1/aH6cJYeNNaahD56OTY8uDaNogPBj+31nBDx7I5EGvfRX7y5x12sGehmTyHYn9Zc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FsAXLlp7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF59C2BCF4;
-	Mon,  4 May 2026 05:39:37 +0000 (UTC)
+	 MIME-Version; b=mfvo1muT1rZtyWoh+nKIpUadsZE38pcRG1fPczy5nvONbASy1wtpyDo9alhCD+V8xEUGDXuZJUQZU9UqlaZHCj34pbHsgiXNbS9N0/iyKOuRR9CTkkPYK4eqCffwZ7aSWkw2+uc9xZaaGnRvxAFSy9791jOaIriWQIuFT1rYbhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVuUCPkM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28412C2BCB8;
+	Mon,  4 May 2026 05:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777873179;
-	bh=id9+iWMpaC3OfLB/KLTKRhoDnXIdrK9EvD7XA2qc4eg=;
+	s=k20201202; t=1777873678;
+	bh=ulSe+//P7AfGb5fY+eeKOwa/LpHXjTeWiUhYvLNHrlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsAXLlp7AXESa7y6Upm+uTV5pKk7YHttwFxBt2uCzEg0/LVwP7nFZOKDKVITPsBiq
-	 5FoIqMpEa2pwTzXoxS0ojYMFf8sMRl1yeO/Tq5IqWZkoo3QULY6s0vsRcMdgIouHSW
-	 ndy/PfKuPnphWepI16Tqtki9A0hFTZNQg64dScu9ZzwCIUu8Gb3N3h4avVrTrPF6Br
-	 Zd6YJihkLagfsY8nxUSfK37xtY/hrTYKDIxpkwm5VMBGYsPQnFnrtM6MmbbZ/2Ave3
-	 HIfwfO8XASNle1iMW+t7c/q6OANIOmINAB2Efvg9g0TqkpIO9+D8KrJfUAEcufozcy
-	 n2ZvlpLWrDnJA==
+	b=PVuUCPkMdaFq3hn5qDOHlzmkF+qi8Qv5hDqoJ1aBPg82DG85EqbxGue9VBaCQAGQC
+	 EQz/hg8zx5nQ1fqQkIp5KaXjA/gi6zuXdn1ols8G4zln/eWNGn+cy//JNRBAzpOj0Y
+	 UTILl2wdgbPKn1rN5et4gRjYXC95qAlx/4UcYt6CM4pCDWbQ4UPsmri7//ZxficvRy
+	 Pf2QvZO4NYLbE9KWq9TobgkhCDFgp67/a+JOVGAcrhvOb4dMZPWBEuMB+Ie3lZeyfq
+	 SPeNBQ3H4AcozyHuE+EBHyLmzs1Rl+6Kk2VkHN/nqDucl4Uvop6idZc4NTdwT9CS59
+	 bDV6yXRfbXKbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] net: qrtr: ns: Free the node during ctrl_cmd_bye()
-Date: Mon,  4 May 2026 01:39:32 -0400
-Message-ID: <20260504053932.1748829-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] net: qrtr: ns: Change servers radix tree to xarray
+Date: Mon,  4 May 2026 01:47:51 -0400
+Message-ID: <20260504054752.1775840-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260504053932.1748829-1-sashal@kernel.org>
-References: <2026050140-pedicure-recluse-8dc9@gregkh>
- <20260504053932.1748829-1-sashal@kernel.org>
+In-Reply-To: <2026050141-sudden-student-ae9d@gregkh>
+References: <2026050141-sudden-student-ae9d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F417A4B895F
+X-Rspamd-Queue-Id: C339F4B8AC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -71,99 +72,332 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242841-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-242842-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,corigine.com:email,davemloft.net:email,quicinc.com:email]
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-[ Upstream commit 68efba36446a7774ea5b971257ade049272a07ac ]
+[ Upstream commit 608a147a88728f84bbd2efdde3d4984339f1d872 ]
 
-A node sends the BYE packet when it is about to go down. So the nameserver
-should advertise the removal of the node to all remote and local observers
-and free the node finally. But currently, the nameserver doesn't free the
-node memory even after processing the BYE packet. This causes the node
-memory to leak.
+There is a use after free scenario while iterating through the servers
+radix tree despite the ns being a single threaded process. This can
+happen when the radix tree APIs are not synchronized with the
+rcu_read_lock() APIs.
 
-Hence, remove the node from Xarray list and free the node memory during
-both success and failure case of ctrl_cmd_bye().
+Convert the radix tree for servers to xarray to take advantage of the
+built in rcu lock usage provided by xarray.
 
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-3-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chris Lew <quic_clew@quicinc.com>
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 68efba36446a ("net: qrtr: ns: Free the node during ctrl_cmd_bye()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/qrtr/ns.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ net/qrtr/ns.c | 133 +++++++++-----------------------------------------
+ 1 file changed, 24 insertions(+), 109 deletions(-)
 
 diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index e3b16bd0d2081..17291fceb4aeb 100644
+index 1da34d54092be..d900a8d8959e4 100644
 --- a/net/qrtr/ns.c
 +++ b/net/qrtr/ns.c
-@@ -337,7 +337,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
- 	struct qrtr_node *node;
- 	unsigned long index;
- 	struct kvec iv;
--	int ret;
-+	int ret = 0;
+@@ -65,7 +65,7 @@ struct qrtr_server {
  
- 	iv.iov_base = &pkt;
- 	iv.iov_len = sizeof(pkt);
-@@ -352,8 +352,10 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ struct qrtr_node {
+ 	unsigned int id;
+-	struct radix_tree_root servers;
++	struct xarray servers;
+ };
+ 
+ static struct qrtr_node *node_get(unsigned int node_id)
+@@ -82,6 +82,7 @@ static struct qrtr_node *node_get(unsigned int node_id)
+ 		return NULL;
+ 
+ 	node->id = node_id;
++	xa_init(&node->servers);
+ 
+ 	if (radix_tree_insert(&nodes, node_id, node)) {
+ 		kfree(node);
+@@ -192,40 +193,23 @@ static void lookup_notify(struct sockaddr_qrtr *to, struct qrtr_server *srv,
+ 
+ static int announce_servers(struct sockaddr_qrtr *sq)
+ {
+-	struct radix_tree_iter iter;
+ 	struct qrtr_server *srv;
+ 	struct qrtr_node *node;
+-	void __rcu **slot;
++	unsigned long index;
+ 	int ret;
+ 
+ 	node = node_get(qrtr_ns.local_node);
+ 	if (!node)
+ 		return 0;
+ 
+-	rcu_read_lock();
+ 	/* Announce the list of servers registered in this node */
+-	radix_tree_for_each_slot(slot, &node->servers, &iter, 0) {
+-		srv = radix_tree_deref_slot(slot);
+-		if (!srv)
+-			continue;
+-		if (radix_tree_deref_retry(srv)) {
+-			slot = radix_tree_iter_retry(&iter);
+-			continue;
+-		}
+-		slot = radix_tree_iter_resume(slot, &iter);
+-		rcu_read_unlock();
+-
++	xa_for_each(&node->servers, index, srv) {
+ 		ret = service_announce_new(sq, srv);
+ 		if (ret < 0) {
+ 			pr_err("failed to announce new service\n");
+ 			return ret;
+ 		}
+-
+-		rcu_read_lock();
+ 	}
+-
+-	rcu_read_unlock();
+-
+ 	return 0;
+ }
+ 
+@@ -255,14 +239,17 @@ static struct qrtr_server *server_add(unsigned int service,
+ 		goto err;
+ 
+ 	/* Delete the old server on the same port */
+-	old = radix_tree_lookup(&node->servers, port);
++	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
+ 	if (old) {
+-		radix_tree_delete(&node->servers, port);
+-		kfree(old);
++		if (xa_is_err(old)) {
++			pr_err("failed to add server [0x%x:0x%x] ret:%d\n",
++			       srv->service, srv->instance, xa_err(old));
++			goto err;
++		} else {
++			kfree(old);
++		}
+ 	}
+ 
+-	radix_tree_insert(&node->servers, port, srv);
+-
+ 	trace_qrtr_ns_server_add(srv->service, srv->instance,
+ 				 srv->node, srv->port);
+ 
+@@ -279,11 +266,11 @@ static int server_del(struct qrtr_node *node, unsigned int port, bool bcast)
+ 	struct qrtr_server *srv;
+ 	struct list_head *li;
+ 
+-	srv = radix_tree_lookup(&node->servers, port);
++	srv = xa_load(&node->servers, port);
+ 	if (!srv)
+ 		return -ENOENT;
+ 
+-	radix_tree_delete(&node->servers, port);
++	xa_erase(&node->servers, port);
+ 
+ 	/* Broadcast the removal of local servers */
+ 	if (srv->node == qrtr_ns.local_node && bcast)
+@@ -343,13 +330,12 @@ static int ctrl_cmd_hello(struct sockaddr_qrtr *sq)
+ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ {
+ 	struct qrtr_node *local_node;
+-	struct radix_tree_iter iter;
+ 	struct qrtr_ctrl_pkt pkt;
+ 	struct qrtr_server *srv;
+ 	struct sockaddr_qrtr sq;
+ 	struct msghdr msg = { };
+ 	struct qrtr_node *node;
+-	void __rcu **slot;
++	unsigned long index;
+ 	struct kvec iv;
+ 	int ret;
+ 
+@@ -360,22 +346,9 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ 	if (!node)
+ 		return 0;
+ 
+-	rcu_read_lock();
+ 	/* Advertise removal of this client to all servers of remote node */
+-	radix_tree_for_each_slot(slot, &node->servers, &iter, 0) {
+-		srv = radix_tree_deref_slot(slot);
+-		if (!srv)
+-			continue;
+-		if (radix_tree_deref_retry(srv)) {
+-			slot = radix_tree_iter_retry(&iter);
+-			continue;
+-		}
+-		slot = radix_tree_iter_resume(slot, &iter);
+-		rcu_read_unlock();
++	xa_for_each(&node->servers, index, srv)
+ 		server_del(node, srv->port, true);
+-		rcu_read_lock();
+-	}
+-	rcu_read_unlock();
  
  	/* Advertise the removal of this client to all local servers */
  	local_node = node_get(qrtr_ns.local_node);
--	if (!local_node)
--		return 0;
-+	if (!local_node) {
-+		ret = 0;
-+		goto delete_node;
-+	}
- 
- 	memset(&pkt, 0, sizeof(pkt));
+@@ -386,18 +359,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
  	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
-@@ -370,10 +372,18 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
- 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
- 		if (ret < 0) {
+ 	pkt.client.node = cpu_to_le32(from->sq_node);
+ 
+-	rcu_read_lock();
+-	radix_tree_for_each_slot(slot, &local_node->servers, &iter, 0) {
+-		srv = radix_tree_deref_slot(slot);
+-		if (!srv)
+-			continue;
+-		if (radix_tree_deref_retry(srv)) {
+-			slot = radix_tree_iter_retry(&iter);
+-			continue;
+-		}
+-		slot = radix_tree_iter_resume(slot, &iter);
+-		rcu_read_unlock();
+-
++	xa_for_each(&local_node->servers, index, srv) {
+ 		sq.sq_family = AF_QIPCRTR;
+ 		sq.sq_node = srv->node;
+ 		sq.sq_port = srv->port;
+@@ -410,11 +372,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
  			pr_err("failed to send bye cmd\n");
--			return ret;
-+			goto delete_node;
+ 			return ret;
  		}
+-		rcu_read_lock();
  	}
--	return 0;
-+
-+	/* Ignore -ENODEV */
-+	ret = 0;
-+
-+delete_node:
-+	xa_erase(&nodes, from->sq_node);
-+	kfree(node);
-+
-+	return ret;
+-
+-	rcu_read_unlock();
+-
+ 	return 0;
  }
  
- static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+@@ -422,7 +380,6 @@ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+ 			       unsigned int node_id, unsigned int port)
+ {
+ 	struct qrtr_node *local_node;
+-	struct radix_tree_iter iter;
+ 	struct qrtr_lookup *lookup;
+ 	struct qrtr_ctrl_pkt pkt;
+ 	struct msghdr msg = { };
+@@ -431,7 +388,7 @@ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+ 	struct qrtr_node *node;
+ 	struct list_head *tmp;
+ 	struct list_head *li;
+-	void __rcu **slot;
++	unsigned long index;
+ 	struct kvec iv;
+ 	int ret;
+ 
+@@ -476,18 +433,7 @@ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+ 	pkt.client.node = cpu_to_le32(node_id);
+ 	pkt.client.port = cpu_to_le32(port);
+ 
+-	rcu_read_lock();
+-	radix_tree_for_each_slot(slot, &local_node->servers, &iter, 0) {
+-		srv = radix_tree_deref_slot(slot);
+-		if (!srv)
+-			continue;
+-		if (radix_tree_deref_retry(srv)) {
+-			slot = radix_tree_iter_retry(&iter);
+-			continue;
+-		}
+-		slot = radix_tree_iter_resume(slot, &iter);
+-		rcu_read_unlock();
+-
++	xa_for_each(&local_node->servers, index, srv) {
+ 		sq.sq_family = AF_QIPCRTR;
+ 		sq.sq_node = srv->node;
+ 		sq.sq_port = srv->port;
+@@ -500,11 +446,7 @@ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+ 			pr_err("failed to send del client cmd\n");
+ 			return ret;
+ 		}
+-		rcu_read_lock();
+ 	}
+-
+-	rcu_read_unlock();
+-
+ 	return 0;
+ }
+ 
+@@ -585,13 +527,12 @@ static int ctrl_cmd_del_server(struct sockaddr_qrtr *from,
+ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 			       unsigned int service, unsigned int instance)
+ {
+-	struct radix_tree_iter node_iter;
+ 	struct qrtr_server_filter filter;
+-	struct radix_tree_iter srv_iter;
+ 	struct qrtr_lookup *lookup;
++	struct qrtr_server *srv;
+ 	struct qrtr_node *node;
+-	void __rcu **node_slot;
+-	void __rcu **srv_slot;
++	unsigned long node_idx;
++	unsigned long srv_idx;
+ 
+ 	/* Accept only local observers */
+ 	if (from->sq_node != qrtr_ns.local_node)
+@@ -610,40 +551,14 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 	filter.service = service;
+ 	filter.instance = instance;
+ 
+-	rcu_read_lock();
+-	radix_tree_for_each_slot(node_slot, &nodes, &node_iter, 0) {
+-		node = radix_tree_deref_slot(node_slot);
+-		if (!node)
+-			continue;
+-		if (radix_tree_deref_retry(node)) {
+-			node_slot = radix_tree_iter_retry(&node_iter);
+-			continue;
+-		}
+-		node_slot = radix_tree_iter_resume(node_slot, &node_iter);
+-
+-		radix_tree_for_each_slot(srv_slot, &node->servers,
+-					 &srv_iter, 0) {
+-			struct qrtr_server *srv;
+-
+-			srv = radix_tree_deref_slot(srv_slot);
+-			if (!srv)
+-				continue;
+-			if (radix_tree_deref_retry(srv)) {
+-				srv_slot = radix_tree_iter_retry(&srv_iter);
+-				continue;
+-			}
+-
++	xa_for_each(&nodes, node_idx, node) {
++		xa_for_each(&node->servers, srv_idx, srv) {
+ 			if (!server_match(srv, &filter))
+ 				continue;
+ 
+-			srv_slot = radix_tree_iter_resume(srv_slot, &srv_iter);
+-
+-			rcu_read_unlock();
+ 			lookup_notify(from, srv, true);
+-			rcu_read_lock();
+ 		}
+ 	}
+-	rcu_read_unlock();
+ 
+ 	/* Empty notification, to indicate end of listing */
+ 	lookup_notify(from, NULL, true);
 -- 
 2.53.0
 
