@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKdeH6Gr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:25 +0200
+	id N8KVNsqo+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110174BF371
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2404BEA94
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08B2A3020FFF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FB9E3042A2D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F733DE43B;
-	Mon,  4 May 2026 14:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B419E3D3334;
+	Mon,  4 May 2026 14:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWapd+pU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlqSk8Ff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3CC315785;
-	Mon,  4 May 2026 14:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774D4378D8C;
+	Mon,  4 May 2026 14:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904458; cv=none; b=bBkd14D8urZ/W4xpU256op8gMDT1RIol/VEywA3/YpgLppiWAmY7BJpUNeH0/xdfL4WA6d4O2xow3pnnoF//8hW+2Z93b82fXovgcjDh3XLQki8xB6WxDAN9Wr5y6bF6RBB/9aI6jnDfOMqguGHkr4vYeFtz0m/+f4pOxMa3a5U=
+	t=1777903260; cv=none; b=cGAMBcyLR+Gz3RlROuOSyCtkf0SiLoDBa+qHuKYVaul3w0rPszdU6nX/wB46IpKzIWvjQlG0HAjuO5jauGm4aCKq4uo57TQcdhOUpJ3pYIcwaNEDsiTNuzzOq6id1NK4HNX9igRFMUJ8rr/723ekkiWp/ExphnYrSnJuhXE53gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904458; c=relaxed/simple;
-	bh=ekXOpofTjeqO/VjlRPl844EP/LYjEpMGl7A/HOusN9k=;
+	s=arc-20240116; t=1777903260; c=relaxed/simple;
+	bh=C5VXDLojTgNESoMxCVQdwC86h4getigo7JbndifZFkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5667r/CLNgALtNIR1I5bAsKsgplqrev58KHXYzVEC4Um/zB0/SFI4ZpfIS3wNNgOxDKxEFBUYcXbLrZ0PqRdqrS0m577TIc5fiwIcfhppLdaKCiDVj+KjBMh9FzpktSEcu9SoyOAircPIxsTCW7Jg1Dwny2gjK37Na7GVs1QLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWapd+pU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837E0C2BCB8;
-	Mon,  4 May 2026 14:20:57 +0000 (UTC)
+	 MIME-Version; b=K/THZ+E0bvX76nwkwcB7XTBtsv7xBayyOtl2ZPWkVBJvEUovInOnrcjAnpBfRv6XvzeV+gQl9ATFky7f4RWvagV+br/Y6glmveCNYUyL5FRAXj2+HsL9JScOM52XRrvbX78YmelevsjlCH/v3ZYJfv+TqPKd+Wze21OCYqRjqWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlqSk8Ff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7CDC2BCB8;
+	Mon,  4 May 2026 14:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904457;
-	bh=ekXOpofTjeqO/VjlRPl844EP/LYjEpMGl7A/HOusN9k=;
+	s=korg; t=1777903260;
+	bh=C5VXDLojTgNESoMxCVQdwC86h4getigo7JbndifZFkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWapd+pURgz3zbueezq1rzWGSF/VeOEIezjlviW6eFoZiX93NFieS5niehMH508RX
-	 GV5ZZJbu4H2hAN6o2t2JdJZHk/n3nf6xaS3mhIS/kG+/KXNUZze/Gp+DB5qiZjoT0r
-	 01r7Kd21qfaUHbJxm0XRtc5Z6XUaknWlGJUKK2EU=
+	b=IlqSk8FfMirLZZ0ofyhjZlaWDS9eeKVTt4n3cSFcaciQWJ0SXgSmPyGlSKni9wUwB
+	 S1rc1r9KoC7iuMZoMmzEXr9yCmMK3GvhpgPU4D8JZFJ8k8pTVCuXVOVhQdBGAMUF4k
+	 H5KsjZph6/qt/fI3DiYH4Gf1oCD9DtvrfkKSl7/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.12 029/215] wifi: rtw88: check for PCI upstream bridge existence
-Date: Mon,  4 May 2026 15:50:48 +0200
-Message-ID: <20260504135131.241002095@linuxfoundation.org>
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 7.0 164/307] hwmon: (isl28022) Fix integer overflow in power calculation on 32-bit
+Date: Mon,  4 May 2026 15:50:49 +0200
+Message-ID: <20260504135149.035139840@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 110174BF371
+X-Rspamd-Queue-Id: EE2404BEA94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,63 +80,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243662-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243195-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url,realtek.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ispras.ru:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,juniper.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit eb101d2abdcccb514ca4fccd3b278dd8267374f6 upstream.
+commit a7c0aaa50e40ffd8fd703d006d5a04b540b9ca92 upstream.
 
-pci_upstream_bridge() returns NULL if the device is on a root bus.  If
-8821CE is installed in the system with such a PCI topology, the probing
-routine will crash.  This has probably been unnoticed as 8821CE is mostly
-supplied in laptops where there is a PCI-to-PCI bridge located upstream
-from the device.  However the card might be installed on a system with
-different configuration.
+isl28022_read_power() computes:
 
-Check if the bridge does exist for the specific workaround to be applied.
+  *val = ((51200000L * ((long)data->gain)) /
+          (long)data->shunt) * (long)regval;
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
+On 32-bit platforms, 'long' is 32 bits. With gain=8 and shunt=10000
+(the default configuration):
 
-Fixes: 24f5e38a13b5 ("rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE")
+  (51200000 * 8) / 10000 = 40960
+  40960 * 65535 = 2,684,313,600
+
+This exceeds LONG_MAX (2,147,483,647), resulting in signed integer
+overflow.
+
+Additionally, dividing before multiplying by regval loses precision
+unnecessarily.
+
+Use u64 arithmetic with div_u64() and multiply before dividing to
+retain precision. The intermediate product cannot overflow u64
+(worst case: 51200000 * 8 * 65535 = 26843136000000). Power is
+inherently non-negative, so unsigned types are the natural fit.
+Cap the result to LONG_MAX before returning it through the hwmon
+callback.
+
+Fixes: 39671a14df4f2 ("hwmon: (isl28022) new driver for ISL28022 power monitor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260220094730.49791-1-pchelkin@ispras.ru
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260410002613.424557-1-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/isl28022.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1767,7 +1767,8 @@ int rtw_pci_probe(struct pci_dev *pdev,
- 	}
+--- a/drivers/hwmon/isl28022.c
++++ b/drivers/hwmon/isl28022.c
+@@ -9,6 +9,7 @@
+ #include <linux/err.h>
+ #include <linux/hwmon.h>
+ #include <linux/i2c.h>
++#include <linux/math64.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
  
- 	/* Disable PCIe ASPM L1 while doing NAPI poll for 8821CE */
--	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C && bridge->vendor == PCI_VENDOR_ID_INTEL)
-+	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C &&
-+	    bridge && bridge->vendor == PCI_VENDOR_ID_INTEL)
- 		rtwpci->rx_no_aspm = true;
- 
- 	rtw_pci_phy_cfg(rtwdev);
+@@ -185,8 +186,8 @@ static int isl28022_read_power(struct de
+ 				  ISL28022_REG_POWER, &regval);
+ 		if (err < 0)
+ 			return err;
+-		*val = ((51200000L * ((long)data->gain)) /
+-			(long)data->shunt) * (long)regval;
++		*val = min(div_u64(51200000ULL * data->gain * regval,
++				   data->shunt), LONG_MAX);
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
 
 
 
