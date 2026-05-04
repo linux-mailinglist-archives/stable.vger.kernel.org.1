@@ -1,280 +1,247 @@
-Return-Path: <stable+bounces-242859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id /sPZADpK+GmQsQIAu9opvQ
-	(envelope-from <stable+bounces-242859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:26:50 +0200
+	id yPprNcdL+GmQsQIAu9opvQ
+	(envelope-from <stable+bounces-242860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:33:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582F64B9505
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:26:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330724B9614
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 97D9930036FE
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 07:26:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 640843009144
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 07:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC7F2DBF76;
-	Mon,  4 May 2026 07:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8DD2EA171;
+	Mon,  4 May 2026 07:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tg/V95yi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9ZSuEah"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B49282F04
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 07:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5897B2BEC27
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 07:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777879604; cv=none; b=uEdqFAGsiWaL5R0GgL4hMXEUDEi559u0Sjs/x/iBBp1v4Fm5C+IOV0FQzAe2I0IlcRdgFQ6hODfWfl9W4tDLg1eI43j0Z6j+7Hrv8LgUsNqw55rgWvLNNTC0vgDEAfMEwRhFJAGeLS1Mx27PNa1+F+B5rVkBXIaVOOEYm87azT0=
+	t=1777879888; cv=none; b=PQKeZGysh3EqTQuv14I7XQRExSZLDCwuA2z0yTJETNT14uYz8EENk31DjPkI8xhx0f4aeIXeqQHnFrMw6OjzGwak7agn+GsxDaRNojPXqZytWoLD4961cVhye4tCO70jWssjN5aOGqS+1IhDt9+L3FvHdsMmcQiMtEmjywe3VMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777879604; c=relaxed/simple;
-	bh=dLIjCxDYnIvriS/nA7iMnHRme+wNybXXrLc4RgS94bs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHxOgrX8YlIlnOfYxwk4/YiUH7mLWsJ7JJX0DXUQtbrq/+xWb1YloO+FhfF0TsTSpduPJY6MuNsyF3joKrEZsRv1Ak4rcAHhaJIO7mTotS2PMnOjerDyjIe/6qVeoDh6bIkzQleETbjlT1q1oQP0JgVkSHpDspECF5+h0WXFAIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tg/V95yi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DA0C2BCB8;
-	Mon,  4 May 2026 07:26:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777879603;
-	bh=dLIjCxDYnIvriS/nA7iMnHRme+wNybXXrLc4RgS94bs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tg/V95yi0+N/EogNoNrXES3s0bhTxuoIuLYKDWnB/dChwWHJp+1LY1KwA5UNRHOul
-	 ZMJ4gS0m5wQk+IRJnLCfeEgfa6jJGCeFB0nn1uStjU9eWCpLaTjR5/EHlMXTCwjbsr
-	 7jvK2TS9kotS+818kWp6fMvy5NkkmGelV/lQxGolJS8bTafNpdnZ1RwxJO/awGDooY
-	 PCpVB/sMU+ZYASXvjf9lVsJpeN/AMGGJhIE+TDRvUJs6a59DeeYlpmn/jzG/XdQGmY
-	 P7yKDmK9faktLoksCTaOvtVnCt8PO3rF9kwUyKOaFiJJYQnxvExEayxmTbuHVarBbV
-	 ztMLRBsFkJrzg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zhengchuan Liang <zcliangcn@gmail.com>,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] net: bridge: use a stable FDB dst snapshot in RCU readers
-Date: Mon,  4 May 2026 03:26:37 -0400
-Message-ID: <20260504072637.1829085-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050159-dairy-ignore-5a64@gregkh>
-References: <2026050159-dairy-ignore-5a64@gregkh>
+	s=arc-20240116; t=1777879888; c=relaxed/simple;
+	bh=YSB5SQmQmqXs7OoK/OoQ5a2W1FhgmfKgwxP5ajgxFU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ru3SaYlTwSuE1MIQaQ5EwyBujpUf/aw8g8d5SMoc/9sO2ABVabSj+eE8SPczApumFdf94WXCZd6kwxybBWWM0fiWfKI3BRbQSA0IYtB7ABd1vj6ynzSEt/0o57k5cE/vkc/vUlIEhsK17b+v0Dn3Gj+UPNrk6pj44lwpRv0P3Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W9ZSuEah; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso26713015e9.0
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 00:31:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777879885; x=1778484685; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CatfaxbBgZQ3LQXPfEhaZbjDP184rQ7dewMd5HLOFbs=;
+        b=W9ZSuEahfN+B27Yo/Iq8SyYIpXBgHgdkFI1IiU9mGjuWuUnjxqrOyg6Sp/vLNgFv5O
+         euqVDJd7SxJjtUSFuT8hw6rsRgy76NWA0Xv29/1LH+XdChBmyS12v7gTZHw3DkHW7B5F
+         sFMIt0vjOST37CkFyTECbWYSLZxIeOOw/uV8hIksP1bLyp8cDJg6lFA8fwrURCZMENB5
+         zOxNqha0831z7dO1oF1WI3dNB3WJ56rS7ZJfVxZvGVVKxrg+AnZ9dB5kUowqKYDaGP3Y
+         pbgneJXhy5Ri8OhG9BMczOSjDqv9yWfTyKCODqyn8KNvZe0HYjylr0ZLjOQAcsp8nl8F
+         VVcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777879885; x=1778484685;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CatfaxbBgZQ3LQXPfEhaZbjDP184rQ7dewMd5HLOFbs=;
+        b=bWrpD9S8koCWle/ggpBUFwuyYJ2dGEWHQg+SFAfvQyF4Zo3ksE9c+K08HGBwrkfRDH
+         oqmKzmr5deyLQpywpPLW26oOYxGCamWPJ5seUI9WFOD3kf6wazGq0D+8VsHKGyPKmbtn
+         ICDp8dr4YwlC4SrOE4gBIRnsg5nvCX67omhjP9Uge32z5jPQ7VgTcajAqce8PasaYm93
+         NgU+uKdGRC2jxDETUndd8WDw2ZrovJ1+YK9fn4zBhmJ/z0rSysxqskJj39YjhgolK8pu
+         /Gfy5SoUyvoUyTBFdSOLmqtUbZO61P5qSyi64Kh9+34WNkkzyr9MGi5FRJddBg909jBl
+         z/Yg==
+X-Forwarded-Encrypted: i=1; AFNElJ/gdixoDQs8wKSquPIVmPa/S3bQmAl87LikIfWnfJSUKVQMrm/5D94gx+ouEoD/UYhJHAfpKoc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0PMtiJV/rvYniyytoUzn1FAYpyw/ArdVmqSh1/SdEBY/zvZdk
+	AhGY1YLM2UMoYmwfy/MVY/Yzr/S6qq1WECDS8OIZ3SDBJfMDOAq1TKf/Ml6f1g==
+X-Gm-Gg: AeBDies3aUnX04dt2zpnoAflfOX+S+SNl8cKY16edyh4PC0VjYn0wbMahLhLBW4+HhL
+	+KnCkTvxzVB7DI+QtbfAlw1m+tcsAEM3HO2a0iqhz4kLzXeUrAnjIAOOEaCTB2Pw+DgohHWHCP6
+	2beVfWy9ZbOgfrvr61D08xdW27LSYC/ls4c5CQoKOPzbSGDc2to3RW6yN8DoaiLkzjy4xJ1qriz
+	X+uctCzW29F4xAvY+ZUXP9bI7Wnq4/IFs40/GwXzCc1Ycww98DgJrRiYVsgixLK/CM+XYG9p/gL
+	kLVznFEEyaKV0TEqgpOd8JytHHegoL8YvvEL6qalUEEHsO84KHXEyydMjJmL8T3MxzP2gBTFO1b
+	+k+/MH2Tk+wnzsrfp3HfTzzcYn70cSvc7XjZ86vcyAK3uS/Y7eISoo6JuhiEc7f8OUE8UfVGqky
+	5GmFnJZdN2yCdATE9+GRewKZKHmd/iK1o=
+X-Received: by 2002:a05:600c:4342:b0:485:2a85:e5ec with SMTP id 5b1f17b1804b1-48c6d455f69mr68059795e9.2.1777879884339;
+        Mon, 04 May 2026 00:31:24 -0700 (PDT)
+Received: from foxbook (bgt227.neoplus.adsl.tpnet.pl. [83.28.83.227])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82308d77sm355839375e9.14.2026.05.04.00.31.23
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 04 May 2026 00:31:24 -0700 (PDT)
+Date: Mon, 4 May 2026 09:31:18 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Desnes Nunes <desnesn@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ gregkh@linuxfoundation.org, mathias.nyman@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH RFT RFC] usb: xhci: Kill hosts with HCE or HSE on
+ command timeout
+Message-ID: <20260504093118.615ff480.michal.pecio@gmail.com>
+In-Reply-To: <20260503213111.117db3a1.michal.pecio@gmail.com>
+References: <20260430014817.2006885-1-desnesn@redhat.com>
+	<20260430104850.352bd946.michal.pecio@gmail.com>
+	<CACaw+exdPSVSfdAob7+d-xH=JEjBbPpY_z1cPPU6rzXx4wUZpA@mail.gmail.com>
+	<20260430235453.2288c973.michal.pecio@gmail.com>
+	<CACaw+ewwM_5eqyGW5=+THwHsYPs7u3NT096AFQdt6x4E6HcWtA@mail.gmail.com>
+	<20260502114644.76e6b5a3.michal.pecio@gmail.com>
+	<CACaw+eyKh7buHDoDyTOe8O65FP5cSXYdzCcQvwqKw=1DwX26oA@mail.gmail.com>
+	<20260502235517.089ba5bf.michal.pecio@gmail.com>
+	<CACaw+ewOTVh49tnkz+cRr0SD_Z-LmYrMWhFUrsik6YF83mPBtA@mail.gmail.com>
+	<20260503071749.6abda137.michal.pecio@gmail.com>
+	<CACaw+ew8uV5g1G-6qZGtVBEYZ3k+fvFrOq3XMyq-Nuhbq5mdnA@mail.gmail.com>
+	<20260503213111.117db3a1.michal.pecio@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 582F64B9505
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 330724B9614
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lzu.edu.cn,nvidia.com,blackwall.org,redhat.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-242859-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-242860-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+On Sun, 3 May 2026 21:31:11 +0200, Michal Pecio wrote:
+> My first wild guess would be that HSE is caused by resetting IOMMU
+> while the xHC is unaware of kexec and continuing to DMA old buffers.
+> Attached patch checks for this and also tries to explicitly clear
+> HSE, although resetting ought to clear it too. But HW has bugs...
 
-[ Upstream commit df4601653201de21b487c3e7fffd464790cab808 ]
+Never mind, here's the smoking gun:
 
-Local FDB entries can be rewritten in place by `fdb_delete_local()`, which
-updates `f->dst` to another port or to `NULL` while keeping the entry
-alive. Several bridge RCU readers inspect `f->dst`, including
-`br_fdb_fillbuf()` through the `brforward_read()` sysfs path.
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: xHCI Host Controller
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: new USB bus
+registered, assigned bus number 3
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: // Halt the HC
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Resetting HCD
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: // Reset the HC
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Wait for controller
+to be ready for doorbell rings
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Reset complete
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Enabling 64-bit DMA addresses.
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Calling HCD init
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Starting xhci_init
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: HCD page size set to 4K
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Device context base
+array address = 0x0x000000100167c000 (DMA), 00000000d042f7e3 (virt)
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Allocated command
+ring at 0000000016f013a6
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: First segment DMA is
+0x0x000000100167d000
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Allocating primary event ring
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Allocating 34
+scratchpad buffers
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Ext Cap
+000000001bef6947, port offset = 1, count = 14, revision = 0x2
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: PSIV:1 PSIE:2 PLT:0
+PFD:0 LP:0 PSIM:12
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: PSIV:2 PSIE:1 PLT:0
+PFD:0 LP:0 PSIM:1500
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: PSIV:3 PSIE:2 PLT:0
+PFD:0 LP:0 PSIM:480
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: xHCI 1.0: support
+USB2 hardware lpm
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Ext Cap
+00000000a5bcc554, port offset = 17, count = 8, revision = 0x3
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: PSIV:4 PSIE:3 PLT:0
+PFD:1 LP:0 PSIM:5
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: PSIV:5 PSIE:3 PLT:0
+PFD:1 LP:1 PSIM:10
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: PSIV:6 PSIE:3 PLT:0
+PFD:1 LP:1 PSIM:10
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: PSIV:7 PSIE:3 PLT:0
+PFD:1 LP:1 PSIM:20
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Found 14 USB 2.0
+ports and 8 USB 3.0 ports.
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: xHC can handle at
+most 64 device slots
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Setting Max device
+slots reg = 0x40
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Setting command ring
+address to 0x100167d001
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Doorbell array is
+located at offset 0x3000 from cap regs base addr
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: // Write event ring
+dequeue pointer, preserving EHB bit
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Finished xhci_init
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Called HCD init
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: hcc params
+0x20007fc1 hci version 0x120 quirks 0x0000000200009810
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Got SBRN 50
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: MWI active
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Finished xhci_pci_reinit
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: supports USB remote wakeup
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: xhci_run
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: ERST deq = 64'h100167e000
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Finished xhci_run for main hcd
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: xHCI Host Controller
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: new USB bus
+registered, assigned bus number 4
+[Fri May  1 09:46:40 2026] xhci_hcd 0000:80:14.0: Host supports USB
+3.2 Enhanced SuperSpeed
+[Fri May  1 09:46:41 2026] xhci_hcd 0000:80:14.0: supports USB remote wakeup
+[Fri May  1 09:46:41 2026] xhci_hcd 0000:80:14.0: Enable interrupts
+[Fri May  1 09:46:41 2026] xhci_hcd 0000:80:14.0: Enable primary interrupter
+[Fri May  1 09:46:41 2026] xhci_hcd 0000:80:14.0: // Turn on HC, cmd = 0x5.
+[Fri May  1 09:46:41 2026] DMAR: DRHD: handling fault status reg 2
+[Fri May  1 09:46:41 2026] DMAR: [DMA Read NO_PASID] Request device
+[80:14.0] fault addr 0x1001680000 [fault reason 0x39] SM: Present bit
+in Root Entry is clear
 
-These readers currently load `f->dst` multiple times and can therefore
-observe inconsistent values across the check and later dereference.
-In `br_fdb_fillbuf()`, this means a concurrent local-FDB update can change
-`f->dst` after the NULL check and before the `port_no` dereference,
-leading to a NULL-ptr-deref.
+The chip IOMMU faults shortly after setting USBCMD.RUN = 1.
+Such fault is expected to cause HSE assertion and usually it does.
+You will probably find that HSE is already set while Enable Slot
+is being queued, even if it was clear in xhci_gen_setup().
 
-Fix this by taking a single `READ_ONCE()` snapshot of `f->dst` in each
-affected RCU reader and using that snapshot for the rest of the access
-sequence. Also publish the in-place `f->dst` updates in `fdb_delete_local()`
-with `WRITE_ONCE()` so the readers and writer use matching access patterns.
+1001680000 is close to valid addresses like 100167e000 or 100167c000.
 
-Fixes: 960b589f86c7 ("bridge: Properly check if local fdb entry can be deleted in br_fdb_change_mac_address")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/6570fabb85ecadb8baaf019efe856f407711c7b9.1776043229.git.zcliangcn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ kept `*idx < cb->args[2]` instead of `*idx < ctx->fdb_idx` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/bridge/br_arp_nd_proxy.c |  8 +++++---
- net/bridge/br_fdb.c          | 28 ++++++++++++++++++----------
- 2 files changed, 23 insertions(+), 13 deletions(-)
+Possible causes:
+- xHCI or IOMMU driver bug
+- HW corrupted a pointer
+- HW accessed something out of bounds
+- HW dereferenced a stale pointer from the original kernel
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index f033a51675602..985aaf7ff1564 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -199,11 +199,12 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
- 
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
- 			if ((p && (p->flags & BR_PROXYARP)) ||
--			    (f->dst && (f->dst->flags & BR_PROXYARP_WIFI)) ||
--			    br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			    (dst && (dst->flags & BR_PROXYARP_WIFI)) ||
-+			    br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (!vid)
- 					br_arp_send(br, p, skb->dev, sip, tip,
- 						    sha, n->ha, sha, 0, 0);
-@@ -463,9 +464,10 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
--			if (br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			if (br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n,
- 						   skb->vlan_proto,
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 9dd405b64fcc9..39cc761012d48 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -243,6 +243,7 @@ struct net_device *br_fdb_find_port(const struct net_device *br_dev,
- 				    const unsigned char *addr,
- 				    __u16 vid)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct net_device *dev = NULL;
- 	struct net_bridge *br;
-@@ -255,8 +256,11 @@ struct net_device *br_fdb_find_port(const struct net_device *br_dev,
- 	br = netdev_priv(br_dev);
- 	rcu_read_lock();
- 	f = br_fdb_find_rcu(br, addr, vid);
--	if (f && f->dst)
--		dev = f->dst->dev;
-+	if (f) {
-+		dst = READ_ONCE(f->dst);
-+		if (dst)
-+			dev = dst->dev;
-+	}
- 	rcu_read_unlock();
- 
- 	return dev;
-@@ -353,7 +357,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 		vg = nbp_vlan_group(op);
- 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
- 		    (!vid || br_vlan_find(vg, vid))) {
--			f->dst = op;
-+			WRITE_ONCE(f->dst, op);
- 			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 			return;
- 		}
-@@ -364,7 +368,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 	/* Maybe bridge device has same hw addr? */
- 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
- 	    (!vid || (v && br_vlan_should_use(v)))) {
--		f->dst = NULL;
-+		WRITE_ONCE(f->dst, NULL);
- 		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 		return;
- 	}
-@@ -827,6 +831,7 @@ int br_fdb_test_addr(struct net_device *dev, unsigned char *addr)
- int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 		   unsigned long maxnum, unsigned long skip)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct __fdb_entry *fe = buf;
- 	unsigned long delta;
-@@ -843,7 +848,8 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 			continue;
- 
- 		/* ignore pseudo entry for local MAC address */
--		if (!f->dst)
-+		dst = READ_ONCE(f->dst);
-+		if (!dst)
- 			continue;
- 
- 		if (skip) {
-@@ -855,8 +861,8 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 		memcpy(fe->mac_addr, f->key.addr.addr, ETH_ALEN);
- 
- 		/* due to ABI compat need to split into hi/lo */
--		fe->port_no = f->dst->port_no;
--		fe->port_hi = f->dst->port_no >> 8;
-+		fe->port_no = dst->port_no;
-+		fe->port_hi = dst->port_no >> 8;
- 
- 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
- 		if (!test_bit(BR_FDB_STATIC, &f->flags)) {
-@@ -981,9 +987,11 @@ int br_fdb_dump(struct sk_buff *skb,
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
-+		const struct net_bridge_port *dst = READ_ONCE(f->dst);
-+
- 		if (*idx < cb->args[2])
- 			goto skip;
--		if (filter_dev && (!f->dst || f->dst->dev != filter_dev)) {
-+		if (filter_dev && (!dst || dst->dev != filter_dev)) {
- 			if (filter_dev != dev)
- 				goto skip;
- 			/* !f->dst is a special case for bridge
-@@ -991,10 +999,10 @@ int br_fdb_dump(struct sk_buff *skb,
- 			 * Therefore need a little more filtering
- 			 * we only want to dump the !f->dst case
- 			 */
--			if (f->dst)
-+			if (dst)
- 				goto skip;
- 		}
--		if (!filter_dev && f->dst)
-+		if (!filter_dev && dst)
- 			goto skip;
- 
- 		err = fdb_fill_info(skb, br, f,
--- 
-2.53.0
+Do you happen to have more of those logs saved, are they all like that?
+Any chance that 1001680000 appears somewhere in the main kernel's log?
 
+If not, I suppose we will have to log every single DMA mapping created
+by the driver and see if this gives any new clues.
+
+Regards,
+Michal
 
