@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-243429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCJEAxyp+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:40 +0200
+	id aGUfJ/yn+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770404BEBCB
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0536B4BE88D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF4463021D1E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0833C321FD9C
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885123B19D1;
-	Mon,  4 May 2026 14:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B0F3DE431;
+	Mon,  4 May 2026 13:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIvrr5dX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTecSZ5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3C740DFD4;
-	Mon,  4 May 2026 14:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6E63DE42D;
+	Mon,  4 May 2026 13:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903861; cv=none; b=AX2zg0V+iwP1VAKSakXXmzm08Xzy/s7sh+irUnvS0Zlsas/2T2YebpIXnz9d6w5fRc9cP5GO9jqMOaPiqecDVRJHG9xBcbGUh9tlPs/fhKdGpfcrHmobYSi1iQ5hJ2pbJjGn668lA1NG///EYceIyK2jsDPKgjpeh/X32QS+hS0=
+	t=1777903120; cv=none; b=RTKURLdcsxNwMGeGRQT2orAFok5JJWyeqhk5wOj8AlJNgmRubL15uaB6mX/6M3MAhrzqVxmysdbsZxp2Wv/E0B1F0DPlqRrsjN5oIjtfKDMjZzte+FHxuxO1vVxUMcLkOIu4btZWw3+m5juCCtdCx40MXTYgVJ8MDHDAlIQx8l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903861; c=relaxed/simple;
-	bh=af4u5aiCCZme5pTlIqy+faZ+GaIMrGJN3x14MFqMNVQ=;
+	s=arc-20240116; t=1777903120; c=relaxed/simple;
+	bh=SQs2lhRKbdZPXH3oniMSNDkbnQR6p8DrF8hhhthxglE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XxVaZSvdKXdVb5pmGWPLpda6mTYF/dpWsk96avUAcnLiJXMr467Q7Q+LwNyEMU59pt7DJl5bO3+Hs3UPzRi9eoTupRTUOhzAkywLs+ykDVntahz6Xn4Pgb1s3cNFzQSuaI+nzQciVFIUymGGqKIsxETGosKG1rEj3dqzgSccKDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIvrr5dX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4913C2BCB8;
-	Mon,  4 May 2026 14:11:00 +0000 (UTC)
+	 MIME-Version; b=jM8y1+5GzjQ64PEBaJFbNjgJOqiZuvocdSINUcnIrLcAF1HKZPJBIRQvbXmtKyZS/aRfkOiNiVCibbGQEYcqnTGSNYFCwJN19cZbjlQR8mKlxM3z+CptY2UWgW31Zwt1XF1+/XBy3XQ+8Nokhv4dMPFJyB65Ax+OqKnEYPhLoLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTecSZ5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56624C2BCB8;
+	Mon,  4 May 2026 13:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903861;
-	bh=af4u5aiCCZme5pTlIqy+faZ+GaIMrGJN3x14MFqMNVQ=;
+	s=korg; t=1777903120;
+	bh=SQs2lhRKbdZPXH3oniMSNDkbnQR6p8DrF8hhhthxglE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIvrr5dXL8KLr0+vHZ86c6Kaqjyk8gomYu+CeHT/kJi6INna9/9YitjyHKmkSfidc
-	 Lvc59UsOuapVvZpvmEwVNbabWtmDDoldRRSpyVrtvST6utrj/ojZ4++CATCaj8AFmp
-	 MUHViUfmw/nkKv76Yxx4kQYjoCiDQ+BTBf8KyGJ8=
+	b=TTecSZ5iuoxwHBCsqRKGkcma1JZCFEMbB1RYmRN7sKHeIvboOwwPSRvHPLzarP5al
+	 5L6jVyUfO5EUaFtYzG5Obb2EMsQFOYtnh+DytRfFGCzfj7T3ZZUg+DONcwV6m7nlav
+	 WYzZunBQCYswN4UPZ2gvA7EvbsKYdctcTlCyuPeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.18 057/275] media: i2c: imx219: Check return value of devm_gpiod_get_optional() in imx219_probe()
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 112/307] io_uring/zcrx: fix user_struct uaf
 Date: Mon,  4 May 2026 15:49:57 +0200
-Message-ID: <20260504135145.053182542@linuxfoundation.org>
+Message-ID: <20260504135147.020984134@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +63,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 770404BEBCB
+X-Rspamd-Queue-Id: 0536B4BE88D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243429-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,ideasonboard.com:email,raspberrypi.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email]
+	TAGGED_FROM(0.00)[bounces-243140-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 943b1f27a3eead21b22e2531a5432ea5910b60eb upstream.
+commit 0fcccfd87152f957fa8312b841f6efef42a05a20 upstream.
 
-The devm_gpiod_get_optional() function may return an error pointer
-(ERR_PTR) in case of a genuine failure during GPIO acquisition,
-not just NULL which indicates the legitimate absence of an optional
-GPIO.
+io_free_rbuf_ring() usees a struct user_struct, which
+io_zcrx_ifq_free() puts it down before destroying the ring.
 
-Add an IS_ERR() check after the function call to catch such errors and
-propagate them to the probe function, ensuring the driver fails to load
-safely rather than proceeding with an invalid pointer.
-
-Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 5c686456a4e83 ("io_uring/zcrx: add user_struct and mm_struct to io_zcrx_ifq")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://patch.msgid.link/e560ae00960d27a810522a7efc0e201c82dff351.1776760917.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx219.c |    3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/zcrx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -1211,6 +1211,9 @@ static int imx219_probe(struct i2c_clien
- 	/* Request optional enable pin */
- 	imx219->reset_gpio = devm_gpiod_get_optional(dev, "reset",
- 						     GPIOD_OUT_HIGH);
-+	if (IS_ERR(imx219->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(imx219->reset_gpio),
-+				     "failed to get reset gpio\n");
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -565,13 +565,13 @@ static void io_zcrx_ifq_free(struct io_z
  
- 	/*
- 	 * The sensor must be powered for imx219_identify_module()
+ 	if (ifq->area)
+ 		io_zcrx_free_area(ifq, ifq->area);
+-	free_uid(ifq->user);
+ 	if (ifq->mm_account)
+ 		mmdrop(ifq->mm_account);
+ 	if (ifq->dev)
+ 		put_device(ifq->dev);
+ 
+ 	io_free_rbuf_ring(ifq);
++	free_uid(ifq->user);
+ 	mutex_destroy(&ifq->pp_lock);
+ 	kfree(ifq);
+ }
 
 
 
