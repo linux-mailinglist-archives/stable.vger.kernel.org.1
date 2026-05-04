@@ -1,129 +1,211 @@
-Return-Path: <stable+bounces-243921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FRiCHQZ+Wlc5gIAu9opvQ
-	(envelope-from <stable+bounces-243921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:11:00 +0200
+	id 2rjgLNwc+WlB5wIAu9opvQ
+	(envelope-from <stable+bounces-243922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:25:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA964C450E
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD5B4C45C1
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84493300B1AA
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:10:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF95A3003D18
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7225537BE78;
-	Mon,  4 May 2026 22:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DCD3806A4;
+	Mon,  4 May 2026 22:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="EwdnCP/U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6aUJxXp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6EB2DCF45;
-	Mon,  4 May 2026 22:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35D53803DE;
+	Mon,  4 May 2026 22:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777932655; cv=none; b=D82hDDzkVxWlnrP05nr5QA3PLezCyPc8UHOuT/fBbCu9bEzESc5WKorpYC+VfmkuOqMN5w9WsbomRU1OwNf1tioDlWrsR9s2vhuqFrjccocscmqSDD+F9EwWuDHY5Zqdg0uKEVzfsR0VzYlvAbga5nFmu1ASySyb4dTFkwG+JtI=
+	t=1777933525; cv=none; b=DFj20Zy0ZlbFWvO/Lrq725RBre85/mhhT9/IjsG9X7pjuGJV0I/FaKSJUBrM35Zs4PgqlFKpkY4PyZwstw7PrtnUOAtx3v3cFkijt0j1mHaMOHlipRak4/SnJxJJhnWl7kFd+iMFU1GlGq75B0hEERgNHVIApbeM62MoIAKeK94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777932655; c=relaxed/simple;
-	bh=tEehmQtDegZFxXuafZ00Yb2xEyd90WkOHl4+sFhpbyY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ToiJhxxFtjJahC5BBvL7u/yVvk2Jf8j1XtXErL/KvgEBZjFRp/HtXj8phOKAdfgGXQyGzdf0JD7aUtZxS4HVtbAOPSjWVmVho7ZrXFEh8+RR4sIAoR5MOYEFPcjjLALNfhESlnMhysGyOay0Nm440OHPGE9uWUCc3p5PneZaUwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=EwdnCP/U; arc=none smtp.client-ip=155.212.184.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23FA7100036;
-	Tue,  5 May 2026 01:10:39 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
-	t=1777932648; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=2pJdonCvAwld4fN0yK+Xb4wRHrqadLgYk32qyWpwm5w=;
-	b=EwdnCP/UfNaCJtQp4gMxFS/oHIQUm3csgs8flJs0WhksOp+BDGJHp/kV80kj8aZCT9IwS1
-	vfSXUgERRnADLxLPRB//UaXrpRSEA/yS9Dl5psrhFX1rW/eZUr6GWLUSIW/Bv1VrfCdYj8
-	R09suF8AocShHLhy4at3X9CPo8peNRtGDT830QMqaqgdy5xu6+yNnaBmHAjQ74bKZ3Ac0p
-	dAgCCnBNmkyxfn08IrXIwbNnHDOTiHdX4TR/EmHV24FGz0tV1CurIV98e8Jkp3wPUBYFwT
-	zT2u1Ol40yHaZ81TjT2JJo0HGaV1jxvOLGmUA/Ezgp/7P23oWUaCAJ+uxiTW9A==
-From: Arseniy Krasnov <avkrasnov@rulkc.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Boris Brezillon <bbrezillon@kernel.org>
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	rulkc@linuxtesting.org,
-	oxffffaa@gmail.com,
-	Arseniy Krasnov <avkrasnov@rulkc.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] mtd: rawnand: fix condition in 'nand_select_target()'
-Date: Tue,  5 May 2026 01:10:12 +0300
-Message-ID: <20260504221012.1310605-1-avkrasnov@rulkc.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1777933525; c=relaxed/simple;
+	bh=CnZQLL+dBf/NVOi4BJkXDFBCc3w6j48on7waVvdGLNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R1gvBLMNVmY/eNsdTC4Reijn93cJR94oVi9foy7tCKbLhbuMbn389C0Rw3iBgUCq7ATazO7NUXCgpbe57dl8dom/IoYZQI6wlP4bYFc9xBAYi+ifsWBfE7pnvS7KAQD5zNIJrnGtVTOiWkmFLHZTTpQHizbHof2x6jE+rYXcVtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6aUJxXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B8CC2BCB8;
+	Mon,  4 May 2026 22:25:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777933525;
+	bh=CnZQLL+dBf/NVOi4BJkXDFBCc3w6j48on7waVvdGLNw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g6aUJxXpaDEy6WuqY8D1Hqtau12puytRPqAmeRKhLum++uSJCJLrneZ5Jm9zrH1zj
+	 X9p5nBrVBx45tyy3h4erko45VteCnSCX4WDVhHPJNGfZN/EXV0B6/Od86fM3ZpqRtm
+	 firrlkIo5V96g7Ocew5v7UZlL37qNayTPvjapwwzQZReHYgtOYZsgzTfhKjlV1LkEq
+	 TgruHd2Lh9mXmIKIM/USPBJ926p7yFs1pKlPr3PS4W/0VP3lEZFGjSA3GJqMRGJpfC
+	 ViZR01WgKLW2UY4vHGfNVCVzPPPTYbw+UsQ+g9fr2/lWRrnr7KXJOsqdDSR1Pa1ULE
+	 HPVCvHGCAE3wA==
+Date: Mon, 4 May 2026 15:25:18 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: =?utf-8?B?4pK2bMOvIFDimK5sYXRlbA==?= <alip@chesswob.org>
+Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	Taeyang Lee <0wn@theori.io>, Brian Pak <bpak@theori.io>,
+	Juno Im <juno@theori.io>, Jungwon Lim <setuid0@theori.io>,
+	Tim Becker <tjbecker@theori.io>,
+	Demi Marie Obenour <demiobenour@gmail.com>,
+	Feng Ning <feng@innora.ai>, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: af_alg - Remove zero-copy support from AF_ALG
+Message-ID: <20260504222518.GA21478@quark>
+References: <20260504061532.172013-1-ebiggers@kernel.org>
+ <mCm5pwZUNYtOVDph2baJg3eAzArddjvFpx3Wwh2qiZfZXYtv-aUjlISuRg5HjuIMzGo51hxCazaH47gp9B_q7I4R4LVePKGkvhO9D0P4nCY=@chesswob.org>
+ <20260504174733.GB2291@sol>
+ <xxEJMG_wLMObY-emZXfETJ6HxxJQCY3OnYiBIUTyAWEMiAcr8QQd2t7c8O-Qj43zBGRv64st0_IrW9ABgaVwco9-puLVlIDh3ijeJ-cxXaE=@chesswob.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 9DA964C450E
+In-Reply-To: <xxEJMG_wLMObY-emZXfETJ6HxxJQCY3OnYiBIUTyAWEMiAcr8QQd2t7c8O-Qj43zBGRv64st0_IrW9ABgaVwco9-puLVlIDh3ijeJ-cxXaE=@chesswob.org>
+X-Rspamd-Queue-Id: 4AD5B4C45C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[rulkc.org,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[rulkc.org:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243921-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,linuxtesting.org,gmail.com,rulkc.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243922-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gondor.apana.org.au,theori.io,gmail.com,innora.ai];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[avkrasnov@rulkc.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rulkc.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-'cs' here must in range [0:nanddev_ntargets).
+On Mon, May 04, 2026 at 06:26:10PM +0000, Ⓐlï P☮latel wrote:
+> On Monday, 4 May 2026 at 19:51, Eric Biggers <ebiggers@kernel.org> wrote:
+> 
+> > On Mon, May 04, 2026 at 04:07:45PM +0000, Ⓐlï P☮latel wrote:
+> > > Syd sandbox uses AF_ALG zero-copy for its Force Sandboxing[1] and Crypt Sandboxing[1].
+> > > Zero-copy means Syd does not have to copy sandbox process data into its own address
+> > > space providing safety and security. Switching to read/write rather than pipes and
+> > > splice breaks a fundamental safety guarantee for the sandbox. Please do not break
+> > > userspace.
+> > >
+> > > Will sendfile(2) continue to work?
+> > >
+> > > [1]: https://man.exherbo.org/syd.7.html#Force_Sandboxing
+> > > [2]: https://man.exherbo.org/syd.7.html#Crypt_Sandboxing
+> > 
+> 
+> > It's very unclear what that feature (which I don't think anyone knew
+> > even existed) is trying to accomplish.  Regardless, this patch doesn't
+> > break the splice or sendfile syscalls.  It just makes them run a bit
+> > more slowly since the kernel will copy the data internally.  So I think
+> > your concern isn't justified.
+> > 
+> 
+> > > How can i test? Please help me.
+> > 
+> 
+> > If this is a feature you care about, perhaps you know how to test it?
+> 
+> Thank you very much for the explanation and excuse me I panicked.
+> 
+> > - Eric
 
-Cc: stable@vger.kernel.org
-Fixes: 32813e288414 ("mtd: rawnand: Get rid of chip->numchips")
-Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
----
- drivers/mtd/nand/raw/nand_base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I've tested that all three cases of read/write, sendfile, and
+vmsplice+splice still work.  The difference is just in how the kernel
+implements them internally.  See the following test program.
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 13e4060bd1b6a..edfee22f15a73 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -174,7 +174,7 @@ void nand_select_target(struct nand_chip *chip, unsigned int cs)
- 	 * cs should always lie between 0 and nanddev_ntargets(), when that's
- 	 * not the case it's a bug and the caller should be fixed.
- 	 */
--	if (WARN_ON(cs > nanddev_ntargets(&chip->base)))
-+	if (WARN_ON(cs >= nanddev_ntargets(&chip->base)))
- 		return;
- 
- 	chip->cur_cs = cs;
--- 
-2.47.3
+#define _GNU_SOURCE
+#include <assert.h>
+#include <fcntl.h>
+#include <linux/if_alg.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/sendfile.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
+int main(void)
+{
+	for (int test = 0; test < 3; test++) {
+		uint8_t msg[32] = {};
+		uint8_t key[16] = {1,2,3,4};
+		struct sockaddr_alg addr = {
+			.salg_family = AF_ALG,
+			.salg_type = "skcipher",
+			.salg_name = "cbc(aes)",
+		};
+		int filefd, algfd, reqfd, pipefd[2], ret;
+
+		filefd = open("msg_file", O_RDWR|O_CREAT|O_TRUNC, 0600);
+		assert(filefd >= 0);
+		ret = pwrite(filefd, msg, sizeof(msg), 0);
+		assert(ret == sizeof(msg));
+
+		algfd = socket(AF_ALG, SOCK_SEQPACKET, 0);
+		assert(algfd >= 0);
+		ret = bind(algfd, (struct sockaddr *)&addr, sizeof(addr));
+		assert(ret == 0);
+		ret = setsockopt(algfd, SOL_ALG, ALG_SET_KEY, key, sizeof(key));
+		assert(ret == 0);
+
+		reqfd = accept(algfd, NULL, NULL);
+		assert(reqfd >= 0);
+
+		switch (test) {
+		case 0:
+			printf("read/write test\n");
+			ret = read(filefd, msg, sizeof(msg));
+			assert(ret == sizeof(msg));
+			ret = write(reqfd, msg, sizeof(msg));
+			assert(ret == sizeof(msg));
+			break;
+		case 1:
+			printf("sendfile test\n");
+			ret = sendfile(reqfd, filefd, NULL, sizeof(msg));
+			assert(ret == sizeof(msg));
+			break;
+		case 2:
+			printf("splice test\n");
+			ret = pipe(pipefd);
+			assert(ret == 0);
+			struct iovec iov = { .iov_base = msg, .iov_len = sizeof(msg) };
+			ret = vmsplice(pipefd[1], &iov, 1, SPLICE_F_GIFT);
+			assert(ret == sizeof(msg));
+			ret = splice(pipefd[0], NULL, reqfd, NULL, sizeof(msg), SPLICE_F_MOVE);
+			assert(ret == sizeof(msg));
+			break;
+		}
+		ret = read(reqfd, msg, sizeof(msg));
+		assert(ret == sizeof(msg));
+		for (int i = 0; i < sizeof(msg); i++)
+			printf("%02x ", msg[i]);
+		printf("\n");
+	}
+}
 
