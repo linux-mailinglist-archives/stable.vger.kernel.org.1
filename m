@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-243759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +P6fLEqw+GkPzAIAu9opvQ
-	(envelope-from <stable+bounces-243759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:18 +0200
+	id oPO8BH6s+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4A04BFE7B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 641924BF612
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5FE46308F99A
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95488308E52A
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5166D3E5579;
-	Mon,  4 May 2026 14:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859EE3DEAC4;
+	Mon,  4 May 2026 14:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkFkfGuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2OlwnjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143043DF01A;
-	Mon,  4 May 2026 14:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4927B315785;
+	Mon,  4 May 2026 14:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904706; cv=none; b=cUTYethy2IgjSeaSnqj/BHJnPwuEbWt1iZh+rCkEPeF+FGU6fbmXEGrc2gPEjigqeE9qWlWZd0eQh64yGCw8Dqgc1JxpqvbDmXK4P3ribos6aaCPzv/z9PxGgrdC4O7UCq0E0OBifMqQx8uj2o8LO7cTshNeZNgiNApUBiT3Pgs=
+	t=1777904180; cv=none; b=MVhSPirbNMcaELVB3teXoNpoaafk1GP+Qz58k1d5C5Gthd1ae5inQaqJ5kjQcupf8nA3AonNaj3A/i7on2mrrsc3vhrfZevh3PTE72D4RNrMQPzfxj61z2zis+BWt5IGDLlwLd/TyXeJG0O1VKnK+4nuNPKZdz9/0qveCp7TPCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904706; c=relaxed/simple;
-	bh=J9ahSR4Ftis2LFwUexMr3cydvP4sqCLQwyv+X60Prqs=;
+	s=arc-20240116; t=1777904180; c=relaxed/simple;
+	bh=KmisXqjCh+1afvwi/hs8eXMiRTlm1+0CkB/jGX/mEr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jO83EkzT8l4EMC4IQM79Py30RiFswMMzevPzEL9IoKMFTM4BMLxeGZDYIkAGY6JAXDN63ncAguBKyCYqANS9JOVBWD6/IoxXBrtDxoIaVBORLHkFid8rUKo6Ysc5VK+shx55oby3HYWnEtydeoF1+01yHL4H7qeB0G27ED/cg9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkFkfGuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8FEC2BCB8;
-	Mon,  4 May 2026 14:25:05 +0000 (UTC)
+	 MIME-Version; b=e3fKAz9/qyo4NyRA+rqOwV5F18A5QNqUVXkiMnD5UF9Wqf/459oN360YDzs4PywQAAYoWuI1tTqDSijpebX+WVVKL344upZLnGjXM0MU7UQN2F+H8iBNuIvHi0uG0Pf/AoV2cPKzt9guOGPHSQKnkgaOz+W0z8xOqnYvRuh+Kho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2OlwnjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D406BC2BCB8;
+	Mon,  4 May 2026 14:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904705;
-	bh=J9ahSR4Ftis2LFwUexMr3cydvP4sqCLQwyv+X60Prqs=;
+	s=korg; t=1777904180;
+	bh=KmisXqjCh+1afvwi/hs8eXMiRTlm1+0CkB/jGX/mEr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkFkfGuLhR+bM1T+ongnpUiKPZNRH8muWfDaarrGgMcUEZvEiXeJyhNvdjvr+uccP
-	 BL/my/Mb6QWXgPcsYBXOgZE2T7rKRiBQEpz4/PCwfk0grIlBIt9Xt6eUhz9ALn9oMU
-	 bwL4ChrSgtXuqZoG2c7YFxk3SIihLLEiA74WBfY0=
+	b=a2OlwnjDKiCoheFnPowY6s6/iGjtxfcxn93v6IwDJs5hafbT37kfRFVhtMOOWRe2M
+	 9kgRMlZmOLJOHlO0jOSIVFqyPvogBHOwfn7sN0JMLgZS7KLf1g9RD97v3FS4FjUkEd
+	 7qaEUk0XeJ7GkJTgWbzHWNXXey8kS3iw7yw2r3cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Rui <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	loongarch@lists.linux.dev,
-	Rong Bao <rong.bao@csmantle.top>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/215] perf annotate: Use jump__delete when freeing LoongArch jumps
+	Gang Yan <yangang@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.18 214/275] mptcp: sync the msk->sndbuf at accept() time
 Date: Mon,  4 May 2026 15:52:34 +0200
-Message-ID: <20260504135135.084370958@linuxfoundation.org>
+Message-ID: <20260504135151.022829547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,148 +64,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2A4A04BFE7B
+X-Rspamd-Queue-Id: 641924BF612
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243759-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243553-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,csmantle.top:email,loongson.cn:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kylinos.cn:email,msgid.link:url]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Bao <rong.bao@csmantle.top>
+From: Gang Yan <yangang@kylinos.cn>
 
-[ Upstream commit a355eefc36c4481188249b067832b40a2c45fa5c ]
+commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
 
-Currently, the initialization of loongarch_jump_ops does not contain an
-assignment to its .free field. This causes disasm_line__free() to fall
-through to ins_ops__delete() for LoongArch jump instructions.
+On passive MPTCP connections, the msk sndbuf is not updated correctly.
 
-ins_ops__delete() will free ins_operands.source.raw and
-ins_operands.source.name, and these fields overlaps with
-ins_operands.jump.raw_comment and ins_operands.jump.raw_func_start.
-Since in loongarch_jump__parse(), these two fields are populated by
-strchr()-ing the same buffer, trying to free them will lead to undefined
-behavior.
+The root cause is an order issue in the accept path:
 
-This invalid free usually leads to crashes:
+- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
+  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
 
-        Process 1712902 (perf) of user 1000 dumped core.
-        Stack trace of thread 1712902:
-        #0  0x00007fffef155c58 n/a (libc.so.6 + 0x95c58)
-        #1  0x00007fffef0f7a94 raise (libc.so.6 + 0x37a94)
-        #2  0x00007fffef0dd6a8 abort (libc.so.6 + 0x1d6a8)
-        #3  0x00007fffef145490 n/a (libc.so.6 + 0x85490)
-        #4  0x00007fffef1646f4 n/a (libc.so.6 + 0xa46f4)
-        #5  0x00007fffef164718 n/a (libc.so.6 + 0xa4718)
-        #6  0x00005555583a6764 __zfree (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x106764)
-        #7  0x000055555854fb70 disasm_line__free (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x2afb70)
-        #8  0x000055555853d618 annotated_source__purge (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x29d618)
-        #9  0x000055555852300c __hist_entry__tui_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28300c)
-        #10 0x0000555558526718 do_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x286718)
-        #11 0x000055555852ed94 evsel__hists_browse (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28ed94)
-        #12 0x000055555831fdd0 cmd_report (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x7fdd0)
-        #13 0x000055555839b644 handle_internal_command (/home/csmantle/dist/linux-arch/tools/perf/perf + 0xfb644)
-        #14 0x00005555582fe6ac main (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5e6ac)
-        #15 0x00007fffef0ddd90 n/a (libc.so.6 + 0x1dd90)
-        #16 0x00007fffef0ddf0c __libc_start_main (libc.so.6 + 0x1df0c)
-        #17 0x00005555582fed10 _start (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5ed10)
-        ELF object binary architecture: LoongArch
+- Later, tcp_child_process() -> tcp_init_transfer() ->
+  tcp_sndbuf_expand() grows the ssk sndbuf.
 
-... and it can be confirmed with Valgrind:
+So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
+expanded and the msk ends up with a much smaller sndbuf than the
+subflow:
 
-        ==1721834== Invalid free() / delete / delete[] / realloc()
-        ==1721834==    at 0x4EA9014: free (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
-        ==1721834==    by 0x4106287: __zfree (zalloc.c:13)
-        ==1721834==    by 0x42ADC8F: disasm_line__free (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x429B737: annotated_source__purge (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42811EB: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==  Address 0x7d34303 is 35 bytes inside a block of size 62 alloc'd
-        ==1721834==    at 0x4EA59B8: malloc (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
-        ==1721834==    by 0x6B80B6F: strdup (strdup.c:42)
-        ==1721834==    by 0x42AD917: disasm_line__new (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42AE5A3: symbol__disassemble_objdump (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42AF0A7: symbol__disassemble (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x429B3CF: symbol__annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x429C233: symbol__annotate2 (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42804D3: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
 
-This patch adds the missing free() specialization in loongarch_jump_ops,
-which prevents disasm_line__free() from invoking the default cleanup
-function.
+Fix this by moving the __mptcp_propagate_sndbuf() call from
+mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
+__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
+been fully expanded by tcp_sndbuf_expand().
 
-Fixes: fb7fd2a14a503b9a ("perf annotate: Move raw_comment and raw_func_start fields out of 'struct ins_operands'")
+Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
 Cc: stable@vger.kernel.org
-Cc: WANG Rui <wangrui@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: loongarch@lists.linux.dev
-Signed-off-by: Rong Bao <rong.bao@csmantle.top>
-Tested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/arch/loongarch/annotate/instructions.c | 1 +
- tools/perf/util/disasm.c                          | 1 +
- 2 files changed, 2 insertions(+)
+ net/mptcp/protocol.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/arch/loongarch/annotate/instructions.c b/tools/perf/arch/loongarch/annotate/instructions.c
-index ab43b1ab51e3b..e16350155bf1d 100644
---- a/tools/perf/arch/loongarch/annotate/instructions.c
-+++ b/tools/perf/arch/loongarch/annotate/instructions.c
-@@ -95,6 +95,7 @@ static int loongarch_jump__parse(struct arch *arch, struct ins_operands *ops, st
- }
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3428,7 +3428,6 @@ struct sock *mptcp_sk_clone_init(const s
+ 	 * uses the correct data
+ 	 */
+ 	mptcp_copy_inaddrs(nsk, ssk);
+-	__mptcp_propagate_sndbuf(nsk, ssk);
  
- static struct ins_ops loongarch_jump_ops = {
-+	.free	   = jump__delete,
- 	.parse	   = loongarch_jump__parse,
- 	.scnprintf = jump__scnprintf,
- };
-diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-index 8a6f450c6f8e7..8f35232f7f22c 100644
---- a/tools/perf/util/disasm.c
-+++ b/tools/perf/util/disasm.c
-@@ -44,6 +44,7 @@ static int jump__scnprintf(struct ins *ins, char *bf, size_t size,
- 			   struct ins_operands *ops, int max_ins_name);
- static int call__scnprintf(struct ins *ins, char *bf, size_t size,
- 			   struct ins_operands *ops, int max_ins_name);
-+static void jump__delete(struct ins_operands *ops);
+ 	mptcp_rcv_space_init(msk, ssk);
+ 	msk->rcvq_space.time = mptcp_stamp();
+@@ -4038,6 +4037,7 @@ static int mptcp_stream_accept(struct so
+ 		}
  
- static void ins__sort(struct arch *arch);
- static int disasm_line__parse(char *line, const char **namep, char **rawp);
--- 
-2.53.0
-
+ 		mptcp_rps_record_subflows(msk);
++		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
+ 
+ 		/* Do late cleanup for the first subflow as necessary. Also
+ 		 * deal with bad peers not doing a complete shutdown.
 
 
 
