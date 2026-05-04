@@ -1,201 +1,191 @@
-Return-Path: <stable+bounces-243905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAh5BVL5+GkG3wIAu9opvQ
-	(envelope-from <stable+bounces-243905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 21:53:54 +0200
+	id PCBQKpf5+Gkr3wIAu9opvQ
+	(envelope-from <stable+bounces-243906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 21:55:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893CA4C3603
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 21:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F135A4C360D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 21:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48D913022AA3
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 19:53:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D5E3301D32C
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 19:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C359F3FADFA;
-	Mon,  4 May 2026 19:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082CE3EF674;
+	Mon,  4 May 2026 19:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UWzvg5S3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pdg7x25y"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011008.outbound.protection.outlook.com [52.101.57.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB7D3FAE0D
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 19:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777924404; cv=fail; b=ONjtmXEtac9cPupZ3Ri8uqBcH1iV6ITYQ2jlZkzhOGoO4rXrnCmEfx+IwqdPmQxiWBuL6FpGWJq5S+XR7VhpHX4F3s+CkO6VlLav6kMGoHB7xWkcnhM8F+4lSuyGEYgQ6qWFmQKsZZjBp8wg86SwYoRBI/Yu2Yr9m9m91BLf02g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777924404; c=relaxed/simple;
-	bh=XK08sKZsZH9ZAgnVOXCjjwHqDbBqhD2tj0JQkuVOlyM=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=beXqBrwz7RYSdazII2uXCzviNib74Eoe1L35hfEuLlCIzbRA7FnKT/z4gDmGxhheQc5aMgvuyWIRgr67q/43HFWmOjCp2PpAa2/oZo0vwT7fHRczR9dIJXCvQVt/4AePs8R8rhhfmmsZThg/VsY2jp0cN1rkufKNbS+OvAlKFek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UWzvg5S3; arc=fail smtp.client-ip=52.101.57.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Vz4LgHcOO5ZUHsrpWh66SsYCbn/IgwP4LAkh/mO/oFr/Oht5vmejM3iXsga4y6GYaTU855OjQyF7BGfPbT4jLwOpqRdnzYneoICjcKn7e4WDua4RDeszqPxHX4nKoqnc5zaRnFH7awpVArkAnQjmQkO5xhNjgXRjVNb2MbYE18Tv1dW4CnZNDOxxe8JE4r6zXCcvbN9T1wzhq1NFuB5qAWHS+ZGjH3uqVzcmLJbhqSoKYQXMKsZeIq6UPK4ZLaC3mhaEokdiiCvu+DRrM+JWb/eCzKfydfTi4oEMnHfmMgUirdOoAL22OzlFdBK2SzMoMi6TRK+kPAlj+vc11wYrIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vm8WTX9NofTiFh51W55mkcWzqls/w+L4gjET9Mc8E8M=;
- b=nQyYklzytONrdKxyRrIQOHkqGos7cSBsEw2VgJInygx3HvphbmCUoo0vEkYW0XT5RFxeIfsjQ/4lMGgRySYwgCUJJqlZ5ICJ0xEng0YqwAoLA+GTCz+uOp5sH2dPx9lfOuJQ9EFZGOGThT86ogoSH6rMcYP4RtkeM3/Bi49k3gZra7JEKLx6mphP3hh9C3bWgebEYY+LUTO/Z70EC9Baq8oSI65yR8nq3oPdiXrZJGRvYpexI13nE0wzEtgDoERb22jK7yelSl8ffdHTt7KJbI0sWpDr+h5mP+YWXOfpRW7vu01s136cbil7W0MA9IjiVQQvbnB5Nfk4auwB5S1pmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vm8WTX9NofTiFh51W55mkcWzqls/w+L4gjET9Mc8E8M=;
- b=UWzvg5S3thXwRvBCtllYxXC3n9csLe6Byo2Kb6Me8roVlRbH1Vxvfk7YpP8B40Z/AJCtMGjm/Jvutm5UfI67wlq0xKWhMmtvLPUsLB9K0qNgnhd/q1nZ5Kwz1lK9r/pE9Lc3hNNW3zBBo011097M0RrXOO6OdlrbQcqEqCnt2ww=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB4557.namprd12.prod.outlook.com (2603:10b6:806:9d::10)
- by SA3PR12MB9177.namprd12.prod.outlook.com (2603:10b6:806:39d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Mon, 4 May
- 2026 19:53:19 +0000
-Received: from SA0PR12MB4557.namprd12.prod.outlook.com
- ([fe80::885a:79b3:8288:287]) by SA0PR12MB4557.namprd12.prod.outlook.com
- ([fe80::885a:79b3:8288:287%5]) with mapi id 15.20.9870.023; Mon, 4 May 2026
- 19:53:19 +0000
-Message-ID: <ba6a67f4-086d-4e05-bd86-fba464778d8c@amd.com>
-Date: Mon, 4 May 2026 14:53:18 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [6.18.y] Missing TLB fix for 6.18.y
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: stable@vger.kernel.org
-Cc: mjanes@netflix.com, "Deucher, Alexander" <alexander.deucher@amd.com>
-References: <04e60ca1-5acd-4c18-aa48-f5650b301137@amd.com>
-In-Reply-To: <04e60ca1-5acd-4c18-aa48-f5650b301137@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR08CA0020.namprd08.prod.outlook.com
- (2603:10b6:805:66::33) To SA0PR12MB4557.namprd12.prod.outlook.com
- (2603:10b6:806:9d::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBC73E2756
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 19:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777924500; cv=none; b=fLcYS133lfsLbL5gamQeOyZb2rUYMAoCH9RS8aglvVjL8rfk2s2XWumaAmoU+rn67sVYXmBKQfQLS+oimAcvJoqPS1tSCZRjuevq8bHuWnYCgqGHGqFVdLa3n5xh8EXvnIc3pN3NSMu5AKNVgMIvGnQePqfOkMCrRgagpva9R2s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777924500; c=relaxed/simple;
+	bh=qOxZwAzYuutAK04f6tS2GHcGvRNV0RK8BWtRC5bkWUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nMXn4DuVgcNzflB5yQG0/ax7wNKc+6h7WD+inBeaIFF0Mbd5MvAOpr+sX6ksOrP+7zLcgsHALqmOmvCmRxZsHEolRVAQYhreIqS8LSRcP08cEqTseXwcmhVaCUBylyQAFYhp1bbutme0NnFayuiFRbIBYaL/IHaUhnMGwiod8eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pdg7x25y; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43d76dd4ee8so3558153f8f.2
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 12:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777924498; x=1778529298; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=erT6UBqquuMP02SpaxioEEnOQAd0rZiSq9AXy326h74=;
+        b=Pdg7x25y2qdPcpATWxts5QD7Iqn0HTNg2ppnvxs2QCaQgYPjOkaTCyO1kxwbSYclag
+         SPfnDH5k/w5bG5UEBwTP/9idlSJXmBFfj6bvv261ypSZUizfdHqNR/+vEDb2G4yGsuNh
+         j4UPLxgi/DSS99s/blAbhaGq6fysGxnwX7Jyty20K08azCRFMN7JAa99f5yvVOQCHjXJ
+         zo43r4mx2vTIt5U9Lvf7nBzaRZuveKCEx4kdOpaL6xTsBoLym5wtQs7iKfW4SVR5Rv3q
+         b3MEVf0YHbm4geNPhoQv1Yame959pDYJGxlYOyVw/o9GzFj6w111CsaYotlU5ywUZp1z
+         TqNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777924498; x=1778529298;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=erT6UBqquuMP02SpaxioEEnOQAd0rZiSq9AXy326h74=;
+        b=RXYZZsKFAEBt8eMunYK1tEKpfQ78FXnGAyZuor1NZBYJcP3EQlSHQhxmsMMFtTQFBg
+         KGVsegHCfZhPEcOXHQ/I8LVpj/TAybWabKMAZz/2PjobfVu4mwAd18Oizd8jvVj0+UQM
+         39iPJHOou7yOZjvdDS1KMUcXpYDM9iUwdVxAsevWCYFOmi0AN3WBzFqXE42R88p4NC4V
+         ZjsIX5vCzSiTJdr9CEqFMnbOt4baQtIqFaxE3YoNfMO9yL1JHxGDW64z9hpRg2WQ9qT8
+         7O+6oWf9C+NsJa7iRylB40gFvuaQNLm4xdGCgvHHNhYE7ObvbXpeXieImF2FSNWxWHFT
+         EIFg==
+X-Gm-Message-State: AOJu0YwLCTuKz1iVL3Z2OYkm6VvCaAADbQduRgkjw696hD8FO22KrYe+
+	35PLPY3+ANG9GduyFYycqJ+XbyuZhGOmI8PUvEHo/o8h3KYKItG+jLqa
+X-Gm-Gg: AeBDieustgcMKzOs/ycWUY8FioBhA+geLWUWbCRD/i1FC0Derylv+JSxSzrqmoVBBgK
+	597kcM3gorM0T51TZwkNXnNYJG2OUkAvGPqav4v9/gagGNiz9xvrnAOjG0/UL2BslARosdNvA9Z
+	3K1fkgqmwmsBCih4UNC2aX5y6x0z06q4SxgyLx1Wtj1Du5hcJs8Hx6q0JxamWPwJsImJzYENy9T
+	/TkszyE0CiaRVQHSC3mgfqHNLtAlWd78Pa0FT0NTmHH1IWQpyMSzV/abNhXjBZ3iEaKmwYpqvxi
+	lhlKgCKx+sMeCGdo7flxRe/chANuS6R4sk7aZ/pPGfv2P4bl7dwAy/nPbyNt2iKQcewDQuUalWS
+	jXHkX1PakLqzRQN2LSUqyOJmFMHE/l+SM0BBYDG8L/QOC+DrbLl5CKBMt0sxbbSfynPoRja36hh
+	BDcvMkofw+Vj5+RJRbb+qZ4wIlDZ++vJ0vecHZMmIh
+X-Received: by 2002:a05:6000:228a:b0:43f:df1b:9e07 with SMTP id ffacd0b85a97d-44bb6ab19c2mr18028339f8f.42.1777924497759;
+        Mon, 04 May 2026 12:54:57 -0700 (PDT)
+Received: from fedora ([156.207.149.151])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4500f8ce84csm275794f8f.19.2026.05.04.12.54.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 12:54:57 -0700 (PDT)
+From: Ahmed Elaidy <elaidya225@gmail.com>
+To: Andrei Vagin <avagin@gmail.com>
+Cc: stable@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	Ahmed Elaidy <elaidya225@gmail.com>
+Subject: [PATCH 6.18.y v3] mm: fix VM_SOFTDIRTY propagation on VMA merge
+Date: Mon,  4 May 2026 22:54:47 +0300
+Message-ID: <20260504195447.31794-1-elaidya225@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <CANaxB-xFcF7U=wJv8EqKy=j=-P3SN+sLQ9ytH8Ej69h03tqL8Q@mail.gmail.com>
+References: <CANaxB-xFcF7U=wJv8EqKy=j=-P3SN+sLQ9ytH8Ej69h03tqL8Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4557:EE_|SA3PR12MB9177:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e572f6a-3114-4e87-a0b0-08deaa16ca89
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	uGoZRokDr68xOWgDRFcTCW6e7uOVPve1W6/niEq8T6Fg0AhGHdpz+H5Eiu/SQOoAlTNi3ySYbrPkyZ/DBk783PZFzjAudbG8OB/c4t8SD3OKjHojFJDNRVlhH55hCmSH9MN+nO3GsXpoeGJfxNx8I/gmtaNYB2T9N9Hw3+KCRebLCQlBfijrvT3cSM6DBpRYcgxb2/j65jrc0tRtQXEudaqxJM7XYEStvc8dijMXtz/aLenVe09oRNbq8N+ZOjmXjJN4JoZXanhWIQqa4zgVbkVdC1PDWndtl9qYX6ZUTWigv2z1gN6baHy1trcFfcN4ufVTSJiMIPpaytAMXQkdA90UgqrOHb/QGA5bQMCjUjlKn6KP9vBk32CK8gWjKvlxMKPfB2akMAfAvWwThNksmX0KWO43DUDnYlpF/IhEoeA5LYEkJCRzQvOSMgeBHtf0TfibrtNp4kBJo2vGN4kFkIOy/sQOJHLl5NxbkUSnz7cmd4UT7XKhpI9Ni+O4bvGO0y/4mAzdWqHSIVlaD6Po2zQ/eeOBJLASP7od9mYpJqdRotQ7OB+LdefiWmZzvEuSLRmhVOwSfP7CvCrKRO6qZmOMioRZJwZSj4pHOquycCmDeT6ZtoGb1JL6DHemGkJVQE01zafkjAj8zZAbJmbnSr9rSNv34k5nsk30Sllc3/LW21Wl+49UgC43IogfpHsG
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4557.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ek5oTy9kOGxtYnRsOHJXaGEyOUFrbzRyNzk0OWdzT0QxZm9xM2h1SXlvOXZi?=
- =?utf-8?B?d0tDQ3JRWlBycUQ0MWhNd3lPcWRDRGxnMXV0a3BiWmgvN01tWXVjZFdnVURa?=
- =?utf-8?B?YUp5ckw1Vk43V2NWdFNJMElhNk5ZRnVOOGJGZE44eVhsTVBCa2ZwbE1GK0ta?=
- =?utf-8?B?V2RybmhLMHVsYkdMMUJZT3JiS1kwbTRBSTI1TDJQRzBsMFUzZ0pPNGJFN0lI?=
- =?utf-8?B?ZjI5dE9LR1A4MVIzZjQ5c1YyQTFoNzgydm90dDNUQ2I4V3dEQWlnTUgrVWFz?=
- =?utf-8?B?N24yNWthZDZrNVJnUUhZTkVja1l0VWE2TkxZak5VRXQzaG1INWpJeURPNXpj?=
- =?utf-8?B?RUdSb1gyMkpTdVpBalM4ZFZZZkNIZjJiU3dVNmFtTHBzWEs4MEhTQzZBRzBl?=
- =?utf-8?B?eGwrU1BYbzArNkVtY2cvQ21WNTB5OGM5aWUwdTBYS0VPOS91cUJBY29WdjBP?=
- =?utf-8?B?dHlGQUYzeENJM2NPNCtiV0x2UkZ5dXN0azJ3eVJRR1JMRmdUZVB0S3VCNWZ3?=
- =?utf-8?B?eFdsQUNCVG5uRVlaS3VQckVoYnNWaVVyTjdRK01ZT1hFdFBuVlkxNVZCWFJj?=
- =?utf-8?B?d3V5SEwvV0ZKQlVzVE1iVjlJWWxBMmVpWll5S3hxWENRZ08wYVRJOXpSSm4r?=
- =?utf-8?B?WDRDdU4zOXV1OTN5cmhJVXd6M3l6RWE2T01sT3VxUVN3dTJGaDVnaVdBQzFj?=
- =?utf-8?B?R2t0cW1EN0VFTzRsVENMRHpVSTFPTzg4c3RwakxSUjNnRkNYWURsMThGbUVv?=
- =?utf-8?B?bTgvSVFvVnNDNURMbVNhSEViZE15K1duTXpMeW5lNXFmOXFGQmhYdGlDRWdC?=
- =?utf-8?B?bWJKRytaNE13YmcwZUxRcURkem0xRW5UTkZ6d2xsalM1a0xLYXJKQWpNMThK?=
- =?utf-8?B?N0xoOFJ5R0x1ZDQyeHlGY250THNYdy9lTEVUbHExYzAvMWM3UHdmUG1hWWE5?=
- =?utf-8?B?UGNrMEdBd2JoNWdFelZ4eVliY0xXNEhNVXZ2NUpCcW9vM3JFMXUvdzBKbGdW?=
- =?utf-8?B?c1FuM0dBdy9Od0Q5Q2dFQmxLQkFkK005RWhLamFQdXlKMVhWMHUyeVByMXJq?=
- =?utf-8?B?alY3QXRYZ2tNSkloeld6U1VSclYzZEh5SGx5NXltS1lPc0Z5SmVmV1RFNzBy?=
- =?utf-8?B?RzhnclZubTZ3SHpCYVdSZnpKVXYyZjdBdWtSeDBqT08wL05BdzhNNm9RaXFl?=
- =?utf-8?B?QVNxNWhHbTlvWkNNYjMva2svU1AvUG9kL1prc0duY2hwN3NJbExsTzJKa0RZ?=
- =?utf-8?B?NVVxVHpWTGJMeXZmMmdlaHY1SjR1R1A3ZVo1RFdLazF3c1BHcXFaaTBUaVE3?=
- =?utf-8?B?aW1UdUpSdVhMdWx3UElsR2pNK1lyZ1liM3hWNFpmajlSS1A4aEhIZVFzSjNK?=
- =?utf-8?B?aUJ5MGhGS09DVnEzRlRYRjBsTUdUaGthTGYxdmRpNkZhMFZ5SzJFOWhoUDVM?=
- =?utf-8?B?am0rdE1BVHcrUDNvUENtdG52S0Exb0J5azYzU1RJMGt3RWNWekdqdUZ0QWc3?=
- =?utf-8?B?YmlwaXhYWGpOcE1rK1lTZkpubENiaGNoMVBFcG0yRGI4UWNxYjlqamZiWTlV?=
- =?utf-8?B?ai9JZ3FEandvS1Z5TkM1TmMvZDN2c3pyWmdDV0dCNWx0L0dqT1ZRckYyOGJ3?=
- =?utf-8?B?WTlaRXZ5UmFtc3pycitUSGtnZm5UaXp4c0Qrbk5uUDA1SmJkUXZaM1lCUGoz?=
- =?utf-8?B?YjNpMDMzdjljZEFBeHNoZmJONk1pRWFSV3Zocyt3a3FxT2ljQWNnMUJNYU5l?=
- =?utf-8?B?a2twWlRrYjJZNEtLdzZyS3hpM2xqWXZ0MGN4QmxIbGlLai8wTUtQYUxXYTk4?=
- =?utf-8?B?UnI3YVpYbXFUOHNUT1BOL010RENGa0lkb2VtZ3B4WWdSZUhJNVZmclZwS3c4?=
- =?utf-8?B?cjZkTHUvc2JQa1lUN3FnVUdVWVpNN25CMzRnTkxkNGYvVE1SSUlaWFg3N2ov?=
- =?utf-8?B?RHBkb25iQ3c5RUZib1k0YnNDbXRTdEk1RGFoWFU5TnBOYXh4YVFYYlBHOC95?=
- =?utf-8?B?SWZCY3dsdm5FRkUxeXowK1J1NVJTOCs4d0NHNmNNNXA0NHVFT0JrRVpIU3Zx?=
- =?utf-8?B?SmJTVFNydTFkK0MwWml0WTdVYW9aVWdsN2F6R3lRMUpRZWZlTmtzRVpBL0RO?=
- =?utf-8?B?QmRKN0o1UnVZWTJnbzF5Q3dCVXEvT0grRmYwVGVhQ0dXY0diVFNyWU14Z3Ex?=
- =?utf-8?B?YlY1b2dqYm5XWlpuSm1QWEliL3NSMGo2RXJKWlpycFkzSWs0eFFicGpsWHRz?=
- =?utf-8?B?YWl4QUFPdSs2SFJyRXpSbzJpUkN3R0UydmYva2tMV1lPV2d1QXl2UURSMXVK?=
- =?utf-8?B?UWtaRks3RlVPL1hSOFdPazFibk5nNVozUmFUU284VkhKbUFocjc3dz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e572f6a-3114-4e87-a0b0-08deaa16ca89
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4557.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2026 19:53:19.8360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qZhY4ZRcssuAUzKhHa4KwKb852wM06eCTcC6jW236IxBa0OwjTJZ65cC2lIdow5RjLL8kIAfAyzjp8a/rvwlUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9177
-X-Rspamd-Queue-Id: 893CA4C3603
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F135A4C360D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[amd.com:+];
-	TAGGED_FROM(0.00)[bounces-243905-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243906-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,oracle.com,linux-foundation.org,kvack.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mario.limonciello@amd.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[elaidya225@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
+During VMA merging, such as through mprotect(), VM_SOFTDIRTY flags could be
+lost. This breaks tools relying on soft-dirty tracking, such as CRIU
+incremental dump/restore.
 
+Upstream resolved this using a broader VM_STICKY infrastructure (commit
+bf14d4a05387 "mm: propagate VM_SOFTDIRTY on merge"). To minimize churn and
+risk in the stable 6.18.y tree, this patch skips backporting the entire
+VM_STICKY series (9 patches). Instead, it introduces a minimal standalone fix.
 
-On 5/4/26 14:43, Mario Limonciello wrote:
-> Hi,
-> 
-> Mark Janes noticed that commit e9f58ff991dd4 ("drm/amdgpu: rework how we 
-> handle TLB fences") was missing from 6.18.y.
-> 
-> This went into 7.0-rc5 and was backported to 6.19.y but not 6.18.y.
-> 
-> This is because this was one of those cases that the "Fixed" commit was 
-> in both 6.18 and 6.19.y as different hashes:
-> 
-> b4a7f4e7ad2b120a94f3111f92a11520052c762d
-> f3854e04b708d73276c4488231a8bd66d30b4671
-> 
-> So can you please backport e9f58ff991dd4 to 6.18.y?
-> 
-> Thanks,
+VM_SOFTDIRTY is intentionally excluded from normal flag comparison to allow
+merging in mprotect and mmap. This patch ensures the resulting merged VMA retains
+the VM_SOFTDIRTY flag if either of the original VMAs had it.
 
-Alex just noted there are a few other dependencies.
+Fixes: 34228d473efe ("mm: ignore VM_SOFTDIRTY on VMA merging")
+Suggested-by: Andrei Vagin <avagin@gmail.com>
+Cc: stable@vger.kernel.org # 6.18.x
+Cc: lorenzo.stoakes@oracle.com
+Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
+---
+ mm/vma.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-f4db9913e4d3 ("drm/amdgpu: validate the flush_gpu_tlb_pasid()")
-e3a6eff92bbd ("drm/amdgpu: Fix validating flush_gpu_tlb_pasid()")
-9163fe4d790f ("Revert "drm/amdgpu: don't attach the tlb fence for SI"")
+diff --git a/mm/vma.c b/mm/vma.c
+index 5815ae9e5770..2988f6b3feff 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -978,6 +978,14 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 	if (err || commit_merge(vmg))
+ 		goto abort;
+ 
++	/*
++	 * VM_SOFTDIRTY is excluded from normal flag comparison to allow
++	 * merging in mprotect, but we have to ensure the result is correctly
++	 * marked with it if either side had it.
++	 */
++	if ((vmg->target->vm_flags ^ vmg->vm_flags) & VM_SOFTDIRTY)
++		vm_flags_set(vmg->target, VM_SOFTDIRTY);
++
+ 	khugepaged_enter_vma(vmg->target, vmg->vm_flags);
+ 	vmg->state = VMA_MERGE_SUCCESS;
+ 	return vmg->target;
+@@ -1098,6 +1106,14 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
+ 	 * following VMA if we have VMAs on both sides.
+ 	 */
+ 	if (vmg->target && !vma_expand(vmg)) {
++		/*
++		 * VM_SOFTDIRTY is excluded from normal flag comparison to allow
++		 * merging, but we have to ensure the result is correctly
++		 * marked with it if either side had it.
++		 */
++		if ((vmg->target->vm_flags ^ vmg->vm_flags) & VM_SOFTDIRTY)
++			vm_flags_set(vmg->target, VM_SOFTDIRTY);
++
+ 		khugepaged_enter_vma(vmg->target, vmg->vm_flags);
+ 		vmg->state = VMA_MERGE_SUCCESS;
+ 		return vmg->target;
+-- 
+2.54.0
 
 
