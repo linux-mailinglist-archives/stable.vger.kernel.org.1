@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-243617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QL/GIOat+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:06 +0200
+	id OAyeGLWw+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAB04BF9F2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0E54BFF39
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 897793034588
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 496E930B9B9E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E580B3DEAD6;
-	Mon,  4 May 2026 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775B53E1CF5;
+	Mon,  4 May 2026 14:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ossNCvZw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsYSOvb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D153DEAD3;
-	Mon,  4 May 2026 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3937B3E1CFB;
+	Mon,  4 May 2026 14:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904344; cv=none; b=lL7EDTudf+HCu9ikSmXdi6l+EtHyVuQ9lH8fUDrTW1nLtsX9GnPq2BtqEdYPDNLHsWwzUgUIV0JAs4zRXavLL0vo/5HwfVeSJYBIV0HARE2KPuvyqf0QTzRgeieH58yUBtZF2UQ1HrbNLF6g7DwYgrY4J6YxlyROMgGJtW5j/2g=
+	t=1777904830; cv=none; b=CbBUMGfQE8ycn+SKeZmPjrx7TefSbaIXrmdmtz7ywp9Rbv5yOvUfDQt89DEqiFZb5h5igOJQ4lbS32anrcqTxGUjRjz92lIbwY1YjRHz+jH9tlr1c/dg5Tba0rLAcxZKa8l/fjdhWjJu9UHIdibWVXGXWAIt6aQ/9/s8pUkhi38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904344; c=relaxed/simple;
-	bh=GZNf80S3NOZf1cA45nGX5jcYOgT4BIFvlVle8lm2dWg=;
+	s=arc-20240116; t=1777904830; c=relaxed/simple;
+	bh=aJ89LwdJX/tHRtxwPq1CO2UxC9x8gF8x/vvhT+YzBeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIsuUuZM24+Y4JU0Yi//thdMeA2C3qb0BT3xvUZ2BID5gRtOp9NHz7F4WaLXzXHuDYw1VwgExPRlgbxDbXKlGSeLmz+QuRE3BDXXRZtgPKDyiQCLYtmj0+HH9Slrh0UZgFztJa402kpLZSfV6R/o8tbW5l0glhrVp13AXyOByYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ossNCvZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4E6C2BCB8;
-	Mon,  4 May 2026 14:19:04 +0000 (UTC)
+	 MIME-Version; b=PzPQVxusZyu2eP7tLK0jS7qYoUc+fVVuxZM8maG8Be0+ayFnfyRXPQFAq5Yi+j0F4xupcju6ZzIrYl4y8XUqNq+m4mE4jgfc+/whjMrQblM9pjDkz9skNv7hn/9pITEvDkO0c/ukkun+QdOt4jdOSWox6iSKGpNrROLgJLHveAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsYSOvb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B75C2BCB8;
+	Mon,  4 May 2026 14:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904344;
-	bh=GZNf80S3NOZf1cA45nGX5jcYOgT4BIFvlVle8lm2dWg=;
+	s=korg; t=1777904830;
+	bh=aJ89LwdJX/tHRtxwPq1CO2UxC9x8gF8x/vvhT+YzBeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ossNCvZwTBiJB5PeHogYTl6KhbcBpcuXQz4jFIf/loHNuXmPeGFQWcvh5QHQr9cKG
-	 rJFjKBIVKjUqEfEnYI9i3roiwQY9abf9OL80Vk4DJkqBcL/hYGvfxyU9K5ZN2qhmoA
-	 QcjOVCZ5rcBiDMm8GlYGoZ+OG2cOxZn8dRgWQm1w=
+	b=XsYSOvb2HhAatg/HV0AJGn6lAswSGBuzutIR8VmKzadQX0bQ2BuWp+0oV71g/kjNu
+	 6EaQNpUzb09bAks3fVpQ8IqVBQPHwWWr9NRxov4xe061qZAU9QFVjc5gS2Hz1n8YXH
+	 K2iQlwrh14axy3ve0hi58BFwxl749zo4MbMPVEJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2afd7e71155c7e241560@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 269/275] ALSA: caiaq: fix usb_dev refcount leak on probe failure
+	Oliver Neukum <oneukum@suse.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 190/215] media: rc: ttusbir: respect DMA coherency rules
 Date: Mon,  4 May 2026 15:53:29 +0200
-Message-ID: <20260504135153.028099945@linuxfoundation.org>
+Message-ID: <20260504135137.302737461@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +65,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7EAB04BF9F2
+X-Rspamd-Queue-Id: CC0E54BFF39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243617-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-243807-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,2afd7e71155c7e241560];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,mess.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 7a5f1cd22d47f8ca4b760b6334378ae42c1bd24b upstream.
+[ Upstream commit 50acaad3d202c064779db8dc3d010007347f59c7 ]
 
-create_card() takes a reference on the USB device with usb_get_dev()
-and stores the matching usb_put_dev() in card_free(), which is
-installed as the snd_card's ->private_free destructor.
+Buffers must not share a cache line with other data structures.
+Allocate separately.
 
-However, ->private_free is only assigned near the end of init_card(),
-after several failure points (usb_set_interface(), EP type checks,
-usb_submit_urb(), the EP1_CMD_GET_DEVICE_INFO exchange, and its
-timeout). When any of those fail, init_card() returns an error to
-snd_probe(), which calls snd_card_free(card). Because ->private_free
-is still NULL, card_free() never runs, the usb_get_dev() reference
-is not dropped, and the struct usb_device leaks along with its
-descriptor allocations and device_private.
-
-syzbot reproduces this with a malformed UAC3 device whose only valid
-altsetting is 0; init_card()'s usb_set_interface(usb_dev, 0, 1) call
-fails with -EIO and triggers the leak.
-
-Move the ->private_free assignment into create_card(), immediately
-after usb_get_dev(), so that every error path reaching snd_card_free()
-balances the reference. card_free()'s callees (snd_usb_caiaq_input_free,
-free_urbs, kfree) already tolerate the partially-initialized state
-because the chip private area is zero-initialized by snd_card_new().
-
-Fixes: 80bb50e2d459 ("ALSA: caiaq: take a reference on the USB device in create_card()")
-Reported-by: syzbot+2afd7e71155c7e241560@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2afd7e71155c7e241560
-Tested-by: syzbot+2afd7e71155c7e241560@syzkaller.appspotmail.com
+Fixes: 0938069fa0897 ("[media] rc: Add support for the TechnoTrend USB IR Receiver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260426001934.70813-1-kartikey406@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ kept kzalloc(sizeof(*tt), GFP_KERNEL) instead of kzalloc_obj() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/device.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/rc/ttusbir.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -423,6 +423,7 @@ static int create_card(struct usb_device
+--- a/drivers/media/rc/ttusbir.c
++++ b/drivers/media/rc/ttusbir.c
+@@ -32,7 +32,7 @@ struct ttusbir {
  
- 	cdev = caiaqdev(card);
- 	cdev->chip.dev = usb_get_dev(usb_dev);
-+	card->private_free = card_free;
- 	cdev->chip.card = card;
- 	cdev->chip.usb_id = USB_ID(le16_to_cpu(usb_dev->descriptor.idVendor),
- 				  le16_to_cpu(usb_dev->descriptor.idProduct));
-@@ -511,7 +512,6 @@ static int init_card(struct snd_usb_caia
- 	scnprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
- 		       cdev->vendor_name, cdev->product_name, usbpath);
+ 	struct led_classdev led;
+ 	struct urb *bulk_urb;
+-	uint8_t bulk_buffer[5];
++	u8 *bulk_buffer;
+ 	int bulk_out_endp, iso_in_endp;
+ 	bool led_on, is_led_on;
+ 	atomic_t led_complete;
+@@ -186,13 +186,16 @@ static int ttusbir_probe(struct usb_inte
+ 	struct rc_dev *rc;
+ 	int i, j, ret;
+ 	int altsetting = -1;
++	u8 *buffer;
  
--	card->private_free = card_free;
- 	err = setup_card(cdev);
- 	if (err < 0)
- 		goto err_kill_urb;
+ 	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
++	buffer = kzalloc(5, GFP_KERNEL);
+ 	rc = rc_allocate_device(RC_DRIVER_IR_RAW);
+-	if (!tt || !rc) {
++	if (!tt || !rc || buffer) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
++	tt->bulk_buffer = buffer;
+ 
+ 	/* find the correct alt setting */
+ 	for (i = 0; i < intf->num_altsetting && altsetting == -1; i++) {
+@@ -281,8 +284,8 @@ static int ttusbir_probe(struct usb_inte
+ 	tt->bulk_buffer[3] = 0x01;
+ 
+ 	usb_fill_bulk_urb(tt->bulk_urb, tt->udev, usb_sndbulkpipe(tt->udev,
+-		tt->bulk_out_endp), tt->bulk_buffer, sizeof(tt->bulk_buffer),
+-						ttusbir_bulk_complete, tt);
++			  tt->bulk_out_endp), tt->bulk_buffer, 5,
++			  ttusbir_bulk_complete, tt);
+ 
+ 	tt->led.name = "ttusbir:green:power";
+ 	tt->led.default_trigger = "rc-feedback";
+@@ -351,6 +354,7 @@ out:
+ 		kfree(tt);
+ 	}
+ 	rc_free_device(rc);
++	kfree(buffer);
+ 
+ 	return ret;
+ }
+@@ -373,6 +377,7 @@ static void ttusbir_disconnect(struct us
+ 	}
+ 	usb_kill_urb(tt->bulk_urb);
+ 	usb_free_urb(tt->bulk_urb);
++	kfree(tt->bulk_buffer);
+ 	usb_set_intfdata(intf, NULL);
+ 	kfree(tt);
+ }
 
 
 
