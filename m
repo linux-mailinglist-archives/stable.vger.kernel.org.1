@@ -1,186 +1,226 @@
-Return-Path: <stable+bounces-243022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAK/LrmV+GkOwwIAu9opvQ
-	(envelope-from <stable+bounces-243022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:48:57 +0200
+	id YEfDJrSV+GkOwwIAu9opvQ
+	(envelope-from <stable+bounces-243021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:48:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EC74BD361
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008754BD35A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9D6D301BCC0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:48:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C96C30191B5
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854263D75DD;
-	Mon,  4 May 2026 12:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E134A3D6CAC;
+	Mon,  4 May 2026 12:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kTV0ng8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkkJ/sXV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317203D3CF6
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0718B3D6CBC
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777898930; cv=none; b=nILajZmOthqlIJ10sjsvy4qUW1HA5N14YlfpBeI4lpURM4lGP5UBq1rTbJKHu0Jgk+kU29B6HHFJAe2M45McpB9rm7RC/JfRU59lekMdBPX2U8M/Z/C+wmfwRT3sry1yt8E41KH6DXEXx4Z6TI6U89AzFtZw9RLSmmDlXKcRDy4=
+	t=1777898929; cv=none; b=SR689VNn4jBjtuv/zFjUCZNq/jg5c7mFdeG/+o/DaZZMDbXq/Xu+rUh3lfdXebs689YY67To8yWD/BViUTvFc31Fm9OjW6BXjTmVA9MHYLCpN7btASH5ei/am1TZAKDDLDW/8pXdqXVgEP0XrKEH+O0KGJHp1uqdg1/wXqLzewk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777898930; c=relaxed/simple;
-	bh=lH1s4f1DsUeMWlf3k4JQdvGtPacKmGPSl5TfO1+bXNk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3/3qjmDYktGftwaEbLGAkGSH06/iON7iKhtVmHtA+iLFIzYYYS+DhuCuyIpUu6QZa5BWSJyHBDiCmr00rEJOi10b9mCPGGhypPQaXCWh3MraABBwmnGAlB0NQfJnCnkgmUzrtyjwp8MgeRjHV9I48rPeZK+Y4iXCjwbxpRF4mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kTV0ng8r; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a3d42263e4so4721151e87.2
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 05:48:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777898924; x=1778503724; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Hp5CCZAjAcFJLhnHM/r6dRzm24SM3LtlL2s2xjPAQQ=;
-        b=kTV0ng8rUOnQWbzbNTt64ZahPZULzCKBET07M0IVlowy6KeRD47g+/f+TVHXEzdyfw
-         n5QfygX51wuIz+mW9dlgVrgcCcg7FseRb+D3cM2flqIa9Yc3sv2eV35bz+5tp6ZlUNq2
-         3gGa21lgOL8nkdaNZnXMowAKXbMkW5EmK6h3In3DlWIddsCSDkdfSEYtfj3QGSe11SEU
-         PYwikP2CTeRhx5Bgq2fb8iuWhW2qjhQ7l91CclnyI6/Z/Sr/RuQOPMLFoQqZ5TxSf6c+
-         t4qFitoMqX1oRTUOzkm0Mi9O5h8JpH5YjbwU/DE22tcX3pAWnTuX/tsyMpwGt2cpFq/S
-         eLXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777898924; x=1778503724;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6Hp5CCZAjAcFJLhnHM/r6dRzm24SM3LtlL2s2xjPAQQ=;
-        b=CbT8OfIcdyNDf4OKoomS6xKSyySivhNbK0KxdZJjWmoCNYpnAzxsFdM3CTK0wv6NYR
-         5C3yTvq1thAmjJBHXRwZsf2kua0BAh7hRjBGHShRr8//SPU62LetCEDIRxwbromtlIcx
-         8xh8dVaBSpfBJ8kAeKUHNyQ3s/D9yWSmEEE91xmZovKzAc0yue6a3PoueGDd3BLPECBK
-         TLOjwAqm7BnIpxHaEItgDTOXJyYmMYlFf71DNrFXMs47K8sD0jM+YPHK9oCgME1kXenq
-         R2k7UaYpxJ6Cw7T2SEI8wvvAnshDbNMcPFg5VrPvkMSQ++PmVtvDQ09x8IFj9s4A1Uxu
-         vrHA==
-X-Forwarded-Encrypted: i=1; AFNElJ+/hHWSe4o51wEfaTfp+LDI3RaBkmiiyxl+bKcxXL2o3wZAFHkYWR6RzvXfd/30B/cSyBVgqP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtmypuiTneUwA2SOrDFJpL7FmM15JJur2qbpJYQrWyH7FpPWb1
-	Zgnx9rPQDuZsmb9EYAjok4en+z7L8wMfW1SZj45asxsjBau0eOQAi0/H
-X-Gm-Gg: AeBDieswD2XZ7+PTyRJ/oWvl+qOa5T0UZaknN3eloe0kqDk3aEFAsSGXIRGHIu7KCIg
-	bMCMY9mustPReeovyKVVHEvbDT2iXfvZEv0uZKIanpdKjlOP8IzFUtfeybq/UOeLbMiMHab9LD/
-	uNDTKugeqQmGp04z7i56sv6V8JiMfPgstMqVbZiIrGBZr7CEWq2fNIcedmZKXxECFcqafB4KLOa
-	hzbEq/m5BcZnPy+Qlf/DzMFoWNsVbu3x+he6ojUpR/apZLXJVXAl+SKZTrdSiVJffk+3lDVIP/D
-	xa+c+6I9VnDXwLzfMa6C/l/284KbO3M6JDQbx8BNEDuTZ+5atK+ikUxENYE567KChvQGlpcVbL2
-	shQ9nIbEXdCN+U2G0T6ahlI54hDDDvOSf6b9s6QnmchircgFHUvfgbPl4RHjoQBLHvPq8RG24O3
-	HZb5KgfQTIOIhfChkr8bxX9nqpYTlHBtEjyoiFSAbj3q2At5F4ieeQp0ym+42feGHVZURM/DX2v
-	dYw1ElE4w==
-X-Received: by 2002:a05:6512:3b0a:b0:5a8:5276:f0db with SMTP id 2adb3069b0e04-5a862fbccfcmr2796502e87.15.1777898924030;
-        Mon, 04 May 2026 05:48:44 -0700 (PDT)
-Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([193.0.150.248])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a85c34165esm2922831e87.56.2026.05.04.05.48.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 05:48:43 -0700 (PDT)
-From: Valery Borovsky <vebohr@gmail.com>
-To: Lee Jones <lee@kernel.org>
-Cc: Ben Dooks <ben@fluff.org.uk>,
-	Vincent Sanders <vince@arm.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	Valery Borovsky <vebohr@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mfd: sm501: fix reference leak on failed device registration
-Date: Mon,  4 May 2026 15:48:41 +0300
-Message-ID: <20260504124841.443496-1-vebohr@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <6b4a9f5ae8a316b6f07f72f2fe3f0b8fc5f18dff.1777889235.git.vebohr@gmail.com>
-References: <6b4a9f5ae8a316b6f07f72f2fe3f0b8fc5f18dff.1777889235.git.vebohr@gmail.com>
+	s=arc-20240116; t=1777898929; c=relaxed/simple;
+	bh=iZtgPic3r4DrK20xbO+hJNjWiUOGK8dwDOfa1avyVl8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F2ZXD8M8WE9UPPL4ebQ5IxTVLHlK09Q4tSFmB4AMVBLpQSIFmGKv1C6Kf+SvAV4FjEzCuPrYA8788WDCnInvaQHmykE85eilYf/gqfXim6oO4u+9NUrZl7TIkCmTChqn46HX3l87ivlNJ5ZDNlwM9Gxqic8doSFIGmTM4wzq2vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkkJ/sXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2813C2BCB8;
+	Mon,  4 May 2026 12:48:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777898928;
+	bh=iZtgPic3r4DrK20xbO+hJNjWiUOGK8dwDOfa1avyVl8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=jkkJ/sXVNOxHAmdrYf10x4aK+WmsHXYQASiP5yf+Z3Xqn4IMqECGL04Rmjgsa1+if
+	 gnFZJmJMzFuxFOiCHF/yRNEx3yfaSRlgueKjbkDznncuCswUIk/7bdvhWvFMcNHUN4
+	 +xLML4QeT6b+L4dnL1ZcBSumYuZZxkL2+hH0SyUk=
+Subject: FAILED: patch "[PATCH] net: stmmac: Prevent NULL deref when RX memory exhausted" failed to apply to 7.0-stable tree
+To: cfsworks@gmail.com,CFSworks@gmail.com,linux@armlinux.org.uk,pabeni@redhat.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 04 May 2026 14:48:45 +0200
+Message-ID: <2026050445-outscore-much-bbe7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 42EC74BD361
+X-Rspamd-Queue-Id: 008754BD35A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[fluff.org.uk,arm.linux.org.uk,linux-foundation.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-243022-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-243021-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,armlinux.org.uk,redhat.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,msgid.link:url,armlinux.org.uk:email]
 
-When platform_device_register() fails in sm501_register_device(), the
-platform device allocated by sm501_create_subdev() has its struct device
-initialized by device_initialize() inside platform_device_register(). The
-error path logs the error but returns without dropping the device reference,
-leaking the memory allocated by sm501_create_subdev():
 
-  sm501_register_device()
-    -> platform_device_register(pdev)
-       -> device_initialize(&pdev->dev)   /* kref = 1 */
-       -> platform_device_add(pdev)       /* fails */
-    <- dev_err() called, kref still 1, sm501_device_release never called
+The patch below does not apply to the 7.0-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The device's release callback (sm501_device_release) calls kfree() on the
-containing sm501_device structure. Without platform_device_put(), this
-memory is never freed.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Per platform_device_register() kernel-doc:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0bb05e6adfa99a2ea1fee1125cc0953409f83ed8
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050445-outscore-much-bbe7@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
-  NOTE: _Never_ directly free @pdev after calling this function, even if
-  it returned an error! Always use platform_device_put() to give up the
-  reference initialised in this function instead.
+Possible dependencies:
 
-Fix this by calling platform_device_put() in the error branch, which
-triggers sm501_device_release() and frees the allocated memory.
 
-Fixes: b6d6454fdb66 ("[PATCH] mfd: SM501 core driver")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0bb05e6adfa99a2ea1fee1125cc0953409f83ed8 Mon Sep 17 00:00:00 2001
+From: Sam Edwards <cfsworks@gmail.com>
+Date: Tue, 21 Apr 2026 21:45:03 -0700
+Subject: [PATCH] net: stmmac: Prevent NULL deref when RX memory exhausted
+
+The CPU receives frames from the MAC through conventional DMA: the CPU
+allocates buffers for the MAC, then the MAC fills them and returns
+ownership to the CPU. For each hardware RX queue, the CPU and MAC
+coordinate through a shared ring array of DMA descriptors: one
+descriptor per DMA buffer. Each descriptor includes the buffer's
+physical address and a status flag ("OWN") indicating which side owns
+the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
+the flag and the MAC is only allowed to clear it, and both must move
+through the ring in sequence: thus the ring is used for both
+"submissions" and "completions."
+
+In the stmmac driver, stmmac_rx() bookmarks its position in the ring
+with the `cur_rx` index. The main receive loop in that function checks
+for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
+network stack (NULLing the pointer), and increments `cur_rx` modulo the
+ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
+position with `dirty_rx`, allocates fresh buffers and rearms the
+descriptors (setting OWN=1). If it fails any allocation, it simply stops
+early (leaving OWN=0) and will retry where it left off when next called.
+
+This means descriptors have a three-stage lifecycle (terms my own):
+- `empty` (OWN=1, buffer valid)
+- `full` (OWN=0, buffer valid and populated)
+- `dirty` (OWN=0, buffer NULL)
+
+But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
+the past (see 'Fixes:'), there was a bug where the loop could cycle
+`cur_rx` all the way back to the first descriptor it dirtied, resulting
+in a NULL dereference when mistaken for `full`. The aforementioned
+commit resolved that *specific* failure by capping the loop's iteration
+limit at `dma_rx_size - 1`, but this is only a partial fix: if the
+previous stmmac_rx_refill() didn't complete, then there are leftover
+`dirty` descriptors that the loop might encounter without needing to
+cycle fully around. The current code therefore panics (see 'Closes:')
+when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
+catch up to `dirty_rx`.
+
+Fix this by explicitly checking, before advancing `cur_rx`, if the next
+entry is dirty; exit the loop if so. This prevents processing of the
+final, used descriptor until stmmac_rx_refill() succeeds, but
+fully prevents the `cur_rx == dirty_rx` ambiguity as the previous bugfix
+intended: so remove the clamp as well. Since stmmac_rx_zc() is a
+copy-paste-and-tweak of stmmac_rx() and the code structure is identical,
+any fix to stmmac_rx() will also need a corresponding fix for
+stmmac_rx_zc(). Therefore, apply the same check there.
+
+In stmmac_rx() (not stmmac_rx_zc()), a related bug remains: after the
+MAC sets OWN=0 on the final descriptor, it will be unable to send any
+further DMA-complete IRQs until it's given more `empty` descriptors.
+Currently, the driver simply *hopes* that the next stmmac_rx_refill()
+succeeds, risking an indefinite stall of the receive process if not. But
+this is not a regression, so it can be addressed in a future change.
+
+Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
 Cc: stable@vger.kernel.org
-Signed-off-by: Valery Borovsky <vebohr@gmail.com>
----
- drivers/mfd/sm501.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Link: https://patch.msgid.link/20260422044503.5349-1-CFSworks@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
-index 0ee6d8940e69..8276456b142f 100644
---- a/drivers/mfd/sm501.c
-+++ b/drivers/mfd/sm501.c
-@@ -704,9 +704,11 @@ static int sm501_register_device(struct sm501_devdata *sm,
- 	if (ret >= 0) {
- 		dev_dbg(sm->dev, "registered %s\n", pdev->name);
- 		list_add_tail(&smdev->list, &sm->devices);
--	} else
-+	} else {
- 		dev_err(sm->dev, "error registering %s (%d)\n",
- 			pdev->name, ret);
-+		platform_device_put(pdev);
-+	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index ca68248dbc78..3591755ea30b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5549,9 +5549,12 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+ 			break;
  
- 	return ret;
- }
--- 
-2.51.0
+ 		/* Prefetch the next RX descriptor */
+-		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+-						priv->dma_conf.dma_rx_size);
+-		next_entry = rx_q->cur_rx;
++		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
++					       priv->dma_conf.dma_rx_size);
++		if (unlikely(next_entry == rx_q->dirty_rx))
++			break;
++
++		rx_q->cur_rx = next_entry;
+ 
+ 		np = stmmac_get_rx_desc(priv, rx_q, next_entry);
+ 
+@@ -5686,7 +5689,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 
+ 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
+ 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+-	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
+ 
+ 	if (netif_msg_rx_status(priv)) {
+ 		void *rx_head = stmmac_get_rx_desc(priv, rx_q, 0);
+@@ -5733,9 +5735,12 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 		if (unlikely(status & dma_own))
+ 			break;
+ 
+-		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+-						priv->dma_conf.dma_rx_size);
+-		next_entry = rx_q->cur_rx;
++		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
++					       priv->dma_conf.dma_rx_size);
++		if (unlikely(next_entry == rx_q->dirty_rx))
++			break;
++
++		rx_q->cur_rx = next_entry;
+ 
+ 		np = stmmac_get_rx_desc(priv, rx_q, next_entry);
+ 
 
 
