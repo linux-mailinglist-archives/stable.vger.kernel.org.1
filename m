@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-243172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6InREVeo+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:23 +0200
+	id gDQdMy2p+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47054BE981
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0614BEC21
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2444307CCF6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22EC03013ED5
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCCE3DA5C7;
-	Mon,  4 May 2026 14:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FD23D5254;
+	Mon,  4 May 2026 14:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhEsO+72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhRU/BaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202C83793C2;
-	Mon,  4 May 2026 14:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185D535A3AD;
+	Mon,  4 May 2026 14:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903201; cv=none; b=eSimvKPPZ1l2kTxwlmzMctxd66cv8etW+mVNl+l7QxbqUrCmed4tT/+rF/+bFEdEueu4BqhvUCuJDIlS7Td1vaH52Fh+YFMf6eFbPrpZkUY+AKyG5goUHC6CfSu6jk3L6bTExw7+/eBxbt/zh/8sckBd7S8JOPmqpiaV5DhIJ54=
+	t=1777903874; cv=none; b=JhIqsrYzMvTGk56aVE0GdwdL+ewX1raA59y08qZpF9eOaX37pbPGXu1tO32dyS8Ddyp7VFZ5LwuxPgJiFIXQdmpZSCp7xBv/iK6I3qK6A+ULe7zERJdE2YsJRL2w1rqGDeEwQRKsr8TQ49dduRnJ8BSpcBmSHTMRgogXbb9YQOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903201; c=relaxed/simple;
-	bh=rxSrvMGL8qOPwFWGCBiv2Ort2jZUV5SgmVSnvCEtKpU=;
+	s=arc-20240116; t=1777903874; c=relaxed/simple;
+	bh=RON3kP9CcmWwPyBqi+UA+589Qm6S0Y1J0Bgn1CWRGns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYnsui85OhYbBStwIA/80uKVcx9snkQ9pi9iV6lc8c9wzXVmh3/ZZg+1cRWgqLMGknyOmBuNSZoswBxr8E0/VG+cKNFFMFNVs1DOb65w8rjpU+GglNBQ3nZ0JrcrpJGxyPcbls0cA8dB/h8z4IUkAgjOAu/p+4GPvheZ6WKGLqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhEsO+72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7FAC2BCB8;
-	Mon,  4 May 2026 13:59:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bq26rtZpFJT3AcaPARB1IrBM3/FHQakaI7U3e2IOJ/ClpHfaiRSuhgRoy/PfPjhqIMsjAUMP+SIFIYJGt2k1Yw37ATpWKmTg8XF7tFjAvQFZLbQQNCTRieLMvn7YXZDYYGITSKPKnqXO+RNLDnQD2mVIHt5VIxADW11jxDw+/QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhRU/BaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35DDC2BCB8;
+	Mon,  4 May 2026 14:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903200;
-	bh=rxSrvMGL8qOPwFWGCBiv2Ort2jZUV5SgmVSnvCEtKpU=;
+	s=korg; t=1777903874;
+	bh=RON3kP9CcmWwPyBqi+UA+589Qm6S0Y1J0Bgn1CWRGns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GhEsO+72b2cMZrXEGGXVB3POR0tEirLECrisp7v3jS085UnzlsigYWDRukYF7hrqZ
-	 C50SaxEAqoMWWI4jagCh/ZPfbWJKG2PSVZpY4r44bLKoQZ3cF8dWjx8dZHAoIO45kT
-	 Obgjc781VYnP+OPN4No34SKyP0qKKreRL8HMtmqs=
+	b=MhRU/BaLEPUQP9VQQVxfpDKe/u3CURcpK+FY25ff0qoZNKAIpB67+86ROvED0XTne
+	 BZmT9ZPtKM6C4vBEUE3vFWf3wpxlatR8jsbdZbwLxpGO+zXxK3PIoqH2XOO9h5z/lm
+	 Vdl5VBjQXYqtwVxmCWM+TgP5vV8pW7360RSVEicc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 143/307] net/smc: avoid early lgr access in smc_clc_wait_msg
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.18 088/275] selftests/landlock: Drain stale audit records on init
 Date: Mon,  4 May 2026 15:50:28 +0200
-Message-ID: <20260504135148.159996015@linuxfoundation.org>
+Message-ID: <20260504135146.190890241@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +63,159 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D47054BE981
+X-Rspamd-Queue-Id: 3F0614BEC21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243172-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,linux.alibaba.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243434-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,digikod.net];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,alibaba.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[digikod.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit 5a8db80f721deee8e916c2cfdee78decda02ce4f upstream.
+commit 3647a4977fb73da385e5a29b9775a4749733470d upstream.
 
-A CLC decline can be received while the handshake is still in an early
-stage, before the connection has been associated with a link group.
+Non-audit Landlock tests generate audit records as side effects when
+audit_enabled is non-zero (e.g. from boot configuration).  These records
+accumulate in the kernel audit backlog while no audit daemon socket is
+open.  When the next test opens a new netlink socket and registers as
+the audit daemon, the stale backlog is delivered, causing baseline
+record count checks to fail spuriously.
 
-The decline handling in smc_clc_wait_msg() updates link-group level sync
-state for first-contact declines, but that state only exists after link
-group setup has completed. Guard the link-group update accordingly and
-keep the per-socket peer diagnosis handling unchanged.
+Fix this by draining all pending records in audit_init() right after
+setting the receive timeout.  The 1-usec SO_RCVTIMEO causes audit_recv()
+to return -EAGAIN once the backlog is empty, naturally terminating the
+drain loop.
 
-This preserves the existing sync_err handling for established link-group
-contexts and avoids touching link-group state before it is available.
+Domain deallocation records are emitted asynchronously from a work
+queue, so they may still arrive after the drain.  Remove records.domain
+== 0 checks that are not preceded by audit_match_record() calls, which
+would otherwise consume stale records before the count.  Document this
+constraint above audit_count_records().
 
-Fixes: 0cfdd8f92cac ("smc: connection and link group creation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/08c68a5c817acf198cce63d22517e232e8d60718.1776850759.git.ruijieli51@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Increasing the drain timeout to catch in-flight deallocation records was
+considered but rejected: a longer timeout adds latency to every
+audit_init() call even when no stale record is pending, and any fixed
+timeout is still not guaranteed to catch all records under load.
+Removing the unprotected checks is simpler and avoids the spurious
+failures.
+
+Cc: Günther Noack <gnoack@google.com>
+Cc: stable@vger.kernel.org
+Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20260402192608.1458252-4-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/smc_clc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/landlock/audit.h                     |   19 +++++++++++
+ tools/testing/selftests/landlock/audit_test.c                |    2 -
+ tools/testing/selftests/landlock/ptrace_test.c               |    1 
+ tools/testing/selftests/landlock/scoped_abstract_unix_test.c |    1 
+ 4 files changed, 19 insertions(+), 4 deletions(-)
 
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -788,8 +788,8 @@ int smc_clc_wait_msg(struct smc_sock *sm
- 		dclc = (struct smc_clc_msg_decline *)clcm;
- 		reason_code = SMC_CLC_DECL_PEERDECL;
- 		smc->peer_diagnosis = ntohl(dclc->peer_diagnosis);
--		if (((struct smc_clc_msg_decline *)buf)->hdr.typev2 &
--						SMC_FIRST_CONTACT_MASK) {
-+		if ((dclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK) &&
-+		    smc->conn.lgr) {
- 			smc->conn.lgr->sync_err = 1;
- 			smc_lgr_terminate_sched(smc->conn.lgr);
+--- a/tools/testing/selftests/landlock/audit.h
++++ b/tools/testing/selftests/landlock/audit.h
+@@ -338,6 +338,15 @@ struct audit_records {
+ 	size_t domain;
+ };
+ 
++/*
++ * WARNING: Do not assert records.domain == 0 without a preceding
++ * audit_match_record() call.  Domain deallocation records are emitted
++ * asynchronously from kworker threads and can arrive after the drain in
++ * audit_init(), corrupting the domain count.  A preceding audit_match_record()
++ * call consumes stale records while scanning, making the assertion safe in
++ * practice because stale deallocation records arrive before the expected access
++ * records.
++ */
+ static int audit_count_records(int audit_fd, struct audit_records *records)
+ {
+ 	struct audit_message msg;
+@@ -391,6 +400,16 @@ static int audit_init(void)
+ 	if (err)
+ 		return -errno;
+ 
++	/*
++	 * Drains stale audit records that accumulated in the kernel backlog
++	 * while no audit daemon socket was open.  This happens when non-audit
++	 * Landlock tests generate records while audit_enabled is non-zero (e.g.
++	 * from boot configuration), or when domain deallocation records arrive
++	 * asynchronously after a previous test's socket was closed.
++	 */
++	while (audit_recv(fd, NULL) == 0)
++		;
++
+ 	return fd;
+ }
+ 
+--- a/tools/testing/selftests/landlock/audit_test.c
++++ b/tools/testing/selftests/landlock/audit_test.c
+@@ -500,7 +500,6 @@ TEST_F(audit_flags, signal)
+ 		} else {
+ 			EXPECT_EQ(1, records.access);
  		}
+-		EXPECT_EQ(0, records.domain);
+ 
+ 		/* Updates filter rules to match the drop record. */
+ 		set_cap(_metadata, CAP_AUDIT_CONTROL);
+@@ -689,7 +688,6 @@ TEST_F(audit_exec, signal_and_open)
+ 	/* Tests that there was no denial until now. */
+ 	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+ 	EXPECT_EQ(0, records.access);
+-	EXPECT_EQ(0, records.domain);
+ 
+ 	/*
+ 	 * Wait for the child to do a first denied action by layer1 and
+--- a/tools/testing/selftests/landlock/ptrace_test.c
++++ b/tools/testing/selftests/landlock/ptrace_test.c
+@@ -486,7 +486,6 @@ TEST_F(audit, trace)
+ 	/* Makes sure there is no superfluous logged records. */
+ 	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+ 	EXPECT_EQ(0, records.access);
+-	EXPECT_EQ(0, records.domain);
+ 
+ 	yama_ptrace_scope = get_yama_ptrace_scope();
+ 	ASSERT_LE(0, yama_ptrace_scope);
+--- a/tools/testing/selftests/landlock/scoped_abstract_unix_test.c
++++ b/tools/testing/selftests/landlock/scoped_abstract_unix_test.c
+@@ -312,7 +312,6 @@ TEST_F(scoped_audit, connect_to_child)
+ 	/* Makes sure there is no superfluous logged records. */
+ 	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+ 	EXPECT_EQ(0, records.access);
+-	EXPECT_EQ(0, records.domain);
+ 
+ 	ASSERT_EQ(0, pipe2(pipe_child, O_CLOEXEC));
+ 	ASSERT_EQ(0, pipe2(pipe_parent, O_CLOEXEC));
 
 
 
