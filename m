@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KZ3HhKp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:30 +0200
+	id 0DBsGjOq+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF6D4BEBA5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFE74BEF0C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA834305A27B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A92733030D4E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B95C3CEB89;
-	Mon,  4 May 2026 14:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989463D9029;
+	Mon,  4 May 2026 14:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/aaKjQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whvhPZyN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644463DC4D5;
-	Mon,  4 May 2026 14:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9D23D5254;
+	Mon,  4 May 2026 14:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903349; cv=none; b=UbZlo/V6OM6+qaZREm6t/x/Rn6wRmP6fO+sqTFa55Q6CKVbyC6tat3Em9ZS+Gz5uf+MWw+Ii5WkkdE/jAYIUZEoKjjCzbl1nX+axLXCbBnXQQTi8GtqZhKeA06PVDi/dp9LTAXlwrDnDwt5P6t+rtMM0qrutgoGbcEfrP8IvC3k=
+	t=1777904000; cv=none; b=OXNonqnQyMNVlVn1tEqVt95KbDE9SFj/d8eOB7cG9IFOJ3neFxYwDPPyLoFQxGyQf43eve2bEDezGWV0ZWFheNmlIRm6VsQlHiadBG8VTxtUAL6Mx9R1XRbb30ML+WzO+SylBWmO1x2eZSzdxcZlGL6t61xP3vJo2lZd82O4pc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903349; c=relaxed/simple;
-	bh=hubszamThfgzugtqr01j8oeEuQreQrAMdQpqpCAV2r4=;
+	s=arc-20240116; t=1777904000; c=relaxed/simple;
+	bh=UX/BOTN5O/w/vUkhPB9Vkqy4gKiHjuxuLeyCzdtC8cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYF9mmWhN/5iXNiMse/Sp5TbHHvtkszo5o3HQtAi3vPIFHpzWtkeRIGvj2zw6LVpehXVqMk48TJrDdOLPcMGlsMf2v//eVouPAKzpz2nneGsAOwrJ5qn7I23StnxVs5TWKW/Ho20i/Q6eTiQvdcEiyLUcC9nfdsryWcqsJPdVVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/aaKjQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E0BC2BCB8;
-	Mon,  4 May 2026 14:02:28 +0000 (UTC)
+	 MIME-Version; b=jlgyZTZA5GbVw5hyA7wNRK6uXQgTxFW5iNmXdY2cz42zDRNVqkIIlc4hb5/l2vxVgegHeyed6VExk1gD4+Tx1EeHATK8zZcwF+fg1A6j+wTwtxXlV00ZO6M1Vu4l0Vh7gIPO5C2vZubBbobzprinXLRdfuVxXa1pX5uzATOlQ0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whvhPZyN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC76CC2BCC4;
+	Mon,  4 May 2026 14:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903349;
-	bh=hubszamThfgzugtqr01j8oeEuQreQrAMdQpqpCAV2r4=;
+	s=korg; t=1777904000;
+	bh=UX/BOTN5O/w/vUkhPB9Vkqy4gKiHjuxuLeyCzdtC8cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/aaKjQ0jTNF0PGoO0dJIRQ51aVG+zCa48IFycN0TvmBGNIFa8YbadazYKRraHLij
-	 olpmm2hwbC8sgvMMDjHABomB949o0LH96/7Sfj6UEiSSzlrfw2sxe56v4epJwsuPNE
-	 KOvI01z1evNO8YTmeZnpUd86GWgGpDTjmkJnakOI=
+	b=whvhPZyNO9dHrjXeNaVFXAz9wdI+zb8apEjAuTAg5dxvvb2Rg9ipaLksE1Y/PNypO
+	 hQcDRcKyIlyHgYBO/GUUyHDZORKk+75e2xAXL6NIGIN0H5+zOR5DkLIU3CST+yvRUL
+	 JQxySWS3qlkMlOiyE6sTzybCk1iE7fjbBf6LqjHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 198/307] mm/damon/core: disallow non-power of two min_region_sz on damon_start()
-Date: Mon,  4 May 2026 15:51:23 +0200
-Message-ID: <20260504135150.333182529@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.18 144/275] randomize_kstack: Maintain kstack_offset per task
+Date: Mon,  4 May 2026 15:51:24 +0200
+Message-ID: <20260504135148.272045724@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EDF6D4BEBA5
+X-Rspamd-Queue-Id: ECFE74BEF0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243229-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243483-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,53 +90,165 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,arm.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit 95093e5cb4c5b50a5b1a4b79f2942b62744bd66a upstream.
+commit 37beb42560165869838e7d91724f3e629db64129 upstream.
 
-Commit d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region") introduced
-a bug that allows unaligned DAMON region address ranges.  Commit
-c80f46ac228b ("mm/damon/core: disallow non-power of two min_region_sz")
-fixed it, but only for damon_commit_ctx() use case.  Still, DAMON sysfs
-interface can emit non-power of two min_region_sz via damon_start().  Fix
-the path by adding the is_power_of_2() check on damon_start().
+kstack_offset was previously maintained per-cpu, but this caused a
+couple of issues. So let's instead make it per-task.
 
-The issue was discovered by sashiko [1].
+Issue 1: add_random_kstack_offset() and choose_random_kstack_offset()
+expected and required to be called with interrupts and preemption
+disabled so that it could manipulate per-cpu state. But arm64, loongarch
+and risc-v are calling them with interrupts and preemption enabled. I
+don't _think_ this causes any functional issues, but it's certainly
+unexpected and could lead to manipulating the wrong cpu's state, which
+could cause a minor performance degradation due to bouncing the cache
+lines. By maintaining the state per-task those functions can safely be
+called in preemptible context.
 
-Link: https://lore.kernel.org/20260411213638.77768-1-sj@kernel.org
-Link: https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org [1]
-Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Issue 2: add_random_kstack_offset() is called before executing the
+syscall and expands the stack using a previously chosen random offset.
+choose_random_kstack_offset() is called after executing the syscall and
+chooses and stores a new random offset for the next syscall. With
+per-cpu storage for this offset, an attacker could force cpu migration
+during the execution of the syscall and prevent the offset from being
+updated for the original cpu such that it is predictable for the next
+syscall on that cpu. By maintaining the state per-task, this problem
+goes away because the per-task random offset is updated after the
+syscall regardless of which cpu it is executing on.
+
+Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
+Closes: https://lore.kernel.org/all/dd8c37bc-795f-4c7a-9086-69e584d8ab24@arm.com/
+Cc: stable@vger.kernel.org
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://patch.msgid.link/20260303150840.3789438-2-ryan.roberts@arm.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/randomize_kstack.h |   26 +++++++++++++++-----------
+ include/linux/sched.h            |    4 ++++
+ init/main.c                      |    1 -
+ kernel/fork.c                    |    2 ++
+ 4 files changed, 21 insertions(+), 12 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1368,6 +1368,11 @@ int damon_start(struct damon_ctx **ctxs,
- 	int i;
- 	int err = 0;
+--- a/include/linux/randomize_kstack.h
++++ b/include/linux/randomize_kstack.h
+@@ -9,7 +9,6 @@
  
-+	for (i = 0; i < nr_ctxs; i++) {
-+		if (!is_power_of_2(ctxs[i]->min_region_sz))
-+			return -EINVAL;
-+	}
+ DECLARE_STATIC_KEY_MAYBE(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+ 			 randomize_kstack_offset);
+-DECLARE_PER_CPU(u32, kstack_offset);
+ 
+ /*
+  * Do not use this anywhere else in the kernel. This is used here because
+@@ -50,15 +49,14 @@ DECLARE_PER_CPU(u32, kstack_offset);
+  * add_random_kstack_offset - Increase stack utilization by previously
+  *			      chosen random offset
+  *
+- * This should be used in the syscall entry path when interrupts and
+- * preempt are disabled, and after user registers have been stored to
+- * the stack. For testing the resulting entropy, please see:
+- * tools/testing/selftests/lkdtm/stack-entropy.sh
++ * This should be used in the syscall entry path after user registers have been
++ * stored to the stack. Preemption may be enabled. For testing the resulting
++ * entropy, please see: tools/testing/selftests/lkdtm/stack-entropy.sh
+  */
+ #define add_random_kstack_offset() do {					\
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
+-		u32 offset = raw_cpu_read(kstack_offset);		\
++		u32 offset = current->kstack_offset;			\
+ 		u8 *ptr = __kstack_alloca(KSTACK_OFFSET_MAX(offset));	\
+ 		/* Keep allocation even after "ptr" loses scope. */	\
+ 		asm volatile("" :: "r"(ptr) : "memory");		\
+@@ -69,9 +67,9 @@ DECLARE_PER_CPU(u32, kstack_offset);
+  * choose_random_kstack_offset - Choose the random offset for the next
+  *				 add_random_kstack_offset()
+  *
+- * This should only be used during syscall exit when interrupts and
+- * preempt are disabled. This position in the syscall flow is done to
+- * frustrate attacks from userspace attempting to learn the next offset:
++ * This should only be used during syscall exit. Preemption may be enabled. This
++ * position in the syscall flow is done to frustrate attacks from userspace
++ * attempting to learn the next offset:
+  * - Maximize the timing uncertainty visible from userspace: if the
+  *   offset is chosen at syscall entry, userspace has much more control
+  *   over the timing between choosing offsets. "How long will we be in
+@@ -85,14 +83,20 @@ DECLARE_PER_CPU(u32, kstack_offset);
+ #define choose_random_kstack_offset(rand) do {				\
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
+-		u32 offset = raw_cpu_read(kstack_offset);		\
++		u32 offset = current->kstack_offset;			\
+ 		offset = ror32(offset, 5) ^ (rand);			\
+-		raw_cpu_write(kstack_offset, offset);			\
++		current->kstack_offset = offset;			\
+ 	}								\
+ } while (0)
 +
- 	mutex_lock(&damon_lock);
- 	if ((exclusive && nr_running_ctxs) ||
- 			(!exclusive && running_exclusive_ctxs)) {
++static inline void random_kstack_task_init(struct task_struct *tsk)
++{
++	tsk->kstack_offset = 0;
++}
+ #else /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+ #define add_random_kstack_offset()		do { } while (0)
+ #define choose_random_kstack_offset(rand)	do { } while (0)
++#define random_kstack_task_init(tsk)		do { } while (0)
+ #endif /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+ 
+ #endif
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1614,6 +1614,10 @@ struct task_struct {
+ 	unsigned long			prev_lowest_stack;
+ #endif
+ 
++#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
++	u32				kstack_offset;
++#endif
++
+ #ifdef CONFIG_X86_MCE
+ 	void __user			*mce_vaddr;
+ 	__u64				mce_kflags;
+--- a/init/main.c
++++ b/init/main.c
+@@ -830,7 +830,6 @@ static inline void initcall_debug_enable
+ #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+ DEFINE_STATIC_KEY_MAYBE_RO(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+ 			   randomize_kstack_offset);
+-DEFINE_PER_CPU(u32, kstack_offset);
+ 
+ static int __init early_randomize_kstack_offset(char *buf)
+ {
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -95,6 +95,7 @@
+ #include <linux/thread_info.h>
+ #include <linux/kstack_erase.h>
+ #include <linux/kasan.h>
++#include <linux/randomize_kstack.h>
+ #include <linux/scs.h>
+ #include <linux/io_uring.h>
+ #include <linux/bpf.h>
+@@ -2191,6 +2192,7 @@ __latent_entropy struct task_struct *cop
+ 	if (retval)
+ 		goto bad_fork_cleanup_io;
+ 
++	random_kstack_task_init(p);
+ 	stackleak_task_init(p);
+ 
+ 	if (pid != &init_struct_pid) {
 
 
 
