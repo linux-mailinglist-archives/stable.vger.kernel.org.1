@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-243487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EICOE0Kq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:34 +0200
+	id 2Pn2GESq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F024BEF3A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0025E4BEF4A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B412305E46B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F94230364B7
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDF13D9029;
-	Mon,  4 May 2026 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB583D5667;
+	Mon,  4 May 2026 14:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAND1jP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJgk4XD3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A019C3AA4F8;
-	Mon,  4 May 2026 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B0D3AA4F8;
+	Mon,  4 May 2026 14:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904010; cv=none; b=hy/vmq9dOloS0qi1y9tibtyLLeE3koUEwXArNd+Th6csC1u6YIchD+fjX/2nA/KisyyWUlh4AzU45+fH6TQIi2mJjcNTPiqHb0batxdgFj4pkRrDYjVpsAWkSrnWTTM9LET8Zvj+lgHQjXXZYf5sNWMWRS04EtzwZRrfFfyAPP0=
+	t=1777904013; cv=none; b=BSebkDZvDOhWowZXU1/bRzArIEigd4oYuNpIUV84IA1kGAouGKLTeQ96L12QO8PCM3y5GWMgM1q9g+WMZIeHoSlv/X87IfWD+TU77b0kVqW2De1LjauABFJffxa0uKUD3d3xHbDh11nw+CihIQ/sbE36vvco3773DUAl6CYWEgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904010; c=relaxed/simple;
-	bh=KVOBMvo9u7TvfOFk4qW2SR9Gei1bbGYHRz/hMGfVMNE=;
+	s=arc-20240116; t=1777904013; c=relaxed/simple;
+	bh=GCAkO/UdqGE1VEdVrvriiY1qR0/W9onR384xDQ8usw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ue3ABAX3E3nrs3qX0ZQgP/mbt9wS8PGD+1IuGyvkHzji47864dpS0TAbXIMlerTk2yhUYUxVp5Hy/qt+03iQtU0sypcJQxhJ4NqIiFWPrgFUHqOczeV1aIEFwcttBpFpSJyjq+Hekl7Ji4OVlxlRE87nISjHDcVlE14quD/3f/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAND1jP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383E8C2BCC4;
-	Mon,  4 May 2026 14:13:30 +0000 (UTC)
+	 MIME-Version; b=Y7c+ZkJvV9ValKq5EjURkrxiATPHa9CpM0IH3evYYsfGAjIKJGXdpMejQ0otEgudv3TODoAyupTgFhl9BzTLiIJSrTvMRAAmLB711Q0n4JH+UwPHhpXHoLz2jNhkmWSmWqV6gyEggZisfUqk/6ix9mLxPKOXkgdOelo5JOQIWgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJgk4XD3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B53C2BCB8;
+	Mon,  4 May 2026 14:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904010;
-	bh=KVOBMvo9u7TvfOFk4qW2SR9Gei1bbGYHRz/hMGfVMNE=;
+	s=korg; t=1777904013;
+	bh=GCAkO/UdqGE1VEdVrvriiY1qR0/W9onR384xDQ8usw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAND1jP7kI9/aZRYjZCUj+LXQFpRIQ6yFv4cmHYjCmr4sFiHCK5fiJvNRZM14QVZD
-	 /p8Ib+J5+kU6GAEcntLr2BFWrBs91syUqRPZBS/DOnzzR1GU8p9eYZ9M83IrI2BU/c
-	 Ca6MyrXrrgEYlq+uYdbJpnMCS7MTlNqn1ILDlUYQ=
+	b=mJgk4XD3heh8Psi4onua2NNX5alJbDTQ958GjbaWtR9ko8d2+AfKQsQ7YS/qdWf+r
+	 6LkbDy7fLG58zfC20w5BiZF/bz1WjwAglBmb+YTompsDNFchbQa0vg9NIosvxxnRqh
+	 zLzkzpVdDyvb7jZEewC/fTlj6yzbx71kAjbc0BTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Laurent M Coquerel <laurent.m.coquerel@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.18 148/275] crypto: qat - fix IRQ cleanup on 6xxx probe failure
-Date: Mon,  4 May 2026 15:51:28 +0200
-Message-ID: <20260504135148.428253112@linuxfoundation.org>
+	Hans Holmberg <hans.holmberg@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.18 149/275] xfs: start gc on zonegc_low_space attribute updates
+Date: Mon,  4 May 2026 15:51:29 +0200
+Message-ID: <20260504135148.465902496@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
 References: <20260504135142.929052779@linuxfoundation.org>
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C5F024BEF3A
+X-Rspamd-Queue-Id: 0025E4BEF4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243487-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243488-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -94,62 +94,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lst.de:email,wdc.com:email]
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Hans Holmberg <hans.holmberg@wdc.com>
 
-commit 95aed2af87ec43fa7624cc81dd13d37824ad4972 upstream.
+commit 181ea4e2de422aa0a66f355bd59bccccdd169826 upstream.
 
-When adf_dev_up() partially completes and then fails, the IRQ
-handlers registered during adf_isr_resource_alloc() are not detached
-before the MSI-X vectors are released.
+Start gc if the agressiveness of zone garbage collection is changed
+by the user (if the file system is not read only).
 
-Since the device is enabled with pcim_enable_device(), calling
-pci_alloc_irq_vectors() internally registers pcim_msi_release() as a
-devres action. On probe failure, devres runs pcim_msi_release() which
-calls pci_free_irq_vectors(), tearing down the MSI-X vectors while IRQ
-handlers (for example 'qat0-bundle0') are still attached. This causes
-remove_proc_entry() warnings:
+Without this change, the new setting will not be taken into account
+until the gc thread is woken up by e.g. a write.
 
-    [   22.163964] remove_proc_entry: removing non-empty directory 'irq/143', leaking at least 'qat0-bundle0'
-
-Moving the devm_add_action_or_reset() before adf_dev_up() does not solve
-the problem since devres runs in LIFO order and pcim_msi_release(),
-registered later inside adf_dev_up(), would still fire before
-adf_device_down().
-
-Fix by calling adf_dev_down() explicitly when adf_dev_up() fails, to
-properly free IRQ handlers before devres releases the MSI-X vectors.
-
-Fixes: 17fd7514ae68 ("crypto: qat - add qat_6xxx driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Laurent M Coquerel <laurent.m.coquerel@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org # v6.15
+Fixes: 845abeb1f06a8a ("xfs: add tunable threshold parameter for triggering zone GC")
+Signed-off-by: Hans Holmberg <hans.holmberg@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_6xxx/adf_drv.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_sysfs.c      |    7 ++++++-
+ fs/xfs/xfs_zone_alloc.h |    4 ++++
+ fs/xfs/xfs_zone_gc.c    |   17 +++++++++++++++++
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/intel/qat/qat_6xxx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_6xxx/adf_drv.c
-@@ -182,8 +182,10 @@ static int adf_probe(struct pci_dev *pde
- 		return ret;
+--- a/fs/xfs/xfs_sysfs.c
++++ b/fs/xfs/xfs_sysfs.c
+@@ -14,6 +14,7 @@
+ #include "xfs_log_priv.h"
+ #include "xfs_mount.h"
+ #include "xfs_zones.h"
++#include "xfs_zone_alloc.h"
  
- 	ret = adf_dev_up(accel_dev, true);
--	if (ret)
-+	if (ret) {
-+		adf_dev_down(accel_dev);
- 		return ret;
+ struct xfs_sysfs_attr {
+ 	struct attribute attr;
+@@ -724,6 +725,7 @@ zonegc_low_space_store(
+ 	const char		*buf,
+ 	size_t			count)
+ {
++	struct xfs_mount	*mp = zoned_to_mp(kobj);
+ 	int			ret;
+ 	unsigned int		val;
+ 
+@@ -734,7 +736,10 @@ zonegc_low_space_store(
+ 	if (val > 100)
+ 		return -EINVAL;
+ 
+-	zoned_to_mp(kobj)->m_zonegc_low_space = val;
++	if (mp->m_zonegc_low_space != val) {
++		mp->m_zonegc_low_space = val;
++		xfs_zone_gc_wakeup(mp);
 +	}
  
- 	ret = devm_add_action_or_reset(dev, adf_device_down, accel_dev);
- 	if (ret)
+ 	return count;
+ }
+--- a/fs/xfs/xfs_zone_alloc.h
++++ b/fs/xfs/xfs_zone_alloc.h
+@@ -51,6 +51,7 @@ int xfs_mount_zones(struct xfs_mount *mp
+ void xfs_unmount_zones(struct xfs_mount *mp);
+ void xfs_zone_gc_start(struct xfs_mount *mp);
+ void xfs_zone_gc_stop(struct xfs_mount *mp);
++void xfs_zone_gc_wakeup(struct xfs_mount *mp);
+ #else
+ static inline int xfs_mount_zones(struct xfs_mount *mp)
+ {
+@@ -65,6 +66,9 @@ static inline void xfs_zone_gc_start(str
+ static inline void xfs_zone_gc_stop(struct xfs_mount *mp)
+ {
+ }
++static inline void xfs_zone_gc_wakeup(struct xfs_mount *mp)
++{
++}
+ #endif /* CONFIG_XFS_RT */
+ 
+ #endif /* _XFS_ZONE_ALLOC_H */
+--- a/fs/xfs/xfs_zone_gc.c
++++ b/fs/xfs/xfs_zone_gc.c
+@@ -1147,6 +1147,23 @@ xfs_zone_gc_stop(
+ 		kthread_park(mp->m_zone_info->zi_gc_thread);
+ }
+ 
++void
++xfs_zone_gc_wakeup(
++	struct xfs_mount	*mp)
++{
++	struct super_block      *sb = mp->m_super;
++
++	/*
++	 * If we are unmounting the file system we must not try to
++	 * wake gc as m_zone_info might have been freed already.
++	 */
++	if (down_read_trylock(&sb->s_umount)) {
++		if (!xfs_is_readonly(mp))
++			wake_up_process(mp->m_zone_info->zi_gc_thread);
++		up_read(&sb->s_umount);
++	}
++}
++
+ int
+ xfs_zone_gc_mount(
+ 	struct xfs_mount	*mp)
 
 
 
