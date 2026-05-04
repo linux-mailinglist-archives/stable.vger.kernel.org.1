@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDwJA3up+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:15 +0200
+	id EEZPLW2u+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286AF4BED46
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306184BFB4B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 861CF302497F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38D55309F5F6
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A63C3DD53E;
-	Mon,  4 May 2026 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728983E0256;
+	Mon,  4 May 2026 14:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gsslo6hT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKswWf2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8BC37881B;
-	Mon,  4 May 2026 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275BD3E0250;
+	Mon,  4 May 2026 14:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903447; cv=none; b=gheGFWfPx1uManatfICJop5ySxIfaQR8uzfXClPz2PUd5X11hSvO50y9Q/JfWCeCPP1jKBh2uiQxUf6sSbAOgM9LRxdgCNEp6bRDUAdrsrEDZoimWZbMyYZRxqonPHYVbVdgpJy6BI2KioPqE/etWuDXlfCvEKj3I5vlHnbl+4U=
+	t=1777904688; cv=none; b=Rhj38roa0JTmzqzd0RbU0RWPN2f3D8L4gH8/9CJZff85L2oMvXkPKq/xdJoH0i15xiIgbKEP6uPZDM+yHnAfzddZU1zY5vMbbBrTxgxwhkXKIB6E6fBGWCqrl9NCyKaI/WKwEv6XCW7E+7lRlcFrpJUsvK5K5BmjGdJd0AlSCcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903447; c=relaxed/simple;
-	bh=I/0C/na99roZNXNdV7SzmcG8kflDUNY1jRpTJhfEPHs=;
+	s=arc-20240116; t=1777904688; c=relaxed/simple;
+	bh=qmwX0X4gQ/ZFJb8J+1AWEoFZiMj5rSYNFc8Q3dnBhwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4SqZa4Igmgrz+6ThRe97wkkgOE6LZedd+k/0cqXmrGVc++OhW8QfsNN0sDAX2OdsPvECEmcQQtQv6gb50WG0S49v/1V/qRI64E9w7ePiNX5XSaiAMwC+Nu9ScIGoTE6j0rs95gyQqzHYQqGtT+rYajdp8Kcu/KMPwQq25ra1WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gsslo6hT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9872AC2BCB8;
-	Mon,  4 May 2026 14:04:06 +0000 (UTC)
+	 MIME-Version; b=ipKA2nrUNp6bdAxK0tY4TjLRz07f9Q3LtKOPE4YLUXutcJFFS3RvZNTzwrVd79+LnHrQEC+iwvhzq4vypSWBKlHyv3/WoRiCwn14RPQxOcmXsedEqxGpU6K8PfvJ+pS8sq9PDCYiYSXmW8C1AW2iYb+hn9WwNbbDvzkTRrs9FaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKswWf2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1AFC2BCB8;
+	Mon,  4 May 2026 14:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903446;
-	bh=I/0C/na99roZNXNdV7SzmcG8kflDUNY1jRpTJhfEPHs=;
+	s=korg; t=1777904687;
+	bh=qmwX0X4gQ/ZFJb8J+1AWEoFZiMj5rSYNFc8Q3dnBhwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gsslo6hTfpWVteI1G5rcXA2RuMdWpjjEVZWqzQQlVYQWI1LBN0T2292FpYUvF8X5D
-	 Yw0VolVDntC6h542cJZI7+Oa5I/TtTEe1QxQRvI7EzBQ2ZQ5053gNevUghvuGnVnfK
-	 K34XUBGaijhMuoRLg42PVLFVfIsFvSpOVvcQhTwM=
+	b=IKswWf2X7gsUTnhQx0Y3n1BpjpSvd16RuB6F1ZxYR/bWz7IkLGJDig38an1ge/zOq
+	 cfkHzrtOELjgYup+dva6QD4loabLQgFp/5zWM4YBsXeJFyMHw/YKEMqhc6gqei0eK4
+	 Mv9LSJFGIb+EGjDm/xsIkOneWrtlgfzpF9f5l+Qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 236/307] amdgpu/jpeg: fix deepsleep register for jpeg 5_0_0 and 5_0_2
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.12 102/215] randomize_kstack: Maintain kstack_offset per task
 Date: Mon,  4 May 2026 15:52:01 +0200
-Message-ID: <20260504135151.722199729@linuxfoundation.org>
+Message-ID: <20260504135133.879838267@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 286AF4BED46
+X-Rspamd-Queue-Id: 306184BFB4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243267-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243752-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,114 +90,165 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David (Ming Qiang) Wu <David.Wu3@amd.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit e90dc3b2d73986610476b02c29d0074aa4d92fb0 upstream.
+commit 37beb42560165869838e7d91724f3e629db64129 upstream.
 
-PCTL0__MMHUB_DEEPSLEEP_IB is 0x69004 on MMHUB 4,1,0 and
-and 0x60804 on MMHUB 4,2,0. 0x62a04 is on MMHUB 1,8,0/1.
+kstack_offset was previously maintained per-cpu, but this caused a
+couple of issues. So let's instead make it per-task.
 
-The DS bits are adjusted to cover more JPEG engines and MMHUB
-version.
+Issue 1: add_random_kstack_offset() and choose_random_kstack_offset()
+expected and required to be called with interrupts and preemption
+disabled so that it could manipulate per-cpu state. But arm64, loongarch
+and risc-v are calling them with interrupts and preemption enabled. I
+don't _think_ this causes any functional issues, but it's certainly
+unexpected and could lead to manipulating the wrong cpu's state, which
+could cause a minor performance degradation due to bouncing the cache
+lines. By maintaining the state per-task those functions can safely be
+called in preemptible context.
 
-Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Issue 2: add_random_kstack_offset() is called before executing the
+syscall and expands the stack using a previously chosen random offset.
+choose_random_kstack_offset() is called after executing the syscall and
+chooses and stores a new random offset for the next syscall. With
+per-cpu storage for this offset, an attacker could force cpu migration
+during the execution of the syscall and prevent the offset from being
+updated for the original cpu such that it is predictable for the next
+syscall on that cpu. By maintaining the state per-task, this problem
+goes away because the per-task random offset is updated after the
+syscall regardless of which cpu it is executing on.
+
+Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
+Closes: https://lore.kernel.org/all/dd8c37bc-795f-4c7a-9086-69e584d8ab24@arm.com/
 Cc: stable@vger.kernel.org
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://patch.msgid.link/20260303150840.3789438-2-ryan.roberts@arm.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c |   52 +++++++++++++++++++++++++++----
- 1 file changed, 46 insertions(+), 6 deletions(-)
+ include/linux/randomize_kstack.h |   26 +++++++++++++++-----------
+ include/linux/sched.h            |    4 ++++
+ init/main.c                      |    1 -
+ kernel/fork.c                    |    2 ++
+ 4 files changed, 21 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
-@@ -736,15 +736,35 @@ static void jpeg_v4_0_3_dec_ring_set_wpt
+--- a/include/linux/randomize_kstack.h
++++ b/include/linux/randomize_kstack.h
+@@ -9,7 +9,6 @@
+ 
+ DECLARE_STATIC_KEY_MAYBE(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+ 			 randomize_kstack_offset);
+-DECLARE_PER_CPU(u32, kstack_offset);
+ 
+ /*
+  * Do not use this anywhere else in the kernel. This is used here because
+@@ -50,15 +49,14 @@ DECLARE_PER_CPU(u32, kstack_offset);
+  * add_random_kstack_offset - Increase stack utilization by previously
+  *			      chosen random offset
+  *
+- * This should be used in the syscall entry path when interrupts and
+- * preempt are disabled, and after user registers have been stored to
+- * the stack. For testing the resulting entropy, please see:
+- * tools/testing/selftests/lkdtm/stack-entropy.sh
++ * This should be used in the syscall entry path after user registers have been
++ * stored to the stack. Preemption may be enabled. For testing the resulting
++ * entropy, please see: tools/testing/selftests/lkdtm/stack-entropy.sh
   */
- void jpeg_v4_0_3_dec_ring_insert_start(struct amdgpu_ring *ring)
+ #define add_random_kstack_offset() do {					\
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
+-		u32 offset = raw_cpu_read(kstack_offset);		\
++		u32 offset = current->kstack_offset;			\
+ 		u8 *ptr = __kstack_alloca(KSTACK_OFFSET_MAX(offset));	\
+ 		/* Keep allocation even after "ptr" loses scope. */	\
+ 		asm volatile("" :: "r"(ptr) : "memory");		\
+@@ -69,9 +67,9 @@ DECLARE_PER_CPU(u32, kstack_offset);
+  * choose_random_kstack_offset - Choose the random offset for the next
+  *				 add_random_kstack_offset()
+  *
+- * This should only be used during syscall exit when interrupts and
+- * preempt are disabled. This position in the syscall flow is done to
+- * frustrate attacks from userspace attempting to learn the next offset:
++ * This should only be used during syscall exit. Preemption may be enabled. This
++ * position in the syscall flow is done to frustrate attacks from userspace
++ * attempting to learn the next offset:
+  * - Maximize the timing uncertainty visible from userspace: if the
+  *   offset is chosen at syscall entry, userspace has much more control
+  *   over the timing between choosing offsets. "How long will we be in
+@@ -85,14 +83,20 @@ DECLARE_PER_CPU(u32, kstack_offset);
+ #define choose_random_kstack_offset(rand) do {				\
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
+-		u32 offset = raw_cpu_read(kstack_offset);		\
++		u32 offset = current->kstack_offset;			\
+ 		offset = ror32(offset, 5) ^ (rand);			\
+-		raw_cpu_write(kstack_offset, offset);			\
++		current->kstack_offset = offset;			\
+ 	}								\
+ } while (0)
++
++static inline void random_kstack_task_init(struct task_struct *tsk)
++{
++	tsk->kstack_offset = 0;
++}
+ #else /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+ #define add_random_kstack_offset()		do { } while (0)
+ #define choose_random_kstack_offset(rand)	do { } while (0)
++#define random_kstack_task_init(tsk)		do { } while (0)
+ #endif /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+ 
+ #endif
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1558,6 +1558,10 @@ struct task_struct {
+ 	unsigned long			prev_lowest_stack;
+ #endif
+ 
++#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
++	u32				kstack_offset;
++#endif
++
+ #ifdef CONFIG_X86_MCE
+ 	void __user			*mce_vaddr;
+ 	__u64				mce_kflags;
+--- a/init/main.c
++++ b/init/main.c
+@@ -835,7 +835,6 @@ static inline void initcall_debug_enable
+ #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+ DEFINE_STATIC_KEY_MAYBE_RO(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+ 			   randomize_kstack_offset);
+-DEFINE_PER_CPU(u32, kstack_offset);
+ 
+ static int __init early_randomize_kstack_offset(char *buf)
  {
--	if (!amdgpu_sriov_vf(ring->adev)) {
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	if (!amdgpu_sriov_vf(adev)) {
-+		int jpeg_inst = GET_INST(JPEG, ring->me);
-+		uint32_t value = 0x80004000; /* default DS14 */
-+
- 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
- 			0, 0, PACKETJ_TYPE0));
--		amdgpu_ring_write(ring, 0x62a04); /* PCTL0_MMHUB_DEEPSLEEP_IB */
-+
-+		/* PCTL0__MMHUB_DEEPSLEEP_IB could be different on different mmhub version */
-+		switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
-+		case IP_VERSION(4, 1, 0):
-+			amdgpu_ring_write(ring, 0x69004);
-+			value = 0x80010000;
-+			break;
-+		case IP_VERSION(4, 2, 0):
-+			amdgpu_ring_write(ring, 0x60804);
-+			if (jpeg_inst & 1)
-+				value = 0x80010000;
-+			break;
-+		default:
-+			amdgpu_ring_write(ring, 0x62a04);
-+			break;
-+		}
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -96,6 +96,7 @@
+ #include <linux/thread_info.h>
+ #include <linux/stackleak.h>
+ #include <linux/kasan.h>
++#include <linux/randomize_kstack.h>
+ #include <linux/scs.h>
+ #include <linux/io_uring.h>
+ #include <linux/bpf.h>
+@@ -2419,6 +2420,7 @@ __latent_entropy struct task_struct *cop
+ 	if (retval)
+ 		goto bad_fork_cleanup_io;
  
- 		amdgpu_ring_write(ring,
- 				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
- 					  0, PACKETJ_TYPE0));
--		amdgpu_ring_write(ring, 0x80004000);
-+		amdgpu_ring_write(ring, value);
- 	}
- }
++	random_kstack_task_init(p);
+ 	stackleak_task_init(p);
  
-@@ -757,15 +777,35 @@ void jpeg_v4_0_3_dec_ring_insert_start(s
-  */
- void jpeg_v4_0_3_dec_ring_insert_end(struct amdgpu_ring *ring)
- {
--	if (!amdgpu_sriov_vf(ring->adev)) {
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	if (!amdgpu_sriov_vf(adev)) {
-+		int jpeg_inst = GET_INST(JPEG, ring->me);
-+		uint32_t value = 0x00004000; /* default DS14 */
-+
- 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
- 			0, 0, PACKETJ_TYPE0));
--		amdgpu_ring_write(ring, 0x62a04);
-+
-+		/* PCTL0__MMHUB_DEEPSLEEP_IB could be different on different mmhub version */
-+		switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
-+		case IP_VERSION(4, 1, 0):
-+			amdgpu_ring_write(ring, 0x69004);
-+			value = 0x00010000;
-+			break;
-+		case IP_VERSION(4, 2, 0):
-+			amdgpu_ring_write(ring, 0x60804);
-+			if (jpeg_inst & 1)
-+				value = 0x00010000;
-+			break;
-+		default:
-+			amdgpu_ring_write(ring, 0x62a04);
-+			break;
-+		}
- 
- 		amdgpu_ring_write(ring,
- 				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
- 					  0, PACKETJ_TYPE0));
--		amdgpu_ring_write(ring, 0x00004000);
-+		amdgpu_ring_write(ring, value);
- 	}
- }
- 
+ 	if (pid != &init_struct_pid) {
 
 
 
