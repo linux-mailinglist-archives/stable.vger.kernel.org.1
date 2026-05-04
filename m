@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHLzFSqr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:26 +0200
+	id oGiYO0So+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B3D4BF1E9
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7894BE941
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C195330241AE
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA5A307DA14
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0FB3DEADB;
-	Mon,  4 May 2026 14:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA003CEB89;
+	Mon,  4 May 2026 14:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iX1plMqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdm+XwEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E1C1A6827;
-	Mon,  4 May 2026 14:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029FF34F483;
+	Mon,  4 May 2026 14:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904393; cv=none; b=GZPb3EL9Plh70HkrSqg7XgB92/SSaa2uGYhHR1Z6JTO0hm75LTM5Dda4/HGYXo9QLmWBv3QvPBHF+d9aE1pkfKdjMP1dDKBDauhjQNPTStFv1+qi1ixIf/k3VQ4L2Of3lvZX1YTMcw0/XktbwC+RgMF88QOwJLYNo++z3wGnG1w=
+	t=1777903237; cv=none; b=MdBEFIo3FIvRNrkrldPoWIbH8mEJIg8UWLXxyqNpjTI/t47peO6Em94LFydlKAy70oJX3hRZJK6U+B5UbN0GIidcMOS1+JO/u7nePaOCod/ZQrHHJVfPlrPWVXmL6f2tR3Z9ZeDCqe9fzCZGAoUv8rw1+kuJo/DOgfNtXLmTIyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904393; c=relaxed/simple;
-	bh=1T0qPA30v4/7Aah4L54kMPeWqC+uTcnnRNB9B7rX/40=;
+	s=arc-20240116; t=1777903237; c=relaxed/simple;
+	bh=1w5qlGBS34YXaS6WbKPXfHpmJr98AUt5VwzLDAO+1FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJ0MvEUnDRFp9RRueZzKrIvNFrCvkMM3VjL33Vk3hURj/XbNXvk5uzcEklGNG4G2s2oNr4TztWNak2lr8UT+ncV57omLIO6fQIO1UkWlVsYStTrS+E3Msv6XGy6lcyakFP9gscA0/eYMBchnEnb1KZOGastKw8ClZxJHRfmp/yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iX1plMqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C3AC2BCC4;
-	Mon,  4 May 2026 14:19:52 +0000 (UTC)
+	 MIME-Version; b=gw62D5aIdnRzWb1LGL3tMxJqfidqRPDTKcRDeBodecp0AVCtY7VU38IWIkaBzUvWbh5bqju/eHxr0hE3tDhysO7R0+fxu6FCkI6V/yzUoGgr9lUkVoTuC9xCFB5BoiOZmzDPIah9B5fZM1swyt9B3YN+uY0fTirX3cJ5R49PR0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdm+XwEH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C138C2BCB8;
+	Mon,  4 May 2026 14:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904393;
-	bh=1T0qPA30v4/7Aah4L54kMPeWqC+uTcnnRNB9B7rX/40=;
+	s=korg; t=1777903236;
+	bh=1w5qlGBS34YXaS6WbKPXfHpmJr98AUt5VwzLDAO+1FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iX1plMquwTEd8QI+P3RWMGDSi7Y5vHKnEF7bEFBQ8rYPSFVWLJ0MTLH2niVq5BUJP
-	 3JQGdSAmzvzLVr2HoYxZRsdfRFAQj7uZWALY1mfvUCFX+RXV3wgKdy9b2Rcg2RyIKO
-	 kwVreXXA9uPZSPp0SefC54dxe8qFVhHJwlIWJRMM=
+	b=sdm+XwEHwMoZQsKRfxMnjLPjCE0Txw8cqEwNKKSgAsvOexVSD53nwWrNbfXLsr81b
+	 73/jVbWA8lEC9DrTYsUFUA8wZoOZz34zM6ktRJ5om5BzJ9Mw4ueNqpKMcbnp0HRIrw
+	 uQh8SszHRVVCmVKYq45Jr936K9ig5XfWrzAwoVSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Bin Lan <lanbincn@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/215] padata: Fix pd UAF once and for all
-Date: Mon,  4 May 2026 15:50:40 +0200
-Message-ID: <20260504135130.951568888@linuxfoundation.org>
+	Saravana Kannan <saravanak@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 156/307] spi: fix resource leaks on device setup failure
+Date: Mon,  4 May 2026 15:50:41 +0200
+Message-ID: <20260504135148.673250719@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,317 +64,165 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C5B3D4BF1E9
+X-Rspamd-Queue-Id: 6D7894BE941
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243637-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gondor.apana.org.au,139.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243186-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email,139.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 71203f68c7749609d7fc8ae6ad054bdedeb24f91 ]
+commit db357034f7e0cf23f233f414a8508312dfe8fbbe upstream.
 
-There is a race condition/UAF in padata_reorder that goes back
-to the initial commit.  A reference count is taken at the start
-of the process in padata_do_parallel, and released at the end in
-padata_serial_worker.
+Make sure to call controller cleanup() if spi_setup() fails while
+registering a device to avoid leaking any resources allocated by
+setup().
 
-This reference count is (and only is) required for padata_replace
-to function correctly.  If padata_replace is never called then
-there is no issue.
-
-In the function padata_reorder which serves as the core of padata,
-as soon as padata is added to queue->serial.list, and the associated
-spin lock released, that padata may be processed and the reference
-count on pd would go away.
-
-Fix this by getting the next padata before the squeue->serial lock
-is released.
-
-In order to make this possible, simplify padata_reorder by only
-calling it once the next padata arrives.
-
-Fixes: 16295bec6398 ("padata: Generic parallelization/serialization interface")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ Adjust context of padata_find_next(). Replace
-cpumask_next_wrap(cpu, pd->cpumask.pcpu) with
-cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false) in padata_reorder() in
-v6.12 according to dc5bb9b769c9 ("cpumask: deprecate cpumask_next_wrap()") and
-f954a2d37637 ("padata: switch padata_find_next() to using cpumask_next_wrap()")
-. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Saravana Kannan <saravanak@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/padata.h |   3 -
- kernel/padata.c        | 136 +++++++++++------------------------------
- 2 files changed, 37 insertions(+), 102 deletions(-)
+ drivers/spi/spi.c |   61 ++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 37 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/padata.h b/include/linux/padata.h
-index 0146daf344306..b486c7359de2b 100644
---- a/include/linux/padata.h
-+++ b/include/linux/padata.h
-@@ -91,7 +91,6 @@ struct padata_cpumask {
-  * @cpu: Next CPU to be processed.
-  * @cpumask: The cpumasks in use for parallel and serial workers.
-  * @reorder_work: work struct for reordering.
-- * @lock: Reorder lock.
-  */
- struct parallel_data {
- 	struct padata_shell		*ps;
-@@ -102,8 +101,6 @@ struct parallel_data {
- 	unsigned int			processed;
- 	int				cpu;
- 	struct padata_cpumask		cpumask;
--	struct work_struct		reorder_work;
--	spinlock_t                      ____cacheline_aligned lock;
- };
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -43,6 +43,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_st
  
- /**
-diff --git a/kernel/padata.c b/kernel/padata.c
-index c3810f5bd7156..e61bdc248551f 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -261,20 +261,17 @@ EXPORT_SYMBOL(padata_do_parallel);
-  *   be parallel processed by another cpu and is not yet present in
-  *   the cpu's reorder queue.
-  */
--static struct padata_priv *padata_find_next(struct parallel_data *pd,
--					    bool remove_object)
-+static struct padata_priv *padata_find_next(struct parallel_data *pd, int cpu,
-+					    unsigned int processed)
- {
- 	struct padata_priv *padata;
- 	struct padata_list *reorder;
--	int cpu = pd->cpu;
+ #include "internals.h"
  
- 	reorder = per_cpu_ptr(pd->reorder_list, cpu);
- 
- 	spin_lock(&reorder->lock);
--	if (list_empty(&reorder->list)) {
--		spin_unlock(&reorder->lock);
--		return NULL;
--	}
-+	if (list_empty(&reorder->list))
-+		goto notfound;
- 
- 	padata = list_entry(reorder->list.next, struct padata_priv, list);
- 
-@@ -282,101 +279,52 @@ static struct padata_priv *padata_find_next(struct parallel_data *pd,
- 	 * Checks the rare case where two or more parallel jobs have hashed to
- 	 * the same CPU and one of the later ones finishes first.
- 	 */
--	if (padata->seq_nr != pd->processed) {
--		spin_unlock(&reorder->lock);
--		return NULL;
--	}
--
--	if (remove_object) {
--		list_del_init(&padata->list);
--		++pd->processed;
--		/* When sequence wraps around, reset to the first CPU. */
--		if (unlikely(pd->processed == 0))
--			pd->cpu = cpumask_first(pd->cpumask.pcpu);
--		else
--			pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
--	}
-+	if (padata->seq_nr != processed)
-+		goto notfound;
- 
-+	list_del_init(&padata->list);
- 	spin_unlock(&reorder->lock);
- 	return padata;
++static int __spi_setup(struct spi_device *spi, bool initial_setup);
 +
-+notfound:
-+	pd->processed = processed;
-+	pd->cpu = cpu;
-+	spin_unlock(&reorder->lock);
-+	return NULL;
+ static DEFINE_IDR(spi_controller_idr);
+ 
+ static void spidev_release(struct device *dev)
+@@ -729,7 +731,7 @@ static int __spi_add_device(struct spi_d
+ 	 * normally rely on the device being setup.  Devices
+ 	 * using SPI_CS_HIGH can't coexist well otherwise...
+ 	 */
+-	status = spi_setup(spi);
++	status = __spi_setup(spi, true);
+ 	if (status < 0) {
+ 		dev_err(dev, "can't setup %s, status %d\n",
+ 				dev_name(&spi->dev), status);
+@@ -3993,27 +3995,7 @@ static int spi_set_cs_timing(struct spi_
+ 	return status;
  }
  
--static void padata_reorder(struct parallel_data *pd)
-+static void padata_reorder(struct padata_priv *padata)
+-/**
+- * spi_setup - setup SPI mode and clock rate
+- * @spi: the device whose settings are being modified
+- * Context: can sleep, and no requests are queued to the device
+- *
+- * SPI protocol drivers may need to update the transfer mode if the
+- * device doesn't work with its default.  They may likewise need
+- * to update clock rates or word sizes from initial values.  This function
+- * changes those settings, and must be called from a context that can sleep.
+- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
+- * effect the next time the device is selected and data is transferred to
+- * or from it.  When this function returns, the SPI device is deselected.
+- *
+- * Note that this call will fail if the protocol driver specifies an option
+- * that the underlying controller or its driver does not support.  For
+- * example, not all hardware supports wire transfers using nine bit words,
+- * LSB-first wire encoding, or active-high chipselects.
+- *
+- * Return: zero on success, else a negative error code.
+- */
+-int spi_setup(struct spi_device *spi)
++static int __spi_setup(struct spi_device *spi, bool initial_setup)
  {
-+	struct parallel_data *pd = padata->pd;
- 	struct padata_instance *pinst = pd->ps->pinst;
--	int cb_cpu;
--	struct padata_priv *padata;
--	struct padata_serial_queue *squeue;
--	struct padata_list *reorder;
-+	unsigned int processed;
-+	int cpu;
- 
--	/*
--	 * We need to ensure that only one cpu can work on dequeueing of
--	 * the reorder queue the time. Calculating in which percpu reorder
--	 * queue the next object will arrive takes some time. A spinlock
--	 * would be highly contended. Also it is not clear in which order
--	 * the objects arrive to the reorder queues. So a cpu could wait to
--	 * get the lock just to notice that there is nothing to do at the
--	 * moment. Therefore we use a trylock and let the holder of the lock
--	 * care for all the objects enqueued during the holdtime of the lock.
--	 */
--	if (!spin_trylock_bh(&pd->lock))
--		return;
-+	processed = pd->processed;
-+	cpu = pd->cpu;
- 
--	while (1) {
--		padata = padata_find_next(pd, true);
-+	do {
-+		struct padata_serial_queue *squeue;
-+		int cb_cpu;
- 
--		/*
--		 * If the next object that needs serialization is parallel
--		 * processed by another cpu and is still on it's way to the
--		 * cpu's reorder queue, nothing to do for now.
--		 */
--		if (!padata)
--			break;
-+		cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
-+		processed++;
- 
- 		cb_cpu = padata->cb_cpu;
- 		squeue = per_cpu_ptr(pd->squeue, cb_cpu);
- 
- 		spin_lock(&squeue->serial.lock);
- 		list_add_tail(&padata->list, &squeue->serial.list);
--		spin_unlock(&squeue->serial.lock);
--
- 		queue_work_on(cb_cpu, pinst->serial_wq, &squeue->work);
--	}
- 
--	spin_unlock_bh(&pd->lock);
--
--	/*
--	 * The next object that needs serialization might have arrived to
--	 * the reorder queues in the meantime.
--	 *
--	 * Ensure reorder queue is read after pd->lock is dropped so we see
--	 * new objects from another task in padata_do_serial.  Pairs with
--	 * smp_mb in padata_do_serial.
--	 */
--	smp_mb();
--
--	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
--	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
- 		/*
--		 * Other context(eg. the padata_serial_worker) can finish the request.
--		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
-+		 * If the next object that needs serialization is parallel
-+		 * processed by another cpu and is still on it's way to the
-+		 * cpu's reorder queue, end the loop.
- 		 */
--		padata_get_pd(pd);
--		if (!queue_work(pinst->serial_wq, &pd->reorder_work))
--			padata_put_pd(pd);
--	}
--}
--
--static void invoke_padata_reorder(struct work_struct *work)
--{
--	struct parallel_data *pd;
--
--	local_bh_disable();
--	pd = container_of(work, struct parallel_data, reorder_work);
--	padata_reorder(pd);
--	local_bh_enable();
--	/* Pairs with putting the reorder_work in the serial_wq */
--	padata_put_pd(pd);
-+		padata = padata_find_next(pd, cpu, processed);
-+		spin_unlock(&squeue->serial.lock);
-+	} while (padata);
- }
- 
- static void padata_serial_worker(struct work_struct *serial_work)
-@@ -427,6 +375,7 @@ void padata_do_serial(struct padata_priv *padata)
- 	struct padata_list *reorder = per_cpu_ptr(pd->reorder_list, hashed_cpu);
- 	struct padata_priv *cur;
- 	struct list_head *pos;
-+	bool gotit = true;
- 
- 	spin_lock(&reorder->lock);
- 	/* Sort in ascending order of sequence number. */
-@@ -436,17 +385,14 @@ void padata_do_serial(struct padata_priv *padata)
- 		if ((signed int)(cur->seq_nr - padata->seq_nr) < 0)
- 			break;
+ 	unsigned	bad_bits, ugly_bits;
+ 	int		status;
+@@ -4098,7 +4080,7 @@ int spi_setup(struct spi_device *spi)
+ 	status = spi_set_cs_timing(spi);
+ 	if (status) {
+ 		mutex_unlock(&spi->controller->io_mutex);
+-		return status;
++		goto err_cleanup;
  	}
--	list_add(&padata->list, pos);
-+	if (padata->seq_nr != pd->processed) {
-+		gotit = false;
-+		list_add(&padata->list, pos);
-+	}
- 	spin_unlock(&reorder->lock);
  
--	/*
--	 * Ensure the addition to the reorder list is ordered correctly
--	 * with the trylock of pd->lock in padata_reorder.  Pairs with smp_mb
--	 * in padata_reorder.
--	 */
--	smp_mb();
--
--	padata_reorder(pd);
-+	if (gotit)
-+		padata_reorder(padata);
+ 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
+@@ -4107,7 +4089,7 @@ int spi_setup(struct spi_device *spi)
+ 			mutex_unlock(&spi->controller->io_mutex);
+ 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
+ 				status);
+-			return status;
++			goto err_cleanup;
+ 		}
+ 
+ 		/*
+@@ -4143,6 +4125,37 @@ int spi_setup(struct spi_device *spi)
+ 			status);
+ 
+ 	return status;
++
++err_cleanup:
++	if (initial_setup)
++		spi_cleanup(spi);
++
++	return status;
++}
++
++/**
++ * spi_setup - setup SPI mode and clock rate
++ * @spi: the device whose settings are being modified
++ * Context: can sleep, and no requests are queued to the device
++ *
++ * SPI protocol drivers may need to update the transfer mode if the
++ * device doesn't work with its default.  They may likewise need
++ * to update clock rates or word sizes from initial values.  This function
++ * changes those settings, and must be called from a context that can sleep.
++ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
++ * effect the next time the device is selected and data is transferred to
++ * or from it.  When this function returns, the SPI device is deselected.
++ *
++ * Note that this call will fail if the protocol driver specifies an option
++ * that the underlying controller or its driver does not support.  For
++ * example, not all hardware supports wire transfers using nine bit words,
++ * LSB-first wire encoding, or active-high chipselects.
++ *
++ * Return: zero on success, else a negative error code.
++ */
++int spi_setup(struct spi_device *spi)
++{
++	return __spi_setup(spi, false);
  }
- EXPORT_SYMBOL(padata_do_serial);
+ EXPORT_SYMBOL_GPL(spi_setup);
  
-@@ -643,9 +589,7 @@ static struct parallel_data *padata_alloc_pd(struct padata_shell *ps)
- 	padata_init_squeues(pd);
- 	pd->seq_nr = -1;
- 	refcount_set(&pd->refcnt, 1);
--	spin_lock_init(&pd->lock);
- 	pd->cpu = cpumask_first(pd->cpumask.pcpu);
--	INIT_WORK(&pd->reorder_work, invoke_padata_reorder);
- 
- 	return pd;
- 
-@@ -1155,12 +1099,6 @@ void padata_free_shell(struct padata_shell *ps)
- 	if (!ps)
- 		return;
- 
--	/*
--	 * Wait for all _do_serial calls to finish to avoid touching
--	 * freed pd's and ps's.
--	 */
--	synchronize_rcu();
--
- 	mutex_lock(&ps->pinst->lock);
- 	list_del(&ps->list);
- 	pd = rcu_dereference_protected(ps->pd, 1);
--- 
-2.53.0
-
 
 
 
