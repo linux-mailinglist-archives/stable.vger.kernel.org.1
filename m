@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JaLKT+p+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:15 +0200
+	id WI70JAqw+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA144BEC6F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B074BFE16
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BDC29302F20D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E5303022AC8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0B23D904D;
-	Mon,  4 May 2026 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D423DE450;
+	Mon,  4 May 2026 14:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iS4CDwy6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vw4o4jk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF2475801;
-	Mon,  4 May 2026 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050C7315785;
+	Mon,  4 May 2026 14:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903413; cv=none; b=dqlPH2BuiAPwo2p3Lu1CavdbCJI72X+tHmWSkSuQRWYiX+CP24cNvbERbemh70PgB3eYCgJokHW0wzgVUKwzNNcJahZkOnCPkWPqMvy2pYN0H4H+sJja7UeXE8zZ+xRBpDqqXjV8wu3fIkljYtjg8CPmlhw6sHNL/cgJPuyEzWk=
+	t=1777904571; cv=none; b=WejNnG3bwiFoRjsytiPCBwjq08WHyImYlr/qS2WCdeXIT5n7xFHT2WOUjyy21D4WSbk7LJdu4SU4rGJ1leBXWt9oHWhOA2qRuOHAp3n/qvWNaxgxInxVAxInTAdWMTLbky5Yyyp9ZoSLDiOJWTnJOLJVryy+JNjHvaWksoqk0/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903413; c=relaxed/simple;
-	bh=U6dE/nQL52xioUi5vbr8Bi7n7r9GKpgz56SnTLyfINs=;
+	s=arc-20240116; t=1777904571; c=relaxed/simple;
+	bh=lBSwAFXOPQ31aqDcgtdFYXn4mqENQBh4HUnnnOPYJz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y+81ALsH54fzyA/OfRstx5lRpsIEpci5dCchss+9gKoFAaKe6gJKKk/WUTzklkpr5rm7KjK2I/6DUFshoXYcP55S6RSzOct4jr9spzqYgbNWUAkKeBb+7+Vs6+hUN6wTcG1S6H0wO2HFqQHizCQ4OpArDMOW7rSY4RZrQB5VtR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iS4CDwy6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E10FC2BCB8;
-	Mon,  4 May 2026 14:03:33 +0000 (UTC)
+	 MIME-Version; b=oywVgylWWXqJfavFcXG7vFBUNExANcdg3G2C1QnbVLUxwyPvWa1vqwVqUdKcXrR0k8zrCL16eZKUfVpJbZGUnA6S2UfgUDjzw48F3lBohWCyAsaNgBPbn9RosHomFIkpu682Ari5f+E+Db1eUcLBa06pR7sroWE9bMPe54LNhr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vw4o4jk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E082C2BCB8;
+	Mon,  4 May 2026 14:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903413;
-	bh=U6dE/nQL52xioUi5vbr8Bi7n7r9GKpgz56SnTLyfINs=;
+	s=korg; t=1777904570;
+	bh=lBSwAFXOPQ31aqDcgtdFYXn4mqENQBh4HUnnnOPYJz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iS4CDwy6yqBaomfpDyds7q93kcUchkYUXlIuFo/5PNL7r3CCHnFgg14YtfoKvXIHw
-	 afJHVNvD1v7rkyvTRdHThuq4twHBnril7nKP1wIpix7EdeD/UbTEh+lULPirEhRCW/
-	 e9wg6FMMQfkuG4Dk49JP8O4hu9lpzJ5wpcmWv+0o=
+	b=1vw4o4jkqRJNCaIFl+hF+V2GfwubDSXpYiw3Z0DDADae13XLqa2vIsfeEnVMQUvVm
+	 V3iqXS2pCoI/ftI6qYlxuiAZVozRXQZDiPKm+lhCr5yPyW1TUS1IP9XGW62Qa5YXEj
+	 0HexU2ZtamA5gy45hO/wNwiBM8zjYZ2LAwULuF0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 224/307] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4, and CS
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marek Vasut <marex@nabladev.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 090/215] net: ks8851: Reinstate disabling of BHs around IRQ handler
 Date: Mon,  4 May 2026 15:51:49 +0200
-Message-ID: <20260504135151.288542950@linuxfoundation.org>
+Message-ID: <20260504135133.446036169@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,506 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AEA144BEC6F
+X-Rspamd-Queue-Id: A4B074BFE16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243254-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243707-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,cr0.pg:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,nabladev.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linutronix.de:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Marek Vasut <marex@nabladev.com>
 
-commit 96bd3e76a171a8e21a6387e54e4c420a81968492 upstream.
+commit 5c9fcac3c872224316714d0d8914d9af16c76a6d upstream.
 
-According to the APM Volume #2, 15.5, Canonicalization and Consistency
-Checks (24593—Rev. 3.42—March 2024), the following condition (among
-others) results in a #VMEXIT with VMEXIT_INVALID (aka SVM_EXIT_ERR):
+If the driver executes ks8851_irq() AND a TX packet has been sent, then
+the driver enables TX queue via netif_wake_queue() which schedules TX
+softirq to queue packets for this device.
 
-  EFER.LME, CR0.PG, CR4.PAE, CS.L, and CS.D are all non-zero.
+If CONFIG_PREEMPT_RT=y is set AND a packet has also been received by
+the MAC, then ks8851_rx_pkts() calls netdev_alloc_skb_ip_align() to
+allocate SKBs for the received packets. If netdev_alloc_skb_ip_align()
+is called with BH enabled, then local_bh_enable() at the end of
+netdev_alloc_skb_ip_align() will trigger the pending softirq processing,
+which may ultimately call the .xmit callback ks8851_start_xmit_par().
+The ks8851_start_xmit_par() will try to lock struct ks8851_net_par
+.lock spinlock, which is already locked by ks8851_irq() from which
+ks8851_start_xmit_par() was called. This leads to a deadlock, which
+is reported by the kernel, including a trace listed below.
 
-In the list of consistency checks done when EFER.LME and CR0.PG are set,
-add a check that CS.L and CS.D are not both set, after the existing
-check that CR4.PAE is set.
+If CONFIG_PREEMPT_RT is not set, then since commit 0913ec336a6c0
+("net: ks8851: Fix deadlock with the SPI chip variant") the deadlock
+can also be triggered without received packet in the RX FIFO. The
+pending softirqs will be processed on return from
+spin_unlock_bh(&ks->statelock) in ks8851_irq(), which triggers the
+deadlock as well.
 
-This is functionally a nop because the nested VMRUN results in
-SVM_EXIT_ERR in HW, which is forwarded to L1, but KVM makes all
-consistency checks before a VMRUN is actually attempted.
+Fix the problem by disabling BH around critical sections, including the
+IRQ handler, thus preventing the net_tx_action() softirq from triggering
+during these critical sections. The net_tx_action() softirq is triggered
+once BH are re-enabled and at the end of the IRQ handler, once all the
+other IRQ handler actions have been completed.
 
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
+ __schedule from schedule_rtlock+0x1c/0x34
+ schedule_rtlock from rtlock_slowlock_locked+0x548/0x904
+ rtlock_slowlock_locked from rt_spin_lock+0x60/0x9c
+ rt_spin_lock from ks8851_start_xmit_par+0x74/0x1a8
+ ks8851_start_xmit_par from netdev_start_xmit+0x20/0x44
+ netdev_start_xmit from dev_hard_start_xmit+0xd0/0x188
+ dev_hard_start_xmit from sch_direct_xmit+0xb8/0x25c
+ sch_direct_xmit from __qdisc_run+0x1f8/0x4ec
+ __qdisc_run from qdisc_run+0x1c/0x28
+ qdisc_run from net_tx_action+0x1f0/0x268
+ net_tx_action from handle_softirqs+0x1a4/0x270
+ handle_softirqs from __local_bh_enable_ip+0xcc/0xe0
+ __local_bh_enable_ip from __alloc_skb+0xd8/0x128
+ __alloc_skb from __netdev_alloc_skb+0x3c/0x19c
+ __netdev_alloc_skb from ks8851_irq+0x388/0x4d4
+ ks8851_irq from irq_thread_fn+0x24/0x64
+ irq_thread_fn from irq_thread+0x178/0x28c
+ irq_thread from kthread+0x12c/0x138
+ kthread from ret_from_fork+0x14/0x28
+
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: e0863634bf9f ("net: ks8851: Queue RX packets in IRQ handler instead of disabling BHs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-17-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260415231020.455298-1-marex@nabladev.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    6 ++++++
- arch/x86/kvm/svm/svm.h    |    1 +
- 2 files changed, 7 insertions(+)
+ drivers/net/ethernet/micrel/ks8851.h        |    6 --
+ drivers/net/ethernet/micrel/ks8851_common.c |   64 +++++++++++-----------------
+ drivers/net/ethernet/micrel/ks8851_par.c    |   15 ++----
+ drivers/net/ethernet/micrel/ks8851_spi.c    |   11 +---
+ 4 files changed, 38 insertions(+), 58 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -392,6 +392,10 @@ static bool __nested_vmcb_check_save(str
- 		    CC(!(save->cr0 & X86_CR0_PE)) ||
- 		    CC(!kvm_vcpu_is_legal_cr3(vcpu, save->cr3)))
- 			return false;
-+
-+		if (CC((save->cs.attrib & SVM_SELECTOR_L_MASK) &&
-+		       (save->cs.attrib & SVM_SELECTOR_DB_MASK)))
-+			return false;
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -408,10 +408,8 @@ struct ks8851_net {
+ 	struct gpio_desc	*gpio;
+ 	struct mii_bus		*mii_bus;
+ 
+-	void			(*lock)(struct ks8851_net *ks,
+-					unsigned long *flags);
+-	void			(*unlock)(struct ks8851_net *ks,
+-					  unsigned long *flags);
++	void			(*lock)(struct ks8851_net *ks);
++	void			(*unlock)(struct ks8851_net *ks);
+ 	unsigned int		(*rdreg16)(struct ks8851_net *ks,
+ 					   unsigned int reg);
+ 	void			(*wrreg16)(struct ks8851_net *ks,
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -28,25 +28,23 @@
+ /**
+  * ks8851_lock - register access lock
+  * @ks: The chip state
+- * @flags: Spinlock flags
+  *
+  * Claim chip register access lock
+  */
+-static void ks8851_lock(struct ks8851_net *ks, unsigned long *flags)
++static void ks8851_lock(struct ks8851_net *ks)
+ {
+-	ks->lock(ks, flags);
++	ks->lock(ks);
+ }
+ 
+ /**
+  * ks8851_unlock - register access unlock
+  * @ks: The chip state
+- * @flags: Spinlock flags
+  *
+  * Release chip register access lock
+  */
+-static void ks8851_unlock(struct ks8851_net *ks, unsigned long *flags)
++static void ks8851_unlock(struct ks8851_net *ks)
+ {
+-	ks->unlock(ks, flags);
++	ks->unlock(ks);
+ }
+ 
+ /**
+@@ -129,11 +127,10 @@ static void ks8851_set_powermode(struct
+ static int ks8851_write_mac_addr(struct net_device *dev)
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+-	unsigned long flags;
+ 	u16 val;
+ 	int i;
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 
+ 	/*
+ 	 * Wake up chip in case it was powered off when stopped; otherwise,
+@@ -149,7 +146,7 @@ static int ks8851_write_mac_addr(struct
+ 	if (!netif_running(dev))
+ 		ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
+ 
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ 
+ 	return 0;
+ }
+@@ -163,12 +160,11 @@ static int ks8851_write_mac_addr(struct
+ static void ks8851_read_mac_addr(struct net_device *dev)
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+-	unsigned long flags;
+ 	u8 addr[ETH_ALEN];
+ 	u16 reg;
+ 	int i;
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 
+ 	for (i = 0; i < ETH_ALEN; i += 2) {
+ 		reg = ks8851_rdreg16(ks, KS_MAR(i));
+@@ -177,7 +173,7 @@ static void ks8851_read_mac_addr(struct
+ 	}
+ 	eth_hw_addr_set(dev, addr);
+ 
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ }
+ 
+ /**
+@@ -328,11 +324,10 @@ static irqreturn_t ks8851_irq(int irq, v
+ {
+ 	struct ks8851_net *ks = _ks;
+ 	struct sk_buff_head rxq;
+-	unsigned long flags;
+ 	unsigned int status;
+ 	struct sk_buff *skb;
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 
+ 	status = ks8851_rdreg16(ks, KS_ISR);
+ 	ks8851_wrreg16(ks, KS_ISR, status);
+@@ -389,7 +384,7 @@ static irqreturn_t ks8851_irq(int irq, v
+ 		ks8851_wrreg16(ks, KS_RXCR1, rxc->rxcr1);
  	}
  
- 	/* Note, SVM doesn't have any additional restrictions on CR4. */
-@@ -508,6 +512,8 @@ static void __nested_copy_vmcb_save_to_c
- 	 * Copy only fields that are validated, as we need them
- 	 * to avoid TOC/TOU races.
- 	 */
-+	to->cs = from->cs;
-+
- 	to->efer = from->efer;
- 	to->cr0 = from->cr0;
- 	to->cr3 = from->cr3;
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -140,6 +140,7 @@ struct kvm_vmcb_info {
- };
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
  
- struct vmcb_save_area_cached {
-+	struct vmcb_seg cs;
- 	u64 efer;
- 	u64 cr4;
- 	u64 cr3;
+ 	if (status & IRQ_LCI)
+ 		mii_check_link(&ks->mii);
+@@ -421,7 +416,6 @@ static void ks8851_flush_tx_work(struct
+ static int ks8851_net_open(struct net_device *dev)
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+-	unsigned long flags;
+ 	int ret;
+ 
+ 	ret = request_threaded_irq(dev->irq, NULL, ks8851_irq,
+@@ -434,7 +428,7 @@ static int ks8851_net_open(struct net_de
+ 
+ 	/* lock the card, even if we may not actually be doing anything
+ 	 * else at the moment */
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 
+ 	netif_dbg(ks, ifup, ks->netdev, "opening\n");
+ 
+@@ -487,7 +481,7 @@ static int ks8851_net_open(struct net_de
+ 
+ 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+ 
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ 	mii_check_link(&ks->mii);
+ 	return 0;
+ }
+@@ -503,23 +497,22 @@ static int ks8851_net_open(struct net_de
+ static int ks8851_net_stop(struct net_device *dev)
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+-	unsigned long flags;
+ 
+ 	netif_info(ks, ifdown, dev, "shutting down\n");
+ 
+ 	netif_stop_queue(dev);
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 	/* turn off the IRQs and ack any outstanding */
+ 	ks8851_wrreg16(ks, KS_IER, 0x0000);
+ 	ks8851_wrreg16(ks, KS_ISR, 0xffff);
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ 
+ 	/* stop any outstanding work */
+ 	ks8851_flush_tx_work(ks);
+ 	flush_work(&ks->rxctrl_work);
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 	/* shutdown RX process */
+ 	ks8851_wrreg16(ks, KS_RXCR1, 0x0000);
+ 
+@@ -528,7 +521,7 @@ static int ks8851_net_stop(struct net_de
+ 
+ 	/* set powermode to soft power down to save power */
+ 	ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ 
+ 	/* ensure any queued tx buffers are dumped */
+ 	while (!skb_queue_empty(&ks->txq)) {
+@@ -582,14 +575,13 @@ static netdev_tx_t ks8851_start_xmit(str
+ static void ks8851_rxctrl_work(struct work_struct *work)
+ {
+ 	struct ks8851_net *ks = container_of(work, struct ks8851_net, rxctrl_work);
+-	unsigned long flags;
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 
+ 	/* need to shutdown RXQ before modifying filter parameters */
+ 	ks8851_wrreg16(ks, KS_RXCR1, 0x00);
+ 
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ }
+ 
+ static void ks8851_set_rx_mode(struct net_device *dev)
+@@ -796,7 +788,6 @@ static int ks8851_set_eeprom(struct net_
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+ 	int offset = ee->offset;
+-	unsigned long flags;
+ 	int len = ee->len;
+ 	u16 tmp;
+ 
+@@ -810,7 +801,7 @@ static int ks8851_set_eeprom(struct net_
+ 	if (!(ks->rc_ccr & CCR_EEPROM))
+ 		return -ENOENT;
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 
+ 	ks8851_eeprom_claim(ks);
+ 
+@@ -833,7 +824,7 @@ static int ks8851_set_eeprom(struct net_
+ 	eeprom_93cx6_wren(&ks->eeprom, false);
+ 
+ 	ks8851_eeprom_release(ks);
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ 
+ 	return 0;
+ }
+@@ -843,7 +834,6 @@ static int ks8851_get_eeprom(struct net_
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+ 	int offset = ee->offset;
+-	unsigned long flags;
+ 	int len = ee->len;
+ 
+ 	/* must be 2 byte aligned */
+@@ -853,7 +843,7 @@ static int ks8851_get_eeprom(struct net_
+ 	if (!(ks->rc_ccr & CCR_EEPROM))
+ 		return -ENOENT;
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 
+ 	ks8851_eeprom_claim(ks);
+ 
+@@ -861,7 +851,7 @@ static int ks8851_get_eeprom(struct net_
+ 
+ 	eeprom_93cx6_multiread(&ks->eeprom, offset/2, (__le16 *)data, len/2);
+ 	ks8851_eeprom_release(ks);
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ 
+ 	return 0;
+ }
+@@ -920,7 +910,6 @@ static int ks8851_phy_reg(int reg)
+ static int ks8851_phy_read_common(struct net_device *dev, int phy_addr, int reg)
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+-	unsigned long flags;
+ 	int result;
+ 	int ksreg;
+ 
+@@ -928,9 +917,9 @@ static int ks8851_phy_read_common(struct
+ 	if (ksreg < 0)
+ 		return ksreg;
+ 
+-	ks8851_lock(ks, &flags);
++	ks8851_lock(ks);
+ 	result = ks8851_rdreg16(ks, ksreg);
+-	ks8851_unlock(ks, &flags);
++	ks8851_unlock(ks);
+ 
+ 	return result;
+ }
+@@ -965,14 +954,13 @@ static void ks8851_phy_write(struct net_
+ 			     int phy, int reg, int value)
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+-	unsigned long flags;
+ 	int ksreg;
+ 
+ 	ksreg = ks8851_phy_reg(reg);
+ 	if (ksreg >= 0) {
+-		ks8851_lock(ks, &flags);
++		ks8851_lock(ks);
+ 		ks8851_wrreg16(ks, ksreg, value);
+-		ks8851_unlock(ks, &flags);
++		ks8851_unlock(ks);
+ 	}
+ }
+ 
+--- a/drivers/net/ethernet/micrel/ks8851_par.c
++++ b/drivers/net/ethernet/micrel/ks8851_par.c
+@@ -55,29 +55,27 @@ struct ks8851_net_par {
+ /**
+  * ks8851_lock_par - register access lock
+  * @ks: The chip state
+- * @flags: Spinlock flags
+  *
+  * Claim chip register access lock
+  */
+-static void ks8851_lock_par(struct ks8851_net *ks, unsigned long *flags)
++static void ks8851_lock_par(struct ks8851_net *ks)
+ {
+ 	struct ks8851_net_par *ksp = to_ks8851_par(ks);
+ 
+-	spin_lock_irqsave(&ksp->lock, *flags);
++	spin_lock_bh(&ksp->lock);
+ }
+ 
+ /**
+  * ks8851_unlock_par - register access unlock
+  * @ks: The chip state
+- * @flags: Spinlock flags
+  *
+  * Release chip register access lock
+  */
+-static void ks8851_unlock_par(struct ks8851_net *ks, unsigned long *flags)
++static void ks8851_unlock_par(struct ks8851_net *ks)
+ {
+ 	struct ks8851_net_par *ksp = to_ks8851_par(ks);
+ 
+-	spin_unlock_irqrestore(&ksp->lock, *flags);
++	spin_unlock_bh(&ksp->lock);
+ }
+ 
+ /**
+@@ -233,7 +231,6 @@ static netdev_tx_t ks8851_start_xmit_par
+ {
+ 	struct ks8851_net *ks = netdev_priv(dev);
+ 	netdev_tx_t ret = NETDEV_TX_OK;
+-	unsigned long flags;
+ 	unsigned int txqcr;
+ 	u16 txmir;
+ 	int err;
+@@ -241,7 +238,7 @@ static netdev_tx_t ks8851_start_xmit_par
+ 	netif_dbg(ks, tx_queued, ks->netdev,
+ 		  "%s: skb %p, %d@%p\n", __func__, skb, skb->len, skb->data);
+ 
+-	ks8851_lock_par(ks, &flags);
++	ks8851_lock_par(ks);
+ 
+ 	txmir = ks8851_rdreg16_par(ks, KS_TXMIR) & 0x1fff;
+ 
+@@ -262,7 +259,7 @@ static netdev_tx_t ks8851_start_xmit_par
+ 		ret = NETDEV_TX_BUSY;
+ 	}
+ 
+-	ks8851_unlock_par(ks, &flags);
++	ks8851_unlock_par(ks);
+ 
+ 	return ret;
+ }
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -73,11 +73,10 @@ struct ks8851_net_spi {
+ /**
+  * ks8851_lock_spi - register access lock
+  * @ks: The chip state
+- * @flags: Spinlock flags
+  *
+  * Claim chip register access lock
+  */
+-static void ks8851_lock_spi(struct ks8851_net *ks, unsigned long *flags)
++static void ks8851_lock_spi(struct ks8851_net *ks)
+ {
+ 	struct ks8851_net_spi *kss = to_ks8851_spi(ks);
+ 
+@@ -87,11 +86,10 @@ static void ks8851_lock_spi(struct ks885
+ /**
+  * ks8851_unlock_spi - register access unlock
+  * @ks: The chip state
+- * @flags: Spinlock flags
+  *
+  * Release chip register access lock
+  */
+-static void ks8851_unlock_spi(struct ks8851_net *ks, unsigned long *flags)
++static void ks8851_unlock_spi(struct ks8851_net *ks)
+ {
+ 	struct ks8851_net_spi *kss = to_ks8851_spi(ks);
+ 
+@@ -311,7 +309,6 @@ static void ks8851_tx_work(struct work_s
+ 	struct ks8851_net_spi *kss;
+ 	unsigned short tx_space;
+ 	struct ks8851_net *ks;
+-	unsigned long flags;
+ 	struct sk_buff *txb;
+ 	bool last;
+ 
+@@ -319,7 +316,7 @@ static void ks8851_tx_work(struct work_s
+ 	ks = &kss->ks8851;
+ 	last = skb_queue_empty(&ks->txq);
+ 
+-	ks8851_lock_spi(ks, &flags);
++	ks8851_lock_spi(ks);
+ 
+ 	while (!last) {
+ 		txb = skb_dequeue(&ks->txq);
+@@ -345,7 +342,7 @@ static void ks8851_tx_work(struct work_s
+ 	ks->tx_space = tx_space;
+ 	spin_unlock_bh(&ks->statelock);
+ 
+-	ks8851_unlock_spi(ks, &flags);
++	ks8851_unlock_spi(ks);
+ }
+ 
+ /**
 
 
 
