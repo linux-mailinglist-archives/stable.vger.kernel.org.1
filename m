@@ -1,96 +1,61 @@
-Return-Path: <stable+bounces-243010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDKoBYKN+GkVwgIAu9opvQ
-	(envelope-from <stable+bounces-243010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:13:54 +0200
+	id ENMiOwSO+GkVwgIAu9opvQ
+	(envelope-from <stable+bounces-243011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:16:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF894BCC7D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:13:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669764BCCD2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 08DDB300826E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:13:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDE3300D683
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9A13CF675;
-	Mon,  4 May 2026 12:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0161E3A3E8C;
+	Mon,  4 May 2026 12:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3WLX3l0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WoEco32j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B06E3CF054
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94B2347BD4
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777896823; cv=none; b=sE0V/yxBU2hnZnGqEE8e3vYbLI87OIMeM/9WEVqyqm8h923rGYj4smK2Pq+/4kwIJDHWOgpmV04Kuu8OXp1YfRgMCnjfn/Y41klTmqfbE8u3rmVYNqHC4Jdr8zXhb5A7adEyB+npj93T5AP0yFR4csuGgNJvBWLUjzAabADMnlk=
+	t=1777896961; cv=none; b=ozYzPMKXqH+SfSEbMVe+F3GWhGQKJI8IQeL9sVcZYhq074c4EBemqUTuHm6hNUSpaIewbrgddioIQEwaESHwmWf/HbyPow868DwjNE4N8adDAYuCJsqEp23hujoVnogBnpOdSJOyrnH0WMKp66bz11QeHbCKNEj5FNvGLrjJfgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777896823; c=relaxed/simple;
-	bh=XNNpH1F5wvOWEqcIvtiZ7uYlDMRnhSh/liAy8ctj5SE=;
+	s=arc-20240116; t=1777896961; c=relaxed/simple;
+	bh=o2yWWM4NHWDjwD/cfOPwRNTV/8WFl5moqvlJykouoKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CN3TelmDf5GWAEnsgrdFQ7MZggv05JEkHvbUVyl0urCNJphPq43v8GZTn2Z+Zm5YU1gmvydJGBHiIsdZeO/Qny2QGv0Zg92fKVeP7KCYX+YTC6oFifL3S74RFliA705yqwHI1gcwhFet9t9NGcK3ASXXIJYoWIiKuGg1bXd29Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D3WLX3l0; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-79a535e7c00so45102437b3.3
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 05:13:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777896821; x=1778501621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XM5dGgpkjSsxJQtB3BR2yd0n4llyOuuMJ1LAIAlQ75o=;
-        b=D3WLX3l0AXcCNKZlUurWw4ZDO6UmsrO3V+pAw+JcDjPiDgH1mfO1eKnP278z4z9Utm
-         GTfenXEI86lMRF0ZNNcZ+Fzo1v8jRqpnYsYUSOykZYfGjCSEDtk0SeYUvLHFdQJEfkRB
-         joK04IpR055SgY+vgSeiauf9YgunWmaN0BCXOJo7fh26tApJK04oiE2j0JubBaSnhGmr
-         VFI7D6QFr60XDJ2prFxPTQfr2Ap1Q4NG9xpwK4pCUIZp5Mug6WIdhTvKeRUJaJZu28G8
-         EpjiJZx/xnf72aml5K1h8e4c54Hb/Zi+nY6DMM//Er0u+Q46Y0DuIuPqCjuAwhNo/qqk
-         /sfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777896821; x=1778501621;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XM5dGgpkjSsxJQtB3BR2yd0n4llyOuuMJ1LAIAlQ75o=;
-        b=ZbQS7QhQUIP4s0nl4ylk4gvNy+Uf2ai0dy2YckLnrNxpOaCtKBp0tOLev9gbQmNoro
-         a9tnQVugYdsvQ8OH0vtzcBhXY8pJu/4hp1RPxU4c5HmhME7zUBV80zPaPjlh604+GfC0
-         xUW0jSgK2QLztVof+Z5QiByZWawqFbrv/0EInvNgatXMnB/ynRsPDoUb+NZsu9otkaPb
-         /OSMFrJK4cXfUDaazqFWxUiUZnSJRTd3xv1Q2Vk9lvmM6YOOOcCnW85cPvaUvl0+KgmH
-         38vTNEk3AY149zDpsocaqcfXzURECwIAylJF9ip3vFtAi3YzpuwNRyHvFnvm1qL+MO52
-         ASrw==
-X-Forwarded-Encrypted: i=1; AFNElJ+xqrcQ4VZvGceXkGJBDpnrNWSBcqgixnMN2JIGd5rDpxreqpP9eLf1zMYaoaHpB/iJaoy9ru4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNWRqFSmFbmXPfPiULsO+SHab7e668Jt0Y7hmgpRMy0Q/irCAb
-	T1nDydutr8sa8aGU2Y/yHo9YTTt+85hmoBOjnTOK/RrUVoLRf31YiG5A
-X-Gm-Gg: AeBDiet3HD5BXsvuYY69Dz0zZwCMi5hausE+8EfcJA3JfH6gjDBSsCTIBTRcnaW1xC8
-	cqluCwqVF8WL1qEOMqEvgDGOT1HRF5LScWU3urCSUnU/D+c3HdxfS06ttEGZnMCQkXTzx4rUwSc
-	PaLRG+pKxrOb50ywJLgJqJGXqCDU6Yz3U3y+O9/v6jfhF/XjJgDYES6W6IbW7030+pgQis69ekq
-	HLsUQ6u6GuGYicuvikUvEtdAjO6p6XE4xyLON04eDS1uO3dunsB1lb8nr1W2DFgTBvz96gtuLWx
-	O4Hq48p+kBTiFUJqZxvDmDg/J9hjGwbLJjA93PVXCIMUQVbgk1z2sJ1EO1pth3qj6/Oj4E6SBls
-	wOoDv6zxwR3kHy3JCGcwrMwF5r8EXc84pDP/LvcqxYCGvNE9N7l6Aqw93QPksf79A771J9Kxjsj
-	ihr+NzkOu1aOugJmLa/XID2uWcl2wNsl5w0/4G54GWW+xgHB5zhRyYYUE=
-X-Received: by 2002:a05:690c:a01c:b0:7b8:bc4e:ac3 with SMTP id 00721157ae682-7bd77104b4emr88139017b3.26.1777896821391;
-        Mon, 04 May 2026 05:13:41 -0700 (PDT)
-Received: from ubuntu-linux-2404.ts.net ([186.151.100.108])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd665464ccsm48417937b3.11.2026.05.04.05.13.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 05:13:40 -0700 (PDT)
-From: Sebastian Alba Vives <sebasjosue84@gmail.com>
-To: yilun.xu@linux.intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-fpga@vger.kernel.org,
-	conor.dooley@microchip.com,
-	mdf@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>
-Subject: [PATCH v5 3/3] fpga: microchip-spi: fix zero header_size OOB read in mpf_ops_parse_header()
-Date: Mon,  4 May 2026 06:13:32 -0600
-Message-ID: <20260504121332.1053563-3-sebasjosue84@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260504121332.1053563-1-sebasjosue84@gmail.com>
-References: <20260504121332.1053563-1-sebasjosue84@gmail.com>
+	 MIME-Version; b=EcsyTeDIqHu3a6+Vi9kxXWg6F0/nZzpn/dgJT0qVFcPbh/Dq3cu3X4saYo+jHY7eomHeYWnlP6BHplJyltl1OJunOWTfyhN0ywmfnUQA6zm7R0xojryJBKcY2ggXXYPtBAxOKqFt76VMUVy0+3u2odwvu+5p6M0P5N8uBqwanPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WoEco32j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DA0C2BCB8;
+	Mon,  4 May 2026 12:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777896961;
+	bh=o2yWWM4NHWDjwD/cfOPwRNTV/8WFl5moqvlJykouoKc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WoEco32jBU23JBV2YfAUcGIlWZUv4nnBQkuJJA7kmk6A4TdcwoFxiOvvaxQoEu3CA
+	 l+RcsAwNRmHcJFX+ux3pBRSTvS+NWaacyWTWiSlUStLC9gOdE7v4E3C9Sz1skNDyfo
+	 JJbqdTuHuCPirx2tJGkRFVm3UNTVx10p6ngOkfCEYgEeubvQjqd1UtuQiW25WQ/qPU
+	 C8trbkJbSj0dkUIwG/PWH3fJuT67cEvUQDch4BS8OAl4NpWKNBq1Af+WH1pNUriSHH
+	 NYCZP7zOfo+ApyH957yOf59pttaNiuAuEXYDDiyuTTabK56DFI2xLunI0saog3piT+
+	 byVMN4Fx4oNjw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Johan Hovold <johan@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] spi: fix resource leaks on device setup failure
+Date: Mon,  4 May 2026 08:15:56 -0400
+Message-ID: <20260504121556.2149853-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050102-whimsical-willpower-501f@gregkh>
+References: <2026050102-whimsical-willpower-501f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,85 +63,164 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EBF894BCC7D
+X-Rspamd-Queue-Id: 669764BCCD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,microchip.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-243010-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243011-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sebasjosue84@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-mpf_ops_parse_header() reads header_size from the bitstream at
-MPF_HEADER_SIZE_OFFSET (24). When header_size is zero, the expression
-*(buf + header_size - 1) reads one byte before the buffer start.
+From: Johan Hovold <johan@kernel.org>
 
-Since initial_header_size is set to 71 in mpf_ops, the fpga-mgr core
-guarantees the buffer is always large enough to reach MPF_HEADER_SIZE_OFFSET.
-The only real gap is the zero header_size case, which cannot be resolved
-by providing a larger buffer, so return -EINVAL.
+[ Upstream commit db357034f7e0cf23f233f414a8508312dfe8fbbe ]
 
-Fixes: 5f8d4a9008307 ("fpga: microchip-spi: add Microchip MPF FPGA manager")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Make sure to call controller cleanup() if spi_setup() fails while
+registering a device to avoid leaking any resources allocated by
+setup().
+
+Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Saravana Kannan <saravanak@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes in v5:
-  - Drop the count < MPF_HEADER_SIZE_OFFSET + 1 check. Since
-    initial_header_size = 71 is set in mpf_ops, the fpga-mgr core
-    already guarantees the buffer covers MPF_HEADER_SIZE_OFFSET.
-    Only the zero header_size case remains as a genuine bug.
-    Suggested by Xu Yilun.
-Changes in v4:
-  - Reduce to two minimal fixes: minimum count check and -EINVAL for
-    zero header_size (superseded by v5).
-Changes in v3:
-  - Add overflow check for 32-bit in component size loop.
-Changes in v2:
-  - Return -EINVAL for header_size == 0, -EAGAIN in block loop,
-    add count check before MPF_HEADER_SIZE_OFFSET read.
----
- drivers/fpga/microchip-spi.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi.c | 61 ++++++++++++++++++++++++++++-------------------
+ 1 file changed, 37 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/fpga/microchip-spi.c b/drivers/fpga/microchip-spi.c
-index dca1a5d..cc8f6d7 100644
---- a/drivers/fpga/microchip-spi.c
-+++ b/drivers/fpga/microchip-spi.c
-@@ -115,9 +115,6 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
- 		return -EINVAL;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 91da4cae011c8..413f09dca8a88 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -42,6 +42,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_stop);
+ 
+ #include "internals.h"
+ 
++static int __spi_setup(struct spi_device *spi, bool initial_setup);
++
+ static DEFINE_IDR(spi_master_idr);
+ 
+ static void spidev_release(struct device *dev)
+@@ -677,7 +679,7 @@ static int __spi_add_device(struct spi_device *spi)
+ 	 * normally rely on the device being setup.  Devices
+ 	 * using SPI_CS_HIGH can't coexist well otherwise...
+ 	 */
+-	status = spi_setup(spi);
++	status = __spi_setup(spi, true);
+ 	if (status < 0) {
+ 		dev_err(dev, "can't setup %s, status %d\n",
+ 				dev_name(&spi->dev), status);
+@@ -3734,27 +3736,7 @@ static int spi_set_cs_timing(struct spi_device *spi)
+ 	return status;
+ }
+ 
+-/**
+- * spi_setup - setup SPI mode and clock rate
+- * @spi: the device whose settings are being modified
+- * Context: can sleep, and no requests are queued to the device
+- *
+- * SPI protocol drivers may need to update the transfer mode if the
+- * device doesn't work with its default.  They may likewise need
+- * to update clock rates or word sizes from initial values.  This function
+- * changes those settings, and must be called from a context that can sleep.
+- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
+- * effect the next time the device is selected and data is transferred to
+- * or from it.  When this function returns, the SPI device is deselected.
+- *
+- * Note that this call will fail if the protocol driver specifies an option
+- * that the underlying controller or its driver does not support.  For
+- * example, not all hardware supports wire transfers using nine bit words,
+- * LSB-first wire encoding, or active-high chipselects.
+- *
+- * Return: zero on success, else a negative error code.
+- */
+-int spi_setup(struct spi_device *spi)
++static int __spi_setup(struct spi_device *spi, bool initial_setup)
+ {
+ 	unsigned	bad_bits, ugly_bits;
+ 	int		status = 0;
+@@ -3833,7 +3815,7 @@ int spi_setup(struct spi_device *spi)
+ 	status = spi_set_cs_timing(spi);
+ 	if (status) {
+ 		mutex_unlock(&spi->controller->io_mutex);
+-		return status;
++		goto err_cleanup;
  	}
  
--	if (count < MPF_HEADER_SIZE_OFFSET + 1)
--		return -EINVAL;
--
- 	header_size = *(buf + MPF_HEADER_SIZE_OFFSET);
- 	if (!header_size)
- 		return -EINVAL;
+ 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
+@@ -3842,7 +3824,7 @@ int spi_setup(struct spi_device *spi)
+ 			mutex_unlock(&spi->controller->io_mutex);
+ 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
+ 				status);
+-			return status;
++			goto err_cleanup;
+ 		}
+ 
+ 		/*
+@@ -3879,6 +3861,37 @@ int spi_setup(struct spi_device *spi)
+ 			status);
+ 
+ 	return status;
++
++err_cleanup:
++	if (initial_setup)
++		spi_cleanup(spi);
++
++	return status;
++}
++
++/**
++ * spi_setup - setup SPI mode and clock rate
++ * @spi: the device whose settings are being modified
++ * Context: can sleep, and no requests are queued to the device
++ *
++ * SPI protocol drivers may need to update the transfer mode if the
++ * device doesn't work with its default.  They may likewise need
++ * to update clock rates or word sizes from initial values.  This function
++ * changes those settings, and must be called from a context that can sleep.
++ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
++ * effect the next time the device is selected and data is transferred to
++ * or from it.  When this function returns, the SPI device is deselected.
++ *
++ * Note that this call will fail if the protocol driver specifies an option
++ * that the underlying controller or its driver does not support.  For
++ * example, not all hardware supports wire transfers using nine bit words,
++ * LSB-first wire encoding, or active-high chipselects.
++ *
++ * Return: zero on success, else a negative error code.
++ */
++int spi_setup(struct spi_device *spi)
++{
++	return __spi_setup(spi, false);
+ }
+ EXPORT_SYMBOL_GPL(spi_setup);
+ 
 -- 
-2.43.0
+2.53.0
 
 
