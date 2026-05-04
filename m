@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-243363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDnVE9+q+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:11 +0200
+	id 0EgtD/il+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CC54BF0FF
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C974BE351
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4B8C304347B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BCBD2300B9DE
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B873DEACB;
-	Mon,  4 May 2026 14:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CF53A63EC;
+	Mon,  4 May 2026 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpfkmS28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3BO50vt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A977B3DEAC5;
-	Mon,  4 May 2026 14:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C57B20DD51;
+	Mon,  4 May 2026 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903693; cv=none; b=ovXHA5/duh/iHDBq0sjb7yxX38fRi5VFcZGB6py6IXUaOcbWDPH3zaYUVrJIq4TORby6NTL/fVLvD7NJDqGY4Q+rDKaO/LIhwiyRddWmI+2GQxon7qWgGcvpA3LKiSBM2pzk/42y/3Pqfn3Xc2nKmeUCzDsgDVNtMZhvoujq0Ak=
+	t=1777903046; cv=none; b=fTlWZs58JzSxckYdsngntLBV4JOHy9wVNA+7S/il1Ac3k1UB5LMqx2yLb2pvtRFz1IFX4n+JGikTX6xVmYeDSwWp0tDC0lT39vZ8ahTR5Lhk9ILdZMBZIuUzEEgbJFbiWP5h2ffM3z12iY7KU4s95maO2ABvu83hCEaNsSm3QeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903693; c=relaxed/simple;
-	bh=fxgdKJWQj6gx42yh6c5t1wlIFrJ/bBsQW4oYoGUuBIA=;
+	s=arc-20240116; t=1777903046; c=relaxed/simple;
+	bh=qTgOOk2hee14TD9UYOK08OefJ1HkYBUGnEoOEp6TY50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6MfuuQh40gVh2DTGnuqBGlz+Z7xBPPA862jOc9rEbM3NH268ghSY4szBEmGvTzUYiMQA1DSY81W/Y5aGhCiyXwoHpAr13bUspUnLPY6CPMD/HdD4k9JDuFDfHyJp9t3KwMelibajXeWwA1/FF7wbbxp4QdLAa1Fy85v0nB5OaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpfkmS28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40263C2BCF4;
-	Mon,  4 May 2026 14:08:13 +0000 (UTC)
+	 MIME-Version; b=PB0/L4cZv3KhBIVJ9Ma6pzxCDVYMj8Dq98lJf+WG5jDnd0P4DdFBisDKk2RxqS6dSbCtX89oG+1NA6bQ6PPmuEG66MuTS1G99eHQe134rRfrVjK6q144RvfNGpx+G+JOAUseus0Nxn+pskNMalNdoOIWiVBAf0CP/aBRNUZKyN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3BO50vt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E6FC2BCB8;
+	Mon,  4 May 2026 13:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903693;
-	bh=fxgdKJWQj6gx42yh6c5t1wlIFrJ/bBsQW4oYoGUuBIA=;
+	s=korg; t=1777903046;
+	bh=qTgOOk2hee14TD9UYOK08OefJ1HkYBUGnEoOEp6TY50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HpfkmS288dyxtfAWqaDeT1TVXAtE3vC5mF73sc/8QsHVtQOtWpp45pNpt8WrlQh+g
-	 z+LDKt037B0LSbB7O3TKfsLe+VgoUidoxoCeDY16ewO/4BlGmZpXEDUbXr9jvWyqXP
-	 qYaQl0xHVr/qVhSy9zXJtY3Uy4/DoYQtSA2WUWNM=
+	b=g3BO50vtNlU5UfrY9dS9b2sbir5BC+RDv8MIgagmsdF/QBsnl+lvly9eL5oYMJIQh
+	 BWfHYkqYYUnMxVQKpUrMpustYfRiXD7ciwoAE5ezV6ESysYWRGJgLiGXv/ckfA155N
+	 rr+JzRwRG0o1hPJ4oJrJlBu6JbqXuEjwBfuTw+6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 026/275] Input: edt-ft5x06 - fix use-after-free in debugfs teardown
-Date: Mon,  4 May 2026 15:49:26 +0200
-Message-ID: <20260504135143.910894780@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 082/307] mm/damon/core: fix damon_call() vs kdamond_fn() exit race
+Date: Mon,  4 May 2026 15:49:27 +0200
+Message-ID: <20260504135145.896598581@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,202 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4CC54BF0FF
+X-Rspamd-Queue-Id: E6C974BE351
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	TAGGED_FROM(0.00)[bounces-243363-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243111-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit f5f9e07060519e2287e99019a6de1eb3ebb65c37 upstream.
+commit 55da81663b9642dd046b26dd6f1baddbcf337c1e upstream.
 
-The commit 68743c500c6e ("Input: edt-ft5x06 - use per-client debugfs
-directory") removed the manual debugfs teardown, relying on the I2C core
-to handle it. However, this creates a window where debugfs files are
-still accessible after edt_ft5x06_ts_teardown_debugfs() frees
-tsdata->raw_buffer.
+Patch series "mm/damon/core: fix damon_call()/damos_walk() vs kdmond exit
+race".
 
-To prevent a use-after-free, protect the freeing of raw_buffer with the
-device mutex and set raw_buffer to NULL. The debugfs read function
-already checks if raw_buffer is NULL under the same mutex, so this
-safely avoids the use-after-free.
+damon_call() and damos_walk() can leak memory and/or deadlock when they
+race with kdamond terminations.  Fix those.
 
-Fixes: 68743c500c6e ("Input: edt-ft5x06 - use per-client debugfs directory")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/adnJicDh-bTUaWXP@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+
+This patch (of 2);
+
+When kdamond_fn() main loop is finished, the function cancels all
+remaining damon_call() requests and unset the damon_ctx->kdamond so that
+API callers and API functions themselves can know the context is
+terminated.  damon_call() adds the caller's request to the queue first.
+After that, it shows if the kdamond of the damon_ctx is still running
+(damon_ctx->kdamond is set).  Only if the kdamond is running, damon_call()
+starts waiting for the kdamond's handling of the newly added request.
+
+The damon_call() requests registration and damon_ctx->kdamond unset are
+protected by different mutexes, though.  Hence, damon_call() could race
+with damon_ctx->kdamond unset, and result in deadlocks.
+
+For example, let's suppose kdamond successfully finished the damon_call()
+requests cancelling.  Right after that, damon_call() is called for the
+context.  It registers the new request, and shows the context is still
+running, because damon_ctx->kdamond unset is not yet done.  Hence the
+damon_call() caller starts waiting for the handling of the request.
+However, the kdamond is already on the termination steps, so it never
+handles the new request.  As a result, the damon_call() caller threads
+infinitely waits.
+
+Fix this by introducing another damon_ctx field, namely
+call_controls_obsolete.  It is protected by the
+damon_ctx->call_controls_lock, which protects damon_call() requests
+registration.  Initialize (unset) it in kdamond_fn() before letting
+damon_start() returns and set it just before the cancelling of remaining
+damon_call() requests is executed.  damon_call() reads the obsolete field
+under the lock and avoids adding a new request.
+
+After this change, only requests that are guaranteed to be handled or
+cancelled are registered.  Hence the after-registration DAMON context
+termination check is no longer needed.  Remove it together.
+
+Note that the deadlock will not happen when damon_call() is called for
+repeat mode request.  In tis case, damon_call() returns instead of waiting
+for the handling when the request registration succeeds and it shows the
+kdamond is running.  However, if the request also has dealloc_on_cancel,
+the request memory would be leaked.
+
+The issue is found by sashiko [1].
+
+Link: https://lore.kernel.org/20260327233319.3528-1-sj@kernel.org
+Link: https://lore.kernel.org/20260327233319.3528-2-sj@kernel.org
+Link: https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org [1]
+Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.14.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/edt-ft5x06.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/damon.h |    1 +
+ mm/damon/core.c       |   45 ++++++++++++++-------------------------------
+ 2 files changed, 15 insertions(+), 31 deletions(-)
 
---- a/drivers/input/touchscreen/edt-ft5x06.c
-+++ b/drivers/input/touchscreen/edt-ft5x06.c
-@@ -829,7 +829,10 @@ static void edt_ft5x06_ts_prepare_debugf
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -805,6 +805,7 @@ struct damon_ctx {
  
- static void edt_ft5x06_ts_teardown_debugfs(struct edt_ft5x06_ts_data *tsdata)
- {
-+	guard(mutex)(&tsdata->mutex);
-+
- 	kfree(tsdata->raw_buffer);
-+	tsdata->raw_buffer = NULL;
+ 	/* lists of &struct damon_call_control */
+ 	struct list_head call_controls;
++	bool call_controls_obsolete;
+ 	struct mutex call_controls_lock;
+ 
+ 	struct damos_walk_control *walk_control;
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1464,35 +1464,6 @@ int damon_kdamond_pid(struct damon_ctx *
+ 	return pid;
  }
  
- #else
+-/*
+- * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
+- *				      an inactive context.
+- * @ctx:	The inactive DAMON context.
+- * @control:	Control variable of the call request.
+- *
+- * This function is called in a case that @control is added to @ctx but @ctx is
+- * not running (inactive).  See if @ctx handled @control or not, and cleanup
+- * @control if it was not handled.
+- *
+- * Returns 0 if @control was handled by @ctx, negative error code otherwise.
+- */
+-static int damon_call_handle_inactive_ctx(
+-		struct damon_ctx *ctx, struct damon_call_control *control)
+-{
+-	struct damon_call_control *c;
+-
+-	mutex_lock(&ctx->call_controls_lock);
+-	list_for_each_entry(c, &ctx->call_controls, list) {
+-		if (c == control) {
+-			list_del(&control->list);
+-			mutex_unlock(&ctx->call_controls_lock);
+-			return -EINVAL;
+-		}
+-	}
+-	mutex_unlock(&ctx->call_controls_lock);
+-	return 0;
+-}
+-
+ /**
+  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+  * @ctx:	DAMON context to call the function for.
+@@ -1510,6 +1481,10 @@ static int damon_call_handle_inactive_ct
+  * synchronization.  The return value of the function will be saved in
+  * &damon_call_control->return_code.
+  *
++ * Note that this function should be called only after damon_start() with the
++ * @ctx has succeeded.  Otherwise, this function could fall into an indefinite
++ * wait.
++ *
+  * Return: 0 on success, negative error code otherwise.
+  */
+ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+@@ -1520,10 +1495,12 @@ int damon_call(struct damon_ctx *ctx, st
+ 	INIT_LIST_HEAD(&control->list);
+ 
+ 	mutex_lock(&ctx->call_controls_lock);
++	if (ctx->call_controls_obsolete) {
++		mutex_unlock(&ctx->call_controls_lock);
++		return -ECANCELED;
++	}
+ 	list_add_tail(&control->list, &ctx->call_controls);
+ 	mutex_unlock(&ctx->call_controls_lock);
+-	if (!damon_is_running(ctx))
+-		return damon_call_handle_inactive_ctx(ctx, control);
+ 	if (control->repeat)
+ 		return 0;
+ 	wait_for_completion(&control->completion);
+@@ -2751,6 +2728,9 @@ static int kdamond_fn(void *data)
+ 
+ 	pr_debug("kdamond (%d) starts\n", current->pid);
+ 
++	mutex_lock(&ctx->call_controls_lock);
++	ctx->call_controls_obsolete = false;
++	mutex_unlock(&ctx->call_controls_lock);
+ 	complete(&ctx->kdamond_started);
+ 	kdamond_init_ctx(ctx);
+ 
+@@ -2855,6 +2835,9 @@ done:
+ 	damon_destroy_targets(ctx);
+ 
+ 	kfree(ctx->regions_score_histogram);
++	mutex_lock(&ctx->call_controls_lock);
++	ctx->call_controls_obsolete = true;
++	mutex_unlock(&ctx->call_controls_lock);
+ 	kdamond_call(ctx, true);
+ 	damos_walk_cancel(ctx);
+ 
 
 
 
