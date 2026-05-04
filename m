@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-243230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YER/Jwup+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:23 +0200
+	id 4JXOAXqs+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102DC4BEB82
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905674BF604
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91AFB305B294
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81ADC3022F69
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7913DE422;
-	Mon,  4 May 2026 14:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE6A3DE43C;
+	Mon,  4 May 2026 14:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vyua7JY4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmlRMqCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF263DE431;
-	Mon,  4 May 2026 14:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8134B315785;
+	Mon,  4 May 2026 14:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903352; cv=none; b=MVFi07EgZhiOr+nofRgUW8UlZAN922MNXayBP/vy8xWMx4SodEjg7Am2w043RNU4unXUcSdux298ZgqGXub4zVTBhQIdCeF2fqslTaEOzqw318yTHIWfBErBraZ9eeLiqoYx04L1yHBxHtljob2yNoG0UcKLqX1hyorUhnf/TI8=
+	t=1777904550; cv=none; b=IKZwwzmtLEokt4lSWFsI/BKUQ0MCX2sBYisgeNyNEbnLsYLRfMPZrqm2nHQLKIcH6ub0lG3lQMHrZqMMaCc4NES+hwTZ1Pa2MUSKxGR+/HJHu8CuuCkabw5hnetAznXB/QcmuwKxBWXF5pzzgzLvzuF+XCk99vuF7e4XnnMhCm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903352; c=relaxed/simple;
-	bh=Ku9tTrnA4cr971llWE+HMQMeB4EQvFutgZSmJ2+mmfo=;
+	s=arc-20240116; t=1777904550; c=relaxed/simple;
+	bh=y+DYwidX/MKQp0Mb+2Rk0eYPrg+y1Eiyd4dKHOz4HJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CK7sOHRmmIZFxhshiEJRXyl6x6oU/Xtl0Wg1HIgd/33Gpsmtr6XPFqbCCCMa3idPPnZPAs/fDe9KRYqN/7e2uNYiQ8XQdP5JK2fgEmZsN0ewUX0njqX0DcFpgDTrUoNdNn6Cor6uXZR47+gNtgweXCwqK/McxisP7zhBkTuXtlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vyua7JY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55514C2BCB8;
-	Mon,  4 May 2026 14:02:31 +0000 (UTC)
+	 MIME-Version; b=Yp1bPMQyevYX7TRplvjiST6RdnzaIQidFMXITAeYMhxrA2toBY31293pUG8JoK77BEIJ24EOoTOnFPoEZly7g11F2r9EHpuz6ReRMCkvMX1K9bz/5tfwPsHSQJ62EKIBiKUmuV4rLlKnzyq5TFwViw+M+L0GDh7/AsWWYBe6ZFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmlRMqCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186FFC2BCB8;
+	Mon,  4 May 2026 14:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903351;
-	bh=Ku9tTrnA4cr971llWE+HMQMeB4EQvFutgZSmJ2+mmfo=;
+	s=korg; t=1777904550;
+	bh=y+DYwidX/MKQp0Mb+2Rk0eYPrg+y1Eiyd4dKHOz4HJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vyua7JY4bhFCcAXV0k7FDMAyOkk4uvOh41CMRQaMfTslxRg9X6vw9JXQWwO6R1a0V
-	 DU5hwKzWMY1WB7Op7hC7xgPSHoy7tuiw31+QkbHZ1B+3KEL3UmBWgg51sCCd5s1CWI
-	 1tmwEoVED2QtZ/7QHIRGSc7wBsq5945Dm17qtCRk=
+	b=FmlRMqCKaa9fLHgL+qaNDYdtyDi2oApM1Nm7xGtVjyFpZb4klvD62OonYbbZ4zHBa
+	 1NanRRZm75yO5UhYgvAg7E4CLL4Ub8yD9Z+KBYkhQ2xN8pW7r7IzG8mzWMm5xlbKTj
+	 WAS++UetssB5V9CWtRkyHT8L8uGGCHygYuRaR9j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Denis M. Karpov" <komlomal@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Harry Yoo (Oracle)" <harry@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 199/307] userfaultfd: allow registration of ranges below mmap_min_addr
+	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.12 065/215] sched: Use u64 for bandwidth ratio calculations
 Date: Mon,  4 May 2026 15:51:24 +0200
-Message-ID: <20260504135150.371319056@linuxfoundation.org>
+Message-ID: <20260504135132.545354226@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,97 +63,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 102DC4BEB82
+X-Rspamd-Queue-Id: 905674BF604
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243230-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.de,oracle.com,zeniv.linux.org.uk,suse.cz,google.com,redhat.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243699-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis M. Karpov <komlomal@gmail.com>
+From: Joseph Salisbury <joseph.salisbury@oracle.com>
 
-commit 161ce69c2c89781784b945d8e281ff2da9dede9c upstream.
+commit c6e80201e057dfb7253385e60bf541121bf5dc33 upstream.
 
-The current implementation of validate_range() in fs/userfaultfd.c
-performs a hard check against mmap_min_addr.  This is redundant because
-UFFDIO_REGISTER operates on memory ranges that must already be backed by a
-VMA.
+to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
+runtime values, but it returns unsigned long.  tg_rt_schedulable() also
+stores the current group limit and the accumulated child sum in unsigned
+long.
 
-Enforcing mmap_min_addr or capability checks again in userfaultfd is
-unnecessary and prevents applications like binary compilers from using
-UFFD for valid memory regions mapped by application.
+On 32-bit builds, large bandwidth ratios can be truncated and the RT
+group sum can wrap when enough siblings are present.  That can let an
+overcommitted RT hierarchy pass the schedulability check, and it also
+narrows the helper result for other callers.
 
-Remove the redundant check for mmap_min_addr.
+Return u64 from to_ratio() and use u64 for the RT group totals so
+bandwidth ratios are preserved and compared at full width on both 32-bit
+and 64-bit builds.
 
-We started using UFFD instead of the classic mprotect approach in the
-binary translator to track application writes.  During development, we
-encountered this bug.  The translator cannot control where the translated
-application chooses to map its memory and if the app requires a
-low-address area, UFFD fails, whereas mprotect would work just fine.  I
-believe this is a genuine logic bug rather than an improvement, and I
-would appreciate including the fix in stable.
-
-Link: https://lore.kernel.org/20260409103345.15044-1-komlomal@gmail.com
-Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
-Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
+Assisted-by: Codex:GPT-5
+Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/userfaultfd.c |    2 --
- 1 file changed, 2 deletions(-)
+ kernel/sched/core.c  |    2 +-
+ kernel/sched/rt.c    |    2 +-
+ kernel/sched/sched.h |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1238,8 +1238,6 @@ static __always_inline int validate_unal
- 		return -EINVAL;
- 	if (!len)
- 		return -EINVAL;
--	if (start < mmap_min_addr)
--		return -EINVAL;
- 	if (start >= task_size)
- 		return -EINVAL;
- 	if (len > task_size - start)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4794,7 +4794,7 @@ void sched_post_fork(struct task_struct
+ 	scx_post_fork(p);
+ }
+ 
+-unsigned long to_ratio(u64 period, u64 runtime)
++u64 to_ratio(u64 period, u64 runtime)
+ {
+ 	if (runtime == RUNTIME_INF)
+ 		return BW_UNIT;
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2707,7 +2707,7 @@ static int tg_rt_schedulable(struct task
+ {
+ 	struct rt_schedulable_data *d = data;
+ 	struct task_group *child;
+-	unsigned long total, sum = 0;
++	u64 total, sum = 0;
+ 	u64 period, runtime;
+ 
+ 	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2698,7 +2698,7 @@ extern void init_dl_entity(struct sched_
+ #define MAX_BW_BITS		(64 - BW_SHIFT)
+ #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
+ 
+-extern unsigned long to_ratio(u64 period, u64 runtime);
++extern u64 to_ratio(u64 period, u64 runtime);
+ 
+ extern void init_entity_runnable_average(struct sched_entity *se);
+ extern void post_init_entity_util_avg(struct task_struct *p);
 
 
 
