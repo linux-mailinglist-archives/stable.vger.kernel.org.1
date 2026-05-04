@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBAhDkNc+GnatQIAu9opvQ
-	(envelope-from <stable+bounces-242899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:47 +0200
+	id IJFVK0Rc+GnatQIAu9opvQ
+	(envelope-from <stable+bounces-242900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEAB04BA6B2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5186F4BA6C0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 20177300E3D1
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:42:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 133EC30117A5
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481F1340280;
-	Mon,  4 May 2026 08:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A6934216C;
+	Mon,  4 May 2026 08:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A38896MD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pM7OQM3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CADD1B86C7
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F37340280
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777884168; cv=none; b=P4KBi6Ljx320DYbr4jvgdeuMzQygGzp0SjYTsqCbZR5y2ghXAvdF7jpiCJIGmB3KPtrHcm2+UtFyRnLzyxDC7pGulSMxdTesQWWIhi2BT2LWuFx4Q2ZcbEA+XeAFgQPs0TdXWm2+DG8jvy7GgdxN+WdJDIB79jk9jkEN/YKUUi8=
+	t=1777884172; cv=none; b=d6sMh4pb8J8b66gtOQbdjemxK6Wlwd7qfbf+eLZSHodDbvizY1KCf+VK/pC0faYENTC/9H7RRPdyqFLQ1id3xN3cUkgGvDF5DtejIey30fwd0zlvqYEJyD0rJr4QNLgbp597gnBqsJ2MRXJRk5FEQst2q3VNRv3BBfi1FPviMkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777884168; c=relaxed/simple;
-	bh=uFE24XOTTnMPr7BzTg96eUnMptJfLoTP4bI9E7dC4yE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=g3rZdh74TWjKrBQ2FTYrmNvtpRN5y0bhqINwYehbKM35dxetNwgH7rKfj0dGXd68l9citWna162OqEDcoRAk1iGqvdroDCiMHTqx7o3VDO3G9DrqMMBgzwYskvBUn0zMv3mjF0ImoxoJUSxepLglFk81mw2XgcCgFIIg4mL8hB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A38896MD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96685C2BCB8;
-	Mon,  4 May 2026 08:42:47 +0000 (UTC)
+	s=arc-20240116; t=1777884172; c=relaxed/simple;
+	bh=BLXbK0ctPCM8DL7grq9TCk13IzV9rhZwrl9sbTnDPZ4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ReSDErolfA6GkD0upzbnW5B4cfjSVaF6ENb6C//bVekkyHLW1YKc+Wkc49/H4KmLK0sLhWc1lC4z4vI+U7suHExqFG7KJHLo/jYocm8Ol77LHGuRCzwHEKfX+yhlSgyS3RNCgiqKoZN2PH4SH5skDJOPC1+sSLcHYmnsXq/cT2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pM7OQM3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75BEC2BCB8;
+	Mon,  4 May 2026 08:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777884167;
-	bh=uFE24XOTTnMPr7BzTg96eUnMptJfLoTP4bI9E7dC4yE=;
+	s=korg; t=1777884172;
+	bh=BLXbK0ctPCM8DL7grq9TCk13IzV9rhZwrl9sbTnDPZ4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=A38896MDN3XQPjqw4UD9xQI55XDjygvdw5D1iEvMc6Gt9wQVMS5diFUUa9VOW6wXm
-	 bKYUl4Umf8kfPcuDT8T6EjrY6sMbyr9a4poDeIL/7krzFgLrWfonvKxATTPwcpnl9J
-	 0aFQj+G3MH14ZwojQqVgadxOO9m6xARLx4T7aOPc=
-Subject: FAILED: patch "[PATCH] x86/shstk: Prevent deadlock during shstk sigreturn" failed to apply to 6.6-stable tree
-To: rick.p.edgecombe@intel.com,dave.hansen@intel.com,tglx@kernel.org,torvalds@linux-foundation.org
+	b=pM7OQM3s5BWHoNy0mjl/SWo8h72gE6Iz0q22e/eKg6zlxrgXu0vxdUFwcm0m18TNI
+	 BmP/asyMSjLby+YtU7c5ywqiLbZWPKrsRWPYfWZrQml6VR4qm6pUSkYlHGErWRnF/E
+	 OtziYs4qaOvhM0B0ED37WbxDItt5+c7RgEv2Xc44=
+Subject: FAILED: patch "[PATCH] wifi: rtl8xxxu: fix potential use of uninitialized value" failed to apply to 6.12-stable tree
+To: yicong@kylinos.cn,pkshih@realtek.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:42:37 +0200
-Message-ID: <2026050437-throat-unrivaled-2769@gregkh>
+Date: Mon, 04 May 2026 10:42:49 +0200
+Message-ID: <2026050449-subtitle-twisty-9256@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DEAB04BA6B2
+X-Rspamd-Queue-Id: 5186F4BA6C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -67,39 +67,39 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242899-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242900-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,intel.com:email,linuxfoundation.org:dkim]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email,msgid.link:url,linuxfoundation.org:dkim]
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9874b2917b9fbc30956fee209d3c4aa47201c64e
+git cherry-pick -x f8a2fc809bfeb49130709b31a4d357a049f28547
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050437-throat-unrivaled-2769@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050449-subtitle-twisty-9256@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,134 +111,89 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9874b2917b9fbc30956fee209d3c4aa47201c64e Mon Sep 17 00:00:00 2001
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Date: Thu, 9 Apr 2026 11:43:30 -0700
-Subject: [PATCH] x86/shstk: Prevent deadlock during shstk sigreturn
+From f8a2fc809bfeb49130709b31a4d357a049f28547 Mon Sep 17 00:00:00 2001
+From: Yi Cong <yicong@kylinos.cn>
+Date: Fri, 6 Mar 2026 15:16:27 +0800
+Subject: [PATCH] wifi: rtl8xxxu: fix potential use of uninitialized value
 
-During sigreturn the shadow stack signal frame is popped. The kernel does
-this by reading the shadow stack using normal read accesses. When it can't
-assume the memory is shadow stack, it takes extra steps to makes sure it is
-reading actual shadow stack memory and not other normal readable memory. It
-does this by holding the mmap read lock while doing the access and checking
-the flags of the VMA.
+The local variables 'mcs' and 'nss' in rtl8xxxu_update_ra_report() are
+passed to rtl8xxxu_desc_to_mcsrate() as output parameters. If the helper
+function encounters an unhandled rate index, it may return without setting
+these values, leading to the use of uninitialized stack data.
 
-Unfortunately that is not safe. If the read of the shadow stack sigframe
-hits a page fault, the fault handler will try to recursively grab another
-mmap read lock. This normally works ok, but if a writer on another CPU is
-also waiting, the second read lock could fail and cause a deadlock.
+Remove the helper rtl8xxxu_desc_to_mcsrate() and inline the logic into
+rtl8xxxu_update_ra_report(). This fixes the use of uninitialized 'mcs'
+and 'nss' variables for legacy rates.
 
-Fix this by not holding mmap lock during the read access to userspace.
+The new implementation explicitly handles:
+- Legacy rates: Set bitrate only.
+- HT rates (MCS0-15): Set MCS flags, index, and NSS (1 or 2) directly.
+- Invalid rates: Return early.
 
-Instead use mmap_lock_speculate_...() to watch for changes between dropping
-mmap lock and the userspace access. Retry if anything grabbed an mmap write
-lock in between and could have changed the VMA.
-
-These mmap_lock_speculate_...() helpers use mm::mm_lock_seq, which is only
-available when PER_VMA_LOCK is configured. So make X86_USER_SHADOW_STACK
-depend on it. On x86, PER_VMA_LOCK is a default configuration for SMP
-kernels. So drop support for the other configs under the assumption that
-the !SMP shadow stack user base does not exist.
-
-Currently there is a check that skips the lookup work when the SSP can be
-assumed to be on a shadow stack. While reorganizing the function, remove
-the optimization to make the tricky code flows more common, such that
-issues like this cannot escape detection for so long.
-
-Fixes: 7fad2a432cd3 ("x86/shstk: Check that signal frame is shadow stack mem")
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Fixes: 7de16123d9e2 ("wifi: rtl8xxxu: Introduce rtl8xxxu_update_ra_report")
 Cc: stable@vger.kernel.org
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Yi Cong <yicong@kylinos.cn>
+Link: https://lore.kernel.org/all/96e31963da0c42dcb52ce44f818963d7@realtek.com/
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260306071627.56501-1-cong.yi@linux.dev
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 99bb5217649a..f3f7cb01d69d 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1885,6 +1885,7 @@ config X86_USER_SHADOW_STACK
- 	bool "X86 userspace shadow stack"
- 	depends on AS_WRUSS
- 	depends on X86_64
-+	depends on PER_VMA_LOCK
- 	select ARCH_USES_HIGH_VMA_FLAGS
- 	select ARCH_HAS_USER_SHADOW_STACK
- 	select X86_CET
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 0962ae4c3017..0ca64900192f 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -326,10 +326,8 @@ static int shstk_push_sigframe(unsigned long *ssp)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index b4efc6f00a37..d1b1474cba67 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -4697,20 +4697,6 @@ static const struct ieee80211_rate rtl8xxxu_legacy_ratetable[] = {
+ 	{.bitrate = 540, .hw_value = 0x0b,},
+ };
  
- static int shstk_pop_sigframe(unsigned long *ssp)
- {
--	struct vm_area_struct *vma;
- 	unsigned long token_addr;
--	bool need_to_check_vma;
--	int err = 1;
-+	unsigned int seq;
- 
- 	/*
- 	 * It is possible for the SSP to be off the end of a shadow stack by 4
-@@ -340,25 +338,35 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	if (!IS_ALIGNED(*ssp, 8))
- 		return -EINVAL;
- 
--	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
-+	do {
-+		struct vm_area_struct *vma;
-+		bool valid_vma;
-+		int err;
- 
--	if (need_to_check_vma)
- 		if (mmap_read_lock_killable(current->mm))
- 			return -EINTR;
- 
--	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
--	if (unlikely(err))
--		goto out_err;
+-static void rtl8xxxu_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
+-{
+-	if (rate <= DESC_RATE_54M)
+-		return;
 -
--	if (need_to_check_vma) {
- 		vma = find_vma(current->mm, *ssp);
--		if (!vma || !(vma->vm_flags & VM_SHADOW_STACK)) {
--			err = -EFAULT;
--			goto out_err;
--		}
-+		valid_vma = vma && (vma->vm_flags & VM_SHADOW_STACK);
- 
-+		/*
-+		 * VMAs can change between get_shstk_data() and find_vma().
-+		 * Watch for changes and ensure that 'token_addr' comes from
-+		 * 'vma' by recording a seqcount.
-+		 *
-+		 * Ignore the return value of mmap_lock_speculate_try_begin()
-+		 * because the mmap lock excludes the possibility of writers.
-+		 */
-+		mmap_lock_speculate_try_begin(current->mm, &seq);
- 		mmap_read_unlock(current->mm);
+-	if (rate >= DESC_RATE_MCS0 && rate <= DESC_RATE_MCS15) {
+-		if (rate < DESC_RATE_MCS8)
+-			*nss = 1;
+-		else
+-			*nss = 2;
+-		*mcs = rate - DESC_RATE_MCS0;
 -	}
-+
-+		if (!valid_vma)
-+			return -EINVAL;
-+
-+		err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
-+		if (err)
-+			return err;
-+	} while (mmap_lock_speculate_retry(current->mm, seq));
+-}
+-
+ static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
+ {
+ 	struct ieee80211_hw *hw = priv->hw;
+@@ -4820,23 +4806,25 @@ static void rtl8xxxu_set_aifs(struct rtl8xxxu_priv *priv, u8 slot_time)
+ void rtl8xxxu_update_ra_report(struct rtl8xxxu_ra_report *rarpt,
+ 			       u8 rate, u8 sgi, u8 bw)
+ {
+-	u8 mcs, nss;
+-
+ 	rarpt->txrate.flags = 0;
  
- 	/* Restore SSP aligned? */
- 	if (unlikely(!IS_ALIGNED(token_addr, 8)))
-@@ -371,10 +379,6 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	*ssp = token_addr;
+ 	if (rate <= DESC_RATE_54M) {
+ 		rarpt->txrate.legacy = rtl8xxxu_legacy_ratetable[rate].bitrate;
+-	} else {
+-		rtl8xxxu_desc_to_mcsrate(rate, &mcs, &nss);
++	} else if (rate >= DESC_RATE_MCS0 && rate <= DESC_RATE_MCS15) {
+ 		rarpt->txrate.flags |= RATE_INFO_FLAGS_MCS;
++		if (rate < DESC_RATE_MCS8)
++			rarpt->txrate.nss = 1;
++		else
++			rarpt->txrate.nss = 2;
  
- 	return 0;
--out_err:
--	if (need_to_check_vma)
--		mmap_read_unlock(current->mm);
--	return err;
- }
+-		rarpt->txrate.mcs = mcs;
+-		rarpt->txrate.nss = nss;
++		rarpt->txrate.mcs = rate - DESC_RATE_MCS0;
  
- int setup_signal_shadow_stack(struct ksignal *ksig)
+ 		if (sgi)
+ 			rarpt->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
+ 
+ 		rarpt->txrate.bw = bw;
++	} else {
++		return;
+ 	}
+ 
+ 	rarpt->bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
 
 
