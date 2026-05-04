@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-243841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEJxB1Cw+GkPzAIAu9opvQ
-	(envelope-from <stable+bounces-243841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:24 +0200
+	id KMg6Efyw+Gk6zAIAu9opvQ
+	(envelope-from <stable+bounces-243830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:45:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1BE4BFE82
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4754BFF84
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7813B30793E8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:31:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5284430714E0
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351283E51CF;
-	Mon,  4 May 2026 14:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014123E2743;
+	Mon,  4 May 2026 14:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hRIU5bu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdT/6NUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B013DFC7F;
-	Mon,  4 May 2026 14:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B860A3DFC60;
+	Mon,  4 May 2026 14:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904915; cv=none; b=B4N9Xeory6L+KzJ8D5YiZg+0JA/1VoHTq08b5cBHP7FUqRukhc7shN8ONSrOOEVSxnh4KUrIUd+tSUTvXdeVE+O6PtGHSQjXl17UFSeqA8MjEUZIEhrzhWUHZPMjn41DKy0FDvLrsP1iiwapcjGchcv9JoqTjxbV/X8sT6VZTS8=
+	t=1777904886; cv=none; b=OqqlA/pyw8gn355tp09tOdMU2v0z8N7T9jjVLBwmpxgnSY+cuBKfK6BqgJrZlcj9UmfhTHPZmzLwQ6ebe7QThtuu74XFJxwwTIypmRYqlMI17QyO2/maxEk9078RH/cpj6CK43cJ6C8eSfrg5SQwiUgYcxcVU9K7W2ly8uZwKw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904915; c=relaxed/simple;
-	bh=ut58HeJ/gW2jAO/lbaa2jIBxZgeAs1iCuDzgjbVIXn4=;
+	s=arc-20240116; t=1777904886; c=relaxed/simple;
+	bh=BTgiTMAZVY4WlHLKjElpxV2XoSpNzWIXIDypAoDBUjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7nhIHCbLhoh3YBuT4mri3Va6YHqynLenVgAwPjDWPQ3FbYEpIUEjC1voKii22nLqszuvrynOe22ffi9egrPJnr+zgL2imV73TUKLox9Lb2x4EGzO7N6QPcbpVteFaDMIF1dwJtZa6xzgnVYDNC8m4QIPdvTE8EjgplKq0h6PVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hRIU5bu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566A7C2BCC4;
-	Mon,  4 May 2026 14:28:34 +0000 (UTC)
+	 MIME-Version; b=TcolD6B8IWEw/nHv71Ma1QaDIMEOCM9FlJ23+lj9v4iTLw8SXbpN7h00XxgWXgHIlA4dExuN69y8CHjMZByxyfxZjmB93zxPnXAaLErE4a+xXjxT7lMO1dSOEGCMFociFvf40NUc8S7gT3oOzJeIpg0azmseuckViHaJTiLP4aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdT/6NUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E33CC2BCB8;
+	Mon,  4 May 2026 14:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904914;
-	bh=ut58HeJ/gW2jAO/lbaa2jIBxZgeAs1iCuDzgjbVIXn4=;
+	s=korg; t=1777904886;
+	bh=BTgiTMAZVY4WlHLKjElpxV2XoSpNzWIXIDypAoDBUjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hRIU5buLIWPEWaSDsXabFJX9fH6TrmIfjohqmw6rQ64HoSsEIbiHBMDX7K8qEQRR
-	 KxoO30Rqs8JDl18L2yLdGElwl1iLBI5vsLvxf1jPfkVZ4VNWDes+dgoN7tlwfNtX49
-	 UXQnr+HjzaVSwgfYfCOECJep8UByx5znQNlVevsw=
+	b=AdT/6NUeARdS6sYqLfXu9r/eiEbc9/CZityfPr1vz/OrBR2UU4+n+2kRXZrXDAHcv
+	 P2g5Fuulb+DlIURpdWG7f2mmAcSkVn5GObSc+RBPBI66+/puLhPtfzKExQkUvdEXBz
+	 GDswmBpHB+bjPNJViiYPxvIPTLFSllw4UoJPYQqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	"Jason A. Donenfeld" <jason@zx2c4.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 204/215] mm: prevent droppable mappings from being locked
-Date: Mon,  4 May 2026 15:53:43 +0200
-Message-ID: <20260504135138.212011592@linuxfoundation.org>
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 205/215] crypto: authencesn - reject short ahash digests during instance creation
+Date: Mon,  4 May 2026 15:53:44 +0200
+Message-ID: <20260504135138.290874350@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
 References: <20260504135130.169210693@linuxfoundation.org>
@@ -75,157 +71,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB1BE4BFE82
+X-Rspamd-Queue-Id: AF4754BFF84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243830-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,gondor.apana.org.au];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243841-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Yznaga <anthony.yznaga@oracle.com>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-[ Upstream commit d239462787b072c78eb19fc1f155c3d411256282 ]
+commit 5db6ef9847717329f12c5ea8aba7e9f588a980c0 upstream.
 
-Droppable mappings must not be lockable.  There is a check for VMAs with
-VM_DROPPABLE set in mlock_fixup() along with checks for other types of
-unlockable VMAs which ensures this when calling mlock()/mlock2().
+authencesn requires either a zero authsize or an authsize of at least
+4 bytes because the ESN encrypt/decrypt paths always move 4 bytes of
+high-order sequence number data at the end of the authenticated data.
 
-For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.  In
-apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set, the
-current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
-applied to it.  VM_LOCKONFAULT is also applied if MCL_ONFAULT is also set.
-When these flags are set as default in this manner they are cleared in
-__mmap_complete() for new mappings that do not support mlock.  A check for
-VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
-mappings created with VM_LOCKED set.  To fix this and reduce that chance
-of similar bugs in the future, introduce and use vma_supports_mlock().
+While crypto_authenc_esn_setauthsize() already rejects explicit
+non-zero authsizes in the range 1..3, crypto_authenc_esn_create()
+still copied auth->digestsize into inst->alg.maxauthsize without
+validating it.  The AEAD core then initialized the tfm's default
+authsize from that value.
 
-Link: https://lkml.kernel.org/r/20260310155821.17869-1-anthony.yznaga@oracle.com
-Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
-Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
-Suggested-by: David Hildenbrand <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Tested-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason A. Donenfeld <jason@zx2c4.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ adapted change to `mm/mmap.c::__mmap_region()` instead of `mm/vma.c::__mmap_complete()` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, selecting an ahash with digest size 1..3, such as
+cbcmac(cipher_null), exposed authencesn instances whose default
+authsize was invalid even though setauthsize() would have rejected the
+same value.  AF_ALG could then trigger the ESN tail handling with a
+too-short tag and hit an out-of-bounds access.
+
+Reject authencesn instances whose ahash digest size is in the invalid
+non-zero range 1..3 so that no tfm can inherit an unsupported default
+authsize.
+
+Fixes: f15f05b0a5de ("crypto: ccm - switch to separate cbcmac driver")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hugetlb_inline.h |    4 ++--
- mm/internal.h                  |   10 ++++++++++
- mm/mlock.c                     |   10 ++++++----
- mm/mmap.c                      |    4 +---
- 4 files changed, 19 insertions(+), 9 deletions(-)
+ crypto/authencesn.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/linux/hugetlb_inline.h
-+++ b/include/linux/hugetlb_inline.h
-@@ -6,14 +6,14 @@
+--- a/crypto/authencesn.c
++++ b/crypto/authencesn.c
+@@ -390,6 +390,11 @@ static int crypto_authenc_esn_create(str
+ 	auth = crypto_spawn_ahash_alg(&ctx->auth);
+ 	auth_base = &auth->base;
  
- #include <linux/mm.h>
- 
--static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
-+static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
- {
- 	return !!(vma->vm_flags & VM_HUGETLB);
- }
- 
- #else
- 
--static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
-+static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
- {
- 	return false;
- }
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1015,6 +1015,16 @@ static inline struct file *maybe_unlock_
- 	}
- 	return fpin;
- }
++	if (auth->digestsize > 0 && auth->digestsize < 4) {
++		err = -EINVAL;
++		goto err_free_inst;
++	}
 +
-+static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
-+{
-+	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
-+		return false;
-+	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
-+		return false;
-+	return vma != get_gate_vma(current->mm);
-+}
-+
- #else /* !CONFIG_MMU */
- static inline void unmap_mapping_folio(struct folio *folio) { }
- static inline void mlock_new_folio(struct folio *folio) { }
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -472,10 +472,12 @@ static int mlock_fixup(struct vma_iterat
- 	int ret = 0;
- 	vm_flags_t oldflags = vma->vm_flags;
- 
--	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
--	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
--	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
--		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
-+	if (newflags == oldflags || vma_is_secretmem(vma) ||
-+	    !vma_supports_mlock(vma))
-+		/*
-+		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
-+		 * For secretmem, don't allow the memory to be unlocked.
-+		 */
- 		goto out;
- 
- 	vma = vma_modify_flags(vmi, *prev, vma, start, end, newflags);
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1547,9 +1547,7 @@ expanded:
- 
- 	vm_stat_account(mm, vm_flags, pglen);
- 	if (vm_flags & VM_LOCKED) {
--		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
--					is_vm_hugetlb_page(vma) ||
--					vma == get_gate_vma(current->mm))
-+		if (!vma_supports_mlock(vma))
- 			vm_flags_clear(vma, VM_LOCKED_MASK);
- 		else
- 			mm->locked_vm += pglen;
+ 	err = crypto_grab_skcipher(&ctx->enc, aead_crypto_instance(inst),
+ 				   crypto_attr_alg_name(tb[2]), 0, mask);
+ 	if (err)
 
 
 
