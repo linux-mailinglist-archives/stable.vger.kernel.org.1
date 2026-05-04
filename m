@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-243158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOUaHRio+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:20 +0200
+	id IMNIEOio+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7534BE8C2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7F94BEAEF
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D87B303DAD1
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6B8B301A141
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30D33DE421;
-	Mon,  4 May 2026 13:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0524D3D5645;
+	Mon,  4 May 2026 14:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDdZ/pNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHl9E2px"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6631E34F483;
-	Mon,  4 May 2026 13:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC86D1ADC83;
+	Mon,  4 May 2026 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903164; cv=none; b=aANcAePrSBdoq9oNaLl11/Nn7Lx7ol2bhO7/u/SlklYXAQy2UtIyKgdtrvz6lBdFff4I8msx3MNFpHSbPeo1mlCFzt2yOxdngj/bMdIB3/+6RXWqXj2OGn6LPwrVUaIPE+4lNxcpx37NYL9nOhm+dYsm4bUm8zd7Grz01btyPmE=
+	t=1777903814; cv=none; b=EoutLx+VWcNXYQvcOgW6hav5qgjLJbetwKOuvzIbmOczPzGUtiASf6ocaz2oSCVDjZcUV6I5hN0bFalShj/SUmRu2FWb2SZU+DfUEYd4xt11sUssdpQGrBBUUphJlugk4W3nKtYebg2h9h7capZyuBB5JssWmgU2IWH15xUU8ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903164; c=relaxed/simple;
-	bh=yCAMFJH6ZVg/BAKYqGw1E9Vox/NGUFrsp79ywrAO4ko=;
+	s=arc-20240116; t=1777903814; c=relaxed/simple;
+	bh=8FBMiUQEseB67fLW/RSIIEnVEMCiGFw97yY7oxBGpKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DngwhonK5kgx2jjg/wt+Bb0g1mWomYYmVMuodPgQ8dfq1epXNj+Zyp/l7ED9b9l2HwU9dJkYxWWPJyamT1QYX9Sgi/DzdriW218ZK3wkfsiw1pGPG4ejJ47mlZ8p+nyiTSRwkXytkdhWqOGtHOYnU0o/UXAzHyViamguius76d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDdZ/pNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A61C2BCB8;
-	Mon,  4 May 2026 13:59:23 +0000 (UTC)
+	 MIME-Version; b=aVJ7ONywoN1EUNBT6QP66PmzgeMn3+z01Na/mAgHp7q0W1DogeutdLA3YSYD061UXJFfJgcOGggBWG9lBNk0CaWblEOsK5jzQWVYeoQ7XVfmUSGMDXvSAmfv318Y4ztl2WvGcDipJRVsCXpWEgpewFqsub7kbeHH1IROxMvcXs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHl9E2px; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E16C2BCB8;
+	Mon,  4 May 2026 14:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903164;
-	bh=yCAMFJH6ZVg/BAKYqGw1E9Vox/NGUFrsp79ywrAO4ko=;
+	s=korg; t=1777903814;
+	bh=8FBMiUQEseB67fLW/RSIIEnVEMCiGFw97yY7oxBGpKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDdZ/pNeGMrQyPQx1wBTJuztg9i393UwX3FHQSQGXce0wf5rjnD+DsI77Z6WtpX2i
-	 sA2qyjPZdkojb55EOhbtEe+8dxoH/2OO9nmaYVq7H0+0cqBqdj607AI+B799LeTQDC
-	 ecqN9Q4RKkWewM8+Xg7etpsrFIUr30dySaMrUo50=
+	b=WHl9E2pxqJDfMZqd3o1/3bkV8VAmwz5o+43tscU11fLOIBbYhxHSqFzMXQi2229iV
+	 F00j7hNhwL3IjHbLM0JnIY6gnAO6lmWJtGJsb2QLIXF9mtu4RgGlv8naVvR2V5FbFM
+	 667tCCnOO2pnjzCQ6aevsfDhFTEK4tkY3RYwjGtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 127/307] rxrpc: Fix memory leaks in rxkad_verify_response()
+	Marek Vasut <marex@nabladev.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.18 072/275] mfd: stpmic1: Attempt system shutdown twice in case PMIC is confused
 Date: Mon,  4 May 2026 15:50:12 +0200
-Message-ID: <20260504135147.572883533@linuxfoundation.org>
+Message-ID: <20260504135145.602692000@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,267 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B7534BE8C2
+X-Rspamd-Queue-Id: BF7F94BEAEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243158-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243411-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,sashiko.dev:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nabladev.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Marek Vasut <marex@nabladev.com>
 
-commit 34f61a07e0cdefaecd3ec03bb5fb22215643678f upstream.
+commit ffdc5c51f8bcd0e5e8255ca275a0a3b958475d99 upstream.
 
-Fix rxkad_verify_response() to free the ticket and the server key under all
-circumstances by initialising the ticket pointer to NULL and then making
-all paths through the function after the first allocation has been done go
-through a single common epilogue that just releases everything - where all
-the releases skip on a NULL pointer.
+Attempt to shut down again, in case the first attempt failed.
+The STPMIC1 might get confused and the first regmap_update_bits()
+returns with -ETIMEDOUT / -110 . If that or similar transient
+failure occurs, try to shut down again. If the second attempt
+fails, there is some bigger problem, report it to user.
 
-Fixes: 57af281e5389 ("rxrpc: Tidy up abort generation infrastructure")
-Fixes: ec832bd06d6f ("rxrpc: Don't retain the server key in the connection")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-2-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6e9df38f359a ("mfd: stpmic1: Add PMIC poweroff via sys-off handler")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260122111423.62591-1-marex@nabladev.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxkad.c |  103 ++++++++++++++++++++++--------------------------------
- 1 file changed, 42 insertions(+), 61 deletions(-)
+ drivers/mfd/stpmic1.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -1136,7 +1136,7 @@ static int rxkad_verify_response(struct
- 	struct rxrpc_crypt session_key;
- 	struct key *server_key;
- 	time64_t expiry;
--	void *ticket;
-+	void *ticket = NULL;
- 	u32 version, kvno, ticket_len, level;
- 	__be32 csum;
- 	int ret, i;
-@@ -1162,13 +1162,13 @@ static int rxkad_verify_response(struct
- 	ret = -ENOMEM;
- 	response = kzalloc_obj(struct rxkad_response, GFP_NOFS);
- 	if (!response)
--		goto temporary_error;
-+		goto error;
+--- a/drivers/mfd/stpmic1.c
++++ b/drivers/mfd/stpmic1.c
+@@ -16,6 +16,8 @@
  
- 	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
- 			  response, sizeof(*response)) < 0) {
--		rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
--				 rxkad_abort_resp_short);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
-+				       rxkad_abort_resp_short);
-+		goto error;
- 	}
+ #include <dt-bindings/mfd/st,stpmic1.h>
  
- 	version = ntohl(response->version);
-@@ -1178,62 +1178,62 @@ static int rxkad_verify_response(struct
- 	trace_rxrpc_rx_response(conn, sp->hdr.serial, version, kvno, ticket_len);
++#define STPMIC1_MAX_RETRIES 2
++
+ #define STPMIC1_MAIN_IRQ 0
  
- 	if (version != RXKAD_VERSION) {
--		rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
--				 rxkad_abort_resp_version);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
-+				       rxkad_abort_resp_version);
-+		goto error;
- 	}
+ static const struct regmap_range stpmic1_readable_ranges[] = {
+@@ -121,9 +123,23 @@ static const struct regmap_irq_chip stpm
+ static int stpmic1_power_off(struct sys_off_data *data)
+ {
+ 	struct stpmic1 *ddata = data->cb_data;
++	int ret;
++
++	/*
++	 * Attempt to shut down again, in case the first attempt failed.
++	 * The STPMIC1 might get confused and the first regmap_update_bits()
++	 * returns with -ETIMEDOUT / -110 . If that or similar transient
++	 * failure occurs, try to shut down again. If the second attempt
++	 * fails, there is some bigger problem, report it to user.
++	 */
++	for (int retries = 0; retries < STPMIC1_MAX_RETRIES; retries++) {
++		ret = regmap_update_bits(ddata->regmap, MAIN_CR, SOFTWARE_SWITCH_OFF,
++					 SOFTWARE_SWITCH_OFF);
++		if (!ret)
++			return NOTIFY_DONE;
++	}
  
- 	if (ticket_len < 4 || ticket_len > MAXKRB5TICKETLEN) {
--		rxrpc_abort_conn(conn, skb, RXKADTICKETLEN, -EPROTO,
--				 rxkad_abort_resp_tkt_len);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADTICKETLEN, -EPROTO,
-+				       rxkad_abort_resp_tkt_len);
-+		goto error;
- 	}
+-	regmap_update_bits(ddata->regmap, MAIN_CR,
+-			   SOFTWARE_SWITCH_OFF, SOFTWARE_SWITCH_OFF);
++	dev_err(ddata->dev, "Failed to access PMIC I2C bus (%d)\n", ret);
  
- 	if (kvno >= RXKAD_TKT_TYPE_KERBEROS_V5) {
--		rxrpc_abort_conn(conn, skb, RXKADUNKNOWNKEY, -EPROTO,
--				 rxkad_abort_resp_unknown_tkt);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADUNKNOWNKEY, -EPROTO,
-+				       rxkad_abort_resp_unknown_tkt);
-+		goto error;
- 	}
- 
- 	/* extract the kerberos ticket and decrypt and decode it */
- 	ret = -ENOMEM;
- 	ticket = kmalloc(ticket_len, GFP_NOFS);
- 	if (!ticket)
--		goto temporary_error_free_resp;
-+		goto error;
- 
- 	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header) + sizeof(*response),
- 			  ticket, ticket_len) < 0) {
--		rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
--				 rxkad_abort_resp_short_tkt);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
-+				       rxkad_abort_resp_short_tkt);
-+		goto error;
- 	}
- 
- 	ret = rxkad_decrypt_ticket(conn, server_key, skb, ticket, ticket_len,
- 				   &session_key, &expiry);
- 	if (ret < 0)
--		goto temporary_error_free_ticket;
-+		goto error;
- 
- 	/* use the session key from inside the ticket to decrypt the
- 	 * response */
- 	ret = rxkad_decrypt_response(conn, response, &session_key);
- 	if (ret < 0)
--		goto temporary_error_free_ticket;
-+		goto error;
- 
- 	if (ntohl(response->encrypted.epoch) != conn->proto.epoch ||
- 	    ntohl(response->encrypted.cid) != conn->proto.cid ||
- 	    ntohl(response->encrypted.securityIndex) != conn->security_ix) {
--		rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--				 rxkad_abort_resp_bad_param);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+				       rxkad_abort_resp_bad_param);
-+		goto error;
- 	}
- 
- 	csum = response->encrypted.checksum;
- 	response->encrypted.checksum = 0;
- 	rxkad_calc_response_checksum(response);
- 	if (response->encrypted.checksum != csum) {
--		rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--				 rxkad_abort_resp_bad_checksum);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+				       rxkad_abort_resp_bad_checksum);
-+		goto error;
- 	}
- 
- 	for (i = 0; i < RXRPC_MAXCALLS; i++) {
-@@ -1241,38 +1241,38 @@ static int rxkad_verify_response(struct
- 		u32 counter = READ_ONCE(conn->channels[i].call_counter);
- 
- 		if (call_id > INT_MAX) {
--			rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--					 rxkad_abort_resp_bad_callid);
--			goto protocol_error_free;
-+			ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+					       rxkad_abort_resp_bad_callid);
-+			goto error;
- 		}
- 
- 		if (call_id < counter) {
--			rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--					 rxkad_abort_resp_call_ctr);
--			goto protocol_error_free;
-+			ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+					       rxkad_abort_resp_call_ctr);
-+			goto error;
- 		}
- 
- 		if (call_id > counter) {
- 			if (conn->channels[i].call) {
--				rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+				ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
- 						 rxkad_abort_resp_call_state);
--				goto protocol_error_free;
-+				goto error;
- 			}
- 			conn->channels[i].call_counter = call_id;
- 		}
- 	}
- 
- 	if (ntohl(response->encrypted.inc_nonce) != conn->rxkad.nonce + 1) {
--		rxrpc_abort_conn(conn, skb, RXKADOUTOFSEQUENCE, -EPROTO,
--				 rxkad_abort_resp_ooseq);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADOUTOFSEQUENCE, -EPROTO,
-+				       rxkad_abort_resp_ooseq);
-+		goto error;
- 	}
- 
- 	level = ntohl(response->encrypted.level);
- 	if (level > RXRPC_SECURITY_ENCRYPT) {
--		rxrpc_abort_conn(conn, skb, RXKADLEVELFAIL, -EPROTO,
--				 rxkad_abort_resp_level);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADLEVELFAIL, -EPROTO,
-+				       rxkad_abort_resp_level);
-+		goto error;
- 	}
- 	conn->security_level = level;
- 
-@@ -1280,31 +1280,12 @@ static int rxkad_verify_response(struct
- 	 * this the connection security can be handled in exactly the same way
- 	 * as for a client connection */
- 	ret = rxrpc_get_server_data_key(conn, &session_key, expiry, kvno);
--	if (ret < 0)
--		goto temporary_error_free_ticket;
--
--	kfree(ticket);
--	kfree(response);
--	_leave(" = 0");
--	return 0;
--
--protocol_error_free:
--	kfree(ticket);
--protocol_error:
--	kfree(response);
--	key_put(server_key);
--	return -EPROTO;
- 
--temporary_error_free_ticket:
-+error:
- 	kfree(ticket);
--temporary_error_free_resp:
- 	kfree(response);
--temporary_error:
--	/* Ignore the response packet if we got a temporary error such as
--	 * ENOMEM.  We just want to send the challenge again.  Note that we
--	 * also come out this way if the ticket decryption fails.
--	 */
- 	key_put(server_key);
-+	_leave(" = %d", ret);
- 	return ret;
+ 	return NOTIFY_DONE;
  }
- 
 
 
 
