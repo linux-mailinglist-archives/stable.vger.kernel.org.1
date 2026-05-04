@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Ke+Ckhc+GnatQIAu9opvQ
-	(envelope-from <stable+bounces-242901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:52 +0200
+	id mG6ABURc+GnatQIAu9opvQ
+	(envelope-from <stable+bounces-242902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2BE4BA6C7
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6764BA6B3
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51FBD3013A78
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:43:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DDB72300371B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA0A33F5B3;
-	Mon,  4 May 2026 08:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C979F329C71;
+	Mon,  4 May 2026 08:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOcYbgFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttKuR2zI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400811B86C7
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5783446A3
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777884181; cv=none; b=s3zudZVCL0OpymZdbrJh3D/+qgGlaGK7DPw7NLhByV1636t/s1fz5vTvtl80wZo8Frra2wkwv5f3I3oD8/8ns00CKcq3UcuNS7N2If45YQChAtKEIKxgdx6uQSJM1QP7F7D5wBTw8ZSFgLV+QFt46tJVt4ubkvNd476UuB3qLPw=
+	t=1777884220; cv=none; b=s4Zw0K6orX0a/49SFMMgkh7mifZZEvzYhfue/0/27IUwgJ6d047wPrRw2eBAWDrRMWlYzEZHv+aEXyytTCHzpn3kfqyZtpfgx1Ae5G5od0aS/nAXecZFGSWOvqdp+HQDukujtKDqNZgca5f/64pN2OXHWHNZwJTX8T+HZbfAnLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777884181; c=relaxed/simple;
-	bh=6CBIqz7FVfx6jN744i/z9/vmZhkaYDF84fnMx0rnnTg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pjAMYolIW5FY5U+N+5HIA46kB5iMXKAh7P/OFf5mL3bTJe0QUNDK94NwsUITgPkpjjKQcWo+sfCtgjHjHNKUWMoLoGW3HcPNlZtwe2XcmtBjbNNDFcFfRa41ZSP7UWj8yrV05MmDiUYrpCwfPUg05Oh0vepJ7IJcYlVnWUZ/UXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOcYbgFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D82AC2BCB9;
-	Mon,  4 May 2026 08:43:00 +0000 (UTC)
+	s=arc-20240116; t=1777884220; c=relaxed/simple;
+	bh=0m6J1wz9cyuA4kYE5XzfAuvqPNy6u2DPHTD0FvhaPyU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UriZulJZvZAzFxc+mRpyQ5V2bq7elpgerec0eij6uVCm4+WWIOMXbo6bOZUkD6vLZbVYaQv1ErMKxlbTjqG9U6obUqcD9e3VicsWnowjgZVdM7fdBoLHi8b4lRRaky6VlFcmeXw1MsZMyzjAMcGcFzsL952U+LjtK+pt49UiA80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttKuR2zI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16151C2BCB8;
+	Mon,  4 May 2026 08:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777884181;
-	bh=6CBIqz7FVfx6jN744i/z9/vmZhkaYDF84fnMx0rnnTg=;
+	s=korg; t=1777884220;
+	bh=0m6J1wz9cyuA4kYE5XzfAuvqPNy6u2DPHTD0FvhaPyU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BOcYbgFWWFuNvzl8tEfwYuX581cv7EfRyK9JitJTFuTZQbDqnm3QJDPCOAsKzdf7f
-	 Qjvpe5sBgYExma6d+kPrOHi8rQSvzWQGUZETybJ1R0ESuTT+t8IIqGspOBfXpOjp/r
-	 KPtnK/ESp5xXcQ5tWdgl7ZWFj+ziO2+qZQjzksg4=
-Subject: FAILED: patch "[PATCH] wifi: rtl8xxxu: fix potential use of uninitialized value" failed to apply to 6.6-stable tree
-To: yicong@kylinos.cn,pkshih@realtek.com
+	b=ttKuR2zIPmiM7gbj8bNKV/NEQYrWtHb3Nqx8waVaagQbpOEFHF4U9t6WYGIx0m03f
+	 gf+pYiGzwKuhjU0BmPFCaSFhvJuQ2z9xhndcdyZqJmoFUmOtaZpDK1lakxm8TdcxWv
+	 t79JuOyxGYSLrVn5XS8XPXJOamsanM0zQg/mzLoc=
+Subject: FAILED: patch "[PATCH] mptcp: sync the msk->sndbuf at accept() time" failed to apply to 6.12-stable tree
+To: yangang@kylinos.cn,matttbe@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:42:50 +0200
-Message-ID: <2026050450-canning-drab-e2be@gregkh>
+Date: Mon, 04 May 2026 10:43:38 +0200
+Message-ID: <2026050437-capable-smite-5105@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BF2BE4BA6C7
+X-Rspamd-Queue-Id: 0B6764BA6B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242901-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242902-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -79,27 +79,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email,msgid.link:url,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kylinos.cn:email,gregkh:email,msgid.link:url]
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x f8a2fc809bfeb49130709b31a4d357a049f28547
+git cherry-pick -x fcf04b14334641f4b0b8647824480935e9416d52
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050450-canning-drab-e2be@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050437-capable-smite-5105@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,89 +111,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f8a2fc809bfeb49130709b31a4d357a049f28547 Mon Sep 17 00:00:00 2001
-From: Yi Cong <yicong@kylinos.cn>
-Date: Fri, 6 Mar 2026 15:16:27 +0800
-Subject: [PATCH] wifi: rtl8xxxu: fix potential use of uninitialized value
+From fcf04b14334641f4b0b8647824480935e9416d52 Mon Sep 17 00:00:00 2001
+From: Gang Yan <yangang@kylinos.cn>
+Date: Mon, 20 Apr 2026 18:19:23 +0200
+Subject: [PATCH] mptcp: sync the msk->sndbuf at accept() time
 
-The local variables 'mcs' and 'nss' in rtl8xxxu_update_ra_report() are
-passed to rtl8xxxu_desc_to_mcsrate() as output parameters. If the helper
-function encounters an unhandled rate index, it may return without setting
-these values, leading to the use of uninitialized stack data.
+On passive MPTCP connections, the msk sndbuf is not updated correctly.
 
-Remove the helper rtl8xxxu_desc_to_mcsrate() and inline the logic into
-rtl8xxxu_update_ra_report(). This fixes the use of uninitialized 'mcs'
-and 'nss' variables for legacy rates.
+The root cause is an order issue in the accept path:
 
-The new implementation explicitly handles:
-- Legacy rates: Set bitrate only.
-- HT rates (MCS0-15): Set MCS flags, index, and NSS (1 or 2) directly.
-- Invalid rates: Return early.
+- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
+  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
 
-Fixes: 7de16123d9e2 ("wifi: rtl8xxxu: Introduce rtl8xxxu_update_ra_report")
+- Later, tcp_child_process() -> tcp_init_transfer() ->
+  tcp_sndbuf_expand() grows the ssk sndbuf.
+
+So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
+expanded and the msk ends up with a much smaller sndbuf than the
+subflow:
+
+  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
+
+Fix this by moving the __mptcp_propagate_sndbuf() call from
+mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
+__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
+been fully expanded by tcp_sndbuf_expand().
+
+Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
 Cc: stable@vger.kernel.org
-Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Yi Cong <yicong@kylinos.cn>
-Link: https://lore.kernel.org/all/96e31963da0c42dcb52ce44f818963d7@realtek.com/
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260306071627.56501-1-cong.yi@linux.dev
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index b4efc6f00a37..d1b1474cba67 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -4697,20 +4697,6 @@ static const struct ieee80211_rate rtl8xxxu_legacy_ratetable[] = {
- 	{.bitrate = 540, .hw_value = 0x0b,},
- };
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index fbffd3a43fe8..718e910ff23f 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3594,7 +3594,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 	 * uses the correct data
+ 	 */
+ 	mptcp_copy_inaddrs(nsk, ssk);
+-	__mptcp_propagate_sndbuf(nsk, ssk);
  
--static void rtl8xxxu_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
--{
--	if (rate <= DESC_RATE_54M)
--		return;
--
--	if (rate >= DESC_RATE_MCS0 && rate <= DESC_RATE_MCS15) {
--		if (rate < DESC_RATE_MCS8)
--			*nss = 1;
--		else
--			*nss = 2;
--		*mcs = rate - DESC_RATE_MCS0;
--	}
--}
--
- static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
- {
- 	struct ieee80211_hw *hw = priv->hw;
-@@ -4820,23 +4806,25 @@ static void rtl8xxxu_set_aifs(struct rtl8xxxu_priv *priv, u8 slot_time)
- void rtl8xxxu_update_ra_report(struct rtl8xxxu_ra_report *rarpt,
- 			       u8 rate, u8 sgi, u8 bw)
- {
--	u8 mcs, nss;
--
- 	rarpt->txrate.flags = 0;
+ 	mptcp_rcv_space_init(msk, ssk);
+ 	msk->rcvq_space.time = mptcp_stamp();
+@@ -4252,6 +4251,7 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
  
- 	if (rate <= DESC_RATE_54M) {
- 		rarpt->txrate.legacy = rtl8xxxu_legacy_ratetable[rate].bitrate;
--	} else {
--		rtl8xxxu_desc_to_mcsrate(rate, &mcs, &nss);
-+	} else if (rate >= DESC_RATE_MCS0 && rate <= DESC_RATE_MCS15) {
- 		rarpt->txrate.flags |= RATE_INFO_FLAGS_MCS;
-+		if (rate < DESC_RATE_MCS8)
-+			rarpt->txrate.nss = 1;
-+		else
-+			rarpt->txrate.nss = 2;
+ 		mptcp_graft_subflows(newsk);
+ 		mptcp_rps_record_subflows(msk);
++		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
  
--		rarpt->txrate.mcs = mcs;
--		rarpt->txrate.nss = nss;
-+		rarpt->txrate.mcs = rate - DESC_RATE_MCS0;
- 
- 		if (sgi)
- 			rarpt->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
- 
- 		rarpt->txrate.bw = bw;
-+	} else {
-+		return;
- 	}
- 
- 	rarpt->bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
+ 		/* Do late cleanup for the first subflow as necessary. Also
+ 		 * deal with bad peers not doing a complete shutdown.
 
 
