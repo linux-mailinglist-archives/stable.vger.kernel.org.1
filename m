@@ -1,236 +1,150 @@
-Return-Path: <stable+bounces-242922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FbrMnBd+GnatQIAu9opvQ
-	(envelope-from <stable+bounces-242922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:48:48 +0200
+	id 2CI1Echd+GnatQIAu9opvQ
+	(envelope-from <stable+bounces-242923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:50:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9B54BA80A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:48:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DE04BA879
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F0C83016245
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:48:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C9DC30069A5
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FB634BA28;
-	Mon,  4 May 2026 08:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66D234BA5B;
+	Mon,  4 May 2026 08:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eaKa/PGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXPM176k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3146D34AAF7;
-	Mon,  4 May 2026 08:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697FB34A3DF
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777884471; cv=none; b=X6NaADTvozM/cX5bZ6Hg94CETTcf/h3Ovm4KhUCHdWNST6B/TMZ5ZXLkB6Hv5aBNjLLVb1VK8ojkR6Nf/oSSa98ysf4dE+9ViZytCwQFzCCzfO6y+OLNRfBlkcv/aWIcaWUu5DABfEA0ccWS1rg7TmNmw8bZ9Gpv/4cVWX/kDJ4=
+	t=1777884500; cv=none; b=UIvznTlzWeOn0HfCc4+kKbREBpe8Wnf2TI7FkCq5OY6r70+gWcZ1yRR5TV6/4VeqcIYMyVD0aitvh4UH2f6+5w8RM/e09gsF5Z4g8u5EN8z/iA2OA2hzZdaSBgCpB/jvaqz/eEU2oOUufRInhnPxzjRV/tv+sCRsxrMWm38MlIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777884471; c=relaxed/simple;
-	bh=+JYc9gtAs3/A+XLQSsrhmAQALfOGYbOvejMYH4rLPkg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=p5ZMWbY5VY56XDhXAQNmDlSz1E1rYv838rBjXM5h+NlhqyPS3u9M5ppW2perwzc3ntWvYVWctPl8VKQmn5/8f+J8RwO8N1cwMN8zR/TSLGzmhsxkdfS46O7fY4DL9tyt4Tjza9Oh5KsyqresthEK8RbnKmlqYeujkqn4mY6WpNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eaKa/PGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF56C2BCB9;
-	Mon,  4 May 2026 08:47:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777884470;
-	bh=+JYc9gtAs3/A+XLQSsrhmAQALfOGYbOvejMYH4rLPkg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=eaKa/PGR2ST0V9W04mZAyPPx4gM0d91LQZrqTTD7wNgRtXxwUgCxRKGQlvI5GgUAk
-	 gOocPiMAZWhOfff/Etdh4RG+MG7zi2XyOQbKxMUiLDRPI5bv81/AjaWhfaFG7mAetu
-	 lvV6lcsg9GY1etmIv9LmjZalmzOj79J5ta+awToZaBV1zLw8WuDaetpG34VnWnHFKT
-	 OU7NZWyHvvN7mjbbCbFWeCi90yCT9oxhTUEPikXGlSp8YHkeIG0HG6UeDK6J+9u1dR
-	 e3+v4E3cwV8j4RG1IId2RPwSD7V1abkMHJkDIltdg09CpluiV/lOrHkptRWbdr/b7s
-	 Oy+CoYGjnkFFw==
-From: Benjamin Tissoires <bentiss@kernel.org>
-Date: Mon, 04 May 2026 10:47:23 +0200
-Subject: [PATCH v3 2/4] HID: core: introduce hid_safe_input_report()
+	s=arc-20240116; t=1777884500; c=relaxed/simple;
+	bh=b2xbGtfrqjr9dQSsB8uORreN+WiDV6+bdD4RnTwbzkg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nJp8rgvMH+VG9BbzLUkcVe5g3GPHhhZQGk3607m7an2kqQon/Qt7OFo3FHRkcQISe2tO4RlVXU36KvxJV1r/pkC4+7ryLeA+F9niSrwBk1YhIAU4zJEwonNf7RtIFzatyTrw833MO0ZeT8LgKmUj7Xnk8PLzztk2wqQ5BB5XYy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXPM176k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3AEC2BCB8;
+	Mon,  4 May 2026 08:48:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777884500;
+	bh=b2xbGtfrqjr9dQSsB8uORreN+WiDV6+bdD4RnTwbzkg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xXPM176khSJGPof8gU10+v4RWW016MeW0GeyAycSBc65eFYL1h2ADpZW5IUu5HlvA
+	 Xcwb3KbRYTAQYt4kJq4ncNvIDGplHVDK3zj6VQF3GCgjp3sycK+2vrwKXMMrU2S3gB
+	 tsODNpx4KcoQgQ9N5q36aBSmgp4oiS+77DAE6PC8=
+Subject: FAILED: patch "[PATCH] crypto: atmel-sha204a - Fix potential UAF and memory leak in" failed to apply to 5.15-stable tree
+To: thorsten.blum@linux.dev,herbert@gondor.apana.org.au
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 04 May 2026 10:48:17 +0200
+Message-ID: <2026050417-strangle-guy-d0dc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260504-wip-fix-core-v3-2-ce1f11f4968f@kernel.org>
-References: <20260504-wip-fix-core-v3-0-ce1f11f4968f@kernel.org>
-In-Reply-To: <20260504-wip-fix-core-v3-0-ce1f11f4968f@kernel.org>
-To: Jiri Kosina <jikos@kernel.org>, 
- =?utf-8?q?Filipe_La=C3=ADns?= <lains@riseup.net>, 
- Bastien Nocera <hadess@hadess.net>, Ping Cheng <ping.cheng@wacom.com>, 
- Jason Gerecke <jason.gerecke@wacom.com>, Viresh Kumar <vireshk@kernel.org>, 
- Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>
-Cc: Icenowy Zheng <uwu@icenowy.me>, linux-input@vger.kernel.org, 
- linux-kernel@vger.kernel.org, greybus-dev@lists.linaro.org, 
- linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
- Benjamin Tissoires <bentiss@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777884459; l=5200;
- i=bentiss@kernel.org; s=20230215; h=from:subject:message-id;
- bh=+JYc9gtAs3/A+XLQSsrhmAQALfOGYbOvejMYH4rLPkg=;
- b=LqXDLiYmsBrKX0Nt0Tc5aXHsFnZmC4CXJdjvunlrKg2EumO3TqFc+pcN4XgTKY448rJkuFhrR
- L/HtUZwnSQwClNpbllsVjExZ9A3B4OV6LIOBSXuJkh/sXaRbMTeYHRo
-X-Developer-Key: i=bentiss@kernel.org; a=ed25519;
- pk=7D1DyAVh6ajCkuUTudt/chMuXWIJHlv2qCsRkIizvFw=
-X-Rspamd-Queue-Id: 5B9B54BA80A
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 40DE04BA879
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242922-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-242923-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,linux.dev:email]
 
-hid_input_report() is used in too many places to have a commit that
-doesn't cross subsystem borders. Instead of changing the API, introduce
-a new one when things matters in the transport layers:
-- usbhid
-- i2chid
 
-This effectively revert to the old behavior for those two transport
-layers.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x bab1adf3b87e4bfac92c4f5963c63db434d561c1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050417-strangle-guy-d0dc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From bab1adf3b87e4bfac92c4f5963c63db434d561c1 Mon Sep 17 00:00:00 2001
+From: Thorsten Blum <thorsten.blum@linux.dev>
+Date: Sat, 14 Mar 2026 20:36:29 +0100
+Subject: [PATCH] crypto: atmel-sha204a - Fix potential UAF and memory leak in
+ remove path
+
+Unregister the hwrng to prevent new ->read() calls and flush the Atmel
+I2C workqueue before teardown to prevent a potential UAF if a queued
+callback runs while the device is being removed.
+
+Drop the early return to ensure sysfs entries are removed and
+->hwrng.priv is freed, preventing a memory leak.
+
+Fixes: da001fb651b0 ("crypto: atmel-i2c - add support for SHA204A random number generator")
 Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
----
- drivers/hid/hid-core.c             | 25 +++++++++++++++++++++++++
- drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++++---
- drivers/hid/usbhid/hid-core.c      | 11 ++++++-----
- include/linux/hid.h                |  2 ++
- 4 files changed, 37 insertions(+), 8 deletions(-)
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index a806820df7e5..b3596851c719 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2181,6 +2181,7 @@ static int __hid_input_report(struct hid_device *hid, enum hid_report_type type,
-  * @interrupt: distinguish between interrupt and control transfers
-  *
-  * This is data entry for lower layers.
-+ * Legacy, please use hid_safe_input_report() instead.
-  */
- int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
- 		     int interrupt)
-@@ -2191,6 +2192,30 @@ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data
- }
- EXPORT_SYMBOL_GPL(hid_input_report);
- 
-+/**
-+ * hid_safe_input_report - report data from lower layer (usb, bt...)
-+ *
-+ * @hid: hid device
-+ * @type: HID report type (HID_*_REPORT)
-+ * @data: report contents
-+ * @bufsize: allocated size of the data buffer
-+ * @size: useful size of data parameter
-+ * @interrupt: distinguish between interrupt and control transfers
-+ *
-+ * This is data entry for lower layers.
-+ * Please use this function instead of the non safe version because we provide
-+ * here the size of the buffer, allowing hid-core to make smarter decisions
-+ * regarding the incoming buffer.
-+ */
-+int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			  size_t bufsize, u32 size, int interrupt)
-+{
-+	return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
-+				  false, /* from_bpf */
-+				  false /* lock_already_taken */);
-+}
-+EXPORT_SYMBOL_GPL(hid_safe_input_report);
-+
- bool hid_match_one_id(const struct hid_device *hdev,
- 		      const struct hid_device_id *id)
+diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
+index 691531647fd6..dbb39ed0cea1 100644
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -194,10 +194,8 @@ static void atmel_sha204a_remove(struct i2c_client *client)
  {
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 5a183af3d5c6..e0a302544cef 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -574,9 +574,10 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
- 		if (ihid->hid->group != HID_GROUP_RMI)
- 			pm_wakeup_event(&ihid->client->dev, 0);
+ 	struct atmel_i2c_client_priv *i2c_priv = i2c_get_clientdata(client);
  
--		hid_input_report(ihid->hid, HID_INPUT_REPORT,
--				ihid->inbuf + sizeof(__le16),
--				ret_size - sizeof(__le16), 1);
-+		hid_safe_input_report(ihid->hid, HID_INPUT_REPORT,
-+				      ihid->inbuf + sizeof(__le16),
-+				      ihid->bufsize - sizeof(__le16),
-+				      ret_size - sizeof(__le16), 1);
- 	}
+-	if (atomic_read(&i2c_priv->tfm_count)) {
+-		dev_emerg(&client->dev, "Device is busy, will remove it anyhow\n");
+-		return;
+-	}
++	devm_hwrng_unregister(&client->dev, &i2c_priv->hwrng);
++	atmel_i2c_flush_queue();
  
- 	return;
-diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
-index fbbfc0f60829..5af93b9b1fb5 100644
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -283,9 +283,9 @@ static void hid_irq_in(struct urb *urb)
- 			break;
- 		usbhid_mark_busy(usbhid);
- 		if (!test_bit(HID_RESUME_RUNNING, &usbhid->iofl)) {
--			hid_input_report(urb->context, HID_INPUT_REPORT,
--					 urb->transfer_buffer,
--					 urb->actual_length, 1);
-+			hid_safe_input_report(urb->context, HID_INPUT_REPORT,
-+					      urb->transfer_buffer, urb->transfer_buffer_length,
-+					      urb->actual_length, 1);
- 			/*
- 			 * autosuspend refused while keys are pressed
- 			 * because most keyboards don't wake up when
-@@ -482,9 +482,10 @@ static void hid_ctrl(struct urb *urb)
- 	switch (status) {
- 	case 0:			/* success */
- 		if (usbhid->ctrl[usbhid->ctrltail].dir == USB_DIR_IN)
--			hid_input_report(urb->context,
-+			hid_safe_input_report(urb->context,
- 				usbhid->ctrl[usbhid->ctrltail].report->type,
--				urb->transfer_buffer, urb->actual_length, 0);
-+				urb->transfer_buffer, urb->transfer_buffer_length,
-+				urb->actual_length, 0);
- 		break;
- 	case -ESHUTDOWN:	/* unplug */
- 		unplug = 1;
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index ac432a2ef415..bfb9859f391e 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1030,6 +1030,8 @@ struct hid_field *hid_find_field(struct hid_device *hdev, unsigned int report_ty
- int hid_set_field(struct hid_field *, unsigned, __s32);
- int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
- 		     int interrupt);
-+int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			  size_t bufsize, u32 size, int interrupt);
- struct hid_field *hidinput_get_led_field(struct hid_device *hid);
- unsigned int hidinput_count_leds(struct hid_device *hid);
- __s32 hidinput_calc_abs_res(const struct hid_field *field, __u16 code);
-
--- 
-2.54.0
+ 	sysfs_remove_group(&client->dev.kobj, &atmel_sha204a_groups);
+ 
 
 
