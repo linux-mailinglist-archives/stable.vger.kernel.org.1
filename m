@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-243122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLW3C3ym+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:28 +0200
+	id +IzWJveq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD894BE4F1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA6A4BF133
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CD673045023
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AE773044577
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89DD34753C;
-	Mon,  4 May 2026 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C3F3B19D1;
+	Mon,  4 May 2026 14:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKxWthsg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUCn7kTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F493DDDD7;
-	Mon,  4 May 2026 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB88135A3AD;
+	Mon,  4 May 2026 14:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903074; cv=none; b=VWCXXZdZ4C8XFwwEfgwheKxvflKAJDyzud6TrfIC547D7Lssvk/6ToQJQvKo3kk9F5+J9crfPcbzvSJS1imkaFbyhi/+aQGcVRI1QGvR21/Hdqkm1SbNiZYLVdmyIgtBxNRTCU5dRW53BYcc/jn50U31etQF4rI74E7vK+xiLBs=
+	t=1777903724; cv=none; b=K2olZI/scjaCeR8LwmwgIdEOPRXT6CuFTcE14JCkszqjxVvHHTHkX6Q30jUsTBaZrn1uUbyGpZpuKdyIk77rYONwnP8rB5OK0ItKwI2IJw3Z0sSTfVo7eG0TQU0dc/Q3LoonIEYLHjzrlH8tILpR1EVeHS3zFT5hz+RnWR2Ibnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903074; c=relaxed/simple;
-	bh=pkoqiXWBKPs5iVQ4mNASCFmV0IiOFJW86OVG4eKzF6o=;
+	s=arc-20240116; t=1777903724; c=relaxed/simple;
+	bh=XK9GyH6c6Y0o6meJIGtlkgZ5XLmem6ptvQBEI2sxZUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9DlCgK5A/OaLip+ZmCNV4g+9RfgqzQ2XpwQOV+kLtpUjSUp9ccn4fIN/RukxBU0VA59VxzSf2oXYB0rl8pwPIROs/SoR/haEJb3dprLBL6vgmf6fm69VOPhaPkeYbCR5EHzVfd55+NQVhYfXw7dbBQ9jsSGUsv42U0ZSL7T39g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKxWthsg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B9BC2BCF5;
-	Mon,  4 May 2026 13:57:53 +0000 (UTC)
+	 MIME-Version; b=PmPmGVPqgTPKyaAZJMxR0tM8uTCOoEoKF58yuEBbuhqFhIVyopY8p5vcttKp/vNCoTPFAO6E2ml57fhTAuvrzVn085aENdv0lAZQmy49EGi+bcpToueX69b2Vg4ueeDMax8TKSs23cB5hm7oXaXMzGnBxj8DNV4Ew6cBaz3zuVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUCn7kTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0D7C2BCB8;
+	Mon,  4 May 2026 14:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903074;
-	bh=pkoqiXWBKPs5iVQ4mNASCFmV0IiOFJW86OVG4eKzF6o=;
+	s=korg; t=1777903724;
+	bh=XK9GyH6c6Y0o6meJIGtlkgZ5XLmem6ptvQBEI2sxZUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKxWthsg5yMG/jr3JJtpZtCqopiCz4hiTTEVLAqoee8Mwow9UTZ+x816U9yoWMVXq
-	 N+1dF17s6hjHXgFaPYjHkdcorOjYuFGqkeGs3uBskE6i+3haGxLyVTV9AEsJYTMlh4
-	 B8ywm6cxciFqX7z6vAifpwjrkVumod5+qyPy8IdY=
+	b=VUCn7kTvskduPFQYOTFoOOgSnfUxkZ5G0rliG33sb/DlKCDCuOYx32AiPsTb+mb/o
+	 sbOjCeLjCZ/BkcJ+aswiZzTnYOaGWR25s1IlKrvysA/+uYNfyQJ9Au2HQn3LrngNLu
+	 324BQvkKeLH1ZPCDm//3jQvsi4Dm79cV1DCT2P4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Rui <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	loongarch@lists.linux.dev,
-	Rong Bao <rong.bao@csmantle.top>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 7.0 092/307] perf annotate: Use jump__delete when freeing LoongArch jumps
+	Johannes Thumshirn <jth@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 037/275] spi: ch341: fix memory leaks on probe failures
 Date: Mon,  4 May 2026 15:49:37 +0200
-Message-ID: <20260504135146.275021893@linuxfoundation.org>
+Message-ID: <20260504135144.316533747@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,154 +64,138 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1BD894BE4F1
+X-Rspamd-Queue-Id: 3BA6A4BF133
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243122-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243375-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xen0n.name:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Bao <rong.bao@csmantle.top>
+From: Johan Hovold <johan@kernel.org>
 
-commit a355eefc36c4481188249b067832b40a2c45fa5c upstream.
+commit b99e3ddb91b499d920e63a2daff8880be68cfe9e upstream.
 
-Currently, the initialization of loongarch_jump_ops does not contain an
-assignment to its .free field. This causes disasm_line__free() to fall
-through to ins_ops__delete() for LoongArch jump instructions.
+Make sure to deregister the controller, disable pins, and kill and free
+the RX URB on probe failures to mirror disconnect and avoid memory
+leaks and use-after-free.
 
-ins_ops__delete() will free ins_operands.source.raw and
-ins_operands.source.name, and these fields overlaps with
-ins_operands.jump.raw_comment and ins_operands.jump.raw_func_start.
-Since in loongarch_jump__parse(), these two fields are populated by
-strchr()-ing the same buffer, trying to free them will lead to undefined
-behavior.
+Also add an explicit URB kill on disconnect for symmetry (even if that
+is not strictly required as USB core would have stopped it in the
+current setup).
 
-This invalid free usually leads to crashes:
-
-        Process 1712902 (perf) of user 1000 dumped core.
-        Stack trace of thread 1712902:
-        #0  0x00007fffef155c58 n/a (libc.so.6 + 0x95c58)
-        #1  0x00007fffef0f7a94 raise (libc.so.6 + 0x37a94)
-        #2  0x00007fffef0dd6a8 abort (libc.so.6 + 0x1d6a8)
-        #3  0x00007fffef145490 n/a (libc.so.6 + 0x85490)
-        #4  0x00007fffef1646f4 n/a (libc.so.6 + 0xa46f4)
-        #5  0x00007fffef164718 n/a (libc.so.6 + 0xa4718)
-        #6  0x00005555583a6764 __zfree (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x106764)
-        #7  0x000055555854fb70 disasm_line__free (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x2afb70)
-        #8  0x000055555853d618 annotated_source__purge (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x29d618)
-        #9  0x000055555852300c __hist_entry__tui_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28300c)
-        #10 0x0000555558526718 do_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x286718)
-        #11 0x000055555852ed94 evsel__hists_browse (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28ed94)
-        #12 0x000055555831fdd0 cmd_report (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x7fdd0)
-        #13 0x000055555839b644 handle_internal_command (/home/csmantle/dist/linux-arch/tools/perf/perf + 0xfb644)
-        #14 0x00005555582fe6ac main (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5e6ac)
-        #15 0x00007fffef0ddd90 n/a (libc.so.6 + 0x1dd90)
-        #16 0x00007fffef0ddf0c __libc_start_main (libc.so.6 + 0x1df0c)
-        #17 0x00005555582fed10 _start (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5ed10)
-        ELF object binary architecture: LoongArch
-
-... and it can be confirmed with Valgrind:
-
-        ==1721834== Invalid free() / delete / delete[] / realloc()
-        ==1721834==    at 0x4EA9014: free (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
-        ==1721834==    by 0x4106287: __zfree (zalloc.c:13)
-        ==1721834==    by 0x42ADC8F: disasm_line__free (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x429B737: annotated_source__purge (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42811EB: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==  Address 0x7d34303 is 35 bytes inside a block of size 62 alloc'd
-        ==1721834==    at 0x4EA59B8: malloc (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
-        ==1721834==    by 0x6B80B6F: strdup (strdup.c:42)
-        ==1721834==    by 0x42AD917: disasm_line__new (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42AE5A3: symbol__disassemble_objdump (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42AF0A7: symbol__disassemble (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x429B3CF: symbol__annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x429C233: symbol__annotate2 (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42804D3: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
-
-This patch adds the missing free() specialization in loongarch_jump_ops,
-which prevents disasm_line__free() from invoking the default cleanup
-function.
-
-Fixes: fb7fd2a14a503b9a ("perf annotate: Move raw_comment and raw_func_start fields out of 'struct ins_operands'")
-Cc: stable@vger.kernel.org
-Cc: WANG Rui <wangrui@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: loongarch@lists.linux.dev
-Signed-off-by: Rong Bao <rong.bao@csmantle.top>
-Tested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
+Cc: stable@vger.kernel.org	# 6.11
+Cc: Johannes Thumshirn <jth@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260327104305.1309915-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/annotate-arch/annotate-loongarch.c |    1 +
- tools/perf/util/disasm.c                           |    2 +-
- tools/perf/util/disasm.h                           |    2 ++
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-ch341.c |   36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
---- a/tools/perf/util/annotate-arch/annotate-loongarch.c
-+++ b/tools/perf/util/annotate-arch/annotate-loongarch.c
-@@ -110,6 +110,7 @@ static int loongarch_jump__parse(const s
- }
+--- a/drivers/spi/spi-ch341.c
++++ b/drivers/spi/spi-ch341.c
+@@ -173,17 +173,17 @@ static int ch341_probe(struct usb_interf
  
- static const struct ins_ops loongarch_jump_ops = {
-+	.free	   = jump__delete,
- 	.parse	   = loongarch_jump__parse,
- 	.scnprintf = jump__scnprintf,
- 	.is_jump   = true,
---- a/tools/perf/util/disasm.c
-+++ b/tools/perf/util/disasm.c
-@@ -451,7 +451,7 @@ int jump__scnprintf(const struct ins *in
- 			 ops->target.offset);
- }
+ 	ch341->tx_buf =
+ 		devm_kzalloc(&udev->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
+-	if (!ch341->tx_buf)
+-		return -ENOMEM;
++	if (!ch341->tx_buf) {
++		ret = -ENOMEM;
++		goto err_free_urb;
++	}
  
--static void jump__delete(struct ins_operands *ops __maybe_unused)
-+void jump__delete(struct ins_operands *ops __maybe_unused)
- {
- 	/*
- 	 * The ops->jump.raw_comment and ops->jump.raw_func_start belong to the
---- a/tools/perf/util/disasm.h
-+++ b/tools/perf/util/disasm.h
-@@ -161,6 +161,8 @@ int jump__scnprintf(const struct ins *in
- int mov__scnprintf(const struct ins *ins, char *bf, size_t size,
- 		   struct ins_operands *ops, int max_ins_name);
+ 	usb_fill_bulk_urb(ch341->rx_urb, udev, ch341->read_pipe, ch341->rx_buf,
+ 			  ch341->rx_len, ch341_recv, ch341);
  
-+void jump__delete(struct ins_operands *ops);
+ 	ret = usb_submit_urb(ch341->rx_urb, GFP_KERNEL);
+-	if (ret) {
+-		usb_free_urb(ch341->rx_urb);
+-		return -ENOMEM;
+-	}
++	if (ret)
++		goto err_free_urb;
+ 
+ 	ctrl->bus_num = -1;
+ 	ctrl->mode_bits = SPI_CPHA;
+@@ -195,21 +195,34 @@ static int ch341_probe(struct usb_interf
+ 
+ 	ret = ch341_config_stream(ch341);
+ 	if (ret)
+-		return ret;
++		goto err_kill_urb;
+ 
+ 	ret = ch341_enable_pins(ch341, true);
+ 	if (ret)
+-		return ret;
++		goto err_kill_urb;
+ 
+ 	ret = spi_register_controller(ctrl);
+ 	if (ret)
+-		return ret;
++		goto err_disable_pins;
+ 
+ 	ch341->spidev = spi_new_device(ctrl, &chip);
+-	if (!ch341->spidev)
+-		return -ENOMEM;
++	if (!ch341->spidev) {
++		ret = -ENOMEM;
++		goto err_unregister;
++	}
+ 
+ 	return 0;
 +
- int symbol__disassemble(struct symbol *sym, struct annotate_args *args);
++err_unregister:
++	spi_unregister_controller(ctrl);
++err_disable_pins:
++	ch341_enable_pins(ch341, false);
++err_kill_urb:
++	usb_kill_urb(ch341->rx_urb);
++err_free_urb:
++	usb_free_urb(ch341->rx_urb);
++
++	return ret;
+ }
  
- char *expand_tabs(char *line, char **storage, size_t *storage_len);
+ static void ch341_disconnect(struct usb_interface *intf)
+@@ -219,6 +232,7 @@ static void ch341_disconnect(struct usb_
+ 	spi_unregister_device(ch341->spidev);
+ 	spi_unregister_controller(ch341->ctrl);
+ 	ch341_enable_pins(ch341, false);
++	usb_kill_urb(ch341->rx_urb);
+ 	usb_free_urb(ch341->rx_urb);
+ }
+ 
 
 
 
