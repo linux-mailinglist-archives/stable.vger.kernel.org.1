@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CExeL8+p+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:39 +0200
+	id QKnQGDqu+GlIxwIAu9opvQ
+	(envelope-from <stable+bounces-243750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD574BEE09
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31E64BFACD
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 40AAA302A0C5
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 991C430805CB
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2535321CC4F;
-	Mon,  4 May 2026 14:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5183DEAF9;
+	Mon,  4 May 2026 14:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShjiLaNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzUn1PkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB473DEFF3;
-	Mon,  4 May 2026 14:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8200D3DE45B;
+	Mon,  4 May 2026 14:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903521; cv=none; b=on6wf6c274RLTXUPCKpp0SPJ716yE7OcM5n+a4C5WPg7+9xEiDJ9yFtQW1tMD6P3gRwqlQOYchxj4ZBCOYVteuonaZukn4yx2f//kHYOjqI0NHK+afROukp6Lyec6gYSZf1FO8hKzOQijIN+7bi4LKkNylvo6Yq4FZR/dBetrwc=
+	t=1777904682; cv=none; b=X1EllwSvEzG0F/IuGOWXPElMh2ZLhZAmXox94KcBiBlBbRqRDZ/YTxOAiy5l/TXQdVjCDzKXher5OuqtqFp24h8GoyqqE7pudfQ2TCOmn9OMe6WCpAlJr7FDCvjgAiua3ALEdPFsAubnPNYMJH4glp/GnXyBYt8zap6pQikTkZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903521; c=relaxed/simple;
-	bh=wK1NwcX6V8dX6wWQo8JGe6Y4GqNIM3jTSQkrt+BUr1Y=;
+	s=arc-20240116; t=1777904682; c=relaxed/simple;
+	bh=1plkIr0JUitPX04WqZDngTr15Jo3wjeYFs+4vLwn7/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htnrSF2bbDggrCDRFNWvrsADVcx2JRVHc+vmgoxeVdkTABSO3T34UKTD5Sq53dqRe+VRayhU4YicHILBH9uhn5Uj08lrPFpcOT00PPAbd6Yzr7lgtqW+O7RAnCnB03QrnDn8aB2G5RTA4uA4uPmyJ6Ixn07x4Q3kdo+6CztpmDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShjiLaNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332ADC2BCF5;
-	Mon,  4 May 2026 14:05:21 +0000 (UTC)
+	 MIME-Version; b=AKmNtHeol03TYKjfybk3wUm3H+ZOlpvk7dIU2TPlgLsBS8HK6lYFC/kRyHtldwwRPAB1ejiO6niLn/IuxAFGfc65OD0vgbCYxCnY01tlQR2qZUFW5ARrxFQcErweRLs9flODGD64L8n9u4vYW6q/6/UM9FdWNY62bbcOmppbhpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzUn1PkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E87C2BCB8;
+	Mon,  4 May 2026 14:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903521;
-	bh=wK1NwcX6V8dX6wWQo8JGe6Y4GqNIM3jTSQkrt+BUr1Y=;
+	s=korg; t=1777904682;
+	bh=1plkIr0JUitPX04WqZDngTr15Jo3wjeYFs+4vLwn7/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShjiLaNTMbF/pTr9I1oGlqnrfMgu0WMwQVl6XhKqiIBOhpjn7GqM2motSmaNfj5/E
-	 Fpqn5pZNbt501A/Qk5vAd5AeD2YyMs5nb0kI556FIBKZs+h9g/4iyPxbA7uyclh/12
-	 Kqw40odQI8wf0agqjmejeuBhQpSUHdUu4oT7TJZE=
+	b=NzUn1PkV7t2YfOLR+Q0nW2/i1BGC/dRZZfA7TOrMQRepOQFw30Qo+AfkuYdq8Sv5r
+	 FD8y7L8ELn23+4wyEIuAxiO0ZZNmVBetQ0vlOYQW9eR4wCkux1gBtzq3OJ8t+MeRNP
+	 v8z9wT/7nsm0/nIL8jgYIInuElrLBUT/wbWYyUhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 7.0 266/307] crypto: atmel-sha204a - Fix uninitialized data access on OTP read error
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Kevin Cheng <chengkev@google.com>,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH 6.12 132/215] KVM: nSVM: Raise #UD if unhandled VMMCALL isnt intercepted by L1
 Date: Mon,  4 May 2026 15:52:31 +0200
-Message-ID: <20260504135152.819854035@linuxfoundation.org>
+Message-ID: <20260504135134.972524849@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,177 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AFD574BEE09
+X-Rspamd-Queue-Id: F31E64BFACD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243750-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243296-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,cmd.data:url,linux.dev:email,apana.org.au:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Kevin Cheng <chengkev@google.com>
 
-commit de4e66b763d1e81188cb2803ec109466582fc9d1 upstream.
+commit c36991c6f8d2ab56ee67aff04e3c357f45cfc76c upstream.
 
-Return early if atmel_i2c_send_receive() fails to avoid checking
-potentially uninitialized data in 'cmd.data'.
+Explicitly synthesize a #UD for VMMCALL if L2 is active, L1 does NOT want
+to intercept VMMCALL, nested_svm_l2_tlb_flush_enabled() is true, and the
+hypercall is something other than one of the supported Hyper-V hypercalls.
+When all of the above conditions are met, KVM will intercept VMMCALL but
+never forward it to L1, i.e. will let L2 make hypercalls as if it were L1.
 
+The TLFS says a whole lot of nothing about this scenario, so go with the
+architectural behavior, which says that VMMCALL #UDs if it's not
+intercepted.
+
+Opportunistically do a 2-for-1 stub trade by stub-ifying the new API
+instead of the helpers it uses.  The last remaining "single" stub will
+soon be dropped as well.
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Fixes: 3f4a812edf5c ("KVM: nSVM: hyper-v: Enable L2 TLB flush")
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: e05ce444e9e5 ("crypto: atmel-sha204a - add reading from otp zone")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Kevin Cheng <chengkev@google.com>
+Link: https://patch.msgid.link/20260228033328.2285047-5-chengkev@google.com
+[sean: rewrite changelog and comment, tag for stable, remove defunct stubs]
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://patch.msgid.link/20260304002223.1105129-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-sha204a.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kvm/hyperv.h     |    8 --------
+ arch/x86/kvm/svm/hyperv.h |   11 +++++++++++
+ arch/x86/kvm/svm/nested.c |    4 +---
+ arch/x86/kvm/svm/svm.c    |   19 ++++++++++++++++++-
+ 4 files changed, 30 insertions(+), 12 deletions(-)
 
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -106,6 +106,10 @@ static int atmel_sha204a_otp_read(struct
+--- a/arch/x86/kvm/hyperv.h
++++ b/arch/x86/kvm/hyperv.h
+@@ -304,14 +304,6 @@ static inline bool kvm_hv_has_stimer_pen
+ {
+ 	return false;
+ }
+-static inline bool kvm_hv_is_tlb_flush_hcall(struct kvm_vcpu *vcpu)
+-{
+-	return false;
+-}
+-static inline bool guest_hv_cpuid_has_l2_tlb_flush(struct kvm_vcpu *vcpu)
+-{
+-	return false;
+-}
+ static inline int kvm_hv_verify_vp_assist(struct kvm_vcpu *vcpu)
+ {
+ 	return 0;
+--- a/arch/x86/kvm/svm/hyperv.h
++++ b/arch/x86/kvm/svm/hyperv.h
+@@ -41,6 +41,13 @@ static inline bool nested_svm_l2_tlb_flu
+ 	return hv_vcpu->vp_assist_page.nested_control.features.directhypercall;
+ }
+ 
++static inline bool nested_svm_is_l2_tlb_flush_hcall(struct kvm_vcpu *vcpu)
++{
++	return guest_hv_cpuid_has_l2_tlb_flush(vcpu) &&
++	       nested_svm_l2_tlb_flush_enabled(vcpu) &&
++	       kvm_hv_is_tlb_flush_hcall(vcpu);
++}
++
+ void svm_hv_inject_synthetic_vmexit_post_tlb_flush(struct kvm_vcpu *vcpu);
+ #else /* CONFIG_KVM_HYPERV */
+ static inline void nested_svm_hv_update_vm_vp_ids(struct kvm_vcpu *vcpu) {}
+@@ -48,6 +55,10 @@ static inline bool nested_svm_l2_tlb_flu
+ {
+ 	return false;
+ }
++static inline bool nested_svm_is_l2_tlb_flush_hcall(struct kvm_vcpu *vcpu)
++{
++	return false;
++}
+ static inline void svm_hv_inject_synthetic_vmexit_post_tlb_flush(struct kvm_vcpu *vcpu) {}
+ #endif /* CONFIG_KVM_HYPERV */
+ 
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1532,9 +1532,7 @@ int nested_svm_exit_special(struct vcpu_
  	}
+ 	case SVM_EXIT_VMMCALL:
+ 		/* Hyper-V L2 TLB flush hypercall is handled by L0 */
+-		if (guest_hv_cpuid_has_l2_tlb_flush(vcpu) &&
+-		    nested_svm_l2_tlb_flush_enabled(vcpu) &&
+-		    kvm_hv_is_tlb_flush_hcall(vcpu))
++		if (nested_svm_is_l2_tlb_flush_hcall(vcpu))
+ 			return NESTED_EXIT_HOST;
+ 		break;
+ 	default:
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -49,6 +49,7 @@
+ #include "svm.h"
+ #include "svm_ops.h"
  
- 	ret = atmel_i2c_send_receive(client, &cmd);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "failed to read otp at %04X\n", addr);
-+		return ret;
++#include "hyperv.h"
+ #include "kvm_onhyperv.h"
+ #include "svm_onhyperv.h"
+ 
+@@ -3377,6 +3378,22 @@ static int invpcid_interception(struct k
+ 	return kvm_handle_invpcid(vcpu, type, gva);
+ }
+ 
++static int vmmcall_interception(struct kvm_vcpu *vcpu)
++{
++	/*
++	 * Inject a #UD if L2 is active and the VMMCALL isn't a Hyper-V TLB
++	 * hypercall, as VMMCALL #UDs if it's not intercepted, and this path is
++	 * reachable if and only if L1 doesn't want to intercept VMMCALL or has
++	 * enabled L0 (KVM) handling of Hyper-V L2 TLB flush hypercalls.
++	 */
++	if (is_guest_mode(vcpu) && !nested_svm_is_l2_tlb_flush_hcall(vcpu)) {
++		kvm_queue_exception(vcpu, UD_VECTOR);
++		return 1;
 +	}
- 
- 	if (cmd.data[0] == 0xff) {
- 		dev_err(&client->dev, "failed, device not ready\n");
++
++	return kvm_emulate_hypercall(vcpu);
++}
++
+ static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
+ 	[SVM_EXIT_READ_CR0]			= cr_interception,
+ 	[SVM_EXIT_READ_CR3]			= cr_interception,
+@@ -3427,7 +3444,7 @@ static int (*const svm_exit_handlers[])(
+ 	[SVM_EXIT_TASK_SWITCH]			= task_switch_interception,
+ 	[SVM_EXIT_SHUTDOWN]			= shutdown_interception,
+ 	[SVM_EXIT_VMRUN]			= vmrun_interception,
+-	[SVM_EXIT_VMMCALL]			= kvm_emulate_hypercall,
++	[SVM_EXIT_VMMCALL]			= vmmcall_interception,
+ 	[SVM_EXIT_VMLOAD]			= vmload_interception,
+ 	[SVM_EXIT_VMSAVE]			= vmsave_interception,
+ 	[SVM_EXIT_STGI]				= stgi_interception,
 
 
 
