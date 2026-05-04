@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNTmKwqp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:22 +0200
+	id aIn9Ad+r+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453514BEB7B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EE14BF445
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD8D13020FFF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC287302B537
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0859D3AA4F8;
-	Mon,  4 May 2026 14:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60BC1A6827;
+	Mon,  4 May 2026 14:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxMN+j5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dh+UxsNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9303A7F4C;
-	Mon,  4 May 2026 14:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A54329E116;
+	Mon,  4 May 2026 14:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903845; cv=none; b=H2utOdGk6l8YxwZFpm/aiAu+/MxS81Yba63/bNDzI7tdd5ow5WrH07PMNktCSWpmt+8YA0wjtd4VwafBeXDS1Rfng4nP8GJspZGrPvrr119rQMQt4q7x7wJQ2J4TlWGQAWx0UlAChk0p3Y0gkkGiDNmPvl2EosCRpC6rb6z/7cc=
+	t=1777904411; cv=none; b=XAlEnGlhdBHlBBIJVPIUZW/uPamJgHS0kgMS46RuhDZlDNE2HuPZOelWaVdpEf8L7+7/FItnjkbV2Yv2ovtiORpzE4255FhdlcFYH7VLjk7YXWQEXZRVrIdrFK0OnedYfms4OhldVPT2kZu6TDAuv77CSWxeeVAIdnGzuLCFeN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903845; c=relaxed/simple;
-	bh=WyDigtKvx6ELkIMHyQ2Dx0d/bOFL3ZyY+pKHKABGdhk=;
+	s=arc-20240116; t=1777904411; c=relaxed/simple;
+	bh=oYMF/2w9gZ43XgGJ1WGoZtjJgdll1kbc/68qx9qL6Ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTq1XfPge+tCrVUTLUWjrlm1zwD1B/WZKYpurBX+20m6bkpIoM+b2ZVycQ7rGLMV7u7i0vaXxDAwFB9g+B1Ok71Tdbb7AwzeWNOsi8iAHVr61xEELF2NKyDSEF3CSGvJYS5vo21Q+mfs+Rtxo9J2bxE7E5IXZNzWjvMRPeqbcHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxMN+j5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552D8C2BCB8;
-	Mon,  4 May 2026 14:10:45 +0000 (UTC)
+	 MIME-Version; b=NnVt+CFYMppp/4Hn8qA2cWro1ZMQJsbGNlejIezwmP13uviE8mVyt5Fy7IC7cn6PXpqNZkgSMzbslnAOZ/2DUumlIblxM1DgctQED+aJUPPWma7w/58Ibs+eJBC5/40QY1Aes7Ly4YX3XLfnEKAwkab6CqbH+3R95Zo5UggOSjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dh+UxsNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28775C2BCB8;
+	Mon,  4 May 2026 14:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903845;
-	bh=WyDigtKvx6ELkIMHyQ2Dx0d/bOFL3ZyY+pKHKABGdhk=;
+	s=korg; t=1777904411;
+	bh=oYMF/2w9gZ43XgGJ1WGoZtjJgdll1kbc/68qx9qL6Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QxMN+j5cJsV8TuqjfzEtocDi8/g62jWw8iEd5do0qiND4t/5NYZzEQi6vlsjUY4Pn
-	 mLxhcuHFXGnY8egFR6Uf70gPOHy0qB5RDBLzcKRV7u+BPJ/11B0umLgTWZnTfc7sJX
-	 7PUUgo72ZVqUzLjd31rNbneLrZdU/zrAnpEOsr8E=
+	b=Dh+UxsNTaXeikCObeLzBotsexKnDwbfYDHovn9k3dkD53AHKKPoJP0r708pHgXZsx
+	 fjjD7tspN/0hrEJ/LKmBmt0VQSckbj3ohud6f46NOF47L96NcW6beCpXLrgSCpvJGi
+	 DxXmRNnNR//eQbnUQ1JCFKedXozOPIeGWFIfUj/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Levinsky <ben.levinsky@amd.com>,
-	Tanmay Shah <tanmay.shah@amd.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.18 083/275] remoteproc: xlnx: Only access buffer information if IPI is buffered
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 004/215] usb: xhci: Make usb_host_endpoint.hcpriv survive endpoint_disable()
 Date: Mon,  4 May 2026 15:50:23 +0200
-Message-ID: <20260504135146.007196746@linuxfoundation.org>
+Message-ID: <20260504135130.336054371@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 453514BEB7B
+X-Rspamd-Queue-Id: C5EE14BF445
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243423-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243644-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Levinsky <ben.levinsky@amd.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 38dd6ccfdfbbe865569a52fe1ba9fa1478f672e6 upstream.
+commit 25e531b422dc2ac90cdae3b6e74b5cdeb081440d upstream.
 
-In the receive callback check if message is NULL to prevent
-possibility of crash by NULL pointer dereferencing.
+xHCI hardware maintains its endpoint state between add_endpoint()
+and drop_endpoint() calls followed by successful check_bandwidth().
+So does the driver.
 
-Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
-Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
-Fixes: 5dfb28c257b7 ("remoteproc: xilinx: Add mailbox channels for rpmsg")
+Core may call endpoint_disable() during xHCI endpoint life, so don't
+clear host_ep->hcpriv then, because this breaks endpoint_reset().
+
+If a driver calls usb_set_interface(), submits URBs which make host
+sequence state non-zero and calls usb_clear_halt(), the device clears
+its sequence state but xhci_endpoint_reset() bails out. The next URB
+malfunctions: USB2 loses one packet, USB3 gets Transaction Error or
+may not complete at all on some (buggy?) HCs from ASMedia and AMD.
+This is triggered by uvcvideo on bulk video devices.
+
+The code was copied from ehci_endpoint_disable() but it isn't needed
+here - hcpriv should only be NULL on emulated root hub endpoints.
+It might prevent resetting and inadvertently enabling a disabled and
+dropped endpoint, but core shouldn't try to reset dropped endpoints.
+
+Document xhci requirements regarding hcpriv. They are currently met.
+
+Fixes: 18b74067ac78 ("xhci: Fix use-after-free regression in xhci clear hub TT implementation")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20260303235127.2317955-3-tanmay.shah@amd.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260402131342.2628648-26-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/xlnx_r5_remoteproc.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/usb/host/xhci.c |    1 -
+ include/linux/usb.h     |    3 ++-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/remoteproc/xlnx_r5_remoteproc.c
-+++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
-@@ -232,17 +232,19 @@ static void zynqmp_r5_mb_rx_cb(struct mb
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3080,7 +3080,6 @@ rescan:
+ 		xhci_dbg(xhci, "endpoint disable with ep_state 0x%x\n",
+ 			 ep->ep_state);
+ done:
+-	host_ep->hcpriv = NULL;
+ 	spin_unlock_irqrestore(&xhci->lock, flags);
+ }
  
- 	ipi = container_of(cl, struct mbox_info, mbox_cl);
- 
--	/* copy data from ipi buffer to r5_core */
-+	/* copy data from ipi buffer to r5_core if IPI is buffered. */
- 	ipi_msg = (struct zynqmp_ipi_message *)msg;
--	buf_msg = (struct zynqmp_ipi_message *)ipi->rx_mc_buf;
--	len = ipi_msg->len;
--	if (len > IPI_BUF_LEN_MAX) {
--		dev_warn(cl->dev, "msg size exceeded than %d\n",
--			 IPI_BUF_LEN_MAX);
--		len = IPI_BUF_LEN_MAX;
-+	if (ipi_msg) {
-+		buf_msg = (struct zynqmp_ipi_message *)ipi->rx_mc_buf;
-+		len = ipi_msg->len;
-+		if (len > IPI_BUF_LEN_MAX) {
-+			dev_warn(cl->dev, "msg size exceeded than %d\n",
-+				 IPI_BUF_LEN_MAX);
-+			len = IPI_BUF_LEN_MAX;
-+		}
-+		buf_msg->len = len;
-+		memcpy(buf_msg->data, ipi_msg->data, len);
- 	}
--	buf_msg->len = len;
--	memcpy(buf_msg->data, ipi_msg->data, len);
- 
- 	/* received and processed interrupt ack */
- 	if (mbox_send_message(ipi->rx_chan, NULL) < 0)
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -53,7 +53,8 @@ struct ep_device;
+  * @ssp_isoc_ep_comp: SuperSpeedPlus isoc companion descriptor for this endpoint
+  * @urb_list: urbs queued to this endpoint; maintained by usbcore
+  * @hcpriv: for use by HCD; typically holds hardware dma queue head (QH)
+- *	with one or more transfer descriptors (TDs) per urb
++ *	with one or more transfer descriptors (TDs) per urb; must be preserved
++ *	by core while BW is allocated for the endpoint
+  * @ep_dev: ep_device for sysfs info
+  * @extra: descriptors following this endpoint in the configuration
+  * @extralen: how many bytes of "extra" are valid
 
 
 
