@@ -1,231 +1,198 @@
-Return-Path: <stable+bounces-242828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wK7oIDEa+GltpwIAu9opvQ
-	(envelope-from <stable+bounces-242828-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 06:01:53 +0200
+	id ACK4EYkb+GnCpwIAu9opvQ
+	(envelope-from <stable+bounces-242829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 06:07:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14734B8450
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 06:01:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5C84B84A6
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 06:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E5EF330068F8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 04:01:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1386F300BC8A
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 04:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A97156F45;
-	Mon,  4 May 2026 04:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7808D1DC9B3;
+	Mon,  4 May 2026 04:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aPP04DFz"
+	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="L12JVhGo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IIHU4632"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69F64414
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 04:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777867309; cv=pass; b=MF2OaihguhjbJ60yvpxOemjsoFByzptQzIxR882lb3gikMFvWNDDOM5Zg0INHOnnLpFJl86CHHOAI+G244Ofxx2SWlpJimQxU1cJjU6KbbkLJRJ/W727nGVVyUGRLITlH5UKtjpquiDcJ51UcN91nbTyHSeSoTjTm+zKraxhnmg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777867309; c=relaxed/simple;
-	bh=ZYrEEY3Jzex6XXznt0iI1Eft5x/J7UCL8WIbq2xkqY8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LHC03jd4b/QVcmk7EH9Tq+cgW716i8p7WYG3kDBvwlWrvJ+Iki58BmAqmT/Rtmb797VVRe0l855FcpR6ioXNcQHfCF7bXC92ZXP9XCO7E1RG8g7VS4W7/1dC3Y/UH8mxE4C4Ddwy6TzAyoY5CDJjUYzIoaaNqoKNyzJrIRpSeqE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aPP04DFz; arc=pass smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8ee63e91acfso280066285a.2
-        for <stable@vger.kernel.org>; Sun, 03 May 2026 21:01:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777867306; cv=none;
-        d=google.com; s=arc-20240605;
-        b=czt/6fCMJjl+BFPZvlXLRrH3yRJdxz4nBcecYw8+ZEmi4UwOYER8iFULHScOx1JyH0
-         jZNqzCWvlV55mH8PJKFz1lJxKF/Rchfza/KHb8drhyHqm2+cQROnhahWZFKME0Ll6A1Q
-         Hlkz4E8VFEOu3u/ssmo/XnXNwQK8ziwT6PUov3tSXsxtdklzT32fBcyhmi3pTFHkVfze
-         bbGeucsRYicFPLnys8Kf2d3TrHjYGZPIbqikmUBZ0eEO60t7ek5b4zPCWH8qLNXfgOSf
-         VMFr+dqPLZ+o922dVEHqBAc36rhQ/LNjOnbT/yGYvx8jzcmVRGbAkcOTRxn6H+S7B3YH
-         1RrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=oGlVUVNCo7t578SnF0/FJlFOI+mo4qIG1hmcAiuexlk=;
-        fh=M9dbtR22YJpxjjKrrHWfrtbzqPsUG8HkTYTaom3Rl3o=;
-        b=DaRcBViLr6sN24fKJzKdfCynPhTO924cXNNbGHddZMuopKKe8FodHIDhsWqa5XPoe5
-         LagkK7xlrAx3tgm5HVOWeCp0x7CfT7dXR0QtmNR20bsUAkbAp6TTcOwcyHoI6Bvj7kB+
-         j4y6D+QFIPNBramclqww0KLb/MwRPQ99O+YidYHS/auAC5yK+xXMn2NRbopR+qZZbXUp
-         sXtzV4xtW7tc87jtICGIc+SDRaNTGD3H+zBISszTxS78rqf+UhJwuN1zq0+VwIepR5ss
-         jjAuT/65vwfkuACn26roUmRmMDEOl2UsJFV8e3YaWc5WumMTaz7hoXtt0tnCKo7JfxHH
-         J9Ow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777867306; x=1778472106; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=oGlVUVNCo7t578SnF0/FJlFOI+mo4qIG1hmcAiuexlk=;
-        b=aPP04DFzE7PZeXot8IQoDt6K50fMq/D5QcpbQPJgs6ZTkCsboTdAlpcu2YJG5uGRhU
-         iHDDiYI2GH2dlSsvDpbcuFeRc9Nk83L4KOhSM4rHLux7IHsHW8uqXGPo6KDd0lHlQDZV
-         lEsW5r7uOF7jxmIKmVXbAGddezPfUzPnlyyDL/m81IeBfwB40EpWeb54AFMr6Kl+85ef
-         R4qgh0WJPhgd8CHpRm+L9+cBvW3ERwdy/AZ0kfFxgoA09w5qHrQus+be6uBdL6fgIW30
-         czIDVM8GSwcTCc891bhiu35mVJshTUvd3S/0qloo8oSba2c2KbM/KY5sJf+QNHCjhRB+
-         bwsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777867306; x=1778472106;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oGlVUVNCo7t578SnF0/FJlFOI+mo4qIG1hmcAiuexlk=;
-        b=UMm1U7lHHki+sB38JycN3QVICHHsrT5UQHSFzpg8zkDqTLHPGfzqzRz8CmG7kzJX7S
-         mcOGz39b1+zvROm1Xr4yKPU6OeTd6LjfrEOgb+QrWCiwgCy4lRfQfE/w7SHAkqYYZBs+
-         kFBn3KCN8EuUu3+D8AqJ2MCZ4kbFIqCuFNmZiNmj2UC9vWfkEQtdHaCvs/fayJvVnkHC
-         GATiyGHXrW47SGH8RJlqbkAAzGOW7yyxZlMcECXiGCSKchRJYCN9JT4a+d7+TZk+AfRa
-         xO8DOisP6ODlVUyB/EbxBAzM/2wEeCbZmMI8040o1Hz6najvkMtIXwPMSWuA9UKnAifj
-         OkRA==
-X-Forwarded-Encrypted: i=1; AFNElJ+SLSSizleq6hPrXjXIAuzb3q/w3j4VLHZNniJga39AkyRMSctViUwb53qtlprfVLf92+gUUVQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHHypc+tEeYxONO0Q/60wnaY6lKXgkP/980DQs+XHbVwZy6e+D
-	Dxw7kDW1ZhHvLVE8fsjlGa3Lo+UR/BpDf19jv4EC7dCjXLlp6Vmt3glNZtmRdaQq7yOjOSA8HbT
-	BgmJcOCzNSfkgoLXd9Y4nFN+b2T7cK7M=
-X-Gm-Gg: AeBDievuA22N9PxDZtZC45Fr8vNfMtczZnCFYPM2VJo+1S8uCABmKbetpehoXzUc2sK
-	Y8DascS7uAl8QIouENkfxVEWRQQOBGcxJf7mnq6U8IUMJCPBmAAARvhvdkC/yVMhBC3Gtkq6O3D
-	GjnMVCiSYObWWpTI0Ep6UNW79gr6acPLyLRcjuaUmLgwcglfnFrpW3UARUKArfL33nbN8v8IitY
-	4ykXr2z6BuZCnVtngNw9+Dyx5m65t073N00jdY5SOjV+YGAZqKo/FfMLn5sWLREXgdrphUHY9l7
-	1XJUAZjaDV8SRL7LZ9YPD0zPv0lPxnD+mIjOcbFBYJIe7f/dMww0hcmZYdcaYx3U80rDs+7ZTKe
-	EwA==
-X-Received: by 2002:a05:620a:708a:b0:8f1:5e8f:fff3 with SMTP id
- af79cd13be357-8fd16c9964fmr1319335285a.26.1777867306422; Sun, 03 May 2026
- 21:01:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7406240DFD1;
+	Mon,  4 May 2026 04:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777867650; cv=none; b=PWGgz4WqjVPff/cNNq+MX1wiYieZGPBEPqRn506MTjpANZ9dxy9ZSzixNxWJIj7T35dddRSU45cz8PeIR1d0rm1LTnBjl/Zr0mWJilosX6fDvgxtJKGZwx8MpZC3/5bMMCIiTftIQoXQT+TGYjoUQXsEFi407yn3dlD9D2tyBUQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777867650; c=relaxed/simple;
+	bh=MNLfm31CuSD9bY0fB2ljoYFQmQ0yfp1g+94VYHm6ffo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hskl1/gV/zP9yYh13YY+bIdeVe2ykIkYHkSSJqosxxE1eCyOioyMVAdW0CYybk8soIZJwhI+SkkATMOS+qM5G4M/+tpHbSOWXH+RuSpLtsW7WEp/6YJ38BRcKiZJXsD8Vkq6p3HnOyN3k//A5zmSjSUsLeEURyNC4q61XeKLu3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=L12JVhGo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IIHU4632; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 889081400065;
+	Mon,  4 May 2026 00:07:26 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 04 May 2026 00:07:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1777867646; x=1777954046; bh=umlJXxAcNxZ9Q2Ni2iGink1BMJ+a6L1A
+	SXDw2P3E0s8=; b=L12JVhGo6Bhd51mZ0iBkKnO0FXg0oyxoPCig2IF0O5esKfzX
+	0FG1HLxqZsd104NZXZ/BEUspQfoJyc4tVO4qRnH+vJ1P6kwT9E9c3u+v/VHHbBiw
+	n+sN1ubCLJNj/qVZLySyViCo0gbOc2LRPf4svF00qInwtbHa6HEC6CoCK0J80RIJ
+	kWqCazS8kELn1LPpVa2fwX29nIEiLo1F1J6Qe8KDjp9TBI5ROPSqnOl/iYICjvKp
+	+B9M9SUGwHmjPvSKmiYrn/GGUgnMAgt2bZTjKVgF3DqTIDgvc7xd9AqPvTknoIPO
+	ArkfK6jX91RGv4gxT80UxAIXPLwoXn6l0v3t4w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1777867646; x=
+	1777954046; bh=umlJXxAcNxZ9Q2Ni2iGink1BMJ+a6L1ASXDw2P3E0s8=; b=I
+	IHU4632/4OFqGYSMke/fs+xURqhcyOkmbNlhqMjmlT6QtFP/ScmkVqJyC/f1zAVu
+	Q07a6MKv+mX9/ZRcdWMg+s/XuPe2Z+PdjDkfvSPIyWfpvofgIusJf268SvHpeNBb
+	S728xWCDOQGljKB4AXaK5i/hHyKmbaPsYvEDBSGsBn1IoVjzHPNTOBYPjELr+iYs
+	sjRVYubr0bLu2INAtcx59VnYFCJhk2iw4+k+mdvdX6lxwtGx6W7Vp/r0t0jQtkZG
+	AgM/+VpWjQPSV61bD+J7ZoRHsOx6APdRolnLGSGicgrdayObGVGa2vCWg3QR57Pt
+	sF6/aHb/YO7gIbQ1Jb57A==
+X-ME-Sender: <xms:fRv4aYKf_bf_gxhEeo0LUPz_w9wKcUv40JJJ_zgiS3Ci2S1zP98m6Q>
+    <xme:fRv4aSMWcU6cpHw-GPxVcw0lzvHb9waMn6r8mKLMZf9KOFVtb1EAPgHHycck-Yx-U
+    yb7op-vegBFkPBPfuCUrccwdJwKjb4m_0frMqfpI_2djaoaoSY0DYE>
+X-ME-Received: <xmr:fRv4aYk6KDbDL2iJg1PlLFNrVJMn7FshEwwgDJ5pX9xzbP9s62v3y4V7D8uacfwYkQVoQ6vMqEsCNWqBEAYbgVBJEEfSMmY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeljeekgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepvfgrkhgrshhh
+    ihcuufgrkhgrmhhothhouceoohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjph
+    eqnecuggftrfgrthhtvghrnhepieffjeetjedvgfejffekuefgtdehjefhgeethfehvdej
+    ueffueduteejtdfghfejnecuffhomhgrihhnpehmshhgihgurdhlihhnkhenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehoqdhtrghkrghshhhi
+    sehsrghkrghmohgttghhihdrjhhppdhnsggprhgtphhtthhopeejpdhmohguvgepshhmth
+    hpohhuthdprhgtphhtthhopegtrghsshhiohhgrggsrhhivghltghonhhtrghtohesghhm
+    rghilhdrtghomhdprhgtphhtthhopegtlhgvmhgvnhhssehlrgguihhstghhrdguvgdprh
+    gtphhtthhopehtihifrghisehsuhhsvgdrtghomhdprhgtphhtthhopehpvghrvgigsehp
+    vghrvgigrdgtiidprhgtphhtthhopehlihhnuhigqdhsohhunhgusehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrd
+    horhhg
+X-ME-Proxy: <xmx:fRv4aW79bIbX_ips3UzZAp5jc1CSmJjmNai-d8Wop3lFXV0Wysogjw>
+    <xmx:fRv4ac15DcFHCkLxrLLmt_VX2u8WCTAAX_iqlRZN24luCkyYIUmiAg>
+    <xmx:fRv4aREoENJRD02g8o_jtPh2claU4-6V6hQ7rQIumjOlFfWe0Ceexg>
+    <xmx:fRv4abjjyspJq1rkg0n1nflo__kvBnBxUnYUI-WO_Mk4I6dRRQ_WEA>
+    <xmx:fhv4adwVfNt4rmqvpvNgUPLtYkoj4pEuXbmRPj8P00GH_5LLUZGKx4MY>
+Feedback-ID: ie8e14432:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 4 May 2026 00:07:24 -0400 (EDT)
+Date: Mon, 4 May 2026 13:07:21 +0900
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To: =?iso-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>
+Cc: Clemens Ladisch <clemens@ladisch.de>, Takashi Iwai <tiwai@suse.com>,
+	Jaroslav Kysela <perex@perex.cz>, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ALSA: firewire-tascam: Do not drop unread control
+ events
+Message-ID: <20260504040721.GA398619@sakamocchi.jp>
+Mail-Followup-To: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	=?iso-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>,
+	Clemens Ladisch <clemens@ladisch.de>, Takashi Iwai <tiwai@suse.com>,
+	Jaroslav Kysela <perex@perex.cz>, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260503-alsa-firewire-tascam-read-queue-v2-1-126c6efd7642@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260501215856.840898-1-lyude@redhat.com>
-In-Reply-To: <20260501215856.840898-1-lyude@redhat.com>
-From: Dave Airlie <airlied@gmail.com>
-Date: Mon, 4 May 2026 14:01:35 +1000
-X-Gm-Features: AVHnY4LmcMo5jkCCXrsqxOpC_hYtr1-nSy7Wtvdm85s7TmkVILKxYJXd3dyZi5U
-Message-ID: <CAPM=9tyVOHU4KZxpGeKn=V3zhGnBwq4v5QfXvzdUE4QPQ2zMOA@mail.gmail.com>
-Subject: Re: [PATCH] drm/nouveau/kms/nvd9-: Use contiguous memory for CRC
- notifier context
-To: Lyude Paul <lyude@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	Dave Airlie <airlied@redhat.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Suraj Kandpal <suraj.kandpal@intel.com>, James Jones <jajones@nvidia.com>, 
-	Faith Ekstrand <faith.ekstrand@collabora.com>, stable@vger.kernel.org, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Ben Skeggs <bskeggs@nvidia.com>, 
-	Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Maxime Ripard <mripard@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: F14734B8450
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260503-alsa-firewire-tascam-read-queue-v2-1-126c6efd7642@gmail.com>
+X-Rspamd-Queue-Id: 9D5C84B84A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[sakamocchi.jp,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[sakamocchi.jp:s=fm3,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[sakamocchi.jp:+,messagingengine.com:+];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-242828-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242829-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[airlied@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[o-takashi@sakamocchi.jp,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sakamocchi.jp:email,sakamocchi.jp:dkim,sakamocchi.jp:mid]
 
-On Sat, 2 May 2026 at 07:59, Lyude Paul <lyude@redhat.com> wrote:
->
-> It looks like CRC read back has been slightly broken for a while now, in
-> particular on GPUs using GSP. On my test machines, it's worked normally
-> when attempting to use it from fbcon. After gnome-shell gets started
-> however, attempting to read /sys/kernel/debug/dri/$CARD/$CRTC/crc/data just
-> returns -EINVAL.
->
-> It turns out what's been happening is that since we've been using
-> nvif_mem_ctor_map() to both allocate and map the CRC notifier region - we
-> haven't actually asked for a contiguous allocation, and simply ask for
-> whatever type of memory allocation nouveau can find first. This doesn't
-> work because the CRC engine on nvidia GPUs doesn't support non-contiguous
-> allocations, which also causes us to fail setting up the kmsCrcNtfyCtxDma
-> object on pre-blackwell platforms since we don't have a single memory
-> address we can point nvif_object_ctor() to. Instead, ctx->mem.addr gets set
-> to ~0ULL.
->
-> It does however, seem to work when fbcon is running. The only reason I can
-> think of this is that before we start up a display environment, there is
-> pretty much nothing allocated in our VRAM that wasn't allocated by nouveau
-> itself - making it dramatically more likely that we end up finding a
-> contiguous allocation by default.
->
-> So, fix this by manually requesting a contiguous allocation when we
-> allocate our context notifiers.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Fixes: 12885ecbfe62 ("drm/nouveau/kms/nvd9-: Add CRC support")
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Dave Airlie <airlied@gmail.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: Timur Tabi <ttabi@nvidia.com>
-> Cc: Suraj Kandpal <suraj.kandpal@intel.com>
-> Cc: James Jones <jajones@nvidia.com>
-> Cc: Faith Ekstrand <faith.ekstrand@collabora.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: nouveau@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.9+
+Hi,
+
+On Sun, May 03, 2026 at 09:55:52PM -0300, Cássio Gabriel wrote:
+> tscm_hwdep_read_queue() copies as many queued control events as fit in
+> the userspace buffer. When the buffer is smaller than the current
+> contiguous queue segment, length is rounded down to the number of bytes
+> that can be copied.
+> 
+> However, after copying that shortened length, the code advances pull_pos
+> to the original tail_pos, marking the whole contiguous segment as
+> consumed. Any events between the copied portion and tail_pos are lost.
+> 
+> Limit tail_pos to the position after the entries actually copied before
+> updating pull_pos. When the whole segment fits, this is equivalent to the
+> old tail_pos update; when the buffer is smaller, the remaining events
+> stay queued for the next read.
+> 
+> Fixes: a8c0d13267a4 ("ALSA: firewire-tascam: notify events of change of state for userspace applications")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 > ---
->  drivers/gpu/drm/nouveau/dispnv50/crc.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/nouveau/dispnv50/crc.c b/drivers/gpu/drm/nouveau/dispnv50/crc.c
-> index deb6af40ef328..5817f39934a8b 100644
-> --- a/drivers/gpu/drm/nouveau/dispnv50/crc.c
-> +++ b/drivers/gpu/drm/nouveau/dispnv50/crc.c
-> @@ -10,6 +10,7 @@
->  #include <nvif/class.h>
->  #include <nvif/cl0002.h>
->  #include <nvif/timer.h>
-> +#include <nvif/if900b.h>
->
->  #include <nvhw/class/cl907d.h>
->
-> @@ -499,16 +500,24 @@ nv50_crc_raster_type(enum nv50_crc_source source)
->   * notifier needs it's own handle
->   */
->  static inline int
-> -nv50_crc_ctx_init(struct nv50_head *head, struct nvif_mmu *mmu,
-> +nv50_crc_ctx_init(struct drm_device *dev, struct nv50_head *head, struct nvif_mmu *mmu,
->                   struct nv50_crc_notifier_ctx *ctx, size_t len, int idx)
->  {
-> -       struct nv50_core *core = nv50_disp(head->base.base.dev)->core;
-> +       struct nv50_core *core = nv50_disp(dev)->core;
->         int ret;
->
-> -       ret = nvif_mem_ctor_map(mmu, "kmsCrcNtfy", NVIF_MEM_VRAM, len, &ctx->mem);
-> +       /* The display engine requires a contiguous region of memory for the CRC notifier context */
-> +       ret = nvif_mem_ctor(mmu, "kmsCrcNtfy", mmu->mem, NVIF_MEM_VRAM | NVIF_MEM_MAPPABLE, 0, len,
-> +                           &(struct gf100_mem_v0) {
-> +                               .contig = true,
-> +                           }, sizeof(struct gf100_mem_v0), &ctx->mem);
+> Changes in v2:
+> - Recompute tail_pos after shortening length instead of adding a separate
+>   entries_copied variable, as suggested.
+> - Add Suggested-by tag.
+> - Link to v1: https://patch.msgid.link/20260501-alsa-firewire-tascam-read-queue-v1-1-7baa4ba1a4de@gmail.com
+> ---
+>  sound/firewire/tascam/tascam-hwdep.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-I don't think you can just throw gf100_mem_v0 in here like that, I
-think you should maybe make nvif_mem_ctor_map deal with this since you
-want a kernel mappable vram region it needs contig.
+Looks good to me;)
 
-Dave.
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+
+Or as a second Co-Author,
+    Co-developed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+    Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+
+To maintainer, please feel free to assign the above tags according to
+your preferences.
+
+
+Thanks
+
+Takashi Sakamoto
 
