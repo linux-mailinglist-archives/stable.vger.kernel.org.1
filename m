@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-243349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIW9LCWp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:49 +0200
+	id 4A5GEeum+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FBF4BEBE9
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03F94BE61F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 27B043044A17
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42379305D5DF
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D519C3DE45D;
-	Mon,  4 May 2026 14:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1693DE425;
+	Mon,  4 May 2026 13:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSYOgXaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAlHR1E/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CB33DD53E;
-	Mon,  4 May 2026 14:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC00D34753C;
+	Mon,  4 May 2026 13:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903657; cv=none; b=s3fWeJQdon+xYKgINa/Y1JW8H/ojm/dMvLN4SQEQ58Dtmf0MSVPwh8y8YLAP9SimeseVkvDHknda7is+/NCYD7118In+sA3KvsvguAJMP+I+7sC7kyzHFiJsrrZOiMiOyTGzagl8sFbjrcRNTqhya0k75sxPB0YkJYtzusGAwi8=
+	t=1777903089; cv=none; b=glZR7qGJMOjzRoe5uynMG+Gjvay3hKUc5J1jFuWQFAvvVescCo1naGqZTvw8AQVSsETAAp8woiMOzLCCI1SAK0HuSALw8yWNhS1dmb1mOrF3VjnpsD2+cn1c7MybiyyUC86g5vOFbN8aJoOBD5fBLY9X1Ctyzw6/ava2bu5OvIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903657; c=relaxed/simple;
-	bh=g3pB55vAtj5Cf55SUOZirH4IQaYDXbdmqVpexVFzBic=;
+	s=arc-20240116; t=1777903089; c=relaxed/simple;
+	bh=H8AxAdg7Ho++YAuk4nI8VxnbPOttUqqUHOCDhDGAyfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GNyQmPDqgHSk6sKh+T3C1WE7WNtDARL6bcT16jcS8NHL+dMKAbB4DU2TOw/5KxSfWhZyXoJP8fbh6CCeRQ7akjUYKqVvuriMq0RPuA1m76Vm+r1KFuxfmYvalkGs1dKgbBJBjaV65CYlYP9Q+Cxx0Y5y4ZjTsXVZ9mHGSYrP2iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSYOgXaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29EBBC2BCB8;
-	Mon,  4 May 2026 14:07:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RFzAsK7ZHyeh5TtObUZqpg3dM1YYVqvhXVLjEaCmA+XzhmT9q99+GyJiGoI07h6hHaXNRVEB2n+zrI2yy22vHHLrm0SIN+19R06nQA6oADwXJgaKkjG8qAfaMTwZMF5QoVITUFdwlaDrhWAuPSL1KiRimwYRZEbruSLauRWsfbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAlHR1E/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C799C2BCB8;
+	Mon,  4 May 2026 13:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903657;
-	bh=g3pB55vAtj5Cf55SUOZirH4IQaYDXbdmqVpexVFzBic=;
+	s=korg; t=1777903089;
+	bh=H8AxAdg7Ho++YAuk4nI8VxnbPOttUqqUHOCDhDGAyfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSYOgXazUbdQAxCwaemPZpHhuz1D6DrcgoBgDWnzVBiapX6NZNqlkhOzRVFw+5w/i
-	 /v+AXtklWcQIaXDN2fqDuQvs3WkxI7JV0eFeMcwhyUnLGmc6BgPmaHw8n2me/gQ8Xw
-	 UkZ+HStJXASGr63azCOoQ1C99HLyQ41Bx/AgNr9o=
+	b=KAlHR1E/vUoAOTXxWq5pyZ6swIpUnTAF0acsm5gofwXhGSJa1OgKi3uSaZaccPohu
+	 c7fZyovzq4v5tuekqqQuruo5GbpOiebabkE5UYhNf3ZZc6DoFUQZ91D/YF80ggC6bF
+	 uQ5drJtgVQCas4Wywl1BPfkUsxN9C+lf3nIO/dlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ayush Singh <ayushdevel1325@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Weigang He <geoffreyhe2@gmail.com>
-Subject: [PATCH 6.18 012/275] greybus: gb-beagleplay: fix sleep in atomic context in hdlc_tx_frames()
+	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 067/307] ALSA: aoa: i2sbus: clear stale prepared state
 Date: Mon,  4 May 2026 15:49:12 +0200
-Message-ID: <20260504135143.395721562@linuxfoundation.org>
+Message-ID: <20260504135145.336533207@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,216 +65,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 65FBF4BEBE9
+X-Rspamd-Queue-Id: D03F94BE61F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243349-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-243128-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[suse.de:query timed out];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weigang He <geoffreyhe2@gmail.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 6b526dca0966f2370835765019a54319b78fca8d upstream.
+commit 5ed060d5491597490fb53ec69da3edc4b1e8c165 upstream.
 
-hdlc_append() calls usleep_range() to wait for circular buffer space,
-but it is called with tx_producer_lock (a spinlock) held via
-hdlc_tx_frames() -> hdlc_append_tx_frame()/hdlc_append_tx_u8()/etc.
-Sleeping while holding a spinlock is illegal and can trigger
-"BUG: scheduling while atomic".
+The i2sbus PCM code uses pi->active to constrain the sibling stream to
+an already prepared duplex format and rate in i2sbus_pcm_open().
 
-Fix this by moving the buffer-space wait out of hdlc_append() and into
-hdlc_tx_frames(), before the spinlock is acquired.  The new flow:
+That state is set from i2sbus_pcm_prepare(), but the current code only
+clears it on close. As a result, the sibling stream can inherit stale
+constraints after the prepared state has been torn down.
 
- 1. Pre-calculate the worst-case encoded frame length.
- 2. Wait (with sleep) outside the lock until enough space is available,
-    kicking the TX consumer work to drain the buffer.
- 3. Acquire the spinlock, re-verify space, and write the entire frame
-    atomically.
+Clear pi->active when hw_params() or hw_free() tears down the prepared
+state, and set it again only after prepare succeeds.
 
-This ensures that sleeping only happens without any lock held, and
-that frames are either fully enqueued or not written at all.
+Replace the stale FIXME in the duplex constraint comment with a description
+of the current driver behavior: i2sbus still programs a single shared
+transport configuration for both directions, so mixed formats are not
+supported in duplex mode.
 
-This bug is found by CodeQL static analysis tool (interprocedural
-sleep-in-atomic query) and my code review.
-
-Fixes: ec558bbfea67 ("greybus: Add BeaglePlay Linux Driver")
-Cc: stable <stable@kernel.org>
-Cc: Ayush Singh <ayushdevel1325@gmail.com>
-Cc: Johan Hovold <johan@kernel.org>
-Cc: Alex Elder <elder@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
-Link: https://patch.msgid.link/20260330120801.981506-1-geoffreyhe2@gmail.com
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260331-aoa-i2sbus-clear-stale-active-v2-1-3764ae2889a1@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/greybus/gb-beagleplay.c |  107 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 90 insertions(+), 17 deletions(-)
+ sound/aoa/soundbus/i2sbus/pcm.c |   55 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 44 insertions(+), 11 deletions(-)
 
---- a/drivers/greybus/gb-beagleplay.c
-+++ b/drivers/greybus/gb-beagleplay.c
-@@ -242,30 +242,26 @@ static void hdlc_write(struct gb_beaglep
+--- a/sound/aoa/soundbus/i2sbus/pcm.c
++++ b/sound/aoa/soundbus/i2sbus/pcm.c
+@@ -165,17 +165,16 @@ static int i2sbus_pcm_open(struct i2sbus
+ 	 * currently in use (if any). */
+ 	hw->rate_min = 5512;
+ 	hw->rate_max = 192000;
+-	/* if the other stream is active, then we can only
+-	 * support what it is currently using.
+-	 * FIXME: I lied. This comment is wrong. We can support
+-	 * anything that works with the same serial format, ie.
+-	 * when recording 24 bit sound we can well play 16 bit
+-	 * sound at the same time iff using the same transfer mode.
++	/* If the other stream is already prepared, keep this stream
++	 * on the same duplex format and rate.
++	 *
++	 * i2sbus_pcm_prepare() still programs one shared transport
++	 * configuration for both directions, so mixed duplex formats
++	 * are not supported here.
+ 	 */
+ 	if (other->active) {
+-		/* FIXME: is this guaranteed by the alsa api? */
+ 		hw->formats &= pcm_format_to_bits(i2sdev->format);
+-		/* see above, restrict rates to the one we already have */
++		/* Restrict rates to the one already in use. */
+ 		hw->rate_min = i2sdev->rate;
+ 		hw->rate_max = i2sdev->rate;
+ 	}
+@@ -283,6 +282,23 @@ void i2sbus_wait_for_stop_both(struct i2
  }
+ #endif
  
- /**
-- * hdlc_append() - Queue HDLC data for sending.
-+ * hdlc_append() - Queue a single HDLC byte for sending.
-  * @bg: beagleplay greybus driver
-  * @value: hdlc byte to transmit
-  *
-- * Assumes that producer lock as been acquired.
-+ * Caller must hold tx_producer_lock and must have ensured sufficient
-+ * space in the circular buffer before calling (see hdlc_tx_frames()).
-  */
- static void hdlc_append(struct gb_beagleplay *bg, u8 value)
- {
--	int tail, head = bg->tx_circ_buf.head;
-+	int head = bg->tx_circ_buf.head;
-+	int tail = READ_ONCE(bg->tx_circ_buf.tail);
- 
--	while (true) {
--		tail = READ_ONCE(bg->tx_circ_buf.tail);
--
--		if (CIRC_SPACE(head, tail, TX_CIRC_BUF_SIZE) >= 1) {
--			bg->tx_circ_buf.buf[head] = value;
--
--			/* Finish producing HDLC byte */
--			smp_store_release(&bg->tx_circ_buf.head,
--					  (head + 1) & (TX_CIRC_BUF_SIZE - 1));
--			return;
--		}
--		dev_warn(&bg->sd->dev, "Tx circ buf full");
--		usleep_range(3000, 5000);
--	}
-+	lockdep_assert_held(&bg->tx_producer_lock);
-+	if (WARN_ON_ONCE(CIRC_SPACE(head, tail, TX_CIRC_BUF_SIZE) < 1))
-+		return;
-+
-+	bg->tx_circ_buf.buf[head] = value;
-+	/* Ensure buffer write is visible before advancing head. */
-+	smp_store_release(&bg->tx_circ_buf.head,
-+			  (head + 1) & (TX_CIRC_BUF_SIZE - 1));
- }
- 
- static void hdlc_append_escaped(struct gb_beagleplay *bg, u8 value)
-@@ -313,13 +309,90 @@ static void hdlc_transmit(struct work_st
- 	spin_unlock_bh(&bg->tx_consumer_lock);
- }
- 
-+/**
-+ * hdlc_encoded_length() - Calculate worst-case encoded length of an HDLC frame.
-+ * @payloads: array of payload buffers
-+ * @count: number of payloads
-+ *
-+ * Returns the maximum number of bytes needed in the circular buffer.
-+ */
-+static size_t hdlc_encoded_length(const struct hdlc_payload payloads[],
-+				  size_t count)
++static void i2sbus_pcm_clear_active(struct i2sbus_dev *i2sdev, int in)
 +{
-+	size_t i, payload_len = 0;
++	struct pcm_info *pi;
 +
-+	for (i = 0; i < count; i++)
-+		payload_len += payloads[i].len;
++	guard(mutex)(&i2sdev->lock);
 +
-+	/*
-+	 * Worst case: every data byte needs escaping (doubles in size).
-+	 * data bytes = address(1) + control(1) + payload + crc(2)
-+	 * framing    = opening flag(1) + closing flag(1)
-+	 */
-+	return 2 + (1 + 1 + payload_len + 2) * 2;
++	get_pcm_info(i2sdev, in, &pi, NULL);
++	pi->active = 0;
 +}
 +
-+#define HDLC_TX_BUF_WAIT_RETRIES	500
-+#define HDLC_TX_BUF_WAIT_US_MIN	3000
-+#define HDLC_TX_BUF_WAIT_US_MAX	5000
++static inline int i2sbus_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params, int in)
++{
++	i2sbus_pcm_clear_active(snd_pcm_substream_chip(substream), in);
++	return 0;
++}
 +
-+/**
-+ * hdlc_tx_frames() - Encode and queue an HDLC frame for transmission.
-+ * @bg: beagleplay greybus driver
-+ * @address: HDLC address field
-+ * @control: HDLC control field
-+ * @payloads: array of payload buffers
-+ * @count: number of payloads
-+ *
-+ * Sleeps outside the spinlock until enough circular-buffer space is
-+ * available, then verifies space under the lock and writes the entire
-+ * frame atomically.  Either a complete frame is enqueued or nothing is
-+ * written, avoiding both sleeping in atomic context and partial frames.
-+ */
- static void hdlc_tx_frames(struct gb_beagleplay *bg, u8 address, u8 control,
- 			   const struct hdlc_payload payloads[], size_t count)
+ static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
  {
-+	size_t needed = hdlc_encoded_length(payloads, count);
-+	int retries = HDLC_TX_BUF_WAIT_RETRIES;
- 	size_t i;
-+	int head, tail;
+ 	struct i2sbus_dev *i2sdev = snd_pcm_substream_chip(substream);
+@@ -291,14 +307,27 @@ static inline int i2sbus_hw_free(struct
+ 	get_pcm_info(i2sdev, in, &pi, NULL);
+ 	if (pi->dbdma_ring.stopping)
+ 		i2sbus_wait_for_stop(i2sdev, pi);
++	i2sbus_pcm_clear_active(i2sdev, in);
+ 	return 0;
+ }
+ 
++static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream,
++				     struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 0);
++}
 +
-+	/* Wait outside the lock for sufficient buffer space. */
-+	while (retries--) {
-+		/* Pairs with smp_store_release() in hdlc_append(). */
-+		head = smp_load_acquire(&bg->tx_circ_buf.head);
-+		tail = READ_ONCE(bg->tx_circ_buf.tail);
+ static int i2sbus_playback_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 0);
+ }
+ 
++static int i2sbus_record_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 1);
++}
 +
-+		if (CIRC_SPACE(head, tail, TX_CIRC_BUF_SIZE) >= needed)
-+			break;
-+
-+		/* Kick the consumer and sleep — no lock held. */
-+		schedule_work(&bg->tx_work);
-+		usleep_range(HDLC_TX_BUF_WAIT_US_MIN, HDLC_TX_BUF_WAIT_US_MAX);
-+	}
-+
-+	if (retries < 0) {
-+		dev_warn_ratelimited(&bg->sd->dev,
-+				     "Tx circ buf full, dropping frame\n");
-+		return;
+ static int i2sbus_record_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 1);
+@@ -335,7 +364,6 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		return -EINVAL;
+ 
+ 	runtime = pi->substream->runtime;
+-	pi->active = 1;
+ 	if (other->active &&
+ 	    ((i2sdev->format != runtime->format)
+ 	     || (i2sdev->rate != runtime->rate)))
+@@ -450,9 +478,11 @@ static int i2sbus_pcm_prepare(struct i2s
+ 
+ 	/* early exit if already programmed correctly */
+ 	/* not locking these is fine since we touch them only in this function */
+-	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
+-	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
++	if (in_le32(&i2sdev->intfregs->serial_format) == sfr &&
++	    in_le32(&i2sdev->intfregs->data_word_sizes) == dws) {
++		pi->active = 1;
+ 		return 0;
 +	}
  
- 	spin_lock(&bg->tx_producer_lock);
+ 	/* let's notify the codecs about clocks going away.
+ 	 * For now we only do mastering on the i2s cell... */
+@@ -490,6 +520,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		if (cii->codec->switch_clock)
+ 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
  
-+	/*
-+	 * Re-check under the lock.  Should not fail since
-+	 * tx_producer_lock serialises all producers and the
-+	 * consumer only frees space, but guard against it.
-+	 */
-+	head = bg->tx_circ_buf.head;
-+	tail = READ_ONCE(bg->tx_circ_buf.tail);
-+	if (unlikely(CIRC_SPACE(head, tail, TX_CIRC_BUF_SIZE) < needed)) {
-+		spin_unlock(&bg->tx_producer_lock);
-+		dev_warn_ratelimited(&bg->sd->dev,
-+				     "Tx circ buf space lost, dropping frame\n");
-+		return;
-+	}
-+
- 	hdlc_append_tx_frame(bg);
- 	hdlc_append_tx_u8(bg, address);
- 	hdlc_append_tx_u8(bg, control);
++	pi->active = 1;
+ 	return 0;
+ }
+ 
+@@ -734,6 +765,7 @@ static snd_pcm_uframes_t i2sbus_playback
+ static const struct snd_pcm_ops i2sbus_playback_ops = {
+ 	.open =		i2sbus_playback_open,
+ 	.close =	i2sbus_playback_close,
++	.hw_params =	i2sbus_playback_hw_params,
+ 	.hw_free =	i2sbus_playback_hw_free,
+ 	.prepare =	i2sbus_playback_prepare,
+ 	.trigger =	i2sbus_playback_trigger,
+@@ -802,6 +834,7 @@ static snd_pcm_uframes_t i2sbus_record_p
+ static const struct snd_pcm_ops i2sbus_record_ops = {
+ 	.open =		i2sbus_record_open,
+ 	.close =	i2sbus_record_close,
++	.hw_params =	i2sbus_record_hw_params,
+ 	.hw_free =	i2sbus_record_hw_free,
+ 	.prepare =	i2sbus_record_prepare,
+ 	.trigger =	i2sbus_record_trigger,
 
 
 
