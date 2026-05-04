@@ -1,154 +1,144 @@
-Return-Path: <stable+bounces-243832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IOVMP+w+Gk6zAIAu9opvQ
-	(envelope-from <stable+bounces-243832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:45:19 +0200
+	id wBtpGr2n+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687324BFF8B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:45:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6904BE801
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D77D930C8664
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:30:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F483303938F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B213DFC65;
-	Mon,  4 May 2026 14:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F523DE457;
+	Mon,  4 May 2026 13:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugC41+WJ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KOoBPuZ8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1572F3D905D;
-	Mon,  4 May 2026 14:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1668C3DDDD7
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 13:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904892; cv=none; b=mTjqvkxaSKIzbAhRAAlWQVn0scLZOmEno/Ej32K5BaSDCpOETs/A/Lr3K14vdkm9qFTdfVgNxxnepK60BPWouXl2hXgSz9CMUjJQ/sWyH7xIFyJS5bPlvs2zWUMRkUffF0GP3omfgXIxsqxGXwzlTg017TJfh2kAr4XKEgbt8DQ=
+	t=1777903144; cv=none; b=VA9WIm3rlTMHYMcq5vPwpULqwcsmjRbLKLWRCnEtQuV2tRGaXuExZ7zlftB6c56+WQuY78Feipo+aOoXDUM8NFPs+gmreAA2gw015t9/RJJX+z43RZe8fRw6bJpx8sahyYCj+2Shm85m+5Zfshz4xs9mVy8H2x9bD4GV8pIj87A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904892; c=relaxed/simple;
-	bh=ziyZo/TWZOxKY1zurWh0MhKk27EDy8x8KgqGTshtZv0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9ktFX7N2ifIGQsU1t0V9uC4mK3oODaVVEM0Awvy8JUs+HQcVckPMYtGRxkWUUxWriTO9uYKCPwRqJ0lyl+HWWRfpFzfPln7SlDAjBsjSFFHnC5/DgCRAGEb9jZpTMbJqbeHnb9dSdM4BHmzCVh/kjf0Xna8wAYtcmMTwLJ6ZrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugC41+WJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A241C2BCB8;
-	Mon,  4 May 2026 14:28:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904891;
-	bh=ziyZo/TWZOxKY1zurWh0MhKk27EDy8x8KgqGTshtZv0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugC41+WJMDh//mIkG96yzhERotik/4HfoA+CIkWCO/GIu6xi7w0n54z+iKg3+9l1e
-	 pK0YNzktio4zeq8Fgy754DRJBZEyz8xpp498dg53qGRHoUkqHgBig52dgtuWoAjtbh
-	 XURfbUpCc8I4H2K8KM/HM2AdzpRAeHcxX5uANuDk=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Kai Ma <k4729.23098@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.12 215/215] netfilter: reject zero shift in nft_bitwise
-Date: Mon,  4 May 2026 15:53:54 +0200
-Message-ID: <20260504135138.680871990@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1777903144; c=relaxed/simple;
+	bh=gOGLBCbpHD5jUNJprldmV5V8WZ1GfuJwuregfRGrSjE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Z6sbTGUD+9BL/1PJODuGX2KEDtTWRALxEyZheeAv0hxJgMlMMdtmVAnkJTwOG8Svil1/R1CIr9DQ2ZIz2Jb08YZ/zg8ao4O91MTR1kqFY4Z8NItWFO1AchVGKoU0t8DvHZ0QSpj58YAUCDFoYJer90ZADGJYyKGevmCK5y6b8PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KOoBPuZ8; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9A7974E42BB8;
+	Mon,  4 May 2026 13:58:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 69A915FD5F;
+	Mon,  4 May 2026 13:58:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B737E11AD2449;
+	Mon,  4 May 2026 15:58:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777903138; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LVrH+hRa8k60712RPQs7XAU8jqIwLgDkBraOs0In2Cc=;
+	b=KOoBPuZ8iPsqVJviZXRPur58W4+JFX2f+4e1Yw2f62tBEjd3M/aDEw1paPJy7ALa2H3qiA
+	DGBZfFGDu+PCKMTqLGRCgqsBPtOg1zI1apECUFvNwyW230zpPrzczAmwnBusuwnnuy013J
+	DEqVNFYwkAK1wsTRcLzbxR8X1ApVq6zAPansft6cn28IfpDvJAssHkX1K4JAI8Q1rJyH43
+	/dQjB7cGMcrekjEwPSLABk+OXXQrbsvrkLjNMzgcHmqj5o+bwQZl9MFV8+Lyy/P48PmpzD
+	eQFYHcXKEOasY8/e7LJtXeMmbBDmJxda19p/PwuSTJtn6SjuYp6cKX9CtVUGxg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Vastargazing <vebohr@gmail.com>
+Cc: linux-kernel@vger.kernel.org,  stable@vger.kernel.org,  Richard
+ Weinberger <richard@nod.at>,  Vignesh Raghavendra <vigneshr@ti.com>,
+  David Woodhouse <dwmw2@infradead.org>,  Lennert Buytenhek
+ <buytenh@wantstofly.org>,  linux-mtd@lists.infradead.org
+Subject: Re: [PATCH 3/5] mtd: maps: physmap: fix reference leak on failed
+ device registration
+In-Reply-To: <6717e0b2a6244ee4e691dba03eb8c790c202e89e.1777889235.git.vebohr@gmail.com>
+	(Vastargazing's message of "Mon, 4 May 2026 13:08:45 +0300")
+References: <cover.1777889235.git.vebohr@gmail.com>
+	<6717e0b2a6244ee4e691dba03eb8c790c202e89e.1777889235.git.vebohr@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Mon, 04 May 2026 15:58:56 +0200
+Message-ID: <87a4ufs2cf.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 687324BFF8B
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: CD6904BE801
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-243832-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243150-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,suse.de,netfilter.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+On 04/05/2026 at 13:08:45 +03, Vastargazing <vebohr@gmail.com> wrote:
 
-------------------
+> When platform_device_register() fails in physmap_init(), the embedded
+> struct device has already been initialized by device_initialize() inside
+> platform_device_register(). The error path unregisters the driver but
+> returns without dropping the device reference:
+>
+>   physmap_init()
+>     -> platform_device_register(&physmap_flash)
+>        -> device_initialize(&physmap_flash.dev)   /* kref =3D 1 */
+>        -> platform_device_add(&physmap_flash)     /* fails */
+>     <- platform_driver_unregister() called, but kref still 1
+>
+> Per platform_device_register() kernel-doc:
+>
+>   NOTE: _Never_ directly free @pdev after calling this function, even if
+>   it returned an error! Always use platform_device_put() to give up the
+>   reference initialised in this function instead.
+>
+> Fix this by calling platform_device_put() before unregistering the driver.
+>
+> Fixes: 73566edf9b91 ("[MTD] Convert physmap to platform driver")
+> Cc: stable@vger.kernel.org
+> Assisted-by: GitHub Copilot (Claude Sonnet 4.5)
+> Signed-off-by: Vastargazing <vebohr@gmail.com>
 
-From: Kai Ma <k4729.23098@gmail.com>
+Somehow b4 applied another patch from that series, I'm not sure why. I
+just dropped it. Please resend this patch alone.
 
-commit fe11e5c40817b84abaa5d83bfb6586d8412bfd07 upstream.
+Also, your SoB line seems to be incorrect, we need a proper name, please
+have a loot at the DCO.
 
-Reject zero shift operands for nft_bitwise left and right shift
-expressions during initialization.
-
-The carry propagation logic computes the carry from the adjacent 32-bit
-word using BITS_PER_TYPE(u32) - shift. A zero shift operand turns this
-into a 32-bit shift, which is undefined behaviour.
-
-Reject zero shift operands in the control plane, alongside the existing
-check for values greater than or equal to 32, so malformed rules never
-reach the packet path.
-
-Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Kai Ma <k4729.23098@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/netfilter/nft_bitwise.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -149,7 +149,8 @@ static int nft_bitwise_init_shift(struct
- 	if (err < 0)
- 		return err;
- 
--	if (priv->data.data[0] >= BITS_PER_TYPE(u32)) {
-+	if (!priv->data.data[0] ||
-+	    priv->data.data[0] >= BITS_PER_TYPE(u32)) {
- 		nft_data_release(&priv->data, desc.type);
- 		return -EINVAL;
- 	}
-
-
+Thanks,
+Miqu=C3=A8l
 
