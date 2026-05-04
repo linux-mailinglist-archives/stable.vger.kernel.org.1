@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-243591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFUYNKeq+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:15 +0200
+	id ELXWCe+r+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5912B4BF07F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDDB4BF45A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B6F23019837
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2354F30D532F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C503DE452;
-	Mon,  4 May 2026 14:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD0B3D8129;
+	Mon,  4 May 2026 14:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpaNX2BN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGHFJW+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A943DE43C;
-	Mon,  4 May 2026 14:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFD63D9029;
+	Mon,  4 May 2026 14:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904278; cv=none; b=C3oLqd/QaGZmp8kqEz4hqE9Af0dS3AuR6xyLP0sEuFxWDIzrVapmvEBa+kfp0N9FMY7qLAXkiP2/TRr/yOPlLRh84pC4HIJK+hBIzZwr88Utzt2BpCArBKKUQhiAP/2MNo5zVoeeGylp/Y6pv6lZJSmfjF+NglN0X+FEwxdJ4TY=
+	t=1777903629; cv=none; b=egG/GQnv/dvTbmCB846feqRQnJsmEjGqN0WEnkgpaDMHf7xqSZk8dhGQK9Lajljqw2OtC95ydFS49ZTiRkC2Ah2jCJw+LrKnvRDjJ/JsrmpHPgR2xzjXdkDUILUN7bx6g8FSht4NPM4XpZf+0VV0u2PEn/zzb3B57qbQuUKfKac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904278; c=relaxed/simple;
-	bh=Tfk/xu+xV+GKHLXj3/rzgGA6Ggk9Tju3F4ADY9QaJnM=;
+	s=arc-20240116; t=1777903629; c=relaxed/simple;
+	bh=x2Cdv+aEHfgAARAZrzw6yRIL7QUtQbEP02Qiyiw4Opc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5wxJMtKx7pkCGV2uWNE4+JmZp0PMopd3C7h02aVjJeqe/PC4fQ1aY8pi2tbAqmcQwsWco3tPT8Jb4Exf3+NxAiggTtwLkJl7kWxdyIANg8KHVfQIM5mNrKHteoKTQomy4h4OaZf+6WB8w9EcQOzWDNj2R2CMmusMnOqP18BVKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpaNX2BN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A037C2BCB8;
-	Mon,  4 May 2026 14:17:57 +0000 (UTC)
+	 MIME-Version; b=DKkrKXkRTKmyBoDXSYYyjarFvADCcOjftkdGsLAZNTfAfx0AqReJQF7Qfb7Mogd/uWPthTBuFTdbmPXxGKhzsg4vWNQi7kJHwv7s2XLdY1xMprKHffxG1MqGCZiznhrscsVpfw34FByzhwyGQHqgTP0AfrFkoaeni2NAhYA9vag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGHFJW+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7302C2BCB8;
+	Mon,  4 May 2026 14:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904277;
-	bh=Tfk/xu+xV+GKHLXj3/rzgGA6Ggk9Tju3F4ADY9QaJnM=;
+	s=korg; t=1777903629;
+	bh=x2Cdv+aEHfgAARAZrzw6yRIL7QUtQbEP02Qiyiw4Opc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IpaNX2BNE862OdAdulnNtb3klRYykvsJGsrvipV6qCeKpzlAWa+7dqMuYND1Un4Kz
-	 vvpHZ/PNi6RNwnPgcWZ6fW4PQdcBWn27xTLvpeQGkQEyojbaUwQb0KCOYklSDqbpUh
-	 Y0P+oCTwmpdTppzqgzjnRGXRw9h0JJxc6uVgMQLo=
+	b=HGHFJW+Mj4hRUzxywL/s1egjca0izwGUxeaIj+fHFtMsd41psbTSf0nI7dNzhzgDZ
+	 8PiizEGdc4sLawFuNpLT0nhIw78c1Mfqy6B03xSBYiO0OstX+5g8zSbL7G969FoIrW
+	 rJsgMR0qPfM3p8qzhsHXOn62TP163K6cNBLp/8sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronak Raheja <ronak.raheja@oss.qualcomm.com>,
-	Wesley Cheng <wesley.cheng@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 252/275] phy: qcom: m31-eusb2: Update init sequence to set PHY_ENABLE
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Kai Ma <k4729.23098@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 7.0 307/307] netfilter: reject zero shift in nft_bitwise
 Date: Mon,  4 May 2026 15:53:12 +0200
-Message-ID: <20260504135152.400163481@linuxfoundation.org>
+Message-ID: <20260504135154.321404125@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +70,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5912B4BF07F
+X-Rspamd-Queue-Id: 7BDDB4BF45A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243591-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-243338-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,suse.de,netfilter.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,qualcomm.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronak Raheja <ronak.raheja@oss.qualcomm.com>
+From: Kai Ma <k4729.23098@gmail.com>
 
-[ Upstream commit 7044ed6749c8a7d49e67b2f07f42da2f29d26be6 ]
+commit fe11e5c40817b84abaa5d83bfb6586d8412bfd07 upstream.
 
-Certain platforms may not have the PHY_ENABLE bit set on power on reset.
-Update the current sequence to explicitly write to enable the PHY_ENABLE
-bit.  This ensures that regardless of the platform, the PHY is properly
-enabled.
+Reject zero shift operands for nft_bitwise left and right shift
+expressions during initialization.
 
-Signed-off-by: Ronak Raheja <ronak.raheja@oss.qualcomm.com>
-Signed-off-by: Wesley Cheng <wesley.cheng@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20250920032158.242725-1-wesley.cheng@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 520a98bdf7ae ("phy: qcom: m31-eusb2: clear PLL_EN during init")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The carry propagation logic computes the carry from the adjacent 32-bit
+word using BITS_PER_TYPE(u32) - shift. A zero shift operand turns this
+into a 32-bit shift, which is undefined behaviour.
+
+Reject zero shift operands in the control plane, alongside the existing
+check for values greater than or equal to 32, so malformed rules never
+reach the packet path.
+
+Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Kai Ma <k4729.23098@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-m31-eusb2.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nft_bitwise.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-m31-eusb2.c
-@@ -25,6 +25,7 @@
- #define POR				BIT(1)
+--- a/net/netfilter/nft_bitwise.c
++++ b/net/netfilter/nft_bitwise.c
+@@ -196,7 +196,8 @@ static int nft_bitwise_init_shift(struct
+ 	if (err < 0)
+ 		return err;
  
- #define USB_PHY_HS_PHY_CTRL_COMMON0	(0x54)
-+#define PHY_ENABLE			BIT(0)
- #define SIDDQ_SEL			BIT(1)
- #define SIDDQ				BIT(2)
- #define FSEL				GENMASK(6, 4)
-@@ -81,6 +82,7 @@ struct m31_eusb2_priv_data {
- static const struct m31_phy_tbl_entry m31_eusb2_setup_tbl[] = {
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG0, UTMI_PHY_CMN_CTRL_OVERRIDE_EN, 1),
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_UTMI_CTRL5, POR, 1),
-+	M31_EUSB_PHY_INIT_CFG(USB_PHY_HS_PHY_CTRL_COMMON0, PHY_ENABLE, 1),
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_CFG1, PLL_EN, 1),
- 	M31_EUSB_PHY_INIT_CFG(USB_PHY_FSEL_SEL, FSEL_SEL, 1),
- };
+-	if (priv->data.data[0] >= BITS_PER_TYPE(u32)) {
++	if (!priv->data.data[0] ||
++	    priv->data.data[0] >= BITS_PER_TYPE(u32)) {
+ 		nft_data_release(&priv->data, desc.type);
+ 		return -EINVAL;
+ 	}
 
 
 
