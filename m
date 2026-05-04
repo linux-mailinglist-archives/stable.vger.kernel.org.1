@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIRNOx+o+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:27 +0200
+	id 0ALMLh+r+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A384BE8D0
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8D14BF1C6
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8423D303D70B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 871FC300BD57
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6B23DE42F;
-	Mon,  4 May 2026 13:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E8B3D3334;
+	Mon,  4 May 2026 14:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kp2Ru+vM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrBpOex+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC6D3DDDDA;
-	Mon,  4 May 2026 13:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F711ADC83;
+	Mon,  4 May 2026 14:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903180; cv=none; b=qT28jlkvEoyk4aLD6E3/Hl2bUCR07PHEhwkTye2V1K45YP+SflZN0DuSmRZBmqLQtOD0LlceqPJxeM774KStCjB2BrVmQTOSFwhyz/7d3NgcSQg5Zk6Doe8luuxgKIf/UCsA5SjL2RF6/keNP4h/AU+UMvAq7GcAtBszRFKLlPI=
+	t=1777903755; cv=none; b=NLcXqyRTbTWEkiWRf+MHXyVIQc13+5TNPX1zEH77UxJyVqa7B3Hm3gCQnMJz0jy7qcfm6/UxBnwVTysaeV65NYlLM6Mn+ACE9eyNAkGrMADHfsH3y23m3e9Jpd8palfqtnaqQCYXncBKYRHvC7JlIR4carLow40J5TYivXewvGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903180; c=relaxed/simple;
-	bh=JK4slfr9CgWK5baufDJET563mICcSabfdIPQy5tT0rk=;
+	s=arc-20240116; t=1777903755; c=relaxed/simple;
+	bh=zZg0iAf4Xe56S6A0ttXnkZGnCyeRiqoJsJ1N0E+tqvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NayaK7OpiOE6nwDy+zbAgEmaFZs52BTxCyjTsz8DKK0e72TY6ugr5W1kO7Sw8GYh/dRyIWRJ47CsAaiTVNeVshWH8f7AdEJjAPZVtRlkDjeO5dwXyKw0PL9nNouETugtaESjmJl6RUmBsoh9Dp6ktJXqB7j8UhIxYwrxPwMszZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kp2Ru+vM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BDDC2BCB8;
-	Mon,  4 May 2026 13:59:39 +0000 (UTC)
+	 MIME-Version; b=RsTd8KR3s+iDLu4pN1s38Y7I/XWZu+ENdfrOjTJ0VSFMdBGxJoG4X51RLZqlaU1pNi1NmwU75fU6waKWzN88wSrC49wRGpKNE6bfNPxlJaBuNI8Wum9jrcn+2qjTZgEOGJWEoHxyszWk/+1m98Tz1KS9mzYRPuHhO5DhtQ2/IHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrBpOex+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD89C2BCB8;
+	Mon,  4 May 2026 14:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903179;
-	bh=JK4slfr9CgWK5baufDJET563mICcSabfdIPQy5tT0rk=;
+	s=korg; t=1777903755;
+	bh=zZg0iAf4Xe56S6A0ttXnkZGnCyeRiqoJsJ1N0E+tqvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kp2Ru+vMMr1XJvwxFKPbt1Al7ZuyK5VD/C3+ZMGSXEGDhII0sxFMs1fc1m2ufpaRR
-	 JJ5aYb8xQA4We745b5yc1TeEAaflnmK5l27wvK2uxa/3kkL81oUX/QN9sePgL4clXg
-	 bp41HuI5OMR2taBxZu8giD888tm0jneYZAs3Lq1g=
+	b=FrBpOex+YFTV60Stw1d2tV8UOsfYnH8PkAYbYou84Lb+7s0u2iioPKJzyWs/VB7ge
+	 s3EB6brTJtl5pTfx1+rPOcgnoCM0ZcpXqyr72lHRD1xmYmJV8G53mbHvnGpjFT4qaN
+	 I0pXBck5IpNK0NvICSCnle00BTrOtjN+FHbFxoYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 7.0 102/307] selftests/landlock: Fix snprintf truncation checks in audit helpers
-Date: Mon,  4 May 2026 15:49:47 +0200
-Message-ID: <20260504135146.649630049@linuxfoundation.org>
+	Ziqing Chen <chenziqing@xiaomi.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 048/275] ALSA: control: Validate buf_len before strnlen() in snd_ctl_elem_init_enum_names()
+Date: Mon,  4 May 2026 15:49:48 +0200
+Message-ID: <20260504135144.723152413@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 68A384BE8D0
+X-Rspamd-Queue-Id: CC8D14BF1C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243164-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,digikod.net];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243388-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,digikod.net:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Ziqing Chen <chenziqing@xiaomi.com>
 
-commit b566f7a4f0e4f15f78f2e5fac273fa954991e03a upstream.
+commit e0da8a8cac74f4b9f577979d131f0d2b88a84487 upstream.
 
-snprintf() returns the number of characters that would have been
-written, excluding the terminating NUL byte.  When the output is
-truncated, this return value equals or exceeds the buffer size.  Fix
-matches_log_domain_allocated() and matches_log_domain_deallocated() to
-detect truncation with ">=" instead of ">".
+snd_ctl_elem_init_enum_names() advances pointer p through the names
+buffer while decrementing buf_len. If buf_len reaches zero but items
+remain, the next iteration calls strnlen(p, 0).
 
-Cc: Günther Noack <gnoack@google.com>
+While strnlen(p, 0) returns 0 and would hit the existing name_len == 0
+error path, CONFIG_FORTIFY_SOURCE's fortified strnlen() first checks
+maxlen against __builtin_dynamic_object_size(). When Clang loses track
+of p's object size inside the loop, this triggers a BRK exception panic
+before the return value is examined.
+
+Add a buf_len == 0 guard at the loop entry to prevent calling fortified
+strnlen() on an exhausted buffer.
+
+Found by kernel fuzz testing through Xiaomi Smartphone.
+
+Fixes: 8d448162bda5 ("ALSA: control: add support for ENUMERATED user space controls")
 Cc: stable@vger.kernel.org
-Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20260402192608.1458252-2-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Ziqing Chen <chenziqing@xiaomi.com>
+Link: https://patch.msgid.link/20260414132437.261304-1-chenziqing@xiaomi.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/landlock/audit.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/core/control.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/tools/testing/selftests/landlock/audit.h
-+++ b/tools/testing/selftests/landlock/audit.h
-@@ -309,7 +309,7 @@ static int __maybe_unused matches_log_do
- 
- 	log_match_len =
- 		snprintf(log_match, sizeof(log_match), log_template, pid);
--	if (log_match_len > sizeof(log_match))
-+	if (log_match_len >= sizeof(log_match))
- 		return -E2BIG;
- 
- 	return audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
-@@ -326,7 +326,7 @@ static int __maybe_unused matches_log_do
- 
- 	log_match_len = snprintf(log_match, sizeof(log_match), log_template,
- 				 num_denials);
--	if (log_match_len > sizeof(log_match))
-+	if (log_match_len >= sizeof(log_match))
- 		return -E2BIG;
- 
- 	return audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1574,6 +1574,10 @@ static int snd_ctl_elem_init_enum_names(
+ 	/* check that there are enough valid names */
+ 	p = names;
+ 	for (i = 0; i < ue->info.value.enumerated.items; ++i) {
++		if (buf_len == 0) {
++			kvfree(names);
++			return -EINVAL;
++		}
+ 		name_len = strnlen(p, buf_len);
+ 		if (name_len == 0 || name_len >= 64 || name_len == buf_len) {
+ 			kvfree(names);
 
 
 
