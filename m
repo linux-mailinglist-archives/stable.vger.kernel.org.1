@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-243925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UH7SE20h+Wmz5wIAu9opvQ
-	(envelope-from <stable+bounces-243925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:45:01 +0200
+	id COOiHMsh+Wmz5wIAu9opvQ
+	(envelope-from <stable+bounces-243926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:46:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02964C4865
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 103C64C48B2
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00A30305431E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:42:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB41A30733E9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F2E388E76;
-	Mon,  4 May 2026 22:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A19738CFFA;
+	Mon,  4 May 2026 22:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TVj5872W"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pNCJCJOs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C614C3890E0
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 22:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8C837FF6D
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 22:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777934561; cv=none; b=V6gOmMJCwqtsK78DN1Bf+USIWHcdFL/6ygRSTCKagPst05IHAsdMYgpdejxpx4w+aUWyP1kIps0bjdPyeg9/+zkNlD4TelwHUGQGn2mLVnx+7ZfjwmZW5HYVLvIpLmXRuZjsm139qCLLWUxp36p1SpetvPYA49j+AKlxOc3MkNU=
+	t=1777934564; cv=none; b=jK+Po7avkMRpQ7FxoERD6jNJcgowI1Sa1gt1trF6EY2odPQTwTKXd5LXReTBKHtVxjTf3lBMvRNHFp4ZqyxBDjCCEkit8pAJuX3howh/issHhb7DOyAvHxFmRBGxSdyYZ29/l2VnW+dM8YGQ89PO2wg/sCQs6tUB7uWM15qwq68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777934561; c=relaxed/simple;
-	bh=/1xQMlHTpDPPKdx9q0rSMVLO6gl3M86K+ccnqA5gdNI=;
+	s=arc-20240116; t=1777934564; c=relaxed/simple;
+	bh=CUOCTJmVRKCTLlMSZJdBYm2KCJJFvArAmComUQyKG2A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bD5MDHSe3CqSaHIYoUXTHGBlNPgMTaGcF9ohmECoi2YwJe4t6jKypG/A81PhzpvF+9S4jxLtutIgLUyalx02P5Q7R9GVGVxU5qwQwSwd+PD7fL6yX7QGeKtT3yAgHeMg4x6/3h9fgFOyrtv+Ig9tDQj1Ts+Eafm49JXVYg501cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TVj5872W; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=OvVj3vUJW/ZM4blusG7z+InA5JtXZWXP4TGiu1TenPWo98pRnq1nx0e1+YedHp8LoHsfKHgdmd7HoW9bm5aIzNTHmEpFEvotLjWFdvKq9yK1YNAM0Rzx5kS07OZJaSvxg1gaRYhU+drt9lZm+5hJfLnSS9+NfjgO27kpqMONaKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pNCJCJOs; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35fc22424d9so11316406a91.2
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 15:42:39 -0700 (PDT)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c7985752be1so1622715a12.0
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 15:42:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777934559; x=1778539359; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777934562; x=1778539362; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ua9DP8bxNVeP3OMgw66O02tdFbDSKg07QfaNr/ggdeQ=;
-        b=TVj5872WcGbO5rkLygx+jdlTxLbs57qu3ge1RP8rRNjL09FJ1iCy1SRhb9gnfzMrzt
-         bLLldOz6G3IFUpweOt/4QDTrU1V0LjluE3InA5sYuXSurrBpuo7ucviKjuVbzSfe7Yyj
-         /srHsjmgOp4TLiunQBvEBBsX3DGMp5LgwKVxcJnpR0qHlpdCGlb8y5QSkPVKIqSPMb5H
-         cGC/YPkxmWAkLs2axHIWk2t3nwB4kOygde++rosnAUlbgD72FYNTBw9cx5ktpRzRwJ7q
-         ikIcf4QduCrz2zrDUUnXqUH688hsUzH6xb3QjgujRW33tlHXA6dPzYUjxvw+k6T/j43B
-         kXYg==
+        bh=WPDlks8S40wU9ZB94GBJYrEHqJjoYpfybndF76KRr9U=;
+        b=pNCJCJOswO7K0JMYh1I3F/+isDgwdbxdEw4UIMAmGDvBvyz28YtVXt7eyd5EW5JvUm
+         Puju2oC7k7acSosIAEADK+iQq6aw+vpi/dgjtIxltMHLajPeIR29ZlWyumfp2UVn/i+N
+         ECet1OB++24jQSDQKV23E0KetxYMuBaAq/JnjJXpB+js6l7t/tIF+HUJIf0OKNtmwN0H
+         CMlTJOQjil+3a+wUNSVwpXjvDbXriag2MjW2CRj2989wJJxxL8GsXK4fcYMIQ141goSB
+         QxMoONNha3nCdZBy9QtC2HumKJtyEdhNAnESZ2ipqoqgMljGQHDGiKPn0bBt0zNcMRke
+         jRxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777934559; x=1778539359;
+        d=1e100.net; s=20251104; t=1777934562; x=1778539362;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ua9DP8bxNVeP3OMgw66O02tdFbDSKg07QfaNr/ggdeQ=;
-        b=qWrxXmeF/LCTpbNzdmw7RMa7InDM7exG7obkfDjNYquKRUWaJVFrOkynA3wHAuP4To
-         NKCPM1MEJbhpowJ3Rp6LeYBLbF6joEdwEGYUFSb7jhFtI3WTXu6pO25dJaJJJvhfO7XX
-         3ECn2EsH5Ar1AGX9SbkVDgmRAXSezhXQMU+N8jaYGgRIzKQcOmgLGujbwZ/+GYRfXPxS
-         s6Md5m+RsPtc4FD9lVsOabC6VVld6rpY5EDMptUVJsJeBg1CMsLNeZmBOcye79NSzF7U
-         iFuNiyFv57rJGU3g052EvV7AXqxE8XbMFjaLSunVC+l81n6TS8Eg+EE2z55QlJkyAIiG
-         rU6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ92dHjr5Knjw+4dFcsRkBcrqZHvNpp1ts6PdXo2URiNjZ/qNN5a37TqDTKZlxLihE8ZsEhXqeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHRVFGwoS+iOhj48AnluGPhVihgSIRJ3/SvMe2//l41l1MTl7T
-	PbtqYvMCqb2/T+xSdFFedVwfmYH+RDzmgQrKVDgL39GGy8mJi2GnZfMY4oL9wb6CGWYTQ5UDN7D
-	MDavdwLwDftmGiy5IKXH13w==
-X-Received: from pgvh2.prod.google.com ([2002:a65:6382:0:b0:c79:81df:1175])
+        bh=WPDlks8S40wU9ZB94GBJYrEHqJjoYpfybndF76KRr9U=;
+        b=O8nv+wh9MM/SlCi6ZJnHCWlFrZaEk87MZWoK7hSm7oYobiyExJ4L7GRhDKnRdV+bAi
+         +z4EXTDEFcp03NZ5KqzXZ94lu6ZsXvB75YLzeXcKHSzURB6GzBrHqtaqTbXIHbUxycAT
+         Fg5IryKf/50xrGn2CBPr9nFbH0UO2M8b/Ai6unJYFP6Ev16KryCBq0898ivcnj6+dh6P
+         o90X7D2mzxRz5LlbnTrk4HEdYUC5J8L1gKCUuzz80HPyXgApY1lI6bEMgbEGqpUxyqBl
+         UVHxyTZkyGApHkb3uv/G0N7YjglE3qAaLR1u76ZmkCSAireulcUfqrmWabfcBO6gHr1p
+         3FIA==
+X-Forwarded-Encrypted: i=1; AFNElJ82M62Ezi2PYDfaztIZdZAZJ1oZQoDRItnefyvdVXd2kjem6ctOceE8522/oDay/YERCv7HQbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8784ObEnJNK1V+7Ek3JgigKdH5yphGI8BXv2UpWHyz5HrHkm7
+	ot1nhBy7PEsqFB0LKoDRF2+8DxUAEhTYfKcVIRFBKs95vd7tcfAFll37KwNJc00KgH8RsNv2iSw
+	nkNKxPMnD60e95hNWttKESQ==
+X-Received: from pgbcp9.prod.google.com ([2002:a05:6a02:4009:b0:c79:8315:4734])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:7e86:b0:3aa:3e4c:9182 with SMTP id adf61e73a8af0-3aa3e4c9385mr220269637.7.1777934558985;
- Mon, 04 May 2026 15:42:38 -0700 (PDT)
-Date: Mon,  4 May 2026 22:42:09 +0000
+ 2002:a05:6a20:918a:b0:3a2:e0d3:37d1 with SMTP id adf61e73a8af0-3a7f1eb20dbmr12044574637.41.1777934561428;
+ Mon, 04 May 2026 15:42:41 -0700 (PDT)
+Date: Mon,  4 May 2026 22:42:10 +0000
 In-Reply-To: <20260504224213.1049426-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260504224213.1049426-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260504224213.1049426-3-jthoughton@google.com>
-Subject: [PATCH 2/5] KVM: loongarch: Grab MMU lock in kvm_arch_flush_shadow_all()
+Message-ID: <20260504224213.1049426-4-jthoughton@google.com>
+Subject: [PATCH 3/5] KVM: mips: Grab MMU lock in kvm_arch_flush_shadow_all()
 From: James Houghton <jthoughton@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
@@ -91,7 +91,7 @@ Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly 
 	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: F02964C4865
+X-Rspamd-Queue-Id: 103C64C48B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -111,7 +111,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-243925-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243926-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -122,32 +122,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-kvm_arch_flush_shadow_all() may be called concurrently on the same
-`kvm`. This could at least result in accounting mistakes (e.g.
-underflows on `kvm->stat.*pages`).
+kvm_mips_flush_gpa_pt() expects the MMU lock to be held; it is not in
+this path.
+
+This can lead to a double-free of page table entries if
+kvm_arch_flush_shadow_all() is called twice on the same `kvm`
+concurrently; such a scenario is possible.
 
 Cc: stable@vger.kernel.org
-Fixes: 752e2cd7b4fb ("LoongArch: KVM: Implement kvm mmu operations")
+Fixes: b62091108633 ("KVM: MIPS: Implement kvm_arch_flush_shadow_all/memslot")
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
 Note: This is compile-tested only!
 
- arch/loongarch/kvm/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kvm/mips.c | 2 ++
+ arch/mips/kvm/mmu.c  | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
-index a7fa458e3360..5dbce9b18e1c 100644
---- a/arch/loongarch/kvm/mmu.c
-+++ b/arch/loongarch/kvm/mmu.c
-@@ -486,7 +486,7 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index a53abbba43ea..463b6c4aa62c 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -180,6 +180,8 @@ long kvm_arch_dev_ioctl(struct file *filp, unsigned int ioctl,
  
  void kvm_arch_flush_shadow_all(struct kvm *kvm)
  {
--	kvm_flush_range(kvm, 0, kvm->arch.gpa_size >> PAGE_SHIFT, 0);
-+	kvm_flush_range(kvm, 0, kvm->arch.gpa_size >> PAGE_SHIFT, 1);
- }
- 
- void kvm_arch_flush_shadow_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
++	guard(spinlock)(&kvm->mmu_lock);
++
+ 	/* Flush whole GPA */
+ 	kvm_mips_flush_gpa_pt(kvm, 0, ~0);
+ 	kvm_flush_remote_tlbs(kvm);
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index d2c3b6b41f18..5045833f8116 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -269,6 +269,8 @@ static bool kvm_mips_flush_gpa_pgd(pgd_t *pgd, unsigned long start_gpa,
+  */
+ bool kvm_mips_flush_gpa_pt(struct kvm *kvm, gfn_t start_gfn, gfn_t end_gfn)
+ {
++	lockdep_assert_held(&kvm->mmu_lock);
++
+ 	return kvm_mips_flush_gpa_pgd(kvm->arch.gpa_mm.pgd,
+ 				      start_gfn << PAGE_SHIFT,
+ 				      end_gfn << PAGE_SHIFT);
 -- 
 2.54.0.545.g6539524ca2-goog
 
