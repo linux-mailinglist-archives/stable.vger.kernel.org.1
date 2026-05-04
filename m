@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCc4G7Or+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243668-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:43 +0200
+	id 0MArDIWn+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC90B4BF3B1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E152F4BE784
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19160302770B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E92723037BC4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF003D8129;
-	Mon,  4 May 2026 14:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335733DE42E;
+	Mon,  4 May 2026 14:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMK5cerv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpHhqEsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BCE1A6827;
-	Mon,  4 May 2026 14:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F643DC4D5;
+	Mon,  4 May 2026 14:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904473; cv=none; b=OuWjLMGM1hkFkIlGWv5ndzgMDqxbPPcTSK+6prcQfPE5EbeNA3e8M3MAm8oh/V1vP4tgEYrVm26jBLaXCcP1NxpXDDi03fBaHlzpQH/NEcL1OcWT4TFBtVD1A0P1jnpd8o3FJO814sKgboq2VN/oAXuEpDNpVK2nuWoFI9OAAzM=
+	t=1777903313; cv=none; b=r8OUOWoEXp2ppD8iAFNDECza1l3D7V2seEX2fDbnAceTh8Nka0rB6ImD8vhuMKNjg2Nw5Ck3RUhtbBvEGNGVvzf8Vh9PaW8oAEfkXjABJ9xSGSQJ1OczMx+YB7h2x8MIId8BCavy5AN1fLGRT66VyNxoSsqcvxvyaaMQBjEldaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904473; c=relaxed/simple;
-	bh=DNclH63PdvnnPAsBIuySCA+t9S4IpKZYZZo/IAetR1c=;
+	s=arc-20240116; t=1777903313; c=relaxed/simple;
+	bh=LLXAFMSsCGwsQq2VAPAI5jwdBQ6r0im3gz4bFx1RBW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2oLW0v2K33yuthVyK4EOWX+jKUeSrk/cpKrWUVxd4srWy2VRQ6yF0vEtPYZuDjNDCfZvO3Mq45zlftkBQ9WgM0gWlqaKUjftVrW79mLhSP8V/mKHfec+aMFe/obFrSAmLfhPqax/EgjGrcZTB5cRL3Gzm0VCV4MkzyyKVoCzUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMK5cerv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A02AC2BCB8;
-	Mon,  4 May 2026 14:21:13 +0000 (UTC)
+	 MIME-Version; b=VDrjDBIQGdpQMDdI7FDgJK+jVX7ZSsHH5gfCAA0xz/pbS9VrlG+rQPZ4D9PanaXVc9DwdJzCaT6fPhd0i6Xt/9KgcWORzo6McFIDFg1s0k4ob7PO76gkGS0HzJmgQBAtAOrP5IxaKvnooSPzLglocf4oK+orpZrufyMaKWC1ILw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpHhqEsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FDFC2BCB8;
+	Mon,  4 May 2026 14:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904473;
-	bh=DNclH63PdvnnPAsBIuySCA+t9S4IpKZYZZo/IAetR1c=;
+	s=korg; t=1777903312;
+	bh=LLXAFMSsCGwsQq2VAPAI5jwdBQ6r0im3gz4bFx1RBW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMK5cervgwH0BRY8G6cGchd7ETWbh8V2KcWVWLMGk9OfNwhi+7dkdqZWhXtho58tG
-	 YbFG46G7IsCbufZKYrHU3qWrTgmWZGCBsWeurXDbdlQjvT4jsqecVSHPhBQRRztXZs
-	 KziR2tPphUU9jprPLWuixvsrGStkYsfbNsxpVDOs=
+	b=BpHhqEscy9SIfHU8brXnhepz7s0VWNId/PswIzLWnY0JKnplllSuGoO+lcQzQDosk
+	 Tn5Ss9aEr2MGIxVdsDK7YQGKKAio4RvAoT2x2llXTaCAwTIUIBBD39vaqVG0RQu298
+	 fQLvRQL4iwQrUj17r8aWVB03SfJBeO5j0lk3V0Y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 052/215] ext2: reject inodes with zero i_nlink and valid mode in ext2_iget()
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Justinien Bouron <jbouron@amazon.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 7.0 186/307] tpm: Use kfree_sensitive() to free auth session in tpm_dev_release()
 Date: Mon,  4 May 2026 15:51:11 +0200
-Message-ID: <20260504135132.077868837@linuxfoundation.org>
+Message-ID: <20260504135149.877747178@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DC90B4BF3B1
+X-Rspamd-Queue-Id: E152F4BE784
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243668-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243215-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,109 +90,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linuxtesting.org:url,altlinux.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Gunnar Kudrjavets <gunnarku@amazon.com>
 
-commit 25947cc5b2374cd5bf627fe3141496444260d04f upstream.
+commit c424d2664f08c77f08b4580b5f0cbaabf7c229b2 upstream.
 
-ext2_iget() already rejects inodes with i_nlink == 0 when i_mode is
-zero or i_dtime is set, treating them as deleted. However, the case of
-i_nlink == 0 with a non-zero mode and zero dtime slips through. Since
-ext2 has no orphan list, such a combination can only result from
-filesystem corruption - a legitimate inode deletion always sets either
-i_dtime or clears i_mode before freeing the inode.
+tpm_dev_release() uses plain kfree() to free chip->auth, which contains
+sensitive cryptographic material including HMAC session keys, nonces,
+and passphrase data (struct tpm2_auth).
 
-A crafted image can exploit this gap to present such an inode to the
-VFS, which then triggers WARN_ON inside drop_nlink() (fs/inode.c) via
-ext2_unlink(), ext2_rename() and ext2_rmdir():
+Every other code path that frees this structure uses kfree_sensitive()
+to zero the memory before releasing it: both tpm2_end_auth_session()
+and tpm_buf_check_hmac_response() do so. The tpm_dev_release() path
+is the only one that does not, leaving key material in freed slab
+memory until it is eventually overwritten.
 
-WARNING: CPU: 3 PID: 609 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
-CPU: 3 UID: 0 PID: 609 Comm: syz-executor Not tainted 6.12.77+ #1
-Call Trace:
- <TASK>
- inode_dec_link_count include/linux/fs.h:2518 [inline]
- ext2_unlink+0x26c/0x300 fs/ext2/namei.c:295
- vfs_unlink+0x2fc/0x9b0 fs/namei.c:4477
- do_unlinkat+0x53e/0x730 fs/namei.c:4541
- __x64_sys_unlink+0xc6/0x110 fs/namei.c:4587
- do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+Use kfree_sensitive() for consistency with the rest of the driver and
+to ensure session keys are scrubbed during device teardown.
 
-WARNING: CPU: 0 PID: 646 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
-CPU: 0 UID: 0 PID: 646 Comm: syz.0.17 Not tainted 6.12.77+ #1
-Call Trace:
- <TASK>
- inode_dec_link_count include/linux/fs.h:2518 [inline]
- ext2_rename+0x35e/0x850 fs/ext2/namei.c:374
- vfs_rename+0xf2f/0x2060 fs/namei.c:5021
- do_renameat2+0xbe2/0xd50 fs/namei.c:5178
- __x64_sys_rename+0x7e/0xa0 fs/namei.c:5223
- do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-WARNING: CPU: 0 PID: 634 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
-CPU: 0 UID: 0 PID: 634 Comm: syz-executor Not tainted 6.12.77+ #1
-Call Trace:
- <TASK>
- inode_dec_link_count include/linux/fs.h:2518 [inline]
- ext2_rmdir+0xca/0x110 fs/ext2/namei.c:311
- vfs_rmdir+0x204/0x690 fs/namei.c:4348
- do_rmdir+0x372/0x3e0 fs/namei.c:4407
- __x64_sys_unlinkat+0xf0/0x130 fs/namei.c:4577
- do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-Extend the existing i_nlink == 0 check to also catch this case,
-reporting the corruption via ext2_error() and returning -EFSCORRUPTED.
-This rejects the inode at load time and prevents it from reaching any
-of the namei.c paths.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://patch.msgid.link/20260404152011.2590197-1-kovalev@altlinux.org
-Signed-off-by: Jan Kara <jack@suse.cz>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Reviewed-by: Justinien Bouron <jbouron@amazon.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext2/inode.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/char/tpm/tpm-chip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -1429,9 +1429,17 @@ struct inode *ext2_iget (struct super_bl
- 	 * the test is that same one that e2fsck uses
- 	 * NeilBrown 1999oct15
- 	 */
--	if (inode->i_nlink == 0 && (inode->i_mode == 0 || ei->i_dtime)) {
--		/* this inode is deleted */
--		ret = -ESTALE;
-+	if (inode->i_nlink == 0) {
-+		if (inode->i_mode == 0 || ei->i_dtime) {
-+			/* this inode is deleted */
-+			ret = -ESTALE;
-+		} else {
-+			ext2_error(sb, __func__,
-+				   "inode %lu has zero i_nlink with mode 0%o and no dtime, "
-+				   "filesystem may be corrupt",
-+				   ino, inode->i_mode);
-+			ret = -EFSCORRUPTED;
-+		}
- 		goto bad_inode;
- 	}
- 	inode->i_blocks = le32_to_cpu(raw_inode->i_blocks);
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -247,7 +247,7 @@ static void tpm_dev_release(struct devic
+ 	kfree(chip->work_space.context_buf);
+ 	kfree(chip->work_space.session_buf);
+ #ifdef CONFIG_TCG_TPM2_HMAC
+-	kfree(chip->auth);
++	kfree_sensitive(chip->auth);
+ #endif
+ 	kfree(chip);
+ }
 
 
 
