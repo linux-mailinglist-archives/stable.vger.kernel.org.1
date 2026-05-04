@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oO3NK0ur+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:59 +0200
+	id 4D4JBYao+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5370A4BF261
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9746C4BE9E5
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 17E0F30219BC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A121D304C7D9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017D23D8129;
-	Mon,  4 May 2026 14:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F9E3A3822;
+	Mon,  4 May 2026 14:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D0bbhh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okDzokWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90971A6827;
-	Mon,  4 May 2026 14:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A7F3CEB89;
+	Mon,  4 May 2026 14:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904416; cv=none; b=IPTYdHpAZ+dP3jVs2iPlfHgT+90LuzytqmvX//zFXovlNamwyCcFLA92owJYn/dn/j9bbzxTYwiS6a9eoJofdJNXqB8zNFMt07zOSb8bw8gifxmjp5mhkD5u0bIThHaHFoqiY1Zd0x9rwXx/hfXWIAf9Xq9yQeU3CGiwujyeFoE=
+	t=1777903281; cv=none; b=OKfQ1az+PU4nSWSwIXHsxnaWf0Rcwa3e5QTTCceKaN+vUaz+0tMYjaY48khurZc0gt+KI7exKLU8flg+jCQw5+T5FQzqeLcDMmGji5VbXvo8S6IiRCSBgMdwuc3NvkytbQN79qqazHeFoabD14f0zRi+9Jz3cGMb4wEc/XI84yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904416; c=relaxed/simple;
-	bh=ZPocLCxSVOmPbZ9gfmSxIW/8LsLqWr6OnbgU9MJ/FSY=;
+	s=arc-20240116; t=1777903281; c=relaxed/simple;
+	bh=c7GEUQdacdaMlnBWeG2sOiF+neMb6QyUe9Nq0mChWqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsYDVgi+R89iHkdaKs2Zx9PSw1+f8ZpADTtZ+5WIo+PdAmnMVeAH4tw+CO10CbxLzcNjPGvBJ0T7owQ6p3yKcJLWuXzwicCnS02iQ0xLElCJskxRZF+1y3aSSNo3Cb8Vt9du3EplxXCfQA9mArHkZnXAM9cto0CYrHIEOJXpVxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D0bbhh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF42C2BCB8;
-	Mon,  4 May 2026 14:20:16 +0000 (UTC)
+	 MIME-Version; b=l86yrX1aeyRY9cNh0sYy65aYmxAzZZae+qBY14TZYB+dHLNPPuTZHc7KyYqLK+236n1stL1qqmgb1gbDHEeozHtD14V2uXon593REwqmRgU83PsYI6l/mRmlmqa6b3l9umaw62xOTALlEKNj99TSwlT81UADxA74uiGTDNc9dFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okDzokWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB42C2BCC4;
+	Mon,  4 May 2026 14:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904416;
-	bh=ZPocLCxSVOmPbZ9gfmSxIW/8LsLqWr6OnbgU9MJ/FSY=;
+	s=korg; t=1777903280;
+	bh=c7GEUQdacdaMlnBWeG2sOiF+neMb6QyUe9Nq0mChWqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0D0bbhh62YEtAV5/uefPy/qjqX3kZj1p1lLMpIbAiIztrt2b5IId4cF9k7BXkrwxX
-	 fQFv+CRSwfrNSDofoWJJ6Mw/8TL1fCJJDUv0PPgwWpzdjZAbFnws+34K8wws/B0yuY
-	 rLkIm+Uhy+bI+WoOIfDFQTcdCH5uqGi/VW8B1YXU=
+	b=okDzokWFHuYj0zhiwhxFcOW6cp0KvqGDRzLaPw8Yw3EwCTgY+lDrtTvRHV87d5H2e
+	 eeXddhg9F4d+Cy7Z5ijWduWAKzjSfr85hOjfLkB4bY4Rwwmf9v7er2wNE77sU8xS1y
+	 xRIxIlbZAZ5IrLBXQnrROmEA0WBvVTVp+HD6lPl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.12 006/215] usb: chipidea: core: allow ci_irq_handler() handle both ID and VBUS change
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 140/307] net: qrtr: ns: Limit the total number of nodes
 Date: Mon,  4 May 2026 15:50:25 +0200
-Message-ID: <20260504135130.408101113@linuxfoundation.org>
+Message-ID: <20260504135148.049553948@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5370A4BF261
+X-Rspamd-Queue-Id: 9746C4BE9E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243646-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243203-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,113 +91,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit b94b631d9f78e653855f7fb58dbcb86c2a856f6f upstream.
+commit 27d5e84e810b0849d08b9aec68e48570461ce313 upstream.
 
-For USB role switch-triggered IRQ, ID and VBUS change come together, for
-example when switching from host to device mode. ID indicate a role switch
-and VBUS is required to determine whether the device controller can start
-operating. Currently, ci_irq_handler() handles only a single event per
-invocation. This can cause an issue where switching to device mode results
-in the device controller not working at all. Allowing ci_irq_handler() to
-handle both ID and VBUS change in one call resolves this issue.
+Currently, the nameserver doesn't limit the number of nodes it handles.
+This can be an attack vector if a malicious client starts registering
+random nodes, leading to memory exhaustion.
 
-Meanwhile, this change also affects the VBUS event handling logic.
-Previously, if an ID event indicated host mode the VBUS IRQ will be
-ignored as the device disable BSE when stop() is called. With the new
-behavior, if ID and VBUS IRQ occur together and the target mode is host,
-the VBUS event is queued and ci_handle_vbus_change() will call
-usb_gadget_vbus_connect(), after which USBMODE is switched to device mode,
-causing host mode to stop working. To prevent this, an additional check is
-added to skip handling VBUS event when current role is not device mode.
+Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
+chosen based on the current platform requirements. If requirement changes
+in the future, this limit can be increased.
 
-Suggested-by: Peter Chen <peter.chen@kernel.org>
-Fixes: e1b5d2bed67c ("usb: chipidea: core: handle usb role switch in a common way")
 Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260402071457.2516021-2-xu.yang_2@nxp.com
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/core.c |   45 ++++++++++++++++++++++----------------------
- drivers/usb/chipidea/otg.c  |    3 ++
- 2 files changed, 26 insertions(+), 22 deletions(-)
+ net/qrtr/ns.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -543,30 +543,31 @@ static irqreturn_t ci_irq_handler(int ir
- 			if (ret == IRQ_HANDLED)
- 				return ret;
- 		}
--	}
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -72,12 +72,16 @@ struct qrtr_node {
+ 	u32 server_count;
+ };
  
--	/*
--	 * Handle id change interrupt, it indicates device/host function
--	 * switch.
--	 */
--	if (ci->is_otg && (otgsc & OTGSC_IDIE) && (otgsc & OTGSC_IDIS)) {
--		ci->id_event = true;
--		/* Clear ID change irq status */
--		hw_write_otgsc(ci, OTGSC_IDIS, OTGSC_IDIS);
--		ci_otg_queue_work(ci);
--		return IRQ_HANDLED;
--	}
-+		/*
-+		 * Handle id change interrupt, it indicates device/host function
-+		 * switch.
-+		 */
-+		if ((otgsc & OTGSC_IDIE) && (otgsc & OTGSC_IDIS)) {
-+			ci->id_event = true;
-+			/* Clear ID change irq status */
-+			hw_write_otgsc(ci, OTGSC_IDIS, OTGSC_IDIS);
-+		}
+-/* Max server, lookup limits are chosen based on the current platform requirements.
+- * If the requirement changes in the future, these values can be increased.
++/* Max nodes, server, lookup limits are chosen based on the current platform
++ * requirements. If the requirement changes in the future, these values can be
++ * increased.
+  */
++#define QRTR_NS_MAX_NODES   64
+ #define QRTR_NS_MAX_SERVERS 256
+ #define QRTR_NS_MAX_LOOKUPS 64
  
--	/*
--	 * Handle vbus change interrupt, it indicates device connection
--	 * and disconnection events.
--	 */
--	if (ci->is_otg && (otgsc & OTGSC_BSVIE) && (otgsc & OTGSC_BSVIS)) {
--		ci->b_sess_valid_event = true;
--		/* Clear BSV irq */
--		hw_write_otgsc(ci, OTGSC_BSVIS, OTGSC_BSVIS);
--		ci_otg_queue_work(ci);
--		return IRQ_HANDLED;
-+		/*
-+		 * Handle vbus change interrupt, it indicates device connection
-+		 * and disconnection events.
-+		 */
-+		if ((otgsc & OTGSC_BSVIE) && (otgsc & OTGSC_BSVIS)) {
-+			ci->b_sess_valid_event = true;
-+			/* Clear BSV irq */
-+			hw_write_otgsc(ci, OTGSC_BSVIS, OTGSC_BSVIS);
-+		}
++static u8 node_count;
 +
-+		if (ci->id_event || ci->b_sess_valid_event) {
-+			ci_otg_queue_work(ci);
-+			return IRQ_HANDLED;
-+		}
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -86,6 +90,11 @@ static struct qrtr_node *node_get(unsign
+ 	if (node)
+ 		return node;
+ 
++	if (node_count >= QRTR_NS_MAX_NODES) {
++		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
++		return NULL;
++	}
++
+ 	/* If node didn't exist, allocate and insert it to the tree */
+ 	node = kzalloc_obj(*node);
+ 	if (!node)
+@@ -99,6 +108,8 @@ static struct qrtr_node *node_get(unsign
+ 		return NULL;
  	}
  
- 	/* Handle device/host interrupt */
---- a/drivers/usb/chipidea/otg.c
-+++ b/drivers/usb/chipidea/otg.c
-@@ -130,6 +130,9 @@ enum ci_role ci_otg_role(struct ci_hdrc
- 
- void ci_handle_vbus_change(struct ci_hdrc *ci)
- {
-+	if (ci->role != CI_ROLE_GADGET)
-+		return;
++	node_count++;
 +
- 	if (!ci->is_otg) {
- 		if (ci->platdata->flags & CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS)
- 			usb_gadget_vbus_connect(&ci->gadget);
+ 	return node;
+ }
+ 
+@@ -405,6 +416,7 @@ static int ctrl_cmd_bye(struct sockaddr_
+ delete_node:
+ 	xa_erase(&nodes, from->sq_node);
+ 	kfree(node);
++	node_count--;
+ 
+ 	return ret;
+ }
 
 
 
