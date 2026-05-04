@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBbyEAGr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:45 +0200
+	id CFPNBDOo+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6CE14BF15F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CE84BE8FD
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C05530389C8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:16:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 309A4300B46B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA613DE454;
-	Mon,  4 May 2026 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A6C3DE43E;
+	Mon,  4 May 2026 14:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajp4gBDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Suhn4zR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E93315785;
-	Mon,  4 May 2026 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF06A1ADC83;
+	Mon,  4 May 2026 14:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904185; cv=none; b=tTDgKgV6+nOVnnwfhlxLPS7hBFzH4Myu+b+UT/l6T4yLpiczV3TaEmB6MGbHfYv6YEeARZVZHKd4RfSYMcHwT1AFSm1WOAs/O5uUu6bstU1+hrwcamARDE5sSEL7JYtVLaryE3m4lMp5ixpsk/Nd6fwKgkJWUIOWHTWKX6A5bMw=
+	t=1777903539; cv=none; b=hkanZ1Y3iGFi5ZVkQwaYkx1I39izuPGbiG9/tJx3IBJ1cfBiITjlP/w19MW3AuyRfDXJiA7JAAlyckqiqM7acB96s62J6Kd3PqelcjHNnM8f58xZgS0A3inlFQNNyJhkVhA8fhDKKDX4H1JcjZVNMKZwuMgmXHVznMpuDuzaF6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904185; c=relaxed/simple;
-	bh=AY2xWGDPR6LXZbfSRCX7QxeS0lR6zS5BgShCw25vfOM=;
+	s=arc-20240116; t=1777903539; c=relaxed/simple;
+	bh=IzA9ou30KLzLCCi/ATmoSIhGVksXepwx0KAqu/OGf6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IpUe/NOlhl3m6N1t2F6Zmzdf6UBfn4tb93NAsgL0LMhvOp9xbVf4vUfV4j3GfSJokq/LYUFJWYO+FqHlRCswrk+DdIbFG+bklAECdsvGSvlHnQi9yF70YaedV7hLai+nYvwhXJ9fA7buLd+OX++/HLUmUGeSWoZlDHiqRbC04SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajp4gBDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F044FC2BCB8;
-	Mon,  4 May 2026 14:16:24 +0000 (UTC)
+	 MIME-Version; b=tpVIhGIRAiaiMf0x5WoN/o0WrS8TazlIrTM4YB+8inJ+qxMUhaddASje9jOealDnPJ292f/ooyBpx+bC9HWTVrwdbuxVF9B+ETo25Qn4jNlhgUa1ivT8DczY2q2jS4VohBLto0MTny1O2KKXUVoK5b3E96UstVV5I2TXmk6CUdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Suhn4zR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15333C2BCC4;
+	Mon,  4 May 2026 14:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904185;
-	bh=AY2xWGDPR6LXZbfSRCX7QxeS0lR6zS5BgShCw25vfOM=;
+	s=korg; t=1777903539;
+	bh=IzA9ou30KLzLCCi/ATmoSIhGVksXepwx0KAqu/OGf6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajp4gBDV95odv1hcSnO27scno1Bs2nADOk7YPwmcViBPTCDRiTQE740lJ0LzPeL9a
-	 /vtlir9H/3aASNiK+Jx7ZONnV+ApjD+3oapk20zee/LNsGAHem/U2TJDqG+zAJKT71
-	 AncFRAMupqtFXplugg6akbihhMamBMnXCtd1Nmcc=
+	b=Suhn4zR7CwjrSiC3ikEDCpRGmzEx5GuO9r5eMCAdDNaw1+0tNJ4kXpLww3P3FeuqN
+	 xml3BZvXFPYHJ08a+jky9U2CkEpNFQLyi94+o2YZaUb+1UkhQLDa26d4gk5NMrUg9F
+	 uqIHF5iGfZYivCbjm+hUwTh9b0sxUhl2fOShqsS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.18 216/275] apparmor: use target tasks context in apparmor_getprocattr()
-Date: Mon,  4 May 2026 15:52:36 +0200
-Message-ID: <20260504135151.096057899@linuxfoundation.org>
+	Sam Edwards <CFSworks@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 7.0 272/307] ceph: fix num_ops off-by-one when crypto allocation fails
+Date: Mon,  4 May 2026 15:52:37 +0200
+Message-ID: <20260504135153.039404965@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +64,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D6CE14BF15F
+X-Rspamd-Queue-Id: A0CE84BE8FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243303-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ibm.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243555-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualys.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cengiz Can <cengiz.can@canonical.com>
+From: Sam Edwards <cfsworks@gmail.com>
 
-commit 4afc61702bdcc3b9b519749ef966cf762a6e7051 upstream.
+commit a0d9555bf9eaeba34fe6b6bb86f442fe08ba3842 upstream.
 
-apparmor_getprocattr() incorrectly calls task_ctx(current) instead of
-task_ctx(task) when retrieving prev and exec attributes, returning the
-caller's labels rather than the target's.
+move_dirty_folio_in_page_array() may fail if the file is encrypted, the
+dirty folio is not the first in the batch, and it fails to allocate a
+bounce buffer to hold the ciphertext. When that happens,
+ceph_process_folio_batch() simply redirties the folio and flushes the
+current batch -- it can retry that folio in a future batch.
 
-Fix by passing task to task_ctx().
+However, if this failed folio is not contiguous with the last folio that
+did make it into the batch, then ceph_process_folio_batch() has already
+incremented `ceph_wbc->num_ops`; because it doesn't follow through and
+add the discontiguous folio to the array, ceph_submit_write() -- which
+expects that `ceph_wbc->num_ops` accurately reflects the number of
+contiguous ranges (and therefore the required number of "write extent"
+ops) in the writeback -- will panic the kernel:
 
-The issue can be reproduced when a process with an onexec transition
-(e.g., configured by a container runtime) is inspected via
-/proc/<pid>/attr/apparmor/exec. The reader's own value is returned
-instead of the target's.
+    BUG_ON(ceph_wbc->op_idx + 1 != req->r_num_ops);
 
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Fixes: 3b529a7600d8 ("apparmor: move task domain change info to task security")
+This issue can be reproduced on affected kernels by writing to
+fscrypt-enabled CephFS file(s) with a 4KiB-written/4KiB-skipped/repeat
+pattern (total filesize should not matter) and gradually increasing the
+system's memory pressure until a bounce buffer allocation fails.
+
+Fix this crash by decrementing `ceph_wbc->num_ops` back to the correct
+value when move_dirty_folio_in_page_array() fails, but the folio already
+started counting a new (i.e. still-empty) extent.
+
+The defect corrected by this patch has existed since 2022 (see first
+`Fixes:`), but another bug blocked multi-folio encrypted writeback until
+recently (see second `Fixes:`). The second commit made it into 6.18.16,
+6.19.6, and 7.0-rc1, unmasking the panic in those versions. This patch
+therefore fixes a regression (panic) introduced by cac190c7674f.
+
 Cc: stable@vger.kernel.org
-Co-developed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
-Co-developed-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: d55207717ded ("ceph: add encryption support to writepage and writepages")
+Fixes: cac190c7674f ("ceph: fix write storm on fscrypted files")
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/lsm.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ fs/ceph/addr.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -821,25 +821,23 @@ static int apparmor_getprocattr(struct t
- 				char **value)
- {
- 	int error = -ENOENT;
--	/* released below */
--	const struct cred *cred = get_task_cred(task);
--	struct aa_task_ctx *ctx = task_ctx(current);
- 	struct aa_label *label = NULL;
- 
-+	rcu_read_lock();
- 	if (strcmp(name, "current") == 0)
--		label = aa_get_newest_label(cred_label(cred));
--	else if (strcmp(name, "prev") == 0  && ctx->previous)
--		label = aa_get_newest_label(ctx->previous);
--	else if (strcmp(name, "exec") == 0 && ctx->onexec)
--		label = aa_get_newest_label(ctx->onexec);
-+		label = aa_get_newest_cred_label(__task_cred(task));
-+	else if (strcmp(name, "prev") == 0  && task_ctx(task)->previous)
-+		label = aa_get_newest_label(task_ctx(task)->previous);
-+	else if (strcmp(name, "exec") == 0 && task_ctx(task)->onexec)
-+		label = aa_get_newest_label(task_ctx(task)->onexec);
- 	else
- 		error = -EINVAL;
-+	rcu_read_unlock();
- 
- 	if (label)
- 		error = aa_getprocattr(label, value, true);
- 
- 	aa_put_label(label);
--	put_cred(cred);
- 
- 	return error;
- }
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -1365,6 +1365,10 @@ void ceph_process_folio_batch(struct add
+ 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
+ 				folio);
+ 		if (rc) {
++			/* Did we just begin a new contiguous op? Nevermind! */
++			if (ceph_wbc->len == 0)
++				ceph_wbc->num_ops--;
++
+ 			folio_redirty_for_writepage(wbc, folio);
+ 			folio_unlock(folio);
+ 			break;
 
 
 
