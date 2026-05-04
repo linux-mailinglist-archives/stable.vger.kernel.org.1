@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-243815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNIHNcOw+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:19 +0200
+	id sOvGFcWx+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:48:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579FB4BFF56
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F5E4C008F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB05430E1A8D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B48A6307DF03
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA8A3E314D;
-	Mon,  4 May 2026 14:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DCC3E0C5F;
+	Mon,  4 May 2026 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3D7+HOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBZnU+SO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028AE36309C;
-	Mon,  4 May 2026 14:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EA93DF003;
+	Mon,  4 May 2026 14:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904851; cv=none; b=RT8qucBTmwSWWWyA6pG4Gv/OPz9OVL/Ha38HqXYdDhCa7CtC16JOGv7I9gAMwnSKGJTDRjsIHdLXh8KMsWHykNh5PjXcRMt+WLInZ7GMPAOvyaUzKxgf6ZuiRlUsNjJypi2xqg48iXpdaTc6rrDMkqO3eH3RxckGTDC8Co/JIDk=
+	t=1777904856; cv=none; b=KnrQA5lNeUrl6D1kaEinWgYeUqhDE8IxoEwbyt2MdEQMuvmpSrdt9TdVSul/iuhALVVn9zNcVFFTJKiUWLOv4fdzGzn+k2cZaK5KYiP6D+pl3/hhDLnOMI1gaIuDZK2itjMaGgBXYepBkF19FxUSzv3yasInFN/hhriYhbksiQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904851; c=relaxed/simple;
-	bh=3jxXWwdeSzyEPNxcC1aq1sH/IEnLYo+NqNtyeZxenYw=;
+	s=arc-20240116; t=1777904856; c=relaxed/simple;
+	bh=DVsV35peOphUUyFC4iwuUbGe0inWr0XfFEWOl46DTBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUfnom1JMhEY12q3Pi7MMz5MY5nA9c83L2TVbLY2Tj76f2A5SFjwTdw5W3BFG4J7LAOx3TbLBgxxk1CIoXljs19xfZecRwUllKtCQDnmrKq7C6OWb6MLmik5jvX5Q4cMyRluT+7ezaUdTRBXQBO9BeplFXkIji50ocevn9cuk9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3D7+HOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0C0C2BCB8;
-	Mon,  4 May 2026 14:27:30 +0000 (UTC)
+	 MIME-Version; b=GH3VGW/PPKh9SY+5RLX+G1zpqcQd73gJ9aixCggXnFTNbtrR45MOqevD+5DSOg8dJLrWlOOIaeEzoQv3Bc/5tUhdIDD82W5WQWOjyMwFJzC0RfqRX03JPPpwOpuwgml8yuO6xlwQ0TboPBHWL5BqHzYgQjjOXN43lafBTwzS7DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBZnU+SO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A32C2BCB8;
+	Mon,  4 May 2026 14:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904850;
-	bh=3jxXWwdeSzyEPNxcC1aq1sH/IEnLYo+NqNtyeZxenYw=;
+	s=korg; t=1777904855;
+	bh=DVsV35peOphUUyFC4iwuUbGe0inWr0XfFEWOl46DTBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3D7+HOtJA9L5v5xPNDl/cIYuNMJbs7LnRZtHBdS0Gl0sGFmC5DrgJ4WD/Pxg1OHd
-	 uCI2n4fjluWh/ckRiOot/yNDUPPEwDDszwNsUMVYz3XczDpvT8k82Czvj8sLJcf42Z
-	 KWkzAIFgm1KWo+9hXuljUa93PzsCZNcNeScOiqd8=
+	b=fBZnU+SOBKkYIuEyNk6hjq+JVf2r2yPJpYA5KTz0/gQFkkU1AzpTABHP7rKnxcftk
+	 Qq+xw4kkdFioAWDdLaEhKW7FKfHIfZBQkl/S9wZixfgcOsD1B1D6i9Ed0+kSci/ZsC
+	 IP+qWUpZGdxeaI8JCBwqBXGUSc3CqHLALFpox4nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Simon Horman <horms@kernel.org>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/215] net: qrtr: ns: Limit the maximum server registration per node
-Date: Mon,  4 May 2026 15:53:37 +0200
-Message-ID: <20260504135137.777287467@linuxfoundation.org>
+Subject: [PATCH 6.12 199/215] net: qrtr: ns: Limit the maximum number of lookups
+Date: Mon,  4 May 2026 15:53:38 +0200
+Message-ID: <20260504135137.857621888@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
 References: <20260504135130.169210693@linuxfoundation.org>
@@ -66,37 +64,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 579FB4BFF56
+X-Rspamd-Queue-Id: 46F5E4C008F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-243815-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-243817-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
@@ -104,104 +101,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit d5ee2ff98322337951c56398e79d51815acbf955 ]
+[ Upstream commit 5640227d9a21c6a8be249a10677b832e7f40dc55 ]
 
-Current code does no bound checking on the number of servers added per
-node. A malicious client can flood NEW_SERVER messages and exhaust memory.
+Current code does no bound checking on the number of lookups a client can
+perform. Though the code restricts the lookups to local clients, there is
+still a possibility of a malicious local client sending a flood of
+NEW_LOOKUP messages over the same socket.
 
-Fix this issue by limiting the maximum number of server registrations to
-256 per node. If the NEW_SERVER message is received for an old port, then
-don't restrict it as it will get replaced. While at it, also rate limit
-the error messages in the failure path of qrtr_ns_worker().
+Fix this issue by limiting the maximum number of lookups to 64 globally.
+Since the nameserver allows only atmost one local observer, this global
+lookup count will ensure that the lookups stay within the limit.
 
-Note that the limit of 256 is chosen based on the current platform
+Note that, limit of 64 is chosen based on the current platform
 requirements. If requirement changes in the future, this limit can be
 increased.
 
 Cc: stable@vger.kernel.org
 Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-1-00a8a5ff2b51@oss.qualcomm.com
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-2-00a8a5ff2b51@oss.qualcomm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted comment block to only mention QRTR_NS_MAX_LOOKUPS and kept kzalloc() instead of kzalloc_obj() due to missing prerequisite commits ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ net/qrtr/ns.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 --- a/net/qrtr/ns.c
 +++ b/net/qrtr/ns.c
-@@ -68,8 +68,14 @@ struct qrtr_server {
- struct qrtr_node {
- 	unsigned int id;
- 	struct xarray servers;
-+	u32 server_count;
- };
+@@ -22,6 +22,7 @@ static struct {
+ 	struct socket *sock;
+ 	struct sockaddr_qrtr bcast_sq;
+ 	struct list_head lookups;
++	u32 lookup_count;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
+ 	void (*saved_data_ready)(struct sock *sk);
+@@ -76,6 +77,11 @@ struct qrtr_node {
+  */
+ #define QRTR_NS_MAX_SERVERS 256
  
-+/* Max server limit is chosen based on the current platform requirements. If the
++/* Max lookup limit is chosen based on the current platform requirements. If the
 + * requirement changes in the future, this value can be increased.
 + */
-+#define QRTR_NS_MAX_SERVERS 256
++#define QRTR_NS_MAX_LOOKUPS 64
 +
  static struct qrtr_node *node_get(unsigned int node_id)
  {
  	struct qrtr_node *node;
-@@ -230,6 +236,17 @@ static struct qrtr_server *server_add(un
- 	if (!service || !port)
- 		return NULL;
+@@ -444,6 +450,7 @@ static int ctrl_cmd_del_client(struct so
  
-+	node = node_get(node_id);
-+	if (!node)
-+		return NULL;
-+
-+	/* Make sure the new servers per port are capped at the maximum value */
-+	old = xa_load(&node->servers, port);
-+	if (!old && node->server_count >= QRTR_NS_MAX_SERVERS) {
-+		pr_err_ratelimited("QRTR client node %u exceeds max server limit!\n", node_id);
-+		return NULL;
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
+ 	}
+ 
+ 	/* Remove the server belonging to this port but don't broadcast
+@@ -561,6 +568,11 @@ static int ctrl_cmd_new_lookup(struct so
+ 	if (from->sq_node != qrtr_ns.local_node)
+ 		return -EINVAL;
+ 
++	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
++		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
++		return -ENOSPC;
 +	}
 +
- 	srv = kzalloc(sizeof(*srv), GFP_KERNEL);
- 	if (!srv)
- 		return NULL;
-@@ -239,10 +256,6 @@ static struct qrtr_server *server_add(un
- 	srv->node = node_id;
- 	srv->port = port;
+ 	lookup = kzalloc(sizeof(*lookup), GFP_KERNEL);
+ 	if (!lookup)
+ 		return -ENOMEM;
+@@ -569,6 +581,7 @@ static int ctrl_cmd_new_lookup(struct so
+ 	lookup->service = service;
+ 	lookup->instance = instance;
+ 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
++	qrtr_ns.lookup_count++;
  
--	node = node_get(node_id);
--	if (!node)
--		goto err;
--
- 	/* Delete the old server on the same port */
- 	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
- 	if (old) {
-@@ -253,6 +266,8 @@ static struct qrtr_server *server_add(un
- 		} else {
- 			kfree(old);
- 		}
-+	} else {
-+		node->server_count++;
+ 	memset(&filter, 0, sizeof(filter));
+ 	filter.service = service;
+@@ -609,6 +622,7 @@ static void ctrl_cmd_del_lookup(struct s
+ 
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
  	}
- 
- 	trace_qrtr_ns_server_add(srv->service, srv->instance,
-@@ -293,6 +308,7 @@ static int server_del(struct qrtr_node *
- 	}
- 
- 	kfree(srv);
-+	node->server_count--;
- 
- 	return 0;
  }
-@@ -681,7 +697,7 @@ static void qrtr_ns_worker(struct work_s
- 		}
- 
- 		if (ret < 0)
--			pr_err("failed while handling packet from %d:%d",
-+			pr_err_ratelimited("failed while handling packet from %d:%d",
- 			       sq.sq_node, sq.sq_port);
- 	}
  
 
 
