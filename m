@@ -1,223 +1,209 @@
-Return-Path: <stable+bounces-243931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NRtKn4r+Wkq6QIAu9opvQ
-	(envelope-from <stable+bounces-243931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:27:58 +0200
+	id JkDsDNIr+Wk86QIAu9opvQ
+	(envelope-from <stable+bounces-243932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:29:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B7E4C4CE1
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:27:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761A94C4D0F
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C46B930098B4
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 23:27:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C9543011585
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 23:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E7B3D4129;
-	Mon,  4 May 2026 23:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B293D1704;
+	Mon,  4 May 2026 23:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dSAan5pq";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ojji7bUe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Txu2oCiT"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EE23A7585
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 23:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526E736C9CC;
+	Mon,  4 May 2026 23:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777937269; cv=none; b=SZ6463cSBxueawLLHcH8+Q8w7VaMvktHr6h8Yamxu1lDi00sX8HtggdehxL+E6HK97earHmbigrMwbzFaAiyXsTjdzRMlE6dWRx1kDPFwROId7lRDLvcrxiC+10fWMbbRcazOi63K3QK6q95Mpg9k3cYdXfAhny8P1948dGI5JQ=
+	t=1777937357; cv=none; b=AaidGWg4BuyUWZm2krXLxw5zpoDfKxn2FqHo74m2sKEhdTBJKBu53CiiXhl+LEkwojeCpmfjWslmCy4pcjbNt+iMPsk+LcWPPIqbyU2Lv45M99/OgVrYU49SUZTO4byy1mtZeah36tGPQdiJ06DoENssj8xyaAWvLuExNfsqR9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777937269; c=relaxed/simple;
-	bh=X/Ts6FB29sipVCHkAJKOzqHUgYArmLo5X/jhFL+PcWk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KiesTBM+oPx61mPVel+A0pZuKgQis6RFT64UV4bI+1+IPS6RgtSGJZksuk+6qSHw0GTQ4UO/1QLCZifk6ss0T6CIXUPXjtv8rUqkJr8gJl8GyInj0xZNTUp/UtuSQwkEEpyqunh4bIiKKE9dTDLxt+2WY9jRbP/X/vPLgBWBKRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dSAan5pq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ojji7bUe; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777937267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yeaz/dAuRpUt7GzZUrHflLMUXhh07epuZ/gDSiDt6lQ=;
-	b=dSAan5pq9MznOUv34k3k0ElDqiHM35mDaL+c+NygKw93p6erDDgHmv4U5jhbQUajddQDrd
-	rpqQqv+rFtQdVvBmgpxnMj+m+v52xoJDPbohFLvD0MjYKtljwWGm9ZlL5/nVC/t7YppW7l
-	gh1dxPmiFqVohjIa4KGORz1w4gnaHSw=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-OvDOjnDCP_Cv7IM-eY3LSw-1; Mon, 04 May 2026 19:27:44 -0400
-X-MC-Unique: OvDOjnDCP_Cv7IM-eY3LSw-1
-X-Mimecast-MFC-AGG-ID: OvDOjnDCP_Cv7IM-eY3LSw_1777937263
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7bd5c9e2e4aso88467447b3.2
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 16:27:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777937263; x=1778542063; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yeaz/dAuRpUt7GzZUrHflLMUXhh07epuZ/gDSiDt6lQ=;
-        b=Ojji7bUePPVSPBfvDnMUirWa6/C7s2ioCP9taSRHZ8avF93GgLTPKeBOMZEQqTaEeT
-         DMFKUy2I0u0Fb8IRz8fMY6WWBJgpRGPLWxild76F6fAjwiaOCYZdByvq10sB3VsJzeON
-         nKS5Uuc1kxVruG0OH/L+9Tm5tCcfaLxrxr1ITGYGIU5vEXE2U0NKrvwbPc3ZvB5sZWHm
-         MP7+Fr7TuC9kP0nmAVN9Hvng/fuR9f0s6p3HkYch3GtlTpmg6aAMRGfm3G+YS0Aqxbo+
-         nQxpcx2gU/eXXtu8gf7eymLn1HYI7WJJ75iX1qTlfu/cK6i5tXxrA0M3EozoCOos2V4n
-         y7TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777937263; x=1778542063;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yeaz/dAuRpUt7GzZUrHflLMUXhh07epuZ/gDSiDt6lQ=;
-        b=lbLw1o12clP6l0MQiSbjWfyU49ox63Umbzs0Ahbtun69FRU+T0pf/4g2Fm7LzXZbTs
-         Fl9txK/p7BogZXdnYOfrro+sfRbl8am8PyOomJnrT2RTS5G9TyeVz9zHI36Bee51fidP
-         0ZZSyHWffWrKmoWHmRO+zgnuCOOFYWIHKa6ZeBuZ3BMOunF3qoM3CaVw/ijIbuf7yMGq
-         pBLs4FuIVNBiols+qUY1mlxpxE3y/0AkVkSWLTcx5Tzczg321xGwCe1ZdzzR8ESxfIU7
-         Qx0A69NPPiAvzB0VdoJWPwPIZ97IHReJwJzZT3063yHQUw/pqq8e8CNXkwZN0brOu27K
-         756w==
-X-Forwarded-Encrypted: i=1; AFNElJ944TGcCwmW/YyUKNF+YNuYvwvpdGPJcJDFQ/h78bDgap/0juSLa0/6r8Ku5fhul8wan4he9MI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfJskJpPdD4gbCSJJKF4OmMWZSxTad75SOFaC81bmBASN+YQlJ
-	1oA7tz92cJ+CBRoFfz13rhLc17GdIgyn6++lAJTn6ufLva8cyQrps7rGegczNz+G/R8QExUvYp9
-	SKcu00lBTxMZyPsKqgTmtfb+cmGzTLjkRKqOt2g/AWN4KP4Oga9u/Lx+F7A==
-X-Gm-Gg: AeBDievz7XWGSbGHQUNJagsXAMSj+CBuwUpSz1RS/ftprtIedbJpLUMfllUx+C8IBXD
-	IvdM5FzTsBT/aXp3Brc5r15dTXJdmKLbwPK3yxpLspEY9a0+sHPRo1CYQSNueVusc4YD6I8PUj3
-	Ra5cruTC9FNAOBUeeRp3cIvg6SNt58GTIiR0UTiA3MO8hRi/I/L+bgCztmydOKyKNuFfR6W9/qX
-	zCmi9qd4S+uASdjNN0LZuLfVk2TviMb8wUSykGnAtpcebSG4lJr4Kc7YqllYX3IWoNPJ8jEUQ34
-	tziLeCuQFP/EylE1Ag6NvqVVGPmfBzroDptOn54YZaOBp45Q8sEKyKJGLjyXmdRqs/1MG6xt+9V
-	rn5RcVXbNbk3y1oHnzrU5N8zmhTuZzSD3EZJif9qcCO1501O2jVEme73uz1R86O4=
-X-Received: by 2002:a05:690c:dd5:b0:7bd:882a:43e0 with SMTP id 00721157ae682-7bdac599075mr9047147b3.27.1777937263380;
-        Mon, 04 May 2026 16:27:43 -0700 (PDT)
-X-Received: by 2002:a05:690c:dd5:b0:7bd:882a:43e0 with SMTP id 00721157ae682-7bdac599075mr9046887b3.27.1777937262923;
-        Mon, 04 May 2026 16:27:42 -0700 (PDT)
-Received: from li-4c4c4544-0032-4210-804c-c3c04f423534.ibm.com ([2600:1700:6476:1430::29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd6652dae3sm55907087b3.8.2026.05.04.16.27.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 16:27:42 -0700 (PDT)
-Message-ID: <2a12f80d489dbf0a5a128294a95e9181e607a5db.camel@redhat.com>
-Subject: Re: [PATCH 1/3] hfs/hfsplus: fix u32 overflow in
- check_and_correct_requested_length
-From: Viacheslav Dubeyko <vdubeyko@redhat.com>
-To: Tristan Madani <tristmd@gmail.com>, Viacheslav Dubeyko
- <slava@dubeyko.com>,  John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Tristan Madani <tristan@talencesecurity.com>, 
-	syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com, 
-	syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
-Date: Mon, 04 May 2026 16:27:40 -0700
-In-Reply-To: <20260501110218.29906-1-tristmd@gmail.com>
-References: <20260501110218.29906-1-tristmd@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.0 (3.60.0-1.fc44app2) 
+	s=arc-20240116; t=1777937357; c=relaxed/simple;
+	bh=2ZEeWJRlASx/z0MrAxgryYwvmf7cezzVkLS6/sdyq5w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=drMwN/pSO7M3qeEUkCRq+DQbSwgRl1L8c9Yd8ZL2QXzm8Tcen+E935Xpnll5iaXMaGh1iFVxzZOqINXgoE5E9ZX6w9iayEcZHrPuRxVslzdDjRj2+DKW81xWnYquxO3Yiq6sGV8HQPPqL6Ovfsn1jTGmXXhipmk/VH5ZfBjrwY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Txu2oCiT; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777937355; x=1809473355;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=2ZEeWJRlASx/z0MrAxgryYwvmf7cezzVkLS6/sdyq5w=;
+  b=Txu2oCiT86gvQcdwS5qmueJIiXn0NaKRld5WrfWUPD8QOEqNLqWO7Se/
+   cVU0Ye/rbpkfI2rQFyEu8U2cFWAmZ78LhV7mmW/xYJPw5UJ9QIvd3ms5d
+   SQf2ro/XHH86jAHIet/4T2iKLnrr+AIUM2XosherUY5tPLCoT14ZzphnV
+   28b1wBGFUZFq/JftE063IBwbKkCZlxr/Wsn9omg0s3i6no3IPiI7ze4e7
+   ZSyBwa9EJHWqX4kD+QoegESBnsgFLYBnp7R1QSmDDCGXrmVv9YNw2W3Wg
+   YdN8fPT3Pf+x2LJ+UV0Fl1JljM5U5ibYFWavQH2la6sFUlj1pPprek4Al
+   A==;
+X-CSE-ConnectionGUID: SKLfRvqUTsuB+PYzLjPYWg==
+X-CSE-MsgGUID: vAgCZOSYS/WLZPfOh6p9sQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="89497277"
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="89497277"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 16:29:14 -0700
+X-CSE-ConnectionGUID: BFjMmAb/Qcur+Ilvs3qsFA==
+X-CSE-MsgGUID: bLHzTB8SSWyB5EoD5uDuKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="239626114"
+Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 16:29:14 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] drm/ttm: Drop tt->restore after successful restore
+Date: Mon,  4 May 2026 16:29:09 -0700
+Message-Id: <20260504232910.3249376-2-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260504232910.3249376-1-matthew.brost@intel.com>
+References: <20260504232910.3249376-1-matthew.brost@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 52B7E4C4CE1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 761A94C4D0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243931-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.intel.com,amd.com,intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com,physik.fu-berlin.de,vivo.com];
+	TAGGED_FROM(0.00)[bounces-243932-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[redhat.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vdubeyko@redhat.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6df204b70bf3261691c5,e76bf3d19b85350571ac];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,syzkaller.appspot.com:url,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email]
 
-On Fri, 2026-05-01 at 11:02 +0000, Tristan Madani wrote:
-> From: Tristan Madani <tristan@talencesecurity.com>
->=20
-> check_and_correct_requested_length() compares (off + len) against
-> node_size using u32 arithmetic.  When the caller passes a large len
-> value (e.g. from an underflowed subtraction in hfs_brec_remove()),
-> off + len can wrap past 2^32 and produce a small result, causing the
-> bounds check to pass when it should fail.
->=20
-> For example, with off=3D14 and len=3D0xFFFFFFF2 (underflowed from
-> data_off - keyoffset - size in hfs_brec_remove), off + len wraps to 6,
-> which is less than a typical node_size of 512, so the check passes and
-> the subsequent memmove reads ~4GB past the node buffer.
->=20
-> Fix this by comparing len against (node_size - off) instead.  Since
-> is_bnode_offset_valid() already guarantees off < node_size before this
-> point, the subtraction cannot underflow.
->=20
-> Reported-by: syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D6df204b70bf3261691c5
-> Tested-by: syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com
-> Reported-by: syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3De76bf3d19b85350571ac
-> Tested-by: syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
-> Fixes: a431930c9bac ("hfs: fix slab-out-of-bounds in hfs_bnode_read()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> ---
->  fs/hfs/bnode.c          | 2 +-
->  fs/hfsplus/hfsplus_fs.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-> index 13d58c51fc46b..c00645a4a5733 100644
-> --- a/fs/hfs/bnode.c
-> +++ b/fs/hfs/bnode.c
-> @@ -41,7 +41,7 @@ u32 check_and_correct_requested_length(struct hfs_bnode=
- *node, u32 off, u32 len)
-> =20
->  	node_size =3D node->tree->node_size;
-> =20
-> -	if ((off + len) > node_size) {
-> +	if (len > node_size - off) {
+ttm_pool_restore_and_alloc() can successfully complete the restore
+process via ttm_pool_restore_commit(), but tt->restore is not dropped
+afterward. As a result, subsequent backup/restore flows observe what
+appears to be a completed restore, while in reality shmem handles are
+still installed in tt->pages, leading to the stack trace below.
 
-I don't agree with likewise change. Probably, we need to have:
+Fix this by freeing and dropping tt->restore in
+ttm_pool_restore_and_alloc() upon successful completion of the restore.
 
-(u64)off + len
+20545 [  309.784531] RIP: 0010:sg_alloc_append_table_from_pages+0x38c/0x490
+20547 [  309.809570] RSP: 0018:ffffc9000623b838 EFLAGS: 00010206
+20548 [  309.814827] RAX: 0000000000001000 RBX: ffff88816e42a160 RCX: 0000000000000000
+20549 [  309.821986] RDX: 0000000000002000 RSI: 0000000000000003 RDI: 0000000000001000
+20550 [  309.829147] RBP: ffff88816e42a168 R08: 0000000000000002 R09: 000000007ffff000
+20551 [  309.836310] R10: ffffc9000623b928 R11: 0000000000000000 R12: 000000007ffff000
+20552 [  309.843471] R13: ffff88815ba5a100 R14: 0000000000000000 R15: 0000000000000001
+20553 [  309.850634] FS:  00007f9ff305e700(0000) GS:ffff888276c94000(0000) knlGS:0000000000000000
+20554 [  309.858749] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+20555 [  309.864519] CR2: 00007f9fca701000 CR3: 00000001565e2005 CR4: 0000000008f70ef0
+20556 [  309.871678] PKRU: 55555558
+20557 [  309.874403] Call Trace:
+20558 [  309.876866]  <TASK>
+20559 [  309.878988]  sg_alloc_table_from_pages_segment+0x60/0x100
+20560 [  309.884415]  ? ttm_resource_manager_usage+0x36/0x60 [ttm]
+20561 [  309.889845]  ? xe_tt_map_sg+0x7d/0xd0 [xe]
+20562 [  309.894045]  xe_tt_map_sg+0x7d/0xd0 [xe]
+20563 [  309.898037]  xe_bo_move+0x927/0xaa0 [xe]
+20564 [  309.902029]  ttm_bo_handle_move_mem+0xba/0x170 [ttm]
+20565 [  309.907022]  ttm_bo_validate+0xbe/0x190 [ttm]
+20566 [  309.911405]  xe_bo_validate+0x9a/0x120 [xe]
+20567 [  309.915663]  xe_gpuvm_validate+0xd9/0x140 [xe]
+20568 [  309.920206]  drm_gpuvm_validate+0x2f0/0x5b0 [drm_gpuvm]
+20569 [  309.925459]  ? drm_exec_lock_obj+0x63/0x210 [drm_exec]
+20570 [  309.930627]  xe_vm_validate_rebind+0x46/0xb0 [xe]
+20571 [  309.935428]  xe_exec_fn+0x20/0x40 [xe]
+20572 [  309.939249]  drm_gpuvm_exec_lock+0x78/0xc0 [drm_gpuvm]
+20573 [  309.944410]  xe_validation_exec_lock+0x5a/0xa0 [xe]
+20574 [  309.949385]  xe_exec_ioctl+0x806/0xc30 [xe]
+20575 [  309.953639]  ? ttwu_queue_wakelist+0xd9/0xf0
+20576 [  309.957935]  ? __pfx_xe_exec_fn+0x10/0x10 [xe]
+20577 [  309.962449]  ? __wake_up_common+0x73/0xa0
+20578 [  309.966482]  ? __pfx_xe_exec_ioctl+0x10/0x10 [xe]
+20579 [  309.971263]  drm_ioctl_kernel+0xa3/0x100
+20580 [  309.975209]  drm_ioctl+0x213/0x440
+20581 [  309.978637]  ? __pfx_xe_exec_ioctl+0x10/0x10 [xe]
+20582 [  309.983415]  xe_drm_ioctl+0x67/0xd0 [xe]
+20583 [  309.987408]  __x64_sys_ioctl+0x7f/0xd0
 
-Thanks,
-Slava.
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: b63d715b8090 ("drm/ttm/pool, drm/ttm/tt: Provide a helper to shrink pages")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ drivers/gpu/drm/ttm/ttm_pool.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
->  		u32 new_len =3D node_size - off;
-> =20
->  		pr_err("requested length has been corrected: "
-> diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-> index 3545b8dbf11c5..10b2dda3f8044 100644
-> --- a/fs/hfsplus/hfsplus_fs.h
-> +++ b/fs/hfsplus/hfsplus_fs.h
-> @@ -600,7 +600,7 @@ u32 check_and_correct_requested_length(struct hfs_bno=
-de *node, u32 off, u32 len)
-> =20
->  	node_size =3D node->tree->node_size;
-> =20
-> -	if ((off + len) > node_size) {
-> +	if (len > node_size - off) {
->  		u32 new_len =3D node_size - off;
-> =20
->  		pr_err("requested length has been corrected: "
+diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+index 278bbe7a11ad..084768d6d9b1 100644
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -931,8 +931,11 @@ int ttm_pool_restore_and_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 			if (ret)
+ 				return ret;
+ 		}
+-		if (!alloc.remaining_pages)
++		if (!alloc.remaining_pages) {
++			kfree(tt->restore);
++			tt->restore = NULL;
+ 			return 0;
++		}
+ 	}
+ 
+ 	return __ttm_pool_alloc(pool, tt, ctx, &alloc, restore);
+-- 
+2.34.1
 
 
