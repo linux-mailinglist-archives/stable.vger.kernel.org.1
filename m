@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKLhDX6s+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:06 +0200
+	id aNeVJYes+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171B04BF614
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992FA4BF64C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8474630229CC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A9B19304434B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8453DE43C;
-	Mon,  4 May 2026 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7733DEAC8;
+	Mon,  4 May 2026 14:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GIiAh7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSL+uzFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F51B29E116;
-	Mon,  4 May 2026 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7193DE45D;
+	Mon,  4 May 2026 14:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904530; cv=none; b=VAsSZ/aBaOQcyqH1290lLy7LoW/PkumWsqsY015Q4IbucasEUnhjUkEL/wX3vTMiFX5qWKFG3iVSP1bSdCLX0jpyJNRNzSScD+OkTVcsguMvEcZXvgu1sF8k+wQUyHpgjCFcnCMTsPvqcqYLaiLN3TWN08gy5gTHZ169KAI8cpw=
+	t=1777904031; cv=none; b=rBwNMxv3qFbluDnRYLPfGDPRpBFKNs0l0cjQWA6RtKOLmZyz4jSfid8Sre1bhGY/8Dbs/qjEACCzrtsk5P7xlUBvdLQzk+NQU0eU4I/3M7K4tq9jOWSEkSfagRuyi3s1JdiiVz7jTXpMiAYmzBu+jKJfbByagomP8OUc+40Lb9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904530; c=relaxed/simple;
-	bh=z64q7lLUl+3k9AXvUlMJ10Z1LEeDSR+46HnNd0CWyk4=;
+	s=arc-20240116; t=1777904031; c=relaxed/simple;
+	bh=k3nj/+pWAgo+Ez5leC6z5w2NdogqenHNBUoCjn+cX5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sA5XAz6X8qLCAi4yb0EeEFU4NzQQqZPZkMaGTtoxlPe3vFtgCOUlxhZMVbiYlceJVfVG6oty/rwMvMRq51/KeKcDOxkme+FY8Qd8rdNayS6aBm/oeL4VpCcIzXVUKfYvLOtEf/LCt+y7iTIiuYr3R8kTvHzuApxXeXWlqRGkM84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GIiAh7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B550C2BCB8;
-	Mon,  4 May 2026 14:22:09 +0000 (UTC)
+	 MIME-Version; b=d7JUTaBNqHPmfq/7CTb/WsHFxZOkNIv7bkiVe2GE6fVHg2ODdmVrExhxdaxo/bp+EUhFqq9rhVC3cgfIgpMEX3uRhsWkIae/893mrzb5UhMtqXUybNN+c+I50KUKa9Uc5AcBfZgcTg6Zt/48hN/qHvSGmXFkw11WQwXgdfBSsKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSL+uzFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A23C2BCC4;
+	Mon,  4 May 2026 14:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904530;
-	bh=z64q7lLUl+3k9AXvUlMJ10Z1LEeDSR+46HnNd0CWyk4=;
+	s=korg; t=1777904031;
+	bh=k3nj/+pWAgo+Ez5leC6z5w2NdogqenHNBUoCjn+cX5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GIiAh7CUkgoB0ngmRbHqLWMe6nDa/chqaE/8I4vNlHyribhROjOH3UgUPUofpnoO
-	 boiDeXIv4Ek8H5SZW5e076wkbcqJBg9YCKgz2zKPU6khtKmBQB84NXXFTswsvtvK4z
-	 c6gGOAs8D3RC4XutGhli8zKywin2JaHlAiiWZCj8=
+	b=aSL+uzFnjOH/tXNqkY1DrAGOF8dV43RpOCCTfCjpraps2r4Jpc3/CZOzAOkZlaXhj
+	 pRvlNey9FfhKKu2X2v+zThNhzv9RvcANMXWrLW1Ttq2iX0yNN1hBKkmxgdhN7RN00q
+	 ellaAkQjIT3GGx0POX53/GWyM0unrE4ReCCxN2c4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 075/215] ALSA: caiaq: Fix control_put() result and cache rollback
-Date: Mon,  4 May 2026 15:51:34 +0200
-Message-ID: <20260504135132.905910890@linuxfoundation.org>
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Justinien Bouron <jbouron@amazon.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.18 155/275] tpm2-sessions: Fix missing tpm_buf_destroy() in tpm2_read_public()
+Date: Mon,  4 May 2026 15:51:35 +0200
+Message-ID: <20260504135148.710193991@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,159 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 171B04BF614
+X-Rspamd-Queue-Id: 992FA4BF64C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243691-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243495-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mpg.de:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Gunnar Kudrjavets <gunnarku@amazon.com>
 
-commit a3542d1b30f92307f545f2def14e8d988dffdff0 upstream.
+commit f0f75a3d98b7959a8677b6363e23190f3018636b upstream.
 
-control_put() always returns 1 and updates cdev->control_state[]
-before sending the USB command. It also ignores transport errors
-from usb_bulk_msg(), snd_usb_caiaq_send_command(), and
-snd_usb_caiaq_send_command_bank().
+tpm2_read_public() calls tpm_buf_init() but fails to call
+tpm_buf_destroy() on two exit paths, leaking a page allocation:
 
-That breaks the ALSA .put() contract and can leave control_get()
-reporting a cached value the device never accepted.
+1. When name_size() returns an error (unrecognized hash algorithm),
+   the function returns directly without destroying the buffer.
 
-Return 0 for unchanged values, propagate transport failures,
-and restore the cached byte when the write fails.
+2. On the success path, the buffer is never destroyed before
+   returning.
 
-Fixes: 8e3cd08ed8e59 ("[ALSA] caiaq - add control API and more input features")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+All other error paths in the function correctly call
+tpm_buf_destroy() before returning.
+
+Fix both by adding the missing tpm_buf_destroy() calls.
+
+Cc: stable@vger.kernel.org # v6.19+
+Fixes: bda1cbf73c6e ("tpm2-sessions: Fix tpm2_read_public range checks")
+Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Reviewed-by: Justinien Bouron <jbouron@amazon.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/control.c |   54 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 17 deletions(-)
+ drivers/char/tpm/tpm2-sessions.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/usb/caiaq/control.c
-+++ b/sound/usb/caiaq/control.c
-@@ -87,6 +87,7 @@ static int control_put(struct snd_kcontr
- 	struct snd_usb_caiaqdev *cdev = caiaqdev(chip->card);
- 	int pos = kcontrol->private_value;
- 	int v = ucontrol->value.integer.value[0];
-+	int ret;
- 	unsigned char cmd;
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -203,8 +203,10 @@ static int tpm2_read_public(struct tpm_c
+ 	rc = tpm_buf_read_u16(&buf, &offset);
+ 	name_size_alg = name_size(&buf.data[offset]);
  
- 	switch (cdev->chip.usb_id) {
-@@ -103,6 +104,10 @@ static int control_put(struct snd_kcontr
+-	if (name_size_alg < 0)
++	if (name_size_alg < 0) {
++		tpm_buf_destroy(&buf);
+ 		return name_size_alg;
++	}
  
- 	if (pos & CNT_INTVAL) {
- 		int i = pos & ~CNT_INTVAL;
-+		unsigned char old = cdev->control_state[i];
-+
-+		if (old == v)
-+			return 0;
- 
- 		cdev->control_state[i] = v;
- 
-@@ -113,10 +118,11 @@ static int control_put(struct snd_kcontr
- 			cdev->ep8_out_buf[0] = i;
- 			cdev->ep8_out_buf[1] = v;
- 
--			usb_bulk_msg(cdev->chip.dev,
--				     usb_sndbulkpipe(cdev->chip.dev, 8),
--				     cdev->ep8_out_buf, sizeof(cdev->ep8_out_buf),
--				     &actual_len, 200);
-+			ret = usb_bulk_msg(cdev->chip.dev,
-+					   usb_sndbulkpipe(cdev->chip.dev, 8),
-+					   cdev->ep8_out_buf,
-+					   sizeof(cdev->ep8_out_buf),
-+					   &actual_len, 200);
- 		} else if (cdev->chip.usb_id ==
- 			USB_ID(USB_VID_NATIVEINSTRUMENTS, USB_PID_MASCHINECONTROLLER)) {
- 
-@@ -128,21 +134,36 @@ static int control_put(struct snd_kcontr
- 				offset = MASCHINE_BANK_SIZE;
- 			}
- 
--			snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
--					cdev->control_state + offset,
--					MASCHINE_BANK_SIZE);
-+			ret = snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
-+							      cdev->control_state + offset,
-+							      MASCHINE_BANK_SIZE);
- 		} else {
--			snd_usb_caiaq_send_command(cdev, cmd,
--					cdev->control_state, sizeof(cdev->control_state));
-+			ret = snd_usb_caiaq_send_command(cdev, cmd,
-+							 cdev->control_state,
-+							 sizeof(cdev->control_state));
- 		}
--	} else {
--		if (v)
--			cdev->control_state[pos / 8] |= 1 << (pos % 8);
--		else
--			cdev->control_state[pos / 8] &= ~(1 << (pos % 8));
- 
--		snd_usb_caiaq_send_command(cdev, cmd,
--				cdev->control_state, sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[i] = old;
-+			return ret;
-+		}
-+	} else {
-+		int idx = pos / 8;
-+		unsigned char mask = 1 << (pos % 8);
-+		unsigned char old = cdev->control_state[idx];
-+		unsigned char val = v ? (old | mask) : (old & ~mask);
-+
-+		if (old == val)
-+			return 0;
-+
-+		cdev->control_state[idx] = val;
-+		ret = snd_usb_caiaq_send_command(cdev, cmd,
-+						 cdev->control_state,
-+						 sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[idx] = old;
-+			return ret;
-+		}
+ 	if (rc != name_size_alg) {
+ 		tpm_buf_destroy(&buf);
+@@ -217,6 +219,7 @@ static int tpm2_read_public(struct tpm_c
  	}
  
- 	return 1;
-@@ -640,4 +661,3 @@ int snd_usb_caiaq_control_init(struct sn
- 
- 	return ret;
+ 	memcpy(name, &buf.data[offset], rc);
++	tpm_buf_destroy(&buf);
+ 	return name_size_alg;
  }
--
+ #endif /* CONFIG_TCG_TPM2_HMAC */
 
 
 
