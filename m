@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-243480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOrUHSmq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:09 +0200
+	id YKM8Mx2u+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79684BEEE1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52B34BFA6D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D46ED305CB80
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 153FB301A27D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15583DE42E;
-	Mon,  4 May 2026 14:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDDC3DE43B;
+	Mon,  4 May 2026 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s0/T2GU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7g238TN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B67377575;
-	Mon,  4 May 2026 14:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634821A6827;
+	Mon,  4 May 2026 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903992; cv=none; b=hb/PhO3m7e6Xw+Nay1lpbctSSv2DvxdsMRN3vPh4AurG28mppyrJNCOD05CgFicBJbqtcKulKSmGPuw7/d02rCzZXVTx1Kw3+iF23C3LeMw70mX+Ln2q+nfbbI5yepZitBU0+w7sX6KfkSodc0KSUUpxAoOVBCWj6XiJck1wj6Q=
+	t=1777904455; cv=none; b=ie7GMhRgEZDEdXpeiHB9vp/eoBZkblEMsrQ4xk04wVETsHEqKtQcaywd0FSaePX6f6DuXZ6qS9b8tJJH6yZJkFNab2PU55YDeyB5dNXDCEkgDbkLvC4TVEXkQnyLd1zDYy8dteAAjXyXTbXX21NSwhQjxOorebNkhWCVFvJM2nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903992; c=relaxed/simple;
-	bh=PiWrmpMgBguGHwWaU9DTf2axadua6xQAn+fnOzWxiAg=;
+	s=arc-20240116; t=1777904455; c=relaxed/simple;
+	bh=Nlyi+REnVKECDy1Et6VIDmQDnqY4o22J1ufYCruoi4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTAI8i0xCxnpB56ZbTYC2/YySEnReui0enIuRkW89CvTuiULrCPys8aGoKgBxzERIpfvly7hG66orNxorYU7UPKPYqJu5AxvLMPk0G1x/X6Iq59Om8PktpsG7MCZeRLYnv5g6rvJSVStmN4BNWOj8dvYjAi7NnvFfmERcG+aBoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s0/T2GU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F10C2BCB8;
-	Mon,  4 May 2026 14:13:11 +0000 (UTC)
+	 MIME-Version; b=KjvzRdFcNT7+HxsQGDTsB+WhfqRL13Ku9Vluph0yDLbQJTfJCoPEphTqT0UFNHq6BCAVbGVRHKvXB4dco6bx9Xhme+SDAHXhtQAhKrwkadTFV1BT1Yb9sm2h9ERFG3X8MRvlmSHadan9ZJ0c03iROGAFzGE++yy0xPpwtagJhzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7g238TN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC876C2BCC4;
+	Mon,  4 May 2026 14:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903992;
-	bh=PiWrmpMgBguGHwWaU9DTf2axadua6xQAn+fnOzWxiAg=;
+	s=korg; t=1777904455;
+	bh=Nlyi+REnVKECDy1Et6VIDmQDnqY4o22J1ufYCruoi4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2s0/T2GUyyDKYgxHTW3KM08NVucEJ41tVnRqy8fiGodhWzD1u3lBmpSBCkbEzTo/2
-	 XQzqQF9I9KrasovzIegzt4/Go2WZ06UzYpstkR9TXRoKudhhXWHWcSH1J9XyvcW0mz
-	 t0Xhjj0Yik5Ks+ipdVx/n9NhVJE47ASuRSW24bO4=
+	b=l7g238TNlDMpRK1XPv39G0O1zniVr8ffJhPY9oaJ63tMZwcY5RrN0kxhPxDcpjuUK
+	 cPznHgpwPM60K4ZM156MsNcJrA583IA4SCBdvzR0ij0DQ1GNgE+Yoy0e/smc/ETJ9y
+	 kiy6E5v73G1QONPpYhBKddl4Wrn1SvVBrzdCPKQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 124/275] net: bridge: use a stable FDB dst snapshot in RCU readers
-Date: Mon,  4 May 2026 15:51:04 +0200
-Message-ID: <20260504135147.511497115@linuxfoundation.org>
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.12 046/215] PCI: endpoint: pci-epf-ntb: Remove duplicate resource teardown
+Date: Mon,  4 May 2026 15:51:05 +0200
+Message-ID: <20260504135131.862575947@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,208 +64,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C79684BEEE1
+X-Rspamd-Queue-Id: B52B34BFA6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243480-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,nvidia.com,blackwall.org,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243661-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,valinux.co.jp:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit df4601653201de21b487c3e7fffd464790cab808 upstream.
+commit 3446beddba450c8d6f9aca2f028712ac527fead3 upstream.
 
-Local FDB entries can be rewritten in place by `fdb_delete_local()`, which
-updates `f->dst` to another port or to `NULL` while keeping the entry
-alive. Several bridge RCU readers inspect `f->dst`, including
-`br_fdb_fillbuf()` through the `brforward_read()` sysfs path.
+epf_ntb_epc_destroy() duplicates the teardown that the caller is
+supposed to do later. This leads to an oops when .allow_link fails or
+when .drop_link is performed. Remove the helper.
 
-These readers currently load `f->dst` multiple times and can therefore
-observe inconsistent values across the check and later dereference.
-In `br_fdb_fillbuf()`, this means a concurrent local-FDB update can change
-`f->dst` after the NULL check and before the `port_no` dereference,
-leading to a NULL-ptr-deref.
+Also drop pci_epc_put(). EPC device refcounting is tied to configfs EPC
+group lifetime, and pci_epc_put() in the .drop_link path is sufficient.
 
-Fix this by taking a single `READ_ONCE()` snapshot of `f->dst` in each
-affected RCU reader and using that snapshot for the rest of the access
-sequence. Also publish the in-place `f->dst` updates in `fdb_delete_local()`
-with `WRITE_ONCE()` so the readers and writer use matching access patterns.
-
-Fixes: 960b589f86c7 ("bridge: Properly check if local fdb entry can be deleted in br_fdb_change_mac_address")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/6570fabb85ecadb8baaf019efe856f407711c7b9.1776043229.git.zcliangcn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8b821cf76150 ("PCI: endpoint: Add EP function driver to provide NTB functionality")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260226084142.2226875-3-den@valinux.co.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_arp_nd_proxy.c |    8 +++++---
- net/bridge/br_fdb.c          |   28 ++++++++++++++++++----------
- 2 files changed, 23 insertions(+), 13 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-ntb.c |   56 ---------------------------
+ 1 file changed, 2 insertions(+), 54 deletions(-)
 
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -202,11 +202,12 @@ void br_do_proxy_suppress_arp(struct sk_
+--- a/drivers/pci/endpoint/functions/pci-epf-ntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-ntb.c
+@@ -1495,47 +1495,6 @@ err_alloc_peer_mem:
+ }
  
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
+ /**
+- * epf_ntb_epc_destroy_interface() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
+- * @type: PRIMARY interface or SECONDARY interface
+- *
+- * Unbind NTB function device from EPC and relinquish reference to pci_epc
+- * for each of the interface.
+- */
+-static void epf_ntb_epc_destroy_interface(struct epf_ntb *ntb,
+-					  enum pci_epc_interface_type type)
+-{
+-	struct epf_ntb_epc *ntb_epc;
+-	struct pci_epc *epc;
+-	struct pci_epf *epf;
+-
+-	if (type < 0)
+-		return;
+-
+-	epf = ntb->epf;
+-	ntb_epc = ntb->epc[type];
+-	if (!ntb_epc)
+-		return;
+-	epc = ntb_epc->epc;
+-	pci_epc_remove_epf(epc, epf, type);
+-	pci_epc_put(epc);
+-}
+-
+-/**
+- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
+- *
+- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
+- */
+-static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
+-{
+-	enum pci_epc_interface_type type;
+-
+-	for (type = PRIMARY_INTERFACE; type <= SECONDARY_INTERFACE; type++)
+-		epf_ntb_epc_destroy_interface(ntb, type);
+-}
+-
+-/**
+  * epf_ntb_epc_create_interface() - Create and initialize NTB EPC interface
+  * @ntb: NTB device that facilitates communication between HOST1 and HOST2
+  * @epc: struct pci_epc to which a particular NTB interface should be associated
+@@ -1614,15 +1573,8 @@ static int epf_ntb_epc_create(struct epf
  
- 			if ((p && (p->flags & BR_PROXYARP)) ||
--			    (f->dst && (f->dst->flags & BR_PROXYARP_WIFI)) ||
--			    br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			    (dst && (dst->flags & BR_PROXYARP_WIFI)) ||
-+			    br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (!vid)
- 					br_arp_send(br, p, skb->dev, sip, tip,
- 						    sha, n->ha, sha, 0, 0);
-@@ -470,9 +471,10 @@ void br_do_suppress_nd(struct sk_buff *s
+ 	ret = epf_ntb_epc_create_interface(ntb, epf->sec_epc,
+ 					   SECONDARY_INTERFACE);
+-	if (ret) {
++	if (ret)
+ 		dev_err(dev, "SECONDARY intf: Fail to create NTB EPC\n");
+-		goto err_epc_create;
+-	}
+-
+-	return 0;
+-
+-err_epc_create:
+-	epf_ntb_epc_destroy_interface(ntb, PRIMARY_INTERFACE);
  
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
--			if (br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			if (br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n,
- 						   skb->vlan_proto,
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -236,6 +236,7 @@ struct net_device *br_fdb_find_port(cons
- 				    const unsigned char *addr,
- 				    __u16 vid)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct net_device *dev = NULL;
- 	struct net_bridge *br;
-@@ -248,8 +249,11 @@ struct net_device *br_fdb_find_port(cons
- 	br = netdev_priv(br_dev);
- 	rcu_read_lock();
- 	f = br_fdb_find_rcu(br, addr, vid);
--	if (f && f->dst)
--		dev = f->dst->dev;
-+	if (f) {
-+		dst = READ_ONCE(f->dst);
-+		if (dst)
-+			dev = dst->dev;
-+	}
- 	rcu_read_unlock();
- 
- 	return dev;
-@@ -346,7 +350,7 @@ static void fdb_delete_local(struct net_
- 		vg = nbp_vlan_group(op);
- 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
- 		    (!vid || br_vlan_find(vg, vid))) {
--			f->dst = op;
-+			WRITE_ONCE(f->dst, op);
- 			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 			return;
- 		}
-@@ -357,7 +361,7 @@ static void fdb_delete_local(struct net_
- 	/* Maybe bridge device has same hw addr? */
- 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
- 	    (!vid || (v && br_vlan_should_use(v)))) {
--		f->dst = NULL;
-+		WRITE_ONCE(f->dst, NULL);
- 		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 		return;
+ 	return ret;
+ }
+@@ -1887,7 +1839,7 @@ static int epf_ntb_bind(struct pci_epf *
+ 	ret = epf_ntb_init_epc_bar(ntb);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to create NTB EPC\n");
+-		goto err_bar_init;
++		return ret;
  	}
-@@ -928,6 +932,7 @@ int br_fdb_test_addr(struct net_device *
- int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 		   unsigned long maxnum, unsigned long skip)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct __fdb_entry *fe = buf;
- 	unsigned long delta;
-@@ -944,7 +949,8 @@ int br_fdb_fillbuf(struct net_bridge *br
- 			continue;
  
- 		/* ignore pseudo entry for local MAC address */
--		if (!f->dst)
-+		dst = READ_ONCE(f->dst);
-+		if (!dst)
- 			continue;
+ 	ret = epf_ntb_config_spad_bar_alloc_interface(ntb);
+@@ -1909,9 +1861,6 @@ static int epf_ntb_bind(struct pci_epf *
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
  
- 		if (skip) {
-@@ -956,8 +962,8 @@ int br_fdb_fillbuf(struct net_bridge *br
- 		memcpy(fe->mac_addr, f->key.addr.addr, ETH_ALEN);
+-err_bar_init:
+-	epf_ntb_epc_destroy(ntb);
+-
+ 	return ret;
+ }
  
- 		/* due to ABI compat need to split into hi/lo */
--		fe->port_no = f->dst->port_no;
--		fe->port_hi = f->dst->port_no >> 8;
-+		fe->port_no = dst->port_no;
-+		fe->port_hi = dst->port_no >> 8;
+@@ -1927,7 +1876,6 @@ static void epf_ntb_unbind(struct pci_ep
  
- 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
- 		if (!test_bit(BR_FDB_STATIC, &f->flags)) {
-@@ -1083,9 +1089,11 @@ int br_fdb_dump(struct sk_buff *skb,
+ 	epf_ntb_epc_cleanup(ntb);
+ 	epf_ntb_config_spad_bar_free(ntb);
+-	epf_ntb_epc_destroy(ntb);
+ }
  
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
-+		const struct net_bridge_port *dst = READ_ONCE(f->dst);
-+
- 		if (*idx < ctx->fdb_idx)
- 			goto skip;
--		if (filter_dev && (!f->dst || f->dst->dev != filter_dev)) {
-+		if (filter_dev && (!dst || dst->dev != filter_dev)) {
- 			if (filter_dev != dev)
- 				goto skip;
- 			/* !f->dst is a special case for bridge
-@@ -1093,10 +1101,10 @@ int br_fdb_dump(struct sk_buff *skb,
- 			 * Therefore need a little more filtering
- 			 * we only want to dump the !f->dst case
- 			 */
--			if (f->dst)
-+			if (dst)
- 				goto skip;
- 		}
--		if (!filter_dev && f->dst)
-+		if (!filter_dev && dst)
- 			goto skip;
- 
- 		err = fdb_fill_info(skb, br, f,
+ #define EPF_NTB_R(_name)						\
 
 
 
