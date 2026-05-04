@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-243679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJGvKies+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:39 +0200
+	id 4CBBOx2q+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEC04BF4F6
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7055D4BEECB
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B697B307425F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 51CE8305660F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A783DE452;
-	Mon,  4 May 2026 14:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5E63DDDD6;
+	Mon,  4 May 2026 14:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIL/KGYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nx1ojmap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFA4315785;
-	Mon,  4 May 2026 14:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8F93AA4F8;
+	Mon,  4 May 2026 14:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904499; cv=none; b=bYjhT/UqaIoF1NVlOmDMuWgf/seoOptgsQWHMMWGuCY0G/JO7bTN418YgSNO+jcujcUXk2WySAjnMalgh4Jv+xLdXmb70nDIGTQTmAYJZ95vcf6OHuK1QD7TfJYER8CfwKSy9QoNGmrTyf4QAkPb9YvmLWRzcPnYERXvayGfp9k=
+	t=1777903987; cv=none; b=PzvXVmHegxua/NP5ildNuLP2ircduH6bndZozC6vRu12B/D8cuh6bEtmB6Jlr25QacjcqdPvpOejSxB8ZhCy/8HROPMlouotEIWjJgJBmW5viIQf6CB+BMDaYzd+nhNQG//sI+HmTLxttZLh/DPWLXw9ntoE7vcZ+PUgsHRVumc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904499; c=relaxed/simple;
-	bh=qOsWCpEkM6++30S52srjAbiT72yu9arDEIoMDhWLq8A=;
+	s=arc-20240116; t=1777903987; c=relaxed/simple;
+	bh=fVxatBOyuoatE86nVgoyS+6rOpAEFnaHEEm7A1C3n5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxtaZ/Ye4ogJTIJnBKMmEaKyn1Qj7AbOv3+uvfUnDvUBykI9jSgL9mkxm32jcqEuIDd7PsiTDIy8gwRMPljCKnAyp+pAhvA0oUOAlSPbL/1jtX52rSZOJ2lqBY4rEQ/1Neu55Es80FDBANNxH1KoCSGBGAX8sufSyiMETPstCXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIL/KGYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48FFC2BCB8;
-	Mon,  4 May 2026 14:21:38 +0000 (UTC)
+	 MIME-Version; b=e3e1N9Hv7pJ9/5hwXYTNY2e75eva04XJT8EgRCjBfwXm2rA8OTvmFNUhV9kl8YxWor2WjsdYV0y7P2a9KBiU2/u/fyyDeOKrGkkfbLk8YEwMbIjdx6m1mTxQaCWSPS94ijwbQGVtndYeUoMN/tz7N6uM+8CAWuawTd985xX4F/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nx1ojmap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3A7C2BCB8;
+	Mon,  4 May 2026 14:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904499;
-	bh=qOsWCpEkM6++30S52srjAbiT72yu9arDEIoMDhWLq8A=;
+	s=korg; t=1777903987;
+	bh=fVxatBOyuoatE86nVgoyS+6rOpAEFnaHEEm7A1C3n5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIL/KGYAKvut8GA5aQEx6AGkAX1eyjOShPu7hjVdWhhn+ymD1njkH3jUTLijjkxUE
-	 nZUEBRYipvSJ+wTTRdI5aCOeq6aDAiIIKmfXVqMvIoE6riC05tmBAEePUPR8rPT1+N
-	 31vPhZHjqwBUX1HGK35G9fCM38laAPjDQxrbn8wI=
+	b=Nx1ojmapYdPlMjz0y9y7/j796pjNKyr60qdlSHGIJg1u0aN8SObO8zR7R1lMmryad
+	 szlmJcO/bPlO9bIwOGoFLtGBuZphTQMsmc1wSKE2YJRjwfixE29u48WlH4Xp0oGcB/
+	 IRtuEVHQsdQqFx2prSsH8ACr0l09kzaa5fCX3lNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 061/215] nvme-pci: add NVME_QUIRK_DISABLE_WRITE_ZEROES for Kingston OM3SGP4
+	linux-fsdevel@vger.kernel.org,
+	linux-unionfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org,
+	Amir Goldstein <amir73il@gmail.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.18 140/275] fs: prepare for adding LSM blob to backing_file
 Date: Mon,  4 May 2026 15:51:20 +0200
-Message-ID: <20260504135132.402722742@linuxfoundation.org>
+Message-ID: <20260504135148.103200544@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +67,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4CEC04BF4F6
+X-Rspamd-Queue-Id: 7055D4BEECB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,lists.ozlabs.org,gmail.com,hallyn.com,paul-moore.com];
+	TAGGED_FROM(0.00)[bounces-243478-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243679-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,paul-moore.com:email,hallyn.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ozlabs.org:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Beckett <bob.beckett@collabora.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit a8eebf9699d69987cc49cec4e4fdb4111ab32423 upstream.
+commit 880bd496ec72a6dcb00cb70c430ef752ba242ae7 upstream.
 
-The Kingston OM3SGP42048K2-A00 (PCI ID 2646:502f) firmware has a race
-condition when processing concurrent write zeroes and DSM (discard)
-commands, causing spurious "LBA Out of Range" errors and IOMMU page
-faults at address 0x0.
-
-The issue is reliably triggered by running two concurrent mkfs commands
-on different partitions of the same drive, which generates interleaved
-write zeroes and discard operations.
-
-Disable write zeroes for this device, matching the pattern used for
-other Kingston OM* drives that have similar firmware issues.
+In preparation to adding LSM blob to backing_file struct, factor out
+helpers init_backing_file() and backing_file_free().
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
-Assisted-by: claude-opus-4-6-v1
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-erofs@lists.ozlabs.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
+[PM: use the term "LSM blob", fix comment style to match file]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/file_table.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3716,6 +3716,8 @@ static const struct pci_device_id nvme_i
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x2646, 0x501E),   /* KINGSTON OM3PGP4xxxxQ OS21011 NVMe SSD */
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
-+	{ PCI_DEVICE(0x2646, 0x502F),   /* KINGSTON OM3SGP4xxxxK NVMe SSD */
-+		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x1f40, 0x1202),   /* Netac Technologies Co. NV3000 NVMe SSD */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1f40, 0x5236),   /* Netac Technologies Co. NV7000 NVMe SSD */
+--- a/fs/file_table.c
++++ b/fs/file_table.c
+@@ -66,6 +66,12 @@ void backing_file_set_user_path(struct f
+ }
+ EXPORT_SYMBOL_GPL(backing_file_set_user_path);
+ 
++static inline void backing_file_free(struct backing_file *ff)
++{
++	path_put(&ff->user_path);
++	kmem_cache_free(bfilp_cachep, ff);
++}
++
+ static inline void file_free(struct file *f)
+ {
+ 	security_file_free(f);
+@@ -73,8 +79,7 @@ static inline void file_free(struct file
+ 		percpu_counter_dec(&nr_files);
+ 	put_cred(f->f_cred);
+ 	if (unlikely(f->f_mode & FMODE_BACKING)) {
+-		path_put(backing_file_user_path(f));
+-		kmem_cache_free(bfilp_cachep, backing_file(f));
++		backing_file_free(backing_file(f));
+ 	} else {
+ 		kmem_cache_free(filp_cachep, f);
+ 	}
+@@ -283,6 +288,12 @@ struct file *alloc_empty_file_noaccount(
+ 	return f;
+ }
+ 
++static int init_backing_file(struct backing_file *ff)
++{
++	memset(&ff->user_path, 0, sizeof(ff->user_path));
++	return 0;
++}
++
+ /*
+  * Variant of alloc_empty_file() that allocates a backing_file container
+  * and doesn't check and modify nr_files.
+@@ -305,7 +316,14 @@ struct file *alloc_empty_backing_file(in
+ 		return ERR_PTR(error);
+ 	}
+ 
++	/* The f_mode flags must be set before fput(). */
+ 	ff->file.f_mode |= FMODE_BACKING | FMODE_NOACCOUNT;
++	error = init_backing_file(ff);
++	if (unlikely(error)) {
++		fput(&ff->file);
++		return ERR_PTR(error);
++	}
++
+ 	return &ff->file;
+ }
+ 
 
 
 
