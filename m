@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNKGBrlc+GnatQIAu9opvQ
-	(envelope-from <stable+bounces-242914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:45:45 +0200
+	id cLSzBLxc+GnatQIAu9opvQ
+	(envelope-from <stable+bounces-242915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:45:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9619B4BA73C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B22D4BA744
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BCE19300A51E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:45:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8085E3005EB2
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071F730F7FF;
-	Mon,  4 May 2026 08:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37962E6CB3;
+	Mon,  4 May 2026 08:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyYqHuJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6OVXNAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA7826D4DD
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873E1289E13
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777884339; cv=none; b=I9ndxc4cMuapjcj/s+qkQ8JbYYu8A/ggpA749ge9uLRFTw2McvYwUHm64DT6i6fNP2h8ziFmIZIWYjhhwwBwmdR380C9c3ytqPxQg5orXwbpFAv8dGaFgDbv83f4dQsH00xWG0XsDoWK8d05moAaVuOY80jwJzdxd8HrzVw9iI0=
+	t=1777884343; cv=none; b=pxG78shH8txAFp/1x20Xe0dRbdgn104Fk0wFpBpoyQu5DNenwjh4TeMwWyZZcnAe/fvCZNr/RECAU42WqG9KO/XeCXghh2kR3ed9VHuFMzdWiJIR/NT0l8miKFMdGcO3Iy4Z3CS6kE+AkkUaXXUZAzj37hqwwIJ+rrkW6Z4ySYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777884339; c=relaxed/simple;
-	bh=93UVa0EcPeiv5dmKeFtuf8CjWUMzhaclkYSbeBclzrs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pFGWhPDR91H8ohpClwmuKEwR1yLQlsFYSvCngBYjRUTQVfh6Hps41g+944CD+RdWLbcBkotEe47uFIpahnce3qWQLMJ2VBeHJWNjuGwn+UB9ChjCLsItQENjfve9uuk/Lzm/DGh0Ms/p7zG4sZp6hDxkeO9yN2mdgFsnaFRlIdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyYqHuJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3FCC2BCB8;
-	Mon,  4 May 2026 08:45:38 +0000 (UTC)
+	s=arc-20240116; t=1777884343; c=relaxed/simple;
+	bh=L/40mcABEYuNZ88OU0p1kTwUBwH8ZERmZ/hgMUozE2Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CIaSt96Z2YXKzmZctiQW9JKFLkJ947o/w8qOobYIddPe43bMDTgIoUA8wVhM3aEutGyB1ifByGpoWISgeyzG0yZiSPAm50D+Z0apFok83ZFBGwemcrYOoGAkp2kVGCOWT48cG/mg1fJeQLt3mwLJU3NVd9MpY/B/zjQEg+G5o1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6OVXNAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADB7C2BCB8;
+	Mon,  4 May 2026 08:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777884339;
-	bh=93UVa0EcPeiv5dmKeFtuf8CjWUMzhaclkYSbeBclzrs=;
+	s=korg; t=1777884343;
+	bh=L/40mcABEYuNZ88OU0p1kTwUBwH8ZERmZ/hgMUozE2Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tyYqHuJuoXCyNM9HWrBUZrOab4w7g6FBMPYiTARMJazKevfGl3Z0A6KQGiB2ZNoDC
-	 LxINhc6o40vCizQumGFRr6tmiyZc81Sz6ngpAeD1K1/+7EgPE1VjOFz8dx1VoTFK87
-	 8b2IGx0uZBH1VtQGFZ2+zTSLKEcT4PoTbieErUrU=
-Subject: FAILED: patch "[PATCH] apparmor: use target task's context in apparmor_getprocattr()" failed to apply to 5.15-stable tree
-To: cengiz.can@canonical.com,john.johansen@canonical.com,qsa@qualys.com
+	b=U6OVXNASBaIcF5LWVn7KdJi4XSLlS9LvLWnd8C7sJpdj/ie8tl0DU17vZyDyVY1Vs
+	 bqZlgCFhEaeUnbV21fhy0WIV4YCyB3hbUn2GSzyEGD2yv3x0gZAU76EStGU+JiejvM
+	 nwL1Ki72NuPyVm5m/C5W2/tluhTCwVUxQ7CQwlww=
+Subject: FAILED: patch "[PATCH] Bluetooth: hci_event: fix potential UAF in SSP passkey" failed to apply to 5.15-stable tree
+To: shuvampandey1@gmail.com,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:45:24 +0200
-Message-ID: <2026050424-extended-ship-1e65@gregkh>
+Date: Mon, 04 May 2026 10:45:41 +0200
+Message-ID: <2026050440-overlaid-handpick-7fc8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9619B4BA73C
+X-Rspamd-Queue-Id: 9B22D4BA744
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -67,24 +67,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242914-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242915-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,canonical.com:email,qualys.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,intel.com:email,gregkh:email]
 
 
 The patch below does not apply to the 5.15-stable tree.
@@ -96,10 +97,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4afc61702bdcc3b9b519749ef966cf762a6e7051
+git cherry-pick -x 85fa3512048793076eef658f66489112dcc91993
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050424-extended-ship-1e65@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050440-overlaid-handpick-7fc8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,66 +112,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4afc61702bdcc3b9b519749ef966cf762a6e7051 Mon Sep 17 00:00:00 2001
-From: Cengiz Can <cengiz.can@canonical.com>
-Date: Tue, 10 Feb 2026 11:17:14 +0300
-Subject: [PATCH] apparmor: use target task's context in apparmor_getprocattr()
+From 85fa3512048793076eef658f66489112dcc91993 Mon Sep 17 00:00:00 2001
+From: Shuvam Pandey <shuvampandey1@gmail.com>
+Date: Thu, 9 Apr 2026 00:32:30 +0545
+Subject: [PATCH] Bluetooth: hci_event: fix potential UAF in SSP passkey
+ handlers
 
-apparmor_getprocattr() incorrectly calls task_ctx(current) instead of
-task_ctx(task) when retrieving prev and exec attributes, returning the
-caller's labels rather than the target's.
+hci_conn lookup and field access must be covered by hdev lock in
+hci_user_passkey_notify_evt() and hci_keypress_notify_evt(), otherwise
+the connection can be freed concurrently.
 
-Fix by passing task to task_ctx().
+Extend the hci_dev_lock critical section to cover all conn usage in both
+handlers.
 
-The issue can be reproduced when a process with an onexec transition
-(e.g., configured by a container runtime) is inspected via
-/proc/<pid>/attr/apparmor/exec. The reader's own value is returned
-instead of the target's.
+Keep the existing keypress notification behavior unchanged by routing
+the early exits through a common unlock path.
 
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Fixes: 3b529a7600d8 ("apparmor: move task domain change info to task security")
+Fixes: 92a25256f142 ("Bluetooth: mgmt: Implement support for passkey notification")
 Cc: stable@vger.kernel.org
-Co-developed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
-Co-developed-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index c1d42fc72fdb..d3af2d10fc22 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -822,25 +822,23 @@ static int apparmor_getprocattr(struct task_struct *task, const char *name,
- 				char **value)
- {
- 	int error = -ENOENT;
--	/* released below */
--	const struct cred *cred = get_task_cred(task);
--	struct aa_task_ctx *ctx = task_ctx(current);
- 	struct aa_label *label = NULL;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 83248085dd4f..b2ee6b6a0f56 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5495,9 +5495,11 @@ static void hci_user_passkey_notify_evt(struct hci_dev *hdev, void *data,
  
-+	rcu_read_lock();
- 	if (strcmp(name, "current") == 0)
--		label = aa_get_newest_label(cred_label(cred));
--	else if (strcmp(name, "prev") == 0  && ctx->previous)
--		label = aa_get_newest_label(ctx->previous);
--	else if (strcmp(name, "exec") == 0 && ctx->onexec)
--		label = aa_get_newest_label(ctx->onexec);
-+		label = aa_get_newest_cred_label(__task_cred(task));
-+	else if (strcmp(name, "prev") == 0  && task_ctx(task)->previous)
-+		label = aa_get_newest_label(task_ctx(task)->previous);
-+	else if (strcmp(name, "exec") == 0 && task_ctx(task)->onexec)
-+		label = aa_get_newest_label(task_ctx(task)->onexec);
- 	else
- 		error = -EINVAL;
-+	rcu_read_unlock();
+ 	bt_dev_dbg(hdev, "");
  
- 	if (label)
- 		error = aa_getprocattr(label, value, true);
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
  
- 	aa_put_label(label);
--	put_cred(cred);
- 
- 	return error;
+ 	conn->passkey_notify = __le32_to_cpu(ev->passkey);
+ 	conn->passkey_entered = 0;
+@@ -5506,6 +5508,9 @@ static void hci_user_passkey_notify_evt(struct hci_dev *hdev, void *data,
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
++
++unlock:
++	hci_dev_unlock(hdev);
  }
+ 
+ static void hci_keypress_notify_evt(struct hci_dev *hdev, void *data,
+@@ -5516,14 +5521,16 @@ static void hci_keypress_notify_evt(struct hci_dev *hdev, void *data,
+ 
+ 	bt_dev_dbg(hdev, "");
+ 
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
+ 
+ 	switch (ev->type) {
+ 	case HCI_KEYPRESS_STARTED:
+ 		conn->passkey_entered = 0;
+-		return;
++		goto unlock;
+ 
+ 	case HCI_KEYPRESS_ENTERED:
+ 		conn->passkey_entered++;
+@@ -5538,13 +5545,16 @@ static void hci_keypress_notify_evt(struct hci_dev *hdev, void *data,
+ 		break;
+ 
+ 	case HCI_KEYPRESS_COMPLETED:
+-		return;
++		goto unlock;
+ 	}
+ 
+ 	if (hci_dev_test_flag(hdev, HCI_MGMT))
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_simple_pair_complete_evt(struct hci_dev *hdev, void *data,
 
 
