@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-243291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PndDPun+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:51 +0200
+	id gNurL/6s+GkixwIAu9opvQ
+	(envelope-from <stable+bounces-243544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D195E4BE883
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6974BF809
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A30E8301D226
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 12897300B9F6
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5548E3DE423;
-	Mon,  4 May 2026 14:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A000F3DE428;
+	Mon,  4 May 2026 14:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzPwJYqx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afKTSYT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7EA3DE442;
-	Mon,  4 May 2026 14:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E3535A3AD;
+	Mon,  4 May 2026 14:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903509; cv=none; b=Rf+Nu+OM/3xN8Fp4FWI5cDmWAb9BM0o7P3Dh7NomBswv6zsDcFFnZjQSnOmyYxlUQTQCT6buGDye3u3P3+aihrveLRvWNHs0TMNHmZ9rA1kKg4n+bCumBqbm4bGpcxgSPcmRIaep7+3hFn4u4NuZz9UE9xHpFjd7qLWrTZA9nhM=
+	t=1777904157; cv=none; b=AGsHj6+Y0zgTd4MCXK3TOY8mU/zy1qVZQKgNMhKE6qR+1hNd7CieCVJcl4dN0xdFHp8yGbgKnNA1IXhe3pQ/oDDD+/d26VS3Be8NcnsaOBZHQnXvovi3mXtRxcDlFBJ7McPeVjgUBcoXd5JzMacsUDr6RYCgd/vny1v1wYYHbPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903509; c=relaxed/simple;
-	bh=3HFd60xB4+NLGSPdBj9SnLHKlcyMteAS+S75Va3FLbE=;
+	s=arc-20240116; t=1777904157; c=relaxed/simple;
+	bh=XoWVwZVpAzJmPUcGeKNKYk2tnAZzE9rdKGxdpYidFU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FAcsBooqbChEO1bb6xpgho6VMl2r7kSeI04yMcobAmCj6sPR74yZ4FwddcW9/1uPYJDcEGt8PLzMKi5xYxspUD+p7VM/OHYuRtGmRS3nx+7Bfg62hmNedWFLKA3f4tgaiv15LGeb8OezlUynrY2Hd6RCpLW9CyZTfO73fVmpm3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzPwJYqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E07C2BCC4;
-	Mon,  4 May 2026 14:05:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PAieY6C+WDfYmk9dKSni64L8LQp55ipndwQVxa5HmsqOT3inRKEsSD3xvK6/LMawwrL+mtLUaaAuN3HPZRB9DeWhL7I10djBStiPqYEnBbBfZb/6wRHkPBG5PZE2UaRIwzfMt7eAweekVguZVLxERqX/4YhB5Rs7n6i9VNPbGWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afKTSYT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F70C2BCB8;
+	Mon,  4 May 2026 14:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903508;
-	bh=3HFd60xB4+NLGSPdBj9SnLHKlcyMteAS+S75Va3FLbE=;
+	s=korg; t=1777904157;
+	bh=XoWVwZVpAzJmPUcGeKNKYk2tnAZzE9rdKGxdpYidFU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gzPwJYqxnkTQF5ePtS46Yg68hkmh53P+aRO81NLIx+O+jdUGNNzGC57fsV/rIdHGx
-	 2Wv0PHOTUCPEiLN9lWEM1LEPUZvEI+6HmwQ0A+inA5B0R8irg3yQPph7ncvT0HNo9v
-	 1uq0TsJSOOkJ7Hcr3UNI4V0HYQoCzlmpz6D3v5tU=
+	b=afKTSYT4fJIMCYiuTp+KIERmX04IHS3STJrOO7ulxg0N8wFRjjJV0NJzcZ970bPPt
+	 HYF4qphw0DJesdxSExnE62cv1w8H+Qb4AZjysepdYtJq0eACXDgq9gOyDMemkFgBcn
+	 8/J8skmrlUOLzeuUAdKbkwgl1FeieySMcvhRhDPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 7.0 261/307] crypto: hisilicon - Fix dma_unmap_single() direction
+	Arnd Bergmann <arnd@arndb.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Subject: [PATCH 6.18 206/275] check-uapi: link into shared objects
 Date: Mon,  4 May 2026 15:52:26 +0200
-Message-ID: <20260504135152.634154604@linuxfoundation.org>
+Message-ID: <20260504135150.731547352@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D195E4BE883
+X-Rspamd-Queue-Id: EA6974BF809
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243291-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243544-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,gondor.apana.org.au];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,arndb.de:email,sourceware.org:url,weissschuh.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 1ee57ab93b75eb59f426aef37b5498a7ffc28278 upstream.
+commit a261f6dff3c1653c19c065c3b3650c625447b8a7 upstream.
 
-The direction used to map the buffer skreq->iv is DMA_TO_DEVICE but it is
-unmapped with direction DMA_BIDIRECTIONAL in the error path.
+While testing ABI changes across all architectures, I found that abidiff
+sometimes produces nonsensical output. Further debugging identified
+missing or broken libelf support for architecture specific relocations
+in ET_REL binaries as the source of the problem[1].
 
-Change the unmap to match the mapping.
+Change the script to no longer produce a relocatable object file but
+instead create a shared library for each header. This makes abidiff
+work for all of the architectures in upstream linux kernels.
 
-Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://sourceware.org/bugzilla/show_bug.cgi?id=33869
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20260306163309.2015837-2-arnd@kernel.org
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/hisilicon/sec/sec_algs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/check-uapi.sh |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/hisilicon/sec/sec_algs.c
-+++ b/drivers/crypto/hisilicon/sec/sec_algs.c
-@@ -844,7 +844,7 @@ err_free_elements:
- 	if (crypto_skcipher_ivsize(atfm))
- 		dma_unmap_single(info->dev, sec_req->dma_iv,
- 				 crypto_skcipher_ivsize(atfm),
--				 DMA_BIDIRECTIONAL);
-+				 DMA_TO_DEVICE);
- err_unmap_out_sg:
- 	if (split)
- 		sec_unmap_sg_on_err(skreq->dst, steps, splits_out,
+--- a/scripts/check-uapi.sh
++++ b/scripts/check-uapi.sh
+@@ -178,8 +178,11 @@ do_compile() {
+ 	local -r inc_dir="$1"
+ 	local -r header="$2"
+ 	local -r out="$3"
+-	printf "int main(void) { return 0; }\n" | \
+-		"$CC" -c \
++	printf "int f(void) { return 0; }\n" | \
++		"$CC" \
++		  -shared \
++		  -nostdlib \
++		  -fPIC \
+ 		  -o "$out" \
+ 		  -x c \
+ 		  -O0 \
 
 
 
