@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APmcKGqp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:58 +0200
+	id 4NZ4Ebis+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AE34BED18
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8E14BF71D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D47EB308231F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09131302A0F1
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F273DDDD6;
-	Mon,  4 May 2026 14:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711C33D300A;
+	Mon,  4 May 2026 14:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzueUBvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmcuWdLf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE703D9029;
-	Mon,  4 May 2026 14:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250343DDDD6;
+	Mon,  4 May 2026 14:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903431; cv=none; b=Cdc1GfCESeup3J5a/PTavPt8kLair2HEoupHaHjQX3bNWq9GJIuZxck3m3KjdAIpdqZPQHrO+Q6eaVtlcaA2oI4uw0A1uO84Dp/7BRO+L0NDZLFRfxNSndby760IuiJ0NZQjRsxr6okAdhfBPrHc13O+jN4VegOhodAqCCgdVTc=
+	t=1777904080; cv=none; b=JKN+VjFWoq0U72DEQyDm0uCzMFArQ+phs1bz+glbx9N5ld51RGs41c5IRMB6fsgE5RsQK8aq7XyBvDhe/nl/rcmMgvyHhjm5EokKvWmkerh5TPJlZhRI3+2LRm8Id+Q9W5CyjSdAwdFaWNuO3TQE6bmxIYw6IMFMgMx2DjbxEVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903431; c=relaxed/simple;
-	bh=jwwd6JPfZxISDBN+FBF1slwjm5F81S+51/GC+ePdKxw=;
+	s=arc-20240116; t=1777904080; c=relaxed/simple;
+	bh=ZtAy3l5q1sSbHKk0csCwEN1l0mVPlzn7B5c8Q+CP9Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZX6DEXryrvoZIWseHyBRPP8syWhTJm3oP4vYlA2zfhwYYvUxS0J82LUnzrUTEi+px9huiDr5SIg0ZgOwM617UVwryAW048CsamDe+F3/2Gg3ChCwYt7ujykk1vKMzESUtuaCLF49E9VNUYC+x2Qo91ekp07sRZpiz1ylE+iB4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzueUBvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2731EC2BCB8;
-	Mon,  4 May 2026 14:03:50 +0000 (UTC)
+	 MIME-Version; b=sVFkWDU7+8iSQ98dV52nm7w4MNv6sQGXKSQUSGi93jgsCefeiWfvXaHdzqxuPLyB/Tnov2JxkNEPiSfdkyM6ciY6zsJD2nF6mCWwX0dUi7bonk/XvsUdLaAeJjKFEInXFhDkJReffQglkQJlrD0YjURiNryd+dd9r8q0Mq/FFR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmcuWdLf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD15C2BCB8;
+	Mon,  4 May 2026 14:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903431;
-	bh=jwwd6JPfZxISDBN+FBF1slwjm5F81S+51/GC+ePdKxw=;
+	s=korg; t=1777904080;
+	bh=ZtAy3l5q1sSbHKk0csCwEN1l0mVPlzn7B5c8Q+CP9Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzueUBvy2QrZOglCSHEC89tx3pqD3u4iXcjSDsOVtilhJceSUOltzAFEUgHWNb+Fn
-	 q5XfAFRlFqDru9X09Br/zjIW5obLIN/HMCU/sl70fo3mZiQyJFrFQ7qfmmtJLw6rGL
-	 3+GY76rX+pxWHun816KGQE7bpFpI4jRV1rL2VFkI=
+	b=NmcuWdLfhadEVpzZP4U8YUzCLaSI+WhZlZq1GKnSuLVy/s4qiAwqeSr2/51RtxKVw
+	 dR+gyaBNiaWmX+P5c3zXMA7/riPT3nVohvJFX3IxVXVgoAWcGIIxODR8wHHHCsZzhD
+	 /eVlbSpK1Zw3iTdORkgHBBFiu3zB4+tJps5PePTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 7.0 231/307] ext4: fix bounds check in check_xattrs() to prevent out-of-bounds access
+	Sean Christopherson <seanjc@google.com>,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH 6.18 176/275] KVM: nSVM: Delay stuffing L2s current RIP into NextRIP until vCPU run
 Date: Mon,  4 May 2026 15:51:56 +0200
-Message-ID: <20260504135151.543543067@linuxfoundation.org>
+Message-ID: <20260504135149.607134426@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,153 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E6AE34BED18
+X-Rspamd-Queue-Id: 8B8E14BF71D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243261-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mit.edu];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243514-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit eceafc31ea7b42c984ece10d79d505c0bb6615d5 upstream.
+commit a0592461f39c00b28f552fe842a063a00043eaa8 upstream.
 
-The bounds check for the next xattr entry in check_xattrs() uses
-(void *)next >= end, which allows next to point within sizeof(u32)
-bytes of end. On the next loop iteration, IS_LAST_ENTRY() reads 4
-bytes via *(__u32 *)(entry), which can overrun the valid xattr region.
+For guests with NRIPS disabled, L1 does not provide NextRIP when running
+an L2 with an injected soft interrupt, instead it advances L2's RIP
+before running it. KVM uses L2's current RIP as the NextRIP in vmcb02 to
+emulate a CPU without NRIPS.
 
-For example, if next lands at end - 1, the check passes since
-next < end, but IS_LAST_ENTRY() reads 4 bytes starting at end - 1,
-accessing 3 bytes beyond the valid region.
+However, in svm_set_nested_state(), the value used for L2's current RIP
+comes from vmcb02, which is just whatever the vCPU had in vmcb02 before
+restoring nested state (zero on a freshly created vCPU). Passing the
+cached RIP value instead (i.e. kvm_rip_read()) would only fix the issue
+if registers are restored before nested state.
 
-Fix this by changing the check to (void *)next + sizeof(u32) > end,
-ensuring there is always enough space for the IS_LAST_ENTRY() read
-on the subsequent iteration.
+Instead, split the logic of setting NextRIP in vmcb02. Handle the
+'normal' case of initializing vmcb02's NextRIP using NextRIP from vmcb12
+(or KVM_GET_NESTED_STATE's payload) in nested_vmcb02_prepare_control().
+Delay the special case of stuffing L2's current RIP into vmcb02's
+NextRIP until shortly before the vCPU is run, to make sure the most
+up-to-date value of RIP is used regardless of KVM_SET_REGS and
+KVM_SET_NESTED_STATE's relative ordering.
 
-Fixes: 3478c83cf26b ("ext4: improve xattr consistency checking and error reporting")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20260224231429.31361-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260328150038.349497-1-kartikey406@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260225005950.3739782-7-yosry@kernel.org
+[sean: use new helper, svm_fixup_nested_rips()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |   25 ++++++++-----------------
+ arch/x86/kvm/svm/svm.c    |   25 +++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 17 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -226,7 +226,7 @@ check_xattrs(struct inode *inode, struct
- 	/* Find the end of the names list */
- 	while (!IS_LAST_ENTRY(e)) {
- 		struct ext4_xattr_entry *next = EXT4_XATTR_NEXT(e);
--		if ((void *)next >= end) {
-+		if ((void *)next + sizeof(u32) > end) {
- 			err_str = "e_name out of bounds";
- 			goto errout;
- 		}
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -814,24 +814,15 @@ static void nested_vmcb02_prepare_contro
+ 	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
+ 
+ 	/*
+-	 * NextRIP is consumed on VMRUN as the return address pushed on the
+-	 * stack for injected soft exceptions/interrupts.  If nrips is exposed
+-	 * to L1, take it verbatim from vmcb12.
+-	 *
+-	 * If nrips is supported in hardware but not exposed to L1, stuff the
+-	 * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
+-	 * responsible for advancing RIP prior to injecting the event). This is
+-	 * only the case for the first L2 run after VMRUN. After that (e.g.
+-	 * during save/restore), NextRIP is updated by the CPU and/or KVM, and
+-	 * the value of the L2 RIP from vmcb12 should not be used.
++	 * If nrips is exposed to L1, take NextRIP as-is.  Otherwise, L1
++	 * advances L2's RIP before VMRUN instead of using NextRIP. KVM will
++	 * stuff the current RIP as vmcb02's NextRIP before L2 is run.  After
++	 * the first run of L2 (e.g. after save+restore), NextRIP is updated by
++	 * the CPU and/or KVM and should be used regardless of L1's support.
+ 	 */
+-	if (boot_cpu_has(X86_FEATURE_NRIPS)) {
+-		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+-		    !svm->nested.nested_run_pending)
+-			vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+-		else
+-			vmcb02->control.next_rip    = vmcb12_rip;
+-	}
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
++	    !svm->nested.nested_run_pending)
++		vmcb02->control.next_rip = svm->nested.ctl.next_rip;
+ 
+ 	svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
+ 	if (is_evtinj_soft(vmcb02->control.event_inj)) {
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3661,6 +3661,29 @@ static void svm_inject_irq(struct kvm_vc
+ 	svm->vmcb->control.event_inj = intr->nr | SVM_EVTINJ_VALID | type;
+ }
+ 
++static void svm_fixup_nested_rips(struct kvm_vcpu *vcpu)
++{
++	struct vcpu_svm *svm = to_svm(vcpu);
++
++	if (!is_guest_mode(vcpu) || !svm->nested.nested_run_pending)
++		return;
++
++	/*
++	 * If nrips is supported in hardware but not exposed to L1, stuff the
++	 * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
++	 * responsible for advancing RIP prior to injecting the event). Once L2
++	 * runs after L1 executes VMRUN, NextRIP is updated by the CPU and/or
++	 * KVM, and this is no longer needed.
++	 *
++	 * This is done here (as opposed to when preparing vmcb02) to use the
++	 * most up-to-date value of RIP regardless of the order of restoring
++	 * registers and nested state in the vCPU save+restore path.
++	 */
++	if (boot_cpu_has(X86_FEATURE_NRIPS) &&
++	    !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
++		svm->vmcb->control.next_rip = kvm_rip_read(vcpu);
++}
++
+ void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
+ 				     int trig_mode, int vector)
+ {
+@@ -4246,6 +4269,8 @@ static __no_kcsan fastpath_t svm_vcpu_ru
+ 	}
+ 	svm->vmcb->save.cr2 = vcpu->arch.cr2;
+ 
++	svm_fixup_nested_rips(vcpu);
++
+ 	svm_hv_update_vp_id(svm->vmcb, vcpu);
+ 
+ 	/*
 
 
 
