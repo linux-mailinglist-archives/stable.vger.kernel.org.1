@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243766-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0E8POmuo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:43 +0200
+	id wNatBh6v+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243766-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6364BE9B2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5934BFC53
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B5C09302AC8E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49E5E30ADCE8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2D93DEAC4;
-	Mon,  4 May 2026 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411333E1222;
+	Mon,  4 May 2026 14:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW5WrQkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6+/lyaE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF813DE454;
-	Mon,  4 May 2026 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268D3DFC74;
+	Mon,  4 May 2026 14:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903565; cv=none; b=sHL+mjjbcrdlrwdUt7OHNkI4GwDPtOz8g30hbs1SWtPeDSXsdxCRxBXBqoSwDZ7bJv/eHX1zO+y6Jd5KUgUKVlD9Kl1LLls3bwDMAWsVfbg2yFwiHKBVmxkI/37xocwRQgbmYfWdPJ3Zy0+ZJ6K8aJMcv1NhIVDjSP6uQZ+A1Vk=
+	t=1777904724; cv=none; b=VHho9bM38S3B6WhetisTlWvoGWdgCIm5XwFmT7Q7AxKjlGc9fxq8bktOs2wpvKzur68kPv1B/429VMfRxaTTqknknrQLbxiZV49YQrYzAWwLGtT8l5Zb7mpVXHjQoBNDvMXVjMcoxtkE7wAO3CH9lGTveBALjiO+12b/EkPaxMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903565; c=relaxed/simple;
-	bh=O4gkvfw1bLmZ7hXrVMbKSw155gsfrBL2R1WMkUedQXE=;
+	s=arc-20240116; t=1777904724; c=relaxed/simple;
+	bh=J3ispVzi28WzJdoFtT2jcBVb9NnkIk6znf9u2614XbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cj72UZPoZvLwBLIyCtupt3YdJFdMu1pYJl9LT1hnaUJjWXecs1wt02rQwO3t+QGbglGoxDP1/Z5O9aCAhP1Ocq3bWnDVWQASFyADaOqrIYVm83ikV/FzriTk6r06Cmzc2VUAmC2eX4Jgbl4IglBVsLylJqA4Svuc0e4Eow0/KB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW5WrQkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE264C2BCB8;
-	Mon,  4 May 2026 14:06:04 +0000 (UTC)
+	 MIME-Version; b=SQOPyggggHImpelzFr0+g48t4pTePdz0OQclbHBuSrUdvvZzzS5ahMRyEbcQTzXEs1ifGce7uPOa7cqZ2lXwvszihUUIQ//lLrklKWhXfzP9JCIiFSR99Xv6xCCYZjSgFLU5B78xEzhaKp7mbS7cvryPTax7BJq39AkdA7I/bjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6+/lyaE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4503EC2BCB8;
+	Mon,  4 May 2026 14:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903565;
-	bh=O4gkvfw1bLmZ7hXrVMbKSw155gsfrBL2R1WMkUedQXE=;
+	s=korg; t=1777904723;
+	bh=J3ispVzi28WzJdoFtT2jcBVb9NnkIk6znf9u2614XbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gW5WrQkbONoBtg6GyXW5nmVNes3OgdUT97hQhAH1cKMxlKSCJF/YZRFSmMgx8sAtm
-	 SK/WdmKdtUUcMJdQc5myuVkkKzhC4CwTmVqJCltYSnhCCMKjwquGfWs0xWH+naTh8m
-	 /hJfljzEV1+RPTrzvlBfhAuv5atPyILCH5QuLh1g=
+	b=E6+/lyaEioa2DoSm0f1Bov/wNnUB0D51+ZsvOZaDwqDkhGwZYkU0qci+P7JsfHb7h
+	 rWETlw1F1HOJyY/4gvU09D8fw6797k69DhBbXz8dKRlJ7Ct2NiDTphcQ7nYjhTcU1p
+	 izE38g03q3vU5FEnTFgknrTNxlGbgQcwe2YDZxT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 284/307] seg6: fix seg6 lwtunnel output redirect for L2 reduced encap mode
+	Qualys Security Advisory <qsa@qualys.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.12 150/215] apparmor: use target tasks context in apparmor_getprocattr()
 Date: Mon,  4 May 2026 15:52:49 +0200
-Message-ID: <20260504135153.478482438@linuxfoundation.org>
+Message-ID: <20260504135135.647806264@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +64,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8A6364BE9B2
+X-Rspamd-Queue-Id: CD5934BFC53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243313-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243766-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,uniroma2.it:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualys.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Cengiz Can <cengiz.can@canonical.com>
 
-commit ade67d5f588832c7ba131aadd4215a94ce0a15c8 upstream.
+commit 4afc61702bdcc3b9b519749ef966cf762a6e7051 upstream.
 
-When SEG6_IPTUN_MODE_L2ENCAP_RED (L2ENCAP_RED) was introduced, the
-condition in seg6_build_state() that excludes L2 encap modes from
-setting LWTUNNEL_STATE_OUTPUT_REDIRECT was not updated to account for
-the new mode.
-As a consequence, L2ENCAP_RED routes incorrectly trigger seg6_output()
-on the output path, where the packet is silently dropped because
-skb_mac_header_was_set() fails on L3 packets.
+apparmor_getprocattr() incorrectly calls task_ctx(current) instead of
+task_ctx(task) when retrieving prev and exec attributes, returning the
+caller's labels rather than the target's.
 
-Extend the check to also exclude L2ENCAP_RED, consistent with L2ENCAP.
+Fix by passing task to task_ctx().
 
-Fixes: 13f0296be8ec ("seg6: add support for SRv6 H.L2Encaps.Red behavior")
+The issue can be reproduced when a process with an onexec transition
+(e.g., configured by a container runtime) is inspected via
+/proc/<pid>/attr/apparmor/exec. The reader's own value is returned
+instead of the target's.
+
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Fixes: 3b529a7600d8 ("apparmor: move task domain change info to task security")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260418162838.31979-1-andrea.mayer@uniroma2.it
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Co-developed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
+Co-developed-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_iptunnel.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/apparmor/lsm.c |   16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -715,7 +715,8 @@ static int seg6_build_state(struct net *
- 	newts->type = LWTUNNEL_ENCAP_SEG6;
- 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -823,25 +823,23 @@ static int apparmor_getprocattr(struct t
+ 				char **value)
+ {
+ 	int error = -ENOENT;
+-	/* released below */
+-	const struct cred *cred = get_task_cred(task);
+-	struct aa_task_ctx *ctx = task_ctx(current);
+ 	struct aa_label *label = NULL;
  
--	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP)
-+	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP &&
-+	    tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP_RED)
- 		newts->flags |= LWTUNNEL_STATE_OUTPUT_REDIRECT;
++	rcu_read_lock();
+ 	if (strcmp(name, "current") == 0)
+-		label = aa_get_newest_label(cred_label(cred));
+-	else if (strcmp(name, "prev") == 0  && ctx->previous)
+-		label = aa_get_newest_label(ctx->previous);
+-	else if (strcmp(name, "exec") == 0 && ctx->onexec)
+-		label = aa_get_newest_label(ctx->onexec);
++		label = aa_get_newest_cred_label(__task_cred(task));
++	else if (strcmp(name, "prev") == 0  && task_ctx(task)->previous)
++		label = aa_get_newest_label(task_ctx(task)->previous);
++	else if (strcmp(name, "exec") == 0 && task_ctx(task)->onexec)
++		label = aa_get_newest_label(task_ctx(task)->onexec);
+ 	else
+ 		error = -EINVAL;
++	rcu_read_unlock();
  
- 	newts->headroom = seg6_lwt_headroom(tuninfo);
+ 	if (label)
+ 		error = aa_getprocattr(label, value, true);
+ 
+ 	aa_put_label(label);
+-	put_cred(cred);
+ 
+ 	return error;
+ }
 
 
 
