@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAywHkir+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:56 +0200
+	id aJL2NhCp+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EB74BF24C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747914BEB9E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 533E73020EB8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B5B5301A40B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBC13DE43B;
-	Mon,  4 May 2026 14:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40553D5645;
+	Mon,  4 May 2026 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7Yxgl8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOtJP/NQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF23D8129;
-	Mon,  4 May 2026 14:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FAE35A3AD;
+	Mon,  4 May 2026 14:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904414; cv=none; b=IdwvsYrtR/fX5KKkOacw/6pSpPegZZtHnu/AbscbO0tJrMZuXbdFl71dugCLepqhVgFqZKwb+e4fH+TyM3vifafrM0rH85nF0lSkBJo87AGqIcyzJJ+zbr5Pe59Cr/Uhbv6t3NXm/M+b5Zh/rsnpbo3yPiX/zWuTgOvBe+r1jYI=
+	t=1777903851; cv=none; b=PMiPgMCoxDs0gOrzAyxnuJl2QDGzBnFMrGBWCyrHBV1Un//f8e4hzzcokp42lesSFm+nGblPgBSNxHa3FLPQgyck4x5UQYFW878KWmWhwHLIPPctSm1rT/MCXHLfM6oypDo2LAWH+quPI3hwvTH2gaN3dNcDehHJ3cRuxfod3gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904414; c=relaxed/simple;
-	bh=UxEQeE+ep5EVEIsfgEqZnsSGk8jZRqOvayTbQcmaTmo=;
+	s=arc-20240116; t=1777903851; c=relaxed/simple;
+	bh=0HrC5sl1nSQUMpX6xt7dvsznCrXE6vIn2k0O6zmlRs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3xzsIBs4dbUt8jYlYD+eVHlp+UHACpmzeY8yJs/HNsMVeDuxAWcVUPY+wMcGkbOS0vgiFNjebYzemNdMZRqTeDjoUECInayyLBtDivTJG8OBmfw2ELT1E4x81eRK4gtoaHmURUgVWlV1xlpB2F0NKc/x/mcKyqBUHd912wZP9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7Yxgl8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD09DC2BCB8;
-	Mon,  4 May 2026 14:20:13 +0000 (UTC)
+	 MIME-Version; b=jxgVrLGSHDGRvzvDspb1qTjGJUIFD7avhZ/4tYucUancJeXbm69oemePbTYB3NT5Ly5rSH2e/I6ILB1mucGZkmfQCZq4IQB6j9FnTHd0l0+ruGyhIMpE8zXAzXB9UCpYMgH7YFsjOh72ddBYG76sep8qlAy2U3CLadZkV8Ekfbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOtJP/NQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEC8C2BCB8;
+	Mon,  4 May 2026 14:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904414;
-	bh=UxEQeE+ep5EVEIsfgEqZnsSGk8jZRqOvayTbQcmaTmo=;
+	s=korg; t=1777903850;
+	bh=0HrC5sl1nSQUMpX6xt7dvsznCrXE6vIn2k0O6zmlRs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7Yxgl8nK8Q/D0mkrbQkK1GXeBpxDs2m63Wou5y7VPDXXP22SHRLISaXgo6k0v9o3
-	 Id7FVdM4UC95WGIFfRSpAYcdqOXViCQiNC5ZEc8rFneCBhu1QmvqyPUCYt25mKTDXQ
-	 moR21g1/u2zL5mZqIFdQGKUSv8C1C+dTpGTihOUE=
+	b=GOtJP/NQWkQ23XgQwIDvpj1lAiQkZZqB2X66JtGwd+BJxUXA9AsWuWYCPS9ovvUPn
+	 sHzUtrOyWCndUl2mgnqQI4S/tzMpANx0iabbxLy0ul1lvEAilEyWA+h98MvSdIr9JI
+	 Ze6K39bZRUmPpBMBlTXKQV0zaPoLMPC1LzzrHM9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Jun Li <jun.li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.12 005/215] usb: chipidea: otg: not wait vbus drop if use role_switch
-Date: Mon,  4 May 2026 15:50:24 +0200
-Message-ID: <20260504135130.371969477@linuxfoundation.org>
+	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.18 085/275] sched: Use u64 for bandwidth ratio calculations
+Date: Mon,  4 May 2026 15:50:25 +0200
+Message-ID: <20260504135146.078930712@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 14EB74BF24C
+X-Rspamd-Queue-Id: 747914BEB9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243645-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243425-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,47 +89,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,msgid.link:url]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Joseph Salisbury <joseph.salisbury@oracle.com>
 
-commit a4e99587102a83ee911c670752fbca694c7e557f upstream.
+commit c6e80201e057dfb7253385e60bf541121bf5dc33 upstream.
 
-The usb role switch will update ID and VBUS states at the same time, and
-vbus will not drop when execute data role swap in Type-C usecase. So lets
-not wait vbus drop in usb role switch case too.
+to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
+runtime values, but it returns unsigned long.  tg_rt_schedulable() also
+stores the current group limit and the accumulated child sum in unsigned
+long.
 
-Fixes: e1b5d2bed67c ("usb: chipidea: core: handle usb role switch in a common way")
+On 32-bit builds, large bandwidth ratios can be truncated and the RT
+group sum can wrap when enough siblings are present.  That can let an
+overcommitted RT hierarchy pass the schedulability check, and it also
+narrows the helper result for other callers.
+
+Return u64 from to_ratio() and use u64 for the RT group totals so
+bandwidth ratios are preserved and compared at full width on both 32-bit
+and 64-bit builds.
+
+Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
+Assisted-by: Codex:GPT-5
+Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260402071457.2516021-3-xu.yang_2@nxp.com
+Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/otg.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/core.c  |    2 +-
+ kernel/sched/rt.c    |    2 +-
+ kernel/sched/sched.h |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/chipidea/otg.c
-+++ b/drivers/usb/chipidea/otg.c
-@@ -187,8 +187,8 @@ void ci_handle_id_switch(struct ci_hdrc
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4792,7 +4792,7 @@ void sched_post_fork(struct task_struct
+ 	scx_post_fork(p);
+ }
  
- 		ci_role_stop(ci);
+-unsigned long to_ratio(u64 period, u64 runtime)
++u64 to_ratio(u64 period, u64 runtime)
+ {
+ 	if (runtime == RUNTIME_INF)
+ 		return BW_UNIT;
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2644,7 +2644,7 @@ static int tg_rt_schedulable(struct task
+ {
+ 	struct rt_schedulable_data *d = data;
+ 	struct task_group *child;
+-	unsigned long total, sum = 0;
++	u64 total, sum = 0;
+ 	u64 period, runtime;
  
--		if (role == CI_ROLE_GADGET &&
--				IS_ERR(ci->platdata->vbus_extcon.edev))
-+		if (role == CI_ROLE_GADGET && !ci->role_switch &&
-+		    IS_ERR(ci->platdata->vbus_extcon.edev))
- 			/*
- 			 * Wait vbus lower than OTGSC_BSV before connecting
- 			 * to host. If connecting status is from an external
+ 	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2702,7 +2702,7 @@ extern void init_cfs_throttle_work(struc
+ #define MAX_BW_BITS		(64 - BW_SHIFT)
+ #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
+ 
+-extern unsigned long to_ratio(u64 period, u64 runtime);
++extern u64 to_ratio(u64 period, u64 runtime);
+ 
+ extern void init_entity_runnable_average(struct sched_entity *se);
+ extern void post_init_entity_util_avg(struct task_struct *p);
 
 
 
