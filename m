@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SC6PLIWs+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:13 +0200
+	id iFb7Od2p+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6189B4BF63E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED6A4BEE46
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFC793096B88
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:16:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11134304E516
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54033DE45A;
-	Mon,  4 May 2026 14:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB1837881B;
+	Mon,  4 May 2026 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+b8CHc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zv8vV6yJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981173DE443;
-	Mon,  4 May 2026 14:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228953A75B6;
+	Mon,  4 May 2026 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904190; cv=none; b=BQ3DFDdOBzMK4SzynT84/qPf3z5BjgdvzoJCqYQDPiUCQNhkQCYN0Fgjt8pr2lSvPAffJMdWI7rjn4QlIH2jse9pnKmTnFSLeHBMMRC3MNf85N8L/+dhxFOjPA7SIaf5lCKu1V+Gth5JeRefTSlIf0b2mNaLUxua8ESFfazwPBM=
+	t=1777903542; cv=none; b=kHHiYtckg/ecSKXFbQAWLRghlHDJ66vBNfO/K4yoSCA3RMkckbKPPjHGanPZf6eDYbvqNLjUaX95QuvMLZg2GPVTKghUU/I6GeLgOqid6Ytquov+5j6TUE/dzaPQDNWtEfdFi/ZyM74GCS5NHNQnMIooAvx68b80d+AWD3JMGSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904190; c=relaxed/simple;
-	bh=x9npeH0x1iChFsUH8IpKGzFWbRHOCGzeYFD5DzOAhjs=;
+	s=arc-20240116; t=1777903542; c=relaxed/simple;
+	bh=r1QfiikGDzICnr4CbwoL5axl9zMnOQtdxN+mawukSGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrIDbV/oaIOy4YW/05W0bwVneoF58gWsodgHrti3PbZQVI4ST76V+oh0OF5PXoxs6bZZJTdCodx/1+d1l/WDAj6V4gCBFKTVk294Q1FPLVS/I7lDil58BFUiENbM9hfBg4SkvX3zZIRWUahLsWVd7tMUMQOEPCiBy+LYrFOkZj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+b8CHc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEB4C2BCB8;
-	Mon,  4 May 2026 14:16:29 +0000 (UTC)
+	 MIME-Version; b=mV0GetaeCRRQGptJQ+1qIVCTD3ebg0F+XgIvVWh53mjjyL9uJGrgQr9cXOxMmv7k6C7AdYzbS09cSA/o2tp3VYz2VyLuc11L8ctQAGIvaiR67p5mBNxRCBtBFAppqQwcT8OrWIw6bnQruVQOxEqCqeAx4gGAXLLslVPVtwS+vmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zv8vV6yJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A596EC2BCB8;
+	Mon,  4 May 2026 14:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904190;
-	bh=x9npeH0x1iChFsUH8IpKGzFWbRHOCGzeYFD5DzOAhjs=;
+	s=korg; t=1777903542;
+	bh=r1QfiikGDzICnr4CbwoL5axl9zMnOQtdxN+mawukSGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+b8CHc1rbquRY8awbNRftK40HWanRvnbDQm89GQviUtGBWezHIG50YxDU6waZbNd
-	 1wWwHQsBy8I04DgfAnW44wph3gniw6GYXH9xr3i80ZGIk4JVasG2Qlb7A2meeYsxrE
-	 RqkX463/pbMefDv7jqolXkONRzqwGcBfePJQc2yQ=
+	b=Zv8vV6yJSAL0yE8pFFy2q+MBsQjDSUdN8AGs20q6txjv8Rovj0b9GFE4ZKfOxJt4v
+	 nb6xo/ZXQjsvdwl930umLx4bnyYND2HXChZRDJYUVy1jlfA+YF93JCgiINZRSDTkUe
+	 5O9d9bQnwxdzFBJ+Ht3BlyDcYNgoBcxHoi/7resI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Yu <qiang.yu@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Subject: [PATCH 6.18 218/275] bus: mhi: host: pci_generic: Switch to async power up to avoid boot delays
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 7.0 273/307] ceph: only d_add() negative dentries when they are unhashed
 Date: Mon,  4 May 2026 15:52:38 +0200
-Message-ID: <20260504135151.168818496@linuxfoundation.org>
+Message-ID: <20260504135153.075783214@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,145 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6189B4BF63E
+X-Rspamd-Queue-Id: EED6A4BEE46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243304-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243557-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ionos.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Yu <qiang.yu@oss.qualcomm.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit cfdb41adf1c2822ad1b1791d4d11093edb5582b6 upstream.
+commit 803447f93d75ab6e40c85e6d12b5630d281d70d6 upstream.
 
-Some modem devices can take significant time (up to 20 secs for sdx75) to
-enter mission mode during initialization. Currently, mhi_sync_power_up()
-waits for this entire process to complete, blocking other driver probes
-and delaying system boot.
+Ceph can call d_add(dentry, NULL) on a negative dentry that is already
+present in the primary dcache hash.
 
-Switch to mhi_async_power_up() so probe can return immediately while MHI
-initialization continues in the background. This eliminates lengthy boot
-delays and allows other drivers to probe in parallel, improving overall
-system boot performance.
+In the current VFS that is not safe.  d_add() goes through __d_add()
+to __d_rehash(), which unconditionally reinserts dentry->d_hash into
+the hlist_bl bucket.  If the dentry is already hashed, reinserting the
+same node can corrupt the bucket, including creating a self-loop.
+Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
+typically looping only on the d_name.hash mismatch check and
+eventually triggering RCU stall reports like this one:
 
-Fixes: 5571519009d0 ("bus: mhi: host: pci_generic: Add SDX75 based modem support")
-Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
+ rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
+ CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
+ Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
+ RIP: 0010:__d_lookup+0x46/0xb0
+ Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
+ RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
+ RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
+ RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
+ RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
+ R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
+ R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
+ FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  lookup_fast+0x9f/0x100
+  walk_component+0x1f/0x150
+  link_path_walk+0x20e/0x3d0
+  path_lookupat+0x68/0x180
+  filename_lookup+0xdc/0x1e0
+  vfs_statx+0x6c/0x140
+  vfs_fstatat+0x67/0xa0
+  __do_sys_newfstatat+0x24/0x60
+  do_syscall_64+0x6a/0x230
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+This is reachable with reused cached negative dentries.  A Ceph lookup
+or atomic_open can be handed a negative dentry that is already hashed,
+and fs/ceph/dir.c then hits one of two paths that incorrectly assume
+"negative" also means "unhashed":
+
+  - ceph_finish_lookup():
+      MDS reply is -ENOENT with no trace
+      -> d_add(dentry, NULL)
+
+  - ceph_lookup():
+      local ENOENT fast path for a complete directory with shared caps
+      -> d_add(dentry, NULL)
+
+Both paths can therefore re-add an already-hashed negative dentry.
+
+Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
+calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
+is true.
+
+Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
+negative dentry when it is actually unhashed.  If the negative dentry
+is already hashed, leave it in place and reuse it as-is.
+
+This preserves the existing behavior for unhashed dentries while
+avoiding d_hash list corruption for reused hashed negatives.
+
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260303-b4-async_power_on-v2-1-d3db81eb457d@oss.qualcomm.com
+Fixes: 2817b000b02c ("ceph: directory operations")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/dir.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -1380,7 +1380,7 @@ static int mhi_pci_probe(struct pci_dev
- 		goto err_unregister;
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -769,7 +769,8 @@ struct dentry *ceph_finish_lookup(struct
+ 				d_drop(dentry);
+ 				err = -ENOENT;
+ 			} else {
+-				d_add(dentry, NULL);
++				if (d_unhashed(dentry))
++					d_add(dentry, NULL);
+ 			}
+ 		}
  	}
- 
--	err = mhi_sync_power_up(mhi_cntrl);
-+	err = mhi_async_power_up(mhi_cntrl);
- 	if (err) {
- 		dev_err(&pdev->dev, "failed to power up MHI controller\n");
- 		goto err_unprepare;
+@@ -840,7 +841,8 @@ static struct dentry *ceph_lookup(struct
+ 			spin_unlock(&ci->i_ceph_lock);
+ 			doutc(cl, " dir %llx.%llx complete, -ENOENT\n",
+ 			      ceph_vinop(dir));
+-			d_add(dentry, NULL);
++			if (d_unhashed(dentry))
++				d_add(dentry, NULL);
+ 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
+ 			return NULL;
+ 		}
 
 
 
