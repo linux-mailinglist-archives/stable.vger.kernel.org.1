@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243248-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOQTInqt+GkuxwIAu9opvQ
-	(envelope-from <stable+bounces-243536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:18 +0200
+	id gM8AN8io+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243248-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAF24BF917
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF144BEA8D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9568305E369
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C59B30B6113
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6D23DE425;
-	Mon,  4 May 2026 14:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAE23DDDD6;
+	Mon,  4 May 2026 14:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwGBysYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zj4EEO5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7CA1A6827;
-	Mon,  4 May 2026 14:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837953DA5C7;
+	Mon,  4 May 2026 14:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904136; cv=none; b=geI6NZfJwiuuQeLvE7tg8Y/sbGM+YIbvIYF5D2HDkF/ZPtyT8aXMRUiwsat28YEZQliXbYbtOeFwSDs0mDTJ0xFwWCb5oFpRnocl6BWfafXi+N7upmHYfOsAQ2ukW3wB0vkfSQKCTpXdZLu2bTTUgYs8qjPUb12/k8inshojKE8=
+	t=1777903398; cv=none; b=X1QVfce6RVhT0LGjgjSFEMgcAjQT/R9CF9OWD4x6qz0PmcrGiJA+0BEaowcOWrEk6CRL8xEXyATq+yk0hpcEUsJ72Oa8E3IxKn7MZdT2krUmwS4G3Eo0moq16aDRPmLCcRrKhJOgUYSdsGF2d9NJ3HtLZyyue6ZRHcHyGnhd8ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904136; c=relaxed/simple;
-	bh=FsNKWt0kF1L9HlhElEExQK1LNXy8mlEUE5ZAmJpLrpo=;
+	s=arc-20240116; t=1777903398; c=relaxed/simple;
+	bh=h+OWwQOLVJC3z4FGMbVfeIcBH/jnOKnLIln6jwaOBqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W46kpzgqlYjuHmPX0T/ITng/eZ2gXmel11DHGZ+k9F5tfWbo44kbvG0Yw924DojqrxxGpNXJt3OZMLW5dAKYzyb+CyDGoXljvVV+U2EnMNMrcc94jpVS2sEDkNhY5A+PTQtkC0fs+sjnwcVFL28qKThw4t0gMg3ai5+eKjJHSbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwGBysYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19100C2BCB8;
-	Mon,  4 May 2026 14:15:35 +0000 (UTC)
+	 MIME-Version; b=gvdzOxR9t3k06Tlr4CM2Nt0xiAk2vbKYuCfwUmbhIIVgm06JlYTAOtVi4S2hKCALaiuLFRa3y+iHGGV629ZGNXNTN9jmIXJEh443jVIjWPWzRjQimgy7HFCyNnJKFr5cs247XEHCfyoO6XtFOdQf3FCIxOegUVRuF0hQGYuSs6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zj4EEO5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6574C2BCB8;
+	Mon,  4 May 2026 14:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904136;
-	bh=FsNKWt0kF1L9HlhElEExQK1LNXy8mlEUE5ZAmJpLrpo=;
+	s=korg; t=1777903398;
+	bh=h+OWwQOLVJC3z4FGMbVfeIcBH/jnOKnLIln6jwaOBqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwGBysYQd+HsK19797g92ZbICA1Vl+xfEn3/B5qtlBtTMOepJe/fq2DOcK9r68uv/
-	 xI/xTuEG/uMS4Ti5jcpy4cjEU4s6xdnVXG4sS7NvEkwArXx78IZv5NJ5WNZToPsQkU
-	 YDUFbTv6VWt47nIzIq5cBB+ntTdlXQszZooroaT8=
+	b=zj4EEO5qHdYf4JK99WYrHcRHq9gEZMOSYUmb2sYlUxOU4Kc4/gZ+yA28z7+DbTjd5
+	 x0fjrvKVEWBhx2gX8j2cG03n1ZDGK8RNF8xJtinMKUi8zbpkUpZRzJbG4CN+T6VfkL
+	 gxiT5IdYRMG8oMqpaol7KgXtlRz5FblrPV4HZoCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 164/275] mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 219/307] KVM: nSVM: Triple fault if restore host CR3 fails on nested #VMEXIT
 Date: Mon,  4 May 2026 15:51:44 +0200
-Message-ID: <20260504135149.142139699@linuxfoundation.org>
+Message-ID: <20260504135151.104371282@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EAAF24BF917
+X-Rspamd-Queue-Id: 5EF144BEA8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,98 +80,156 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243536-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243248-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 40250b2dded0604a112be605f3828700d80ad7c2 upstream.
+commit 5d291ef0585ed880ed4dd71ea1a5965e0a65fb53 upstream.
 
-Patch series "mm/damon/core: validate damos_quota_goal->nid".
+If loading L1's CR3 fails on a nested #VMEXIT, nested_svm_vmexit()
+returns an error code that is ignored by most callers, and continues to
+run L1 with corrupted state. A sane recovery is not possible in this
+case, and HW behavior is to cause a shutdown. Inject a triple fault
+instead, and do not return early from nested_svm_vmexit(). Continue
+cleaning up the vCPU state (e.g. clear pending exceptions), to handle
+the failure as gracefully as possible.
 
-node_mem[cg]_{used,free}_bp DAMOS quota goals receive the node id.  The
-node id is used for si_meminfo_node() and NODE_DATA() without proper
-validation.  As a result, privileged users can trigger an out of bounds
-memory access using DAMON_SYSFS.  Fix the issues.
+>From the APM:
 
-The issue was originally reported [1] with a fix by another author.  The
-original author announced [2] that they will stop working including the
-fix that was still in the review stage.  Hence I'm restarting this.
+  Upon #VMEXIT, the processor performs the following actions in order to
+  return to the host execution context:
 
+  ...
 
-This patch (of 2):
+  if (illegal host state loaded, or exception while loading host state)
+      shutdown
+  else
+      execute first host instruction following the VMRUN
 
-Users can set damos_quota_goal->nid with arbitrary value for
-node_mem_{used,free}_bp.  But DAMON core is using those for
-si_meminfo_node() without the validation of the value.  This can result in
-out of bounds memory access.  The issue can actually triggered using DAMON
-user-space tool (damo), like below.
+Remove the return value of nested_svm_vmexit(), which is mostly
+unchecked anyway.
 
-    $ sudo ./damo start --damos_action stat \
-    	--damos_quota_goal node_mem_used_bp 50% -1 \
-    	--damos_quota_interval 1s
-    $ sudo dmesg
-    [...]
-    [   65.565986] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000098
-
-Fix this issue by adding the validation of the given node.  If an invalid
-node id is given, it returns 0% for used memory ratio, and 100% for free
-memory ratio.
-
-Link: https://lore.kernel.org/20260329043902.46163-2-sj@kernel.org
-Link: https://lore.kernel.org/20260325073034.140353-1-objecting@objecting.org [1]
-Link: https://lore.kernel.org/20260327040924.68553-1-sj@kernel.org [2]
-Fixes: 0e1c773b501f ("mm/damon/core: introduce damos quota goal metrics for memory node utilization")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d82aaef9c88a ("KVM: nSVM: use nested_svm_load_cr3() on guest->host switch")
+CC: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-10-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/kvm/svm/nested.c |   10 +++-------
+ arch/x86/kvm/svm/svm.c    |   11 ++---------
+ arch/x86/kvm/svm/svm.h    |    6 +++---
+ 3 files changed, 8 insertions(+), 19 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2038,12 +2038,24 @@ static inline u64 damos_get_some_mem_psi
- #endif	/* CONFIG_PSI */
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1202,12 +1202,11 @@ static int nested_svm_vmexit_update_vmcb
+ 	return 0;
+ }
  
- #ifdef CONFIG_NUMA
-+static bool invalid_mem_node(int nid)
-+{
-+	return nid < 0 || nid >= MAX_NUMNODES || !node_state(nid, N_MEMORY);
-+}
-+
- static __kernel_ulong_t damos_get_node_mem_bp(
- 		struct damos_quota_goal *goal)
+-int nested_svm_vmexit(struct vcpu_svm *svm)
++void nested_svm_vmexit(struct vcpu_svm *svm)
  {
- 	struct sysinfo i;
- 	__kernel_ulong_t numerator;
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
+ 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
+-	int rc;
  
-+	if (invalid_mem_node(goal->nid)) {
-+		if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
-+			return 0;
-+		else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
-+			return 10000;
-+	}
-+
- 	si_meminfo_node(&i, goal->nid);
- 	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
- 		numerator = i.totalram - i.freeram;
+ 	rc = nested_svm_vmexit_update_vmcb12(vcpu);
+ 	if (rc) {
+@@ -1330,9 +1329,8 @@ int nested_svm_vmexit(struct vcpu_svm *s
+ 
+ 	nested_svm_uninit_mmu_context(vcpu);
+ 
+-	rc = nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true);
+-	if (rc)
+-		return 1;
++	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true))
++		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+ 
+ 	/*
+ 	 * Drop what we picked up for L2 via svm_complete_interrupts() so it
+@@ -1357,8 +1355,6 @@ int nested_svm_vmexit(struct vcpu_svm *s
+ 	 */
+ 	if (kvm_apicv_activated(vcpu->kvm))
+ 		__kvm_vcpu_update_apicv(vcpu);
+-
+-	return 0;
+ }
+ 
+ static void nested_svm_triple_fault(struct kvm_vcpu *vcpu)
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2233,13 +2233,9 @@ static int emulate_svm_instr(struct kvm_
+ 		[SVM_INSTR_VMSAVE] = vmsave_interception,
+ 	};
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+-	int ret;
+ 
+ 	if (is_guest_mode(vcpu)) {
+-		/* Returns '1' or -errno on failure, '0' on success. */
+-		ret = nested_svm_simple_vmexit(svm, guest_mode_exit_codes[opcode]);
+-		if (ret)
+-			return ret;
++		nested_svm_simple_vmexit(svm, guest_mode_exit_codes[opcode]);
+ 		return 1;
+ 	}
+ 	return svm_instr_handlers[opcode](vcpu);
+@@ -4872,7 +4868,6 @@ static int svm_enter_smm(struct kvm_vcpu
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	struct kvm_host_map map_save;
+-	int ret;
+ 
+ 	if (!is_guest_mode(vcpu))
+ 		return 0;
+@@ -4892,9 +4887,7 @@ static int svm_enter_smm(struct kvm_vcpu
+ 	svm->vmcb->save.rsp = vcpu->arch.regs[VCPU_REGS_RSP];
+ 	svm->vmcb->save.rip = vcpu->arch.regs[VCPU_REGS_RIP];
+ 
+-	ret = nested_svm_simple_vmexit(svm, SVM_EXIT_SW);
+-	if (ret)
+-		return ret;
++	nested_svm_simple_vmexit(svm, SVM_EXIT_SW);
+ 
+ 	/*
+ 	 * KVM uses VMCB01 to store L1 host state while L2 runs but
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -793,14 +793,14 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
+ void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
+ 			  struct vmcb_save_area *from_save);
+ void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
+-int nested_svm_vmexit(struct vcpu_svm *svm);
++void nested_svm_vmexit(struct vcpu_svm *svm);
+ 
+-static inline int nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
++static inline void nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
+ {
+ 	svm->vmcb->control.exit_code	= exit_code;
+ 	svm->vmcb->control.exit_info_1	= 0;
+ 	svm->vmcb->control.exit_info_2	= 0;
+-	return nested_svm_vmexit(svm);
++	nested_svm_vmexit(svm);
+ }
+ 
+ int nested_svm_exit_handled(struct vcpu_svm *svm);
 
 
 
