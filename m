@@ -1,174 +1,213 @@
-Return-Path: <stable+bounces-243894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id nnGoKKLg+GnM2gIAu9opvQ
-	(envelope-from <stable+bounces-243894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:08:34 +0200
+	id aAEMJm3l+Gl32wIAu9opvQ
+	(envelope-from <stable+bounces-243895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:29:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C2E4C250A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:08:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785614C288F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 20:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 920A13009E0C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 18:08:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8F9F302B537
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 18:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1ED83E2756;
-	Mon,  4 May 2026 18:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871353E5ED0;
+	Mon,  4 May 2026 18:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OsALomt5"
+	dkim=pass (2048-bit key) header.d=chesswob.org header.i=@chesswob.org header.b="IlH8FO8n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC0E1C861D;
-	Mon,  4 May 2026 18:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D5B3E5599;
+	Mon,  4 May 2026 18:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777918106; cv=none; b=L2VQPsVmzBbHKMVfPqMPFKWNNhTkZpoiaJF2ZBrZBnK9lJStbQyw0gqHtmJXorhJiVKA96nc9KKi145tn90UFNHY/Y+noslXH0nNSQQ8SICz08nfKz6ae/AH3komtiEctLmmn7mfOQb31FW5RnUkX5EeWJGWeo/Sfah+009USrQ=
+	t=1777919181; cv=none; b=qwrJ2ugeEVJIU9SWeswXGu5kH3T12iE7Hi5UsGTbpXVDv0wBYeBU4Rh6R8HfIT6+JD+J7poZ9LVN6FdvVzyY66MNdK5sEdpPXXhqofTNiw5g1GLURia8WPm8RnKlKFMlxE8YHMHQO9fNRfDgITIt6LC7BZ7ivzlbS7KHmWEj7HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777918106; c=relaxed/simple;
-	bh=3UPZWevxPsrYPCrR7mOC/FIGar1XFQKQdBJDn/D/anM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MlN070h7YvOL+a9sJOnWsS2AJajcOQ8/FkVInJpY28j+rtljdwFX1tT6pLhE7Om4Kh6q0WxAlIpbBjvsTMzXwvWAbvhToET4eIVzhj2KbvpFfUXEe9IwV1uO+runEiMHp5Q0gEewyDm3nQR9ILBTXIWL6d7BkBl4RKf2phPphtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OsALomt5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D38C2BCB8;
-	Mon,  4 May 2026 18:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777918106;
-	bh=3UPZWevxPsrYPCrR7mOC/FIGar1XFQKQdBJDn/D/anM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OsALomt5LyqBH08Erf6EWMdKqzWAnU6f7s1/ezvIEFLI1g3Qzf7kzNeSXUOskCd4Z
-	 a91VN4Bv7tJEv2JxQQlwgR8q2N3Ffoe8KR1tiqnW20YvEuAfbrr28//jjkBnyokJCb
-	 DsqSRACn1ooaYinBPMXj7dM1F8oSz9V8jy6YAdeGQVAwEp6wTy+Wf3JlRlA9pUZ90F
-	 zWMB2itqEqhGYzWSvbx/BRZsC40RxMEZLSBJdc5vIJXpaG8RqHKUrsgocCceYuhpE1
-	 T9lEFy+m4HMya5exU0I/VoMoJS16WCsSgPo+EmvtE7pEHX19CwHlv6nV/hMPvGXYC3
-	 E7bpIESCKP0uw==
-Message-ID: <66a22c70-6d8c-4d3b-baa3-b63ca22b804a@kernel.org>
-Date: Mon, 4 May 2026 20:08:20 +0200
+	s=arc-20240116; t=1777919181; c=relaxed/simple;
+	bh=UaOnLB4kzFhagkSo1mRsv03uIvRALpIaTJO2y/9URNc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B/pfxwxoBV/Fd4zNKK1zvtdAfPXaArAGGAgPKQm4BfAN2fDiShp8diJOl3IqSVCqHCUX0ZKImH49xQsl51ME+WyzmFS/WsC7q/AAsUJw/WTCruCRGZ7HgYFA3qKDgDEc/Atij2vdOw3sIfTNtvD6ZuboEveN/qzh6zaANg3pykw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chesswob.org; spf=pass smtp.mailfrom=chesswob.org; dkim=pass (2048-bit key) header.d=chesswob.org header.i=@chesswob.org header.b=IlH8FO8n; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chesswob.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chesswob.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chesswob.org;
+	s=protonmail; t=1777919175; x=1778178375;
+	bh=PR/X6lI251CoSCFQrPjdszYhdQtxyE+I9d8XZnIz22c=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=IlH8FO8nNRxMDkS/MOeqT85jDT0d18WjtJn1QiHbWwYgoqUH2UEduRf5FE+DnCuYl
+	 f47MkJYeGe0fGdQaDIJKlkT73v2gXMbOV6qNi51kx5a9pYOrtLrejk9hkJ9UMPfqGH
+	 VyMYrfxA/W2Y0152EXCZ7HH0cpw9iS1SSKZR0NWPs3MYFrOIDBVKltQ0vyCZ8p5yX8
+	 +FciicrpHKTOv8ZOz93BA5K0wAwtTcqL8J3Sh83eETmwSXJCvVWp2csKVUykDYDsQ8
+	 I9/uZwuss27Nnn/+Fc39MlJZeO1lekeKODBtfgokyN+oevtMBS9VVOfKR1ijrQhT0i
+	 Md2yvIMA4dFRw==
+Date: Mon, 04 May 2026 18:26:10 +0000
+To: Eric Biggers <ebiggers@kernel.org>
+From: =?utf-8?B?4pK2bMOvIFDimK5sYXRlbA==?= <alip@chesswob.org>
+Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Taeyang Lee <0wn@theori.io>, Brian Pak <bpak@theori.io>, Juno Im <juno@theori.io>, Jungwon Lim <setuid0@theori.io>, Tim Becker <tjbecker@theori.io>, Demi Marie Obenour <demiobenour@gmail.com>, Feng Ning <feng@innora.ai>, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: af_alg - Remove zero-copy support from AF_ALG
+Message-ID: <xxEJMG_wLMObY-emZXfETJ6HxxJQCY3OnYiBIUTyAWEMiAcr8QQd2t7c8O-Qj43zBGRv64st0_IrW9ABgaVwco9-puLVlIDh3ijeJ-cxXaE=@chesswob.org>
+In-Reply-To: <20260504174733.GB2291@sol>
+References: <20260504061532.172013-1-ebiggers@kernel.org> <mCm5pwZUNYtOVDph2baJg3eAzArddjvFpx3Wwh2qiZfZXYtv-aUjlISuRg5HjuIMzGo51hxCazaH47gp9B_q7I4R4LVePKGkvhO9D0P4nCY=@chesswob.org> <20260504174733.GB2291@sol>
+Feedback-ID: 36787097:user:proton
+X-Pm-Message-ID: 1afb90c6cdb9a12d85494210882da516a8ac3d32
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 4/4] mptcp: sockopt: increase seq in
- mptcp_setsockopt_all_sf
-Content-Language: fr
-To: netdev@vger.kernel.org
-Cc: mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Florian Westphal <fw@strlen.de>, Gang Yan <yangang@kylinos.cn>,
- Dmytro Shytyi <dmytro@shytyi.net>
-References: <20260501-net-mptcp-misc-fixes-7-1-rc3-v1-0-b70118df778e@kernel.org>
- <20260501-net-mptcp-misc-fixes-7-1-rc3-v1-4-b70118df778e@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260501-net-mptcp-misc-fixes-7-1-rc3-v1-4-b70118df778e@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A1C2E4C250A
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------53ee95e391c4beb67b725744ebc23dbf7c3afdadd1f8e30ba44010d800038c0b"; charset=utf-8
+X-Rspamd-Queue-Id: 785614C288F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[chesswob.org,quarantine];
+	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	R_DKIM_ALLOW(-0.20)[chesswob.org:s=protonmail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_UNKNOWN(0.10)[application/pgp-keys];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243894-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243895-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gondor.apana.org.au,theori.io,gmail.com,innora.ai];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:~];
+	DKIM_TRACE(0.00)[chesswob.org:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alip@chesswob.org,stable@vger.kernel.org];
+	HAS_ATTACHMENT(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sashiko.dev:url]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[exherbo.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Hello,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------53ee95e391c4beb67b725744ebc23dbf7c3afdadd1f8e30ba44010d800038c0b
+Content-Type: multipart/mixed;boundary=---------------------ee818561bc99d6503c9bebfbccd26cf0
 
-On 01/05/2026 21:35, Matthieu Baerts (NGI0) wrote:
-> mptcp_setsockopt_all_sf() was missing a call to sockopt_seq_inc(). This
-> is required not to cause missing synchronization for newer subflows
-> created later on.
-> 
-> This helper is called each time a socket option is set on subflows, and
-> future ones will need to inherit this option after their creation.
+-----------------------ee818561bc99d6503c9bebfbccd26cf0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;charset=utf-8
 
-Regarding Sashiko's review, I think this can be ignored: the comments
-are about existing code / architecture. In short, for the moment, most
-places in sockopt.c assumes that if there is an error to set a socket
-option with one subflow, the error will be visible when setting this
-option on all of them. Maybe (not sure) this could be changed, but then
-this can be done later, when modifying all the other places. Here I
-think it is better to keep the same logic as what is done with the other
-options.
+On Monday, 4 May 2026 at 19:51, Eric Biggers <ebiggers@kernel.org> wrote:
 
-https://sashiko.dev/#/patchset/20260501-net-mptcp-misc-fixes-7-1-rc3-v1-0-b70118df778e%40kernel.org
+> On Mon, May 04, 2026 at 04:07:45PM +0000, =E2=92=B6l=C3=AF P=E2=98=AElat=
+el wrote:
+> > Syd sandbox uses AF_ALG zero-copy for its Force Sandboxing[1] and Cryp=
+t Sandboxing[1].
+> > Zero-copy means Syd does not have to copy sandbox process data into it=
+s own address
+> > space providing safety and security. Switching to read/write rather th=
+an pipes and
+> > splice breaks a fundamental safety guarantee for the sandbox. Please d=
+o not break
+> > userspace.
+> >
+> > Will sendfile(2) continue to work?
+> >
+> > [1]: https://man.exherbo.org/syd.7.html#Force_Sandboxing
+> > [2]: https://man.exherbo.org/syd.7.html#Crypt_Sandboxing
+> =
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+
+> It's very unclear what that feature (which I don't think anyone knew
+> even existed) is trying to accomplish.  Regardless, this patch doesn't
+> break the splice or sendfile syscalls.  It just makes them run a bit
+> more slowly since the kernel will copy the data internally.  So I think
+> your concern isn't justified.
+> =
+
+
+> > How can i test? Please help me.
+> =
+
+
+> If this is a feature you care about, perhaps you know how to test it?
+
+Thank you very much for the explanation and excuse me I panicked.
+
+> - Eric
+> =
+
+
+
+Best,
+Ali
+-----------------------ee818561bc99d6503c9bebfbccd26cf0
+Content-Type: application/pgp-keys; filename="publickey - alip@chesswob.org - 0x55838BF3.asc"; name="publickey - alip@chesswob.org - 0x55838BF3.asc"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="publickey - alip@chesswob.org - 0x55838BF3.asc"; name="publickey - alip@chesswob.org - 0x55838BF3.asc"
+
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCgp4c0JOQkdFWGppUUJDQUNvakdh
+OTlKTnVENVFVQUxFeWNsd2Uxd01MVjVySmN5ZUhrM3NIOEVZTExsS2sKNm9wNlJ1bGhjUHdvMW5O
+UmdXRkM4ZVBRaVNqMUpFRHFlRjQ3eXU5Y0xDU3BLeDRJWUVCZmxiSkwwcEI4CkpZdUk4NSs1OVE1
+MXZaeUJuU3pTclBkcUdjSDM2d05wZ2d0N2lTcHVCVjk3clRWeE1ndHU4S0RtUisvSgpXQWQ2aWJl
+UE93b3pnd1ZQV0VJY1NQd0FaUFlrcHJ5YnVCQkNWb2dmbUxLN09FWTNGMlozTzEyeGFHYVUKOGF6
+RU5XZkI2YWJPVXM1ajlOaXJFMW5OV1h2V3FPSEVVa3grVmdFTUlkR2JTWWc5Y0dicDljUjZZZUFS
+CnlpK0Y0MGJYMWZCS2ZVNFI3ZDVJQXY0Y2g2OTUxMDdrMW9qYmJCRjZDWFZ3V0tSSzBlRng1Tit6
+QUJFQgpBQUhOSldGc2FYQkFZMmhsYzNOM2IySXViM0puSUR4aGJHbHdRR05vWlhOemQyOWlMbTl5
+Wno3Q3dJMEUKRUFFSUFDQUZBbUVYamlRR0N3a0hDQU1DQkJVSUNnSUVGZ0lCQUFJWkFRSWJBd0ll
+QVFBaENSRE81K2JkClErS2JzQlloQkZXRGkvTXNPNG9Ja28wR1NzN241dDFENHB1d2ZRRUgvaXpy
+ekJkbzFGMHhYRjdNdjkzVgpkS2xFbWxlVk8rYnVjdU5hb2huNzFCNnl1SW5EM1NLYUM1SHF0dENK
+MFlnNEYvQmIwdDlVYjBrWGkxOFUKRnRKU0V0TmxpUXJRTVJLZno3cFVqTHAwWkR1Y2xlaDVKUURs
+ZHVZYlBVWEdGRDdnNVN6M3M4OXJuYWdXCnFKZkdxcWVlMWRDcXJYN0l2N0xwU2ZVbDlLdzhwSmRG
+aFlsby95RW9SLzVnM2k1Yy8wOWtyaDdSUmk0agpPdVBteFMzWHN0aTVRT0x1U2JFUFlhWmhpZnZn
+R3JOcVRyUTY0QUxDSjQ2Q3ZrQVQ0UGptWnpncE03cHcKeURQNEFJM25WRDNSQ0U4SHY3SjR2TmdC
+Z1dvL1hKRlcyd0EydUFJV2xzbTd1eFNjMWh5OFVLVzFnTVl4Cm9PM1daeGl0TWQrMk81L1VuakRB
+MHovT3dFMEVZUmVPSkFFSUFLOVF1b1pvNnloYlAvTVpvNDZnZjY0ZAo3Nmc5NE84VnJ1amxwazVE
+cjg3T0wvVGY1dS9XMVRiZWhCYWppN0s5Z0NLczlVZUtUYldyanVlRnltSSsKY1lGMzZiclIrVFgw
+cjFyMGRRbjl4Y0M2UnRDNDArV3lOdER3dTk5Ym1VZkF1dnJ5QmdOOW9aVHF1azlFClUydEUydjBh
+ZTQ4MzU1L3AwQmR4c3Z6SmNPTW1FWENDZUpYcUdQa0Nrd3Fnc3JxazRTVHFQS2VRWTZXcgpOU0NX
+cnE3WTVVYWVJWXZaUm5kMFRjV0ZLWVJLbk5XNkI2TnplZFdjRGJRazV1OUs2RzN5SS9vTy9EdzQK
+a25PanVCWUNBa1Vodzk0M1ZwSi81N3RwMDFzd2hjdjVlcHFCYUhLNVNSYTg4TytOWUlRODdNNE5m
+Z3lFCkg3Z0lDY0RTT1lMVURUM0ZmN1VBRVFFQUFjTEFkZ1FZQVFnQUNRVUNZUmVPSkFJYkRBQWhD
+UkRPNStiZApRK0tic0JZaEJGV0RpL01zTzRvSWtvMEdTczduNXQxRDRwdXdiNmdILzNsaE8wdFJm
+NTZrOG5Lc0hQZ0wKWHlVTUVQZWtoVFVMdG04RXFkekozSkhMUTJlNFBxWTQydlJhNEdEUzY5aVNL
+UVR6UlhvdWhQWnBId2tCCnpKTk4xK3AxQ2V0LzNiRzJza0hlMkxwV2tGVVBad256MEE4SkZFMEhr
+RmpZcUVLYXk3ZUs0LzIxTGhKUQpCZEZUSDMwbVBOMytiMVU5dmtOblBPY0ZQbHhmbmNzekk2Rk1j
+NnU4dnYxNDc3SkFJcE0yV0pQcXRkUWMKSncvT2dHcjFaRW5OWi9icktWK3RQeHlEdmxtUklsQTNI
+TnlyN0Q5NWN2bFlkVHl5emcyb3dFZHRMa3dlCjI0eUNUbWdHNnVoL29SazFsenFYcWZHaEpDYVpD
+Zi83MlhpcWxSaDFRUko1ejdIM1NMcHF3MUszVXlQbApaNHg4NTliSFJMODNXeGpiR1FLMU8vMD0K
+PXNtSUEKLS0tLS1FTkQgUEdQIFBVQkxJQyBLRVkgQkxPQ0stLS0tLQo=
+-----------------------ee818561bc99d6503c9bebfbccd26cf0--
+
+--------53ee95e391c4beb67b725744ebc23dbf7c3afdadd1f8e30ba44010d800038c0b
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wsC5BAEBCgBtBYJp+OSrCRDO5+bdQ+KbsEUUAAAAAAAcACBzYWx0QG5vdGF0
+aW9ucy5vcGVucGdwanMub3JnrosanUaATdxv1zvo0qqMcwbspCcHHKdd4kfq
+6DeKiE0WIQRVg4vzLDuKCJKNBkrO5+bdQ+KbsAAAIHEH/3/LRUM9YzeL2cmV
+rZsH7dsmYchx1e1fn/MJqKGBohTKLslPS5VUPN5sTBTd8ZvRNrBZkvSNlLDJ
+18YxPbLJGFtwHYOx/SPTrh85Cr18gas+fKOwqETAnHQ/liBnLUcW2q8si/qs
+KVDr2DZ2qhOarTdC/Eu/zqJplyJTonWebmLbZ9VA/RcL/SWlwRNO9gaf9yjp
+aCDVwAmkuqUP5BoR5JvgsZlDIgybAH9DppF7JK7xM1iU102DbHMNHP5W72VN
+RLCBGzeutWa9HWCcHgkCizSoRE8B3+ls9w/QB8y9SDHSDvk6Ewd9c4VAdw5v
+a/IxiVHzooDo2ip0tHT8XfZKHjk=
+=wfTi
+-----END PGP SIGNATURE-----
+
+
+--------53ee95e391c4beb67b725744ebc23dbf7c3afdadd1f8e30ba44010d800038c0b--
 
 
