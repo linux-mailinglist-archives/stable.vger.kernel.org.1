@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cC93Ktan+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:14 +0200
+	id EOZgAyKu+GlIxwIAu9opvQ
+	(envelope-from <stable+bounces-243740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD8E4BE84A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574D24BFA89
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49EAF301223D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25B7330827C1
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3710E2D8DDF;
-	Mon,  4 May 2026 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0D43E1CF0;
+	Mon,  4 May 2026 14:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlioqNMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeNxSJC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6653DE431;
-	Mon,  4 May 2026 14:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4533E1CE5;
+	Mon,  4 May 2026 14:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903496; cv=none; b=q/rtrwQSdkpCOGXrRoF9TXIwOAmsy8vAc9xoRA1OCXvU8vzJAwWGl0EhaPq7OrQx9QrTsgQCoQxc2nq1ZP0OiLlp9K+JE03yxfxSXZAp2S+7Yllwnnh6kLNMcIwpBLq4OWIVFLuDJOWAQVspZdNvTj/37QDqfIIUG8p90EqAHPQ=
+	t=1777904656; cv=none; b=ttBKtOeTDP/xWl5UumtEuvUUiTA6RU4UhwN0EtK6/9x8AvJmFERhRsWll711g/RHGGWyVFlmBf8EcQXege6UpW0QLm04u3dHhoIKHgZ3SkydeaHxGFP1mSRu7xUaB7dRtsvYnsMaKdA8UMeerWLBgHjKGG9bHd4OhssyewfaYpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903496; c=relaxed/simple;
-	bh=Ym1KwoJ4ANIlW+2oBdJjKd+vhRQpSG3NGkmKH5+AmE4=;
+	s=arc-20240116; t=1777904656; c=relaxed/simple;
+	bh=vX1+2Bd5le4vWov91gYHrhZYgwmvupHsmP4hzIr57/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJOEio7LbC1I89abs8du6pFTYeXXkYYsmdi+fpfcZv03jgFGEO/URYWt/Lbp7lOVQGAHvYIDHfGn7mWwVumU624RiQf4UCo4QZuPXulFQW3L3V5Qu51PdB1s/e/7DU2SXu9Mr9bfYGfQUzp/pRaVG/oQhiXce00nKPCRB1cFYNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlioqNMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C21C2BCB8;
-	Mon,  4 May 2026 14:04:55 +0000 (UTC)
+	 MIME-Version; b=bWqZNM6YnvliID7CsrSX/boe8guHwSWgN45zdkF96dWIVJeg2Xae2xKoQfjTz7hWZajvO91+JsatgtxcuF1Nk1Lt9sEGKE2M85UKyRdmxWS1ThSyqxSJ/eWtB0y06CvHz0pYIqysoJKOTy8ugL8aAaniRSysCVFyarvWid5FqW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeNxSJC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39696C2BCF7;
+	Mon,  4 May 2026 14:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903495;
-	bh=Ym1KwoJ4ANIlW+2oBdJjKd+vhRQpSG3NGkmKH5+AmE4=;
+	s=korg; t=1777904656;
+	bh=vX1+2Bd5le4vWov91gYHrhZYgwmvupHsmP4hzIr57/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KlioqNMoIbADfecmEcjs2rT9wDWdjsuTSvXypeSUef0qiGhzRdYJgyyz8coAs5eN5
-	 GEuW8FX/3+51/ek27n/rWgkz7YQeT2QLR2ymAxsn2/EGG3wP0JE/jJTyMHkIm/8UDZ
-	 RBm0rbO+ZdxaxJR0ZS4l3PTyttIo7tHbFexiJqTQ=
+	b=LeNxSJC9aE3ah1q9Zj37LpHZISFozNetoFR/9SNF3WpQyCQ+DUiXhtQtLowzmjWN3
+	 wEnVJCCcgeVK2gkp0PLt3zeDTv/yt8bBwP2LGl1qtvLSH2IK024A/wRfe1oUhn72KD
+	 6ml68a1YMR2rqRSh3rOI2UHa1M4fU4W/kCdkjkLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 7.0 257/307] crypto: acomp - fix wrong pointer stored by acomp_save_req()
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 123/215] KVM: SVM: Explicitly mark vmcb01 dirty after modifying VMCB intercepts
 Date: Mon,  4 May 2026 15:52:22 +0200
-Message-ID: <20260504135152.488730776@linuxfoundation.org>
+Message-ID: <20260504135134.644504597@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5CD8E4BE84A
+X-Rspamd-Queue-Id: 574D24BFA89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,90 +80,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243286-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243740-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit d7e20b9bd6c990773cf0c09e2642250b8a70263d upstream.
+commit d5bde6113aed8315a2bfe708730b721be9c2f48b upstream.
 
-acomp_save_req() stores &req->chain in req->base.data. When
-acomp_reqchain_done() is invoked on asynchronous completion, it receives
-&req->chain as the data argument but casts it directly to struct
-acomp_req. Since data points to the chain member, all subsequent field
-accesses are at a wrong offset, resulting in memory corruption.
+When reacting to an intercept update, explicitly mark vmcb01's intercepts
+dirty, as KVM always initially operates on vmcb01, and nested_svm_vmexit()
+isn't guaranteed to mark VMCB_INTERCEPTS as dirty.  I.e. if L2 is active,
+KVM will modify the intercepts for L1, but might not mark them as dirty
+before the next VMRUN of L1.
 
-The issue occurs when an asynchronous hardware implementation, such as
-the QAT driver, completes a request that uses the DMA virtual address
-interface (e.g. acomp_request_set_src_dma()). This combination causes
-crypto_acomp_compress() to enter the acomp_do_req_chain() path, which
-sets acomp_reqchain_done() as the completion callback via
-acomp_save_req().
-
-With KASAN enabled, this manifests as a general protection fault in
-acomp_reqchain_done():
-
-  general protection fault, probably for non-canonical address 0xe000040000000000
-  KASAN: probably user-memory-access in range [0x0000400000000000-0x0000400000000007]
-  RIP: 0010:acomp_reqchain_done+0x15b/0x4e0
-  Call Trace:
-   <IRQ>
-   qat_comp_alg_callback+0x5d/0xa0 [intel_qat]
-   adf_ring_response_handler+0x376/0x8b0 [intel_qat]
-   adf_response_handler+0x60/0x170 [intel_qat]
-   tasklet_action_common+0x223/0x820
-   handle_softirqs+0x1ab/0x640
-   </IRQ>
-
-Fix this by storing the request itself in req->base.data instead of
-&req->chain, so that acomp_reqchain_done() receives the correct pointer.
-Simplify acomp_restore_req() accordingly to access req->chain directly.
-
-Fixes: 64929fe8c0a4 ("crypto: acomp - Remove request chaining")
+Fixes: 116a0a23676e ("KVM: SVM: Add clean-bit for intercetps, tsc-offset and pause filter count")
 Cc: stable@vger.kernel.org
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260218230958.2877682-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/acompress.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/nested.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/crypto/acompress.c
-+++ b/crypto/acompress.c
-@@ -169,15 +169,13 @@ static void acomp_save_req(struct acomp_
- 	state->compl = req->base.complete;
- 	state->data = req->base.data;
- 	req->base.complete = cplt;
--	req->base.data = state;
-+	req->base.data = req;
- }
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -129,11 +129,13 @@ void recalc_intercepts(struct vcpu_svm *
+ 	struct vmcb_ctrl_area_cached *g;
+ 	unsigned int i;
  
- static void acomp_restore_req(struct acomp_req *req)
- {
--	struct acomp_req_chain *state = req->base.data;
--
--	req->base.complete = state->compl;
--	req->base.data = state->data;
-+	req->base.complete = req->chain.compl;
-+	req->base.data = req->chain.data;
- }
+-	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
++	vmcb_mark_dirty(svm->vmcb01.ptr, VMCB_INTERCEPTS);
  
- static void acomp_reqchain_virt(struct acomp_req *req)
+ 	if (!is_guest_mode(&svm->vcpu))
+ 		return;
+ 
++	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
++
+ 	c = &svm->vmcb->control;
+ 	h = &svm->vmcb01.ptr->control;
+ 	g = &svm->nested.ctl;
 
 
 
