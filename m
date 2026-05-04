@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHb7KsCn+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:52 +0200
+	id iIQ3DEWt+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793C14BE80F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8691B4BF8A9
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C6167300D342
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEA303037DF0
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3257337881B;
-	Mon,  4 May 2026 14:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37C33D5254;
+	Mon,  4 May 2026 14:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arWyyjYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU34pv1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD6D3D9029;
-	Mon,  4 May 2026 14:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664561A9FAF;
+	Mon,  4 May 2026 14:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903441; cv=none; b=ndN4jaa9JQCNKCFAY9fjr7Y5Br48unlsg67dh/+5zVGqY3NkTiDUleXfM40dLLL5NVWnvEmNC2inP9ifYmEDfXul+mwlGLBP5PNSYTWjP6Boya5S1D3a0jyF3T9yIgxwY/3eUSP4W7tHQRIztgk/7JeFuDPr5iVqUt65/HS09yg=
+	t=1777904090; cv=none; b=aiXVqSb5TK2YaGFUrNGCRo3UHQNR39c/CjMYFiulprV56s1dyUOO5ysrTzb/AWwqC8sMee/+ZbFvK1v1hxSHs40KwwJPykfLweYlNGzsGBnFo6xqrgbFLZgIDZRp6M5pbJ8xcN9lS82bCfYSKwwx0BY93IIk/Of2Lswi/RxhX98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903441; c=relaxed/simple;
-	bh=ByCjKDhEcoAzDrkX6plxsCQ78aFim1upKjhtsCwYM/4=;
+	s=arc-20240116; t=1777904090; c=relaxed/simple;
+	bh=yHpSMFquBvS0vHf44pXFNQBg3LnLfs6XdsMdJcjmluk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CT5awVwZ+f04iOw+JcIY2WE3r5xadEfwy36x5+Pr2KNFr0p/nDgze7RFcPlcFsdFcvgVXDmgDjp8/r2WAZuzCvcy80D2lWlPG3I1vBxgGx1FqA3diszemTDMCbIiJG2Q0D/ov2kKm4gfkh5kzdN74JvHqoFf6CzxL3VcizMPktc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arWyyjYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C5BC2BCB8;
-	Mon,  4 May 2026 14:04:01 +0000 (UTC)
+	 MIME-Version; b=jIYdn/wpKf5JMgyAoFXt4T7DelIGQ+OVdDCrmdy/TM12dWChWyRp/MXvwKEQDTCTyLLXAiEZ6sz2QF+QwBNiAsc0w7FYnKOrTTREdq6JuZiECZRQmak2JcKxFcy1zvnyidQS/X4OTXvT+JCvYcj5I2PYpWQRxku/2GK87h0PyuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU34pv1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E38C2BCC4;
+	Mon,  4 May 2026 14:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903441;
-	bh=ByCjKDhEcoAzDrkX6plxsCQ78aFim1upKjhtsCwYM/4=;
+	s=korg; t=1777904090;
+	bh=yHpSMFquBvS0vHf44pXFNQBg3LnLfs6XdsMdJcjmluk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arWyyjYLcbfM9tCwzx2mQm0oYMZL3m7MSQ2WoyRgal2FHHeSmTiqW/srlHUD4ZrBr
-	 14VJAmv0BaUai1B7GI4B7wmBJyukK6hMaUMZTDvA4Dww4NBJImJDFtyuIDQF0DcZUo
-	 OL2hLBWQ2k1M+AUNjXWwiRmnq6h7pwZAOO56VWm0=
+	b=UU34pv1wkRJGKxiadQWSM8Mgfj/XCa267ZYeQZ3rpI8LvxctM3b8hFahhucC04vUc
+	 t7rJOFY/BbdlfEmhe7GcA8k6au0QpUSwn+LpOuFQGXCaxVaiN0J2RrV153NBTGFqod
+	 ddxUCS+mam4ptPIUE0p8UzgBdCGlOWYR0zkE5dKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
-	Hendrik Donner <hd@os-cillation.de>,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>
-Subject: [PATCH 7.0 234/307] mtd: spi-nor: sst: Fix write enable before AAI sequence
+	Sean Christopherson <seanjc@google.com>,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH 6.18 179/275] KVM: nSVM: Delay setting soft IRQ RIP tracking fields until vCPU run
 Date: Mon,  4 May 2026 15:51:59 +0200
-Message-ID: <20260504135151.651034533@linuxfoundation.org>
+Message-ID: <20260504135149.718695842@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 793C14BE80F
+X-Rspamd-Queue-Id: 8691B4BF8A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,80 +80,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243265-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243518-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,dicortech.com:email,os-cillation.de:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 upstream.
+commit c64bc6ed1764c1b7e3c0017019f743196074092f upstream.
 
-When writing to SST flash starting at an odd address, a single byte is
-first programmed using the byte program (BP) command. After this
-operation completes, the flash hardware automatically clears the Write
-Enable Latch (WEL) bit.
+In the save+restore path, when restoring nested state, the values of RIP
+and CS base passed into nested_vmcb02_prepare_control() are mostly
+incorrect.  They are both pulled from the vmcb02. For CS base, the value
+is only correct if system regs are restored before nested state. The
+value of RIP is whatever the vCPU had in vmcb02 before restoring nested
+state (zero on a freshly created vCPU).
 
-If an AAI (Auto Address Increment) word program sequence follows, it
-requires WEL to be set. Without re-enabling writes, the AAI sequence
-fails.
+Instead, take a similar approach to NextRIP, and delay initializing the
+RIP tracking fields until shortly before the vCPU is run, to make sure
+the most up-to-date values of RIP and CS base are used regardless of
+KVM_SET_SREGS, KVM_SET_REGS, and KVM_SET_NESTED_STATE's relative
+ordering.
 
-Add spi_nor_write_enable() after the odd-address byte program when more
-data needs to be written. Use a local boolean for clarity.
-
-Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-Tested-by: Hendrik Donner <hd@os-cillation.de>
-Reviewed-by: Hendrik Donner <hd@os-cillation.de>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260225005950.3739782-8-yosry@kernel.org
+[sean: deal with the svm_cancel_injection() madness]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/sst.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/x86/kvm/svm/nested.c |   17 ++++++++---------
+ arch/x86/kvm/svm/svm.c    |   29 +++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+), 9 deletions(-)
 
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -203,6 +203,8 @@ static int sst_nor_write(struct mtd_info
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -712,9 +712,7 @@ static bool is_evtinj_nmi(u32 evtinj)
+ 	return type == SVM_EVTINJ_TYPE_NMI;
+ }
  
- 	/* Start write from odd address. */
- 	if (to % 2) {
-+		bool needs_write_enable = (len > 1);
-+
- 		/* write one byte. */
- 		ret = sst_nor_write_data(nor, to, 1, buf);
- 		if (ret < 0)
-@@ -210,6 +212,17 @@ static int sst_nor_write(struct mtd_info
+-static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+-					  unsigned long vmcb12_rip,
+-					  unsigned long vmcb12_csbase)
++static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ {
+ 	u32 int_ctl_vmcb01_bits = V_INTR_MASKING_MASK;
+ 	u32 int_ctl_vmcb12_bits = V_TPR_MASK | V_IRQ_INJECTION_BITS_MASK;
+@@ -826,15 +824,16 @@ static void nested_vmcb02_prepare_contro
+ 		vmcb02->control.next_rip = svm->nested.ctl.next_rip;
  
- 		to++;
- 		actual++;
+ 	svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
 +
-+		/*
-+		 * Byte program clears the write enable latch. If more
-+		 * data needs to be written using the AAI sequence,
-+		 * re-enable writes.
-+		 */
-+		if (needs_write_enable) {
-+			ret = spi_nor_write_enable(nor);
-+			if (ret)
-+				goto out;
-+		}
++	/*
++	 * soft_int_csbase, soft_int_old_rip, and soft_int_next_rip (if L1
++	 * doesn't have NRIPS) are initialized later, before the vCPU is run.
++	 */
+ 	if (is_evtinj_soft(vmcb02->control.event_inj)) {
+ 		svm->soft_int_injected = true;
+-		svm->soft_int_csbase = vmcb12_csbase;
+-		svm->soft_int_old_rip = vmcb12_rip;
+ 		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+ 		    !svm->nested.nested_run_pending)
+ 			svm->soft_int_next_rip = svm->nested.ctl.next_rip;
+-		else
+-			svm->soft_int_next_rip = vmcb12_rip;
  	}
  
- 	/* Write out most of the data here. */
+ 	/* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
+@@ -919,7 +918,7 @@ int enter_svm_guest_mode(struct kvm_vcpu
+ 	nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.ptr);
+ 
+ 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
+-	nested_vmcb02_prepare_control(svm, vmcb12->save.rip, vmcb12->save.cs.base);
++	nested_vmcb02_prepare_control(svm);
+ 	nested_vmcb02_prepare_save(svm, vmcb12);
+ 
+ 	ret = nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
+@@ -1877,7 +1876,7 @@ static int svm_set_nested_state(struct k
+ 	nested_copy_vmcb_control_to_cache(svm, ctl);
+ 
+ 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
+-	nested_vmcb02_prepare_control(svm, svm->vmcb->save.rip, svm->vmcb->save.cs.base);
++	nested_vmcb02_prepare_control(svm);
+ 
+ 	/*
+ 	 * Any previously restored state (e.g. KVM_SET_SREGS) would mark fields
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3558,6 +3558,16 @@ static int svm_handle_exit(struct kvm_vc
+ 	return svm_invoke_exit_handler(vcpu, exit_code);
+ }
+ 
++static void svm_set_nested_run_soft_int_state(struct kvm_vcpu *vcpu)
++{
++	struct vcpu_svm *svm = to_svm(vcpu);
++
++	svm->soft_int_csbase = svm->vmcb->save.cs.base;
++	svm->soft_int_old_rip = kvm_rip_read(vcpu);
++	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
++		svm->soft_int_next_rip = kvm_rip_read(vcpu);
++}
++
+ static int pre_svm_run(struct kvm_vcpu *vcpu)
+ {
+ 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, vcpu->cpu);
+@@ -3680,6 +3690,13 @@ static void svm_fixup_nested_rips(struct
+ 	if (boot_cpu_has(X86_FEATURE_NRIPS) &&
+ 	    !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+ 		svm->vmcb->control.next_rip = kvm_rip_read(vcpu);
++
++	/*
++	 * Simiarly, initialize the soft int metadata here to use the most
++	 * up-to-date values of RIP and CS base, regardless of restore order.
++	 */
++	if (svm->soft_int_injected)
++		svm_set_nested_run_soft_int_state(vcpu);
+ }
+ 
+ void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
+@@ -4043,6 +4060,18 @@ static void svm_complete_soft_interrupt(
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
+ 	/*
++	 * Initialize the soft int fields *before* reading them below if KVM
++	 * aborted entry to the guest with a nested VMRUN pending.  To ensure
++	 * KVM uses up-to-date values for RIP and CS base across save/restore,
++	 * regardless of restore order, KVM waits to set the soft int fields
++	 * until VMRUN is imminent.  But when canceling injection, KVM requeues
++	 * the soft int and will reinject it via the standard injection flow,
++	 * and so KVM needs to grab the state from the pending nested VMRUN.
++	 */
++	if (is_guest_mode(vcpu) && svm->nested.nested_run_pending)
++		svm_set_nested_run_soft_int_state(vcpu);
++
++	/*
+ 	 * If NRIPS is enabled, KVM must snapshot the pre-VMRUN next_rip that's
+ 	 * associated with the original soft exception/interrupt.  next_rip is
+ 	 * cleared on all exits that can occur while vectoring an event, so KVM
 
 
 
