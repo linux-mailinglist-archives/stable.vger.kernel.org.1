@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-243583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IzQNVir+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:12 +0200
+	id CC8MOqey+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874734BF288
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214AE4C01DE
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41EAD301D24D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 22B1430470AF
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02DB3DE458;
-	Mon,  4 May 2026 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED823DFC72;
+	Mon,  4 May 2026 14:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXBJaUty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiLZ8V7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617143DE43B;
-	Mon,  4 May 2026 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E655E3DE458;
+	Mon,  4 May 2026 14:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904257; cv=none; b=q+3CEtSWfwV6zgznkDMVaTHsZ17/AHe1njae+kYqhGrHJAu/iuTzWABWcPSM6OnzjijpNhM9miu3upPHKaSI/ap8mEjCGQyTEtyoFKU6iW0GCdmDB3OTCQWjQq3PhEIJcBX0naza9eJ5zS+eoBhO33nx7f4JbXBWLYXgeNzyc4I=
+	t=1777904770; cv=none; b=dHbEziUwlApjwFsZDJEKqYXS1ajmAa6FSdPX48cW0acNcEPN0E6O5xQP4R0n4p2Xr+97jlPAkTaPsPhZJ2Bb7V8OZsko/4GAEUolDw+jI2y5gYvLDztcqq6GDl9/Pb2JFQpwi9EjLTlHY66NqyGpT948W3GylgsdLkfZ7VAvrdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904257; c=relaxed/simple;
-	bh=CiT4XqyGKNa2cz0nI6DnytUXowrpQgtXFwzqR0CbCfQ=;
+	s=arc-20240116; t=1777904770; c=relaxed/simple;
+	bh=vyeAdfSJVKrqyAOo+BiE3os7GMQiZJor6yFLhUN3by4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSlPavRzfxDhPUV0M25JFFsaBjB7DI3e1lQdbmFxHYYZ1tAO816PKt8dpWxeL8hUWf3lWAQrwhbDL6PPboMZkDy990GN0upneCUxxo+68Njx3DdgtImvTBdCOmohliWF4lUw3vmJyD7w0dmPqZ3Ow/G/Uc4eOhS/bgFjd2mj+gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXBJaUty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD13BC2BCB8;
-	Mon,  4 May 2026 14:17:36 +0000 (UTC)
+	 MIME-Version; b=DHv/icyn51nBcO7N8Sv62CrjlnLhaPZ4k2njzSA1L1e0wHhAc3RiEP3hCtLjgc5uHbe2paI9D41G+3b13MwIjnEEwGGzyXx48IbvZCJnQ/kepu/OOkDuJ1jeFa+uck/Gb7X5XPpUIQke+BzSE1X5uPCbCDpjy90hNzjzKueyklY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiLZ8V7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7DCC2BCC4;
+	Mon,  4 May 2026 14:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904257;
-	bh=CiT4XqyGKNa2cz0nI6DnytUXowrpQgtXFwzqR0CbCfQ=;
+	s=korg; t=1777904769;
+	bh=vyeAdfSJVKrqyAOo+BiE3os7GMQiZJor6yFLhUN3by4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXBJaUtySiSVxeWAvYIwHEdER77vPQzjp6V83/3nnt8w+4CO+4pwLfe19Kcm4c9oE
-	 3MOF7LifouhnfvAlofhRLfbGimTlIafeqrwQRcVlWVIQIrJ9gedRn7ZrbMosSWhF9Y
-	 OHxtfN/e9e7LJAawFlAlnGQWAutWEQdG7uHE1r3E=
+	b=uiLZ8V7jUELHqaHDLWPwqpCtwhAUjaj9jEqjsZgU2iyVBw0dzgqHwD/TX5OftGdkQ
+	 NWpJvR8VIc72PNynmEdBdtxtB0CYK0plkSWBxHFxBbSXcLN9ke7Re0rpjqrWguF/fF
+	 eYKlBK4DOHoAlLPtMaVZEFMUNd6yxcinO2jgogGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 245/275] seg6: fix seg6 lwtunnel output redirect for L2 reduced encap mode
+	Chen Zhao <chezhao@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.12 166/215] IB/core: Fix zero dmac race in neighbor resolution
 Date: Mon,  4 May 2026 15:53:05 +0200
-Message-ID: <20260504135152.141834041@linuxfoundation.org>
+Message-ID: <20260504135136.243960439@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +65,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 874734BF288
+X-Rspamd-Queue-Id: 214AE4C01DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243583-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243784-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniroma2.it:email,l2encaps.red:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Chen Zhao <chezhao@nvidia.com>
 
-commit ade67d5f588832c7ba131aadd4215a94ce0a15c8 upstream.
+commit 5e6de34d82b49cab9d8a42063e9cd0f22a4f31e5 upstream.
 
-When SEG6_IPTUN_MODE_L2ENCAP_RED (L2ENCAP_RED) was introduced, the
-condition in seg6_build_state() that excludes L2 encap modes from
-setting LWTUNNEL_STATE_OUTPUT_REDIRECT was not updated to account for
-the new mode.
-As a consequence, L2ENCAP_RED routes incorrectly trigger seg6_output()
-on the output path, where the packet is silently dropped because
-skb_mac_header_was_set() fails on L3 packets.
+dst_fetch_ha() checks nud_state without holding the neighbor lock, then
+copies ha under the seqlock. A race in __neigh_update() where nud_state
+is set to NUD_REACHABLE before ha is written allows dst_fetch_ha() to
+read a zero MAC address while the seqlock reports no concurrent writer.
 
-Extend the check to also exclude L2ENCAP_RED, consistent with L2ENCAP.
+netevent_callback amplifies this by waking ALL pending addr_req workers
+when ANY neighbor becomes NUD_VALID. At scale (N peers resolving ARP
+concurrently), the hit probability scales as N^2, making it near-certain
+for large RDMA workloads.
 
-Fixes: 13f0296be8ec ("seg6: add support for SRv6 H.L2Encaps.Red behavior")
+N(A): neigh_update(A)                   W(A): addr_resolve(A)
+ |                                       [sleep]
+ | write_lock_bh(&A->lock)               |
+ | A->nud_state = NUD_REACHABLE          |
+ | // A->ha is still 0                   |
+ |                                       [woken by netevent_cb() of
+ |                                         another neighbour]
+ |                                       | dst_fetch_ha(A)
+ |                                       |   A->nud_state & NUD_VALID
+ |                                       |   read_seqbegin(&A->ha_lock)
+ |                                       |   snapshot = A->ha  /* 0 */
+ |                                       |   read_seqretry(&A->ha_lock)
+ |                                       |   return snapshot
+ | seqlock(&A->ha_lock)
+ | A->ha = mac_A     /* too late */
+ | sequnlock(&A->ha_lock)
+ | write_unlock_bh(&A->lock)
+
+The incorrect/zero mac is read and programmed in the device QP while it
+was not yet updated. This causes silent packet loss and eventual
+RETRY_EXC_ERR.
+
+Fix by holding the neighbor read lock across the nud_state check and
+ha copy in dst_fetch_ha(), ensuring it synchronizes with
+__neigh_update() which is updating while holding the write lock.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260418162838.31979-1-andrea.mayer@uniroma2.it
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 92ebb6a0a13a ("IB/cm: Remove now useless rcu_lock in dst_fetch_ha")
+Link: https://patch.msgid.link/r/20260405-fix-dmac-race-v1-1-cfa1ec2ce54a@nvidia.com
+Signed-off-by: Chen Zhao <chezhao@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_iptunnel.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/addr.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -715,7 +715,8 @@ static int seg6_build_state(struct net *
- 	newts->type = LWTUNNEL_ENCAP_SEG6;
- 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -321,11 +321,14 @@ static int dst_fetch_ha(const struct dst
+ 	if (!n)
+ 		return -ENODATA;
  
--	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP)
-+	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP &&
-+	    tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP_RED)
- 		newts->flags |= LWTUNNEL_STATE_OUTPUT_REDIRECT;
++	read_lock_bh(&n->lock);
+ 	if (!(n->nud_state & NUD_VALID)) {
++		read_unlock_bh(&n->lock);
+ 		neigh_event_send(n, NULL);
+ 		ret = -ENODATA;
+ 	} else {
+ 		neigh_ha_snapshot(dev_addr->dst_dev_addr, n, dst->dev);
++		read_unlock_bh(&n->lock);
+ 	}
  
- 	newts->headroom = seg6_lwt_headroom(tuninfo);
+ 	neigh_release(n);
 
 
 
