@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-243280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCz5OC2r+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:29 +0200
+	id 4DSxDPes+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682C34BF1F8
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62F14BF7F9
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1958630CEC06
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1BA4B307E62E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72583DD53E;
-	Mon,  4 May 2026 14:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BFC3DF00F;
+	Mon,  4 May 2026 14:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk1+7sRJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2uZf4Oa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADEC3D9029;
-	Mon,  4 May 2026 14:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5143DFC8D;
+	Mon,  4 May 2026 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903480; cv=none; b=NnH+K184ovX6t2uaatwuaT37kuY9lN/xYLoEwRPCjBmQ4ShmvYDVuMhFrmRo3W5xnzwyvy4PFjxif28rIZlnyX63QPylRZVcx9f+EJEQZ+nuBGxhWgjN/u3TsxgGmbj0/r/TFWkaVB1qVQGGW82zg75pkjxrZ2pWvZxy3HBVlLc=
+	t=1777904638; cv=none; b=GVVHff1BP7E9hDNbj6HM5Hf5A89HbpD9FvcrhhzvEnHjUmwi8FYQPaijAtqnHvcPx7sjyCWyFs6D9k80X/4vhVKYNrNS198A0PDL8jPSD/Odl3xHQhHPkS2pwbbti7WfuOpxX8ZsB3bSKSJkMmrBMwx1VIkP//MQhxDKR/OfFZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903480; c=relaxed/simple;
-	bh=cEuKnlYXp4dseraV60XEvUp82F9v7FjPVwROeqoU18k=;
+	s=arc-20240116; t=1777904638; c=relaxed/simple;
+	bh=c+fp/y+jp800q2T0CQbMgETYOip/I8mDfPYwSmdzR9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3pn6LuqiJdgs0L47av9ue4aqhc6kOKn7LimMGAp9oYzpC8x4cV1XGyOrRC0wlltt+xtVmunNj+pvFqJ06gTTCcabizIBGlEl4ZPB+SdX+F1mgAgjAu4MG1k+Sg1z7821MTwdTot4b02u6ZB9VdLaC4cmwKJ9qBmt0oJctUZvDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk1+7sRJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D42C2BCB8;
-	Mon,  4 May 2026 14:04:39 +0000 (UTC)
+	 MIME-Version; b=M9lY/dnC+ZT27qpuRrjaWD2nFXfwSkPJGDszOk3ix2LdS0r7/azwxaQAj6cnEqhfnCSRLxMkkeQ+BXTGy7CSA2y7Qwi+aiLVV0jNu3pIRwb1Wwk/cdgDuS3FVl633QQPYSGvmUKcv7c19RaNvvD/d+PbCLyrU5GCPwxTGQ+H3yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2uZf4Oa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EAEC2BCC4;
+	Mon,  4 May 2026 14:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903480;
-	bh=cEuKnlYXp4dseraV60XEvUp82F9v7FjPVwROeqoU18k=;
+	s=korg; t=1777904638;
+	bh=c+fp/y+jp800q2T0CQbMgETYOip/I8mDfPYwSmdzR9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qk1+7sRJ6kO1xbmkMKKUtx/CE+vY32xXaM5phovf8Xw0C+mWv7SCy+mZQnm6HCURs
-	 LCoq5AwU0wNvCuRsloNGr7+5Q9najxLFo5lT/zof8ddO/ig4w2DC2uY6Fb3Pj323jX
-	 xLMdC0kvqCXcOrklMqdGXBG/ZVU2+881B6OdfSe8=
+	b=x2uZf4OaMs4bGsRcoS4ojJp+XF6Yj46YijVQ5Q98yg9xvLOF7ikBj5EHnnibqynPJ
+	 URuD5ht+LaKGYqKTMN4jsT36MtDOEJB63hpMCPcODIbcpRXkoHFzjRSSTIgVizb4/u
+	 56H2jTWJ2FOXL355CiVDZScU7knfJZf1k0t0wbKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Mak <makb@juniper.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 7.0 251/307] mfd: core: Preserve OF node when ACPI handle is present
+	"Denis M. Karpov" <komlomal@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 117/215] userfaultfd: allow registration of ranges below mmap_min_addr
 Date: Mon,  4 May 2026 15:52:16 +0200
-Message-ID: <20260504135152.266350709@linuxfoundation.org>
+Message-ID: <20260504135134.428575059@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +73,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 682C34BF1F8
+X-Rspamd-Queue-Id: C62F14BF7F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243733-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.de,oracle.com,zeniv.linux.org.uk,suse.cz,google.com,redhat.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243280-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Mak <makb@juniper.net>
+From: Denis M. Karpov <komlomal@gmail.com>
 
-commit caa5a5d44d8ae4fd13b744857d66c9313b712d1f upstream.
+commit 161ce69c2c89781784b945d8e281ff2da9dede9c upstream.
 
-Switch device_set_node to set_primary_fwnode, so that the ACPI fwnode
-does not overwrite the of_node with NULL.
+The current implementation of validate_range() in fs/userfaultfd.c
+performs a hard check against mmap_min_addr.  This is redundant because
+UFFDIO_REGISTER operates on memory ranges that must already be backed by a
+VMA.
 
-This allows MFD children with both OF nodes and ACPI handles to have OF
-nodes again.
+Enforcing mmap_min_addr or capability checks again in userfaultfd is
+unnecessary and prevents applications like binary compilers from using
+UFFD for valid memory regions mapped by application.
 
-Cc: stable@vger.kernel.org
-Fixes: 51e3b257099d ("mfd: core: Make use of device_set_node()")
-Signed-off-by: Brian Mak <makb@juniper.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260325223024.35992-1-makb@juniper.net
-Signed-off-by: Lee Jones <lee@kernel.org>
+Remove the redundant check for mmap_min_addr.
+
+We started using UFFD instead of the classic mprotect approach in the
+binary translator to track application writes.  During development, we
+encountered this bug.  The translator cannot control where the translated
+application chooses to map its memory and if the app requires a
+low-address area, UFFD fails, whereas mprotect would work just fine.  I
+believe this is a genuine logic bug rather than an improvement, and I
+would appreciate including the fix in stable.
+
+Link: https://lore.kernel.org/20260409103345.15044-1-komlomal@gmail.com
+Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/mfd-core.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/userfaultfd.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/mfd/mfd-core.c
-+++ b/drivers/mfd/mfd-core.c
-@@ -88,7 +88,17 @@ static void mfd_acpi_add_device(const st
- 		}
- 	}
- 
--	device_set_node(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
-+	/*
-+	 * NOTE: The fwnode design doesn't allow proper stacking/sharing. This
-+	 * should eventually turn into a device fwnode API call that will allow
-+	 * prepending to a list of fwnodes (with ACPI taking precedence).
-+	 *
-+	 * set_primary_fwnode() is used here, instead of device_set_node(), as
-+	 * device_set_node() will overwrite the existing fwnode, which may be an
-+	 * OF node that was populated earlier. To support a use case where ACPI
-+	 * and OF is used in conjunction, we call set_primary_fwnode() instead.
-+	 */
-+	set_primary_fwnode(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
- }
- #else
- static inline void mfd_acpi_add_device(const struct mfd_cell *cell,
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1215,8 +1215,6 @@ static __always_inline int validate_unal
+ 		return -EINVAL;
+ 	if (!len)
+ 		return -EINVAL;
+-	if (start < mmap_min_addr)
+-		return -EINVAL;
+ 	if (start >= task_size)
+ 		return -EINVAL;
+ 	if (len > task_size - start)
 
 
 
