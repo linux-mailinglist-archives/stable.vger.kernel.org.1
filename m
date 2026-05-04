@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-243448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHAHNc+r+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:11 +0200
+	id mGFhDmKn+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A934BF414
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B92D4BE70B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 49FFC3028D1E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EFB15302F419
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DC23D75D7;
-	Mon,  4 May 2026 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F06E3A3822;
+	Mon,  4 May 2026 14:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXVt/xUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdywuf1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364DD3B19D1;
-	Mon,  4 May 2026 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128683A7F4C;
+	Mon,  4 May 2026 14:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903910; cv=none; b=cWl4By7D2rOX584kOwpI+OPMLq2bXgZmZdWwcnqq+fbVsJHg368kv7R79NSBYu5eUixcXfM4wRAQhBLIF9nxIZe4ixiH0wLGak+1T+/9tZUB6G9qA4ckN6xKRUSRBeDXk9rhNIzHwVSCEFr5ydbQ4iFlRmkSxUiOmJOPA7tOT+s=
+	t=1777903263; cv=none; b=TzDS+aL6ySqdins/4IKmQ9pWAF/oZI7Yc+7UaQGoZwUoV76hvc3X9Rqr4tBGAp0MgZxS50KcHz7iSTCmAWC/tjWh0iCk/aM/ubjPn4u0sT76fmdiXKziudf28B2VTgAHR14GpiWrd1zSalQQxCtuC76aCDIIsXKAzxiEMReMEEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903910; c=relaxed/simple;
-	bh=uT4QOsTSbw+1OBFrMrYO1qObZZORva6lfRqgNhIaWaE=;
+	s=arc-20240116; t=1777903263; c=relaxed/simple;
+	bh=L56oYbOPXq2C3PD4RdH3aZDQ5q2DQ8IJG9Gdgt7f2SI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S13AQbYoaOTofAD696vbKyC7S5zI7SomrIxqLdve1e7CSrhvn+veOtDzugzriCfHN+r9fnkvL1cBw/Jo0k/FkvfpqIhwzRDQg22mtMkqPCyLxdmHERqbsxkTS1fT0uWzTDqfNNtVyUk4pc9aj/fWC7DuAUkKKYYS/wYgG0g1KKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXVt/xUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A21C2BCB8;
-	Mon,  4 May 2026 14:11:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jEYaFNdFRXxFeDxHdl07QbDRgOrJnREx+i9NKwh4TOl2YT200Pr6lgSZrSlWKylX2cxxqI6ldPqFDd+YFBQQ+GQLM5ffhHs+mv9nqSvni/pLbHgNRod24RpUXNq0sqMRLAq4FlBzPgo/T6E1pbFTvJ4OXWa5BrsL+mJanAUlYI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdywuf1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D93C2BCB8;
+	Mon,  4 May 2026 14:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903910;
-	bh=uT4QOsTSbw+1OBFrMrYO1qObZZORva6lfRqgNhIaWaE=;
+	s=korg; t=1777903262;
+	bh=L56oYbOPXq2C3PD4RdH3aZDQ5q2DQ8IJG9Gdgt7f2SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXVt/xUUGxRiypKtuXQjLzyMsB3w/bh0YdwpRsDVcbocP//R/A/fKGUMQhvyr5Zkz
-	 +YcCqPVRbqwrAB2HyoB3odrYDSEkkJYkTg+4fT9btp/KBZirh/+z7b4LIF18xo34G4
-	 J2jwUo78HVPWlyw02sIVQZ0d8cIHzsVKaNM1Ua9s=
+	b=gdywuf1AUabYZ7fyOAT7h91R52yiLYImOVACOblDA+0bAdxWOikVIw5REJ5LL9md/
+	 DN4qyv61EQTBVXMesUpHHq/pGfecPZcGg6iPbIP3JaQMOQbiuBgkcfl/FIpwBslG4v
+	 qhg/pFMEE61TdU3NEdIIcQ0FO+yLXQQ1KRVBw4cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 109/275] rxrpc: Fix memory leaks in rxkad_verify_response()
-Date: Mon,  4 May 2026 15:50:49 +0200
-Message-ID: <20260504135146.960041141@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 7.0 165/307] hwmon: (powerz) Avoid cacheline sharing for DMA buffer
+Date: Mon,  4 May 2026 15:50:50 +0200
+Message-ID: <20260504135149.071218060@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,268 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 19A934BF414
+X-Rspamd-Queue-Id: 7B92D4BE70B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243448-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243196-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,auristor.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sashiko.dev:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:email,weissschuh.net:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 34f61a07e0cdefaecd3ec03bb5fb22215643678f upstream.
+commit 3023c050af3600bf451153335dea5e073c9a3088 upstream.
 
-Fix rxkad_verify_response() to free the ticket and the server key under all
-circumstances by initialising the ticket pointer to NULL and then making
-all paths through the function after the first allocation has been done go
-through a single common epilogue that just releases everything - where all
-the releases skip on a NULL pointer.
+Depending on the architecture the transfer buffer may share a cacheline
+with the following mutex. As the buffer may be used for DMA, that is
+problematic.
 
-Fixes: 57af281e5389 ("rxrpc: Tidy up abort generation infrastructure")
-Fixes: ec832bd06d6f ("rxrpc: Don't retain the server key in the connection")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-2-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use the high-level DMA helpers to make sure that cacheline sharing can
+not happen.
+
+Also drop the comment, as the helpers are documentation enough.
+
+https://sashiko.dev/#/message/20260408175814.934BFC19421%40smtp.kernel.org
+
+Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
+Cc: stable@vger.kernel.org # ca085faabb42: dma-mapping: add __dma_from_device_group_begin()/end()
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20260408-powerz-cacheline-alias-v1-1-1254891be0dd@weissschuh.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxkad.c |  103 ++++++++++++++++++++++--------------------------------
- 1 file changed, 42 insertions(+), 61 deletions(-)
+ drivers/hwmon/powerz.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -1136,7 +1136,7 @@ static int rxkad_verify_response(struct
- 	struct rxrpc_crypt session_key;
- 	struct key *server_key;
- 	time64_t expiry;
--	void *ticket;
-+	void *ticket = NULL;
- 	u32 version, kvno, ticket_len, level;
- 	__be32 csum;
- 	int ret, i;
-@@ -1162,13 +1162,13 @@ static int rxkad_verify_response(struct
- 	ret = -ENOMEM;
- 	response = kzalloc(sizeof(struct rxkad_response), GFP_NOFS);
- 	if (!response)
--		goto temporary_error;
-+		goto error;
+--- a/drivers/hwmon/powerz.c
++++ b/drivers/hwmon/powerz.c
+@@ -6,6 +6,7 @@
  
- 	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
- 			  response, sizeof(*response)) < 0) {
--		rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
--				 rxkad_abort_resp_short);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
-+				       rxkad_abort_resp_short);
-+		goto error;
- 	}
+ #include <linux/completion.h>
+ #include <linux/device.h>
++#include <linux/dma-mapping.h>
+ #include <linux/hwmon.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+@@ -33,7 +34,9 @@ struct powerz_sensor_data {
+ } __packed;
  
- 	version = ntohl(response->version);
-@@ -1178,62 +1178,62 @@ static int rxkad_verify_response(struct
- 	trace_rxrpc_rx_response(conn, sp->hdr.serial, version, kvno, ticket_len);
- 
- 	if (version != RXKAD_VERSION) {
--		rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
--				 rxkad_abort_resp_version);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
-+				       rxkad_abort_resp_version);
-+		goto error;
- 	}
- 
- 	if (ticket_len < 4 || ticket_len > MAXKRB5TICKETLEN) {
--		rxrpc_abort_conn(conn, skb, RXKADTICKETLEN, -EPROTO,
--				 rxkad_abort_resp_tkt_len);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADTICKETLEN, -EPROTO,
-+				       rxkad_abort_resp_tkt_len);
-+		goto error;
- 	}
- 
- 	if (kvno >= RXKAD_TKT_TYPE_KERBEROS_V5) {
--		rxrpc_abort_conn(conn, skb, RXKADUNKNOWNKEY, -EPROTO,
--				 rxkad_abort_resp_unknown_tkt);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADUNKNOWNKEY, -EPROTO,
-+				       rxkad_abort_resp_unknown_tkt);
-+		goto error;
- 	}
- 
- 	/* extract the kerberos ticket and decrypt and decode it */
- 	ret = -ENOMEM;
- 	ticket = kmalloc(ticket_len, GFP_NOFS);
- 	if (!ticket)
--		goto temporary_error_free_resp;
-+		goto error;
- 
- 	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header) + sizeof(*response),
- 			  ticket, ticket_len) < 0) {
--		rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
--				 rxkad_abort_resp_short_tkt);
--		goto protocol_error;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
-+				       rxkad_abort_resp_short_tkt);
-+		goto error;
- 	}
- 
- 	ret = rxkad_decrypt_ticket(conn, server_key, skb, ticket, ticket_len,
- 				   &session_key, &expiry);
- 	if (ret < 0)
--		goto temporary_error_free_ticket;
-+		goto error;
- 
- 	/* use the session key from inside the ticket to decrypt the
- 	 * response */
- 	ret = rxkad_decrypt_response(conn, response, &session_key);
- 	if (ret < 0)
--		goto temporary_error_free_ticket;
-+		goto error;
- 
- 	if (ntohl(response->encrypted.epoch) != conn->proto.epoch ||
- 	    ntohl(response->encrypted.cid) != conn->proto.cid ||
- 	    ntohl(response->encrypted.securityIndex) != conn->security_ix) {
--		rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--				 rxkad_abort_resp_bad_param);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+				       rxkad_abort_resp_bad_param);
-+		goto error;
- 	}
- 
- 	csum = response->encrypted.checksum;
- 	response->encrypted.checksum = 0;
- 	rxkad_calc_response_checksum(response);
- 	if (response->encrypted.checksum != csum) {
--		rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--				 rxkad_abort_resp_bad_checksum);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+				       rxkad_abort_resp_bad_checksum);
-+		goto error;
- 	}
- 
- 	for (i = 0; i < RXRPC_MAXCALLS; i++) {
-@@ -1241,38 +1241,38 @@ static int rxkad_verify_response(struct
- 		u32 counter = READ_ONCE(conn->channels[i].call_counter);
- 
- 		if (call_id > INT_MAX) {
--			rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--					 rxkad_abort_resp_bad_callid);
--			goto protocol_error_free;
-+			ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+					       rxkad_abort_resp_bad_callid);
-+			goto error;
- 		}
- 
- 		if (call_id < counter) {
--			rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
--					 rxkad_abort_resp_call_ctr);
--			goto protocol_error_free;
-+			ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+					       rxkad_abort_resp_call_ctr);
-+			goto error;
- 		}
- 
- 		if (call_id > counter) {
- 			if (conn->channels[i].call) {
--				rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
-+				ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
- 						 rxkad_abort_resp_call_state);
--				goto protocol_error_free;
-+				goto error;
- 			}
- 			conn->channels[i].call_counter = call_id;
- 		}
- 	}
- 
- 	if (ntohl(response->encrypted.inc_nonce) != conn->rxkad.nonce + 1) {
--		rxrpc_abort_conn(conn, skb, RXKADOUTOFSEQUENCE, -EPROTO,
--				 rxkad_abort_resp_ooseq);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADOUTOFSEQUENCE, -EPROTO,
-+				       rxkad_abort_resp_ooseq);
-+		goto error;
- 	}
- 
- 	level = ntohl(response->encrypted.level);
- 	if (level > RXRPC_SECURITY_ENCRYPT) {
--		rxrpc_abort_conn(conn, skb, RXKADLEVELFAIL, -EPROTO,
--				 rxkad_abort_resp_level);
--		goto protocol_error_free;
-+		ret = rxrpc_abort_conn(conn, skb, RXKADLEVELFAIL, -EPROTO,
-+				       rxkad_abort_resp_level);
-+		goto error;
- 	}
- 	conn->security_level = level;
- 
-@@ -1280,31 +1280,12 @@ static int rxkad_verify_response(struct
- 	 * this the connection security can be handled in exactly the same way
- 	 * as for a client connection */
- 	ret = rxrpc_get_server_data_key(conn, &session_key, expiry, kvno);
--	if (ret < 0)
--		goto temporary_error_free_ticket;
--
--	kfree(ticket);
--	kfree(response);
--	_leave(" = 0");
--	return 0;
--
--protocol_error_free:
--	kfree(ticket);
--protocol_error:
--	kfree(response);
--	key_put(server_key);
--	return -EPROTO;
- 
--temporary_error_free_ticket:
-+error:
- 	kfree(ticket);
--temporary_error_free_resp:
- 	kfree(response);
--temporary_error:
--	/* Ignore the response packet if we got a temporary error such as
--	 * ENOMEM.  We just want to send the challenge again.  Note that we
--	 * also come out this way if the ticket decryption fails.
--	 */
- 	key_put(server_key);
-+	_leave(" = %d", ret);
- 	return ret;
- }
- 
+ struct powerz_priv {
+-	char transfer_buffer[64];	/* first member to satisfy DMA alignment */
++	__dma_from_device_group_begin();
++	char transfer_buffer[64];
++	__dma_from_device_group_end();
+ 	struct mutex mutex;
+ 	struct completion completion;
+ 	struct urb *urb;
 
 
 
