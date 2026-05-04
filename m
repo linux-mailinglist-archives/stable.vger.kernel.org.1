@@ -1,88 +1,58 @@
-Return-Path: <stable+bounces-243392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MC3QCYmp+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:29 +0200
+	id 0NTaEeql+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43C74BED73
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E76BA4BE32A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB1B3301570F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BD4C30087F7
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FC23AA4F8;
-	Mon,  4 May 2026 14:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602423D75CE;
+	Mon,  4 May 2026 13:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xrv9i8Sn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N82IaxwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F7E40DFD4;
-	Mon,  4 May 2026 14:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BB934753C;
+	Mon,  4 May 2026 13:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903765; cv=none; b=iOEpU3cUzeo7VTRbswIOt+uIHl3AlmiOjZh/fCkiURKXie7LTxpJQI4TYL3xKVXX2FUVgbjfnDyH3Rgs+n2Rq5agnabFm8GMuWxJuYY7xn4vzrW99oN2UFB/NASFHm6LY5FeyGoWCNDRRO2zGhqftHfOTiUejtk1yseyVBRWbaA=
+	t=1777903028; cv=none; b=gQw1cK04GE6QcrWN+dUG/0Rd6pChRRTC7hA6u6942jdjGwVXdox5fu543tMsfIedrHVfx3MEypV9wM5tN+N67uRy6k0KOxGOAfgIWPjoE92WHFAR/yp16fDHcX9DZWa5TaqS3T1Y4in2dJCNyMOqE7oK9pepf9eLnA/TpylL7As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903765; c=relaxed/simple;
-	bh=ySTLiwQZy0i6oGAwOdKsvH5ZKUDe9aisydXA7ybl+IU=;
+	s=arc-20240116; t=1777903028; c=relaxed/simple;
+	bh=501bUnos8n6bV6xacU+EMU5yUTvsODO0pLXAN6vNN6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j0RIT1TsCwivsZc2K9lmc7fZ34XHxILgxNfGq93Ehmf9yhRAuRX0eEGR0+aECPDvhXnbEOZf9PsLhW2qFKIMGOMmeSeyIvkLJcF1Rg+1I1dE2dNwsYBjw6L0/LWAArcHF+jFPRjHwTaaxD95WFCYFyQstMgD5rbyK5Yfk0ZlE0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xrv9i8Sn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3396AC2BCB8;
-	Mon,  4 May 2026 14:09:25 +0000 (UTC)
+	 MIME-Version; b=Ab9lxuVAIEDv3Cvirl76T3EeQys3JDOjIGt8dHFrjV4RAAaWQk2GoU7L4JioNyBT2tY8+x0E+8TPdNwkpm1my15BbOoDYAkJBIhrU+Dpwx+gYB99FYFhJ4QK4/1HRyAzmf5Soe71JaAcuHQCF0MuqyaxiMKxZf3dt5JX9M7brSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N82IaxwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD013C2BCB8;
+	Mon,  4 May 2026 13:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903765;
-	bh=ySTLiwQZy0i6oGAwOdKsvH5ZKUDe9aisydXA7ybl+IU=;
+	s=korg; t=1777903028;
+	bh=501bUnos8n6bV6xacU+EMU5yUTvsODO0pLXAN6vNN6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xrv9i8SnszLUnMuKd7cI1OgQQsNPxwhXr8wSYakSb1ln7of6KcLTvbFcx2uNHxFPr
-	 gNAUbNC9XmVFFRcrFh4RpCvYGGGM8ZBIQMDDRcWc8WtTEiWDQE+dAFw6Bjolzxbc12
-	 an1N0/llqxWVqfH4K8O8zqZGbHyol9W++JQymkrQ=
+	b=N82IaxwR0ZTEO0KFoR7HCnf1ysh4R0EOm93wCkm7YnBFXV29DkaKgobm9baaPeWWO
+	 CG8oiuqbsCWrRzirOt4WWzFdb305cQ+y3CNHM5PIplTAaxFZFnEt4WR56H0gdLbrR/
+	 bZN+SUKcnnLbBGGR8Jn4RD7TATYmJ4FA2/KzW/C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Bodo Stroesser <bostroesser@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Clemens Ladisch <clemens@ladisch.de>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jan Kara <jack@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Long Li <longli@microsoft.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Richard Weinberger <richard@nod.at>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 021/275] fs: afs: revert mmap_prepare() change
+	Josh Hunt <johunt@akamai.com>,
+	Yu Kuai <yukuai@fnnas.com>
+Subject: [PATCH 7.0 076/307] md/raid10: fix deadlock with check operation and nowait requests
 Date: Mon,  4 May 2026 15:49:21 +0200
-Message-ID: <20260504135143.725105434@linuxfoundation.org>
+Message-ID: <20260504135145.674045191@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -93,145 +63,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E43C74BED73
+X-Rspamd-Queue-Id: E76BA4BE32A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	TAGGED_FROM(0.00)[bounces-243392-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.intel.com,foss.st.com,zeniv.linux.org.uk,arndb.de,gmail.com,ladisch.de,redhat.com,microsoft.com,suse.cz,google.com,lwn.net,oracle.com,auristor.com,suse.com,bootlin.com,suse.de,nod.at,arm.com,ti.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243104-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,akamai.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+From: Josh Hunt <johunt@akamai.com>
 
-commit fbfc6578eaca12daa0c09df1e9ba7f2c657b49da upstream.
+commit 7d96f3120a7fb7210d21b520c5b6f495da6ba436 upstream.
 
-Partially reverts commit 9d5403b1036c ("fs: convert most other
-generic_file_*mmap() users to .mmap_prepare()").
+When an array check is running it will raise the barrier at which point
+normal requests will become blocked and increment the nr_pending value to
+signal there is work pending inside of wait_barrier(). NOWAIT requests
+do not block and so will return immediately with an error, and additionally
+do not increment nr_pending in wait_barrier(). Upstream change commit
+43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request") added a
+call to raid_end_bio_io() to fix a memory leak when NOWAIT requests hit
+this condition. raid_end_bio_io() eventually calls allow_barrier() and
+it will unconditionally do an atomic_dec_and_test(&conf->nr_pending) even
+though the corresponding increment on nr_pending didn't happen in the
+NOWAIT case.
 
-This is because the .mmap invocation establishes a refcount, but
-.mmap_prepare is called at a point where a merge or an allocation failure
-might happen after the call, which would leak the refcount increment.
+This can be easily seen by starting a check operation while an application
+is doing nowait IO on the same array. This results in a deadlocked state
+due to nr_pending value underflowing and so the md resync thread gets stuck
+waiting for nr_pending to == 0.
 
-Functionality is being added to permit the use of .mmap_prepare in this
-case, but in the interim, we need to fix this.
+Output of r10conf state of the array when we hit this condition:
 
-Link: https://lkml.kernel.org/r/08804c94e39d9102a3a8fbd12385e8aa079ba1d3.1774045440.git.ljs@kernel.org
-Fixes: 9d5403b1036c ("fs: convert most other generic_file_*mmap() users to .mmap_prepare()")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Bodo Stroesser <bostroesser@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Clemens Ladisch <clemens@ladisch.de>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Marc Dionne <marc.dionne@auristor.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+crash> struct r10conf
+	barrier = 1,
+        nr_pending = {
+          counter = -41
+        },
+        nr_waiting = 15,
+        nr_queued = 0,
+
+Example of md_sync thread stuck waiting on raise_barrier() and other
+requests stuck in wait_barrier():
+
+md1_resync
+[<0>] raise_barrier+0xce/0x1c0
+[<0>] raid10_sync_request+0x1ca/0x1ed0
+[<0>] md_do_sync+0x779/0x1110
+[<0>] md_thread+0x90/0x160
+[<0>] kthread+0xbe/0xf0
+[<0>] ret_from_fork+0x34/0x50
+[<0>] ret_from_fork_asm+0x1a/0x30
+
+kworker/u1040:2+flush-253:4
+[<0>] wait_barrier+0x1de/0x220
+[<0>] regular_request_wait+0x30/0x180
+[<0>] raid10_make_request+0x261/0x1000
+[<0>] md_handle_request+0x13b/0x230
+[<0>] __submit_bio+0x107/0x1f0
+[<0>] submit_bio_noacct_nocheck+0x16f/0x390
+[<0>] ext4_io_submit+0x24/0x40
+[<0>] ext4_do_writepages+0x254/0xc80
+[<0>] ext4_writepages+0x84/0x120
+[<0>] do_writepages+0x7a/0x260
+[<0>] __writeback_single_inode+0x3d/0x300
+[<0>] writeback_sb_inodes+0x1dd/0x470
+[<0>] __writeback_inodes_wb+0x4c/0xe0
+[<0>] wb_writeback+0x18b/0x2d0
+[<0>] wb_workfn+0x2a1/0x400
+[<0>] process_one_work+0x149/0x330
+[<0>] worker_thread+0x2d2/0x410
+[<0>] kthread+0xbe/0xf0
+[<0>] ret_from_fork+0x34/0x50
+[<0>] ret_from_fork_asm+0x1a/0x30
+
+Fixes: 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josh Hunt <johunt@akamai.com>
+Link: https://lore.kernel.org/linux-raid/20260303005619.1352958-1-johunt@akamai.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/file.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/md/raid10.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/afs/file.c b/fs/afs/file.c
-index f609366fd2ac..74d04af51ff4 100644
---- a/fs/afs/file.c
-+++ b/fs/afs/file.c
-@@ -19,7 +19,7 @@
- #include <trace/events/netfs.h>
- #include "internal.h"
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1184,7 +1184,7 @@ static void raid10_read_request(struct m
+ 	}
  
--static int afs_file_mmap_prepare(struct vm_area_desc *desc);
-+static int afs_file_mmap(struct file *file, struct vm_area_struct *vma);
+ 	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
+-		raid_end_bio_io(r10_bio);
++		free_r10bio(r10_bio);
+ 		return;
+ 	}
  
- static ssize_t afs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter);
- static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
-@@ -35,7 +35,7 @@ const struct file_operations afs_file_operations = {
- 	.llseek		= generic_file_llseek,
- 	.read_iter	= afs_file_read_iter,
- 	.write_iter	= netfs_file_write_iter,
--	.mmap_prepare	= afs_file_mmap_prepare,
-+	.mmap		= afs_file_mmap,
- 	.splice_read	= afs_file_splice_read,
- 	.splice_write	= iter_file_splice_write,
- 	.fsync		= afs_fsync,
-@@ -492,16 +492,16 @@ static void afs_drop_open_mmap(struct afs_vnode *vnode)
- /*
-  * Handle setting up a memory mapping on an AFS file.
-  */
--static int afs_file_mmap_prepare(struct vm_area_desc *desc)
-+static int afs_file_mmap(struct file *file, struct vm_area_struct *vma)
- {
--	struct afs_vnode *vnode = AFS_FS_I(file_inode(desc->file));
-+	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
- 	int ret;
+@@ -1372,7 +1372,7 @@ static void raid10_write_request(struct
  
- 	afs_add_open_mmap(vnode);
+ 	sectors = r10_bio->sectors;
+ 	if (!regular_request_wait(mddev, conf, bio, sectors)) {
+-		raid_end_bio_io(r10_bio);
++		free_r10bio(r10_bio);
+ 		return;
+ 	}
  
--	ret = generic_file_mmap_prepare(desc);
-+	ret = generic_file_mmap(file, vma);
- 	if (ret == 0)
--		desc->vm_ops = &afs_vm_ops;
-+		vma->vm_ops = &afs_vm_ops;
- 	else
- 		afs_drop_open_mmap(vnode);
- 	return ret;
--- 
-2.54.0
-
 
 
 
