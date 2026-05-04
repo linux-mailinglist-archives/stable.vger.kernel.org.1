@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-243822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPTfKUCv+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:52 +0200
+	id GEJxB1Cw+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275EC4BFC9E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1BE4BFE82
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E8FD43100FFC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:30:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7813B30793E8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9A13E3C75;
-	Mon,  4 May 2026 14:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351283E51CF;
+	Mon,  4 May 2026 14:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mctuwrpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hRIU5bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233673E3C71;
-	Mon,  4 May 2026 14:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B013DFC7F;
+	Mon,  4 May 2026 14:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904866; cv=none; b=sUvLttsX25IxDsFpCCHU8k/Zk+CJeH28uBzR8iqXqoGTxpYyk+lZBK3Xs9XgM1Jg06j4ki0cfuUfTCSbbAM9MtESX+byanQrznDbLRxo9SiB5yW1MD1x1xEhHdpqnwNuHOiaJDQvXtjWy0UryZ/Q0HD3wfg8kJXZ8cYdyZJ3E1A=
+	t=1777904915; cv=none; b=B4N9Xeory6L+KzJ8D5YiZg+0JA/1VoHTq08b5cBHP7FUqRukhc7shN8ONSrOOEVSxnh4KUrIUd+tSUTvXdeVE+O6PtGHSQjXl17UFSeqA8MjEUZIEhrzhWUHZPMjn41DKy0FDvLrsP1iiwapcjGchcv9JoqTjxbV/X8sT6VZTS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904866; c=relaxed/simple;
-	bh=Cb3CAUFBFst7L7avfEFyJHhBPpKZ7ulJd2r+BJwfrk0=;
+	s=arc-20240116; t=1777904915; c=relaxed/simple;
+	bh=ut58HeJ/gW2jAO/lbaa2jIBxZgeAs1iCuDzgjbVIXn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Psy2T0V57Dz8NUQOlkl+8UBl1Z8TUlYhAAacmyKI3khEa0tCgFXFgPPyEF7fiNIGYF5erRZHLYs2Dw+TdlHEhGxT7k8YNzNVZ9fc3dxiXpuew1+b0SPwEVjrqEaw4Z4wnVRGpXtcpXUKsoVQ7/aUsKRbJUy9qaEOnlJA0kpJ+vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mctuwrpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6599C2BCB8;
-	Mon,  4 May 2026 14:27:45 +0000 (UTC)
+	 MIME-Version; b=A7nhIHCbLhoh3YBuT4mri3Va6YHqynLenVgAwPjDWPQ3FbYEpIUEjC1voKii22nLqszuvrynOe22ffi9egrPJnr+zgL2imV73TUKLox9Lb2x4EGzO7N6QPcbpVteFaDMIF1dwJtZa6xzgnVYDNC8m4QIPdvTE8EjgplKq0h6PVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hRIU5bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566A7C2BCC4;
+	Mon,  4 May 2026 14:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904866;
-	bh=Cb3CAUFBFst7L7avfEFyJHhBPpKZ7ulJd2r+BJwfrk0=;
+	s=korg; t=1777904914;
+	bh=ut58HeJ/gW2jAO/lbaa2jIBxZgeAs1iCuDzgjbVIXn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mctuwrpEK2U25VmNmriA1xZgHz2uHWEGsdLXJ80F+Rgg3lCkYMwD/Yo/Qw3AF1S8n
-	 NvsF0/WOaCx5eIfzDEdqpnbPLfgCeXyjbL0qVKI+lLek6HKz/oeHKAv3nQUoU7WVtc
-	 LEU0O9f9DVIpqGYsE5i3+cgCK7jj02I9dGDyZvnM=
+	b=0hRIU5buLIWPEWaSDsXabFJX9fH6TrmIfjohqmw6rQ64HoSsEIbiHBMDX7K8qEQRR
+	 KxoO30Rqs8JDl18L2yLdGElwl1iLBI5vsLvxf1jPfkVZ4VNWDes+dgoN7tlwfNtX49
+	 UXQnr+HjzaVSwgfYfCOECJep8UByx5znQNlVevsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Anthony Yznaga <anthony.yznaga@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Jason A. Donenfeld" <jason@zx2c4.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/215] spi: fix resource leaks on device setup failure
-Date: Mon,  4 May 2026 15:53:42 +0200
-Message-ID: <20260504135138.142498515@linuxfoundation.org>
+Subject: [PATCH 6.12 204/215] mm: prevent droppable mappings from being locked
+Date: Mon,  4 May 2026 15:53:43 +0200
+Message-ID: <20260504135138.212011592@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
 References: <20260504135130.169210693@linuxfoundation.org>
@@ -65,166 +75,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 275EC4BFC9E
+X-Rspamd-Queue-Id: BB1BE4BFE82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243822-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243841-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
 
-[ Upstream commit db357034f7e0cf23f233f414a8508312dfe8fbbe ]
+[ Upstream commit d239462787b072c78eb19fc1f155c3d411256282 ]
 
-Make sure to call controller cleanup() if spi_setup() fails while
-registering a device to avoid leaking any resources allocated by
-setup().
+Droppable mappings must not be lockable.  There is a check for VMAs with
+VM_DROPPABLE set in mlock_fixup() along with checks for other types of
+unlockable VMAs which ensures this when calling mlock()/mlock2().
 
-Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Saravana Kannan <saravanak@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.  In
+apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set, the
+current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
+applied to it.  VM_LOCKONFAULT is also applied if MCL_ONFAULT is also set.
+When these flags are set as default in this manner they are cleared in
+__mmap_complete() for new mappings that do not support mlock.  A check for
+VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
+mappings created with VM_LOCKED set.  To fix this and reduce that chance
+of similar bugs in the future, introduce and use vma_supports_mlock().
+
+Link: https://lkml.kernel.org/r/20260310155821.17869-1-anthony.yznaga@oracle.com
+Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+Suggested-by: David Hildenbrand <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Tested-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ adapted change to `mm/mmap.c::__mmap_region()` instead of `mm/vma.c::__mmap_complete()` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   61 ++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 24 deletions(-)
+ include/linux/hugetlb_inline.h |    4 ++--
+ mm/internal.h                  |   10 ++++++++++
+ mm/mlock.c                     |   10 ++++++----
+ mm/mmap.c                      |    4 +---
+ 4 files changed, 19 insertions(+), 9 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -42,6 +42,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_st
+--- a/include/linux/hugetlb_inline.h
++++ b/include/linux/hugetlb_inline.h
+@@ -6,14 +6,14 @@
  
- #include "internals.h"
+ #include <linux/mm.h>
  
-+static int __spi_setup(struct spi_device *spi, bool initial_setup);
-+
- static DEFINE_IDR(spi_master_idr);
- 
- static void spidev_release(struct device *dev)
-@@ -735,7 +737,7 @@ static int __spi_add_device(struct spi_d
- 	 * normally rely on the device being setup.  Devices
- 	 * using SPI_CS_HIGH can't coexist well otherwise...
- 	 */
--	status = spi_setup(spi);
-+	status = __spi_setup(spi, true);
- 	if (status < 0) {
- 		dev_err(dev, "can't setup %s, status %d\n",
- 				dev_name(&spi->dev), status);
-@@ -3879,27 +3881,7 @@ static int spi_set_cs_timing(struct spi_
- 	return status;
+-static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
++static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
+ {
+ 	return !!(vma->vm_flags & VM_HUGETLB);
  }
  
--/**
-- * spi_setup - setup SPI mode and clock rate
-- * @spi: the device whose settings are being modified
-- * Context: can sleep, and no requests are queued to the device
-- *
-- * SPI protocol drivers may need to update the transfer mode if the
-- * device doesn't work with its default.  They may likewise need
-- * to update clock rates or word sizes from initial values.  This function
-- * changes those settings, and must be called from a context that can sleep.
-- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-- * effect the next time the device is selected and data is transferred to
-- * or from it.  When this function returns, the SPI device is deselected.
-- *
-- * Note that this call will fail if the protocol driver specifies an option
-- * that the underlying controller or its driver does not support.  For
-- * example, not all hardware supports wire transfers using nine bit words,
-- * LSB-first wire encoding, or active-high chipselects.
-- *
-- * Return: zero on success, else a negative error code.
-- */
--int spi_setup(struct spi_device *spi)
-+static int __spi_setup(struct spi_device *spi, bool initial_setup)
+ #else
+ 
+-static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
++static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
  {
- 	unsigned	bad_bits, ugly_bits;
- 	int		status;
-@@ -3984,7 +3966,7 @@ int spi_setup(struct spi_device *spi)
- 	status = spi_set_cs_timing(spi);
- 	if (status) {
- 		mutex_unlock(&spi->controller->io_mutex);
--		return status;
-+		goto err_cleanup;
+ 	return false;
+ }
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1015,6 +1015,16 @@ static inline struct file *maybe_unlock_
  	}
- 
- 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
-@@ -3993,7 +3975,7 @@ int spi_setup(struct spi_device *spi)
- 			mutex_unlock(&spi->controller->io_mutex);
- 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
- 				status);
--			return status;
-+			goto err_cleanup;
- 		}
- 
- 		/*
-@@ -4030,6 +4012,37 @@ int spi_setup(struct spi_device *spi)
- 			status);
- 
- 	return status;
+ 	return fpin;
+ }
 +
-+err_cleanup:
-+	if (initial_setup)
-+		spi_cleanup(spi);
-+
-+	return status;
++static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
++{
++	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
++		return false;
++	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
++		return false;
++	return vma != get_gate_vma(current->mm);
 +}
 +
-+/**
-+ * spi_setup - setup SPI mode and clock rate
-+ * @spi: the device whose settings are being modified
-+ * Context: can sleep, and no requests are queued to the device
-+ *
-+ * SPI protocol drivers may need to update the transfer mode if the
-+ * device doesn't work with its default.  They may likewise need
-+ * to update clock rates or word sizes from initial values.  This function
-+ * changes those settings, and must be called from a context that can sleep.
-+ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-+ * effect the next time the device is selected and data is transferred to
-+ * or from it.  When this function returns, the SPI device is deselected.
-+ *
-+ * Note that this call will fail if the protocol driver specifies an option
-+ * that the underlying controller or its driver does not support.  For
-+ * example, not all hardware supports wire transfers using nine bit words,
-+ * LSB-first wire encoding, or active-high chipselects.
-+ *
-+ * Return: zero on success, else a negative error code.
-+ */
-+int spi_setup(struct spi_device *spi)
-+{
-+	return __spi_setup(spi, false);
- }
- EXPORT_SYMBOL_GPL(spi_setup);
+ #else /* !CONFIG_MMU */
+ static inline void unmap_mapping_folio(struct folio *folio) { }
+ static inline void mlock_new_folio(struct folio *folio) { }
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -472,10 +472,12 @@ static int mlock_fixup(struct vma_iterat
+ 	int ret = 0;
+ 	vm_flags_t oldflags = vma->vm_flags;
  
+-	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
+-	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
+-	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
+-		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
++	if (newflags == oldflags || vma_is_secretmem(vma) ||
++	    !vma_supports_mlock(vma))
++		/*
++		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
++		 * For secretmem, don't allow the memory to be unlocked.
++		 */
+ 		goto out;
+ 
+ 	vma = vma_modify_flags(vmi, *prev, vma, start, end, newflags);
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1547,9 +1547,7 @@ expanded:
+ 
+ 	vm_stat_account(mm, vm_flags, pglen);
+ 	if (vm_flags & VM_LOCKED) {
+-		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
+-					is_vm_hugetlb_page(vma) ||
+-					vma == get_gate_vma(current->mm))
++		if (!vma_supports_mlock(vma))
+ 			vm_flags_clear(vma, VM_LOCKED_MASK);
+ 		else
+ 			mm->locked_vm += pglen;
 
 
 
