@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-243490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNajDXKs+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:54 +0200
+	id mCv/CoGp+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C42E4BF5EE
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2D24BED55
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37A68303EC00
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8553309B194
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958BF3D75D7;
-	Mon,  4 May 2026 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC5D315785;
+	Mon,  4 May 2026 14:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/9Fchfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXUk3akB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585423AA4F8;
-	Mon,  4 May 2026 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118F937881B;
+	Mon,  4 May 2026 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904018; cv=none; b=mY1j5UKe08gaJc/Bgmqw/M9hpwOWfXTGSA1CeeaCRn0Uxl58gb9KwmD0WhGOypib2x8kfjJvil//2/zf4hQTWJHuBret5RMXpInVVsPIfWaYFtE5FQhr+dsOdR0k1F5gRx+wKhNKyDGmt5lW7BLqYqKLS7AFUyMGJU6fmE6dVU0=
+	t=1777903455; cv=none; b=Q1RMAgbrLR1yTGanWrSX+u0Ohh7oslbKV5iCekBoryfqjk2tctlmzVljbhCm7/U8u01UNjvoxRgrqM2xQXGMtrn3XodFXGjZLodhIMf8jEYGRY0wlGSu0S2KGpgdvnzTNJRUOoamgIjejPPU5HdfLiCbLlhS26iEpqzrfQF7iFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904018; c=relaxed/simple;
-	bh=hLcl7R2ZTtN05pxwCmIHLdmy6ua4QQmzONOfisUhQWs=;
+	s=arc-20240116; t=1777903455; c=relaxed/simple;
+	bh=uVKQMOh0/p8AVben/Jp/fcYfMmA3DEgzdeCM04w29Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxs8q//FbE1/QcYm8ahp71/2LiSXWxT38ORbOthuwYWewTG2YU6UYzaGryObqJhlM1XzncAiKq8DIYtksJe7M0JO3b/Yw76433o+liUhRTil3FtPAJv3cbyfDYrBUiBJ0H4RfTg7JZoabWlHJ2ea2ztkWVERkZT4d+wu5BXx2mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/9Fchfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2747C2BCB8;
-	Mon,  4 May 2026 14:13:37 +0000 (UTC)
+	 MIME-Version; b=Phijzh0TE8xXgKstt6rp3rhnIG5AJqLXYMwIddbjiAQFUzkrrpZVgX7+iy0WuuBnr3MV88tDX70JD18l7Xj4Xi+1np32cbNrIty+mWsbYuNCjPnzp4CdW1M4gjn7NQVtHvgUd4wnbElpi2WEsiC2c1XrZlOKIQh9SQsamiFVku4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXUk3akB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607C4C2BCB8;
+	Mon,  4 May 2026 14:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904018;
-	bh=hLcl7R2ZTtN05pxwCmIHLdmy6ua4QQmzONOfisUhQWs=;
+	s=korg; t=1777903454;
+	bh=uVKQMOh0/p8AVben/Jp/fcYfMmA3DEgzdeCM04w29Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/9Fchfn5RboHx4j++HtfDna6g2ZgXEcqbqkDTa4oByl/oFg6B+mdaLKbF4qebwCX
-	 5e+V3/PHkC9nP5CyCS1EjudPwcRGyv1pVFue1RA3U10DnxuTN1FAwZxO/6X9AiGvVY
-	 AVLIam1gQ1vX+zfUB89T7X7ZzQgpWt2My5MEiP9U=
+	b=pXUk3akBlpYajQSysm0f/cZnlyiU/73JKbak+vgxAhw78b8om0mqbMYBBqdHlBLkU
+	 XBPvsWR6UAGqVwQuzMv6fyjge+MnU7I09nBuOtngR9jhMF7WPtm3k7JO+PDnS7gsck
+	 7fh7WkE3NHj43s/pRyRfcB6plXV75ImzhtueyJ2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Hans de Goede <hansg@kernel.org>,
-	linux-fbdev@vger.kernel.org
-Subject: [PATCH 6.18 151/275] firmware: google: framebuffer: Do not unregister platform device
-Date: Mon,  4 May 2026 15:51:31 +0200
-Message-ID: <20260504135148.546551690@linuxfoundation.org>
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 207/307] KVM: nSVM: Ensure AVIC is inhibited when restoring a vCPU to guest mode
+Date: Mon,  4 May 2026 15:51:32 +0200
+Message-ID: <20260504135150.663740157@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +63,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7C42E4BF5EE
+X-Rspamd-Queue-Id: 5F2D24BED55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243490-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243270-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,chromium.org:email,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 5cd28bd28c8ce426b56ce4230dbd17537181d5ad upstream.
+commit 24f7d36b824b65cf1a2db3db478059187b2a37b0 upstream.
 
-The native driver takes over the framebuffer aperture by removing the
-system- framebuffer platform device. Afterwards the pointer in drvdata
-is dangling. Remove the entire logic around drvdata and let the kernel's
-aperture helpers handle this. The platform device depends on the native
-hardware device instead of the coreboot device anyway.
+On nested VMRUN, KVM ensures AVIC is inhibited by requesting
+KVM_REQ_APICV_UPDATE, triggering a check of inhibit reasons, finding
+APICV_INHIBIT_REASON_NESTED, and disabling AVIC.
 
-When commit 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer
-driver") added the coreboot framebuffer code, the kernel did not support
-device-based aperture management. Instead native driviers only removed
-the conflicting fbdev device. At that point, unregistering the framebuffer
-device most likely worked correctly. It was definitely broken after
-commit d9702b2a2171 ("fbdev/simplefb: Do not use struct
-fb_info.apertures"). So take this commit for the Fixes tag. Earlier
-releases might work depending on the native hardware driver.
+However, when KVM_SET_NESTED_STATE is performed on a vCPU not in guest
+mode with AVIC enabled, KVM_REQ_APICV_UPDATE is not requested, and AVIC
+is not inhibited.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: d9702b2a2171 ("fbdev/simplefb: Do not use struct fb_info.apertures")
-Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Acked-by: Julius Werner <jwerner@chromium.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Hans de Goede <hansg@kernel.org>
-Cc: linux-fbdev@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v6.3+
-Link: https://patch.msgid.link/20260217155836.96267-2-tzimmermann@suse.de
+Request KVM_REQ_APICV_UPDATE in the KVM_SET_NESTED_STATE path if AVIC is
+active, similar to the nested VMRUN path.
+
+Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260224225017.3303870-1-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/google/framebuffer-coreboot.c |   10 ----------
- 1 file changed, 10 deletions(-)
+ arch/x86/kvm/svm/nested.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/firmware/google/framebuffer-coreboot.c
-+++ b/drivers/firmware/google/framebuffer-coreboot.c
-@@ -81,19 +81,10 @@ static int framebuffer_probe(struct core
- 						 sizeof(pdata));
- 	if (IS_ERR(pdev))
- 		pr_warn("coreboot: could not register framebuffer\n");
--	else
--		dev_set_drvdata(&dev->dev, pdev);
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1939,6 +1939,9 @@ static int svm_set_nested_state(struct k
  
- 	return PTR_ERR_OR_ZERO(pdev);
- }
+ 	svm->nested.force_msr_bitmap_recalc = true;
  
--static void framebuffer_remove(struct coreboot_device *dev)
--{
--	struct platform_device *pdev = dev_get_drvdata(&dev->dev);
--
--	platform_device_unregister(pdev);
--}
--
- static const struct coreboot_device_id framebuffer_ids[] = {
- 	{ .tag = CB_TAG_FRAMEBUFFER },
- 	{ /* sentinel */ }
-@@ -102,7 +93,6 @@ MODULE_DEVICE_TABLE(coreboot, framebuffe
- 
- static struct coreboot_driver framebuffer_driver = {
- 	.probe = framebuffer_probe,
--	.remove = framebuffer_remove,
- 	.drv = {
- 		.name = "framebuffer",
- 	},
++	if (kvm_vcpu_apicv_active(vcpu))
++		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
++
+ 	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+ 	ret = 0;
+ out_free:
 
 
 
