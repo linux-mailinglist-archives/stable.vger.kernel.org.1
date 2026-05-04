@@ -1,123 +1,131 @@
-Return-Path: <stable+bounces-242967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Ee1I8lo+GkSuQIAu9opvQ
-	(envelope-from <stable+bounces-242967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:37:13 +0200
+	id +K29CgFp+GkSuQIAu9opvQ
+	(envelope-from <stable+bounces-242968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:38:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307654BB0C2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:37:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0594BB129
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8B94A301777B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 09:35:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6FC63013EEC
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 09:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651F137D11D;
-	Mon,  4 May 2026 09:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3B837D11B;
+	Mon,  4 May 2026 09:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4yJ6mAQ"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="pPk93QDu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED4637C916;
-	Mon,  4 May 2026 09:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D42237D125
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 09:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777887322; cv=none; b=sWcCzTqLIwU6vC1d4Fjz68C9xA3O+hFBStyP2VQuDDrfCNHLEBd67UkO1j3xt1ilhfhOtMlmk7v3rW1GRqFuGlUYTTXlyWkHYOKP9DlHLQD/bVOCuYYEe7piESn8OHJWRpxAAJJtOdYO/or0iG0jySoeT8slAT75oVEYa5i8MgI=
+	t=1777887459; cv=none; b=tXp9sXeUvXLhsnWWcpeLJoBxitXXXs2Y/uR8EnMoMWACUqlYSH58Ycfckr3cV65XW6UOuJWfyMhqi3cxQFDtps9quYrVdBuQ3nyD8/Y6K1BGifp4bAS8y92iy8hEWcDHkLTM1HFd7K5nQ96VNBx2nBV88Ma7xdriNBz04uEJ5As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777887322; c=relaxed/simple;
-	bh=jZdqtpCQPPnGAzvlXzvlcKZDNzXGWxtPWRCYbqEoKpU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Onjs4PdIXRTsl50AZRf9IOlRlukWC4qAiTsEiUvE/ZjDohlM0IopjPuc262nTylYvsFSx/yNIBXdlgwIyfXSAI7rfKxSV0DSIC3arBgTU0x3mPSytz4V85o6TRNQYyuO+bmxAO59pO5hGL3+O4eu1unlKqmpQFhBphzwOGSUn0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4yJ6mAQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717CDC2BCB8;
-	Mon,  4 May 2026 09:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777887321;
-	bh=jZdqtpCQPPnGAzvlXzvlcKZDNzXGWxtPWRCYbqEoKpU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i4yJ6mAQVJRg3mF216mSO+534NGg/aVAW0xsrZq7nV5ztiEn11SezdJnqA3RWnk6Q
-	 Y/P8MjwGcF6iRDtkj5gb1gJCDKY8hop1blNAniMsWeDJkdOMFHKhaC4h4pdIFexROH
-	 JW6mcnte/XbT0CRsUIMUxkuYKa5TOY2fd4+UPdf4=
-Date: Mon, 4 May 2026 11:35:19 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Salman Alghamdi <me@cipherat.com>
-Cc: luka.gejak@linux.dev, straube.linux@gmail.com,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/8] staging: rtl8723bs: fix buffer over-read in
- rtw_update_protection
-Message-ID: <2026050434-construct-starter-5468@gregkh>
-References: <20260428164513.763471-1-me@cipherat.com>
- <20260428164513.763471-2-me@cipherat.com>
+	s=arc-20240116; t=1777887459; c=relaxed/simple;
+	bh=i/7vCtsZmVlkoXIYo2WxoP8n4jx9YUY91Os072nkgeg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f1amwIfFbgshrygx6Ropm3YuRSKnQnxLoQSvPJtx4c9zzu5p87WC+MboRler10ge5tApSPXXICMNp7GDpwRXf4gVygHXXc3txnnD4Z9qgjtKC7nj824cu540SfT+BHI+2AaSNhsXOfaImqKg4c2THuwgLNP6k8pzGRqGlYEFaco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=pPk93QDu; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1777887446; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Zb5ErKr54BhvZ32/onU88L0NBMZZj0o/QFN1pwWhowY=;
+	b=pPk93QDuQvHJkK3paeb9gPRqE99WP27YkO8ifssMC9dYxQFfto7w8Kbi9Pfh9eKBqlqV810qPgsvHSr+pGvRtGtjh/nkUjYIwPCC4SbEbJ3Qkkpuo/2OgZoEQUREFeuhVaC3W69mDY6G1oWbfy+SZEDbt6Fm6i/iP/DE5TLAy6E=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X29gGKT_1777887441;
+Received: from 30.69.177.140(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X29gGKT_1777887441 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 04 May 2026 17:37:25 +0800
+Message-ID: <22a5f2d3-7c8b-466a-bdbb-8164cbd7cbe3@linux.alibaba.com>
+Date: Mon, 4 May 2026 11:37:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428164513.763471-2-me@cipherat.com>
-X-Rspamd-Queue-Id: 307654BB0C2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15.y] erofs: fix the out-of-bounds nameoff handling for
+ trailing dirents
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Yuhao Jiang <danisjiang@gmail.com>, Junrui Luo
+ <moonafterrain@outlook.com>, Chao Yu <chao@kernel.org>
+References: <2026050132-undercoat-undercoat-0f5b@gregkh>
+ <20260501184848.3924034-1-sashal@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <20260501184848.3924034-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8F0594BB129
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242967-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242968-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,outlook.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linux.dev,gmail.com,lists.linux.dev,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.974];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cipherat.com:email,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email,linux.alibaba.com:dkim,linux.alibaba.com:mid]
 
-On Tue, Apr 28, 2026 at 07:44:31PM +0300, Salman Alghamdi wrote:
-> rtw_update_protection() is called with a pointer offset into the
-> ies buffer but the full ie_length is passed, causing a potential
-> buffer over-read.
+
+
+On 2026/5/2 02:48, Sasha Levin wrote:
+> From: Gao Xiang <hsiangkao@linux.alibaba.com>
 > 
-> Fixes: e945c43df60b ("Staging: rtl8723bs: Delete dead code from update_current_network()")
-> Fixes: d3fcee1b78a5 ("staging: rtl8723bs: fix camel case in struct wlan_bssid_ex")
-> Reported-by: Luka Gejak <luka.gejak@linux.dev>
-> Closes: https://lore.kernel.org/linux-staging/DI2H39EAAFBZ.3KI5NWN02AQ2S@linux.dev
+> [ Upstream commit d18a3b5d337fa412a38e776e6b4b857a58836575 ]
+> 
+> Currently we already have boundary-checks for nameoffs, but the trailing
+> dirents are special since the namelens are calculated with strnlen()
+> with unchecked nameoffs.
+> 
+> If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
+> maxsize - nameoff can underflow, causing strnlen() to read past the
+> directory block.
+> 
+> nameoff0 should also be verified to be a multiple of
+> `sizeof(struct erofs_dirent)` as well [1].
+> 
+> [1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
+> 
+> Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+> Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Reported-by: Junrui Luo <moonafterrain@outlook.com>
+> Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Salman Alghamdi <me@cipherat.com>
-> ---
->  drivers/staging/rtl8723bs/core/rtw_mlme.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Reviewed-by: Chao Yu <chao@kernel.org>
+> [ replaced upstream `bsz` with `PAGE_SIZE` and `sizeof(*de)` with `sizeof(struct erofs_dirent)` ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Looks good to me.
 
-You should not mix patches for the current release (i.e. this one), with
-patches for the next release (i.e. the rest of the patches in this
-series), as that means I can't take the full series for either :(
-
-Please break this up into two different sets of patches and resend them
-that way.
-
-thanks,
-
-greg k-h
+Thanks,
+Gao Xiang
 
