@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-243058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0I7TIqWl+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:56:53 +0200
+	id KIzfDBGm+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8854BE298
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:56:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0844BE38C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 42DB4301082D
+	by tor.lore.kernel.org (Postfix) with ESMTP id ABC22301CDA8
 	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106263DC4D5;
-	Mon,  4 May 2026 13:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEED3D47D0;
+	Mon,  4 May 2026 13:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRUnodNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hM96sQLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DF22E2F0E;
-	Mon,  4 May 2026 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED3A3D9DCF;
+	Mon,  4 May 2026 13:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902909; cv=none; b=oGGE8cXbi3eRnS7wh4PMz96LWGrEJxLOcgZxz8FCihz3GKNCDSfeetJwbD5lPqPwHfqm5CLyrikYSOc2qJInp4ing2PMqoj4Jwf23WOV7gYsMx5cRvLszOjXK4HdLy+wWi9bfyJ2NTC43NIyMkWS2S8Dy54e1MQEnmA1x8lrhKw=
+	t=1777902912; cv=none; b=RccNzns689osiyqbIzjAal0rzoQ0ZTnSKf+M4GzPVXUN1vK28duZ1cRu3ulkxyDuUk7ES1N3+EssVZ6GuvfDXYCQ4JokvQht++yiAtFUx3zJXPGPLQj4jA9Z8FTTkiZJx5sxD6pgCtw8jnVcxrjkfNHdZO/5mvgbo9CyPNmhD8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902909; c=relaxed/simple;
-	bh=ZzT6g+KrMqS+1Obuin2H7A6Pb9SMEgv95NxzT/1xa8c=;
+	s=arc-20240116; t=1777902912; c=relaxed/simple;
+	bh=0+OVFt+YqQ8FdcwV/1M5HLwucyxz8WEx7uXpnQorU2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hH+VoyCHgsa4Z8VIcWNYJ4uCwnZ+ec2ZQDZIhrQQNMr8NYfGLgg6iBLJ2dVTI+Q1kAihu1g9qDYDmxPgt4iyJB+MhFgVoFoubtBRhodH5iRm0bVmNdoWMUzftv9OFLGhTYKps3tc6TiQrUR3L5QgQ6Iegt5tH+xbZBOmn7M2ymE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRUnodNf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB18C2BCF4;
-	Mon,  4 May 2026 13:55:08 +0000 (UTC)
+	 MIME-Version; b=C/4wD8XF4JqkymVeDrIx6/5uZH2a5Adjp2PsduetzES9gtvWTPs9CqbnxKvpo8ytHTO3mHF4XLbtNnjf3cvckfd3hMq3ONCPSIXQBCeg04s6SCGXN2+L+v7tnPHQZsUZ/XNFWXnGF/frcbNu8lWWSvUb4lRTQfb4nHjCD/b2hIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hM96sQLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A268C2BCB8;
+	Mon,  4 May 2026 13:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902909;
-	bh=ZzT6g+KrMqS+1Obuin2H7A6Pb9SMEgv95NxzT/1xa8c=;
+	s=korg; t=1777902911;
+	bh=0+OVFt+YqQ8FdcwV/1M5HLwucyxz8WEx7uXpnQorU2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRUnodNfJtSGNDrGRz6gx85hvjgKFaNFODVi14uIgb6dqgStHqwtuaaSweoU1kVF6
-	 m7Dk//Kle4D08x0lwxijA0Q1RBtbudGEK2mrhxZWex046VL9A4wYWi5j6OnAQZvkmx
-	 DX5fIktHzWnFxjb4G++l7g3m9qognrrPOhHogljU=
+	b=hM96sQLvktsNNB2T85Qf3tPYGhQsXsEykGDIJ07E3NDHWp+17QvIOjWJRWosChW6Q
+	 DjqhTTvEa2PdqiH+gD4Xtl4RTuPGMfYrSOq451401ucBuEMe7T72wxyd7m2rLWMjSx
+	 /jG8gjcDkauom4owRmD9DL5mQ8uNxkn3AKykBCMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Peter Chen <peter.chen@kernel.org>,
-	Jun Li <jun.li@nxp.com>,
 	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 7.0 005/307] usb: chipidea: otg: not wait vbus drop if use role_switch
-Date: Mon,  4 May 2026 15:48:10 +0200
-Message-ID: <20260504135143.027487860@linuxfoundation.org>
+Subject: [PATCH 7.0 006/307] usb: chipidea: core: allow ci_irq_handler() handle both ID and VBUS change
+Date: Mon,  4 May 2026 15:48:11 +0200
+Message-ID: <20260504135143.065412690@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
 References: <20260504135142.814938198@linuxfoundation.org>
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7E8854BE298
+X-Rspamd-Queue-Id: BB0844BE38C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243058-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243059-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,10 +89,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nxp.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
@@ -101,36 +100,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 
 From: Xu Yang <xu.yang_2@nxp.com>
 
-commit a4e99587102a83ee911c670752fbca694c7e557f upstream.
+commit b94b631d9f78e653855f7fb58dbcb86c2a856f6f upstream.
 
-The usb role switch will update ID and VBUS states at the same time, and
-vbus will not drop when execute data role swap in Type-C usecase. So lets
-not wait vbus drop in usb role switch case too.
+For USB role switch-triggered IRQ, ID and VBUS change come together, for
+example when switching from host to device mode. ID indicate a role switch
+and VBUS is required to determine whether the device controller can start
+operating. Currently, ci_irq_handler() handles only a single event per
+invocation. This can cause an issue where switching to device mode results
+in the device controller not working at all. Allowing ci_irq_handler() to
+handle both ID and VBUS change in one call resolves this issue.
 
+Meanwhile, this change also affects the VBUS event handling logic.
+Previously, if an ID event indicated host mode the VBUS IRQ will be
+ignored as the device disable BSE when stop() is called. With the new
+behavior, if ID and VBUS IRQ occur together and the target mode is host,
+the VBUS event is queued and ci_handle_vbus_change() will call
+usb_gadget_vbus_connect(), after which USBMODE is switched to device mode,
+causing host mode to stop working. To prevent this, an additional check is
+added to skip handling VBUS event when current role is not device mode.
+
+Suggested-by: Peter Chen <peter.chen@kernel.org>
 Fixes: e1b5d2bed67c ("usb: chipidea: core: handle usb role switch in a common way")
 Cc: stable@vger.kernel.org
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reviewed-by: Jun Li <jun.li@nxp.com>
 Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260402071457.2516021-3-xu.yang_2@nxp.com
+Link: https://patch.msgid.link/20260402071457.2516021-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/otg.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/core.c |   45 ++++++++++++++++++++++----------------------
+ drivers/usb/chipidea/otg.c  |    3 ++
+ 2 files changed, 26 insertions(+), 22 deletions(-)
 
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -544,30 +544,31 @@ static irqreturn_t ci_irq_handler(int ir
+ 			if (ret == IRQ_HANDLED)
+ 				return ret;
+ 		}
+-	}
+ 
+-	/*
+-	 * Handle id change interrupt, it indicates device/host function
+-	 * switch.
+-	 */
+-	if (ci->is_otg && (otgsc & OTGSC_IDIE) && (otgsc & OTGSC_IDIS)) {
+-		ci->id_event = true;
+-		/* Clear ID change irq status */
+-		hw_write_otgsc(ci, OTGSC_IDIS, OTGSC_IDIS);
+-		ci_otg_queue_work(ci);
+-		return IRQ_HANDLED;
+-	}
++		/*
++		 * Handle id change interrupt, it indicates device/host function
++		 * switch.
++		 */
++		if ((otgsc & OTGSC_IDIE) && (otgsc & OTGSC_IDIS)) {
++			ci->id_event = true;
++			/* Clear ID change irq status */
++			hw_write_otgsc(ci, OTGSC_IDIS, OTGSC_IDIS);
++		}
+ 
+-	/*
+-	 * Handle vbus change interrupt, it indicates device connection
+-	 * and disconnection events.
+-	 */
+-	if (ci->is_otg && (otgsc & OTGSC_BSVIE) && (otgsc & OTGSC_BSVIS)) {
+-		ci->b_sess_valid_event = true;
+-		/* Clear BSV irq */
+-		hw_write_otgsc(ci, OTGSC_BSVIS, OTGSC_BSVIS);
+-		ci_otg_queue_work(ci);
+-		return IRQ_HANDLED;
++		/*
++		 * Handle vbus change interrupt, it indicates device connection
++		 * and disconnection events.
++		 */
++		if ((otgsc & OTGSC_BSVIE) && (otgsc & OTGSC_BSVIS)) {
++			ci->b_sess_valid_event = true;
++			/* Clear BSV irq */
++			hw_write_otgsc(ci, OTGSC_BSVIS, OTGSC_BSVIS);
++		}
++
++		if (ci->id_event || ci->b_sess_valid_event) {
++			ci_otg_queue_work(ci);
++			return IRQ_HANDLED;
++		}
+ 	}
+ 
+ 	/* Handle device/host interrupt */
 --- a/drivers/usb/chipidea/otg.c
 +++ b/drivers/usb/chipidea/otg.c
-@@ -187,8 +187,8 @@ void ci_handle_id_switch(struct ci_hdrc
+@@ -130,6 +130,9 @@ enum ci_role ci_otg_role(struct ci_hdrc
  
- 		ci_role_stop(ci);
- 
--		if (role == CI_ROLE_GADGET &&
--				IS_ERR(ci->platdata->vbus_extcon.edev))
-+		if (role == CI_ROLE_GADGET && !ci->role_switch &&
-+		    IS_ERR(ci->platdata->vbus_extcon.edev))
- 			/*
- 			 * Wait vbus lower than OTGSC_BSV before connecting
- 			 * to host. If connecting status is from an external
+ void ci_handle_vbus_change(struct ci_hdrc *ci)
+ {
++	if (ci->role != CI_ROLE_GADGET)
++		return;
++
+ 	if (!ci->is_otg) {
+ 		if (ci->platdata->flags & CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS)
+ 			usb_gadget_vbus_connect(&ci->gadget);
 
 
 
