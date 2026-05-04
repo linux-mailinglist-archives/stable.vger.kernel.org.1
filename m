@@ -1,149 +1,153 @@
-Return-Path: <stable+bounces-243868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AiLJvbC+Gky0gIAu9opvQ
-	(envelope-from <stable+bounces-243868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:01:58 +0200
+	id 4INTFhDE+GlQ0gIAu9opvQ
+	(envelope-from <stable+bounces-243869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:06:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FDDB4C1160
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:01:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DA74C1269
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D3773035263
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 15:58:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A413E302978F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 16:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341A73E1220;
-	Mon,  4 May 2026 15:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C2C3DEFE2;
+	Mon,  4 May 2026 16:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JO+cDyrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2SciqKd"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7273E1204
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 15:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0388A39B97F;
+	Mon,  4 May 2026 16:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777910287; cv=none; b=c8m2UR4eo7VHxBorWiOoap/U86oGqspX0cTIccTp7WKQNjeaMjDhWRLyE8K/69ybJ9WMVTjvHARnEoTRY6eUuS5Kf6ecTGPem8SAWiYi0xA0Kvffuw8ccXN8HS2ZBkZ6oepfCJp6fn6mOdS4iFK7EhItNJ5BrRKv4ZcGQGRYbQw=
+	t=1777910585; cv=none; b=SVvOFI5wdb+qfxVKm9NZtgE9f1lC/1sQIivdoodsMMqpkfqNLB5KxVHwzS5VIp9uZhebPllFNeLZ6EsMASbEiex+cX/alPYVxY0y8W5vQdgq65cs1EGav3uOwIOtmtVjkzdT4fz7oSigpe1LjCgoJeMgVJtELrbYp+IsUERMAvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777910287; c=relaxed/simple;
-	bh=tW9EumHW1pHvUG6IQmWyvfRITKPRFwNLOdOmAnLilcw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gVPKvncpyu4WDtGpykqVGAl4o8cAgKHD8GribpF9SWU+5Y2LvmLdl/T1pNNUdV750Cgwr1tv7RIG1Vk+4tqLbfkd6Gm9Ntr7DpAo5+Fvu9LLfcSmG0ociPIB7ZEpVINhJ6SSM3nR7SdfMwggroXyzgBDkdLGW35Fy7XsqWYYDXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JO+cDyrs; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777910284;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JN8svIitjHi+0YtK7HQD4akt5dsvF1C3v1yPtgOpFGo=;
-	b=JO+cDyrsZqsW112LCexz76sKCeSg+gWuy4FxDcXrc0LKaAi7AU2y4RHV2umEjnERezjGWn
-	VK71WFsnxV/yLnw1pf7hx6Q1APTiBUyR2MKhmV90ul/ZMFk6acga/3eze7Rd7wOO9bZUjQ
-	ShbreNKa5ZuOmJRYPZWcjR4fbmNzovI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-X9GY2M_XMLqulU50FrL-Yw-1; Mon,
- 04 May 2026 11:58:01 -0400
-X-MC-Unique: X9GY2M_XMLqulU50FrL-Yw-1
-X-Mimecast-MFC-AGG-ID: X9GY2M_XMLqulU50FrL-Yw_1777910279
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D29751956046;
-	Mon,  4 May 2026 15:57:58 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.64.157])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 71B1530001A1;
-	Mon,  4 May 2026 15:57:55 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org,  Eelco Chaudron <echaudro@redhat.com>,  "David
- S. Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,
-  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  Simon Horman <horms@kernel.org>,  Shuah Khan <shuah@kernel.org>,  Yuan
- Tan <tanyuan98@outlook.com>,  Yang Yang <n05ec@lzu.edu.cn>,
-  dev@openvswitch.org,  linux-kernel@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH net v2 1/2] openvswitch: vport: fix self-deadlock on
- release of tunnel ports
-In-Reply-To: <20260430233848.440994-2-i.maximets@ovn.org> (Ilya Maximets's
-	message of "Fri, 1 May 2026 01:38:37 +0200")
-References: <20260430233848.440994-1-i.maximets@ovn.org>
-	<20260430233848.440994-2-i.maximets@ovn.org>
-Date: Mon, 04 May 2026 11:57:54 -0400
-Message-ID: <f7tcxzbxj3x.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1777910585; c=relaxed/simple;
+	bh=MquTlFp80T6ZCdO4Poniu3OoOL4Jn+PRvnOMfdB6ngc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVk23P4hJFvNRcQ30qSiQhCugpcBnAIu8/S+0ASSd126obQQHw11ZIbN197YUqld39ygYiA1SvaRAu72D24VrPQnMXkyD5mnq4x5RwCLfae+2IgfciATOQfmH09HI9F9xE6uGYQZmljMkPCI9+yy4/FH/bsyMk7vkKBGbO6iU1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2SciqKd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3438AC2BCB8;
+	Mon,  4 May 2026 16:03:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777910584;
+	bh=MquTlFp80T6ZCdO4Poniu3OoOL4Jn+PRvnOMfdB6ngc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e2SciqKdaX8KOm507QbAl8NxRfNTVYnWNQUK+iTFAXJgD1zkZS1yKsOPW9eTHIpAS
+	 TCkSSCKTA1yjOwddwXRK6lJ9J9hL9oAFazrSmcqgCTNXbHfgiEFHh0dfVJpBUi+G1p
+	 XewYSTwmYhmGZhfkK1ea4U+mRUGkb3DM1hPboJ/M=
+Date: Mon, 4 May 2026 18:03:02 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Feng Ning <feng@innora.ai>
+Cc: linux-staging@lists.linux.dev, Luka Gejak <luka.gejak@linux.dev>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6] staging: rtl8723bs: fix heap buffer overflow in
+ cfg80211_rtw_add_key()
+Message-ID: <2026050458-numbness-haven-1ae4@gregkh>
+References: <20260413113224.5201-1-feng@innora.ai>
+ <2026042626-tabloid-suitor-33c5@gregkh>
+ <20260427111738.33069-1-feng@innora.ai>
+ <2026050417-monkhood-backless-4c3e@gregkh>
+ <20260504154823.52057-1-feng@innora.ai>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: 3FDDB4C1160
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260504154823.52057-1-feng@innora.ai>
+X-Rspamd-Queue-Id: C3DA74C1269
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243868-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,davemloft.net,google.com,kernel.org,outlook.com,lzu.edu.cn,openvswitch.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aconole@redhat.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243869-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ovn.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,sashiko.dev:url]
 
-Ilya Maximets <i.maximets@ovn.org> writes:
+On Mon, May 04, 2026 at 03:48:30PM +0000, Feng Ning wrote:
+> On Mon, May 04, 2026 at 04:12:44PM +0200, Greg KH wrote:
+> > What about these review comments:
+> >         https://sashiko.dev/#/patchset/20260427111738.33069-1-feng@innora.ai
+> >
+> > Are they incorrect?
+> >
+> > And was this tested on real hardware?
+> 
+> Hi Greg,
+> 
+> Thank you for the pointer to the Sashiko review.
+> 
+> Regarding the review comment (Medium): Sashiko suggests returning -EINVAL
+> when params->seq_len exceeds sizeof(param->u.crypt.seq), rather than
+> silently truncating with min_t().
+> 
+> The comment raises a valid point.  I chose min_t() for two reasons:
+> 
+>   1. The upstream cfg80211 framework does not enforce an upper bound on
+>      seq_len before reaching the driver, so a strict -EINVAL could
+>      break any existing userspace that happens to pass seq_len > 8
+>      (even if no standard cipher requires more than 6 bytes).
+> 
+>   2. Staging drivers historically favour silent clamping over hard
+>      rejections for parameters that are out of the ordinary but
+>      otherwise harmless -- the primary goal was to close the overflow,
+>      not to police the caller.
 
-> vports are used concurrently and protected by RCU, so netdev_put()
-> must happen after the RCU grace period.  So, either in an RCU call or
-> after the synchronize_net().  The rtnl_delete_link() must happen under
-> RTNL and so can't be executed in RCU context.  Calling synchronize_net()
-> while holding RTNL is not a good idea for performance and system
-> stability under load in general, so calling netdev_put() in RCU call
-> is the right solution here.
->
-> However,
-> when the device is deleted, rtnl_unlock() will call netdev_run_todo()
-> and block until all the references are gone.  In the current code this
-> means that we never reach the call_rcu() and the vport is never freed
-> and the reference is never released, causing a self-deadlock on device
-> removal.
->
-> Fix that by moving the rcu_call() before the rtnl_unlock(), so the
-> scheduled RCU callback will be executed when synchronize_net() is
-> called from the rtnl_unlock()->netdev_run_todo() while the RTNL itself
-> is already released.
->
-> Fixes: 6931d21f87bc ("openvswitch: defer tunnel netdev_put to RCU release")
-> Cc: stable@vger.kernel.org
-> Acked-by: Eelco Chaudron <echaudro@redhat.com>
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-> ---
+Let's fix this in a way that the code can be moved out of staging
+someday please.
 
-Acked-by: Aaron Conole <aconole@redhat.com>
+> That said, I can see the argument for -EINVAL: it makes the contract
+> explicit and avoids installing a key with a truncated sequence counter
+> that could produce unexpected crypto behaviour.
 
+Yes, that is better.
+
+> Regarding hardware testing: I do not currently have a physical
+> rtl8723bs device.  My verification was based on code review of the
+> cfg80211 key installation path and static analysis confirming that
+> ieee_param.crypt.seq is an 8-byte fixed buffer while params->seq_len
+> is fully userspace-controlled via NL80211_CMD_NEW_KEY.
+> 
+> I understand this is a limitation.  If hardware testing is required
+> before merge I can source a RTL8723BU/BS USB dongle (approximately
+> 1-2 weeks), or alternatively a community member with the hardware
+> could confirm the fix.  Please advise on your preference.
+
+Ideally someone can test this on the real hardware.  I'm loath to take
+real patches for this driver without that happening.
+
+thanks,
+
+greg k-h
 
