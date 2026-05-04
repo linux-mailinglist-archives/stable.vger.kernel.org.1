@@ -1,190 +1,162 @@
-Return-Path: <stable+bounces-243871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAvVLm/F+GlQ0gIAu9opvQ
-	(envelope-from <stable+bounces-243871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:12:31 +0200
+	id 0OLLIanG+GlQ0gIAu9opvQ
+	(envelope-from <stable+bounces-243872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:17:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9384C13B8
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:12:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FDC4C142E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:17:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D21E33068868
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 16:08:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85CD5301584D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 16:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7FE3E0228;
-	Mon,  4 May 2026 16:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C65F364923;
+	Mon,  4 May 2026 16:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kEWVtHZS"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="B3G0hyhf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D94B3AA4F8;
-	Mon,  4 May 2026 16:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D261CAA65
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 16:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777910898; cv=none; b=QRmld/TH3RyYzzxnYRH/efiJNtJAvz0ULAVC4EV+8qFPKyCI49fEQDk9BLwbD6ozajPaGRp16mGWO6LVKalg0XXe2upsQ2QijDbmjM7Sp19aNmEZm+eOe5oGtL7MwZhAfBjfgvfMB0/kWcxlAKaDzqiiuLpy0ls6LPLD9uxFpq8=
+	t=1777911460; cv=none; b=QpHBHvGPo0LwEL2fWx8TOlxpm78GO2XiW++2Ro4C64GTbrO2LciSw/KiRQq5wj6DTrpHeZnXllQBXF4hHhd+m3yUIURmP6USllhDaGhBDh4vIrmHdQ7t/pTmCB5FM7WKkEU8+OAJIoK1Q+psh2Dd8CToqoOBVB984U1KozcXBl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777910898; c=relaxed/simple;
-	bh=4lCsaFuu2B5R467I+7rpTNdF6BZtih2LJJ2lk/PHSPw=;
+	s=arc-20240116; t=1777911460; c=relaxed/simple;
+	bh=e+cYlcR/4LfpdBr8x2GQmIc7u37KbjDc+gIlNtqc2B4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LVsXEfFANg9s4hxrQZWlVHMQZAu5AjE7zePvMgNo9CiEo1mYQEjUe8K68UU5QvN5cqo1OR4t2LZf9e7eL9xJcdgJdMZXhmfXJcGIJ+n5XlhsEKR/4DdFEz6Uj8nsv17p+fj6tgvngtE0m59MH4EqTL/Y9JicqSCS4rBvooqsj3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kEWVtHZS; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777910897; x=1809446897;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=4lCsaFuu2B5R467I+7rpTNdF6BZtih2LJJ2lk/PHSPw=;
-  b=kEWVtHZSqRTnaUNmYOxZbYen0iR7xrpAYZMh9QBY4EOrU/4kDYlnL9XQ
-   F80VXe2bCHZbrEDuQ9l1a9Js42XDFjqQRiNk2QiyHrk7IOxKB+4B/+TL3
-   +QUCar8cTMOaNCZlWcJIz+fLd4zRkac5jg0T2Aca1+YFVxuruu4XP0Ld3
-   APXjnyaqCmdqv4G+uHostIvyKFccehhNDmwfXArJ8km1rAp3Fkjqy2zA2
-   K8kJCvRXwVX1nC9wpg6a5Kdn1dyysFJJSdIgMMph3K2B9ZnRa7NgTW+zF
-   wnne4WCfxFz6G1FEGOlPcWENHtu6+vY6ExEhwOHl3smXvdfievSd06utm
-   Q==;
-X-CSE-ConnectionGUID: PAyNB5lXRfKbBiD3Tln2KQ==
-X-CSE-MsgGUID: GMEImeuKRxaCOAUHGF4nNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="77789297"
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="77789297"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 09:08:15 -0700
-X-CSE-ConnectionGUID: keFM9U6aQ4urZpzFRDdezg==
-X-CSE-MsgGUID: pg+QsgYJTZGFA3RcNf/zHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="259211309"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.110.19]) ([10.125.110.19])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 09:08:14 -0700
-Message-ID: <1eb01a65-d21a-40a8-948e-0b1a3f088a20@intel.com>
-Date: Mon, 4 May 2026 09:08:13 -0700
+	 In-Reply-To:Content-Type; b=KbYaenkNWm7qPPQKleBvXtoXTRPVgyw6g+/HRbTVLdggs29Gqb1iUNI8SoTSnlNEizrKcPBcxQEG/9ahpVt2Kh1syqruowLoMHoDMdWjiDJWDWMloe8VoxWHHX8mW8XUTrHRDX9awaIEbP3EQQlrgfz9eZHaLxfTgafTqW7+jxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=B3G0hyhf; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4891f625344so45461425e9.0
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 09:17:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1777911457; x=1778516257; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PB0CX69KAx5rnBO+d/cQTMDVxCggaKTqEnwtGGRcSVw=;
+        b=B3G0hyhf92L/m+dBk9uTC22OJQDi6agKoru1Ru6m0PBSl3+21SwZ/UYbXBJmkCyqDy
+         tI8v+H21XWNUP2asvQYqs2Ls+qz8EgLppaFRj/3dn5wgeUj8Ju5wkyRQg+RjDMjBFL+t
+         W6jERvvCxoSzD0R3vhdE+s+beMkEWbfIQPsYgpqleENhesew7VLzXhw32Bdpol8kxVK0
+         SSX/bUUmhbjwDA5Lb+TUcBWFnwv82LfhXGcYNHEW/w19S4I+6qTKlVmNex+AetgClVAk
+         0MO/sFyJfwOsLoxdSvxoAAk3RJEI70ZM7APOBT+6x9nEt1Eh5dxSp3tGAlp7d7QGS4w5
+         803g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777911457; x=1778516257;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PB0CX69KAx5rnBO+d/cQTMDVxCggaKTqEnwtGGRcSVw=;
+        b=SIrxBJ0S8a+Jhq8mwrb9Li2/Mt0EX5e5jFI5Ef1NWZ0YaJqKbfshJ3RQax3K2vDFir
+         JElh05FYHRfZXhkyvcWgv6WZ7s/3cI7tHY5GgiF+EyS3W0fq8Zr2NQVYEKtZLL5HBKtt
+         dKwOieaZxsOOofHFghRG8JHrJTlcOjTmX3lZTAjkDorVLuTBnGx9ag3zt/UxDeAxnS0K
+         MeI7vzVTOvnI+fbTERbaK7tJ0vbKp0CtOzyvnqK3TtljSlqf9MIIWuH5AzjiU9bdcD5X
+         0KBJ1HkKL8guQTxiZpRomxhOE+SUV0/v/uk5H0Knd/+SZnbbEzv/kOlBnufVJ/E34xn/
+         LxEA==
+X-Forwarded-Encrypted: i=1; AFNElJ+luC3/7qdhIUEr0ZEMX8hZZTqBNO1oIURXTyFIHnF7vRlGIZnKMybihyxbGHz27lgL3lobO2U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQHTi5hiYqDSLakrrDR/kin893JzPQ/KSxstHPaNKjthcX8f50
+	v8/C6ZbM0vPu8prfz0//2YrqGbMHa5YNAIjRnQClH469j/2Tp8YRMMs=
+X-Gm-Gg: AeBDiet4hxmasW8lJQRMzdexqjULMBsW8PSodEliygKGF02rdvQFxyREoREX/Sjh1Ib
+	kJmp4JZiFBR3V6bohleah9xYmHAra2dxTayMBQpI/6U1ROllcgCmxF5/z3taxKLksxCtz4ArsNt
+	rJDCR39B2ZzGEDRjj697XUPEqOlAQb/nUgQ0JGfbqTNFYWsYzaAaJRF8w3+acyiBlpZs4MXAA7Q
+	WJSxMnZKI0wI2bPxyqDE6SOOygJ/5cHyKPcLVMrJi9RcaTl96pcoLDkIGd+vhK5mV3nIZTjE5Yi
+	bVU4Jra4RU+9VLN3z2PNfXS78vuSTtFUAIETPsIr9mh8wPNFcrSKSOb30LGSLgrLZj+Xr92+Xj/
+	bTXYKY60JqPKG6InHAjgEcx0IpTBnGjIBBNVaT5oaAMYIq7b7V67k4BAerpI9FkPYtYjhq5/GE0
+	Xy2vvkBEr8oCTyaVamZ4AlUsSCgPmIebmr62XTVrRLEl/TXcF2rPduCbWvISp8KQQ2u+UTyxffi
+	RyzDmXVD3uLEA==
+X-Received: by 2002:a05:600c:4f42:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-48d1426a438mr3174505e9.13.1777911456922;
+        Mon, 04 May 2026 09:17:36 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ace33.dip0.t-ipconnect.de. [91.42.206.51])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8fed8ea0sm143100235e9.5.2026.05.04.09.17.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2026 09:17:35 -0700 (PDT)
+Message-ID: <aa485951-fcba-4e09-b01d-e586001e54e9@googlemail.com>
+Date: Mon, 4 May 2026 18:17:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/dax: check for empty/zero entries before calling
- pfn_to_page()
-To: Souvik Banerjee <souvik@amlalabs.com>, dan.j.williams@intel.com
-Cc: willy@infradead.org, jack@suse.cz, apopple@nvidia.com,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260501233933.2614302-1-souvik@amlalabs.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260501233933.2614302-1-souvik@amlalabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1C9384C13B8
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/215] 6.12.86-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260504135130.169210693@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F2FDC4C142E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243872-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243871-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid,amlalabs.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid,peters-netzplatz.de:url]
+
+Am 04.05.2026 um 15:50 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.86 release.
+> There are 215 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
+Beste Grüße,
+Peter Schneider
 
-On 5/1/26 4:39 PM, Souvik Banerjee wrote:
-> Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> added zero/empty-entry early returns to dax_associate_entry() and
-> dax_disassociate_entry(), but placed them *after* the
-> `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
-> expands to page_folio(pfn_to_page(dax_to_pfn(entry))), and page_folio()
-> performs READ_ONCE(page->compound_head) -- a real dereference of the
-> struct page pointer derived from a bogus PFN extracted from the
-> empty/zero XA value.
-> 
-> On systems where vmemmap covers all of RAM that dereference reads
-> garbage and is harmless: the early return then discards the result.
-> On virtio-pmem with altmap (vmemmap stored inside the device), only
-> the real device PFN range is mapped, so the dereference triggers a
-> kernel paging fault from the truncate / invalidate path and from the
-> PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
-> freed:
-> 
->   Unable to handle kernel paging request at
->   virtual address ffff_fdff_bf00_0008 (vmemmap region)
->   Call trace:
->    dax_disassociate_entry.isra.0+0x20/0x50
->    dax_iomap_pte_fault
->    dax_iomap_fault
->    erofs_dax_fault
-> 
-> Close the residual gap by moving the dax_to_folio() call after the
-> zero/empty guard in dax_disassociate_entry().  Apply the same
-> treatment to dax_busy_page(), which has the identical pattern but
-> was not touched by the prior fix.
-> 
-> Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
-> Cc: stable@vger.kernel.org # v6.15+
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-
-> ---
->  fs/dax.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 6d175cd47a99..6878473265bb 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -505,21 +505,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
->  static void dax_disassociate_entry(void *entry, struct address_space *mapping,
->  				bool trunc)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return;
->  
-> +	folio = dax_to_folio(entry);
->  	dax_folio_put(folio);
->  }
->  
->  static struct page *dax_busy_page(void *entry)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return NULL;
->  
-> +	folio = dax_to_folio(entry);
->  	if (folio_ref_count(folio) - folio_mapcount(folio))
->  		return &folio->page;
->  	else
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
