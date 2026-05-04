@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KyDB1is+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:28 +0200
+	id KHX3Gmem+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925CC4BF582
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892144BE4B0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2412304D5F7
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBCAB301DF68
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994D33D9029;
-	Mon,  4 May 2026 14:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0943DE443;
+	Mon,  4 May 2026 13:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WniD3s9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrC2VBwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0CE1ADC83;
-	Mon,  4 May 2026 14:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52B33DE425;
+	Mon,  4 May 2026 13:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903781; cv=none; b=LqIQ3ruyCKGSu5RA78j2eHPtkAKBHTveZIiINnrclvMeHVtaHG5bSmjkgvMJi+a5mQHHJFnIPiAmuov8MtBD4PAVgSHmbg0nmoppGAb3bovY7EMG7eg2KzhRIjEndttSvqmYOT4nfaPyKkwH80Ms39ifQMyYCyenDix/0UfvpUI=
+	t=1777903107; cv=none; b=jby1pbDlzCQIk7cU3lcXIcnq6Y3fPSMLOwzBjOmpp7jejm9tz0n16AQ26IL5OIW04NNVi0QA7WPxxfcCzswwEQnuvcdG92QXWpTw+g7bYcpKhVncD4SSyYQLpvaXvPN8Q7s04HSbwJkL/52vWPBcGuBwDCHXNvwMdQDECM/DvKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903781; c=relaxed/simple;
-	bh=qwW0R1iSaaC9y73sCITf5w8wGPJLOoxhs6B4t5ljCiE=;
+	s=arc-20240116; t=1777903107; c=relaxed/simple;
+	bh=TIKV3hkLX7KZabYo25DTu0tX/YVAq97jdt3JYIdgXpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FS4A6G3PW4b1jn0lo1Kr69RedPdAY7oo9WCXr6klr+J2cewEM0lMs6axyGVk12SkW4o94Ct3CeFlbCb+IB91Np0Ov+spAyLXu+w04ERFx1efdhCf5n8p7x9v3Ob767v6DDArMDc+MOnj/2uq9qBnDXSEf8+Cb4WwB+A5J7R6OY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WniD3s9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D4FC2BCC4;
-	Mon,  4 May 2026 14:09:40 +0000 (UTC)
+	 MIME-Version; b=EqHxqKIawQNBNC13lZ6c/elURu7ZU7y9ZTurVdxSbgM7oACn1ul9WeXfmtxq4h7/hx8jk4SuZoinXyIlQMY1lSxdWZeIjImvnGG4d66vftBu5NhEBfJ8N02Cyheu8hbw2J3lkOlhMM3h7xG9OBQA4I2dEgGzbqiDEGAiuoAUeuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrC2VBwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAEDC2BCC4;
+	Mon,  4 May 2026 13:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903781;
-	bh=qwW0R1iSaaC9y73sCITf5w8wGPJLOoxhs6B4t5ljCiE=;
+	s=korg; t=1777903107;
+	bh=TIKV3hkLX7KZabYo25DTu0tX/YVAq97jdt3JYIdgXpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WniD3s9X/ZLqbyxGp3n87nNrIRAOOHp4fYUWjSZcrFlingGu5M2Ss2gqAGJMXrpSC
-	 MfAaRbtcFakmpd6tJlTxMiBI7n3mTMauEReOhUMF24hkGd8/KTAUFUi9HdSbSYaYj5
-	 D0dlWVtu0cS2AwsKxR1PrngX868I4f8sAXe4q/8A=
+	b=ZrC2VBwGhsYqcnLqp0hez3OXqMD61oDHKQwqy84u5LR7V+7iE8LTZexC8Ll8gTxcl
+	 A4+dH/C79wF1r4Y+U1oank0NtmYfu7gbinTNCBnv82928IeA2mIAIRKDi9DPbkFwSQ
+	 M8Q1ggnrJITDc8R7HJuqin0WCSZTWwp99PChbafI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Lothar Rubusch <l.rubusch@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.18 052/275] crypto: atmel-sha204a - Fix OTP sysfs read and error handling
+	Youngmin Choi <youngminchoi94@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 107/307] io_uring/zcrx: return back two step unregistration
 Date: Mon,  4 May 2026 15:49:52 +0200
-Message-ID: <20260504135144.868749118@linuxfoundation.org>
+Message-ID: <20260504135146.836152201@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 925CC4BF582
+X-Rspamd-Queue-Id: 892144BE4B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
@@ -72,101 +72,171 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243398-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243135-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,gmail.com,gondor.apana.org.au];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kernel.dk:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 635c3a757a567b2479639237f5f0d4d9439015f1 upstream.
+commit e5361d25e241ac3a23177fa74ae91d049bad00d3 upstream.
 
-Fix otp_show() to read and print all 64 bytes of the OTP zone.
-Previously, the loop only printed half of the OTP (32 bytes), and
-partial output was returned on read errors.
+There are reports where io_uring instance removal takes too long and an
+ifq reallocation by another zcrx instance fails. Split zcrx destruction
+into two steps similarly how it was before, first close the queue early
+but maintain zcrx alive, and then when all inflight requests are
+completed, drop the main zcrx reference. For extra protection, mark
+terminated zcrx instances in xarray and warn if we double put them.
 
-Propagate the actual error from atmel_sha204a_otp_read() instead of
-producing partial output.
-
-Replace sprintf() with sysfs_emit_at(), which is preferred for
-formatting sysfs output because it provides safer bounds checking.
-
-Cc: stable@vger.kernel.org
-Fixes: 13909a0c8897 ("crypto: atmel-sha204a - provide the otp content")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Lothar Rubusch <l.rubusch@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org # 6.19+
+Link: https://github.com/axboe/liburing/issues/1550
+Reported-by: Youngmin Choi <youngminchoi94@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://patch.msgid.link/0ce21f0565ab4358668922a28a8a36922dfebf76.1774261953.git.asml.silence@gmail.com
+[axboe: NULL ifq before break inside scoped guard]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-sha204a.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ io_uring/io_uring.c |    4 ++++
+ io_uring/zcrx.c     |   46 +++++++++++++++++++++++++++++++++++++++++++---
+ io_uring/zcrx.h     |    4 ++++
+ 3 files changed, 51 insertions(+), 3 deletions(-)
 
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -15,6 +15,7 @@
- #include <linux/module.h>
- #include <linux/scatterlist.h>
- #include <linux/slab.h>
-+#include <linux/sysfs.h>
- #include <linux/workqueue.h>
- #include "atmel-i2c.h"
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2308,6 +2308,10 @@ static __cold void io_ring_exit_work(str
+ 	struct io_tctx_node *node;
+ 	int ret;
  
-@@ -120,21 +121,22 @@ static ssize_t otp_show(struct device *d
++	mutex_lock(&ctx->uring_lock);
++	io_terminate_zcrx(ctx);
++	mutex_unlock(&ctx->uring_lock);
++
+ 	/*
+ 	 * If we're doing polled IO and end up having requests being
+ 	 * submitted async (out-of-line), then completions can come in while
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -624,12 +624,17 @@ static void io_zcrx_scrub(struct io_zcrx
+ 	}
+ }
+ 
+-static void zcrx_unregister(struct io_zcrx_ifq *ifq)
++static void zcrx_unregister_user(struct io_zcrx_ifq *ifq)
  {
- 	u16 addr;
- 	u8 otp[OTP_ZONE_SIZE];
--	char *str = buf;
- 	struct i2c_client *client = to_i2c_client(dev);
--	int i;
-+	ssize_t len = 0;
-+	int i, ret;
+ 	if (refcount_dec_and_test(&ifq->user_refs)) {
+ 		io_close_queue(ifq);
+ 		io_zcrx_scrub(ifq);
+ 	}
++}
++
++static void zcrx_unregister(struct io_zcrx_ifq *ifq)
++{
++	zcrx_unregister_user(ifq);
+ 	io_put_zcrx_ifq(ifq);
+ }
  
--	for (addr = 0; addr < OTP_ZONE_SIZE/4; addr++) {
--		if (atmel_sha204a_otp_read(client, addr, otp + addr * 4) < 0) {
-+	for (addr = 0; addr < OTP_ZONE_SIZE / 4; addr++) {
-+		ret = atmel_sha204a_otp_read(client, addr, otp + addr * 4);
-+		if (ret < 0) {
- 			dev_err(dev, "failed to read otp zone\n");
--			break;
-+			return ret;
+@@ -885,6 +890,36 @@ static struct net_iov *__io_zcrx_get_fre
+ 	return &area->nia.niovs[niov_idx];
+ }
+ 
++static inline bool is_zcrx_entry_marked(struct io_ring_ctx *ctx, unsigned long id)
++{
++	return xa_get_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
++}
++
++static inline void set_zcrx_entry_mark(struct io_ring_ctx *ctx, unsigned long id)
++{
++	xa_set_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
++}
++
++void io_terminate_zcrx(struct io_ring_ctx *ctx)
++{
++	struct io_zcrx_ifq *ifq;
++	unsigned long id = 0;
++
++	lockdep_assert_held(&ctx->uring_lock);
++
++	while (1) {
++		scoped_guard(mutex, &ctx->mmap_lock)
++			ifq = xa_find(&ctx->zcrx_ctxs, &id, ULONG_MAX, XA_PRESENT);
++		if (!ifq)
++			break;
++		if (WARN_ON_ONCE(is_zcrx_entry_marked(ctx, id)))
++			break;
++		set_zcrx_entry_mark(ctx, id);
++		id++;
++		zcrx_unregister_user(ifq);
++	}
++}
++
+ void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
+ {
+ 	struct io_zcrx_ifq *ifq;
+@@ -896,12 +931,17 @@ void io_unregister_zcrx_ifqs(struct io_r
+ 			unsigned long id = 0;
+ 
+ 			ifq = xa_find(&ctx->zcrx_ctxs, &id, ULONG_MAX, XA_PRESENT);
+-			if (ifq)
++			if (ifq) {
++				if (WARN_ON_ONCE(!is_zcrx_entry_marked(ctx, id))) {
++					ifq = NULL;
++					break;
++				}
+ 				xa_erase(&ctx->zcrx_ctxs, id);
++			}
  		}
+ 		if (!ifq)
+ 			break;
+-		zcrx_unregister(ifq);
++		io_put_zcrx_ifq(ifq);
  	}
  
--	for (i = 0; i < addr*2; i++)
--		str += sprintf(str, "%02X", otp[i]);
--	str += sprintf(str, "\n");
--	return str - buf;
-+	for (i = 0; i < OTP_ZONE_SIZE; i++)
-+		len += sysfs_emit_at(buf, len, "%02X", otp[i]);
-+	len += sysfs_emit_at(buf, len, "\n");
-+	return len;
+ 	xa_destroy(&ctx->zcrx_ctxs);
+--- a/io_uring/zcrx.h
++++ b/io_uring/zcrx.h
+@@ -71,6 +71,7 @@ int io_zcrx_ctrl(struct io_ring_ctx *ctx
+ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+ 			 struct io_uring_zcrx_ifq_reg __user *arg);
+ void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx);
++void io_terminate_zcrx(struct io_ring_ctx *ctx);
+ int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
+ 		 struct socket *sock, unsigned int flags,
+ 		 unsigned issue_flags, unsigned int *len);
+@@ -85,6 +86,9 @@ static inline int io_register_zcrx_ifq(s
+ static inline void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
+ {
  }
- static DEVICE_ATTR_RO(otp);
- 
++static inline void io_terminate_zcrx(struct io_ring_ctx *ctx)
++{
++}
+ static inline int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
+ 			       struct socket *sock, unsigned int flags,
+ 			       unsigned issue_flags, unsigned int *len)
 
 
 
