@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGycCL6r+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:54 +0200
+	id EEYUIgiq+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2324BF3DF
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BA54BEE88
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 09F7A303F278
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3DFC301DDA0
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D8E3DE45C;
-	Mon,  4 May 2026 14:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34B13D75D7;
+	Mon,  4 May 2026 14:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZ2gRzLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUTN8HGF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81633DE44F;
-	Mon,  4 May 2026 14:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673D53AA4F8;
+	Mon,  4 May 2026 14:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904478; cv=none; b=L7rZQQVV7BnoGkKXvi2w8Pi+q+kKjyUQdtj2Yp0FRwTKW4BDq048nyI5ii6dRSLiRKqEDdAX6SjfQQ4Er77GLRcTYy9fRu89lN7co15haje8eNL8iHy9QF8e+Zz33oi9GEzxhMc2RDvElfsJeKdn2kjJGESfskT75YmiPZHFgfc=
+	t=1777903969; cv=none; b=kLnoCwKTt04vZU9g5LPuLyNYyfITmI3R4v8cXNhvrXwerIV458vrIs/JJ9LUz1A+2I+5FsxyPWAi4uPCyV45x6YxqLPg0cvxf9Q20POnWsieu/1GwoUrlVFiMZVnzwnHaVj7R1crP07XTsEPPFAwhpAdj5Z+28Ifypoecp7Qw5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904478; c=relaxed/simple;
-	bh=oEw+n49Wxff7FjweuZqVTONkpoaJhv0eXJ+sAimAw4M=;
+	s=arc-20240116; t=1777903969; c=relaxed/simple;
+	bh=+XgYqY2VPBR1BtUtvipQYfZE2uYbgy42/vysquHCilc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RObPNFwGwO7WV1IW5vfdHhGTVvk6DRiynVXZFePL55kusp1t4f+tgns2iSBhLFNk5jQHR0MCaB2OmZWd1wyVhCsGnms2IMBGaduSF+YD/09YQUEdQ9W3e+Y4i5QufQlxow+P8AELGSdo7BEPawRIkaCCvcSuawMeVM50F5fe4b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZ2gRzLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408FCC2BCB8;
-	Mon,  4 May 2026 14:21:18 +0000 (UTC)
+	 MIME-Version; b=GjmHTrAquAwdt919JsHfXW201JcENNWF2Tfgm8ZEpxonw3Kky0ktW2Wi4Ydu5Eq98bWxTKkF2EETDPynC5XhA0vwQ7W8T1QAde5jJlxuUraN8nYKHh6RqLDJSm6FTBfStax16cFIlOclm/JB1JcyJ4djRkbr/qa4fnQ6qabwFF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUTN8HGF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D0FC2BCB8;
+	Mon,  4 May 2026 14:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904478;
-	bh=oEw+n49Wxff7FjweuZqVTONkpoaJhv0eXJ+sAimAw4M=;
+	s=korg; t=1777903969;
+	bh=+XgYqY2VPBR1BtUtvipQYfZE2uYbgy42/vysquHCilc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZ2gRzLM8V5vXkzbIGpgaaL7KU6sUOzRD6DAXp3X1rnP0UW9NEh6IZZkSk/2HNzdy
-	 rBmGiABUtMwN7ecHVbriGAYpbY62s2746j7OpUWZ2GnBTvuE/Xh51JpkkRzt64J88A
-	 UsBvB1sliMdzArtn2rZj5NJGLgQD29mddkMGJ+VI=
+	b=IUTN8HGFo4NH6u94R/wrj9AhZlK+KGfBrqymji9DHiMxwBaHNStHspikoSujCnGrM
+	 NUgSl40OfgChd0r/BAXpZ2NgEdG6LNUfux4/Rb7eFceSlzHVmKE9rkcFNs8dxtAPBb
+	 xdWKPPEjgajo8GFwWM4K4PIp4dHwEUl7soHdccuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harin Lee <me@harin.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 054/215] ALSA: ctxfi: Add fallback to default RSR for S/PDIF
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.18 133/275] libceph: Prevent potential null-ptr-deref in ceph_handle_auth_reply()
 Date: Mon,  4 May 2026 15:51:13 +0200
-Message-ID: <20260504135132.150593823@linuxfoundation.org>
+Message-ID: <20260504135147.842327463@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8E2324BF3DF
+X-Rspamd-Queue-Id: 20BA54BEE88
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243471-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243670-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url,harin.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tu-ilmenau.de:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harin Lee <me@harin.net>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit 7d61662197ecdc458e33e475b6ada7f6da61d364 upstream.
+commit 5199c125d25aeae8615c4fc31652cc0fe624338e upstream.
 
-spdif_passthru_playback_get_resources() uses atc->pll_rate as the RSR
-for the MSR calculation loop. However, pll_rate is only updated in
-atc_pll_init() and not in hw_pll_init(), so it remains 0 after the
-card init.
+If a message of type CEPH_MSG_AUTH_REPLY contains a zero value for both
+protocol and result, this is currently not treated as an error. In case
+of ac->negotiating == true and ac->protocol > 0, this leads to setting
+ac->protocol = 0 and ac->ops = NULL. Thereafter, the check for
+ac->protocol != protocol returns false, and init_protocol() is not
+called. Subsequently, ac->ops->handle_reply() is called, which leads to
+a null pointer dereference, because ac->ops is still NULL.
 
-When spdif_passthru_playback_setup() skips atc_pll_init() for
-32000 Hz, (rsr * desc.msr) always becomes 0, causing the loop to spin
-indefinitely.
+This patch changes the check for ac->protocol != protocol to
+!ac->protocol, as this also includes the case when the protocol was set
+to zero in the message. This causes the message to be treated as
+containing a bad auth protocol.
 
-Add fallback to use atc->rsr when atc->pll_rate is 0. This reflects
-the hardware state, since hw_card_init() already configures the PLL
-to the default RSR.
-
-Fixes: 8cc72361481f ("ALSA: SB X-Fi driver merge")
 Cc: stable@vger.kernel.org
-Signed-off-by: Harin Lee <me@harin.net>
-Link: https://patch.msgid.link/20260406074913.217374-1-me@harin.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/ctxfi/ctatc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ceph/auth.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/ctxfi/ctatc.c
-+++ b/sound/pci/ctxfi/ctatc.c
-@@ -788,7 +788,8 @@ static int spdif_passthru_playback_get_r
- 	struct src *src;
- 	int err;
- 	int n_amixer = apcm->substream->runtime->channels, i;
--	unsigned int pitch, rsr = atc->pll_rate;
-+	unsigned int pitch;
-+	unsigned int rsr = atc->pll_rate ? atc->pll_rate : atc->rsr;
- 
- 	/* first release old resources */
- 	atc_pcm_release_resources(atc, apcm);
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -245,7 +245,7 @@ int ceph_handle_auth_reply(struct ceph_a
+ 			ac->protocol = 0;
+ 			ac->ops = NULL;
+ 		}
+-		if (ac->protocol != protocol) {
++		if (!ac->protocol) {
+ 			ret = init_protocol(ac, protocol);
+ 			if (ret) {
+ 				pr_err("auth protocol '%s' init failed: %d\n",
 
 
 
