@@ -1,65 +1,68 @@
-Return-Path: <stable+bounces-243704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eN7dDIWs+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:13 +0200
+	id wJV+IXyt+GkuxwIAu9opvQ
+	(envelope-from <stable+bounces-243538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B884BF63F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C704F4BF924
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CBA6A3028C30
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B64B73037419
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892283DE44F;
-	Mon,  4 May 2026 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA85937D11B;
+	Mon,  4 May 2026 14:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCrjxb9w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkT8oCk0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4EE3DE450;
-	Mon,  4 May 2026 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2BD21C173;
+	Mon,  4 May 2026 14:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904563; cv=none; b=C+oyawKPE7VECEsKcWS3DKQbPNFUG5aN1fBFvY8NV5K/4G04/61g7/3JmnCSvrsjTIIrANnAssS2FA7t33MItDmWIYsiZ4BVVLii+uxqdQekC+APf6yOT67czVg2KZ/PVt3lzUA1mquyOY3nt3/7OxSdkNXbJJXQQFqiTKsN9z4=
+	t=1777904141; cv=none; b=Co/ooRGIHnmlUrGfXKLI3EsyVAacA1rzBIlzPKshsumXVjlv4OMuOoIroD/8Wf0xOKp5n9DAtzbLgxM4k/uNKzulCxJfvsgFVG5NqekMwp37teTqyaKMIAySK9K7zZz9VxM0xvFuWNBcsPCsQGN+/kzirjV1vT8Ja9+tlGzH4To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904563; c=relaxed/simple;
-	bh=JyWyk2YiKLXg9xy1lPJywczN4zTn8fuTFevqNIuHNYI=;
+	s=arc-20240116; t=1777904141; c=relaxed/simple;
+	bh=0/Hvf7gcc7bkw8ScWCe9RhA1WXgf2pi/qjLQtGlw8DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkUnJ+5cI6hqmkQqzWPFlXZh4rPYFVWO1xHWwYZPyZ2YVMdjWPNFUHqeycdNA3NTVWyetIFy++zYXtivuLLD97+/SukqttjIP2E1tW7c/T8iwi5CTu3aRJCo49L+cFSpfWWZ6uZdMdKcK68ZmeERI1z22V++2eBWJ9+Iz6q4bKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCrjxb9w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CECC2BCB8;
-	Mon,  4 May 2026 14:22:42 +0000 (UTC)
+	 MIME-Version; b=LHXWw22vKQiLfsuEr/6vZxj4cb1MirYMFgPa/DygfoTttPqT1pxcOp8N/EBKRQlVg5SUPUsoAf9cjaBoj/DcblX0I8+m26cdIG3GBqM+6KFxbBjHbTd2rlvjNW+13IuMhOyJ08utuNELMpufNdYDUuKmAa86+wRK45fcSbluyaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkT8oCk0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C40DC2BCB8;
+	Mon,  4 May 2026 14:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904563;
-	bh=JyWyk2YiKLXg9xy1lPJywczN4zTn8fuTFevqNIuHNYI=;
+	s=korg; t=1777904141;
+	bh=0/Hvf7gcc7bkw8ScWCe9RhA1WXgf2pi/qjLQtGlw8DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DCrjxb9wGuR/L7uCQlaye6L1doHKUW/urYtdhqDg5WWB0ZZvQnn0KQylG71w7L3md
-	 4lQ6MtkTehwIVSoFK3rVA03MFLLu3XDfv+f/3w5qJD7wr9GPpRQBu0M75Cbln9tAyU
-	 jzi9D6slmifchB5Fes8IcQXU/jLE/Cpe7ThRV6w4=
+	b=XkT8oCk0vlfAr9G9afuBtZkzlHb4R2I/xyaMnC8s1JyfEVelcUv9ahZ++FvpLC7HZ
+	 2N4MNleYngMFtKwuvlw5xIs2Y1RSuyHaEeyAcn6hPh74He5iL6y+QFVQ0DEP8YESCQ
+	 gZbCt5wlGK/lJmuRZOtna6AWho9AxySl1BWNwOkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <draw51280@163.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 087/215] net: rds: fix MR cleanup on copy error
+	"Denis M. Karpov" <komlomal@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 166/275] userfaultfd: allow registration of ranges below mmap_min_addr
 Date: Mon,  4 May 2026 15:51:46 +0200
-Message-ID: <20260504135133.337566732@linuxfoundation.org>
+Message-ID: <20260504135149.218043718@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +73,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 61B884BF63F
+X-Rspamd-Queue-Id: C704F4BF924
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -78,76 +81,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243704-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,163.com];
+	TAGGED_FROM(0.00)[bounces-243538-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.de,oracle.com,zeniv.linux.org.uk,suse.cz,google.com,redhat.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ao Zhou <draw51280@163.com>
+From: Denis M. Karpov <komlomal@gmail.com>
 
-commit 8141a2dc70080eda1aedc0389ed2db2b292af5bd upstream.
+commit 161ce69c2c89781784b945d8e281ff2da9dede9c upstream.
 
-__rds_rdma_map() hands sg/pages ownership to the transport after
-get_mr() succeeds. If copying the generated cookie back to user space
-fails after that point, the error path must not free those resources
-again before dropping the MR reference.
+The current implementation of validate_range() in fs/userfaultfd.c
+performs a hard check against mmap_min_addr.  This is redundant because
+UFFDIO_REGISTER operates on memory ranges that must already be backed by a
+VMA.
 
-Remove the duplicate unpin/free from the put_user() failure branch so
-that MR teardown is handled only through the existing final cleanup
-path.
+Enforcing mmap_min_addr or capability checks again in userfaultfd is
+unnecessary and prevents applications like binary compilers from using
+UFFD for valid memory regions mapped by application.
 
-Fixes: 0d4597c8c5ab ("net/rds: Track user mapped pages through special API")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <draw51280@163.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/79c8ef73ec8e5844d71038983940cc2943099baf.1776764247.git.draw51280@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Remove the redundant check for mmap_min_addr.
+
+We started using UFFD instead of the classic mprotect approach in the
+binary translator to track application writes.  During development, we
+encountered this bug.  The translator cannot control where the translated
+application chooses to map its memory and if the app requires a
+low-address area, UFFD fails, whereas mprotect would work just fine.  I
+believe this is a genuine logic bug rather than an improvement, and I
+would appreciate including the fix in stable.
+
+Link: https://lore.kernel.org/20260409103345.15044-1-komlomal@gmail.com
+Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/rdma.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/userfaultfd.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -326,10 +326,6 @@ static int __rds_rdma_map(struct rds_soc
- 
- 	if (args->cookie_addr &&
- 	    put_user(cookie, (u64 __user *)(unsigned long)args->cookie_addr)) {
--		if (!need_odp) {
--			unpin_user_pages(pages, nr_pages);
--			kfree(sg);
--		}
- 		ret = -EFAULT;
- 		goto out;
- 	}
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1219,8 +1219,6 @@ static __always_inline int validate_unal
+ 		return -EINVAL;
+ 	if (!len)
+ 		return -EINVAL;
+-	if (start < mmap_min_addr)
+-		return -EINVAL;
+ 	if (start >= task_size)
+ 		return -EINVAL;
+ 	if (len > task_size - start)
 
 
 
