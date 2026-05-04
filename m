@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFeICNhb+GnqtQIAu9opvQ
-	(envelope-from <stable+bounces-242890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:42:00 +0200
+	id aGT+LwFc+GnatQIAu9opvQ
+	(envelope-from <stable+bounces-242891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:42:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883CB4BA627
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 394974BA667
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C95A300E148
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:40:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E933A301EC7E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D438678F4F;
-	Mon,  4 May 2026 08:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B4234167B;
+	Mon,  4 May 2026 08:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUjKtnRo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFygKoyV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91792340280
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13E5341AB6
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777884042; cv=none; b=czQ8SCGe/UmNTp8hGkabNvAexVBbAwudveUWThL5QYj9Ak1HTcpQGJ9mBTpi9/o90picqeGep+p0HmMefuYpDDYOuvpbx51jE93nbGYUCdepMSnJSvf8HUZ0P/ExgYIJ5ndFDsGeTrKPY8HseOacMam57UpdrOk61wQOvHyGQ00=
+	t=1777884113; cv=none; b=q/ivAavFENNacjGVXv7IoceUepv9eywtuYMm2ZdvzjLG3P2iiL86BOxDJzk9mg/WMY35R/hJ0LGXDqENXUrbtoQRF+qPLaRKdVKrVdx8bXb9zDP2PjhY8uv82mtKkNL6cRaWyRs6i5kVeH0sX8SCurh+T0x25n6K5Qubp2kMNmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777884042; c=relaxed/simple;
-	bh=AEBp6cqsU2NC/EJ9dpdmJCMK+EBcHnW+AEAVD7H4OKA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qH614QOnmHyrUIxAhsVN14HT05Jz7mZ+QOScxyPCa9VJVK9z79Z63nxSf7i7K9L9BtIIeuBEAmYGBcj60/oIZ2iomViPDffAuL/j3gMFb5c2OWMQdyPLtth3EMuaG3B+jdiEnajgANVTA1AX1QzJGKY0MPkR9i8yFG9VHa/mmDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUjKtnRo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E6FC2BCB8;
-	Mon,  4 May 2026 08:40:41 +0000 (UTC)
+	s=arc-20240116; t=1777884113; c=relaxed/simple;
+	bh=4g0IIWFqI0WD0x8HTB1HfRAz8XwqswAOUnr4niyUv7g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PsBavacKkGS90Vfr3NHrK/SpY8KGLDss6l9djcoABGEfllcV59DxPVHkQx4XEGPkPxlvqcZXVhf3AesKtbjDHj9U4AEQZ83tlZDmQWU5jR+srgNIadt2gig9n9umyQc64dM7TiBw5hvNt38Io4JJ9p0D9BTHjt4ELOQOBDpVIt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFygKoyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C596C2BCB8;
+	Mon,  4 May 2026 08:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777884042;
-	bh=AEBp6cqsU2NC/EJ9dpdmJCMK+EBcHnW+AEAVD7H4OKA=;
+	s=korg; t=1777884112;
+	bh=4g0IIWFqI0WD0x8HTB1HfRAz8XwqswAOUnr4niyUv7g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=aUjKtnRoZTMXN/TgayI1yERbSiIJ283LNefoJ0xW4hPDcStl6TaonoXEHnKKyLqhV
-	 ONxCBai3xkvNAap2VrDKwqr91GUqNro48lEPYAU12oH2ohntZN3uSFnvtXxK50RXDx
-	 mXd2uQlZdCtfSLtjTUkyad/ZKNrKd//ga5rTU7+4=
-Subject: FAILED: patch "[PATCH] mm, swap: speed up hibernation allocation and writeout" failed to apply to 6.18-stable tree
-To: kasong@tencent.com,akpm@linux-foundation.org,baohua@kernel.org,bhe@redhat.com,chrisl@kernel.org,mail@carstengrohmann.de,nphamcs@gmail.com,shikemeng@huaweicloud.com,stable@vger.kernel.org
+	b=JFygKoyVwm8Nj4H3TFFW/QDuiDvs9vLX7gN46XUtntD2YTkeYGrKTBXwbe2UCEnjo
+	 8iFdRMZEk12sq7nscuUd0re5ye4CmLl1HI87lxIY/kZxoKMXd4MUO7zW5Ne9lvc26o
+	 OepdZWS6Slhmbs/aExDHjbsblPMSnraeYxEkd2L4=
+Subject: FAILED: patch "[PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()" failed to apply to 7.0-stable tree
+To: zilin@seu.edu.cn,slava@dubeyko.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:40:40 +0200
-Message-ID: <2026050440-judgingly-glandular-5a54@gregkh>
+Date: Mon, 04 May 2026 10:41:50 +0200
+Message-ID: <2026050450-unkind-frolic-dab1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,57 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 883CB4BA627
-X-Rspamd-Action: add header
+X-Rspamd-Queue-Id: 394974BA667
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [7.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SEM_URIBL(3.50)[huaweicloud.com:email];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242890-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-242891-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	GREYLIST(0.00)[pass,meta];
-	FREEMAIL_TO(0.00)[tencent.com,linux-foundation.org,kernel.org,redhat.com,carstengrohmann.de,gmail.com,huaweicloud.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.996];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_SPAM(0.00)[0.894];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Spam: Yes
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,seu.edu.cn:email,linuxfoundation.org:dkim]
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 7.0-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x 396f57b5720024638dbb503f6a4abd988a49d815
+git cherry-pick -x 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050440-judgingly-glandular-5a54@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050450-unkind-frolic-dab1@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -116,78 +111,137 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 396f57b5720024638dbb503f6a4abd988a49d815 Mon Sep 17 00:00:00 2001
-From: Kairui Song <kasong@tencent.com>
-Date: Mon, 16 Feb 2026 22:58:02 +0800
-Subject: [PATCH] mm, swap: speed up hibernation allocation and writeout
+From 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 Mon Sep 17 00:00:00 2001
+From: Zilin Guan <zilin@seu.edu.cn>
+Date: Fri, 27 Mar 2026 16:47:41 +0800
+Subject: [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
 
-Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
-hibernation has been using the swap slot slow allocation path for
-simplification, which turns out might cause regression for some devices
-because the allocator now rotates clusters too often, leading to slower
-allocation and more random distribution of data.
+hfsplus_fill_super() calls hfs_find_init() to initialize a search
+structure, which acquires tree->tree_lock. If the subsequent call to
+hfsplus_cat_build_key() fails, the function jumps to the out_put_root
+error label without releasing the lock. The later cleanup path then
+frees the tree data structure with the lock still held, triggering a
+held lock freed warning.
 
-Fast allocation is not complex, so implement hibernation support as well.
+Fix this by adding the missing hfs_find_exit(&fd) call before jumping
+to the out_put_root error label. This ensures that tree->tree_lock is
+properly released on the error path.
 
-Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
-performance is several times better [1]:
-6.19:               324 seconds
-After this series:  35 seconds
+The bug was originally detected on v6.13-rc1 using an experimental
+static analysis tool we are developing, and we have verified that the
+issue persists in the latest mainline kernel. The tool is specifically
+designed to detect memory management issues. It is currently under active
+development and not yet publicly available.
 
-Link: https://lkml.kernel.org/r/20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com
-Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de/ [1]
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
-Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
-Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org/
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
+lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
+used GDB to dynamically shrink the max_unistr_len parameter to 1 before
+hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
+return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
+exercises the faulty error path. The following warning was observed
+during mount:
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 94af29d1de88..90132b74d6a0 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
- /* Allocate a slot for hibernation */
- swp_entry_t swap_alloc_hibernation_slot(int type)
- {
--	struct swap_info_struct *si = swap_type_to_info(type);
--	unsigned long offset;
-+	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
-+	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
-+	struct swap_cluster_info *ci;
- 	swp_entry_t entry = {0};
- 
- 	if (!si)
-@@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
- 	if (get_swap_device_info(si)) {
- 		if (si->flags & SWP_WRITEOK) {
- 			/*
--			 * Grab the local lock to be compliant
--			 * with swap table allocation.
-+			 * Try the local cluster first if it matches the device. If
-+			 * not, try grab a new cluster and override local cluster.
- 			 */
- 			local_lock(&percpu_swap_cluster.lock);
--			offset = cluster_alloc_swap_entry(si, NULL);
-+			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
-+			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
-+			if (pcp_si == si && pcp_offset) {
-+				ci = swap_cluster_lock(si, pcp_offset);
-+				if (cluster_is_usable(ci, 0))
-+					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
-+				else
-+					swap_cluster_unlock(ci);
-+			}
-+			if (!offset)
-+				offset = cluster_alloc_swap_entry(si, NULL);
- 			local_unlock(&percpu_swap_cluster.lock);
- 			if (offset)
- 				entry = swp_entry(si->type, offset);
+	=========================
+	WARNING: held lock freed!
+	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
+	-------------------------
+	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
+	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+	2 locks held by mount/174:
+	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
+	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+
+	stack backtrace:
+	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+	Call Trace:
+	<TASK>
+	dump_stack_lvl+0x82/0xd0
+	debug_check_no_locks_freed+0x13a/0x180
+	kfree+0x16b/0x510
+	? hfsplus_fill_super+0xcb4/0x18a0
+	hfsplus_fill_super+0xcb4/0x18a0
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x65f/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? pointer+0x4ce/0xbf0
+	? trace_contention_end+0x11c/0x150
+	? __pfx_pointer+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x79b/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? vsnprintf+0x6da/0x1270
+	? srso_return_thunk+0x5/0x5f
+	? __mutex_unlock_slowpath+0x157/0x740
+	? __pfx_vsnprintf+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? mark_held_locks+0x49/0x80
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? irqentry_exit+0x17b/0x5e0
+	? trace_irq_disable.constprop.0+0x116/0x150
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	get_tree_bdev_flags+0x302/0x580
+	? __pfx_get_tree_bdev_flags+0x10/0x10
+	? vfs_parse_fs_qstr+0x129/0x1a0
+	? __pfx_vfs_parse_fs_qstr+0x3/0x10
+	vfs_get_tree+0x89/0x320
+	fc_mount+0x10/0x1d0
+	path_mount+0x5c5/0x21c0
+	? __pfx_path_mount+0x10/0x10
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? kmem_cache_free+0x307/0x540
+	? user_path_at+0x51/0x60
+	? __x64_sys_mount+0x212/0x280
+	? srso_return_thunk+0x5/0x5f
+	__x64_sys_mount+0x212/0x280
+	? __pfx___x64_sys_mount+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	do_syscall_64+0x111/0x680
+	entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	RIP: 0033:0x7ffacad55eae
+	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
+	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
+	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
+	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
+	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
+	</TASK>
+
+After applying this patch, the warning no longer appears.
+
+Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+
+diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
+index 242ccca3acb7..a36243b08c7c 100644
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	if (err)
+ 		goto out_put_root;
+ 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+-	if (unlikely(err < 0))
++	if (unlikely(err < 0)) {
++		hfs_find_exit(&fd);
+ 		goto out_put_root;
++	}
+ 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
 
 
