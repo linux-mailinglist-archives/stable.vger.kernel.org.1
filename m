@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPM9Ls+o+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:23 +0200
+	id mOLuJ4+s+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590B04BEAAE
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A81E4BF670
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A9583078A32
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99450303F449
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD943D5645;
-	Mon,  4 May 2026 14:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7CA3DE454;
+	Mon,  4 May 2026 14:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeyTzW6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxSRZzev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700E13D904D;
-	Mon,  4 May 2026 14:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919EC3DE452;
+	Mon,  4 May 2026 14:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903416; cv=none; b=rqm46g4fA6UgfPtZ9/+oc4ox6Rh0nndB496jj7nvGh/vEzqYcg5dtpl5DEXV1XYwVJUBSm96ZzKvNopMfyPny8uHCZIYKGLJ1DRh42k/xjfn0kRXEomPXf9U6ZUX6dFbqLRr3gSDh8Zkc7Ii/4n1YVfY92p5KbfFYfcHdPk2D/8=
+	t=1777904573; cv=none; b=kkkGjsMtnEBOuquCXPlRZV2OnT01GBCKVwrjHdIBzJte3gA7TVC+vHYotE1zeO0nr1DXKfNiqoE99qXff1j4Q9qQUDRXxzER9GyUiFLhApqeQ1AxNt8FMuHuz/17Sumqc9oeILqv3YsfzPXFAdDDR51504kC08vOPDDmtJu2PTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903416; c=relaxed/simple;
-	bh=nC4tsz9HRPftc6s4r2qvitCCb/jK9kWOqvYzB1RF6vc=;
+	s=arc-20240116; t=1777904573; c=relaxed/simple;
+	bh=ARgNfsh9ZubnvRKN9sTq4Srpxf27F3I3ak5vMeDIZNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLsJ6WWQbodOvIZajcXb6lM2E4yBRn8Cbqzc2U2zvK6985h6JOEjUwC7lDeMpXi7KUoW4UOr/hcb60umHfW/CTnvnXbkCRb3EL3RstmwLFFgF/iBrjUniJ1OMYv7Muk7wKwLvNUzdDu91bIL2UZvb75wcUSvby0pZaU2Z4kAKFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeyTzW6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44B4C2BCB8;
-	Mon,  4 May 2026 14:03:35 +0000 (UTC)
+	 MIME-Version; b=Mlg2GJn6CGykRhXLsY4XQhUJZ3//y40/t4NamOv8eQfSV7DEPq3tgBGX0+KvZd/HvWbrHuhpBLUydLo3p4RtgramSU/cxXUE/ICCIz/ItUESDEXIKo/6GpWss+XmPUGQrWro3gfDEm9XFqxxPI4M1I0mNsiyocyOsacO2HxDYDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxSRZzev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275ECC2BCB8;
+	Mon,  4 May 2026 14:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903416;
-	bh=nC4tsz9HRPftc6s4r2qvitCCb/jK9kWOqvYzB1RF6vc=;
+	s=korg; t=1777904573;
+	bh=ARgNfsh9ZubnvRKN9sTq4Srpxf27F3I3ak5vMeDIZNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JeyTzW6PkGDCs+ZM9yjTfYgm5G2d4pdZfiXqfPsiys/QFg73ZTu1upJra6x+EZhnf
-	 taYsItmMraaWhE9/DVe9/uEfKKdYWqUchDaIbuyr35s/apGtx9ZTxsc2U3F0IU56aS
-	 KQLkrK4HggHIYF78UKYi5ACeXdWbaK0Usoba042g=
+	b=AxSRZzevRzESS6S7/jxEL7DwCCDlHzDdRlxCmFNJwL2Q2lZReizKigKyYhn+4hQzK
+	 e3rUE2CoHcT8/JMiEpStSoZ3vNRQlbxpcbCllahYitYLPa3HJAVzfRmRE/Ib+DDQg3
+	 PLGr0rvWZ5uRlpC5aLGbtEy38vtDIzklB6AUtE4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 225/307] KVM: nSVM: Drop the non-architectural consistency check for NP_ENABLE
+	Breno Leitao <leitao@debian.org>,
+	Gustavo Luiz Duarte <gustavold@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 091/215] netconsole: avoid out-of-bounds access on empty string in trim_newline()
 Date: Mon,  4 May 2026 15:51:50 +0200
-Message-ID: <20260504135151.325385774@linuxfoundation.org>
+Message-ID: <20260504135133.482572240@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +65,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 590B04BEAAE
+X-Rspamd-Queue-Id: 2A81E4BF670
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,gmail.com,kernel.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-243708-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243255-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-commit e0b6f031d64c086edd563e7af9c0c0a2261dd2a4 upstream.
+commit 7079c8c13f2d33992bc846240517d88f4ab07781 upstream.
 
-KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
-SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
-On first glance, it seems like the check should actually be for
-guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
-host to support NPTs but the guest CPUID to not advertise it.
+trim_newline() unconditionally dereferences s[len - 1] after computing
+len = strnlen(s, maxlen). When the string is empty, len is 0 and the
+expression underflows to s[(size_t)-1], reading (and potentially
+writing) one byte before the buffer.
 
-However, the consistency check is not architectural to begin with. The
-APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
-that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
-if X86_FEATURE_NPT is not available for L1, so sanitize it when copying
-from the VMCB12 to KVM's cache.
+The two callers feed trim_newline() with the result of strscpy() from
+configfs store callbacks (dev_name_store, userdatum_value_store).
+configfs guarantees count >= 1 reaches the callback, but the byte
+itself can be NUL: a userspace write(fd, "\0", 1) leaves the
+destination empty after strscpy() and triggers the underflow. The OOB
+write only fires if the adjacent byte happens to be '\n', so this is
+not a security issue, but the access is undefined behaviour either way.
 
-Apart from the consistency check, NP_ENABLE in VMCB12 is currently
-ignored because the bit is actually copied from VMCB01 to VMCB02, not
-from VMCB12.
+This pattern is commonly flagged by LLM-based code reviewers. While it
+is not a security fix, the underlying access is undefined behaviour and
+the change is small and self-contained, so it is a reasonable candidate
+for the stable trees.
 
-Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
+Guard the dereference on a non-zero length.
+
+Fixes: ae001dc67907 ("net: netconsole: move newline trimming to function")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-15-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/netconsole.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -350,9 +350,6 @@ static bool __nested_vmcb_check_controls
- 	if (CC(control->asid == 0))
- 		return false;
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -300,6 +300,8 @@ static void trim_newline(char *s, size_t
+ 	size_t len;
  
--	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
--		return false;
--
- 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
- 					   MSRPM_SIZE)))
- 		return false;
-@@ -462,6 +459,11 @@ void __nested_copy_vmcb_control_to_cache
- 	nested_svm_sanitize_intercept(vcpu, to, SKINIT);
- 	nested_svm_sanitize_intercept(vcpu, to, RDPRU);
- 
-+	/* Always clear SVM_NESTED_CTL_NP_ENABLE if the guest cannot use NPTs */
-+	to->nested_ctl          = from->nested_ctl;
-+	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
-+		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
-+
- 	to->iopm_base_pa        = from->iopm_base_pa;
- 	to->msrpm_base_pa       = from->msrpm_base_pa;
- 	to->tsc_offset          = from->tsc_offset;
-@@ -475,7 +477,6 @@ void __nested_copy_vmcb_control_to_cache
- 	to->exit_info_2         = from->exit_info_2;
- 	to->exit_int_info       = from->exit_int_info;
- 	to->exit_int_info_err   = from->exit_int_info_err;
--	to->nested_ctl          = from->nested_ctl;
- 	to->event_inj           = from->event_inj;
- 	to->event_inj_err       = from->event_inj_err;
- 	to->next_rip            = from->next_rip;
+ 	len = strnlen(s, maxlen);
++	if (!len)
++		return;
+ 	if (s[len - 1] == '\n')
+ 		s[len - 1] = '\0';
+ }
 
 
 
