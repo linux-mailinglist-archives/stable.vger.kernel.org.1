@@ -1,345 +1,223 @@
-Return-Path: <stable+bounces-243930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OI2oMoUn+Wmp6AIAu9opvQ
-	(envelope-from <stable+bounces-243930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:11:01 +0200
+	id 6NRtKn4r+Wkq6QIAu9opvQ
+	(envelope-from <stable+bounces-243931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:27:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511164C4C2E
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:11:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B7E4C4CE1
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 327F4301B90B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 23:10:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C46B930098B4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 23:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3883932F4;
-	Mon,  4 May 2026 23:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E7B3D4129;
+	Mon,  4 May 2026 23:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RzmO6ZuJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dSAan5pq";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ojji7bUe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEF5361DDE
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 23:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EE23A7585
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 23:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777936252; cv=none; b=hLArx/PW9fgSg10MzlFpqJHu6t+MEfrdohv8L84zI6xt135sHfGToQeXxXBEPgrIGyCKH5qG+S20J5758Ma2+XsrIgPU9Chhk/BNvWzErHWMSjtEBvs+kk74B3oMjX7+LpzKJiR4NUMbsEIiX95yoVuc75C6Fku66JFRqP9Sk8U=
+	t=1777937269; cv=none; b=SZ6463cSBxueawLLHcH8+Q8w7VaMvktHr6h8Yamxu1lDi00sX8HtggdehxL+E6HK97earHmbigrMwbzFaAiyXsTjdzRMlE6dWRx1kDPFwROId7lRDLvcrxiC+10fWMbbRcazOi63K3QK6q95Mpg9k3cYdXfAhny8P1948dGI5JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777936252; c=relaxed/simple;
-	bh=e1v+wg5Mt+4G2ehJr+dbUseIs8rNc8zIUsahECLU2nU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qHj1GTu2C+A0wTcQG41ZVD1bfEZMTbRtoEnTe0nHgT/GNMnxgfQl6KHvz/1f1rLZCAToH26Z2cIx0ke8H+Nz73VyltsOeYOeiuiHGNx6MfJup5zL8KHncMCFpZgYHYhMJUaPvAc6qjyb/R+3AB4icBEwiB+q1eigzrZEBGiCwAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RzmO6ZuJ; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3568090851aso12034803a91.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 16:10:50 -0700 (PDT)
+	s=arc-20240116; t=1777937269; c=relaxed/simple;
+	bh=X/Ts6FB29sipVCHkAJKOzqHUgYArmLo5X/jhFL+PcWk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KiesTBM+oPx61mPVel+A0pZuKgQis6RFT64UV4bI+1+IPS6RgtSGJZksuk+6qSHw0GTQ4UO/1QLCZifk6ss0T6CIXUPXjtv8rUqkJr8gJl8GyInj0xZNTUp/UtuSQwkEEpyqunh4bIiKKE9dTDLxt+2WY9jRbP/X/vPLgBWBKRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dSAan5pq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ojji7bUe; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777937267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yeaz/dAuRpUt7GzZUrHflLMUXhh07epuZ/gDSiDt6lQ=;
+	b=dSAan5pq9MznOUv34k3k0ElDqiHM35mDaL+c+NygKw93p6erDDgHmv4U5jhbQUajddQDrd
+	rpqQqv+rFtQdVvBmgpxnMj+m+v52xoJDPbohFLvD0MjYKtljwWGm9ZlL5/nVC/t7YppW7l
+	gh1dxPmiFqVohjIa4KGORz1w4gnaHSw=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-527-OvDOjnDCP_Cv7IM-eY3LSw-1; Mon, 04 May 2026 19:27:44 -0400
+X-MC-Unique: OvDOjnDCP_Cv7IM-eY3LSw-1
+X-Mimecast-MFC-AGG-ID: OvDOjnDCP_Cv7IM-eY3LSw_1777937263
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7bd5c9e2e4aso88467447b3.2
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 16:27:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777936250; x=1778541050; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cAttJD+RV5lk5kNpW7EPj87JP+4oaqPyp5frl0M0LOQ=;
-        b=RzmO6ZuJiopjK38sYolMzLnHfoNKdZUPClmlYeciE2hDCq/GK68Af+Aq4ilU/LBOyu
-         HJgBS3Rjnc7jW3gfRj9bBOY7lYfn8muJKT+JUFj9JRmWwhHAL5TCRNNYb2Fz0eG6Au2O
-         lATPW9Wnlpi43hQ5ZZNncwTF+LkssYpWjZKAGzDtodO9AWVFumfKNdH5kOCopS00GhJi
-         W7EtlDbcGr/xMPMltlyKoeKW5SZvrTbxNmdDqyjcYcfJ/XASjAdYvasigg1MnxkeeCCU
-         EKsOWAY8ND2hZDD1rGaRpaRxKED4xNaaKQJkAcfTu2GsDkLoZuoKtAgSycAa59PCwreb
-         meCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777936250; x=1778541050;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+        d=redhat.com; s=google; t=1777937263; x=1778542063; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=cAttJD+RV5lk5kNpW7EPj87JP+4oaqPyp5frl0M0LOQ=;
-        b=lBHE/GwIY8TTDrSmDlxweF32pQOjmw+b74gG4HAHJegfD0+SuZB49reJLMfyO5fF+h
-         7G3hMtkdNIGxGsqOqz7pv+4ca7Kbn89ZVZ4V2Ggbx9fORo4kE2Efmufrw4p9klQxi+d6
-         TKvEubyk81uR2x9aTks0s52MrAp/zudLW1Losuz3Ft5+srIFybat26huH8mCnwoCIcwf
-         xm+Dn8+qxPGY91vw5WIMTxprAgqp1TewhsHTEea9VBXEY28nrYpkH6mFfpprs2uafFzT
-         BqU5lO0lenDYW3E+Iymc7gyaMGW++D5ayqaZQk3m04r9BSmkQIpVKdVikIvmdhgOKuZr
-         tbSg==
-X-Forwarded-Encrypted: i=1; AFNElJ+LZkuZnIcJ+05XPfz17dTLV9nU6GuEMeC9cxWJ2XnQ67Cqw3a8q+42z25AaxKCDn5QNLhkWJ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztGxplHd3nK0gcVlg9NgeOjSTZ/Ue7EDTHqudNhudJeoGlwcQ8
-	5NdVQrRTYGm+Y4sTQdogNlTOZyI37NLuAFaj0qbh5DMwdy0qwRlCKAurv4tqibSEsC4stxCrt51
-	AhUSUS8LOhlVT37245XTpIQ==
-X-Received: from pgbcs4.prod.google.com ([2002:a05:6a02:4184:b0:c79:8b14:e151])
- (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:580f:b0:35f:bae8:3531 with SMTP id 98e67ed59e1d1-3657761ae72mr698785a91.25.1777936249486;
- Mon, 04 May 2026 16:10:49 -0700 (PDT)
-Date: Mon,  4 May 2026 23:10:47 +0000
-In-Reply-To: <20260504224213.1049426-2-jthoughton@google.com>
+        bh=yeaz/dAuRpUt7GzZUrHflLMUXhh07epuZ/gDSiDt6lQ=;
+        b=Ojji7bUePPVSPBfvDnMUirWa6/C7s2ioCP9taSRHZ8avF93GgLTPKeBOMZEQqTaEeT
+         DMFKUy2I0u0Fb8IRz8fMY6WWBJgpRGPLWxild76F6fAjwiaOCYZdByvq10sB3VsJzeON
+         nKS5Uuc1kxVruG0OH/L+9Tm5tCcfaLxrxr1ITGYGIU5vEXE2U0NKrvwbPc3ZvB5sZWHm
+         MP7+Fr7TuC9kP0nmAVN9Hvng/fuR9f0s6p3HkYch3GtlTpmg6aAMRGfm3G+YS0Aqxbo+
+         nQxpcx2gU/eXXtu8gf7eymLn1HYI7WJJ75iX1qTlfu/cK6i5tXxrA0M3EozoCOos2V4n
+         y7TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777937263; x=1778542063;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yeaz/dAuRpUt7GzZUrHflLMUXhh07epuZ/gDSiDt6lQ=;
+        b=lbLw1o12clP6l0MQiSbjWfyU49ox63Umbzs0Ahbtun69FRU+T0pf/4g2Fm7LzXZbTs
+         Fl9txK/p7BogZXdnYOfrro+sfRbl8am8PyOomJnrT2RTS5G9TyeVz9zHI36Bee51fidP
+         0ZZSyHWffWrKmoWHmRO+zgnuCOOFYWIHKa6ZeBuZ3BMOunF3qoM3CaVw/ijIbuf7yMGq
+         pBLs4FuIVNBiols+qUY1mlxpxE3y/0AkVkSWLTcx5Tzczg321xGwCe1ZdzzR8ESxfIU7
+         Qx0A69NPPiAvzB0VdoJWPwPIZ97IHReJwJzZT3063yHQUw/pqq8e8CNXkwZN0brOu27K
+         756w==
+X-Forwarded-Encrypted: i=1; AFNElJ944TGcCwmW/YyUKNF+YNuYvwvpdGPJcJDFQ/h78bDgap/0juSLa0/6r8Ku5fhul8wan4he9MI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfJskJpPdD4gbCSJJKF4OmMWZSxTad75SOFaC81bmBASN+YQlJ
+	1oA7tz92cJ+CBRoFfz13rhLc17GdIgyn6++lAJTn6ufLva8cyQrps7rGegczNz+G/R8QExUvYp9
+	SKcu00lBTxMZyPsKqgTmtfb+cmGzTLjkRKqOt2g/AWN4KP4Oga9u/Lx+F7A==
+X-Gm-Gg: AeBDievz7XWGSbGHQUNJagsXAMSj+CBuwUpSz1RS/ftprtIedbJpLUMfllUx+C8IBXD
+	IvdM5FzTsBT/aXp3Brc5r15dTXJdmKLbwPK3yxpLspEY9a0+sHPRo1CYQSNueVusc4YD6I8PUj3
+	Ra5cruTC9FNAOBUeeRp3cIvg6SNt58GTIiR0UTiA3MO8hRi/I/L+bgCztmydOKyKNuFfR6W9/qX
+	zCmi9qd4S+uASdjNN0LZuLfVk2TviMb8wUSykGnAtpcebSG4lJr4Kc7YqllYX3IWoNPJ8jEUQ34
+	tziLeCuQFP/EylE1Ag6NvqVVGPmfBzroDptOn54YZaOBp45Q8sEKyKJGLjyXmdRqs/1MG6xt+9V
+	rn5RcVXbNbk3y1oHnzrU5N8zmhTuZzSD3EZJif9qcCO1501O2jVEme73uz1R86O4=
+X-Received: by 2002:a05:690c:dd5:b0:7bd:882a:43e0 with SMTP id 00721157ae682-7bdac599075mr9047147b3.27.1777937263380;
+        Mon, 04 May 2026 16:27:43 -0700 (PDT)
+X-Received: by 2002:a05:690c:dd5:b0:7bd:882a:43e0 with SMTP id 00721157ae682-7bdac599075mr9046887b3.27.1777937262923;
+        Mon, 04 May 2026 16:27:42 -0700 (PDT)
+Received: from li-4c4c4544-0032-4210-804c-c3c04f423534.ibm.com ([2600:1700:6476:1430::29])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd6652dae3sm55907087b3.8.2026.05.04.16.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 16:27:42 -0700 (PDT)
+Message-ID: <2a12f80d489dbf0a5a128294a95e9181e607a5db.camel@redhat.com>
+Subject: Re: [PATCH 1/3] hfs/hfsplus: fix u32 overflow in
+ check_and_correct_requested_length
+From: Viacheslav Dubeyko <vdubeyko@redhat.com>
+To: Tristan Madani <tristmd@gmail.com>, Viacheslav Dubeyko
+ <slava@dubeyko.com>,  John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Tristan Madani <tristan@talencesecurity.com>, 
+	syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com, 
+	syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
+Date: Mon, 04 May 2026 16:27:40 -0700
+In-Reply-To: <20260501110218.29906-1-tristmd@gmail.com>
+References: <20260501110218.29906-1-tristmd@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.0 (3.60.0-1.fc44app2) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260504224213.1049426-2-jthoughton@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260504231048.1184273-1-jthoughton@google.com>
-Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in kvm_arch_flush_shadow_all()
-From: James Houghton <jthoughton@google.com>
-To: jthoughton@google.com
-Cc: chenhuacai@kernel.org, gshan@redhat.com, jhogan@kernel.org, 
-	joey.gouly@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, maobibo@loongson.cn, 
-	maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com, ricarkol@google.com, 
-	seanjc@google.com, shahuang@redhat.com, stable@vger.kernel.org, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, zhaotianrui@loongson.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 511164C4C2E
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 52B7E4C4CE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-243930-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-243931-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com,physik.fu-berlin.de,vivo.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jthoughton@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[vdubeyko@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,6df204b70bf3261691c5,e76bf3d19b85350571ac];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,syzkaller.appspot.com:url,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-On Mon, May 4, 2026 at 3:42=E2=80=AFPM James Houghton <jthoughton@google.co=
-m> wrote:
->
-> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
-> concurrently in the event that the KVM's `mm` is __mmput() at the
-> same time that last reference to the KVM is being dropped.
->
-> T1              T2
-> KVM_CREATE_VM
->                 Get VM file from T1
-> close VM
-> exit_mm()       close VM
->
-> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->     with only the KVM srcu read lock held.
->
-> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
->     kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->     again, with only the KVM srcu read lock held.
->
-> This leads to a potential double-free of
-> kvm->arch.kvm_mmu_free_memory_cache and now with NV
-> kvm->arch.nested_mmus.
->
+On Fri, 2026-05-01 at 11:02 +0000, Tristan Madani wrote:
+> From: Tristan Madani <tristan@talencesecurity.com>
+>=20
+> check_and_correct_requested_length() compares (off + len) against
+> node_size using u32 arithmetic.  When the caller passes a large len
+> value (e.g. from an underflowed subtraction in hfs_brec_remove()),
+> off + len can wrap past 2^32 and produce a small result, causing the
+> bounds check to pass when it should fail.
+>=20
+> For example, with off=3D14 and len=3D0xFFFFFFF2 (underflowed from
+> data_off - keyoffset - size in hfs_brec_remove), off + len wraps to 6,
+> which is less than a typical node_size of 512, so the check passes and
+> the subsequent memmove reads ~4GB past the node buffer.
+>=20
+> Fix this by comparing len against (node_size - off) instead.  Since
+> is_bnode_offset_valid() already guarantees off < node_size before this
+> point, the subtraction cannot underflow.
+>=20
+> Reported-by: syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D6df204b70bf3261691c5
+> Tested-by: syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com
+> Reported-by: syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3De76bf3d19b85350571ac
+> Tested-by: syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
+> Fixes: a431930c9bac ("hfs: fix slab-out-of-bounds in hfs_bnode_read()")
 > Cc: stable@vger.kernel.org
-> Fixes: e7bf7a490c68 ("KVM: arm64: Split huge pages when dirty logging is =
-enabled")
-> Signed-off-by: James Houghton <jthoughton@google.com>
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 > ---
->  arch/arm64/include/asm/kvm_mmu.h |  1 +
->  arch/arm64/kvm/mmu.c             | 23 +++++++++++++++++++----
->  arch/arm64/kvm/nested.c          |  4 +++-
->  3 files changed, 23 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kv=
-m_mmu.h
-> index 01e9c72d6aa7..30d5c24fcebb 100644
-> --- a/arch/arm64/include/asm/kvm_mmu.h
-> +++ b/arch/arm64/include/asm/kvm_mmu.h
-> @@ -178,6 +178,7 @@ void stage2_unmap_vm(struct kvm *kvm);
->  int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigne=
-d long type);
->  void kvm_uninit_stage2_mmu(struct kvm *kvm);
->  void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
-> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
->  int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
->                           phys_addr_t pa, unsigned long size, bool writab=
-le);
->
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index d089c107d9b7..4bab407d43bb 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1021,7 +1021,9 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm=
-_s2_mmu *mmu, unsigned long t
->
->  void kvm_uninit_stage2_mmu(struct kvm *kvm)
->  {
-> -       kvm_free_stage2_pgd(&kvm->arch.mmu);
-> +       lockdep_assert_held_write(&kvm->mmu_lock);
+>  fs/hfs/bnode.c          | 2 +-
+>  fs/hfsplus/hfsplus_fs.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+> index 13d58c51fc46b..c00645a4a5733 100644
+> --- a/fs/hfs/bnode.c
+> +++ b/fs/hfs/bnode.c
+> @@ -41,7 +41,7 @@ u32 check_and_correct_requested_length(struct hfs_bnode=
+ *node, u32 off, u32 len)
+> =20
+>  	node_size =3D node->tree->node_size;
+> =20
+> -	if ((off + len) > node_size) {
+> +	if (len > node_size - off) {
 
-*facepalm*.... this doesn't account for the other callers of
-kvm_uninit_stage2_mmu(). They will get lockdep warnings.
+I don't agree with likewise change. Probably, we need to have:
 
-I've attached a diff to the bottom of this reply that *does* deal with them=
-.
-:( Sorry.
+(u64)off + len
 
-I'm guessing Marc or Oliver will probably want this patch to look quite
-different, so I'll wait to hear from them before actually sending a v2.
+Thanks,
+Slava.
 
-In the meantime, I'll properly retest with lockdep enabled.
+>  		u32 new_len =3D node_size - off;
+> =20
+>  		pr_err("requested length has been corrected: "
+> diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
+> index 3545b8dbf11c5..10b2dda3f8044 100644
+> --- a/fs/hfsplus/hfsplus_fs.h
+> +++ b/fs/hfsplus/hfsplus_fs.h
+> @@ -600,7 +600,7 @@ u32 check_and_correct_requested_length(struct hfs_bno=
+de *node, u32 off, u32 len)
+> =20
+>  	node_size =3D node->tree->node_size;
+> =20
+> -	if ((off + len) > node_size) {
+> +	if (len > node_size - off) {
+>  		u32 new_len =3D node_size - off;
+> =20
+>  		pr_err("requested length has been corrected: "
 
-> +
-> +       kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
->         kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
->  }
->
-> @@ -1095,12 +1097,14 @@ void stage2_unmap_vm(struct kvm *kvm)
->         srcu_read_unlock(&kvm->srcu, idx);
->  }
->
-> -void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
-> +static void __kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu, bool locked)
->  {
->         struct kvm *kvm =3D kvm_s2_mmu_to_kvm(mmu);
->         struct kvm_pgtable *pgt =3D NULL;
->
-> -       write_lock(&kvm->mmu_lock);
-> +       if (!locked)
-> +               write_lock(&kvm->mmu_lock);
-> +
->         pgt =3D mmu->pgt;
->         if (pgt) {
->                 mmu->pgd_phys =3D 0;
-> @@ -1111,7 +1115,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->         if (kvm_is_nested_s2_mmu(kvm, mmu))
->                 kvm_init_nested_s2_mmu(mmu);
->
-> -       write_unlock(&kvm->mmu_lock);
-> +       if (!locked)
-> +               write_unlock(&kvm->mmu_lock);
->
->         if (pgt) {
->                 kvm_stage2_destroy(pgt);
-> @@ -1119,6 +1124,16 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->         }
->  }
->
-> +void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
-> +{
-> +       __kvm_free_stage2_pgd(mmu, false);
-> +}
-> +
-> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu)
-> +{
-> +       __kvm_free_stage2_pgd(mmu, true);
-> +}
-> +
->  static void hyp_mc_free_fn(void *addr, void *mc)
->  {
->         struct kvm_hyp_memcache *memcache =3D mc;
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 883b6c1008fb..977598bff5e6 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
->  {
->         int i;
->
-> +       guard(write_lock)(&kvm->mmu_lock);
-> +
->         for (i =3D 0; i < kvm->arch.nested_mmus_size; i++) {
->                 struct kvm_s2_mmu *mmu =3D &kvm->arch.nested_mmus[i];
->
->                 if (!WARN_ON(atomic_read(&mmu->refcnt)))
-> -                       kvm_free_stage2_pgd(mmu);
-> +                       kvm_free_stage2_pgd_locked(mmu);
->         }
->         kvfree(kvm->arch.nested_mmus);
->         kvm->arch.nested_mmus =3D NULL;
-> --
-> 2.54.0.545.g6539524ca2-goog
-
-And here is the diff that should fix this patch. (Sorry!!)
-
-diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_=
-mmu.h
-index 30d5c24fcebb..e32e844943be 100644
---- a/arch/arm64/include/asm/kvm_mmu.h
-+++ b/arch/arm64/include/asm/kvm_mmu.h
-@@ -177,6 +177,7 @@ void kvm_stage2_wp_range(struct kvm_s2_mmu *mmu, phys_a=
-ddr_t addr, phys_addr_t e
- void stage2_unmap_vm(struct kvm *kvm);
- int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned =
-long type);
- void kvm_uninit_stage2_mmu(struct kvm *kvm);
-+void kvm_uninit_stage2_mmu_locked(struct kvm *kvm);
- void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
- void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
- int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 4bab407d43bb..98ba8116676c 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1019,14 +1019,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_=
-s2_mmu *mmu, unsigned long t
- 	return err;
- }
-=20
--void kvm_uninit_stage2_mmu(struct kvm *kvm)
--{
--	lockdep_assert_held_write(&kvm->mmu_lock);
--
--	kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
--	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
--}
--
- static void stage2_unmap_memslot(struct kvm *kvm,
- 				 struct kvm_memory_slot *memslot)
- {
-@@ -1134,6 +1126,24 @@ void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *m=
-mu)
- 	__kvm_free_stage2_pgd(mmu, true);
- }
-=20
-+static void __kvm_uninit_stage2_mmu(struct kvm *kvm, bool locked)
-+{
-+	__kvm_free_stage2_pgd(&kvm->arch.mmu, locked);
-+	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
-+}
-+
-+void kvm_uninit_stage2_mmu(struct kvm *kvm)
-+{
-+	__kvm_uninit_stage2_mmu(kvm, false);
-+}
-+
-+void kvm_uninit_stage2_mmu_locked(struct kvm *kvm)
-+{
-+	lockdep_assert_held_write(&kvm->mmu_lock);
-+
-+	__kvm_uninit_stage2_mmu(kvm, true);
-+}
-+
- static void hyp_mc_free_fn(void *addr, void *mc)
- {
- 	struct kvm_hyp_memcache *memcache =3D mc;
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 977598bff5e6..f61f0244f0fb 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1201,7 +1201,7 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
- 	kvfree(kvm->arch.nested_mmus);
- 	kvm->arch.nested_mmus =3D NULL;
- 	kvm->arch.nested_mmus_size =3D 0;
--	kvm_uninit_stage2_mmu(kvm);
-+	kvm_uninit_stage2_mmu_locked(kvm);
- }
-=20
- /*
 
