@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-243648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243468-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FW+GFKr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:06 +0200
+	id SNzvLEKq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243468-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FC74BF272
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 591114BEF3C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F18E630234D2
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8E4DF303FE60
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2390D3DE443;
-	Mon,  4 May 2026 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30413D75D7;
+	Mon,  4 May 2026 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMHaaKWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZKYVa4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9691315785;
-	Mon,  4 May 2026 14:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C673DE44F;
+	Mon,  4 May 2026 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904421; cv=none; b=inujNDsi2bEcDTp9le6804hLo1YfYTG5qGuUmTjLXfMELD7vfKtbZTyTh43XASGseKs85gw/y4TVAO3LjnFt2yrczsBIojv0vg/Bg+q7DsTXsGI7iU/i0t2puuyclfgkAiolSJ5W+svEszOOVEfJXf05aq/240SYtpAv2jlxr7w=
+	t=1777903961; cv=none; b=A4/sg3TXy4szUXwX6JfShY6ZWn3m8zwbwcl0RlTfqZiPGQCs/VE9V+TlfOCzF9V5VUvJcU7Hz811jiTeBl2U8DVbvW19QMh7PcfyU4+70t85szO867+KV+ZwgEffVn88kPClKkg4ec4UrH5lR08d9nDaGBem6y2tMLYaXyKDU68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904421; c=relaxed/simple;
-	bh=Vb55D8KDX81rbJ42SfwXpZbsMMk+MziybGYxO9SrLI4=;
+	s=arc-20240116; t=1777903961; c=relaxed/simple;
+	bh=5r8C282E4/zuW6MasOdVbqmgkO342Ye8iFEQb7UKU9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeCQnZGHsGATgcrpwooPF40Wba01V5dZr/0GM18+xFjM2k8rMRSJQGBizQ8Ut63gtpLOVKt3H0qAelgLkxV+BKq7uObPQZkCTYXfDzEutj9ONmCJzHv9oCvkqn3AaXIaJ2zQoIa7eS2C/316r8n1Ddh6JSD6ah8eOgNB80aQ9Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMHaaKWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C8AC2BCB8;
-	Mon,  4 May 2026 14:20:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qQ5sXgbN19teFD+CY3K/wGu5pCtQ+c/JMA5cQFd+JaStZnWx9m+168th6uUGrxoBFLVHXCSlrJp33jL/Kz9yskJwnIVUaXaV/jMIZAhUaU6ph54G5GVtkfGAWqn50Sgl7z1P17LNZCa/BcvQAeal8COSNPeAiu1A5/1GTg8YgA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZKYVa4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3EBC2BCB8;
+	Mon,  4 May 2026 14:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904421;
-	bh=Vb55D8KDX81rbJ42SfwXpZbsMMk+MziybGYxO9SrLI4=;
+	s=korg; t=1777903961;
+	bh=5r8C282E4/zuW6MasOdVbqmgkO342Ye8iFEQb7UKU9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMHaaKWzsuXmsbBx5sFOR1RU3njGX5JoY/MlklVHWgcTmdedMLx+qpoySo4AgC7za
-	 aW3DM4OWXN9MVN8lEtJXMGkmcBO7j1MiBYUqPIKLSgGPEdpMT3ZoAm3XFbMl9rsRoi
-	 dXh09dyg5nc71EyduYvcwie1F/6ZI5lfrXLCAKvU=
+	b=TZKYVa4etB46poXLqZawT4tcgR1gIt+SMYlOngiegrEQgcEtsCqvOEz6t+uk6Diaj
+	 3EOrLynT26yI6AYjKDWf23Tzl1K+7TczOuzRRhmZx1wGWOPcDTyaCFYfnEiCu7H148
+	 rG+Owa9hVI34645skbshlIjQ62dHM0Y4SkqUyVXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 008/215] LoongArch: Add spectre boundry for syscall dispatch table
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Jann Horn <jannh@google.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.18 087/275] landlock: Fix LOG_SUBDOMAINS_OFF inheritance across fork()
 Date: Mon,  4 May 2026 15:50:27 +0200
-Message-ID: <20260504135130.479560272@linuxfoundation.org>
+Message-ID: <20260504135146.153430776@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +64,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D3FC74BF272
+X-Rspamd-Queue-Id: 591114BEF3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243648-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,digikod.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-243468-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,loongson.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,digikod.net:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit 0c965d2784fbbd7f8e3b96d875c9cfdf7c00da3d upstream.
+commit 874c8f83826c95c62c21d9edfe9ef43e5c346724 upstream.
 
-The LoongArch syscall number is directly controlled by userspace, but
-does not have a array_index_nospec() boundry to prevent access past the
-syscall function pointer tables.
+hook_cred_transfer() only copies the Landlock security blob when the
+source credential has a domain.  This is inconsistent with
+landlock_restrict_self() which can set LOG_SUBDOMAINS_OFF on a
+credential without creating a domain (via the ruleset_fd=-1 path): the
+field is committed but not preserved across fork() because the child's
+prepare_creds() calls hook_cred_transfer() which skips the copy when
+domain is NULL.
 
+This breaks the documented use case where a process mutes subdomain logs
+before forking sandboxed children: the children lose the muting and
+their domains produce unexpected audit records.
+
+Fix this by unconditionally copying the Landlock credential blob.
+
+Cc: Günther Noack <gnoack@google.com>
+Cc: Jann Horn <jannh@google.com>
 Cc: stable@vger.kernel.org
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: ead9079f7569 ("landlock: Add LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20260407164107.2012589-1-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/syscall.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/landlock/cred.c                      |    6 -
+ tools/testing/selftests/landlock/audit_test.c |   88 ++++++++++++++++++++++++++
+ 2 files changed, 90 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/kernel/syscall.c
-+++ b/arch/loongarch/kernel/syscall.c
-@@ -9,6 +9,7 @@
- #include <linux/entry-common.h>
- #include <linux/errno.h>
- #include <linux/linkage.h>
-+#include <linux/nospec.h>
- #include <linux/objtool.h>
- #include <linux/randomize_kstack.h>
- #include <linux/syscalls.h>
-@@ -61,7 +62,7 @@ void noinstr __no_stack_protector do_sys
- 	add_random_kstack_offset();
+--- a/security/landlock/cred.c
++++ b/security/landlock/cred.c
+@@ -22,10 +22,8 @@ static void hook_cred_transfer(struct cr
+ 	const struct landlock_cred_security *const old_llcred =
+ 		landlock_cred(old);
  
- 	if (nr < NR_syscalls) {
--		syscall_fn = sys_call_table[nr];
-+		syscall_fn = sys_call_table[array_index_nospec(nr, NR_syscalls)];
- 		regs->regs[4] = syscall_fn(regs->orig_a0, regs->regs[5], regs->regs[6],
- 					   regs->regs[7], regs->regs[8], regs->regs[9]);
- 	}
+-	if (old_llcred->domain) {
+-		landlock_get_ruleset(old_llcred->domain);
+-		*landlock_cred(new) = *old_llcred;
+-	}
++	landlock_get_ruleset(old_llcred->domain);
++	*landlock_cred(new) = *old_llcred;
+ }
+ 
+ static int hook_cred_prepare(struct cred *const new,
+--- a/tools/testing/selftests/landlock/audit_test.c
++++ b/tools/testing/selftests/landlock/audit_test.c
+@@ -279,6 +279,94 @@ TEST_F(audit, thread)
+ 				&audit_tv_default, sizeof(audit_tv_default)));
+ }
+ 
++/*
++ * Verifies that log_subdomains_off set via the ruleset_fd=-1 path (without
++ * creating a domain) is inherited by children across fork().  This exercises
++ * the hook_cred_transfer() fix: the Landlock credential blob must be copied
++ * even when the source credential has no domain.
++ *
++ * Phase 1 (baseline): a child without muting creates a domain and triggers a
++ * denial that IS logged.
++ *
++ * Phase 2 (after muting): the parent mutes subdomain logs, forks another child
++ * who creates a domain and triggers a denial that is NOT logged.
++ */
++TEST_F(audit, log_subdomains_off_fork)
++{
++	const struct landlock_ruleset_attr ruleset_attr = {
++		.scoped = LANDLOCK_SCOPE_SIGNAL,
++	};
++	struct audit_records records;
++	int ruleset_fd, status;
++	pid_t child;
++
++	ruleset_fd =
++		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
++	ASSERT_LE(0, ruleset_fd);
++
++	ASSERT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
++
++	/*
++	 * Phase 1: forks a child that creates a domain and triggers a denial
++	 * before any muting.  This proves the audit path works.
++	 */
++	child = fork();
++	ASSERT_LE(0, child);
++	if (child == 0) {
++		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
++		ASSERT_EQ(-1, kill(getppid(), 0));
++		ASSERT_EQ(EPERM, errno);
++		_exit(0);
++		return;
++	}
++
++	ASSERT_EQ(child, waitpid(child, &status, 0));
++	ASSERT_EQ(true, WIFEXITED(status));
++	ASSERT_EQ(0, WEXITSTATUS(status));
++
++	/* The denial must be logged (baseline). */
++	EXPECT_EQ(0, matches_log_signal(_metadata, self->audit_fd, getpid(),
++					NULL));
++
++	/* Drains any remaining records (e.g. domain allocation). */
++	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
++
++	/*
++	 * Mutes subdomain logs without creating a domain.  The parent's
++	 * credential has domain=NULL and log_subdomains_off=1.
++	 */
++	ASSERT_EQ(0, landlock_restrict_self(
++			     -1, LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF));
++
++	/*
++	 * Phase 2: forks a child that creates a domain and triggers a denial.
++	 * Because log_subdomains_off was inherited via fork(), the child's
++	 * domain has log_status=LANDLOCK_LOG_DISABLED.
++	 */
++	child = fork();
++	ASSERT_LE(0, child);
++	if (child == 0) {
++		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
++		ASSERT_EQ(-1, kill(getppid(), 0));
++		ASSERT_EQ(EPERM, errno);
++		_exit(0);
++		return;
++	}
++
++	ASSERT_EQ(child, waitpid(child, &status, 0));
++	ASSERT_EQ(true, WIFEXITED(status));
++	ASSERT_EQ(0, WEXITSTATUS(status));
++
++	/* No denial record should appear. */
++	EXPECT_EQ(-EAGAIN, matches_log_signal(_metadata, self->audit_fd,
++					      getpid(), NULL));
++
++	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
++	EXPECT_EQ(0, records.access);
++
++	EXPECT_EQ(0, close(ruleset_fd));
++}
++
+ FIXTURE(audit_flags)
+ {
+ 	struct audit_filter audit_filter;
 
 
 
