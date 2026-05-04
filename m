@@ -1,339 +1,345 @@
-Return-Path: <stable+bounces-243929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCdRI9Uj+Wmz5wIAu9opvQ
-	(envelope-from <stable+bounces-243929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:55:17 +0200
+	id OI2oMoUn+Wmp6AIAu9opvQ
+	(envelope-from <stable+bounces-243930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:11:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368BC4C49B1
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 511164C4C2E
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A74C303660D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:53:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 327F4301B90B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 23:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6196738B150;
-	Mon,  4 May 2026 22:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3883932F4;
+	Mon,  4 May 2026 23:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Es82fauC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RzmO6ZuJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BC036495F;
-	Mon,  4 May 2026 22:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEF5361DDE
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 23:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777935237; cv=none; b=oT8xS4SD7dAZu3MokHL0hx2480dH7p6n2M20xFXc8InR9QZI23K5SZ7WiB2hz32uMgquaZYwq81ayTVfFA1JtJ6OjSOElBuCz4HxiTzPv4/8cSQUrCWUwL1BgAm9j1Avcdq8xqt6nsw2A+8xXETSTjqyvDkSeVd6/xeR2o9fjcA=
+	t=1777936252; cv=none; b=hLArx/PW9fgSg10MzlFpqJHu6t+MEfrdohv8L84zI6xt135sHfGToQeXxXBEPgrIGyCKH5qG+S20J5758Ma2+XsrIgPU9Chhk/BNvWzErHWMSjtEBvs+kk74B3oMjX7+LpzKJiR4NUMbsEIiX95yoVuc75C6Fku66JFRqP9Sk8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777935237; c=relaxed/simple;
-	bh=i2fPoHqb8xx58hB925XeINZ1xXUggfULPyDbIosH0Lg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDlGExiyyDAqqNCGw918rQIchCjT45KKWQFs+aSdJfwkGDXrDXLkAhGUPXWGZoh/ptzXP77g7xyufvwPvmsHH+YVIYarK8bQ29RD4O/D6Pl9RKPqs+hmLewjf5dawmlKzK7Mq7xvYGtYNG0ap9qZGktclCgkgMSdsGC0N5t+tMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Es82fauC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E612C2BCB8;
-	Mon,  4 May 2026 22:53:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777935236;
-	bh=i2fPoHqb8xx58hB925XeINZ1xXUggfULPyDbIosH0Lg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Es82fauCn2gm1BNzPMKFu4D/4fDab1uEpE48DXZvZ+mRHGMTWATBvYsl1yIpnA1CS
-	 Mf9hYt2AoMZSCdnuBmwGGSzZTnh3pgMLUEfBaFgseiUmCwqKpavwyxTi4ROvd3fXGh
-	 NtlVFUMJL8Gk8LcsoS4XU2IeqeMTa4gemISG9ffd1c1B20FIRhY6OZchyXzq33Uad4
-	 KavXcdDkUYb/2aPJv7xl0Ri7rGoQ3/hy13SQFtc2l0isaStJzQRC/9cd4wxhou2Dtn
-	 YbzFBzBau/lQSxbfS4/CqOWmfoURgu4O2e79RIdewk392cdr+mxPy6Wzq2hbbKCnxs
-	 rtdbpBT0sTh9Q==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Taeyang Lee <0wn@theori.io>,
-	Brian Pak <bpak@theori.io>,
-	Juno Im <juno@theori.io>,
-	Jungwon Lim <setuid0@theori.io>,
-	Tim Becker <tjbecker@theori.io>,
-	Demi Marie Obenour <demiobenour@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Feng Ning <feng@innora.ai>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] crypto: af_alg - Remove zero-copy support from skcipher and aead
-Date: Mon,  4 May 2026 15:53:28 -0700
-Message-ID: <20260504225328.25356-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504092442.GA2486@quark>
-References: <20260504092442.GA2486@quark>
+	s=arc-20240116; t=1777936252; c=relaxed/simple;
+	bh=e1v+wg5Mt+4G2ehJr+dbUseIs8rNc8zIUsahECLU2nU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qHj1GTu2C+A0wTcQG41ZVD1bfEZMTbRtoEnTe0nHgT/GNMnxgfQl6KHvz/1f1rLZCAToH26Z2cIx0ke8H+Nz73VyltsOeYOeiuiHGNx6MfJup5zL8KHncMCFpZgYHYhMJUaPvAc6qjyb/R+3AB4icBEwiB+q1eigzrZEBGiCwAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RzmO6ZuJ; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3568090851aso12034803a91.1
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 16:10:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777936250; x=1778541050; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cAttJD+RV5lk5kNpW7EPj87JP+4oaqPyp5frl0M0LOQ=;
+        b=RzmO6ZuJiopjK38sYolMzLnHfoNKdZUPClmlYeciE2hDCq/GK68Af+Aq4ilU/LBOyu
+         HJgBS3Rjnc7jW3gfRj9bBOY7lYfn8muJKT+JUFj9JRmWwhHAL5TCRNNYb2Fz0eG6Au2O
+         lATPW9Wnlpi43hQ5ZZNncwTF+LkssYpWjZKAGzDtodO9AWVFumfKNdH5kOCopS00GhJi
+         W7EtlDbcGr/xMPMltlyKoeKW5SZvrTbxNmdDqyjcYcfJ/XASjAdYvasigg1MnxkeeCCU
+         EKsOWAY8ND2hZDD1rGaRpaRxKED4xNaaKQJkAcfTu2GsDkLoZuoKtAgSycAa59PCwreb
+         meCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777936250; x=1778541050;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cAttJD+RV5lk5kNpW7EPj87JP+4oaqPyp5frl0M0LOQ=;
+        b=lBHE/GwIY8TTDrSmDlxweF32pQOjmw+b74gG4HAHJegfD0+SuZB49reJLMfyO5fF+h
+         7G3hMtkdNIGxGsqOqz7pv+4ca7Kbn89ZVZ4V2Ggbx9fORo4kE2Efmufrw4p9klQxi+d6
+         TKvEubyk81uR2x9aTks0s52MrAp/zudLW1Losuz3Ft5+srIFybat26huH8mCnwoCIcwf
+         xm+Dn8+qxPGY91vw5WIMTxprAgqp1TewhsHTEea9VBXEY28nrYpkH6mFfpprs2uafFzT
+         BqU5lO0lenDYW3E+Iymc7gyaMGW++D5ayqaZQk3m04r9BSmkQIpVKdVikIvmdhgOKuZr
+         tbSg==
+X-Forwarded-Encrypted: i=1; AFNElJ+LZkuZnIcJ+05XPfz17dTLV9nU6GuEMeC9cxWJ2XnQ67Cqw3a8q+42z25AaxKCDn5QNLhkWJ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztGxplHd3nK0gcVlg9NgeOjSTZ/Ue7EDTHqudNhudJeoGlwcQ8
+	5NdVQrRTYGm+Y4sTQdogNlTOZyI37NLuAFaj0qbh5DMwdy0qwRlCKAurv4tqibSEsC4stxCrt51
+	AhUSUS8LOhlVT37245XTpIQ==
+X-Received: from pgbcs4.prod.google.com ([2002:a05:6a02:4184:b0:c79:8b14:e151])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:580f:b0:35f:bae8:3531 with SMTP id 98e67ed59e1d1-3657761ae72mr698785a91.25.1777936249486;
+ Mon, 04 May 2026 16:10:49 -0700 (PDT)
+Date: Mon,  4 May 2026 23:10:47 +0000
+In-Reply-To: <20260504224213.1049426-2-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 368BC4C49B1
+Mime-Version: 1.0
+References: <20260504224213.1049426-2-jthoughton@google.com>
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260504231048.1184273-1-jthoughton@google.com>
+Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in kvm_arch_flush_shadow_all()
+From: James Houghton <jthoughton@google.com>
+To: jthoughton@google.com
+Cc: chenhuacai@kernel.org, gshan@redhat.com, jhogan@kernel.org, 
+	joey.gouly@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, maobibo@loongson.cn, 
+	maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com, ricarkol@google.com, 
+	seanjc@google.com, shahuang@redhat.com, stable@vger.kernel.org, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, zhaotianrui@loongson.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 511164C4C2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-243929-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,theori.io,gmail.com,kernel.org,innora.ai];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243930-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[innora.ai:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,copy.fail:url]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jthoughton@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-The zero-copy support is one of the riskiest aspects of AF_ALG.  It
-allows userspace to request cryptographic operations directly on
-pagecache pages of files like the 'su' binary.  It also allows userspace
-to concurrently modify the memory which is being operated on, a recipe
-for TOCTOU vulnerabilities.
+On Mon, May 4, 2026 at 3:42=E2=80=AFPM James Houghton <jthoughton@google.co=
+m> wrote:
+>
+> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
+> concurrently in the event that the KVM's `mm` is __mmput() at the
+> same time that last reference to the KVM is being dropped.
+>
+> T1              T2
+> KVM_CREATE_VM
+>                 Get VM file from T1
+> close VM
+> exit_mm()       close VM
+>
+> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>     with only the KVM srcu read lock held.
+>
+> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
+>     kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>     again, with only the KVM srcu read lock held.
+>
+> This leads to a potential double-free of
+> kvm->arch.kvm_mmu_free_memory_cache and now with NV
+> kvm->arch.nested_mmus.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: e7bf7a490c68 ("KVM: arm64: Split huge pages when dirty logging is =
+enabled")
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+>  arch/arm64/include/asm/kvm_mmu.h |  1 +
+>  arch/arm64/kvm/mmu.c             | 23 +++++++++++++++++++----
+>  arch/arm64/kvm/nested.c          |  4 +++-
+>  3 files changed, 23 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kv=
+m_mmu.h
+> index 01e9c72d6aa7..30d5c24fcebb 100644
+> --- a/arch/arm64/include/asm/kvm_mmu.h
+> +++ b/arch/arm64/include/asm/kvm_mmu.h
+> @@ -178,6 +178,7 @@ void stage2_unmap_vm(struct kvm *kvm);
+>  int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigne=
+d long type);
+>  void kvm_uninit_stage2_mmu(struct kvm *kvm);
+>  void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
+> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
+>  int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
+>                           phys_addr_t pa, unsigned long size, bool writab=
+le);
+>
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index d089c107d9b7..4bab407d43bb 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1021,7 +1021,9 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm=
+_s2_mmu *mmu, unsigned long t
+>
+>  void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>  {
+> -       kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +       lockdep_assert_held_write(&kvm->mmu_lock);
 
-While zero-copy support is more valuable in other areas of the kernel
-like the frequently used networking and file I/O code, it has far less
-value in AF_ALG, which is a niche UAPI.  AF_ALG primarily just exists
-for backwards compatibility with a small set of userspace programs such
-as 'iwd' that haven't yet been fixed to use userspace crypto code.
+*facepalm*.... this doesn't account for the other callers of
+kvm_uninit_stage2_mmu(). They will get lockdep warnings.
 
-Originally AF_ALG was intended to be used to access hardware crypto
-accelerators.  However, it isn't an efficient interface for that anyway,
-and it turned out to be rarely used in this way in practice.
+I've attached a diff to the bottom of this reply that *does* deal with them=
+.
+:( Sorry.
 
-Thus, the risks of the zero-copy support in AF_ALG vastly outweigh its
-benefits.  Let's just remove it.
+I'm guessing Marc or Oliver will probably want this patch to look quite
+different, so I'll wait to hear from them before actually sending a v2.
 
-This commit removes it from the "skcipher" and "aead" algorithm types.
-"hash" will be handled separately.
+In the meantime, I'll properly retest with lockdep enabled.
 
-This is a soft break, not a hard break.  Even after this commit, it
-still works to use splice() or sendfile() to transfer data to an AF_ALG
-request socket from a pipe or any file, respectively.  What changes is
-just that the kernel now makes an internal, stable copy of the data
-before doing the crypto operation.  So performance is slightly reduced,
-but the UAPI isn't broken.  And, very importantly, it's much safer.
+> +
+> +       kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
+>         kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>  }
+>
+> @@ -1095,12 +1097,14 @@ void stage2_unmap_vm(struct kvm *kvm)
+>         srcu_read_unlock(&kvm->srcu, idx);
+>  }
+>
+> -void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+> +static void __kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu, bool locked)
+>  {
+>         struct kvm *kvm =3D kvm_s2_mmu_to_kvm(mmu);
+>         struct kvm_pgtable *pgt =3D NULL;
+>
+> -       write_lock(&kvm->mmu_lock);
+> +       if (!locked)
+> +               write_lock(&kvm->mmu_lock);
+> +
+>         pgt =3D mmu->pgt;
+>         if (pgt) {
+>                 mmu->pgd_phys =3D 0;
+> @@ -1111,7 +1115,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>         if (kvm_is_nested_s2_mmu(kvm, mmu))
+>                 kvm_init_nested_s2_mmu(mmu);
+>
+> -       write_unlock(&kvm->mmu_lock);
+> +       if (!locked)
+> +               write_unlock(&kvm->mmu_lock);
+>
+>         if (pgt) {
+>                 kvm_stage2_destroy(pgt);
+> @@ -1119,6 +1124,16 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>         }
+>  }
+>
+> +void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+> +{
+> +       __kvm_free_stage2_pgd(mmu, false);
+> +}
+> +
+> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu)
+> +{
+> +       __kvm_free_stage2_pgd(mmu, true);
+> +}
+> +
+>  static void hyp_mc_free_fn(void *addr, void *mc)
+>  {
+>         struct kvm_hyp_memcache *memcache =3D mc;
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 883b6c1008fb..977598bff5e6 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
+>  {
+>         int i;
+>
+> +       guard(write_lock)(&kvm->mmu_lock);
+> +
+>         for (i =3D 0; i < kvm->arch.nested_mmus_size; i++) {
+>                 struct kvm_s2_mmu *mmu =3D &kvm->arch.nested_mmus[i];
+>
+>                 if (!WARN_ON(atomic_read(&mmu->refcnt)))
+> -                       kvm_free_stage2_pgd(mmu);
+> +                       kvm_free_stage2_pgd_locked(mmu);
+>         }
+>         kvfree(kvm->arch.nested_mmus);
+>         kvm->arch.nested_mmus =3D NULL;
+> --
+> 2.54.0.545.g6539524ca2-goog
 
-Tested with libkcapi/test.sh.  All its test cases still pass.  I also
-verified that this would have prevented the copy.fail exploit as well.
-I also used a custom test program to verify that sendfile() still works.
+And here is the diff that should fix this patch. (Sorry!!)
 
-Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Fixes: 400c40cf78da ("crypto: algif - add AEAD support")
-Reported-by: Taeyang Lee <0wn@theori.io>
-Link: https://copy.fail/
-Reported-by: Feng Ning <feng@innora.ai>
-Closes: https://lore.kernel.org/r/afYcc-tZFwvZZo76@ans-MacBook-Pro.local
-Reviewed-by: Demi Marie Obenour <demiobenour@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
-
-v3: improved explanation
-v2: added tags
-
- Documentation/crypto/userspace-if.rst | 31 ++----------
- crypto/af_alg.c                       | 73 +++++++++------------------
- crypto/algif_aead.c                   |  8 +--
- 3 files changed, 33 insertions(+), 79 deletions(-)
-
-diff --git a/Documentation/crypto/userspace-if.rst b/Documentation/crypto/userspace-if.rst
-index 021759198fe7..d220e266b8de 100644
---- a/Documentation/crypto/userspace-if.rst
-+++ b/Documentation/crypto/userspace-if.rst
-@@ -325,37 +325,14 @@ CRYPTO_USER_API_RNG_CAVP option:
-    but only after the entropy has been set.
- 
- Zero-Copy Interface
- -------------------
- 
--In addition to the send/write/read/recv system call family, the AF_ALG
--interface can be accessed with the zero-copy interface of
--splice/vmsplice. As the name indicates, the kernel tries to avoid a copy
--operation into kernel space.
+diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_=
+mmu.h
+index 30d5c24fcebb..e32e844943be 100644
+--- a/arch/arm64/include/asm/kvm_mmu.h
++++ b/arch/arm64/include/asm/kvm_mmu.h
+@@ -177,6 +177,7 @@ void kvm_stage2_wp_range(struct kvm_s2_mmu *mmu, phys_a=
+ddr_t addr, phys_addr_t e
+ void stage2_unmap_vm(struct kvm *kvm);
+ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned =
+long type);
+ void kvm_uninit_stage2_mmu(struct kvm *kvm);
++void kvm_uninit_stage2_mmu_locked(struct kvm *kvm);
+ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
+ void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
+ int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 4bab407d43bb..98ba8116676c 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1019,14 +1019,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_=
+s2_mmu *mmu, unsigned long t
+ 	return err;
+ }
+=20
+-void kvm_uninit_stage2_mmu(struct kvm *kvm)
+-{
+-	lockdep_assert_held_write(&kvm->mmu_lock);
 -
--The zero-copy operation requires data to be aligned at the page
--boundary. Non-aligned data can be used as well, but may require more
--operations of the kernel which would defeat the speed gains obtained
--from the zero-copy interface.
+-	kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
+-	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+-}
 -
--The system-inherent limit for the size of one zero-copy operation is 16
--pages. If more data is to be sent to AF_ALG, user space must slice the
--input into segments with a maximum size of 16 pages.
--
--Zero-copy can be used with the following code example (a complete
--working example is provided with libkcapi):
--
--::
--
--    int pipes[2];
--
--    pipe(pipes);
--    /* input data in iov */
--    vmsplice(pipes[1], iov, iovlen, SPLICE_F_GIFT);
--    /* opfd is the file descriptor returned from accept() system call */
--    splice(pipes[0], NULL, opfd, NULL, ret, 0);
--    read(opfd, out, outlen);
-+AF_ALG used to have zero-copy support, but it was removed due to it being a
-+frequent source of vulnerabilities.  For backwards compatibility the splice()
-+and sendfile() system calls are still supported, but the kernel will make an
-+internal copy of the data before passing it to the crypto code.
- 
- 
- Setsockopt Interface
- --------------------
- 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 5a00c18eb145..fce0b87c2b65 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -971,11 +971,11 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 		struct scatterlist *sg;
- 		size_t len = size;
- 		ssize_t plen;
- 
- 		/* use the existing memory in an allocated page */
--		if (ctx->merge && !(msg->msg_flags & MSG_SPLICE_PAGES)) {
-+		if (ctx->merge) {
- 			sgl = list_entry(ctx->tsgl_list.prev,
- 					 struct af_alg_tsgl, list);
- 			sg = sgl->sg + sgl->cur - 1;
- 			len = min_t(size_t, len,
- 				    PAGE_SIZE - sg->offset - sg->length);
-@@ -1015,64 +1015,41 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 				 list);
- 		sg = sgl->sg;
- 		if (sgl->cur)
- 			sg_unmark_end(sg + sgl->cur - 1);
- 
--		if (msg->msg_flags & MSG_SPLICE_PAGES) {
--			struct sg_table sgtable = {
--				.sgl		= sg,
--				.nents		= sgl->cur,
--				.orig_nents	= sgl->cur,
--			};
--
--			plen = extract_iter_to_sg(&msg->msg_iter, len, &sgtable,
--						  MAX_SGL_ENTS - sgl->cur, 0);
--			if (plen < 0) {
--				err = plen;
-+		do {
-+			struct page *pg;
-+			unsigned int i = sgl->cur;
+ static void stage2_unmap_memslot(struct kvm *kvm,
+ 				 struct kvm_memory_slot *memslot)
+ {
+@@ -1134,6 +1126,24 @@ void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *m=
+mu)
+ 	__kvm_free_stage2_pgd(mmu, true);
+ }
+=20
++static void __kvm_uninit_stage2_mmu(struct kvm *kvm, bool locked)
++{
++	__kvm_free_stage2_pgd(&kvm->arch.mmu, locked);
++	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
++}
 +
-+			plen = min_t(size_t, len, PAGE_SIZE);
++void kvm_uninit_stage2_mmu(struct kvm *kvm)
++{
++	__kvm_uninit_stage2_mmu(kvm, false);
++}
 +
-+			pg = alloc_page(GFP_KERNEL);
-+			if (!pg) {
-+				err = -ENOMEM;
- 				goto unlock;
- 			}
- 
--			for (; sgl->cur < sgtable.nents; sgl->cur++)
--				get_page(sg_page(&sg[sgl->cur]));
-+			sg_assign_page(sg + i, pg);
++void kvm_uninit_stage2_mmu_locked(struct kvm *kvm)
++{
++	lockdep_assert_held_write(&kvm->mmu_lock);
 +
-+			err = memcpy_from_msg(page_address(sg_page(sg + i)),
-+					      msg, plen);
-+			if (err) {
-+				__free_page(sg_page(sg + i));
-+				sg_assign_page(sg + i, NULL);
-+				goto unlock;
-+			}
++	__kvm_uninit_stage2_mmu(kvm, true);
++}
 +
-+			sg[i].length = plen;
- 			len -= plen;
- 			ctx->used += plen;
- 			copied += plen;
- 			size -= plen;
--		} else {
--			do {
--				struct page *pg;
--				unsigned int i = sgl->cur;
--
--				plen = min_t(size_t, len, PAGE_SIZE);
--
--				pg = alloc_page(GFP_KERNEL);
--				if (!pg) {
--					err = -ENOMEM;
--					goto unlock;
--				}
--
--				sg_assign_page(sg + i, pg);
--
--				err = memcpy_from_msg(
--					page_address(sg_page(sg + i)),
--					msg, plen);
--				if (err) {
--					__free_page(sg_page(sg + i));
--					sg_assign_page(sg + i, NULL);
--					goto unlock;
--				}
--
--				sg[i].length = plen;
--				len -= plen;
--				ctx->used += plen;
--				copied += plen;
--				size -= plen;
--				sgl->cur++;
--			} while (len && sgl->cur < MAX_SGL_ENTS);
--
--			ctx->merge = plen & (PAGE_SIZE - 1);
--		}
-+			sgl->cur++;
-+		} while (len && sgl->cur < MAX_SGL_ENTS);
-+
-+		ctx->merge = plen & (PAGE_SIZE - 1);
- 
- 		if (!size)
- 			sg_mark_end(sg + sgl->cur - 1);
- 	}
- 
-diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
-index cb651ab58d62..c6c2ce21895d 100644
---- a/crypto/algif_aead.c
-+++ b/crypto/algif_aead.c
-@@ -7,14 +7,14 @@
-  * This file provides the user-space API for AEAD ciphers.
-  *
-  * The following concept of the memory management is used:
-  *
-  * The kernel maintains two SGLs, the TX SGL and the RX SGL. The TX SGL is
-- * filled by user space with the data submitted via sendmsg (maybe with
-- * MSG_SPLICE_PAGES).  Filling up the TX SGL does not cause a crypto operation
-- * -- the data will only be tracked by the kernel. Upon receipt of one recvmsg
-- * call, the caller must provide a buffer which is tracked with the RX SGL.
-+ * filled by user space with the data submitted via sendmsg.  Filling up the TX
-+ * SGL does not cause a crypto operation -- the data will only be tracked by the
-+ * kernel. Upon receipt of one recvmsg call, the caller must provide a buffer
-+ * which is tracked with the RX SGL.
-  *
-  * During the processing of the recvmsg operation, the cipher request is
-  * allocated and prepared. As part of the recvmsg operation, the processed
-  * TX buffers are extracted from the TX SGL into a separate SGL.
-  *
-
-base-commit: c7e4e4d5f7dc2daa439303d1b5bf6bdfaa249f49
--- 
-2.54.0
-
+ static void hyp_mc_free_fn(void *addr, void *mc)
+ {
+ 	struct kvm_hyp_memcache *memcache =3D mc;
+diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+index 977598bff5e6..f61f0244f0fb 100644
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -1201,7 +1201,7 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
+ 	kvfree(kvm->arch.nested_mmus);
+ 	kvm->arch.nested_mmus =3D NULL;
+ 	kvm->arch.nested_mmus_size =3D 0;
+-	kvm_uninit_stage2_mmu(kvm);
++	kvm_uninit_stage2_mmu_locked(kvm);
+ }
+=20
+ /*
 
