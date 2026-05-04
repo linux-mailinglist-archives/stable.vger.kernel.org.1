@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKM8Mx2u+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:01 +0200
+	id cJRGHm6n+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52B34BFA6D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D114BE731
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 153FB301A27D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A4A363016CE9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDDC3DE43B;
-	Mon,  4 May 2026 14:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A253DDDDA;
+	Mon,  4 May 2026 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7g238TN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKNT1Ca2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634821A6827;
-	Mon,  4 May 2026 14:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3B03D5645;
+	Mon,  4 May 2026 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904455; cv=none; b=ie7GMhRgEZDEdXpeiHB9vp/eoBZkblEMsrQ4xk04wVETsHEqKtQcaywd0FSaePX6f6DuXZ6qS9b8tJJH6yZJkFNab2PU55YDeyB5dNXDCEkgDbkLvC4TVEXkQnyLd1zDYy8dteAAjXyXTbXX21NSwhQjxOorebNkhWCVFvJM2nU=
+	t=1777903296; cv=none; b=ZonVW9FbToHQPEsL6FNHLULKj+jLnhRilb235lnO/wYI32F2lCL4K2RDAT/MkmAwQGSigO3fpznfMEoD4kfMhMCXTteVDDKV7MebxM3z7R7I2nrhRroZ7DaHGh614FhqdJ6UZKvA/Es5Ojsso9mn7YekAol+FFVeQJqIrk7QS5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904455; c=relaxed/simple;
-	bh=Nlyi+REnVKECDy1Et6VIDmQDnqY4o22J1ufYCruoi4A=;
+	s=arc-20240116; t=1777903296; c=relaxed/simple;
+	bh=wg4FwtteHa7+0CCKJrAW5q7N8BjnflUWKPdYty44TGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjvzRdFcNT7+HxsQGDTsB+WhfqRL13Ku9Vluph0yDLbQJTfJCoPEphTqT0UFNHq6BCAVbGVRHKvXB4dco6bx9Xhme+SDAHXhtQAhKrwkadTFV1BT1Yb9sm2h9ERFG3X8MRvlmSHadan9ZJ0c03iROGAFzGE++yy0xPpwtagJhzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7g238TN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC876C2BCC4;
-	Mon,  4 May 2026 14:20:54 +0000 (UTC)
+	 MIME-Version; b=EXmO2AHWZ/0NuehnDmUxKvYig6wMbAGaQB43ToAoH3L6h81LcFG5HXpxwPIy84JVpj/Yfl8UlGAGhO0k61qwAEYEl9EsHlcIicE7xTtN5S2W+pG9oxznVG3JHBqEt5klRuHjTcCqiUAYZz6ap7fteJIPiLj6Hwuo1uiFLcUQ/io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKNT1Ca2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0E4C2BCB8;
+	Mon,  4 May 2026 14:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904455;
-	bh=Nlyi+REnVKECDy1Et6VIDmQDnqY4o22J1ufYCruoi4A=;
+	s=korg; t=1777903296;
+	bh=wg4FwtteHa7+0CCKJrAW5q7N8BjnflUWKPdYty44TGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7g238TNlDMpRK1XPv39G0O1zniVr8ffJhPY9oaJ63tMZwcY5RrN0kxhPxDcpjuUK
-	 cPznHgpwPM60K4ZM156MsNcJrA583IA4SCBdvzR0ij0DQ1GNgE+Yoy0e/smc/ETJ9y
-	 kiy6E5v73G1QONPpYhBKddl4Wrn1SvVBrzdCPKQo=
+	b=DKNT1Ca29WVQuiZvtGS2DTnqZFF9Wq/kKZhmlsz1+2LWnn9f/0ALVoR7i9nLadYzD
+	 VlcW8IE+ipyEVwWtJUXp6Kp6Xvg7ywRnUV+Z1rHocQ2XL+3UYY8MAr4oWyMqYy67qZ
+	 Bz+znuhApxyigFzLB2Z8Ef/s4BvrtAsGBvq7g2eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.12 046/215] PCI: endpoint: pci-epf-ntb: Remove duplicate resource teardown
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 7.0 180/307] firmware: exynos-acpm: Drop fake const on handle pointer
 Date: Mon,  4 May 2026 15:51:05 +0200
-Message-ID: <20260504135131.862575947@linuxfoundation.org>
+Message-ID: <20260504135149.647262820@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B52B34BFA6D
+X-Rspamd-Queue-Id: 38D114BE731
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243661-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243209-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,131 +89,355 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,valinux.co.jp:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-commit 3446beddba450c8d6f9aca2f028712ac527fead3 upstream.
+commit a2be37eedb52ea26938fa4cc9de1ff84963c57ad upstream.
 
-epf_ntb_epc_destroy() duplicates the teardown that the caller is
-supposed to do later. This leads to an oops when .allow_link fails or
-when .drop_link is performed. Remove the helper.
+All the functions operating on the 'handle' pointer are claiming it is a
+pointer to const thus they should not modify the handle.  In fact that's
+a false statement, because first thing these functions do is drop the
+cast to const with container_of:
 
-Also drop pci_epc_put(). EPC device refcounting is tied to configfs EPC
-group lifetime, and pci_epc_put() in the .drop_link path is sufficient.
+  struct acpm_info *acpm = handle_to_acpm_info(handle);
 
-Fixes: 8b821cf76150 ("PCI: endpoint: Add EP function driver to provide NTB functionality")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+And with such cast the handle is easily writable with simple:
+
+  acpm->handle.ops.pmic_ops.read_reg = NULL;
+
+The code is not correct logically, either, because functions like
+acpm_get_by_node() and acpm_handle_put() are meant to modify the handle
+reference counting, thus they must modify the handle.  Modification here
+happens anyway, even if the reference counting is stored in the
+container which the handle is part of.
+
+The code does not have actual visible bug, but incorrect 'const'
+annotations could lead to incorrect compiler decisions.
+
+Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-3-den@valinux.co.jp
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260224104203.42950-2-krzysztof.kozlowski@oss.qualcomm.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-ntb.c |   56 ---------------------------
- 1 file changed, 2 insertions(+), 54 deletions(-)
+ drivers/clk/samsung/clk-acpm.c                        |    4 -
+ drivers/firmware/samsung/exynos-acpm-dvfs.c           |    4 -
+ drivers/firmware/samsung/exynos-acpm-dvfs.h           |    4 -
+ drivers/firmware/samsung/exynos-acpm-pmic.c           |   10 ++--
+ drivers/firmware/samsung/exynos-acpm-pmic.h           |   10 ++--
+ drivers/firmware/samsung/exynos-acpm.c                |   16 ++++---
+ drivers/firmware/samsung/exynos-acpm.h                |    2 
+ drivers/mfd/sec-acpm.c                                |   10 ++--
+ include/linux/firmware/samsung/exynos-acpm-protocol.h |   40 +++++++-----------
+ 9 files changed, 48 insertions(+), 52 deletions(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-ntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-ntb.c
-@@ -1495,47 +1495,6 @@ err_alloc_peer_mem:
+--- a/drivers/clk/samsung/clk-acpm.c
++++ b/drivers/clk/samsung/clk-acpm.c
+@@ -20,7 +20,7 @@ struct acpm_clk {
+ 	u32 id;
+ 	struct clk_hw hw;
+ 	unsigned int mbox_chan_id;
+-	const struct acpm_handle *handle;
++	struct acpm_handle *handle;
+ };
+ 
+ struct acpm_clk_variant {
+@@ -113,7 +113,7 @@ static int acpm_clk_register(struct devi
+ 
+ static int acpm_clk_probe(struct platform_device *pdev)
+ {
+-	const struct acpm_handle *acpm_handle;
++	struct acpm_handle *acpm_handle;
+ 	struct clk_hw_onecell_data *clk_data;
+ 	struct clk_hw **hws;
+ 	struct device *dev = &pdev->dev;
+--- a/drivers/firmware/samsung/exynos-acpm-dvfs.c
++++ b/drivers/firmware/samsung/exynos-acpm-dvfs.c
+@@ -42,7 +42,7 @@ static void acpm_dvfs_init_set_rate_cmd(
+ 	cmd[3] = ktime_to_ms(ktime_get());
  }
  
- /**
-- * epf_ntb_epc_destroy_interface() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-- * @type: PRIMARY interface or SECONDARY interface
-- *
-- * Unbind NTB function device from EPC and relinquish reference to pci_epc
-- * for each of the interface.
-- */
--static void epf_ntb_epc_destroy_interface(struct epf_ntb *ntb,
--					  enum pci_epc_interface_type type)
--{
--	struct epf_ntb_epc *ntb_epc;
--	struct pci_epc *epc;
--	struct pci_epf *epf;
--
--	if (type < 0)
--		return;
--
--	epf = ntb->epf;
--	ntb_epc = ntb->epc[type];
--	if (!ntb_epc)
--		return;
--	epc = ntb_epc->epc;
--	pci_epc_remove_epf(epc, epf, type);
--	pci_epc_put(epc);
--}
--
--/**
-- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-- *
-- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
-- */
--static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
--{
--	enum pci_epc_interface_type type;
--
--	for (type = PRIMARY_INTERFACE; type <= SECONDARY_INTERFACE; type++)
--		epf_ntb_epc_destroy_interface(ntb, type);
--}
--
--/**
-  * epf_ntb_epc_create_interface() - Create and initialize NTB EPC interface
-  * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-  * @epc: struct pci_epc to which a particular NTB interface should be associated
-@@ -1614,15 +1573,8 @@ static int epf_ntb_epc_create(struct epf
- 
- 	ret = epf_ntb_epc_create_interface(ntb, epf->sec_epc,
- 					   SECONDARY_INTERFACE);
--	if (ret) {
-+	if (ret)
- 		dev_err(dev, "SECONDARY intf: Fail to create NTB EPC\n");
--		goto err_epc_create;
--	}
--
--	return 0;
--
--err_epc_create:
--	epf_ntb_epc_destroy_interface(ntb, PRIMARY_INTERFACE);
- 
- 	return ret;
+-int acpm_dvfs_set_rate(const struct acpm_handle *handle,
++int acpm_dvfs_set_rate(struct acpm_handle *handle,
+ 		       unsigned int acpm_chan_id, unsigned int clk_id,
+ 		       unsigned long rate)
+ {
+@@ -62,7 +62,7 @@ static void acpm_dvfs_init_get_rate_cmd(
+ 	cmd[3] = ktime_to_ms(ktime_get());
  }
-@@ -1887,7 +1839,7 @@ static int epf_ntb_bind(struct pci_epf *
- 	ret = epf_ntb_init_epc_bar(ntb);
- 	if (ret) {
- 		dev_err(dev, "Failed to create NTB EPC\n");
--		goto err_bar_init;
-+		return ret;
+ 
+-unsigned long acpm_dvfs_get_rate(const struct acpm_handle *handle,
++unsigned long acpm_dvfs_get_rate(struct acpm_handle *handle,
+ 				 unsigned int acpm_chan_id, unsigned int clk_id)
+ {
+ 	struct acpm_xfer xfer;
+--- a/drivers/firmware/samsung/exynos-acpm-dvfs.h
++++ b/drivers/firmware/samsung/exynos-acpm-dvfs.h
+@@ -11,10 +11,10 @@
+ 
+ struct acpm_handle;
+ 
+-int acpm_dvfs_set_rate(const struct acpm_handle *handle,
++int acpm_dvfs_set_rate(struct acpm_handle *handle,
+ 		       unsigned int acpm_chan_id, unsigned int id,
+ 		       unsigned long rate);
+-unsigned long acpm_dvfs_get_rate(const struct acpm_handle *handle,
++unsigned long acpm_dvfs_get_rate(struct acpm_handle *handle,
+ 				 unsigned int acpm_chan_id,
+ 				 unsigned int clk_id);
+ 
+--- a/drivers/firmware/samsung/exynos-acpm-pmic.c
++++ b/drivers/firmware/samsung/exynos-acpm-pmic.c
+@@ -77,7 +77,7 @@ static void acpm_pmic_init_read_cmd(u32
+ 	cmd[3] = ktime_to_ms(ktime_get());
+ }
+ 
+-int acpm_pmic_read_reg(const struct acpm_handle *handle,
++int acpm_pmic_read_reg(struct acpm_handle *handle,
+ 		       unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 		       u8 *buf)
+ {
+@@ -107,7 +107,7 @@ static void acpm_pmic_init_bulk_read_cmd
+ 		 FIELD_PREP(ACPM_PMIC_VALUE, count);
+ }
+ 
+-int acpm_pmic_bulk_read(const struct acpm_handle *handle,
++int acpm_pmic_bulk_read(struct acpm_handle *handle,
+ 			unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			u8 count, u8 *buf)
+ {
+@@ -150,7 +150,7 @@ static void acpm_pmic_init_write_cmd(u32
+ 	cmd[3] = ktime_to_ms(ktime_get());
+ }
+ 
+-int acpm_pmic_write_reg(const struct acpm_handle *handle,
++int acpm_pmic_write_reg(struct acpm_handle *handle,
+ 			unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			u8 value)
+ {
+@@ -187,7 +187,7 @@ static void acpm_pmic_init_bulk_write_cm
  	}
- 
- 	ret = epf_ntb_config_spad_bar_alloc_interface(ntb);
-@@ -1909,9 +1861,6 @@ static int epf_ntb_bind(struct pci_epf *
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
- 
--err_bar_init:
--	epf_ntb_epc_destroy(ntb);
--
- 	return ret;
  }
  
-@@ -1927,7 +1876,6 @@ static void epf_ntb_unbind(struct pci_ep
- 
- 	epf_ntb_epc_cleanup(ntb);
- 	epf_ntb_config_spad_bar_free(ntb);
--	epf_ntb_epc_destroy(ntb);
+-int acpm_pmic_bulk_write(const struct acpm_handle *handle,
++int acpm_pmic_bulk_write(struct acpm_handle *handle,
+ 			 unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			 u8 count, const u8 *buf)
+ {
+@@ -220,7 +220,7 @@ static void acpm_pmic_init_update_cmd(u3
+ 	cmd[3] = ktime_to_ms(ktime_get());
  }
  
- #define EPF_NTB_R(_name)						\
+-int acpm_pmic_update_reg(const struct acpm_handle *handle,
++int acpm_pmic_update_reg(struct acpm_handle *handle,
+ 			 unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			 u8 value, u8 mask)
+ {
+--- a/drivers/firmware/samsung/exynos-acpm-pmic.h
++++ b/drivers/firmware/samsung/exynos-acpm-pmic.h
+@@ -11,19 +11,19 @@
+ 
+ struct acpm_handle;
+ 
+-int acpm_pmic_read_reg(const struct acpm_handle *handle,
++int acpm_pmic_read_reg(struct acpm_handle *handle,
+ 		       unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 		       u8 *buf);
+-int acpm_pmic_bulk_read(const struct acpm_handle *handle,
++int acpm_pmic_bulk_read(struct acpm_handle *handle,
+ 			unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			u8 count, u8 *buf);
+-int acpm_pmic_write_reg(const struct acpm_handle *handle,
++int acpm_pmic_write_reg(struct acpm_handle *handle,
+ 			unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			u8 value);
+-int acpm_pmic_bulk_write(const struct acpm_handle *handle,
++int acpm_pmic_bulk_write(struct acpm_handle *handle,
+ 			 unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			 u8 count, const u8 *buf);
+-int acpm_pmic_update_reg(const struct acpm_handle *handle,
++int acpm_pmic_update_reg(struct acpm_handle *handle,
+ 			 unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+ 			 u8 value, u8 mask);
+ #endif /* __EXYNOS_ACPM_PMIC_H__ */
+--- a/drivers/firmware/samsung/exynos-acpm.c
++++ b/drivers/firmware/samsung/exynos-acpm.c
+@@ -412,7 +412,7 @@ static int acpm_wait_for_message_respons
+  *
+  * Return: 0 on success, -errno otherwise.
+  */
+-int acpm_do_xfer(const struct acpm_handle *handle, const struct acpm_xfer *xfer)
++int acpm_do_xfer(struct acpm_handle *handle, const struct acpm_xfer *xfer)
+ {
+ 	struct acpm_info *acpm = handle_to_acpm_info(handle);
+ 	struct exynos_mbox_msg msg;
+@@ -674,7 +674,7 @@ static int acpm_probe(struct platform_de
+  * acpm_handle_put() - release the handle acquired by acpm_get_by_phandle.
+  * @handle:	Handle acquired by acpm_get_by_phandle.
+  */
+-static void acpm_handle_put(const struct acpm_handle *handle)
++static void acpm_handle_put(struct acpm_handle *handle)
+ {
+ 	struct acpm_info *acpm = handle_to_acpm_info(handle);
+ 	struct device *dev = acpm->dev;
+@@ -700,9 +700,11 @@ static void devm_acpm_release(struct dev
+  * @np:		ACPM device tree node.
+  *
+  * Return: pointer to handle on success, ERR_PTR(-errno) otherwise.
++ *
++ * Note: handle CANNOT be pointer to const
+  */
+-static const struct acpm_handle *acpm_get_by_node(struct device *dev,
+-						  struct device_node *np)
++static struct acpm_handle *acpm_get_by_node(struct device *dev,
++					    struct device_node *np)
+ {
+ 	struct platform_device *pdev;
+ 	struct device_link *link;
+@@ -743,10 +745,10 @@ static const struct acpm_handle *acpm_ge
+  *
+  * Return: pointer to handle on success, ERR_PTR(-errno) otherwise.
+  */
+-const struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
+-						struct device_node *np)
++struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
++					  struct device_node *np)
+ {
+-	const struct acpm_handle **ptr, *handle;
++	struct acpm_handle **ptr, *handle;
+ 
+ 	ptr = devres_alloc(devm_acpm_release, sizeof(*ptr), GFP_KERNEL);
+ 	if (!ptr)
+--- a/drivers/firmware/samsung/exynos-acpm.h
++++ b/drivers/firmware/samsung/exynos-acpm.h
+@@ -17,7 +17,7 @@ struct acpm_xfer {
+ 
+ struct acpm_handle;
+ 
+-int acpm_do_xfer(const struct acpm_handle *handle,
++int acpm_do_xfer(struct acpm_handle *handle,
+ 		 const struct acpm_xfer *xfer);
+ 
+ #endif /* __EXYNOS_ACPM_H__ */
+--- a/drivers/mfd/sec-acpm.c
++++ b/drivers/mfd/sec-acpm.c
+@@ -367,7 +367,7 @@ static const struct regmap_config s2mpg1
+ };
+ 
+ struct sec_pmic_acpm_shared_bus_context {
+-	const struct acpm_handle *acpm;
++	struct acpm_handle *acpm;
+ 	unsigned int acpm_chan_id;
+ 	u8 speedy_channel;
+ };
+@@ -390,7 +390,7 @@ static int sec_pmic_acpm_bus_write(void
+ 				   size_t count)
+ {
+ 	struct sec_pmic_acpm_bus_context *ctx = context;
+-	const struct acpm_handle *acpm = ctx->shared->acpm;
++	struct acpm_handle *acpm = ctx->shared->acpm;
+ 	const struct acpm_pmic_ops *pmic_ops = &acpm->ops.pmic_ops;
+ 	size_t val_count = count - BITS_TO_BYTES(ACPM_ADDR_BITS);
+ 	const u8 *d = data;
+@@ -410,7 +410,7 @@ static int sec_pmic_acpm_bus_read(void *
+ 				  void *val_buf, size_t val_size)
+ {
+ 	struct sec_pmic_acpm_bus_context *ctx = context;
+-	const struct acpm_handle *acpm = ctx->shared->acpm;
++	struct acpm_handle *acpm = ctx->shared->acpm;
+ 	const struct acpm_pmic_ops *pmic_ops = &acpm->ops.pmic_ops;
+ 	const u8 *r = reg_buf;
+ 	u8 reg;
+@@ -429,7 +429,7 @@ static int sec_pmic_acpm_bus_reg_update_
+ 					     unsigned int val)
+ {
+ 	struct sec_pmic_acpm_bus_context *ctx = context;
+-	const struct acpm_handle *acpm = ctx->shared->acpm;
++	struct acpm_handle *acpm = ctx->shared->acpm;
+ 	const struct acpm_pmic_ops *pmic_ops = &acpm->ops.pmic_ops;
+ 
+ 	return pmic_ops->update_reg(acpm, ctx->shared->acpm_chan_id, ctx->type, reg & 0xff,
+@@ -480,7 +480,7 @@ static int sec_pmic_acpm_probe(struct pl
+ 	struct regmap *regmap_common, *regmap_pmic, *regmap;
+ 	const struct sec_pmic_acpm_platform_data *pdata;
+ 	struct sec_pmic_acpm_shared_bus_context *shared_ctx;
+-	const struct acpm_handle *acpm;
++	struct acpm_handle *acpm;
+ 	struct device *dev = &pdev->dev;
+ 	int ret, irq;
+ 
+--- a/include/linux/firmware/samsung/exynos-acpm-protocol.h
++++ b/include/linux/firmware/samsung/exynos-acpm-protocol.h
+@@ -14,30 +14,24 @@ struct acpm_handle;
+ struct device_node;
+ 
+ struct acpm_dvfs_ops {
+-	int (*set_rate)(const struct acpm_handle *handle,
+-			unsigned int acpm_chan_id, unsigned int clk_id,
+-			unsigned long rate);
+-	unsigned long (*get_rate)(const struct acpm_handle *handle,
++	int (*set_rate)(struct acpm_handle *handle, unsigned int acpm_chan_id,
++			unsigned int clk_id, unsigned long rate);
++	unsigned long (*get_rate)(struct acpm_handle *handle,
+ 				  unsigned int acpm_chan_id,
+ 				  unsigned int clk_id);
+ };
+ 
+ struct acpm_pmic_ops {
+-	int (*read_reg)(const struct acpm_handle *handle,
+-			unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+-			u8 *buf);
+-	int (*bulk_read)(const struct acpm_handle *handle,
+-			 unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+-			 u8 count, u8 *buf);
+-	int (*write_reg)(const struct acpm_handle *handle,
+-			 unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+-			 u8 value);
+-	int (*bulk_write)(const struct acpm_handle *handle,
+-			  unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+-			  u8 count, const u8 *buf);
+-	int (*update_reg)(const struct acpm_handle *handle,
+-			  unsigned int acpm_chan_id, u8 type, u8 reg, u8 chan,
+-			  u8 value, u8 mask);
++	int (*read_reg)(struct acpm_handle *handle, unsigned int acpm_chan_id,
++			u8 type, u8 reg, u8 chan, u8 *buf);
++	int (*bulk_read)(struct acpm_handle *handle, unsigned int acpm_chan_id,
++			 u8 type, u8 reg, u8 chan, u8 count, u8 *buf);
++	int (*write_reg)(struct acpm_handle *handle, unsigned int acpm_chan_id,
++			 u8 type, u8 reg, u8 chan, u8 value);
++	int (*bulk_write)(struct acpm_handle *handle, unsigned int acpm_chan_id,
++			  u8 type, u8 reg, u8 chan, u8 count, const u8 *buf);
++	int (*update_reg)(struct acpm_handle *handle, unsigned int acpm_chan_id,
++			  u8 type, u8 reg, u8 chan, u8 value, u8 mask);
+ };
+ 
+ struct acpm_ops {
+@@ -56,12 +50,12 @@ struct acpm_handle {
+ struct device;
+ 
+ #if IS_ENABLED(CONFIG_EXYNOS_ACPM_PROTOCOL)
+-const struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
+-						struct device_node *np);
++struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
++					  struct device_node *np);
+ #else
+ 
+-static inline const struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
+-							      struct device_node *np)
++static inline struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
++							struct device_node *np)
+ {
+ 	return NULL;
+ }
 
 
 
