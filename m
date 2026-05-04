@@ -1,131 +1,164 @@
-Return-Path: <stable+bounces-242991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOI2ONJ1+GlavgIAu9opvQ
-	(envelope-from <stable+bounces-242991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:32:50 +0200
+	id UHBLHLJ2+GlavgIAu9opvQ
+	(envelope-from <stable+bounces-242992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:36:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DFE4BBC65
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C26E04BBD2D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C42C300363D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 10:28:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C318300FEEA
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 10:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F643932D1;
-	Mon,  4 May 2026 10:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D153A4F2D;
+	Mon,  4 May 2026 10:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="GQXY4v5U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjLnS72c"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B111C38C423
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 10:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1203A3E80
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 10:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777890512; cv=none; b=jcQiiUHDIjF0mQN/KtL5t+bWFSBN32Za/jys767zHQ5p3JCWuQMqheur6KjP8tZXkifDgmYVwKxg5DrdRH5+r6aeNvIlpAjlpGsoGw0iCJq7gE6BR/jcVVat+s7sY1g/xRFMT+QWWz3mRRZb456s4/turNu5R/7vdcil8atZF6M=
+	t=1777890781; cv=none; b=AIi6+KmEWHxfxgXmMiXSpagnTyrN13WBMe46H39S5rdFED15ZRw8LOuV3VUlcC50ZVDeOKij+2gOCoAG5XNYLH5+UcxjBTclqw2xPUD2otSfKpQltaJPpDRnjcBh8MW9TIJkXeKtHPf9Tfy55/+8Lqo977ALa1FnmWVYKT52hsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777890512; c=relaxed/simple;
-	bh=l0u+qIbMG4K3gGG4R1IQyfVCAKBiFcgivd12uIl/stQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fDsujxn3OAfZDDM6eiDJW5NKECfCTPenbOrdjtUnsQCoESMzOzhlrcAhCUJGbG7WCzpWF4hRJo0EDVB5hCYFjbhQZJXj0q33oAtu1WiV0x24d0dBbNFcuKqF/LSsZQCAxibzqRVwIumuUPiYeergv6MgF/ak7NYZdJAOu+QemR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=GQXY4v5U; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777890501; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=WnrwbVqsOYhf12NlUY/G8R9GdmmzIFV33O/wNPiZVKY=;
-	b=GQXY4v5UxLDeR8tpus8UjaTJwjAAXd+1adpgCe936t6fr1jJFIJlXR04IJJxZOIgwL6CW7p3femVBVr/jzmvQ+KNkOW03DwGQtICnDhbcBN/YzniSnVz5hqTOar1/cPZwplIucpfSpSl2tVbkmuiv8eLHl0TxG2uG5SteVt2VIQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R821e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X2Aqmdj_1777890494;
-Received: from 30.69.177.140(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X2Aqmdj_1777890494 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 04 May 2026 18:28:20 +0800
-Message-ID: <4895cf47-70e2-45ec-a7d1-3a762d09c515@linux.alibaba.com>
-Date: Mon, 4 May 2026 12:28:13 +0200
+	s=arc-20240116; t=1777890781; c=relaxed/simple;
+	bh=Jp2dRtSbJ6bggEeqzfFJcjmzx+vU6aa4ExgTZk+M29g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=g6neiLVpJSzP/XYFah5o4Np6ayIYCVn7VMivOl73SQQuQ8FmiFwfcDkJnfN1t/R/w+IzYNjH0HPypKI493AHtUjRCMYYOCW7obNYUVF7+HlVgagEh2eLjJrxdbd0KAsWHRMW6G1Ee8Gm953CjuH92+MsJ7bCCWZph3hm3oJ3pN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjLnS72c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C5EC2BCB8;
+	Mon,  4 May 2026 10:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777890780;
+	bh=Jp2dRtSbJ6bggEeqzfFJcjmzx+vU6aa4ExgTZk+M29g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CjLnS72cH/C4DVX6/N6nX8iBnIKQibkyeyXz2s78gdBQAdfBIPDIl5aFmBVadzCHV
+	 xkHDUX09tiCgR0bSrjf9zuzaBT3z7tRPYnFeFvJyLnxbD1CLytD+97BY4sE2y6lLQV
+	 cX7ivLaNdWIBIFfHtRQv4abMxHYVGREoVlecWFKX0ZatfbnQf0gC+TejlA0LR50Q7I
+	 lfh6buUXcx1eZkr2LcDVfrGnehQ7DndO7oeIl0sajE6B7mZpBCUPVBV5SWSOKLmD+L
+	 GqZ7VkfB/9Djx1Tc6b6V13egsDxuV5E0pjRv/Hz0CzpmfoUqcr/9S5+mquOqahfZWZ
+	 nDwqLncCXrbzw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] net: qrtr: ns: Limit the total number of nodes
+Date: Mon,  4 May 2026 06:32:53 -0400
+Message-ID: <20260504103253.2070381-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050153-why-recopy-0aae@gregkh>
+References: <2026050153-why-recopy-0aae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10.y] erofs: fix the out-of-bounds nameoff handling for
- trailing dirents
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Yuhao Jiang <danisjiang@gmail.com>, Junrui Luo
- <moonafterrain@outlook.com>, Chao Yu <chao@kernel.org>
-References: <2026050132-spender-underfoot-6d7b@gregkh>
- <20260501191150.3973995-1-sashal@kernel.org>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20260501191150.3973995-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 37DFE4BBC65
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C26E04BBD2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-9.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242991-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,outlook.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242992-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,sashiko.dev:url,linux.alibaba.com:dkim,linux.alibaba.com:mid]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
+[ Upstream commit 27d5e84e810b0849d08b9aec68e48570461ce313 ]
 
-On 2026/5/2 03:11, Sasha Levin wrote:
-> From: Gao Xiang <hsiangkao@linux.alibaba.com>
-> 
-> [ Upstream commit d18a3b5d337fa412a38e776e6b4b857a58836575 ]
-> 
-> Currently we already have boundary-checks for nameoffs, but the trailing
-> dirents are special since the namelens are calculated with strnlen()
-> with unchecked nameoffs.
-> 
-> If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
-> maxsize - nameoff can underflow, causing strnlen() to read past the
-> directory block.
-> 
-> nameoff0 should also be verified to be a multiple of
-> `sizeof(struct erofs_dirent)` as well [1].
-> 
-> [1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
-> 
-> Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
-> Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Reported-by: Junrui Luo <moonafterrain@outlook.com>
-> Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-> Reviewed-by: Chao Yu <chao@kernel.org>
-> [ replaced upstream `bsz` with `PAGE_SIZE` and `sizeof(*de)` with `sizeof(struct erofs_dirent)` ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-Looks good to me.
+Currently, the nameserver doesn't limit the number of nodes it handles.
+This can be an attack vector if a malicious client starts registering
+random nodes, leading to memory exhaustion.
 
-Thanks,
-Gao Xiang
+Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
+chosen based on the current platform requirements. If requirement changes
+in the future, this limit can be increased.
+
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ dropped node_count-- hunk since ctrl_cmd_bye() has no delete_node ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/qrtr/ns.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3c513e7ca2d5c..03b5ae3100de7 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -68,6 +68,16 @@ struct qrtr_node {
+ 	struct radix_tree_root servers;
+ };
+ 
++/* Max nodes, server, lookup limits are chosen based on the current platform
++ * requirements. If the requirement changes in the future, these values can be
++ * increased.
++ */
++#define QRTR_NS_MAX_NODES   64
++#define QRTR_NS_MAX_SERVERS 256
++#define QRTR_NS_MAX_LOOKUPS 64
++
++static u8 node_count;
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -76,6 +86,11 @@ static struct qrtr_node *node_get(unsigned int node_id)
+ 	if (node)
+ 		return node;
+ 
++	if (node_count >= QRTR_NS_MAX_NODES) {
++		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
++		return NULL;
++	}
++
+ 	/* If node didn't exist, allocate and insert it to the tree */
+ 	node = kzalloc(sizeof(*node), GFP_KERNEL);
+ 	if (!node)
+@@ -88,6 +103,8 @@ static struct qrtr_node *node_get(unsigned int node_id)
+ 		return NULL;
+ 	}
+ 
++	node_count++;
++
+ 	return node;
+ }
+ 
+-- 
+2.53.0
+
 
