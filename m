@@ -1,89 +1,60 @@
-Return-Path: <stable+bounces-243320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOnVE5So+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:24 +0200
+	id WBqGAjuu+GlIxwIAu9opvQ
+	(envelope-from <stable+bounces-243607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F924BEA0A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BF14BFAD4
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4BCB30308D3
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B8F8315C4A3
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A959D3DE44C;
-	Mon,  4 May 2026 14:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC303D6484;
+	Mon,  4 May 2026 14:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hijSwaiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVJzkQNb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4C22E2F0E;
-	Mon,  4 May 2026 14:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D5E1A6827;
+	Mon,  4 May 2026 14:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903583; cv=none; b=pidd1pQHPHP650/PKCmSOxVqJvJhFoMt3qvxhx/qwhqMy/rYgdiAVE2GIskpki7Q+vKNcNpdKcgl2aCCDaMDDLvObUWbNrcANSO06g+11ymHWLzgYh5QnMbrfBIY8/PsuVn/fTSnHLutx19EzSHSqhhwMJNyNmQsJaj8greurpg=
+	t=1777904319; cv=none; b=qe0JpohUEWdbljrz979AQtcb9pzczKMRYqrADvcsyoLIVTUOty5Vu8EMNTVTELqIIIsnV3AyxQX/ardXACDq67tw9VpkePM06kQeSEocdW/hYwgjP94FVzArSa095kuutwQPQDlVvnMm5iiK1B6jiGfF5kb0xIf3GUC9IlqYbqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903583; c=relaxed/simple;
-	bh=wggb4D1wSnzYBXyKgc36p9S0ogor2iMOwa4rq48rTsY=;
+	s=arc-20240116; t=1777904319; c=relaxed/simple;
+	bh=cIrZMEzut9CRIzqKmoxDmVedgfnWT+Q6KqHn0VoGRSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmPniuqs7qhJc0e6NfRQcU19g0Lg8vf4dNjdMFD0DwOFbqouPnM7sVrgQJVFSLYGmL/fszNJkLbPpUgb0vYujW8Ie2xcsAzN8uCpP7nJch2R3Vs87kAjnE4KwotAprrvmGS3abHndpX0R279S3/p2beOzGTdFg9DqXU86BUPw0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hijSwaiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A20C2BCB8;
-	Mon,  4 May 2026 14:06:22 +0000 (UTC)
+	 MIME-Version; b=c/RofNZNkVg1xBJm47kd2xgcSdPWs7zUYi9Y82b1KqOFXJxLlfIw4VRvFYNMb695jBkfrY+nYy1FD4egElMyxoHdAypjPkUw2Z3fAeZmhur1P3R9sPGResPxW6NoqTMMSPU+J6nE6Ba2JtHte0SDHUso7tqvD25A2bg3aMa9KaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVJzkQNb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D066C2BCB8;
+	Mon,  4 May 2026 14:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903583;
-	bh=wggb4D1wSnzYBXyKgc36p9S0ogor2iMOwa4rq48rTsY=;
+	s=korg; t=1777904318;
+	bh=cIrZMEzut9CRIzqKmoxDmVedgfnWT+Q6KqHn0VoGRSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hijSwaiDz71C5hfXJPc3z5PQEK76S+L1xeD5dJ72rd28vtblpa6Yzh9B98C/wUPap
-	 mPOQnCuo/fGiZg/Z4rM5+yfUl4nnC0CfyOL90G4zGdJttbQYVAcDZF05UEBORxVfZA
-	 OiWfa+F4IZYjH7dslpWgZgb76FCYZGD3Bk0InFAY=
+	b=pVJzkQNbuGE9Hb/I5SldJ/iYjBrbp+hdqLKsLyMUg05LUStAakKiJW0loGCsURkA+
+	 3CE7kPcoc+lLfB6QiSULbv+G2XtNSJ0iAsKDaoBKKyxELXm+z5hm9HkVXK4Lx3YG0T
+	 NMuotWIc47aY1qFzxd28UmdPrFVmTNmXGE+5yhws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Bodo Stroesser <bostroesser@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Clemens Ladisch <clemens@ladisch.de>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jan Kara <jack@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Long Li <longli@microsoft.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Richard Weinberger <richard@nod.at>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 291/307] mm: avoid deadlock when holding rmap on mmap_prepare error
+	Chen Zhao <chezhao@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.18 236/275] IB/core: Fix zero dmac race in neighbor resolution
 Date: Mon,  4 May 2026 15:52:56 +0200
-Message-ID: <20260504135153.740527989@linuxfoundation.org>
+Message-ID: <20260504135151.817000720@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -94,183 +65,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 15F924BEA0A
+X-Rspamd-Queue-Id: 96BF14BFAD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[36];
-	TAGGED_FROM(0.00)[bounces-243320-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.intel.com,foss.st.com,zeniv.linux.org.uk,arndb.de,gmail.com,ladisch.de,redhat.com,microsoft.com,suse.cz,google.com,lwn.net,oracle.com,auristor.com,suse.com,bootlin.com,suse.de,nod.at,arm.com,ti.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243607-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+From: Chen Zhao <chezhao@nvidia.com>
 
-[ Upstream commit f96e1d5f15b7c854a6a9ec1225d68a12fe7dcda6 ]
+commit 5e6de34d82b49cab9d8a42063e9cd0f22a4f31e5 upstream.
 
-Commit ac0a3fc9c07d ("mm: add ability to take further action in
-vm_area_desc") added the ability for drivers to instruct mm to take actions
-after the .mmap_prepare callback is complete.
+dst_fetch_ha() checks nud_state without holding the neighbor lock, then
+copies ha under the seqlock. A race in __neigh_update() where nud_state
+is set to NUD_REACHABLE before ha is written allows dst_fetch_ha() to
+read a zero MAC address while the seqlock reports no concurrent writer.
 
-To make life simpler and safer, this is done before the VMA/mmap write lock
-is dropped but when the VMA is completely established.
+netevent_callback amplifies this by waking ALL pending addr_req workers
+when ANY neighbor becomes NUD_VALID. At scale (N peers resolving ARP
+concurrently), the hit probability scales as N^2, making it near-certain
+for large RDMA workloads.
 
-So on error, we simply munmap() the VMA.
+N(A): neigh_update(A)                   W(A): addr_resolve(A)
+ |                                       [sleep]
+ | write_lock_bh(&A->lock)               |
+ | A->nud_state = NUD_REACHABLE          |
+ | // A->ha is still 0                   |
+ |                                       [woken by netevent_cb() of
+ |                                         another neighbour]
+ |                                       | dst_fetch_ha(A)
+ |                                       |   A->nud_state & NUD_VALID
+ |                                       |   read_seqbegin(&A->ha_lock)
+ |                                       |   snapshot = A->ha  /* 0 */
+ |                                       |   read_seqretry(&A->ha_lock)
+ |                                       |   return snapshot
+ | seqlock(&A->ha_lock)
+ | A->ha = mac_A     /* too late */
+ | sequnlock(&A->ha_lock)
+ | write_unlock_bh(&A->lock)
 
-As part of this implementation, unfortunately a horrible hack had to be
-implemented to support some questionable behaviour hugetlb relies upon -
-that is that the file rmap lock is held until the operation is complete.
+The incorrect/zero mac is read and programmed in the device QP while it
+was not yet updated. This causes silent packet loss and eventual
+RETRY_EXC_ERR.
 
-The implementation, for convenience, did this in mmap_action_finish() so
-both the VMA and mmap_prepare compatibility layer paths would have this
-correctly handled.
+Fix by holding the neighbor read lock across the nud_state check and
+ha copy in dst_fetch_ha(), ensuring it synchronizes with
+__neigh_update() which is updating while holding the write lock.
 
-However, it turns out there is a mistake here - the rmap lock cannot be
-held on munmap, as free_pgtables() -> unlink_file_vma_batch_add() ->
-unlink_file_vma_batch_process() takes the file rmap lock.
-
-We therefore currently have a deadlock issue that might arise.
-
-Resolve this by leaving it to callers to handle the unmap.
-
-The compatibility layer does not support this rmap behaviour, so we simply
-have it unmap on error after calling mmap_action_complete().
-
-In the VMA implementation, we only perform the unmap after the rmap lock is
-dropped.
-
-This resolves the issue by ensuring the rmap lock is always dropped when
-the unmap occurs.
-
-Link: https://lkml.kernel.org/r/d44248be9da68258b07c2c59d4e73485ee0ca943.1774045440.git.ljs@kernel.org
-Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Bodo Stroesser <bostroesser@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Clemens Ladisch <clemens@ladisch.de>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Marc Dionne <marc.dionne@auristor.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 92ebb6a0a13a ("IB/cm: Remove now useless rcu_lock in dst_fetch_ha")
+Link: https://patch.msgid.link/r/20260405-fix-dmac-race-v1-1-cfa1ec2ce54a@nvidia.com
+Signed-off-by: Chen Zhao <chezhao@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/util.c |   12 +++++++-----
- mm/vma.c  |   13 ++++++++++---
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ drivers/infiniband/core/addr.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1186,7 +1186,13 @@ int compat_vma_mmap(struct file *file, s
- 		return err;
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -321,11 +321,14 @@ static int dst_fetch_ha(const struct dst
+ 	if (!n)
+ 		return -ENODATA;
  
- 	set_vma_from_desc(vma, &desc);
--	return mmap_action_complete(vma, &desc.action);
-+	err = mmap_action_complete(vma, &desc.action);
-+	if (err) {
-+		const size_t len = vma_pages(vma) << PAGE_SHIFT;
-+
-+		do_munmap(current->mm, vma->vm_start, len, NULL);
-+	}
-+	return err;
- }
- EXPORT_SYMBOL(compat_vma_mmap);
- 
-@@ -1279,10 +1285,6 @@ static int mmap_action_finish(struct vm_
- 	 * invoked if we do NOT merge, so we only clean up the VMA we created.
- 	 */
- 	if (err) {
--		const size_t len = vma_pages(vma) << PAGE_SHIFT;
--
--		do_munmap(current->mm, vma->vm_start, len, NULL);
--
- 		if (action->error_hook) {
- 			/* We may want to filter the error. */
- 			err = action->error_hook(err);
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2706,9 +2706,9 @@ static int call_action_complete(struct m
- 				struct mmap_action *action,
- 				struct vm_area_struct *vma)
- {
--	int ret;
-+	int err;
- 
--	ret = mmap_action_complete(vma, action);
-+	err = mmap_action_complete(vma, action);
- 
- 	/* If we held the file rmap we need to release it. */
- 	if (map->hold_file_rmap_lock) {
-@@ -2716,7 +2716,14 @@ static int call_action_complete(struct m
- 
- 		i_mmap_unlock_write(file->f_mapping);
++	read_lock_bh(&n->lock);
+ 	if (!(n->nud_state & NUD_VALID)) {
++		read_unlock_bh(&n->lock);
+ 		neigh_event_send(n, NULL);
+ 		ret = -ENODATA;
+ 	} else {
+ 		neigh_ha_snapshot(dev_addr->dst_dev_addr, n, dst->dev);
++		read_unlock_bh(&n->lock);
  	}
--	return ret;
-+
-+	if (err) {
-+		const size_t len = vma_pages(vma) << PAGE_SHIFT;
-+
-+		do_munmap(current->mm, vma->vm_start, len, NULL);
-+	}
-+
-+	return err;
- }
  
- static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 	neigh_release(n);
 
 
 
