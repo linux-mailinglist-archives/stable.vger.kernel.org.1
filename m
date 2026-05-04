@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-243809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLBMDriw+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:08 +0200
+	id 2G1EAper+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BDF4BFF40
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE6F4BF35A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF64030BB23F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 713CD302351F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFAB3E2759;
-	Mon,  4 May 2026 14:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA633D6484;
+	Mon,  4 May 2026 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ph8C/haT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM0JcJQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941883DEAC9;
-	Mon,  4 May 2026 14:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236451A6827;
+	Mon,  4 May 2026 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904835; cv=none; b=fEAeYKHBxrylK2yxWvmv5HokLgv30pf4d2yNS/rIC6OgcxioUNMJ79nIauR3YOq10Lwx895+MUIZTt1doiqD08zpLtQ4sn8RTHAn/bhz86K/00f3Cq8a0ZhjF7XSeowB3fplessmIyDWtBx1rqO7w5AFQB67yqh8hmQ/jS1ifoI=
+	t=1777904350; cv=none; b=VTXjA9olOlxNRpD3eW29zIyEUNM4yRw2YChaqYPbBq4vrmx/NJZ1xF6RpGAH3DizFrfFvGEEFgxP7GTiP35GQrNjWMDSSV2vZ3nbeOU7Y/upmVaA6tOUH/CkHUhyDQEopAUQp2JDwzwtSzGepamfhBbU38baCBehQSeeR+cl/EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904835; c=relaxed/simple;
-	bh=ArfheiAKMJODpLisNz6rLitiCMg10yRm2YzPbSn6dJM=;
+	s=arc-20240116; t=1777904350; c=relaxed/simple;
+	bh=2kG1bWUG1MLkLQYC/l6LJKzLLFcNcXM9ghFbitbXJvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1yjZP39D1ziHWt2JssN5rgaQayUOtqQXi3qyXLl9J/HEBBbaQV4kIA0OxZ4K5mb5xfF5bsPqKf64i/BZtQj2RWcfnqGHePdbp3T/FAUBJISu+XVfbZFz9Tr+9BIy7kGOvpQn3OlBZ6OKnbHoLfIFE/+ZKeTw1JFiCx1Zgiedtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ph8C/haT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2E2C2BCB8;
-	Mon,  4 May 2026 14:27:14 +0000 (UTC)
+	 MIME-Version; b=ixj/vIQKGdR5fCqfIcMp6/MnXHD8rFLjbbgSU+tFbHcAeH/7yOF7lB7zW8Hwkix6HIb2b3D/ViMbmSRdGgXy6LxTWY5IjKtaUbLvtgzC2ME9+lYMavMOkZIFgOrQCb78WmqoQsmxF9A+EH2u+Et1NIG7IxuhRdYVhBTMlV3AaL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qM0JcJQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66025C2BCB8;
+	Mon,  4 May 2026 14:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904835;
-	bh=ArfheiAKMJODpLisNz6rLitiCMg10yRm2YzPbSn6dJM=;
+	s=korg; t=1777904349;
+	bh=2kG1bWUG1MLkLQYC/l6LJKzLLFcNcXM9ghFbitbXJvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ph8C/haT3Dt/OnsM9yBI4ZboxKoskHs4kg2hg8IibpPwuSMxaCwpdVIr46nTU5VKO
-	 cLywPIljy+NzAhz3B+DrfVTl5X5GtsczkWawF+HNj7Dp2q7lIvPp24Eb+UyB5Nm3zd
-	 kxmn/mJb8zgRHBEirXnH6fAQgKYYvHPb+NLlwDtQ=
+	b=qM0JcJQP4qXJaT7N0Lft3MO9c1sagQRntHa28ptBGww+irzb5YwUKWMBERQ+Ou8aD
+	 FPnFVWLELPBIv5Zr/tVaiYbsqV404fFvuhQ95LciNpQAqDp6kvMkNkRl8OMvprZdBs
+	 nt5UJAmF08Xpz4rheJKauK3hTROp+qtvU+AigWLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/215] media: rc: igorplugusb: heed coherency rules
+	Marco Elver <elver@google.com>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 271/275] vmalloc: fix buffer overflow in vrealloc_node_align()
 Date: Mon,  4 May 2026 15:53:31 +0200
-Message-ID: <20260504135137.426995447@linuxfoundation.org>
+Message-ID: <20260504135153.100437439@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,119 +66,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E3BDF4BFF40
+X-Rspamd-Queue-Id: BAE6F4BF35A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243809-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,gmail.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-243619-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,mess.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit eac69475b01fe1e861dfe3960b57fa95671c132e ]
+commit 82d1f01292d3f09bf063f829f8ab8de12b4280a1 upstream.
 
-In a control request, the USB request structure
-can be subject to DMA on some HCs. Hence it must obey
-the rules for DMA coherency. Allocate it separately.
+Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
+vrealloc") added the ability to force a new allocation if the current
+pointer is on the wrong NUMA node, or if an alignment constraint is not
+met, even if the user is shrinking the allocation.
 
-Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ replaced kzalloc_obj(*ir->request, GFP_KERNEL) with kzalloc(sizeof(*ir->request), GFP_KERNEL) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On this path (need_realloc), the code allocates a new object of 'size'
+bytes and then memcpy()s 'old_size' bytes into it.  If the request is to
+shrink the object (size < old_size), this results in an out-of-bounds
+write on the new buffer.
+
+Fix this by bounding the copy length by the new allocation size.
+
+Link: https://lore.kernel.org/20260420114805.3572606-2-elver@google.com
+Fixes: 4c5d3365882d ("mm/vmalloc: allow to set node and align in vrealloc")
+Signed-off-by: Marco Elver <elver@google.com>
+Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/igorplugusb.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ mm/vmalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/rc/igorplugusb.c
-+++ b/drivers/media/rc/igorplugusb.c
-@@ -34,7 +34,7 @@ struct igorplugusb {
- 	struct device *dev;
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4201,7 +4201,7 @@ need_realloc:
+ 		return NULL;
  
- 	struct urb *urb;
--	struct usb_ctrlrequest request;
-+	struct usb_ctrlrequest *request;
+ 	if (p) {
+-		memcpy(n, p, old_size);
++		memcpy(n, p, min(size, old_size));
+ 		vfree(p);
+ 	}
  
- 	struct timer_list timer;
- 
-@@ -122,7 +122,7 @@ static void igorplugusb_cmd(struct igorp
- {
- 	int ret;
- 
--	ir->request.bRequest = cmd;
-+	ir->request->bRequest = cmd;
- 	ir->urb->transfer_flags = 0;
- 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
- 	if (ret && ret != -EPERM)
-@@ -164,13 +164,17 @@ static int igorplugusb_probe(struct usb_
- 	if (!ir)
- 		return -ENOMEM;
- 
-+	ir->request = kzalloc(sizeof(*ir->request), GFP_KERNEL);
-+	if (!ir->request)
-+		goto fail;
-+
- 	ir->dev = &intf->dev;
- 
- 	timer_setup(&ir->timer, igorplugusb_timer, 0);
- 
--	ir->request.bRequest = GET_INFRACODE;
--	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
--	ir->request.wLength = cpu_to_le16(MAX_PACKET);
-+	ir->request->bRequest = GET_INFRACODE;
-+	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
-+	ir->request->wLength = cpu_to_le16(MAX_PACKET);
- 
- 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!ir->urb)
-@@ -228,6 +232,7 @@ fail:
- 	usb_free_urb(ir->urb);
- 	rc_free_device(ir->rc);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- 
- 	return ret;
- }
-@@ -243,6 +248,7 @@ static void igorplugusb_disconnect(struc
- 	usb_unpoison_urb(ir->urb);
- 	usb_free_urb(ir->urb);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- }
- 
- static const struct usb_device_id igorplugusb_table[] = {
 
 
 
