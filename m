@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-243168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kL8YOGCo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:32 +0200
+	id iNg6HvWq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152C74BE996
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E854D4BF12C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 169173034583
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B59430233E0
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAC53DE423;
-	Mon,  4 May 2026 13:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05653D5645;
+	Mon,  4 May 2026 14:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtKF8iR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZP/iikn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F45B2BFC7B;
-	Mon,  4 May 2026 13:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822D93B19D1;
+	Mon,  4 May 2026 14:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903190; cv=none; b=BJvlnWchwbbpCWS4lbFyPUZSq/IGOY90wIK9VLk4pjm5dHZuFujNsA6sYuAwsnJ3GSeUi25HGEUc5MTWl2ONjG0NgRfMd6nHKVGWzvdd6ecCxgByYih68RXDxkUBIY4Sy6NEOFk/cDQQCh9G7zTCJohVaR43rUwMx+oIK14n7jk=
+	t=1777903871; cv=none; b=eVm67mZ86MkpYUHpbFDtLQb1clPaznKo8tpj//3aQP83qdxC1t6FOOXCc0UQptBhMOnjPq4WVSjhEiiYQcCp6d+kUpBMY++uD76qUFdIyPlqp38RIKQ314n3xIXOxFze9ch8tJvt7+nP3qm5ppOvHft2dZHRJJtifqNNXo4q2f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903190; c=relaxed/simple;
-	bh=DEYFhdebBDkoUeIgGKZ86lfpKMFivP8Q/QmZ5J+RlZA=;
+	s=arc-20240116; t=1777903871; c=relaxed/simple;
+	bh=gENbwNyFLzvlAwdmSo1+TQ8Zqbd26x8vfQLvNtGiOaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqA4oRjaZaaB1fSFvg712sco9fXEv/0pM9v05L/5eJyiBJhEKB9zHqlCWVPh5SO49Uubq4WxeLQfnQl5IhSGIom0k6tOEaJtm64W1gtqmOJvs4y1c7rNfo+ENTyLAFOkStYwz8uD//F6+uuUkGCqO9yJ7nCgqNpJInEG5Fvkr4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtKF8iR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A3DC2BCB8;
-	Mon,  4 May 2026 13:59:49 +0000 (UTC)
+	 MIME-Version; b=pb/uxQFDsFa0ePmAA/ZLq6usYpZtvoM2dAKu9RYmF8Hsv71Sd9Cw0nm3AzcIDwJK55IRiLVAVAGiTSlmFhTN+6iTLyfzqxU5lfT3oRzRSSsNkIQ0SBkkdcJ7lkw1wHgtm7um2K2Ct48fqPxD0dz4yWqM1Md+P8QU9Xp+Kg5BrLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZP/iikn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1880EC2BCB8;
+	Mon,  4 May 2026 14:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903190;
-	bh=DEYFhdebBDkoUeIgGKZ86lfpKMFivP8Q/QmZ5J+RlZA=;
+	s=korg; t=1777903871;
+	bh=gENbwNyFLzvlAwdmSo1+TQ8Zqbd26x8vfQLvNtGiOaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtKF8iR8Ywc+nZJiqWTbAWpWYVhIHU57WMAh+DAM+P+LsBJzE11UyxOtNd1eJB5sc
-	 M+ifPUWvfsU9yFRFsc2/WpfCVl9HoKnr4S6Y2qjUbC/033t002NdL9zOyzPACftEjg
-	 f+v63Mxm5DULwKIT4XNowp6LfyXKVAtuaASHTois=
+	b=kZP/iikn8UoJ8ZhlBC2SswZy1ppcEQbBQ+kTOrwHXrv3pD3Fn6+Xu9OIdFG5XksEJ
+	 t3+gZlZx2ExdA1J3CHZPb1Og+EJojlzopPXqGUXyDjfODuSjn5h9vjLF9Wu+d05qgz
+	 px0d+3ztXZQ6RvtteUZVAndVnBNeeAaBbDmODnBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 106/307] block: fix zone write plugs refcount handling in disk_zone_wplug_schedule_bio_work()
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 051/275] media: mtk-jpeg: fix use-after-free in release path due to uncancelled work
 Date: Mon,  4 May 2026 15:49:51 +0200
-Message-ID: <20260504135146.800070270@linuxfoundation.org>
+Message-ID: <20260504135144.831724790@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +64,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 152C74BE996
+X-Rspamd-Queue-Id: E854D4BF12C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[zju.edu.cn:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243168-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-243433-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,body];
 	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_SPAM(0.00)[0.800];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zju.edu.cn:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit 0a8b8af896e0ef83e188e1fe20f98f2bbb1c2459 upstream.
+commit 34c519feef3e4fcff1078dc8bdb25fbbbd10303f upstream.
 
-The function disk_zone_wplug_schedule_bio_work() always takes a
-reference on the zone write plug of the BIO work being scheduled. This
-ensures that the zone write plug cannot be freed while the BIO work is
-being scheduled but has not run yet. However, this unconditional
-reference taking is fragile since the reference taken is released by the
-BIO work blk_zone_wplug_bio_work() function, which implies that there
-always must be a 1:1 relation between the work being scheduled and the
-work running.
+The mtk_jpeg_release() function frees the context structure (ctx) without
+first cancelling any pending or running work in ctx->jpeg_work. This
+creates a race window where the workqueue callback may still be accessing
+the context memory after it has been freed.
 
-Make sure to drop the reference taken when scheduling the BIO work if
-the work is already scheduled, that is, when queue_work() returns false.
+Race condition:
 
-Fixes: 9e78c38ab30b ("block: Hold a reference on zone write plugs to schedule submission")
+    CPU 0 (release)                    CPU 1 (workqueue)
+    ----------------                   ------------------
+    close()
+      mtk_jpeg_release()
+                                       mtk_jpegenc_worker()
+                                         ctx = work->data
+                                         // accessing ctx
+
+        kfree(ctx)  // freed!
+                                         access ctx  // UAF!
+
+The work is queued via queue_work() during JPEG encode/decode operations
+(via mtk_jpeg_device_run). If the device is closed while work is pending
+or running, the work handler will access freed memory.
+
+Fix this by calling cancel_work_sync() BEFORE acquiring the mutex. This
+ordering is critical: if cancel_work_sync() is called after mutex_lock(),
+and the work handler also tries to acquire the same mutex, it would cause
+a deadlock.
+
+Note: The open error path does NOT need cancel_work_sync() because
+INIT_WORK() only initializes the work structure - it does not schedule
+it. Work is only scheduled later during ioctl operations.
+
+Fixes: 5fb1c2361e56 ("mtk-jpegenc: add jpeg encode worker interface")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-zoned.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -1198,13 +1198,17 @@ static void disk_zone_wplug_schedule_bio
- 	lockdep_assert_held(&zwplug->lock);
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -1209,6 +1209,7 @@ static int mtk_jpeg_release(struct file
+ 	struct mtk_jpeg_dev *jpeg = video_drvdata(file);
+ 	struct mtk_jpeg_ctx *ctx = mtk_jpeg_file_to_ctx(file);
  
- 	/*
--	 * Take a reference on the zone write plug and schedule the submission
--	 * of the next plugged BIO. blk_zone_wplug_bio_work() will release the
--	 * reference we take here.
-+	 * Schedule the submission of the next plugged BIO. Taking a reference
-+	 * to the zone write plug is required as the bio_work belongs to the
-+	 * plug, and thus we must ensure that the write plug does not go away
-+	 * while the work is being scheduled but has not run yet.
-+	 * blk_zone_wplug_bio_work() will release the reference we take here,
-+	 * and we also drop this reference if the work is already scheduled.
- 	 */
- 	WARN_ON_ONCE(!(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED));
- 	refcount_inc(&zwplug->ref);
--	queue_work(disk->zone_wplugs_wq, &zwplug->bio_work);
-+	if (!queue_work(disk->zone_wplugs_wq, &zwplug->bio_work))
-+		disk_put_zone_wplug(zwplug);
- }
- 
- static inline void disk_zone_wplug_add_bio(struct gendisk *disk,
++	cancel_work_sync(&ctx->jpeg_work);
+ 	mutex_lock(&jpeg->lock);
+ 	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+ 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
 
 
 
