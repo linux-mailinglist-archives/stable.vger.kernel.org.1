@@ -1,240 +1,240 @@
-Return-Path: <stable+bounces-243907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GAbO3H6+Gkr3wIAu9opvQ
-	(envelope-from <stable+bounces-243907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 21:58:41 +0200
+	id gLKSHNf/+Gko4AIAu9opvQ
+	(envelope-from <stable+bounces-243908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 22:21:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EC84C363B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 21:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D94F24C37F3
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 22:21:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40863301E5BF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 19:58:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 638FA305789A
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 20:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF88E3FB7E2;
-	Mon,  4 May 2026 19:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81EA3126C4;
+	Mon,  4 May 2026 20:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhsxWcNa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/yq6Obb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7293FB7E9
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 19:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777924718; cv=pass; b=iD9xIjQhQaGwl0xjVxopr3DphAnCBBRuoyAUaBFSvxyAg7s97OK5w4+RISMQFUa9KpLFFti+ku7uFBXHTFWitnbd410Zk4/peyR4yKdD8Phq7IVWaPqdLvPXG7oINQxGKxYiHedRl3iXW/r4lrs9HmmOEqcuH7gkWsMFV3ziMeE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777924718; c=relaxed/simple;
-	bh=D0x/MTLW7vDS1AAs+2/eraYArPBjq6gq+kxQnVpL3Mc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jycBVAateGFYpTgubmeQx6/OVfik4qkHuAKrzJ1qLH3STXNWXmhS4IgAlhFWY8G3ZbnKG/uEBtU2mRj82YA5qRshTlaxfcN4/Iv/TnxEzFjdn993CYPswl951gTXXd7TNcTuQYMIrUVK15uicEcopNtAQb+i8WjgdnbIcQA02LE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhsxWcNa; arc=pass smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF45D30C629
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 20:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777925954; cv=none; b=N818ghZklDNsFsyDchA8K5QpshTKHWn7AwL6KH9JT7JXm5rF4kQGQM8Fl0VggDti60OO86qrUryVNT+H0nQn0OFOde1OiwXlD+WkZBl+OQBTxj6x4Pym5TLNNRHGLuCzFl+58ihHgYbda6oYcSNbhZhKCNm5I9c2K4dmokA6fOg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777925954; c=relaxed/simple;
+	bh=EF/AXOZq24b4Tnt1bvQhOXUwu01Y3py1+Jyfb67o9BE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YXovH4RXpbpXwXiQ+4fCMEU+/UWWGkmjWSmBLsP7VcFIA+Z9zQc0BD8SxQSNR9AIaRpUBe8O6QlETjtih7Qlm5p8QS0zIor1AN2DC/ME2UftE47VqSrmblcRLy9T7SUV3kAYSYLJbcXT8q67ckmJuwKgnTXeybdyZntsT7oXdmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/yq6Obb; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-67929ff6dbfso6773389a12.2
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 12:58:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777924714; cv=none;
-        d=google.com; s=arc-20240605;
-        b=d62cgQXHdjflzDS9BpFPz2rnRfPXgWr1+SnjOPvvv+yz2lfUQmoVHsVLmhYPs6gDG7
-         GpLnezC/ljCGpLQxViUPkAtVjyNmBvQ4ag4a5FIMg7PuYx7YrB+s4vqsDVY+jjBjyG8j
-         kJinsjnm8T4B7O7IbzDJFG3pDaRUCy8XYcrqWvpjDNmCKyxsbYaeumSqr9LoUarfoLfm
-         eqpl+fL4Es/EJgG6hBVwftf5lbLtC9E54d9KD+uqLw5hLLuPLjE37lCMnmGUiUl/W+M8
-         9i7PITm42lkCRwS7tsWv49UtpngUiIiXuvi+g8/f1UnKvYqKKBntWvEBgDzP7UjKTaky
-         vafg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=esEqdBvyNeHgcLcZRMKUkcBSd2coHxMvjI5oFXwBBPs=;
-        fh=urHPd6F57xW2X+YYzpYSpT6XvBV9GQxP80weQfp8ih8=;
-        b=ZxmLnWfYB3DmcqfbOAlJ0iE1cjmyRwArD+DTL5nr4Cyr20c9APWKIuZXbbp8FLEFch
-         HSKAqYBU7N2aE2UhlyNQccbqCA/dCmfIvZxpNlDcppgFo3Sin8Z94uGnqEyi7T8mxw7E
-         x2KOg9cQsHc4iZcJc5A6I2+2vbGMpbZQtBAD8MIrELS88bndz+WUTys+7TiwsgRs7A3q
-         3mJzky+NxV/UKNKTEs3JEScyTlk4S7mEzhgH0HNGb3soaiiiJmqc3L/qFlBDIPOD2mbk
-         hZssPZrKxwKQWHm/NpcheGlasQQovqsCY5ETgPY9SPE8qHJ6wZPlUWGYX4YMyixfimGC
-         GtvQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a860667fabso3351634e87.0
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 13:19:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777924714; x=1778529514; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=esEqdBvyNeHgcLcZRMKUkcBSd2coHxMvjI5oFXwBBPs=;
-        b=OhsxWcNaRpG4Q+b+hKzzXVXVxwm3yYsFsnKtlHce7ygXSmOcdb2JEw9jS5iyCiXT7s
-         aamXsKgCQYCFe+eEAiSG8/w6+/0vgs/bW5qzwH3NUUxvts57uyhDwJGsq9fCvrfnYNsA
-         d3GDcVC34SHBusblAdwVOSjzE69F/n321Fud0DXAyfx4iAAK7lm9+xu7SoZs+MMcCpr2
-         1u5G1KqaduwX4gWdCMQuSPSR6n43Ao171GX/RcG7tnRIXdLOWcRYsILJWXVVNPl2LMZO
-         WB/EiNecEedVWdyT6pnhRrdYCnTW4n72QhTdt5cGYLNToLVkAYDpBOQhMn+LV3eKcp9a
-         N5KA==
+        d=gmail.com; s=20251104; t=1777925951; x=1778530751; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0tOD8/6djJ4pMyTuanqYIEyAgeWg4xBI8A3+BKBgiYE=;
+        b=k/yq6ObbBgnyW4N5VMtPd9CvOEyfEyw/Zoq7pXMthK3WWIMT4PYIxhObc5mAafbJON
+         m0GqgMo8i6YUwFu1tupbGV/6H+dikEc9OfLLSXqbTCmGsHsTGc0R4mqpjWXk7yNxnQ4B
+         xVcK8PeDkQA2cFpsNS+jpx0B4Wd9oKUQO+WxBDp7K9/lwLuBRNSyVEA+mwzhxR8t7P4J
+         f4UHPaPxfnukYvnB5adk61f3LA8RthEZEz8G4JwPiLbOzHDixH21Za7nDP+vyb6x04zb
+         YyNh8p5gk311qeKX0Kw+IHmd2s3bFOU0lHG9mpUK+4zs2F0GGHDkkpAmHUQzxaGRJ87x
+         3HSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777924714; x=1778529514;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=esEqdBvyNeHgcLcZRMKUkcBSd2coHxMvjI5oFXwBBPs=;
-        b=UOaUTKKfa7jXBDQt4M0zJt65q9EET5q6f6tn80TqUaVrOJcnArHCD7EwcvTY1W98Xg
-         1Nd6sERBKm/D256wVhUsO2lyp1ABg4u5vHi6unKmteVOGXhb+lWxr/mfD0LIyZTYNh+a
-         7q/Qga+6rCezRGoKXTJRNj50cOydVg2NBzoV9bVA9tpoa1brDfxe9e9mRbHF6nQiHKjH
-         EBb2GkSifmOTz9gz8Cq0qyeIJGEik793lYs3QNnuWLcGv2IoWJ0spbSrUYAWd1u5pQfN
-         7r6X2snr9FelprhaUJOBLuY+57zIBi/MJdYhJjj9gNil/+VA/uH/As6p3mwlx9atFiHP
-         T0gw==
-X-Gm-Message-State: AOJu0YxTtIsmRXbYRWaKtzaP99Ki1UfwvufRu/t4K1U6T/fUVT7IeOM/
-	dH9D4AXL9f9E+nOzeBNnHLfKPzkdjS6gsJPUGLBJOQoFfuKUOuVDabDJMWymAXHwl9M1SW05LDi
-	ikfZOFfKx7N1ItygDYLBu7E9hh0So28sWeYq5
-X-Gm-Gg: AeBDievEBmxwOs9AACYNwAAvdumwuQaFzE1ejtAIbk4qsRzrHEg0Z/4YMfdxbi7qa8B
-	E2DnJ6X4k6QoMVSujqOTtST88tPu+BasXsUqJu4tLQQzv7/BnvcJSoraJE+BQCRzz+icB2Dl/ui
-	pA+JcYdPyP68njGG2MbVoh8Fjpzd+lFdKTNuyN/kokZbBffz42O3D0guI7Kk9pUsT9uwq5wGiub
-	h9vOHgbb4THBzyFThX5rlIIZ7iMPV+W/Wt8JQs3GgbRkr6vi+PN0+m+JsFOeSe24CcXnaZaaPCm
-	jx5Xez6GDJJ2WL9zffeT
-X-Received: by 2002:aa7:c34f:0:b0:672:64b:c97b with SMTP id
- 4fb4d7f45d1cf-67c1aab3100mr3731156a12.26.1777924714107; Mon, 04 May 2026
- 12:58:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777925951; x=1778530751;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0tOD8/6djJ4pMyTuanqYIEyAgeWg4xBI8A3+BKBgiYE=;
+        b=SiXygTYwr/QZdQWitFTsyWwMPjkzkzPx3msMjU191AbMnPOPM1AuhxZR0iotJnZu6p
+         AZ8xtwiAsc9hkufFyY5XKbz5SyeREagDl5L1pVe7Q3KXbCdqsZhhn2OFkUC1uzsJWs7a
+         poLMN3CebsWsUCWIwkkTPXlgzNpG/ZjOi83j+E2Se2KTPO0tD6B4wg9uq5c/jjYi/yOt
+         n2SFc/R6aHWpFkpDw5MGvQf4ibKXbh22nIZnKpEKNbBnUyec+aaHAz7oRsN5EniQiDyO
+         boC65kwrqmkuUkQznBkPDAg6YvoAg+jv6XXdyCD+ePHWEbcjiARTQ5OKkS5WwZAQf+eY
+         3g2A==
+X-Forwarded-Encrypted: i=1; AFNElJ9tLojTmyD+RqYatbmTZgUQRtz91IsBO9Axh7YQmGz7oWsLkpndUtMF/2CesDksZdETylyYbs8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEbjBjDVYeT3wrI2bRaOv3DXdBPKAN5iZTLEP7RHtCu73Wsf8e
+	2TTZgLhbVzBjE+WE0wUiXgSFVdIL75hIAbD2tSGLifl/5UNEeDDVFdNn
+X-Gm-Gg: AeBDietOQ+jqvcLt9CBeUfBgOVhxBFlkcsVJf+lIMnnXVeQpvfDYNlMRHdruGHCBF2k
+	kdztIaJPzilHqqIQKJcQ0hnO7TKKmiUuR/ZptAYqZxWcsxTHsWQmi6n15d9zX45WzczaCHlcxN2
+	8CeiPMGQuuX0bOGLmpRxGe4WiLE90vi7qzLWVyUBD32DpXD4epzLk7tYEH2BmuyBEzVlo7cI167
+	6oERWtethTMw4Y1s1aUASW1GuhJ8F2N32W4teJI8RM14/K7uwFqOgMa/ihaBAyBZVz8r8izmM2d
+	jbbeWLsA6cEYDP+Wi23gA/o6DNzWtL9C+C9sTnQ/L32kmgSwxyXkVP5jRpKFk7KEK+VhBjEV67t
+	APBKlYLqGfaqZChVuPKZwKG39ti7YuSoZksTHQqAeiHetlDe9n4LOOAZu7gfki78N+ExYNd3ahz
+	qsiYh9OXC4yGUeSBm8LdkV6j2iyYxG1PIaoal42zaP8x/8
+X-Received: by 2002:a05:6512:3f02:b0:5a4:175d:21a with SMTP id 2adb3069b0e04-5a862ec2566mr3851306e87.2.1777925950756;
+        Mon, 04 May 2026 13:19:10 -0700 (PDT)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a85c230c68sm3245638e87.19.2026.05.04.13.19.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 13:19:10 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com
+Cc: siqueira@igalia.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	ardb@kernel.org,
+	hamza.mahfooz@amd.com,
+	aurabindo.pillai@amd.com,
+	Roman.Li@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH] drm/amd/display: Wrap DCN32 phantom-plane allocation in DC_RUN_WITH_PREEMPTION_ENABLED
+Date: Tue,  5 May 2026 01:19:05 +0500
+Message-ID: <20260504201905.90667-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANaxB-y=SD7V7dcBXuAqq8=p2R46SAr1uKZtMACynvk1=Cftqg@mail.gmail.com>
- <20260424221126.1238744-1-elaidya225@gmail.com> <CANaxB-xFcF7U=wJv8EqKy=j=-P3SN+sLQ9ytH8Ej69h03tqL8Q@mail.gmail.com>
-In-Reply-To: <CANaxB-xFcF7U=wJv8EqKy=j=-P3SN+sLQ9ytH8Ej69h03tqL8Q@mail.gmail.com>
-From: Ahmed Elaidy <elaidya225@gmail.com>
-Date: Mon, 4 May 2026 22:58:22 +0300
-X-Gm-Features: AVHnY4K-gqls4V5lFPSYuwMzajTBx-lOIHJ6BTOdcQJ2CRq2bDdmxV7hRnhW0rw
-Message-ID: <CAP48DwbE3MnQqVmbOsrSZgo6tYvqE4RV9o4dS2TODUP9G85aog@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: fix VM_SOFTDIRTY propagation on VMA merge
-To: Andrei Vagin <avagin@gmail.com>
-Cc: stable@vger.kernel.org, lorenzo.stoakes@oracle.com, linux-mm@kvack.org, 
-	akpm@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 59EC84C363B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D94F24C37F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243907-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243908-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[igalia.com,gmail.com,ffwll.ch,kernel.org,amd.com,lists.freedesktop.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[elaidya225@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,oracle.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hi Andrei,
+dcn32_validate_bandwidth() wraps dcn32_internal_validate_bw() with
+DC_FP_START()/DC_FP_END(). On x86 non-RT, DC_FP_START expands into
+kernel_fpu_begin() which takes fpregs_lock(), i.e. local_bh_disable().
+Allocations done inside this region must therefore not sleep.
 
-Thanks for the review.
+The legacy DML1 path through dcn32_full_validate_bw_helper() ->
+dcn32_add_phantom_pipes() -> dcn32_enable_phantom_plane() unconditionally
+calls dc_state_create_phantom_plane() -> dc_create_plane_state(), which
+performs kvzalloc(sizeof(struct dc_plane_state)). On a recent kernel
+sizeof(struct dc_plane_state) is 343736 bytes (335 KiB), well above the
+PAGE_ALLOC_COSTLY_ORDER threshold, so __kvmalloc_node() takes the vmalloc
+path. __get_vm_area_node() then trips its BUG_ON(in_interrupt()) because
+SOFTIRQ_DISABLE_OFFSET is set in preempt_count:
 
-> Should we fix vma_merge_new_range too?
+  kernel BUG at mm/vmalloc.c:3206!
+  RIP: __get_vm_area_node+0x257/0x2d0
+  Workqueue: events_unbound commit_work
+  Call Trace:
+   __vmalloc_node_range_noprof+0x22b/0x570
+   __kvmalloc_node_noprof+0x3d0/0xb40
+   dc_create_plane_state+0x35/0x290 [amdgpu]
+   dc_state_create_phantom_plane+0x1a/0x120 [amdgpu]
+   dcn32_enable_phantom_plane+0x101/0x780 [amdgpu]
+   dcn32_add_phantom_pipes+0x47/0x460 [amdgpu]
+   dcn32_full_validate_bw_helper.constprop.0+0xa46/0x1d70 [amdgpu]
+   dcn32_internal_validate_bw+0x49c/0x1600 [amdgpu]
+   dml1_validate+0x20f/0x800 [amdgpu]
+   dcn32_validate_bandwidth+0x317/0x540 [amdgpu]
+   dc_validate_with_context+0xd34/0x1d30 [amdgpu]
+   dc_commit_streams+0x7ca/0x1810 [amdgpu]
+   amdgpu_dm_commit_streams+0xfd4/0x1e60 [amdgpu]
+   amdgpu_dm_atomic_commit_tail+0x29e/0x3520 [amdgpu]
+   commit_tail+0x204/0x4b0
+   process_one_work+0x8fd/0x16a0
 
-Yes, vma_merge_new_range() exhibited the exact same logic gap where
-vma_expand() leaves the merged VMA without VM_SOFTDIRTY if the target
-sequence didn't have it natively. I have added the exact same fix to
-vma_merge_new_range() in v3.
+Per-CPU __preempt_count on the crashing CPU at panic time was 0x202:
+SOFTIRQ_DISABLE_OFFSET (0x200) from fpregs_lock() plus two preempt holds
+from dc_fpu_begin() and kernel_fpu_begin().
 
-> How are you testing this patch?
+The DML2 paths already wrap their large vzalloc()s in
+DC_RUN_WITH_PREEMPTION_ENABLED() to handle this case (see
+drivers/gpu/drm/amd/display/dc/dml2_0/dml21/dml21_wrapper.c:26 and
+drivers/gpu/drm/amd/display/dc/dml2_0/dml2_wrapper.c:24). Apply the same
+guard to the DML1 phantom-plane allocation in dcn32_enable_phantom_plane().
 
-Testing was done using the CRIU ZDTM transition test suite
-(soft-dirty-merged-vmas.c) on virtme-ng. The test enforces an
-unprivileged namespace testing environment (ZDTM_ROOTLESS=3D1) where it
-tracks VM_SOFTDIRTY across merged VMAs. The unpatched 6.18 kernel
-fails this incremental tracking natively, but correctly propagates the
-bit with this fix applied.
+This is a separate class of issue from "drm/amd/display: Fix unsafe uses
+of kernel mode FPU" by Ard Biesheuvel, which addressed callers entering
+DC FP compilation units without DC_FP_START. The bug fixed here is the
+inverse: a sleeping allocator invoked from within an active DC_FP_START
+region.
 
-I've addressed the formatting suggestions and added the Fixes tag to
-point to the 2014 commit (34228d473efe). I have just sent the v3 patch
-to the list.
+Reproducer (RX 7900 XTX, single 4K HDMI display, DCN 3.2): launch any
+workload that produces rapid atomic modeset commits. The most reliable
+trigger observed is launching Rise of the Tomb Raider via Proton and
+repeatedly pressing the Super key during the level loading screen;
+crash occurs within ~4 minutes uptime. Random crashes are also observed
+during routine fullscreen toggles (image viewers, chat applications).
 
-Best regards,
-Ahmed
+Hardware verified clean: memtest86+ 4 passes, stressapptest -W -m 32
+4 hours, both pass with 0 errors. KASAN active, no reports under load.
 
+Fixes: 235c67634230 ("drm/amd/display: add DCN32/321 specific files for Display Core")
+Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+---
+ .../drm/amd/display/dc/resource/dcn32/dcn32_resource.c    | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-On Mon, May 4, 2026 at 7:42=E2=80=AFPM Andrei Vagin <avagin@gmail.com> wrot=
-e:
->
->
->
-> On Fri, Apr 24, 2026 at 3:11=E2=80=AFPM Ahmed Elaidy <elaidya225@gmail.co=
-m> wrote:
->>
->> During VMA merging, such as through mprotect(), VM_SOFTDIRTY flags could=
- be
->> lost. This breaks tools relying on soft-dirty tracking, such as CRIU
->> incremental dump/restore.
->>
->> Upstream resolved this using a broader VM_STICKY infrastructure (commit
->> bf14d4a05387 "mm: propagate VM_SOFTDIRTY on merge"). To minimize churn a=
-nd
->> risk in the stable 6.18.y tree, this patch skips backporting the entire
->> VM_STICKY series (9 patches). Instead, it introduces a minimal standalon=
-e fix.
->>
->> VM_SOFTDIRTY is intentionally excluded from normal flag comparison to al=
-low
->> merging in mprotect. This patch ensures the resulting merged VMA retains
->> the VM_SOFTDIRTY flag if either of the original VMAs had it.
->>
->> Suggested-by: Andrei Vagin <avagin@gmail.com>
->> Cc: stable@vger.kernel.org
->
->
-> It probably should be: Cc: stable@vger.kernel.org # 6.18.x and
-> the prefix in the subject can be [PATCH 6.18.y]..
->
-> Please add The Fixes tag to the commit that introduced the issue.
->
->>
->> Cc: lorenzo.stoakes@oracle.com
->> Signed-off-by: Ahmed Khalid Elaidy <elaidya225@gmail.com>
->> ---
->>  mm/vma.c | 8 ++++++++
->>  1 file changed, 8 insertions(+)
->>
->> diff --git a/mm/vma.c b/mm/vma.c
->> index 5815ae9e5770..03728d855684 100644
->> --- a/mm/vma.c
->> +++ b/mm/vma.c
->> @@ -978,6 +978,14 @@ static __must_check struct vm_area_struct *vma_merg=
-e_existing_range(
->>         if (err || commit_merge(vmg))
->>                 goto abort;
->>
->> +       /*
->> +        * VM_SOFTDIRTY is excluded from normal flag comparison to allow
->> +        * merging in mprotect, but we have to ensure the result is corr=
-ectly
->> +        * marked with it if either side had it.
->> +        */
->> +       if ((vmg->target->vm_flags ^ vmg->vm_flags) & VM_SOFTDIRTY)
->> +               vm_flags_set(vmg->target, VM_SOFTDIRTY);
->
->
-> Should we fix vma_merge_new_range too?
->
-> How are you testing this patch?
->
-> Thanks,
-> Andrei
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+index 82f81b586986..3751f7a94a05 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+@@ -92,9 +92,14 @@
+ #include "dml/dcn32/dcn32_fpu.h"
+ 
+ #include "dc_state_priv.h"
++#include "dc_fpu.h"
+ 
+ #include "dml2_0/dml2_wrapper.h"
+ 
++#if !defined(DC_RUN_WITH_PREEMPTION_ENABLED)
++#define DC_RUN_WITH_PREEMPTION_ENABLED(code) code
++#endif
++
+ #define DC_LOGGER_INIT(logger)
+ 
+ enum dcn32_clk_src_array_id {
+@@ -1684,7 +1689,8 @@ static void dcn32_enable_phantom_plane(struct dc *dc,
+ 		if (curr_pipe->top_pipe && curr_pipe->top_pipe->plane_state == curr_pipe->plane_state)
+ 			phantom_plane = prev_phantom_plane;
+ 		else
+-			phantom_plane = dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state);
++			DC_RUN_WITH_PREEMPTION_ENABLED(phantom_plane =
++				dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state));
+ 
+ 		if (!phantom_plane)
+ 			continue;
+-- 
+2.54.0
+
 
