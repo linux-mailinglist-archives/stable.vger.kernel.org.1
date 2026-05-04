@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JFoIGKt+GkuxwIAu9opvQ
-	(envelope-from <stable+bounces-243529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:54 +0200
+	id yJMcCj6o+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62EF4BF8E4
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF4C4BE92D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06C803057D44
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 310AE300A31C
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CD43D6484;
-	Mon,  4 May 2026 14:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC793DEAD6;
+	Mon,  4 May 2026 14:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya4pAAR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbJxSSBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B5D1C68F;
-	Mon,  4 May 2026 14:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEA23DEAC3;
+	Mon,  4 May 2026 14:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904118; cv=none; b=aJ/QygwsPIYsvV9rqLSIsJTb0cA6oXAJJzf8zWitHArA7j+GQklRyseDN+tbTUupsde/7u6G9gb4WU28Dn+8AdpWiBZ+KmwabwWzmE82aqJgTA56zfwcG1z7S8P62YlgviaEvLfepONsbvLGUet0wBBapBuFHXrKt0zxlnIGARw=
+	t=1777903547; cv=none; b=D/M+OCnuefiX1VzC9+5KOw7L9VWh83DFYrfAIuA0weP+rs5KG1bKt/Qkniv+G31+gdvfBxPgofIs8tfwSnRyiNYhAEIxH+dpPWMJcuHkrxC+PwfPXaL8tPD3UwTRMxOAJfk5cJ0duEg8qdy2TbQ4NLYPf5bhiSsGwFkDiUBNFwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904118; c=relaxed/simple;
-	bh=Qnmch3hl14DSlwINUn/b7hbKPbTP+/wFxYUMpV151OI=;
+	s=arc-20240116; t=1777903547; c=relaxed/simple;
+	bh=b/iUfD9Ozl6F73BHvU38QXCQ9hPA9jFJM9SEvbThDNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hPeynWyW4f6uxCQASeh4OEGtu1Agfbv1GimJXuePfwnQkhM1iZEdGvEHaXo70wTrV72Ud8MbpWgnF1r6eqEPfgslbF21DKXZKbXo3ADOLOfJOaEXx0tafeBek0fAa7Acjjtu7ly4IWyTulHPv+MTHWtiTYFlW5auwj3vj3eQ5Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya4pAAR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA0DC2BCB8;
-	Mon,  4 May 2026 14:15:18 +0000 (UTC)
+	 MIME-Version; b=c1PcXaJjxfbF3oOhtUEnACETEXepyu/gm1fOdmsKH9JoS2bLSvx9uGYkpJfVgRkhQSUOd+4thOgcHaLClNhuvXDFME0PzJyQTaoNH6hUUy+FrxF8FQaxW+7U/Uy6FSnZOlOXOb/z9O/pHMNJFYhYoe2Htn8PYnjNbN/FQO1tKiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbJxSSBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD62EC2BCF4;
+	Mon,  4 May 2026 14:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904118;
-	bh=Qnmch3hl14DSlwINUn/b7hbKPbTP+/wFxYUMpV151OI=;
+	s=korg; t=1777903547;
+	bh=b/iUfD9Ozl6F73BHvU38QXCQ9hPA9jFJM9SEvbThDNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ya4pAAR+SQXBSfvcl6oWgx+zbhaYxrnmkMaAWf60djZ7q6baw4G1t4WoaHq/5c9x0
-	 pGV1z8YDk1Kng+/wRE3/4aSuG7uMOAWWq/2ZRRc8nmPmPkLRl7ZUTp2egv4+jWGAax
-	 kWCG5b8dHhJHWAPQyE96jJThbQcHajE+oxXODQqE=
+	b=zbJxSSBZb1JHpJ+F7tr1ri/CkNXwS66NIfIwRHqsCFfU2hi21DOrbIIH+LyLO8bJ2
+	 A7JO/sUjdT8b6ufNE1tCVW63jigrtfUnKsjUSG1P02nLVImD8dgwn9/0ZGFfLSYc+W
+	 I58JgxCMCK7ie3wJM36eEEurQV3BmfM+xUZKW4TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 189/275] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4, and CS
+	Chia-Ming Chang <chiamingc@synology.com>,
+	robbieko <robbieko@synology.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 7.0 244/307] inotify: fix watch count leak when fsnotify_add_inode_mark_locked() fails
 Date: Mon,  4 May 2026 15:52:09 +0200
-Message-ID: <20260504135150.095756560@linuxfoundation.org>
+Message-ID: <20260504135152.010548549@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E62EF4BF8E4
+X-Rspamd-Queue-Id: ADF4C4BE92D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243529-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243306-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,cr0.pg:url,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,synology.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Chia-Ming Chang <chiamingc@synology.com>
 
-commit 96bd3e76a171a8e21a6387e54e4c420a81968492 upstream.
+commit 6a320935fa4293e9e599ec9f85dc9eb3be7029f8 upstream.
 
-According to the APM Volume #2, 15.5, Canonicalization and Consistency
-Checks (24593—Rev. 3.42—March 2024), the following condition (among
-others) results in a #VMEXIT with VMEXIT_INVALID (aka SVM_EXIT_ERR):
+When fsnotify_add_inode_mark_locked() fails in inotify_new_watch(),
+the error path calls inotify_remove_from_idr() but does not call
+dec_inotify_watches() to undo the preceding inc_inotify_watches().
+This leaks a watch count, and repeated failures can exhaust the
+max_user_watches limit with -ENOSPC even when no watches are active.
 
-  EFER.LME, CR0.PG, CR4.PAE, CS.L, and CS.D are all non-zero.
+Prior to commit 1cce1eea0aff ("inotify: Convert to using per-namespace
+limits"), the watch count was incremented after fsnotify_add_mark_locked()
+succeeded, so this path was not affected. The conversion moved
+inc_inotify_watches() before the mark insertion without adding the
+corresponding rollback.
 
-In the list of consistency checks done when EFER.LME and CR0.PG are set,
-add a check that CS.L and CS.D are not both set, after the existing
-check that CR4.PAE is set.
+Add the missing dec_inotify_watches() call in the error path.
 
-This is functionally a nop because the nested VMRUN results in
-SVM_EXIT_ERR in HW, which is forwarded to L1, but KVM makes all
-consistency checks before a VMRUN is actually attempted.
-
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
+Fixes: 1cce1eea0aff ("inotify: Convert to using per-namespace limits")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-17-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
+Signed-off-by: robbieko <robbieko@synology.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://patch.msgid.link/20260224093442.3076294-1-chiamingc@synology.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    6 ++++++
- arch/x86/kvm/svm/svm.h    |    1 +
- 2 files changed, 7 insertions(+)
+ fs/notify/inotify/inotify_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -377,6 +377,10 @@ static bool __nested_vmcb_check_save(str
- 		    CC(!(save->cr0 & X86_CR0_PE)) ||
- 		    CC(!kvm_vcpu_is_legal_cr3(vcpu, save->cr3)))
- 			return false;
-+
-+		if (CC((save->cs.attrib & SVM_SELECTOR_L_MASK) &&
-+		       (save->cs.attrib & SVM_SELECTOR_DB_MASK)))
-+			return false;
+--- a/fs/notify/inotify/inotify_user.c
++++ b/fs/notify/inotify/inotify_user.c
+@@ -621,6 +621,7 @@ static int inotify_new_watch(struct fsno
+ 	if (ret) {
+ 		/* we failed to get on the inode, get off the idr */
+ 		inotify_remove_from_idr(group, tmp_i_mark);
++		dec_inotify_watches(group->inotify_data.ucounts);
+ 		goto out_err;
  	}
  
- 	/* Note, SVM doesn't have any additional restrictions on CR4. */
-@@ -465,6 +469,8 @@ static void __nested_copy_vmcb_save_to_c
- 	 * Copy only fields that are validated, as we need them
- 	 * to avoid TOC/TOU races.
- 	 */
-+	to->cs = from->cs;
-+
- 	to->efer = from->efer;
- 	to->cr0 = from->cr0;
- 	to->cr3 = from->cr3;
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -142,6 +142,7 @@ struct kvm_vmcb_info {
- };
- 
- struct vmcb_save_area_cached {
-+	struct vmcb_seg cs;
- 	u64 efer;
- 	u64 cr4;
- 	u64 cr3;
 
 
 
