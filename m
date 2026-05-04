@@ -1,215 +1,187 @@
-Return-Path: <stable+bounces-242835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AH4wGUMn+Gn6qwIAu9opvQ
-	(envelope-from <stable+bounces-242835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 06:57:39 +0200
+	id 2MlSCxMp+Gk3rAIAu9opvQ
+	(envelope-from <stable+bounces-242836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 07:05:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7FE4B8656
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 06:57:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901584B8703
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 07:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C665530073E1
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 04:57:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8002030048ED
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 05:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2B41F3BA2;
-	Mon,  4 May 2026 04:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A243258EE9;
+	Mon,  4 May 2026 05:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OGkyfikm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FqzG6Dse"
 X-Original-To: stable@vger.kernel.org
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012033.outbound.protection.outlook.com [52.101.53.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289C823ABA7
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 04:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777870655; cv=fail; b=VyMqlU5YzVQSUzf8lRSHfRIVVU2SNyAPcF4lyVmjFnb7h3Kk0kHBAkm/yAZjHoByxfPy4krq2jTkjnyoZILREfXdUwI8sb2E4dTpmJ+M7StCn+3iOsKUJ9t5mVLWA1INRorbPjijWPkIAOT4AvLLpUa3RLzroDErsUmxFSNq3Pc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777870655; c=relaxed/simple;
-	bh=vC8D/W93VXwsIjC/jR7C/Qh5lPXm56Kku9m/PCnEKEY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IQbKDbIH6AdFy5dDSMG3hDCGLUO3gAxCQjc5xnyeDwObt5+y6Q70WmavllLLDsb7seI2kwgdo9pv0Iz+bjvMNVxLxVCM6geOKWvR0DkE1QfnVeenwIn2t+BaN6gRcDwBUMo7q3Gh41Sw/5uNzAN2fzuAtAv6Wp4OMpMvAgOIxjA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OGkyfikm; arc=fail smtp.client-ip=52.101.53.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LtkMpUsID8twEZE7gxfa/ioitNxoCKgsXIcjFbGrGi3WKcedZDmeYBbhYK/hwz2uMv3gb4B5D5JgAPwp0pPMxs6Zq81quuASgQz5E1FZx9SHWs2cNdSvULmfFQvC2kP7VCMfIGEfPVBix47rXimr1homWjtINJnzTW4OZGHsbZn5oReZJuWOk9R1B3HfeFE0qPn4h+39wfxbiGnHuYrE521xcYyNeIiKoyiG7gRZOCXV2jemp9E+jCcq24C///U1h0RwQEzh32e+dzaNEgvZr82GXd1MVRqGAbzhtgLBJjQElpEKZPuozGK1btbxhgILjorv3R/oO9YctFqlloWO8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ITWDBTdIlIQD0uCP/XMjKmtty7uCCpj911cr6Y2QQ1k=;
- b=FpUy4te/fA6yVAZDVuUTOvuodLk0zuTn3DH6yOZTA3ST6jMy+WCExc+k+TqFKxzD7+IxGeidamaihvEHDgxGAMas8aBD97DQdRO3YoH8I9L7IJvkxXb103zntDn6ih/31NCAXIQAp1Gv7XBAhhbL2w0oafzR4tBIvGeLHzJnBMB66AB7W5O8MKcPMhF/o2OnS0L09Txa/SjzS19SOpXYDoA2uql8ZkpEcdC1BPZqqpjYqwaPc6P9vK9uAwbx/tZVlAP3E+dEIEGZMs2MPgJ4gRe721RdZCkQN3lO4/PDg7jzZfG+ZHh3cUZJnwLCxP/guZEdDJ210AnYrFEcXCn4HQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ITWDBTdIlIQD0uCP/XMjKmtty7uCCpj911cr6Y2QQ1k=;
- b=OGkyfikmWLNnYXoLP1B2ISxskVDK3rvqTMKJly3tTQA72mPyUhiY89Ugiz1BphQR154+xlqYlHryhUwAAo7bD0fLdFNK65blvohnB5ncKbfhWSG1Ps17atWcgmwt6BHruWranJN7TdblYSQ5fJSJlogiyz51Q7QJc3j6smBUQtY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5754.namprd12.prod.outlook.com (2603:10b6:208:391::20)
- by CH3PR12MB8912.namprd12.prod.outlook.com (2603:10b6:610:169::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Mon, 4 May
- 2026 04:57:30 +0000
-Received: from BL1PR12MB5754.namprd12.prod.outlook.com
- ([fe80::b080:4c1a:f6e5:4564]) by BL1PR12MB5754.namprd12.prod.outlook.com
- ([fe80::b080:4c1a:f6e5:4564%5]) with mapi id 15.20.9870.023; Mon, 4 May 2026
- 04:57:30 +0000
-Message-ID: <d355484d-d038-4393-ac06-a71ff1c69b50@amd.com>
-Date: Mon, 4 May 2026 10:27:23 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iommu/amd: Fix precedence order in set_dte_passthrough()
-To: Weinan Liu <wnliu@google.com>, iommu@lists.linux.dev, jgg@nvidia.com,
- joro@8bytes.org, suravee.suthikulpanit@amd.com
-Cc: will@kernel.org, patches@lists.linux.dev, stable@vger.kernel.org,
- robin.murphy@arm.com, santosh.shukla@amd.com, chrisl@kernel.org
-References: <20260430232851.236666-1-wnliu@google.com>
-Content-Language: en-US
-From: Vasant Hegde <vasant.hegde@amd.com>
-In-Reply-To: <20260430232851.236666-1-wnliu@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0039.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:81::10) To BL1PR12MB5754.namprd12.prod.outlook.com
- (2603:10b6:208:391::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2B3256C61
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 05:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777871120; cv=none; b=TNBq3Xi4DaR9vWMaijsIbjTeDjDJ+mV2MG0pijZ31cvsq/UajiK/rOHSNyrjlAgcqM5uDsZaV3XWG7kJOi0M6uPvdHckehlnKKm0WXrB2+NPxJyyEC45IBpfH1T/VqGEErFIUvXXn4dx5w/xaS1nje/PN0Lm4Tbekl1aIloFZIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777871120; c=relaxed/simple;
+	bh=M2sWS/gg3dwrAE97fSBa8c2uQW7Y0vw0Jt57zP5QY8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ciITPns0/cs6Rm7lEG7598Cw8K/OPEd0KPAFf/28oNC0sLIEGagfjdbBkTCF53pYBwGIXYNHTcrfkrS8WgX50r6AGue5+gqYEG+RQF3bitEJUpJsg32dy691obrKra3vzWeq8sEwzicYxCdZSn3YrPEvJpvafPoafqfgxXaCQyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FqzG6Dse; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF95C2BCB8;
+	Mon,  4 May 2026 05:05:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777871119;
+	bh=M2sWS/gg3dwrAE97fSBa8c2uQW7Y0vw0Jt57zP5QY8Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FqzG6Dsen3cIzBqtfsHFvK5CQTr9Z//pu14l78utWByGHpUo2jFmPNihPqtJo9uir
+	 5Ghc6ZNOo3fBhi6mO+ja6QSG7V3ywNa5wLy2gzluQ/Xw9uKPDEZ13D3P9iD4nMzzaC
+	 5rmWYMFi9H8qSlgQiFJXYq4PMh+AvJjXu7WMVWuG1cN18mi1Zk9eHRUP02YzSvtjtH
+	 k9EumhpBjT0dz3oE8xdXakxf7v7QJwoIC2qQnQOv/PZoP7LhcRpPwBZBoeQOUFA6eo
+	 0C46eSW0bIuEmoycXEdjzZ8Re6qYqs6m3flh4BLih1j+5a4ZhHmMjFrT6CRXfzTaTt
+	 zOV9FU5KJtYiA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] net: qrtr: ns: Limit the maximum number of lookups
+Date: Mon,  4 May 2026 01:05:10 -0400
+Message-ID: <20260504050510.1612332-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050119-liking-frill-4504@gregkh>
+References: <2026050119-liking-frill-4504@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5754:EE_|CH3PR12MB8912:EE_
-X-MS-Office365-Filtering-Correlation-Id: d846ed43-56e1-4f81-c747-08dea999a572
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	nS3QYCjcZTgU/7KuHBEIgKfPabpV6DSxSOnGE04aHd9kl7BsrfqoZAKvCnRejXxQjt+1HxLcavQehnDYK3nCfqtFeMGbC53ktkpGaZWbI54p5WAj9VhQeOV8anQKOzlFkt/3DJGU1IealT4iLLhvoKAHrHbwdAocQL9V2gQlxLjiyYhfjzEym6Nq3BxXkwyuTzBlNc5SCJtBezXDwHOS2W4Kqk8iX4Zlkf7csM5PNSo9C3cHyk5ySOBRfa+p2zmUqEzaq+xAqvKsplrOr1pSfoza8JkKRFQe8s0AWK/Low2yWTjkJL+huKK00q+sb/96H0ghykD+24FlZTHmbNShYC6U50cc9GbQGckmSoeWx8FdpOI28YbKdCddgUvWP6HSvJt9n8Uxvk3qn/Boul4w7g+qGZEHaGEXFD4oRY/yYxMTavNgFIJQkdloOsC+9QlWemjoEo/OItSE6vAiP3+9Zme8P8lh5T3ErcS+ZNxV2k57xijA8y8AEJEDClVNHZUBWu5rcg4EVhuaDjPoveQMxKeWWAM0rCa7mh+Lvrxog0XJBdu3U4d2hmSgBn3bFmWo9rkyJ36wjr9KjQUPIoNZkZAgyuIntRLzYMGZdh7biJg2idsU6cJoFsGRZZGizlv9wjfU/0iQ7XvHR6sdoHSF3YLQPvJ+2HEhfKQ43C6L+JRFvZYY5RUTuocOEVPP+6v2
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5754.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RWw4anFRVzl6Q0VLM25JOGNERzFGMHJFQncvT3NMRGI4QWxsR3NjUHdFcTZs?=
- =?utf-8?B?N3ZzR20xWkNCV3FCS0Yxdjc0TlpycVJCSktNLzZxYU1Za2hpOUt3R09KcnNZ?=
- =?utf-8?B?V3hKclMvOFVBbHBkMjNHTENXWEpHR0NkV1pmcjhmZ0dSUjk0dkZWWG0zaXNW?=
- =?utf-8?B?dTVIRkVrZFkyU0QvK1ZqUm9JdDhxOUxsZWVNNmhoM1RuWXIvazBodTBLWWx4?=
- =?utf-8?B?a1hNUmlnQXFiNXJ2VzRvSnBYSFhoUmVQUWxESS9abVAvK29hc1FBMWV4WW91?=
- =?utf-8?B?MFVpU0dlZWZ4WVp4UVZCcnQ5NXRadDMxK2pYNkV5enhWSnZMancvVVlLaE9M?=
- =?utf-8?B?dUdNZUt2QjllR1NuNkk3dW02eWJ0OTJIWlUvWjl1UStBdU16ZW04dkpWY0w1?=
- =?utf-8?B?STBuQnpXMkREQ2RLMzkvVHQyVWhDVTJqR3NWVkM3V1B4eHVwRi9vaHVrSy9L?=
- =?utf-8?B?SE9UR2FkdmpXZEtjRmpBdDFVTXpHSEdRWEVHb2RLTkM5bC9aMlR0VTR1UGxr?=
- =?utf-8?B?MnhZcTZYMi92Tk5nWWx0TjhLYnlHcGk1d1NmQTcwNWhXaGRqSWY2SlhCRFhv?=
- =?utf-8?B?aUp0Kzd3YTg4ZnptOUdNMDU5Zjl2RFRDNktGdDBDeGh3SDJzQkZ0Z2I4VjZY?=
- =?utf-8?B?RE1oQ0dld29HaU56ZzlXQlc5Mk9FOTNWUlVlS1BjMEY4OUZnQ0xZcFROdXZI?=
- =?utf-8?B?RmFEaVpGcTRwNmp2eEZBRmlPSjUzUmh3dEZIQVdRY1BaYnBvRE05ZkNWeFlY?=
- =?utf-8?B?MFVBNSszaXNoaUNMeks3eHA4U0o0ZFB5WUQ4T0FlREpvYVp2VTArLzlkeS9o?=
- =?utf-8?B?Ti9SYzZaSkNLSjY3Z0xUa3F4NjkwZlZsY2JlUi9iK1hhRVZHQzRoQ2lWNng4?=
- =?utf-8?B?WVl5Qmt1UlJhcG5Kdk9oQXh1dHgxd0R4djJkTEFVMU5QS0lza24vVjJTZ1JF?=
- =?utf-8?B?c1JzUGNXM2ZXOGw3cldxeEpMaFBka3laaFdZMXovcE5OdEZRTjl0MW9vc2dO?=
- =?utf-8?B?THl1UEtpTk0zRktkcDRiY2RGcGNvb3dBWmlZZjhlLzVYYktqRkcrQ2Fzc3g0?=
- =?utf-8?B?Z2NtaUVkUGtvenlLNFNtZDZUdUpBeUFQMFlZUkxsSjVpa3ZkWVpJM0JDOUlo?=
- =?utf-8?B?akFjWi9sUHBtMlFNcUR5YzdlQjV4cWdxOFRYeTRBUmhoNEx1dHB6RUVwKzhT?=
- =?utf-8?B?U29oSVljaXpRMm5BckFzODEyNHV0SzU3bzZCSFZ1aDBQTENwTjJGb1lBdUlS?=
- =?utf-8?B?TmM1dEFaUm4wVFlDUnpxQk5lSFF5alM4TVpEY1ZvTm5GeFFHaTNxdzZFQk1q?=
- =?utf-8?B?WjhGTi92ZHIwdmFGaktoWmdVb1JxNnFXUCtkaWpJTjJXNkFUdjV2anh0VUwz?=
- =?utf-8?B?dTJlZHRQcHBkQjJLNkF0N2E3YVVIU1J4cmpWVjdXWnJWNll6S2FXZjlIUWJI?=
- =?utf-8?B?ZnRrNFpITDB0SnVucXBkUXlpQy9YbzczSmFuSW8rRy9oRElFc3hQVTZocVpF?=
- =?utf-8?B?ZTJrVHpEZ3RSNU1POWxyNXVtZDBvY0tKcWxkZUo4OEZTeWg4M0Y2SDBpQUJ5?=
- =?utf-8?B?SG1KTkpmelZIaGhPWUtFR2JPZDhkaEtlRE13WWJLZ2J0N2ZoMVNjN0FnNWdx?=
- =?utf-8?B?a2x1Y1pRdFBOOXMrV3lVcDlDUzBpZ0dXV0JqV0loMWdZb1lWUjh4NVllMkV3?=
- =?utf-8?B?ZnU4Z2w0R1hhNTBGZ05CcVp3SjE1dWR3ZnVmRi81UEUxKzNrWTlIcENkVUph?=
- =?utf-8?B?ZHVtQzJWVlBkcm9xZFNSVW1rSHk0U1l5TzU5SlVndDUzVGVybmxES296ZS9E?=
- =?utf-8?B?RjQ0QzN6Zy9YMTl0OFJTYmJFK1A0aXpBMjlBRHJzTjhvR1VSamtndjllaEln?=
- =?utf-8?B?c1lFRllHdEx2Yk5yS2tjOFB6T2R6bk1zeTY4TmFLTzdTZ0FuUXQ4U2Ywamwz?=
- =?utf-8?B?R2pIRXNiVTl1VTJoTXRPRVppSmtaa2s2S1R5eDV5SnJnVWtXeG5TMVZTYURh?=
- =?utf-8?B?VUx2Z0VUK3dxOVk2cURIWElSYTBubW5xWDgxTHdwVndkbm8zWmxZZjFYMGE1?=
- =?utf-8?B?Rk1LYzQvejJTRE1KZWJKd1BnRklDb3ZJUlh4K0ZzTXBoY1V4VVJmMXpuRloy?=
- =?utf-8?B?ZCtPYnBKWmdRMDRQRmJWNU5yMndBai94cDY3NXFpQjVMbXRTYVMxV2hSV01j?=
- =?utf-8?B?aFZHYXdkeFp2Um5MZ2ZvWjk2dTlGRjFlQUxiNENyR3hXOGNvdkNFRnY4SXlr?=
- =?utf-8?B?QjJMK2xqbEt5U21yOHU2VE5TeXpQcHZ0eXRBaCtLUTF0bXN6M1JYenIwa3c3?=
- =?utf-8?B?Q1c5K3BlUngySzhMYjZyTlBIbmI3WG91MWJKc2U3S21BNzNmeXVvUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d846ed43-56e1-4f81-c747-08dea999a572
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5754.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2026 04:57:30.6013
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: auCcC4U8POBFCSRntXgnUrf0UhBDTbpxvNIBlX8QlTA2JmjSIIU+sbOthw49iX3eCw8E6iCknfdkScO3p6VwbA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8912
-X-Rspamd-Queue-Id: BA7FE4B8656
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 901584B8703
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-242835-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[amd.com:+];
-	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242836-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vasant.hegde@amd.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,amd.com:email,amd.com:dkim,amd.com:mid]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
+[ Upstream commit 5640227d9a21c6a8be249a10677b832e7f40dc55 ]
 
-On 5/1/2026 4:58 AM, Weinan Liu wrote:
-> Bitwise OR | operator has a higher precedence than the ternary ?:
-> operatior. It will be incorrectly evaluated as:
-> 
-> new->data[1] |= (FIELD_PREP(...) | dev_data->ats_enabled) ? DTE_FLAG_IOTLB : 0;
-> 
-> Wrap the conditional operation in parentheses to enforce the
-> correct evaluation order.
-> 
-> Fixes: 93eee2a49c1b ("iommu/amd: Refactor logic to program the host page table in DTE")
-> Signed-off-by: Weinan Liu <wnliu@google.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Current code does no bound checking on the number of lookups a client can
+perform. Though the code restricts the lookups to local clients, there is
+still a possibility of a malicious local client sending a flood of
+NEW_LOOKUP messages over the same socket.
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Fix this issue by limiting the maximum number of lookups to 64 globally.
+Since the nameserver allows only atmost one local observer, this global
+lookup count will ensure that the lookups stay within the limit.
 
--Vasant
+Note that, limit of 64 is chosen based on the current platform
+requirements. If requirement changes in the future, this limit can be
+increased.
 
-> ---
->  drivers/iommu/amd/iommu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-> index 01171361f9bc..ccffbecb15c2 100644
-> --- a/drivers/iommu/amd/iommu.c
-> +++ b/drivers/iommu/amd/iommu.c
-> @@ -2149,7 +2149,8 @@ static void set_dte_passthrough(struct iommu_dev_data *dev_data,
->  	new->data[0] |= DTE_FLAG_TV | DTE_FLAG_IR | DTE_FLAG_IW;
->  
->  	new->data[1] |= FIELD_PREP(DTE_DOMID_MASK, domain->id) |
-> -			(dev_data->ats_enabled) ? DTE_FLAG_IOTLB : 0;
-> +			(dev_data->ats_enabled ? DTE_FLAG_IOTLB : 0);
-> +
->  }
->  
->  static void set_dte_entry(struct amd_iommu *iommu,
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-2-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted comment block to only mention QRTR_NS_MAX_LOOKUPS and kept kzalloc() instead of kzalloc_obj() due to missing prerequisite commits ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/qrtr/ns.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3c513e7ca2d5c..4c9982e80d460 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -21,6 +21,7 @@ static struct {
+ 	struct socket *sock;
+ 	struct sockaddr_qrtr bcast_sq;
+ 	struct list_head lookups;
++	u32 lookup_count;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
+ 	int local_node;
+@@ -68,6 +69,11 @@ struct qrtr_node {
+ 	struct radix_tree_root servers;
+ };
+ 
++/* Max lookup limit is chosen based on the current platform requirements. If the
++ * requirement changes in the future, this value can be increased.
++ */
++#define QRTR_NS_MAX_LOOKUPS 64
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -456,6 +462,7 @@ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+ 
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
+ 	}
+ 
+ 	/* Remove the server belonging to this port but don't broadcast
+@@ -589,6 +596,11 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 	if (from->sq_node != qrtr_ns.local_node)
+ 		return -EINVAL;
+ 
++	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
++		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
++		return -ENOSPC;
++	}
++
+ 	lookup = kzalloc(sizeof(*lookup), GFP_KERNEL);
+ 	if (!lookup)
+ 		return -ENOMEM;
+@@ -597,6 +609,7 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 	lookup->service = service;
+ 	lookup->instance = instance;
+ 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
++	qrtr_ns.lookup_count++;
+ 
+ 	memset(&filter, 0, sizeof(filter));
+ 	filter.service = service;
+@@ -663,6 +676,7 @@ static void ctrl_cmd_del_lookup(struct sockaddr_qrtr *from,
+ 
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
+ 	}
+ }
+ 
+-- 
+2.53.0
 
 
