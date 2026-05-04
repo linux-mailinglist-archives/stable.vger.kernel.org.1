@@ -1,349 +1,237 @@
-Return-Path: <stable+bounces-243933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243934-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EgsO+Ir+Wk86QIAu9opvQ
-	(envelope-from <stable+bounces-243933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:29:38 +0200
+	id AHaTAOgr+Wkq6QIAu9opvQ
+	(envelope-from <stable+bounces-243934-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:29:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E5D4C4D2C
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:29:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010D74C4D33
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 01:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3DF03028B19
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 23:29:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D19C130091FD
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 23:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AC03D300E;
-	Mon,  4 May 2026 23:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42E93D3486;
+	Mon,  4 May 2026 23:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WJv3k0Yr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h92yLmBp";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MxkhQDiK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D953D0926;
-	Mon,  4 May 2026 23:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABDF3D1704
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 23:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777937359; cv=none; b=hVm0IUYICBjG1ds28oNrdTUwU9YsZ5Qlkqo/NUClxePNve1MnMs88e8PVS1Mn7eM2Li/6vSU96SivVh4k3759Cw1wieJh0Ht9wakpmWpKPVxITOJvxE4NpCcoKiWkV/toPxR+0IquLRi+C9vT/j9ArPn2o3yESm0OwZ44b9GBwU=
+	t=1777937378; cv=none; b=uBnHbHuXG7Nvsd4Zpdt8VOlXtuwSMm7iB7qSruV390I4WAQHj1FMpp+nSnnAGwtv7WEhBTdjpviLuqm4gGOqVyiwgab7PTK4eXCVPtIeOFjFkyDGlcVpy5dH8gniNa9ArzJKfbni3mfdlhlcDQcsI7zSHi4+FKkJui2+jFkkdF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777937359; c=relaxed/simple;
-	bh=D4bRlDJqbmkrqhygiZUwPPCzNuNKuwuOZ58/BaNil04=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rg4d/lPagDECrmiu2YIEW4Fwe48dHSJnZ3743In7EAGtDN+I8t0J1+wsgxwUOf1gACHH0WhgAiHimLoT1e3c+mojMkeGe/6Wgmzj0IXYxJ6bn2cWRiZHhS0wZ3WXHs5rvm1o3h4LC3Gpgew5JNZJvK+81U63BKroPWi2nkkTvLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WJv3k0Yr; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777937358; x=1809473358;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=D4bRlDJqbmkrqhygiZUwPPCzNuNKuwuOZ58/BaNil04=;
-  b=WJv3k0YrSlv882n2sCNltiUG9YcKvEbo6yywYR2wBd1f1phsCnM2DhIQ
-   6N7DaNK/OGDlrXc7Xjv4Xtw8FLpPGaDo3mZwLMxI7R55WP76dWlZvJe9y
-   OOAdBp7tGknNfKIrqOEDRAhSZvkG2/7E9aZDcpP2GdsK89nzqAJMEw5R2
-   R/zvTYAVdfNQMi+FD51WVPEYiSX6AMhlxScOoHw2vKI2b9c/SsQrNIFOK
-   Ksc1JQkreSAJt73vMdevVDJqG1ZAYHB4j2nO7ifPareWfDm6dOYgLIR/6
-   J7mFYf+A/rYAsFINLo0SDVdnpc+BnftJxFth2qncHhc3o8bKy8318Ff/6
-   A==;
-X-CSE-ConnectionGUID: VKzo2pHDRkaY+ujVYx7JXw==
-X-CSE-MsgGUID: TO54+YowQcqMzZDRKY/EXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="89497288"
-X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
-   d="scan'208";a="89497288"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 16:29:15 -0700
-X-CSE-ConnectionGUID: XtP0aJglQ72vw15qkR3y/g==
-X-CSE-MsgGUID: vtgklWZ6QcagW/7/gVMIdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
-   d="scan'208";a="239626117"
-Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 16:29:15 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Cc: Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH v2 2/2] drm/ttm/pool: back up at native page order
-Date: Mon,  4 May 2026 16:29:10 -0700
-Message-Id: <20260504232910.3249376-3-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260504232910.3249376-1-matthew.brost@intel.com>
-References: <20260504232910.3249376-1-matthew.brost@intel.com>
+	s=arc-20240116; t=1777937378; c=relaxed/simple;
+	bh=VB/VZVOuWxM7Vs4MaYara4db9BUPG7xgRiAmNS6PBh4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HFcCqXb+feugrQHzssl3rQC5MyIxAhF6Gs3nQbOo9zMDSvn/ixgLdBzazmV+0j8zTqIjIrcJ7qbt8qEbnVQa147B57uukvCS7xLAWAc3zAC2Jh+tgpMnZM2V9Q/F31pAYT0o6ViXsVx46FoG/zEglZ8Bq3qwgZ/ZfESw/bA5Cp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h92yLmBp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MxkhQDiK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777937376;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oMJ6qLGsbY/8TJJVB5qBWJI8imsazXiBmcRxjMiEVbc=;
+	b=h92yLmBpTgXrgIJdmNPHbBbbuAyWFi89CxGtMVXZip3X3RWPINCGiALZVlobLNSOVIxEte
+	Sl7GlskcLRRG65WTYMalAbmpO6JOwX3S2FixLK9O75TnyAMMPjtdUBfHM2yXQulvpvq5S5
+	ImkR6tz5kxgpQj0Dk3wEOjzBVx14oBM=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-376-gn7rR0x8MKegPv41zRSIRQ-1; Mon, 04 May 2026 19:29:35 -0400
+X-MC-Unique: gn7rR0x8MKegPv41zRSIRQ-1
+X-Mimecast-MFC-AGG-ID: gn7rR0x8MKegPv41zRSIRQ_1777937375
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-79064868702so5967497b3.3
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 16:29:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777937374; x=1778542174; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oMJ6qLGsbY/8TJJVB5qBWJI8imsazXiBmcRxjMiEVbc=;
+        b=MxkhQDiKXqkTHkU03JhOUN8PGEBQCmoU77fFPhrTSthYkN5h7F+2JAXuZYxTnP5jy6
+         nIAvDIsqe7fPiBW8Tv64y9b6a2X/10ru9ZwdT5VRSoKMAwFWDcHBTnBaMGsnVwP1kUWS
+         Pt54rqy4Ciu26+7yFVOft5HVIKgbxoTER4Vh4/xdQaBQlpkQ8BvjcpUlEZrWH3NQ1CqR
+         BhSOX++0fh/qbELUExn+jcDoy7gSddCNwb5BJLoVCfBw1ClCn0aiy+G7lI4MF010DEhr
+         AMFaO4GIG2cqNKVxjC/+WFLy01lmi2KMuxh6yWFCcxAJPP1c5DZlI7HZf7BvLAL0EFSY
+         KXsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777937374; x=1778542174;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oMJ6qLGsbY/8TJJVB5qBWJI8imsazXiBmcRxjMiEVbc=;
+        b=ks9tdo4E7qc4yJecvPBwJP+TxnZshveLs+cJi5wNGnU193cYHJG2SHrt9uQxYeHxZ6
+         4YkKZUBDfdCWkUR9o0QFWieYxJ0wFsNHhpRxaOpd3P8pySINWW60K4+cRQA7Obd9l/si
+         UsHEJ1LILHigo0HnR+8v2qKqW8iDoMzZ5057y35ShZwn0woWn+jcaM48P0PM8hKUC1NT
+         iZhdU331Toenkfj2rOvSwddHcUb8tr7NwY758Q8KbZQkdaet4quLKi4bcLcbggILDjwx
+         3UmzIOyNUrOvIXZhuQX3YGvj8Tz8wLWxLqTvuQ3/DrE0yvk1wm/rcMcPtMlpE2Jh+++Y
+         oN+w==
+X-Forwarded-Encrypted: i=1; AFNElJ/g5xKMUdtpX/O8be5IQrmUvLRKd+8ABXoflgZFh0Kk4OIJ3pbTi4xe7IR0C5NmWZiG8wVYfLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoW/hAnPlcjjoylxIiCEObHKLf4ot9foxa4IpIIdCF4qi9tptK
+	oKO9+cz+bFbRJ1UE/woPOvhH/UT/wvZ7dsJJEWnDaVGjAF6EskhGC6KUWDHRRnGCGFV83fDeWNw
+	E8GF5u2P12sO02ERkxJo6R7hjzEDb5wKKQ0gHfhrYyFi/2ByaLT2RPm9FTiGinX3/tw==
+X-Gm-Gg: AeBDieut+/L7/ZeR9itL2K/lVJcEY1wOlexFKgL+Oygt7CW96W5nHILcoEI+qMNLBvw
+	z2ATAj29wjsPvMFJ45omO6uvLkP7TLV7GrSPwTm26IXo5e8C7JKFycAvHVJnwDDwWHdp4fwFvaZ
+	5tLVd2k/xzCD0ZaPGmECk/iRS4h7NOnVnmkYKG3OFbihr261xSCXX2h1WOgiryJ8NITFwvHvB0J
+	+ejRyX09IV2WBY8E4tWBGxra3NvCWiAeyBOq8KU9QBkbqDgg0ljcSIoDq2ltiTGFT7i1YlyUhdh
+	9iQb3aaPcgOgRKc4Cyqdz/oi4sEme/NjrPafAMncHyWDTujxh3ly7FrG1dsEjcY1YYbBxM4fZ8g
+	4Gh6e5JtwTqQOj+ZBxBFQGqoLF4KNIVAr9Ek6+iHpUKpe9tHK6X5+l9k4yAHsiXc=
+X-Received: by 2002:a05:690c:c501:b0:7ba:fd82:9131 with SMTP id 00721157ae682-7bdac640431mr9347987b3.47.1777937374236;
+        Mon, 04 May 2026 16:29:34 -0700 (PDT)
+X-Received: by 2002:a05:690c:c501:b0:7ba:fd82:9131 with SMTP id 00721157ae682-7bdac640431mr9347667b3.47.1777937373502;
+        Mon, 04 May 2026 16:29:33 -0700 (PDT)
+Received: from li-4c4c4544-0032-4210-804c-c3c04f423534.ibm.com ([2600:1700:6476:1430::29])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd7d849afesm37183217b3.49.2026.05.04.16.29.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 16:29:33 -0700 (PDT)
+Message-ID: <af5d510b2204484b414474c5b92c8654908c4db3.camel@redhat.com>
+Subject: Re: [PATCH 2/3] hfs/hfsplus: initialize data buffer in
+ hfs_bnode_read_u16 and hfs_bnode_read_u8
+From: Viacheslav Dubeyko <vdubeyko@redhat.com>
+To: Tristan Madani <tristmd@gmail.com>, Viacheslav Dubeyko
+ <slava@dubeyko.com>,  John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Tristan Madani <tristan@talencesecurity.com>, 
+	syzbot+217eb327242d08197efb@syzkaller.appspotmail.com
+Date: Mon, 04 May 2026 16:29:31 -0700
+In-Reply-To: <20260501110218.29906-2-tristmd@gmail.com>
+References: <20260501110218.29906-1-tristmd@gmail.com>
+	 <20260501110218.29906-2-tristmd@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.0 (3.60.0-1.fc44app2) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 75E5D4C4D2C
+X-Rspamd-Queue-Id: 010D74C4D33
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amd.com,intel.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-243934-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243933-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com,physik.fu-berlin.de,vivo.com];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[vdubeyko@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,217eb327242d08197efb];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email]
 
-ttm_pool_split_for_swap() splits high-order pool pages into order-0
-pages during backup so each 4K page can be released to the system as
-soon as it has been written to shmem. While this minimizes the
-allocator's working set during reclaim, it actively fragments memory:
-every TTM-backed compound page that the shrinker touches is shattered
-into order-0 pages, even when the rest of the system would prefer that
-the high-order block stay intact. Under sustained kswapd pressure this
-is enough to drive other parts of MM into recovery loops from which
-they cannot easily escape, because the memory TTM just freed is no
-longer contiguous.
+On Fri, 2026-05-01 at 11:02 +0000, Tristan Madani wrote:
+> From: Tristan Madani <tristan@talencesecurity.com>
+>=20
+> hfs_bnode_read_u16() and hfs_bnode_read_u8() declare local data buffers
+> without initialization, then pass them to hfs_bnode_read().  If
+> is_bnode_offset_valid() fails inside hfs_bnode_read(), the function
+> returns early without writing to the buffer, leaving it uninitialized.
+> The caller then returns the garbage value to its caller.
+>=20
+> This triggers KMSAN uninit-value reports when a corrupted HFS+ image
+> has a node_size of 1, causing rec_off to underflow in hfs_bnode_find()
+> and the subsequent hfs_bnode_read_u16() to operate on an invalid offset.
+>=20
+> Zero-initialize both buffers so that callers get a deterministic zero
+> value when the underlying read fails.
+>=20
+> Reported-by: syzbot+217eb327242d08197efb@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D217eb327242d08197efb
+> Tested-by: syzbot+217eb327242d08197efb@syzkaller.appspotmail.com
+> Fixes: a431930c9bac ("hfs: fix slab-out-of-bounds in hfs_bnode_read()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+> ---
+>  fs/hfs/bnode.c     | 4 ++--
+>  fs/hfsplus/bnode.c | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+> index c00645a4a5733..08307faea7a68 100644
+> --- a/fs/hfs/bnode.c
+> +++ b/fs/hfs/bnode.c
+> @@ -97,7 +97,7 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, =
+u32 off, u32 len)
+> =20
+>  u16 hfs_bnode_read_u16(struct hfs_bnode *node, u32 off)
+>  {
+> -	__be16 data;
+> +	__be16 data =3D 0;
+>  	// optimize later...
+>  	hfs_bnode_read(node, &data, off, 2);
+>  	return be16_to_cpu(data);
+> @@ -105,7 +105,7 @@ u16 hfs_bnode_read_u16(struct hfs_bnode *node, u32 of=
+f)
+> =20
+>  u8 hfs_bnode_read_u8(struct hfs_bnode *node, u32 off)
+>  {
+> -	u8 data;
+> +	u8 data =3D 0;
+>  	// optimize later...
+>  	hfs_bnode_read(node, &data, off, 1);
+>  	return data;
+> diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+> index f8b5a8ae58ff5..35790085b5b2e 100644
+> --- a/fs/hfsplus/bnode.c
+> +++ b/fs/hfsplus/bnode.c
+> @@ -55,7 +55,7 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, =
+u32 off, u32 len)
+> =20
+>  u16 hfs_bnode_read_u16(struct hfs_bnode *node, u32 off)
+>  {
+> -	__be16 data;
+> +	__be16 data =3D 0;
+>  	/* TODO: optimize later... */
+>  	hfs_bnode_read(node, &data, off, 2);
+>  	return be16_to_cpu(data);
+> @@ -63,7 +63,7 @@ u16 hfs_bnode_read_u16(struct hfs_bnode *node, u32 off)
+> =20
+>  u8 hfs_bnode_read_u8(struct hfs_bnode *node, u32 off)
+>  {
+> -	u8 data;
+> +	u8 data =3D 0;
+>  	/* TODO: optimize later... */
+>  	hfs_bnode_read(node, &data, off, 1);
+>  	return data;
 
-Stop unconditionally splitting on the backup path and back up each
-compound at its native order in ttm_pool_backup():
+If I remember correctly, I already shared that hfs_bnode_read() is called i=
+n
+multiple places. So, this patch is not enough for complete fix of the issue=
+.
 
-  - For each non-handle slot, read the order from the head page and
-    back up all 1<<order subpages to consecutive shmem indices,
-    writing the resulting handles into tt->pages[] as we go.
-  - On success, the compound is freed once at its native order. No
-    split_page(), no per-4K refcount juggling, no fragmentation
-    introduced from this path.
-  - Slots that already hold a backup handle from a previous partial
-    attempt are skipped. A compound that would extend past a
-    fault-injection-truncated num_pages is skipped rather than split.
-
-A per-subpage backup failure cannot be made fully atomic: backing up a
-subpage allocates a shmem folio before the source page can be released,
-so under true OOM any subpage in a compound (not just the first) may
-fail to be backed up with the rest of the source compound still live
-and contiguous. To make forward progress in that case, fall back to
-splitting the source compound and backing up its remaining subpages
-individually:
-
-  - On the first per-subpage failure for a compound (and only if
-    order > 0), call ttm_pool_split_for_swap() to split the source
-    compound, release the subpages whose contents already live in
-    shmem (their handles in tt->pages stay valid), and retry the
-    failing subpage at order 0.
-  - Subsequent successful subpage backups in the now-split compound
-    free their source page individually as soon as the handle is
-    written.
-  - A second failure after splitting terminates the loop with partial
-    progress; the remaining order-0 subpages stay in tt->pages as
-    plain page pointers and are cleaned up by the normal
-    ttm_pool_drop_backed_up() / ttm_pool_free_range() paths.
-
-This restores the original split-on-OOM fallback behavior while
-keeping the common, non-OOM case fragmentation-free. It also
-preserves the "partial backup is allowed" contract: shrunken is
-incremented per backed-up subpage so the caller still sees forward
-progress when a compound only partially succeeds.
-
-The restore-side leftover-page branch in ttm_pool_restore_commit() is
-left as-is for now: that path can still split a previously-retained
-compound, but in practice it is unreachable under realistic workloads
-(per profiling we have not been able to trigger it), so it is not
-worth complicating the restore state machine to avoid the split there.
-If it ever becomes a problem in practice it can be addressed
-independently.
-
-ttm_pool_split_for_swap() itself is retained both for the OOM
-fallback above and for the restore path's remaining caller. The
-DMA-mapped pre-backup unmap loop, the purge path, ttm_pool_free_*,
-and ttm_pool_unmap_and_free() already operate at native order and
-are unchanged.
-
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Fixes: b63d715b8090 ("drm/ttm/pool, drm/ttm/tt: Provide a helper to shrink pages")
-Suggested-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Assisted-by: Claude:claude-opus-4.6
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-
----
-
-A follow-up should attempt writeback to shmem at folio order as well,
-but the API for doing so is unclear and may be incomplete.
-
-This patch is related to the pending series [1] and significantly
-reduces the likelihood of Xe entering a kswapd loop under fragmentation.
-The kswapd → shrinker → Xe shrinker → TTM backup path is still
-exercised; however, with this change the backup path no longer worsens
-fragmentation, which previously amplified reclaim pressure and
-reinforced the kswapd loop.
-
-Nonetheless, the pathological case that [1] aims to address still exists
-and requires a proper solution. Even with this patch, a kswapd loop due
-to severe fragmentation can still be triggered, although it is now
-substantially harder to reproduce.
-
-v2:
- - Split pages and free immediately if backup fails are higher order
-   (Thomas)
-
-[1] https://patchwork.freedesktop.org/series/165330/
----
- drivers/gpu/drm/ttm/ttm_pool.c | 84 ++++++++++++++++++++++++++++------
- 1 file changed, 70 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-index 084768d6d9b1..5345297b5ef9 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -1039,12 +1039,11 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
- {
- 	struct file *backup = tt->backup;
- 	struct page *page;
--	unsigned long handle;
- 	gfp_t alloc_gfp;
- 	gfp_t gfp;
- 	int ret = 0;
- 	pgoff_t shrunken = 0;
--	pgoff_t i, num_pages;
-+	pgoff_t i, num_pages, npages;
- 
- 	if (WARN_ON(ttm_tt_is_backed_up(tt)))
- 		return -EINVAL;
-@@ -1100,28 +1099,85 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
- 	if (IS_ENABLED(CONFIG_FAULT_INJECTION) && should_fail(&backup_fault_inject, 1))
- 		num_pages = DIV_ROUND_UP(num_pages, 2);
- 
--	for (i = 0; i < num_pages; ++i) {
--		s64 shandle;
-+	for (i = 0; i < num_pages; i += npages) {
-+		unsigned int order;
-+		pgoff_t j;
-+		bool folio_has_been_split = false;
- 
-+		npages = 1;
- 		page = tt->pages[i];
- 		if (unlikely(!page))
- 			continue;
- 
--		ttm_pool_split_for_swap(pool, page);
-+		/* Already-handled entry from a previous attempt. */
-+		if (unlikely(ttm_backup_page_ptr_is_handle(page)))
-+			continue;
-+
-+		order = ttm_pool_page_order(pool, page);
-+		npages = 1UL << order;
- 
--		shandle = ttm_backup_backup_page(backup, page, flags->writeback, i,
--						 gfp, alloc_gfp);
--		if (shandle < 0) {
--			/* We allow partially shrunken tts */
--			ret = shandle;
-+		/*
-+		 * Back up the compound atomically at its native order. If
-+		 * fault injection truncated num_pages mid-compound, skip
-+		 * the partial tail rather than splitting.
-+		 */
-+		if (unlikely(i + npages > num_pages))
- 			break;
-+
-+		for (j = 0; j < npages; ++j) {
-+			s64 shandle;
-+
-+try_again_after_split:
-+			if (IS_ENABLED(CONFIG_FAULT_INJECTION) &&
-+			    should_fail(&backup_fault_inject, 1))
-+				shandle = -ENOMEM;
-+			else
-+				shandle = ttm_backup_backup_page(backup, page + j,
-+								 flags->writeback,
-+								 i + j, gfp,
-+								 alloc_gfp);
-+
-+			if (shandle < 0 && !folio_has_been_split && order) {
-+				pgoff_t k;
-+
-+				/*
-+				 * True OOM: could not allocate a shmem folio
-+				 * for the next subpage. Fall back to splitting
-+				 * the source compound and backing up subpages
-+				 * individually. Release the already-backed-up
-+				 * subpages whose contents now live in shmem;
-+				 * any further failure terminates the loop with
-+				 * partial progress (handled by the caller).
-+				 */
-+				folio_has_been_split = true;
-+				ttm_pool_split_for_swap(pool, page);
-+
-+				for (k = 0; k < j; ++k) {
-+					__free_pages_gpu_account(page + k, 0, false);
-+					shrunken++;
-+				}
-+
-+				goto try_again_after_split;
-+			} else if (shandle < 0) {
-+				ret = shandle;
-+				goto out;
-+			} else if (folio_has_been_split) {
-+				__free_pages_gpu_account(page + j, 0, false);
-+				shrunken++;
-+			}
-+
-+			tt->pages[i + j] = ttm_backup_handle_to_page_ptr(shandle);
-+		}
-+
-+		if (!folio_has_been_split) {
-+			/* Compound fully backed up; free at native order. */
-+			page->private = 0;
-+			__free_pages_gpu_account(page, order, false);
-+			shrunken += npages;
- 		}
--		handle = shandle;
--		tt->pages[i] = ttm_backup_handle_to_page_ptr(handle);
--		__free_pages_gpu_account(page, 0, false);
--		shrunken++;
- 	}
- 
-+out:
- 	return shrunken ? shrunken : ret;
- }
- 
--- 
-2.34.1
+Thanks,
+Slava.
 
 
