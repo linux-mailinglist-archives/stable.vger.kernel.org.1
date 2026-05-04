@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-243366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFtSDN6q+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:10 +0200
+	id uDPJDimm+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE924BF0F0
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4107E4BE3E6
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 805A13063CE7
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3140301BCE3
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77DA3B19D1;
-	Mon,  4 May 2026 14:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7503D47D0;
+	Mon,  4 May 2026 13:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKcJjg2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyLs8hC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9BA3D3334;
-	Mon,  4 May 2026 14:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6FE34753C;
+	Mon,  4 May 2026 13:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903701; cv=none; b=T+rmovbVCHbC6h9zQYiFDfgF1Km09h7ZYd8AW3IHWQM++2DlzCIGAYFvzG6T3NgSP1JB2vV3CQ+Fe1675FlOE8j/GJvVfLi93fJFtbcTG27Sj0IUf0diDM6hlr5zy9R/GhmpMWU63S8wt967s5bRPfEhd9GbZZ0Hq8Uhmt53s9E=
+	t=1777903051; cv=none; b=RYwmb3RaIi9xZVLIfoKS+4B1L2MydeMpkAjVQ4LYUdEycI986IZLjLefZ0UraD+8FwiOAWzL2o7DLqXLvdQM/z5sbtpoRcQZUebfs0TRg1DPgByneOSWJkWV1tgNPPGmA1ghnGQcYRVahlO+hbwzMr1cinairUgkwjGaRxSTQSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903701; c=relaxed/simple;
-	bh=282i9gPB0ICBMjp7o/VSy8fPSN+9QYR+mkd2ThR9BVo=;
+	s=arc-20240116; t=1777903051; c=relaxed/simple;
+	bh=PyZIlFbA8N0G5I2p7AE0845N1fJ0DR5FKl7Se7Mwtsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jM/q2S1Rwp2fAGJfKeWYM0E3HvsOW8cp+OAVIwqwW4k5aiBj658sMFMZoP417VmSE3v50U07/4VVA4bzSzdkhrQjiA1oCNH0TndBAAUKPvghirqqmSDBcgNcp8RFIcw8WibpImSS7MQawzBOKNabt3Qhz6oj08opsbDHclKAv4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKcJjg2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02019C2BCB8;
-	Mon,  4 May 2026 14:08:20 +0000 (UTC)
+	 MIME-Version; b=mLpz+PnBSwiuCaNYRGap8qLWK8IyP9o5U7byw8lED8JRa8wdYYFcw2oFmYVZu6+nyqfsvFz/hXgWSoJbVbfe7XYZjK6INcGKn5w6etNlLzlNWkBaqu+CJwMU6XAtMfH6rXlQBUds+EfiVjBYzo68hj1CpRBgtPu4luNW3DPOFdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyLs8hC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9345C2BCB8;
+	Mon,  4 May 2026 13:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903701;
-	bh=282i9gPB0ICBMjp7o/VSy8fPSN+9QYR+mkd2ThR9BVo=;
+	s=korg; t=1777903051;
+	bh=PyZIlFbA8N0G5I2p7AE0845N1fJ0DR5FKl7Se7Mwtsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKcJjg2/MNe9KK/fVyyLm3ON0fI3G+xHlG5IJ350ekPW0+kCBxZcnylp2fntYaHnA
-	 crXcYrtJQAPd/8mkD17kbzk1xHKh8GrV8A1VBdOuowSGpcA/LX5UhLDQzqrrHGMXUv
-	 0pZf5swaf6vo8n5CJoPA44BFc64rnmJBCa91sLgY=
+	b=NyLs8hC/rzwndkQxp8cBVhAWaEHCFDXKqWHK0l8rOGGXnPO3krFm7BBtN6btD8qCk
+	 K3BtUJJMWhvQFShqv28n2HTto1sGo6/CjOQ6lHZa2boKyY54qxTEUFcon5d5d2JRcE
+	 gEvKDKMnxRlAnjXCbk9lWZAZx3t52U2I/mRLV/oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Hodges <git@danielhodges.dev>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 029/275] wifi: mwifiex: fix use-after-free in mwifiex_adapter_cleanup()
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Frank van der Linden <fvdl@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 084/307] mm/hugetlb: fix early boot crash on parameters without = separator
 Date: Mon,  4 May 2026 15:49:29 +0200
-Message-ID: <20260504135144.020019749@linuxfoundation.org>
+Message-ID: <20260504135145.973740554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +67,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4BE924BF0F0
+X-Rspamd-Queue-Id: 4107E4BE3E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243113-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243366-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[danielhodges.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Hodges <git@danielhodges.dev>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit ae5e95d4157481693be2317e3ffcd84e36010cbb upstream.
+commit c45b354911d01565156e38d7f6bc07edb51fc34c upstream.
 
-The mwifiex_adapter_cleanup() function uses timer_delete()
-(non-synchronous) for the wakeup_timer before the adapter structure is
-freed. This is incorrect because timer_delete() does not wait for any
-running timer callback to complete.
+If hugepages, hugepagesz, or default_hugepagesz are specified on the
+kernel command line without the '=' separator, early parameter parsing
+passes NULL to hugetlb_add_param(), which dereferences it in strlen() and
+can crash the system during early boot.
 
-If the wakeup_timer callback (wakeup_timer_fn) is executing when
-mwifiex_adapter_cleanup() is called, the callback will continue to
-access adapter fields (adapter->hw_status, adapter->if_ops.card_reset,
-etc.) which may be freed by mwifiex_free_adapter() called later in the
-mwifiex_remove_card() path.
+Reject NULL values in hugetlb_add_param() and return -EINVAL instead.
 
-Use timer_delete_sync() instead to ensure any running timer callback has
-completed before returning.
-
-Fixes: 4636187da60b ("mwifiex: add wakeup timer based recovery mechanism")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-Link: https://patch.msgid.link/20260206194401.2346-1-git@danielhodges.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/20260409105437.108686-4-thorsten.blum@linux.dev
+Fixes: 5b47c02967ab ("mm/hugetlb: convert cmdline parameters from setup to early")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/hugetlb.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/init.c
-+++ b/drivers/net/wireless/marvell/mwifiex/init.c
-@@ -391,7 +391,7 @@ static void mwifiex_invalidate_lists(str
- static void
- mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
- {
--	timer_delete(&adapter->wakeup_timer);
-+	timer_delete_sync(&adapter->wakeup_timer);
- 	cancel_delayed_work_sync(&adapter->devdump_work);
- 	mwifiex_cancel_all_pending_cmd(adapter);
- 	wake_up_interruptible(&adapter->cmd_wait_q.wait);
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4252,6 +4252,9 @@ static __init int hugetlb_add_param(char
+ 	size_t len;
+ 	char *p;
+ 
++	if (!s)
++		return -EINVAL;
++
+ 	if (hugetlb_param_index >= HUGE_MAX_CMDLINE_ARGS)
+ 		return -EINVAL;
+ 
 
 
 
