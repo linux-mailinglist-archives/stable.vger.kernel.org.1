@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-243143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIxfNIqn+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:58 +0200
+	id YK1gCuKp+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD30B4BE792
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFF04BEE5B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D876F300980F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E8D4F3000FC8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3563DE423;
-	Mon,  4 May 2026 13:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3A13D3334;
+	Mon,  4 May 2026 14:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlCINzyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YL8K/VFm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12140DFD4;
-	Mon,  4 May 2026 13:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F351D3B19D1;
+	Mon,  4 May 2026 14:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903128; cv=none; b=kHkjBGLfqiAeVSs75RYSbDDIOAh87bQfpbWo3icH8xXXAsGHJDxP+Z2Iw/opqwAbDLKtF/y5JIG/gJijrlwVNXYj7soP6EUPasZ2VI1UheZBMvBjnf9D6qcj5Tut5BtuV7nqLjzdr2zrI6E5Ue4N+b8r+UNLgCyF10bDG3/HkK8=
+	t=1777903869; cv=none; b=FR2zjrbJlWOOzAxpy3g0CZstChLLJntNp7NmJyYdZg+ELLQa5/WRroE0hrjQMMgCskEXIwJrAtzsE7Rh9dGWVBa8CSjxzRl/zekULr+iXzhf9w5k+e8/hTZrK+Dbw8hUdGBeCYAxQHe1+EGrdFnyqu+XOcTeGxcURZHQPhuYOoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903128; c=relaxed/simple;
-	bh=/aIx+AKRNcddoH2XHBMa0eSOXQTZTJhH3IM/OtaS3ik=;
+	s=arc-20240116; t=1777903869; c=relaxed/simple;
+	bh=k7pGaJKN+ctqzB5SZ86i3Y1HF0ZK9i4se6jMQ7vCezk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1u2A45Ci3u+UQdVvY8FIDQN7k2kdhqE/DRtch5GzLgdR8UKujvkROjq/nYvMc/1ZTLaZrZ284iXeE/3CIfqrgjBbhiuaXrB11rn07xEDDaAUhhw9gINuuXNStqzi++eA6UQKRnYIAPEk14vh+7uSc+Sr8scZx8xYh1OM57fHso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlCINzyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C23DC2BCB8;
-	Mon,  4 May 2026 13:58:47 +0000 (UTC)
+	 MIME-Version; b=S7zyIzhvcREkS2k05Lj7EwaBXTG1y3x5//RgnF9gNb/0N9vgarZSObxGwKksCJR494ugY/XO3ylt8WfDxhrGc7NU5/4MS9WRKpMqwpEFFX+Dd2b+ia2XHNmsUwguuv/QL2imXuHdnUYUvpiS8BZPa848ftcAftr6cFPvVmO960c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YL8K/VFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C4FC2BCB8;
+	Mon,  4 May 2026 14:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903128;
-	bh=/aIx+AKRNcddoH2XHBMa0eSOXQTZTJhH3IM/OtaS3ik=;
+	s=korg; t=1777903868;
+	bh=k7pGaJKN+ctqzB5SZ86i3Y1HF0ZK9i4se6jMQ7vCezk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GlCINzyNePHVuSmeRSd/EXikthIHe+ElhzMyNi4jShre6VU97vqJnst+wkEyLR6Z/
-	 c6C1AnwM6jAklvCjn3FU7xnFrK/6DraYDheZxDx9WnBLteuO5lmr7SIRkdG0L8gHqZ
-	 0gw2tm3fPl1nBPmwz2PJ8M9U4A/rwc4WuWNyXrU0=
+	b=YL8K/VFmdUz4Gt8y8iyVumkfA5ctEB/jK6JlrHBp6e6snhU84qldFI9yjcX9o63Ty
+	 VgG2BYurNCtkcXoLVp7fC104kS540y7/HstnNQXNjY6IoJIXPB5UMY0YLCKs5+yIT/
+	 Khz/B9ghuIkxNDNP9idZ1d96R8JFaYio4FPDFcbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Lawrence <joe.lawrence@redhat.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>
-Subject: [PATCH 7.0 115/307] module.lds,codetag: force 0 sh_addr for sections
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 060/275] mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
 Date: Mon,  4 May 2026 15:50:00 +0200
-Message-ID: <20260504135147.131925794@linuxfoundation.org>
+Message-ID: <20260504135145.163005285@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,14 +66,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DD30B4BE792
+X-Rspamd-Queue-Id: BAFF04BEE5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243143-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243432-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,97 +90,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,sourceware.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,linux-foundation.org:email,chromium.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Lawrence <joe.lawrence@redhat.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 4afc71bba8b7d7841681e7647ae02f5079aaf28f upstream.
+commit 4fb61d95ad21c3b6f1c09f357ff49d70abb0535e upstream.
 
-Commit 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and
-related macros") added .text and made .data, .bss, and .rodata sections
-unconditional in the module linker script, but without an explicit
-address like the other sections in the same file.
+zs_page_migrate() uses copy_page() to copy the contents of a zspage page
+during migration.  However, copy_page() is not instrumented by KMSAN, so
+the shadow and origin metadata of the destination page are not updated.
 
-When linking modules with ld.bfd -r, sections defined without an address
-inherit the location counter, resulting in non-zero sh_addr values in
-the .ko.  Relocatable objects are expected to have sh_addr=0 for these
-sections and these non-zero addresses confuse elfutils and have been
-reported to cause segmentation faults in SystemTap [1].
+As a result, subsequent accesses to the migrated page are reported as
+use-after-free by KMSAN, despite the data being correctly copied.
 
-Add the 0 address specifier to all sections in module.lds, including the
-.codetag.* sections via MOD_SEPARATE_CODETAG_SECTIONS macro.
+Add a kmsan_copy_page_meta() call after copy_page() to propagate the KMSAN
+metadata to the new page, matching what copy_highpage() does internally.
 
-Link: https://sourceware.org/bugzilla/show_bug.cgi?id=33958
-Fixes: 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related macros")
-Signed-off-by: Joe Lawrence <joe.lawrence@redhat.com>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Link: https://lkml.kernel.org/r/20260321132912.93434-1-syoshida@redhat.com
+Fixes: afb2d666d025 ("zsmalloc: use copy_page for full page copy")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/codetag.lds.h |    2 +-
- scripts/module.lds.S              |   12 ++++++------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ mm/zsmalloc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/asm-generic/codetag.lds.h
-+++ b/include/asm-generic/codetag.lds.h
-@@ -18,7 +18,7 @@
- 	IF_MEM_ALLOC_PROFILING(SECTION_WITH_BOUNDARIES(alloc_tags))
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1708,6 +1708,7 @@ static int zs_page_migrate(struct page *
+ 	 */
+ 	d_addr = kmap_local_zpdesc(newzpdesc);
+ 	copy_page(d_addr, s_addr);
++	kmsan_copy_page_meta(zpdesc_page(newzpdesc), zpdesc_page(zpdesc));
+ 	kunmap_local(d_addr);
  
- #define MOD_SEPARATE_CODETAG_SECTION(_name)	\
--	.codetag.##_name : {			\
-+	.codetag.##_name 0 : {			\
- 		SECTION_WITH_BOUNDARIES(_name)	\
- 	}
- 
---- a/scripts/module.lds.S
-+++ b/scripts/module.lds.S
-@@ -32,30 +32,30 @@ SECTIONS {
- 	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
- 	__ex_table		0 : ALIGN(4) { KEEP(*(__ex_table)) }
- 
--	__patchable_function_entries : { *(__patchable_function_entries) }
-+	__patchable_function_entries 0 : { *(__patchable_function_entries) }
- 
- 	.init.klp_funcs		0 : ALIGN(8) { KEEP(*(.init.klp_funcs)) }
- 	.init.klp_objects	0 : ALIGN(8) { KEEP(*(.init.klp_objects)) }
- 
- #ifdef CONFIG_ARCH_USES_CFI_TRAPS
--	__kcfi_traps		: { KEEP(*(.kcfi_traps)) }
-+	__kcfi_traps		0 : { KEEP(*(.kcfi_traps)) }
- #endif
- 
--	.text : {
-+	.text			0 : {
- 		*(.text .text.[0-9a-zA-Z_]*)
- 	}
- 
--	.bss : {
-+	.bss			0 : {
- 		*(.bss .bss.[0-9a-zA-Z_]*)
- 		*(.bss..L*)
- 	}
- 
--	.data : {
-+	.data			0 : {
- 		*(.data .data.[0-9a-zA-Z_]*)
- 		*(.data..L*)
- 	}
- 
--	.rodata : {
-+	.rodata			0 : {
- 		*(.rodata .rodata.[0-9a-zA-Z_]*)
- 		*(.rodata..L*)
- 	}
+ 	for (addr = s_addr + offset; addr < s_addr + PAGE_SIZE;
 
 
 
