@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-243279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMBeC82n+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:05 +0200
+	id eKy0MKWs+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2464BE824
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CB84BF6C4
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DE6EA3010676
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C66C830C36E7
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A2E3DC4D5;
-	Mon,  4 May 2026 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D163DEAF2;
+	Mon,  4 May 2026 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7FDmo9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scnqU2vf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8F03D9029;
-	Mon,  4 May 2026 14:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E733DE45B;
+	Mon,  4 May 2026 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903478; cv=none; b=DXUlqGJPZBkTp1sVu1/Lo91/u0xSaqgeIqnJuQZUTiSLtCWMjGJ3NY2zLPbrgB1QjX+DpDzCrsikkp9jA3q9DJmdKHSKmmKsrftH3+Oh6VVteojBGALVYS2jcdREpIDqXyZFWkfeAA06FkWs3R3qjVmFSZf9uZ+jnKSM/0WpmFI=
+	t=1777904203; cv=none; b=rMgaW49OZl7lPz4CBc2766zxOnCwOnonBzIE9X4GjqGb1dmW0RxBT84Gn+/d7F2mh7Siz/ve3C0eXXuLZ1aV/tSnFOIEMp6Ue8fBJJmfb/TxBQ9G1Z2vUYqXHK+h7ZbCEhFyb574wkLqLb5E1LRSQQwW1HcIb8fnlvOS47Gsq9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903478; c=relaxed/simple;
-	bh=YV6F/BOiZon3BW+Uy8shInW+EqzD04Mc0T8QrBmz/W8=;
+	s=arc-20240116; t=1777904203; c=relaxed/simple;
+	bh=zDBt1Yqdj2ID3OrVZN6Nd+leuu6XdpNQVnG+KRycaKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=px46TKBQ6ANOKh+nwr5pYK6ir+lxb5yX4FrAwOOH9RiweXSw6GXbYErMIKqK6+ODzg/WZ1xg9907aUyrT8YhrkcegtcWLI4vu+q4KhPyGm6pYjf/5utxWpoybv6++e1wk6MhzI9Wl3/ODWtOz+ksdZhb/5QhBDMSN+bntmg4Mp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7FDmo9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806C2C2BCB8;
-	Mon,  4 May 2026 14:04:37 +0000 (UTC)
+	 MIME-Version; b=pswhilBhCgw3YoZtTQVMj5IsS0vKsXXhSIOwsOZJnlYYe001ZUl/O6IavuMJb3BtXkoYne7UifI13Sa8U9nnofpZSJ8luH/8YBlSn+SOxiEuTPp6GDCvOH0e2I0vIoVO8rcUhTZQ5eTftTaBNfIMKHt8oOgkvk0OM421sEFs2xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scnqU2vf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0271C2BCB8;
+	Mon,  4 May 2026 14:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903477;
-	bh=YV6F/BOiZon3BW+Uy8shInW+EqzD04Mc0T8QrBmz/W8=;
+	s=korg; t=1777904203;
+	bh=zDBt1Yqdj2ID3OrVZN6Nd+leuu6XdpNQVnG+KRycaKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7FDmo9DlWJUAl3ueEWNQEqebM0SH9usrY/7Y9rquq7KVDrnP8cHAp1+aG/WnqUBH
-	 txZ6zi5aJybit2DwXqVEbHOfWKnn+oUXzb50AyoainQWv7eIGG+CPNmfeRvX4AbYRW
-	 HQBpubzbUxIuuf4tOPL1dE5uW+SH0c56SxQkNRgY=
+	b=scnqU2vf8/IkmHuSOaesxgc2wpwbtClGmHK/Kw7CDSGakK5NMRluZ1X+iCh1MSLN8
+	 e5VoUGponGDHjnA9k45PbSquDvMoYQNnlwx5scN8/WHr6KwlVIiNRL1s7gYCQohvzZ
+	 rQ/b0S96ElgIkatO08Wfhu7crs2hj+M4KgidaAKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 7.0 250/307] mptcp: sync the msk->sndbuf at accept() time
-Date: Mon,  4 May 2026 15:52:15 +0200
-Message-ID: <20260504135152.228179782@linuxfoundation.org>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ian Rogers <irogers@google.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.18 196/275] ring-buffer: Do not double count the reader_page
+Date: Mon,  4 May 2026 15:52:16 +0200
+Message-ID: <20260504135150.357881312@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +67,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CE2464BE824
+X-Rspamd-Queue-Id: 11CB84BF6C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243562-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243279-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kylinos.cn:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,goodmis.org:email,efficios.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
+commit 92d5a606721f759ebebf448b3bd2b7a781d50bd0 upstream.
 
-On passive MPTCP connections, the msk sndbuf is not updated correctly.
+Since the cpu_buffer->reader_page is updated if there are unwound
+pages. After that update, we should skip the page if it is the
+original reader_page, because the original reader_page is already
+checked.
 
-The root cause is an order issue in the accept path:
-
-- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
-  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
-
-- Later, tcp_child_process() -> tcp_init_transfer() ->
-  tcp_sndbuf_expand() grows the ssk sndbuf.
-
-So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
-expanded and the msk ends up with a much smaller sndbuf than the
-subflow:
-
-  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
-
-Fix this by moving the __mptcp_propagate_sndbuf() call from
-mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
-__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
-been fully expanded by tcp_sndbuf_expand().
-
-Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ian Rogers <irogers@google.com>
+Link: https://patch.msgid.link/177701353063.2223789.1471163147644103306.stgit@mhiramat.tok.corp.google.com
+Fixes: ca296d32ece3 ("tracing: ring_buffer: Rewind persistent ring buffer on reboot")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3570,7 +3570,6 @@ struct sock *mptcp_sk_clone_init(const s
- 	 * uses the correct data
- 	 */
- 	mptcp_copy_inaddrs(nsk, ssk);
--	__mptcp_propagate_sndbuf(nsk, ssk);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1877,7 +1877,7 @@ static int rb_validate_buffer(struct buf
+ static void rb_meta_validate_events(struct ring_buffer_per_cpu *cpu_buffer)
+ {
+ 	struct ring_buffer_cpu_meta *meta = cpu_buffer->ring_meta;
+-	struct buffer_page *head_page, *orig_head;
++	struct buffer_page *head_page, *orig_head, *orig_reader;
+ 	unsigned long entry_bytes = 0;
+ 	unsigned long entries = 0;
+ 	int ret;
+@@ -1888,16 +1888,17 @@ static void rb_meta_validate_events(stru
+ 		return;
  
- 	mptcp_rcv_space_init(msk, ssk);
- 	msk->rcvq_space.time = mptcp_stamp();
-@@ -4228,6 +4227,7 @@ static int mptcp_stream_accept(struct so
+ 	orig_head = head_page = cpu_buffer->head_page;
++	orig_reader = cpu_buffer->reader_page;
  
- 		mptcp_graft_subflows(newsk);
- 		mptcp_rps_record_subflows(msk);
-+		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
+ 	/* Do the reader page first */
+-	ret = rb_validate_buffer(cpu_buffer->reader_page->page, cpu_buffer->cpu);
++	ret = rb_validate_buffer(orig_reader->page, cpu_buffer->cpu);
+ 	if (ret < 0) {
+ 		pr_info("Ring buffer reader page is invalid\n");
+ 		goto invalid;
+ 	}
+ 	entries += ret;
+-	entry_bytes += local_read(&cpu_buffer->reader_page->page->commit);
+-	local_set(&cpu_buffer->reader_page->entries, ret);
++	entry_bytes += local_read(&orig_reader->page->commit);
++	local_set(&orig_reader->entries, ret);
  
- 		/* Do late cleanup for the first subflow as necessary. Also
- 		 * deal with bad peers not doing a complete shutdown.
+ 	ts = head_page->page->time_stamp;
+ 
+@@ -2000,8 +2001,8 @@ static void rb_meta_validate_events(stru
+ 	/* Iterate until finding the commit page */
+ 	for (i = 0; i < meta->nr_subbufs + 1; i++, rb_inc_page(&head_page)) {
+ 
+-		/* Reader page has already been done */
+-		if (head_page == cpu_buffer->reader_page)
++		/* The original reader page has already been checked/counted. */
++		if (head_page == orig_reader)
+ 			continue;
+ 
+ 		ret = rb_validate_buffer(head_page->page, cpu_buffer->cpu);
 
 
 
