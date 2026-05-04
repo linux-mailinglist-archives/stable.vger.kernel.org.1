@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AWiEa+r+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:39 +0200
+	id cPpxFDir+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CE64BF3A1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7DD4BF21C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8BCE430216E9
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC1783026C99
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DCC3D9029;
-	Mon,  4 May 2026 14:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8085D3DE452;
+	Mon,  4 May 2026 14:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVfo1l6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMZUsRsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA3D3D5645;
-	Mon,  4 May 2026 14:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425333DE43C;
+	Mon,  4 May 2026 14:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903889; cv=none; b=lajgjFDp5myBFp3JZWVYXpEZj07+lVVx3TXEqPmibpMaylQZaZAmQUFAZlkiCTg0uiSDQ2fPvQkPJkghET5CyIXHl55A5ZIfFGOa/MgJ7ndZ9weyewasU0N+vSHdz9752N06lspmkpb/vP7246dtgK/WxNPvr3m7TDkzZ6qv0bo=
+	t=1777904401; cv=none; b=GZ6EQz71c2M1q2btbajtuVH1fYPxsAmr8m2ngzxY8Wotdo4WUFW6117YuqEO/vAotP4+T8UmJ3y70W1uO53ans3lhEOSRhJ4INcEDFFYi4WuBynyqoK+MuGbjoc7uElcajgtc+pyVT82XziWX03BfwQaqvoKtnHNhAiOPqHJY10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903889; c=relaxed/simple;
-	bh=fNjPB1mN7YXDL7yl93fV5bZ4wT1cNbApK2z93+Dpjng=;
+	s=arc-20240116; t=1777904401; c=relaxed/simple;
+	bh=Zbe5hKgoi81qz18gesPMbTIG1PWRtbPyJ3mvXiLV4h0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SbQbDqLoLMxkQD4iifSegVGfYZQ/UnxqKTL5tHQX7y9+DjFCV5r0YdcuiCp8KRLkj8+bIBkjWTQFe4xE3qcG8hqXcoy7pKd2EwIV+aSytW276ozt1Yy3sGcPsAKdQOleN1lGLDv6wZcxhfciHfBLDY+3d/w1iNuJLUozzNLYv3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVfo1l6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23341C2BCB8;
-	Mon,  4 May 2026 14:11:28 +0000 (UTC)
+	 MIME-Version; b=WSD9+CVeBMFdmvWPuPKi1Aa3+lVE2VCJdigzLqcqBzILdus5gdThrO72ug3dB92C/HyRM8FP/fbMjUNPZOEcR6YtKr0bYRWLM61PQ3v5LoJHfPl2zKpuEgUI0dVsBoPraW4lRUy+jK1yjiTXGtZxop9GTcyoGIsULxKDALT0gCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMZUsRsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85FEC2BCF5;
+	Mon,  4 May 2026 14:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903889;
-	bh=fNjPB1mN7YXDL7yl93fV5bZ4wT1cNbApK2z93+Dpjng=;
+	s=korg; t=1777904401;
+	bh=Zbe5hKgoi81qz18gesPMbTIG1PWRtbPyJ3mvXiLV4h0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVfo1l6SBLuW0rC/IQTMVEgluxHNqDqzAk8c140yiBcZck1eo7lZG1MaOOR+Bodua
-	 e5IW6lPiD2w4+is3bikxbSj3ZpNp5DQ23uX/Xey7bTosRUqkdE/lx5RxvNLTlPZhjA
-	 A627jFqF6btr+VbCxBLYROceIJS6O66d8pNh+UQ4=
+	b=jMZUsRsUvAcyVDpGPl90syBu+X/TINheR36npy43KGEg4jJ/6/g10a9fnfPI1kcQP
+	 nQYo5/WZUT/iE4wNB/PDSsZEeUqjOdEN19M7DAu2kJIWz3TYkUeHnmktjfE6eaDaAI
+	 T0PElmqjUF4+12628H6KsxTyS6FE06pBua10/3fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 102/275] ALSA: 6fire: Fix input volume change detection
-Date: Mon,  4 May 2026 15:50:42 +0200
-Message-ID: <20260504135146.704891336@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Fang Wang <32840572@qq.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 024/215] drm/amdgpu: Use vmemdup_array_user in amdgpu_bo_create_list_entry_array
+Date: Mon,  4 May 2026 15:50:43 +0200
+Message-ID: <20260504135131.059938084@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +64,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 56CE64BF3A1
+X-Rspamd-Queue-Id: 0E7DD4BF21C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243440-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,amd.com,qq.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-243640-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qq.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-commit dc88eef8f55e85e92d016cdf7e291f5560efd79b upstream.
+[ Upstream commit c4ac100e9ae252b09986766ad23b1f83ca3a369d ]
 
-usb6fire_control_input_vol_put() stores the analog capture volume
-as a signed offset in rt->input_vol[] (-15..+15), but it compares
-the cached value against the user-visible mixer value (0..30)
-before subtracting 15.
+Replace kvmalloc_array() + copy_from_user() with vmemdup_array_user() on
+the fast path.
 
-This mixes two domains in the change detection path. Since the
-runtime is zero-initialized, the visible default is 15; writing 0
-right after probe is ignored, while writing 15 is reported as a
-change even though the cached value remains 0.
+This shrinks the source code and improves separation between the kernel
+and userspace slabs.
 
-Normalize the user value before comparing it with the cached offset.
-
-Fixes: 06bb4e743501 ("ALSA: snd-usb-6fire: add analog input volume control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260416-alsa-6fire-input-volume-change-detection-v1-1-ec78299168df@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Fang Wang <32840572@qq.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/6fire/control.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c | 41 +++++++++------------
+ 1 file changed, 17 insertions(+), 24 deletions(-)
 
---- a/sound/usb/6fire/control.c
-+++ b/sound/usb/6fire/control.c
-@@ -290,15 +290,17 @@ static int usb6fire_control_input_vol_pu
- 		struct snd_ctl_elem_value *ucontrol)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+index 702f6610d0243..66fb37b643882 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+@@ -184,43 +184,36 @@ void amdgpu_bo_list_put(struct amdgpu_bo_list *list)
+ int amdgpu_bo_create_list_entry_array(struct drm_amdgpu_bo_list_in *in,
+ 				      struct drm_amdgpu_bo_list_entry **info_param)
  {
- 	struct control_runtime *rt = snd_kcontrol_chip(kcontrol);
-+	int vol0 = ucontrol->value.integer.value[0] - 15;
-+	int vol1 = ucontrol->value.integer.value[1] - 15;
- 	int changed = 0;
+-	const void __user *uptr = u64_to_user_ptr(in->bo_info_ptr);
+ 	const uint32_t info_size = sizeof(struct drm_amdgpu_bo_list_entry);
++	const void __user *uptr = u64_to_user_ptr(in->bo_info_ptr);
++	const uint32_t bo_info_size = in->bo_info_size;
++	const uint32_t bo_number = in->bo_number;
+ 	struct drm_amdgpu_bo_list_entry *info;
+-	int r;
+-
+-	info = kvmalloc_array(in->bo_number, info_size, GFP_KERNEL);
+-	if (!info)
+-		return -ENOMEM;
  
--	if (rt->input_vol[0] != ucontrol->value.integer.value[0]) {
--		rt->input_vol[0] = ucontrol->value.integer.value[0] - 15;
-+	if (rt->input_vol[0] != vol0) {
-+		rt->input_vol[0] = vol0;
- 		rt->ivol_updated &= ~(1 << 0);
- 		changed = 1;
+ 	/* copy the handle array from userspace to a kernel buffer */
+-	r = -EFAULT;
+-	if (likely(info_size == in->bo_info_size)) {
+-		unsigned long bytes = in->bo_number *
+-			in->bo_info_size;
+-
+-		if (copy_from_user(info, uptr, bytes))
+-			goto error_free;
+-
++	if (likely(info_size == bo_info_size)) {
++		info = vmemdup_array_user(uptr, bo_number, info_size);
++		if (IS_ERR(info))
++			return PTR_ERR(info);
+ 	} else {
+-		unsigned long bytes = min(in->bo_info_size, info_size);
++		const uint32_t bytes = min(bo_info_size, info_size);
+ 		unsigned i;
+ 
+-		memset(info, 0, in->bo_number * info_size);
+-		for (i = 0; i < in->bo_number; ++i) {
+-			if (copy_from_user(&info[i], uptr, bytes))
+-				goto error_free;
++		info = kvmalloc_array(bo_number, info_size, GFP_KERNEL);
++		if (!info)
++			return -ENOMEM;
+ 
+-			uptr += in->bo_info_size;
++		memset(info, 0, bo_number * info_size);
++		for (i = 0; i < bo_number; ++i, uptr += bo_info_size) {
++			if (copy_from_user(&info[i], uptr, bytes)) {
++				kvfree(info);
++				return -EFAULT;
++			}
+ 		}
  	}
--	if (rt->input_vol[1] != ucontrol->value.integer.value[1]) {
--		rt->input_vol[1] = ucontrol->value.integer.value[1] - 15;
-+	if (rt->input_vol[1] != vol1) {
-+		rt->input_vol[1] = vol1;
- 		rt->ivol_updated &= ~(1 << 1);
- 		changed = 1;
- 	}
+ 
+ 	*info_param = info;
+ 	return 0;
+-
+-error_free:
+-	kvfree(info);
+-	return r;
+ }
+ 
+ int amdgpu_bo_list_ioctl(struct drm_device *dev, void *data,
+-- 
+2.53.0
+
 
 
 
