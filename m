@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-243244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDZzC7Kn+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:38 +0200
+	id 6NizOnOs+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9614BE7E2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816154BF5F6
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C74323025E55
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E3EC30219A8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865EE3DD53E;
-	Mon,  4 May 2026 14:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43B83DE43C;
+	Mon,  4 May 2026 14:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBEIAeoc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2L1uNK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497CE75801;
-	Mon,  4 May 2026 14:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B4B315785;
+	Mon,  4 May 2026 14:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903388; cv=none; b=MuMVs2xSaLnnY0uyWmXB0A/CMT9x3a8pWUbsysQ6b9qrexwJ264lr4LgdVFrAy8MEZqdITcMLdmAbAWQ0Clki1yD6yR+nabwg0TlndfjE93ryuXy5fpESe4PSOpYtQj50A+rAzgPqgd+hpydQQppw/SH2+adKsO91UvugMghNPI=
+	t=1777904545; cv=none; b=L2q2oXyU0B2lqygKxkXsqApAcHYWGcEkExxYCS0gK+3IBxS6iW6V2NBGJCiqmzBSN++tlAjE7DKPpPqg3k7fbQrnmp5vdf49yyHhwTXSq2iiltoM8+dC4cuJuaiiQ/aljVCyiNpx/vRHtHI88dlBwTkpeGJ4WoQL4qSkCVlaL+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903388; c=relaxed/simple;
-	bh=tR7S/vg5O6L9N/dLvu+YCTCKQImWYHdWzCCF/CJL3OU=;
+	s=arc-20240116; t=1777904545; c=relaxed/simple;
+	bh=PDlc9E8GOggXPSw1dJqDIxSY174SsMnQAboSRtjT75E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHwtDgIfjh9gRe4VYn44jj0KtFad+yEKm/IXEHf1Sc5q1wNxitEqTD8F2NY2Mi98dtZfJILpfDdLY0xjjsUHmON4LIdakeUQZszLkGyVUQ5p3MB4TI9imUFhvt0tk6xM2E9shyo/7v4mt6E4vdwZxv4IBQF1VglW7L+OnmquyMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBEIAeoc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90474C2BCB8;
-	Mon,  4 May 2026 14:03:07 +0000 (UTC)
+	 MIME-Version; b=sbn+fQVpPJKJp4fISK7K/vFCIsPtbwBwSMirutUGwmlZfchxrdy7XJLuXm2G71rnPQcRyrAnW4lEaidfOM+AulWftnWXM082oxeo63HrIZMZ8aw1BJffwf/XbTiKrq7HijUObL99xkPWoI3jGMjoy5ejSqGYIRhxHQLFo4vV/J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2L1uNK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FE3C2BCB8;
+	Mon,  4 May 2026 14:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903387;
-	bh=tR7S/vg5O6L9N/dLvu+YCTCKQImWYHdWzCCF/CJL3OU=;
+	s=korg; t=1777904545;
+	bh=PDlc9E8GOggXPSw1dJqDIxSY174SsMnQAboSRtjT75E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBEIAeocI2UTkC99nNtc1N2iUG2tvbBr3vfWns4O+RhU1gci93LWG4mwV5st7PfWo
-	 so0Gx6RsJ1u7th1mfu8UZ4srxXJtZR2BdBpoi+0pKp+XXUdG2krz5vgwuqqyeBBvh2
-	 YxNmT6/3hnXVtEcREiA2L16C5gpNgtF3zbETYyNw=
+	b=L2L1uNK2Y/MOre9lqqkdYBiryChmWf6GA0SQVfcI0fB5sWdfknFwS/VXRFqGbZscR
+	 lFys5VZWnl2ZU73BCgGoQKZXWnGFIFAeRxY/uYLIwY0PLypq2PeMlL622pLfb/RNWa
+	 tk+/jBeEYWmp+7XHbvtqLkZj5IFXaiVz6lkWGjZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 215/307] KVM: SVM: Add missing save/restore handling of LBR MSRs
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 081/215] rxrpc: Fix memory leaks in rxkad_verify_response()
 Date: Mon,  4 May 2026 15:51:40 +0200
-Message-ID: <20260504135150.957179987@linuxfoundation.org>
+Message-ID: <20260504135133.121324650@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,169 +68,267 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EC9614BE7E2
+X-Rspamd-Queue-Id: 816154BF5F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243697-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243244-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,auristor.com:email,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sashiko.dev:url,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 3700f0788da6acf73b2df56690f4b201aa4aefd2 upstream.
+commit 34f61a07e0cdefaecd3ec03bb5fb22215643678f upstream.
 
-MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
-KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. So
-save/restore is completely broken.
+Fix rxkad_verify_response() to free the ticket and the server key under all
+circumstances by initialising the ticket pointer to NULL and then making
+all paths through the function after the first allocation has been done go
+through a single common epilogue that just releases everything - where all
+the releases skip on a NULL pointer.
 
-Fix it by adding the MSRs to msrs_to_save_base, and allowing writes to
-LBR MSRs from userspace only (as they are read-only MSRs) if LBR
-virtualization is enabled.  Additionally, to correctly restore L1's LBRs
-while L2 is running, make sure the LBRs are copied from the captured
-VMCB01 save area in svm_copy_vmrun_state().
-
-Note, for VMX, this also fixes a flaw where MSR_IA32_DEBUGCTLMSR isn't
-reported as an MSR to save/restore.
-
-Note #2, over-reporting MSR_IA32_LASTxxx on Intel is ok, as KVM already
-handles unsupported reads and writes thanks to commit b5e2fec0ebc3 ("KVM:
-Ignore DEBUGCTL MSRs with no effect") (kvm_do_msr_access() will morph the
-unsupported userspace write into a nop).
-
-Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
-Cc: stable@vger.kernel.org
-Reported-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-4-yosry@kernel.org
-[sean: guard with lbrv checks, massage changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 57af281e5389 ("rxrpc: Tidy up abort generation infrastructure")
+Fixes: ec832bd06d6f ("rxrpc: Don't retain the server key in the connection")
+Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260422161438.2593376-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    5 +++++
- arch/x86/kvm/svm/svm.c    |   42 +++++++++++++++++++++++++++++++++++++-----
- arch/x86/kvm/x86.c        |    3 +++
- 3 files changed, 45 insertions(+), 5 deletions(-)
+ net/rxrpc/rxkad.c |  103 ++++++++++++++++++++++--------------------------------
+ 1 file changed, 42 insertions(+), 61 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1109,6 +1109,11 @@ void svm_copy_vmrun_state(struct vmcb_sa
- 		to_save->isst_addr = from_save->isst_addr;
- 		to_save->ssp = from_save->ssp;
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -1048,7 +1048,7 @@ static int rxkad_verify_response(struct
+ 	struct rxrpc_crypt session_key;
+ 	struct key *server_key;
+ 	time64_t expiry;
+-	void *ticket;
++	void *ticket = NULL;
+ 	u32 version, kvno, ticket_len, level;
+ 	__be32 csum;
+ 	int ret, i;
+@@ -1074,13 +1074,13 @@ static int rxkad_verify_response(struct
+ 	ret = -ENOMEM;
+ 	response = kzalloc(sizeof(struct rxkad_response), GFP_NOFS);
+ 	if (!response)
+-		goto temporary_error;
++		goto error;
+ 
+ 	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
+ 			  response, sizeof(*response)) < 0) {
+-		rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
+-				 rxkad_abort_resp_short);
+-		goto protocol_error;
++		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
++				       rxkad_abort_resp_short);
++		goto error;
  	}
-+
-+	if (kvm_cpu_cap_has(X86_FEATURE_LBRV)) {
-+		svm_copy_lbrs(to_save, from_save);
-+		to_save->dbgctl &= ~DEBUGCTL_RESERVED_BITS;
-+	}
+ 
+ 	version = ntohl(response->version);
+@@ -1090,62 +1090,62 @@ static int rxkad_verify_response(struct
+ 	trace_rxrpc_rx_response(conn, sp->hdr.serial, version, kvno, ticket_len);
+ 
+ 	if (version != RXKAD_VERSION) {
+-		rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
+-				 rxkad_abort_resp_version);
+-		goto protocol_error;
++		ret = rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
++				       rxkad_abort_resp_version);
++		goto error;
+ 	}
+ 
+ 	if (ticket_len < 4 || ticket_len > MAXKRB5TICKETLEN) {
+-		rxrpc_abort_conn(conn, skb, RXKADTICKETLEN, -EPROTO,
+-				 rxkad_abort_resp_tkt_len);
+-		goto protocol_error;
++		ret = rxrpc_abort_conn(conn, skb, RXKADTICKETLEN, -EPROTO,
++				       rxkad_abort_resp_tkt_len);
++		goto error;
+ 	}
+ 
+ 	if (kvno >= RXKAD_TKT_TYPE_KERBEROS_V5) {
+-		rxrpc_abort_conn(conn, skb, RXKADUNKNOWNKEY, -EPROTO,
+-				 rxkad_abort_resp_unknown_tkt);
+-		goto protocol_error;
++		ret = rxrpc_abort_conn(conn, skb, RXKADUNKNOWNKEY, -EPROTO,
++				       rxkad_abort_resp_unknown_tkt);
++		goto error;
+ 	}
+ 
+ 	/* extract the kerberos ticket and decrypt and decode it */
+ 	ret = -ENOMEM;
+ 	ticket = kmalloc(ticket_len, GFP_NOFS);
+ 	if (!ticket)
+-		goto temporary_error_free_resp;
++		goto error;
+ 
+ 	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header) + sizeof(*response),
+ 			  ticket, ticket_len) < 0) {
+-		rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
+-				 rxkad_abort_resp_short_tkt);
+-		goto protocol_error;
++		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
++				       rxkad_abort_resp_short_tkt);
++		goto error;
+ 	}
+ 
+ 	ret = rxkad_decrypt_ticket(conn, server_key, skb, ticket, ticket_len,
+ 				   &session_key, &expiry);
+ 	if (ret < 0)
+-		goto temporary_error_free_ticket;
++		goto error;
+ 
+ 	/* use the session key from inside the ticket to decrypt the
+ 	 * response */
+ 	ret = rxkad_decrypt_response(conn, response, &session_key);
+ 	if (ret < 0)
+-		goto temporary_error_free_ticket;
++		goto error;
+ 
+ 	if (ntohl(response->encrypted.epoch) != conn->proto.epoch ||
+ 	    ntohl(response->encrypted.cid) != conn->proto.cid ||
+ 	    ntohl(response->encrypted.securityIndex) != conn->security_ix) {
+-		rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
+-				 rxkad_abort_resp_bad_param);
+-		goto protocol_error_free;
++		ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
++				       rxkad_abort_resp_bad_param);
++		goto error;
+ 	}
+ 
+ 	csum = response->encrypted.checksum;
+ 	response->encrypted.checksum = 0;
+ 	rxkad_calc_response_checksum(response);
+ 	if (response->encrypted.checksum != csum) {
+-		rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
+-				 rxkad_abort_resp_bad_checksum);
+-		goto protocol_error_free;
++		ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
++				       rxkad_abort_resp_bad_checksum);
++		goto error;
+ 	}
+ 
+ 	for (i = 0; i < RXRPC_MAXCALLS; i++) {
+@@ -1153,38 +1153,38 @@ static int rxkad_verify_response(struct
+ 		u32 counter = READ_ONCE(conn->channels[i].call_counter);
+ 
+ 		if (call_id > INT_MAX) {
+-			rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
+-					 rxkad_abort_resp_bad_callid);
+-			goto protocol_error_free;
++			ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
++					       rxkad_abort_resp_bad_callid);
++			goto error;
+ 		}
+ 
+ 		if (call_id < counter) {
+-			rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
+-					 rxkad_abort_resp_call_ctr);
+-			goto protocol_error_free;
++			ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
++					       rxkad_abort_resp_call_ctr);
++			goto error;
+ 		}
+ 
+ 		if (call_id > counter) {
+ 			if (conn->channels[i].call) {
+-				rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
++				ret = rxrpc_abort_conn(conn, skb, RXKADSEALEDINCON, -EPROTO,
+ 						 rxkad_abort_resp_call_state);
+-				goto protocol_error_free;
++				goto error;
+ 			}
+ 			conn->channels[i].call_counter = call_id;
+ 		}
+ 	}
+ 
+ 	if (ntohl(response->encrypted.inc_nonce) != conn->rxkad.nonce + 1) {
+-		rxrpc_abort_conn(conn, skb, RXKADOUTOFSEQUENCE, -EPROTO,
+-				 rxkad_abort_resp_ooseq);
+-		goto protocol_error_free;
++		ret = rxrpc_abort_conn(conn, skb, RXKADOUTOFSEQUENCE, -EPROTO,
++				       rxkad_abort_resp_ooseq);
++		goto error;
+ 	}
+ 
+ 	level = ntohl(response->encrypted.level);
+ 	if (level > RXRPC_SECURITY_ENCRYPT) {
+-		rxrpc_abort_conn(conn, skb, RXKADLEVELFAIL, -EPROTO,
+-				 rxkad_abort_resp_level);
+-		goto protocol_error_free;
++		ret = rxrpc_abort_conn(conn, skb, RXKADLEVELFAIL, -EPROTO,
++				       rxkad_abort_resp_level);
++		goto error;
+ 	}
+ 	conn->security_level = level;
+ 
+@@ -1192,31 +1192,12 @@ static int rxkad_verify_response(struct
+ 	 * this the connection security can be handled in exactly the same way
+ 	 * as for a client connection */
+ 	ret = rxrpc_get_server_data_key(conn, &session_key, expiry, kvno);
+-	if (ret < 0)
+-		goto temporary_error_free_ticket;
+-
+-	kfree(ticket);
+-	kfree(response);
+-	_leave(" = 0");
+-	return 0;
+-
+-protocol_error_free:
+-	kfree(ticket);
+-protocol_error:
+-	kfree(response);
+-	key_put(server_key);
+-	return -EPROTO;
+ 
+-temporary_error_free_ticket:
++error:
+ 	kfree(ticket);
+-temporary_error_free_resp:
+ 	kfree(response);
+-temporary_error:
+-	/* Ignore the response packet if we got a temporary error such as
+-	 * ENOMEM.  We just want to send the challenge again.  Note that we
+-	 * also come out this way if the ticket decryption fails.
+-	 */
+ 	key_put(server_key);
++	_leave(" = %d", ret);
+ 	return ret;
  }
  
- void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2788,19 +2788,19 @@ static int svm_get_msr(struct kvm_vcpu *
- 		msr_info->data = svm->tsc_aux;
- 		break;
- 	case MSR_IA32_DEBUGCTLMSR:
--		msr_info->data = svm->vmcb->save.dbgctl;
-+		msr_info->data = lbrv ? svm->vmcb->save.dbgctl : 0;
- 		break;
- 	case MSR_IA32_LASTBRANCHFROMIP:
--		msr_info->data = svm->vmcb->save.br_from;
-+		msr_info->data = lbrv ? svm->vmcb->save.br_from : 0;
- 		break;
- 	case MSR_IA32_LASTBRANCHTOIP:
--		msr_info->data = svm->vmcb->save.br_to;
-+		msr_info->data = lbrv ? svm->vmcb->save.br_to : 0;
- 		break;
- 	case MSR_IA32_LASTINTFROMIP:
--		msr_info->data = svm->vmcb->save.last_excp_from;
-+		msr_info->data = lbrv ? svm->vmcb->save.last_excp_from : 0;
- 		break;
- 	case MSR_IA32_LASTINTTOIP:
--		msr_info->data = svm->vmcb->save.last_excp_to;
-+		msr_info->data = lbrv ? svm->vmcb->save.last_excp_to : 0;
- 		break;
- 	case MSR_VM_HSAVE_PA:
- 		msr_info->data = svm->nested.hsave_msr;
-@@ -3075,6 +3075,38 @@ static int svm_set_msr(struct kvm_vcpu *
- 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
- 		svm_update_lbrv(vcpu);
- 		break;
-+	case MSR_IA32_LASTBRANCHFROMIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_from = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
-+	case MSR_IA32_LASTBRANCHTOIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_to = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
-+	case MSR_IA32_LASTINTFROMIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_from = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
-+	case MSR_IA32_LASTINTTOIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_to = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
- 	case MSR_VM_HSAVE_PA:
- 		/*
- 		 * Old kernels did not validate the value written to
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -351,6 +351,9 @@ static const u32 msrs_to_save_base[] = {
- 	MSR_IA32_U_CET, MSR_IA32_S_CET,
- 	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
- 	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
-+	MSR_IA32_DEBUGCTLMSR,
-+	MSR_IA32_LASTBRANCHFROMIP, MSR_IA32_LASTBRANCHTOIP,
-+	MSR_IA32_LASTINTFROMIP, MSR_IA32_LASTINTTOIP,
- };
- 
- static const u32 msrs_to_save_pmu[] = {
 
 
 
