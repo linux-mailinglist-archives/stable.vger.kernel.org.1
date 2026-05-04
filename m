@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-243460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGmqJdGp+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:41 +0200
+	id EAYfGyGp+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118FE4BEE26
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE544BEBE1
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC2143048609
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4516A3062C2D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4703D5667;
-	Mon,  4 May 2026 14:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405A83D904D;
+	Mon,  4 May 2026 14:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLY0XFeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+9BIqDR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E3C377575;
-	Mon,  4 May 2026 14:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0417437881B;
+	Mon,  4 May 2026 14:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903941; cv=none; b=dMnnrBGyQYiH+oAZScB18BixszGbKsjbToGiuDfHRviJRPVwHfb08OE59rDG4RdYteFEt4pTsEdYYACbjuhWu4P9G78eixX2KU8yeDhYXLLFvlnwVYiP/Kuq9XM174VFhIRjZqtK0Xc84qhCaYKhpBMvKapTktAUgaFnz0ReSq8=
+	t=1777903370; cv=none; b=ssQnl8tvtYXsHoFUMbVOJukuLmHS9h7lpaGCci5BwsqaGGt8+r/huS2eECqp3KLifwPX4acaLqlAoKHRnv4AtuH9S34cOKD4dPaYdQv37G8nxszefHfWMSqnnFHxW0EgjQu4W+5mOn1f4Ii5uG+HdtlXzyTy5N3Mi+/cazIatwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903941; c=relaxed/simple;
-	bh=bizZ2Jq91v9qkv1U4NzD6rjRxOlwPJNEOPhIaJzgtTI=;
+	s=arc-20240116; t=1777903370; c=relaxed/simple;
+	bh=m6MGNC2gm34X2/9er+i5vAFENiEa9soBgDf0yyjBPYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMaUbWU+4JE+4RMcqTYL7RUFkJ4+VPorRQuYWmv7hUr4qM5y+AyVkE/5dAHCwVU7He0xHkg0iccX8gNfJlvd1RJn0zZKC9+M4fhXqZ0u0BicUabSdbmNeFTjVTE+AiAWkGDkLMQ5rhvQO94jlvnb8L+kJkQNrdR9hvgs5NOLIP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLY0XFeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD57C2BCB8;
-	Mon,  4 May 2026 14:12:20 +0000 (UTC)
+	 MIME-Version; b=NhSy7s3qzHbKT9xmb1pFC6YzjneMg79uJTm8VTO96LGfVrzpwi76khjwS6NVKLSW+zugWXCLBMYCPIB/QIZWLQ0+IqjbrA1Rm5ZLyUX0Dei6eCymAbfxwz/vXP3q6PAfPo2MPQTXsSlnsQhCJGwxswyPQIR/Lm7zZuPk/MqxIDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+9BIqDR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB21C2BCB8;
+	Mon,  4 May 2026 14:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903941;
-	bh=bizZ2Jq91v9qkv1U4NzD6rjRxOlwPJNEOPhIaJzgtTI=;
+	s=korg; t=1777903369;
+	bh=m6MGNC2gm34X2/9er+i5vAFENiEa9soBgDf0yyjBPYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLY0XFebvI1cgDlL8WY/p+Yd1lqDIvrr1xKsfGsGGOIyPyTamupv1ZmMWqBp3Tkpt
-	 gNBsgFPOqGzJJutoS3cU7DNGORWKGRBPYGzBqoalbd7aOm01WhuH7g4+YVSi1jt6gh
-	 SMpkouJeAkxPeizj5c6ftygG70I3A010RJ9+02Ko=
+	b=T+9BIqDRuRKN2tKA4k7i0COIGRQiVhGFyzfMlLa+JjPAx2lAVuCT+v1SwVhZBh359
+	 ycxqGltpeQDNq3WhAPUNHHk+3TMUVN4NRc0fmje9qwWM9UYgltc6eTt1BHuFYK0Ilv
+	 pH6tfa7OeTrpmYJhojgzdSneiv3jNDlwIo3JlQo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <draw51280@163.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 120/275] net: rds: fix MR cleanup on copy error
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 7.0 175/307] arm64: dts: ti: am62-verdin: Enable pullup for eMMC data pins
 Date: Mon,  4 May 2026 15:51:00 +0200
-Message-ID: <20260504135147.362844013@linuxfoundation.org>
+Message-ID: <20260504135149.449787730@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +63,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 118FE4BEE26
+X-Rspamd-Queue-Id: 1CE544BEBE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243460-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243237-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ti.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ao Zhou <draw51280@163.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 8141a2dc70080eda1aedc0389ed2db2b292af5bd upstream.
+commit d5325810814ee995debfa0b6c4a22e0391598bef upstream.
 
-__rds_rdma_map() hands sg/pages ownership to the transport after
-get_mr() succeeds. If copying the generated cookie back to user space
-fails after that point, the error path must not free those resources
-again before dropping the MR reference.
+Verdin AM62 board does not have external pullups on eMMC DAT1-DAT7 pins.
+Enable internal pullups on DAT1-DAT7 considering:
 
-Remove the duplicate unpin/free from the put_user() failure branch so
-that MR teardown is handled only through the existing final cleanup
-path.
+ - without a host-side pullup, these lines rely solely on the eMMC
+   device's internal pullup (R_int, 10kohm-150kohm per JEDEC), which may
+   exceed the recommended 50kohm max for 1.8V VCCQ
+ - JEDEC JESD84-B51 Table 200 requires host-side pullups (R_DAT,
+   10kohm-100kohm) on all data lines to prevent bus floating
 
-Fixes: 0d4597c8c5ab ("net/rds: Track user mapped pages through special API")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <draw51280@163.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/79c8ef73ec8e5844d71038983940cc2943099baf.1776764247.git.draw51280@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 316b80246b16 ("arm64: dts: ti: add verdin am62")
+Cc: stable@vger.kernel.org
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://patch.msgid.link/20260320073032.10427-1-francesco@dolcini.it
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/rdma.c |    4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -326,10 +326,6 @@ static int __rds_rdma_map(struct rds_soc
+--- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+@@ -572,16 +572,16 @@
+ 	/* On-module eMMC */
+ 	pinctrl_sdhci0: main-mmc0-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62X_IOPAD(0x220, PIN_INPUT, 0) /*  (Y3) MMC0_CMD  */
+-			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1) MMC0_CLK  */
+-			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2) MMC0_DAT0 */
+-			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (AA1) MMC0_DAT1 */
+-			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (AA3) MMC0_DAT2 */
+-			AM62X_IOPAD(0x208, PIN_INPUT, 0) /*  (Y4) MMC0_DAT3 */
+-			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (AB2) MMC0_DAT4 */
+-			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (AC1) MMC0_DAT5 */
+-			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (AD2) MMC0_DAT6 */
+-			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (AC2) MMC0_DAT7 */
++			AM62X_IOPAD(0x220, PIN_INPUT,        0) /*  (Y3) MMC0_CMD  */
++			AM62X_IOPAD(0x218, PIN_INPUT,        0) /* (AB1) MMC0_CLK  */
++			AM62X_IOPAD(0x214, PIN_INPUT,        0) /* (AA2) MMC0_DAT0 */
++			AM62X_IOPAD(0x210, PIN_INPUT_PULLUP, 0) /* (AA1) MMC0_DAT1 */
++			AM62X_IOPAD(0x20c, PIN_INPUT_PULLUP, 0) /* (AA3) MMC0_DAT2 */
++			AM62X_IOPAD(0x208, PIN_INPUT_PULLUP, 0) /*  (Y4) MMC0_DAT3 */
++			AM62X_IOPAD(0x204, PIN_INPUT_PULLUP, 0) /* (AB2) MMC0_DAT4 */
++			AM62X_IOPAD(0x200, PIN_INPUT_PULLUP, 0) /* (AC1) MMC0_DAT5 */
++			AM62X_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (AD2) MMC0_DAT6 */
++			AM62X_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (AC2) MMC0_DAT7 */
+ 		>;
+ 	};
  
- 	if (args->cookie_addr &&
- 	    put_user(cookie, (u64 __user *)(unsigned long)args->cookie_addr)) {
--		if (!need_odp) {
--			unpin_user_pages(pages, nr_pages);
--			kfree(sg);
--		}
- 		ret = -EFAULT;
- 		goto out;
- 	}
 
 
 
