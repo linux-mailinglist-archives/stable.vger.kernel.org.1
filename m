@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-243266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243519-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Dr1Meyo+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:52 +0200
+	id gJ+ZCkmt+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243519-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1864BEB07
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF6F4BF8B0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63F0330D2731
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80361303989A
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB443DDDDA;
-	Mon,  4 May 2026 14:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2356F3D75D7;
+	Mon,  4 May 2026 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDAt9Llk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUouAeAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98B03A2574;
-	Mon,  4 May 2026 14:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BE81A9FAF;
+	Mon,  4 May 2026 14:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903444; cv=none; b=L8nHrlQJiKDM/0mGoF7uK3MgCgz5LfQcctd8cy1NAWTvccloHvc8uIZsDb9Cr9h4q3mC3np2wRbKMRB7Cb/BDOE3QORNOev89MqMqw9lXEb9NZgpyFvGL57aOUv4zWJUJ/YYzq/tAcwjd62VqwiBxau1oKZtqeyH8l4E9RJpEBA=
+	t=1777904092; cv=none; b=svGCj3kfgxDZRKuVXEV7vlFjsSL1EqNJ++DS1gowU5N9vuQ31rWAjRwaG/L1OKuMj3hCNJyP1nypYqCv1Mm4VMrr7W+jHWZ+JyKBwERquMsNVpdzHFLpuwXcZmf2KepYZ8LdPzpUQqbanV443NXhHIL8ZAtSC6o+61qL1qeC4jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903444; c=relaxed/simple;
-	bh=+Wh/+MwbNh5T5GUQq3dv/axpZ23H+Jgc/Ki8eRQKOXU=;
+	s=arc-20240116; t=1777904092; c=relaxed/simple;
+	bh=mpuTjFkEF14pqCsKqdR0JYXf9b3H7crnaNK7W3cgQr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mcl3QInhbYGbEH2mL8Zk6lRNNyyJv0rCrxlE0MG6+32MSpJEW+pZsy3glMH7AUsOpE0Bqsthv0VJiRLGpDv3MzFiDBFKHSfAhUVNf3nnU0LTw/UG8HequcFSH5CIewsZi5VVcLaSIibPoqcDmIzfl3831luGGJTVbPY42nmy8+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDAt9Llk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C94C2BCB8;
-	Mon,  4 May 2026 14:04:03 +0000 (UTC)
+	 MIME-Version; b=jYUo9yEW2qhi0SFn9D1W6Uwu23pSaC8v2vc5TZ15YaF9cBHlaoTQtIv1+4DhPdm6pb4sjYfGfwemEivHZAw6pOB7JdehBa4vE3bjVTTCmYBDVGlMDEUZ2RJGH1MvFZVdK+ZjZWbX5543FD05pJZN0v2E3rDpD/xlSF7XH7YHW2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUouAeAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEE7C2BCB8;
+	Mon,  4 May 2026 14:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903444;
-	bh=+Wh/+MwbNh5T5GUQq3dv/axpZ23H+Jgc/Ki8eRQKOXU=;
+	s=korg; t=1777904092;
+	bh=mpuTjFkEF14pqCsKqdR0JYXf9b3H7crnaNK7W3cgQr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDAt9Llk8ah2AP2s87YUZYKI28TCDLPGPUbGTIeWpkgDxOxBGuxpPVds8sLn4RDG3
-	 vQ3N0+wVCX6v7uCczf0P8+7vK41tdVnIbfLMlBEW8pC70vfkSrNoSLJMSmhV2T2ubP
-	 GOJfArvdz7IgE9Pfke5jWdYUYEAm9qLtNcdZiphY=
+	b=tUouAeAk5wDrioJJXJYoV3Y1YGhFDNEENI4b3PWcrnFUUF1jnymO6uLg/S/LfJ6xY
+	 NNU8Iuv9Kd7Mk1TFK8Vy/TW+s+hT4UxVXAMtps+xN1f6A8UG+D2nutI/CkhF9mtNkv
+	 Dkq2zUKCMd/ffJtQbK5HPdSUjpG5od6IO+rHqC+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 7.0 235/307] mtd: spinand: winbond: Declare the QE bit on W25NxxJW
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.18 180/275] KVM: SVM: Switch svm_copy_lbrs() to a macro
 Date: Mon,  4 May 2026 15:52:00 +0200
-Message-ID: <20260504135151.686734269@linuxfoundation.org>
+Message-ID: <20260504135149.756129827@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3A1864BEB07
+X-Rspamd-Queue-Id: 0FF6F4BF8B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -74,65 +75,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243266-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243519-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 7866ce992cf0d3c3b50fe8bf4acb1dbb173a2304 upstream.
+commit 361dbe8173c460a2bf8aee23920f6c2dbdcabb94 upstream.
 
-Factory default for this bit is "set" (at least on the chips I have),
-but we must make sure it is actually set by Linux explicitly, as the
-bit is writable by an earlier stage.
+In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
+without a containing 'struct vmcb', and later even 'struct
+vmcb_save_area_cached', make it a macro.
 
-Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
+Macros are generally not preferred compared to functions, mainly due to
+type-safety. However, in this case it seems like having a simple macro
+copying a few fields is better than copy-pasting the same 5 lines of
+code in different places.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-3-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/spi/winbond.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/nested.c |    8 ++++----
+ arch/x86/kvm/svm/svm.c    |    9 ---------
+ arch/x86/kvm/svm/svm.h    |   10 +++++++++-
+ 3 files changed, 13 insertions(+), 14 deletions(-)
 
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -485,7 +485,7 @@ static const struct spinand_info winbond
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_dual_quad_dtr_variants,
- 					      &write_cache_variants,
- 					      &update_cache_variants),
--		     0,
-+		     SPINAND_HAS_QE_BIT,
- 		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL),
- 		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
- 	SPINAND_INFO("W25N01KV", /* 3.3V */
-@@ -549,7 +549,7 @@ static const struct spinand_info winbond
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_dual_quad_dtr_variants,
- 					      &write_cache_variants,
- 					      &update_cache_variants),
--		     0,
-+		     SPINAND_HAS_QE_BIT,
- 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
- 		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
- 	SPINAND_INFO("W25N02KV", /* 3.3V */
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -679,10 +679,10 @@ static void nested_vmcb02_prepare_save(s
+ 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
+ 		 * svm_set_msr's definition of reserved bits.
+ 		 */
+-		svm_copy_lbrs(vmcb02, vmcb12);
++		svm_copy_lbrs(&vmcb02->save, &vmcb12->save);
+ 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
+ 	} else {
+-		svm_copy_lbrs(vmcb02, vmcb01);
++		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
+ 	}
+ 	vmcb_mark_dirty(vmcb02, VMCB_LBR);
+ 	svm_update_lbrv(&svm->vcpu);
+@@ -1189,9 +1189,9 @@ int nested_svm_vmexit(struct vcpu_svm *s
+ 
+ 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+ 		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
+-		svm_copy_lbrs(vmcb12, vmcb02);
++		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+ 	} else {
+-		svm_copy_lbrs(vmcb01, vmcb02);
++		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
+ 		vmcb_mark_dirty(vmcb01, VMCB_LBR);
+ 	}
+ 
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -804,15 +804,6 @@ static void svm_recalc_msr_intercepts(st
+ 	 */
+ }
+ 
+-void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
+-{
+-	to_vmcb->save.dbgctl		= from_vmcb->save.dbgctl;
+-	to_vmcb->save.br_from		= from_vmcb->save.br_from;
+-	to_vmcb->save.br_to		= from_vmcb->save.br_to;
+-	to_vmcb->save.last_excp_from	= from_vmcb->save.last_excp_from;
+-	to_vmcb->save.last_excp_to	= from_vmcb->save.last_excp_to;
+-}
+-
+ static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
+ {
+ 	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -688,8 +688,16 @@ static inline void *svm_vcpu_alloc_msrpm
+ 	return svm_alloc_permissions_map(MSRPM_SIZE, GFP_KERNEL_ACCOUNT);
+ }
+ 
++#define svm_copy_lbrs(to, from)					\
++do {								\
++	(to)->dbgctl		= (from)->dbgctl;		\
++	(to)->br_from		= (from)->br_from;		\
++	(to)->br_to		= (from)->br_to;		\
++	(to)->last_excp_from	= (from)->last_excp_from;	\
++	(to)->last_excp_to	= (from)->last_excp_to;		\
++} while (0)
++
+ void svm_vcpu_free_msrpm(void *msrpm);
+-void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
+ void svm_enable_lbrv(struct kvm_vcpu *vcpu);
+ void svm_update_lbrv(struct kvm_vcpu *vcpu);
+ 
 
 
 
