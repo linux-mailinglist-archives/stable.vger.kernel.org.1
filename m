@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PpUCCmq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:09 +0200
+	id 0O5SIB2u+GlIxwIAu9opvQ
+	(envelope-from <stable+bounces-243654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6D54BEEE0
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8554BFA6C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 960A7303C255
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 305B930377C8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2BB3D5667;
-	Mon,  4 May 2026 14:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A5E3DE443;
+	Mon,  4 May 2026 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqAorcN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wl9pr3+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8D03BE630;
-	Mon,  4 May 2026 14:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1AB3DE450;
+	Mon,  4 May 2026 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903933; cv=none; b=BWDDbuxC2MpLi1t/wei6C4G5GqKMLubjpZflO41s059rErCl6PAvt6Trj4T22MTfaeVOSMd2IKPtJ52tTHNUUbz5itrkul+W4D2SUWltUfsxonnGewdz8Q4dFzEso56JrP6fLWFrU/YjROfRWGlKdTZnbidlcBq+c1ESS40/HIo=
+	t=1777904437; cv=none; b=ntrgleEnkyuIVCoZq+lAE6fcJGDuGdGLPYB0Ej87ki6rg6WPRd07pVULcAjdv3968WcdO++6nnamW1+C1GY3Vvbx8v4F202F53HQkOT9IZIqlqpa7JAlJ7blIyjvlox2geeUMgAB3PExR4faVSuLc4GwAfLmWAHsBtkrLSrT6Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903933; c=relaxed/simple;
-	bh=kMGvUilzEnTXMoTORIbJ8g+hf+UjgM4rTNIag/gEEpY=;
+	s=arc-20240116; t=1777904437; c=relaxed/simple;
+	bh=uIfo70Q/3W7VBo5FjFsS1hNq25MG6QNYGX0hPsGAQFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4p4sVen3UKDYHaqrXlCHpLQe9zjylh547vIRE0JfDzGSpnRIUsTgr0eZa6GrjVMW0ktO+zs/XuQv3seqZk11bMRc+e3Et45To+l8lVe/0zUAOXevBN6omnlvMfAFgG9zFrsGPNYkqKFxNY0KUMsX1mVbHl2GKIwZZclHNrhiV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqAorcN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A72C2BCB8;
-	Mon,  4 May 2026 14:12:12 +0000 (UTC)
+	 MIME-Version; b=Bwm9/K3D9eMBwLl9HN1M2kPHkSOh45EjVicuWEmD9u/Ymodm0xwAim+SqAqWUvdWwR3FZpEPJPYyX8Hv2vRQENIDyFRPWYdj55MuBiTl78eeIRfhnOOr4hppIPc9cK7aLYTJVCeV9ndJFEEJ45+o090XqeSuiii3PXZ7li33Nn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wl9pr3+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EB9C2BCB8;
+	Mon,  4 May 2026 14:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903933;
-	bh=kMGvUilzEnTXMoTORIbJ8g+hf+UjgM4rTNIag/gEEpY=;
+	s=korg; t=1777904437;
+	bh=uIfo70Q/3W7VBo5FjFsS1hNq25MG6QNYGX0hPsGAQFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqAorcN5Vwboo6zfr4jvSC7dIRClG/ZfeL/h8Nm/USKoWgTJ0bzyVb85wzNY2kyjr
-	 gtM5JLCCGdSid3bFDVDTqf06HdmVzQXgbvCZ/IFNhSdAZ9tF15bDi9+0oNsg8LTNIW
-	 lIj334+UuvvcinF0qRmUOp7zWbycYS3s02oKMycU=
+	b=wl9pr3+ZMywPsTKSmzADVfsIcd+8FbLoxe8sGu7SVR2WNdv/8TK2e7WZNplk0j+8m
+	 msue/JAeaweWunBMeyk1K+JpIPNy9W02GexvHi7jQ+T97p4rPYkh5T25m4bh1JnPHr
+	 UtCSYSGSCUIUwA6e4PQu24RfXgMcDp0SyDqkgwfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 117/275] net: txgbe: fix RTNL assertion warning when remove module
-Date: Mon,  4 May 2026 15:50:57 +0200
-Message-ID: <20260504135147.255021555@linuxfoundation.org>
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 039/215] hwmon: (powerz) Fix missing usb_kill_urb() on signal interrupt
+Date: Mon,  4 May 2026 15:50:58 +0200
+Message-ID: <20260504135131.610085226@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +63,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A6D54BEEE0
+X-Rspamd-Queue-Id: EE8554BFA6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243457-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243654-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[trustnetic.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,armlinux.org.uk:email]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,juniper.net:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit e159f05e12cc1111a3103b99375ddf0dfd0e7d63 upstream.
+commit b66437cb20a2d9ef201f40b675569f8ea7787c9f upstream.
 
-For the copper NIC with external PHY, the driver called
-phylink_connect_phy() during probe and phylink_disconnect_phy() during
-remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
-upon module remove.
+wait_for_completion_interruptible_timeout() returns -ERESTARTSYS when
+interrupted. This needs to abort the URB and return an error. No data
+has been received from the device so any reads from the transfer
+buffer are invalid.
 
-To fix this, add rtnl_lock() and rtnl_unlock() around the
-phylink_disconnect_phy() in remove function.
+The original code tests !ret, which only catches the timeout case (0).
+On signal delivery (-ERESTARTSYS), !ret is false so the function skips
+usb_kill_urb() and falls through to read from the unfilled transfer
+buffer.
 
- ------------[ cut here ]------------
- RTNL: assertion failed at drivers/net/phy/phylink.c (2351)
- WARNING: drivers/net/phy/phylink.c:2351 at
-phylink_disconnect_phy+0xd8/0xf0 [phylink], CPU#0: rmmod/4464
- Modules linked in: ...
- CPU: 0 UID: 0 PID: 4464 Comm: rmmod Kdump: loaded Not tainted 7.0.0-rc4+
- Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING
-PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
- RIP: 0010:phylink_disconnect_phy+0xe4/0xf0 [phylink]
- Code: 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 f6 31 ff e9 3a 38 8f e7
-48 8d 3d 48 87 e2 ff ba 2f 09 00 00 48 c7 c6 c1 22 24 c0 <67> 48 0f b9 3a
-e9 34 ff ff ff 66 90 90 90 90 90 90 90 90 90 90 90
- RSP: 0018:ffffce7288363ac0 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff89654b2a1a00 RCX: 0000000000000000
- RDX: 000000000000092f RSI: ffffffffc02422c1 RDI: ffffffffc0239020
- RBP: ffffce7288363ae8 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000000 R12: ffff8964c4022000
- R13: ffff89654fce3028 R14: ffff89654ebb4000 R15: ffffffffc0226348
- FS:  0000795e80d93780(0000) GS:ffff896c52857000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00005b528b592000 CR3: 0000000170d0f000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  txgbe_remove_phy+0xbb/0xd0 [txgbe]
-  txgbe_remove+0x4c/0xb0 [txgbe]
-  pci_device_remove+0x41/0xb0
-  device_remove+0x43/0x80
-  device_release_driver_internal+0x206/0x270
-  driver_detach+0x4a/0xa0
-  bus_remove_driver+0x83/0x120
-  driver_unregister+0x2f/0x60
-  pci_unregister_driver+0x40/0x90
-  txgbe_driver_exit+0x10/0x850 [txgbe]
-  __do_sys_delete_module.isra.0+0x1c3/0x2f0
-  __x64_sys_delete_module+0x12/0x20
-  x64_sys_call+0x20c3/0x2390
-  do_syscall_64+0x11c/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_syscall_64+0x15a/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_fault+0x312/0x580
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __handle_mm_fault+0x9d5/0x1040
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? count_memcg_events+0x101/0x1d0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? handle_mm_fault+0x1e8/0x2f0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_user_addr_fault+0x2f8/0x820
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? irqentry_exit+0xb2/0x600
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? exc_page_fault+0x92/0x1c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Fix by capturing the return value into a long (matching the function
+return type) and handling signal (negative) and timeout (zero) cases
+with separate checks that both call usb_kill_urb() before returning.
 
-Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
+Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/8B47A5872884147D+20260407094041.4646-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260410002521.422645-3-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/powerz.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -659,7 +659,9 @@ void txgbe_remove_phy(struct txgbe *txgb
- 		return;
- 	case wx_mac_sp:
- 		if (txgbe->wx->media_type == wx_media_copper) {
-+			rtnl_lock();
- 			phylink_disconnect_phy(txgbe->wx->phylink);
-+			rtnl_unlock();
- 			phylink_destroy(txgbe->wx->phylink);
- 			return;
- 		}
+--- a/drivers/hwmon/powerz.c
++++ b/drivers/hwmon/powerz.c
+@@ -112,6 +112,7 @@ static void powerz_usb_cmd_complete(stru
+ 
+ static int powerz_read_data(struct usb_device *udev, struct powerz_priv *priv)
+ {
++	long rc;
+ 	int ret;
+ 
+ 	if (!priv->urb)
+@@ -133,8 +134,14 @@ static int powerz_read_data(struct usb_d
+ 	if (ret)
+ 		return ret;
+ 
+-	if (!wait_for_completion_interruptible_timeout
+-	    (&priv->completion, msecs_to_jiffies(5))) {
++	rc = wait_for_completion_interruptible_timeout(&priv->completion,
++						       msecs_to_jiffies(5));
++	if (rc < 0) {
++		usb_kill_urb(priv->urb);
++		return rc;
++	}
++
++	if (rc == 0) {
+ 		usb_kill_urb(priv->urb);
+ 		return -EIO;
+ 	}
 
 
 
