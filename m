@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-243651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBsLGGKr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:22 +0200
+	id iK46NGyp+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5DB4BF2BC
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4889A4BED27
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C216302A4C8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EEF7301F49B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05093DE456;
-	Mon,  4 May 2026 14:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2383D3334;
+	Mon,  4 May 2026 14:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgNyk9YC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7LqF+fP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37D33DE43C;
-	Mon,  4 May 2026 14:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2B335A3AD;
+	Mon,  4 May 2026 14:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904429; cv=none; b=lZjxPC2PV6RGCurHxCYhGq59tRDyJo7Kjf9e1zV6BpZlSCIo5qqIdtPqVou800MRY7pU4Y4LiXiz/MEXIl+Z4Vb4ASnRyyQX72kkXmBiB+L8A2GsqKMOwUSqh9jMwgwoUTDKjfp/l4QQCcUGPKyGXweecHOcDgHMRMfvfdpoHj4=
+	t=1777903907; cv=none; b=tlPH3yACxXfd0OQoP8fpSBLy+ifUS+Lhj7VO5JdGthRZ8IogfV0Vv7TzPtIqrPczMzdEs/qmK4FScgJIDrAkR611GK+hZc7HB4zBi3i7RsW15VRjTDoF9K7zilJmJ+xQ7i3vZVKVf/lQrPBM6OhfUP67zuNn9JjOa1wwYRTdxR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904429; c=relaxed/simple;
-	bh=Qw1xDlb6MAPFvHZvXe3bn/LTwdKZw3KvuvqWUEvC9CY=;
+	s=arc-20240116; t=1777903907; c=relaxed/simple;
+	bh=f4PpvaJpDib2H4mkAPQX2DOPnfyzSqxe/6VAESc8CY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WN88Or4ZncuSYeAZUUuZYKo+P3ikbssTNOEMybiZSMODeHko29jsWUOftWpSlDB99NWCsKL/tWLWaASVG7Qsevlg4A6FRcycDLReu6/LZPuCVK8TiYy/C9PUEqb3dxUIVVefZPho6IpbNnNGu128cVw8gaC60kzaxlFht8RZhac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgNyk9YC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4961EC2BCB8;
-	Mon,  4 May 2026 14:20:29 +0000 (UTC)
+	 MIME-Version; b=XSNKDO/Ui2nz2SCqg+DB1F5jVqTp2w3R/VDhCW8woFs/3TOVr7ojzCctkl9hFRb3eHEulj0zVypndn9eS6PiBIYegxsnq67R6jn9xTNZ+hcpp0vxfxAtIsbZCgDLF/j/dcDqQEyrNpoXf4lRXTEnsDuGDmpQcjFZDggsNXFpsmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7LqF+fP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AE0C2BCB8;
+	Mon,  4 May 2026 14:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904429;
-	bh=Qw1xDlb6MAPFvHZvXe3bn/LTwdKZw3KvuvqWUEvC9CY=;
+	s=korg; t=1777903907;
+	bh=f4PpvaJpDib2H4mkAPQX2DOPnfyzSqxe/6VAESc8CY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgNyk9YCFRWoAgs5ndzUl8np0Du9t7XLxtcH53aeJOz8y5KjWR4SCP5RaMQMywmjm
-	 9+gjFo0Z5xn9EMShhHD6MwDWhQ7sZa6gsWSvTS6+fXaSA00Tt1eTJsp2SDmBYqhxMK
-	 L7ULIGXoL5uTImWA1aU9mjxkWLM/4ppcnVubkL+I=
+	b=G7LqF+fPxTLEq18lorOuaO52r/6B20CQ0NDGuvfw7j9hkvpX+G+6Al/JNvHEujVz3
+	 9Q/C2e0FQcRJrJon1AogLqv5PiZDObRKKMfYkitDcC1geN6KLGzHNRWrxYAdc16bPn
+	 y4kgz++pJfW04gLPUrrkPCPEg+anOCsgbyB1u/RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Qu Wenruo <wqu@suse.com>,
-	Avinesh Kumar <avinesh.kumar@suse.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Geffon <bgeffon@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 028/215] zram: do not forget to endio for partial discard requests
-Date: Mon,  4 May 2026 15:50:47 +0200
-Message-ID: <20260504135131.204615573@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 108/275] rxrpc: Fix potential UAF after skb_unshare() failure
+Date: Mon,  4 May 2026 15:50:48 +0200
+Message-ID: <20260504135146.922664135@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,14 +68,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CB5DB4BF2BC
+X-Rspamd-Queue-Id: 4889A4BED27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -84,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243651-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243447-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -93,71 +92,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,auristor.com:email,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: David Howells <dhowells@redhat.com>
 
-commit e3668b371329ea036ff022ce8ecc82f8befcf003 upstream.
+commit 1f2740150f904bfa60e4bad74d65add3ccb5e7f8 upstream.
 
-As reported by Qu Wenruo and Avinesh Kumar, the following
+If skb_unshare() fails to unshare a packet due to allocation failure in
+rxrpc_input_packet(), the skb pointer in the parent (rxrpc_io_thread())
+will be NULL'd out.  This will likely cause the call to
+trace_rxrpc_rx_done() to oops.
 
- getconf PAGESIZE
- 65536
- blkdiscard -p 4k /dev/zram0
+Fix this by moving the unsharing down to where rxrpc_input_call_event()
+calls rxrpc_input_call_packet().  There are a number of places prior to
+that where we ignore DATA packets for a variety of reasons (such as the
+call already being complete) for which an unshare is then avoided.
 
-takes literally forever to complete.  zram doesn't support partial
-discards and just returns immediately w/o doing any discard work in such
-cases.  The problem is that we forget to endio on our way out, so
-blkdiscard sleeps forever in submit_bio_wait().  Fix this by jumping to
-end_bio label, which does bio_endio().
+And with that, rxrpc_input_packet() doesn't need to take a pointer to the
+pointer to the packet, so change that to just a pointer.
 
-Link: https://lore.kernel.org/20260331074255.777019-1-senozhatsky@chromium.org
-Fixes: 0120dd6e4e20 ("zram: make zram_bio_discard more self-contained")
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reported-by: Qu Wenruo <wqu@suse.com>
-Closes: https://lore.kernel.org/linux-block/92361cd3-fb8b-482e-bc89-15ff1acb9a59@suse.com
-Tested-by: Qu Wenruo <wqu@suse.com>
-Reported-by: Avinesh Kumar <avinesh.kumar@suse.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1256530
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 2d1faf7a0ca3 ("rxrpc: Simplify skbuff accounting in receive path")
+Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260422161438.2593376-4-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/trace/events/rxrpc.h |    4 ++--
+ net/rxrpc/ar-internal.h      |    1 -
+ net/rxrpc/call_event.c       |   19 ++++++++++++++++++-
+ net/rxrpc/io_thread.c        |   24 ++----------------------
+ net/rxrpc/skbuff.c           |    9 ---------
+ 5 files changed, 22 insertions(+), 35 deletions(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2017,7 +2017,7 @@ static void zram_bio_discard(struct zram
- 	 */
- 	if (offset) {
- 		if (n <= (PAGE_SIZE - offset))
--			return;
-+			goto end_bio;
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -161,8 +161,6 @@
+ 	E_(rxrpc_call_poke_timer_now,		"Timer-now")
  
- 		n -= (PAGE_SIZE - offset);
- 		index++;
-@@ -2032,6 +2032,7 @@ static void zram_bio_discard(struct zram
- 		n -= PAGE_SIZE;
- 	}
+ #define rxrpc_skb_traces \
+-	EM(rxrpc_skb_eaten_by_unshare,		"ETN unshare  ") \
+-	EM(rxrpc_skb_eaten_by_unshare_nomem,	"ETN unshar-nm") \
+ 	EM(rxrpc_skb_get_call_rx,		"GET call-rx  ") \
+ 	EM(rxrpc_skb_get_conn_secured,		"GET conn-secd") \
+ 	EM(rxrpc_skb_get_conn_work,		"GET conn-work") \
+@@ -189,6 +187,7 @@
+ 	EM(rxrpc_skb_put_purge,			"PUT purge    ") \
+ 	EM(rxrpc_skb_put_purge_oob,		"PUT purge-oob") \
+ 	EM(rxrpc_skb_put_response,		"PUT response ") \
++	EM(rxrpc_skb_put_response_copy,		"PUT resp-cpy ") \
+ 	EM(rxrpc_skb_put_rotate,		"PUT rotate   ") \
+ 	EM(rxrpc_skb_put_unknown,		"PUT unknown  ") \
+ 	EM(rxrpc_skb_see_conn_work,		"SEE conn-work") \
+@@ -197,6 +196,7 @@
+ 	EM(rxrpc_skb_see_recvmsg_oob,		"SEE recvm-oob") \
+ 	EM(rxrpc_skb_see_reject,		"SEE reject   ") \
+ 	EM(rxrpc_skb_see_rotate,		"SEE rotate   ") \
++	EM(rxrpc_skb_see_unshare_nomem,		"SEE unshar-nm") \
+ 	E_(rxrpc_skb_see_version,		"SEE version  ")
  
-+end_bio:
- 	bio_endio(bio);
+ #define rxrpc_local_traces \
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -1486,7 +1486,6 @@ int rxrpc_server_keyring(struct rxrpc_so
+ void rxrpc_kernel_data_consumed(struct rxrpc_call *, struct sk_buff *);
+ void rxrpc_new_skb(struct sk_buff *, enum rxrpc_skb_trace);
+ void rxrpc_see_skb(struct sk_buff *, enum rxrpc_skb_trace);
+-void rxrpc_eaten_skb(struct sk_buff *, enum rxrpc_skb_trace);
+ void rxrpc_get_skb(struct sk_buff *, enum rxrpc_skb_trace);
+ void rxrpc_free_skb(struct sk_buff *, enum rxrpc_skb_trace);
+ void rxrpc_purge_queue(struct sk_buff_head *);
+--- a/net/rxrpc/call_event.c
++++ b/net/rxrpc/call_event.c
+@@ -332,7 +332,24 @@ bool rxrpc_input_call_event(struct rxrpc
+ 
+ 			saw_ack |= sp->hdr.type == RXRPC_PACKET_TYPE_ACK;
+ 
+-			rxrpc_input_call_packet(call, skb);
++			if (sp->hdr.securityIndex != 0 &&
++			    skb_cloned(skb)) {
++				/* Unshare the packet so that it can be
++				 * modified by in-place decryption.
++				 */
++				struct sk_buff *nskb = skb_copy(skb, GFP_ATOMIC);
++
++				if (nskb) {
++					rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
++					rxrpc_input_call_packet(call, nskb);
++					rxrpc_free_skb(nskb, rxrpc_skb_put_call_rx);
++				} else {
++					/* OOM - Drop the packet. */
++					rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
++				}
++			} else {
++				rxrpc_input_call_packet(call, skb);
++			}
+ 			rxrpc_free_skb(skb, rxrpc_skb_put_call_rx);
+ 			did_receive = true;
+ 		}
+--- a/net/rxrpc/io_thread.c
++++ b/net/rxrpc/io_thread.c
+@@ -192,13 +192,12 @@ static bool rxrpc_extract_abort(struct s
+ /*
+  * Process packets received on the local endpoint
+  */
+-static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff **_skb)
++static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff *skb)
+ {
+ 	struct rxrpc_connection *conn;
+ 	struct sockaddr_rxrpc peer_srx;
+ 	struct rxrpc_skb_priv *sp;
+ 	struct rxrpc_peer *peer = NULL;
+-	struct sk_buff *skb = *_skb;
+ 	bool ret = false;
+ 
+ 	skb_pull(skb, sizeof(struct udphdr));
+@@ -244,25 +243,6 @@ static bool rxrpc_input_packet(struct rx
+ 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_call);
+ 		if (sp->hdr.seq == 0)
+ 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_seq);
+-
+-		/* Unshare the packet so that it can be modified for in-place
+-		 * decryption.
+-		 */
+-		if (sp->hdr.securityIndex != 0) {
+-			skb = skb_unshare(skb, GFP_ATOMIC);
+-			if (!skb) {
+-				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare_nomem);
+-				*_skb = NULL;
+-				return just_discard;
+-			}
+-
+-			if (skb != *_skb) {
+-				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare);
+-				*_skb = skb;
+-				rxrpc_new_skb(skb, rxrpc_skb_new_unshared);
+-				sp = rxrpc_skb(skb);
+-			}
+-		}
+ 		break;
+ 
+ 	case RXRPC_PACKET_TYPE_CHALLENGE:
+@@ -494,7 +474,7 @@ int rxrpc_io_thread(void *data)
+ 			switch (skb->mark) {
+ 			case RXRPC_SKB_MARK_PACKET:
+ 				skb->priority = 0;
+-				if (!rxrpc_input_packet(local, &skb))
++				if (!rxrpc_input_packet(local, skb))
+ 					rxrpc_reject_packet(local, skb);
+ 				trace_rxrpc_rx_done(skb->mark, skb->priority);
+ 				rxrpc_free_skb(skb, rxrpc_skb_put_input);
+--- a/net/rxrpc/skbuff.c
++++ b/net/rxrpc/skbuff.c
+@@ -47,15 +47,6 @@ void rxrpc_get_skb(struct sk_buff *skb,
  }
  
+ /*
+- * Note the dropping of a ref on a socket buffer by the core.
+- */
+-void rxrpc_eaten_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
+-{
+-	int n = atomic_inc_return(&rxrpc_n_rx_skbs);
+-	trace_rxrpc_skb(skb, 0, n, why);
+-}
+-
+-/*
+  * Note the destruction of a socket buffer.
+  */
+ void rxrpc_free_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
 
 
 
