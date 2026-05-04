@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMs2Li6m+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:10 +0200
+	id pBPYMF2p+Gm6xgIAu9opvQ
+	(envelope-from <stable+bounces-243369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177094BE3F5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70B24BECD7
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA70B3029796
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 52358305CFCD
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DAA3D47D0;
-	Mon,  4 May 2026 13:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A113D5645;
+	Mon,  4 May 2026 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axRuLXxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0feBp7II"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699B520DD51;
-	Mon,  4 May 2026 13:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D981ADC83;
+	Mon,  4 May 2026 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903056; cv=none; b=OS5k0zAU85gZ6nI8ixhHlIsZdPqRAYq+Nu2oda5ov+XgNnKNmXmWEQZ5sxH3OS3OsU06LWquWhq84waM4P2fsYChBszOGa6gldvPvAPlgflsFSXdbGyhdbggmflGBrYpv3neFD8cRFIoCxl6pbzDaR5XmeDHKps8fAiA/9J3A8s=
+	t=1777903709; cv=none; b=H4MVhtKZDi6UYM80TrqECiPcVJkSZcVZRMn4yQ+e1d68zRoDLVFifudk2woQPmVRdDnoh5D/J4f/qfJma9H2vQkXl1+cF6ozVMtxuLjHGiNNTH0dqEl2zITd/kBNrE7HGMq7ygFrIpjAwHchYwkEfEXvxS/TmSPcV0I5uxBdjX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903056; c=relaxed/simple;
-	bh=OWZ+9jfaabhH/v985YZJVurIw76Wu0NvkEpo/gm15lQ=;
+	s=arc-20240116; t=1777903709; c=relaxed/simple;
+	bh=U7NRuY2U8rqZP/7U3x9esvfwLKbBkl5+fKOAhURHGLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6nYBacNDaiq+cKxbaYKqbP0z2TxQlu0MT0S8fNMkUrYRFoRlUl6Pu1hYAE+nLpgdD18KBTzGm1+TbrPbW7WCSM8s1k8yD+9hbS23BbdHcedr6qSPzOsu9aVvWsVcf9VmLY5JggPE/VKHSuom6JUG2tMp7+Q45TzqxdejNGvIt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axRuLXxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2152C2BCB8;
-	Mon,  4 May 2026 13:57:35 +0000 (UTC)
+	 MIME-Version; b=K3kcCFtfqf85T9+ieZH47JfFfFNasazmQn4hmV+zv3x8nUcR7VLTxKSRLZ0VHTy+fWJxahyLcQ+0FGkDtcPbEUyOxkV/ZZTkbMzCOKzw/1FPdhHczKv/ZMEIMzuLmtoYmRYwNdp4/D6FQxW08vcWaNXrMxiH+msFCWOlfBcvAzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0feBp7II; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF35EC2BCB8;
+	Mon,  4 May 2026 14:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903056;
-	bh=OWZ+9jfaabhH/v985YZJVurIw76Wu0NvkEpo/gm15lQ=;
+	s=korg; t=1777903709;
+	bh=U7NRuY2U8rqZP/7U3x9esvfwLKbBkl5+fKOAhURHGLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axRuLXxfdzyZiw4nwc7sih6riyPuFnltsSI418Z9k6tuqEGTxrQrVzcA6n8GXvm5L
-	 Xsfy7Ae701lIzUYEbKk7coGFYS1qvvp6DtdkBSh6EP/xWs26TxqQXsPk8/TazLtf41
-	 hWKkUpCdIChXQD06MZdV3MBd5MrHjAPBMwpjRcw4=
+	b=0feBp7II92EbrcS/QBV/bGTe22Z0Kfid49Et32kc142zc7UNeFgmJ94uGYrml1JMr
+	 y29ExHUkEVxsyFBOrDwkZCq5+bQVJqcFDu7db5t+QHuyLjru5QE9C0CSSRVWRQ7KxI
+	 bZoGxFqje+ljhHeZbOuS1OwgWNKz9fdxHrE/ynwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 7.0 086/307] nvme-pci: add NVME_QUIRK_DISABLE_WRITE_ZEROES for Kingston OM3SGP4
-Date: Mon,  4 May 2026 15:49:31 +0200
-Message-ID: <20260504135146.053972952@linuxfoundation.org>
+	Alex Williamson <alex.williamson@nvidia.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Alex Williamson <alex@shazbot.org>
+Subject: [PATCH 6.18 032/275] vfio/cdx: Serialize VFIO_DEVICE_SET_IRQS with a per-device mutex
+Date: Mon,  4 May 2026 15:49:32 +0200
+Message-ID: <20260504135144.132056574@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 177094BE3F5
+X-Rspamd-Queue-Id: C70B24BECD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,60 +81,140 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243115-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243369-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,shazbot.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Beckett <bob.beckett@collabora.com>
+From: Alex Williamson <alex.williamson@nvidia.com>
 
-commit a8eebf9699d69987cc49cec4e4fdb4111ab32423 upstream.
+commit 670e8864b1a218d72f08db40d0103adf38fa1d9b upstream.
 
-The Kingston OM3SGP42048K2-A00 (PCI ID 2646:502f) firmware has a race
-condition when processing concurrent write zeroes and DSM (discard)
-commands, causing spurious "LBA Out of Range" errors and IOMMU page
-faults at address 0x0.
+vfio_cdx_set_msi_trigger() reads vdev->config_msi and operates on the
+vdev->cdx_irqs array based on its value, but provides no serialization
+against concurrent VFIO_DEVICE_SET_IRQS ioctls.  Two callers can race
+such that one observes config_msi as set while another clears it and
+frees cdx_irqs via vfio_cdx_msi_disable(), resulting in a use-after-free
+of the cdx_irqs array.
 
-The issue is reliably triggered by running two concurrent mkfs commands
-on different partitions of the same drive, which generates interleaved
-write zeroes and discard operations.
+Add a cdx_irqs_lock mutex to struct vfio_cdx_device and acquire it in
+vfio_cdx_set_msi_trigger(), which is the single chokepoint through
+which all updates to config_msi, cdx_irqs, and msi_count flow, covering
+both the ioctl path and the close-device cleanup path.  This keeps the
+test of config_msi atomic with the subsequent enable, disable, or
+trigger operations.
 
-Disable write zeroes for this device, matching the pattern used for
-other Kingston OM* drives that have similar firmware issues.
+Drop the pre-call !cdx_irqs test from vfio_cdx_irqs_cleanup() as part
+of this change: the optimization it provided is redundant with the
+!config_msi early-return inside vfio_cdx_msi_disable(), and leaving the
+test in place would be an unsynchronized read of state the new lock is
+meant to protect.
 
+Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
-Assisted-by: claude-opus-4-6-v1
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+Acked-by: Nikhil Agarwal <nikhil.agarwal@amd.com>
+Link: https://lore.kernel.org/r/20260417202800.88287-3-alex.williamson@nvidia.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vfio/cdx/intr.c    |    9 ++-------
+ drivers/vfio/cdx/main.c    |   19 +++++++++++++++++++
+ drivers/vfio/cdx/private.h |    3 +++
+ 3 files changed, 24 insertions(+), 7 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -4178,6 +4178,8 @@ static const struct pci_device_id nvme_i
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x2646, 0x501E),   /* KINGSTON OM3PGP4xxxxQ OS21011 NVMe SSD */
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
-+	{ PCI_DEVICE(0x2646, 0x502F),   /* KINGSTON OM3SGP4xxxxK NVMe SSD */
-+		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x1f40, 0x1202),   /* Netac Technologies Co. NV3000 NVMe SSD */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1f40, 0x5236),   /* Netac Technologies Co. NV7000 NVMe SSD */
+--- a/drivers/vfio/cdx/intr.c
++++ b/drivers/vfio/cdx/intr.c
+@@ -152,6 +152,8 @@ static int vfio_cdx_set_msi_trigger(stru
+ 	if (start + count > cdx_dev->num_msi)
+ 		return -EINVAL;
+ 
++	guard(mutex)(&vdev->cdx_irqs_lock);
++
+ 	if (!count && (flags & VFIO_IRQ_SET_DATA_NONE)) {
+ 		vfio_cdx_msi_disable(vdev);
+ 		return 0;
+@@ -206,12 +208,5 @@ int vfio_cdx_set_irqs_ioctl(struct vfio_
+ /* Free All IRQs for the given device */
+ void vfio_cdx_irqs_cleanup(struct vfio_cdx_device *vdev)
+ {
+-	/*
+-	 * Device does not support any interrupt or the interrupts
+-	 * were not configured
+-	 */
+-	if (!vdev->cdx_irqs)
+-		return;
+-
+ 	vfio_cdx_set_msi_trigger(vdev, 0, 0, 0, VFIO_IRQ_SET_DATA_NONE, NULL);
+ }
+--- a/drivers/vfio/cdx/main.c
++++ b/drivers/vfio/cdx/main.c
+@@ -8,6 +8,23 @@
+ 
+ #include "private.h"
+ 
++static int vfio_cdx_init_dev(struct vfio_device *core_vdev)
++{
++	struct vfio_cdx_device *vdev =
++		container_of(core_vdev, struct vfio_cdx_device, vdev);
++
++	mutex_init(&vdev->cdx_irqs_lock);
++	return 0;
++}
++
++static void vfio_cdx_release_dev(struct vfio_device *core_vdev)
++{
++	struct vfio_cdx_device *vdev =
++		container_of(core_vdev, struct vfio_cdx_device, vdev);
++
++	mutex_destroy(&vdev->cdx_irqs_lock);
++}
++
+ static int vfio_cdx_open_device(struct vfio_device *core_vdev)
+ {
+ 	struct vfio_cdx_device *vdev =
+@@ -281,6 +298,8 @@ static int vfio_cdx_mmap(struct vfio_dev
+ 
+ static const struct vfio_device_ops vfio_cdx_ops = {
+ 	.name		= "vfio-cdx",
++	.init		= vfio_cdx_init_dev,
++	.release	= vfio_cdx_release_dev,
+ 	.open_device	= vfio_cdx_open_device,
+ 	.close_device	= vfio_cdx_close_device,
+ 	.ioctl		= vfio_cdx_ioctl,
+--- a/drivers/vfio/cdx/private.h
++++ b/drivers/vfio/cdx/private.h
+@@ -6,6 +6,8 @@
+ #ifndef VFIO_CDX_PRIVATE_H
+ #define VFIO_CDX_PRIVATE_H
+ 
++#include <linux/mutex.h>
++
+ #define VFIO_CDX_OFFSET_SHIFT    40
+ 
+ static inline u64 vfio_cdx_index_to_offset(u32 index)
+@@ -31,6 +33,7 @@ struct vfio_cdx_region {
+ struct vfio_cdx_device {
+ 	struct vfio_device	vdev;
+ 	struct vfio_cdx_region	*regions;
++	struct mutex		cdx_irqs_lock;
+ 	struct vfio_cdx_irq	*cdx_irqs;
+ 	u32			flags;
+ #define BME_SUPPORT BIT(0)
 
 
 
