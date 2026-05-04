@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-243544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNurL/6s+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:14 +0200
+	id qOdCFKyp+Gm6xgIAu9opvQ
+	(envelope-from <stable+bounces-243292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6974BF809
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C1A4BEDDA
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 12897300B9F6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7CA0B30454DD
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A000F3DE428;
-	Mon,  4 May 2026 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE283DEAF6;
+	Mon,  4 May 2026 14:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afKTSYT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4L8gYLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E3535A3AD;
-	Mon,  4 May 2026 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A4B3DEFF8;
+	Mon,  4 May 2026 14:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904157; cv=none; b=AGsHj6+Y0zgTd4MCXK3TOY8mU/zy1qVZQKgNMhKE6qR+1hNd7CieCVJcl4dN0xdFHp8yGbgKnNA1IXhe3pQ/oDDD+/d26VS3Be8NcnsaOBZHQnXvovi3mXtRxcDlFBJ7McPeVjgUBcoXd5JzMacsUDr6RYCgd/vny1v1wYYHbPo=
+	t=1777903512; cv=none; b=MI+wWEEW7LXi+qe525EyytybcP7hAvAbELTJTx8qi8ONlr5/ubY5SacyE0FF8lyNDzyVcp015LJa8LbdIb3mNqnCbGO6sWy+gvUxBRD/aedlRGWkB9xN9FK6+ZM7hieuYeJ2xFPD1rd8p8lFSkJImioHNd5VFAXPRsPX1kigpCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904157; c=relaxed/simple;
-	bh=XoWVwZVpAzJmPUcGeKNKYk2tnAZzE9rdKGxdpYidFU0=;
+	s=arc-20240116; t=1777903512; c=relaxed/simple;
+	bh=77GPda1b/nBvZ/rAWONlw6whd/0/C4kwm9rGKHlnjqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PAieY6C+WDfYmk9dKSni64L8LQp55ipndwQVxa5HmsqOT3inRKEsSD3xvK6/LMawwrL+mtLUaaAuN3HPZRB9DeWhL7I10djBStiPqYEnBbBfZb/6wRHkPBG5PZE2UaRIwzfMt7eAweekVguZVLxERqX/4YhB5Rs7n6i9VNPbGWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afKTSYT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F70C2BCB8;
-	Mon,  4 May 2026 14:15:56 +0000 (UTC)
+	 MIME-Version; b=Pb5F/gxtJ6rYXBHi1HK96/fVB3j1E+aUrTunG0dGWHsJNktnc1PTgQz4GKPEYuSpBfeeUfHGMeUStaT5GbvI6aWDFp45jOnzfbI+v/zQA4RZ3PH+OAU12NnLv7gY4tHEgthHovnd72NwyGuC5WLe7sOTBc0bgUHvWn4iAgzVeRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4L8gYLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B67C2BCC4;
+	Mon,  4 May 2026 14:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904157;
-	bh=XoWVwZVpAzJmPUcGeKNKYk2tnAZzE9rdKGxdpYidFU0=;
+	s=korg; t=1777903511;
+	bh=77GPda1b/nBvZ/rAWONlw6whd/0/C4kwm9rGKHlnjqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afKTSYT4fJIMCYiuTp+KIERmX04IHS3STJrOO7ulxg0N8wFRjjJV0NJzcZ970bPPt
-	 HYF4qphw0DJesdxSExnE62cv1w8H+Qb4AZjysepdYtJq0eACXDgq9gOyDMemkFgBcn
-	 8/J8skmrlUOLzeuUAdKbkwgl1FeieySMcvhRhDPo=
+	b=V4L8gYLOPUff3Nws59VhB3fKmCLJShKilflMVcmm1r4aVo4LolP/6jiJpUzuWQL0O
+	 aMIrZMn2EOyakKh+zhFb6AYG19ZWyqY0Ig1QMUQUYPNdu+stp2ukndQYg5cMzWtICX
+	 8iSlhacjtoibDkc1EPOJZbVgPW228uFLjQoZtFwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Subject: [PATCH 6.18 206/275] check-uapi: link into shared objects
-Date: Mon,  4 May 2026 15:52:26 +0200
-Message-ID: <20260504135150.731547352@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 7.0 262/307] crypto: ccree - fix a memory leak in cc_mac_digest()
+Date: Mon,  4 May 2026 15:52:27 +0200
+Message-ID: <20260504135152.670667211@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA6974BF809
+X-Rspamd-Queue-Id: 47C1A4BEDDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243544-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243292-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,arndb.de:email,sourceware.org:url,weissschuh.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,apana.org.au:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit a261f6dff3c1653c19c065c3b3650c625447b8a7 upstream.
+commit 02c64052fad03699b9c6d1df2f9b444d17e4ac50 upstream.
 
-While testing ABI changes across all architectures, I found that abidiff
-sometimes produces nonsensical output. Further debugging identified
-missing or broken libelf support for architecture specific relocations
-in ET_REL binaries as the source of the problem[1].
+Add cc_unmap_result() if cc_map_hash_request_final()
+fails to prevent potential memory leak.
 
-Change the script to no longer produce a relocatable object file but
-instead create a shared library for each header. This makes abidiff
-work for all of the architectures in upstream linux kernels.
-
-Link: https://sourceware.org/bugzilla/show_bug.cgi?id=33869
+Fixes: 63893811b0fc ("crypto: ccree - add ahash support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20260306163309.2015837-2-arnd@kernel.org
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/check-uapi.sh |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/crypto/ccree/cc_hash.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/scripts/check-uapi.sh
-+++ b/scripts/check-uapi.sh
-@@ -178,8 +178,11 @@ do_compile() {
- 	local -r inc_dir="$1"
- 	local -r header="$2"
- 	local -r out="$3"
--	printf "int main(void) { return 0; }\n" | \
--		"$CC" -c \
-+	printf "int f(void) { return 0; }\n" | \
-+		"$CC" \
-+		  -shared \
-+		  -nostdlib \
-+		  -fPIC \
- 		  -o "$out" \
- 		  -x c \
- 		  -O0 \
+--- a/drivers/crypto/ccree/cc_hash.c
++++ b/drivers/crypto/ccree/cc_hash.c
+@@ -1448,6 +1448,7 @@ static int cc_mac_digest(struct ahash_re
+ 	if (cc_map_hash_request_final(ctx->drvdata, state, req->src,
+ 				      req->nbytes, 1, flags)) {
+ 		dev_err(dev, "map_ahash_request_final() failed\n");
++		cc_unmap_result(dev, state, digestsize, req->result);
+ 		cc_unmap_req(dev, state, ctx);
+ 		return -ENOMEM;
+ 	}
 
 
 
