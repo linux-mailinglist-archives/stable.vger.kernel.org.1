@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDFFIqCq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:08 +0200
+	id QJ0wMx2v+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18DF4BF061
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2964BFC51
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 00CEA3030D23
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EEB2A308FA29
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BA83DEAC1;
-	Mon,  4 May 2026 14:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4283E1220;
+	Mon,  4 May 2026 14:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJ9YGCmO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP9Z8zPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379AD3D5667;
-	Mon,  4 May 2026 14:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAC53E1223;
+	Mon,  4 May 2026 14:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903642; cv=none; b=ryfRnsZODZXbY/aGu/9x2yeNcRRSClB7x4tgNTNJSjNjIUNAkJZePNnebaGXbXKwd0ze/vaR2Vezn9JuCJkVZhiuiVssNXq6NLuUw0Ads8dQLlVwW97yoapy8jSqjO1/d1Z9+9IQtYnZkthwJUqXXLIeLopvnMKaarPs5urxUJQ=
+	t=1777904721; cv=none; b=EvlWJspmpB9moHBAh0ew181jbKLUrPxGFv26Zfi5/Q/ijW+YZBIpqGNzqf233GoUldaz+w7+XiD1YMojRZ61r29b0n4MbX+mvbXKbMzqliZ75mrrA0ifwyqHewLZ+WrRaerfjMu7QQ+M2uJPUDHbbxlgCEag9jHefLjR7lVhjKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903642; c=relaxed/simple;
-	bh=zyXB31vHTu8lvIQcLAEvkrKG2IP9+YWqDK9v/SbDiFs=;
+	s=arc-20240116; t=1777904721; c=relaxed/simple;
+	bh=W1dUxmuNK9urUhrUb6VhEaTZVl3O2VTaqZUZ74ntlMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=un2GIimKao1W265xpluwfiTxTrdpc0Q6yH9d5Cpc6aZwpnL57IpeiIMsXbYMiLkTevXkM4CPvmlxwU73Q3ZYbMuUEnbLPDOjvSt/n83h7AflAcT8BqwTAOyB2HMPSej8X0BRbJ5kAlktUxESwFiVOl2WeKe4kjf0BhJWBxrQwh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJ9YGCmO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB55C2BCB8;
-	Mon,  4 May 2026 14:07:21 +0000 (UTC)
+	 MIME-Version; b=NyQuaOnz0Ggjz5GOBe6UH+FKI1EtbV6tPiMKpkE3S+16CfuovJG9HTZQw8DZNijY2xL493xtuZeuV9hGQfiV+umPmLOtVnBVLO+dujGoeRBP0TIHm+3dvtppwLEvdDJ4pcsAcfeob5b5FyLahzUPqBGQhHs+NkIItVTwlvKmwL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP9Z8zPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E95C2BCB8;
+	Mon,  4 May 2026 14:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903642;
-	bh=zyXB31vHTu8lvIQcLAEvkrKG2IP9+YWqDK9v/SbDiFs=;
+	s=korg; t=1777904721;
+	bh=W1dUxmuNK9urUhrUb6VhEaTZVl3O2VTaqZUZ74ntlMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJ9YGCmOtOYbjCY6qqMHGjqQbLhxtWwXglvCBzdoszOmc6eB6e5FV9hNFL3luOMWG
-	 6ci18AOEJ8s+sOBIukpcS95AtyRkxHkwL2QDaCcPY+aG23lUWV7lSIsPiwVlmxGGME
-	 Z5uFEpln8TuN9mz4tuHYwm9fwCxaoVCN7Zoq8/o8=
+	b=BP9Z8zPy+t38Ab7nUbEL83m6uqZh6Wt9OjOJTvJXLmjAHXXpFsjxVxTa4zXCv1hgO
+	 siGXeBKqj6cG5wm915alIrNbs3YGciIlDArjyJsvtiHw6eKp8+GTo9oNPO3d5EDJif
+	 yf4kQ3tieAqB5GO/IAf95YbYjoyT6i7y16TW7zLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 7.0 282/307] sched_ext: Documentation: Clarify ops.dispatch() role in task lifecycle
-Date: Mon,  4 May 2026 15:52:47 +0200
-Message-ID: <20260504135153.404911459@linuxfoundation.org>
+	Brian Mak <makb@juniper.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.12 149/215] mfd: core: Preserve OF node when ACPI handle is present
+Date: Mon,  4 May 2026 15:52:48 +0200
+Message-ID: <20260504135135.611250232@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A18DF4BF061
+X-Rspamd-Queue-Id: 6F2964BFC51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,72 +81,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243343-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243765-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,juniper.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Brian Mak <makb@juniper.net>
 
-commit a313357a346839d40b3a4dec393c71bf30cbb34c upstream.
+commit caa5a5d44d8ae4fd13b744857d66c9313b712d1f upstream.
 
-ops.dispatch() is invoked when a CPU becomes available. This can occur
-when a task voluntarily yields the CPU, exhausts its time slice, or is
-preempted for other reasons.
+Switch device_set_node to set_primary_fwnode, so that the ACPI fwnode
+does not overwrite the of_node with NULL.
 
-If the task is still runnable, refilling its time slice in
-ops.dispatch() (either by the BPF scheduler or the sched_ext core)
-allows it to continue running without triggering ops.stopping().
-However, this behavior is not clearly reflected in the current task
-lifecycle diagram.
+This allows MFD children with both OF nodes and ACPI handles to have OF
+nodes again.
 
-Update the diagram to better represent this interaction.
-
-Fixes: 9465f44d2df2 ("sched_ext: Documentation: Clarify time slice handling in task lifecycle")
-Cc: stable@vger.kernel.org # v6.17+
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 51e3b257099d ("mfd: core: Make use of device_set_node()")
+Signed-off-by: Brian Mak <makb@juniper.net>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260325223024.35992-1-makb@juniper.net
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/scheduler/sched-ext.rst |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/mfd/mfd-core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/Documentation/scheduler/sched-ext.rst
-+++ b/Documentation/scheduler/sched-ext.rst
-@@ -320,13 +320,15 @@ by a sched_ext scheduler:
-                 ops.dispatch(); /* Task is moved to a local DSQ */
-             }
-             ops.running();      /* Task starts running on its assigned CPU */
--            while (task->scx.slice > 0 && task is runnable)
--                ops.tick();     /* Called every 1/HZ seconds */
--            ops.stopping();     /* Task stops running (time slice expires or wait) */
+diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
+index 6be58eb5a746..7aa32b90cf1e 100644
+--- a/drivers/mfd/mfd-core.c
++++ b/drivers/mfd/mfd-core.c
+@@ -88,7 +88,17 @@ static void mfd_acpi_add_device(const struct mfd_cell *cell,
+ 		}
+ 	}
  
--            /* Task's CPU becomes available */
-+            while task_is_runnable(p) {
-+                while (task->scx.slice > 0 && task_is_runnable(p))
-+                    ops.tick();     /* Called every 1/HZ seconds */
-+
-+                ops.dispatch();     /* task->scx.slice can be refilled */
-+            }
- 
--            ops.dispatch();     /* task->scx.slice can be refilled */
-+            ops.stopping();     /* Task stops running (time slice expires or wait) */
-         }
- 
-         ops.quiescent();        /* Task releases its assigned CPU (wait) */
+-	device_set_node(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
++	/*
++	 * NOTE: The fwnode design doesn't allow proper stacking/sharing. This
++	 * should eventually turn into a device fwnode API call that will allow
++	 * prepending to a list of fwnodes (with ACPI taking precedence).
++	 *
++	 * set_primary_fwnode() is used here, instead of device_set_node(), as
++	 * device_set_node() will overwrite the existing fwnode, which may be an
++	 * OF node that was populated earlier. To support a use case where ACPI
++	 * and OF is used in conjunction, we call set_primary_fwnode() instead.
++	 */
++	set_primary_fwnode(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
+ }
+ #else
+ static inline void mfd_acpi_add_device(const struct mfd_cell *cell,
+-- 
+2.54.0
+
 
 
 
