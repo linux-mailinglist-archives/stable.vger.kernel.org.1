@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCJiLbup+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:19 +0200
+	id 6BOQLT6s+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385B14BEDE1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3149E4BF538
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D758304619B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AD0BF307994D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7C03DE45D;
-	Mon,  4 May 2026 14:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6D53DE456;
+	Mon,  4 May 2026 14:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mk4bAIZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayPby91B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E293D5645;
-	Mon,  4 May 2026 14:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428583DE44F;
+	Mon,  4 May 2026 14:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903926; cv=none; b=fLghdGMi1E6VIzo1qq3kkf4UeBzOg/C1kT/kDln/29vKKpohS+aKePLDJ9VNYjRwH4OBI6ny21Ff3gtCNANEX6ejyOB4+vHBQGbkj7LwJaLR5Wli8JQoWZMPVhz7ra9NgPyYKynCbi5eRaJxl3eMTGxU1qA1uIUcU2puv4xSOf0=
+	t=1777904517; cv=none; b=F7+zzBFDvp24afUh7yYzvUhHs0PaTuomh4MGEMS0Ui5kor3dKWYHpdWt4lPjt7pD3AT9yJzvOeW4bp8Ni12N09f0VrmelAw2fxU4Am1BbZANjdk6HKRFpGnxkBgbWDDIns5whwoiyn5IYO6Cy5h/VkgQ4es/ZQLgaJnaWIpNmWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903926; c=relaxed/simple;
-	bh=xCoJ0XT4XH+vjMfB2N9RKug1BDhzTl2e2ecPyYciu58=;
+	s=arc-20240116; t=1777904517; c=relaxed/simple;
+	bh=jj5DOxvbKSbGppUjzauK0MbqwYtPIP16XWARp7k9ol0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQf3SaWhqkD/5YSEVNYIXV+4d4HvPXbwNiWQuY92g+Bfl4wI99ol6wQ/m/ub6TQSM3rfHe5FGeAP6E2///eU5Fx6umf67gZ7cwXKy9QY44jin9Chx65Z6y+yhxPAinCrLWmbZwYMESoyuTUwzOawqVYEoB9TnJT3ketIFkAncj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mk4bAIZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F43EC2BCB8;
-	Mon,  4 May 2026 14:12:05 +0000 (UTC)
+	 MIME-Version; b=mcfG3yxYBhsF8j5HmkTLOYMYoEoFDqmUyn/y/k6YACOAU61yl2+pEb0gMVdU21dfbm7Q9u7CyNkVykGwOQqzEkagYSWMTTgygCn34Gzx5fn5Yr0msdzgTS9iqZZ1fNQZRdn1AhE6oSoLLExI0Qe/u3txZ7KVKzUrPd/ahl8VO5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayPby91B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE372C2BCC4;
+	Mon,  4 May 2026 14:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903925;
-	bh=xCoJ0XT4XH+vjMfB2N9RKug1BDhzTl2e2ecPyYciu58=;
+	s=korg; t=1777904517;
+	bh=jj5DOxvbKSbGppUjzauK0MbqwYtPIP16XWARp7k9ol0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mk4bAIZhSY/KpWkBQitkzX2BeHUGfEoMWLLCnXnF/BH4krQ4A1BIEsxRw7LqzdkFJ
-	 b0bO5JUdKLhJHAS9Ldn/3Bd/ACzdwu9ye8igkY91/K2ZfZXphSjD3ZsnGaUzjsR384
-	 zXSy9hRDokZPvVsxhBjSL6k02JEE/FhF+l2NkaAY=
+	b=ayPby91BGAvqvK5GW1MkLR9nfYQ2KS3ifnzW18t7IfB+FgBD1Nu1Dnv7+TLNA6GTk
+	 Qz/WLfVtNiGi3X8mbs9yaQCdozb3AvaDYraq0ykvIc9n3p+gI6WIT90hkFt7pKiA+V
+	 PUTQ61lRK5brrNgvGjzW6UpdMCkJtxgvvtpXgj7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.18 115/275] EDAC/versalnet: Fix memory leak in remove and probe error paths
+	Yiming Qian <yimingqian591@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.12 036/215] crypto: pcrypt - Fix handling of MAY_BACKLOG requests
 Date: Mon,  4 May 2026 15:50:55 +0200
-Message-ID: <20260504135147.182039423@linuxfoundation.org>
+Message-ID: <20260504135131.496711528@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 385B14BEDE1
+X-Rspamd-Queue-Id: 3149E4BF538
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243686-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243454-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 1b6f292cb94d95c9bc22e1efe592daf62c60bc2e upstream.
+commit 915b692e6cb723aac658c25eb82c58fd81235110 upstream.
 
-The mcdi object allocated using kzalloc() in the setup_mcdi() is not freed in
-the remove path or in probe's error handling path leading to a memory leak.
-Fix it by freeing the allocated memory.
+MAY_BACKLOG requests can return EBUSY.  Handle them by checking
+for that value and filtering out EINPROGRESS notifications.
 
-Fixes: d5fe2fec6c40d ("EDAC: Add a driver for the AMD Versal NET DDR controller")
-Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260322131139.1684716-1-ptsm@linux.microsoft.com
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 5a1436beec57 ("crypto: pcrypt - call the complete function on error")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/versalnet_edac.c |    2 ++
- 1 file changed, 2 insertions(+)
+ crypto/pcrypt.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/edac/versalnet_edac.c
-+++ b/drivers/edac/versalnet_edac.c
-@@ -917,6 +917,7 @@ static int mc_probe(struct platform_devi
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -69,6 +69,9 @@ static void pcrypt_aead_done(void *data,
+ 	struct pcrypt_request *preq = aead_request_ctx(req);
+ 	struct padata_priv *padata = pcrypt_request_padata(preq);
  
- err_init:
- 	cdx_mcdi_finish(priv->mcdi);
-+	kfree(priv->mcdi);
++	if (err == -EINPROGRESS)
++		return;
++
+ 	padata->info = err;
  
- err_unreg:
- 	unregister_rpmsg_driver(&amd_rpmsg_driver);
-@@ -938,6 +939,7 @@ static void mc_remove(struct platform_de
- 	remove_versalnet(priv);
- 	rproc_shutdown(priv->mcdi->r5_rproc);
- 	cdx_mcdi_finish(priv->mcdi);
-+	kfree(priv->mcdi);
- }
+ 	padata_do_serial(padata);
+@@ -82,7 +85,7 @@ static void pcrypt_aead_enc(struct padat
  
- static const struct of_device_id amd_edac_match[] = {
+ 	ret = crypto_aead_encrypt(req);
+ 
+-	if (ret == -EINPROGRESS)
++	if (ret == -EINPROGRESS || ret == -EBUSY)
+ 		return;
+ 
+ 	padata->info = ret;
+@@ -133,7 +136,7 @@ static void pcrypt_aead_dec(struct padat
+ 
+ 	ret = crypto_aead_decrypt(req);
+ 
+-	if (ret == -EINPROGRESS)
++	if (ret == -EINPROGRESS || ret == -EBUSY)
+ 		return;
+ 
+ 	padata->info = ret;
 
 
 
