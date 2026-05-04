@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-243449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKwbOYep+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:27 +0200
+	id 0IUTI86o+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A924BED6C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4674BEA9F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F35430205D9
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B10AB301B1C8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EAE3DE43E;
-	Mon,  4 May 2026 14:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75053D904D;
+	Mon,  4 May 2026 14:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkbUFL5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO/J0tDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14FC3DE42E;
-	Mon,  4 May 2026 14:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5CB3D3308;
+	Mon,  4 May 2026 14:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903913; cv=none; b=QI8CmkGsRT3JGg8Uy3oD8AQikRwQjMxX1km/9qOjCtdkAdRhOv65iGvpHllg3eLfpSm70AZ6/K9GaJ1Y3PNVtz+7OSGi4ovCjy1NnZC7kBly7KJynKg/G1DDQMKD8S16+XXFzOUBfqjsKwUivK3JQA6Hy4nkjyDkcxLyoBYaWVU=
+	t=1777903265; cv=none; b=neZISPyUJ6CN4OF6F8UbhlC/5vbbyKxUpD/AyxKedduKYoABdD3ClFCa0CAPn3BAXjbme0/s5k+X4cna8RsngrfNNLLt0lK6yMp6KSPPKnBH6Scufoevh9AywJASD35t5x16bb8TptRw2c9kXeeCsVeTIDcD7qpYmkcxtUmGf5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903913; c=relaxed/simple;
-	bh=3qvSnfHLOcPFMGHxWwV80u2kXv8kqnaiVTPpNXBE0cY=;
+	s=arc-20240116; t=1777903265; c=relaxed/simple;
+	bh=ZkktuPNKgwBHIvoUO8O4rH7xhOo6lZvhO4lQHMoOLZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqMrQmS8Yj+CaKrfVY6H/k70675sCt0i1+rbaLXkJsGivP1REPcXmizrkXSi3S4BYD4RK9ouQ+Om1kG2vLvCrFXRH/j0FQoay3lMJfDFIqfiu42UE2pnNxfhvEnEkdKimf0S1IPURz0lhE7Szp+clxwCAM2s/RCeFEAvq1RxPQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkbUFL5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C324C2BCF4;
-	Mon,  4 May 2026 14:11:52 +0000 (UTC)
+	 MIME-Version; b=OyKaGvgk72LqC2qmJRX3GPV0dIc7KpFLhtcSE62not6cZIE2MimZ/xGKbypmMCvJHH5EvujbYDuzqK60MaaiZerLesgWu08hgOdoG+CrVbE4ryon9c3ReMA7d76xmwjtwrnAu6oDl++rgA1U3I56TuijwuUbLQ0q6AHcM4A4ams=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO/J0tDN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22576C2BCB8;
+	Mon,  4 May 2026 14:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903912;
-	bh=3qvSnfHLOcPFMGHxWwV80u2kXv8kqnaiVTPpNXBE0cY=;
+	s=korg; t=1777903265;
+	bh=ZkktuPNKgwBHIvoUO8O4rH7xhOo6lZvhO4lQHMoOLZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkbUFL5mUmDKUsuuCBqn7SbJb0m9cMVEi4ezC/Q9p5qIRKcqnagOpPI4YQ8cdl6L8
-	 L6jzGuw7whXVNEr+xWCE0VAMc7Es5RmGGvn5QQZikQr4qv3piLVgoiyMTqhs6ydTZL
-	 GhTgv8miMCy7F6fpcQoqS4t8pg+YrW8MXDTkspq0=
+	b=BO/J0tDNNmLtEpYxgSBtlVL5rxwmYdmMZNW9BOqE8pJ+UuU9Kc6MVNzOXAJQNSBVl
+	 S2o3hQhkAYhpK2Ey7PAhThj/XYQi/c7Xa/jMOueHq4XUbDfIc2Mr3B6uZU7aKEs8Ks
+	 MoykzUyTnC3FqU9aqacxBeIefXWjO2e7ow6rsLa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 110/275] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
-Date: Mon,  4 May 2026 15:50:50 +0200
-Message-ID: <20260504135146.996005803@linuxfoundation.org>
+	Daniel Scally <dan.scally+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 166/307] media: rzv2h-ivc: Revise default VBLANK formula
+Date: Mon,  4 May 2026 15:50:51 +0200
+Message-ID: <20260504135149.110185859@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,113 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 81A924BED6C
+X-Rspamd-Queue-Id: AB4674BEA9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243197-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243449-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,msgid.link:url,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,auristor.com:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ideasonboard.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Daniel Scally <dan.scally+renesas@ideasonboard.com>
 
-commit 24481a7f573305706054c59e275371f8d0fe919f upstream.
+commit 38104fe60ebb6b6cb66e3e9ef0a5c12f1260b1bc upstream.
 
-The security operations that verify the RESPONSE packets decrypt bits of it
-in place - however, the sk_buff may be shared with a packet sniffer, which
-would lead to the sniffer seeing an apparently corrupt packet (actually
-decrypted).
+The vertical blanking settings for the IVC block are dependent on
+settings in the ISP. This was originally set to calculate as the
+worst-case possible value, but it seems that this can cause the IVC
+block to hang. Instead calculate the vblank to match the default
+settings (which are currently all the driver sets anyway).
 
-Fix this by handing a copy of the packet off to the specific security
-handler if the packet was cloned.
-
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
+Signed-off-by: Daniel Scally <dan.scally+renesas@ideasonboard.com>
+Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/conn_event.c |   29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -240,6 +240,33 @@ static void rxrpc_call_is_secure(struct
- 		rxrpc_notify_socket(call);
- }
+--- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
++++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+@@ -24,7 +24,7 @@
+ #include <media/videobuf2-dma-contig.h>
  
-+static int rxrpc_verify_response(struct rxrpc_connection *conn,
-+				 struct sk_buff *skb)
-+{
-+	int ret;
-+
-+	if (skb_cloned(skb)) {
-+		/* Copy the packet if shared so that we can do in-place
-+		 * decryption.
-+		 */
-+		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
-+
-+		if (nskb) {
-+			rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
-+			ret = conn->security->verify_response(conn, nskb);
-+			rxrpc_free_skb(nskb, rxrpc_skb_put_response_copy);
-+		} else {
-+			/* OOM - Drop the packet. */
-+			rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
-+			ret = -ENOMEM;
-+		}
-+	} else {
-+		ret = conn->security->verify_response(conn, skb);
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * connection-level Rx packet processor
-  */
-@@ -270,7 +297,7 @@ static int rxrpc_process_event(struct rx
- 		}
- 		spin_unlock_irq(&conn->state_lock);
+ #define RZV2H_IVC_FIXED_HBLANK			0x20
+-#define RZV2H_IVC_MIN_VBLANK(hts)		max(0x1b, 15 + (120501 / (hts)))
++#define RZV2H_IVC_MIN_VBLANK(hts)		max(0x1b, 70100 / (hts))
  
--		ret = conn->security->verify_response(conn, skb);
-+		ret = rxrpc_verify_response(conn, skb);
- 		if (ret < 0)
- 			return ret;
- 
+ struct rzv2h_ivc_buf {
+ 	struct vb2_v4l2_buffer vb;
 
 
 
