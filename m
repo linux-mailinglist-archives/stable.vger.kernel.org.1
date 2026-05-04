@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-243203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4D4JBYao+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:10 +0200
+	id WH6TBFqu+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9746C4BE9E5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5F64BFB0C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A121D304C7D9
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A6920300BD5E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F9E3A3822;
-	Mon,  4 May 2026 14:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFE11A6827;
+	Mon,  4 May 2026 14:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okDzokWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwLu2PMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A7F3CEB89;
-	Mon,  4 May 2026 14:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF12315785;
+	Mon,  4 May 2026 14:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903281; cv=none; b=OKfQ1az+PU4nSWSwIXHsxnaWf0Rcwa3e5QTTCceKaN+vUaz+0tMYjaY48khurZc0gt+KI7exKLU8flg+jCQw5+T5FQzqeLcDMmGji5VbXvo8S6IiRCSBgMdwuc3NvkytbQN79qqazHeFoabD14f0zRi+9Jz3cGMb4wEc/XI84yY=
+	t=1777904419; cv=none; b=FxmVNNREQQQwEr7BzK8VMi32ZK5aJ2PqLCzhsGw8WUduPCoumu2CgrxE0cYrj2rzADt8MUUx4O/8Fz6KelIXwyMNeZvvEYDHkX1oj9ujEst2pG2hPownUMII+xZ2wRQgN/rk9V+CdVujMNy7C5AIp94Btp7U8GV2jFNX06JB/Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903281; c=relaxed/simple;
-	bh=c7GEUQdacdaMlnBWeG2sOiF+neMb6QyUe9Nq0mChWqE=;
+	s=arc-20240116; t=1777904419; c=relaxed/simple;
+	bh=DiDmRllkBbNY7pCwJ2/DXaPtcwe7ZCYSoHr0he+FOeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l86yrX1aeyRY9cNh0sYy65aYmxAzZZae+qBY14TZYB+dHLNPPuTZHc7KyYqLK+236n1stL1qqmgb1gbDHEeozHtD14V2uXon593REwqmRgU83PsYI6l/mRmlmqa6b3l9umaw62xOTALlEKNj99TSwlT81UADxA74uiGTDNc9dFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okDzokWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB42C2BCC4;
-	Mon,  4 May 2026 14:01:20 +0000 (UTC)
+	 MIME-Version; b=A6wilTLGmprc/4JpZf/GQaESZMKHTM0/uTTrMRFkWlzKsBB5mgtVYMrADPr9h4VGubGSWwc7nmt9aw/EnZSuTZxdgcGiGHBlx0gqLecwgm8FRLxIcdkcUKPsaYrogULtXeGxemSE8ROIilqERsaz1IbpysblRxGCQwzH051t2OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwLu2PMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D588BC2BCB8;
+	Mon,  4 May 2026 14:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903280;
-	bh=c7GEUQdacdaMlnBWeG2sOiF+neMb6QyUe9Nq0mChWqE=;
+	s=korg; t=1777904419;
+	bh=DiDmRllkBbNY7pCwJ2/DXaPtcwe7ZCYSoHr0he+FOeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okDzokWFHuYj0zhiwhxFcOW6cp0KvqGDRzLaPw8Yw3EwCTgY+lDrtTvRHV87d5H2e
-	 eeXddhg9F4d+Cy7Z5ijWduWAKzjSfr85hOjfLkB4bY4Rwwmf9v7er2wNE77sU8xS1y
-	 xRIxIlbZAZ5IrLBXQnrROmEA0WBvVTVp+HD6lPl8=
+	b=gwLu2PMP4x537zP1+NKXL+7DP8oHuVFA+KyAajyDkK4Xb2glRK/8KdV3MaL/9H7am
+	 SqBLZuK+H+5GynZLYZTSaPG50XVJnrejiPcCCxuslWM2y7/9oWFfzqEUn/Pnuf5+PN
+	 7V457SgmiYp8yGpf4rgJrrtib1XCK2VUDe+yUuiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 140/307] net: qrtr: ns: Limit the total number of nodes
-Date: Mon,  4 May 2026 15:50:25 +0200
-Message-ID: <20260504135148.049553948@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 007/215] ALSA: usb-audio: Evaluate packsize caps at the right place
+Date: Mon,  4 May 2026 15:50:26 +0200
+Message-ID: <20260504135130.443686544@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9746C4BE9E5
+X-Rspamd-Queue-Id: 0A5F64BFB0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243647-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243203-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 27d5e84e810b0849d08b9aec68e48570461ce313 upstream.
+commit 52521e8398839105ef8eb22b3f0993f9b0d11a57 upstream.
 
-Currently, the nameserver doesn't limit the number of nodes it handles.
-This can be an attack vector if a malicious client starts registering
-random nodes, leading to memory exhaustion.
+We introduced the upper bound checks of the packet sizes by the
+ep->maxframesize for avoiding the URB submission errors.  However, the
+check was applied at an incorrect place in the function
+snd_usb_endpoint_set_params() where ep->maxframesize isn't defined
+yet; the value is defined at a bit later position.  So this ended up
+with a failure at the first run while the second run works.
 
-Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
-chosen based on the current platform requirements. If requirement changes
-in the future, this limit can be increased.
+For fixing it, move the check at the correct place, right after the
+calculation of ep->maxframesize in the same function.
 
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7fe8dec3f628 ("ALSA: usb-audio: Cap the packet size pre-calculations")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221292
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260410143220.1676344-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ sound/usb/endpoint.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -72,12 +72,16 @@ struct qrtr_node {
- 	u32 server_count;
- };
- 
--/* Max server, lookup limits are chosen based on the current platform requirements.
-- * If the requirement changes in the future, these values can be increased.
-+/* Max nodes, server, lookup limits are chosen based on the current platform
-+ * requirements. If the requirement changes in the future, these values can be
-+ * increased.
-  */
-+#define QRTR_NS_MAX_NODES   64
- #define QRTR_NS_MAX_SERVERS 256
- #define QRTR_NS_MAX_LOOKUPS 64
- 
-+static u8 node_count;
-+
- static struct qrtr_node *node_get(unsigned int node_id)
- {
- 	struct qrtr_node *node;
-@@ -86,6 +90,11 @@ static struct qrtr_node *node_get(unsign
- 	if (node)
- 		return node;
- 
-+	if (node_count >= QRTR_NS_MAX_NODES) {
-+		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
-+		return NULL;
-+	}
-+
- 	/* If node didn't exist, allocate and insert it to the tree */
- 	node = kzalloc_obj(*node);
- 	if (!node)
-@@ -99,6 +108,8 @@ static struct qrtr_node *node_get(unsign
- 		return NULL;
+--- a/sound/usb/endpoint.c
++++ b/sound/usb/endpoint.c
+@@ -1400,9 +1400,6 @@ int snd_usb_endpoint_set_params(struct s
+ 		goto unlock;
  	}
  
-+	node_count++;
+-	ep->packsize[0] = min(ep->packsize[0], ep->maxframesize);
+-	ep->packsize[1] = min(ep->packsize[1], ep->maxframesize);
+-
+ 	/* calculate the frequency in 16.16 format */
+ 	ep->freqm = ep->freqn;
+ 	ep->freqshift = INT_MIN;
+@@ -1429,6 +1426,9 @@ int snd_usb_endpoint_set_params(struct s
+ 	ep->maxframesize = ep->maxpacksize / ep->cur_frame_bytes;
+ 	ep->curframesize = ep->curpacksize / ep->cur_frame_bytes;
+ 
++	ep->packsize[0] = min(ep->packsize[0], ep->maxframesize);
++	ep->packsize[1] = min(ep->packsize[1], ep->maxframesize);
 +
- 	return node;
- }
- 
-@@ -405,6 +416,7 @@ static int ctrl_cmd_bye(struct sockaddr_
- delete_node:
- 	xa_erase(&nodes, from->sq_node);
- 	kfree(node);
-+	node_count--;
- 
- 	return ret;
- }
+ 	err = update_clock_ref_rate(chip, ep);
+ 	if (err >= 0) {
+ 		ep->need_setup = false;
 
 
 
