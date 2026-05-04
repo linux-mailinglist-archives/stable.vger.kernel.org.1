@@ -1,328 +1,157 @@
-Return-Path: <stable+bounces-242857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDc8IzFH+GmesAIAu9opvQ
-	(envelope-from <stable+bounces-242857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:13:53 +0200
+	id b62+OZdI+Gn+sAIAu9opvQ
+	(envelope-from <stable+bounces-242858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:19:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2518D4B9352
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 393774B9406
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 09:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D65F300DDC4
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 07:13:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDC7300B63B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 07:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05D02D8773;
-	Mon,  4 May 2026 07:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1ED12DC782;
+	Mon,  4 May 2026 07:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpQXJdM2"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bTqfMcXn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805314C97;
-	Mon,  4 May 2026 07:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5CC283FCF;
+	Mon,  4 May 2026 07:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777878823; cv=none; b=b9i1VTw8PyJxJfRubnjSs0MgvTJj03FS1LeDVATwSO+LYx1bjiBU0Gq8VlNyaMsLJniUo7CKoiKLnv59AaioYRtISJQAf3jQb2UkcFfaK0gwHaZweGx0TiqqAmemTcIHROSX87PmidTr8N4Ihp1wU1hI7tLR7WS8b1+usHLQOCg=
+	t=1777879185; cv=none; b=D+lHcF8sp5kDUAzbM5luUhgMNaS1ThzQUH1s8x7fTNudDe127g0+IlWaSydmD9dIkJ30LdvNRTlWxzF5yfm2ORYVfMWqiH24jpVDucTnm9lHqfy91enk82/H6Qwiow7adeNexuO3BUgEmS4BvAj6a6FlhjGzgEiMNWYlBI7Wqy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777878823; c=relaxed/simple;
-	bh=8nNjo6NtiO8TiRvxGn5ZegTCsBknx+MOnUGPsTEfwqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7I8nYzJFbVumlO1OwZOVXCHvLFg4DK9Qvkz3QElP+vCTYmpmOjC6gpmKbjgBmFUFpAf8ns6fe8WViZ45YA5nT4QGhg9gMNwIICNSGJaS/sK1MD1yxWRV1Cqeb5FnNjZMbUT+HXCw0WtF8d0lOgK4vtgKhRWiwVxCsctmjNoLkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpQXJdM2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D5AC2BCB8;
-	Mon,  4 May 2026 07:13:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777878823;
-	bh=8nNjo6NtiO8TiRvxGn5ZegTCsBknx+MOnUGPsTEfwqc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gpQXJdM2bNH+ddDq1qFGZ4Zt9qjcIwam/DLeC8fT84bbFQXgOZ//z+VCBo2CC0NJ1
-	 WalvQU0AIGYmlDEdEjL7ShkJeMG6yD5RQoeitPlfsfIx9ctnLkMoxGRmaXuRxPokV2
-	 CpuZ/Q1eKwH1bHYcF03nK5SFs+IMgKS+77OxgVjoCOZI92yOvGoOl1OsxcdnzC9aWz
-	 pX9DUXP2qzblkB7YOOj3eQTaFG9zNtW31dd1ayJcQCuU+e07LBEWTe8wt2lUAS6TRh
-	 gMapoDeKj7AFdLNgesW8fvlSecC5QZr9j8WqNGmPe9q+mdbo0j9MjewabcRZQ2SSH3
-	 VZo4eu3+/N1/g==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Taeyang Lee <0wn@theori.io>,
-	Brian Pak <bpak@theori.io>,
-	Juno Im <juno@theori.io>,
-	Jungwon Lim <setuid0@theori.io>,
-	Tim Becker <tjbecker@theori.io>,
-	Demi Marie Obenour <demiobenour@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Feng Ning <feng@innora.ai>,
+	s=arc-20240116; t=1777879185; c=relaxed/simple;
+	bh=ZwpEgD9dfY1lLa0/0tzE+yUzAUsDEEdYjAkgPNwa27o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qB5069p4aFRlVOD8o8yg5gv9FOClZaEvlXBWc+uTU4fawgSSoceo+jtZSVFEmnvM7l5A/N/IlhJUIT4VDvdAU527cC3R3TFeopFxAQGo3HTV3xdk74GFf7quSLkTV60CbmoVpvzDxthCrQGoX6cr28DNiytRhJdUxd3sMv/tXrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bTqfMcXn; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from ideasonboard.com (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E18F08F;
+	Mon,  4 May 2026 09:19:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1777879172;
+	bh=ZwpEgD9dfY1lLa0/0tzE+yUzAUsDEEdYjAkgPNwa27o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bTqfMcXndrnhLd74eNJZVShOfpKjZXblDYGHxTC4M3yh3VPjZKQ4WDraxoXBusIyp
+	 Hp4qPP888Kqc5vAk9B7Rip3VFT31cqWzOrQO6k2r8/qSwZPeFkTgWeTcARmuZ+7MUW
+	 A3NOYIu+DMETVzblFReNES1pQD33ZYT6dMxRJezg=
+Date: Mon, 4 May 2026 09:19:30 +0200
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Hans Verkuil <hverkuil@kernel.org>, Nas Chung <nas.chung@chipsnmedia.com>, 
+	Jackson Lee <jackson.lee@chipsnmedia.com>, Bingbu Cao <bingbu.cao@intel.com>, 
+	Tianshu Qiu <tian.shu.qiu@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Keke Li <keke.li@amlogic.com>, Yong Zhi <yong.zhi@intel.com>, 
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-staging@lists.linux.dev, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, 
 	stable@vger.kernel.org
-Subject: [PATCH v2] crypto: af_alg - Remove zero-copy support from AF_ALG
-Date: Mon,  4 May 2026 00:10:25 -0700
-Message-ID: <20260504071025.180058-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504070724.GC112568@sol>
-References: <20260504070724.GC112568@sol>
+Subject: Re: [PATCH v3 6/6] media: amlogic-c3: Add validations for ae and awb
+ config
+Message-ID: <afhH8Fq_7bIy3Lv3@zed>
+References: <20260504-smatch-7-1-v3-0-fda125c30058@chromium.org>
+ <20260504-smatch-7-1-v3-6-fda125c30058@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2518D4B9352
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260504-smatch-7-1-v3-6-fda125c30058@chromium.org>
+X-Rspamd-Queue-Id: 393774B9406
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,theori.io,gmail.com,kernel.org,innora.ai];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242857-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-242858-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	TAGGED_RCPT(0.00)[stable,samsung];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TO_DN_SOME(0.00)[]
 
-The zero-copy support is one of the riskiest aspects of AF_ALG.  It
-allows userspace to request cryptographic operations directly on
-pagecache pages of files like the 'su' binary.  It also allows userspace
-to concurrently modify the memory which is being operated on, a huge
-recipe for TOCTOU vulnerabilities.
+Hi Ricardo
 
-While zero-copy support is more valuable in other areas of the kernel
-like the frequently used networking and file I/O code, it has far less
-value in AF_ALG, which is a niche UAPI.  AF_ALG primarily just exists
-for backwards compatibility with a small set of userspace programs such
-as 'iwd' that haven't yet been fixed to use userspace crypto code.
+On Mon, May 04, 2026 at 06:54:09AM +0000, Ricardo Ribalda wrote:
+> Avoid invalid memory access if the zones_num is bigger than
+> zone_weight.
+>
+> This patch fixes the following smatch errors:
+> drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:111 c3_isp_params_awb_wt() error: buffer overflow 'cfg->zone_weight' 768 <= u32max
+> drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:111 c3_isp_params_awb_wt() error: buffer overflow 'cfg->zone_weight' 768 <= u32max
+> drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:227 c3_isp_params_ae_wt() error: buffer overflow 'cfg->zone_weight' 255 <= u32max
+> drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:227 c3_isp_params_ae_wt() error: buffer overflow 'cfg->zone_weight' 255 <= u32max
+>
+> Cc: stable@vger.kernel.org
+> Fixes: fb2e135208f3 ("media: platform: Add C3 ISP driver")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  drivers/media/platform/amlogic/c3/isp/c3-isp-params.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c b/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
+> index 6f9ca7a7dd88..aec3eed0e443 100644
+> --- a/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
+> +++ b/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
+> @@ -104,6 +104,8 @@ static void c3_isp_params_awb_wt(struct c3_isp_device *isp,
+>  	c3_isp_write(isp, ISP_AWB_BLK_WT_ADDR, 0);
+>
+>  	zones_num = cfg->horiz_zones_num * cfg->vert_zones_num;
+> +	if (zones_num > C3_ISP_AWB_MAX_ZONES)
+> +		zones_num = C3_ISP_AWB_MAX_ZONES;
 
-Originally AF_ALG was intended to be used to access hardware crypto
-accelerators.  However, it isn't an efficient interface for that anyway,
-and it turned out to be rarely used in this way in practice.
+Or
+        zones_num = min(cfg->horiz_zones_num * cfg->vert_zones_num,
+                        C3_ISP_AWB_MAX_ZONES);
 
-Thus, the risks of the zero-copy support in AF_ALG vastly outweigh its
-benefits.  Just remove it.
+Whatever you prefer:
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-Note that this isn't a hard break, since the splice syscall is still
-supported.  The data is just now copied instead.  So it still works,
-just a bit slower in some cases.
-
-Tested with libkcapi/test.sh.  All its test cases still pass.  I also
-verified that this would have prevented the copy.fail exploit as well.
-
-Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Fixes: 400c40cf78da ("crypto: algif - add AEAD support")
-Reported-by: Taeyang Lee <0wn@theori.io>
-Link: https://copy.fail/
-Reported-by: Feng Ning <feng@innora.ai>
-Closes: https://lore.kernel.org/r/afYcc-tZFwvZZo76@ans-MacBook-Pro.local
-Reviewed-by: Demi Marie Obenour <demiobenour@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
-
-v2: added tags
-
- Documentation/crypto/userspace-if.rst | 30 ++---------
- crypto/af_alg.c                       | 73 +++++++++------------------
- crypto/algif_aead.c                   |  8 +--
- 3 files changed, 32 insertions(+), 79 deletions(-)
-
-diff --git a/Documentation/crypto/userspace-if.rst b/Documentation/crypto/userspace-if.rst
-index 021759198fe7..80eb2819901a 100644
---- a/Documentation/crypto/userspace-if.rst
-+++ b/Documentation/crypto/userspace-if.rst
-@@ -325,37 +325,13 @@ CRYPTO_USER_API_RNG_CAVP option:
-    but only after the entropy has been set.
- 
- Zero-Copy Interface
- -------------------
- 
--In addition to the send/write/read/recv system call family, the AF_ALG
--interface can be accessed with the zero-copy interface of
--splice/vmsplice. As the name indicates, the kernel tries to avoid a copy
--operation into kernel space.
--
--The zero-copy operation requires data to be aligned at the page
--boundary. Non-aligned data can be used as well, but may require more
--operations of the kernel which would defeat the speed gains obtained
--from the zero-copy interface.
--
--The system-inherent limit for the size of one zero-copy operation is 16
--pages. If more data is to be sent to AF_ALG, user space must slice the
--input into segments with a maximum size of 16 pages.
--
--Zero-copy can be used with the following code example (a complete
--working example is provided with libkcapi):
--
--::
--
--    int pipes[2];
--
--    pipe(pipes);
--    /* input data in iov */
--    vmsplice(pipes[1], iov, iovlen, SPLICE_F_GIFT);
--    /* opfd is the file descriptor returned from accept() system call */
--    splice(pipes[0], NULL, opfd, NULL, ret, 0);
--    read(opfd, out, outlen);
-+AF_ALG used to have zero-copy support, but it was removed due to it being a
-+frequent source of vulnerabilities.  For backwards compatibility the splice
-+system call is still supported, but the data will simply be copied.
- 
- 
- Setsockopt Interface
- --------------------
- 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 5a00c18eb145..fce0b87c2b65 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -971,11 +971,11 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 		struct scatterlist *sg;
- 		size_t len = size;
- 		ssize_t plen;
- 
- 		/* use the existing memory in an allocated page */
--		if (ctx->merge && !(msg->msg_flags & MSG_SPLICE_PAGES)) {
-+		if (ctx->merge) {
- 			sgl = list_entry(ctx->tsgl_list.prev,
- 					 struct af_alg_tsgl, list);
- 			sg = sgl->sg + sgl->cur - 1;
- 			len = min_t(size_t, len,
- 				    PAGE_SIZE - sg->offset - sg->length);
-@@ -1015,64 +1015,41 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 				 list);
- 		sg = sgl->sg;
- 		if (sgl->cur)
- 			sg_unmark_end(sg + sgl->cur - 1);
- 
--		if (msg->msg_flags & MSG_SPLICE_PAGES) {
--			struct sg_table sgtable = {
--				.sgl		= sg,
--				.nents		= sgl->cur,
--				.orig_nents	= sgl->cur,
--			};
--
--			plen = extract_iter_to_sg(&msg->msg_iter, len, &sgtable,
--						  MAX_SGL_ENTS - sgl->cur, 0);
--			if (plen < 0) {
--				err = plen;
-+		do {
-+			struct page *pg;
-+			unsigned int i = sgl->cur;
-+
-+			plen = min_t(size_t, len, PAGE_SIZE);
-+
-+			pg = alloc_page(GFP_KERNEL);
-+			if (!pg) {
-+				err = -ENOMEM;
- 				goto unlock;
- 			}
- 
--			for (; sgl->cur < sgtable.nents; sgl->cur++)
--				get_page(sg_page(&sg[sgl->cur]));
-+			sg_assign_page(sg + i, pg);
-+
-+			err = memcpy_from_msg(page_address(sg_page(sg + i)),
-+					      msg, plen);
-+			if (err) {
-+				__free_page(sg_page(sg + i));
-+				sg_assign_page(sg + i, NULL);
-+				goto unlock;
-+			}
-+
-+			sg[i].length = plen;
- 			len -= plen;
- 			ctx->used += plen;
- 			copied += plen;
- 			size -= plen;
--		} else {
--			do {
--				struct page *pg;
--				unsigned int i = sgl->cur;
--
--				plen = min_t(size_t, len, PAGE_SIZE);
--
--				pg = alloc_page(GFP_KERNEL);
--				if (!pg) {
--					err = -ENOMEM;
--					goto unlock;
--				}
--
--				sg_assign_page(sg + i, pg);
--
--				err = memcpy_from_msg(
--					page_address(sg_page(sg + i)),
--					msg, plen);
--				if (err) {
--					__free_page(sg_page(sg + i));
--					sg_assign_page(sg + i, NULL);
--					goto unlock;
--				}
--
--				sg[i].length = plen;
--				len -= plen;
--				ctx->used += plen;
--				copied += plen;
--				size -= plen;
--				sgl->cur++;
--			} while (len && sgl->cur < MAX_SGL_ENTS);
--
--			ctx->merge = plen & (PAGE_SIZE - 1);
--		}
-+			sgl->cur++;
-+		} while (len && sgl->cur < MAX_SGL_ENTS);
-+
-+		ctx->merge = plen & (PAGE_SIZE - 1);
- 
- 		if (!size)
- 			sg_mark_end(sg + sgl->cur - 1);
- 	}
- 
-diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
-index cb651ab58d62..c6c2ce21895d 100644
---- a/crypto/algif_aead.c
-+++ b/crypto/algif_aead.c
-@@ -7,14 +7,14 @@
-  * This file provides the user-space API for AEAD ciphers.
-  *
-  * The following concept of the memory management is used:
-  *
-  * The kernel maintains two SGLs, the TX SGL and the RX SGL. The TX SGL is
-- * filled by user space with the data submitted via sendmsg (maybe with
-- * MSG_SPLICE_PAGES).  Filling up the TX SGL does not cause a crypto operation
-- * -- the data will only be tracked by the kernel. Upon receipt of one recvmsg
-- * call, the caller must provide a buffer which is tracked with the RX SGL.
-+ * filled by user space with the data submitted via sendmsg.  Filling up the TX
-+ * SGL does not cause a crypto operation -- the data will only be tracked by the
-+ * kernel. Upon receipt of one recvmsg call, the caller must provide a buffer
-+ * which is tracked with the RX SGL.
-  *
-  * During the processing of the recvmsg operation, the cipher request is
-  * allocated and prepared. As part of the recvmsg operation, the processed
-  * TX buffers are extracted from the TX SGL into a separate SGL.
-  *
-
-base-commit: 6d35786de28116ecf78797a62b84e6bf3c45aa5a
--- 
-2.54.0
-
+>
+>  	/* Need to write 8 weights at once */
+>  	for (i = 0; i < zones_num / 8; i++) {
+> @@ -220,6 +222,8 @@ static void c3_isp_params_ae_wt(struct c3_isp_device *isp,
+>  	c3_isp_write(isp, ISP_AE_BLK_WT_ADDR, 0);
+>
+>  	zones_num = cfg->horiz_zones_num * cfg->vert_zones_num;
+> +	if (zones_num > C3_ISP_AE_MAX_ZONES)
+> +		zones_num = C3_ISP_AE_MAX_ZONES;
+>
+>  	/* Need to write 8 weights at once */
+>  	for (i = 0; i < zones_num / 8; i++) {
+>
+> --
+> 2.54.0.545.g6539524ca2-goog
+>
 
