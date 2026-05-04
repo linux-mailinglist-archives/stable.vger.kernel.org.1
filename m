@@ -1,235 +1,339 @@
-Return-Path: <stable+bounces-243928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DyDAbwi+Wmz5wIAu9opvQ
-	(envelope-from <stable+bounces-243928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:50:36 +0200
+	id KCdRI9Uj+Wmz5wIAu9opvQ
+	(envelope-from <stable+bounces-243929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:55:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3364C4929
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 368BC4C49B1
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:55:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA1F3301808A
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:47:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A74C303660D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84115370D4A;
-	Mon,  4 May 2026 22:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6196738B150;
+	Mon,  4 May 2026 22:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Jo9+Mzyg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Es82fauC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25B83806D1
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 22:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BC036495F;
+	Mon,  4 May 2026 22:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777934860; cv=none; b=lnm//+yX79kAgetrMIo9h1yUZNNFKosltgWnBgMDWPS9bnO7DGJm8BhtrtVKWDl60JpfzCdNkOkUyxapyZZZwtAKCAgm3DaO1GquKCunFNYKi5U0pB+rr+yITQN0lDkNHPMD3dRl8GfX1GwJutl1zYP0M4iZsZGhQygjPlkgO20=
+	t=1777935237; cv=none; b=oT8xS4SD7dAZu3MokHL0hx2480dH7p6n2M20xFXc8InR9QZI23K5SZ7WiB2hz32uMgquaZYwq81ayTVfFA1JtJ6OjSOElBuCz4HxiTzPv4/8cSQUrCWUwL1BgAm9j1Avcdq8xqt6nsw2A+8xXETSTjqyvDkSeVd6/xeR2o9fjcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777934860; c=relaxed/simple;
-	bh=7EFLAQZTvZr+bNwaBPn0b1qZPFp/QiS7LgKDiG9a6TU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=If+hIbvLPbl8a0TAJw1h+SKsM14o7VoJodAQrEeyOkICM+CU0mGU9GeL2DnVniN2BA2njJk2LaKZB4Hrwy4vmGJl/5QA5I/pa2Ot87FUsG6kbp7D6k5NQ2RMtKVpJ5wzxVAib+egb0I5FaOuaFmxXVlV8CFCNScJgWM/zaPVkzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Jo9+Mzyg; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-67be41d5eeeso4340945a12.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 15:47:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1777934855; x=1778539655; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7EFLAQZTvZr+bNwaBPn0b1qZPFp/QiS7LgKDiG9a6TU=;
-        b=Jo9+MzygyZfuytTETIiuEtOH4dCVDD+9EDp8Wa6vjlhpzXkWKaYmB0KrOm5IIbnoCS
-         ft+pVolmYpPpXkqlQU6FKR/YOLixOZkJpcqKB7Q6q6zvXhfePucnxVtTLuIsLX6LnTH3
-         nksBtMsRt03GNPYF6GGXBsjUVqDufRHztbuhE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777934855; x=1778539655;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7EFLAQZTvZr+bNwaBPn0b1qZPFp/QiS7LgKDiG9a6TU=;
-        b=hXXOOHsLf0S3lzMyoPVqNN2GTG2YkurPoUuSTB5kuNq+J+ixUK5z9oWpeceTHwjhQH
-         C5gpsO0KbBGWlIWijv4UsLwgod9dCjWZNlI561vITzt3PDETfRmtum9t+CAO2KPIpIE5
-         1Ubg5uJTMA6AFuXw7ouL4kRsVXjcP77wmWu/sVNVjfUC+YFCQMDt5c8M2W/ipGSVa7m6
-         eMNmhNFdz5h+xOBJfp/WcecUmMQVrhhtFsMc5UX9A0+9wz/cBi5GW5++K73cQDafxWUO
-         bpabEwLJm4t8wO/MoXoW1ZuQbipzUDDKo1FjXXE2vVCCbo4cNaQbX+XLr3BXSRoMIdGM
-         REbQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8jy91lBd2o62ALGBn0eaH66yNnT/yAb6AVAlb8VYMlO3VKvYCdXeyVszXY+zk2ziczp5PRU88=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7ZT+TIBDyjDl/bRCC+DH/M//UIb+pwwEVpQQp5TRFd2Ni2xy+
-	EOelEOKmsShH2PgIbZK3TtpClkXNq/FeMDG4EiJ+HB4I0kwpWzSRaYLPP2bfUx8lgD3YXtQHGlJ
-	fVuqgIQ==
-X-Gm-Gg: AeBDiethZLt5j6A6TnUiZ/lwaFAS/3JvZ89unzqr1qCwY7dJ74TBKUJWmOjV0wP9A5F
-	+E7+tS2RDcx3z0QXWxPNql8Hev3lUFOGiWJzY5geG9BElUYpovUN7k4l8V/5l2puHmTuXv3hVCy
-	W5K9o1CnoKVbCNZ07YDeihJow+i3l06hGBJxtTNfFlXBEzJWyFUWHWG3+KduxCnvgJpo4IZue5c
-	7ZB6pMz4FjcfwZQONCc5o0XmOLYfL9kEQA/92lzXha6h5cm7pE41BFQF9tD7/vZWkem7z2BLpdD
-	Z8fL6xCL21ZsVhzZ1s4Mk2/qwVntSzs1oacRU3ldaxT1R8DANF2ux0OpAbdzq2+N6OuXIrLP+uL
-	toQGCqhNWani5fgoMOK8x4azMxr9vFTCG804ydVkdk/XSDGTSdyxK99/S4j4NDQ61M58duofwMf
-	yINL5fwoQV1uXMDP2HvPoG5zTkhTvGpUiN6GhjT9eq1j9zf7lUdruP7Q2iz8fEa0AvzUGyWFLTN
-	pAN1g8Y3fs=
-X-Received: by 2002:a17:907:742:b0:bad:ad5:300a with SMTP id a640c23a62f3a-bbffc689a52mr651373566b.26.1777934855475;
-        Mon, 04 May 2026 15:47:35 -0700 (PDT)
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com. [209.85.221.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bbe69f6b7f6sm434857766b.3.2026.05.04.15.47.34
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 May 2026 15:47:35 -0700 (PDT)
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-44c4cc7c1cfso1583492f8f.0
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 15:47:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/bRYAet76hYUB2wyCvkq1rldTa7DPVTOSFQoW90vJVjycnvt5nodBvzHari6ohlhkESMD7KCU=@vger.kernel.org
-X-Received: by 2002:a05:6000:44d7:b0:44d:821:1a0b with SMTP id
- ffacd0b85a97d-44d08211b96mr10576224f8f.29.1777934853301; Mon, 04 May 2026
- 15:47:33 -0700 (PDT)
+	s=arc-20240116; t=1777935237; c=relaxed/simple;
+	bh=i2fPoHqb8xx58hB925XeINZ1xXUggfULPyDbIosH0Lg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dDlGExiyyDAqqNCGw918rQIchCjT45KKWQFs+aSdJfwkGDXrDXLkAhGUPXWGZoh/ptzXP77g7xyufvwPvmsHH+YVIYarK8bQ29RD4O/D6Pl9RKPqs+hmLewjf5dawmlKzK7Mq7xvYGtYNG0ap9qZGktclCgkgMSdsGC0N5t+tMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Es82fauC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E612C2BCB8;
+	Mon,  4 May 2026 22:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777935236;
+	bh=i2fPoHqb8xx58hB925XeINZ1xXUggfULPyDbIosH0Lg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Es82fauCn2gm1BNzPMKFu4D/4fDab1uEpE48DXZvZ+mRHGMTWATBvYsl1yIpnA1CS
+	 Mf9hYt2AoMZSCdnuBmwGGSzZTnh3pgMLUEfBaFgseiUmCwqKpavwyxTi4ROvd3fXGh
+	 NtlVFUMJL8Gk8LcsoS4XU2IeqeMTa4gemISG9ffd1c1B20FIRhY6OZchyXzq33Uad4
+	 KavXcdDkUYb/2aPJv7xl0Ri7rGoQ3/hy13SQFtc2l0isaStJzQRC/9cd4wxhou2Dtn
+	 YbzFBzBau/lQSxbfS4/CqOWmfoURgu4O2e79RIdewk392cdr+mxPy6Wzq2hbbKCnxs
+	 rtdbpBT0sTh9Q==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Taeyang Lee <0wn@theori.io>,
+	Brian Pak <bpak@theori.io>,
+	Juno Im <juno@theori.io>,
+	Jungwon Lim <setuid0@theori.io>,
+	Tim Becker <tjbecker@theori.io>,
+	Demi Marie Obenour <demiobenour@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Feng Ning <feng@innora.ai>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] crypto: af_alg - Remove zero-copy support from skcipher and aead
+Date: Mon,  4 May 2026 15:53:28 -0700
+Message-ID: <20260504225328.25356-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260504092442.GA2486@quark>
+References: <20260504092442.GA2486@quark>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260425165751.1716569-1-zhengxingda@iscas.ac.cn>
- <CAD=FV=VXD34ZZTH4MJUtZ6xifbbjp1cLRBd_xvz=3T12G4tKYw@mail.gmail.com>
- <d9faab05aab120fee367394edcb35bd131c97646.camel@iscas.ac.cn>
- <CAD=FV=X-FUw_MqE2ufv=ngBS3ho4vg-QKokav+MeP7XAAjXUbg@mail.gmail.com>
- <151c1c1d52fce8c3b1dac3a919be3086ce3426df.camel@iscas.ac.cn>
- <CAD=FV=XPAWEiN4EFvY0sA7uEBqxpc0iiD28Y9BmpguoerG1hpg@mail.gmail.com>
- <d349eb9a8632d847eca48ece1e6c88b717dddde1.camel@iscas.ac.cn> <CAD=FV=USy4DWrkKrhqbUGR5JWJzcJz_J1PVt0Z=o_LVn_iON-w@mail.gmail.com>
-In-Reply-To: <CAD=FV=USy4DWrkKrhqbUGR5JWJzcJz_J1PVt0Z=o_LVn_iON-w@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 4 May 2026 15:47:22 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=U-LPUGyuEYS1fj7N+x-bHExVGQb+K0Y+BghSTALFCXXg@mail.gmail.com>
-X-Gm-Features: AVHnY4ImODE6ejb7j0AN2nutpolTGLLLL7T5afsRsY5Tf0sxdNKbt3HVLiqE74Q
-Message-ID: <CAD=FV=U-LPUGyuEYS1fj7N+x-bHExVGQb+K0Y+BghSTALFCXXg@mail.gmail.com>
-Subject: Re: [PATCH] drm/panel: himax-hx83102: restore MODE_LPM after sending
- disable cmds
-To: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Cong Yang <yangcong5@huaqin.corp-partner.google.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5E3364C4929
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 368BC4C49B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,suse.de,huaqin.corp-partner.google.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-243928-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-243929-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,theori.io,gmail.com,kernel.org,innora.ai];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:dkim,chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[innora.ai:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,copy.fail:url]
 
-Hi,
+The zero-copy support is one of the riskiest aspects of AF_ALG.  It
+allows userspace to request cryptographic operations directly on
+pagecache pages of files like the 'su' binary.  It also allows userspace
+to concurrently modify the memory which is being operated on, a recipe
+for TOCTOU vulnerabilities.
 
-On Tue, Apr 28, 2026 at 1:52=E2=80=AFPM Doug Anderson <dianders@chromium.or=
-g> wrote:
->
-> > > > > > > > Cc: stable@vger.kernel.org # 6.11+
-> > > > > > > > Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out
-> > > > > > > > as
-> > > > > > > > separate driver")
-> > > > > > >
-> > > > > > > This "Fixes" looks wrong. The bug was still there even before
-> > > > > > > the
-> > > > > > > driver was broken out. ...and it looks like the driver that
-> > > > > > > this
-> > > > > > > was
-> > > > > > > broken out of (panel-boe-tv101wum-nl6.c) still has the same
-> > > > > > > bug?
-> > > > > >
-> > > > > > Yes, but I think the fix shouldn't be propagated to the other
-> > > > > > driver
-> > > > > > because of the same reason with breaking out the original
-> > > > > > driver.
-> > > > >
-> > > > > ...but doesn't all the same logic apply to the other driver?
-> > > > > Nothing
-> > > > > ever adds MIPI_DSI_MODE_LPM back in.
-> > > > >
-> > > > > Even if you don't fix the other driver yourself right now, the
-> > > > > proper
-> > > > > "Fixes" tag is when the problem was introduced, not when the
-> > > > > driver
-> > > > > forked out.
-> > > >
-> > > > I think the Fixes tag should point to where the driver is forked
-> > > > out,
-> > > > and if I'm going to send a patch for panel-boe-tv101wum-nl6, it
-> > > > will
-> > > > has a Fixes tag pointing to the further commit affecting that
-> > > > driver.
-> > >
-> > > You're free to have your own opinion, but that doesn't match my
-> > > understanding of the Fixes tag. If you can convince Neil or some
-> > > other
-> > > drm-misc committer to land your changes with the Fixes tag as you
-> > > have
-> > > it, then I won't object, but I won't land it. Best of luck!
-> >
-> > I checked the forking commit, and the forking process doesn't involve
-> > moving a `dsi->mode_flags &=3D ~MIPI_DSI_MODE_LPM` clause from the pane=
-l-
-> > boe-tv101wum-nl6 driver to the panel-himax-hx83102 driver, which means
-> > that this clause in the new driver is new, and shouldn't be trivially
-> > backported to the old driver (because this process will affect other
-> > non-hx83102 panels in that driver). Even if the unblanking issue exists
-> > before the forking point, the specific code fixed by this commit is
-> > created by the forking point (just by copying), instead of the previous
-> > commit introducing the starry panel or the initial addition of the LPM
-> > masking code to panel-boe-tv101wum-nl6 .
->
-> In general in Linux drivers support more than one device. If you have
-> a fix for a driver, then you make the fix. You don't couch your fix
-> with "if (this_is_the_device_i_tested) do_my_fix()"
->
-> Said another way, if we hadn't forked support of this panel into a
-> separate driver, then you'd _have_ to be fixing to
-> panel-boe-tv101wum-nl6 driver, correct? You wouldn't add a special
-> case just for your panel--you'd fix it for the whole driver.
->
-> Another argument here is that someone could (conceivably) still have
-> an old kernel built from before the driver forked out. Maybe they care
-> about supporting "panel-himax-hx83102" panels on their old kernel.
-> They'd want the fix tagged so that they could find it.
->
->
-> > In addition, this isn't a regression fix, so Fixes tag is only
-> > informative for backporting. The previous paragraph has already proved
-> > that pointing it further isn't meaningful for backporting.
->
-> Sure, it's not a regression, but it's still a fix for a bug in the
-> panel driver. I don't know why someone wouldn't want to backport it if
-> they were using this panel.
+While zero-copy support is more valuable in other areas of the kernel
+like the frequently used networking and file I/O code, it has far less
+value in AF_ALG, which is a niche UAPI.  AF_ALG primarily just exists
+for backwards compatibility with a small set of userspace programs such
+as 'iwd' that haven't yet been fixed to use userspace crypto code.
 
-I see you've now also got a fix for panel-boe-tv101wum-nl6.c [1]. If
-that patch also lands, then IMO this becomes fine.
+Originally AF_ALG was intended to be used to access hardware crypto
+accelerators.  However, it isn't an efficient interface for that anyway,
+and it turned out to be rarely used in this way in practice.
 
-[1] https://lore.kernel.org/r/20260503091708.1079962-1-zhengxingda@iscas.ac=
-.cn/
+Thus, the risks of the zero-copy support in AF_ALG vastly outweigh its
+benefits.  Let's just remove it.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+This commit removes it from the "skcipher" and "aead" algorithm types.
+"hash" will be handled separately.
+
+This is a soft break, not a hard break.  Even after this commit, it
+still works to use splice() or sendfile() to transfer data to an AF_ALG
+request socket from a pipe or any file, respectively.  What changes is
+just that the kernel now makes an internal, stable copy of the data
+before doing the crypto operation.  So performance is slightly reduced,
+but the UAPI isn't broken.  And, very importantly, it's much safer.
+
+Tested with libkcapi/test.sh.  All its test cases still pass.  I also
+verified that this would have prevented the copy.fail exploit as well.
+I also used a custom test program to verify that sendfile() still works.
+
+Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Fixes: 400c40cf78da ("crypto: algif - add AEAD support")
+Reported-by: Taeyang Lee <0wn@theori.io>
+Link: https://copy.fail/
+Reported-by: Feng Ning <feng@innora.ai>
+Closes: https://lore.kernel.org/r/afYcc-tZFwvZZo76@ans-MacBook-Pro.local
+Reviewed-by: Demi Marie Obenour <demiobenour@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+
+v3: improved explanation
+v2: added tags
+
+ Documentation/crypto/userspace-if.rst | 31 ++----------
+ crypto/af_alg.c                       | 73 +++++++++------------------
+ crypto/algif_aead.c                   |  8 +--
+ 3 files changed, 33 insertions(+), 79 deletions(-)
+
+diff --git a/Documentation/crypto/userspace-if.rst b/Documentation/crypto/userspace-if.rst
+index 021759198fe7..d220e266b8de 100644
+--- a/Documentation/crypto/userspace-if.rst
++++ b/Documentation/crypto/userspace-if.rst
+@@ -325,37 +325,14 @@ CRYPTO_USER_API_RNG_CAVP option:
+    but only after the entropy has been set.
+ 
+ Zero-Copy Interface
+ -------------------
+ 
+-In addition to the send/write/read/recv system call family, the AF_ALG
+-interface can be accessed with the zero-copy interface of
+-splice/vmsplice. As the name indicates, the kernel tries to avoid a copy
+-operation into kernel space.
+-
+-The zero-copy operation requires data to be aligned at the page
+-boundary. Non-aligned data can be used as well, but may require more
+-operations of the kernel which would defeat the speed gains obtained
+-from the zero-copy interface.
+-
+-The system-inherent limit for the size of one zero-copy operation is 16
+-pages. If more data is to be sent to AF_ALG, user space must slice the
+-input into segments with a maximum size of 16 pages.
+-
+-Zero-copy can be used with the following code example (a complete
+-working example is provided with libkcapi):
+-
+-::
+-
+-    int pipes[2];
+-
+-    pipe(pipes);
+-    /* input data in iov */
+-    vmsplice(pipes[1], iov, iovlen, SPLICE_F_GIFT);
+-    /* opfd is the file descriptor returned from accept() system call */
+-    splice(pipes[0], NULL, opfd, NULL, ret, 0);
+-    read(opfd, out, outlen);
++AF_ALG used to have zero-copy support, but it was removed due to it being a
++frequent source of vulnerabilities.  For backwards compatibility the splice()
++and sendfile() system calls are still supported, but the kernel will make an
++internal copy of the data before passing it to the crypto code.
+ 
+ 
+ Setsockopt Interface
+ --------------------
+ 
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 5a00c18eb145..fce0b87c2b65 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -971,11 +971,11 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 		struct scatterlist *sg;
+ 		size_t len = size;
+ 		ssize_t plen;
+ 
+ 		/* use the existing memory in an allocated page */
+-		if (ctx->merge && !(msg->msg_flags & MSG_SPLICE_PAGES)) {
++		if (ctx->merge) {
+ 			sgl = list_entry(ctx->tsgl_list.prev,
+ 					 struct af_alg_tsgl, list);
+ 			sg = sgl->sg + sgl->cur - 1;
+ 			len = min_t(size_t, len,
+ 				    PAGE_SIZE - sg->offset - sg->length);
+@@ -1015,64 +1015,41 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 				 list);
+ 		sg = sgl->sg;
+ 		if (sgl->cur)
+ 			sg_unmark_end(sg + sgl->cur - 1);
+ 
+-		if (msg->msg_flags & MSG_SPLICE_PAGES) {
+-			struct sg_table sgtable = {
+-				.sgl		= sg,
+-				.nents		= sgl->cur,
+-				.orig_nents	= sgl->cur,
+-			};
+-
+-			plen = extract_iter_to_sg(&msg->msg_iter, len, &sgtable,
+-						  MAX_SGL_ENTS - sgl->cur, 0);
+-			if (plen < 0) {
+-				err = plen;
++		do {
++			struct page *pg;
++			unsigned int i = sgl->cur;
++
++			plen = min_t(size_t, len, PAGE_SIZE);
++
++			pg = alloc_page(GFP_KERNEL);
++			if (!pg) {
++				err = -ENOMEM;
+ 				goto unlock;
+ 			}
+ 
+-			for (; sgl->cur < sgtable.nents; sgl->cur++)
+-				get_page(sg_page(&sg[sgl->cur]));
++			sg_assign_page(sg + i, pg);
++
++			err = memcpy_from_msg(page_address(sg_page(sg + i)),
++					      msg, plen);
++			if (err) {
++				__free_page(sg_page(sg + i));
++				sg_assign_page(sg + i, NULL);
++				goto unlock;
++			}
++
++			sg[i].length = plen;
+ 			len -= plen;
+ 			ctx->used += plen;
+ 			copied += plen;
+ 			size -= plen;
+-		} else {
+-			do {
+-				struct page *pg;
+-				unsigned int i = sgl->cur;
+-
+-				plen = min_t(size_t, len, PAGE_SIZE);
+-
+-				pg = alloc_page(GFP_KERNEL);
+-				if (!pg) {
+-					err = -ENOMEM;
+-					goto unlock;
+-				}
+-
+-				sg_assign_page(sg + i, pg);
+-
+-				err = memcpy_from_msg(
+-					page_address(sg_page(sg + i)),
+-					msg, plen);
+-				if (err) {
+-					__free_page(sg_page(sg + i));
+-					sg_assign_page(sg + i, NULL);
+-					goto unlock;
+-				}
+-
+-				sg[i].length = plen;
+-				len -= plen;
+-				ctx->used += plen;
+-				copied += plen;
+-				size -= plen;
+-				sgl->cur++;
+-			} while (len && sgl->cur < MAX_SGL_ENTS);
+-
+-			ctx->merge = plen & (PAGE_SIZE - 1);
+-		}
++			sgl->cur++;
++		} while (len && sgl->cur < MAX_SGL_ENTS);
++
++		ctx->merge = plen & (PAGE_SIZE - 1);
+ 
+ 		if (!size)
+ 			sg_mark_end(sg + sgl->cur - 1);
+ 	}
+ 
+diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
+index cb651ab58d62..c6c2ce21895d 100644
+--- a/crypto/algif_aead.c
++++ b/crypto/algif_aead.c
+@@ -7,14 +7,14 @@
+  * This file provides the user-space API for AEAD ciphers.
+  *
+  * The following concept of the memory management is used:
+  *
+  * The kernel maintains two SGLs, the TX SGL and the RX SGL. The TX SGL is
+- * filled by user space with the data submitted via sendmsg (maybe with
+- * MSG_SPLICE_PAGES).  Filling up the TX SGL does not cause a crypto operation
+- * -- the data will only be tracked by the kernel. Upon receipt of one recvmsg
+- * call, the caller must provide a buffer which is tracked with the RX SGL.
++ * filled by user space with the data submitted via sendmsg.  Filling up the TX
++ * SGL does not cause a crypto operation -- the data will only be tracked by the
++ * kernel. Upon receipt of one recvmsg call, the caller must provide a buffer
++ * which is tracked with the RX SGL.
+  *
+  * During the processing of the recvmsg operation, the cipher request is
+  * allocated and prepared. As part of the recvmsg operation, the processed
+  * TX buffers are extracted from the TX SGL into a separate SGL.
+  *
+
+base-commit: c7e4e4d5f7dc2daa439303d1b5bf6bdfaa249f49
+-- 
+2.54.0
+
 
