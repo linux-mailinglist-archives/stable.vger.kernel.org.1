@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-243300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FkVFi2o+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:41 +0200
+	id +P6fLEqw+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F8C4BE8F5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4A04BFE7B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34851300B1C4
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5FE46308F99A
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5713A75801;
-	Mon,  4 May 2026 14:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5166D3E5579;
+	Mon,  4 May 2026 14:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtoH8Gh7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkFkfGuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193543DE45A;
-	Mon,  4 May 2026 14:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143043DF01A;
+	Mon,  4 May 2026 14:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903532; cv=none; b=Rl9HrITRjQukoTos+Da7Kq0iqWcNNEhdvaepoum9FiLlqEQ3UlIHfPFvWYp+d7AnvFZwLjik0fTp5b/fDnUPq+DOjgt6gjh1tirSzfDPdBbOyXqDNHLyI4KDEwvR7sMtpKEj5QRTly7Dp9vmNDKKOse91C+yx3OEleOlB6NKL98=
+	t=1777904706; cv=none; b=cUTYethy2IgjSeaSnqj/BHJnPwuEbWt1iZh+rCkEPeF+FGU6fbmXEGrc2gPEjigqeE9qWlWZd0eQh64yGCw8Dqgc1JxpqvbDmXK4P3ribos6aaCPzv/z9PxGgrdC4O7UCq0E0OBifMqQx8uj2o8LO7cTshNeZNgiNApUBiT3Pgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903532; c=relaxed/simple;
-	bh=q62kNxGsAu9VRO0aGREyg0MScNmBLnBtAVrGPY3/Zx8=;
+	s=arc-20240116; t=1777904706; c=relaxed/simple;
+	bh=J9ahSR4Ftis2LFwUexMr3cydvP4sqCLQwyv+X60Prqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2ofc7wdbcyCCZ+VXbxXQGK2/aDyXOROyrxKbALxlOYFEQqAy1aGzAGQURGextottpFc2fKRZPM8bZht+5S61H1QnXyhUircWQlEJWXlnWrM0TR3oD7KaRviV02EfCZKyLhWL2uNO40pIGhBr5Ot1TRDr+YBNTZRdtbKlUBtu0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtoH8Gh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F95DC2BCB8;
-	Mon,  4 May 2026 14:05:31 +0000 (UTC)
+	 MIME-Version; b=jO83EkzT8l4EMC4IQM79Py30RiFswMMzevPzEL9IoKMFTM4BMLxeGZDYIkAGY6JAXDN63ncAguBKyCYqANS9JOVBWD6/IoxXBrtDxoIaVBORLHkFid8rUKo6Ysc5VK+shx55oby3HYWnEtydeoF1+01yHL4H7qeB0G27ED/cg9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkFkfGuL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8FEC2BCB8;
+	Mon,  4 May 2026 14:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903531;
-	bh=q62kNxGsAu9VRO0aGREyg0MScNmBLnBtAVrGPY3/Zx8=;
+	s=korg; t=1777904705;
+	bh=J9ahSR4Ftis2LFwUexMr3cydvP4sqCLQwyv+X60Prqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtoH8Gh7aBviwTNH6VeJU4jisU5Ey5aRgueDp9PWFqBlyX9FJ/nsHF+lETD7YAkQE
-	 dHgAeDdgc1AqwbEeEiGxMFfaUu7mhBCsaglbgO/ZBr84m2wqe1V8L5Su2pkYgzmuNK
-	 3ymAPPk1tFBA5niDixX6ALV0KciGg23SeLEwLchA=
+	b=lkFkfGuLhR+bM1T+ongnpUiKPZNRH8muWfDaarrGgMcUEZvEiXeJyhNvdjvr+uccP
+	 BL/my/Mb6QWXgPcsYBXOgZE2T7rKRiBQEpz4/PCwfk0grIlBIt9Xt6eUhz9ALn9oMU
+	 bwL4ChrSgtXuqZoG2c7YFxk3SIihLLEiA74WBfY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 7.0 269/307] crypto: nx - Fix packed layout in struct nx842_crypto_header
+	WANG Rui <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	loongarch@lists.linux.dev,
+	Rong Bao <rong.bao@csmantle.top>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 135/215] perf annotate: Use jump__delete when freeing LoongArch jumps
 Date: Mon,  4 May 2026 15:52:34 +0200
-Message-ID: <20260504135152.930838891@linuxfoundation.org>
+Message-ID: <20260504135135.084370958@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +68,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 30F8C4BE8F5
+X-Rspamd-Queue-Id: 2A4A04BFE7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243759-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243300-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,csmantle.top:email,loongson.cn:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Rong Bao <rong.bao@csmantle.top>
 
-commit b0bfa49c03e3c65737eafa73d8a698eaf55379a6 upstream.
+[ Upstream commit a355eefc36c4481188249b067832b40a2c45fa5c ]
 
-struct nx842_crypto_header is declared with the __packed attribute,
-however	the fields grouped with struct_group_tagged() were not packed.
-This caused the grouped header portion of the structure to lose the
-packed layout guarantees of the containing structure.
+Currently, the initialization of loongarch_jump_ops does not contain an
+assignment to its .free field. This causes disasm_line__free() to fall
+through to ins_ops__delete() for LoongArch jump instructions.
 
-Fix this by replacing struct_group_tagged() with __struct_group(...,
-..., __packed, ...) so the grouped fields are packed, and the original
-layout is preserved, restoring the intended packed layout of the
-structure.
+ins_ops__delete() will free ins_operands.source.raw and
+ins_operands.source.name, and these fields overlaps with
+ins_operands.jump.raw_comment and ins_operands.jump.raw_func_start.
+Since in loongarch_jump__parse(), these two fields are populated by
+strchr()-ing the same buffer, trying to free them will lead to undefined
+behavior.
 
-Before changes:
-struct nx842_crypto_header {
-	union {
-		struct {
-			__be16     magic;                /*     0     2 */
-			__be16     ignore;               /*     2     2 */
-			u8         groups;               /*     4     1 */
-		};                                       /*     0     6 */
-		struct nx842_crypto_header_hdr hdr;      /*     0     6 */
-	};                                               /*     0     6 */
-	struct nx842_crypto_header_group group[];        /*     6     0 */
+This invalid free usually leads to crashes:
 
-	/* size: 6, cachelines: 1, members: 2 */
-	/* last cacheline: 6 bytes */
-} __attribute__((__packed__));
+        Process 1712902 (perf) of user 1000 dumped core.
+        Stack trace of thread 1712902:
+        #0  0x00007fffef155c58 n/a (libc.so.6 + 0x95c58)
+        #1  0x00007fffef0f7a94 raise (libc.so.6 + 0x37a94)
+        #2  0x00007fffef0dd6a8 abort (libc.so.6 + 0x1d6a8)
+        #3  0x00007fffef145490 n/a (libc.so.6 + 0x85490)
+        #4  0x00007fffef1646f4 n/a (libc.so.6 + 0xa46f4)
+        #5  0x00007fffef164718 n/a (libc.so.6 + 0xa4718)
+        #6  0x00005555583a6764 __zfree (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x106764)
+        #7  0x000055555854fb70 disasm_line__free (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x2afb70)
+        #8  0x000055555853d618 annotated_source__purge (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x29d618)
+        #9  0x000055555852300c __hist_entry__tui_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28300c)
+        #10 0x0000555558526718 do_annotate (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x286718)
+        #11 0x000055555852ed94 evsel__hists_browse (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x28ed94)
+        #12 0x000055555831fdd0 cmd_report (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x7fdd0)
+        #13 0x000055555839b644 handle_internal_command (/home/csmantle/dist/linux-arch/tools/perf/perf + 0xfb644)
+        #14 0x00005555582fe6ac main (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5e6ac)
+        #15 0x00007fffef0ddd90 n/a (libc.so.6 + 0x1dd90)
+        #16 0x00007fffef0ddf0c __libc_start_main (libc.so.6 + 0x1df0c)
+        #17 0x00005555582fed10 _start (/home/csmantle/dist/linux-arch/tools/perf/perf + 0x5ed10)
+        ELF object binary architecture: LoongArch
 
-After changes:
-struct nx842_crypto_header {
-	union {
-		struct {
-			__be16     magic;                /*     0     2 */
-			__be16     ignore;               /*     2     2 */
-			u8         groups;               /*     4     1 */
-		} __attribute__((__packed__));           /*     0     5 */
-		struct nx842_crypto_header_hdr hdr;      /*     0     5 */
-	};                                               /*     0     5 */
-	struct nx842_crypto_header_group group[];        /*     5     0 */
+... and it can be confirmed with Valgrind:
 
-	/* size: 5, cachelines: 1, members: 2 */
-	/* last cacheline: 5 bytes */
-} __attribute__((__packed__));
+        ==1721834== Invalid free() / delete / delete[] / realloc()
+        ==1721834==    at 0x4EA9014: free (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
+        ==1721834==    by 0x4106287: __zfree (zalloc.c:13)
+        ==1721834==    by 0x42ADC8F: disasm_line__free (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x429B737: annotated_source__purge (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42811EB: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==  Address 0x7d34303 is 35 bytes inside a block of size 62 alloc'd
+        ==1721834==    at 0x4EA59B8: malloc (in /usr/lib/valgrind/vgpreload_memcheck-loongarch64-linux.so)
+        ==1721834==    by 0x6B80B6F: strdup (strdup.c:42)
+        ==1721834==    by 0x42AD917: disasm_line__new (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42AE5A3: symbol__disassemble_objdump (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42AF0A7: symbol__disassemble (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x429B3CF: symbol__annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x429C233: symbol__annotate2 (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42804D3: __hist_entry__tui_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x42848D7: do_annotate (in /home/csmantle/dist/linux-arch/tools/perf/perf)
+        ==1721834==    by 0x428CF33: evsel__hists_browse (in /home/csmantle/dist/linux-arch/tools/perf/perf)
 
-Fixes: 1e6b251ce175 ("crypto: nx - Avoid -Wflex-array-member-not-at-end warning")
+This patch adds the missing free() specialization in loongarch_jump_ops,
+which prevents disasm_line__free() from invoking the default cleanup
+function.
+
+Fixes: fb7fd2a14a503b9a ("perf annotate: Move raw_comment and raw_func_start fields out of 'struct ins_operands'")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: WANG Rui <wangrui@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: loongarch@lists.linux.dev
+Signed-off-by: Rong Bao <rong.bao@csmantle.top>
+Tested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/nx/nx-842.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/arch/loongarch/annotate/instructions.c | 1 +
+ tools/perf/util/disasm.c                          | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/crypto/nx/nx-842.h
-+++ b/drivers/crypto/nx/nx-842.h
-@@ -159,7 +159,7 @@ struct nx842_crypto_header_group {
+diff --git a/tools/perf/arch/loongarch/annotate/instructions.c b/tools/perf/arch/loongarch/annotate/instructions.c
+index ab43b1ab51e3b..e16350155bf1d 100644
+--- a/tools/perf/arch/loongarch/annotate/instructions.c
++++ b/tools/perf/arch/loongarch/annotate/instructions.c
+@@ -95,6 +95,7 @@ static int loongarch_jump__parse(struct arch *arch, struct ins_operands *ops, st
+ }
  
- struct nx842_crypto_header {
- 	/* New members MUST be added within the struct_group() macro below. */
--	struct_group_tagged(nx842_crypto_header_hdr, hdr,
-+	__struct_group(nx842_crypto_header_hdr, hdr, __packed,
- 		__be16 magic;		/* NX842_CRYPTO_MAGIC */
- 		__be16 ignore;		/* decompressed end bytes to ignore */
- 		u8 groups;		/* total groups in this header */
-@@ -167,7 +167,7 @@ struct nx842_crypto_header {
- 	struct nx842_crypto_header_group group[];
- } __packed;
- static_assert(offsetof(struct nx842_crypto_header, group) == sizeof(struct nx842_crypto_header_hdr),
--	      "struct member likely outside of struct_group_tagged()");
-+	      "struct member likely outside of __struct_group()");
+ static struct ins_ops loongarch_jump_ops = {
++	.free	   = jump__delete,
+ 	.parse	   = loongarch_jump__parse,
+ 	.scnprintf = jump__scnprintf,
+ };
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 8a6f450c6f8e7..8f35232f7f22c 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -44,6 +44,7 @@ static int jump__scnprintf(struct ins *ins, char *bf, size_t size,
+ 			   struct ins_operands *ops, int max_ins_name);
+ static int call__scnprintf(struct ins *ins, char *bf, size_t size,
+ 			   struct ins_operands *ops, int max_ins_name);
++static void jump__delete(struct ins_operands *ops);
  
- #define NX842_CRYPTO_GROUP_MAX	(0x20)
- 
+ static void ins__sort(struct arch *arch);
+ static int disasm_line__parse(char *line, const char **namep, char **rawp);
+-- 
+2.53.0
+
 
 
 
