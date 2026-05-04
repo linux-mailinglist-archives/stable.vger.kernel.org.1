@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-243453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDvZHvyr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243453-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:56 +0200
+	id wL99IOWo+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810414BF47C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83164BEAE1
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C80A302CFD8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DAB0A300F2AD
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7E33DE43C;
-	Mon,  4 May 2026 14:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F883D9029;
+	Mon,  4 May 2026 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14gT6XzO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFsGcI7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336553DDDD6;
-	Mon,  4 May 2026 14:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163023CEB89;
+	Mon,  4 May 2026 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903923; cv=none; b=N1vpuvoJi6Kp1ggRqjfI2vn0hBFiYCCDevh61XFVFMUPElcwN6yHs5lApK/HDj2homcHSmXOnbeJjEquHGT/GaxF6GRXUcENxxzVsQYx3O53/UvjCcRjeCciLQvH7dN3dMJKs4XOHIxBf1JrzP6pWlziPAEwhlEpRFP9llvfAZw=
+	t=1777903318; cv=none; b=QXr1qJDMqQDDv8u0n6HtOLigj1l5oXb0ZQnt5SLemLx54kV1it4jwFrVUQnnWzZurhGDC1OKWKxCTB8Y9w70zkIDCH6LNAfqfzt03nIK1SL1i6TiZd7++Pah18EGQeIFbZXZyLojnhQjwJ44heqR/vCCuu6tVkRsysCY9eFpAO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903923; c=relaxed/simple;
-	bh=QclF9ZhgNHQ8kifAGK1f0/eWmpuoIVQjKAOYZGWV3ZU=;
+	s=arc-20240116; t=1777903318; c=relaxed/simple;
+	bh=8oQ1JUdNVyY6whdhEAw2B5C3UdcqCf+4Y65iei7iMsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1L2EVatVTgxFHyEJo/K9AwCuqra9YDSq4/y+yG4nRKbqy3z2OeWm1SLMLHZShliv3YgZm2nUihzlQ3Cli/NBGMTxVOwvTmECnftvXcKf/Rk2pgi6d28wsB/cvOqa/REKZDs7CSUSAsuCoomL8Ne8nBJnNp9SqdgM8bdRYmgRHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14gT6XzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE108C2BCB8;
-	Mon,  4 May 2026 14:12:02 +0000 (UTC)
+	 MIME-Version; b=cVSZJotwS82My85QS8VPMUhVyApTlr4f2+VWdpD8EHogUxRVO12mXWa+ybvZpq0FiNP7B2nPwqi3dX78XUghEUabxand0aWBSeLT8OkMcsx4JTFcryg5mxgfRsfYxTom/G92gGtdKZHZ9yKdf27wcXW6jY381xQLIfAWbLsXdwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFsGcI7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6C9C2BCB8;
+	Mon,  4 May 2026 14:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903923;
-	bh=QclF9ZhgNHQ8kifAGK1f0/eWmpuoIVQjKAOYZGWV3ZU=;
+	s=korg; t=1777903318;
+	bh=8oQ1JUdNVyY6whdhEAw2B5C3UdcqCf+4Y65iei7iMsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14gT6XzOLBzCJCbmdHuYqjWvv25TQdA6D4KacomJs683HFH9gVSKK0ReUMk/HLfeW
-	 /C0KsC6bj2JYQGvpzAA1K/2G7RLwbNt3wBL3UwhDybWs0DLkpP6r7KJhNFJV6F7iLV
-	 sKK4rDdjBit3iw7KGw7AryGy69B38rdtOD2cYxP4=
+	b=oFsGcI7u1vDzFGTzO53br42DFJ2v1namYOouU7UyTAw1eEW/4lILOOgoTQwHPjReL
+	 OvaM3/Oko8LN60hdhmHObOmsWsySA2AaTYW97oIjh6biP4j3um3akuYnNzQ4NIW/Eq
+	 74SZ5VYWijrvgMSKLAhQufAYusYUqy8zrvSa9uo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 114/275] rxrpc: Fix rxrpc_input_call_event() to only unshare DATA packets
-Date: Mon,  4 May 2026 15:50:54 +0200
-Message-ID: <20260504135147.143549909@linuxfoundation.org>
+	Amir Goldstein <amir73il@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 7.0 170/307] selinux: fix overlayfs mmap() and mprotect() access checks
+Date: Mon,  4 May 2026 15:50:55 +0200
+Message-ID: <20260504135149.259987562@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +63,456 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 810414BF47C
+X-Rspamd-Queue-Id: A83164BEAE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243217-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243453-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,auristor.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,paul-moore.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Paul Moore <paul@paul-moore.com>
 
-commit 55b2984c96c37f909bbfe8851f13152693951382 upstream.
+commit 82544d36b1729153c8aeb179e84750f0c085d3b1 upstream.
 
-Fix rxrpc_input_call_event() to only unshare DATA packets and not ACK,
-ABORT, etc..
+The existing SELinux security model for overlayfs is to allow access if
+the current task is able to access the top level file (the "user" file)
+and the mounter's credentials are sufficient to access the lower
+level file (the "backing" file).  Unfortunately, the current code does
+not properly enforce these access controls for both mmap() and mprotect()
+operations on overlayfs filesystems.
 
-And with that, rxrpc_input_packet() doesn't need to take a pointer to the
-pointer to the packet, so change that to just a pointer.
+This patch makes use of the newly created security_mmap_backing_file()
+LSM hook to provide the missing backing file enforcement for mmap()
+operations, and leverages the backing file API and new LSM blob to
+provide the necessary information to properly enforce the mprotect()
+access controls.
 
-Fixes: 1f2740150f90 ("rxrpc: Fix potential UAF after skb_unshare() failure")
-Closes: https://sashiko.dev/#/patchset/20260422161438.2593376-4-dhowells@redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260423200909.3049438-2-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/call_event.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/selinux/hooks.c          |  244 +++++++++++++++++++++++++++-----------
+ security/selinux/include/objsec.h |   11 +
+ 2 files changed, 190 insertions(+), 65 deletions(-)
 
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -332,7 +332,8 @@ bool rxrpc_input_call_event(struct rxrpc
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -1745,49 +1745,72 @@ static inline int file_path_has_perm(con
+ static int bpf_fd_pass(const struct file *file, u32 sid);
+ #endif
  
- 			saw_ack |= sp->hdr.type == RXRPC_PACKET_TYPE_ACK;
+-/* Check whether a task can use an open file descriptor to
+-   access an inode in a given way.  Check access to the
+-   descriptor itself, and then use dentry_has_perm to
+-   check a particular permission to the file.
+-   Access to the descriptor is implicitly granted if it
+-   has the same SID as the process.  If av is zero, then
+-   access to the file is not checked, e.g. for cases
+-   where only the descriptor is affected like seek. */
+-static int file_has_perm(const struct cred *cred,
+-			 struct file *file,
+-			 u32 av)
++static int __file_has_perm(const struct cred *cred, const struct file *file,
++			   u32 av, bool bf_user_file)
++
+ {
+-	struct file_security_struct *fsec = selinux_file(file);
+-	struct inode *inode = file_inode(file);
+ 	struct common_audit_data ad;
+-	u32 sid = cred_sid(cred);
++	struct inode *inode;
++	u32 ssid = cred_sid(cred);
++	u32 tsid_fd;
+ 	int rc;
  
--			if (sp->hdr.securityIndex != 0 &&
-+			if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA &&
-+			    sp->hdr.securityIndex != 0 &&
- 			    skb_cloned(skb)) {
- 				/* Unshare the packet so that it can be
- 				 * modified by in-place decryption.
+-	ad.type = LSM_AUDIT_DATA_FILE;
+-	ad.u.file = file;
++	if (bf_user_file) {
++		struct backing_file_security_struct *bfsec;
++		const struct path *path;
++
++		if (WARN_ON(!(file->f_mode & FMODE_BACKING)))
++			return -EIO;
++
++		bfsec = selinux_backing_file(file);
++		path = backing_file_user_path(file);
++		tsid_fd = bfsec->uf_sid;
++		inode = d_inode(path->dentry);
+ 
+-	if (sid != fsec->sid) {
+-		rc = avc_has_perm(sid, fsec->sid,
+-				  SECCLASS_FD,
+-				  FD__USE,
+-				  &ad);
++		ad.type = LSM_AUDIT_DATA_PATH;
++		ad.u.path = *path;
++	} else {
++		struct file_security_struct *fsec = selinux_file(file);
++
++		tsid_fd = fsec->sid;
++		inode = file_inode(file);
++
++		ad.type = LSM_AUDIT_DATA_FILE;
++		ad.u.file = file;
++	}
++
++	if (ssid != tsid_fd) {
++		rc = avc_has_perm(ssid, tsid_fd, SECCLASS_FD, FD__USE, &ad);
+ 		if (rc)
+-			goto out;
++			return rc;
+ 	}
+ 
+ #ifdef CONFIG_BPF_SYSCALL
+-	rc = bpf_fd_pass(file, cred_sid(cred));
++	/* regardless of backing vs user file, use the underlying file here */
++	rc = bpf_fd_pass(file, ssid);
+ 	if (rc)
+ 		return rc;
+ #endif
+ 
+ 	/* av is zero if only checking access to the descriptor. */
+-	rc = 0;
+ 	if (av)
+-		rc = inode_has_perm(cred, inode, av, &ad);
++		return inode_has_perm(cred, inode, av, &ad);
+ 
+-out:
+-	return rc;
++	return 0;
++}
++
++/* Check whether a task can use an open file descriptor to
++   access an inode in a given way.  Check access to the
++   descriptor itself, and then use dentry_has_perm to
++   check a particular permission to the file.
++   Access to the descriptor is implicitly granted if it
++   has the same SID as the process.  If av is zero, then
++   access to the file is not checked, e.g. for cases
++   where only the descriptor is affected like seek. */
++static inline int file_has_perm(const struct cred *cred,
++				const struct file *file, u32 av)
++{
++	return __file_has_perm(cred, file, av, false);
+ }
+ 
+ /*
+@@ -3825,6 +3848,17 @@ static int selinux_file_alloc_security(s
+ 	return 0;
+ }
+ 
++static int selinux_backing_file_alloc(struct file *backing_file,
++				      const struct file *user_file)
++{
++	struct backing_file_security_struct *bfsec;
++
++	bfsec = selinux_backing_file(backing_file);
++	bfsec->uf_sid = selinux_file(user_file)->sid;
++
++	return 0;
++}
++
+ /*
+  * Check whether a task has the ioctl permission and cmd
+  * operation to an inode.
+@@ -3942,42 +3976,55 @@ static int selinux_file_ioctl_compat(str
+ 
+ static int default_noexec __ro_after_init;
+ 
+-static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
+-{
+-	const struct cred *cred = current_cred();
+-	u32 sid = cred_sid(cred);
+-	int rc = 0;
++static int __file_map_prot_check(const struct cred *cred,
++				 const struct file *file, unsigned long prot,
++				 bool shared, bool bf_user_file)
++{
++	struct inode *inode = NULL;
++	bool prot_exec = prot & PROT_EXEC;
++	bool prot_write = prot & PROT_WRITE;
++
++	if (file) {
++		if (bf_user_file)
++			inode = d_inode(backing_file_user_path(file)->dentry);
++		else
++			inode = file_inode(file);
++	}
++
++	if (default_noexec && prot_exec &&
++	    (!file || IS_PRIVATE(inode) || (!shared && prot_write))) {
++		int rc;
++		u32 sid = cred_sid(cred);
+ 
+-	if (default_noexec &&
+-	    (prot & PROT_EXEC) && (!file || IS_PRIVATE(file_inode(file)) ||
+-				   (!shared && (prot & PROT_WRITE)))) {
+ 		/*
+-		 * We are making executable an anonymous mapping or a
+-		 * private file mapping that will also be writable.
+-		 * This has an additional check.
++		 * We are making executable an anonymous mapping or a private
++		 * file mapping that will also be writable.
+ 		 */
+-		rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
+-				  PROCESS__EXECMEM, NULL);
++		rc = avc_has_perm(sid, sid, SECCLASS_PROCESS, PROCESS__EXECMEM,
++				  NULL);
+ 		if (rc)
+-			goto error;
++			return rc;
+ 	}
+ 
+ 	if (file) {
+-		/* read access is always possible with a mapping */
++		/* "read" always possible, "write" only if shared */
+ 		u32 av = FILE__READ;
+-
+-		/* write access only matters if the mapping is shared */
+-		if (shared && (prot & PROT_WRITE))
++		if (shared && prot_write)
+ 			av |= FILE__WRITE;
+-
+-		if (prot & PROT_EXEC)
++		if (prot_exec)
+ 			av |= FILE__EXECUTE;
+ 
+-		return file_has_perm(cred, file, av);
++		return __file_has_perm(cred, file, av, bf_user_file);
+ 	}
+ 
+-error:
+-	return rc;
++	return 0;
++}
++
++static inline int file_map_prot_check(const struct cred *cred,
++				      const struct file *file,
++				      unsigned long prot, bool shared)
++{
++	return __file_map_prot_check(cred, file, prot, shared, false);
+ }
+ 
+ static int selinux_mmap_addr(unsigned long addr)
+@@ -3993,36 +4040,80 @@ static int selinux_mmap_addr(unsigned lo
+ 	return rc;
+ }
+ 
+-static int selinux_mmap_file(struct file *file,
+-			     unsigned long reqprot __always_unused,
+-			     unsigned long prot, unsigned long flags)
++static int selinux_mmap_file_common(const struct cred *cred, struct file *file,
++				    unsigned long prot, bool shared)
+ {
+-	struct common_audit_data ad;
+-	int rc;
+-
+ 	if (file) {
++		int rc;
++		struct common_audit_data ad;
++
+ 		ad.type = LSM_AUDIT_DATA_FILE;
+ 		ad.u.file = file;
+-		rc = inode_has_perm(current_cred(), file_inode(file),
+-				    FILE__MAP, &ad);
++		rc = inode_has_perm(cred, file_inode(file), FILE__MAP, &ad);
+ 		if (rc)
+ 			return rc;
+ 	}
+ 
+-	return file_map_prot_check(file, prot,
+-				   (flags & MAP_TYPE) == MAP_SHARED);
++	return file_map_prot_check(cred, file, prot, shared);
++}
++
++static int selinux_mmap_file(struct file *file,
++			     unsigned long reqprot __always_unused,
++			     unsigned long prot, unsigned long flags)
++{
++	return selinux_mmap_file_common(current_cred(), file, prot,
++					(flags & MAP_TYPE) == MAP_SHARED);
++}
++
++/**
++ * selinux_mmap_backing_file - Check mmap permissions on a backing file
++ * @vma: memory region
++ * @backing_file: stacked filesystem backing file
++ * @user_file: user visible file
++ *
++ * This is called after selinux_mmap_file() on stacked filesystems, and it
++ * is this function's responsibility to verify access to @backing_file and
++ * setup the SELinux state for possible later use in the mprotect() code path.
++ *
++ * By the time this function is called, mmap() access to @user_file has already
++ * been authorized and @vma->vm_file has been set to point to @backing_file.
++ *
++ * Return zero on success, negative values otherwise.
++ */
++static int selinux_mmap_backing_file(struct vm_area_struct *vma,
++				     struct file *backing_file,
++				     struct file *user_file __always_unused)
++{
++	unsigned long prot = 0;
++
++	/* translate vma->vm_flags perms into PROT perms */
++	if (vma->vm_flags & VM_READ)
++		prot |= PROT_READ;
++	if (vma->vm_flags & VM_WRITE)
++		prot |= PROT_WRITE;
++	if (vma->vm_flags & VM_EXEC)
++		prot |= PROT_EXEC;
++
++	return selinux_mmap_file_common(backing_file->f_cred, backing_file,
++					prot, vma->vm_flags & VM_SHARED);
+ }
+ 
+ static int selinux_file_mprotect(struct vm_area_struct *vma,
+ 				 unsigned long reqprot __always_unused,
+ 				 unsigned long prot)
+ {
++	int rc;
+ 	const struct cred *cred = current_cred();
+ 	u32 sid = cred_sid(cred);
++	const struct file *file = vma->vm_file;
++	bool backing_file;
++	bool shared = vma->vm_flags & VM_SHARED;
++
++	/* check if we need to trigger the "backing files are awful" mode */
++	backing_file = file && (file->f_mode & FMODE_BACKING);
+ 
+ 	if (default_noexec &&
+ 	    (prot & PROT_EXEC) && !(vma->vm_flags & VM_EXEC)) {
+-		int rc = 0;
+ 		/*
+ 		 * We don't use the vma_is_initial_heap() helper as it has
+ 		 * a history of problems and is currently broken on systems
+@@ -4036,11 +4127,15 @@ static int selinux_file_mprotect(struct
+ 		    vma->vm_end <= vma->vm_mm->brk) {
+ 			rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
+ 					  PROCESS__EXECHEAP, NULL);
+-		} else if (!vma->vm_file && (vma_is_initial_stack(vma) ||
++			if (rc)
++				return rc;
++		} else if (!file && (vma_is_initial_stack(vma) ||
+ 			    vma_is_stack_for_current(vma))) {
+ 			rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
+ 					  PROCESS__EXECSTACK, NULL);
+-		} else if (vma->vm_file && vma->anon_vma) {
++			if (rc)
++				return rc;
++		} else if (file && vma->anon_vma) {
+ 			/*
+ 			 * We are making executable a file mapping that has
+ 			 * had some COW done. Since pages might have been
+@@ -4048,13 +4143,29 @@ static int selinux_file_mprotect(struct
+ 			 * modified content.  This typically should only
+ 			 * occur for text relocations.
+ 			 */
+-			rc = file_has_perm(cred, vma->vm_file, FILE__EXECMOD);
++			rc = __file_has_perm(cred, file, FILE__EXECMOD,
++					     backing_file);
++			if (rc)
++				return rc;
++			if (backing_file) {
++				rc = file_has_perm(file->f_cred, file,
++						   FILE__EXECMOD);
++				if (rc)
++					return rc;
++			}
+ 		}
++	}
++
++	rc = __file_map_prot_check(cred, file, prot, shared, backing_file);
++	if (rc)
++		return rc;
++	if (backing_file) {
++		rc = file_map_prot_check(file->f_cred, file, prot, shared);
+ 		if (rc)
+ 			return rc;
+ 	}
+ 
+-	return file_map_prot_check(vma->vm_file, prot, vma->vm_flags&VM_SHARED);
++	return 0;
+ }
+ 
+ static int selinux_file_lock(struct file *file, unsigned int cmd)
+@@ -7393,6 +7504,7 @@ struct lsm_blob_sizes selinux_blob_sizes
+ 	.lbs_cred = sizeof(struct cred_security_struct),
+ 	.lbs_task = sizeof(struct task_security_struct),
+ 	.lbs_file = sizeof(struct file_security_struct),
++	.lbs_backing_file = sizeof(struct backing_file_security_struct),
+ 	.lbs_inode = sizeof(struct inode_security_struct),
+ 	.lbs_ipc = sizeof(struct ipc_security_struct),
+ 	.lbs_key = sizeof(struct key_security_struct),
+@@ -7498,9 +7610,11 @@ static struct security_hook_list selinux
+ 
+ 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
+ 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
++	LSM_HOOK_INIT(backing_file_alloc, selinux_backing_file_alloc),
+ 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
+ 	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
+ 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
++	LSM_HOOK_INIT(mmap_backing_file, selinux_mmap_backing_file),
+ 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
+ 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
+ 	LSM_HOOK_INIT(file_lock, selinux_file_lock),
+--- a/security/selinux/include/objsec.h
++++ b/security/selinux/include/objsec.h
+@@ -88,6 +88,10 @@ struct file_security_struct {
+ 	u32 pseqno; /* Policy seqno at the time of file open */
+ };
+ 
++struct backing_file_security_struct {
++	u32 uf_sid; /* associated user file fsec->sid */
++};
++
+ struct superblock_security_struct {
+ 	u32 sid; /* SID of file system superblock */
+ 	u32 def_sid; /* default SID for labeling */
+@@ -195,6 +199,13 @@ static inline struct file_security_struc
+ 	return file->f_security + selinux_blob_sizes.lbs_file;
+ }
+ 
++static inline struct backing_file_security_struct *
++selinux_backing_file(const struct file *backing_file)
++{
++	void *blob = backing_file_security(backing_file);
++	return blob + selinux_blob_sizes.lbs_backing_file;
++}
++
+ static inline struct inode_security_struct *
+ selinux_inode(const struct inode *inode)
+ {
 
 
 
