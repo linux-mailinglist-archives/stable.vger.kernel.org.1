@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHNbO9Sp+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:44 +0200
+	id 8INtMpWm+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE524BEE35
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B244BE52F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2B703022BA6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 16D6E3022A99
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6BE3B19D1;
-	Mon,  4 May 2026 14:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3787B3DE450;
+	Mon,  4 May 2026 13:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLRBLXlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5epaBJZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E573A7F4C;
-	Mon,  4 May 2026 14:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D2D3DE452;
+	Mon,  4 May 2026 13:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903863; cv=none; b=uk3BJBM/gzbZirvl6aL3IqIAVPpNJoerua2a3fkKqCEIDutvQgyXFUKuKxUO6N0Q2gUDAOnDOczGEBszqhvciCtqTL39aAzDo/9x7R8I7DiGytGZIgZ1NRYKScQZ5D0CP/PJWFitI8rkXEQwsvndZIqY6SYFQot4RgGUv4Or6XI=
+	t=1777903126; cv=none; b=B++NOhFiZdhm9b3SaN2Z9D/fg7EjU0KcwhohJlxfDlvPLLV6nHx71hup8nuJzas9fGwNGGTk4Ounue5UE8emkC4C0We34W9g0H3PU59CIQONYXuQovFqCWg/zhClEL1FgMx+mxCpTkrd8L5h/lUv6LrTUc91K2bl8uXhvd7+L8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903863; c=relaxed/simple;
-	bh=6C2anW6yKHJ3OQRX9foK0Vz2zY74e7MtZArjzg+cFxQ=;
+	s=arc-20240116; t=1777903126; c=relaxed/simple;
+	bh=0QIAOWdaaAHMICltR4wwDYzJUuaH9bNjwZ4pv8n7SfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAmq9uL+DoeeeVXbQJ3iKt0ngsjnX3+ZQ2lSr03KzUmzz+n+hX234vk9LXdqCl+SJ3yMX+JLs2ka4S10YcWQ4+XePayMmpi8nPDpapRJ/d80jA2Y3RBwev3XjrV+YJsAFtFxxbsZA0T83seaGL/jN5CuAVOL3NSxv2W79dF7uZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLRBLXlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9C6C2BCB8;
-	Mon,  4 May 2026 14:11:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MOulQCq7Et30/W1oAJBifQfDwezlyjRr5zYZFor+4jl5i4YuUKeF7LrihhPrusNEtzUOrnMjFbeZ9C6qeJ6CgqNQFnuZcWDAmp/Ymi8OSveqLDxgDKODlwI8+Dcy3p0z/NRh5+G+ILzglwdSivU9HKh+GFy/uN5IznpFrJ3iBCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5epaBJZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78335C2BCB8;
+	Mon,  4 May 2026 13:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903863;
-	bh=6C2anW6yKHJ3OQRX9foK0Vz2zY74e7MtZArjzg+cFxQ=;
+	s=korg; t=1777903125;
+	bh=0QIAOWdaaAHMICltR4wwDYzJUuaH9bNjwZ4pv8n7SfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLRBLXlQSYUF81vR5+E/OcTLzOwMD55k1OmahkuuiR7wnZOIiGMeQYD1FYkSntIb0
-	 HoWgBbXvJPG4vSmQx6QofeHYHdCrNlJWw1zT0V322jgWf61bTvWVSqVvLXl/EtDwec
-	 Q8INV8DdOhd37odG38AVHSn2fpgTZOT3m5QanACA=
+	b=V5epaBJZB6PXoGTrvTqxbrWsIlK8n8Y4uFu0FLgpWFMBDLAXP1NNDvL4PCE3SS/oz
+	 fvNiMl0hvVa0RAZ9K1gjULY/VKO8RzjLeRzqu7YtdlaFCoNO8ECYuIGVUW6UCDlp9L
+	 sAk6fNkWy6qlmrlESIxsX1h00Gy2Dpd2tR4l+DL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 058/275] net: qrtr: ns: Fix use-after-free in driver remove()
-Date: Mon,  4 May 2026 15:49:58 +0200
-Message-ID: <20260504135145.089338781@linuxfoundation.org>
+	=?UTF-8?q?Azizcan=20Da=C5=9Ftan?= <azizcan.d@mileniumsec.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 114/307] io_uring/poll: ensure EPOLL_ONESHOT is propagated for EPOLL_URING_WAKE
+Date: Mon,  4 May 2026 15:49:59 +0200
+Message-ID: <20260504135147.094980654@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CFE524BEE35
+X-Rspamd-Queue-Id: 07B244BE52F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243430-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243142-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mileniumsec.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 7809fea20c9404bfcfa6112ec08d1fe1d3520beb upstream.
+commit 1967f0b1cafdde37aa9e08e6021c14bcc484b7a5 upstream.
 
-In the remove callback, if a packet arrives after destroy_workqueue() is
-called, but before sock_release(), the qrtr_ns_data_ready() callback will
-try to queue the work, causing use-after-free issue.
+Commit:
 
-Fix this issue by saving the default 'sk_data_ready' callback during
-qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
-the start of remove(). This ensures that even if a packet arrives after
-destroy_workqueue(), the work struct will not be dereferenced.
+aacf2f9f382c ("io_uring: fix req->apoll_events")
 
-Note that it is also required to ensure that the RX threads are completed
-before destroying the workqueue, because the threads could be using the
-qrtr_ns_data_ready() callback.
+fixed an issue where poll->events and req->apoll_events weren't
+synchronized, but then when the commit referenced in Fixes got added,
+it didn't ensure the same thing.
+
+If we mask in EPOLLONESHOT in the regular EPOLL_URING_WAKE path, then
+ensure it's done for both. Including a link to the original report
+below, even though it's mostly nonsense. But it includes a reproducer
+that does show that IORING_CQE_F_MORE is set in the previous CQE,
+while no more CQEs will be generated for this request. Just ignore
+anything that pretends this is security related in any way, it's just
+the typical AI nonsense.
 
 Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-5-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/io-uring/CAM0zi7yQzF3eKncgHo4iVM5yFLAjsiob_ucqyWKs=hyd_GqiMg@mail.gmail.com/
+Reported-by: Azizcan Daştan <azizcan.d@mileniumsec.com>
+Fixes: 4464853277d0 ("io_uring: pass in EPOLL_URING_WAKE for eventfd signaling and wakeups")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ io_uring/poll.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -24,6 +24,7 @@ static struct {
- 	struct list_head lookups;
- 	struct workqueue_struct *workqueue;
- 	struct work_struct work;
-+	void (*saved_data_ready)(struct sock *sk);
- 	int local_node;
- } qrtr_ns;
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -415,8 +415,10 @@ static int io_poll_wake(struct wait_queu
+ 		 * disable multishot as there is a circular dependency between
+ 		 * CQ posting and triggering the event.
+ 		 */
+-		if (mask & EPOLL_URING_WAKE)
++		if (mask & EPOLL_URING_WAKE) {
+ 			poll->events |= EPOLLONESHOT;
++			req->apoll_events |= EPOLLONESHOT;
++		}
  
-@@ -709,6 +710,7 @@ int qrtr_ns_init(void)
- 		goto err_sock;
- 	}
- 
-+	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
- 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
- 
- 	sq.sq_port = QRTR_PORT_CTRL;
-@@ -749,6 +751,10 @@ int qrtr_ns_init(void)
- 	return 0;
- 
- err_wq:
-+	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
-+	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
-+	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
-+
- 	destroy_workqueue(qrtr_ns.workqueue);
- err_sock:
- 	sock_release(qrtr_ns.sock);
-@@ -758,7 +764,12 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
- 
- void qrtr_ns_remove(void)
- {
-+	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
-+	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
-+	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
-+
- 	cancel_work_sync(&qrtr_ns.work);
-+	synchronize_net();
- 	destroy_workqueue(qrtr_ns.workqueue);
- 
- 	/* sock_release() expects the two references that were put during
+ 		/* optional, saves extra locking for removal in tw handler */
+ 		if (mask && poll->events & EPOLLONESHOT) {
 
 
 
