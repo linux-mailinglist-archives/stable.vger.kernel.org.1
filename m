@@ -1,61 +1,69 @@
-Return-Path: <stable+bounces-243011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENMiOwSO+GkVwgIAu9opvQ
-	(envelope-from <stable+bounces-243011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:16:04 +0200
+	id GAqwBUGO+GkVwgIAu9opvQ
+	(envelope-from <stable+bounces-243012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:17:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669764BCCD2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71EBE4BCD00
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 14:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDE3300D683
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:16:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEA033026F24
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 12:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0161E3A3E8C;
-	Mon,  4 May 2026 12:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071D9347BD4;
+	Mon,  4 May 2026 12:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WoEco32j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L7tBAwdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94B2347BD4
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED7A3CF058
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 12:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777896961; cv=none; b=ozYzPMKXqH+SfSEbMVe+F3GWhGQKJI8IQeL9sVcZYhq074c4EBemqUTuHm6hNUSpaIewbrgddioIQEwaESHwmWf/HbyPow868DwjNE4N8adDAYuCJsqEp23hujoVnogBnpOdSJOyrnH0WMKp66bz11QeHbCKNEj5FNvGLrjJfgQ=
+	t=1777896994; cv=none; b=XP4cflPni5Dd7kNxAqiwuW03PlFf8IcP3IuCRHO3B6N+tXHduod1lF5Cjv/WQcrO9RGl7B4vQQNSfj71byHGoZQqq+HvUayCZmkT6xTU0IwfHfrCRj5vwS17ARBnv5VjGCWXAUUhc6Ec93KMCEIdVPVZVNdxxpQ3qXR9itsSlig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777896961; c=relaxed/simple;
-	bh=o2yWWM4NHWDjwD/cfOPwRNTV/8WFl5moqvlJykouoKc=;
+	s=arc-20240116; t=1777896994; c=relaxed/simple;
+	bh=RHJ79y8uN8ALGcC4JYdm3peduA1WE4GefffpI2PvqB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcsyTeDIqHu3a6+Vi9kxXWg6F0/nZzpn/dgJT0qVFcPbh/Dq3cu3X4saYo+jHY7eomHeYWnlP6BHplJyltl1OJunOWTfyhN0ywmfnUQA6zm7R0xojryJBKcY2ggXXYPtBAxOKqFt76VMUVy0+3u2odwvu+5p6M0P5N8uBqwanPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WoEco32j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DA0C2BCB8;
-	Mon,  4 May 2026 12:15:59 +0000 (UTC)
+	 MIME-Version; b=gb2ZDDbBsKvnoYqviMe7dHZ4Tt+UWJ28cHNyy/dwsVuCODHrQxgbIwmnA2QHYb0kYoTIsZatvJjJ9h3VkbNF+0C9rvYusBdfFQpi2laCJUGPV7Y5X7xWICDULlyZTkORStc3QG5T39JL43wUHKWFMBIOtjxFmUkleXCoHfJlIME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L7tBAwdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FFAC2BCB8;
+	Mon,  4 May 2026 12:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777896961;
-	bh=o2yWWM4NHWDjwD/cfOPwRNTV/8WFl5moqvlJykouoKc=;
+	s=k20201202; t=1777896994;
+	bh=RHJ79y8uN8ALGcC4JYdm3peduA1WE4GefffpI2PvqB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoEco32jBU23JBV2YfAUcGIlWZUv4nnBQkuJJA7kmk6A4TdcwoFxiOvvaxQoEu3CA
-	 l+RcsAwNRmHcJFX+ux3pBRSTvS+NWaacyWTWiSlUStLC9gOdE7v4E3C9Sz1skNDyfo
-	 JJbqdTuHuCPirx2tJGkRFVm3UNTVx10p6ngOkfCEYgEeubvQjqd1UtuQiW25WQ/qPU
-	 C8trbkJbSj0dkUIwG/PWH3fJuT67cEvUQDch4BS8OAl4NpWKNBq1Af+WH1pNUriSHH
-	 NYCZP7zOfo+ApyH957yOf59pttaNiuAuEXYDDiyuTTabK56DFI2xLunI0saog3piT+
-	 byVMN4Fx4oNjw==
+	b=L7tBAwdTwbiKuKdl/w+k/FhNE2EYjBVYT5M9QaV6E7qnkm1DOgVge3i3ivREgddkT
+	 PuQh4ZO04DL7ll2qS9iYBU3qoRfWBNLDXAF62zVKAYzP7QPgeZqMG5CpRRXmw287u4
+	 V2OjJLFAnZE5DKAGI4mwpMVQ+187skt5Eb8TYrED254TXLi1af2TwyWMcTwXoDzpPD
+	 eUmV86bHAgk/iKKCLyMgZSblv3oNURO5il26vygUmXFzbG4v/swgdaU5scf60rIr73
+	 k6U0EJE+JBiVGi/UYKpRvm4Yk3v0M19ZhtLCjOr5uZ8RLT8OcaYBnj0Mp06tX3soyn
+	 ZKYw7ZVaKUUEA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Zhengchuan Liang <zcliangcn@gmail.com>,
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] spi: fix resource leaks on device setup failure
-Date: Mon,  4 May 2026 08:15:56 -0400
-Message-ID: <20260504121556.2149853-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] net: bridge: use a stable FDB dst snapshot in RCU readers
+Date: Mon,  4 May 2026 08:16:28 -0400
+Message-ID: <20260504121628.2165390-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050102-whimsical-willpower-501f@gregkh>
-References: <2026050102-whimsical-willpower-501f@gregkh>
+In-Reply-To: <2026050101-feisty-cadmium-4e90@gregkh>
+References: <2026050101-feisty-cadmium-4e90@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +71,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 669764BCCD2
+X-Rspamd-Queue-Id: 71EBE4BCD00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -71,155 +79,201 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243011-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lzu.edu.cn,nvidia.com,blackwall.org,redhat.com];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243012-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url]
 
-From: Johan Hovold <johan@kernel.org>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-[ Upstream commit db357034f7e0cf23f233f414a8508312dfe8fbbe ]
+[ Upstream commit df4601653201de21b487c3e7fffd464790cab808 ]
 
-Make sure to call controller cleanup() if spi_setup() fails while
-registering a device to avoid leaking any resources allocated by
-setup().
+Local FDB entries can be rewritten in place by `fdb_delete_local()`, which
+updates `f->dst` to another port or to `NULL` while keeping the entry
+alive. Several bridge RCU readers inspect `f->dst`, including
+`br_fdb_fillbuf()` through the `brforward_read()` sysfs path.
 
-Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Saravana Kannan <saravanak@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+These readers currently load `f->dst` multiple times and can therefore
+observe inconsistent values across the check and later dereference.
+In `br_fdb_fillbuf()`, this means a concurrent local-FDB update can change
+`f->dst` after the NULL check and before the `port_no` dereference,
+leading to a NULL-ptr-deref.
+
+Fix this by taking a single `READ_ONCE()` snapshot of `f->dst` in each
+affected RCU reader and using that snapshot for the rest of the access
+sequence. Also publish the in-place `f->dst` updates in `fdb_delete_local()`
+with `WRITE_ONCE()` so the readers and writer use matching access patterns.
+
+Fixes: 960b589f86c7 ("bridge: Properly check if local fdb entry can be deleted in br_fdb_change_mac_address")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/6570fabb85ecadb8baaf019efe856f407711c7b9.1776043229.git.zcliangcn@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ kept combined-flag check `(dst->flags & (BR_PROXYARP_WIFI | BR_NEIGH_SUPPRESS))` and `cb->args[2]` indexing instead of `br_is_neigh_suppress_enabled()` helper and `ctx->fdb_idx` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c | 61 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 24 deletions(-)
+ net/bridge/br_arp_nd_proxy.c |  8 +++++---
+ net/bridge/br_fdb.c          | 28 ++++++++++++++++++----------
+ 2 files changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 91da4cae011c8..413f09dca8a88 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -42,6 +42,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_stop);
+diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+index de80939d1e104..742b3a24f9c88 100644
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -199,11 +199,12 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
  
- #include "internals.h"
+ 		f = br_fdb_find_rcu(br, n->ha, vid);
+ 		if (f) {
++			const struct net_bridge_port *dst = READ_ONCE(f->dst);
+ 			bool replied = false;
  
-+static int __spi_setup(struct spi_device *spi, bool initial_setup);
-+
- static DEFINE_IDR(spi_master_idr);
+ 			if ((p && (p->flags & BR_PROXYARP)) ||
+-			    (f->dst && (f->dst->flags & (BR_PROXYARP_WIFI |
+-							 BR_NEIGH_SUPPRESS)))) {
++			    (dst && (dst->flags & (BR_PROXYARP_WIFI |
++						   BR_NEIGH_SUPPRESS)))) {
+ 				if (!vid)
+ 					br_arp_send(br, p, skb->dev, sip, tip,
+ 						    sha, n->ha, sha, 0, 0);
+@@ -463,9 +464,10 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
  
- static void spidev_release(struct device *dev)
-@@ -677,7 +679,7 @@ static int __spi_add_device(struct spi_device *spi)
- 	 * normally rely on the device being setup.  Devices
- 	 * using SPI_CS_HIGH can't coexist well otherwise...
- 	 */
--	status = spi_setup(spi);
-+	status = __spi_setup(spi, true);
- 	if (status < 0) {
- 		dev_err(dev, "can't setup %s, status %d\n",
- 				dev_name(&spi->dev), status);
-@@ -3734,27 +3736,7 @@ static int spi_set_cs_timing(struct spi_device *spi)
- 	return status;
- }
+ 		f = br_fdb_find_rcu(br, n->ha, vid);
+ 		if (f) {
++			const struct net_bridge_port *dst = READ_ONCE(f->dst);
+ 			bool replied = false;
  
--/**
-- * spi_setup - setup SPI mode and clock rate
-- * @spi: the device whose settings are being modified
-- * Context: can sleep, and no requests are queued to the device
-- *
-- * SPI protocol drivers may need to update the transfer mode if the
-- * device doesn't work with its default.  They may likewise need
-- * to update clock rates or word sizes from initial values.  This function
-- * changes those settings, and must be called from a context that can sleep.
-- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-- * effect the next time the device is selected and data is transferred to
-- * or from it.  When this function returns, the SPI device is deselected.
-- *
-- * Note that this call will fail if the protocol driver specifies an option
-- * that the underlying controller or its driver does not support.  For
-- * example, not all hardware supports wire transfers using nine bit words,
-- * LSB-first wire encoding, or active-high chipselects.
-- *
-- * Return: zero on success, else a negative error code.
-- */
--int spi_setup(struct spi_device *spi)
-+static int __spi_setup(struct spi_device *spi, bool initial_setup)
+-			if (f->dst && (f->dst->flags & BR_NEIGH_SUPPRESS)) {
++			if (dst && (dst->flags & BR_NEIGH_SUPPRESS)) {
+ 				if (vid != 0)
+ 					br_nd_send(br, p, skb, n,
+ 						   skb->vlan_proto,
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 83ec74b67340f..c7c74a0421841 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -121,6 +121,7 @@ struct net_device *br_fdb_find_port(const struct net_device *br_dev,
+ 				    const unsigned char *addr,
+ 				    __u16 vid)
  {
- 	unsigned	bad_bits, ugly_bits;
- 	int		status = 0;
-@@ -3833,7 +3815,7 @@ int spi_setup(struct spi_device *spi)
- 	status = spi_set_cs_timing(spi);
- 	if (status) {
- 		mutex_unlock(&spi->controller->io_mutex);
--		return status;
-+		goto err_cleanup;
- 	}
++	const struct net_bridge_port *dst;
+ 	struct net_bridge_fdb_entry *f;
+ 	struct net_device *dev = NULL;
+ 	struct net_bridge *br;
+@@ -133,8 +134,11 @@ struct net_device *br_fdb_find_port(const struct net_device *br_dev,
+ 	br = netdev_priv(br_dev);
+ 	rcu_read_lock();
+ 	f = br_fdb_find_rcu(br, addr, vid);
+-	if (f && f->dst)
+-		dev = f->dst->dev;
++	if (f) {
++		dst = READ_ONCE(f->dst);
++		if (dst)
++			dev = dst->dev;
++	}
+ 	rcu_read_unlock();
  
- 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
-@@ -3842,7 +3824,7 @@ int spi_setup(struct spi_device *spi)
- 			mutex_unlock(&spi->controller->io_mutex);
- 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
- 				status);
--			return status;
-+			goto err_cleanup;
+ 	return dev;
+@@ -224,7 +228,7 @@ static void fdb_delete_local(struct net_bridge *br,
+ 		vg = nbp_vlan_group(op);
+ 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
+ 		    (!vid || br_vlan_find(vg, vid))) {
+-			f->dst = op;
++			WRITE_ONCE(f->dst, op);
+ 			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 			return;
  		}
+@@ -235,7 +239,7 @@ static void fdb_delete_local(struct net_bridge *br,
+ 	/* Maybe bridge device has same hw addr? */
+ 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
+ 	    (!vid || (v && br_vlan_should_use(v)))) {
+-		f->dst = NULL;
++		WRITE_ONCE(f->dst, NULL);
+ 		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 		return;
+ 	}
+@@ -462,6 +466,7 @@ int br_fdb_test_addr(struct net_device *dev, unsigned char *addr)
+ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
+ 		   unsigned long maxnum, unsigned long skip)
+ {
++	const struct net_bridge_port *dst;
+ 	struct net_bridge_fdb_entry *f;
+ 	struct __fdb_entry *fe = buf;
+ 	int num = 0;
+@@ -477,7 +482,8 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
+ 			continue;
  
- 		/*
-@@ -3879,6 +3861,37 @@ int spi_setup(struct spi_device *spi)
- 			status);
+ 		/* ignore pseudo entry for local MAC address */
+-		if (!f->dst)
++		dst = READ_ONCE(f->dst);
++		if (!dst)
+ 			continue;
  
- 	return status;
-+
-+err_cleanup:
-+	if (initial_setup)
-+		spi_cleanup(spi);
-+
-+	return status;
-+}
-+
-+/**
-+ * spi_setup - setup SPI mode and clock rate
-+ * @spi: the device whose settings are being modified
-+ * Context: can sleep, and no requests are queued to the device
-+ *
-+ * SPI protocol drivers may need to update the transfer mode if the
-+ * device doesn't work with its default.  They may likewise need
-+ * to update clock rates or word sizes from initial values.  This function
-+ * changes those settings, and must be called from a context that can sleep.
-+ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-+ * effect the next time the device is selected and data is transferred to
-+ * or from it.  When this function returns, the SPI device is deselected.
-+ *
-+ * Note that this call will fail if the protocol driver specifies an option
-+ * that the underlying controller or its driver does not support.  For
-+ * example, not all hardware supports wire transfers using nine bit words,
-+ * LSB-first wire encoding, or active-high chipselects.
-+ *
-+ * Return: zero on success, else a negative error code.
-+ */
-+int spi_setup(struct spi_device *spi)
-+{
-+	return __spi_setup(spi, false);
- }
- EXPORT_SYMBOL_GPL(spi_setup);
+ 		if (skip) {
+@@ -489,8 +495,8 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
+ 		memcpy(fe->mac_addr, f->key.addr.addr, ETH_ALEN);
  
+ 		/* due to ABI compat need to split into hi/lo */
+-		fe->port_no = f->dst->port_no;
+-		fe->port_hi = f->dst->port_no >> 8;
++		fe->port_no = dst->port_no;
++		fe->port_hi = dst->port_no >> 8;
+ 
+ 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
+ 		if (!test_bit(BR_FDB_STATIC, &f->flags))
+@@ -836,9 +842,11 @@ int br_fdb_dump(struct sk_buff *skb,
+ 
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
++		const struct net_bridge_port *dst = READ_ONCE(f->dst);
++
+ 		if (*idx < cb->args[2])
+ 			goto skip;
+-		if (filter_dev && (!f->dst || f->dst->dev != filter_dev)) {
++		if (filter_dev && (!dst || dst->dev != filter_dev)) {
+ 			if (filter_dev != dev)
+ 				goto skip;
+ 			/* !f->dst is a special case for bridge
+@@ -846,10 +854,10 @@ int br_fdb_dump(struct sk_buff *skb,
+ 			 * Therefore need a little more filtering
+ 			 * we only want to dump the !f->dst case
+ 			 */
+-			if (f->dst)
++			if (dst)
+ 				goto skip;
+ 		}
+-		if (!filter_dev && f->dst)
++		if (!filter_dev && dst)
+ 			goto skip;
+ 
+ 		err = fdb_fill_info(skb, br, f,
 -- 
 2.53.0
 
