@@ -1,64 +1,72 @@
-Return-Path: <stable+bounces-243106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBWGFjym+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:24 +0200
+	id oI9JE0Gr+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477D44BE418
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5364BF230
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9ED053007ADC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A48093018AB2
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BC03D75CE;
-	Mon,  4 May 2026 13:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75713DE45B;
+	Mon,  4 May 2026 14:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w/mMxcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYelivcV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332DB20DD51;
-	Mon,  4 May 2026 13:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0F33DE458;
+	Mon,  4 May 2026 14:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903033; cv=none; b=VQOVepmG9CAgAOozDKPL+Ng3pOq/uz8y9F1ivCPEqBOGi/j51FFoLv7YMhZOs3UZg6LPJwn/SgxNkBLKfhz4oDHs7JqpFr0KfLRGWObPxa+Hlu9TvU9b1S77Bi2lnt+TvD6Fh7OPLcl4D8adKiWCzWeWtV8+Uyr8fsziLucoCUQ=
+	t=1777903773; cv=none; b=TbK/ngKMf3tU5ehwebw4TS9ACfLR65JfK1ZI6XSJkl5B6XOritPRIIhnUJHiWc99IERCmAT6fVU/ws/Yh2z/dUrHZScJitrb72mX8HoCcHPjPxgHAo7hbkaxjHkaTxuXemiftJHP5v7VS5BwrI0MjPYKwQrUHlK1Vvmsj/P5kPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903033; c=relaxed/simple;
-	bh=tQMm1w1KbTqoD/5e0F/q5+607LGY/qVlVx2WwGOouSc=;
+	s=arc-20240116; t=1777903773; c=relaxed/simple;
+	bh=vcjF7Zn8S4hdgI9HftRqc9LdKLPksjgUT/EctSd4eIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfowPY9bBqIrWTPVbdqhc932ci0D2M2Qj+gi+o4xAa/jWjiTqMWOh06H+OLS3fVWNfq1sfFEEsyscYHdMbPP6EOkEncqdO8IT1tIUSwQ7xcb8Wjy6E5JHOnTMFOXHjUhnXpXa4RWPwahlO2ZG3PeiSOkseag4jp5Z3j0+wRM0q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w/mMxcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF52DC2BCB8;
-	Mon,  4 May 2026 13:57:12 +0000 (UTC)
+	 MIME-Version; b=scjwihni6smpkiRUMQ/G0kAWovYHVme4CIwfOL+nVFaQv8KSk+pwbe9jFpVy/KWWBKM/BaoA2xUbbv0gmsMxdml7STs+CukM7OMuLB2RWioPQNPLfQZDwL8z4oehyo6K5pQkNZAdjRHmkyX8bbpbzkaruid+jzE35KCpnvihs9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYelivcV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1DEC2BCB8;
+	Mon,  4 May 2026 14:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903033;
-	bh=tQMm1w1KbTqoD/5e0F/q5+607LGY/qVlVx2WwGOouSc=;
+	s=korg; t=1777903773;
+	bh=vcjF7Zn8S4hdgI9HftRqc9LdKLPksjgUT/EctSd4eIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0w/mMxcnCVndlEqqTKDUTQ1j1ZR52N4QqfwVWfTs+c1nIM31qLa39WCuVe5I7njX7
-	 zWI+0JG93iXSb2abwWS1ESTyqreG0hZMO2QTMSt6QB5f/vwc3QH5xWBkwYwhHAhduf
-	 tnADbtvZktZnZ2tcK0jreBceWO5cWWhYPBZNQOHc=
+	b=IYelivcVEo9AqyjTMHRvZXI6sPuhejsOFADxv58ubXpXDxWKfGp07jri5AbRBkHsT
+	 D15eA9ZsAHohYQZAj4F4Vf6+iQSBqLa2tQBEp+CuxZoCFQ4zJBZSHSBj64vU4Ohijb
+	 W39b0PaqXHtb5haAACdYbidkGicrHNCtyXCYB2Yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 7.0 078/307] media: rockchip: rkcif: fix off by one bugs
-Date: Mon,  4 May 2026 15:49:23 +0200
-Message-ID: <20260504135145.747838042@linuxfoundation.org>
+	Usama Arif <usama.arif@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 024/275] mm: migrate: requeue destination folio on deferred split queue
+Date: Mon,  4 May 2026 15:49:24 +0200
+Message-ID: <20260504135143.837208988@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +77,135 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 477D44BE418
+X-Rspamd-Queue-Id: 3F5364BF230
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243106-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-243395-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,cmpxchg.org,nvidia.com,kernel.org,gmail.com,sk.com,gourry.net,linux.alibaba.com,intel.com,infradead.org,redhat.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,collabora.com:email,linaro.org:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Usama Arif <usama.arif@linux.dev>
 
-commit e4056b84af0fc18c84b4e5741df04ecd8ca17973 upstream.
+commit a2e0c0668a3486f96b86c50e02872c8e94fd4f9c upstream.
 
-Change these comparisons from > vs >= to avoid accessing one element
-beyond the end of the arrays.
-While at it, use ARRAY_SIZE instead of the _MAX enum values.
+During folio migration, __folio_migrate_mapping() removes the source folio
+from the deferred split queue, but the destination folio is never
+re-queued.  This causes underutilized THPs to escape the shrinker after
+NUMA migration, since they silently drop off the deferred split list.
 
-Fixes: 1f2353f5a1af ("media: rockchip: rkcif: add support for rk3568 vicap mipi capture")
-Cc: stable@kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Michael Riesch <michael.riesch@collabora.com>
-Reviewed-by: Paul Elder <paul.elder@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Chen-Yu Tsai <wens@kernel.org>
-[fix cosmetic issues]
-Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fix this by recording whether the source folio was on the deferred split
+queue and its partially mapped state before move_to_new_folio() unqueues
+it, and re-queuing the destination folio after a successful migration if
+it was.
+
+By the time migrate_folio_move() runs, partially mapped folios without a
+pin have already been split by migrate_pages_batch().  So only two cases
+remain on the deferred list at this point:
+  1. Partially mapped folios with a pin (split failed).
+  2. Fully mapped but potentially underused folios.  The recorded
+     partially_mapped state is forwarded to deferred_split_folio() so that
+     the destination folio is correctly re-queued in both cases.
+
+Because THPs are removed from the deferred_list, THP shinker cannot
+split the underutilized THPs in time.  As a result, users will show
+less free memory than before.
+
+Link: https://lkml.kernel.org/r/20260312104723.1351321-1-usama.arif@linux.dev
+Fixes: dafff3f4c850 ("mm: split underused THPs")
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rockchip/rkcif/rkcif-capture-mipi.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ mm/migrate.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/media/platform/rockchip/rkcif/rkcif-capture-mipi.c
-+++ b/drivers/media/platform/rockchip/rkcif/rkcif-capture-mipi.c
-@@ -489,8 +489,8 @@ static inline unsigned int rkcif_mipi_ge
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1349,6 +1349,8 @@ static int migrate_folio_move(free_folio
+ 	int rc;
+ 	int old_page_state = 0;
+ 	struct anon_vma *anon_vma = NULL;
++	bool src_deferred_split = false;
++	bool src_partially_mapped = false;
+ 	struct list_head *prev;
  
- 	block = interface->index - RKCIF_MIPI_BASE;
+ 	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
+@@ -1362,6 +1364,12 @@ static int migrate_folio_move(free_folio
+ 		goto out_unlock_both;
+ 	}
  
--	if (WARN_ON_ONCE(block > RKCIF_MIPI_MAX - RKCIF_MIPI_BASE) ||
--	    WARN_ON_ONCE(index > RKCIF_MIPI_REGISTER_MAX))
-+	if (WARN_ON_ONCE(block >= ARRAY_SIZE(rkcif->match_data->mipi->blocks)) ||
-+	    WARN_ON_ONCE(index >= ARRAY_SIZE(rkcif->match_data->mipi->regs)))
- 		return RKCIF_REGISTER_NOTSUPPORTED;
++	if (folio_order(src) > 1 &&
++	    !data_race(list_empty(&src->_deferred_list))) {
++		src_deferred_split = true;
++		src_partially_mapped = folio_test_partially_mapped(src);
++	}
++
+ 	rc = move_to_new_folio(dst, src, mode);
+ 	if (rc)
+ 		goto out;
+@@ -1382,6 +1390,15 @@ static int migrate_folio_move(free_folio
+ 	if (old_page_state & PAGE_WAS_MAPPED)
+ 		remove_migration_ptes(src, dst, 0);
  
- 	offset = rkcif->match_data->mipi->blocks[block].offset;
-@@ -510,9 +510,9 @@ static inline unsigned int rkcif_mipi_id
- 	block = stream->interface->index - RKCIF_MIPI_BASE;
- 	id = stream->id;
- 
--	if (WARN_ON_ONCE(block > RKCIF_MIPI_MAX - RKCIF_MIPI_BASE) ||
--	    WARN_ON_ONCE(id > RKCIF_ID_MAX) ||
--	    WARN_ON_ONCE(index > RKCIF_MIPI_ID_REGISTER_MAX))
-+	if (WARN_ON_ONCE(block >= ARRAY_SIZE(rkcif->match_data->mipi->blocks)) ||
-+	    WARN_ON_ONCE(id >= ARRAY_SIZE(rkcif->match_data->mipi->regs_id)) ||
-+	    WARN_ON_ONCE(index >= ARRAY_SIZE(rkcif->match_data->mipi->regs_id[id])))
- 		return RKCIF_REGISTER_NOTSUPPORTED;
- 
- 	offset = rkcif->match_data->mipi->blocks[block].offset;
++	/*
++	 * Requeue the destination folio on the deferred split queue if
++	 * the source was on the queue.  The source is unqueued in
++	 * __folio_migrate_mapping(), so we recorded the state from
++	 * before move_to_new_folio().
++	 */
++	if (src_deferred_split)
++		deferred_split_folio(dst, src_partially_mapped);
++
+ out_unlock_both:
+ 	folio_unlock(dst);
+ 	folio_set_owner_migrate_reason(dst, reason);
 
 
 
