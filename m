@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BKnA6+n+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:35 +0200
+	id 0MXaB3Gs+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B564BE7D2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57A64BF5E0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 490663025AD9
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29D4C303B4DF
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17E13DE44C;
-	Mon,  4 May 2026 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B013DE452;
+	Mon,  4 May 2026 14:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wy7/hEph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qb4E9LHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50D13DE443;
-	Mon,  4 May 2026 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73493DE44F;
+	Mon,  4 May 2026 14:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903385; cv=none; b=aT/R9Z+9n55x1MnVeVkkq9I1/FH1QVhu9+7kxuC/E0O6NKwLwe/ffJu8tmQKqOcQ/HB3F0yqy79Fj0b4bg8dACX7WvaVQ8HnezzLncsGd2sbNCnwZQULe5VBQuaKP2v/zAmQpikhNpy4vVpFejXHOYSn1O/ECSGgAn7Kv+mwm00=
+	t=1777904542; cv=none; b=Nhyh0pEtmlcBEZUM1aic2DC/LHBAP/0x8o9orDHEoZZZtZv04gaRstXub0JL091fw5F1xwgNPcxU/ihFfn4PGpZVkd09MrsYC6SGNZbbjCSJfRQmZtb34bDytcLqWOaXZyeHqkNWwgjQg2K0EuiT9XvP5Z/x97NQZELETHEXou4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903385; c=relaxed/simple;
-	bh=QXIk368q8dN6epkzTJEwKG7woTxdkLzXMxJbCFxlE9A=;
+	s=arc-20240116; t=1777904542; c=relaxed/simple;
+	bh=DR8dcueP0cGGxdKygerIXDBp7FY1FynfIvfD9jaR6fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qitm7OYL6vR0r6lH9Ipj91RWP+S+SBGPE0KOIFlZUUC53GSLuSlQPaqcuct3U3ANNF3j+Edk5wNQg/figyLsXphGZ4j1Q2lRdJBD7VzehHnfF+scwo1pbKsy1N1chZanJJcpULj195fS1sqlL+FR7PG3oG77gaosNsk5ZmX1Bo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wy7/hEph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06737C2BCF4;
-	Mon,  4 May 2026 14:03:04 +0000 (UTC)
+	 MIME-Version; b=OLjXK+f/G4ssGX+N/B7+mDCgs+Qbcy93sDdHbML/RCU/UzTgT7Qm8dkT+wY78z2zePf0AlQni7+4kzlPXzYeEgO2Uowni57JrKoH8K7U1D+A0yr6dhYuhxKy1lqvD4l9NUOqHZKM7kyhU+Y7q5DSaHpUX9DrX5jVH+HtY3aSwqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qb4E9LHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A754C2BCB8;
+	Mon,  4 May 2026 14:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903385;
-	bh=QXIk368q8dN6epkzTJEwKG7woTxdkLzXMxJbCFxlE9A=;
+	s=korg; t=1777904542;
+	bh=DR8dcueP0cGGxdKygerIXDBp7FY1FynfIvfD9jaR6fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wy7/hEphOZYI7H5Hi69wx3ph7clq2daptXTp3v3WKjl8DDFJLILlmmA0IS9XFF25F
-	 s5bJYhAhqgWQTPooZ6TT/uD5D4slXxUqkOF644yi/9CwfJp3gSPdPQqxP7Fkr8+kl6
-	 wZ7RlLppG5KnLxtqe5S8EaKWQHs0GYfIEgCQDG0M=
+	b=qb4E9LHHfwFKCdaOCiLPT2Y5qGiOlY/7L1HkiqgEg+HvNWi6w82RprTWBcORmIycY
+	 B928vdNAQhPuX8rxU76BiGDQb0v8hbIuzsxQHHd1j0qyoOvoD08yCkRvMuBhbwxOsw
+	 vBGtJLPTKm0rW2//aOBy6IqVhDSkcn4xKrAJMLqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 214/307] KVM: SVM: Switch svm_copy_lbrs() to a macro
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 080/215] iio: adc: ad7768-1: fix one-shot mode data acquisition
 Date: Mon,  4 May 2026 15:51:39 +0200
-Message-ID: <20260504135150.920885128@linuxfoundation.org>
+Message-ID: <20260504135133.085449531@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +65,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A7B564BE7D2
+X-Rspamd-Queue-Id: B57A64BF5E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243696-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243243-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,analog.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,baylibre.com:email,huawei.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Jonathan Santos <Jonathan.Santos@analog.com>
 
-commit 361dbe8173c460a2bf8aee23920f6c2dbdcabb94 upstream.
+commit 8be19e233744961db6069da9c9ab63eb085a0447 upstream.
 
-In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
-without a containing 'struct vmcb', and later even 'struct
-vmcb_save_area_cached', make it a macro.
+According to the datasheet, one-shot mode requires a SYNC_IN pulse to
+trigger a new sample conversion. In the current implementation, No sync
+pulse was sent after switching to one-shot mode and reinit_completion()
+was called before mode switching, creating a race condition where spurious
+interrupts during mode change could trigger completion prematurely.
 
-Macros are generally not preferred compared to functions, mainly due to
-type-safety. However, in this case it seems like having a simple macro
-copying a few fields is better than copy-pasting the same 5 lines of
-code in different places.
+Fix by sending a sync pulse after configuring one-shot mode and
+reinit_completion() to ensure it only waits for the actual conversion
+completion.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-3-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    8 ++++----
- arch/x86/kvm/svm/svm.c    |    9 ---------
- arch/x86/kvm/svm/svm.h    |   10 +++++++++-
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/iio/adc/ad7768-1.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -721,10 +721,10 @@ static void nested_vmcb02_prepare_save(s
- 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
- 		 * svm_set_msr's definition of reserved bits.
- 		 */
--		svm_copy_lbrs(vmcb02, vmcb12);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb12->save);
- 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
- 	} else {
--		svm_copy_lbrs(vmcb02, vmcb01);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
- 	}
- 	vmcb_mark_dirty(vmcb02, VMCB_LBR);
- 	svm_update_lbrv(&svm->vcpu);
-@@ -1243,9 +1243,9 @@ int nested_svm_vmexit(struct vcpu_svm *s
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -241,12 +241,17 @@ static int ad7768_scan_direct(struct iio
+ 	struct ad7768_state *st = iio_priv(indio_dev);
+ 	int readval, ret;
  
- 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
- 		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
--		svm_copy_lbrs(vmcb12, vmcb02);
-+		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
- 	} else {
--		svm_copy_lbrs(vmcb01, vmcb02);
-+		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
- 		vmcb_mark_dirty(vmcb01, VMCB_LBR);
- 	}
- 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -841,15 +841,6 @@ static void svm_recalc_msr_intercepts(st
- 	 */
- }
- 
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
--{
--	to_vmcb->save.dbgctl		= from_vmcb->save.dbgctl;
--	to_vmcb->save.br_from		= from_vmcb->save.br_from;
--	to_vmcb->save.br_to		= from_vmcb->save.br_to;
--	to_vmcb->save.last_excp_from	= from_vmcb->save.last_excp_from;
--	to_vmcb->save.last_excp_to	= from_vmcb->save.last_excp_to;
--}
+-	reinit_completion(&st->completion);
 -
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
- {
- 	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -713,8 +713,16 @@ static inline void *svm_vcpu_alloc_msrpm
- 	return svm_alloc_permissions_map(MSRPM_SIZE, GFP_KERNEL_ACCOUNT);
- }
+ 	ret = ad7768_set_mode(st, AD7768_ONE_SHOT);
+ 	if (ret < 0)
+ 		return ret;
  
-+#define svm_copy_lbrs(to, from)					\
-+do {								\
-+	(to)->dbgctl		= (from)->dbgctl;		\
-+	(to)->br_from		= (from)->br_from;		\
-+	(to)->br_to		= (from)->br_to;		\
-+	(to)->last_excp_from	= (from)->last_excp_from;	\
-+	(to)->last_excp_to	= (from)->last_excp_to;		\
-+} while (0)
++	reinit_completion(&st->completion);
 +
- void svm_vcpu_free_msrpm(void *msrpm);
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
- void svm_enable_lbrv(struct kvm_vcpu *vcpu);
- void svm_update_lbrv(struct kvm_vcpu *vcpu);
- 
++	/* One-shot mode requires a SYNC pulse to generate a new sample */
++	ret = ad7768_send_sync_pulse(st);
++	if (ret)
++		return ret;
++
+ 	ret = wait_for_completion_timeout(&st->completion,
+ 					  msecs_to_jiffies(1000));
+ 	if (!ret)
 
 
 
