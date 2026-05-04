@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGLADSms+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:41 +0200
+	id 2H8EIU+o+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C224BF4FD
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D994BE960
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A98B3101C9E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5CE8303FDE2
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AB23DDDD6;
-	Mon,  4 May 2026 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F023DD519;
+	Mon,  4 May 2026 13:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugBljyk7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQnl0gZb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2301ADC83;
-	Mon,  4 May 2026 14:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC2D3A7F4C;
+	Mon,  4 May 2026 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903734; cv=none; b=sL2uJoiN7omL9jPFrhvkNB2hUfHFGzdvYkbO1K81cwlMiPCkr3mVSIUaWyrGvO6zwdvEcasXV4pOFYL4HLoppMc3FOiugGCExoCgRJB4HFhXJEk+yXgaB/HUOdLGN+Tf0znilKaZtwCHDNtJQpoAu6QYEY2URH4iWpcQDxP7k0U=
+	t=1777903192; cv=none; b=Cg0P6BXz6BoveCTKMNt7ElpYWPZEr3HfxNJGSM5GcPhsNZu497aIrBSn+7/UVFA/FtfZXFmzaSrK+KtKWcqMNd4HEpMhkcKI3oPRbKojpArwB8oxErzdx+5Sb35Tnd81k7YtNLBN1YiCmDRnk2iWT+1TxLhW/A/jl0ruJeX28ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903734; c=relaxed/simple;
-	bh=f9XQH5k+0y0xWYOF99z04fdWCYU/rETOPQ8MkQhx1xM=;
+	s=arc-20240116; t=1777903192; c=relaxed/simple;
+	bh=5D7bN/QVMZTTahc/A2Nbv8jUARaIZeu69whFhT4XrHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GwbT/vXtm8TZkU6HBP2Rq0zxXETI7Oo1nhPeSP497ZJJvJ8XZzHw5YXRtsJbVBI0BDYSqw4qXv5cobDOMonD5dMNxtfrDiFQbOJSgNoX6NqUN1/JVS7r155l8sTa9fGmz8tI0wJeHMy9t3Q1L1xZyRLqyUikDoOEFOKfk5rBiUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugBljyk7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F047C2BCB8;
-	Mon,  4 May 2026 14:08:54 +0000 (UTC)
+	 MIME-Version; b=VBSNtJAL8ETGE8djou8y3HS4pnP5Dc6nQp43pfQrZBpz+lV6GjBEeVJszekvvo+CQhK53n3LuGfjK7cT07mGfYuTuT0gzvo2yUeStqDSoKgFvAnAjZPkDLPJr491irPFDO9RnSMXoe2QpD9V/YWthABjw9op4peJz+OI4vkW/vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQnl0gZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E99C2BCB8;
+	Mon,  4 May 2026 13:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903734;
-	bh=f9XQH5k+0y0xWYOF99z04fdWCYU/rETOPQ8MkQhx1xM=;
+	s=korg; t=1777903192;
+	bh=5D7bN/QVMZTTahc/A2Nbv8jUARaIZeu69whFhT4XrHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugBljyk74xX1uC54SWuJg2ErURKQu7lcMC488vWSDndjAVKOim9Bv5rDfiI1k6tna
-	 MeaTvBPlUZGh6ISGjnsFDxvUEMRUfIusG+m17QQ+fi4cLgfXNmdJhXVbZWN9JcorW2
-	 YW3kdTFoxuCJhqsaAsAi+JulQK3Nzw+v/gx1kiq4=
+	b=KQnl0gZbxDNmzPMEBwqLXlz2aKJAPtorPQ2ahyR4h8Yqs0wyp7Ss86JJvbSlGolgK
+	 8BkAEiJMN2N0hoJee9B9Q3aXVYDTKLXfc8ixVo2jVIHpISpX2TCgbeLgtOEy5T5IEx
+	 /ASVHd0/G8dPCsgiVPjGF/v9sthLJwF115OukBuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Swamil Jain <s-jain1@ti.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.18 041/275] dt-bindings: display: ti, am65x-dss: Fix AM62L DSS reg and clock constraints
-Date: Mon,  4 May 2026 15:49:41 +0200
-Message-ID: <20260504135144.468456408@linuxfoundation.org>
+	Simon Liebold <simonlie@amazon.de>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 7.0 097/307] selftests/mqueue: Fix incorrectly named file
+Date: Mon,  4 May 2026 15:49:42 +0200
+Message-ID: <20260504135146.463940657@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 85C224BF4FD
+X-Rspamd-Queue-Id: F2D994BE960
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,145 +80,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243379-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243169-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ti.com:url,ti.com:email,0.0.0.1:email,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.de:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swamil Jain <s-jain1@ti.com>
+From: Simon Liebold <simonlie@amazon.de>
 
-commit 9c469240997584449cfac51a75d1d3d71968c76f upstream.
+commit 64fac99037689020ad97e472ae898e96ea3616dc upstream.
 
-The AM62L DSS [1] support incorrectly used the same register and
-clock constraints as AM65x, but AM62L has a single video port
+Commit 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+intended to increase the timeout for mq_perf_tests from the default
+kselftest limit of 45 seconds to 180 seconds.
 
-Fix this by adding conditional constraints that properly define the
-register regions and clocks for AM62L DSS (single video port) versus
-other AM65x variants (dual video port).
+Unfortunately, the file storing this information was incorrectly named
+`setting` instead of `settings`, causing the kselftest runner not to
+pick up the limit and keep using the default 45 seconds limit.
 
-[1]: Section 12.7 (Display Subsystem and Peripherals)
-Link : https://www.ti.com/lit/pdf/sprujb4
+Fix this by renaming it to `settings` to ensure that the kselftest
+runner uses the increased timeout of 180 seconds for this test.
 
-Fixes: cb8d4323302c ("dt-bindings: display: ti,am65x-dss: Add support for AM62L DSS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Swamil Jain <s-jain1@ti.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260415110409.2577633-1-s-jain1@ti.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+Cc: <stable@vger.kernel.org> # 5.10.y
+Signed-off-by: Simon Liebold <simonlie@amazon.de>
+Link: https://lore.kernel.org/r/20260312140200.2224850-1-simonlie@amazon.de
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/display/ti/ti,am65x-dss.yaml |   70 +++++++---
- 1 file changed, 52 insertions(+), 18 deletions(-)
+ tools/testing/selftests/mqueue/{setting => settings} | 0
+ tools/testing/selftests/mqueue/setting  |    1 -
+ tools/testing/selftests/mqueue/settings |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename tools/testing/selftests/mqueue/{setting => settings} (100%)
 
---- a/Documentation/devicetree/bindings/display/ti/ti,am65x-dss.yaml
-+++ b/Documentation/devicetree/bindings/display/ti/ti,am65x-dss.yaml
-@@ -36,34 +36,50 @@ properties:
-   reg:
-     description:
-       Addresses to each DSS memory region described in the SoC's TRM.
--    items:
--      - description: common DSS register area
--      - description: VIDL1 light video plane
--      - description: VID video plane
--      - description: OVR1 overlay manager for vp1
--      - description: OVR2 overlay manager for vp2
--      - description: VP1 video port 1
--      - description: VP2 video port 2
--      - description: common1 DSS register area
-+    oneOf:
-+      - items:
-+          - description: common DSS register area
-+          - description: VIDL1 light video plane
-+          - description: VID video plane
-+          - description: OVR1 overlay manager for vp1
-+          - description: OVR2 overlay manager for vp2
-+          - description: VP1 video port 1
-+          - description: VP2 video port 2
-+          - description: common1 DSS register area
-+      - items:
-+          - description: common DSS register area
-+          - description: VIDL1 light video plane
-+          - description: OVR1 overlay manager for vp1
-+          - description: VP1 video port 1
-+          - description: common1 DSS register area
- 
-   reg-names:
--    items:
--      - const: common
--      - const: vidl1
--      - const: vid
--      - const: ovr1
--      - const: ovr2
--      - const: vp1
--      - const: vp2
--      - const: common1
-+    oneOf:
-+      - items:
-+          - const: common
-+          - const: vidl1
-+          - const: vid
-+          - const: ovr1
-+          - const: ovr2
-+          - const: vp1
-+          - const: vp2
-+          - const: common1
-+      - items:
-+          - const: common
-+          - const: vidl1
-+          - const: ovr1
-+          - const: vp1
-+          - const: common1
- 
-   clocks:
-+    minItems: 2
-     items:
-       - description: fck DSS functional clock
-       - description: vp1 Video Port 1 pixel clock
-       - description: vp2 Video Port 2 pixel clock
- 
-   clock-names:
-+    minItems: 2
-     items:
-       - const: fck
-       - const: vp1
-@@ -180,6 +196,24 @@ allOf:
-         ports:
-           properties:
-             port@1: false
-+        reg:
-+          maxItems: 5
-+        reg-names:
-+          maxItems: 5
-+        clocks:
-+          maxItems: 2
-+        clock-names:
-+          maxItems: 2
-+    else:
-+      properties:
-+        reg:
-+          minItems: 8
-+        reg-names:
-+          minItems: 8
-+        clocks:
-+          minItems: 3
-+        clock-names:
-+          minItems: 3
- 
-   - if:
-       properties:
+--- a/tools/testing/selftests/mqueue/setting
++++ /dev/null
+@@ -1 +0,0 @@
+-timeout=180
+--- /dev/null
++++ b/tools/testing/selftests/mqueue/settings
+@@ -0,0 +1 @@
++timeout=180
 
 
 
