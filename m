@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-243676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKmcLhOs+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:19 +0200
+	id aHsRBhOq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5314D4BF4BC
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4FB4BEEAE
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B874B306AA5C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2FC7302E0D7
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD28A3DEAFA;
-	Mon,  4 May 2026 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F305F3D75D7;
+	Mon,  4 May 2026 14:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaf2m8tS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awUoEUkP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8012B1A6827;
-	Mon,  4 May 2026 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B675935A3AD;
+	Mon,  4 May 2026 14:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904491; cv=none; b=Znp2/BeapP01kUEmBu7/qWxEJtsn7USlsbJY9arDy9kkPkQ5oKUsxOquoE8I+Do3hsaUyXpsm9K/RU6sfqnobK/AlE1v6+cmWrJd34SbwjDkClJJRSv9panXULDtDfXgF4DzU+l8mQJnCwoZ3hMjo4l+iBmpz+wdupqOZcW4WCk=
+	t=1777903979; cv=none; b=FlafwiiitmJ0Hedo9WVgBj3Cc50B32C4c3bgK7xOjkaDrNw0pawleoOybZXvH5SnqEYnyf4kB5zcJ1oSsFjov/ZncP+7tpr7f2ZTxIfnwiYTkgl+pQxv1xxpuSI3H0ul6NlVx7reklP8CdPEXM3mZ79IJgEg9Ree9lrPLi+ba4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904491; c=relaxed/simple;
-	bh=QwlzJ3UUcUbeERQ4Kgl3KMsBHKlBg9IPb2Jo8QcP0Fw=;
+	s=arc-20240116; t=1777903979; c=relaxed/simple;
+	bh=potPiOhod3xmaupgm+U4Ma9mU9PaXxDQwDqn6PKuCrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssfyHryI7lmKu4Rk8jXWwL1h+9Bf9w2a7la+GPTh1IDP5WDKJtopIRCLo6Qi4mplwQk6C6GRdSiKBkDW+AWh626M9p6W0SQmCGnIZVHo6QKcUGYCFUfhgxuOpJoiOqsvHCSgZKMYJnMUSH6BLVnv7H5b5Jons+k+ikrtIGZhNCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaf2m8tS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167BAC2BCB8;
-	Mon,  4 May 2026 14:21:30 +0000 (UTC)
+	 MIME-Version; b=mn/MWeIOgGl0RAHi7WqZDgvNfqN20+W9AGRshfjJsdLZ34LOlSXSp/fsidmyriKpACFHZp+56WGJCR0K/rdeaK8/wlkOEbZR57hkPc0itW7YWlm7awxA4rz5mW3YYf7/nhRRwmDPkSsBx4yRPMJwiFWTvlkxceSWD2FKbxJE/a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awUoEUkP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF79C2BCF4;
+	Mon,  4 May 2026 14:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904491;
-	bh=QwlzJ3UUcUbeERQ4Kgl3KMsBHKlBg9IPb2Jo8QcP0Fw=;
+	s=korg; t=1777903979;
+	bh=potPiOhod3xmaupgm+U4Ma9mU9PaXxDQwDqn6PKuCrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xaf2m8tSnynaryRtKFFY+hlz/GxPyDQa4hKKmD2xH1YJNAe4nE+xqoxCO/KGcBfF0
-	 PYo3gW7Pqn60Wzn7nuF0zKB/o1TgdPaFBGG4HYG4jr7Wti3Jmi2sppBLDrBpZILWzz
-	 vtpuPdU8CgHrzv1/z9f3qkLiVa0Kbd3ldnH8MhIE=
+	b=awUoEUkPiJ59rIJU24p52vMqQNJv+s3afOV9yknLE/lxu3dVQOlOafjkQyjN3ZqJ3
+	 P2vI10nNe2T0/V6rv33NxMEah54b0Omguonv2nCCK+Vmb0AgZ7vClvaukIPrHBf1fh
+	 a2EUlmU1T1wVTcw4QATmLlgQBJ2xJu3cuyXZv4gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Hunt <johunt@akamai.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.12 058/215] md/raid10: fix deadlock with check operation and nowait requests
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18 137/275] LoongArch: Show CPU vulnerabilites correctly
 Date: Mon,  4 May 2026 15:51:17 +0200
-Message-ID: <20260504135132.294915488@linuxfoundation.org>
+Message-ID: <20260504135147.994597105@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +62,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5314D4BF4BC
+X-Rspamd-Queue-Id: 9D4FB4BEEAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243475-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243676-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fnnas.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,akamai.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,cc-sw.com:url,loongson.cn:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Hunt <johunt@akamai.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 7d96f3120a7fb7210d21b520c5b6f495da6ba436 upstream.
+commit 37e57e8ad96cdec4a57b55fd10bef50f7370a954 upstream.
 
-When an array check is running it will raise the barrier at which point
-normal requests will become blocked and increment the nr_pending value to
-signal there is work pending inside of wait_barrier(). NOWAIT requests
-do not block and so will return immediately with an error, and additionally
-do not increment nr_pending in wait_barrier(). Upstream change commit
-43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request") added a
-call to raid_end_bio_io() to fix a memory leak when NOWAIT requests hit
-this condition. raid_end_bio_io() eventually calls allow_barrier() and
-it will unconditionally do an atomic_dec_and_test(&conf->nr_pending) even
-though the corresponding increment on nr_pending didn't happen in the
-NOWAIT case.
+Most LoongArch processors are vulnerable to Spectre-V1 Proof-of-Concept
+(PoC). And the generic mechanism, __user pointer sanitization, can be
+used as a mitigation. This means to use array_index_nospec() to prevent
+out of boundry access in syscall and other critical paths.
 
-This can be easily seen by starting a check operation while an application
-is doing nowait IO on the same array. This results in a deadlocked state
-due to nr_pending value underflowing and so the md resync thread gets stuck
-waiting for nr_pending to == 0.
+Implement the arch-specific cpu_show_spectre_v1() to show CPU Spectre-V1
+vulnerabilites correctly.
 
-Output of r10conf state of the array when we hit this condition:
-
-crash> struct r10conf
-	barrier = 1,
-        nr_pending = {
-          counter = -41
-        },
-        nr_waiting = 15,
-        nr_queued = 0,
-
-Example of md_sync thread stuck waiting on raise_barrier() and other
-requests stuck in wait_barrier():
-
-md1_resync
-[<0>] raise_barrier+0xce/0x1c0
-[<0>] raid10_sync_request+0x1ca/0x1ed0
-[<0>] md_do_sync+0x779/0x1110
-[<0>] md_thread+0x90/0x160
-[<0>] kthread+0xbe/0xf0
-[<0>] ret_from_fork+0x34/0x50
-[<0>] ret_from_fork_asm+0x1a/0x30
-
-kworker/u1040:2+flush-253:4
-[<0>] wait_barrier+0x1de/0x220
-[<0>] regular_request_wait+0x30/0x180
-[<0>] raid10_make_request+0x261/0x1000
-[<0>] md_handle_request+0x13b/0x230
-[<0>] __submit_bio+0x107/0x1f0
-[<0>] submit_bio_noacct_nocheck+0x16f/0x390
-[<0>] ext4_io_submit+0x24/0x40
-[<0>] ext4_do_writepages+0x254/0xc80
-[<0>] ext4_writepages+0x84/0x120
-[<0>] do_writepages+0x7a/0x260
-[<0>] __writeback_single_inode+0x3d/0x300
-[<0>] writeback_sb_inodes+0x1dd/0x470
-[<0>] __writeback_inodes_wb+0x4c/0xe0
-[<0>] wb_writeback+0x18b/0x2d0
-[<0>] wb_workfn+0x2a1/0x400
-[<0>] process_one_work+0x149/0x330
-[<0>] worker_thread+0x2d2/0x410
-[<0>] kthread+0xbe/0xf0
-[<0>] ret_from_fork+0x34/0x50
-[<0>] ret_from_fork_asm+0x1a/0x30
-
-Fixes: 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josh Hunt <johunt@akamai.com>
-Link: https://lore.kernel.org/linux-raid/20260303005619.1352958-1-johunt@akamai.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Link: https://cc-sw.com/chinese-loongarch-architecture-evaluation-part-3-of-3/
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/cpu-probe.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1182,7 +1182,7 @@ static void raid10_read_request(struct m
- 	}
+--- a/arch/loongarch/kernel/cpu-probe.c
++++ b/arch/loongarch/kernel/cpu-probe.c
+@@ -7,6 +7,7 @@
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/ptrace.h>
++#include <linux/cpu.h>
+ #include <linux/smp.h>
+ #include <linux/stddef.h>
+ #include <linux/export.h>
+@@ -387,3 +388,9 @@ void cpu_probe(void)
  
- 	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
--		raid_end_bio_io(r10_bio);
-+		free_r10bio(r10_bio);
- 		return;
- 	}
- 
-@@ -1381,7 +1381,7 @@ static void raid10_write_request(struct
- 
- 	sectors = r10_bio->sectors;
- 	if (!regular_request_wait(mddev, conf, bio, sectors)) {
--		raid_end_bio_io(r10_bio);
-+		free_r10bio(r10_bio);
- 		return;
- 	}
- 
+ 	cpu_report();
+ }
++
++ssize_t cpu_show_spectre_v1(struct device *dev,
++			    struct device_attribute *attr, char *buf)
++{
++	return sysfs_emit(buf, "Mitigation: __user pointer sanitization\n");
++}
 
 
 
