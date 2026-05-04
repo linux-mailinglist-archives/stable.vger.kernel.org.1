@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eL95IUut+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:31 +0200
+	id qDwJA3up+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1DA4BF8B7
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 286AF4BED46
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB0C43051171
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 861CF302497F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2863D75D7;
-	Mon,  4 May 2026 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A63C3DD53E;
+	Mon,  4 May 2026 14:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeIm+peb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gsslo6hT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701BE3DDDD6;
-	Mon,  4 May 2026 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8BC37881B;
+	Mon,  4 May 2026 14:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904095; cv=none; b=udvfwSxBZ8Nz33CpH1Cg8UVRlExDPfybPr38loVPKA5tYAUQR7YcDIGzP7rpTRYVurZ+ti6ggbo1YYA8m7TBCakudIb3d94tap9OMqxyFvcZ1hNXz171pUK3WQiob1q5M3r3gYnvS95psUeP1PQ4U0mRXwagjJDHCoBXi1Z303c=
+	t=1777903447; cv=none; b=gheGFWfPx1uManatfICJop5ySxIfaQR8uzfXClPz2PUd5X11hSvO50y9Q/JfWCeCPP1jKBh2uiQxUf6sSbAOgM9LRxdgCNEp6bRDUAdrsrEDZoimWZbMyYZRxqonPHYVbVdgpJy6BI2KioPqE/etWuDXlfCvEKj3I5vlHnbl+4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904095; c=relaxed/simple;
-	bh=2JASAl7FNWLruSqu3efp9Y4bL3ZGzVnf8pLpwOsx9fk=;
+	s=arc-20240116; t=1777903447; c=relaxed/simple;
+	bh=I/0C/na99roZNXNdV7SzmcG8kflDUNY1jRpTJhfEPHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6yTGq2vyeAHXf51GOkMq9S2qQHhz/wEoT3NbffuO7+PlhKy5oiS8mrugpfrVGN7fO6nE6Rz+CJyrSRkOPwTz4wIQRK0BCCrEgCCsrntZV2VZtwNgpRnPi2bUu9/a0a9iqWHbvpE2st+r9AcGwrp5A7KgXRFZUrugSTBzEemTgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeIm+peb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061EFC2BCB8;
-	Mon,  4 May 2026 14:14:54 +0000 (UTC)
+	 MIME-Version; b=K4SqZa4Igmgrz+6ThRe97wkkgOE6LZedd+k/0cqXmrGVc++OhW8QfsNN0sDAX2OdsPvECEmcQQtQv6gb50WG0S49v/1V/qRI64E9w7ePiNX5XSaiAMwC+Nu9ScIGoTE6j0rs95gyQqzHYQqGtT+rYajdp8Kcu/KMPwQq25ra1WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gsslo6hT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9872AC2BCB8;
+	Mon,  4 May 2026 14:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904095;
-	bh=2JASAl7FNWLruSqu3efp9Y4bL3ZGzVnf8pLpwOsx9fk=;
+	s=korg; t=1777903446;
+	bh=I/0C/na99roZNXNdV7SzmcG8kflDUNY1jRpTJhfEPHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeIm+pebKebOc1uSy65oyVMlc4jkvlDAamuOu8JOpyCKIubED13p42bu1ccrrIZmf
-	 dcJ2p0x/gfHHxVyir23ISsYCPkdzqATZIhEDN6QAKPNCDUV6Gx4dtIav4HmyF3aeEo
-	 azhkoU3Hq0z8agRxR+P6BzJAhoCghFCIPZh5eUR0=
+	b=Gsslo6hTfpWVteI1G5rcXA2RuMdWpjjEVZWqzQQlVYQWI1LBN0T2292FpYUvF8X5D
+	 Yw0VolVDntC6h542cJZI7+Oa5I/TtTEe1QxQRvI7EzBQ2ZQ5053gNevUghvuGnVnfK
+	 K34XUBGaijhMuoRLg42PVLFVfIsFvSpOVvcQhTwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 181/275] KVM: SVM: Add missing save/restore handling of LBR MSRs
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 236/307] amdgpu/jpeg: fix deepsleep register for jpeg 5_0_0 and 5_0_2
 Date: Mon,  4 May 2026 15:52:01 +0200
-Message-ID: <20260504135149.801643880@linuxfoundation.org>
+Message-ID: <20260504135151.722199729@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D1DA4BF8B7
+X-Rspamd-Queue-Id: 286AF4BED46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243520-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243267-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,143 +89,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: David (Ming Qiang) Wu <David.Wu3@amd.com>
 
-commit 3700f0788da6acf73b2df56690f4b201aa4aefd2 upstream.
+commit e90dc3b2d73986610476b02c29d0074aa4d92fb0 upstream.
 
-MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
-KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. So
-save/restore is completely broken.
+PCTL0__MMHUB_DEEPSLEEP_IB is 0x69004 on MMHUB 4,1,0 and
+and 0x60804 on MMHUB 4,2,0. 0x62a04 is on MMHUB 1,8,0/1.
 
-Fix it by adding the MSRs to msrs_to_save_base, and allowing writes to
-LBR MSRs from userspace only (as they are read-only MSRs) if LBR
-virtualization is enabled.  Additionally, to correctly restore L1's LBRs
-while L2 is running, make sure the LBRs are copied from the captured
-VMCB01 save area in svm_copy_vmrun_state().
+The DS bits are adjusted to cover more JPEG engines and MMHUB
+version.
 
-Note, for VMX, this also fixes a flaw where MSR_IA32_DEBUGCTLMSR isn't
-reported as an MSR to save/restore.
-
-Note #2, over-reporting MSR_IA32_LASTxxx on Intel is ok, as KVM already
-handles unsupported reads and writes thanks to commit b5e2fec0ebc3 ("KVM:
-Ignore DEBUGCTL MSRs with no effect") (kvm_do_msr_access() will morph the
-unsupported userspace write into a nop).
-
-Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reported-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-4-yosry@kernel.org
-[sean: guard with lbrv checks, massage changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    5 +++++
- arch/x86/kvm/svm/svm.c    |   42 +++++++++++++++++++++++++++++++++++++-----
- arch/x86/kvm/x86.c        |    3 +++
- 3 files changed, 45 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c |   52 +++++++++++++++++++++++++++----
+ 1 file changed, 46 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1057,6 +1057,11 @@ void svm_copy_vmrun_state(struct vmcb_sa
- 		to_save->isst_addr = from_save->isst_addr;
- 		to_save->ssp = from_save->ssp;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -736,15 +736,35 @@ static void jpeg_v4_0_3_dec_ring_set_wpt
+  */
+ void jpeg_v4_0_3_dec_ring_insert_start(struct amdgpu_ring *ring)
+ {
+-	if (!amdgpu_sriov_vf(ring->adev)) {
++	struct amdgpu_device *adev = ring->adev;
 +
-+	if (kvm_cpu_cap_has(X86_FEATURE_LBRV)) {
-+		svm_copy_lbrs(to_save, from_save);
-+		to_save->dbgctl &= ~DEBUGCTL_RESERVED_BITS;
-+	}
++	if (!amdgpu_sriov_vf(adev)) {
++		int jpeg_inst = GET_INST(JPEG, ring->me);
++		uint32_t value = 0x80004000; /* default DS14 */
++
+ 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
+ 			0, 0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x62a04); /* PCTL0_MMHUB_DEEPSLEEP_IB */
++
++		/* PCTL0__MMHUB_DEEPSLEEP_IB could be different on different mmhub version */
++		switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
++		case IP_VERSION(4, 1, 0):
++			amdgpu_ring_write(ring, 0x69004);
++			value = 0x80010000;
++			break;
++		case IP_VERSION(4, 2, 0):
++			amdgpu_ring_write(ring, 0x60804);
++			if (jpeg_inst & 1)
++				value = 0x80010000;
++			break;
++		default:
++			amdgpu_ring_write(ring, 0x62a04);
++			break;
++		}
+ 
+ 		amdgpu_ring_write(ring,
+ 				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
+ 					  0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x80004000);
++		amdgpu_ring_write(ring, value);
+ 	}
  }
  
- void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2712,19 +2712,19 @@ static int svm_get_msr(struct kvm_vcpu *
- 		msr_info->data = svm->tsc_aux;
- 		break;
- 	case MSR_IA32_DEBUGCTLMSR:
--		msr_info->data = svm->vmcb->save.dbgctl;
-+		msr_info->data = lbrv ? svm->vmcb->save.dbgctl : 0;
- 		break;
- 	case MSR_IA32_LASTBRANCHFROMIP:
--		msr_info->data = svm->vmcb->save.br_from;
-+		msr_info->data = lbrv ? svm->vmcb->save.br_from : 0;
- 		break;
- 	case MSR_IA32_LASTBRANCHTOIP:
--		msr_info->data = svm->vmcb->save.br_to;
-+		msr_info->data = lbrv ? svm->vmcb->save.br_to : 0;
- 		break;
- 	case MSR_IA32_LASTINTFROMIP:
--		msr_info->data = svm->vmcb->save.last_excp_from;
-+		msr_info->data = lbrv ? svm->vmcb->save.last_excp_from : 0;
- 		break;
- 	case MSR_IA32_LASTINTTOIP:
--		msr_info->data = svm->vmcb->save.last_excp_to;
-+		msr_info->data = lbrv ? svm->vmcb->save.last_excp_to : 0;
- 		break;
- 	case MSR_VM_HSAVE_PA:
- 		msr_info->data = svm->nested.hsave_msr;
-@@ -2999,6 +2999,38 @@ static int svm_set_msr(struct kvm_vcpu *
- 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
- 		svm_update_lbrv(vcpu);
- 		break;
-+	case MSR_IA32_LASTBRANCHFROMIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_from = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
-+	case MSR_IA32_LASTBRANCHTOIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_to = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
-+	case MSR_IA32_LASTINTFROMIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_from = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
-+	case MSR_IA32_LASTINTTOIP:
-+		if (!lbrv)
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_to = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-+		break;
- 	case MSR_VM_HSAVE_PA:
- 		/*
- 		 * Old kernels did not validate the value written to
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -350,6 +350,9 @@ static const u32 msrs_to_save_base[] = {
- 	MSR_IA32_U_CET, MSR_IA32_S_CET,
- 	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
- 	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
-+	MSR_IA32_DEBUGCTLMSR,
-+	MSR_IA32_LASTBRANCHFROMIP, MSR_IA32_LASTBRANCHTOIP,
-+	MSR_IA32_LASTINTFROMIP, MSR_IA32_LASTINTTOIP,
- };
+@@ -757,15 +777,35 @@ void jpeg_v4_0_3_dec_ring_insert_start(s
+  */
+ void jpeg_v4_0_3_dec_ring_insert_end(struct amdgpu_ring *ring)
+ {
+-	if (!amdgpu_sriov_vf(ring->adev)) {
++	struct amdgpu_device *adev = ring->adev;
++
++	if (!amdgpu_sriov_vf(adev)) {
++		int jpeg_inst = GET_INST(JPEG, ring->me);
++		uint32_t value = 0x00004000; /* default DS14 */
++
+ 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
+ 			0, 0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x62a04);
++
++		/* PCTL0__MMHUB_DEEPSLEEP_IB could be different on different mmhub version */
++		switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
++		case IP_VERSION(4, 1, 0):
++			amdgpu_ring_write(ring, 0x69004);
++			value = 0x00010000;
++			break;
++		case IP_VERSION(4, 2, 0):
++			amdgpu_ring_write(ring, 0x60804);
++			if (jpeg_inst & 1)
++				value = 0x00010000;
++			break;
++		default:
++			amdgpu_ring_write(ring, 0x62a04);
++			break;
++		}
  
- static const u32 msrs_to_save_pmu[] = {
+ 		amdgpu_ring_write(ring,
+ 				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
+ 					  0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x00004000);
++		amdgpu_ring_write(ring, value);
+ 	}
+ }
+ 
 
 
 
