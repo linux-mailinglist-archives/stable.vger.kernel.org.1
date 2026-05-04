@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8B9aMWOs+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:39 +0200
+	id wP9cAY6n+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3204BF5A5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3244BE799
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CF01301E836
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B9EAC303ACD9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E513DE45B;
-	Mon,  4 May 2026 14:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A273DDDDA;
+	Mon,  4 May 2026 14:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLmhhLtM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Zh+u6bJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD63929E116;
-	Mon,  4 May 2026 14:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51F3CEB89;
+	Mon,  4 May 2026 14:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904501; cv=none; b=tgqSmVGlhwJ0iaUf2VIyD9kWO3nPkOrvh7UVrhpyW9LypGvJgISlcc6C0lFQdwfq5q5LjkvPPhD8/j0cE34mhH+61v4c1hwNL0s5Y3eheATcLe+n8EMhX6cqzlNxri78wVPHLd6jW6t4razzU3PakZlNSqDOhPuMk526fpD4Nag=
+	t=1777903341; cv=none; b=hxlrXa6E3a2aei/U4D2s/mtIk7x9iPIWwn3LJ/cBJHHuwdFlcm8MJGm5FfugkHaILAzzQeTncXzb6caQ4sLUt9Z81vfn8hwcyyCU5Mo7yyDnBpg8x/Gewt2VC0hN204DxRE4AN03aRVYLHADEfvbk1j3cZKaRNHFoZMHgrSqkfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904501; c=relaxed/simple;
-	bh=IOUd1Qwnxt0G5QqT21+xuYkF6OVdbxPkhLNbkruhjPk=;
+	s=arc-20240116; t=1777903341; c=relaxed/simple;
+	bh=hTNcjmVuj6RGduSeXtYAfPKyZwl+T4UyfQwiedrEqcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rA4MTO6vFh7914x65+C5LY64ki+lMvIxu/oR6sQNlHqQ1ewiVsUepNtj6JCkaLMWrsfU8cglq3kl+XoG3P6Wavp6/o8E/GSuEDxOYIjcOpE46WTjwND0e/0uxWTKoclGv1i4oSaH1iW1Ic0TR2auKTSj7E12ssRNI8Md7TyTyUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLmhhLtM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62120C2BCB8;
-	Mon,  4 May 2026 14:21:41 +0000 (UTC)
+	 MIME-Version; b=ONLgAl6Mu6JJco4sUMMoMCrQXniea7h34+tAl3QXnsO7QTlRNfXXj8HzUrpBJX7XEXgpcZBf9M85NdInPrTDVSbVNVJVoaBOTFVPeH2796QJpE7ok0/UmfVBM4xTwLxXhx70w91PNW7KVJ+weNsl4gSmmTAWstHyZX3zvwvdRTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Zh+u6bJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A40C2BCB8;
+	Mon,  4 May 2026 14:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904501;
-	bh=IOUd1Qwnxt0G5QqT21+xuYkF6OVdbxPkhLNbkruhjPk=;
+	s=korg; t=1777903341;
+	bh=hTNcjmVuj6RGduSeXtYAfPKyZwl+T4UyfQwiedrEqcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLmhhLtMykSHHSVXiyw6On+Xo8zbey7VoVmT9EtTg/E9lzaqTNua/JPdnhhxcKFkG
-	 acvN2t8dr35/R1RBS3M5foAHFZS7QYyMtug1PspeQamt79JOMo2iwn10Z/Hddu1JIW
-	 ulBK1pn9gJ7P2kOksfNoQZI2uLt22Oxt4LvHZ0IE=
+	b=0Zh+u6bJAn6xj/oMcJ/GAjm3Azn/WR3OKZOTJDv+77PSrtN6isv+aN21p8TXjmKzJ
+	 GXVvvexn4MkZL1SZE0xmEChmkJD0wVh6G5MzL+fURq/20NhYgZ7tlNtGP6eJpWjXO0
+	 ZwRPoqxdQheW704fSWO3XMfrGbGv5gVdWUqv3LTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 062/215] nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is set
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 196/307] mm/damon/core: use time_in_range_open() for damos quota window start
 Date: Mon,  4 May 2026 15:51:21 +0200
-Message-ID: <20260504135132.438039977@linuxfoundation.org>
+Message-ID: <20260504135150.257038701@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8E3204BF5A5
+X-Rspamd-Queue-Id: 8F3244BE799
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243680-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243226-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,49 +91,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Beckett <bob.beckett@collabora.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 40f0496b617b431f8d2dd94d7f785c1121f8a68a upstream.
+commit 049a57421dd67a28c45ae7e92c36df758033e5fa upstream.
 
-The NVM Command Set Identify Controller data may report a non-zero
-Write Zeroes Size Limit (wzsl). When present, nvme_init_non_mdts_limits()
-unconditionally overrides max_zeroes_sectors from wzsl, even if
-NVME_QUIRK_DISABLE_WRITE_ZEROES previously set it to zero.
+damos_adjust_quota() uses time_after_eq() to show if it is time to start a
+new quota charge window, comparing the current jiffies and the scheduled
+next charge window start time.  If it is, the next charge window start
+time is updated and the new charge window starts.
 
-This effectively re-enables write zeroes for devices that need it
-disabled, defeating the quirk. Several Kingston OM* drives rely on
-this quirk to avoid firmware issues with write zeroes commands.
+The time check and next window start time update is skipped while the
+scheme is deactivated by the watermarks.  Let's suppose the deactivation
+is kept more than LONG_MAX jiffies (assuming CONFIG_HZ of 250, more than
+99 days in 32 bit systems and more than one billion years in 64 bit
+systems), resulting in having the jiffies larger than the next charge
+window start time + LONG_MAX.  Then, the time_after_eq() call can return
+false until another LONG_MAX jiffies are passed.
 
-Check for the quirk before applying the wzsl override.
+This means the scheme can continue working after being reactivated by the
+watermarks.  But, soon, the quota will be exceeded and the scheme will
+again effectively stop working until the next charge window starts.
+Because the current charge window is extended to up to LONG_MAX jiffies,
+however, it will look like it stopped unexpectedly and indefinitely, from
+the user's perspective.
 
-Fixes: 5befc7c26e5a ("nvme: implement non-mdts command limits")
-Cc: stable@vger.kernel.org
-Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
-Assisted-by: claude-opus-4-6-v1
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fix this by using !time_in_range_open() instead.
+
+The issue was discovered [1] by sashiko.
+
+Link: https://lore.kernel.org/20260329152306.45796-1-sj@kernel.org
+Link: https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org [1]
+Fixes: ee801b7dd782 ("mm/damon/schemes: activate schemes based on a watermarks mechanism")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3169,7 +3169,7 @@ static int nvme_init_non_mdts_limits(str
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2291,7 +2291,8 @@ static void damos_adjust_quota(struct da
+ 	}
  
- 	ctrl->dmrl = id->dmrl;
- 	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
--	if (id->wzsl)
-+	if (id->wzsl && !(ctrl->quirks & NVME_QUIRK_DISABLE_WRITE_ZEROES))
- 		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
- 
- free_data:
+ 	/* New charge window starts */
+-	if (time_after_eq(jiffies, quota->charged_from +
++	if (!time_in_range_open(jiffies, quota->charged_from,
++				quota->charged_from +
+ 				msecs_to_jiffies(quota->reset_interval))) {
+ 		if (quota->esz && quota->charged_sz >= quota->esz)
+ 			s->stat.qt_exceeds++;
 
 
 
