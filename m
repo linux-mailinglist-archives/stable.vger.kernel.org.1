@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-243613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AL74AoCr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:52 +0200
+	id 8MOHHiav+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF374BF328
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4324BFC60
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DDA9E301F375
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CE6930E0F8F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891983DE443;
-	Mon,  4 May 2026 14:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0304F3E3143;
+	Mon,  4 May 2026 14:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfT38rcM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQpzxhKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D08D3D8129;
-	Mon,  4 May 2026 14:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB13436309C;
+	Mon,  4 May 2026 14:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904334; cv=none; b=dpWUpxP/Y9GNHlUvVvKgJNIaUlqkhYvPNM3VEM7rsz3oul4KARL/5Y8FFuNq5CwFyYjeJXYuiOQejSoObsWt+p3foPTiNGjm2492e9B+MvWz+bL0keqKPrz/s3Rna4iOyvwzlm9moPvqgk6HPnvq3+Y+4B1E9gaaNbgsWN9YvzM=
+	t=1777904845; cv=none; b=SqPZoGMFBxYdeYD1p/wB6au5F5J6FgcCPPOi9T41NMHvUJDQrJIS+vNk0NMfY2OGZ0tTPP7Jdn6wyLRUkEIkMOs/sPx7zWIxsZ00po3K8Yjm69gVxKN+Ue4d+NTDHX0RQMRMc/+gU7HsYRv7hTIWRQ955W7Ja2vIjfrNuRjGARA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904334; c=relaxed/simple;
-	bh=NAn6CxfUu5iu2xH9FVnhqkGk+LpeU4Ih2gUEsbPRonU=;
+	s=arc-20240116; t=1777904845; c=relaxed/simple;
+	bh=TAGOi28nMwWMofdLxyDhKRUN0Uo9ZyD5lYmxDr5oqbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=essTJCWXbXdYbh9Y0A+dj53lOaumYBUDSXs3wOWlX58ze4zOdFxhEo8KkhVOYPIIAME+qrl93+MyHp+sy28AEIfhbeSSNKpjCLrYBZyOk5ZHIz7uxV2pmEOSjbdw/j5NNIKkR4NgJk28nXWnip4XxCV34yuBOsojhmXSwV+oLP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfT38rcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86BAC2BCB8;
-	Mon,  4 May 2026 14:18:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f/fMHIfIo6E2yjI0Vm7zUi01ku8V/YFrGslbQPIjCu0iFv4GAphaeuvQ49KQ9lAqT/Axyki/1AUIJ6aShvara7LPRhk7luVH0js24rid5adsgPPcJv9wi8RsdRHPLeFPN4UIk9OHhI9iNg2pdtyPUKhqB3YKvf+fRWXhxpWgzd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQpzxhKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CABC2BCB8;
+	Mon,  4 May 2026 14:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904334;
-	bh=NAn6CxfUu5iu2xH9FVnhqkGk+LpeU4Ih2gUEsbPRonU=;
+	s=korg; t=1777904845;
+	bh=TAGOi28nMwWMofdLxyDhKRUN0Uo9ZyD5lYmxDr5oqbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfT38rcMNJzDWWPqLV0XB79fdhgXt6PyJZknPs1IIClK6mF4MkFpUiPGVi8huJZXX
-	 J7fdM3lSVtWrF/je4AwJzhadMJqP/U8KqPQMHk4+KNK8cgZEIv2ZhvkZy4pZc+zEJ4
-	 kd0ILjtNnIvBjNGaIePMIHCudzGS8hoYrpo71J+g=
+	b=EQpzxhKc132HmMOEDP5OfUOr6woMwM01rEmQuohaXIgTlp90uE09IhT+lueX37/3P
+	 VqQWEvDqPNjQE3WOpNX3b+WgBA4v374ib6LkUecOYkjW4zfpfr+NrpJZc3gq38R0h7
+	 wGOdGMySvq+kj5CnlmvTGKKKz0sA0Jp/oye0Se30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Kai Ma <k4729.23098@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.18 275/275] netfilter: reject zero shift in nft_bitwise
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 196/215] iio: frequency: admv1013: fix NULL pointer dereference on str
 Date: Mon,  4 May 2026 15:53:35 +0200
-Message-ID: <20260504135153.244626992@linuxfoundation.org>
+Message-ID: <20260504135137.648804291@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +66,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ADF374BF328
+X-Rspamd-Queue-Id: 0F4324BFC60
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-243613-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243813-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,suse.de,netfilter.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,analog.com:email,huawei.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Ma <k4729.23098@gmail.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit fe11e5c40817b84abaa5d83bfb6586d8412bfd07 upstream.
+[ Upstream commit aac0a51b16700b403a55b67ba495de021db78763 ]
 
-Reject zero shift operands for nft_bitwise left and right shift
-expressions during initialization.
+When device_property_read_string() fails, str is left uninitialized
+but the code falls through to strcmp(str, ...), dereferencing a garbage
+pointer. Replace manual read/strcmp with
+device_property_match_property_string() and consolidate the SE mode
+enums into a single sequential enum, mapping to hardware register
+values via a switch consistent with other bitfields in the driver.
 
-The carry propagation logic computes the carry from the adjacent 32-bit
-word using BITS_PER_TYPE(u32) - shift. A zero shift operand turns this
-into a 32-bit shift, which is undefined behaviour.
+Several cleanup patches have been applied to this driver recently so
+this will need a manual backport.
 
-Reject zero shift operands in the control plane, alongside the existing
-check for values greater than or equal to 32, so malformed rules never
-reach the packet path.
-
-Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Kai Ma <k4729.23098@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_bitwise.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/frequency/admv1013.c |   67 ++++++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 29 deletions(-)
 
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -196,7 +196,8 @@ static int nft_bitwise_init_shift(struct
- 	if (err < 0)
- 		return err;
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -85,9 +85,9 @@ enum {
+ };
  
--	if (priv->data.data[0] >= BITS_PER_TYPE(u32)) {
-+	if (!priv->data.data[0] ||
-+	    priv->data.data[0] >= BITS_PER_TYPE(u32)) {
- 		nft_data_release(&priv->data, desc.type);
- 		return -EINVAL;
- 	}
+ enum {
+-	ADMV1013_SE_MODE_POS = 6,
+-	ADMV1013_SE_MODE_NEG = 9,
+-	ADMV1013_SE_MODE_DIFF = 12
++	ADMV1013_SE_MODE_POS,
++	ADMV1013_SE_MODE_NEG,
++	ADMV1013_SE_MODE_DIFF,
+ };
+ 
+ struct admv1013_state {
+@@ -470,10 +470,23 @@ static int admv1013_init(struct admv1013
+ 	if (ret)
+ 		return ret;
+ 
+-	data = FIELD_PREP(ADMV1013_QUAD_SE_MODE_MSK, st->quad_se_mode);
++	switch (st->quad_se_mode) {
++	case ADMV1013_SE_MODE_POS:
++		data = 6;
++		break;
++	case ADMV1013_SE_MODE_NEG:
++		data = 9;
++		break;
++	case ADMV1013_SE_MODE_DIFF:
++		data = 12;
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	ret = __admv1013_spi_update_bits(st, ADMV1013_REG_QUAD,
+-					 ADMV1013_QUAD_SE_MODE_MSK, data);
++					 ADMV1013_QUAD_SE_MODE_MSK,
++					 FIELD_PREP(ADMV1013_QUAD_SE_MODE_MSK, data));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -514,37 +527,33 @@ static void admv1013_powerdown(void *dat
+ 	admv1013_spi_update_bits(data, ADMV1013_REG_ENABLE, enable_reg_msk, enable_reg);
+ }
+ 
++static const char * const admv1013_input_modes[] = {
++	[ADMV1013_IQ_MODE] = "iq",
++	[ADMV1013_IF_MODE] = "if",
++};
++
++static const char * const admv1013_quad_se_modes[] = {
++	[ADMV1013_SE_MODE_POS] = "se-pos",
++	[ADMV1013_SE_MODE_NEG] = "se-neg",
++	[ADMV1013_SE_MODE_DIFF] = "diff",
++};
++
+ static int admv1013_properties_parse(struct admv1013_state *st)
+ {
+ 	int ret;
+-	const char *str;
+ 	struct device *dev = &st->spi->dev;
+ 
+ 	st->det_en = device_property_read_bool(dev, "adi,detector-enable");
+ 
+-	ret = device_property_read_string(dev, "adi,input-mode", &str);
+-	if (ret)
+-		st->input_mode = ADMV1013_IQ_MODE;
+-
+-	if (!strcmp(str, "iq"))
+-		st->input_mode = ADMV1013_IQ_MODE;
+-	else if (!strcmp(str, "if"))
+-		st->input_mode = ADMV1013_IF_MODE;
+-	else
+-		return -EINVAL;
+-
+-	ret = device_property_read_string(dev, "adi,quad-se-mode", &str);
+-	if (ret)
+-		st->quad_se_mode = ADMV1013_SE_MODE_DIFF;
+-
+-	if (!strcmp(str, "diff"))
+-		st->quad_se_mode = ADMV1013_SE_MODE_DIFF;
+-	else if (!strcmp(str, "se-pos"))
+-		st->quad_se_mode = ADMV1013_SE_MODE_POS;
+-	else if (!strcmp(str, "se-neg"))
+-		st->quad_se_mode = ADMV1013_SE_MODE_NEG;
+-	else
+-		return -EINVAL;
++	ret = device_property_match_property_string(dev, "adi,input-mode",
++						    admv1013_input_modes,
++						    ARRAY_SIZE(admv1013_input_modes));
++	st->input_mode = ret >= 0 ? ret : ADMV1013_IQ_MODE;
++
++	ret = device_property_match_property_string(dev, "adi,quad-se-mode",
++						    admv1013_quad_se_modes,
++						    ARRAY_SIZE(admv1013_quad_se_modes));
++	st->quad_se_mode = ret >= 0 ? ret : ADMV1013_SE_MODE_DIFF;
+ 
+ 	ret = devm_regulator_bulk_get_enable(dev,
+ 					     ARRAY_SIZE(admv1013_vcc_regs),
 
 
 
