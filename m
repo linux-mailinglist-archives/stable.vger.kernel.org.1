@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-243376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFDqCSCs+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:32 +0200
+	id GIMCMKem+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:01:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776454BF4DA
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75C34BE560
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C98F33094013
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E439C304F237
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C8B3D3334;
-	Mon,  4 May 2026 14:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E993DE425;
+	Mon,  4 May 2026 13:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1TLA1gZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtTo8CMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249FB3AA4F8;
-	Mon,  4 May 2026 14:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCC73DE422;
+	Mon,  4 May 2026 13:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903727; cv=none; b=s9VghA436H/6lNuElclEg/L2hAMAjWIqrXDVki+ZY9qeKfF/YNLFUtS/hSwu3Wvr9AX/8iHEm7QIolYRLQOlZdj/Ab6Wu2yLHMdOD08Vu+RL9CwvertdO2fGnk4GsBRRM1xGL6O9z4U4UA0iIu18NVtcOBYawel0Aio2E8i4z6g=
+	t=1777903077; cv=none; b=T3sZrdiiz5YP1VFJcLF9vxgEbNH6k9NiZHhU67yux2C0iam87rFC9vhP5iApeEkNA8P43NlR2MZ9LQzmaxMUFmEfk1DU1IG3kyskEmWAGUFNEwSTqGi/y1fG21Fkoche/Avz+/usnhfWlG6dxfPpuso2WzkQN+dsTBN5iDSk3uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903727; c=relaxed/simple;
-	bh=r+pK5X5zhBNa1YkXObym8LaNbRRnBqDaLuxek8zu6ro=;
+	s=arc-20240116; t=1777903077; c=relaxed/simple;
+	bh=S3VBaBL4wVPQIsLrxwL3L1TkaRwbV2JJ9ogchxk+ehw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3ygvq3rR/SdgW6yNB6mTUXHewUNjudmNNlccqYt9YDA4E6T/7hf1IisPCfbeqpK+1yGgj6DRY/vW55yFWzw3f0Pwn9gkj52NaW+p2NY11ZJg5oE2V6ZG/qGWrCo27UJ6fp1AjXJaNDCg3RRnL7P0RLjfn5CZg2xAC5jn2jB0NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1TLA1gZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD63C2BCB8;
-	Mon,  4 May 2026 14:08:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d3kVjLfhhbXOtLgP6RKZMlq2KN2fttxcprUG1oq3K0uPfE06R+tc8ar0FlQ0ZeLdvj+Np5J/cAxceau14S+9obPLnoUMfTbb7dU7HVAoc5vGfTpNdaJ5JpC6QZppGu3AhK575hrlEnL0pk6GVJBCkrIXF2YU/IjKTa8cFHSx7YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtTo8CMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81ABDC2BCB8;
+	Mon,  4 May 2026 13:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903727;
-	bh=r+pK5X5zhBNa1YkXObym8LaNbRRnBqDaLuxek8zu6ro=;
+	s=korg; t=1777903076;
+	bh=S3VBaBL4wVPQIsLrxwL3L1TkaRwbV2JJ9ogchxk+ehw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1TLA1gZmC0i3yqeHA3xWtKz8+GaP4/cPo9FpJsDuUu0IriQgS6ERjVo5IqMwK/M6
-	 9iRghnJkTdLNjaiUReqEioRh3S/x98cbhfOsDWrhZSBb/0k9QLgOESY+jSNt1n8IYI
-	 YByRWyusntg9IWaaVGgd/Jgt3pqXR6jXIArdlImM=
+	b=JtTo8CMeV4/7godzg6xvZgrU0D1e7gizkDg9fpkyzy/EFY0jofng2tLsOuHetb280
+	 xAGnuRvM+gC+X1344fiCV69GR1N8DcejK+/0cQSAxzMinWRRo0PKPLB6c4TjdXk2Wf
+	 jnz/tTfPY6a8MpKV9UgxUrkgTb3DjxVW9zUxR1lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 038/275] mm: call ->free_folio() directly in folio_unmap_invalidate()
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 7.0 093/307] RDMA/mana_ib: Disable RX steering on RSS QP destroy
 Date: Mon,  4 May 2026 15:49:38 +0200
-Message-ID: <20260504135144.353831543@linuxfoundation.org>
+Message-ID: <20260504135146.313326907@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,127 +62,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 776454BF4DA
+X-Rspamd-Queue-Id: D75C34BE560
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243376-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-243123-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,bigsleep-501448199];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,infradead.org:email,kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Long Li <longli@microsoft.com>
 
-commit 615d9bb2ccad42f9e21d837431e401db2e471195 upstream.
+commit dbeb256e8dd87233d891b170c0b32a6466467036 upstream.
 
-We can only call filemap_free_folio() if we have a reference to (or hold a
-lock on) the mapping.  Otherwise, we've already removed the folio from the
-mapping so it no longer pins the mapping and the mapping can be removed,
-causing a use-after-free when accessing mapping->a_ops.
+When an RSS QP is destroyed (e.g. DPDK exit), mana_ib_destroy_qp_rss()
+destroys the RX WQ objects but does not disable vPort RX steering in
+firmware. This leaves stale steering configuration that still points to
+the destroyed RX objects.
 
-Follow the same pattern as __remove_mapping() and load the free_folio
-function pointer before dropping the lock on the mapping.  That lets us
-make filemap_free_folio() static as this was the only caller outside
-filemap.c.
+If traffic continues to arrive (e.g. peer VM is still transmitting) and
+the VF interface is subsequently brought up (mana_open), the firmware
+may deliver completions using stale CQ IDs from the old RX objects.
+These CQ IDs can be reused by the ethernet driver for new TX CQs,
+causing RX completions to land on TX CQs:
 
-Link: https://lore.kernel.org/20260413184314.3419945-1-willy@infradead.org
-Fixes: fb7d3bc41493 ("mm/filemap: drop streaming/uncached pages when writeback completes")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Jan Kara <jack@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  WARNING: mana_poll_tx_cq+0x1b8/0x220 [mana]  (is_sq == false)
+  WARNING: mana_gd_process_eq_events+0x209/0x290 (cq_table lookup fails)
+
+Fix this by disabling vPort RX steering before destroying RX WQ objects.
+Note that mana_fence_rqs() cannot be used here because the fence
+completion is delivered on the CQ, which is polled by user-mode (e.g.
+DPDK) and not visible to the kernel driver.
+
+Refactor the disable logic into a shared mana_disable_vport_rx() in
+mana_en, exported for use by mana_ib, replacing the duplicate code.
+The ethernet driver's mana_dealloc_queues() is also updated to call
+this common function.
+
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/20260325194100.1929056-1-longli@microsoft.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c  | 3 ++-
- mm/internal.h | 1 -
- mm/truncate.c | 6 +++++-
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/mana/qp.c               |   15 +++++++++++++++
+ drivers/net/ethernet/microsoft/mana/mana_en.c |   11 ++++++++++-
+ include/net/mana/mana.h                       |    1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 91dcfe14a67b7..e3339cf37a1f0 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -227,7 +227,8 @@ void __filemap_remove_folio(struct folio *folio, void *shadow)
- 	page_cache_delete(mapping, folio, shadow);
+--- a/drivers/infiniband/hw/mana/qp.c
++++ b/drivers/infiniband/hw/mana/qp.c
+@@ -822,6 +822,21 @@ static int mana_ib_destroy_qp_rss(struct
+ 	ndev = mana_ib_get_netdev(qp->ibqp.device, qp->port);
+ 	mpc = netdev_priv(ndev);
+ 
++	/* Disable vPort RX steering before destroying RX WQ objects.
++	 * Otherwise firmware still routes traffic to the destroyed queues,
++	 * which can cause bogus completions on reused CQ IDs when the
++	 * ethernet driver later creates new queues on mana_open().
++	 *
++	 * Unlike the ethernet teardown path, mana_fence_rqs() cannot be
++	 * used here because the fence completion CQE is delivered on the
++	 * CQ which is polled by userspace (e.g. DPDK), so there is no way
++	 * for the kernel to wait for fence completion.
++	 *
++	 * This is best effort — if it fails there is not much we can do,
++	 * and mana_cfg_vport_steering() already logs the error.
++	 */
++	mana_disable_vport_rx(mpc);
++
+ 	for (i = 0; i < (1 << ind_tbl->log_ind_tbl_size); i++) {
+ 		ibwq = ind_tbl->ind_tbl[i];
+ 		wq = container_of(ibwq, struct mana_ib_wq, ibwq);
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2889,6 +2889,13 @@ static void mana_rss_table_init(struct m
+ 			ethtool_rxfh_indir_default(i, apc->num_queues);
  }
  
--void filemap_free_folio(struct address_space *mapping, struct folio *folio)
-+static void filemap_free_folio(const struct address_space *mapping,
-+		struct folio *folio)
++int mana_disable_vport_rx(struct mana_port_context *apc)
++{
++	return mana_cfg_vport_steering(apc, TRI_STATE_FALSE, false, false,
++				       false);
++}
++EXPORT_SYMBOL_NS(mana_disable_vport_rx, "NET_MANA");
++
+ int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
+ 		    bool update_hash, bool update_tab)
  {
- 	void (*free_folio)(struct folio *);
+@@ -3273,10 +3280,12 @@ static int mana_dealloc_queues(struct ne
+ 	 */
  
-diff --git a/mm/internal.h b/mm/internal.h
-index c80c6f566c2d9..4cf6a12ff491d 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -471,7 +471,6 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
- 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
- unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
- 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
--void filemap_free_folio(struct address_space *mapping, struct folio *folio);
- int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
- bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
- 		loff_t end);
-diff --git a/mm/truncate.c b/mm/truncate.c
-index 3c5a50ae32741..4bf64fd610c94 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -622,6 +622,7 @@ static int folio_launder(struct address_space *mapping, struct folio *folio)
- int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
- 			   gfp_t gfp)
- {
-+	void (*free_folio)(struct folio *);
- 	int ret;
+ 	apc->rss_state = TRI_STATE_FALSE;
+-	err = mana_config_rss(apc, TRI_STATE_FALSE, false, false);
++	err = mana_disable_vport_rx(apc);
+ 	if (err && mana_en_need_log(apc, err))
+ 		netdev_err(ndev, "Failed to disable vPort: %d\n", err);
  
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -648,9 +649,12 @@ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
- 	xa_unlock_irq(&mapping->i_pages);
- 	if (mapping_shrinkable(mapping))
- 		inode_add_lru(mapping->host);
-+	free_folio = mapping->a_ops->free_folio;
- 	spin_unlock(&mapping->host->i_lock);
++	mana_fence_rqs(apc);
++
+ 	/* Even in err case, still need to cleanup the vPort */
+ 	mana_destroy_vport(apc);
  
--	filemap_free_folio(mapping, folio);
-+	if (free_folio)
-+		free_folio(folio);
-+	folio_put_refs(folio, folio_nr_pages(folio));
- 	return 1;
- failed:
- 	xa_unlock_irq(&mapping->i_pages);
--- 
-2.53.0
-
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -568,6 +568,7 @@ struct mana_port_context {
+ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);
+ int mana_config_rss(struct mana_port_context *ac, enum TRI_STATE rx,
+ 		    bool update_hash, bool update_tab);
++int mana_disable_vport_rx(struct mana_port_context *apc);
+ 
+ int mana_alloc_queues(struct net_device *ndev);
+ int mana_attach(struct net_device *ndev);
 
 
 
