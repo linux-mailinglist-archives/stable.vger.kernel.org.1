@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNNnFt6m+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:06 +0200
+	id UKrtML+o+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29334BE610
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415104BEA6F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D8FFC3029494
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3ED10301589F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09D13DEFFE;
-	Mon,  4 May 2026 13:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B583D5645;
+	Mon,  4 May 2026 14:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9nNWo9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2zg7uxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945E13DEAC4;
-	Mon,  4 May 2026 13:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4A93D5667;
+	Mon,  4 May 2026 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903151; cv=none; b=tq420yLXOEh/hkv/c1vrdOtnBvUd76ogFEiHymvkxQ0S9xd1uWv1coyM3uR60izrHLx9VKoTdoz/Vgponlm53AfjvopU3OpW4MaTSwnknYS6ZggMI09sph0jAUDVfsDSSDSZD/6LPpWj6cU3JyJ/BTSQfeGYrJPHlf+wjELdZMs=
+	t=1777903801; cv=none; b=MhTxg9mivvhu2ssafNV+M5fw1l+oxKuCaRoyOf0qQIeBeZWGR87vNGCFqoA+ih7iKFkO/CXTt37JfsWhosN+9b36hQ3O457xcFqnGzrQs3tYOIby8Uw1N4lyihcMcW0TijRBiyO6cQTiKHo74fyzHFWkB66yUeyT8C+8jgp/cVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903151; c=relaxed/simple;
-	bh=0PUKid2hoEP/A2L4DQlSMoNzq1hN4Qlx8/ke3rpJ7ns=;
+	s=arc-20240116; t=1777903801; c=relaxed/simple;
+	bh=HhFPu3AX7Nw5Icsprw7W4rUdH0F5rE+/OCrQQEtwlUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OhQVy8kCKjo6oXT1GoWWQ6h3VRFcY+I7bMZ8BCxMoe0DVKh3qNUN+vFiFYHQ2tfYSkC4FkJIUH6eA0mkmPGdxKHVqXv93b5yM+wv+SJ7vY6ELRGF0i49zB+3Oe65YVnxW0PCrv5ynB/Kn4WV1iXp86vnC+7HZnh5Ps43ob4Aa1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9nNWo9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8A2C2BCF4;
-	Mon,  4 May 2026 13:59:11 +0000 (UTC)
+	 MIME-Version; b=cBNXjL/ok0QccRzB8AbMTQnmVSyaxohZQEPzT3/4v7T7R9d4RKdho4OqDPFvn1CVRCrE2ARprfM1KqoA59QfbqOumhBhxULiZ8QyLEevboEf4dzRsxLiLl6xvZr3ka4QDOrXOI6DIvcKEaNNgLqGmYp55DU+oEqGD6eIxgRZ9BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2zg7uxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70846C2BCB8;
+	Mon,  4 May 2026 14:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903151;
-	bh=0PUKid2hoEP/A2L4DQlSMoNzq1hN4Qlx8/ke3rpJ7ns=;
+	s=korg; t=1777903801;
+	bh=HhFPu3AX7Nw5Icsprw7W4rUdH0F5rE+/OCrQQEtwlUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9nNWo9tEEbgx2MP19rYGsQUc3FNecxeTC/2f1kuOIqi6gYy9DZMiYJzH2keg1aeB
-	 fXwc3f6ocxEmxYy70SGa1n2tFO6ZnphgL+oaVxAej6DpPJjWS9/HgfFOyhWn/Gzy5e
-	 bwJJkRuBnxmmPqAMD/LhBmTU/JZbeGyAUZtgwLHs=
+	b=l2zg7uxII1BnaJyaFaPTcUOKiJEmvfjVlnd7P9sQnscUgjv4f9Li6XuchAKTJCotc
+	 OtsrH6XqTnoVoDsE0m9l7PTGu0h5uN7ZQ7lBDK1DMYTYpyb0fAFk6pWrUI/p972hNa
+	 he/7oYo046nb0G6J/aOdzXORD91T480wappFBtLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 123/307] ALSA: pcmtest: Fix resource leaks in module init error paths
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.18 068/275] jbd2: fix deadlock in jbd2_journal_cancel_revoke()
 Date: Mon,  4 May 2026 15:50:08 +0200
-Message-ID: <20260504135147.424511827@linuxfoundation.org>
+Message-ID: <20260504135145.458799434@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D29334BE610
+X-Rspamd-Queue-Id: 415104BEA6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243153-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243406-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit d5d5f80416a3a749906c04d56575e2290792654b upstream.
+commit 981fcc5674e67158d24d23e841523eccba19d0e7 upstream.
 
-pcmtest allocates its pattern buffers and creates its debugfs tree
-before registering the platform device and driver, but mod_init()
-does not release those resources when a later init step fails.
+Commit f76d4c28a46a ("fs/jbd2: use sleeping version of
+__find_get_block()") changed jbd2_journal_cancel_revoke() to use
+__find_get_block_nonatomic() which holds the folio lock instead of
+i_private_lock. This breaks the lock ordering (folio -> buffer) and
+causes an ABBA deadlock when the filesystem blocksize < pagesize:
 
-As a result, a debugfs directory creation failure leaks the pattern
-buffers, while platform_device_register() and
-platform_driver_register() failures leave both the pattern buffers
-and the debugfs tree behind. The recent fix for failed device
-registration only dropped the embedded device reference.
+     T1                                T2
+ext4_mkdir()
+ ext4_init_new_dir()
+  ext4_append()
+   ext4_getblk()
+    lock_buffer()    <- A
+                                   sync_blockdev()
+                                    blkdev_writepages()
+                                     writeback_iter()
+                                      writeback_get_folio()
+                                       folio_lock()   <- B
+     ext4_journal_get_create_access()
+      jbd2_journal_cancel_revoke()
+       __find_get_block_nonatomic()
+        folio_lock()  <- B
+                                     block_write_full_folio()
+                                      lock_buffer()   <- A
 
-Add the missing cleanup for the debugfs tree and pattern buffers in
-the remaining module init error paths.
+This can occasionally cause generic/013 to hang.
 
-Fixes: 315a3d57c64c ("ALSA: Implement the new Virtual PCM Test Driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260421-alsa-pcmtest-init-unwind-v1-1-03fe0c423dbb@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix by only calling __find_get_block_nonatomic() when the passed
+buffer_head doesn't belong to the bdev, which is the only case that we
+need to look up its bdev alias. Otherwise, the lookup is redundant since
+the found buffer_head is equal to the one we passed in.
+
+Fixes: f76d4c28a46a ("fs/jbd2: use sleeping version of __find_get_block()")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20260409114204.917154-1-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/drivers/pcmtest.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/jbd2/revoke.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/sound/drivers/pcmtest.c
-+++ b/sound/drivers/pcmtest.c
-@@ -754,15 +754,24 @@ static int __init mod_init(void)
+--- a/fs/jbd2/revoke.c
++++ b/fs/jbd2/revoke.c
+@@ -428,6 +428,7 @@ void jbd2_journal_cancel_revoke(handle_t
+ 	journal_t *journal = handle->h_transaction->t_journal;
+ 	int need_cancel;
+ 	struct buffer_head *bh = jh2bh(jh);
++	struct address_space *bh_mapping = bh->b_folio->mapping;
  
- 	err = init_debug_files(buf_allocated);
- 	if (err)
--		return err;
-+		goto err_free_patterns;
- 	err = platform_device_register(&pcmtst_pdev);
- 	if (err) {
- 		platform_device_put(&pcmtst_pdev);
--		return err;
-+		goto err_clear_debug;
+ 	jbd2_debug(4, "journal_head %p, cancelling revoke\n", jh);
+ 
+@@ -464,13 +465,14 @@ void jbd2_journal_cancel_revoke(handle_t
+ 	 * buffer_head?  If so, we'd better make sure we clear the
+ 	 * revoked status on any hashed alias too, otherwise the revoke
+ 	 * state machine will get very upset later on. */
+-	if (need_cancel) {
++	if (need_cancel && !sb_is_blkdev_sb(bh_mapping->host->i_sb)) {
+ 		struct buffer_head *bh2;
++
+ 		bh2 = __find_get_block_nonatomic(bh->b_bdev, bh->b_blocknr,
+ 						 bh->b_size);
+ 		if (bh2) {
+-			if (bh2 != bh)
+-				clear_buffer_revoked(bh2);
++			WARN_ON_ONCE(bh2 == bh);
++			clear_buffer_revoked(bh2);
+ 			__brelse(bh2);
+ 		}
  	}
- 	err = platform_driver_register(&pcmtst_pdrv);
--	if (err)
-+	if (err) {
- 		platform_device_unregister(&pcmtst_pdev);
-+		goto err_clear_debug;
-+	}
-+
-+	return 0;
-+
-+err_clear_debug:
-+	clear_debug_files();
-+err_free_patterns:
-+	free_pattern_buffers();
- 	return err;
- }
- 
 
 
 
