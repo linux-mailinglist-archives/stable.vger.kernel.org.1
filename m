@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-243390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPFmMSOr+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:19 +0200
+	id kL8YOGCo+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD67B4BF1DB
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152C74BE996
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E23A300BD77
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 169173034583
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D674B3B19D1;
-	Mon,  4 May 2026 14:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAC53DE423;
+	Mon,  4 May 2026 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adcvdFRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtKF8iR8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF0C40DFD4;
-	Mon,  4 May 2026 14:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F45B2BFC7B;
+	Mon,  4 May 2026 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903760; cv=none; b=Pmm1PAiEVD+JUqYImubaz3QS6x+XHZYI4FkO1nR9ZQn/3/vrO8PuGyWIVKTMvIZoN9g+Oh8gVhJ1DOZUkDlwinTwn4UbeksAgtevk2aMQQ80Cw65/eu1N2IYplLgMDLaOhBGg7J10QCR+8ZjhM0LhCN93psk+6+a4ezkgGnOj4I=
+	t=1777903190; cv=none; b=BJvlnWchwbbpCWS4lbFyPUZSq/IGOY90wIK9VLk4pjm5dHZuFujNsA6sYuAwsnJ3GSeUi25HGEUc5MTWl2ONjG0NgRfMd6nHKVGWzvdd6ecCxgByYih68RXDxkUBIY4Sy6NEOFk/cDQQCh9G7zTCJohVaR43rUwMx+oIK14n7jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903760; c=relaxed/simple;
-	bh=z/mTl0ocST6R86kpZqQxzFXtxUg6Z3tFnDBLsX3/MrU=;
+	s=arc-20240116; t=1777903190; c=relaxed/simple;
+	bh=DEYFhdebBDkoUeIgGKZ86lfpKMFivP8Q/QmZ5J+RlZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnFDmLqv8hrBXN91l0nKHyzD4uDRz4PyPqQRanVdizQWzAf8hwBGjkY5MbjJ0c7xAEFMTxoBq0k8YCMIKCuaTrzJqCDpZULKDTB8J3VHo8cvHKmJ57V5tD1OdeQIIZ96SW2Dg9/3SpxiUc9um/cpvQ51l2+wLoP9rE3X5sU5s1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adcvdFRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3310AC2BCB8;
-	Mon,  4 May 2026 14:09:20 +0000 (UTC)
+	 MIME-Version; b=GqA4oRjaZaaB1fSFvg712sco9fXEv/0pM9v05L/5eJyiBJhEKB9zHqlCWVPh5SO49Uubq4WxeLQfnQl5IhSGIom0k6tOEaJtm64W1gtqmOJvs4y1c7rNfo+ENTyLAFOkStYwz8uD//F6+uuUkGCqO9yJ7nCgqNpJInEG5Fvkr4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtKF8iR8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A3DC2BCB8;
+	Mon,  4 May 2026 13:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903760;
-	bh=z/mTl0ocST6R86kpZqQxzFXtxUg6Z3tFnDBLsX3/MrU=;
+	s=korg; t=1777903190;
+	bh=DEYFhdebBDkoUeIgGKZ86lfpKMFivP8Q/QmZ5J+RlZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adcvdFRgiWZxOz9jqZ713wz+M8KfSIV38V7RaTFCKEqHOywBJWLDjuNOGwB1zCq/n
-	 bQ4XKj1JzWJd3+fgZNyK8t/XXFxLXYAMYlY8t40n1+N5eXO8E+7I8BW7cb/rGa6E63
-	 R89aEcvp5y/Qxj7Bs5bbMbQtOBISY+A0rsCvFEjs=
+	b=dtKF8iR8Ywc+nZJiqWTbAWpWYVhIHU57WMAh+DAM+P+LsBJzE11UyxOtNd1eJB5sc
+	 M+ifPUWvfsU9yFRFsc2/WpfCVl9HoKnr4S6Y2qjUbC/033t002NdL9zOyzPACftEjg
+	 f+v63Mxm5DULwKIT4XNowp6LfyXKVAtuaASHTois=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 050/275] net: strparser: fix skb_head leak in strp_abort_strp()
-Date: Mon,  4 May 2026 15:49:50 +0200
-Message-ID: <20260504135144.795473131@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 106/307] block: fix zone write plugs refcount handling in disk_zone_wplug_schedule_bio_work()
+Date: Mon,  4 May 2026 15:49:51 +0200
+Message-ID: <20260504135146.800070270@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +66,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DD67B4BF1DB
+X-Rspamd-Queue-Id: 152C74BE996
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
-	TAGGED_FROM(0.00)[bounces-243390-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243168-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luxiao Xu <rakukuip@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit fe72340daaf1af588be88056faf98965f39e6032 upstream.
+commit 0a8b8af896e0ef83e188e1fe20f98f2bbb1c2459 upstream.
 
-When the stream parser is aborted, for example after a message assembly timeout,
-it can still hold a reference to a partially assembled message in
-strp->skb_head.
+The function disk_zone_wplug_schedule_bio_work() always takes a
+reference on the zone write plug of the BIO work being scheduled. This
+ensures that the zone write plug cannot be freed while the BIO work is
+being scheduled but has not run yet. However, this unconditional
+reference taking is fragile since the reference taken is released by the
+BIO work blk_zone_wplug_bio_work() function, which implies that there
+always must be a 1:1 relation between the work being scheduled and the
+work running.
 
-That skb is not released in strp_abort_strp(), which leaks the partially
-assembled message and can be triggered repeatedly to exhaust memory.
+Make sure to drop the reference taken when scheduling the BIO work if
+the work is already scheduled, that is, when queue_work() returns false.
 
-Fix this by freeing strp->skb_head and resetting the parser state in the
-abort path. Leave strp_stop() unchanged so final cleanup still happens in
-strp_done() after the work and timer have been synchronized.
-
-Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Link: https://patch.msgid.link/ade3857a9404999ce9a1c27ec523efc896072678.1775482694.git.rakukuip@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9e78c38ab30b ("block: Hold a reference on zone write plugs to schedule submission")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/strparser/strparser.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ block/blk-zoned.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/net/strparser/strparser.c
-+++ b/net/strparser/strparser.c
-@@ -45,6 +45,14 @@ static void strp_abort_strp(struct strpa
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1198,13 +1198,17 @@ static void disk_zone_wplug_schedule_bio
+ 	lockdep_assert_held(&zwplug->lock);
  
- 	strp->stopped = 1;
+ 	/*
+-	 * Take a reference on the zone write plug and schedule the submission
+-	 * of the next plugged BIO. blk_zone_wplug_bio_work() will release the
+-	 * reference we take here.
++	 * Schedule the submission of the next plugged BIO. Taking a reference
++	 * to the zone write plug is required as the bio_work belongs to the
++	 * plug, and thus we must ensure that the write plug does not go away
++	 * while the work is being scheduled but has not run yet.
++	 * blk_zone_wplug_bio_work() will release the reference we take here,
++	 * and we also drop this reference if the work is already scheduled.
+ 	 */
+ 	WARN_ON_ONCE(!(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED));
+ 	refcount_inc(&zwplug->ref);
+-	queue_work(disk->zone_wplugs_wq, &zwplug->bio_work);
++	if (!queue_work(disk->zone_wplugs_wq, &zwplug->bio_work))
++		disk_put_zone_wplug(zwplug);
+ }
  
-+	if (strp->skb_head) {
-+		kfree_skb(strp->skb_head);
-+		strp->skb_head = NULL;
-+	}
-+
-+	strp->skb_nextp = NULL;
-+	strp->need_bytes = 0;
-+
- 	if (strp->sk) {
- 		struct sock *sk = strp->sk;
- 
+ static inline void disk_zone_wplug_add_bio(struct gendisk *disk,
 
 
 
