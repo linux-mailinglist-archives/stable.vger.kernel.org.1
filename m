@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-243804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDcvLWSv+GkPzAIAu9opvQ
-	(envelope-from <stable+bounces-243804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:28 +0200
+	id UHe4G6+x+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:48:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8234C4BFCD2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACF14C007F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 21F6F3094731
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1982E306499E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65B03E0241;
-	Mon,  4 May 2026 14:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA6F3E1D1A;
+	Mon,  4 May 2026 14:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDhSdWZ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUywYJZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896113E0245;
-	Mon,  4 May 2026 14:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BEE3E1D01;
+	Mon,  4 May 2026 14:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904822; cv=none; b=Ep5ChZ/hBNFyzzWk9Kg7IJuhIx/XBKcJd/kMf05xLQSVPDPxyIPleCPWO/i3vVRPbFBkDecgTiyWk9ZC3ITMX6aQX3VMWWTXWKnFaJLxmSmGLm+QCfD8SN1yab5T1ufUbVSLC1lFdhNI5sI7e5oramAZSvoVr049UaRZ5XOCA7o=
+	t=1777904828; cv=none; b=J6zPI3MyJfl1GSEe1lq+ftOMc0dXYDieKT6RegFASHs9zuG15/pq/DEDYgcb2MwTb+NjJo3RM4HhEfZsZAZspcLFrRfgTf4ph9BJM7LjYnXePq/jyrKIUOcGZP1B2AxzVJwN3AJqzfgOKXtId2QTD010M7sArykt8EoUS5nY2IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904822; c=relaxed/simple;
-	bh=MEJ+ApTdDM8PIl1kIT50aLWzH/+Ks2DwqBriynurZAo=;
+	s=arc-20240116; t=1777904828; c=relaxed/simple;
+	bh=PEYXvB8qIkcH0xE+lkb8P9tlsyZgfdet8PU/UKbSH3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V6xdpnIu4+jCSLXj1ZQV7tLnMCYFrLBp0J4TjCRmw8e3U3Vf250bGOFYxoeITxMXBfxHTTMdvgjNI6QiTlkgFxjY6wGEgbzRuN1eKibFgTKx6FAwv7NUIaUYRi/CSQ6WcU8K46S/u8meY5Q8+N6xWDPLvcjx4k5464FC3K2HAAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDhSdWZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2110BC2BCC4;
-	Mon,  4 May 2026 14:27:01 +0000 (UTC)
+	 MIME-Version; b=P5hr0WKaAhQGlmGBX/RjMOapU5FeXVZoLqCxwYHFjFMCH8RTD+jLPrlRvv4Qfp/NlQFkKs3dAYSHNl8t5UeSJHgrLeUMMgZBPXHiatMTK7lzr0pQH6ogge0xnuzFw1PgapW4YyoHCNeNjEUFceaIlqBKyN+69zv+4x8zx+K0W9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUywYJZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4085CC2BCF4;
+	Mon,  4 May 2026 14:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904822;
-	bh=MEJ+ApTdDM8PIl1kIT50aLWzH/+Ks2DwqBriynurZAo=;
+	s=korg; t=1777904827;
+	bh=PEYXvB8qIkcH0xE+lkb8P9tlsyZgfdet8PU/UKbSH3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDhSdWZ3AS8hHorXAFXJV90UOJRvnNrrb0bDGBZLwmSCeaMTRu4t18TujEk9BnxEw
-	 IQlZbVf+6kBMX5sVobPaVMm6YxSRUl9CgiPLJyPFdP92VPXBmhYA2QeKHX8x4X+gGy
-	 Yc/PLuvzm7s4YspalGFVX75N5nSihtW6y1ROiu3s=
+	b=VUywYJZdz/Y/xZ5frgNOYYUkTP7V23zVu2Dztb4HeVNNV5oZ1uH3LzILC6A1hGWMZ
+	 ZuTLV4x5LEyy73QXrBLtvGu21Tg2l2oudSK0J4qi8xJbR7Y0/0Cb1tpP5d2QK1vaCD
+	 XO+2dMv9JUMKZuEQH4sZqyA4CmOf4Qdzg9LMMz94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 188/215] ALSA: aoa: i2sbus: clear stale prepared state
-Date: Mon,  4 May 2026 15:53:27 +0200
-Message-ID: <20260504135137.187106794@linuxfoundation.org>
+Subject: [PATCH 6.12 189/215] mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
+Date: Mon,  4 May 2026 15:53:28 +0200
+Message-ID: <20260504135137.264461319@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
 References: <20260504135130.169210693@linuxfoundation.org>
@@ -64,200 +66,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8234C4BFCD2
+X-Rspamd-Queue-Id: 8ACF14C007F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,suse.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243804-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243806-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,mediatek.com:email,linux-foundation.org:email,chromium.org:email]
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 5ed060d5491597490fb53ec69da3edc4b1e8c165 ]
+[ Upstream commit 4fb61d95ad21c3b6f1c09f357ff49d70abb0535e ]
 
-The i2sbus PCM code uses pi->active to constrain the sibling stream to
-an already prepared duplex format and rate in i2sbus_pcm_open().
+zs_page_migrate() uses copy_page() to copy the contents of a zspage page
+during migration.  However, copy_page() is not instrumented by KMSAN, so
+the shadow and origin metadata of the destination page are not updated.
 
-That state is set from i2sbus_pcm_prepare(), but the current code only
-clears it on close. As a result, the sibling stream can inherit stale
-constraints after the prepared state has been torn down.
+As a result, subsequent accesses to the migrated page are reported as
+use-after-free by KMSAN, despite the data being correctly copied.
 
-Clear pi->active when hw_params() or hw_free() tears down the prepared
-state, and set it again only after prepare succeeds.
+Add a kmsan_copy_page_meta() call after copy_page() to propagate the KMSAN
+metadata to the new page, matching what copy_highpage() does internally.
 
-Replace the stale FIXME in the duplex constraint comment with a description
-of the current driver behavior: i2sbus still programs a single shared
-transport configuration for both directions, so mixed formats are not
-supported in duplex mode.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260331-aoa-i2sbus-clear-stale-active-v2-1-3764ae2889a1@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lkml.kernel.org/r/20260321132912.93434-1-syoshida@redhat.com
+Fixes: afb2d666d025 ("zsmalloc: use copy_page for full page copy")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ translated zpdesc_page(newzpdesc/zpdesc) arguments to newpage/page ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/aoa/soundbus/i2sbus/pcm.c |   55 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 44 insertions(+), 11 deletions(-)
+ mm/zsmalloc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/aoa/soundbus/i2sbus/pcm.c
-+++ b/sound/aoa/soundbus/i2sbus/pcm.c
-@@ -165,17 +165,16 @@ static int i2sbus_pcm_open(struct i2sbus
- 	 * currently in use (if any). */
- 	hw->rate_min = 5512;
- 	hw->rate_max = 192000;
--	/* if the other stream is active, then we can only
--	 * support what it is currently using.
--	 * FIXME: I lied. This comment is wrong. We can support
--	 * anything that works with the same serial format, ie.
--	 * when recording 24 bit sound we can well play 16 bit
--	 * sound at the same time iff using the same transfer mode.
-+	/* If the other stream is already prepared, keep this stream
-+	 * on the same duplex format and rate.
-+	 *
-+	 * i2sbus_pcm_prepare() still programs one shared transport
-+	 * configuration for both directions, so mixed duplex formats
-+	 * are not supported here.
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1808,6 +1808,7 @@ static int zs_page_migrate(struct page *
  	 */
- 	if (other->active) {
--		/* FIXME: is this guaranteed by the alsa api? */
- 		hw->formats &= pcm_format_to_bits(i2sdev->format);
--		/* see above, restrict rates to the one we already have */
-+		/* Restrict rates to the one already in use. */
- 		hw->rate_min = i2sdev->rate;
- 		hw->rate_max = i2sdev->rate;
- 	}
-@@ -283,6 +282,23 @@ void i2sbus_wait_for_stop_both(struct i2
- }
- #endif
+ 	d_addr = kmap_atomic(newpage);
+ 	copy_page(d_addr, s_addr);
++	kmsan_copy_page_meta(newpage, page);
+ 	kunmap_atomic(d_addr);
  
-+static void i2sbus_pcm_clear_active(struct i2sbus_dev *i2sdev, int in)
-+{
-+	struct pcm_info *pi;
-+
-+	guard(mutex)(&i2sdev->lock);
-+
-+	get_pcm_info(i2sdev, in, &pi, NULL);
-+	pi->active = 0;
-+}
-+
-+static inline int i2sbus_hw_params(struct snd_pcm_substream *substream,
-+				   struct snd_pcm_hw_params *params, int in)
-+{
-+	i2sbus_pcm_clear_active(snd_pcm_substream_chip(substream), in);
-+	return 0;
-+}
-+
- static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
- {
- 	struct i2sbus_dev *i2sdev = snd_pcm_substream_chip(substream);
-@@ -291,14 +307,27 @@ static inline int i2sbus_hw_free(struct
- 	get_pcm_info(i2sdev, in, &pi, NULL);
- 	if (pi->dbdma_ring.stopping)
- 		i2sbus_wait_for_stop(i2sdev, pi);
-+	i2sbus_pcm_clear_active(i2sdev, in);
- 	return 0;
- }
- 
-+static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream,
-+				     struct snd_pcm_hw_params *params)
-+{
-+	return i2sbus_hw_params(substream, params, 0);
-+}
-+
- static int i2sbus_playback_hw_free(struct snd_pcm_substream *substream)
- {
- 	return i2sbus_hw_free(substream, 0);
- }
- 
-+static int i2sbus_record_hw_params(struct snd_pcm_substream *substream,
-+				   struct snd_pcm_hw_params *params)
-+{
-+	return i2sbus_hw_params(substream, params, 1);
-+}
-+
- static int i2sbus_record_hw_free(struct snd_pcm_substream *substream)
- {
- 	return i2sbus_hw_free(substream, 1);
-@@ -335,7 +364,6 @@ static int i2sbus_pcm_prepare(struct i2s
- 		return -EINVAL;
- 
- 	runtime = pi->substream->runtime;
--	pi->active = 1;
- 	if (other->active &&
- 	    ((i2sdev->format != runtime->format)
- 	     || (i2sdev->rate != runtime->rate)))
-@@ -450,9 +478,11 @@ static int i2sbus_pcm_prepare(struct i2s
- 
- 	/* early exit if already programmed correctly */
- 	/* not locking these is fine since we touch them only in this function */
--	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
--	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
-+	if (in_le32(&i2sdev->intfregs->serial_format) == sfr &&
-+	    in_le32(&i2sdev->intfregs->data_word_sizes) == dws) {
-+		pi->active = 1;
- 		return 0;
-+	}
- 
- 	/* let's notify the codecs about clocks going away.
- 	 * For now we only do mastering on the i2s cell... */
-@@ -490,6 +520,7 @@ static int i2sbus_pcm_prepare(struct i2s
- 		if (cii->codec->switch_clock)
- 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
- 
-+	pi->active = 1;
- 	return 0;
- }
- 
-@@ -746,6 +777,7 @@ static snd_pcm_uframes_t i2sbus_playback
- static const struct snd_pcm_ops i2sbus_playback_ops = {
- 	.open =		i2sbus_playback_open,
- 	.close =	i2sbus_playback_close,
-+	.hw_params =	i2sbus_playback_hw_params,
- 	.hw_free =	i2sbus_playback_hw_free,
- 	.prepare =	i2sbus_playback_prepare,
- 	.trigger =	i2sbus_playback_trigger,
-@@ -814,6 +846,7 @@ static snd_pcm_uframes_t i2sbus_record_p
- static const struct snd_pcm_ops i2sbus_record_ops = {
- 	.open =		i2sbus_record_open,
- 	.close =	i2sbus_record_close,
-+	.hw_params =	i2sbus_record_hw_params,
- 	.hw_free =	i2sbus_record_hw_free,
- 	.prepare =	i2sbus_record_prepare,
- 	.trigger =	i2sbus_record_trigger,
+ 	for (addr = s_addr + offset; addr < s_addr + PAGE_SIZE;
 
 
 
