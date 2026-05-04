@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-243068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kK5bFUim+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:36 +0200
+	id OLrTNNyl+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:57:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64624BE42F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82694BE30C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0E40A306B27F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41625300A65D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993C23DA7D7;
-	Mon,  4 May 2026 13:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324493D6489;
+	Mon,  4 May 2026 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuHv7LCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VklSn83c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5E23A63EC;
-	Mon,  4 May 2026 13:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F9229BD9A;
+	Mon,  4 May 2026 13:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902935; cv=none; b=jNPnvqW8JXJIW58U7rBXn1BtdPQUzlz9rxQqQt8a+BILiPx9kfRepWoaqqmewmB3kXm15ekYvMkC1aORrIyIA69Kt2aFLMbSHYqMTsctgTq2V6PjmJ/dkLER0muqCZ6XGDPRiACr6Qbe/0URI626Swg0auOjYG6CiCzfaEk9mfI=
+	t=1777902938; cv=none; b=mAe+9cHzKEME4QySHsXKkt3VQ64o+EXR2Qpi9dGKiHY9y6eHBC+fkU/SNdhiQGqoNgXYyGEIp/qvi4NHTQkajpSpxbfIsE/Nwu1vMHrNQ89cszGeEy59PwWnT36iey8UlOqPHiJeGB9VTRZlXAG0hkuW8N3ZV5vXvCc7kXGyOrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902935; c=relaxed/simple;
-	bh=BfQMA1A2rPjoElYoEkR6wRISl1dgdAwLDQBnAoIpyqI=;
+	s=arc-20240116; t=1777902938; c=relaxed/simple;
+	bh=DZ7rXMCFvyEGWda2tvFQLDlFV/iPSzGmbTMmNLXD7wE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjbNkL9Sb8/sx0z49MDQGuL5DSFmb5rEqfQ6mD+cJE3gtOlV+nTizilIysaMF5oJuptR9SocEgTV9ilkP60rOnRX5K3i1qWXMvLyMJB12tlsu1e2Fpe2FfL5ra02KCWxOc1FBdBndfGWPwy/b0tWE3W12s8MPLBlxRLSWgFdo3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuHv7LCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E739AC2BCB8;
-	Mon,  4 May 2026 13:55:34 +0000 (UTC)
+	 MIME-Version; b=MyXTlDWj8WrU8ZGMZ/UmHU0ALqzmhJjomYeVN6RWDZef1Ch4NQffjmwgQTgH/ySMjr/+1Ilu0ZwdH8fmydHn6V+NsLHfZYF9LE+39M1kMb5tY15f0IedJDqZ4NpKko9SfssimrICPkAfNweBZ9B+9cu2GGdCTv3DoAgoflPU7PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VklSn83c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECD3C2BCB8;
+	Mon,  4 May 2026 13:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902935;
-	bh=BfQMA1A2rPjoElYoEkR6wRISl1dgdAwLDQBnAoIpyqI=;
+	s=korg; t=1777902937;
+	bh=DZ7rXMCFvyEGWda2tvFQLDlFV/iPSzGmbTMmNLXD7wE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuHv7LCuXnIZ/pB0LOsTDFP2PjWvVoaRZYBCwUp/u/6ug6HURpsuSOGKkTe+GHjrL
-	 TsqUpzyTgZAiPUembQ1YnTPFTjR/1pnpXsK1m4j4/P3k8lBei2Tk2wpROMjbsTwyMK
-	 mSie5ESsYtImPmZO9cobWcoT9LF3Zu9RDkpAzWgk=
+	b=VklSn83cWrLY4UUY1g/Ml8B8zlSCQNfeF/hxTqNN0XlwJtSLhV4iPJPSI301KJ/rH
+	 pPs0Zmf8j9CGywm2/e/YxhDXJF3161eshfV2qiQwhcuu+HVCwLDOZajRj/SlL/V9It
+	 u0XTK73eFGC79dnig3rhOkG4JXBecAi9m0Qz7phs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 7.0 040/307] um: drivers: call kernel_strrchr() explicitly in cow_user.c
-Date: Mon,  4 May 2026 15:48:45 +0200
-Message-ID: <20260504135144.328571787@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 7.0 041/307] thermal: core: Fix thermal zone governor cleanup issues
+Date: Mon,  4 May 2026 15:48:46 +0200
+Message-ID: <20260504135144.372575714@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
 References: <20260504135142.814938198@linuxfoundation.org>
@@ -64,95 +62,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C64624BE42F
+X-Rspamd-Queue-Id: D82694BE30C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243068-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243069-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,sipsolutions.net:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 91e901c65b4da02a6fd543e3f0049829ae9645b7 upstream.
+commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 upstream.
 
-Building ARCH=um on glibc >= 2.43 fails:
+If thermal_zone_device_register_with_trips() fails after adding
+a thermal governor to the thermal zone being registered, the
+governor is not removed from it as appropriate which may lead to
+a memory leak.
 
-  arch/um/drivers/cow_user.c: error: implicit declaration of
-  function 'strrchr' [-Wimplicit-function-declaration]
+In turn, thermal_zone_device_unregister() calls thermal_set_governor()
+without acquiring the thermal zone lock beforehand which may race with
+a governor update via sysfs and may lead to a use-after-free in that
+case.
 
-glibc 2.43's C23 const-preserving strrchr() macro does not survive
-UML's global -Dstrrchr=kernel_strrchr remap from arch/um/Makefile.
-Call kernel_strrchr() directly in cow_user.c so the source no longer
-depends on the -D rewrite.
+Address these issues by adding two thermal_set_governor() calls, one to
+thermal_release() to remove the governor from the given thermal zone,
+and one to the thermal zone registration error path to cover failures
+preceding the thermal zone device registration.
 
-Fixes: 2c51a4bc0233 ("um: fix strrchr() problems")
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260408070102.2325572-1-michael.bommarito@gmail.com
-[remove unnecessary 'extern']
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each thermal zone")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/cow_user.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/thermal/thermal_core.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/um/drivers/cow_user.c
-+++ b/arch/um/drivers/cow_user.c
-@@ -15,6 +15,12 @@
- #include "cow.h"
- #include "cow_sys.h"
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -964,6 +964,7 @@ static void thermal_release(struct devic
+ 		     sizeof("thermal_zone") - 1)) {
+ 		tz = to_thermal_zone(dev);
+ 		thermal_zone_destroy_device_groups(tz);
++		thermal_set_governor(tz, NULL);
+ 		mutex_destroy(&tz->lock);
+ 		complete(&tz->removal);
+ 	} else if (!strncmp(dev_name(dev), "cooling_device",
+@@ -1611,8 +1612,10 @@ thermal_zone_device_register_with_trips(
+ 	/* sys I/F */
+ 	/* Add nodes that are always present via .groups */
+ 	result = thermal_zone_create_device_groups(tz);
+-	if (result)
++	if (result) {
++		thermal_set_governor(tz, NULL);
+ 		goto remove_id;
++	}
  
-+/*
-+ * arch/um/Makefile remaps strrchr to kernel_strrchr; call the kernel
-+ * name directly to avoid glibc >= 2.43's C23 strrchr macro.
-+ */
-+char *kernel_strrchr(const char *, int);
-+
- #define PATH_LEN_V1 256
+ 	result = device_register(&tz->device);
+ 	if (result)
+@@ -1725,8 +1728,6 @@ void thermal_zone_device_unregister(stru
  
- /* unsigned time_t works until year 2106 */
-@@ -153,7 +159,7 @@ static int absolutize(char *to, int size
- 			   errno);
- 		return -1;
- 	}
--	slash = strrchr(from, '/');
-+	slash = kernel_strrchr(from, '/');
- 	if (slash != NULL) {
- 		*slash = '\0';
- 		if (chdir(from)) {
+ 	cancel_delayed_work_sync(&tz->poll_queue);
+ 
+-	thermal_set_governor(tz, NULL);
+-
+ 	thermal_thresholds_exit(tz);
+ 	thermal_remove_hwmon_sysfs(tz);
+ 	ida_free(&thermal_tz_ida, tz->id);
 
 
 
