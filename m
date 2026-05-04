@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJbXBo2q+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:49 +0200
+	id oDZzC7Kn+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAE24BF00C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9614BE7E2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3C015300B461
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C74323025E55
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97343D5254;
-	Mon,  4 May 2026 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865EE3DD53E;
+	Mon,  4 May 2026 14:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vz9i0AsV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBEIAeoc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D72E3BE630;
-	Mon,  4 May 2026 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497CE75801;
+	Mon,  4 May 2026 14:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904082; cv=none; b=k8HVat7/ldy45rWjeoW0PlfoqZoGLqbN8LVzai6RaYsre2HlbAP3GuYN6hHQhkumMKF8ygm8+6Y7fAyIkMM+GXo79MtMHchhHT9loNNtluYk1s148zIvRUjnx+arNT18l0oVsWB5eNGdGq3473mxHq0D6PZPjGRk+wAJCjfNr4Y=
+	t=1777903388; cv=none; b=MuMVs2xSaLnnY0uyWmXB0A/CMT9x3a8pWUbsysQ6b9qrexwJ264lr4LgdVFrAy8MEZqdITcMLdmAbAWQ0Clki1yD6yR+nabwg0TlndfjE93ryuXy5fpESe4PSOpYtQj50A+rAzgPqgd+hpydQQppw/SH2+adKsO91UvugMghNPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904082; c=relaxed/simple;
-	bh=KxtXCqojtfaZdwrucVMG5XarfHyVHyG4mU5yQ9BCft4=;
+	s=arc-20240116; t=1777903388; c=relaxed/simple;
+	bh=tR7S/vg5O6L9N/dLvu+YCTCKQImWYHdWzCCF/CJL3OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FleVr8Jt2cPnseH0ED4j9fHYyRWDCkPQRcQboY99Y+4m/Qt32IZnwNCPnMmLrLFzRrm+bK/NpBI7IBCPeveg7xsRme39eEoTjjnstjItaS5uV648tkbiZeI+CZQEAhqhLfab/vf+o8wBhWvCTC6su9ZEXiyylVzh1612aTl5jfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vz9i0AsV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DF9C2BCC4;
-	Mon,  4 May 2026 14:14:42 +0000 (UTC)
+	 MIME-Version; b=VHwtDgIfjh9gRe4VYn44jj0KtFad+yEKm/IXEHf1Sc5q1wNxitEqTD8F2NY2Mi98dtZfJILpfDdLY0xjjsUHmON4LIdakeUQZszLkGyVUQ5p3MB4TI9imUFhvt0tk6xM2E9shyo/7v4mt6E4vdwZxv4IBQF1VglW7L+OnmquyMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBEIAeoc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90474C2BCB8;
+	Mon,  4 May 2026 14:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904082;
-	bh=KxtXCqojtfaZdwrucVMG5XarfHyVHyG4mU5yQ9BCft4=;
+	s=korg; t=1777903387;
+	bh=tR7S/vg5O6L9N/dLvu+YCTCKQImWYHdWzCCF/CJL3OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vz9i0AsVYhhKHh0K6L7s2auiK9Jv8SEk59SbemoRrAcQEAFF5c+Hb/GcctodQQ5mM
-	 rHbLz2Elh2WHFBcKZuU7FTXkvcLacv5EK9Tmx3rmt59wwByTt2UEl5gWaj+JzleMQq
-	 duzPCabcFgntD21fqqOluXqVIX/BmMFebM7Z0SVM=
+	b=LBEIAeocI2UTkC99nNtc1N2iUG2tvbBr3vfWns4O+RhU1gci93LWG4mwV5st7PfWo
+	 so0Gx6RsJ1u7th1mfu8UZ4srxXJtZR2BdBpoi+0pKp+XXUdG2krz5vgwuqqyeBBvh2
+	 YxNmT6/3hnXVtEcREiA2L16C5gpNgtF3zbETYyNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacqueline Wong <jacqwong@google.com>,
-	Jordan Hand <jhand@google.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.18 159/275] tpm: tpm_tis: stop transmit if retries are exhausted
-Date: Mon,  4 May 2026 15:51:39 +0200
-Message-ID: <20260504135148.910264608@linuxfoundation.org>
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 215/307] KVM: SVM: Add missing save/restore handling of LBR MSRs
+Date: Mon,  4 May 2026 15:51:40 +0200
+Message-ID: <20260504135150.957179987@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DAAE24BF00C
+X-Rspamd-Queue-Id: EC9614BE7E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243515-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243244-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -93,55 +93,140 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacqueline Wong <jacqwong@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 949692da7211572fac419b2986b6abc0cd1aeb76 upstream.
+commit 3700f0788da6acf73b2df56690f4b201aa4aefd2 upstream.
 
-tpm_tis_send_main() will attempt to retry sending data TPM_RETRY times.
-Currently, if those retries are exhausted, the driver will attempt to
-call execute. The TPM will be in the wrong state, leading to the
-operation simply timing out.
+MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
+KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. So
+save/restore is completely broken.
 
-Instead, if there is still an error after retries are exhausted, return
-that error immediately.
+Fix it by adding the MSRs to msrs_to_save_base, and allowing writes to
+LBR MSRs from userspace only (as they are read-only MSRs) if LBR
+virtualization is enabled.  Additionally, to correctly restore L1's LBRs
+while L2 is running, make sure the LBRs are copied from the captured
+VMCB01 save area in svm_copy_vmrun_state().
 
-Cc: stable@vger.kernel.org # v6.6+
-Fixes: 280db21e153d8 ("tpm_tis: Resend command to recover from data transfer errors")
-Signed-off-by: Jacqueline Wong <jacqwong@google.com>
-Signed-off-by: Jordan Hand <jhand@google.com>
-Link: https://lore.kernel.org/r/20260415160006.2275325-3-jacqwong@google.com
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Note, for VMX, this also fixes a flaw where MSR_IA32_DEBUGCTLMSR isn't
+reported as an MSR to save/restore.
+
+Note #2, over-reporting MSR_IA32_LASTxxx on Intel is ok, as KVM already
+handles unsupported reads and writes thanks to commit b5e2fec0ebc3 ("KVM:
+Ignore DEBUGCTL MSRs with no effect") (kvm_do_msr_access() will morph the
+unsupported userspace write into a nop).
+
+Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
+Cc: stable@vger.kernel.org
+Reported-by: Jim Mattson <jmattson@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-4-yosry@kernel.org
+[sean: guard with lbrv checks, massage changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    5 +++++
+ arch/x86/kvm/svm/svm.c    |   42 +++++++++++++++++++++++++++++++++++++-----
+ arch/x86/kvm/x86.c        |    3 +++
+ 3 files changed, 45 insertions(+), 5 deletions(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -557,11 +557,16 @@ static int tpm_tis_send_main(struct tpm_
- 			break;
- 		else if (rc != -EAGAIN && rc != -EIO)
- 			/* Data transfer failed, not recoverable */
--			return rc;
-+			goto out_err;
- 
- 		usleep_range(priv->timeout_min, priv->timeout_max);
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1109,6 +1109,11 @@ void svm_copy_vmrun_state(struct vmcb_sa
+ 		to_save->isst_addr = from_save->isst_addr;
+ 		to_save->ssp = from_save->ssp;
  	}
- 
-+	if (rc == -EAGAIN || rc == -EIO) {
-+		dev_err(&chip->dev, "Exhausted %d tpm_tis_send_data retries\n", TPM_RETRY);
-+		goto out_err;
-+	}
 +
- 	/* go and do it */
- 	rc = tpm_tis_write8(priv, TPM_STS(priv->locality), TPM_STS_GO);
- 	if (rc < 0)
++	if (kvm_cpu_cap_has(X86_FEATURE_LBRV)) {
++		svm_copy_lbrs(to_save, from_save);
++		to_save->dbgctl &= ~DEBUGCTL_RESERVED_BITS;
++	}
+ }
+ 
+ void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2788,19 +2788,19 @@ static int svm_get_msr(struct kvm_vcpu *
+ 		msr_info->data = svm->tsc_aux;
+ 		break;
+ 	case MSR_IA32_DEBUGCTLMSR:
+-		msr_info->data = svm->vmcb->save.dbgctl;
++		msr_info->data = lbrv ? svm->vmcb->save.dbgctl : 0;
+ 		break;
+ 	case MSR_IA32_LASTBRANCHFROMIP:
+-		msr_info->data = svm->vmcb->save.br_from;
++		msr_info->data = lbrv ? svm->vmcb->save.br_from : 0;
+ 		break;
+ 	case MSR_IA32_LASTBRANCHTOIP:
+-		msr_info->data = svm->vmcb->save.br_to;
++		msr_info->data = lbrv ? svm->vmcb->save.br_to : 0;
+ 		break;
+ 	case MSR_IA32_LASTINTFROMIP:
+-		msr_info->data = svm->vmcb->save.last_excp_from;
++		msr_info->data = lbrv ? svm->vmcb->save.last_excp_from : 0;
+ 		break;
+ 	case MSR_IA32_LASTINTTOIP:
+-		msr_info->data = svm->vmcb->save.last_excp_to;
++		msr_info->data = lbrv ? svm->vmcb->save.last_excp_to : 0;
+ 		break;
+ 	case MSR_VM_HSAVE_PA:
+ 		msr_info->data = svm->nested.hsave_msr;
+@@ -3075,6 +3075,38 @@ static int svm_set_msr(struct kvm_vcpu *
+ 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+ 		svm_update_lbrv(vcpu);
+ 		break;
++	case MSR_IA32_LASTBRANCHFROMIP:
++		if (!lbrv)
++			return KVM_MSR_RET_UNSUPPORTED;
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.br_from = data;
++		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
++		break;
++	case MSR_IA32_LASTBRANCHTOIP:
++		if (!lbrv)
++			return KVM_MSR_RET_UNSUPPORTED;
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.br_to = data;
++		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
++		break;
++	case MSR_IA32_LASTINTFROMIP:
++		if (!lbrv)
++			return KVM_MSR_RET_UNSUPPORTED;
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.last_excp_from = data;
++		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
++		break;
++	case MSR_IA32_LASTINTTOIP:
++		if (!lbrv)
++			return KVM_MSR_RET_UNSUPPORTED;
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.last_excp_to = data;
++		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
++		break;
+ 	case MSR_VM_HSAVE_PA:
+ 		/*
+ 		 * Old kernels did not validate the value written to
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -351,6 +351,9 @@ static const u32 msrs_to_save_base[] = {
+ 	MSR_IA32_U_CET, MSR_IA32_S_CET,
+ 	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
+ 	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
++	MSR_IA32_DEBUGCTLMSR,
++	MSR_IA32_LASTBRANCHFROMIP, MSR_IA32_LASTBRANCHTOIP,
++	MSR_IA32_LASTINTFROMIP, MSR_IA32_LASTINTTOIP,
+ };
+ 
+ static const u32 msrs_to_save_pmu[] = {
 
 
 
