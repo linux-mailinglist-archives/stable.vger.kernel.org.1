@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-243362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UImpHUOp+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:19 +0200
+	id sK6oNOSl+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:57:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346A54BEC7E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5314BE31B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A9F83029126
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 14750300AB2B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610EA3DE459;
-	Mon,  4 May 2026 14:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218E83D47D0;
+	Mon,  4 May 2026 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tm3+Fnnx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbEmFcmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2491C3DE44E;
-	Mon,  4 May 2026 14:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D975929BD9A;
+	Mon,  4 May 2026 13:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903691; cv=none; b=XCyYvhPJjKEZuuEKc8VBjNJSbFqczwgTy8i6OqA0mlkxyR4pFcf1C+cnWyczCVteo/06bFu/pAWFwS7rsyuOIxpOFBPpXztp/YdGYu9jSR02gHoA+bGq6GRxxVG+wPSv5UqeQtG2YAMVgs0ESNXyWvSTf0312pu8RrlW10jn5GU=
+	t=1777903017; cv=none; b=jLKm0v8GlUegcDcff6ofWo6Q6YxN9JylW6K6x+fccEzH3vNOqHWf2L11zMb7gv8P1+IzletoVEoawVD+a4/eEA1QsDMviMCMyVGjIJzB81mgCQSI90ywvJO/FezSCClmZWOq1GY7xMgQXEs7Ju5fV6DvrbfzaCtJR7zGemzCegY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903691; c=relaxed/simple;
-	bh=pZGR9ib/3slOuxUIq+gqjCU/GEuZO7rqEgb/a/iwwJc=;
+	s=arc-20240116; t=1777903017; c=relaxed/simple;
+	bh=22IfEK9vPCNFpS1Lde+q5vzqS2ZGdzDtJKGpG8jl0N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/slq2k+mHC+3vIqADgp7WDses0guY+QAitSxt5b5ByAACIbai+pfDKNeDK58GyOz6k7JW4K7GRp5j544gu5NaIZe2ycDK64yT52n3exGGHsNQN5wKl+mozux2/0Frjf6LVdqhqbror0tVDIWbBDe11dbFmRjCPgUU9belm06tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tm3+Fnnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F5EC2BCB8;
-	Mon,  4 May 2026 14:08:10 +0000 (UTC)
+	 MIME-Version; b=A+/gN3K592kmTwoMT6aSv5x2bV6JouY4QYC+NHCj/RyH/i/82i7hxHqE9wmGt3puC2M+OBTMunwUw9LkCoYha+GS1oeubiwbgEQQZEMZHPWNEyymvW5F7zit3AsTMgdMLM/IU0qMHfSkezH94/fKM/SCB6NZeU59iWQzEQTqabA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbEmFcmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70533C2BCB8;
+	Mon,  4 May 2026 13:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903691;
-	bh=pZGR9ib/3slOuxUIq+gqjCU/GEuZO7rqEgb/a/iwwJc=;
+	s=korg; t=1777903017;
+	bh=22IfEK9vPCNFpS1Lde+q5vzqS2ZGdzDtJKGpG8jl0N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tm3+Fnnxf0026vlGQs7RM+4ISrSWdvDYhTHkPy8t677AJeaMY1PZw/GZutafErV2+
-	 JecsM7BkSttv88QcWtg8X4dGFO3sGJS2orcI+8T3j5DZd8ftTVk18GtMqH8UBXz+fD
-	 GDhiBZzMowFSt5GRNMMzrgbL29RS8y+OMBmWj/SU=
+	b=lbEmFcmwTTHTiq6qQ0XKgIoRnShlcfcHxXDIR753iMYIda142wvp7POgMQGXDI3Dc
+	 OUH/IMhT0e1a1CtqL8oPyR4IVQAXszAqRz3dGLgUmQnvKwS/GLtsGm911CZ7aqNVQU
+	 SD3vQDhCBniX/AVpAHk614p78x5CgcgI3RGRy6uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.18 017/275] device property: Make modifications of fwnode "flags" thread safe
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 7.0 072/307] erofs: fix the out-of-bounds nameoff handling for trailing dirents
 Date: Mon,  4 May 2026 15:49:17 +0200
-Message-ID: <20260504135143.578033427@linuxfoundation.org>
+Message-ID: <20260504135145.526180631@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,349 +65,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 346A54BEC7E
+X-Rspamd-Queue-Id: 6E5314BE31B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243362-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-243100-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,chromium.org:email,sang-engineering.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,alibaba.com:email,sashiko.dev:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit f72e77c33e4b5657af35125e75bab249256030f3 upstream.
+commit d18a3b5d337fa412a38e776e6b4b857a58836575 upstream.
 
-In various places in the kernel, we modify the fwnode "flags" member
-by doing either:
-  fwnode->flags |= SOME_FLAG;
-  fwnode->flags &= ~SOME_FLAG;
+Currently we already have boundary-checks for nameoffs, but the trailing
+dirents are special since the namelens are calculated with strnlen()
+with unchecked nameoffs.
 
-This type of modification is not thread-safe. If two threads are both
-mucking with the flags at the same time then one can clobber the
-other.
+If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
+maxsize - nameoff can underflow, causing strnlen() to read past the
+directory block.
 
-While flags are often modified while under the "fwnode_link_lock",
-this is not universally true.
+nameoff0 should also be verified to be a multiple of
+`sizeof(struct erofs_dirent)` as well [1].
 
-Create some accessor functions for setting, clearing, and testing the
-FWNODE flags and move all users to these accessor functions. New
-accessor functions use set_bit() and clear_bit(), which are
-thread-safe.
+[1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
 
+Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
 Cc: stable@vger.kernel.org
-Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Saravana Kannan <saravanak@kernel.org>
-Link: https://patch.msgid.link/20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid
-[ Fix fwnode_clear_flag() argument alignment, restore dropped blank
-  line in fwnode_dev_initialized(), and remove unnecessary parentheses
-  around fwnode_test_flag() calls. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c                 |   24 +++++++++----------
- drivers/bus/imx-weim.c              |    2 -
- drivers/i2c/i2c-core-of.c           |    2 -
- drivers/net/phy/mdio_bus_provider.c |    4 +--
- drivers/of/base.c                   |    2 -
- drivers/of/dynamic.c                |    2 -
- drivers/of/platform.c               |    2 -
- drivers/spi/spi.c                   |    2 -
- include/linux/fwnode.h              |   44 +++++++++++++++++++++++++++---------
- 9 files changed, 53 insertions(+), 31 deletions(-)
+ fs/erofs/dir.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -182,7 +182,7 @@ void fw_devlink_purge_absent_suppliers(s
- 	if (fwnode->dev)
- 		return;
+--- a/fs/erofs/dir.c
++++ b/fs/erofs/dir.c
+@@ -19,20 +19,18 @@ static int erofs_fill_dentries(struct in
+ 		const char *de_name = (char *)dentry_blk + nameoff;
+ 		unsigned int de_namelen;
  
--	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
- 	fwnode_links_purge_consumers(fwnode);
+-		/* the last dirent in the block? */
+-		if (de + 1 >= end)
+-			de_namelen = strnlen(de_name, maxsize - nameoff);
+-		else
++		/* non-trailing dirent in the directory block? */
++		if (de + 1 < end)
+ 			de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
++		else if (maxsize <= nameoff)
++			goto err_bogus;
++		else
++			de_namelen = strnlen(de_name, maxsize - nameoff);
  
- 	fwnode_for_each_available_child_node(fwnode, child)
-@@ -228,7 +228,7 @@ static void __fw_devlink_pickup_dangling
- 	if (fwnode->dev && fwnode->dev->bus)
- 		return;
+-		/* a corrupted entry is found */
+-		if (nameoff + de_namelen > maxsize ||
+-		    de_namelen > EROFS_NAME_LEN) {
+-			erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+-				  EROFS_I(dir)->nid);
+-			DBG_BUGON(1);
+-			return -EFSCORRUPTED;
+-		}
++		/* a corrupted entry is found (including negative namelen) */
++		if (!in_range32(de_namelen, 1, EROFS_NAME_LEN) ||
++		    nameoff + de_namelen > maxsize)
++			goto err_bogus;
  
--	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
- 	__fwnode_links_move_consumers(fwnode, new_sup);
- 
- 	fwnode_for_each_available_child_node(fwnode, child)
-@@ -1012,7 +1012,7 @@ static void device_links_missing_supplie
- static bool dev_is_best_effort(struct device *dev)
- {
- 	return (fw_devlink_best_effort && dev->can_match) ||
--		(dev->fwnode && (dev->fwnode->flags & FWNODE_FLAG_BEST_EFFORT));
-+		(dev->fwnode && fwnode_test_flag(dev->fwnode, FWNODE_FLAG_BEST_EFFORT));
- }
- 
- static struct fwnode_handle *fwnode_links_check_suppliers(
-@@ -1723,11 +1723,11 @@ bool fw_devlink_is_strict(void)
- 
- static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
- {
--	if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
-+	if (fwnode_test_flag(fwnode, FWNODE_FLAG_LINKS_ADDED))
- 		return;
- 
- 	fwnode_call_int_op(fwnode, add_links);
--	fwnode->flags |= FWNODE_FLAG_LINKS_ADDED;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_LINKS_ADDED);
- }
- 
- static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
-@@ -1885,7 +1885,7 @@ static bool fwnode_init_without_drv(stru
- 	struct device *dev;
- 	bool ret;
- 
--	if (!(fwnode->flags & FWNODE_FLAG_INITIALIZED))
-+	if (!fwnode_test_flag(fwnode, FWNODE_FLAG_INITIALIZED))
- 		return false;
- 
- 	dev = get_dev_from_fwnode(fwnode);
-@@ -2001,10 +2001,10 @@ static bool __fw_devlink_relax_cycles(st
- 	 * We aren't trying to find all cycles. Just a cycle between con and
- 	 * sup_handle.
- 	 */
--	if (sup_handle->flags & FWNODE_FLAG_VISITED)
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_VISITED))
- 		return false;
- 
--	sup_handle->flags |= FWNODE_FLAG_VISITED;
-+	fwnode_set_flag(sup_handle, FWNODE_FLAG_VISITED);
- 
- 	/* Termination condition. */
- 	if (sup_handle == con_handle) {
-@@ -2074,7 +2074,7 @@ static bool __fw_devlink_relax_cycles(st
+ 		if (!dir_emit(ctx, de_name, de_namelen,
+ 			      erofs_nid_to_ino64(EROFS_SB(dir->i_sb),
+@@ -42,6 +40,10 @@ static int erofs_fill_dentries(struct in
+ 		ctx->pos += sizeof(struct erofs_dirent);
  	}
- 
- out:
--	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
-+	fwnode_clear_flag(sup_handle, FWNODE_FLAG_VISITED);
- 	put_device(sup_dev);
- 	put_device(con_dev);
- 	put_device(par_dev);
-@@ -2127,7 +2127,7 @@ static int fw_devlink_create_devlink(str
- 	 * When such a flag is set, we can't create device links where P is the
- 	 * supplier of C as that would delay the probe of C.
- 	 */
--	if (sup_handle->flags & FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD &&
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD) &&
- 	    fwnode_is_ancestor_of(sup_handle, con->fwnode))
- 		return -EINVAL;
- 
-@@ -2150,7 +2150,7 @@ static int fw_devlink_create_devlink(str
- 	else
- 		flags = FW_DEVLINK_FLAGS_PERMISSIVE;
- 
--	if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NOT_DEVICE))
- 		sup_dev = fwnode_get_next_parent_dev(sup_handle);
- 	else
- 		sup_dev = get_dev_from_fwnode(sup_handle);
-@@ -2162,7 +2162,7 @@ static int fw_devlink_create_devlink(str
- 		 * supplier device indefinitely.
- 		 */
- 		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
--		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-+		    fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED)) {
- 			dev_dbg(con,
- 				"Not linking %pfwf - dev might never probe\n",
- 				sup_handle);
---- a/drivers/bus/imx-weim.c
-+++ b/drivers/bus/imx-weim.c
-@@ -332,7 +332,7 @@ static int of_weim_notify(struct notifie
- 			 * fw_devlink doesn't skip adding consumers to this
- 			 * device.
- 			 */
--			rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+			fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 			if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
- 				dev_err(&pdev->dev,
- 					"Failed to create child device '%pOF'\n",
---- a/drivers/i2c/i2c-core-of.c
-+++ b/drivers/i2c/i2c-core-of.c
-@@ -180,7 +180,7 @@ static int of_i2c_notify(struct notifier
- 		 * Clear the flag before adding the device so that fw_devlink
- 		 * doesn't skip adding consumers to this device.
- 		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+		fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 		client = of_i2c_register_device(adap, rd->dn);
- 		if (IS_ERR(client)) {
- 			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
---- a/drivers/net/phy/mdio_bus_provider.c
-+++ b/drivers/net/phy/mdio_bus_provider.c
-@@ -299,8 +299,8 @@ int __mdiobus_register(struct mii_bus *b
- 		return -EINVAL;
- 
- 	if (bus->parent && bus->parent->of_node)
--		bus->parent->of_node->fwnode.flags |=
--					FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD;
-+		fwnode_set_flag(&bus->parent->of_node->fwnode,
-+				FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD);
- 
- 	WARN(bus->state != MDIOBUS_ALLOCATED &&
- 	     bus->state != MDIOBUS_UNREGISTERED,
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1868,7 +1868,7 @@ void of_alias_scan(void * (*dt_alloc)(u6
- 		if (name)
- 			of_stdout = of_find_node_opts_by_path(name, &of_stdout_options);
- 		if (of_stdout)
--			of_stdout->fwnode.flags |= FWNODE_FLAG_BEST_EFFORT;
-+			fwnode_set_flag(&of_stdout->fwnode, FWNODE_FLAG_BEST_EFFORT);
- 	}
- 
- 	if (!of_aliases)
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -225,7 +225,7 @@ static void __of_attach_node(struct devi
- 	np->sibling = np->parent->child;
- 	np->parent->child = np;
- 	of_node_clear_flag(np, OF_DETACHED);
--	np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
-+	fwnode_set_flag(&np->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 
- 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
- 
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -743,7 +743,7 @@ static int of_platform_notify(struct not
- 		 * Clear the flag before adding the device so that fw_devlink
- 		 * doesn't skip adding consumers to this device.
- 		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+		fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 		/* pdev_parent may be NULL when no bus platform device */
- 		pdev_parent = of_find_device_by_node(parent);
- 		pdev = of_platform_device_create(rd->dn, NULL,
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4801,7 +4801,7 @@ static int of_spi_notify(struct notifier
- 		 * Clear the flag before adding the device so that fw_devlink
- 		 * doesn't skip adding consumers to this device.
- 		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+		fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 		spi = of_register_spi_device(ctlr, rd->dn);
- 		put_device(&ctlr->dev);
- 
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -15,6 +15,7 @@
- #define _LINUX_FWNODE_H_
- 
- #include <linux/bits.h>
-+#include <linux/bitops.h>
- #include <linux/err.h>
- #include <linux/list.h>
- #include <linux/types.h>
-@@ -42,12 +43,12 @@ struct device;
-  *		suppliers. Only enforce ordering with suppliers that have
-  *		drivers.
-  */
--#define FWNODE_FLAG_LINKS_ADDED			BIT(0)
--#define FWNODE_FLAG_NOT_DEVICE			BIT(1)
--#define FWNODE_FLAG_INITIALIZED			BIT(2)
--#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	BIT(3)
--#define FWNODE_FLAG_BEST_EFFORT			BIT(4)
--#define FWNODE_FLAG_VISITED			BIT(5)
-+#define FWNODE_FLAG_LINKS_ADDED			0
-+#define FWNODE_FLAG_NOT_DEVICE			1
-+#define FWNODE_FLAG_INITIALIZED			2
-+#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	3
-+#define FWNODE_FLAG_BEST_EFFORT			4
-+#define FWNODE_FLAG_VISITED			5
- 
- struct fwnode_handle {
- 	struct fwnode_handle *secondary;
-@@ -57,7 +58,7 @@ struct fwnode_handle {
- 	struct device *dev;
- 	struct list_head suppliers;
- 	struct list_head consumers;
--	u8 flags;
-+	unsigned long flags;
- };
- 
- /*
-@@ -212,16 +213,37 @@ static inline void fwnode_init(struct fw
- 	INIT_LIST_HEAD(&fwnode->suppliers);
+ 	return 0;
++err_bogus:
++	erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
++	DBG_BUGON(1);
++	return -EFSCORRUPTED;
  }
  
-+static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
-+				   unsigned int bit)
-+{
-+	set_bit(bit, &fwnode->flags);
-+}
-+
-+static inline void fwnode_clear_flag(struct fwnode_handle *fwnode,
-+				     unsigned int bit)
-+{
-+	clear_bit(bit, &fwnode->flags);
-+}
-+
-+static inline void fwnode_assign_flag(struct fwnode_handle *fwnode,
-+				      unsigned int bit, bool value)
-+{
-+	assign_bit(bit, &fwnode->flags, value);
-+}
-+
-+static inline bool fwnode_test_flag(struct fwnode_handle *fwnode,
-+				    unsigned int bit)
-+{
-+	return test_bit(bit, &fwnode->flags);
-+}
-+
- static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
- 					  bool initialized)
- {
- 	if (IS_ERR_OR_NULL(fwnode))
- 		return;
+ static int erofs_readdir(struct file *f, struct dir_context *ctx)
+@@ -88,7 +90,7 @@ static int erofs_readdir(struct file *f,
+ 		}
  
--	if (initialized)
--		fwnode->flags |= FWNODE_FLAG_INITIALIZED;
--	else
--		fwnode->flags &= ~FWNODE_FLAG_INITIALIZED;
-+	fwnode_assign_flag(fwnode, FWNODE_FLAG_INITIALIZED, initialized);
- }
- 
- int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
+ 		nameoff = le16_to_cpu(de->nameoff);
+-		if (nameoff < sizeof(struct erofs_dirent) || nameoff >= bsz) {
++		if (!nameoff || nameoff >= bsz || (nameoff % sizeof(*de))) {
+ 			erofs_err(sb, "invalid de[0].nameoff %u @ nid %llu",
+ 				  nameoff, EROFS_I(dir)->nid);
+ 			err = -EFSCORRUPTED;
 
 
 
