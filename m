@@ -1,65 +1,64 @@
-Return-Path: <stable+bounces-243503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMuxM4qq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:46 +0200
+	id iHzBEQGs+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474AE4BEFFD
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317164BF491
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4554F3042037
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9F9C5303F4FA
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077243DE422;
-	Mon,  4 May 2026 14:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7A29E116;
+	Mon,  4 May 2026 14:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzGCDdhM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gTUY+Hv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC1A3D300A;
-	Mon,  4 May 2026 14:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C86035A3AD;
+	Mon,  4 May 2026 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904051; cv=none; b=SV+lbL1Ub+TbCn+d+0s29ip/2m5MIpldyn5mscJkME43TXcpv/7D55aHQt9gJqz2ve0AJya0jI+bKfPxmaaPPw/6uqaiBsgwl64FkhLd2ReB3rOpJHGVAHq0rBak6T4fBzUsTF00GSFXasoz3z/eyTI5FmRRK/UkrEHJt+ojSYE=
+	t=1777904448; cv=none; b=JBHWt4jxWTIVj77bAixo/FTZXi+7DWMtTwP6NxWeCMzuLLed0VDxbpwjFM/meIK5ceRCykHvju9tSPSTxkAyHGSC1ZVxzGEJgfXRi39FK/IL1G1Io/uTbConxrqOoz4qNcThSE1KUEEEgtsFNYQu5kGcD/0qksUvu3NRL5/9NF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904051; c=relaxed/simple;
-	bh=se7XlK9K9klWw78kSPZmoes7h+mk3sX3/L9FRGSAo34=;
+	s=arc-20240116; t=1777904448; c=relaxed/simple;
+	bh=hWAt4RQmPCkyZcUZ6DCcN2Vp+9glGG74zVA9vKyJfRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlhbYMZQXsfT74IvzyfVNZGX417mhFeAXmH7zd+4PUPjOqkTdyJ90TOjvVWhq2LIlF9fBph1/IY2EFFCmauJslZDqlICe2sZ9cC2IZAL8eOD97oka5v8mWOfIQWcfPRVWZLMIlLGT+S0CgjtxhdidfAQQKTessSnSUduOIAjHLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzGCDdhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B49C2BCB8;
-	Mon,  4 May 2026 14:14:11 +0000 (UTC)
+	 MIME-Version; b=X0iurz7p3bzjzQVkxtGUbZV1EuwMJDtK7gmycjVG/0CQoZGYs/xjQraaxCoO78+SX6X4c/ECgR9veHm4xF13T9AVWttrtr2iRCCZuYsckYCxJ1RpecrzUmWDS9jHDTmRM+IbCzCFCbIiPqW2LBINr0Mc+/lDlEC7E92MNDphvMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gTUY+Hv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FE4C2BCB8;
+	Mon,  4 May 2026 14:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904051;
-	bh=se7XlK9K9klWw78kSPZmoes7h+mk3sX3/L9FRGSAo34=;
+	s=korg; t=1777904447;
+	bh=hWAt4RQmPCkyZcUZ6DCcN2Vp+9glGG74zVA9vKyJfRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzGCDdhMjsohSVsbWIaycmVRXMTxZxzG20PtKoQFBVGkbFYh8heT/ugiBtYIRSC6Y
-	 r0r4i7nGRYLKUPD0PBnjA9VPW7llmn2kqMrLO4h43tuCmwtPs+XNo5xcHgmjK45vmA
-	 g0MDI65RTNq9TequIkpo6odHeB9ZaZL4ri2QCVyQ=
+	b=1gTUY+Hv7ysL0rTPaS58F58Pavh2gAk8VHlRAmTmjh1TNq2V1FdFs3HaihMDC4iMB
+	 TNn6NPZm58SvhGEPocvXgXSccZ6P3C9GNBjI0xrTNivxrYGiO55GcMmu+lRi5yt1z0
+	 BecAvpIMel1jW+f2fK2TCh595NT8or41PY/zey+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
 	Yifan Wu <yifanwucs@gmail.com>,
 	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
 	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
 	Ren Wei <n05ec@lzu.edu.cn>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 122/275] net/smc: avoid early lgr access in smc_clc_wait_msg
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 043/215] net: strparser: fix skb_head leak in strp_abort_strp()
 Date: Mon,  4 May 2026 15:51:02 +0200
-Message-ID: <20260504135147.438761301@linuxfoundation.org>
+Message-ID: <20260504135131.754019984@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +69,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 474AE4BEFFD
+X-Rspamd-Queue-Id: 317164BF491
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243503-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,linux.alibaba.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
+	TAGGED_FROM(0.00)[bounces-243658-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,alibaba.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-commit 5a8db80f721deee8e916c2cfdee78decda02ce4f upstream.
+commit fe72340daaf1af588be88056faf98965f39e6032 upstream.
 
-A CLC decline can be received while the handshake is still in an early
-stage, before the connection has been associated with a link group.
+When the stream parser is aborted, for example after a message assembly timeout,
+it can still hold a reference to a partially assembled message in
+strp->skb_head.
 
-The decline handling in smc_clc_wait_msg() updates link-group level sync
-state for first-contact declines, but that state only exists after link
-group setup has completed. Guard the link-group update accordingly and
-keep the per-socket peer diagnosis handling unchanged.
+That skb is not released in strp_abort_strp(), which leaks the partially
+assembled message and can be triggered repeatedly to exhaust memory.
 
-This preserves the existing sync_err handling for established link-group
-contexts and avoids touching link-group state before it is available.
+Fix this by freeing strp->skb_head and resetting the parser state in the
+abort path. Leave strp_stop() unchanged so final cleanup still happens in
+strp_done() after the work and timer have been synchronized.
 
-Fixes: 0cfdd8f92cac ("smc: connection and link group creation")
+Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
 Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
 Reported-by: Yifan Wu <yifanwucs@gmail.com>
 Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
 Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/08c68a5c817acf198cce63d22517e232e8d60718.1776850759.git.ruijieli51@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/ade3857a9404999ce9a1c27ec523efc896072678.1775482694.git.rakukuip@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/smc_clc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/strparser/strparser.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -788,8 +788,8 @@ int smc_clc_wait_msg(struct smc_sock *sm
- 		dclc = (struct smc_clc_msg_decline *)clcm;
- 		reason_code = SMC_CLC_DECL_PEERDECL;
- 		smc->peer_diagnosis = ntohl(dclc->peer_diagnosis);
--		if (((struct smc_clc_msg_decline *)buf)->hdr.typev2 &
--						SMC_FIRST_CONTACT_MASK) {
-+		if ((dclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK) &&
-+		    smc->conn.lgr) {
- 			smc->conn.lgr->sync_err = 1;
- 			smc_lgr_terminate_sched(smc->conn.lgr);
- 		}
+--- a/net/strparser/strparser.c
++++ b/net/strparser/strparser.c
+@@ -45,6 +45,14 @@ static void strp_abort_strp(struct strpa
+ 
+ 	strp->stopped = 1;
+ 
++	if (strp->skb_head) {
++		kfree_skb(strp->skb_head);
++		strp->skb_head = NULL;
++	}
++
++	strp->skb_nextp = NULL;
++	strp->need_bytes = 0;
++
+ 	if (strp->sk) {
+ 		struct sock *sk = strp->sk;
+ 
 
 
 
