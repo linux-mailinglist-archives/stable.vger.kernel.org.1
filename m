@@ -1,88 +1,97 @@
-Return-Path: <stable+bounces-243923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGa+M+wg+Wmz5wIAu9opvQ
-	(envelope-from <stable+bounces-243923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:42:52 +0200
+	id EDpeFkYh+Wmz5wIAu9opvQ
+	(envelope-from <stable+bounces-243924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:44:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4744C47F7
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:42:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13344C4831
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 00:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA271301A1E0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:41:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A26743046E9D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 22:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033D738734A;
-	Mon,  4 May 2026 22:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B743C38757D;
+	Mon,  4 May 2026 22:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GbJ23uc/"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CBcINOEG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2DC388E56
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 22:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9694387581
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 22:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777934511; cv=none; b=hg++xVFuF9CvevaP1RqCMXCuzPSjqlyUbTpjqjRNbLk1WxyE9RJ7jnxXXZ1Galr/ajonm9Ae75F+cOo9q357tdO9/zOgcDu8y9vJK50GqHLyb+BWt2guL0ow3NOEIHk6aZoLc1HnyR7z4qQc/Vfzj1Y1kOmPXhM4m4vGSatAKgY=
+	t=1777934558; cv=none; b=ZgKXevfg4fenE/6omZZJOVMVHoEbWVSe2e1JD7w+87AKWVuV4Pbiz3o4zTFC5SPz9vx3lTunSqO10wDmcappxpomLR9ZzAucz/QlzJLilUVy2BQ70VC1oFYRWRSOD5IDBU04pJqy9g4TwzyoCjaD7DhWZZ+FdwYzsZbM3XoDe2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777934511; c=relaxed/simple;
-	bh=Lq+8W0uithjpGO8AyqVL+ucnl8xpjGmvE8KbBwpzx6A=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m2HriWSBpbFXoy0BGa81ywOvyPLehX72KMdmzmfHx0d8yQ4Zkn86GNwSt5L28P3YGWWMIJpX953wFbK2AJFvFFnjbqJj2gMWX6YCQW6aT88qDX887SeR+nPC6rVfA0W+hkFaKdx4fae5kPL5qJ6jUJtDhPtYbdRE2r5fQiycxFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GbJ23uc/; arc=none smtp.client-ip=209.85.160.74
+	s=arc-20240116; t=1777934558; c=relaxed/simple;
+	bh=rDuwAeB4ha58gotrneg8EsaMOT+AwZ1dhESIVBbvmoQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QeIETYUwicw0H6VVw/YuPt2ECleYJ9nod3zwtJ4hThZa+e4yXzO+XqDsY94UdIVHCsvxTBaxoFPb1Oq1zU1nPPXcOdJjzrNP56fndDBil6oq5sAzFgH+rb4i/ikz43+4w6FXdAuTK+suLCSeSOnxdT07KpuPxNhXlQDcsIQYGEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CBcINOEG; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com
-Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-42fb0f12b10so5401186fac.2
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 15:41:48 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8353df9bc7eso1951371b3a.2
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 15:42:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777934507; x=1778539307; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=47ROPB2Em/ngAJ0XtKAFAEw2BzcABtJdB2FL97PM0d8=;
-        b=GbJ23uc/uOACCjEQaqECtKg10vtHFkH0BczkAqCOactwGxQJRSyd7mQjolJOj+LAbW
-         sr1Wbcb767bSp0mD2736sdQuAQt3EYN9XdNVasJZVnSGSs0HmCSS2+wXG5N1azvknap7
-         ThxJ93voM53Op5dedK0GNGxGb2cpvHZ23+N8zEcFptoNoAs/B4zXECin1R5HF3rVoZhL
-         Q/2bZCHcKRXq/ILbhjeWtVVqDXp6VtfK5+uISlU2keW+UHy3+eotHlLuSHjZc/hM48O7
-         loxG1PI7mJjuWe7Dyei2jUKwGmjjHrp8OoV5U/bMrmDdPXKg7CbpFw2O2MO5pqzbamo4
-         kOiA==
+        d=google.com; s=20251104; t=1777934556; x=1778539356; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uWygzttyaDGZ8i1sz2PNqa3rZtIdDV4A7Q8dk96hn1w=;
+        b=CBcINOEGtgq/zjoVaaEJplp+LKCXJsutpTTEfZ7fWHpKaRv96FYaiK/j6JfnlnqHim
+         vYUXw+6KsreOWBl968Bvy1Xhk1tZ6tePc1EwyWJjQ2Ekrn51DNYjmzHdN0idND79pv8X
+         kTdCiO1NL73BpnabSho2mva1+6MANYogNCTqqLcmsdFLdP2XE7DELfKx/QyScPQK6Mt8
+         fn+sqFaW+X+J5UZecZyDl8y/wdm23XeztHxguX0XuLc3O4I/R0kWqcl9RcHCG7vElaf4
+         W+NF+TMHnMC1GX0y6/BwpkWUGONdixewRQ6UGKYVnr9aewLEVsGd6XfCSOSEkJREQHGd
+         lagA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777934507; x=1778539307;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=47ROPB2Em/ngAJ0XtKAFAEw2BzcABtJdB2FL97PM0d8=;
-        b=ayA/5rXOIMdrfoT29Et7VC3WEVIll5SlsKwjS8wdp0dal9JDR8P4dM6OSE/Fxg1uD2
-         Rtv7qSdMOy63mQlvZj7OFCiOljlpk3EAbyed5YXlbrGtOJDYYHSs0Ic+u74LPOotyjT0
-         1pkuWRhn9HqcW/+JK7sLFyB4G/Ys2oE02F197SpgRaw8QXh5wbf+KpWZsX8Tz5T8w3KT
-         s0HE5AvXcdPJfYHEURkv3QbVK1EpBkyeznybP+ioZnTDZnvasJLpnwDbFdGr2KNvNYSj
-         2z4IhdMoxL0JXx4p3owpNhO3SdKERUQqomUA1m4Belzrg9yKSHeeu2s0Qfc06nH1lxXm
-         eCiw==
-X-Forwarded-Encrypted: i=1; AFNElJ/xLieIZO+Akhmdg7+PwZhyJt8DDyLZ1H3NJO7dFjH6wUUaokD2opQAzm+K8ORaInldO6T68Zo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRTYwG2ppxBgMBwj9JjBArVA64ND6Qr2eKMqZude1SAox326kK
-	UqhZTGkxEX5sxk1iTnmYMCcEIAwjOI+tgoNo+tbnKci1eFGpQX3Ahs59jOlW347OoCpySUavaj4
-	MJP2GeBP5eg==
-X-Received: from ilvs2.prod.google.com ([2002:a05:6e02:2162:b0:4fc:43f3:bc11])
- (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6820:a09:b0:696:7697:6469
- with SMTP id 006d021491bc7-6998a5a8cf8mr335188eaf.17.1777934506893; Mon, 04
- May 2026 15:41:46 -0700 (PDT)
-Date: Mon,  4 May 2026 22:41:42 +0000
+        d=1e100.net; s=20251104; t=1777934556; x=1778539356;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uWygzttyaDGZ8i1sz2PNqa3rZtIdDV4A7Q8dk96hn1w=;
+        b=YXPc2Ob0DaKOcSHqh9VRerwSkU9Eg7DEx4O1UT9RaSReDa0leYO5JztRCVY7eLqmFp
+         plErGU/MifHfKt3Q791322YFHv9G1FNsi4QaWlx+q7f/CG2mi1kqPmMRX8hiDZCoVFR+
+         8r0IooCU3ZiJjuKfQlzoTNXM+tek+5cr7Ye4kvtJbsqJ0EFN2BTXwPw4n8JjQplEAXx9
+         QpeHPtzjRW7B1wYELVRJcSWpCbipivg8OX4fNw1/p4KcZUBPiv6oNdtj8zcx9qYqx5d/
+         s/N1KP/KVz7+onf+tOScq7uugtSg9fqqTo6duTQE7pole5FckWNwgaI/vZouOsYjS2HX
+         hTRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8t2nr1uB2aQ2bdin36a/RKOa4f2h7n44rlJGK3USa6eoRrsbcKTvgbm9xp7dLk8d8cpL6mYeU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCXas4wiHjl/5hFt6I0Q8wui18s1fe5Of/LrxUGyS1E5HwvRLX
+	mSMtyBqwDSU8vL4gYBKh+g918dXFiDSsKU5MDyoRp/mkWSyikuT/iqiOaG/+gxLstoZw3BENsgo
+	5XOZV9BD6nvLL5RwFb6OEBw==
+X-Received: from pfbhh11.prod.google.com ([2002:a05:6a00:868b:b0:82f:a959:4a7f])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:181b:b0:823:d2c:b156 with SMTP id d2e1a72fcca58-8352d037329mr12663141b3a.5.1777934555976;
+ Mon, 04 May 2026 15:42:35 -0700 (PDT)
+Date: Mon,  4 May 2026 22:42:08 +0000
+In-Reply-To: <20260504224213.1049426-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260504224213.1049426-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260504224142.1041477-1-rananta@google.com>
-Subject: [PATCH] vfio/pci: Use a private flag to prevent power state change
- with VFs
-From: Raghavendra Rao Ananta <rananta@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex@shazbot.org>
-Cc: David Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Raghavendra Rao Ananta <rananta@google.com>, stable@vger.kernel.org
+Message-ID: <20260504224213.1049426-2-jthoughton@google.com>
+Subject: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in kvm_arch_flush_shadow_all()
+From: James Houghton <jthoughton@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Sean Christopherson <seanjc@google.com>, Gavin Shan <gshan@redhat.com>, 
+	Shaoqin Huang <shahuang@redhat.com>, Ricardo Koller <ricarkol@google.com>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, James Hogan <jhogan@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 2F4744C47F7
+X-Rspamd-Queue-Id: B13344C4831
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -90,227 +99,149 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243923-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-243924-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rananta@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ziepe.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,shazbot.org:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jthoughton@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-The current implementation uses pci_num_vf() while holding the
-memory_lock to prevent changing the power state of a PF when
-VFs are enabled. This creates a lockdep circular dependency
-warning in because memory_lock is held during device probing.
+kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
+concurrently in the event that the KVM's `mm` is __mmput() at the
+same time that last reference to the KVM is being dropped.
 
-[  286.997167] ======================================================
-[  287.003363] WARNING: possible circular locking dependency detected
-[  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
-[  287.015074] ------------------------------------------------------
-[  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
-[  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
-vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.036530]
-[  287.036530] but task is already holding lock:
-[  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
-vfio_group_fops_unl_ioctl+0x44d/0x7b0
-[  287.051879]
-[  287.051879] which lock already depends on the new lock.
-[  287.051879]
-[  287.060070]
-[  287.060070] the existing dependency chain (in reverse order) is:
-[  287.067568]
-[  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
-[  287.073941]        __mutex_lock+0x92/0xb80
-[  287.078058]        vfio_assign_device_set+0x66/0x1b0
-[  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
-[  287.088638]        vfio_pci_probe+0xd2/0x100
-[  287.092933]        local_pci_probe_callback+0x4d/0xa0
-[  287.098001]        process_scheduled_works+0x2ca/0x680
-[  287.103158]        worker_thread+0x1e8/0x2f0
-[  287.107452]        kthread+0x10c/0x140
-[  287.111230]        ret_from_fork+0x18e/0x360
-[  287.115519]        ret_from_fork_asm+0x1a/0x30
-[  287.119983]
-[  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
-[  287.127219]        __flush_work+0x345/0x490
-[  287.131429]        pci_device_probe+0x2e3/0x490
-[  287.135979]        really_probe+0x1f9/0x4e0
-[  287.140180]        __driver_probe_device+0x77/0x100
-[  287.145079]        driver_probe_device+0x1e/0x110
-[  287.149803]        __device_attach_driver+0xe3/0x170
-[  287.154789]        bus_for_each_drv+0x125/0x150
-[  287.159346]        __device_attach+0xca/0x1a0
-[  287.163720]        device_initial_probe+0x34/0x50
-[  287.168445]        pci_bus_add_device+0x6e/0x90
-[  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
-[  287.177719]        sriov_add_vfs+0x2c/0x60
-[  287.181838]        sriov_enable+0x306/0x4a0
-[  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
-[  287.191715]        sriov_numvfs_store+0xd9/0x1c0
-[  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
-[  287.201338]        vfs_write+0x2be/0x3b0
-[  287.205286]        ksys_write+0x73/0x100
-[  287.209233]        do_syscall_64+0x14d/0x750
-[  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  287.219120]
-[  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
-[  287.225491]        __lock_acquire+0x14c6/0x2800
-[  287.230048]        lock_acquire+0xd3/0x2f0
-[  287.234168]        down_write+0x3a/0xc0
-[  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.243436]        __rpm_callback+0x8c/0x310
-[  287.247730]        rpm_resume+0x529/0x6f0
-[  287.251765]        __pm_runtime_resume+0x68/0x90
-[  287.256402]        vfio_pci_core_enable+0x44/0x310
-[  287.261216]        vfio_pci_open_device+0x1c/0x80
-[  287.265947]        vfio_df_open+0x10f/0x150
-[  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
-[  287.275476]        __se_sys_ioctl+0x71/0xc0
-[  287.279679]        do_syscall_64+0x14d/0x750
-[  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  287.289559]
-[  287.289559] other info that might help us debug this:
-[  287.289559]
-[  287.297582] Chain exists of:
-[  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
---> &new_dev_set->lock
-[  287.297582]
-[  287.310023]  Possible unsafe locking scenario:
-[  287.310023]
-[  287.315961]        CPU0                    CPU1
-[  287.320510]        ----                    ----
-[  287.325059]   lock(&new_dev_set->lock);
-[  287.328917]
-lock((work_completion)(&arg.work));
-[  287.336153]                                lock(&new_dev_set->lock);
-[  287.342523]   lock(&vdev->memory_lock);
-[  287.346382]
-[  287.346382]  *** DEADLOCK ***
-[  287.346382]
-[  287.352315] 2 locks held by vfio_pci_sriov_/18636:
-[  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
-at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
-[  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
-at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
-[  287.376976]
-[  287.376976] stack backtrace:
-[  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
-Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
-[  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
-[  287.381356] Call Trace:
-[  287.381357]  <TASK>
-[  287.381358]  dump_stack_lvl+0x54/0x70
-[  287.381361]  print_circular_bug+0x2e1/0x300
-[  287.381363]  check_noncircular+0xf9/0x120
-[  287.381364]  ? __lock_acquire+0x5b4/0x2800
-[  287.381366]  __lock_acquire+0x14c6/0x2800
-[  287.381368]  ? pci_mmcfg_read+0x4f/0x220
-[  287.381370]  ? pci_mmcfg_write+0x57/0x220
-[  287.381371]  ? lock_acquire+0xd3/0x2f0
-[  287.381373]  ? pci_mmcfg_write+0x57/0x220
-[  287.381374]  ? lock_release+0xef/0x360
-[  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381377]  lock_acquire+0xd3/0x2f0
-[  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381379]  ? lock_is_held_type+0x76/0x100
-[  287.381382]  down_write+0x3a/0xc0
-[  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
-[  287.381385]  __rpm_callback+0x8c/0x310
-[  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
-[  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
-[  287.381390]  rpm_resume+0x529/0x6f0
-[  287.381392]  ? lock_is_held_type+0x76/0x100
-[  287.381394]  __pm_runtime_resume+0x68/0x90
-[  287.381396]  vfio_pci_core_enable+0x44/0x310
-[  287.381398]  vfio_pci_open_device+0x1c/0x80
-[  287.381399]  vfio_df_open+0x10f/0x150
-[  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
-[  287.381402]  __se_sys_ioctl+0x71/0xc0
-[  287.381404]  do_syscall_64+0x14d/0x750
-[  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  287.381406]  ? trace_irq_disable+0x25/0xd0
-[  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+T1              T2
+KVM_CREATE_VM
+                Get VM file from T1
+close VM
+exit_mm()       close VM
 
-Introduce a private flag 'sriov_pwr_active' in the vfio_pci_core_device
-struct. This  allows the driver to track the SR-IOV power state requirement
-without  relying on pci_num_vf() while holding the memory_lock. The lock is
-now  only held to set the flag and ensure the device is in D0, after which
-pci_enable_sriov() can be called without the lock.
+T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+    with only the KVM srcu read lock held.
 
-Fixes: f4162eb1e2fc ("vfio/pci: Change the PF power state to D0 before enabling VFs")
+T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
+    kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+    again, with only the KVM srcu read lock held.
+
+This leads to a potential double-free of
+kvm->arch.kvm_mmu_free_memory_cache and now with NV
+kvm->arch.nested_mmus.
+
 Cc: stable@vger.kernel.org
-Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-Suggested-by: Alex Williamson <alex@shazbot.org>
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+Fixes: e7bf7a490c68 ("KVM: arm64: Split huge pages when dirty logging is enabled")
+Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 6 ++++--
- include/linux/vfio_pci_core.h    | 1 +
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/kvm_mmu.h |  1 +
+ arch/arm64/kvm/mmu.c             | 23 +++++++++++++++++++----
+ arch/arm64/kvm/nested.c          |  4 +++-
+ 3 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 3f8d093aacf8a..0e4a73e541d3a 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -271,7 +271,7 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
- 	int ret;
+diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
+index 01e9c72d6aa7..30d5c24fcebb 100644
+--- a/arch/arm64/include/asm/kvm_mmu.h
++++ b/arch/arm64/include/asm/kvm_mmu.h
+@@ -178,6 +178,7 @@ void stage2_unmap_vm(struct kvm *kvm);
+ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long type);
+ void kvm_uninit_stage2_mmu(struct kvm *kvm);
+ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
++void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
+ int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
+ 			  phys_addr_t pa, unsigned long size, bool writable);
  
- 	/* Prevent changing power state for PFs with VFs enabled */
--	if (pci_num_vf(pdev) && state > PCI_D0)
-+	if (vdev->sriov_pwr_active && state > PCI_D0)
- 		return -EBUSY;
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index d089c107d9b7..4bab407d43bb 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1021,7 +1021,9 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
  
- 	if (vdev->needs_pm_restore) {
-@@ -2292,8 +2292,9 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+ void kvm_uninit_stage2_mmu(struct kvm *kvm)
+ {
+-	kvm_free_stage2_pgd(&kvm->arch.mmu);
++	lockdep_assert_held_write(&kvm->mmu_lock);
++
++	kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
+ 	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+ }
  
- 		down_write(&vdev->memory_lock);
- 		vfio_pci_set_power_state(vdev, PCI_D0);
--		ret = pci_enable_sriov(pdev, nr_virtfn);
-+		vdev->sriov_pwr_active = true;
- 		up_write(&vdev->memory_lock);
-+		ret = pci_enable_sriov(pdev, nr_virtfn);
- 		if (ret) {
- 			pm_runtime_put(&pdev->dev);
- 			goto out_del;
-@@ -2307,6 +2308,7 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+@@ -1095,12 +1097,14 @@ void stage2_unmap_vm(struct kvm *kvm)
+ 	srcu_read_unlock(&kvm->srcu, idx);
+ }
+ 
+-void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
++static void __kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu, bool locked)
+ {
+ 	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+ 	struct kvm_pgtable *pgt = NULL;
+ 
+-	write_lock(&kvm->mmu_lock);
++	if (!locked)
++		write_lock(&kvm->mmu_lock);
++
+ 	pgt = mmu->pgt;
+ 	if (pgt) {
+ 		mmu->pgd_phys = 0;
+@@ -1111,7 +1115,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+ 	if (kvm_is_nested_s2_mmu(kvm, mmu))
+ 		kvm_init_nested_s2_mmu(mmu);
+ 
+-	write_unlock(&kvm->mmu_lock);
++	if (!locked)
++		write_unlock(&kvm->mmu_lock);
+ 
+ 	if (pgt) {
+ 		kvm_stage2_destroy(pgt);
+@@ -1119,6 +1124,16 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
  	}
+ }
  
- out_del:
-+	vdev->sriov_pwr_active = false;
- 	mutex_lock(&vfio_pci_sriov_pfs_mutex);
- 	list_del_init(&vdev->sriov_pfs_item);
- out_unlock:
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 2ebba746c18f7..9a39a13a65766 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -127,6 +127,7 @@ struct vfio_pci_core_device {
- 	bool			needs_pm_restore:1;
- 	bool			pm_intx_masked:1;
- 	bool			pm_runtime_engaged:1;
-+	bool			sriov_pwr_active:1;
- 	struct pci_saved_state	*pci_saved_state;
- 	struct pci_saved_state	*pm_save;
- 	int			ioeventfds_nr;
-
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
++void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
++{
++	__kvm_free_stage2_pgd(mmu, false);
++}
++
++void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu)
++{
++	__kvm_free_stage2_pgd(mmu, true);
++}
++
+ static void hyp_mc_free_fn(void *addr, void *mc)
+ {
+ 	struct kvm_hyp_memcache *memcache = mc;
+diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+index 883b6c1008fb..977598bff5e6 100644
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
+ {
+ 	int i;
+ 
++	guard(write_lock)(&kvm->mmu_lock);
++
+ 	for (i = 0; i < kvm->arch.nested_mmus_size; i++) {
+ 		struct kvm_s2_mmu *mmu = &kvm->arch.nested_mmus[i];
+ 
+ 		if (!WARN_ON(atomic_read(&mmu->refcnt)))
+-			kvm_free_stage2_pgd(mmu);
++			kvm_free_stage2_pgd_locked(mmu);
+ 	}
+ 	kvfree(kvm->arch.nested_mmus);
+ 	kvm->arch.nested_mmus = NULL;
 -- 
 2.54.0.545.g6539524ca2-goog
 
