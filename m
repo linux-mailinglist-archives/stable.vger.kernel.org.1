@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MBzF2Oq+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:07 +0200
+	id aPouD1Sp+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6704BEFB6
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E204BECB8
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 600083017ED2
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 478783073572
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E45B3D300A;
-	Mon,  4 May 2026 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B076D3A2574;
+	Mon,  4 May 2026 14:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7gC4Msp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRRQ0VCF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BBF3A7F4C;
-	Mon,  4 May 2026 14:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740953DA5C7;
+	Mon,  4 May 2026 14:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904015; cv=none; b=Fjgf1YUaeJNCRBiRDlVIqstVcaasdVXV9FEqh0L6aRDyx3hOq3qgCNmjKm/5Ut6vMlMw7JdI3k7mhOwsmVlzYaJqS/Wc77doSXU44WbelBXbfwUwJEmn/ahpagpajIzZxgh/AN6w7rl4U86WyR8Je4UtZOx8hQ5hwJrbfVoCNfA=
+	t=1777903408; cv=none; b=hM2xHmitag7EScz4FLj02khidminWU3PABqkKMhBoU1KGT3Zxll6nAxksXw2kK34lqUUOvd8sCHr15W6lfdtpz0ngvT8if/3MctYPJ8BhofjIdNsZmdl2YJ+AdlP65oWU5EjkwsxPCZcVrzMQ+pJcztshpH6ffDYekh7h8t0x9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904015; c=relaxed/simple;
-	bh=xMzadajH6GHAJA0IhyR5E6KjOkbWqvt62eoXJzsvq7c=;
+	s=arc-20240116; t=1777903408; c=relaxed/simple;
+	bh=EeAz4B5Zyj9jO0XYMg0ecpzovrBM0sCmbtsnkkJ4nns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRB8/xG2YV0dwatRAhJ/cywXULfwmXomM5UYpxzLqzFF2PWZ/0/j55fCqI8LM8r8U2zUXoFh3e1csfb7O5SbtiJv5gdlRxzySa2cseqgoT79bbDAuj2HvF5Bg05hnsGdHCLGnK5i2Efr6YwhiD81y+QTUi8sO8ChIU4aSoQbosI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7gC4Msp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9E8C2BCF4;
-	Mon,  4 May 2026 14:13:35 +0000 (UTC)
+	 MIME-Version; b=PMarVj89B0H1tYKGcm0BcGRZuF18sMWQ7aWRiQDYe+akxaolQ+Hp7qfikFirtzX7CskijFv0QIcYJ0ILQV/h8eAwwCWQhygLR5Xkahxd4HupdKChjU/Y1JZM+DW83aS5UgEJr18HqUP2EVO4PiksvNkVhUtZTW9rL4Q+0JsUjTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRRQ0VCF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C786C2BCB8;
+	Mon,  4 May 2026 14:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904015;
-	bh=xMzadajH6GHAJA0IhyR5E6KjOkbWqvt62eoXJzsvq7c=;
+	s=korg; t=1777903408;
+	bh=EeAz4B5Zyj9jO0XYMg0ecpzovrBM0sCmbtsnkkJ4nns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7gC4MspWbCCLlfZfqJ1isA4wHM8XWGBiKgM53STSuzBXNwgZvQhyRephTbqfMNYd
-	 90Tvwz47k8MGkJKe8VxSnruWrAKBDEZnMxj/2SEaCHVeigtebuUgUbePELVTe/3BoK
-	 BSpyXzlGHfx+iuKi9BtZlghHNbDfZ5waXxrZTDR8=
+	b=PRRQ0VCFdi7xZssld/4C82KwL7WHP6d4D0nBTJ5nmcYBtVXAxdOe6+RW2jTgSwTyX
+	 0Pe3evKi0sKburIPoc7rH2P6Ba3IwNAyEuQUHS11ERgBdexDXqqq5FcSSRtzZkJPwq
+	 UeayrEM5nFjipb47jfuGg+b0bmSQF16vHfHUBrdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.18 150/275] xfs: fix a resource leak in xfs_alloc_buftarg()
+	Kevin Cheng <chengkev@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 205/307] KVM: SVM: Inject #UD for INVLPGA if EFER.SVME=0
 Date: Mon,  4 May 2026 15:51:30 +0200
-Message-ID: <20260504135148.507993506@linuxfoundation.org>
+Message-ID: <20260504135150.590992482@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ED6704BEFB6
+X-Rspamd-Queue-Id: 80E204BECB8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,51 +81,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243489-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243252-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Kevin Cheng <chengkev@google.com>
 
-commit 29a7b2614357393b176ef06ba5bc3ff5afc8df69 upstream.
+commit d99df02ff427f461102230f9c5b90a6c64ee8e23 upstream.
 
-In the error path, call fs_put_dax() to drop the DAX
-device reference.
+INVLPGA should cause a #UD when EFER.SVME is not set. Add a check to
+properly inject #UD when EFER.SVME=0.
 
-Fixes: 6f643c57d57c ("xfs: implement ->notify_failure() for XFS")
+Fixes: ff092385e828 ("KVM: SVM: Implement INVLPGA")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Kevin Cheng <chengkev@google.com>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260228033328.2285047-3-chengkev@google.com
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_buf.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/svm/svm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/xfs/xfs_buf.c
-+++ b/fs/xfs/xfs_buf.c
-@@ -1831,6 +1831,7 @@ xfs_alloc_buftarg(
- 	return btp;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2366,6 +2366,9 @@ static int invlpga_interception(struct k
+ 	gva_t gva = kvm_rax_read(vcpu);
+ 	u32 asid = kvm_rcx_read(vcpu);
  
- error_free:
-+	fs_put_dax(btp->bt_daxdev, mp);
- 	kfree(btp);
- 	return ERR_PTR(error);
- }
++	if (nested_svm_check_permissions(vcpu))
++		return 1;
++
+ 	/* FIXME: Handle an address size prefix. */
+ 	if (!is_long_mode(vcpu))
+ 		gva = (u32)gva;
 
 
 
