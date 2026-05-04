@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGxgMrqs+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:06 +0200
+	id sHoADEOt+GkuxwIAu9opvQ
+	(envelope-from <stable+bounces-243737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6B14BF72A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD40D4BF8A2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3949330EDD59
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 052F73046F56
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5B23DEAC3;
-	Mon,  4 May 2026 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719EE3DEFE3;
+	Mon,  4 May 2026 14:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nbnbpjw7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydmhk3ch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805D53DE45A;
-	Mon,  4 May 2026 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB9F3E0C5E;
+	Mon,  4 May 2026 14:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904226; cv=none; b=j23Sg1rAI/MEYLWupqtDJHcKocjOGBTfwzPIGhHageVJOGDtILwEGxOxn9oMt/4FCoxEjtIqC19eVthESV3A3eq++3T8GWjHHeiJzA8quiqfI1mHTSFNUmVPTlP+qv/4A9KgVBOxW0MRNw0B+M8mlygqKV3BvdctK2hHVO1toyA=
+	t=1777904649; cv=none; b=Pk7GvTKAY0RERqeaezLvtdDTDjWX8POVDRmmI72980ahmq8mxbYw41/gLhApy7gWWpT1cjdBHPakiiN12V2stb91NKPYIB0Z7KqXQPSAO6fi3fKtf/wAMcgtl0UmMRDYx9BqTlgaCXEdlJwOvT7/ox47+3mzlhs7fQ0ok9hZNFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904226; c=relaxed/simple;
-	bh=/tWs2VnnBVzkVkMcd5iv4Zd+ICUqci4Geobfw5/sHp4=;
+	s=arc-20240116; t=1777904649; c=relaxed/simple;
+	bh=wa92vhRpQCpvdPwMF4pAJ5ljqav+71d4laArB8yw0dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8imTVqpNKLj35rMRSqHkf9MF0hNEryAN7cZ7N3Rp4sK2iqb55igxosBd/BNATJcMVsA0uLMpAPO8aoAEEI26XuSpJG58LIpJQCD9FmWH+4Bw7LJnuuN65lJvP7klwcS/F/OQxvU1XXpSWgVRDF4VGjLXKD5uNy64WiiYxaH4M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nbnbpjw7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A25C2BCB8;
-	Mon,  4 May 2026 14:17:05 +0000 (UTC)
+	 MIME-Version; b=I48vbKXbCrqjMzXqc++N5fWoBsIW0WGcfKPlJGFMdAFP9x6x4IDekTD92oJKL2/VE6nCocWKw64A6ivI29tx3nb8VTiGys/xuGbmjEtERxXrK58s60tw+TAz8kbwPLz+RzqyPnuViAhh/4LAKX+SJDHBAK7bF/p6xLh7ZJn/guc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydmhk3ch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3C7C2BCC4;
+	Mon,  4 May 2026 14:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904226;
-	bh=/tWs2VnnBVzkVkMcd5iv4Zd+ICUqci4Geobfw5/sHp4=;
+	s=korg; t=1777904648;
+	bh=wa92vhRpQCpvdPwMF4pAJ5ljqav+71d4laArB8yw0dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nbnbpjw7HTcEywQGuWvBwqnPJd3F2dkHQ3kLZ1ZBuaIhqXQiv3BORag596y4Mrxdn
-	 nD/IxYjKARzSbALTT5xX9N5yJp+1M589swJQtRaXhlEN40vXYJLLc4G+0Yj+GLUBSu
-	 kPr0UIyIgSNLfVn0mzH8yZ9tR2PWzsGivMwU5AvM=
+	b=ydmhk3chAXMBwxxXeiODWyH9IxowSrlMZwLjeLE8MCXmbr4eumV8fhTGgAxv4bQYM
+	 4s7D01lqZbiNYggqyl7Ldix5h2hUHvFR493/dmrtvm+99QbUXhk1h9sjpKpnF5ook8
+	 biMAFKs+4DzrxyknlHlOcrrAMCipg2ud2ZL7zsqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
-	Hendrik Donner <hd@os-cillation.de>,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>
-Subject: [PATCH 6.18 199/275] mtd: spi-nor: sst: Fix write enable before AAI sequence
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 120/215] KVM: nSVM: Sync NextRIP to cached vmcb12 after VMRUN of L2
 Date: Mon,  4 May 2026 15:52:19 +0200
-Message-ID: <20260504135150.469507879@linuxfoundation.org>
+Message-ID: <20260504135134.537519871@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7D6B14BF72A
+X-Rspamd-Queue-Id: CD40D4BF8A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,80 +80,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243571-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243737-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dicortech.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,os-cillation.de:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 upstream.
+commit 778d8c1b2a6ffe622ddcd3bb35b620e6e41f4da0 upstream.
 
-When writing to SST flash starting at an odd address, a single byte is
-first programmed using the byte program (BP) command. After this
-operation completes, the flash hardware automatically clears the Write
-Enable Latch (WEL) bit.
+After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
+fields written by the CPU from vmcb02 to the cached vmcb12. This is
+because the cached vmcb12 is used as the authoritative copy of some of
+the controls, and is the payload when saving/restoring nested state.
 
-If an AAI (Auto Address Increment) word program sequence follows, it
-requires WEL to be set. Without re-enabling writes, the AAI sequence
-fails.
+NextRIP is also written by the CPU (in some cases) after VMRUN, but is
+not sync'd to the cached vmcb12. As a result, it is corrupted after
+save/restore (replaced by the original value written by L1 on nested
+VMRUN). This could cause problems for both KVM (e.g. when injecting a
+soft IRQ) or L1 (e.g. when using NextRIP to advance RIP after emulating
+an instruction).
 
-Add spi_nor_write_enable() after the odd-address byte program when more
-data needs to be written. Use a local boolean for clarity.
+Fix this by sync'ing NextRIP to the cache after VMRUN of L2, but only
+after completing interrupts (not in nested_sync_control_from_vmcb02()),
+as KVM may update NextRIP (e.g. when re-injecting a soft IRQ).
 
-Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-Tested-by: Hendrik Donner <hd@os-cillation.de>
-Reviewed-by: Hendrik Donner <hd@os-cillation.de>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260225005950.3739782-2-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/sst.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/x86/kvm/svm/svm.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -203,6 +203,8 @@ static int sst_nor_write(struct mtd_info
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4445,6 +4445,16 @@ static __no_kcsan fastpath_t svm_vcpu_ru
  
- 	/* Start write from odd address. */
- 	if (to % 2) {
-+		bool needs_write_enable = (len > 1);
+ 	svm_complete_interrupts(vcpu);
+ 
++	/*
++	 * Update the cache after completing interrupts to get an accurate
++	 * NextRIP, e.g. when re-injecting a soft interrupt.
++	 *
++	 * FIXME: Rework svm_get_nested_state() to not pull data from the
++	 *        cache (except for maybe int_ctl).
++	 */
++	if (is_guest_mode(vcpu))
++		svm->nested.ctl.next_rip = svm->vmcb->control.next_rip;
 +
- 		/* write one byte. */
- 		ret = sst_nor_write_data(nor, to, 1, buf);
- 		if (ret < 0)
-@@ -210,6 +212,17 @@ static int sst_nor_write(struct mtd_info
+ 	return svm_exit_handlers_fastpath(vcpu);
+ }
  
- 		to++;
- 		actual++;
-+
-+		/*
-+		 * Byte program clears the write enable latch. If more
-+		 * data needs to be written using the AAI sequence,
-+		 * re-enable writes.
-+		 */
-+		if (needs_write_enable) {
-+			ret = spi_nor_write_enable(nor);
-+			if (ret)
-+				goto out;
-+		}
- 	}
- 
- 	/* Write out most of the data here. */
 
 
 
