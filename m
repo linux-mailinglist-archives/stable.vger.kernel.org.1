@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-243360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uC+aD9Gq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:57 +0200
+	id AJmKBB+m+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F764BF0D4
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E784BE3C7
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28F7A307B069
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2BEB300DE06
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C9C3DE43F;
-	Mon,  4 May 2026 14:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080D02E2F0E;
+	Mon,  4 May 2026 13:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpIprSXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elq0hiBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8263DE44E;
-	Mon,  4 May 2026 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7C834753C;
+	Mon,  4 May 2026 13:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903685; cv=none; b=odHK6x8USItc/jDd0GH/4fcGDIMcJuX2FU1TT7nfEHXqUyyx5Nn2px1jqnJ8f8vYqAIHnbbQ3R/+7PgfKJSGPk2Bf0ypLceusOG0hkh5uafDONxssIJspVYvMXMHAaUuaDKXGVdh/72L/8azUfhfBlgzUUkYDkbLZOTukwwA0dY=
+	t=1777903043; cv=none; b=X28IZlZnCKiwn3e62+LMCENhgK4C3+W0pHuLvHPVC/1Nr8qbF73iN/54DWvIVE8dtBMpgEo0w8RfaVpHgBdKliSfiWas/ygQnI8qS7VV+rRYQlkg5R6ZGsR4FDAoEX8wsgh7DRXWb6gd6yCH8HhRFsuZshCGoSiXcti+62crv0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903685; c=relaxed/simple;
-	bh=q/H4447A510bgLwJ9Ik8gdgQejB+Q1nh3TP/Zprau+w=;
+	s=arc-20240116; t=1777903043; c=relaxed/simple;
+	bh=p40naQDPhhrtAnCUSmC2kzl2htyjyv7UQMnbPj3/D8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GeyPGLCqHPQ5M676e1dP0k7Hj3JgplIS1YWhCDk8xBSoA2ytkS15ANjbDOcnFTuIevCacuzrZEV8rPU03QjiHO5WgEfWBrPCu3Qx/wVZiQ+VoZ758k8Tzcz7aP+9f0KGBeU0KVO7tb75P6kX/F0fpFBLXKvxw1o9AYArD6VnFN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpIprSXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637A7C2BCB8;
-	Mon,  4 May 2026 14:08:05 +0000 (UTC)
+	 MIME-Version; b=eQO/ZM7fgsjC2/aUZUDBWqQ788dSAl96QTPIEBLjXoAojz1NMFAMFvg8AR71rrGnrYioa2iTR+9rfpZr9kiE9jMLdiG2trUG5pw/KsAkhhX0JRkobjKYM9LbBTbZ9MyDfOQZ5/ucNOsieLsGDQDoAhGYyCOyc2I6g+E5dF4PqIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elq0hiBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14583C2BCB8;
+	Mon,  4 May 2026 13:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903685;
-	bh=q/H4447A510bgLwJ9Ik8gdgQejB+Q1nh3TP/Zprau+w=;
+	s=korg; t=1777903043;
+	bh=p40naQDPhhrtAnCUSmC2kzl2htyjyv7UQMnbPj3/D8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpIprSXQGpjHWoVQkPfBur4ElRY7L7v/21zmLcty++TK0ux4FcFstmmxx7bvIw+1m
-	 gwuWsm6V0JlVcrdzqoraeUiZk/DlQ3btPRoTZkTVKZEzfb1n6YkLnNd7T6kPyoaR/6
-	 70kygaGrgPeYbD4L6NJ8N64esp3k6ywtN5Xh3t6A=
+	b=elq0hiBSt1z6Vazxnh+lXOAhr7b70NNSEqPtGpMpmSRTDn+xpytjolEQSpTjUdtNz
+	 KqnPXlVnb3s8BxoVBFFrhpZ6zase1J1qhguqJ3Iy4JqW4gnNqSF1O65VUCeaGAfIYG
+	 jDbeUByc9GvnJTiVLdFW1MjWRG1H2ZcHTG4GhmzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 009/275] drm/nouveau: fix u32 overflow in pushbuf reloc bounds check
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 064/307] net: qrtr: ns: Fix use-after-free in driver remove()
 Date: Mon,  4 May 2026 15:49:09 +0200
-Message-ID: <20260504135143.285497046@linuxfoundation.org>
+Message-ID: <20260504135145.225418538@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +63,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 99F764BF0D4
+X-Rspamd-Queue-Id: 28E784BE3C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-243360-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-243110-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,ffwll.ch:email,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 2fc87d37be1b730a149b035f9375fdb8cc5333a5 upstream.
+commit 7809fea20c9404bfcfa6112ec08d1fe1d3520beb upstream.
 
-nouveau_gem_pushbuf_reloc_apply() validates each relocation with
+In the remove callback, if a packet arrives after destroy_workqueue() is
+called, but before sock_release(), the qrtr_ns_data_ready() callback will
+try to queue the work, causing use-after-free issue.
 
-    if (r->reloc_bo_offset + 4 > nvbo->bo.base.size)
+Fix this issue by saving the default 'sk_data_ready' callback during
+qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
+the start of remove(). This ensures that even if a packet arrives after
+destroy_workqueue(), the work struct will not be dereferenced.
 
-but reloc_bo_offset is __u32 (uapi/drm/nouveau_drm.h) and the integer
-literal 4 promotes to unsigned int, so the addition is performed in 32
-bits and wraps before the comparison against the size_t bo size.
+Note that it is also required to ensure that the RX threads are completed
+before destroying the workqueue, because the threads could be using the
+qrtr_ns_data_ready() callback.
 
-Cast to u64 so the addition happens in 64-bit arithmetic.
-
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Reported-by: Anthropic
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Fixes: a1606a9596e5 ("drm/nouveau: new gem pushbuf interface, bump to 0.0.16")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Add Fixes: tag. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-5-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_gem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/qrtr/ns.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -686,7 +686,7 @@ nouveau_gem_pushbuf_reloc_apply(struct n
- 		}
- 		nvbo = (void *)(unsigned long)bo[r->reloc_bo_index].user_priv;
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -24,6 +24,7 @@ static struct {
+ 	struct list_head lookups;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
++	void (*saved_data_ready)(struct sock *sk);
+ 	int local_node;
+ } qrtr_ns;
  
--		if (unlikely(r->reloc_bo_offset + 4 >
-+		if (unlikely((u64)r->reloc_bo_offset + 4 >
- 			     nvbo->bo.base.size)) {
- 			NV_PRINTK(err, cli, "reloc outside of bo\n");
- 			ret = -EINVAL;
+@@ -709,6 +710,7 @@ int qrtr_ns_init(void)
+ 		goto err_sock;
+ 	}
+ 
++	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
+ 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
+ 
+ 	sq.sq_port = QRTR_PORT_CTRL;
+@@ -749,6 +751,10 @@ int qrtr_ns_init(void)
+ 	return 0;
+ 
+ err_wq:
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ err_sock:
+ 	sock_release(qrtr_ns.sock);
+@@ -758,7 +764,12 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
+ 
+ void qrtr_ns_remove(void)
+ {
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	cancel_work_sync(&qrtr_ns.work);
++	synchronize_net();
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ 
+ 	/* sock_release() expects the two references that were put during
 
 
 
