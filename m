@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2I7QCeNe+GlJtgIAu9opvQ
-	(envelope-from <stable+bounces-242937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:54:59 +0200
+	id cNCcDu1d+GnatQIAu9opvQ
+	(envelope-from <stable+bounces-242938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:50:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A52E4BA9EC
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:54:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF8D4BA8AE
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 734943082B3B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:50:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 360CD300D1DE
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F5D34CFC6;
-	Mon,  4 May 2026 08:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405B93451C8;
+	Mon,  4 May 2026 08:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0O+BFN6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEead/pz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD6234C826
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E09348469
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777884607; cv=none; b=KIkWLnHq/vDas2Mf+UrIvNby7HOEFy8L1XxQS1zFRxKTjodJrU6Smrg4yXhH2VnHw+UFy7H3quJ3VxlyZMcevDxk/7jVg45JUBPEy0a4Q8woYS4xbA1dLY/pqiy0sbHAn+A93bhtEavPyss87929rZOYigJ73yq7B7d3v0qSSaU=
+	t=1777884611; cv=none; b=YHNy47sEseQKbmS7T3rBzunmN6MBt+DrTUp0XD1CDuXV/9PXHlhAHkjIdM52LEFa7Z7hskC+VqG530KHXUbogxbbeuVKV1oJW1wBosbjmHjweKcju6TUr53GwrxKLsFNz5u+GtRJfNw2nNyWprRNrI53a5komGPDxrBrE+u08gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777884607; c=relaxed/simple;
-	bh=QIJvTtd0KA1wxtQv/E4iNWpJcqFtCv4HL0wHpplC1Qw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fdHyNLtZ0lsRXRzP50uslb9zWrW2jSMlzpAHwbkSOV8Pcl2yGCzIUgZoyVkCW17qs3cnR+zmoymlCXeZ3K2x3NDrsgkEEpCuHxdvZbTDUUOmNYS99/A1k/JUvK/9xD7IT6CZktZ+odDiu4JXYYMEC+PtaEBzOX6FT+F+4XCChb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0O+BFN6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07418C2BCF4;
-	Mon,  4 May 2026 08:50:06 +0000 (UTC)
+	s=arc-20240116; t=1777884611; c=relaxed/simple;
+	bh=p/GeJ4PVd4GWsg55TNApi/cLmI+3XE2yukLLPdnNn1c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k4MjKbnwoS3EgVcad1cN5/dkBT6c7TMjss5HGcPIM77ZZrzenmlJHOce1WmBbQ9E5SHMbCh/tQF1KOEp9Hbe+ARZ/LyBC/PwnYqyUj1FLXc0AkPWH0dWPPBVmgsgyZ3A57j5annQOt0fJHhLC7WwvfRXxAbocOevpxOSEczlXVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEead/pz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84164C2BCF4;
+	Mon,  4 May 2026 08:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777884607;
-	bh=QIJvTtd0KA1wxtQv/E4iNWpJcqFtCv4HL0wHpplC1Qw=;
+	s=korg; t=1777884610;
+	bh=p/GeJ4PVd4GWsg55TNApi/cLmI+3XE2yukLLPdnNn1c=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0O+BFN6X7O7eQ0KvZCNsP8Ozx6jPr8y0s/gclwa0Orozikg5fjaVRAxb1BASy3vNz
-	 omyBEn7ib58R2DdMkPaB/dOvY6gLErjqGBJ6WO69c3hBDEBOiS0Qsw3vh95D2xN9MA
-	 5MGoGc/4yuHJV3Q0U/qmhfPVjTSQbYd3qQn9AsDI=
-Subject: FAILED: patch "[PATCH] ceph: fix num_ops off-by-one when crypto allocation fails" failed to apply to 6.6-stable tree
-To: cfsworks@gmail.com,CFSworks@gmail.com,Slava.Dubeyko@ibm.com,idryomov@gmail.com
+	b=DEead/pz6MX5dvwx8yyhQ8hZqLHK9j8WFsxr9a8stV9DmJcVZEfs03T1MUHWkW5EL
+	 LOH9xGhaIeeCVjRM71V2D8MmJYtcsg/lsKU2cw0A9E0YxKTmohUJuGn0oGBhF4S2SV
+	 PEMfoU/UG2eIH58IiZZXbGFcJLqXIKizROQQFvj8=
+Subject: FAILED: patch "[PATCH] ceph: only d_add() negative dentries when they are unhashed" failed to apply to 6.6-stable tree
+To: max.kellermann@ionos.com,Slava.Dubeyko@ibm.com,idryomov@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:49:55 +0200
-Message-ID: <2026050455-worry-catalog-1445@gregkh>
+Date: Mon, 04 May 2026 10:50:08 +0200
+Message-ID: <2026050408-banana-unroasted-5bb4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9A52E4BA9EC
+X-Rspamd-Queue-Id: DDF8D4BA8AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,30 +62,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242937-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242938-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[ionos.com,ibm.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,ibm.com];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ionos.com:email]
 
 
 The patch below does not apply to the 6.6-stable tree.
@@ -97,10 +97,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x a0d9555bf9eaeba34fe6b6bb86f442fe08ba3842
+git cherry-pick -x 803447f93d75ab6e40c85e6d12b5630d281d70d6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050455-worry-catalog-1445@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050408-banana-unroasted-5bb4@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,63 +112,107 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a0d9555bf9eaeba34fe6b6bb86f442fe08ba3842 Mon Sep 17 00:00:00 2001
-From: Sam Edwards <cfsworks@gmail.com>
-Date: Tue, 17 Mar 2026 19:37:33 -0700
-Subject: [PATCH] ceph: fix num_ops off-by-one when crypto allocation fails
+From 803447f93d75ab6e40c85e6d12b5630d281d70d6 Mon Sep 17 00:00:00 2001
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Fri, 27 Mar 2026 17:23:08 +0100
+Subject: [PATCH] ceph: only d_add() negative dentries when they are unhashed
 
-move_dirty_folio_in_page_array() may fail if the file is encrypted, the
-dirty folio is not the first in the batch, and it fails to allocate a
-bounce buffer to hold the ciphertext. When that happens,
-ceph_process_folio_batch() simply redirties the folio and flushes the
-current batch -- it can retry that folio in a future batch.
+Ceph can call d_add(dentry, NULL) on a negative dentry that is already
+present in the primary dcache hash.
 
-However, if this failed folio is not contiguous with the last folio that
-did make it into the batch, then ceph_process_folio_batch() has already
-incremented `ceph_wbc->num_ops`; because it doesn't follow through and
-add the discontiguous folio to the array, ceph_submit_write() -- which
-expects that `ceph_wbc->num_ops` accurately reflects the number of
-contiguous ranges (and therefore the required number of "write extent"
-ops) in the writeback -- will panic the kernel:
+In the current VFS that is not safe.  d_add() goes through __d_add()
+to __d_rehash(), which unconditionally reinserts dentry->d_hash into
+the hlist_bl bucket.  If the dentry is already hashed, reinserting the
+same node can corrupt the bucket, including creating a self-loop.
+Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
+typically looping only on the d_name.hash mismatch check and
+eventually triggering RCU stall reports like this one:
 
-    BUG_ON(ceph_wbc->op_idx + 1 != req->r_num_ops);
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
+ rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
+ CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
+ Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
+ RIP: 0010:__d_lookup+0x46/0xb0
+ Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
+ RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
+ RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
+ RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
+ RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
+ R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
+ R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
+ FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  lookup_fast+0x9f/0x100
+  walk_component+0x1f/0x150
+  link_path_walk+0x20e/0x3d0
+  path_lookupat+0x68/0x180
+  filename_lookup+0xdc/0x1e0
+  vfs_statx+0x6c/0x140
+  vfs_fstatat+0x67/0xa0
+  __do_sys_newfstatat+0x24/0x60
+  do_syscall_64+0x6a/0x230
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-This issue can be reproduced on affected kernels by writing to
-fscrypt-enabled CephFS file(s) with a 4KiB-written/4KiB-skipped/repeat
-pattern (total filesize should not matter) and gradually increasing the
-system's memory pressure until a bounce buffer allocation fails.
+This is reachable with reused cached negative dentries.  A Ceph lookup
+or atomic_open can be handed a negative dentry that is already hashed,
+and fs/ceph/dir.c then hits one of two paths that incorrectly assume
+"negative" also means "unhashed":
 
-Fix this crash by decrementing `ceph_wbc->num_ops` back to the correct
-value when move_dirty_folio_in_page_array() fails, but the folio already
-started counting a new (i.e. still-empty) extent.
+  - ceph_finish_lookup():
+      MDS reply is -ENOENT with no trace
+      -> d_add(dentry, NULL)
 
-The defect corrected by this patch has existed since 2022 (see first
-`Fixes:`), but another bug blocked multi-folio encrypted writeback until
-recently (see second `Fixes:`). The second commit made it into 6.18.16,
-6.19.6, and 7.0-rc1, unmasking the panic in those versions. This patch
-therefore fixes a regression (panic) introduced by cac190c7674f.
+  - ceph_lookup():
+      local ENOENT fast path for a complete directory with shared caps
+      -> d_add(dentry, NULL)
+
+Both paths can therefore re-add an already-hashed negative dentry.
+
+Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
+calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
+is true.
+
+Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
+negative dentry when it is actually unhashed.  If the negative dentry
+is already hashed, leave it in place and reuse it as-is.
+
+This preserves the existing behavior for unhashed dentries while
+avoiding d_hash list corruption for reused hashed negatives.
 
 Cc: stable@vger.kernel.org
-Fixes: d55207717ded ("ceph: add encryption support to writepage and writepages")
-Fixes: cac190c7674f ("ceph: fix write storm on fscrypted files")
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Fixes: 2817b000b02c ("ceph: directory operations")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 2090fc78529c..44553556ac74 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -1365,6 +1365,10 @@ void ceph_process_folio_batch(struct address_space *mapping,
- 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
- 				folio);
- 		if (rc) {
-+			/* Did we just begin a new contiguous op? Nevermind! */
-+			if (ceph_wbc->len == 0)
-+				ceph_wbc->num_ops--;
-+
- 			folio_redirty_for_writepage(wbc, folio);
- 			folio_unlock(folio);
- 			break;
+diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
+index bac9cfb6b982..27ce9e55e947 100644
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -769,7 +769,8 @@ struct dentry *ceph_finish_lookup(struct ceph_mds_request *req,
+ 				d_drop(dentry);
+ 				err = -ENOENT;
+ 			} else {
+-				d_add(dentry, NULL);
++				if (d_unhashed(dentry))
++					d_add(dentry, NULL);
+ 			}
+ 		}
+ 	}
+@@ -840,7 +841,8 @@ static struct dentry *ceph_lookup(struct inode *dir, struct dentry *dentry,
+ 			spin_unlock(&ci->i_ceph_lock);
+ 			doutc(cl, " dir %llx.%llx complete, -ENOENT\n",
+ 			      ceph_vinop(dir));
+-			d_add(dentry, NULL);
++			if (d_unhashed(dentry))
++				d_add(dentry, NULL);
+ 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
+ 			return NULL;
+ 		}
 
 
