@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHAjB96p+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:54 +0200
+	id +P2oLgCt+GkixwIAu9opvQ
+	(envelope-from <stable+bounces-243629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D234BEE48
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B17A4BF819
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 884D13027DB9
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8538131B729C
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349533D75D7;
-	Mon,  4 May 2026 14:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049BD3D9DBB;
+	Mon,  4 May 2026 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlEaK0L1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODkZa806"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBBF35A3AD;
-	Mon,  4 May 2026 14:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC12F29E116;
+	Mon,  4 May 2026 14:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903954; cv=none; b=oQ8uJB+B5upY4TtYRq9SoagesigP9/RNrCH3aESbLThc61ovIX8lfOcrLrdNfJ84BmnDRk3mBKG9HxK+tfiWdLsEw1CYGGCyQlZtwemhIxSOVnEN1hyxEa58F2NtlemrjHTat0DudEmcaSXQUSOCApp9UfHs9RFxt7nYP1kzHqw=
+	t=1777904375; cv=none; b=DRjtTKArWZzZf6150cumnP2tOyiXaN2v1W11YDcS71eWnFPAkKxGiAalvoxiO0QEXdtqmhoYvLVV3BLMnJNoAmm3JAJH7sKG5UW2D5SlT0SuaZ+A3at9b8yURVP3UzmNlPhRC6Dp/yxaj6gQRG6A65M39yCcwucH5NJESaAg8IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903954; c=relaxed/simple;
-	bh=Rox3pwTqQuI+KopRltdVN4gK/RwnHhajuHIZ5pxl1T4=;
+	s=arc-20240116; t=1777904375; c=relaxed/simple;
+	bh=0Cb0oZugt4VUs4HxWBlTdXHgoIMEE2R+Lrh9Q++geUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bjw5Ahw3BP3bIjWg+BEA9G4sqNTqWPdr0LN2StuyA28wSm3OlSDoGtUF41Q+rHiG9LQE52b/HAft7DlfPlExgC6JfcVpjf+YfxxEbye6MvX7/YplGdP01yBKEsfOGrOyWsekJ57ycvStdlY5Udf5Tvv8rjrkvDWClUh+8RoSaAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlEaK0L1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B96C2BCB8;
-	Mon,  4 May 2026 14:12:33 +0000 (UTC)
+	 MIME-Version; b=dEd16ozMPEBvT3RRS+TxsHiKqKnhhQ6gGAvWv2q9p4dQWVb/R1FwTtaLPSPYdOpK4swF6sErQE01nPkl3fpQhVdf+d+/TZmGhkib+YXzZd6LjeGuTuNvMjQ5FBqQyQNiuyC6h5sRMS+9Qnif45Q9yknZaJ25KpjXLKtooSsgBls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODkZa806; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FABCC2BCB8;
+	Mon,  4 May 2026 14:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903953;
-	bh=Rox3pwTqQuI+KopRltdVN4gK/RwnHhajuHIZ5pxl1T4=;
+	s=korg; t=1777904375;
+	bh=0Cb0oZugt4VUs4HxWBlTdXHgoIMEE2R+Lrh9Q++geUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlEaK0L1UMZhkSuXdQV/vhJTVE0Rzxwgs86RfENRkYWLGyC5dczEjLDnR5PhyGS4q
-	 QL805UFuXDjqBRT1AIF627e+72hdHP77hu7OV8459sZgsGdE0inPHYl+2jPObjoF/z
-	 f3Z6PNG8prPeJi2asnIuutjOj+OiIdmhE10uAYTY=
+	b=ODkZa80629DIkSpThs5lf21LOu7aTrmON26fNXeE9ZLsfwtyo+tCLwWSvpMaL1lsD
+	 qoZdB7DzPRvwFr2v99sAknN8ed/N/ho6S0+Tq+77gd9jQx7ASts2g1fPCvNkRc3lVM
+	 pweOTAJmy+2bzaiE3gHqtVPI77LWDDLtBTRRE/4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 094/275] io_uring/timeout: check unused sqe fields
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>
+Subject: [PATCH 6.12 015/215] ibmasm: fix heap over-read in ibmasm_send_i2o_message()
 Date: Mon,  4 May 2026 15:50:34 +0200
-Message-ID: <20260504135146.410926513@linuxfoundation.org>
+Message-ID: <20260504135130.730750816@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 82D234BEE48
+X-Rspamd-Queue-Id: 5B17A4BF819
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243465-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243629-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kernel.dk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit 484ae637a3e3d909718de7c07afd3bb34b6b8504 upstream.
+commit 9aad71144fa3682cca3837a06c8623016790e7ec upstream.
 
-Zero check unused SQE fields addr3 and pad2 for timeout and timeout
-update requests. They're not needed now, but could be used sometime
-in the future.
+The ibmasm_send_i2o_message() function uses get_dot_command_size() to
+compute the byte count for memcpy_toio(), but this value is derived from
+user-controlled fields in the dot_command_header (command_size: u8,
+data_size: u16) and is never validated against the actual allocation size.
+A root user can write a small buffer with inflated header fields, causing
+memcpy_toio() to read up to ~65 KB past the end of the allocation into
+adjacent kernel heap, which is then forwarded to the service processor
+over MMIO.
 
+Silently clamping the copy size is not sufficient: if the header fields
+claim a larger size than the buffer, the SP receives a dot command whose
+own header is inconsistent with the I2O message length, which can cause
+the SP to desynchronize. Reject such commands outright by returning
+failure.
+
+Validate command_size before calling get_mfa_inbound() to avoid leaking
+an I2O message frame: reading INBOUND_QUEUE_PORT dequeues a hardware
+frame from the controller's free pool, and returning without a
+corresponding set_mfa_inbound() call would permanently exhaust it.
+
+Additionally, clamp command_size to I2O_COMMAND_SIZE before the
+memcpy_toio() so the MMIO write stays within the I2O message frame,
+consistent with the clamping already performed by outgoing_message_size()
+for the header field.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260314165805.548293-1-LivelyCarpet87@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/timeout.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/misc/ibmasm/lowlevel.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -445,6 +445,8 @@ int io_timeout_remove_prep(struct io_kio
+--- a/drivers/misc/ibmasm/lowlevel.c
++++ b/drivers/misc/ibmasm/lowlevel.c
+@@ -19,17 +19,21 @@ static struct i2o_header header = I2O_HE
+ int ibmasm_send_i2o_message(struct service_processor *sp)
+ {
+ 	u32 mfa;
+-	unsigned int command_size;
++	size_t command_size;
+ 	struct i2o_message *message;
+ 	struct command *command = sp->current_command;
  
- 	if (unlikely(req->flags & (REQ_F_FIXED_FILE | REQ_F_BUFFER_SELECT)))
- 		return -EINVAL;
-+	if (sqe->addr3 || sqe->__pad2[0])
-+		return -EINVAL;
- 	if (sqe->buf_index || sqe->len || sqe->splice_fd_in)
- 		return -EINVAL;
++	command_size = get_dot_command_size(command->buffer);
++	if (command_size > command->buffer_size)
++		return 1;
++	if (command_size > I2O_COMMAND_SIZE)
++		command_size = I2O_COMMAND_SIZE;
++
+ 	mfa = get_mfa_inbound(sp->base_address);
+ 	if (!mfa)
+ 		return 1;
  
-@@ -517,6 +519,8 @@ static int __io_timeout_prep(struct io_k
- 	unsigned flags;
- 	u32 off = READ_ONCE(sqe->off);
+-	command_size = get_dot_command_size(command->buffer);
+-	header.message_size = outgoing_message_size(command_size);
+-
++	header.message_size = outgoing_message_size((unsigned int)command_size);
+ 	message = get_i2o_message(sp->base_address, mfa);
  
-+	if (sqe->addr3 || sqe->__pad2[0])
-+		return -EINVAL;
- 	if (sqe->buf_index || sqe->len != 1 || sqe->splice_fd_in)
- 		return -EINVAL;
- 	if (off && is_timeout_link)
+ 	memcpy_toio(&message->header, &header, sizeof(struct i2o_header));
 
 
 
