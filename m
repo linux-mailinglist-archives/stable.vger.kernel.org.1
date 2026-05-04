@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELnsIeCv+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:32 +0200
+	id 0PndDPun+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CC44BFDCB
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D195E4BE883
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3FEF3028F53
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:26:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A30E8301D226
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07643E3C4C;
-	Mon,  4 May 2026 14:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5548E3DE423;
+	Mon,  4 May 2026 14:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsijKQoE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzPwJYqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612A53DEAC8;
-	Mon,  4 May 2026 14:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7EA3DE442;
+	Mon,  4 May 2026 14:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904667; cv=none; b=rPxWtYwZWqQ8X8fZfwJtXbkN7q9bMu7kyQ4Hdw0drXrBirm1BULtgH1UOKfTjZQV+cyD2JWPiuDXSSFBeRM/OQxFKZ4s1qi+JQwnq77mGWaNh1csznh7+x2eLRWfWYbX7clZ7zLZ1HWpV3jIOZj4bdjncs1OP4ekQ4mvgZYlCo8=
+	t=1777903509; cv=none; b=Rf+Nu+OM/3xN8Fp4FWI5cDmWAb9BM0o7P3Dh7NomBswv6zsDcFFnZjQSnOmyYxlUQTQCT6buGDye3u3P3+aihrveLRvWNHs0TMNHmZ9rA1kKg4n+bCumBqbm4bGpcxgSPcmRIaep7+3hFn4u4NuZz9UE9xHpFjd7qLWrTZA9nhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904667; c=relaxed/simple;
-	bh=CdiWGCHUSER/kK/Uwcdit9tvbBVIIAwkuYzNpypZyz0=;
+	s=arc-20240116; t=1777903509; c=relaxed/simple;
+	bh=3HFd60xB4+NLGSPdBj9SnLHKlcyMteAS+S75Va3FLbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUuTjOumjOBhaRrbitvEuACSaQtSl7MinEeRGLzwEckf794dsu0AlsZzdjlgy2WozvGQbvMGwFLdo9hTqfVbPK+1nSAPnKE0+aJqYFyMf4cPRtKqM/jLS+4+Ks27Hm9VY87w5U16zglgxTKB3tkarm7hCqeChMhwDYoEdogCHd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsijKQoE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DA2C2BCF5;
-	Mon,  4 May 2026 14:24:26 +0000 (UTC)
+	 MIME-Version; b=FAcsBooqbChEO1bb6xpgho6VMl2r7kSeI04yMcobAmCj6sPR74yZ4FwddcW9/1uPYJDcEGt8PLzMKi5xYxspUD+p7VM/OHYuRtGmRS3nx+7Bfg62hmNedWFLKA3f4tgaiv15LGeb8OezlUynrY2Hd6RCpLW9CyZTfO73fVmpm3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzPwJYqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E07C2BCC4;
+	Mon,  4 May 2026 14:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904667;
-	bh=CdiWGCHUSER/kK/Uwcdit9tvbBVIIAwkuYzNpypZyz0=;
+	s=korg; t=1777903508;
+	bh=3HFd60xB4+NLGSPdBj9SnLHKlcyMteAS+S75Va3FLbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsijKQoEYNQ+T3C91t/6i8bSymPcGIs2sgJyr9+AnWmbEAJVyABDlkRqPVBojLBRR
-	 6y6QhO9LUDs/OD2M6bacgnWOup3uHQxuHAQ/LH23VF3dBFVBJahHeVOcKH+Rmg1cM7
-	 GbLNRgZ+uUa4VhX6WjG0ulOGvlS5oFpTA3IVcEPs=
+	b=gzPwJYqxnkTQF5ePtS46Yg68hkmh53P+aRO81NLIx+O+jdUGNNzGC57fsV/rIdHGx
+	 2Wv0PHOTUCPEiLN9lWEM1LEPUZvEI+6HmwQ0A+inA5B0R8irg3yQPph7ncvT0HNo9v
+	 1uq0TsJSOOkJ7Hcr3UNI4V0HYQoCzlmpz6D3v5tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 127/215] KVM: nSVM: Clear GIF on nested #VMEXIT(INVALID)
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 7.0 261/307] crypto: hisilicon - Fix dma_unmap_single() direction
 Date: Mon,  4 May 2026 15:52:26 +0200
-Message-ID: <20260504135134.788763684@linuxfoundation.org>
+Message-ID: <20260504135152.634154604@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 35CC44BFDCB
+X-Rspamd-Queue-Id: D195E4BE883
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243744-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243291-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,gondor.apana.org.au];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit f85a6ce06e4a0d49652f57967a649ab09e06287c upstream.
+commit 1ee57ab93b75eb59f426aef37b5498a7ffc28278 upstream.
 
-According to the APM, GIF is set to 0 on any #VMEXIT, including
-an #VMEXIT(INVALID) due to failed consistency checks. Clear GIF on
-consistency check failures.
+The direction used to map the buffer skreq->iv is DMA_TO_DEVICE but it is
+unmapped with direction DMA_BIDIRECTIONAL in the error path.
 
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-11-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Change the unmap to match the mapping.
+
+Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/hisilicon/sec/sec_algs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -886,6 +886,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
- 		vmcb12->control.exit_code_hi = -1u;
- 		vmcb12->control.exit_info_1  = 0;
- 		vmcb12->control.exit_info_2  = 0;
-+		svm_set_gif(svm, false);
- 		goto out;
- 	}
- 
+--- a/drivers/crypto/hisilicon/sec/sec_algs.c
++++ b/drivers/crypto/hisilicon/sec/sec_algs.c
+@@ -844,7 +844,7 @@ err_free_elements:
+ 	if (crypto_skcipher_ivsize(atfm))
+ 		dma_unmap_single(info->dev, sec_req->dma_iv,
+ 				 crypto_skcipher_ivsize(atfm),
+-				 DMA_BIDIRECTIONAL);
++				 DMA_TO_DEVICE);
+ err_unmap_out_sg:
+ 	if (split)
+ 		sec_unmap_sg_on_err(skreq->dst, steps, splits_out,
 
 
 
