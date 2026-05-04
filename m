@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-242897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YE47OeRb+GnatQIAu9opvQ
-	(envelope-from <stable+bounces-242897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:42:12 +0200
+	id cLhAHkFc+GnatQIAu9opvQ
+	(envelope-from <stable+bounces-242898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B12B4BA635
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:42:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6604BA6AA
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 73A3A3004DEE
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:42:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91DED301ABBF
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6073446CA;
-	Mon,  4 May 2026 08:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7EF13446BE;
+	Mon,  4 May 2026 08:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oofmk+1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpdOFkvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCC83446C0
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D313446B7
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777884129; cv=none; b=CNhSR2LpVcfNzRydRQcR3qyMDmDSOcPYeLp+qD+whDuW5f5CjBE7qRwZ+FFFy7bq0iZiqUHyLu5TB3Lvrg4c+Lqtq3cq2tfG56aNmTTjltY324jfMQnWz9ArfVIbK2klkHWVkz2Ot9/kMiEQkfx+7P7bweRLa4am2yv1z5p9qBo=
+	t=1777884159; cv=none; b=hfJZhm/nykWqMCYB7hHY7q2pF3dpsxV9v2ZBYTzQZpnqidGK42P8NsWxnk/iNPdjJX7jdHId1//wPxnpdwTeN9S6d5x4x2aVe87dgRyCOS8oTJgn+kLSCEvCRYyoDnNn52gJvz95og80iIsoUF8Mdok1mGvdNTA/bGBipIWPmMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777884129; c=relaxed/simple;
-	bh=Ozuwi+GoKHEt/JTfJB4Fdky6yiB/DbsJInLuYJTtmoI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TxmDGLM0hlInEjGW5Hr0Ax/nIfB8Op1Hevv35kENkHL74U1KGf+A8Z6On21HBkXSc34tsSq3DmVPDtyw8YKVPyp8r/0pMGWQHO0QZ6oyciJb1qMdhcBMPAUTg7POEX3coYc9p8GUVzlyghxZx/V6LglyK2PTg0lk+97edptPzhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oofmk+1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55B9C2BCB8;
-	Mon,  4 May 2026 08:42:08 +0000 (UTC)
+	s=arc-20240116; t=1777884159; c=relaxed/simple;
+	bh=3x3tBnDVojIBa96RmbG0tIH1U0jpuXmGA/HtA/2xdJw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=g4MOrzL8gK5gfgOgZV+JzEA88xYL3B85+1EJVrKJOkmD6vQCiz0GoDQdu5B2DESo9VvNvwKG7dFP7nrezLpu9oz1aPN4c9ShJJHw1h3aF9nAKeWe4Y08hfdNwcHHGX/p5td6AebIvOkigrR1GCOWUuLjRB7T+5K/fPZcs9PFXqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpdOFkvi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1A1C2BCB8;
+	Mon,  4 May 2026 08:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777884129;
-	bh=Ozuwi+GoKHEt/JTfJB4Fdky6yiB/DbsJInLuYJTtmoI=;
+	s=korg; t=1777884159;
+	bh=3x3tBnDVojIBa96RmbG0tIH1U0jpuXmGA/HtA/2xdJw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Oofmk+1Z2rxADJhpQpPpUG4HJoECtvA6RHwUGLr/slschVlV/5Nat0eIH7Q8DttN7
-	 SU100B2qEpFwxeEmkJZ/m3+YnprfPvCboiD3oRutFFYTm8f8HZ8U10lbYHVLRLU/Sk
-	 7kxLZi/s4Ilre2dri4BoIvQa+f/+613jLDCYPW50=
-Subject: FAILED: patch "[PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()" failed to apply to 5.10-stable tree
-To: zilin@seu.edu.cn,slava@dubeyko.com
+	b=FpdOFkviEgeKTNIetuJwepJxpDQbGW8MF9WhI/zdjlYdUlzJga00bm7g9UbXQib9c
+	 zSKVV7BAEmH0VettrM3A/jc2WMxg2EUA48eVQH6Db+c1LoVWmFpPTDlA5j+r/0D7hW
+	 M3xO+pE3Vjarios88ZFHPQ1pnGeYeyUXhBgFoJT0=
+Subject: FAILED: patch "[PATCH] x86/shstk: Prevent deadlock during shstk sigreturn" failed to apply to 6.12-stable tree
+To: rick.p.edgecombe@intel.com,dave.hansen@intel.com,tglx@kernel.org,torvalds@linux-foundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:41:58 +0200
-Message-ID: <2026050458-wand-spring-c905@gregkh>
+Date: Mon, 04 May 2026 10:42:36 +0200
+Message-ID: <2026050436-breeches-reformat-d041@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B12B4BA635
+X-Rspamd-Queue-Id: DD6604BA6AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,16 +62,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242897-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242898-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -79,27 +79,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-0.996];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,seu.edu.cn:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,gregkh:email,linux-foundation.org:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733
+git cherry-pick -x 9874b2917b9fbc30956fee209d3c4aa47201c64e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050458-wand-spring-c905@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050436-breeches-reformat-d041@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,137 +111,134 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 Mon Sep 17 00:00:00 2001
-From: Zilin Guan <zilin@seu.edu.cn>
-Date: Fri, 27 Mar 2026 16:47:41 +0800
-Subject: [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
+From 9874b2917b9fbc30956fee209d3c4aa47201c64e Mon Sep 17 00:00:00 2001
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Date: Thu, 9 Apr 2026 11:43:30 -0700
+Subject: [PATCH] x86/shstk: Prevent deadlock during shstk sigreturn
 
-hfsplus_fill_super() calls hfs_find_init() to initialize a search
-structure, which acquires tree->tree_lock. If the subsequent call to
-hfsplus_cat_build_key() fails, the function jumps to the out_put_root
-error label without releasing the lock. The later cleanup path then
-frees the tree data structure with the lock still held, triggering a
-held lock freed warning.
+During sigreturn the shadow stack signal frame is popped. The kernel does
+this by reading the shadow stack using normal read accesses. When it can't
+assume the memory is shadow stack, it takes extra steps to makes sure it is
+reading actual shadow stack memory and not other normal readable memory. It
+does this by holding the mmap read lock while doing the access and checking
+the flags of the VMA.
 
-Fix this by adding the missing hfs_find_exit(&fd) call before jumping
-to the out_put_root error label. This ensures that tree->tree_lock is
-properly released on the error path.
+Unfortunately that is not safe. If the read of the shadow stack sigframe
+hits a page fault, the fault handler will try to recursively grab another
+mmap read lock. This normally works ok, but if a writer on another CPU is
+also waiting, the second read lock could fail and cause a deadlock.
 
-The bug was originally detected on v6.13-rc1 using an experimental
-static analysis tool we are developing, and we have verified that the
-issue persists in the latest mainline kernel. The tool is specifically
-designed to detect memory management issues. It is currently under active
-development and not yet publicly available.
+Fix this by not holding mmap lock during the read access to userspace.
 
-We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
-lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
-used GDB to dynamically shrink the max_unistr_len parameter to 1 before
-hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
-return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
-exercises the faulty error path. The following warning was observed
-during mount:
+Instead use mmap_lock_speculate_...() to watch for changes between dropping
+mmap lock and the userspace access. Retry if anything grabbed an mmap write
+lock in between and could have changed the VMA.
 
-	=========================
-	WARNING: held lock freed!
-	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
-	-------------------------
-	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
-	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-	2 locks held by mount/174:
-	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
-	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+These mmap_lock_speculate_...() helpers use mm::mm_lock_seq, which is only
+available when PER_VMA_LOCK is configured. So make X86_USER_SHADOW_STACK
+depend on it. On x86, PER_VMA_LOCK is a default configuration for SMP
+kernels. So drop support for the other configs under the assumption that
+the !SMP shadow stack user base does not exist.
 
-	stack backtrace:
-	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	Call Trace:
-	<TASK>
-	dump_stack_lvl+0x82/0xd0
-	debug_check_no_locks_freed+0x13a/0x180
-	kfree+0x16b/0x510
-	? hfsplus_fill_super+0xcb4/0x18a0
-	hfsplus_fill_super+0xcb4/0x18a0
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x65f/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? pointer+0x4ce/0xbf0
-	? trace_contention_end+0x11c/0x150
-	? __pfx_pointer+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x79b/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? vsnprintf+0x6da/0x1270
-	? srso_return_thunk+0x5/0x5f
-	? __mutex_unlock_slowpath+0x157/0x740
-	? __pfx_vsnprintf+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? mark_held_locks+0x49/0x80
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? irqentry_exit+0x17b/0x5e0
-	? trace_irq_disable.constprop.0+0x116/0x150
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	get_tree_bdev_flags+0x302/0x580
-	? __pfx_get_tree_bdev_flags+0x10/0x10
-	? vfs_parse_fs_qstr+0x129/0x1a0
-	? __pfx_vfs_parse_fs_qstr+0x3/0x10
-	vfs_get_tree+0x89/0x320
-	fc_mount+0x10/0x1d0
-	path_mount+0x5c5/0x21c0
-	? __pfx_path_mount+0x10/0x10
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? kmem_cache_free+0x307/0x540
-	? user_path_at+0x51/0x60
-	? __x64_sys_mount+0x212/0x280
-	? srso_return_thunk+0x5/0x5f
-	__x64_sys_mount+0x212/0x280
-	? __pfx___x64_sys_mount+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	do_syscall_64+0x111/0x680
-	entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7ffacad55eae
-	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
-	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
-	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
-	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
-	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
-	</TASK>
+Currently there is a check that skips the lookup work when the SSP can be
+assumed to be on a shadow stack. While reorganizing the function, remove
+the optimization to make the tricky code flows more common, such that
+issues like this cannot escape detection for so long.
 
-After applying this patch, the warning no longer appears.
+Fixes: 7fad2a432cd3 ("x86/shstk: Check that signal frame is shadow stack mem")
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
 
-Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 242ccca3acb7..a36243b08c7c 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (err)
- 		goto out_put_root;
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
--	if (unlikely(err < 0))
-+	if (unlikely(err < 0)) {
-+		hfs_find_exit(&fd);
- 		goto out_put_root;
-+	}
- 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 99bb5217649a..f3f7cb01d69d 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1885,6 +1885,7 @@ config X86_USER_SHADOW_STACK
+ 	bool "X86 userspace shadow stack"
+ 	depends on AS_WRUSS
+ 	depends on X86_64
++	depends on PER_VMA_LOCK
+ 	select ARCH_USES_HIGH_VMA_FLAGS
+ 	select ARCH_HAS_USER_SHADOW_STACK
+ 	select X86_CET
+diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
+index 0962ae4c3017..0ca64900192f 100644
+--- a/arch/x86/kernel/shstk.c
++++ b/arch/x86/kernel/shstk.c
+@@ -326,10 +326,8 @@ static int shstk_push_sigframe(unsigned long *ssp)
+ 
+ static int shstk_pop_sigframe(unsigned long *ssp)
+ {
+-	struct vm_area_struct *vma;
+ 	unsigned long token_addr;
+-	bool need_to_check_vma;
+-	int err = 1;
++	unsigned int seq;
+ 
+ 	/*
+ 	 * It is possible for the SSP to be off the end of a shadow stack by 4
+@@ -340,25 +338,35 @@ static int shstk_pop_sigframe(unsigned long *ssp)
+ 	if (!IS_ALIGNED(*ssp, 8))
+ 		return -EINVAL;
+ 
+-	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
++	do {
++		struct vm_area_struct *vma;
++		bool valid_vma;
++		int err;
+ 
+-	if (need_to_check_vma)
+ 		if (mmap_read_lock_killable(current->mm))
+ 			return -EINTR;
+ 
+-	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
+-	if (unlikely(err))
+-		goto out_err;
+-
+-	if (need_to_check_vma) {
+ 		vma = find_vma(current->mm, *ssp);
+-		if (!vma || !(vma->vm_flags & VM_SHADOW_STACK)) {
+-			err = -EFAULT;
+-			goto out_err;
+-		}
++		valid_vma = vma && (vma->vm_flags & VM_SHADOW_STACK);
+ 
++		/*
++		 * VMAs can change between get_shstk_data() and find_vma().
++		 * Watch for changes and ensure that 'token_addr' comes from
++		 * 'vma' by recording a seqcount.
++		 *
++		 * Ignore the return value of mmap_lock_speculate_try_begin()
++		 * because the mmap lock excludes the possibility of writers.
++		 */
++		mmap_lock_speculate_try_begin(current->mm, &seq);
+ 		mmap_read_unlock(current->mm);
+-	}
++
++		if (!valid_vma)
++			return -EINVAL;
++
++		err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
++		if (err)
++			return err;
++	} while (mmap_lock_speculate_retry(current->mm, seq));
+ 
+ 	/* Restore SSP aligned? */
+ 	if (unlikely(!IS_ALIGNED(token_addr, 8)))
+@@ -371,10 +379,6 @@ static int shstk_pop_sigframe(unsigned long *ssp)
+ 	*ssp = token_addr;
+ 
+ 	return 0;
+-out_err:
+-	if (need_to_check_vma)
+-		mmap_read_unlock(current->mm);
+-	return err;
+ }
+ 
+ int setup_signal_shadow_stack(struct ksignal *ksig)
 
 
