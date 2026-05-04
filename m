@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sElMGROt+GkuxwIAu9opvQ
-	(envelope-from <stable+bounces-243508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:35 +0200
+	id EAqIOpes+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23CA4BF84D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0A94BF68B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2D48301DCF1
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 410563014368
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B943DE43B;
-	Mon,  4 May 2026 14:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE1B315785;
+	Mon,  4 May 2026 14:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgweQK8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6EkJc91"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943AE3DE420;
-	Mon,  4 May 2026 14:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2134935A3AD;
+	Mon,  4 May 2026 14:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904064; cv=none; b=dcOnUCWd4eRnAKGqQdXlnFQK+8MhWeWce3ZxYYcUEorxicB1CeLy7JTvz8wW4bEORLnTG4x4lN+SDLFj7YgnP/dFyuAit+1qpZqnNU65hSaEgwVHVCKrohCSH3fWK89Imk6rbcjJQo99/y8dhidstirx5GOMZtZOElssp0mCexA=
+	t=1777904576; cv=none; b=O1smlE9gAvTkFUKHdf5Un/RwPg+gy8gq7fvzoBBhOodFFSnf93l+NU7ldFEnfoxMud2XeLkdRtCMYBUihhEKUmfcJKYmXQOvGDFfviDXQFZbaUlwsihFV1xyh9PF9k4rBoIhz8f/QhRgXs5EttbTsHT9s2bI535g4zUfGggzhiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904064; c=relaxed/simple;
-	bh=9NMoExrYcWdGLbiKblXdZfLGlS72p8S2vB6UjYPWIgQ=;
+	s=arc-20240116; t=1777904576; c=relaxed/simple;
+	bh=G/gc1VzAnsodX8Wtd6KozWIsTfVdo3TSPs0l/Qz2l+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZIZ6tq1uYiXP583xnEqiPnCvnCJLiveZ5wGXnTnRzC2PsZsUSTwaR68n6fJ6r/DgZcQZoF3YWfg7sVdKDR/sb43c+Xq5sQoJ03bL/aec0Fkf1qmLsQT4q5ZfCnx6n6QthQq625m9iBoDn2DEiOzUen1P6l7yJ37yBhPngE3nrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgweQK8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AECFC2BCB8;
-	Mon,  4 May 2026 14:14:24 +0000 (UTC)
+	 MIME-Version; b=KPL+kC8Wg0I4nMsi13cjfG5JjEWUg0JnpbvvRHhYUkTf7+gQa6q3Cr3/H2AmnnRtmzjPGC2cXeoTgX2g5FuCa8/pknHXv9mq8IZp0bghfBHhw5c3COO4ifDLUr05+VMLwpavQjbr8dwO1orWwJbhdpP71o68NPRs3tLe/vpe+p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6EkJc91; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB25DC2BCB8;
+	Mon,  4 May 2026 14:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904064;
-	bh=9NMoExrYcWdGLbiKblXdZfLGlS72p8S2vB6UjYPWIgQ=;
+	s=korg; t=1777904576;
+	bh=G/gc1VzAnsodX8Wtd6KozWIsTfVdo3TSPs0l/Qz2l+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgweQK8cCPlpLrs8UkYO7OZ+hmTWy4Y9KdrJ0Zy6neaN6xILQOvf4Qrhzuja9RuOx
-	 Ygvc7ja2fblCs9T6lfX8hkOW2AZAb31iK3jfvHZO3hV36GCG5t4Yk2uMfDTZCedl1H
-	 g9rfUb/1aTepFVm4eIa6GfKZbeWx70xi5kGxkNKA=
+	b=i6EkJc9123BB/LFIBISxqi3HBZLuuppYWm61Lxiv5PyH6ak7JAZlWO00NQEPnhVrw
+	 SIs8oZFTxF9K/c+4frjn0RDl52mwd9l/KP3o497EYFA4MrKoaOVZj1y2HWgPo++VsE
+	 4+VpDtsd/kvSIm0s73dPsDbk4XCOErYZlAElXfzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 170/275] KVM: nSVM: Sync NextRIP to cached vmcb12 after VMRUN of L2
-Date: Mon,  4 May 2026 15:51:50 +0200
-Message-ID: <20260504135149.374970869@linuxfoundation.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marek Vasut <marex@nabladev.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 092/215] net: ks8851: Avoid excess softirq scheduling
+Date: Mon,  4 May 2026 15:51:51 +0200
+Message-ID: <20260504135133.519018432@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E23CA4BF84D
+X-Rspamd-Queue-Id: AF0A94BF68B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243508-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243709-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,65 +90,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Marek Vasut <marex@nabladev.com>
 
-commit 778d8c1b2a6ffe622ddcd3bb35b620e6e41f4da0 upstream.
+commit 22230e68b2cf1ab6b027be8cf1198164a949c4fa upstream.
 
-After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-fields written by the CPU from vmcb02 to the cached vmcb12. This is
-because the cached vmcb12 is used as the authoritative copy of some of
-the controls, and is the payload when saving/restoring nested state.
+The code injects a packet into netif_rx() repeatedly, which will add
+it to its internal NAPI and schedule a softirq, and process it. It is
+more efficient to queue multiple packets and process them all at the
+local_bh_enable() time.
 
-NextRIP is also written by the CPU (in some cases) after VMRUN, but is
-not sync'd to the cached vmcb12. As a result, it is corrupted after
-save/restore (replaced by the original value written by L1 on nested
-VMRUN). This could cause problems for both KVM (e.g. when injecting a
-soft IRQ) or L1 (e.g. when using NextRIP to advance RIP after emulating
-an instruction).
-
-Fix this by sync'ing NextRIP to the cache after VMRUN of L2, but only
-after completing interrupts (not in nested_sync_control_from_vmcb02()),
-as KVM may update NextRIP (e.g. when re-injecting a soft IRQ).
-
-Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-CC: stable@vger.kernel.org
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260225005950.3739782-2-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: e0863634bf9f ("net: ks8851: Queue RX packets in IRQ handler instead of disabling BHs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260415231020.455298-2-marex@nabladev.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/micrel/ks8851_common.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4343,6 +4343,16 @@ static __no_kcsan fastpath_t svm_vcpu_ru
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -389,9 +389,12 @@ static irqreturn_t ks8851_irq(int irq, v
+ 	if (status & IRQ_LCI)
+ 		mii_check_link(&ks->mii);
  
- 	svm_complete_interrupts(vcpu);
+-	if (status & IRQ_RXI)
++	if (status & IRQ_RXI) {
++		local_bh_disable();
+ 		while ((skb = __skb_dequeue(&rxq)))
+ 			netif_rx(skb);
++		local_bh_enable();
++	}
  
-+	/*
-+	 * Update the cache after completing interrupts to get an accurate
-+	 * NextRIP, e.g. when re-injecting a soft interrupt.
-+	 *
-+	 * FIXME: Rework svm_get_nested_state() to not pull data from the
-+	 *        cache (except for maybe int_ctl).
-+	 */
-+	if (is_guest_mode(vcpu))
-+		svm->nested.ctl.next_rip = svm->vmcb->control.next_rip;
-+
- 	return svm_exit_handlers_fastpath(vcpu);
+ 	return IRQ_HANDLED;
  }
- 
 
 
 
