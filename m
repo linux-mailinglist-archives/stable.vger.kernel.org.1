@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDPQKxaw+GkPzAIAu9opvQ
-	(envelope-from <stable+bounces-243711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:26 +0200
+	id AAQKGkSp+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB4F4BFE24
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A38A14BEC86
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C9EC301050E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:23:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 37E5C3019011
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8759F3DE44F;
-	Mon,  4 May 2026 14:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221853DDDDA;
+	Mon,  4 May 2026 14:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMzt85Ql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EH5jkoaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC40315785;
-	Mon,  4 May 2026 14:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5D375801;
+	Mon,  4 May 2026 14:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904581; cv=none; b=mPOc+KszjA6Hv+lR4k1hr86fQg8e/LKqHfmEqZDio2F5UBRRKY/lMRt+YD+nvTmRfXBrWZTBM77+emTaVZ9Y5exNbYZQPH+Hg4e+7Y2M8RcBN20mDwskwF41AneXGjBv4R2LLTRUzzGISsUUvgorAKSaLu1n6kktdBkir5WLyXE=
+	t=1777903423; cv=none; b=sQ8+OWSDNMipWGjsAKKjUrXm2wwABp87oDZOvHk8HvhpBN467WwasHHBJH311xqSmJMqSDQGPmbTUkMMy8V65mPJG6DXxoGCmB49FaN+x5hnG05c5HeOX4iUNWmObMr1e7UMpwDPtPhrkBRzOHtC/gQEZPI18MEBzXjDJozY71Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904581; c=relaxed/simple;
-	bh=A5q/6YS05nWRUfHaxhfP4T5SOeZiBFRd+9BvWDU6ZHM=;
+	s=arc-20240116; t=1777903423; c=relaxed/simple;
+	bh=CJogiG42R+2Ov6YA7iV4dPM+/vNDa/Pe/OxgK0lRFso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Htawua8ye2eMD7y6TLbw1JX9Hqrt39kQlyuKmVbD+mUEe8WZNfgFEa9/wBFNareywlAvBbffZ5UsTWgS7AmgYtIwK9XxI8hCu1YQva299PRy/nPemIqy5hTcDwBE9YLh/hiUSKlhXH0hU+E/9eu1Enxsy8EXmnVgI2agI3lNit4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMzt85Ql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3371C2BCB8;
-	Mon,  4 May 2026 14:23:00 +0000 (UTC)
+	 MIME-Version; b=Pt/gXDZv5TrGCHbJGQXNI+G5H6JTQZkv1tdZ9G0U5JUo4DTqYjua/2g48osJztdz0P45Kb1bRXHFYsiSS4hg6sweV/tBvUGr5WFwIPkfFn/p8pmoBzGVk+U81167nqE2wAa0pXU6BxzVr886QPMaX0ctVEggjt9PyJysTbvYU88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EH5jkoaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC14C2BCB8;
+	Mon,  4 May 2026 14:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904581;
-	bh=A5q/6YS05nWRUfHaxhfP4T5SOeZiBFRd+9BvWDU6ZHM=;
+	s=korg; t=1777903423;
+	bh=CJogiG42R+2Ov6YA7iV4dPM+/vNDa/Pe/OxgK0lRFso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMzt85QlZoauTcvk636eTf/aiMkSijfdw+22D7d6T98nGrnZ+TvJUvDzL21PhNS+6
-	 aFlI+Wgv0xiaCmQSiRQ2Al81rGrN501LgS5HdVE5Y2cgNcGDztCdTJ50orTuTMmc0N
-	 Lnxe0FIL6CyGihoYjeS0N9XcOk9jSnV/0YHzcGf4=
+	b=EH5jkoaVdt/VYX1wSYDRtEALNYVdPsQpSymxO9agouuX+4RU6cIR7TQwjk76KRLDm
+	 sJTFTN3rxDCdzSgcKNkfHEca9UswHPCCtepQCEFi6dCO+RQ6TnhZyx9Kli4U2qxODq
+	 hwSs89A0dvVUJkjNlXu/2RQI206kpjGi6RYtz360=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.12 093/215] drm/arcpgu: fix device node leak
-Date: Mon,  4 May 2026 15:51:52 +0200
-Message-ID: <20260504135133.555039739@linuxfoundation.org>
+	Yosry Ahmed <yosry@kernel.org>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 228/307] KVM: nSVM: Always intercept VMMCALL when L2 is active
+Date: Mon,  4 May 2026 15:51:53 +0200
+Message-ID: <20260504135151.435716526@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BDB4F4BFE24
+X-Rspamd-Queue-Id: A38A14BEC86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243711-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243258-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,49 +90,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit ad3ac32a3893a2bbcad545efc005a8e4e7ecf10c upstream.
+commit 33d3617a52f9930d22b2af59f813c2fbdefa6dd5 upstream.
 
-This function gets a device_node reference via
-of_graph_get_remote_port_parent() and stores it in encoder_node, but never
-puts that reference. Add it.
+Always intercept VMMCALL now that KVM properly synthesizes a #UD as
+appropriate, i.e. when L1 doesn't want to intercept VMMCALL, to avoid
+putting L2 into an infinite #UD loop if KVM_X86_QUIRK_FIX_HYPERCALL_INSN
+is enabled.
 
-There used to be a of_node_put(encoder_node) but it has been removed by
-mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
-arcpgu_drm_hdmi_init").
+By letting L2 execute VMMCALL natively and thus #UD, for all intents and
+purposes KVM morphs the VMMCALL intercept into a #UD intercept (KVM always
+intercepts #UD).  When the hypercall quirk is enabled, KVM "emulates"
+VMMCALL in response to the #UD by trying to fixup the opcode to the "right"
+vendor, then restarts the guest, without skipping the VMMCALL.  As a
+result, the guest sees an endless stream of #UDs since it's already
+executing the correct vendor hypercall instruction, i.e. the emulator
+doesn't anticipate that the #UD could be due to lack of interception, as
+opposed to a truly undefined opcode.
 
-Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
+Fixes: 0d945bd93511 ("KVM: SVM: Don't allow nested guest to VMMCALL into host")
 Cc: stable@vger.kernel.org
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://patch.msgid.link/20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://patch.msgid.link/20260304002223.1105129-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/arcpgu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/hyperv.h |    4 ----
+ arch/x86/kvm/svm/nested.c |    7 -------
+ 2 files changed, 11 deletions(-)
 
---- a/drivers/gpu/drm/tiny/arcpgu.c
-+++ b/drivers/gpu/drm/tiny/arcpgu.c
-@@ -248,7 +248,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
- static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+--- a/arch/x86/kvm/svm/hyperv.h
++++ b/arch/x86/kvm/svm/hyperv.h
+@@ -51,10 +51,6 @@ static inline bool nested_svm_is_l2_tlb_
+ void svm_hv_inject_synthetic_vmexit_post_tlb_flush(struct kvm_vcpu *vcpu);
+ #else /* CONFIG_KVM_HYPERV */
+ static inline void nested_svm_hv_update_vm_vp_ids(struct kvm_vcpu *vcpu) {}
+-static inline bool nested_svm_l2_tlb_flush_enabled(struct kvm_vcpu *vcpu)
+-{
+-	return false;
+-}
+ static inline bool nested_svm_is_l2_tlb_flush_hcall(struct kvm_vcpu *vcpu)
  {
- 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
--	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
-+	struct device_node *encoder_node __free(device_node) = NULL;
-+	struct device_node *endpoint_node = NULL;
- 	struct drm_connector *connector = NULL;
- 	struct drm_device *drm = &arcpgu->drm;
- 	struct resource *res;
+ 	return false;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -158,13 +158,6 @@ void recalc_intercepts(struct vcpu_svm *
+ 			vmcb_clr_intercept(c, INTERCEPT_VINTR);
+ 	}
+ 
+-	/*
+-	 * We want to see VMMCALLs from a nested guest only when Hyper-V L2 TLB
+-	 * flush feature is enabled.
+-	 */
+-	if (!nested_svm_l2_tlb_flush_enabled(&svm->vcpu))
+-		vmcb_clr_intercept(c, INTERCEPT_VMMCALL);
+-
+ 	for (i = 0; i < MAX_INTERCEPT; i++)
+ 		c->intercepts[i] |= g->intercepts[i];
+ 
 
 
 
