@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-243263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEHlDN6o+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243263-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:38 +0200
+	id KNajDXKs+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A7C4BEAD1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C42E4BF5EE
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F60230CE618
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 37A68303EC00
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A6D37881B;
-	Mon,  4 May 2026 14:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958BF3D75D7;
+	Mon,  4 May 2026 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2Tq6KZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/9Fchfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE3D3D9029;
-	Mon,  4 May 2026 14:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585423AA4F8;
+	Mon,  4 May 2026 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903437; cv=none; b=W+D90OEkuSherWgivFIIXdDeW8zd2vzNGKRcILs00+2TTaEtltLLlJdGxdPW03/Pu99WzjH/mXHoWqEO+OQAR3oUuDTkvoV/R7/z+WGq22zNGYB5kkmrZn/2rQCnSfHRuCaOl590y5bKJzEEkOam2CkMOy/oKZMB7hYdM49kqGw=
+	t=1777904018; cv=none; b=mY1j5UKe08gaJc/Bgmqw/M9hpwOWfXTGSA1CeeaCRn0Uxl58gb9KwmD0WhGOypib2x8kfjJvil//2/zf4hQTWJHuBret5RMXpInVVsPIfWaYFtE5FQhr+dsOdR0k1F5gRx+wKhNKyDGmt5lW7BLqYqKLS7AFUyMGJU6fmE6dVU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903437; c=relaxed/simple;
-	bh=FHWAm6V3sNa8XxWbwLxZVLgkMX4u/ewYWx3UOHD25co=;
+	s=arc-20240116; t=1777904018; c=relaxed/simple;
+	bh=hLcl7R2ZTtN05pxwCmIHLdmy6ua4QQmzONOfisUhQWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MdZilPqprk59aR9H4o1ZyE/YvCmzEsFTvCi4rp49OedgBoYDhuPwnWVzHtV9x6VLfF+cdR6FWW36nKOE1BRA4Ksmm6ErWV/mmwAAQciBIfyRp7k/O+AR8aotgCJTr3dYCC+yqHWyHqCGqQXFPMBakRFVAunL2JvPFTy7lyLNil0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2Tq6KZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B756C2BCB8;
-	Mon,  4 May 2026 14:03:56 +0000 (UTC)
+	 MIME-Version; b=Lxs8q//FbE1/QcYm8ahp71/2LiSXWxT38ORbOthuwYWewTG2YU6UYzaGryObqJhlM1XzncAiKq8DIYtksJe7M0JO3b/Yw76433o+liUhRTil3FtPAJv3cbyfDYrBUiBJ0H4RfTg7JZoabWlHJ2ea2ztkWVERkZT4d+wu5BXx2mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/9Fchfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2747C2BCB8;
+	Mon,  4 May 2026 14:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903436;
-	bh=FHWAm6V3sNa8XxWbwLxZVLgkMX4u/ewYWx3UOHD25co=;
+	s=korg; t=1777904018;
+	bh=hLcl7R2ZTtN05pxwCmIHLdmy6ua4QQmzONOfisUhQWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2Tq6KZR20Iwin1veTxWMcDsP+ZfVuTsKObgA9Y9kY2rWVnTCtxsp+A113PnvRV/Y
-	 4fZ/QETVP3ctKn+AmIp3ZpaXE6qbz8LshmnXwk0xH8e9i9elt2YwGtEkG7+0LCZm97
-	 nM6IbTz/suOgUT9CjblQUCfMSSIaPXRXdOhMBveI=
+	b=d/9Fchfn5RboHx4j++HtfDna6g2ZgXEcqbqkDTa4oByl/oFg6B+mdaLKbF4qebwCX
+	 5e+V3/PHkC9nP5CyCS1EjudPwcRGyv1pVFue1RA3U10DnxuTN1FAwZxO/6X9AiGvVY
+	 AVLIam1gQ1vX+zfUB89T7X7ZzQgpWt2My5MEiP9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 206/307] KVM: SVM: Explicitly mark vmcb01 dirty after modifying VMCB intercepts
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Hans de Goede <hansg@kernel.org>,
+	linux-fbdev@vger.kernel.org
+Subject: [PATCH 6.18 151/275] firmware: google: framebuffer: Do not unregister platform device
 Date: Mon,  4 May 2026 15:51:31 +0200
-Message-ID: <20260504135150.626871725@linuxfoundation.org>
+Message-ID: <20260504135148.546551690@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +67,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 86A7C4BEAD1
+X-Rspamd-Queue-Id: 7C42E4BF5EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243490-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243263-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,chromium.org:email,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit d5bde6113aed8315a2bfe708730b721be9c2f48b upstream.
+commit 5cd28bd28c8ce426b56ce4230dbd17537181d5ad upstream.
 
-When reacting to an intercept update, explicitly mark vmcb01's intercepts
-dirty, as KVM always initially operates on vmcb01, and nested_svm_vmexit()
-isn't guaranteed to mark VMCB_INTERCEPTS as dirty.  I.e. if L2 is active,
-KVM will modify the intercepts for L1, but might not mark them as dirty
-before the next VMRUN of L1.
+The native driver takes over the framebuffer aperture by removing the
+system- framebuffer platform device. Afterwards the pointer in drvdata
+is dangling. Remove the entire logic around drvdata and let the kernel's
+aperture helpers handle this. The platform device depends on the native
+hardware device instead of the coreboot device anyway.
 
-Fixes: 116a0a23676e ("KVM: SVM: Add clean-bit for intercetps, tsc-offset and pause filter count")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20260218230958.2877682-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+When commit 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer
+driver") added the coreboot framebuffer code, the kernel did not support
+device-based aperture management. Instead native driviers only removed
+the conflicting fbdev device. At that point, unregistering the framebuffer
+device most likely worked correctly. It was definitely broken after
+commit d9702b2a2171 ("fbdev/simplefb: Do not use struct
+fb_info.apertures"). So take this commit for the Fixes tag. Earlier
+releases might work depending on the native hardware driver.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: d9702b2a2171 ("fbdev/simplefb: Do not use struct fb_info.apertures")
+Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Acked-by: Julius Werner <jwerner@chromium.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Hans de Goede <hansg@kernel.org>
+Cc: linux-fbdev@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v6.3+
+Link: https://patch.msgid.link/20260217155836.96267-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/firmware/google/framebuffer-coreboot.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -128,11 +128,13 @@ void recalc_intercepts(struct vcpu_svm *
- 	struct vmcb_ctrl_area_cached *g;
- 	unsigned int i;
+--- a/drivers/firmware/google/framebuffer-coreboot.c
++++ b/drivers/firmware/google/framebuffer-coreboot.c
+@@ -81,19 +81,10 @@ static int framebuffer_probe(struct core
+ 						 sizeof(pdata));
+ 	if (IS_ERR(pdev))
+ 		pr_warn("coreboot: could not register framebuffer\n");
+-	else
+-		dev_set_drvdata(&dev->dev, pdev);
  
--	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
-+	vmcb_mark_dirty(svm->vmcb01.ptr, VMCB_INTERCEPTS);
+ 	return PTR_ERR_OR_ZERO(pdev);
+ }
  
- 	if (!is_guest_mode(&svm->vcpu))
- 		return;
+-static void framebuffer_remove(struct coreboot_device *dev)
+-{
+-	struct platform_device *pdev = dev_get_drvdata(&dev->dev);
+-
+-	platform_device_unregister(pdev);
+-}
+-
+ static const struct coreboot_device_id framebuffer_ids[] = {
+ 	{ .tag = CB_TAG_FRAMEBUFFER },
+ 	{ /* sentinel */ }
+@@ -102,7 +93,6 @@ MODULE_DEVICE_TABLE(coreboot, framebuffe
  
-+	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
-+
- 	c = &svm->vmcb->control;
- 	h = &svm->vmcb01.ptr->control;
- 	g = &svm->nested.ctl;
+ static struct coreboot_driver framebuffer_driver = {
+ 	.probe = framebuffer_probe,
+-	.remove = framebuffer_remove,
+ 	.drv = {
+ 		.name = "framebuffer",
+ 	},
 
 
 
