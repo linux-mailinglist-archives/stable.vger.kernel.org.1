@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKcRHKep+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:59 +0200
+	id OPFEMsen+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B0A4BEDD3
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CDE4BE816
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 996F3301D7CE
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8354329D448
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867501ADC83;
-	Mon,  4 May 2026 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CD43DE424;
+	Mon,  4 May 2026 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zx1Ke8bO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHG+hBI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F013A7F4C;
-	Mon,  4 May 2026 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1525B3DEAEC;
+	Mon,  4 May 2026 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903799; cv=none; b=lz+KtKTPQ+Plfo4x76UtFhzt7Rg5jLpxCGOplMcyK2eR/rDSWAvpteUefZlexc7LDQZkZaqqdXx1MDDgTUF0xirM3ARKEodohTXeSVoKZVEBLjMBdq6AaMkI6qyCujvC4b4/ZcvYXw3a3bk9anXo+Wu906FE9p8/7YAOwoKUwro=
+	t=1777903149; cv=none; b=o+1oF749M7P6BrNmovGlMLJq9uFPeOyrIVZJw0tt9B2byw5Y8+jRxO7dXHphizfvbU7R3tNxZZi18MAvchPawQ+FtP2XREtJkFZ6WczuZCaA76r/zsMvwJl01qw+vk/TWX3GuXbD308IBUmPtq0Xh2RMbmg9xRWEBIuec1IcR0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903799; c=relaxed/simple;
-	bh=OKBgdSFymcVHS90uBl9DTmD8XE/nf6AXI9H7hV9M1Gk=;
+	s=arc-20240116; t=1777903149; c=relaxed/simple;
+	bh=ts+8KJVlF7VdvogxBzteqFPxwzim+L4NKqCAOd3U2CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtaePPJFVhaSin2j0iZ881FrhbQ/zQRgHpWM2VpxFqWky3Xyw2tVLi+2HS2P7GrXdBHC6pvkB6CmZmnYJH9UtYmJGZa8erHYcN9zITHIg+s8eOk8w5BC+VrU0MgUC66e1rrW8SUZ/ZK7hO8MnGibZTZMWDCHRvnjhC5F089XiTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zx1Ke8bO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B22C2BCB8;
-	Mon,  4 May 2026 14:09:58 +0000 (UTC)
+	 MIME-Version; b=SZXD2jiA8cPrJgYsoyio5Iun8Bz1st4I39AKb+lDgailvzKP1X4JPSMXYi+zFk+dZxh8iZDzkcUZDa2Kc/26Zys4nxfoF680Y0yrXb/EjN5wstgGrqYDvQuHWc4ZUVweyblFfBd86dn4d0gWHtXu1jAMfm7j/GNg6ACUe7qpyFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHG+hBI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B44CC4AF09;
+	Mon,  4 May 2026 13:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903799;
-	bh=OKBgdSFymcVHS90uBl9DTmD8XE/nf6AXI9H7hV9M1Gk=;
+	s=korg; t=1777903149;
+	bh=ts+8KJVlF7VdvogxBzteqFPxwzim+L4NKqCAOd3U2CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zx1Ke8bOsLOW7C2O2JlIPWfYAk7vn9m7xbDN6/WKRPOAZnw+06L6rlNhoKdo4ajfj
-	 NIaAEJ7yKmYFcDm9iNXLPewU2YfvfQaM1SNzq7CpXS6B+EmKpy91GJDx6MSBvr7gGs
-	 4l6f2OQWPaP96wMFdMO9UoS+mEZAprvykb/meXVs=
+	b=JHG+hBI28LZ/OkddOOtgTyaVVeiiT0OWi1Syv1VRUDmCUvdbrTqDY2GdbIepmpicK
+	 LOEuQkt3uKujENsaKZksxvCZbwfy0zzw044jZ+g74hzO1zYCXEgXwSog1pv4tvMzl5
+	 vt0CXf1qX6oUt6f6lYvR4eK711LIFWrnnIW0v8q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiao <252270051@hdu.edu.cn>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.18 067/275] ipmi:ssif: Clean up kthread on errors
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 122/307] ALSA: pcmtest: fix reference leak on failed device registration
 Date: Mon,  4 May 2026 15:50:07 +0200
-Message-ID: <20260504135145.421056583@linuxfoundation.org>
+Message-ID: <20260504135147.388221948@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 24B0A4BEDD3
+X-Rspamd-Queue-Id: 32CDE4BE816
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243152-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243405-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,minyard.net:email,hdu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 75c486cb1bcaa1a3ec3a6438498176a3a4998ae4 upstream.
+commit 4ff036f95238f02c87e5d7c0a9d93748582a8950 upstream.
 
-If an error occurs after the ssif kthread is created, but before the
-main IPMI code starts the ssif interface, the ssif kthread will not
-be stopped.
+When platform_device_register() fails in mod_init(), the embedded struct
+device in pcmtst_pdev has already been initialized by
+device_initialize(), but the failure path returns the error without
+dropping the device reference for the current platform device:
 
-So make sure the kthread is stopped on an error condition if it is
-running.
+  mod_init()
+    -> platform_device_register(&pcmtst_pdev)
+       -> device_initialize(&pcmtst_pdev.dev)
+       -> setup_pdev_dma_masks(&pcmtst_pdev)
+       -> platform_device_add(&pcmtst_pdev)
 
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-Reported-by: Li Xiao <<252270051@hdu.edu.cn>
+This leads to a reference leak when platform_device_register() fails.
+Fix this by calling platform_device_put() before returning the error.
+
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Fixes: 315a3d57c64c5 ("ALSA: Implement the new Virtual PCM Test Driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Li Xiao <252270051@hdu.edu.cn>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260415193138.3861297-1-lgs201920130244@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ sound/drivers/pcmtest.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1270,8 +1270,10 @@ static void shutdown_ssif(void *send_inf
- 	ssif_info->stopping = true;
- 	timer_delete_sync(&ssif_info->watch_timer);
- 	timer_delete_sync(&ssif_info->retry_timer);
--	if (ssif_info->thread)
-+	if (ssif_info->thread) {
- 		kthread_stop(ssif_info->thread);
-+		ssif_info->thread = NULL;
+--- a/sound/drivers/pcmtest.c
++++ b/sound/drivers/pcmtest.c
+@@ -756,8 +756,10 @@ static int __init mod_init(void)
+ 	if (err)
+ 		return err;
+ 	err = platform_device_register(&pcmtst_pdev);
+-	if (err)
++	if (err) {
++		platform_device_put(&pcmtst_pdev);
+ 		return err;
 +	}
- }
- 
- static void ssif_remove(struct i2c_client *client)
-@@ -1918,6 +1920,15 @@ static int ssif_probe(struct i2c_client
- 
-  out:
- 	if (rv) {
-+		/*
-+		 * If ipmi_register_smi() starts the interface, it will
-+		 * call shutdown and that will free the thread and set
-+		 * it to NULL.  Otherwise it must be freed here.
-+		 */
-+		if (ssif_info->thread) {
-+			kthread_stop(ssif_info->thread);
-+			ssif_info->thread = NULL;
-+		}
- 		if (addr_info)
- 			addr_info->client = NULL;
- 
+ 	err = platform_driver_register(&pcmtst_pdrv);
+ 	if (err)
+ 		platform_device_unregister(&pcmtst_pdev);
 
 
 
