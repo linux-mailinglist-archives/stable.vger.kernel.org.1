@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-243533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFNCD3Ct+GkuxwIAu9opvQ
-	(envelope-from <stable+bounces-243533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:08 +0200
+	id cFtNFOqs+GkixwIAu9opvQ
+	(envelope-from <stable+bounces-243534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46344BF8F9
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0664BF7D4
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A374305A257
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 364DA300B28F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2973DE425;
-	Mon,  4 May 2026 14:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3BA3DE425;
+	Mon,  4 May 2026 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxhRf8C7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwic7mf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C111C68F;
-	Mon,  4 May 2026 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAB537D11B;
+	Mon,  4 May 2026 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904128; cv=none; b=C3GFxGoBNtdJtVB+8bgqrOAtsul6z8+H2/lMmxk8kOTInfTSoznu3hc+pIqGvg2+0LHSVFdT4Ar0bCHgj0qi84JErdfmv1NSaCkuNXlvuWN+myXMsHV59YY0EgXzzVSfaYxbcAvLzeFr2JvFMCWCyVPI0cZpA+8SYCDs64QTdYo=
+	t=1777904131; cv=none; b=XT+K2aRrY+QwM6rNoJOwN/ZMjj+D09UKqQbt2Nm+QS9+FgmPkNoM6OmwN76arq0ZOUUj2nOzv8tU6SbG6mWFAp4xjwFcZv5wQeRTU768D2uCJlTWsyqjQleXBfcCionT/1urV0uMZ4Qpgevui/2J+p8mTAaDVxBiwe/AsKK21Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904128; c=relaxed/simple;
-	bh=rum3pUC+gv1GbwVpErrRNN/Jmqxfywsv2hX3pBuEA/U=;
+	s=arc-20240116; t=1777904131; c=relaxed/simple;
+	bh=fCI4jqhH01adjbhNNox9Vv4NlxAGYi86baOL68VW66Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puhUfyDaAAhLwhEWGwb38mVKv6BwboOLzjeXMr1pwT/Y43yeeYjbefLdK2Jd8gkBc5Ds1odd9DVHc3O0EwyrGeFOnwAYOvRKQqQHE7fc73Iza1xgmx8Y1ealCEbeXuW/SiUDxV2Q4eSbtMzsYRqbNWVhsSTlTVcuRDgAqtmxRDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxhRf8C7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A158C2BCC4;
-	Mon,  4 May 2026 14:15:28 +0000 (UTC)
+	 MIME-Version; b=qU7DTG8DLbyWuLHPMjGf3YFsG12SbrgzzQAquin0Fa8k8Mtb3+OmZU8jQOfNBs9CuwbhDTrOaLC9FUHvri/hRHauRvabyEmytFMJseKLQMKjKa7O7Mg90DAaioIc9rsfDAwB87K6XiMeDPn02+dK7RHKfsq+Pc0STnZfpbEd22c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwic7mf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F405FC2BCB8;
+	Mon,  4 May 2026 14:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904128;
-	bh=rum3pUC+gv1GbwVpErrRNN/Jmqxfywsv2hX3pBuEA/U=;
+	s=korg; t=1777904131;
+	bh=fCI4jqhH01adjbhNNox9Vv4NlxAGYi86baOL68VW66Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xxhRf8C7uMBpqBofkpP1HlRBHPnys9qC6Dvv5HVI4oAJmHJlV8BKq9wt2a9ISYV84
-	 EtK5bKjqsSTXnCh9TglUYbGKWmtS40vOmozBT4xIsM5PNtTcJVsRUGo4Awu0t0D5Qw
-	 YMbyW8lBtzF6ClaQdBn7sgmit59EE1E/eaRt3QwQ=
+	b=kwic7mf4SFBlDm+2wH1Zzuvk+sRWY5Uf9jadcPde8D/p7uQHiooZabrJqcRMSmwBk
+	 FT61/jsp2Orc5OjrCCeOl/9ug19LpJ/SsVIrm6ZJSvYMUlXpTBEVl/mn4tVLv+ny3n
+	 BVrvffvDS3hQ58g2Wo6F4+KHfcFeORvc17kVgwUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	chenyichong <chenyichong@uniontech.com>,
+	Jackie Liu <liuyun01@kylinos.cn>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Gregory Price <gourry@gourry.net>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	David Hildenbrand <david@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 161/275] mm/vmalloc: take vmap_purge_lock in shrinker
-Date: Mon,  4 May 2026 15:51:41 +0200
-Message-ID: <20260504135149.028306219@linuxfoundation.org>
+Subject: [PATCH 6.18 162/275] mm/mempolicy: fix memory leaks in weighted_interleave_auto_store()
+Date: Mon,  4 May 2026 15:51:42 +0200
+Message-ID: <20260504135149.065364268@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
 References: <20260504135142.929052779@linuxfoundation.org>
@@ -65,78 +68,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B46344BF8F9
+X-Rspamd-Queue-Id: 4A0664BF7D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,uniontech.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-243533-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243534-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,gmail.com,gourry.net,nvidia.com,sk.com,kernel.org,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,linux-foundation.org:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Jackie Liu <liuyun01@kylinos.cn>
 
-commit ec05f51f1e65bce95528543eb73fda56fd201d94 upstream.
+commit 6fae274ce0e3109cbbc4c18b354eaace1f0af7d7 upstream.
 
-decay_va_pool_node() can be invoked concurrently from two paths:
-__purge_vmap_area_lazy() when pools are being purged, and the shrinker via
-vmap_node_shrink_scan().
+weighted_interleave_auto_store() fetches old_wi_state inside the if
+(!input) block only.  This causes two memory leaks:
 
-However, decay_va_pool_node() is not safe to run concurrently, and the
-shrinker path currently lacks serialization, leading to races and possible
-leaks.
+1. When a user writes "false" and the current mode is already manual,
+   the function returns early without freeing the freshly allocated
+   new_wi_state.
 
-Protect decay_va_pool_node() by taking vmap_purge_lock in the shrinker
-path to ensure serialization with purge users.
+2. When a user writes "true", old_wi_state stays NULL because the
+   fetch is skipped entirely. The old state is then overwritten by
+   rcu_assign_pointer() but never freed, since the cleanup path is
+   gated on old_wi_state being non-NULL. A user can trigger this
+   repeatedly by writing "1" in a loop.
 
-Link: https://lore.kernel.org/20260413192646.14683-1-urezki@gmail.com
-Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-Cc: chenyichong <chenyichong@uniontech.com>
-Cc: <stable@vger.kernel.org>
+Fix both leaks by moving the old_wi_state fetch before the input check,
+making it unconditional.  This also allows a unified early return for both
+"true" and "false" when the requested mode matches the current mode.
+
+Link: https://lore.kernel.org/20260401005702.7096-1-liu.yun@linux.dev
+Link: https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev
+Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.16+
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmalloc.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/mempolicy.c |   23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -5255,6 +5255,7 @@ vmap_node_shrink_scan(struct shrinker *s
- {
- 	struct vmap_node *vn;
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -3636,18 +3636,19 @@ static ssize_t weighted_interleave_auto_
+ 		new_wi_state->iw_table[i] = 1;
  
-+	guard(mutex)(&vmap_purge_lock);
- 	for_each_vmap_node(vn)
- 		decay_va_pool_node(vn, true);
+ 	mutex_lock(&wi_state_lock);
+-	if (!input) {
+-		old_wi_state = rcu_dereference_protected(wi_state,
+-					lockdep_is_held(&wi_state_lock));
+-		if (!old_wi_state)
+-			goto update_wi_state;
+-		if (input == old_wi_state->mode_auto) {
+-			mutex_unlock(&wi_state_lock);
+-			return count;
+-		}
++	old_wi_state = rcu_dereference_protected(wi_state,
++				lockdep_is_held(&wi_state_lock));
++
++	if (old_wi_state && input == old_wi_state->mode_auto) {
++		mutex_unlock(&wi_state_lock);
++		kfree(new_wi_state);
++		return count;
++	}
+ 
+-		memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
+-					       nr_node_ids * sizeof(u8));
++	if (!input) {
++		if (old_wi_state)
++			memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
++						       nr_node_ids * sizeof(u8));
+ 		goto update_wi_state;
+ 	}
  
 
 
