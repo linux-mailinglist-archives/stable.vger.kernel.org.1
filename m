@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJUKBlWq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:53 +0200
+	id +P+ABIap+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857CF4BEF95
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D715B4BED5D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C3DF3023A63
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DF493091593
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913833DE43C;
-	Mon,  4 May 2026 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09953D9029;
+	Mon,  4 May 2026 14:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuVWfolA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzK047U1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2D03DDDD6;
-	Mon,  4 May 2026 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6448575801;
+	Mon,  4 May 2026 14:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904026; cv=none; b=I4PgDig/DdyzbqXC4VZVGmZg/1kGT9atBBry/zvayiFUb5H0IGUbGUZCoZMVlj1OKqmDHlpFClf7GAJEDsqhD5GVQ/NRdi1h34z3b7uUBcmOBnSIfbTn9FMUVXjYGYuZ45c/m7pjA6s8xeC5UtRB0IHjLV9B/V/8Miuv//rbHjM=
+	t=1777903457; cv=none; b=cWZpxah2wQhZhbwQMsdoHzembnoCAwG7x1ERUtJC9z4RYNRZMbmlWsZdW2WeZArKpIjttahna1BxfyFSADjhQZwAw9ycI/EK2sb8OoVO7iyMSxKUmtYzCZrkzptHjMPX37Lwo1/9lsG4nVNb3hAXE8kN4hVRCFqBWh1LA8QRk6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904026; c=relaxed/simple;
-	bh=LdeMqir73GD4TUL+1U9b21iAbx5+8Rhm29bdeD07vVQ=;
+	s=arc-20240116; t=1777903457; c=relaxed/simple;
+	bh=tNzswJ1XESlgnxAralxaaftmc5nsDhCEMLoizpBvAvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfRqy7AQsB6SEtaUR1+jf1sTVqNo8BSmxPbgf8YpIILeZxKReAZEa5u5+a87nJC0wyWs5ktM4nZ/636spuQGCMJHi4BrOLlw5IEBhkSyPfaUp6Ggy0fOzavg0E5LMwZ9ZZnVm6uk8B1ZnQHXuAH+9/Gx1BvBwX9VQBBSL9pFe8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuVWfolA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A247CC2BCB8;
-	Mon,  4 May 2026 14:13:45 +0000 (UTC)
+	 MIME-Version; b=C3n4nLegOxMtGI/mxwbFwJm9R2LwC+KyLSwiMbAUmbem6pKLTuUX7JPI8+O/+81JlQZWw+H0WRiFQrzf+C6ExnTSGe1DQ+sgzmG61zKtQPNmerB+3lh2PY43W8AkpVyFJCS51bRFzQ0hp7sSQ+z7Radk4m0W/crILzh/mlWAwjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzK047U1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE594C2BCB8;
+	Mon,  4 May 2026 14:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904026;
-	bh=LdeMqir73GD4TUL+1U9b21iAbx5+8Rhm29bdeD07vVQ=;
+	s=korg; t=1777903457;
+	bh=tNzswJ1XESlgnxAralxaaftmc5nsDhCEMLoizpBvAvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuVWfolANOsVKwqY/5ma89yM6IkVjBAV2ubXiHDeA8dOdc1gKUBuu+RMk9GEbROw3
-	 JtAEv0poIr3vCAD2nn+NQOiZBKu5G3lYalkp2c/aDR6RaDAr6k5YK/Fcv957YsPUEj
-	 Q+0ZfMKjzwlPlH8J+f1Qat3m9H3j5iWaxE0xWxFo=
+	b=IzK047U1f7jazvQoqjNNxNpv7MDxIl1zkJQoFBQqRVVZVR3KDIzx/w1bGRYJRfgf+
+	 fzyyML968fbpmvad+oX0mJa0ATEoICaSSAxBvg6ho8HI4jjUAUQpEUUgz70dxJ01Df
+	 1C4bS+3ESyP950fpY0LydpZ+381Tc70ulCZ2750c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Louvel <paul.louvel@bootlin.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.18 153/275] crypto: talitos - rename first/last to first_desc/last_desc
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 208/307] KVM: nSVM: Always use NextRIP as vmcb02s NextRIP after first L2 VMRUN
 Date: Mon,  4 May 2026 15:51:33 +0200
-Message-ID: <20260504135148.622106543@linuxfoundation.org>
+Message-ID: <20260504135150.701008736@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 857CF4BEF95
+X-Rspamd-Queue-Id: D715B4BED5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,218 +80,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243493-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243271-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Louvel <paul.louvel@bootlin.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit a1b80018b8cec27fc06a8b04a7f8b5f6cfe86eae upstream.
+commit 8d397582f6b5e9fbcf09781c7c934b4910e94a50 upstream.
 
-Previous commit introduces a new last_request variable in the context
-structure.
+For guests with NRIPS disabled, L1 does not provide NextRIP when running
+an L2 with an injected soft interrupt, instead it advances the current RIP
+before running it. KVM uses the current RIP as the NextRIP in vmcb02 to
+emulate a CPU without NRIPS.
 
-Renaming the first/last existing member variable in the context
-structure to improve readability.
+However, after L2 runs the first time, NextRIP will be updated by the CPU
+and/or KVM, and the current RIP is no longer the correct value to use in
+vmcb02.  Hence, after save/restore, use the current RIP if and only if a
+nested run is pending, otherwise use NextRIP.  Give soft_int_next_rip the
+same treatment, as it's the same logic, just for a narrower use case.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260225005950.3739782-6-yosry@kernel.org
+[sean: give soft_int_next_rip the same treatment]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/talitos.c |   46 +++++++++++++++++++++++-----------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ arch/x86/kvm/svm/nested.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
---- a/drivers/crypto/talitos.c
-+++ b/drivers/crypto/talitos.c
-@@ -869,8 +869,8 @@ struct talitos_ahash_req_ctx {
- 	u8 buf[2][HASH_MAX_BLOCK_SIZE];
- 	int buf_idx;
- 	unsigned int swinit;
--	unsigned int first;
--	unsigned int last;
-+	unsigned int first_desc;
-+	unsigned int last_desc;
- 	unsigned int last_request;
- 	unsigned int to_hash_later;
- 	unsigned int nbuf;
-@@ -889,8 +889,8 @@ struct talitos_export_state {
- 	u32 hw_context[TALITOS_MDEU_MAX_CONTEXT_SIZE / sizeof(u32)];
- 	u8 buf[HASH_MAX_BLOCK_SIZE];
- 	unsigned int swinit;
--	unsigned int first;
--	unsigned int last;
-+	unsigned int first_desc;
-+	unsigned int last_desc;
- 	unsigned int to_hash_later;
- 	unsigned int nbuf;
- };
-@@ -1722,7 +1722,7 @@ static void common_nonsnoop_hash_unmap(s
- 	if (desc->next_desc &&
- 	    desc->ptr[5].ptr != desc2->ptr[5].ptr)
- 		unmap_single_talitos_ptr(dev, &desc2->ptr[5], DMA_FROM_DEVICE);
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		memcpy(areq->result, req_ctx->hw_context,
- 		       crypto_ahash_digestsize(tfm));
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -856,24 +856,32 @@ static void nested_vmcb02_prepare_contro
+ 	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
  
-@@ -1759,7 +1759,7 @@ static void ahash_done(struct device *de
- 		 container_of(desc, struct talitos_edesc, desc);
- 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
- 
--	if (!req_ctx->last && req_ctx->to_hash_later) {
-+	if (!req_ctx->last_desc && req_ctx->to_hash_later) {
- 		/* Position any partial block for next update/final/finup */
- 		req_ctx->buf_idx = (req_ctx->buf_idx + 1) & 1;
- 		req_ctx->nbuf = req_ctx->to_hash_later;
-@@ -1825,7 +1825,7 @@ static int common_nonsnoop_hash(struct t
- 	/* first DWORD empty */
- 
- 	/* hash context in */
--	if (!req_ctx->first || req_ctx->swinit) {
-+	if (!req_ctx->first_desc || req_ctx->swinit) {
- 		map_single_talitos_ptr_nosync(dev, &desc->ptr[1],
- 					      req_ctx->hw_context_size,
- 					      req_ctx->hw_context,
-@@ -1833,7 +1833,7 @@ static int common_nonsnoop_hash(struct t
- 		req_ctx->swinit = 0;
- 	}
- 	/* Indicate next op is not the first. */
--	req_ctx->first = 0;
-+	req_ctx->first_desc = 0;
- 
- 	/* HMAC key */
- 	if (ctx->keylen)
-@@ -1866,7 +1866,7 @@ static int common_nonsnoop_hash(struct t
- 	/* fifth DWORD empty */
- 
- 	/* hash/HMAC out -or- hash context out */
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		map_single_talitos_ptr(dev, &desc->ptr[5],
- 				       crypto_ahash_digestsize(tfm),
- 				       req_ctx->hw_context, DMA_FROM_DEVICE);
-@@ -1908,7 +1908,7 @@ static int common_nonsnoop_hash(struct t
- 		if (sg_count > 1)
- 			sync_needed = true;
- 		copy_talitos_ptr(&desc2->ptr[5], &desc->ptr[5], is_sec1);
--		if (req_ctx->last)
-+		if (req_ctx->last_desc)
- 			map_single_talitos_ptr_nosync(dev, &desc->ptr[5],
- 						      req_ctx->hw_context_size,
- 						      req_ctx->hw_context,
-@@ -1964,7 +1964,7 @@ static int ahash_process_req_one(struct
- 	bool is_sec1 = has_ftr_sec1(priv);
- 	u8 *ctx_buf = req_ctx->buf[req_ctx->buf_idx];
- 
--	if (!req_ctx->last && (nbytes + req_ctx->nbuf <= blocksize)) {
-+	if (!req_ctx->last_desc && (nbytes + req_ctx->nbuf <= blocksize)) {
- 		/* Buffer up to one whole block */
- 		nents = sg_nents_for_len(req_ctx->request_sl, nbytes);
- 		if (nents < 0) {
-@@ -1981,7 +1981,7 @@ static int ahash_process_req_one(struct
- 	nbytes_to_hash = nbytes + req_ctx->nbuf;
- 	to_hash_later = nbytes_to_hash & (blocksize - 1);
- 
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		to_hash_later = 0;
- 	else if (to_hash_later)
- 		/* There is a partial block. Hash the full block(s) now */
-@@ -2041,19 +2041,19 @@ static int ahash_process_req_one(struct
- 	edesc->desc.hdr = ctx->desc_hdr_template;
- 
- 	/* On last one, request SEC to pad; otherwise continue */
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_PAD;
- 	else
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_CONT;
- 
- 	/* request SEC to INIT hash. */
--	if (req_ctx->first && !req_ctx->swinit)
-+	if (req_ctx->first_desc && !req_ctx->swinit)
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_INIT;
- 
- 	/* When the tfm context has a keylen, it's an HMAC.
- 	 * A first or last (ie. not middle) descriptor must request HMAC.
+ 	/*
+-	 * next_rip is consumed on VMRUN as the return address pushed on the
++	 * NextRIP is consumed on VMRUN as the return address pushed on the
+ 	 * stack for injected soft exceptions/interrupts.  If nrips is exposed
+-	 * to L1, take it verbatim from vmcb12.  If nrips is supported in
+-	 * hardware but not exposed to L1, stuff the actual L2 RIP to emulate
+-	 * what a nrips=0 CPU would do (L1 is responsible for advancing RIP
+-	 * prior to injecting the event).
++	 * to L1, take it verbatim from vmcb12.
++	 *
++	 * If nrips is supported in hardware but not exposed to L1, stuff the
++	 * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
++	 * responsible for advancing RIP prior to injecting the event). This is
++	 * only the case for the first L2 run after VMRUN. After that (e.g.
++	 * during save/restore), NextRIP is updated by the CPU and/or KVM, and
++	 * the value of the L2 RIP from vmcb12 should not be used.
  	 */
--	if (ctx->keylen && (req_ctx->first || req_ctx->last))
-+	if (ctx->keylen && (req_ctx->first_desc || req_ctx->last_desc))
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_HMAC;
+-	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+-		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+-	else if (boot_cpu_has(X86_FEATURE_NRIPS))
+-		vmcb02->control.next_rip    = vmcb12_rip;
++	if (boot_cpu_has(X86_FEATURE_NRIPS)) {
++		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
++		    !svm->nested.nested_run_pending)
++			vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
++		else
++			vmcb02->control.next_rip    = vmcb12_rip;
++	}
  
- 	return common_nonsnoop_hash(edesc, req_ctx->areq, nbytes_to_hash, ahash_done);
-@@ -2076,7 +2076,7 @@ static void sec1_ahash_process_remaining
- 			req_ctx->remaining_ahash_request_bytes;
- 
- 		if (req_ctx->last_request)
--			req_ctx->last = 1;
-+			req_ctx->last_desc = 1;
- 	}
- 
- 	err = ahash_process_req_one(req_ctx->areq,
-@@ -2103,7 +2103,7 @@ static int ahash_process_req(struct ahas
- 		if (nbytes > TALITOS1_MAX_DATA_LEN)
- 			nbytes = TALITOS1_MAX_DATA_LEN;
- 		else if (req_ctx->last_request)
--			req_ctx->last = 1;
-+			req_ctx->last_desc = 1;
- 	}
- 
- 	req_ctx->current_ahash_request_bytes = nbytes;
-@@ -2124,14 +2124,14 @@ static int ahash_init(struct ahash_reque
- 	/* Initialize the context */
- 	req_ctx->buf_idx = 0;
- 	req_ctx->nbuf = 0;
--	req_ctx->first = 1; /* first indicates h/w must init its context */
-+	req_ctx->first_desc = 1; /* first_desc indicates h/w must init its context */
- 	req_ctx->swinit = 0; /* assume h/w init of context */
- 	size =	(crypto_ahash_digestsize(tfm) <= SHA256_DIGEST_SIZE)
- 			? TALITOS_MDEU_CONTEXT_SIZE_MD5_SHA1_SHA256
- 			: TALITOS_MDEU_CONTEXT_SIZE_SHA384_SHA512;
- 	req_ctx->hw_context_size = size;
- 	req_ctx->last_request = 0;
--	req_ctx->last = 0;
-+	req_ctx->last_desc = 0;
- 	INIT_WORK(&req_ctx->sec1_ahash_process_remaining, sec1_ahash_process_remaining);
- 
- 	dma = dma_map_single(dev, req_ctx->hw_context, req_ctx->hw_context_size,
-@@ -2224,8 +2224,8 @@ static int ahash_export(struct ahash_req
- 	       req_ctx->hw_context_size);
- 	memcpy(export->buf, req_ctx->buf[req_ctx->buf_idx], req_ctx->nbuf);
- 	export->swinit = req_ctx->swinit;
--	export->first = req_ctx->first;
--	export->last = req_ctx->last;
-+	export->first_desc = req_ctx->first_desc;
-+	export->last_desc = req_ctx->last_desc;
- 	export->to_hash_later = req_ctx->to_hash_later;
- 	export->nbuf = req_ctx->nbuf;
- 
-@@ -2250,8 +2250,8 @@ static int ahash_import(struct ahash_req
- 	memcpy(req_ctx->hw_context, export->hw_context, size);
- 	memcpy(req_ctx->buf[0], export->buf, export->nbuf);
- 	req_ctx->swinit = export->swinit;
--	req_ctx->first = export->first;
--	req_ctx->last = export->last;
-+	req_ctx->first_desc = export->first_desc;
-+	req_ctx->last_desc = export->last_desc;
- 	req_ctx->to_hash_later = export->to_hash_later;
- 	req_ctx->nbuf = export->nbuf;
- 
+ 	svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
+ 	if (is_evtinj_soft(vmcb02->control.event_inj)) {
+ 		svm->soft_int_injected = true;
+ 		svm->soft_int_csbase = vmcb12_csbase;
+ 		svm->soft_int_old_rip = vmcb12_rip;
+-		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
++		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
++		    !svm->nested.nested_run_pending)
+ 			svm->soft_int_next_rip = svm->nested.ctl.next_rip;
+ 		else
+ 			svm->soft_int_next_rip = vmcb12_rip;
 
 
 
