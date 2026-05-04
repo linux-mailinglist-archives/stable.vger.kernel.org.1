@@ -1,51 +1,104 @@
-Return-Path: <stable+bounces-242845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNbrGJs5+GmlrgIAu9opvQ
-	(envelope-from <stable+bounces-242845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 08:15:55 +0200
+	id SAURFQE8+GkArwIAu9opvQ
+	(envelope-from <stable+bounces-242847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 08:26:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38864B8CE1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 08:15:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E21774B8DD9
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 08:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6BCD23001026
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 06:15:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D182C3024A62
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 06:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BF1222580;
-	Mon,  4 May 2026 06:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C6329DB6C;
+	Mon,  4 May 2026 06:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Opffhxl2"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="j9makQ2V";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cCcLpQjZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0592DE56A;
-	Mon,  4 May 2026 06:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491E3292B2E
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 06:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777875351; cv=none; b=IoDTghFZSzTVK/9Ay/aZlWD3SWOJfEuD6uz/p0kx9jZB1CKZyHBTN7OklQfJc/M7TQv1alPYXKLBj8K6ldPXMux15B8+HtajdQDoxsdlbgthUTtk1u6zI6KQGPRzgokQ7cwsA4WRciHVplm/vQnnI4KA+j1bdxke0Vp3U/KfycE=
+	t=1777875865; cv=none; b=TMhQbFuOskD0G/pLBSgfshwmrWTRMzcM5PzsTkXlRWUocX0PS9COz2WEYr4Gwaajy92WF7LAGoFVMwSOMMxdhXf6UHpqzY3YfNVGNeX9zuPRkGzDzEqAd2RVNZ+hRzoX4Zlmh47QrTAiz5Ldqtygrl7lkYl02yJjz0w14ys8mo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777875351; c=relaxed/simple;
-	bh=bt+hPFYYNbZdxzCJfA44fBJlfQ7pJF3zNfqkgtBhs24=;
+	s=arc-20240116; t=1777875865; c=relaxed/simple;
+	bh=bcTkj7z6FKGNVOHa6c1rxzRLMWKib6fRDMdYaX8gzSU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sh2XtxOcH/g6ZvQjhtvwCpBYwZU/lqBfopBg0dfnIaKbZBdlIdvA9+wU03L5yc0eVxixlS+gUIGE2zZ3sCNQ9Gej3anMZKAz1z5wcwMGwJBIR/1z3doacIxPbMSmywycRVquItZgnNmkAztucdgiR+RVsPjweFRC+wBPC8E1C4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Opffhxl2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D0FC2BCC9;
-	Mon,  4 May 2026 06:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777875350;
-	bh=bt+hPFYYNbZdxzCJfA44fBJlfQ7pJF3zNfqkgtBhs24=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Opffhxl2bQ+IJWVpS/aE0X5zgH6cqkttNO8KSTmu/i4ra0s5HKfwaWkp8JKLUSKjr
-	 tjOrg8YZ6qvMMOIblyiHGFIcUyGEjZfqRa4N7pHuT5SJp9HkC/fTrdeyQV3ct+5K56
-	 fD2V2Po7DqchWnhN+NgqqE4V1sgtKGonlzfoyRgD9UzosuKrPZMbBat6B60ygX1a8r
-	 SIfGIu9uIh2NJTYCZMHIT1c2YkBfi9/+yXQe/ei6XH8M//33Yi6cGBIzZ4eHz7eZ/8
-	 uYpIDotXHBBr7O67jIb5+L+IHvn6PDRitk02+W+g2/xQpfeHvT3LadJsHOA9lzDkPx
-	 i1hz24aU9Wj/Q==
-Message-ID: <a196b98a-a4f7-4e97-9005-d8a9f5e4814b@kernel.org>
-Date: Mon, 4 May 2026 08:15:46 +0200
+	 In-Reply-To:Content-Type; b=VZsVXNwkx1Xpz+1sWKbMoXHLa9Zyg37qw7dcjJ4oEDTqdPM6Wxl7XtM//lvIZ8ddHooac3kPtoRqCXoE7oaOlUW2Xr+E9MDseJ6xjoORp4kFHjWZ6FJKbDSUnnf1oFznGvAnQhBTOGQGrjA6DCEvljGApxXFNO5y4zYdy+ocQxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=j9makQ2V; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cCcLpQjZ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6446DC034174286
+	for <stable@vger.kernel.org>; Mon, 4 May 2026 06:24:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	TNyRR0rELfmD0/XXE4YuZsBRKd2/cuC3uluE9QU1vLU=; b=j9makQ2VCl7+a92H
+	Ms359avakOcDGNz8ZJfzNQmBfTNA946xGHczlH1u6/6vSkDQkPY4jefB3GjtSIq6
+	Fh5DSTC7ycKn6SYkIHN2O3x6Dwj0VrrEMzuSoFvLnbA/UPcfXrWszK3c5D7KRTjY
+	Cx6xeG4+uRVJUIvkKPeEExDpqxzA0YMDmG327Qu4oWSloLysl6GNdZaKgDDiCC3l
+	WZM+2VX2q7wO99Q+4pB7Z11FKIpnDxh1adEAU3VWQspVaSeg4OTyHKaQmwnFNfpn
+	PcYy93sNJBnQV91mpvmhR1VGVZ/M+V+aKqRZxAKtyjJwOcmyRwUIg94RIpbMPHb4
+	oCfZ7A==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dw9n8ccwq-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 04 May 2026 06:24:23 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2b2d83e7461so72409115ad.3
+        for <stable@vger.kernel.org>; Sun, 03 May 2026 23:24:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1777875862; x=1778480662; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TNyRR0rELfmD0/XXE4YuZsBRKd2/cuC3uluE9QU1vLU=;
+        b=cCcLpQjZEdw1EPmTIsL0A2oMoXIAq3oKwkn01qeiiU4fVaELGnxBzqlOgZrSqs96Rk
+         yR9nvlVNwuX8ExbxXzqY4JpQ4WVoDn5vpGcGVCX5cOL5I6iHkOXtfWf34cXuFWTIxjbF
+         nyUdt/nef5tmzikwCstoFPFm7bj8otOf26CdtPO3gtlO8NmytUesmO/iDevboV2kSA80
+         c+P2g++ywOA6mVHapWyu+av6zkJPHt53nzBV2aTIThjD146gK5N10kOkgR/cKx48UBAm
+         P1N72cbqE9/sZmXXX6SYxbKNv/iD+qVhZy90ksPmFaexGYW4QyWYH5HUrkhu8F3AC35u
+         G4lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777875862; x=1778480662;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TNyRR0rELfmD0/XXE4YuZsBRKd2/cuC3uluE9QU1vLU=;
+        b=KScUT452sLoH9TdOkpT9mIWBkBQ0c0toTbIedYTDk8oJH1T2ywO+cWfSm4rT+Htnrz
+         ySmaxq7OLpZyIA9TsbeKySLLhtKjscpkbvK1bOYo9+07kYWy4WxallAS3oKRwJPfPf1T
+         GUTBl6rKqjtVxrCGzevxkp2gHVlZeKl0DLpQAOL1dO//U8l8eEYm8DUPw0M4LT0mXqoW
+         HGsn/arIhAlKvJabJc1ZXe6b530llofa4SxyrSI/ahFGUsSuxDebE9b0ZCvqiB9ho/Hp
+         kGVPTCegIkLeILUgRGADykaV4r6vgFM5uVmFnS4Nw77ge5umvX3pOjELWfqqnGEmL5IX
+         xNLw==
+X-Gm-Message-State: AOJu0YwvC2OebwZAxbUhGbNgiaSdb41bS9wOEgKZ+TaPoHTnhjNb1U4q
+	yNhpy2B3zKavC3tWBQR4wviDD/KGKNacH1oFu4fYKLDcCENZ57H7PuEEKHac4qPMNwIHlZBrPio
+	H9xqYqeT5Vk+pyn0nSa9MGRhHfcZhJYLsaafYzjgSJS7CHj+/eGRh9zpjq+A=
+X-Gm-Gg: AeBDiev0V1FDlplTNY+cDMCOfvrEX7gH3WgQ2RkkLbLk8pzXYnQszbIOmAuCzO9L1jJ
+	J/9rRPXMK2l+QiPMcfwPR1YkBAIYAcHBVfsms0mOJSyjdZQB7phskBSO3mPXKyge5NZKOWCgnlA
+	ZrdqH53C50KEqvYsPbUAl4BNmpvIwSO4ElYY0VKSiRJk8N68Pnw5nK+fKZr03UGr4cvOa+6sVgN
+	7ToqBDMN+rE88oPHgzzGEl0Mq9Qg68KJ7InfMLqqZEUa5bQx6g2WWb/9HDXDuixx3SnRAY2C2km
+	ZBMv5SI65KWjAe9umWt2ibgde/s3zlQmgUT9SBMVEPvzRykz5dNCecdmQOMJDIvZHZ0JJgDSF6M
+	yg57pf8iW56zkIBCUFndbKr6XkhTx5FSvw1L2koAlTBFGwsgPxuatX4TiB3YyOFzAPOO7FosRQg
+	Q+7hmSw/UwnB1ALDlqCz6K
+X-Received: by 2002:a17:902:d506:b0:2b2:4d36:7aa with SMTP id d9443c01a7336-2b9f280fe1emr84277345ad.35.1777875862064;
+        Sun, 03 May 2026 23:24:22 -0700 (PDT)
+X-Received: by 2002:a17:902:d506:b0:2b2:4d36:7aa with SMTP id d9443c01a7336-2b9f280fe1emr84277065ad.35.1777875861559;
+        Sun, 03 May 2026 23:24:21 -0700 (PDT)
+Received: from ?IPV6:240e:400:e18:23b6:48a3:6006:2608:1239? ([240e:400:e18:23b6:48a3:6006:2608:1239])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae0f67esm96626775ad.51.2026.05.03.23.24.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 May 2026 23:24:21 -0700 (PDT)
+Message-ID: <ff263bb6-1e0b-4cd8-a1c3-82ee162427bf@oss.qualcomm.com>
+Date: Mon, 4 May 2026 14:24:12 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,197 +106,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 001/311] drm/amd/pm: disable OD_FAN_CURVE if temp or
- pwm range invalid for smu v13
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Yang Wang <kevinyang.wang@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Sasha Levin <sashal@kernel.org>
-References: <20260408175939.393281918@linuxfoundation.org>
- <20260408175939.452810365@linuxfoundation.org>
+Subject: Re: [PATCH] cpufreq: qcom-cpufreq-hw: Fix possible double free
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, zhongqiu.han@oss.qualcomm.com
+References: <20260501190005.504962-1-lgs201920130244@gmail.com>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20260408175939.452810365@linuxfoundation.org>
+From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+In-Reply-To: <20260501190005.504962-1-lgs201920130244@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F38864B8CE1
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: iB23p7V-KxQyZ5VTanekENwsAIuuNn6t
+X-Proofpoint-ORIG-GUID: iB23p7V-KxQyZ5VTanekENwsAIuuNn6t
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDA2NiBTYWx0ZWRfXweQXe+iSrRS2
+ 23aW5nzjWgoWfd6EtkTy2mtac0HLaYgDryMkPl8HAv0F7lrS6bJtLud05+enTqV4vKYFEVR55Kf
+ Hvi5n55Zg24nKbmSIoNdhJgy3A64WxbPmCDLQI4wLoqTf+clRj3ASc/X7BF43h3DMi8jw1Ukd+U
+ gF/e9+06YMwqHGzog2bX6uZFdEIvaXDMAdrWIfylCNXZa+DQvA70m/v/ko3qvT3Im79yuRjy1NF
+ MOFQtWyWvyktaS3EKHugzsvTgqmQxKRNIhgmGmsYZsp+85cFhOAZ5Yl5fTeWs5vV7iMtANQekIg
+ 5QY8Vt6NLBPr3u1paTaiVhfUh3u6lnwpole2bIs68VnrmIMPllqGzjIJhGoVP1jrsoEWDAaPuOu
+ nfVyNeJzbBa399O8V+Pmvjtki0wbgK5wm5yDtd269jRlsBXs/F3AMUZ3pvRWQ2Yg+Jg7C1p2tZd
+ DGI87nIK9PI5eHp+kTw==
+X-Authority-Analysis: v=2.4 cv=ScjHsPRu c=1 sm=1 tr=0 ts=69f83b97 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=c92rfblmAAAA:8
+ a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=g1ydD-XOTWB8Hi5v_0UA:9
+ a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 spamscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605040066
+X-Rspamd-Queue-Id: E21774B8DD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	TAGGED_FROM(0.00)[bounces-242847-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,linaro.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242845-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,amd.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhongqiu.han@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-On 08. 04. 26, 20:00, Greg Kroah-Hartman wrote:
-> 6.19-stable review patch.  If anyone has any objections, please let me know.
+On 5/2/2026 3:00 AM, Guangshuo Li wrote:
+> qcom_cpufreq.data is allocated with devm_kzalloc() in probe() as an
+> array of per-domain data. qcom_cpufreq_hw_cpu_init() stores a pointer to
+> one element of this array in policy->driver_data.
 > 
-> ------------------
+> qcom_cpufreq_hw_cpu_exit() currently calls kfree() on policy->driver_data.
+> This is not valid because the memory is devm-managed. For the first
+> domain, this can free the devm-managed allocation while the devres entry
+> is still active, leading to a possible double free when the platform
+> device is later detached. For other domains, the pointer may refer to an
+> element inside the array rather than the allocation base.
 > 
-> From: Yang Wang <kevinyang.wang@amd.com>
+> Remove the kfree(data) call and let devres release qcom_cpufreq.data.
 > 
-> [ Upstream commit 3e6dd28a11083e83e11a284d99fcc9eb748c321c ]
-
-This appears to break 6.19.12 wrt fan speed on Radeon Pro W7700:
-https://bugzilla.suse.com/show_bug.cgi?id=1263854
-
-7.0 is broken the same way.
-
-They say:
-> As mentioned in the summary, lact fails to control the fan speed on my
-> AMD Radeon PRO W7700 graphic card. It worked perfectly until kernel
-> 6.19.11 but failed after upgrading to kernel 6.19.12 and also fails
-> with actual kernel 7.0.2.
+> This issue was found by a static analysis tool I am developing.
 > 
-> I assume the problem is related to the following kernel commit to
-> kernel 6.19.12:
-> 
-> commit 9b96266a2d469ca6576fd0a071a48e71a9436686
-> Author: Yang Wang <kevinyang.wang@amd.com>
-> Date:   Wed Apr 1 12:16:37 2026 -0400
-> 
-> Since kernel 6.19.12 the "gpu_od"-Folder under
-> 
-> /sys/class/drm/card1/device/
-> 
-> does no longer exist, so lactd fails to read/write data within that folder
-> and beyond.
-> 
-> My problem is that the 'sensors' utility reports high memory temperatures on
-> my W7700. Even when idle the memory stays above 75°C and and rises up to
-> 102°C when watching an AV1-encoded movie.
-> 
-> The fan is now controlled solely by the Radeon firmware. The fan runs
-> at ~600 rpm (30%) and does not speed up when the memory temperature
-> approaches the critical value of 105°C.
-> 
-> The current situation, with temperatures running very high, is likely to
-> have a negative impact on the graphics card's lifespan.
-> 
-> # sensors amdgpu-pci-e300
-> amdgpu-pci-e300
-> Adapter: PCI adapter
-> vddgfx:      179.00 mV 
-> fan1:         596 RPM  (min =    0 RPM, max = 5300 RPM)
-> edge:         +63.0°C  (crit = +100.0°C, hyst = -273.1°C)
->                        (emerg = +105.0°C)
-> junction:     +70.0°C  (crit = +105.0°C, hyst = -273.1°C)
->                        (emerg = +110.0°C)
-> mem:          +84.0°C  (crit = +105.0°C, hyst = -273.1°C)  <=== idle+)
->                        (emerg = +110.0°C)
-> PPT:          49.00 W  (cap = 150.00 W)
-> pwm1:             38%
-> sclk:          15 MHz 
-> mclk:         772 MHz
-> 
-> +) i noticed that e.g. the firefox browser has a negative impact on the
-> mlck value and the therefore the mem temperature.
-> 
-> The possibility to set the fan min to 900-1000 rpm with lact has helped
-> to keep the temperatures below 65°C when idle and below 85°C when playing
-> an AV1-encoded movie.
-
-
-Any ideas?
-
-
-> Forcibly disable the OD_FAN_CURVE feature when temperature or PWM range is invalid,
-> otherwise PMFW will reject this configuration on smu v13.0.x
-> 
-> example:
-> $ sudo cat /sys/bus/pci/devices/<BDF>/gpu_od/fan_ctrl/fan_curve
-> 
-> OD_FAN_CURVE:
-> 0: 0C 0%
-> 1: 0C 0%
-> 2: 0C 0%
-> 3: 0C 0%
-> 4: 0C 0%
-> OD_RANGE:
-> FAN_CURVE(hotspot temp): 0C 0C
-> FAN_CURVE(fan speed): 0% 0%
-> 
-> $ echo "0 50 40" | sudo tee fan_curve
-> 
-> kernel log:
-> [  756.442527] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
-> [  777.345800] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
-> 
-> Closes: https://github.com/ROCm/amdgpu/issues/208
-> Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-> Acked-by: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> (cherry picked from commit 470891606c5a97b1d0d937e0aa67a3bed9fcb056)
+> Fixes: 054a3ef683a1 ("cpufreq: qcom-hw: Allocate qcom_cpufreq_data during probe")
 > Cc: stable@vger.kernel.org
-> [ adapted forward declaration placement to existing FEATURE_MASK macro ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 
-thanks,
+
+Hi Guangshuo,
+
+Thanks for fixing this.
+
+Yes, qcom_cpufreq.data is devm-managed and policy->driver_data
+points into that per-domain array, so freeing it from ->exit() is
+invalid (and for non-zero domains it can even be a non-base pointer).
+Dropping kfree(data) is the correct fix.
+
+
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+
+
+Regarding the sashiko.dev AI-generated review comments[1]: all four
+issues raised are pre-existing possible problems in the driver and were
+not introduced by this patch.
+
+- The data->policy dangling pointer via the clock provider path
+- The race window in qcom_cpufreq_hw_cpu_offline() between
+   cancel_delayed_work_sync() and disable_irq_nosync()
+- The unowned IRQ operations when request_threaded_irq() fails
+- The freq_table/OPP leak on cpu_init() error paths
+
+They are potentially valid observations worth addressing, but should be
+handled as separate follow-up patches.
+
+[1]https://sashiko.dev/#/patchset/20260501190005.504962-1-lgs201920130244%40gmail.com
+
+
+
+
+
+
+
+> ---
+>   drivers/cpufreq/qcom-cpufreq-hw.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
+> index ea9a20d27b8f..ef19faedbfec 100644
+> --- a/drivers/cpufreq/qcom-cpufreq-hw.c
+> +++ b/drivers/cpufreq/qcom-cpufreq-hw.c
+> @@ -578,7 +578,6 @@ static void qcom_cpufreq_hw_cpu_exit(struct cpufreq_policy *policy)
+>   	dev_pm_opp_of_cpumask_remove_table(policy->related_cpus);
+>   	qcom_cpufreq_hw_lmh_exit(data);
+>   	kfree(policy->freq_table);
+> -	kfree(data);
+>   }
+>   
+>   static void qcom_cpufreq_ready(struct cpufreq_policy *policy)
+
+
 -- 
-js
-suse labs
-
+Thx and BRs,
+Zhongqiu Han
 
