@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DGFLmGp+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:49 +0200
+	id EFhMLY2q+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AC64BECF8
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7D64BF00E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AAC92303A6FB
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1E8D3043380
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FCF3DC4D5;
-	Mon,  4 May 2026 14:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C053DE43C;
+	Mon,  4 May 2026 14:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMbuLRP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s08aqgt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD5775801;
-	Mon,  4 May 2026 14:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5652A1A9FAF;
+	Mon,  4 May 2026 14:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903467; cv=none; b=t4lQNeI7dwfRftKziLDEtd6mPLg+T0BBpmNq0mRY7sRQLPK4d6uY+9ZU2P8xoicTdoyk78fKuUXEiBPebeHBAIuq+8Lsani4Y1FJHw7vVOMnUcEAwmpylDP0HWVFFMFNvOC9m6vyNdr3xHp37v0v+z0LpapeGDimeN5X0+KNfWU=
+	t=1777904054; cv=none; b=Pp1vBu8ejy5VtY2JwPX3KRhZztDlFxuh9TsA7BcfxgcCDH4xAiTZ1AxZCk2AJhTqkwse6xCcNBT6pa9auh7bOsREdIBh4maVOUdjj3CNmkUaeBRk3w7g4uSEKBUCgG+QQdvn9Rj7j8p35Ig3G6VxaTkVE9a+wkzrFfChM+H7Tjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903467; c=relaxed/simple;
-	bh=rogAXt1bTs/8bPlCsp2jzk+EvHFV2QStPwdUsRXGPgI=;
+	s=arc-20240116; t=1777904054; c=relaxed/simple;
+	bh=29TqC3ZVArH5yt2xVh2+JM9sLqeWfMzm/+RkuM92bDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpbhYBFj2pj40MtiNEUWnWv2E5J7BoKBeL9j+Psr4lLBJUEs/yAlpjaALNTzj9sc6QE/cMH95IbPAc82TOlxLWnMtqR8Qz1uiJsFGhdwAVkmVod11a7I4jjsZrhaFas+fwCSptReHWgw19mlbf1hbEeuF/ibCuXLVVZqeKcQmfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMbuLRP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DDDC2BCB8;
-	Mon,  4 May 2026 14:04:27 +0000 (UTC)
+	 MIME-Version; b=O8Uj7j4BeRBShfIm+LL9/r8Y83CZl9eAYC1cctrQEgnQfhcV5gVS97gnPx2bmCTV2dYcJ0oMTbekp10T+aNJdT3qxKKjJg1ZjkGXxqIGZEhugKuf2p47YZCK3L08/SlDStmUT60Uln1l/fUoEOdf4VXfRzWK30xMHNoWnk+xa+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s08aqgt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CC8C2BCB8;
+	Mon,  4 May 2026 14:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903467;
-	bh=rogAXt1bTs/8bPlCsp2jzk+EvHFV2QStPwdUsRXGPgI=;
+	s=korg; t=1777904054;
+	bh=29TqC3ZVArH5yt2xVh2+JM9sLqeWfMzm/+RkuM92bDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMbuLRP17FK6lJR1Tmb24OlzU5k5ImU2rZmFPG0LDWFyjVvwuy/eHNrc2brlfe048
-	 E8jGAFoeXyXk1phW0Cvsw+4BTITKJToK34zAQOXVzrzpV1/CkqXL0lTtiheUz/Na8x
-	 Nx9/oW0BqgvCYXGnE/ejVPSw33UadTXxIHmnmLG4=
+	b=s08aqgt1BTdoBYsY2RkLdammue+9smb0BeAXjAbG63tZvW5hgepyVJfzTC17xcEKO
+	 fh9d2yHg4qp2q4PYPb9AfegQqEUu+ZdcsgN18kRQTUUwmv1vERapXQGRJB3gHsrH8D
+	 mD1pk/wAm6A4Yh1arIxd4vgVlGGFLpjt1wDbsLEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 212/307] KVM: nSVM: Avoid clearing VMCB_LBR in vmcb12
-Date: Mon,  4 May 2026 15:51:37 +0200
-Message-ID: <20260504135150.845970857@linuxfoundation.org>
+	Jacqueline Wong <jacqwong@google.com>,
+	Jordan Hand <jhand@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.18 158/275] tpm: tpm_tis: add error logging for data transfer
+Date: Mon,  4 May 2026 15:51:38 +0200
+Message-ID: <20260504135148.854515055@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F0AC64BECF8
+X-Rspamd-Queue-Id: 2F7D64BF00E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243275-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243504-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,75 +90,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Jacqueline Wong <jacqwong@google.com>
 
-commit b53ab5167a81537777ac780bbd93d32613aa3bda upstream.
+commit 0471921e2d1043dcc6de5cffb49dd37709521abe upstream.
 
-svm_copy_lbrs() always marks VMCB_LBR dirty in the destination VMCB.
-However, nested_svm_vmexit() uses it to copy LBRs to vmcb12, and
-clearing clean bits in vmcb12 is not architecturally defined.
+Add logging to more easily determine reason for transmit failure
 
-Move vmcb_mark_dirty() to callers and drop it for vmcb12.
-
-This also facilitates incoming refactoring that does not pass the entire
-VMCB to svm_copy_lbrs().
-
-Fixes: d20c796ca370 ("KVM: x86: nSVM: implement nested LBR virtualization")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-2-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: 280db21e153d8 ("tpm_tis: Resend command to recover from data transfer errors")
+Signed-off-by: Jacqueline Wong <jacqwong@google.com>
+Signed-off-by: Jordan Hand <jhand@google.com>
+Link: https://lore.kernel.org/r/20260415160006.2275325-2-jacqwong@google.com
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    7 +++++--
- arch/x86/kvm/svm/svm.c    |    2 --
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -726,6 +726,7 @@ static void nested_vmcb02_prepare_save(s
- 	} else {
- 		svm_copy_lbrs(vmcb02, vmcb01);
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -472,6 +472,8 @@ static int tpm_tis_send_data(struct tpm_
+ 		status = tpm_tis_status(chip);
+ 		if (!itpm && (status & TPM_STS_DATA_EXPECT) == 0) {
+ 			rc = -EIO;
++			dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be set. sts = 0x%08x\n",
++				status);
+ 			goto out_err;
+ 		}
  	}
-+	vmcb_mark_dirty(vmcb02, VMCB_LBR);
- 	svm_update_lbrv(&svm->vcpu);
- }
+@@ -492,6 +494,8 @@ static int tpm_tis_send_data(struct tpm_
+ 	status = tpm_tis_status(chip);
+ 	if (!itpm && (status & TPM_STS_DATA_EXPECT) != 0) {
+ 		rc = -EIO;
++		dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be unset. sts = 0x%08x\n",
++			status);
+ 		goto out_err;
+ 	}
  
-@@ -1242,10 +1243,12 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
- 
- 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
--		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK)))
-+		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
- 		svm_copy_lbrs(vmcb12, vmcb02);
--	else
-+	} else {
- 		svm_copy_lbrs(vmcb01, vmcb02);
-+		vmcb_mark_dirty(vmcb01, VMCB_LBR);
-+	}
- 
- 	svm_update_lbrv(vcpu);
- 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -848,8 +848,6 @@ void svm_copy_lbrs(struct vmcb *to_vmcb,
- 	to_vmcb->save.br_to		= from_vmcb->save.br_to;
- 	to_vmcb->save.last_excp_from	= from_vmcb->save.last_excp_from;
- 	to_vmcb->save.last_excp_to	= from_vmcb->save.last_excp_to;
--
--	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
- }
- 
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
 
 
 
