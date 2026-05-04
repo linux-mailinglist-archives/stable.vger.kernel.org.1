@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-243081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDtuG7Ol+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:57:07 +0200
+	id KFNpAnem+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220174BE2C4
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:57:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D4A4BE4EA
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1F3BC3002304
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7473D302F695
 	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AF73D9DCF;
-	Mon,  4 May 2026 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AA93DD519;
+	Mon,  4 May 2026 13:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cztaaxeJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCGHGRCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8573D6489;
-	Mon,  4 May 2026 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987B63DA7D7;
+	Mon,  4 May 2026 13:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902969; cv=none; b=L3YGJ8Oq7KXN/B909XElsG70Y2rSvaGlPc9fygDTiYKEVtbb5RceDZvXLg/OZSq6R2oZq+UwXl9Dgqa2B2CjONxEYiFQArjbK+XDxPffm459nDwE8G7626iy76VLDe38LkswexfHu+PTSpYAuZwJx0v5frYonunpl7D3jJ95s3w=
+	t=1777902971; cv=none; b=FwE2VLr8XcTVxBdWL9domFw5WjyEtE2XDAKqkI3NbCaRjW2vy2vczPR0T69n3pvTx6uGfqd3LJGCnWT9uvhoV00dVfGogAl93nyKdV5nYqcJqcTstLkYcn5KY83ga1YIoW4zJHgWzUQqTdWJvS4bp1a79YfnaSkc6BlIKgqa7MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902969; c=relaxed/simple;
-	bh=WZ36wMgxrPGxDe8PZKxXSEYLDgVbd2d/aejmFlsaEa0=;
+	s=arc-20240116; t=1777902971; c=relaxed/simple;
+	bh=FNv/nWvLESziXShTne8eJmQo0QSYwosMU6JYRJUBVZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7VLFJN+9PHWsDd8QuPDZrnUVMQ8rc8yEXTAm8uUjolg2Afoh6r6nwWLyzeXeRfAv7ZaiRB+9v76U0MmL5AzGousVd5u2JBCCOToNkkb99NntB1tdQZkCnqCM0VReL4PUbNtvRP0TvUssTRoy4pKwwxOKXTv4RiHcl/m6Ps4xes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cztaaxeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D60CC2BCB8;
-	Mon,  4 May 2026 13:56:08 +0000 (UTC)
+	 MIME-Version; b=MJx4k6/Q/3Zr1sAoSCv2sgWDw5oy4LQON/XMJXsyMdV3Xvl2F17aQZtk4ILcJwYMvA05/Yc9G22BAzPpVPdCjOI1HrpIamRsMItEqF2K6/Ch2TMFNrXo5deZKqZBl7F31Ry2LhHqlwa2LcLBllpI4Ftu+PP8Zcif7NDq8Bo5nN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCGHGRCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E29FC2BCB8;
+	Mon,  4 May 2026 13:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902968;
-	bh=WZ36wMgxrPGxDe8PZKxXSEYLDgVbd2d/aejmFlsaEa0=;
+	s=korg; t=1777902971;
+	bh=FNv/nWvLESziXShTne8eJmQo0QSYwosMU6JYRJUBVZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cztaaxeJO9QIB79xwfgzWC1Q84yVQ3mRUDwu1VVtW7sEVNk3pIW6wWroFF9VF65Oc
-	 DM8Q2KWIQ63Re/oVWPRaV3+2jzCN/1Bdhlv9DX8n+eJw3S1uyIi29YY0LdbtBuKiRC
-	 Wx6UArUAZg/ILlX0+ake9Kz3rKPB7dMjjKFPq+lw=
+	b=ZCGHGRCdi5qSRMZ+M12VG+88vHs2r0Wl6s+mFiI5fwy5QBqESTKUixRMfB3xhuMLn
+	 w6JphfLMX7SCXc2zJS1sY6qinnLWE9GuS+9UQoiYs0UI2nGBSyR92mk1b6wwJol9IA
+	 Gc2iAt6rXM9YImhe6FrAZJNn+s01n+S/p6zbOjXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 052/307] media: amphion: Fix race between m2m job_abort and device_run
-Date: Mon,  4 May 2026 15:48:57 +0200
-Message-ID: <20260504135144.784590798@linuxfoundation.org>
+	Ziqing Chen <chenziqing@xiaomi.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 053/307] ALSA: control: Validate buf_len before strnlen() in snd_ctl_elem_init_enum_names()
+Date: Mon,  4 May 2026 15:48:58 +0200
+Message-ID: <20260504135144.820581089@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
 References: <20260504135142.814938198@linuxfoundation.org>
@@ -64,105 +63,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 220174BE2C4
+X-Rspamd-Queue-Id: 67D4A4BE4EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243081-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243082-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Ziqing Chen <chenziqing@xiaomi.com>
 
-commit 8cd35ceadcfc8c5da2eb7f7ce24525ce9d4ee62e upstream.
+commit e0da8a8cac74f4b9f577979d131f0d2b88a84487 upstream.
 
-Fix kernel panic caused by race condition where v4l2_m2m_ctx_release()
-frees m2m_ctx while v4l2_m2m_try_run() is about to call device_run
-with the same context.
+snd_ctl_elem_init_enum_names() advances pointer p through the names
+buffer while decrementing buf_len. If buf_len reaches zero but items
+remain, the next iteration calls strnlen(p, 0).
 
-Race sequence:
-  v4l2_m2m_try_run():           v4l2_m2m_ctx_release():
-    lock/unlock                   v4l2_m2m_cancel_job()
-                                    job_abort()
-                                      v4l2_m2m_job_finish()
-                                  kfree(m2m_ctx)  <- frees ctx
-    device_run()  <- use-after-free crash at 0x538
+While strnlen(p, 0) returns 0 and would hit the existing name_len == 0
+error path, CONFIG_FORTIFY_SOURCE's fortified strnlen() first checks
+maxlen against __builtin_dynamic_object_size(). When Clang loses track
+of p's object size inside the loop, this triggers a BRK exception panic
+before the return value is examined.
 
-Crash trace:
-  Unable to handle kernel read from unreadable memory at virtual address
-  0000000000000538
-  v4l2_m2m_try_run+0x78/0x138
-  v4l2_m2m_device_run_work+0x14/0x20
+Add a buf_len == 0 guard at the loop entry to prevent calling fortified
+strnlen() on an exhausted buffer.
 
-The amphion vpu driver does not rely on the m2m framework's device_run
-callback to perform encode/decode operations.
+Found by kernel fuzz testing through Xiaomi Smartphone.
 
-Fix the race by preventing m2m framework job scheduling entirely:
-- Add job_ready callback returning 0 (no jobs ready for m2m framework)
-- Remove job_abort callback to avoid the race condition
-
-Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Fixes: 8d448162bda5 ("ALSA: control: add support for ENUMERATED user space controls")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Ziqing Chen <chenziqing@xiaomi.com>
+Link: https://patch.msgid.link/20260414132437.261304-1-chenziqing@xiaomi.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/amphion/vpu_v4l2.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ sound/core/control.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -447,17 +447,14 @@ static void vpu_m2m_device_run(void *pri
- {
- }
- 
--static void vpu_m2m_job_abort(void *priv)
-+static int vpu_m2m_job_ready(void *priv)
- {
--	struct vpu_inst *inst = priv;
--	struct v4l2_m2m_ctx *m2m_ctx = inst->fh.m2m_ctx;
--
--	v4l2_m2m_job_finish(m2m_ctx->m2m_dev, m2m_ctx);
-+	return 0;
- }
- 
- static const struct v4l2_m2m_ops vpu_m2m_ops = {
- 	.device_run = vpu_m2m_device_run,
--	.job_abort = vpu_m2m_job_abort
-+	.job_ready = vpu_m2m_job_ready,
- };
- 
- static int vpu_vb2_queue_setup(struct vb2_queue *vq,
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1574,6 +1574,10 @@ static int snd_ctl_elem_init_enum_names(
+ 	/* check that there are enough valid names */
+ 	p = names;
+ 	for (i = 0; i < ue->info.value.enumerated.items; ++i) {
++		if (buf_len == 0) {
++			kvfree(names);
++			return -EINVAL;
++		}
+ 		name_len = strnlen(p, buf_len);
+ 		if (name_len == 0 || name_len >= 64 || name_len == buf_len) {
+ 			kvfree(names);
 
 
 
