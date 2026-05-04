@@ -1,186 +1,211 @@
-Return-Path: <stable+bounces-242981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULrNJ95w+GkHvAIAu9opvQ
-	(envelope-from <stable+bounces-242981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:11:42 +0200
+	id AByPGNtx+GlCvAIAu9opvQ
+	(envelope-from <stable+bounces-242985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:15:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C09A4BB7E3
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:11:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB9D4BB906
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 12:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FA3E304706F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 10:09:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 43FBC3006691
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 10:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D769C392C3D;
-	Mon,  4 May 2026 10:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50598395DAC;
+	Mon,  4 May 2026 10:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gawq11ah"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="csElEh77"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B33A37D113
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 10:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178E538CFE7
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 10:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777889343; cv=none; b=hi0V8mc7rdhl/0EKdJN2AVQlBZUz1wshx3+oaYmQkeWtjvSVuYWNzDsxX1xZd7kcArLYCmxDTbTNlzSzTgd+Wx5OjV3SAesRs0qSMpit+KLiUK6MwXjrfaYwmyMa72jAsv0vvNuDapAHPdPucrUVfFD6ZBDNyye5BStfkMKO62E=
+	t=1777889751; cv=none; b=bQsc1oWlynA0qGp4o+th1LX5g0qzx2JLDUxrcIdOlT64BSygCwEMwdu1Cj8kQvs5xqcq5KtfyM6DyPVn1fdXLjpFFGMbNSJVh7QIPz50TDoFoGYVaBKz6DCJhpoYSeI4kfzWd87gcPQ6/mpjhMILgwQ2cUd6MRTxMNKqN7fEkL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777889343; c=relaxed/simple;
-	bh=Zs9WNTC83oSjBnoN+C/Zgou1KF6Ibnz5FPkh61SSYcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFgmpLsBMY4+P8CtjGEj057st6cWnEN+mL5UidSs6BypgPb7QNA5kTNnwMNsORVjuuxbSdV0/m4EkNHWuPrdQE6hJYeUxn1v4LOuT5hu7n2i3PXUngUc1XrQEc8t1YBmwRb0cuOY4PPLUk3H4p2SNquLIRbVaVUleTbQy3QkjoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gawq11ah; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-393800586aeso14211681fa.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 03:08:58 -0700 (PDT)
+	s=arc-20240116; t=1777889751; c=relaxed/simple;
+	bh=oVghwXEaGFO+mpqTUByC0AmUIQGtr/LpRywd/Udsh78=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZC3CVKSwBNigrsNJvpG41CGzhaBwDBDLbjHp0V2o0m4b/HSCmrLRG2+jqzycM213/DAt0toQj9Dn+Lfk5Fvtp49ozsO8Cizh35oGsiYhTBYVJIi+PpSWRnX2pWzr+X9Jr45FHCujpUrAwASsua9FY9cHpWZQSukxOY2tqhA6t5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=csElEh77; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d734223e4so2235040f8f.0
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 03:15:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777889337; x=1778494137; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=efcgj+nt9ZDETRdVUhLvA9ywV/eZR7SxjX6DhlexZWI=;
-        b=Gawq11ahWxXiiP576uVGZqUD62NEN3CxSvw34/7mzMZ81o//CHVCzHhkVuDDjflxOE
-         myr5Lz5C4Zl6MPh0XQczmfT7Pq67V757H8IgoLQZDHzww1KXd2sn/AJSzyJWSsMRNFjS
-         v6+PMD5vtwGww6VcNNQ3cyPJ4ApvgVnkuHmHXMYM0qS/9yM/f3hmAnsgQX/mQd6R7grF
-         T6mzwEl2piRy2hf81dcpu+JdsuYZQDYB6Cusn4oGOplf4v98+5RWMwVNYQhi1cDPX70q
-         HQNSKL3KOmhb77EJskPo79rDH3nlc5x+R+Gr5TgjkNoSNSOCeT1unvEjDL3rHzBmhLFe
-         6vqg==
+        d=linaro.org; s=google; t=1777889747; x=1778494547; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RXPt5HpxBahR86o/HeRzM3lfXAfvN85/ZCFAeD5ZDhk=;
+        b=csElEh77xyETlfa9q9KvLEwkAMir1NeBDJYiefJHTrMwwFu18N+NJADB1KOadzXJS3
+         A/l5hv1ykdP77BxbEyx45Grbg7xU9nMKiTEtBVkKp6KYrSnJNQoIMLsUzcytGWdHliYu
+         Oz/f8A5U9il0Ex7VHYR1d9RWxHpo2Kchjp9x+FvywN0eaH3XPSV6WLA+cwxQ3ax8npvF
+         scIrNix6TlMJ51OYsbQ+kkvhLeM4DeGGkEKzlGqkuTeCuCkUIvrgAyPVr92wl4yBFHmI
+         s/F0VYltIIDFjMoUCACHrqf3Psf7vX5L5qjvj9Qv1jVK66D1n7j7MyzNHSKiIaf7ouqY
+         KjTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777889337; x=1778494137;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=efcgj+nt9ZDETRdVUhLvA9ywV/eZR7SxjX6DhlexZWI=;
-        b=axEDWLbfrfbFF6NaQnEQA27gUDJRHvXikWJXCvzoRdlc/N9REyUs2I0ZIE6uv9ocC8
-         BCxvD58Vvn4FvIGWsKpwv8KDSp9Y5vZp7JYPOzY/0Ha8oiezmsGXQjHO1HfgiB0O1SZC
-         isQqcUyLSyqq13NgykafIgIZ6IFBeOu8yrXAJv3YCs0G96XRfkRNthdVQwj4zRgohfBv
-         3Ttt4aF6zLa6cyoioErQi82ew8+XjOia4V4nYQd1oYJIce3bjAlWHVSEa/1i41GYF4H1
-         SRnY9JSspfnAgXDcOyEh/4/qEgzLvee5nuXjFH+1d0EZ3QF3ex2tynJgpa/OaLuH8YP6
-         M2hg==
-X-Forwarded-Encrypted: i=1; AFNElJ+tGSPz3LKKHvsxkL1Q+r+ND5KpZ+aDOrWoYNCbkeenXO1b71jDIqjrHzHLZmlClvp5h4Aanl0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGMA/9Z2gJILEOL/qypI5wKSdKsPkCLU/EBddNAlm1lJLk8nGA
-	8qxCECMZ5aIVpygXirtWwckNZpfs3Iwc8w/Meqsv8FLXBSr43y3rjNCD
-X-Gm-Gg: AeBDiet2cFOcHVbfBYOwXzdYOqkh9ujKokY4uLX87gBALzAAgdL10ancVd32EQjAnEq
-	22ArebEfTlupOr/5LVUTjY8BxhPsitQni3QFzGTNj4EvBEKC3hoOIhh+xfOlgVh/DPxjQ67RGia
-	T3qiT4+H3ZgZcgNSZfujwpdwuVr/gE4hNccjZjBaQ+TamK/K1G5n1RBvYbLQ6+0zHSaMSfsTsK+
-	7j56JMIFabAyMkHvpfYLwx8Cn8ODmKJa5Xv1UOmO0ToSzzo0mjLUuNeVx1vCX56TW+Kn1s/xg/r
-	F9GfgYMdry8cp2TTCSDIs0cxN8s2eFBKM3kHPbdWF160ru+AyN8iPY1eKzaR44fI9Lo2XYRmwmi
-	aPDHmyJ8jYGGa9JfBi5m8Z06ElStfBEjbeQci+XkFH+WI3YgA0hz4Wl+LfrPCZsMxTboQmi4gaf
-	OCj5URfMTPbRjmE7J7eEd6x5ESlC7X/eq+xwft13YOwLshLY4HXiOMX682rFHSKNyWK+MBM5A=
-X-Received: by 2002:a05:6512:39c4:b0:5a4:5d0:2892 with SMTP id 2adb3069b0e04-5a852741d37mr5443285e87.19.1777889336425;
-        Mon, 04 May 2026 03:08:56 -0700 (PDT)
-Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([193.0.150.248])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a86645ae7csm1979099e87.79.2026.05.04.03.08.55
+        d=1e100.net; s=20251104; t=1777889747; x=1778494547;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RXPt5HpxBahR86o/HeRzM3lfXAfvN85/ZCFAeD5ZDhk=;
+        b=NwX5xdyNYNJdKONHqHJbMx8rMBPd3S0WmXb0g4YmVober3DYV5dZP5ZdXl292C4dXd
+         QK0H6KZGrLimXhjaMHty4P4GpqpQmhaBTxcv3UAtlFRpzkNqoXbIAYgO3L0ph1ad3rhN
+         YQzK4mtckd5IoPsH/yQpBjGdVIO80AB9HDiYEMnCzeWUE93OXDT+rw9oY5R+qYQdO0T2
+         anzGfy4ob8J73o81xyyI3YqoTF5+DkGl60UrCPZtsNezOLbTJS8VNrqP+zoa+qqrGIFL
+         koYFxU8QRzaoXuZ+KQRXUDHlV6Wzl6YM0kwySfxx67uVxCAcJ3xvbyYdU7x/0XPpFg12
+         sfbg==
+X-Forwarded-Encrypted: i=1; AFNElJ+w8vR3Rmsa6tOxlbRFBikaByljQLiil0BfRDWnCWHhwUmMuUXvIX2hvdkAuYULIz0EpanxpQk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXadnPToliZwxF7uZnN6JUy4fqBb3xZXq42a8opn0Cu2nKaDXG
+	q2NzDAJ85IXA3wSndt0X8l7NJj5TTnNInpKMS3acuGYG8cdFhFvlL78pz7dennr+lcc=
+X-Gm-Gg: AeBDiet32b3X3Z2g0MeOfOYjeBdhqsXlBWwZYmXxEkiS3TgD/G13QBSQisPSR6+fCS3
+	+j0zXUw7UjbB7YW5X6YZsT248lS4xjiPtgs3Pl3uXCVE7IO7xhilLhZ+jQpVfCxTp6rsiQvI54T
+	SjHXyD1sAVicoZbRAWiXAa0sc8wVZPslLwDhbpYQdkUgoiVJcgmId5LmaKpmrKIjSRuF6gjwUl7
+	jmsQut0ivLthogFTfrU1L0AY5gNQjMFrcWNbwcJFGuPCjCRl9wa1Yar4SdNRoYLN2UjOLq9c0xk
+	T5H11v8GBgNlKly7bH/uoc53GTEW8/42E3Z3HU3aNnS6ZkHYzLjyh8FYc5Io/wyMaefxmM9m5ms
+	FvWkfizbchki4Ipu3/NUceU7onldjIzO7zE4jFxfgwEOQew6annN0j0974Dp38h3NiV9494hsFp
+	ILBfkXT8OQSNgL06HEFTiiIZUB5WPjzrwkv61smM6BIy4BAEQ64DiFtqkqo9fTOVRh+gpofEwpH
+	2bIYuvQ7s9J1DPGMA==
+X-Received: by 2002:a05:6000:288e:b0:444:2db8:d07a with SMTP id ffacd0b85a97d-44bb34e62b4mr14894990f8f.3.1777889747455;
+        Mon, 04 May 2026 03:15:47 -0700 (PDT)
+Received: from ta2.c.googlers.com (17.83.155.104.bc.googleusercontent.com. [104.155.83.17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a9879ef89sm28545366f8f.30.2026.05.04.03.15.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 03:08:56 -0700 (PDT)
-From: Vastargazing <vebohr@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: Vastargazing <vebohr@gmail.com>,
-	stable@vger.kernel.org,
-	Lee Jones <lee@kernel.org>,
-	Vincent Sanders <vince@arm.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Dooks <ben@fluff.org.uk>
-Subject: [PATCH 5/5] mfd: sm501: fix reference leak on failed device registration
-Date: Mon,  4 May 2026 13:08:47 +0300
-Message-ID: <6b4a9f5ae8a316b6f07f72f2fe3f0b8fc5f18dff.1777889235.git.vebohr@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1777889235.git.vebohr@gmail.com>
-References: <cover.1777889235.git.vebohr@gmail.com>
+        Mon, 04 May 2026 03:15:47 -0700 (PDT)
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH v4 0/7] firmware: samsung: acpm: Various fixes for sashiko
+ bug reports
+Date: Mon, 04 May 2026 10:15:43 +0000
+Message-Id: <20260504-acpm-fixes-sashiko-reports-v4-0-529246be6b2b@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8C09A4BB7E3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM9x+GkC/43NwQ6CMAyA4VcxOzuzlcGYJ9/DeBiswKIyspFFQ
+ 3h3ByeMCfH4N+3XiQT0FgM5HybiMdpgXZ9CHA+k7nTfIrUmNQEGBROQUV0PT9rYFwYadOjs3VG
+ Pg/NjoBqhrAo0eV5ykoDB47qY7q+31J0No/Pv9Vfky/QvNnLKKACXlVRMQY6Xh+21dyfnW7K4E
+ baW3LUgWbxpSoNKaKXkj5VtLbVrZckSsm6k0BVT2nxZ8zx/ALcAwh5dAQAA
+X-Change-ID: 20260423-acpm-fixes-sashiko-reports-ae28b6ed5581
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>
+Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org, 
+ andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777889746; l=3432;
+ i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
+ bh=oVghwXEaGFO+mpqTUByC0AmUIQGtr/LpRywd/Udsh78=;
+ b=voi8crt+8GfhFajHco5uShZAg9TtsMgq7FvCTHws0Ox4uzv85b6/H/AKZ9OX/bnVGCNmN/026
+ WSvQjnVhGfODLDt/Z2xQYjglqoL157mZFKileoL4u1DzIBywuhNloqf
+X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
+ pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
+X-Rspamd-Queue-Id: 4BB9D4BB906
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org,arm.linux.org.uk,linux-foundation.org,fluff.org.uk];
-	TAGGED_FROM(0.00)[bounces-242981-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242985-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-When platform_device_register() fails in sm501_register_device(), the
-platform device allocated by sm501_create_subdev() has its struct device
-initialized by device_initialize() inside platform_device_register(). The
-error path logs the error but returns without dropping the device reference,
-leaking the memory allocated by sm501_create_subdev():
+Fixes for concurrency and memory ordering bugs that were identified by
+the Sashiko review tool when proposing the GS101 ACPM TMU addition.
 
-  sm501_register_device()
-    -> platform_device_register(pdev)
-       -> device_initialize(&pdev->dev)   /* kref = 1 */
-       -> platform_device_add(pdev)       /* fails */
-    <- dev_err() called, kref still 1, sm501_device_release never called
+While these bugs are genuine flaws, we haven't hit them yet, likely
+because we don't have enough ACPM clients upstreamed to trigger the
+race conditions.
 
-The device's release callback (sm501_device_release) calls kfree() on the
-containing sm501_device structure. Without platform_device_put(), this
-memory is never freed.
+These fixes can go in either at the -rc phase or as regular patches for
+the next merge window. If the latter, we'll need a dedicated branch, as
+these patches, together with the other ACPM thermal preparatory patches
+will be needed by the upcoming GS101 ACPM thermal driver.
 
-Per platform_device_register() kernel-doc:
+Thanks,
+ta
 
-  NOTE: _Never_ directly free @pdev after calling this function, even if
-  it returned an error! Always use platform_device_put() to give up the
-  reference initialised in this function instead.
-
-Fix this by calling platform_device_put() in the error branch, which
-triggers sm501_device_release() and frees the allocated memory.
-
-Fixes: b6d6454fdb66 ("[PATCH] mfd: SM501 core driver")
-Cc: stable@vger.kernel.org
-Assisted-by: GitHub Copilot (Claude Sonnet 4.5)
-Signed-off-by: Vastargazing <vebohr@gmail.com>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 ---
- drivers/mfd/sm501.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v4:
+- Drop the SRAM boundary checks patch, incomplete band-aid.
+- Split the concurrency and memory ordering into dedicated logical
+  patches. It involved reordering of the last patches to avoid
+  modifying the same code twice.
+- Add a missing memory barrier in acpm_get_rx() to prevent weakly
+  ordered CPUs from advancing the hardware RX pointer before the
+  payload reads have completed.
+- Fix a false-timeout race in the polling path by decoupling the
+  polling thread from the global allocator bitmap.
+- Use test_and_set_bit_lock. address dependency was not enforced
+  when using the plain non-atomic read with find_next_zero_bit().
+- Fix kernel doc.
+- Link to v3: https://lore.kernel.org/r/20260429-acpm-fixes-sashiko-reports-v3-0-47cf74ab09ad@linaro.org
 
-diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
-index 0ee6d8940e69..8276456b142f 100644
---- a/drivers/mfd/sm501.c
-+++ b/drivers/mfd/sm501.c
-@@ -704,9 +704,11 @@ static int sm501_register_device(struct sm501_devdata *sm,
- 	if (ret >= 0) {
- 		dev_dbg(sm->dev, "registered %s\n", pdev->name);
- 		list_add_tail(&smdev->list, &sm->devices);
--	} else
-+	} else {
- 		dev_err(sm->dev, "error registering %s (%d)\n",
- 			pdev->name, ret);
-+		platform_device_put(pdev);
-+	}
- 
- 	return ret;
- }
+Changes in v3:
+- validate more SRAM parameters and queue pointers (sashiko)
+- consider/fix the acquire path (Krzysztof) - patch was moved
+  last in the series to avoid touching the same code twice.
+- Link to v2: https://lore.kernel.org/r/20260427-acpm-fixes-sashiko-reports-v2-0-1ff8de94a997@linaro.org
+
+Changes in v2:
+- drop patch "firmware: samsung: acpm: Fix sequence number leak and infinite loop"
+  The patch freed sequence numbers on mailbox failures or timeouts. Because
+  the message is already in SRAM and tx.front was advanced, a delayed
+  firmware wake-up will process that abandoned message, stealing the
+  sequence number from a new thread and causing silent data corruption.
+- fix mailbox channel leak when `acpm_achan_alloc_cmds()` failed. Did it
+  by  moving the `devm_add_action_or_reset()` call.
+- new patches, last 3 in the set, they fix some more sashiko reports.
+- Link to v1: https://lore.kernel.org/r/20260423-acpm-fixes-sashiko-reports-v1-0-2217b790925e@linaro.org
+
+---
+Tudor Ambarus (7):
+      firmware: samsung: acpm: Fix cross-thread RX length corruption
+      firmware: samsung: acpm: Fix mailbox channel leak on probe error
+      firmware: samsung: acpm: Fix dummy stubs to return ERR_PTR
+      firmware: samsung: acpm: Add memory barrier before advancing RX pointer
+      firmware: samsung: acpm: Fix false timeouts in polling path
+      firmware: samsung: acpm: Fix missing LKMM barriers in RX and TX paths
+      firmware: samsung: acpm: Fix infinite loop on sequence number exhaustion
+
+ drivers/firmware/samsung/exynos-acpm-dvfs.c        |   3 +
+ drivers/firmware/samsung/exynos-acpm.c             | 119 ++++++++++++++++-----
+ .../linux/firmware/samsung/exynos-acpm-protocol.h  |   3 +-
+ 3 files changed, 96 insertions(+), 29 deletions(-)
+---
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+change-id: 20260423-acpm-fixes-sashiko-reports-ae28b6ed5581
+
+Best regards,
 -- 
-2.51.0
+Tudor Ambarus <tudor.ambarus@linaro.org>
 
 
