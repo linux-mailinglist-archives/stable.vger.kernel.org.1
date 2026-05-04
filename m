@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-243439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOHNAu6p+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:10 +0200
+	id EClNATOr+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C784BEE70
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE594BF20D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F066930234F0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22D183025E69
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438A13A7F4C;
-	Mon,  4 May 2026 14:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3383DE443;
+	Mon,  4 May 2026 14:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YenRtL8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Em8eSXf7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055BE3D5645;
-	Mon,  4 May 2026 14:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E70C315785;
+	Mon,  4 May 2026 14:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903887; cv=none; b=hhXOa5CaXaQZQj+zTavaMB3keBUkKBSLiZQNr8oU22+hsnwQPhyNpGoQVCoIviQAMfL1Z3RUbnAJi3bXbzy9jFSJ7C9M8mpAxR6G7jUTJsjuAypaL2mdSW5cwF+afQH/aRgunNfpsKl4pvbDQtmalPFJnVrY1fBvZlcbWkzJjIQ=
+	t=1777904398; cv=none; b=eaAj3VeIMvqm46GXhshNhIgkXwME8QwmkAN6SpK6lK3ZHgU0W1D/65qkQ+uMiE8Funh0+jzFUw84lKQ/s7+f8Mg95O3utGXzp3SKRr6RRmqEYu86PuvxRDgZRJ9ceAilaWyMcjbaaIdzuJlYTNRQ5NMPw7iy/l1GumlrxDYWrjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903887; c=relaxed/simple;
-	bh=0Fm/xl5KcyDOa1T+33ZmtaK+JAUjPnYINYBXT9444uc=;
+	s=arc-20240116; t=1777904398; c=relaxed/simple;
+	bh=uykBgZ8JIVZkVV5UFdvhX5h3aqPOnmv3bWY6ze+o//Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYE9Y+sMEfXTtw+slmdo49ecwdzCIe1etaabRfa87IyTY8HhYZE1qvWfhOc8p7Wn3rdlkDnO9IRalceg35Su/PeA94agSYQII64eTGZEQJQS76fQfWTMlPVs3y3wEkcuxnuKA70VHroZlidIyfbtjY9n6OJzwX8GvpelB4IBlWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YenRtL8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC48C2BCB8;
-	Mon,  4 May 2026 14:11:26 +0000 (UTC)
+	 MIME-Version; b=P12IyGQJef5sKO2wKf/Zram4hkJklpXtWjAl9KMbIHQB5NpRIkQrBQK2tgrZZuNQWrLYDqXv1S24pZk+RmJBemWSMo8ef3ABqqae1RqT/PSsDGeyXdqzvzr1mqZG3KM6BUKN8kItiCsGJ9qL/BGQzqytcx8ufAl7EAYqbXxykv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Em8eSXf7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3447CC2BCB8;
+	Mon,  4 May 2026 14:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903886;
-	bh=0Fm/xl5KcyDOa1T+33ZmtaK+JAUjPnYINYBXT9444uc=;
+	s=korg; t=1777904398;
+	bh=uykBgZ8JIVZkVV5UFdvhX5h3aqPOnmv3bWY6ze+o//Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YenRtL8GBtrlElsz7YE4SmgQgC7sifLSU3NEJtjWnhxvHAnhonoVvPV6riDSZJQM5
-	 80B68+EUr741itvl1QR+guTzI4pQgArUNj0BWpNBxjUOCaZBYSvFziMIFrJbPUlHgB
-	 DH9PfPtUdbpEKLUpymUAM4otDgUh1Q3Im6ispojM=
+	b=Em8eSXf7rLZX4+gX8Vh22YE2jyyHuqkv4+McDpQw8WfJnWv/gCphfvGasCZhb7wx1
+	 P4JM407jRMUKpkUudmlPTyNoVhmD5KYsX5ZjXJVqPGT2S8AAIvORY7L9c9TrhMZCx2
+	 kU4xi3BJhd86NVmubweNJFnXxcZf8A4REdkL4IHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 101/275] ALSA: caiaq: Handle probe errors properly
-Date: Mon,  4 May 2026 15:50:41 +0200
-Message-ID: <20260504135146.668130324@linuxfoundation.org>
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 023/215] rust: init: fix `clippy::undocumented_unsafe_blocks` warnings
+Date: Mon,  4 May 2026 15:50:42 +0200
+Message-ID: <20260504135131.023603491@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +65,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B4C784BEE70
+X-Rspamd-Queue-Id: ACE594BF20D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243439-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243639-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,garyguo.net:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 28abd224db4a49560b452115bca3672a20e45b2f upstream.
+The stable backport in commit acc105db0826 ("rust: pin-init:
+add references to previously initialized fields") introduced some
+`clippy::undocumented_unsafe_blocks` warnings [1], e.g.
 
-The probe procedure of setup_card() in caiaq driver doesn't treat the
-error cases gracefully, e.g. the error from snd_card_register() calls
-snd_card_free() but continues.  This would lead to a UAF for the
-further calls like snd_usb_caiaq_control_init(), as Berk suggested in
-another patch in the link below.
+    error: unsafe block missing a safety comment
+        --> rust/kernel/init/macros.rs:1015:25
 
-However, the problem is not only that; in general, this function drops
-the all error handlings (as it's a void function) although its caller
-can propagate an error to snd_probe(), which eventually calls
-snd_card_free() as a proper error path.  That said, we should treat
-each error case in setup_card(), and just return the error code
-promptly, which is then handled later as a fatal error in snd_probe().
+As well as:
 
-This patch achieves it by changing the setup_card() to return an error
-code.  Also, the superfluous snd_card_free() call is removed, too.
+    --> rust/kernel/init/macros.rs:1243:45
+    --> rust/kernel/init/macros.rs:1286:22
+    --> rust/kernel/init/macros.rs:1374:45
 
-Note that card->private_free can be set still safely at returning an
-error.  All called functions in card_free() have checks of the
-unassigned resources or NULL checks.
+After discussing it with Benno and Gary, we decided to clean the build
+log by doing a minimal targeted stable commit.
 
-Fixes: 8e3cd08ed8e5 ("[ALSA] caiaq - add control API and more input features")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20260413034941.1131465-2-berkcgoksel@gmail.com
-Link: https://patch.msgid.link/20260414105916.364073-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus, depending on the case:
+
+  - Reorder the attributes so that the existing `// SAFETY:` comments
+    may be seen by Clippy.
+
+  - Add a placeholder `// SAFETY: TODO.` comment.
+
+Cc: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>
+Fixes: acc105db0826 ("rust: pin-init: add references to previously initialized fields")
+Link: https://lore.kernel.org/stable/20260421111111.57059-1-ojeda@kernel.org/ [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/device.c |   33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+ rust/kernel/init/macros.rs | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -290,7 +290,7 @@ int snd_usb_caiaq_set_auto_msg(struct sn
- 					  tmp, sizeof(tmp));
- }
+diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
+index e477e4de817bf..d6e27c5221155 100644
+--- a/rust/kernel/init/macros.rs
++++ b/rust/kernel/init/macros.rs
+@@ -1012,6 +1012,7 @@ macro_rules! __pin_data {
+                         self,
+                         slot: &'__slot mut $p_type,
+                     ) -> ::core::pin::Pin<&'__slot mut $p_type> {
++                        // SAFETY: TODO.
+                         unsafe { ::core::pin::Pin::new_unchecked(slot) }
+                     }
+                 )*
+@@ -1235,11 +1236,11 @@ macro_rules! __init_internal {
+         // Unaligned fields will cause the compiler to emit E0793. We do not support
+         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+         // `ptr::write` below has the same requirement.
++        #[allow(unused_variables, unused_assignments)]
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
+         // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables, unused_assignments)]
+         let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
  
--static void setup_card(struct snd_usb_caiaqdev *cdev)
-+static int setup_card(struct snd_usb_caiaqdev *cdev)
- {
- 	int ret;
- 	char val[4];
-@@ -325,8 +325,10 @@ static void setup_card(struct snd_usb_ca
- 		snd_usb_caiaq_send_command(cdev, EP1_CMD_READ_IO, NULL, 0);
+         // Create the drop guard:
+@@ -1278,11 +1279,11 @@ macro_rules! __init_internal {
+         // Unaligned fields will cause the compiler to emit E0793. We do not support
+         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+         // `ptr::write` below has the same requirement.
++        #[allow(unused_variables, unused_assignments)]
+         // SAFETY:
+         // - the field is not structurally pinned, since the line above must compile,
+         // - the field has been initialized,
+         // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables, unused_assignments)]
+         let $field = unsafe { &mut (*$slot).$field };
  
- 		if (!wait_event_timeout(cdev->ep1_wait_queue,
--					cdev->control_state[0] != 0xff, HZ))
--			return;
-+					cdev->control_state[0] != 0xff, HZ)) {
-+			dev_err(dev, "Read timeout for control state\n");
-+			return -EINVAL;
-+		}
+         // Create the drop guard:
+@@ -1366,11 +1367,11 @@ macro_rules! __init_internal {
+         // Unaligned fields will cause the compiler to emit E0793. We do not support
+         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+         // `ptr::write` below has the same requirement.
++        #[allow(unused_variables, unused_assignments)]
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
+         // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables, unused_assignments)]
+         let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
  
- 		/* fix up some defaults */
- 		if ((cdev->control_state[1] != 2) ||
-@@ -347,33 +349,43 @@ static void setup_card(struct snd_usb_ca
- 	    cdev->spec.num_digital_audio_out +
- 	    cdev->spec.num_digital_audio_in > 0) {
- 		ret = snd_usb_caiaq_audio_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up audio system (ret=%d)\n", ret);
-+			return ret;
-+		}
- 	}
- 
- 	if (cdev->spec.num_midi_in +
- 	    cdev->spec.num_midi_out > 0) {
- 		ret = snd_usb_caiaq_midi_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up MIDI system (ret=%d)\n", ret);
-+			return ret;
-+		}
- 	}
- 
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
- 	ret = snd_usb_caiaq_input_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
-+		return ret;
-+	}
- #endif
- 
- 	/* finally, register the card and all its sub-instances */
- 	ret = snd_card_register(cdev->chip.card);
- 	if (ret < 0) {
- 		dev_err(dev, "snd_card_register() returned %d\n", ret);
--		snd_card_free(cdev->chip.card);
-+		return ret;
- 	}
- 
- 	ret = snd_usb_caiaq_control_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
- }
- 
- static void card_free(struct snd_card *card)
-@@ -499,8 +511,11 @@ static int init_card(struct snd_usb_caia
- 	scnprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
- 		       cdev->vendor_name, cdev->product_name, usbpath);
- 
--	setup_card(cdev);
- 	card->private_free = card_free;
-+	err = setup_card(cdev);
-+	if (err < 0)
-+		return err;
-+
- 	return 0;
- 
-  err_kill_urb:
+         // Create the drop guard:
+-- 
+2.53.0
+
 
 
 
