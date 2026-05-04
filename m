@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNdTOYaq+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:42 +0200
+	id qCc4G7Or+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750E54BEFF6
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC90B4BF3B1
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9E48B304185C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 19160302770B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664CD3D5667;
-	Mon,  4 May 2026 14:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF003D8129;
+	Mon,  4 May 2026 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkCCEPuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMK5cerv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6833AA4F8;
-	Mon,  4 May 2026 14:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BCE1A6827;
+	Mon,  4 May 2026 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904049; cv=none; b=Nw6lDawCRjYVyCp5MQhQJsGr5HcXGcCzCKU/CF01sHOKhr+mg6J57ZoCdMkLCIQL2omaZsWEe/R83ZJ3zoFzCiLe8GN2wAKUks5jsFWsETOHRt1mExeK+rG07K0Jf8Z/IsApsoRJ33QzlThZSwzEImpBODBcm9m8b0Dr/l+Y0Ng=
+	t=1777904473; cv=none; b=OuWjLMGM1hkFkIlGWv5ndzgMDqxbPPcTSK+6prcQfPE5EbeNA3e8M3MAm8oh/V1vP4tgEYrVm26jBLaXCcP1NxpXDDi03fBaHlzpQH/NEcL1OcWT4TFBtVD1A0P1jnpd8o3FJO814sKgboq2VN/oAXuEpDNpVK2nuWoFI9OAAzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904049; c=relaxed/simple;
-	bh=WpZZD7JardDsPE8bNcHsHkeny9yjHL6ICzXy1HgNb8o=;
+	s=arc-20240116; t=1777904473; c=relaxed/simple;
+	bh=DNclH63PdvnnPAsBIuySCA+t9S4IpKZYZZo/IAetR1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jF4iBPlgApPn/dMkmNvjBPDD204UZUvjWS/cbk8/BK+qvtbHA6YH7xdmfIzDwIaSGCLWb8LprEl3JnmDm/zLlAYikb75OIbIMkmc+u0K9yO3F0NEHjbKSdOD6S6/Ebr2PLRSNMU6xe3MRDP4L7qnGntVOK9mqfWSOqDKMfZ2XQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkCCEPuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5367C2BCB8;
-	Mon,  4 May 2026 14:14:08 +0000 (UTC)
+	 MIME-Version; b=Z2oLW0v2K33yuthVyK4EOWX+jKUeSrk/cpKrWUVxd4srWy2VRQ6yF0vEtPYZuDjNDCfZvO3Mq45zlftkBQ9WgM0gWlqaKUjftVrW79mLhSP8V/mKHfec+aMFe/obFrSAmLfhPqax/EgjGrcZTB5cRL3Gzm0VCV4MkzyyKVoCzUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMK5cerv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A02AC2BCB8;
+	Mon,  4 May 2026 14:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904049;
-	bh=WpZZD7JardDsPE8bNcHsHkeny9yjHL6ICzXy1HgNb8o=;
+	s=korg; t=1777904473;
+	bh=DNclH63PdvnnPAsBIuySCA+t9S4IpKZYZZo/IAetR1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vkCCEPuRRq81LfFuRo+xaih/01tRBftTI+PkX8jbcsUyMSksvkgp+GJ+IOPuVx1Uk
-	 DcM1LQLOnn8G+VQfDXjMgtWK1hPBchkicbfVDIQCW2wtI0PV1tjb/xWN5nKVcylSDG
-	 eXSRQH1JFlpxKkiCN8Ebe1em6oIBi++1VTiF8S+Y=
+	b=LMK5cervgwH0BRY8G6cGchd7ETWbh8V2KcWVWLMGk9OfNwhi+7dkdqZWhXtho58tG
+	 YbFG46G7IsCbufZKYrHU3qWrTgmWZGCBsWeurXDbdlQjvT4jsqecVSHPhBQRRztXZs
+	 KziR2tPphUU9jprPLWuixvsrGStkYsfbNsxpVDOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hkbinbin <hkbinbinbin@gmail.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.18 131/275] RDMA/rxe: Validate pad and ICRC before payload_size() in rxe_rcv
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.12 052/215] ext2: reject inodes with zero i_nlink and valid mode in ext2_iget()
 Date: Mon,  4 May 2026 15:51:11 +0200
-Message-ID: <20260504135147.767594422@linuxfoundation.org>
+Message-ID: <20260504135132.077868837@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,135 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 750E54BEFF6
+X-Rspamd-Queue-Id: DC90B4BF3B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243502-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243668-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linuxtesting.org:url,altlinux.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hkbinbin <hkbinbinbin@gmail.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit 7244491dab347f648e661da96dc0febadd9daec3 upstream.
+commit 25947cc5b2374cd5bf627fe3141496444260d04f upstream.
 
-rxe_rcv() currently checks only that the incoming packet is at least
-header_size(pkt) bytes long before payload_size() is used.
+ext2_iget() already rejects inodes with i_nlink == 0 when i_mode is
+zero or i_dtime is set, treating them as deleted. However, the case of
+i_nlink == 0 with a non-zero mode and zero dtime slips through. Since
+ext2 has no orphan list, such a combination can only result from
+filesystem corruption - a legitimate inode deletion always sets either
+i_dtime or clears i_mode before freeing the inode.
 
-However, payload_size() subtracts both the attacker-controlled BTH pad
-field and RXE_ICRC_SIZE from pkt->paylen:
+A crafted image can exploit this gap to present such an inode to the
+VFS, which then triggers WARN_ON inside drop_nlink() (fs/inode.c) via
+ext2_unlink(), ext2_rename() and ext2_rmdir():
 
-  payload_size = pkt->paylen - offset[RXE_PAYLOAD] - bth_pad(pkt)
-                 - RXE_ICRC_SIZE
+WARNING: CPU: 3 PID: 609 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
+CPU: 3 UID: 0 PID: 609 Comm: syz-executor Not tainted 6.12.77+ #1
+Call Trace:
+ <TASK>
+ inode_dec_link_count include/linux/fs.h:2518 [inline]
+ ext2_unlink+0x26c/0x300 fs/ext2/namei.c:295
+ vfs_unlink+0x2fc/0x9b0 fs/namei.c:4477
+ do_unlinkat+0x53e/0x730 fs/namei.c:4541
+ __x64_sys_unlink+0xc6/0x110 fs/namei.c:4587
+ do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-This means a short packet can still make payload_size() underflow even
-if it includes enough bytes for the fixed headers. Simply requiring
-header_size(pkt) + RXE_ICRC_SIZE is not sufficient either, because a
-packet with a forged non-zero BTH pad can still leave payload_size()
-negative and pass an underflowed value to later receive-path users.
+WARNING: CPU: 0 PID: 646 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
+CPU: 0 UID: 0 PID: 646 Comm: syz.0.17 Not tainted 6.12.77+ #1
+Call Trace:
+ <TASK>
+ inode_dec_link_count include/linux/fs.h:2518 [inline]
+ ext2_rename+0x35e/0x850 fs/ext2/namei.c:374
+ vfs_rename+0xf2f/0x2060 fs/namei.c:5021
+ do_renameat2+0xbe2/0xd50 fs/namei.c:5178
+ __x64_sys_rename+0x7e/0xa0 fs/namei.c:5223
+ do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-Fix this by validating pkt->paylen against the full minimum length
-required by payload_size(): header_size(pkt) + bth_pad(pkt) +
-RXE_ICRC_SIZE.
+WARNING: CPU: 0 PID: 634 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
+CPU: 0 UID: 0 PID: 634 Comm: syz-executor Not tainted 6.12.77+ #1
+Call Trace:
+ <TASK>
+ inode_dec_link_count include/linux/fs.h:2518 [inline]
+ ext2_rmdir+0xca/0x110 fs/ext2/namei.c:311
+ vfs_rmdir+0x204/0x690 fs/namei.c:4348
+ do_rmdir+0x372/0x3e0 fs/namei.c:4407
+ __x64_sys_unlinkat+0xf0/0x130 fs/namei.c:4577
+ do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
+Extend the existing i_nlink == 0 check to also catch this case,
+reporting the corruption via ext2_error() and returning -EFSCORRUPTED.
+This rejects the inode at load time and prevents it from reaching any
+of the namei.c paths.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://patch.msgid.link/r/20260401121907.1468366-1-hkbinbinbin@gmail.com
-Signed-off-by: hkbinbin <hkbinbinbin@gmail.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://patch.msgid.link/20260404152011.2590197-1-kovalev@altlinux.org
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_recv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext2/inode.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/infiniband/sw/rxe/rxe_recv.c
-+++ b/drivers/infiniband/sw/rxe/rxe_recv.c
-@@ -330,7 +330,8 @@ void rxe_rcv(struct sk_buff *skb)
- 	pkt->qp = NULL;
- 	pkt->mask |= rxe_opcode[pkt->opcode].mask;
- 
--	if (unlikely(skb->len < header_size(pkt)))
-+	if (unlikely(pkt->paylen < header_size(pkt) + bth_pad(pkt) +
-+		       RXE_ICRC_SIZE))
- 		goto drop;
- 
- 	err = hdr_check(pkt);
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -1429,9 +1429,17 @@ struct inode *ext2_iget (struct super_bl
+ 	 * the test is that same one that e2fsck uses
+ 	 * NeilBrown 1999oct15
+ 	 */
+-	if (inode->i_nlink == 0 && (inode->i_mode == 0 || ei->i_dtime)) {
+-		/* this inode is deleted */
+-		ret = -ESTALE;
++	if (inode->i_nlink == 0) {
++		if (inode->i_mode == 0 || ei->i_dtime) {
++			/* this inode is deleted */
++			ret = -ESTALE;
++		} else {
++			ext2_error(sb, __func__,
++				   "inode %lu has zero i_nlink with mode 0%o and no dtime, "
++				   "filesystem may be corrupt",
++				   ino, inode->i_mode);
++			ret = -EFSCORRUPTED;
++		}
+ 		goto bad_inode;
+ 	}
+ 	inode->i_blocks = le32_to_cpu(raw_inode->i_blocks);
 
 
 
