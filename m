@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDkQA3in+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:40 +0200
+	id GGX8HBmp+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046BF4BE74E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E4D4BEBC3
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 695A23043480
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E32BC301C92B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A193DEAF6;
-	Mon,  4 May 2026 13:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82EE3CEB89;
+	Mon,  4 May 2026 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07KEmcU/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kf0aAFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C813DE434;
-	Mon,  4 May 2026 13:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA0B40DFD4;
+	Mon,  4 May 2026 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903118; cv=none; b=e4GOZTqJC6Kdj/pO14bYSv/niyHUN39NltVll+r5C1RQ7PeLXaW/Bg3QxBT4Nu7lZlmdHPxeROquRqkWP9WRN+41ShGjfsk6UleQWE1RxQTcDcbpMXpU1QdLQKctFf/1t7TVoFde7SFBcxboJ+w845EO/uYM+TqModEkUy4jdxo=
+	t=1777903858; cv=none; b=aUfaO1gmWs9mbnBL8jA214OWW6izXVaZn3UdSWTOsvD2cKcOgeqjbcEI8IWb5VCDwxYSQZKSGSWGC/oSuPZHyBHvabydulbkkXUIPyabbAJme5BX/II+sZ77C/vzv3D/KGL1w0qkYzt3XqPLYVhuhjqW86kMeKsjeO4zBZ+l/dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903118; c=relaxed/simple;
-	bh=66fFBONY5TMSHyROEx7ceP9Kv8suWXiuY2rDRjaN4Dw=;
+	s=arc-20240116; t=1777903858; c=relaxed/simple;
+	bh=DiQmgTqJNs1H+BxWZ6upDBoS2Qv5AUrCHV/Ymq/qMFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1Vb0Gc3oA3H8YpjmdC0Icq6MTHxnsLvHHyUP9AH3QzmBeYGnELdCn03Zs7b6pph/yi20ujpeK8JWkESA6TcWPpOAcATS5dDrUr2R34fQIWBMYbf1KY74aC0qvxQgE4icIEy8U3PEdbx/OqTe8L7QKK4e1lfSlKsOO6IVM1EZEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07KEmcU/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBD6C2BCB8;
-	Mon,  4 May 2026 13:58:37 +0000 (UTC)
+	 MIME-Version; b=JFCh9IaNLJrKIjBws4sSjto3aNhulw3MpBFYSY6V3Iuq0exPBJRC73QmWP/R2hFaYJqNPQrOEGb/rGgC2mrdu+VeTzvtPJK36Hngbe3VwRLKRe0zXMzlPOjtV7WFOQk2ET/INrAO+jhdItgy7xpYR516AVwbdnscObgmQryqSjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kf0aAFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428FFC2BCB8;
+	Mon,  4 May 2026 14:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903118;
-	bh=66fFBONY5TMSHyROEx7ceP9Kv8suWXiuY2rDRjaN4Dw=;
+	s=korg; t=1777903858;
+	bh=DiQmgTqJNs1H+BxWZ6upDBoS2Qv5AUrCHV/Ymq/qMFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07KEmcU/FkO0pylS/m5CizauOirA38mw6AAfnSu8Lu0VZixwZqPJgoO477pPTa5/3
-	 eF9iKEq2hQK3LKiLWY/k3ZEBc/wJSegisYbuwwhfSgtSJRygH2LvyyozyK7v3FywXX
-	 Bg7UsjooHzBXbm8VhVbwNen5CW58u8xNZeALP/eg=
+	b=1kf0aAFH3i08xUcViTaPdMJSUcdRs+cHkrw5fYCOjyAFfB/hU6rcdaZCZdECMufEr
+	 OHI2GYF8Z/f2Q6Ep/CQ96hiK2kzZCymkUzgp3pzEpT+5pQPdMRUWGLo9CPaTFstlTb
+	 FvEWi/cRSL+ki0DV9kjiYA+h5sgbLOc/U6v/N6ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 111/307] io_uring/register: fix ring resizing with mixed/large SQEs/CQEs
+	Josh Law <objecting@objecting.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 056/275] lib/ts_kmp: fix integer overflow in pattern length calculation
 Date: Mon,  4 May 2026 15:49:56 +0200
-Message-ID: <20260504135146.985015780@linuxfoundation.org>
+Message-ID: <20260504135145.017083393@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 046BF4BE74E
+X-Rspamd-Queue-Id: 08E4D4BEBC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,96 +80,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243139-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243428-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kernel.dk:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Josh Law <objecting@objecting.org>
 
-commit 45cd95763e198d74d369ede43aef0b1955b8dea4 upstream.
+commit 8cdf30813ea8ce881cecc08664144416dbdb3e16 upstream.
 
-The ring resizing only properly handles "normal" sized SQEs or CQEs, if
-there are pending entries around a resize. This normally should not be
-the case, but the code is supposed to handle this regardless.
+The ts_kmp algorithm stores its prefix_tbl[] table and pattern in a single
+allocation sized from the pattern length.  If the prefix_tbl[] size
+calculation wraps, the resulting allocation can be too small and
+subsequent pattern copies can overflow it.
 
-For the mixed SQE/CQE cases, the current copying works fine as they
-are indexed in the same way. Each half is just copied separately. But
-for fixed large SQEs and CQEs, the iteration and copy need to take that
-into account.
+Fix this by rejecting zero-length patterns and by using overflow helpers
+before calculating the combined allocation size.
 
-Cc: stable@kernel.org
-Fixes: 79cfe9e59c2a ("io_uring/register: add IORING_REGISTER_RESIZE_RINGS")
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+This fixes a potential heap overflow.  The pattern length calculation can
+wrap during a size_t addition, leading to an undersized allocation.
+Because the textsearch library is reachable from userspace via Netfilter's
+xt_string module, this is a security risk that should be backported to LTS
+kernels.
+
+Link: https://lkml.kernel.org/r/20260308202028.2889285-2-objecting@objecting.org
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/register.c |   32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ lib/ts_kmp.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/io_uring/register.c
-+++ b/io_uring/register.c
-@@ -599,10 +599,20 @@ static int io_register_resize_rings(stru
- 	if (tail - old_head > p->sq_entries)
- 		goto overflow;
- 	for (i = old_head; i < tail; i++) {
--		unsigned src_head = i & (ctx->sq_entries - 1);
--		unsigned dst_head = i & (p->sq_entries - 1);
-+		unsigned index, dst_mask, src_mask;
-+		size_t sq_size;
+--- a/lib/ts_kmp.c
++++ b/lib/ts_kmp.c
+@@ -94,8 +94,22 @@ static struct ts_config *kmp_init(const
+ 	struct ts_config *conf;
+ 	struct ts_kmp *kmp;
+ 	int i;
+-	unsigned int prefix_tbl_len = len * sizeof(unsigned int);
+-	size_t priv_size = sizeof(*kmp) + len + prefix_tbl_len;
++	unsigned int prefix_tbl_len;
++	size_t priv_size;
++
++	/* Zero-length patterns would make kmp_find() read beyond kmp->pattern. */
++	if (unlikely(!len))
++		return ERR_PTR(-EINVAL);
++
++	/*
++	 * kmp->pattern is stored immediately after the prefix_tbl[] table.
++	 * Reject lengths that would wrap while sizing either region.
++	 */
++	if (unlikely(check_mul_overflow(len, sizeof(*kmp->prefix_tbl),
++					&prefix_tbl_len) ||
++		     check_add_overflow(sizeof(*kmp), (size_t)len, &priv_size) ||
++		     check_add_overflow(priv_size, prefix_tbl_len, &priv_size)))
++		return ERR_PTR(-EINVAL);
  
--		n.sq_sqes[dst_head] = o.sq_sqes[src_head];
-+		index = i;
-+		sq_size = sizeof(struct io_uring_sqe);
-+		src_mask = ctx->sq_entries - 1;
-+		dst_mask = p->sq_entries - 1;
-+		if (ctx->flags & IORING_SETUP_SQE128) {
-+			index <<= 1;
-+			sq_size <<= 1;
-+			src_mask = (ctx->sq_entries << 1) - 1;
-+			dst_mask = (p->sq_entries << 1) - 1;
-+		}
-+		memcpy(&n.sq_sqes[index & dst_mask], &o.sq_sqes[index & src_mask], sq_size);
- 	}
- 	WRITE_ONCE(n.rings->sq.head, old_head);
- 	WRITE_ONCE(n.rings->sq.tail, tail);
-@@ -619,10 +629,20 @@ overflow:
- 		goto out;
- 	}
- 	for (i = old_head; i < tail; i++) {
--		unsigned src_head = i & (ctx->cq_entries - 1);
--		unsigned dst_head = i & (p->cq_entries - 1);
-+		unsigned index, dst_mask, src_mask;
-+		size_t cq_size;
- 
--		n.rings->cqes[dst_head] = o.rings->cqes[src_head];
-+		index = i;
-+		cq_size = sizeof(struct io_uring_cqe);
-+		src_mask = ctx->cq_entries - 1;
-+		dst_mask = p->cq_entries - 1;
-+		if (ctx->flags & IORING_SETUP_CQE32) {
-+			index <<= 1;
-+			cq_size <<= 1;
-+			src_mask = (ctx->cq_entries << 1) - 1;
-+			dst_mask = (p->cq_entries << 1) - 1;
-+		}
-+		memcpy(&n.rings->cqes[index & dst_mask], &o.rings->cqes[index & src_mask], cq_size);
- 	}
- 	WRITE_ONCE(n.rings->cq.head, old_head);
- 	WRITE_ONCE(n.rings->cq.tail, tail);
+ 	conf = alloc_ts_config(priv_size, gfp_mask);
+ 	if (IS_ERR(conf))
 
 
 
