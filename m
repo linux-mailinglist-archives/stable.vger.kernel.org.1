@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDNyMlys+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:32 +0200
+	id 8KZ3HhKp+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644F34BF590
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF6D4BEBA5
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 57DF53083967
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA834305A27B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93893DE459;
-	Mon,  4 May 2026 14:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B95C3CEB89;
+	Mon,  4 May 2026 14:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0FWi4T6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/aaKjQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4413D9DBB;
-	Mon,  4 May 2026 14:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644463DC4D5;
+	Mon,  4 May 2026 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904522; cv=none; b=kayaV8VJF3xtf2nvsVQcV5/1TsBjRPoz2eQYDdkVOGPhQ3dYHZs+wNrGHcPDQBnQx8BVI2g/BnEmK0k+lQQZagP+49UDRdcwWthKM4AAKGfX9uZ43ItLUEi2bMDbtULISBu2MmjcfUbrtFCVeqqwFMUFNRwG7/ya5aCMYvN3EDg=
+	t=1777903349; cv=none; b=UbZlo/V6OM6+qaZREm6t/x/Rn6wRmP6fO+sqTFa55Q6CKVbyC6tat3Em9ZS+Gz5uf+MWw+Ii5WkkdE/jAYIUZEoKjjCzbl1nX+axLXCbBnXQQTi8GtqZhKeA06PVDi/dp9LTAXlwrDnDwt5P6t+rtMM0qrutgoGbcEfrP8IvC3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904522; c=relaxed/simple;
-	bh=0+7xVen8kDQj+uVCHKqDlYR6q9x6OybTIIItX+tWXOg=;
+	s=arc-20240116; t=1777903349; c=relaxed/simple;
+	bh=hubszamThfgzugtqr01j8oeEuQreQrAMdQpqpCAV2r4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRqM1NMF0/biqrxlALLZeg/95bcxePVTnnXyZHPQzPIhDXGrnpESKRsKgNKn6FsrfG/OYv0duFswzYNi+h6scCNs7r8+KCA2zaN5cr+78pfVdXpQU7sl5fCH5WceOg1q2UaAsGKJJyc2Om4BaYho1mkmV408c0W6xD4u4nP/qew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0FWi4T6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AB3C2BCF4;
-	Mon,  4 May 2026 14:22:01 +0000 (UTC)
+	 MIME-Version; b=HYF9mmWhN/5iXNiMse/Sp5TbHHvtkszo5o3HQtAi3vPIFHpzWtkeRIGvj2zw6LVpehXVqMk48TJrDdOLPcMGlsMf2v//eVouPAKzpz2nneGsAOwrJ5qn7I23StnxVs5TWKW/Ho20i/Q6eTiQvdcEiyLUcC9nfdsryWcqsJPdVVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/aaKjQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E0BC2BCB8;
+	Mon,  4 May 2026 14:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904522;
-	bh=0+7xVen8kDQj+uVCHKqDlYR6q9x6OybTIIItX+tWXOg=;
+	s=korg; t=1777903349;
+	bh=hubszamThfgzugtqr01j8oeEuQreQrAMdQpqpCAV2r4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0FWi4T6zcpegEbKJUtWc+Gyr3EbVeMLNbtuuvlGRbvbbwyW4PZpckRs+EODcsCpO
-	 H+1f7fAGrc2TAnzTRwahWaQWuVQ4Il9AwBQFE01SjxfCI3r++dUUhtTHDtL3kZiKYt
-	 5JP+OdKrg443005CNWHnUsT5dWU/Zh805wFpy4JM=
+	b=I/aaKjQ0jTNF0PGoO0dJIRQ51aVG+zCa48IFycN0TvmBGNIFa8YbadazYKRraHLij
+	 olpmm2hwbC8sgvMMDjHABomB949o0LH96/7Sfj6UEiSSzlrfw2sxe56v4epJwsuPNE
+	 KOvI01z1evNO8YTmeZnpUd86GWgGpDTjmkJnakOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Levinsky <ben.levinsky@amd.com>,
-	Tanmay Shah <tanmay.shah@amd.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.12 064/215] remoteproc: xlnx: Only access buffer information if IPI is buffered
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 198/307] mm/damon/core: disallow non-power of two min_region_sz on damon_start()
 Date: Mon,  4 May 2026 15:51:23 +0200
-Message-ID: <20260504135132.509562376@linuxfoundation.org>
+Message-ID: <20260504135150.333182529@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 644F34BF590
+X-Rspamd-Queue-Id: EDF6D4BEBA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,73 +80,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243688-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243229-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Levinsky <ben.levinsky@amd.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 38dd6ccfdfbbe865569a52fe1ba9fa1478f672e6 upstream.
+commit 95093e5cb4c5b50a5b1a4b79f2942b62744bd66a upstream.
 
-In the receive callback check if message is NULL to prevent
-possibility of crash by NULL pointer dereferencing.
+Commit d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region") introduced
+a bug that allows unaligned DAMON region address ranges.  Commit
+c80f46ac228b ("mm/damon/core: disallow non-power of two min_region_sz")
+fixed it, but only for damon_commit_ctx() use case.  Still, DAMON sysfs
+interface can emit non-power of two min_region_sz via damon_start().  Fix
+the path by adding the is_power_of_2() check on damon_start().
 
-Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
-Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
-Fixes: 5dfb28c257b7 ("remoteproc: xilinx: Add mailbox channels for rpmsg")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20260303235127.2317955-3-tanmay.shah@amd.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+The issue was discovered by sashiko [1].
+
+Link: https://lore.kernel.org/20260411213638.77768-1-sj@kernel.org
+Link: https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org [1]
+Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.18.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/xlnx_r5_remoteproc.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ mm/damon/core.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/remoteproc/xlnx_r5_remoteproc.c
-+++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
-@@ -232,17 +232,19 @@ static void zynqmp_r5_mb_rx_cb(struct mb
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1368,6 +1368,11 @@ int damon_start(struct damon_ctx **ctxs,
+ 	int i;
+ 	int err = 0;
  
- 	ipi = container_of(cl, struct mbox_info, mbox_cl);
- 
--	/* copy data from ipi buffer to r5_core */
-+	/* copy data from ipi buffer to r5_core if IPI is buffered. */
- 	ipi_msg = (struct zynqmp_ipi_message *)msg;
--	buf_msg = (struct zynqmp_ipi_message *)ipi->rx_mc_buf;
--	len = ipi_msg->len;
--	if (len > IPI_BUF_LEN_MAX) {
--		dev_warn(cl->dev, "msg size exceeded than %d\n",
--			 IPI_BUF_LEN_MAX);
--		len = IPI_BUF_LEN_MAX;
-+	if (ipi_msg) {
-+		buf_msg = (struct zynqmp_ipi_message *)ipi->rx_mc_buf;
-+		len = ipi_msg->len;
-+		if (len > IPI_BUF_LEN_MAX) {
-+			dev_warn(cl->dev, "msg size exceeded than %d\n",
-+				 IPI_BUF_LEN_MAX);
-+			len = IPI_BUF_LEN_MAX;
-+		}
-+		buf_msg->len = len;
-+		memcpy(buf_msg->data, ipi_msg->data, len);
- 	}
--	buf_msg->len = len;
--	memcpy(buf_msg->data, ipi_msg->data, len);
- 
- 	/* received and processed interrupt ack */
- 	if (mbox_send_message(ipi->rx_chan, NULL) < 0)
++	for (i = 0; i < nr_ctxs; i++) {
++		if (!is_power_of_2(ctxs[i]->min_region_sz))
++			return -EINVAL;
++	}
++
+ 	mutex_lock(&damon_lock);
+ 	if ((exclusive && nr_running_ctxs) ||
+ 			(!exclusive && running_exclusive_ctxs)) {
 
 
 
