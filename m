@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0O5SIB2u+GlIxwIAu9opvQ
-	(envelope-from <stable+bounces-243654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:01 +0200
+	id QAqUHBGs+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8554BFA6C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 782BA4BF4AE
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 305B930377C8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33579306F91E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A5E3DE443;
-	Mon,  4 May 2026 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7053D3334;
+	Mon,  4 May 2026 14:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wl9pr3+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdL047ah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1AB3DE450;
-	Mon,  4 May 2026 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3336D35A3AD;
+	Mon,  4 May 2026 14:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904437; cv=none; b=ntrgleEnkyuIVCoZq+lAE6fcJGDuGdGLPYB0Ej87ki6rg6WPRd07pVULcAjdv3968WcdO++6nnamW1+C1GY3Vvbx8v4F202F53HQkOT9IZIqlqpa7JAlJ7blIyjvlox2geeUMgAB3PExR4faVSuLc4GwAfLmWAHsBtkrLSrT6Ik=
+	t=1777903936; cv=none; b=k9oh+baStY4X4Ie0k1LKObOIa47iayKgjLNLUDbdF2UoYr7IfXGeSd8p3/7L5zIpQ+BkeMNpC6Co+FIEUV4qJ9Nd6bjwF1uWUxR3wdr8v0x/NsE9c0poAatg8j7evt6NwOOH2QEEH3tdsp9YKlVpYl7lv3BZJUF2hyR1BPj/UEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904437; c=relaxed/simple;
-	bh=uIfo70Q/3W7VBo5FjFsS1hNq25MG6QNYGX0hPsGAQFg=;
+	s=arc-20240116; t=1777903936; c=relaxed/simple;
+	bh=0te0Xg0GDDXSsI+LDqMgTcSFjRvwkkYO8px1yLDgtHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bwm9/K3D9eMBwLl9HN1M2kPHkSOh45EjVicuWEmD9u/Ymodm0xwAim+SqAqWUvdWwR3FZpEPJPYyX8Hv2vRQENIDyFRPWYdj55MuBiTl78eeIRfhnOOr4hppIPc9cK7aLYTJVCeV9ndJFEEJ45+o090XqeSuiii3PXZ7li33Nn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wl9pr3+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EB9C2BCB8;
-	Mon,  4 May 2026 14:20:36 +0000 (UTC)
+	 MIME-Version; b=HL7vK4l26jrRw6Ddztq8pQaLPi0fCRGTxq+I2f9EiF3tNNGI6OcS+DB5OqMjutnG6/aE0LT86BcEHwZk+LZxZashry5XID0FTMugr033s5/Pz/ZUVuqLXymHgErXPJiGl7AaaLdHZU35nQOwfR3COH8bryUlc50/ZIYuWXjpHaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdL047ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88415C2BCB8;
+	Mon,  4 May 2026 14:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904437;
-	bh=uIfo70Q/3W7VBo5FjFsS1hNq25MG6QNYGX0hPsGAQFg=;
+	s=korg; t=1777903935;
+	bh=0te0Xg0GDDXSsI+LDqMgTcSFjRvwkkYO8px1yLDgtHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wl9pr3+ZMywPsTKSmzADVfsIcd+8FbLoxe8sGu7SVR2WNdv/8TK2e7WZNplk0j+8m
-	 msue/JAeaweWunBMeyk1K+JpIPNy9W02GexvHi7jQ+T97p4rPYkh5T25m4bh1JnPHr
-	 UtCSYSGSCUIUwA6e4PQu24RfXgMcDp0SyDqkgwfM=
+	b=UdL047ahclXL3Aps07l82VBkAQM6KqF5euPSe2j/TZtzmzLNWQXRJ3OmUCQo9YkwF
+	 Ix5aCYhfaiGbXi/BHHwKRyuFL1nwzRypiq6LgSLeh1uyBr5Ha4dH2p8CAKMn9xrjmv
+	 7EukxBB6TN8m8vz+yCDEfyAh+UqoXJ79cY6q/vxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 039/215] hwmon: (powerz) Fix missing usb_kill_urb() on signal interrupt
+	Robert Marko <robert.marko@sartura.hr>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.18 118/275] arm64: dts: marvell: uDPU: add ethernet aliases
 Date: Mon,  4 May 2026 15:50:58 +0200
-Message-ID: <20260504135131.610085226@linuxfoundation.org>
+Message-ID: <20260504135147.291539811@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE8554BFA6C
+X-Rspamd-Queue-Id: 782BA4BF4AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -80,79 +80,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243654-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243458-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,juniper.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Robert Marko <robert.marko@sartura.hr>
 
-commit b66437cb20a2d9ef201f40b675569f8ea7787c9f upstream.
+commit 38f09c97340cd23f976242e6cb1e7aa4c8ed28d0 upstream.
 
-wait_for_completion_interruptible_timeout() returns -ERESTARTSYS when
-interrupted. This needs to abort the URB and return an error. No data
-has been received from the device so any reads from the transfer
-buffer are invalid.
+On eDPU plus, which is an updated revision of eDPU which uses an external
+MV88E6361 switch we are relying on U-Boot to detect the board, and then
+enable and disable the required nodes for that revision.
 
-The original code tests !ret, which only catches the timeout case (0).
-On signal delivery (-ERESTARTSYS), !ret is false so the function skips
-usb_kill_urb() and falls through to read from the unfilled transfer
-buffer.
+However, it seems that I missed adding the required aliases for ethernet
+controllers, and this worked as in OpenWrt we had added those locally.
 
-Fix by capturing the return value into a long (matching the function
-return type) and handling signal (negative) and timeout (zero) cases
-with separate checks that both call usb_kill_urb() before returning.
-
-Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260410002521.422645-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 660b8b2f3944 ("arm64: dts: marvell: eDPU: add support for version with external switch")
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/powerz.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/hwmon/powerz.c
-+++ b/drivers/hwmon/powerz.c
-@@ -112,6 +112,7 @@ static void powerz_usb_cmd_complete(stru
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+@@ -15,6 +15,11 @@
+ #include "armada-372x.dtsi"
  
- static int powerz_read_data(struct usb_device *udev, struct powerz_priv *priv)
- {
-+	long rc;
- 	int ret;
- 
- 	if (!priv->urb)
-@@ -133,8 +134,14 @@ static int powerz_read_data(struct usb_d
- 	if (ret)
- 		return ret;
- 
--	if (!wait_for_completion_interruptible_timeout
--	    (&priv->completion, msecs_to_jiffies(5))) {
-+	rc = wait_for_completion_interruptible_timeout(&priv->completion,
-+						       msecs_to_jiffies(5));
-+	if (rc < 0) {
-+		usb_kill_urb(priv->urb);
-+		return rc;
-+	}
+ / {
++	aliases {
++		ethernet0 = &eth0;
++		ethernet1 = &eth1;
++	};
 +
-+	if (rc == 0) {
- 		usb_kill_urb(priv->urb);
- 		return -EIO;
- 	}
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
 
 
 
