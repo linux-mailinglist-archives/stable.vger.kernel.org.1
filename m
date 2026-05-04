@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNvvCKOy+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:52:19 +0200
+	id cFnWGf2t+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3230A4C01CF
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:52:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D64034BFA24
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4458630470B6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 598E13117315
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD60F3E0223;
-	Mon,  4 May 2026 14:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9893DE43C;
+	Mon,  4 May 2026 14:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzgFFN3n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLngFZjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7493F3DE45D;
-	Mon,  4 May 2026 14:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F0F1A6827;
+	Mon,  4 May 2026 14:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904772; cv=none; b=ZbYxB3f1gXCeNSq+HsgvNc17yUQmXyzldcpAZuLKN+EFrshnyi42jy41alOhMZdTmXHDcj1aC49gy/DKhNCPvmYD5bEeYzskoVMGwD4Aox8MDvhS6eJiO0Ap0YaC/sK18s6N/v7n9Gpcp6AXGKwxRcjgnbCwCiOTJUsC4DJOeDs=
+	t=1777904262; cv=none; b=VohbavXY+LVQf+yZEkCp2bHK1bOKH3tXqpe21grBWgGxn5LvYqHzvGr5hk9MMm1269NbUqIvnwZKxDkFF43tRrQ9smWRzHEw1OOXJ+kAtYGxsXQkLpCAZlyLmb9OIVjWMVyciMy4DGt12dytEse0UFrcEDygEL7/kH8NVF2YHOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904772; c=relaxed/simple;
-	bh=uPq4qwYojl1HLVHJtj3Pt3mGYmjqV2TE8/IABbLWUjs=;
+	s=arc-20240116; t=1777904262; c=relaxed/simple;
+	bh=fAjYWGij6Ai4L7J+o3l2M+DPhAdNXt3H14zlcd7wbyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sU5HourJzQeVvE3m1S2nuEJtaSgUSrZR8IbLhxpopM8ApDkxEc41FU9LQUvS08mL4gwQRZ3RDzeN7bnTqd3f6YkgxD05QkXhIexCZpu0FvAyLbN2tLvjB3q8XaLio9Cn9jJoqspbtSpBRWtIH23O0jmBf6zNkICrKWAeyrYXb00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzgFFN3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA9FC2BCB8;
-	Mon,  4 May 2026 14:26:11 +0000 (UTC)
+	 MIME-Version; b=sdE/ew0YItGK8VTJ9IC2QSN+s4EikJ7INIVfH9/vrBV5pqf0gDX5ybMAVx4NNv+fbdcuIldT2H027onkfUNf3zAdymm90GahI5QSp4bdin8BnkTaRfWDj+vwWWnMOvq3cb4jeUa61mmumjDa3gdxk6GZiLDwTRMFuwWKZVfjgDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLngFZjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB58BC2BCB8;
+	Mon,  4 May 2026 14:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904772;
-	bh=uPq4qwYojl1HLVHJtj3Pt3mGYmjqV2TE8/IABbLWUjs=;
+	s=korg; t=1777904262;
+	bh=fAjYWGij6Ai4L7J+o3l2M+DPhAdNXt3H14zlcd7wbyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzgFFN3n/EMpd2gmeaJ202iAl6FdOPkWBL2ndoezI1zipp6Z5QnQSnzGDzxDE/yzc
-	 ahIUT66Wh3RcZGxejrsgIiNR/D4bugW9bCG29wfmiK1M4HQ+XZtaBX8EODRwAn2ZPX
-	 +n+rVpFgwQdTgBf2W3cKob8O59q78z+FSz0soOVk=
+	b=XLngFZjjWnpOJF+ovOxBRglsP43te8fcc1VTN7ZGqSunX9hMF+ubAfA58THCYGtqR
+	 ygLly7dV0wIW93I1826seBCqwxo8CU22tQH+oRFgGPJP3ebT+nUUrDidewlALG66cc
+	 d0w8isdvNKnbTzIgWYU5OPun0fMS4BpPwT4fJ04o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Warthog9 Hawley <warthog9@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.12 167/215] ktest: Fix the month in the name of the failure directory
-Date: Mon,  4 May 2026 15:53:06 +0200
-Message-ID: <20260504135136.281242942@linuxfoundation.org>
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 247/275] arm64: mm: Simplify check in arch_kfence_init_pool()
+Date: Mon,  4 May 2026 15:53:07 +0200
+Message-ID: <20260504135152.216332108@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3230A4C01CF
+X-Rspamd-Queue-Id: D64034BFA24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243585-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243785-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,goodmis.org:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
 
-commit 768059ede35f197575a38b10797b52402d9d4d2f upstream.
+[ Upstream commit b7737c38e7cb611c2fbd87af3b09afeb92c96fe7 ]
 
-The Perl localtime() function returns the month starting at 0 not 1. This
-caused the date produced to create the directory for saving files of a
-failed run to have the month off by one.
+TL;DR: checking force_pte_mapping() in arch_kfence_init_pool() is
+sufficient
 
-  machine-test-useconfig-fail-20260314073628
+Commit ce2b3a50ad92 ("arm64: mm: Don't sleep in
+split_kernel_leaf_mapping() when in atomic context") recently added
+an arm64 implementation of arch_kfence_init_pool() to ensure that
+the KFENCE pool is PTE-mapped. Assuming that the pool was not
+initialised early, block splitting is necessary if the linear
+mapping is not fully PTE-mapped, in other words if
+force_pte_mapping() is false.
 
-The above happened in April, not March. The correct name should have been:
+arch_kfence_init_pool() currently makes another check: whether
+BBML2-noabort is supported, i.e. whether we are *able* to split
+block mappings. This check is however unnecessary, because
+force_pte_mapping() is always true if KFENCE is enabled and
+BBML2-noabort is not supported. This must be the case by design,
+since KFENCE requires PTE-mapped pages in all cases. We can
+therefore remove that check.
 
-  machine-test-useconfig-fail-20260414073628
+The situation is different in split_kernel_leaf_mapping(), as that
+function is called unconditionally regardless of the configuration.
+If BBML2-noabort is not supported, it cannot do anything and bails
+out. If force_pte_mapping() is true, there is nothing to do and it
+also bails out, but these are independent checks.
 
-This was somewhat confusing.
+Commit 53357f14f924 ("arm64: mm: Tidy up force_pte_mapping()")
+grouped these checks into a helper, split_leaf_mapping_possible().
+This isn't so helpful as only split_kernel_leaf_mapping() should
+check both. Revert the parts of that commit that introduced the
+helper, reintroducing the more accurate comments in
+split_kernel_leaf_mapping().
 
-Cc: stable@vger.kernel.org
-Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
-Link: https://patch.msgid.link/20260420142426.33ad0293@fedora
-Fixes: 7faafbd69639b ("ktest: Add open and close console and start stop monitor")
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Stable-dep-of: f12b435de2f2 ("arm64: mm: Fix rodata=full block mapping support for realm guests")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c |   33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1790,7 +1790,7 @@ sub save_logs {
-     my ($result, $basedir) = @_;
-     my @t = localtime;
-     my $date = sprintf "%04d%02d%02d%02d%02d%02d",
--	1900+$t[5],$t[4],$t[3],$t[2],$t[1],$t[0];
-+	1900+$t[5],$t[4]+1,$t[3],$t[2],$t[1],$t[0];
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -773,18 +773,6 @@ static inline bool force_pte_mapping(voi
+ 	return rodata_full || arm64_kfence_can_set_direct_map() || is_realm_world();
+ }
  
-     my $type = $build_type;
-     if ($type =~ /useconfig/) {
+-static inline bool split_leaf_mapping_possible(void)
+-{
+-	/*
+-	 * !BBML2_NOABORT systems should never run into scenarios where we would
+-	 * have to split. So exit early and let calling code detect it and raise
+-	 * a warning.
+-	 */
+-	if (!system_supports_bbml2_noabort())
+-		return false;
+-	return !force_pte_mapping();
+-}
+-
+ static DEFINE_MUTEX(pgtable_split_lock);
+ 
+ int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+@@ -792,11 +780,22 @@ int split_kernel_leaf_mapping(unsigned l
+ 	int ret;
+ 
+ 	/*
+-	 * Exit early if the region is within a pte-mapped area or if we can't
+-	 * split. For the latter case, the permission change code will raise a
+-	 * warning if not already pte-mapped.
++	 * !BBML2_NOABORT systems should not be trying to change permissions on
++	 * anything that is not pte-mapped in the first place. Just return early
++	 * and let the permission change code raise a warning if not already
++	 * pte-mapped.
++	 */
++	if (!system_supports_bbml2_noabort())
++		return 0;
++
++	/*
++	 * If the region is within a pte-mapped area, there is no need to try to
++	 * split. Additionally, CONFIG_DEBUG_PAGEALLOC and CONFIG_KFENCE may
++	 * change permissions from atomic context so for those cases (which are
++	 * always pte-mapped), we must not go any further because taking the
++	 * mutex below may sleep.
+ 	 */
+-	if (!split_leaf_mapping_possible() || is_kfence_address((void *)start))
++	if (force_pte_mapping() || is_kfence_address((void *)start))
+ 		return 0;
+ 
+ 	/*
+@@ -1095,7 +1094,7 @@ bool arch_kfence_init_pool(void)
+ 	int ret;
+ 
+ 	/* Exit early if we know the linear map is already pte-mapped. */
+-	if (!split_leaf_mapping_possible())
++	if (force_pte_mapping())
+ 		return true;
+ 
+ 	/* Kfence pool is already pte-mapped for the early init case. */
 
 
 
