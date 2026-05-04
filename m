@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-243416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCyuAvao+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:02 +0200
+	id kLw1FKqo+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED5D4BEB3A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C8F4BEA3D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4ED2301D96C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCEB030103B9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF633D3334;
-	Mon,  4 May 2026 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4853D904D;
+	Mon,  4 May 2026 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cquq4jQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4Y5CGgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918863A7F4C;
-	Mon,  4 May 2026 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEB9378D8C;
+	Mon,  4 May 2026 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903827; cv=none; b=JxscdCBuTycDJfD3z1LRtEAK2fiBVV0OWr+kG8p/TwHnKGOqPhCz6CmsW1un9b0Y+Ltkk6bWbXhGckN1L3fIe/EZqH8J5MgE/YDENVGxxDLLm7R87FRIoPl6loy84xIgK656wZr0dDxHEF8phX4cOvEDN7HCklghJzv+duUOCic=
+	t=1777903286; cv=none; b=LM8/a39rTXEgfNLjx8ERPXTRcDuY13Z8z9PxD5i1GCgP5TXOIHXV21WFFSCwY6qTOh3CdDLEWPwpwJHFDVSoSnCxqIlIQJSLwj0N9HtmI2VHNrSVOLaJ9zBQ1IvqmXh4fLWtEw4EEF8nngZV/yC0Ud6kuYCYn5u0SfRJvOSn3+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903827; c=relaxed/simple;
-	bh=IfWSmoQmBFCteJ2cUZwiFfYXgcaQtw4DM/kinAUdezU=;
+	s=arc-20240116; t=1777903286; c=relaxed/simple;
+	bh=Lj5jqLxr7GzoKsUyG2xZ2OFJz+h/SE4Zpkc7d+miRSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VEGvfrkU3A8vul5lx3Yx9CXGqxmy/XFX1x1fFfxmP1opgWXriyqySf/+0hYz9xBGZbRHpQeoYbj69VOM2EOOM0VCDJcMpd306Lnd3N638mgN/bXmNU8qlvvYg9AtCqOz462gFsnUYGimqg7g3DE9Q6dSIbnRnwwtiMuPbAQvwBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cquq4jQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27006C2BCB8;
-	Mon,  4 May 2026 14:10:26 +0000 (UTC)
+	 MIME-Version; b=kRD8yaU2OZqOG6IyEwht0yZRnKfUV5MGD0jioaiUALw4jzXC/CN23J7kcsYjJ22HsQ2dWU1KMZ2jZ4TsPKDJtacEwPIJPEkYOn5N3wrceBY48yifJu4GFLkoWFGKbN/g9X2zI7/QpQwG/WyX57Lu0tgBB5qtAN8a+mL1nIKPkIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4Y5CGgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F2EC2BCB8;
+	Mon,  4 May 2026 14:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903827;
-	bh=IfWSmoQmBFCteJ2cUZwiFfYXgcaQtw4DM/kinAUdezU=;
+	s=korg; t=1777903286;
+	bh=Lj5jqLxr7GzoKsUyG2xZ2OFJz+h/SE4Zpkc7d+miRSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cquq4jQv9FzlLdiLg8wx1Kj8TJx/EYm5E8SojvdVwkO7kuMPP5zYChCIMNdMgUThu
-	 gLmfFCYt0tj8CO927pAleBEbABWW7eDviO+0CkSxa7hODLo8TDal4vVMmYKZGd7hzX
-	 vUkRBVajLv8kwN91NUp+N1O3ZRBRx/bUWu9C6k54=
+	b=E4Y5CGgl3Bp+vhBcCA2EBGkLqSLgoauHsyIQ1DBGQ9xkeU/2f43a9ES+xvX5Wdd5e
+	 ORdq7e9HsJ0tdFp/qSKLiYAuFMP/m5IegZ49n9kCvkFtR/+LEOFhhw4Nc+dXh8k+5u
+	 Dd+8sEtqgk15SOtikVOSiosCWhR64UqI/ok76R3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.18 077/275] nvme-pci: add NVME_QUIRK_DISABLE_WRITE_ZEROES for Kingston OM3SGP4
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 132/307] rxrpc: Fix rxrpc_input_call_event() to only unshare DATA packets
 Date: Mon,  4 May 2026 15:50:17 +0200
-Message-ID: <20260504135145.785552323@linuxfoundation.org>
+Message-ID: <20260504135147.756554770@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +68,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8ED5D4BEB3A
+X-Rspamd-Queue-Id: D3C8F4BEA3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243205-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243416-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,sashiko.dev:url,infradead.org:email,auristor.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Beckett <bob.beckett@collabora.com>
+From: David Howells <dhowells@redhat.com>
 
-commit a8eebf9699d69987cc49cec4e4fdb4111ab32423 upstream.
+commit 55b2984c96c37f909bbfe8851f13152693951382 upstream.
 
-The Kingston OM3SGP42048K2-A00 (PCI ID 2646:502f) firmware has a race
-condition when processing concurrent write zeroes and DSM (discard)
-commands, causing spurious "LBA Out of Range" errors and IOMMU page
-faults at address 0x0.
+Fix rxrpc_input_call_event() to only unshare DATA packets and not ACK,
+ABORT, etc..
 
-The issue is reliably triggered by running two concurrent mkfs commands
-on different partitions of the same drive, which generates interleaved
-write zeroes and discard operations.
+And with that, rxrpc_input_packet() doesn't need to take a pointer to the
+pointer to the packet, so change that to just a pointer.
 
-Disable write zeroes for this device, matching the pattern used for
-other Kingston OM* drives that have similar firmware issues.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
-Assisted-by: claude-opus-4-6-v1
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 1f2740150f90 ("rxrpc: Fix potential UAF after skb_unshare() failure")
+Closes: https://sashiko.dev/#/patchset/20260422161438.2593376-4-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260423200909.3049438-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/rxrpc/call_event.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3922,6 +3922,8 @@ static const struct pci_device_id nvme_i
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x2646, 0x501E),   /* KINGSTON OM3PGP4xxxxQ OS21011 NVMe SSD */
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
-+	{ PCI_DEVICE(0x2646, 0x502F),   /* KINGSTON OM3SGP4xxxxK NVMe SSD */
-+		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x1f40, 0x1202),   /* Netac Technologies Co. NV3000 NVMe SSD */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1f40, 0x5236),   /* Netac Technologies Co. NV7000 NVMe SSD */
+--- a/net/rxrpc/call_event.c
++++ b/net/rxrpc/call_event.c
+@@ -332,7 +332,8 @@ bool rxrpc_input_call_event(struct rxrpc
+ 
+ 			saw_ack |= sp->hdr.type == RXRPC_PACKET_TYPE_ACK;
+ 
+-			if (sp->hdr.securityIndex != 0 &&
++			if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA &&
++			    sp->hdr.securityIndex != 0 &&
+ 			    skb_cloned(skb)) {
+ 				/* Unshare the packet so that it can be
+ 				 * modified by in-place decryption.
 
 
 
