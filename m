@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDOqCNqr+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:22 +0200
+	id 4IzQNVir+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2FE4BF430
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874734BF288
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA749312A9D5
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:07:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 41EAD301D24D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F123DD53E;
-	Mon,  4 May 2026 14:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02DB3DE458;
+	Mon,  4 May 2026 14:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkRcjqwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXBJaUty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCD53DFC9B;
-	Mon,  4 May 2026 14:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617143DE43B;
+	Mon,  4 May 2026 14:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903608; cv=none; b=pZ0gAbwHeH2MvurK+dQ3elzYUTFjt02WPc86szkizpVRmnuC6angBS7cGwADlQtfkhhFSV/1PPOOREuYIittAzxO9KFvBCVnwWa4aVc1E0+CVCVZIwciM9+Sdm0LjX3N8ifLHD5mV4NxuT4yDgrO0MRYZeVg3oybN8iZNVo/HLY=
+	t=1777904257; cv=none; b=q+3CEtSWfwV6zgznkDMVaTHsZ17/AHe1njae+kYqhGrHJAu/iuTzWABWcPSM6OnzjijpNhM9miu3upPHKaSI/ap8mEjCGQyTEtyoFKU6iW0GCdmDB3OTCQWjQq3PhEIJcBX0naza9eJ5zS+eoBhO33nx7f4JbXBWLYXgeNzyc4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903608; c=relaxed/simple;
-	bh=9z0Q8mrNbcLQf3nWm26SeHAEutfw2z+02ozG2UaUeYQ=;
+	s=arc-20240116; t=1777904257; c=relaxed/simple;
+	bh=CiT4XqyGKNa2cz0nI6DnytUXowrpQgtXFwzqR0CbCfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDSqgWDymIWFGvxg51MUzGyap779YLAZmmr63Fp79LPTYXyeh/dI+4KLHBd/ZVGRcZV7tBZxXBCh3PgFVHaOQllMEF0A+HYJzgS1GfrT5gAOYJd4ZaMcgqUJ843mE9q8Q8bbmaSFKgITmjCxZFB7UV8BaM7SaWGNl+6xv7PvUoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkRcjqwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42722C2BCC4;
-	Mon,  4 May 2026 14:06:48 +0000 (UTC)
+	 MIME-Version; b=JSlPavRzfxDhPUV0M25JFFsaBjB7DI3e1lQdbmFxHYYZ1tAO816PKt8dpWxeL8hUWf3lWAQrwhbDL6PPboMZkDy990GN0upneCUxxo+68Njx3DdgtImvTBdCOmohliWF4lUw3vmJyD7w0dmPqZ3Ow/G/Uc4eOhS/bgFjd2mj+gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXBJaUty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD13BC2BCB8;
+	Mon,  4 May 2026 14:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903608;
-	bh=9z0Q8mrNbcLQf3nWm26SeHAEutfw2z+02ozG2UaUeYQ=;
+	s=korg; t=1777904257;
+	bh=CiT4XqyGKNa2cz0nI6DnytUXowrpQgtXFwzqR0CbCfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkRcjqwzktvmBKNEcUeTxbYEuIsY6FJaSpEqxo/A3nnCWxPo0ioyysqisqBiYxVMY
-	 vNuQ98Qw2Lyt7uw//ipjAJ0cUHyayl2bEYXGETYqXRNBYaubEkhCt2G/oK8fFLuxa8
-	 0ZO49GeE3WRZlqwVyuWP9Lj7/W9DR72oGxAi47hY=
+	b=IXBJaUtySiSVxeWAvYIwHEdER77vPQzjp6V83/3nnt8w+4CO+4pwLfe19Kcm4c9oE
+	 3MOF7LifouhnfvAlofhRLfbGimTlIafeqrwQRcVlWVIQIrJ9gedRn7ZrbMosSWhF9Y
+	 OHxtfN/e9e7LJAawFlAlnGQWAutWEQdG7uHE1r3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brajesh Gupta <brajesh.gupta@imgtec.com>,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>
-Subject: [PATCH 7.0 300/307] drm/imagination: Fix segfault when updating ftrace mask
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 245/275] seg6: fix seg6 lwtunnel output redirect for L2 reduced encap mode
 Date: Mon,  4 May 2026 15:53:05 +0200
-Message-ID: <20260504135154.068761034@linuxfoundation.org>
+Message-ID: <20260504135152.141834041@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8C2FE4BF430
+X-Rspamd-Queue-Id: 874734BF288
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243330-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243583-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,imgtec.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniroma2.it:email,l2encaps.red:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brajesh Gupta <brajesh.gupta@imgtec.com>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-commit 5dfd429591f8d7185bf63a08b5c30863fb605611 upstream.
+commit ade67d5f588832c7ba131aadd4215a94ce0a15c8 upstream.
 
-Fix invalid data access by passing right data for debugfs entry.
+When SEG6_IPTUN_MODE_L2ENCAP_RED (L2ENCAP_RED) was introduced, the
+condition in seg6_build_state() that excludes L2 encap modes from
+setting LWTUNNEL_STATE_OUTPUT_REDIRECT was not updated to account for
+the new mode.
+As a consequence, L2ENCAP_RED routes incorrectly trigger seg6_output()
+on the output path, where the packet is silently dropped because
+skb_mac_header_was_set() fails on L3 packets.
 
-[  171.549793] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[  171.559248] Mem abort info:
-[  171.562173]   ESR = 0x0000000096000044
-[  171.566227]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  171.573108]   SET = 0, FnV = 0
-[  171.576448]   EA = 0, S1PTW = 0
-[  171.579745]   FSC = 0x04: level 0 translation fault
-[  171.584760] Data abort info:
-[  171.588012]   ISV = 0, ISS = 0x00000044, ISS2 = 0x00000000
-[  171.593734]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-[  171.598962]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  171.604471] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000083837000
-[  171.611358] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-[  171.618500] Internal error: Oops: 0000000096000044 [#1]  SMP
-[  171.624222] Modules linked in: powervr drm_shmem_helper drm_gpuvm...
-[  171.656580] CPU: 0 UID: 0 PID: 549 Comm: bash Not tainted 7.0.0-rc2-g730b257ba723-dirty #13 PREEMPT
-[  171.665773] Hardware name: BeagleBoard.org BeaglePlay (DT)
-[  171.671296] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  171.678306] pc : pvr_fw_trace_mask_set+0x78/0x154 [powervr]
-[  171.683959] lr : pvr_fw_trace_mask_set+0x4c/0x154 [powervr]
-[  171.689593] sp : ffff8000835ebb90
-[  171.692929] x29: ffff8000835ebc00 x28: ffff000005c60f80 x27: 0000000000000000
-[  171.700130] x26: 0000000000000000 x25: ffff00000504af28 x24: 0000000000000000
-[  171.707324] x23: ffff00000504af50 x22: 0000000000000203 x21: 0000000000000000
-[  171.714518] x20: ffff000005c44a80 x19: ffff000005c457b8 x18: 0000000000000000
-[  171.721715] x17: 0000000000000000 x16: 0000000000000000 x15: 0000aaaae8887580
-[  171.728908] x14: 0000000000000000 x13: 0000000000000000 x12: ffff8000835ebc30
-[  171.736095] x11: ffff00000504af2a x10: ffff00008504af29 x9 : 0fffffffffffffff
-[  171.743286] x8 : ffff8000835ebbf8 x7 : 0000000000000000 x6 : 000000000000002a
-[  171.750479] x5 : ffff00000504af2e x4 : 0000000000000000 x3 : 0000000000000010
-[  171.757674] x2 : 0000000000000203 x1 : 0000000000000000 x0 : ffff8000835ebba0
-[  171.764871] Call trace:
-[  171.767342]  pvr_fw_trace_mask_set+0x78/0x154 [powervr] (P)
-[  171.772984]  simple_attr_write_xsigned.isra.0+0xe0/0x19c
-[  171.778341]  simple_attr_write+0x18/0x24
-[  171.782296]  debugfs_attr_write+0x50/0x98
-[  171.786341]  full_proxy_write+0x6c/0xa8
-[  171.790208]  vfs_write+0xd4/0x350
-[  171.793561]  ksys_write+0x70/0x108
-[  171.796995]  __arm64_sys_write+0x1c/0x28
-[  171.800952]  invoke_syscall+0x48/0x10c
-[  171.804740]  el0_svc_common.constprop.0+0x40/0xe0
-[  171.809487]  do_el0_svc+0x1c/0x28
-[  171.812834]  el0_svc+0x34/0x108
-[  171.816013]  el0t_64_sync_handler+0xa0/0xe4
-[  171.820237]  el0t_64_sync+0x198/0x19c
-[  171.823939] Code: 32000262 b90ac293 1a931056 9134e293 (b9000036)
-[  171.830073] ---[ end trace 0000000000000000 ]---
+Extend the check to also exclude L2ENCAP_RED, consistent with L2ENCAP.
 
-Fixes: a331631496a0 ("drm/imagination: Simplify module parameters")
-Signed-off-by: Brajesh Gupta <brajesh.gupta@imgtec.com>
-Reviewed-by: Alessio Belle <alessio.belle@imgtec.com>
+Fixes: 13f0296be8ec ("seg6: add support for SRv6 H.L2Encaps.Red behavior")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260427-ftrace_fix-v3-1-e081530759a8@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260418162838.31979-1-andrea.mayer@uniroma2.it
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imagination/pvr_fw_trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/seg6_iptunnel.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_fw_trace.c b/drivers/gpu/drm/imagination/pvr_fw_trace.c
-index e154cb35f604..6193811ef7be 100644
---- a/drivers/gpu/drm/imagination/pvr_fw_trace.c
-+++ b/drivers/gpu/drm/imagination/pvr_fw_trace.c
-@@ -558,6 +558,6 @@ pvr_fw_trace_debugfs_init(struct pvr_device *pvr_dev, struct dentry *dir)
- 				    &pvr_fw_trace_fops);
- 	}
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -715,7 +715,8 @@ static int seg6_build_state(struct net *
+ 	newts->type = LWTUNNEL_ENCAP_SEG6;
+ 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
  
--	debugfs_create_file("trace_mask", 0600, dir, fw_trace,
-+	debugfs_create_file("trace_mask", 0600, dir, pvr_dev,
- 			    &pvr_fw_trace_mask_fops);
- }
--- 
-2.54.0
-
+-	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP)
++	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP &&
++	    tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP_RED)
+ 		newts->flags |= LWTUNNEL_STATE_OUTPUT_REDIRECT;
+ 
+ 	newts->headroom = seg6_lwt_headroom(tuninfo);
 
 
 
