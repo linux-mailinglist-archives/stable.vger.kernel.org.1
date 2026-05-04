@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKKANzCq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:16 +0200
+	id KDNyMlys+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7791E4BEF04
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644F34BF590
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08DC830309AF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57DF53083967
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104873A7F4C;
-	Mon,  4 May 2026 14:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93893DE459;
+	Mon,  4 May 2026 14:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn28rO+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0FWi4T6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60683BE630;
-	Mon,  4 May 2026 14:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4413D9DBB;
+	Mon,  4 May 2026 14:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903997; cv=none; b=gu6kLuZiiDUPWtq3AkLnReQJpqGcb34Z4JIYC7rkldbX9Sr6YGFUQzO/7MCZ3U/9nBj1EV+CQncIXiw86cZoFdVSG1+V1B2Pw/2P5UfNpRKiO4yYQCDAKXQNfX3Ddwo5Fx8kImU1rVXTeb/BForaDd2AoYK+L07d263daoN8Tl8=
+	t=1777904522; cv=none; b=kayaV8VJF3xtf2nvsVQcV5/1TsBjRPoz2eQYDdkVOGPhQ3dYHZs+wNrGHcPDQBnQx8BVI2g/BnEmK0k+lQQZagP+49UDRdcwWthKM4AAKGfX9uZ43ItLUEi2bMDbtULISBu2MmjcfUbrtFCVeqqwFMUFNRwG7/ya5aCMYvN3EDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903997; c=relaxed/simple;
-	bh=bi6vVC1aZCIIvm5aZdYszP0nEMFMRXiwSfuv7gjjdtQ=;
+	s=arc-20240116; t=1777904522; c=relaxed/simple;
+	bh=0+7xVen8kDQj+uVCHKqDlYR6q9x6OybTIIItX+tWXOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsFIgXgkJ1liOMC8vuBB8tv6NPD4sCvybiAA8R8CL+SMIgRvr0Vvwnec7yUeZSOQy3vsUaIvR4MMLxBl87RcMCPFJaPHK7qsJkeocsOWVnels6DuCAeLGOLa4Fv4dXOapmIDdDRu//NBUWIFkFKoafz+Mo3tOa808fmxLvCwqm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn28rO+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A96FC2BCFA;
-	Mon,  4 May 2026 14:13:17 +0000 (UTC)
+	 MIME-Version; b=lRqM1NMF0/biqrxlALLZeg/95bcxePVTnnXyZHPQzPIhDXGrnpESKRsKgNKn6FsrfG/OYv0duFswzYNi+h6scCNs7r8+KCA2zaN5cr+78pfVdXpQU7sl5fCH5WceOg1q2UaAsGKJJyc2Om4BaYho1mkmV408c0W6xD4u4nP/qew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0FWi4T6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AB3C2BCF4;
+	Mon,  4 May 2026 14:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903997;
-	bh=bi6vVC1aZCIIvm5aZdYszP0nEMFMRXiwSfuv7gjjdtQ=;
+	s=korg; t=1777904522;
+	bh=0+7xVen8kDQj+uVCHKqDlYR6q9x6OybTIIItX+tWXOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mn28rO+Qx/bjjEml09Xs5scKXJnxQ5yc6lH/ol6erzWcVDnGM4j4adJb3G3h3fiB5
-	 J/3k5ryFgLnE3pNRFgPK/QZVjY2qzwtnnCdoxe29lmtVqY4plwS7fQdYoDy8Jzpgng
-	 fxq4CsC7bW/MYWq6P8WujVO7dw/AtnLq0SgItS8M=
+	b=q0FWi4T6zcpegEbKJUtWc+Gyr3EbVeMLNbtuuvlGRbvbbwyW4PZpckRs+EODcsCpO
+	 H+1f7fAGrc2TAnzTRwahWaQWuVQ4Il9AwBQFE01SjxfCI3r++dUUhtTHDtL3kZiKYt
+	 5JP+OdKrg443005CNWHnUsT5dWU/Zh805wFpy4JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 143/275] hwmon: (pt5161l) Fix bugs in pt5161l_read_block_data()
+	Ben Levinsky <ben.levinsky@amd.com>,
+	Tanmay Shah <tanmay.shah@amd.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.12 064/215] remoteproc: xlnx: Only access buffer information if IPI is buffered
 Date: Mon,  4 May 2026 15:51:23 +0200
-Message-ID: <20260504135148.213015111@linuxfoundation.org>
+Message-ID: <20260504135132.509562376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7791E4BEF04
+X-Rspamd-Queue-Id: 644F34BF590
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243482-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243688-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,68 +90,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email,roeck-us.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Ben Levinsky <ben.levinsky@amd.com>
 
-commit 24c73e93d6a756e1b8626bb259d2e07c5b89b370 upstream.
+commit 38dd6ccfdfbbe865569a52fe1ba9fa1478f672e6 upstream.
 
-Fix two bugs in pt5161l_read_block_data():
+In the receive callback check if message is NULL to prevent
+possibility of crash by NULL pointer dereferencing.
 
-1. Buffer overrun: The local buffer rbuf is declared as u8 rbuf[24],
-   but i2c_smbus_read_block_data() can return up to
-   I2C_SMBUS_BLOCK_MAX (32) bytes. The i2c-core copies the data into
-   the caller's buffer before the return value can be checked, so
-   the post-read length validation does not prevent a stack overrun
-   if a device returns more than 24 bytes. Resize the buffer to
-   I2C_SMBUS_BLOCK_MAX.
-
-2. Unexpected positive return on length mismatch: When all three
-   retries are exhausted because the device returns data with an
-   unexpected length, i2c_smbus_read_block_data() returns a positive
-   byte count. The function returns this directly, and callers treat
-   any non-negative return as success, processing stale or incomplete
-   buffer contents. Return -EIO when retries are exhausted with a
-   positive return value, preserving the negative error code on I2C
-   failure.
-
-Fixes: 1b2ca93cd0592 ("hwmon: Add driver for Astera Labs PT5161L retimer")
+Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
+Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
+Fixes: 5dfb28c257b7 ("remoteproc: xilinx: Add mailbox channels for rpmsg")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260410002549.424162-1-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20260303235127.2317955-3-tanmay.shah@amd.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pt5161l.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/remoteproc/xlnx_r5_remoteproc.c |   20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/drivers/hwmon/pt5161l.c
-+++ b/drivers/hwmon/pt5161l.c
-@@ -121,7 +121,7 @@ static int pt5161l_read_block_data(struc
- 	int ret, tries;
- 	u8 remain_len = len;
- 	u8 curr_len;
--	u8 wbuf[16], rbuf[24];
-+	u8 wbuf[16], rbuf[I2C_SMBUS_BLOCK_MAX];
- 	u8 cmd = 0x08; /* [7]:pec_en, [4:2]:func, [1]:start, [0]:end */
- 	u8 config = 0x00; /* [6]:cfg_type, [4:1]:burst_len, [0]:address bit16 */
+--- a/drivers/remoteproc/xlnx_r5_remoteproc.c
++++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+@@ -232,17 +232,19 @@ static void zynqmp_r5_mb_rx_cb(struct mb
  
-@@ -151,7 +151,7 @@ static int pt5161l_read_block_data(struc
- 				break;
- 		}
- 		if (tries >= 3)
--			return ret;
-+			return ret < 0 ? ret : -EIO;
+ 	ipi = container_of(cl, struct mbox_info, mbox_cl);
  
- 		memcpy(val, rbuf, curr_len);
- 		val += curr_len;
+-	/* copy data from ipi buffer to r5_core */
++	/* copy data from ipi buffer to r5_core if IPI is buffered. */
+ 	ipi_msg = (struct zynqmp_ipi_message *)msg;
+-	buf_msg = (struct zynqmp_ipi_message *)ipi->rx_mc_buf;
+-	len = ipi_msg->len;
+-	if (len > IPI_BUF_LEN_MAX) {
+-		dev_warn(cl->dev, "msg size exceeded than %d\n",
+-			 IPI_BUF_LEN_MAX);
+-		len = IPI_BUF_LEN_MAX;
++	if (ipi_msg) {
++		buf_msg = (struct zynqmp_ipi_message *)ipi->rx_mc_buf;
++		len = ipi_msg->len;
++		if (len > IPI_BUF_LEN_MAX) {
++			dev_warn(cl->dev, "msg size exceeded than %d\n",
++				 IPI_BUF_LEN_MAX);
++			len = IPI_BUF_LEN_MAX;
++		}
++		buf_msg->len = len;
++		memcpy(buf_msg->data, ipi_msg->data, len);
+ 	}
+-	buf_msg->len = len;
+-	memcpy(buf_msg->data, ipi_msg->data, len);
+ 
+ 	/* received and processed interrupt ack */
+ 	if (mbox_send_message(ipi->rx_chan, NULL) < 0)
 
 
 
