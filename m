@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHX4KoGn+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:49 +0200
+	id cKBnLRes+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2236E4BE775
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DB44BF4C5
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 518553036702
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A9490301B714
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810DA3B19D1;
-	Mon,  4 May 2026 14:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4173DE450;
+	Mon,  4 May 2026 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABL5+J3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShcWo06B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B2E40DFD4;
-	Mon,  4 May 2026 14:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F2829E116;
+	Mon,  4 May 2026 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903310; cv=none; b=t/CTAWf4VABBFoH8Ee1QwT0XMpv49CY/Sz668R86BJcfKpw5WAAXOK2vd1ecf4juwfy8PpEeHzF1cxlnKb92M2VEMyAMrQRnCUsS/cIUWWIeKzlygcAI/xLZoufXc2sGiQXhEha2zu8eRHbyeR/ByayR49+vD+SSN3CtH380n3I=
+	t=1777904471; cv=none; b=B8/agoejOmhbHvX3W8Lx2l4Y1ONMhtYbzvVbIDtd7jPyo66HAqMm8pWw4d719kelXdOQkGY/+Ke5SvgDN9PqHTA0l037wa63XvbV/+vWb0qiRwBTKA4GEIbJAKNUhzub1a3tUwHuq7hdFqS2+oIJcd8GRwUri4Iom4YOOn6FwfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903310; c=relaxed/simple;
-	bh=Q8VnGOnbQqKhyDo9i7SxMTxD+iF7zXpuhyNZ97zRs9I=;
+	s=arc-20240116; t=1777904471; c=relaxed/simple;
+	bh=aHB9+D6mTqnKgTnrBWGhOQS1Jc3/c/0IsvzJSK0t+yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/TN+66+fwy/eCCZT4SxSCa1rHgAY/CdKIIjT5eR3ECi8V2sdIkSAeW012qFTucj6CMAQu7mBmxc9oXp4DrIaq2Xlu/6LNBodt4djDtTdyePDzkdjoJd1mftYd6x6UWcenraQgfJp31b634Bqo3BV7X/pONWkN7wN6os6mZVpDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABL5+J3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C97C2BCC4;
-	Mon,  4 May 2026 14:01:49 +0000 (UTC)
+	 MIME-Version; b=pzfPtmmSEP5L5CWSGkr+PIip2hu7lYt9OcOdAeJH3xc11Z16GKsUJJvGNjArvGbGSgRXrW4kyr4uBmLDL92K+mYk0ndztniQZN+o1/07afwVU4mHgey/LoGxXaUGJNHvOQqpXMHpUGLBqCuYHfGB4C21HQ+5LhA/WqkliPi9Fo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShcWo06B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709FAC2BCB8;
+	Mon,  4 May 2026 14:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903310;
-	bh=Q8VnGOnbQqKhyDo9i7SxMTxD+iF7zXpuhyNZ97zRs9I=;
+	s=korg; t=1777904470;
+	bh=aHB9+D6mTqnKgTnrBWGhOQS1Jc3/c/0IsvzJSK0t+yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABL5+J3Kr4wFhdQM8C9jG/g+yr254KMHL/eDsRwrVwl584DJ5aDynfQKkfOVahPZ6
-	 Ubu8fE5mp42CY6CHbbHcqnZgIUcGgqx4uFexAHsWueUxQkzDMmoTvFC2C4MZ81y6w9
-	 h7WHub7QukWLCD9vZ3/WILsFHz0mG6JDyfgBLWeI=
+	b=ShcWo06BGr0cdRsJyjx7nX+07rD2KCOWu9hSqbMzQarl8a0ZnWFlBk09nGiu89cNW
+	 7sSZ+XCAIBd1Lb8bNGGtuHfTZH680NBWanf5vH63UE8Eu3pJfN3e5h+huN8zSguknC
+	 WwbfWAAGyE1PDuOrZU5JAYAg6JOtXUKzYGZ8up34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Justinien Bouron <jbouron@amazon.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 7.0 185/307] tpm: Fix auth session leak in tpm2_get_random() error path
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 051/215] net: qrtr: ns: Fix use-after-free in driver remove()
 Date: Mon,  4 May 2026 15:51:10 +0200
-Message-ID: <20260504135149.840408511@linuxfoundation.org>
+Message-ID: <20260504135132.041812751@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2236E4BE775
+X-Rspamd-Queue-Id: 55DB44BF4C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,66 +80,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243214-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243667-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gunnar Kudrjavets <gunnarku@amazon.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 666c1a2ca603d8314231200bf8bbb3a81bd64c6b upstream.
+commit 7809fea20c9404bfcfa6112ec08d1fe1d3520beb upstream.
 
-When tpm_buf_fill_hmac_session() fails inside the do-while loop in
-tpm2_get_random(), the function returns directly after destroying the
-buffer, without ending the auth session via tpm2_end_auth_session().
+In the remove callback, if a packet arrives after destroy_workqueue() is
+called, but before sock_release(), the qrtr_ns_data_ready() callback will
+try to queue the work, causing use-after-free issue.
 
-This leaks the TPM auth session resource. All other error paths within
-the loop correctly reach the 'out' label which calls both
-tpm_buf_destroy() and tpm2_end_auth_session().
+Fix this issue by saving the default 'sk_data_ready' callback during
+qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
+the start of remove(). This ensures that even if a packet arrives after
+destroy_workqueue(), the work struct will not be dereferenced.
 
-Fix this by replacing the early return with a goto to the existing 'out'
-label, which already handles both cleanup operations. The redundant
-tpm_buf_destroy() call is removed since 'out' takes care of it.
+Note that it is also required to ensure that the RX threads are completed
+before destroying the workqueue, because the threads could be using the
+qrtr_ns_data_ready() callback.
 
-Cc: stable@vger.kernel.org # v6.19+
-Fixes: 6e9722e9a7bf ("tpm2-sessions: Fix out of range indexing in name_size")
-Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Reviewed-by: Justinien Bouron <jbouron@amazon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-5-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm2-cmd.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/qrtr/ns.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -295,10 +295,8 @@ int tpm2_get_random(struct tpm_chip *chi
- 		}
- 		tpm_buf_append_u16(&buf, num_bytes);
- 		err = tpm_buf_fill_hmac_session(chip, &buf);
--		if (err) {
--			tpm_buf_destroy(&buf);
--			return err;
--		}
-+		if (err)
-+			goto out;
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -24,6 +24,7 @@ static struct {
+ 	struct list_head lookups;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
++	void (*saved_data_ready)(struct sock *sk);
+ 	int local_node;
+ } qrtr_ns;
  
- 		err = tpm_transmit_cmd(chip, &buf,
- 				       offsetof(struct tpm2_get_random_out,
+@@ -709,6 +710,7 @@ int qrtr_ns_init(void)
+ 		goto err_sock;
+ 	}
+ 
++	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
+ 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
+ 
+ 	sq.sq_port = QRTR_PORT_CTRL;
+@@ -749,6 +751,10 @@ int qrtr_ns_init(void)
+ 	return 0;
+ 
+ err_wq:
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ err_sock:
+ 	sock_release(qrtr_ns.sock);
+@@ -758,7 +764,12 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
+ 
+ void qrtr_ns_remove(void)
+ {
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	cancel_work_sync(&qrtr_ns.work);
++	synchronize_net();
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ 
+ 	/* sock_release() expects the two references that were put during
 
 
 
