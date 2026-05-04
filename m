@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-243574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HEDAbys+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:08 +0200
+	id cC93Ktan+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AD04BF738
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD8E4BE84A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82FFD30F05F0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49EAF301223D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BAF21C173;
-	Mon,  4 May 2026 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3710E2D8DDF;
+	Mon,  4 May 2026 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15SdnXQu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlioqNMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2708E315785;
-	Mon,  4 May 2026 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6653DE431;
+	Mon,  4 May 2026 14:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904234; cv=none; b=LYYpgsi8x1yyA1OYjfHcPtZAk6ql4n/Numk3uAod1Ouv0KuPjp4ydEE+uAFU9BbVYXBA/Y6eu6KX0QaVMBBNyCjFM+RJwcT0GSD8Db0RLXT4iC/M4NEJMqC+GHNhdhA8tmAefdQ8hfobGbHU+1YpuMxR1VPV2BcgPU7w9Od+xXU=
+	t=1777903496; cv=none; b=q/rtrwQSdkpCOGXrRoF9TXIwOAmsy8vAc9xoRA1OCXvU8vzJAwWGl0EhaPq7OrQx9QrTsgQCoQxc2nq1ZP0OiLlp9K+JE03yxfxSXZAp2S+7Yllwnnh6kLNMcIwpBLq4OWIVFLuDJOWAQVspZdNvTj/37QDqfIIUG8p90EqAHPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904234; c=relaxed/simple;
-	bh=p3ea+28DrWIs5IIvhBPPw3Jum0/4H5FqiPf1frCUE+Y=;
+	s=arc-20240116; t=1777903496; c=relaxed/simple;
+	bh=Ym1KwoJ4ANIlW+2oBdJjKd+vhRQpSG3NGkmKH5+AmE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkFD4+8Ex4xzVEQk/Pejp94gr9Nc+1DmvtwyqCpEQUKMPwnwyxyitM1jsKRdL7+F/BdPN1slXTWEGOQ3QHnflAkSgJOr4kv9dnjLumQa4VHBtQ7oEJkeVDGmDe092oIWl4Ud75CC4SEjHc/uTZMqAeF/bo55KBljLAlVe733+bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15SdnXQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEBFC2BCB8;
-	Mon,  4 May 2026 14:17:13 +0000 (UTC)
+	 MIME-Version; b=UJOEio7LbC1I89abs8du6pFTYeXXkYYsmdi+fpfcZv03jgFGEO/URYWt/Lbp7lOVQGAHvYIDHfGn7mWwVumU624RiQf4UCo4QZuPXulFQW3L3V5Qu51PdB1s/e/7DU2SXu9Mr9bfYGfQUzp/pRaVG/oQhiXce00nKPCRB1cFYNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlioqNMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C21C2BCB8;
+	Mon,  4 May 2026 14:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904234;
-	bh=p3ea+28DrWIs5IIvhBPPw3Jum0/4H5FqiPf1frCUE+Y=;
+	s=korg; t=1777903495;
+	bh=Ym1KwoJ4ANIlW+2oBdJjKd+vhRQpSG3NGkmKH5+AmE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15SdnXQu/wGcV3kFYD6G6v1XnihmWeg1B0iuvHJj8Uvl4zXqZGh88Rc7oN90teEN0
-	 6IuayYomZpLKXpLqgX/n3mHRLxd0tnOa42Dec7F9x/CFnGsHq16SoSTyaypdikDFW6
-	 iVUz5rPr0iS3FgwKknLA44+M1dEU/cgWbCCSclcA=
+	b=KlioqNMoIbADfecmEcjs2rT9wDWdjsuTSvXypeSUef0qiGhzRdYJgyyz8coAs5eN5
+	 GEuW8FX/3+51/ek27n/rWgkz7YQeT2QLR2ymAxsn2/EGG3wP0JE/jJTyMHkIm/8UDZ
+	 RBm0rbO+ZdxaxJR0ZS4l3PTyttIo7tHbFexiJqTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.18 202/275] md/md-llbitmap: skip reading rdevs that are not in_sync
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 7.0 257/307] crypto: acomp - fix wrong pointer stored by acomp_save_req()
 Date: Mon,  4 May 2026 15:52:22 +0200
-Message-ID: <20260504135150.578091680@linuxfoundation.org>
+Message-ID: <20260504135152.488730776@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 79AD04BF738
+X-Rspamd-Queue-Id: 5CD8E4BE84A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243574-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243286-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fnnas.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-commit 7701e68b5072faa03a8f30b4081dc16df9092381 upstream.
+commit d7e20b9bd6c990773cf0c09e2642250b8a70263d upstream.
 
-When reading bitmap pages from member disks, the code iterates through
-all rdevs and attempts to read from the first available one. However,
-it only checks for raid_disk assignment and Faulty flag, missing the
-In_sync flag check.
+acomp_save_req() stores &req->chain in req->base.data. When
+acomp_reqchain_done() is invoked on asynchronous completion, it receives
+&req->chain as the data argument but casts it directly to struct
+acomp_req. Since data points to the chain member, all subsequent field
+accesses are at a wrong offset, resulting in memory corruption.
 
-This can cause bitmap data to be read from spare disks that are still
-being rebuilt and don't have valid bitmap information yet. Reading
-stale or uninitialized bitmap data from such disks can lead to
-incorrect dirty bit tracking, potentially causing data corruption
-during recovery or normal operation.
+The issue occurs when an asynchronous hardware implementation, such as
+the QAT driver, completes a request that uses the DMA virtual address
+interface (e.g. acomp_request_set_src_dma()). This combination causes
+crypto_acomp_compress() to enter the acomp_do_req_chain() path, which
+sets acomp_reqchain_done() as the completion callback via
+acomp_save_req().
 
-Add the In_sync flag check to ensure bitmap pages are only read from
-fully synchronized member disks that have valid bitmap data.
+With KASAN enabled, this manifests as a general protection fault in
+acomp_reqchain_done():
 
+  general protection fault, probably for non-canonical address 0xe000040000000000
+  KASAN: probably user-memory-access in range [0x0000400000000000-0x0000400000000007]
+  RIP: 0010:acomp_reqchain_done+0x15b/0x4e0
+  Call Trace:
+   <IRQ>
+   qat_comp_alg_callback+0x5d/0xa0 [intel_qat]
+   adf_ring_response_handler+0x376/0x8b0 [intel_qat]
+   adf_response_handler+0x60/0x170 [intel_qat]
+   tasklet_action_common+0x223/0x820
+   handle_softirqs+0x1ab/0x640
+   </IRQ>
+
+Fix this by storing the request itself in req->base.data instead of
+&req->chain, so that acomp_reqchain_done() receives the correct pointer.
+Simplify acomp_restore_req() accordingly to access req->chain directly.
+
+Fixes: 64929fe8c0a4 ("crypto: acomp - Remove request chaining")
 Cc: stable@vger.kernel.org
-Fixes: 5ab829f1971d ("md/md-llbitmap: introduce new lockless bitmap")
-Link: https://lore.kernel.org/linux-raid/20260223024038.3084853-2-yukuai@fnnas.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-llbitmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ crypto/acompress.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/md/md-llbitmap.c b/drivers/md/md-llbitmap.c
-index bf398d7476b3..6b2d27de1528 100644
---- a/drivers/md/md-llbitmap.c
-+++ b/drivers/md/md-llbitmap.c
-@@ -459,7 +459,8 @@ static struct page *llbitmap_read_page(struct llbitmap *llbitmap, int idx)
- 	rdev_for_each(rdev, mddev) {
- 		sector_t sector;
+--- a/crypto/acompress.c
++++ b/crypto/acompress.c
+@@ -169,15 +169,13 @@ static void acomp_save_req(struct acomp_
+ 	state->compl = req->base.complete;
+ 	state->data = req->base.data;
+ 	req->base.complete = cplt;
+-	req->base.data = state;
++	req->base.data = req;
+ }
  
--		if (rdev->raid_disk < 0 || test_bit(Faulty, &rdev->flags))
-+		if (rdev->raid_disk < 0 || test_bit(Faulty, &rdev->flags) ||
-+		    !test_bit(In_sync, &rdev->flags))
- 			continue;
+ static void acomp_restore_req(struct acomp_req *req)
+ {
+-	struct acomp_req_chain *state = req->base.data;
+-
+-	req->base.complete = state->compl;
+-	req->base.data = state->data;
++	req->base.complete = req->chain.compl;
++	req->base.data = req->chain.data;
+ }
  
- 		sector = mddev->bitmap_info.offset +
--- 
-2.54.0
-
+ static void acomp_reqchain_virt(struct acomp_req *req)
 
 
 
