@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-243167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJBjLlWo+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:21 +0200
+	id MPFmMSOr+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D603D4BE97B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD67B4BF1DB
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0AED4303405B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E23A300BD77
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69D53DD519;
-	Mon,  4 May 2026 13:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D674B3B19D1;
+	Mon,  4 May 2026 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSngP45x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adcvdFRg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ADF3D5645;
-	Mon,  4 May 2026 13:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF0C40DFD4;
+	Mon,  4 May 2026 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903187; cv=none; b=i7jjYUrlb7QkE9cYtkc6QpGTLlu5d76m6Fg57qzFMybYVMsQ5/69W7oCVCyrMtJixNbChgwHJXpPkM2Gqw4dGJ8hoWoIo7HfFH/6NWdAzS8DFKclZYbWNLqvFXnZDiUnT255ehbWVuYklPMeTxtdL49TInDmFmDV8BLq6aFbi+g=
+	t=1777903760; cv=none; b=Pmm1PAiEVD+JUqYImubaz3QS6x+XHZYI4FkO1nR9ZQn/3/vrO8PuGyWIVKTMvIZoN9g+Oh8gVhJ1DOZUkDlwinTwn4UbeksAgtevk2aMQQ80Cw65/eu1N2IYplLgMDLaOhBGg7J10QCR+8ZjhM0LhCN93psk+6+a4ezkgGnOj4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903187; c=relaxed/simple;
-	bh=Qh2rb6ZhO4P4Mh9T8lM1sxS4DNsqJUV7XxpVJX8qaSQ=;
+	s=arc-20240116; t=1777903760; c=relaxed/simple;
+	bh=z/mTl0ocST6R86kpZqQxzFXtxUg6Z3tFnDBLsX3/MrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIL1HG1SahpmtHF47Z1OGu+fP8wf7St6NWHURkqRYU1qiQwoNBekzHKp+A3TjQXdrANeJrhrbzCjYXYubhF2OhayPLhGBI3L2r2+IrDB9LND8l3itEqrS2683IeJ9PIsdiY62MGSYXmsOydZPGxS/7CBHoc2gp2/zXebeyuih/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSngP45x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA2BC2BCB8;
-	Mon,  4 May 2026 13:59:47 +0000 (UTC)
+	 MIME-Version; b=pnFDmLqv8hrBXN91l0nKHyzD4uDRz4PyPqQRanVdizQWzAf8hwBGjkY5MbjJ0c7xAEFMTxoBq0k8YCMIKCuaTrzJqCDpZULKDTB8J3VHo8cvHKmJ57V5tD1OdeQIIZ96SW2Dg9/3SpxiUc9um/cpvQ51l2+wLoP9rE3X5sU5s1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adcvdFRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3310AC2BCB8;
+	Mon,  4 May 2026 14:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903187;
-	bh=Qh2rb6ZhO4P4Mh9T8lM1sxS4DNsqJUV7XxpVJX8qaSQ=;
+	s=korg; t=1777903760;
+	bh=z/mTl0ocST6R86kpZqQxzFXtxUg6Z3tFnDBLsX3/MrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSngP45xCDhUKTsLFohXzTXgbeDR3BAlIzHgbmjHR3T2T6PeC6uR4L1CF3Fg6WnS/
-	 FmC7IuoM9+8QkwlYX9RaqqnM4wthdAFQHjjggac0zrlRruc5hJw3m/XBL22kJqb0qx
-	 W0hIN0JDGfxJVGZDkS3oQz1O1fQpF3MtV6l/UExw=
+	b=adcvdFRgiWZxOz9jqZ713wz+M8KfSIV38V7RaTFCKEqHOywBJWLDjuNOGwB1zCq/n
+	 bQ4XKj1JzWJd3+fgZNyK8t/XXFxLXYAMYlY8t40n1+N5eXO8E+7I8BW7cb/rGa6E63
+	 R89aEcvp5y/Qxj7Bs5bbMbQtOBISY+A0rsCvFEjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 105/307] mm/zone_device: do not touch device folio after calling ->folio_free()
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 050/275] net: strparser: fix skb_head leak in strp_abort_strp()
 Date: Mon,  4 May 2026 15:49:50 +0200
-Message-ID: <20260504135146.762878552@linuxfoundation.org>
+Message-ID: <20260504135144.795473131@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +69,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D603D4BE97B
+X-Rspamd-Queue-Id: DD67B4BF1DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243167-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,nvidia.com,gmail.com,kernel.org,suse.de,linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
+	TAGGED_FROM(0.00)[bounces-243390-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,intel.com:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-commit 39928984956037cabd304321cb8f342e47421db5 upstream.
+commit fe72340daaf1af588be88056faf98965f39e6032 upstream.
 
-The contents of a device folio can immediately change after calling
-->folio_free(), as the folio may be reallocated by a driver with a
-different order.  Instead of touching the folio again to extract the
-pgmap, use the local stack variable when calling percpu_ref_put_many().
+When the stream parser is aborted, for example after a message assembly timeout,
+it can still hold a reference to a partially assembled message in
+strp->skb_head.
 
-Link: https://lore.kernel.org/20260410230346.4009855-1-matthew.brost@intel.com
-Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+That skb is not released in strp_abort_strp(), which leaks the partially
+assembled message and can be triggered repeatedly to exhaust memory.
+
+Fix this by freeing strp->skb_head and resetting the parser state in the
+abort path. Leave strp_stop() unchanged so final cleanup still happens in
+strp_done() after the work and timer have been synchronized.
+
+Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/ade3857a9404999ce9a1c27ec523efc896072678.1775482694.git.rakukuip@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memremap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/strparser/strparser.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -454,7 +454,7 @@ void free_zone_device_folio(struct folio
- 		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
- 			break;
- 		pgmap->ops->folio_free(folio);
--		percpu_ref_put_many(&folio->pgmap->ref, nr);
-+		percpu_ref_put_many(&pgmap->ref, nr);
- 		break;
+--- a/net/strparser/strparser.c
++++ b/net/strparser/strparser.c
+@@ -45,6 +45,14 @@ static void strp_abort_strp(struct strpa
  
- 	case MEMORY_DEVICE_GENERIC:
+ 	strp->stopped = 1;
+ 
++	if (strp->skb_head) {
++		kfree_skb(strp->skb_head);
++		strp->skb_head = NULL;
++	}
++
++	strp->skb_nextp = NULL;
++	strp->need_bytes = 0;
++
+ 	if (strp->sk) {
+ 		struct sock *sk = strp->sk;
+ 
 
 
 
