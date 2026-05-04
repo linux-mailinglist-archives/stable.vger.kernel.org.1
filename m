@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKbtEHWx+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:17 +0200
+	id MPk8HA+q+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD94C000A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE874BEE9D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9604F3061A46
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A6C3F304A0B9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC053E1228;
-	Mon,  4 May 2026 14:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08D53DD53E;
+	Mon,  4 May 2026 14:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0u5i1KWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptHNg+qJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909F53DE443;
-	Mon,  4 May 2026 14:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37C421CC4F;
+	Mon,  4 May 2026 14:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904726; cv=none; b=uqwEq5zpgg9sQE28Bsc6xDb3oBI8kwK6OeIiYrgeOOw6kZeCqdfJ5Mh55EP32OpdO++eXGc1h7uplUmrNkrNMpALQDL06SX21V3EKVD5ZbaSr0y5/wPYHtAz9iYhdhTaxrqNRLGayUx9OVFIFC8O65eHWRumefX+rLHmWVLP328=
+	t=1777903567; cv=none; b=u9rkfr7+/zBvTAt7MgDnALo9DWEblEbcFkqu11ARrrzTRYMTHI7ajyrHESH7e52QoDd80Sx9U/WvLX6ZZDEC9fWHPY8jlJD5wk5ejzcgMVAJ2v+9rzbFwcrtdCcxVxuXmINc1RJhPDEaEkIX+HeTp4suyc6McOArcy+n6sZIEYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904726; c=relaxed/simple;
-	bh=mK8wlVE0dlQYoMgL5s99z+uj7Q7Xv6gsCaa0QGacVFk=;
+	s=arc-20240116; t=1777903567; c=relaxed/simple;
+	bh=4tGuwRckG5nt7NUm9CBUXjcvazNWEKndrLRhqQgXA1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWecUdjCWmOPbnVHViNsFDqJwoNo4dzxCg2vpgCku25nOtxgNQJbszDo3nJ7LRRRRpSlywE/5vURcb1RCSGU/cTAe9dS0An2UJ5Wqzfs+y1UhzZi5Lw9KBHzQrGpjuQPVUWZ3Jr6sEeLiBrlfqcW7/7TR5zj07b2had8LAyFV4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0u5i1KWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AC1C2BCB8;
-	Mon,  4 May 2026 14:25:25 +0000 (UTC)
+	 MIME-Version; b=YJzvQgzY3oHov/5E9jAxnj7hKgVh49inoL5vr/AtJgDzWa7j3VE/BzFJv67bkRlB/gw4FyDoVaw8Za22tobInc4u8mnWB9Avyz1x1z2nlZOLbZnQekRaFXBh2zjuYwk5K48zMkoKGEtBUlXlroS4zvRExToIc6xJa46V0QLlTCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptHNg+qJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49726C2BCB8;
+	Mon,  4 May 2026 14:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904726;
-	bh=mK8wlVE0dlQYoMgL5s99z+uj7Q7Xv6gsCaa0QGacVFk=;
+	s=korg; t=1777903567;
+	bh=4tGuwRckG5nt7NUm9CBUXjcvazNWEKndrLRhqQgXA1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0u5i1KWJEG4gctmjYJ/iowaq2jv0F0HdfPb0kW42lSBDnM885nQ+1skVUYd1nDJnn
-	 gx1BhvZkPBPL6hHzyJKOoZxSS2OvtNPl3jN6PFQe/pT6VT2u9j+ZU5NPngW2Wt4eOy
-	 ZyAW9QmAAerfL845a7HPcvG79tMthq7w9X4oR7Xo=
+	b=ptHNg+qJk8kaF13QpPvsoV8ZTTIYgABH4vk8NX0qKUq9wy3H2kR3roaFNPFA88cKB
+	 12hFVvAQi8jNSOF7wI2DcTtO+C/I2KfSYPRCY/pnr9juFYNGCroeBSOpxUeayR/f40
+	 QHlFcx3EEj5qaO2gzCsyjwipSJ1N4Ypq5GvWaOMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuvam Pandey <shuvampandey1@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 151/215] Bluetooth: hci_event: fix potential UAF in SSP passkey handlers
+	WANG Rui <r@hev.cc>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: [PATCH 7.0 285/307] perf loongarch: Fix build failure with CONFIG_LIBDW_DWARF_UNWIND
 Date: Mon,  4 May 2026 15:52:50 +0200
-Message-ID: <20260504135135.684147878@linuxfoundation.org>
+Message-ID: <20260504135153.514327333@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +65,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3CFD94C000A
+X-Rspamd-Queue-Id: 7CE874BEE9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243767-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243314-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuvam Pandey <shuvampandey1@gmail.com>
+From: WANG Rui <r@hev.cc>
 
-commit 85fa3512048793076eef658f66489112dcc91993 upstream.
+commit 841dbf4871c57ce2da18c4ea7ffac5487d0eda16 upstream.
 
-hci_conn lookup and field access must be covered by hdev lock in
-hci_user_passkey_notify_evt() and hci_keypress_notify_evt(), otherwise
-the connection can be freed concurrently.
+Building perf for LoongArch fails when CONFIG_LIBDW_DWARF_UNWIND is
+enabled because unwind-libdw.o is still referenced in
+arch/loongarch/util/Build.
 
-Extend the hci_dev_lock critical section to cover all conn usage in both
-handlers.
-
-Keep the existing keypress notification behavior unchanged by routing
-the early exits through a common unlock path.
-
-Fixes: 92a25256f142 ("Bluetooth: mgmt: Implement support for passkey notification")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e62fae9d9e8 ("perf unwind-libdw: Fix a cross-arch unwinding bug")
+Signed-off-by: WANG Rui <r@hev.cc>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Ben Hutchings <ben@decadent.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ tools/perf/arch/loongarch/util/Build |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5412,9 +5412,11 @@ static void hci_user_passkey_notify_evt(
+--- a/tools/perf/arch/loongarch/util/Build
++++ b/tools/perf/arch/loongarch/util/Build
+@@ -1,4 +1,3 @@
+ perf-util-y += header.o
  
- 	bt_dev_dbg(hdev, "");
- 
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
- 	if (!conn)
--		return;
-+		goto unlock;
- 
- 	conn->passkey_notify = __le32_to_cpu(ev->passkey);
- 	conn->passkey_entered = 0;
-@@ -5423,6 +5425,9 @@ static void hci_user_passkey_notify_evt(
- 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
- 					 conn->dst_type, conn->passkey_notify,
- 					 conn->passkey_entered);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
- }
- 
- static void hci_keypress_notify_evt(struct hci_dev *hdev, void *data,
-@@ -5433,14 +5438,16 @@ static void hci_keypress_notify_evt(stru
- 
- 	bt_dev_dbg(hdev, "");
- 
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
- 	if (!conn)
--		return;
-+		goto unlock;
- 
- 	switch (ev->type) {
- 	case HCI_KEYPRESS_STARTED:
- 		conn->passkey_entered = 0;
--		return;
-+		goto unlock;
- 
- 	case HCI_KEYPRESS_ENTERED:
- 		conn->passkey_entered++;
-@@ -5455,13 +5462,16 @@ static void hci_keypress_notify_evt(stru
- 		break;
- 
- 	case HCI_KEYPRESS_COMPLETED:
--		return;
-+		goto unlock;
- 	}
- 
- 	if (hci_dev_test_flag(hdev, HCI_MGMT))
- 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
- 					 conn->dst_type, conn->passkey_notify,
- 					 conn->passkey_entered);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
- }
- 
- static void hci_simple_pair_complete_evt(struct hci_dev *hdev, void *data,
+ perf-util-$(CONFIG_LOCAL_LIBUNWIND) += unwind-libunwind.o
+-perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) += unwind-libdw.o
 
 
 
