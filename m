@@ -1,212 +1,166 @@
-Return-Path: <stable+bounces-242871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2I+WJNlY+GlStQIAu9opvQ
-	(envelope-from <stable+bounces-242871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:29:13 +0200
+	id EPUkF5FZ+GlStQIAu9opvQ
+	(envelope-from <stable+bounces-242872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:32:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEC14BA399
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:29:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9EA4BA425
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81AA3306D0C6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:25:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4DD63002295
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5E1331A6D;
-	Mon,  4 May 2026 08:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9B832B9BB;
+	Mon,  4 May 2026 08:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="foVmCKOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccN/nXfW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E451C3321B1
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2518308F3E
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777883152; cv=none; b=JbzWD1BuQZljA1qZYtx4WWDQL1EB6LkkOIF5eN/wSdMTwnVK0XAH+wc84ExFyhHrSgW6gENWkBokiKEGbevu44pmEdw4wqOW+Zdqq5j2cFZdy3PO84h8e7v1ECO2YBCBBT4aOI2hr2f+1HeDveYs1/WT5g0ZFpbis8rkXUVBO2o=
+	t=1777883534; cv=none; b=AfBsQCjzijVApduDCcuaSicnpm8sMR1sreXBwclKVECEsZ5bncQr0EqWMY43xtkb8XBxEFOt6SbJf+DDOEwjV5uCqObyKpA6+JvbEQP2sjHgrx8yfe5KPJE4Gdw84GY8wBN1Ei1afwsu48ZnuP5qtbSdzTVlZesYfV1pvXwN8ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777883152; c=relaxed/simple;
-	bh=G0HlUpP+L59SM/PgS9XrkbbqRt4wRveUjJziSIIppL4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k/b6OhhMU33nPlU9zqTQofabBB9e8NDFN+YdGZMEG6NkKGf7csI1rq37/mPM49MJDcnET2DT/Qo+cKODM0ZRFPCzCUJTLpAH4bQ4o5Y4IV67YMFWCf0raiVdMgJN1BUffSQvIzTHkjx2y/qee1nl8ittnJ89TGz6VAXtnKVnKlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=foVmCKOb; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-67c9616b4feso489477a12.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 01:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1777883144; x=1778487944; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9R8zXqHCtcGHTYvHcfHWaBjDK5mDDl8ovVVHVrbBYhw=;
-        b=foVmCKObcKLZeyoZEq3WGlFNPTnzkdRRGZkDiXi3U97qO5ZcJjJeOXpK/bAfipWQc2
-         yiobeiMY/5nhbCEjV6RkOuHYJO8Z1Sl0ewnwBNMSOJoQjTiUFh1y9ifNTYN0dajBSfwQ
-         CGxy3HcFuYQ+EpWoPRXX5WrnahOwLH06ILtEU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777883144; x=1778487944;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9R8zXqHCtcGHTYvHcfHWaBjDK5mDDl8ovVVHVrbBYhw=;
-        b=ryq8z4Y4A5KtWXY1nqunYxKQRtq1g8S91K8loN5NBLMFL/DksaHAJB7yLuzXOEM5Qf
-         QifrogRUtUixCyjbv+Pvci76SrI3SBQoi69LL88WCTAZPRO96WsnP8L1kW1D1eHm4KYv
-         /9WtsJeAlb+zcSAYlOKIS085Pc5WVzYL4Knkq2kz9DhbBq0FeJQyLtMPRNio8b7usBC7
-         gRVdmngNI70hPtL/qfaKeDei9s9ICeLtFesglq84xL7hVe1gaTgQk+r+20FnHxHyIVgJ
-         rVV8ace7W3C+k7Y9jZbmk9YtiUykJwFWYiwz0EG3ugemRsZ/p5aaTttRuIP3wZUVYO6P
-         4/uA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Sx/GWt+GJBgG9oOvj8Hpv4aYwV//19/gGfFf3D5MQluh1P63Kb1klU7D+NoqTpvc5H8G4ou8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMu1aqEDmIzamQBd/SNNpPGU4kydaf5G0tacxl5K2bMOE7Uks3
-	+Vk6oI5Y/iC+krlXsKou9iygbjVUA276+ROr1+vbY2zTLvNr569WbMb3IPi5YnmrjtLP8QiBKVP
-	eOu7GoFz9
-X-Gm-Gg: AeBDievyXqrsuGelOHN04twyOReAWw1rW7b1c+IodIEaHvAOj96TG9sdlehlcvupe1Q
-	g/bxb/HMuODjdEPoeoP0SVPA7HY+3Ht7jChTTwIt6E/36ijUh5zPADZY1h9anJFfTxMGY4zPscL
-	Gms/Mkdxo1iuNUoD1sUynqolw7ugbOJQv1oLPKOrnIyf1iAuNMqxjbhgTTtESD9wv+diG+wfDub
-	vQIGoqT99VXsk7xGhnQAy9Eu6x6PgmdWXUhJWN+bXAvPPGYHF/cRXnuvMsVO103IdXSjV0L/mkj
-	IKRVK7e4o5s1kt0T1voo2fACKrINOGEjjt6SNBP1gPTofghAYue3FQ5QAZYuf+L6DdBsKBo//fp
-	xw3t6zPM//0LFFSG2NYg+OSBse74s9UuaX0Hrj0jkktYHBzsu7b5eF6k4Poz+tpw/y7hFEZo8R+
-	Fg6/jD2VEE4OIYzG7kP3ohWZ7WjB5ZTYkUEOXRDnTeT3c8aTgisI8Pf4DeHVLI61RS2Wm2n9s=
-X-Received: by 2002:a05:6402:1515:b0:670:b72b:4044 with SMTP id 4fb4d7f45d1cf-67c1ada377bmr2548086a12.15.1777883143902;
-        Mon, 04 May 2026 01:25:43 -0700 (PDT)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67b877d5ab2sm3219987a12.14.2026.05.04.01.25.42
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 May 2026 01:25:43 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-67b6da5a618so6526661a12.2
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 01:25:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+DSzL5kqY/7s9dqvfu8q9n5/B3xX2H+xEaWoE5649bucKlByFtzNQ9TiZQqFqIwx9sCHAhH0o=@vger.kernel.org
-X-Received: by 2002:a17:907:d87:b0:bc1:a5cd:9a67 with SMTP id
- a640c23a62f3a-bc1a5cdb3efmr195866666b.34.1777883140796; Mon, 04 May 2026
- 01:25:40 -0700 (PDT)
+	s=arc-20240116; t=1777883534; c=relaxed/simple;
+	bh=P8q38H689QZ/MTjPVbyFqrevV/rmryyCS9uEb2q1C+k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QW6wRoP3YVmXvk8Oumqq+GRLRGuBq3WO+KUqNefg92dJr4lJvt+s5GCghnENZhsRw8bmA6iCMrfzV2PQMOs14XDixN1Gi6++9w8braMM4JF/LXBma3ZvQX7c+Lo2Gd2peK+PpYIm/IXHltXHnNIoF/hX+7QVc5C5/mqOTZ5evPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccN/nXfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B98C2BCB8;
+	Mon,  4 May 2026 08:32:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777883534;
+	bh=P8q38H689QZ/MTjPVbyFqrevV/rmryyCS9uEb2q1C+k=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ccN/nXfW8+rOdnWJQhFASSXAlTW/4sAo4ykL+7tqb1ROo8XMmFALQZdsWDEFTHkn4
+	 JklIvtFymER4GQFqBm3lcHwFUcbrGKKcpcFWCo2jepibrlZGgIOBAfLL0D2M8vLIWe
+	 ndGa236pef/2riE98j13gFX31VreOaXziOAojrVs=
+Subject: FAILED: patch "[PATCH] ARM: 9472/1: fix race condition on PG_dcache_clean in" failed to apply to 6.12-stable tree
+To: brian.ruley@gehealthcare.com,rmk+kernel@armlinux.org.uk,stable@vger.kernel.org,will@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 04 May 2026 10:32:11 +0200
+Message-ID: <2026050411-clamp-remold-c574@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260501-smatch-7-1-v2-0-a2fcfb2531ac@chromium.org>
- <20260501-smatch-7-1-v2-5-a2fcfb2531ac@chromium.org> <afhXQOcJn11-UGCq@kekkonen.localdomain>
-In-Reply-To: <afhXQOcJn11-UGCq@kekkonen.localdomain>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 4 May 2026 10:25:27 +0200
-X-Gmail-Original-Message-ID: <CANiDSCtmjKu2rcDCyCtZrnv4obvY5T49NUwDS7OTRRpn6NUEdQ@mail.gmail.com>
-X-Gm-Features: AVHnY4ILmFd1TWdg3HI0oqY9t2ArMATGJOzQAzGapqrP0BhJPZ6QfuhOAXwot78
-Message-ID: <CANiDSCtmjKu2rcDCyCtZrnv4obvY5T49NUwDS7OTRRpn6NUEdQ@mail.gmail.com>
-Subject: Re: [PATCH v2 5/6] media: staging: ipu3-imgu: Add range check for imgu_css_cfg_acc_stripe
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans Verkuil <hverkuil@kernel.org>, 
-	Nas Chung <nas.chung@chipsnmedia.com>, Jackson Lee <jackson.lee@chipsnmedia.com>, 
-	Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Keke Li <keke.li@amlogic.com>, 
-	Yong Zhi <yong.zhi@intel.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, 
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: EBEC14BA399
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BF9EA4BA425
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242871-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242872-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.994];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,samsung];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,intel.com:email,chromium.org:dkim,chromium.org:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gehealthcare.com:email,armlinux.org.uk:email]
 
-Hi Sakari
 
-Thanks for the review
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Mon, 4 May 2026 at 10:22, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
->
-> Hi Ricardo,
->
-> On Fri, May 01, 2026 at 11:32:50AM +0000, Ricardo Ribalda wrote:
-> > If the driver's stripe information is invalid it can result in an integer
-> > overflow. Add a range check with a WARN_ON to expose this kind of
-> > error.
->
-> This would be an underflow, not overflow. There's also no longer a
-> WARN_ON() here.
->
-> I presume this might not be the only such issue in the driver.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I have updated the commit message in my local tree. Will repost in a
-couple of days to allow more comments.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 75f9a484e817adea211c73f89ed938a2b2f90953
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050411-clamp-remold-c574@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Regards!
-
->
-> >
-> > This patch fixes the following smatch error:
-> > drivers/staging/media/ipu3/ipu3-css-params.c:1792 imgu_css_cfg_acc_stripe() warn: 'acc->stripe.bds_out_stripes[0]->width - 2 * f' 4294967168 can't fit into 65535 'acc->stripe.bds_out_stripes[1]->offset'
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: e11110a5b744 ("media: staging/intel-ipu3: css: Compute and program ccs")
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> >  drivers/staging/media/ipu3/ipu3-css-params.c | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/staging/media/ipu3/ipu3-css-params.c b/drivers/staging/media/ipu3/ipu3-css-params.c
-> > index 2c48d57a3180..92cce31e35c5 100644
-> > --- a/drivers/staging/media/ipu3/ipu3-css-params.c
-> > +++ b/drivers/staging/media/ipu3/ipu3-css-params.c
-> > @@ -1770,6 +1770,8 @@ static int imgu_css_cfg_acc_stripe(struct imgu_css *css, unsigned int pipe,
-> >               acc->stripe.bds_out_stripes[0].width =
-> >                       ALIGN(css_pipe->rect[IPU3_CSS_RECT_BDS].width, f);
-> >       } else {
-> > +             u32 offset;
-> > +
-> >               /* Image processing is divided into two stripes */
-> >               acc->stripe.bds_out_stripes[0].width =
-> >                       acc->stripe.bds_out_stripes[1].width =
-> > @@ -1788,8 +1790,10 @@ static int imgu_css_cfg_acc_stripe(struct imgu_css *css, unsigned int pipe,
-> >                       acc->stripe.bds_out_stripes[1].width += f;
-> >               }
-> >               /* Overlap between stripes is IPU3_UAPI_ISP_VEC_ELEMS * 4 */
-> > -             acc->stripe.bds_out_stripes[1].offset =
-> > -                     acc->stripe.bds_out_stripes[0].width - 2 * f;
-> > +             offset = acc->stripe.bds_out_stripes[0].width - 2 * f;
-> > +             if (offset > 65535)
-> > +                     return -EINVAL;
-> > +             acc->stripe.bds_out_stripes[1].offset = offset;
-> >       }
-> >
-> >       acc->stripe.effective_stripes[0].height =
-> >
->
-> --
-> Regards,
->
-> Sakari Ailus
+Possible dependencies:
 
 
 
--- 
-Ricardo Ribalda
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 75f9a484e817adea211c73f89ed938a2b2f90953 Mon Sep 17 00:00:00 2001
+From: Brian Ruley <brian.ruley@gehealthcare.com>
+Date: Wed, 15 Apr 2026 18:12:48 +0100
+Subject: [PATCH] ARM: 9472/1: fix race condition on PG_dcache_clean in
+ __sync_icache_dcache()
+
+This bug was already discovered and fixed for arm64 in
+commit 588a513d3425 ("arm64: Fix race condition on PG_dcache_clean in
+__sync_icache_dcache()").
+
+Verified with added instrumentation to track dcache flushes in a ring
+buffer, as shown by the (distilled) output:
+
+  kernel: SIGILL at b6b80ac0 cpu 1 pid 32663 linux_pte=8eff659f
+          hw_pte=8eff6e7e young=1 exec=1
+  kernel: dcache flush START   cpu0 pfn=8eff6 ts=48629557020154
+  kernel: dcache flush SKIPPED cpu1 pfn=8eff6 ts=48629557020154
+  kernel: dcache flush FINISH  cpu0 pfn=8eff6 ts=48629557036154
+  audisp-syslog: comm="journalctl" exe="/usr/bin/journalctl" sig=4 [...]
+
+Discussions in the mailing list mentioned that arch/arm is also affected
+but the fix was never applied to it [1][2]. Apply the change now, since
+the race condition can cause sporadic SIGILL's and SEGV's especially
+while under high memory pressure.
+
+Link: https://lore.kernel.org/all/adzMOdySgMIePcue@willie-the-truck [1]
+Link: https://lore.kernel.org/all/20210514095001.13236-1-catalin.marinas@arm.com [2]
+Signed-off-by: Brian Ruley <brian.ruley@gehealthcare.com>
+Reviewed-by: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 6012191aa9c6 ("ARM: 6380/1: Introduce __sync_icache_dcache() for VIPT caches")
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+
+diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
+index 19470d938b23..4d7ef5cc36b6 100644
+--- a/arch/arm/mm/flush.c
++++ b/arch/arm/mm/flush.c
+@@ -304,8 +304,10 @@ void __sync_icache_dcache(pte_t pteval)
+ 	else
+ 		mapping = NULL;
+ 
+-	if (!test_and_set_bit(PG_dcache_clean, &folio->flags.f))
++	if (!test_bit(PG_dcache_clean, &folio->flags.f)) {
+ 		__flush_dcache_folio(mapping, folio);
++		set_bit(PG_dcache_clean, &folio->flags.f);
++	}
+ 
+ 	if (pte_exec(pteval))
+ 		__flush_icache_all();
+
 
