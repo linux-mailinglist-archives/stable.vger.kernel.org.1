@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDwkBuWs+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:49 +0200
+	id AAjsEAaq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0F64BF7B5
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF474BEE7E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B57BF3052D28
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B604C311FF1B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EDC3DE428;
-	Mon,  4 May 2026 14:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4763DE44A;
+	Mon,  4 May 2026 14:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn9nCW+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqU6sCLu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C192D1A6827;
-	Mon,  4 May 2026 14:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1361C3DE43E;
+	Mon,  4 May 2026 14:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904123; cv=none; b=Oa4so0lbPMckc4OQyFoODArYLsTEhbOJLFoDGXCUztYSyPZSO2gQAhfNWiG+9GE6NjbmpzNL/NM5QRSRROLV+XNPTOZ0RBjR/iccQKE1GGz0STgRz4EeFdYwKXxs3eHIQsI3JDF/RpnHMAqSHeK75YNtBGCo2RvRepn6eIDLnQU=
+	t=1777903555; cv=none; b=ZKgjBtepoCR4VERue8l51iShtQWrd2YOxI+QBYCN4pzj57oBk1kdfhjdov3y+nuRY9ADC5aBdos9kZNHph8eqj1YVn6gYTw8gZtkaZD2hIRc+sd5++Ef9Yuu8lPPCKB5q9xgT74GShId7OqrgyOi1yfTvDDarVcedZ3nOVxQo7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904123; c=relaxed/simple;
-	bh=gu4r6XNoXtcSDPxAcdunJM88jQA+0qF6O1MZyImUsRM=;
+	s=arc-20240116; t=1777903555; c=relaxed/simple;
+	bh=dRRuxpt5drsB8wG7QUiABypLzKm8XeHtTVDkez4f3wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eEKxw7idH3FAJ9FpdTt+84EpFbj3zo3jDuW30MWoP6Z4E9Rr9y7/lyx8Ugeio2xUB1yM7JEMUpzKvVfHGt3M5cazzydB4FvIFmipGQtcBg16BATngdd2xigsn4APAQVMJg1NMQe2GjO4y8httojh0ST3ogr2WyEbhxzUR/zzijs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn9nCW+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5737FC2BCB8;
-	Mon,  4 May 2026 14:15:23 +0000 (UTC)
+	 MIME-Version; b=ntOPnQgCWddmqoZGc5Qu6UuigcgJb+oHtYHbHN8njBmwRFd/3XVDU3OTePCYR0NkyFqnqi3taMMHKc4Y85UQ1rIFnaWB0T4t6SXUKb9L45ACTez+3faNwW0E4fh9qM6dNS9F5Gp8ydn09B6PbeH8RQQZ81M/z+z064WGmYEb568=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqU6sCLu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F363C2BCF4;
+	Mon,  4 May 2026 14:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904123;
-	bh=gu4r6XNoXtcSDPxAcdunJM88jQA+0qF6O1MZyImUsRM=;
+	s=korg; t=1777903554;
+	bh=dRRuxpt5drsB8wG7QUiABypLzKm8XeHtTVDkez4f3wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn9nCW+eKIeJ/H14+EGomwAhlaf2JrdmmBGWTZcd0vrQOin5vGUO2yiVVGx5WqYU0
-	 cXz88MUdJwBqMDbybpWoJhSRoomm5M6J2rYeNVPCWWuwj6t8Q64GrH/1WTnoarx3Aa
-	 Uol2Iem8Yjpg7YLnbo4ndcke11e/mfC7FLNTGvgg=
+	b=gqU6sCLuz0RycZnygpkotdO1Dr8nI1vcK+w0MLAHc+6pXOZ/5cy8Qy7pVqXmDP3CN
+	 TjTsnLt7JOyBWr+rnevuNBDgWbp5mq+A/hlJZcgIegG3lsKTyVioKv5glZIvG7D8TD
+	 /wulDM9dHLU6Uiag0K4XZTqId4HYuxJeChqHHzUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 191/275] KVM: nSVM: Add missing consistency check for nCR3 validity
-Date: Mon,  4 May 2026 15:52:11 +0200
-Message-ID: <20260504135150.173807606@linuxfoundation.org>
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Yi Cong <yicong@kylinos.cn>
+Subject: [PATCH 7.0 247/307] wifi: rtl8xxxu: fix potential use of uninitialized value
+Date: Mon,  4 May 2026 15:52:12 +0200
+Message-ID: <20260504135152.120449298@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E0F64BF7B5
+X-Rspamd-Queue-Id: 7EF474BEE7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243531-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243309-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[g_pat.pa:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,realtek.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Yi Cong <yicong@kylinos.cn>
 
-commit b71138fcc362c67ebe66747bb22cb4e6b4d6a651 upstream.
+commit f8a2fc809bfeb49130709b31a4d357a049f28547 upstream.
 
->From the APM Volume #2, 15.25.4 (24593—Rev. 3.42—March 2024):
+The local variables 'mcs' and 'nss' in rtl8xxxu_update_ra_report() are
+passed to rtl8xxxu_desc_to_mcsrate() as output parameters. If the helper
+function encounters an unhandled rate index, it may return without setting
+these values, leading to the use of uninitialized stack data.
 
-  When VMRUN is executed with nested paging enabled (NP_ENABLE = 1), the
-  following conditions are considered illegal state combinations, in
-  addition to those mentioned in “Canonicalization and Consistency Checks”:
-      • Any MBZ bit of nCR3 is set.
-      • Any G_PAT.PA field has an unsupported type encoding or any
-        reserved field in G_PAT has a nonzero value.
+Remove the helper rtl8xxxu_desc_to_mcsrate() and inline the logic into
+rtl8xxxu_update_ra_report(). This fixes the use of uninitialized 'mcs'
+and 'nss' variables for legacy rates.
 
-Add the consistency check for nCR3 being a legal GPA with no MBZ bits
-set.  Note, the G_PAT.PA check is being handled separately[*].
+The new implementation explicitly handles:
+- Legacy rates: Set bitrate only.
+- HT rates (MCS0-15): Set MCS flags, index, and NSS (1 or 2) directly.
+- Invalid rates: Return early.
 
-Link: https://lore.kernel.org/kvm/20260205214326.1029278-3-jmattson@google.com [*]
-Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
+Fixes: 7de16123d9e2 ("wifi: rtl8xxxu: Introduce rtl8xxxu_update_ra_report")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-16-yosry@kernel.org
-[sean: capture everything in CC(), massage changelog formatting]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Yi Cong <yicong@kylinos.cn>
+Link: https://lore.kernel.org/all/96e31963da0c42dcb52ce44f818963d7@realtek.com/
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260306071627.56501-1-cong.yi@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c |   28 +++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -335,6 +335,10 @@ static bool __nested_vmcb_check_controls
- 	if (CC(control->asid == 0))
- 		return false;
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -4697,20 +4697,6 @@ static const struct ieee80211_rate rtl8x
+ 	{.bitrate = 540, .hw_value = 0x0b,},
+ };
  
-+	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) &&
-+	       !kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
-+		return false;
-+
- 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
- 					   MSRPM_SIZE)))
- 		return false;
+-static void rtl8xxxu_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
+-{
+-	if (rate <= DESC_RATE_54M)
+-		return;
+-
+-	if (rate >= DESC_RATE_MCS0 && rate <= DESC_RATE_MCS15) {
+-		if (rate < DESC_RATE_MCS8)
+-			*nss = 1;
+-		else
+-			*nss = 2;
+-		*mcs = rate - DESC_RATE_MCS0;
+-	}
+-}
+-
+ static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
+ {
+ 	struct ieee80211_hw *hw = priv->hw;
+@@ -4820,23 +4806,25 @@ static void rtl8xxxu_set_aifs(struct rtl
+ void rtl8xxxu_update_ra_report(struct rtl8xxxu_ra_report *rarpt,
+ 			       u8 rate, u8 sgi, u8 bw)
+ {
+-	u8 mcs, nss;
+-
+ 	rarpt->txrate.flags = 0;
+ 
+ 	if (rate <= DESC_RATE_54M) {
+ 		rarpt->txrate.legacy = rtl8xxxu_legacy_ratetable[rate].bitrate;
+-	} else {
+-		rtl8xxxu_desc_to_mcsrate(rate, &mcs, &nss);
++	} else if (rate >= DESC_RATE_MCS0 && rate <= DESC_RATE_MCS15) {
+ 		rarpt->txrate.flags |= RATE_INFO_FLAGS_MCS;
++		if (rate < DESC_RATE_MCS8)
++			rarpt->txrate.nss = 1;
++		else
++			rarpt->txrate.nss = 2;
+ 
+-		rarpt->txrate.mcs = mcs;
+-		rarpt->txrate.nss = nss;
++		rarpt->txrate.mcs = rate - DESC_RATE_MCS0;
+ 
+ 		if (sgi)
+ 			rarpt->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
+ 
+ 		rarpt->txrate.bw = bw;
++	} else {
++		return;
+ 	}
+ 
+ 	rarpt->bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
 
 
 
