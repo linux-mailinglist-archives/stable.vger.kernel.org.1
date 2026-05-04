@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-243144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCdNKJmm+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:57 +0200
+	id kEVuNFus+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6464BE539
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5192B4BF589
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 945F63022BB9
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF3DC304EA0D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B23F3DD53E;
-	Mon,  4 May 2026 13:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE603D5667;
+	Mon,  4 May 2026 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMYhZTr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXJz189i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37D3DDDD7;
-	Mon,  4 May 2026 13:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1673AA4F8;
+	Mon,  4 May 2026 14:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903131; cv=none; b=GRmv8jCc2+LbKqqzj1CDmRs3l8Ktu7hAKNmlQGpUoef1AXCX7TT+5ojcBs6eEKZE0UGsj+JdPkBjKserbGz3uD2/lD117GBIxS3i3YnkH7UM4kbPus0lHV/8PJyxM+lK087cKAwhPTcHZqPmUFjVhcPd5aVpmfPyMizfJTLWSlU=
+	t=1777903784; cv=none; b=nuo+EH5+d35DGmkIO3UtXJIEhNgFQlx1ALNdUMD51QpE3ozswUbvRDSPziQQDKKQGm20oo8LZ0HEwhMvg6fHBGPiJfFzfUpU/QfC1w73QnsDXost+6msQ3Tk+tl/iaclDZDjkEo+EDFAU0d8yvpylHf+dhalRCNtRhDCSkSjYMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903131; c=relaxed/simple;
-	bh=1jraNgiHsMlH5L0ot1p3sQgwVJnC4GoEgnKdMcLE06M=;
+	s=arc-20240116; t=1777903784; c=relaxed/simple;
+	bh=04JED3shfEKOGXZ2D7mmo6KsP7RNp56OsNASUpnS0gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=duJUCCs2z0EvqtZy+QmYnrC6NJG7sIbcTE0MpRPGFp1vTad+GQT6xPP5ZC6OJeL81fe0qgJJOBbpRi1VWnFnnN037hU6z/Z1ziB41vAIbE70qEDHa8jiJPjPyGZyBes/MnHM0X3eMj3BYu7930L60/kn7yyfkXW/8/cTXrmbwYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMYhZTr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B6BC2BCB8;
-	Mon,  4 May 2026 13:58:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZsStbgjzK6Ft09/2MZtAaFQ54HpW5Vvwih9XPsh+OF8zyCboyaDDSSu90cZpuRT/pgz0gRaXb60dc2mbihd9RZJH+5oAxaXmspDpnrMBbQF3hrOMjaMdtrdc7FE06SQn/VdGqLAVFw4ocYmRu89Xx1N+Xo0/CkQMqh4hzOFSrsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXJz189i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBB6C2BCB8;
+	Mon,  4 May 2026 14:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903130;
-	bh=1jraNgiHsMlH5L0ot1p3sQgwVJnC4GoEgnKdMcLE06M=;
+	s=korg; t=1777903783;
+	bh=04JED3shfEKOGXZ2D7mmo6KsP7RNp56OsNASUpnS0gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMYhZTr/FRCUUHwq/SiShukdM+CdW33nIUxS1vTa8B4OiGzLIWFiXwhpBpFlVo1U0
-	 +7dXQT2GeOAgcKsu29tC862D2hg4vmu2jY8fWuEA58bjeVGt4sYfZVPmC4n8PG6pwi
-	 kZDr387vzYjCQgYGnzslTe5dzJ3aKX7l1WFF7rzQ=
+	b=iXJz189ifTOo35zJCqbaO7OAZ+ZwqJdmebP+i1CRNF3HMKxJ7fVIWdqCLRdfYy9j2
+	 w8vtTPiIacKT9WGTDGzPM6QJIDG+rP+NdT2Wa36XNpcs9vT31GiCZH1FLNSlNLjmiK
+	 lB0Lm0WJe21LOCIIZ0dbZPLN3Dt4MC5fen3Xeg8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 7.0 116/307] module.lds.S: Fix modules on 32-bit parisc architecture
+	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 061/275] ALSA: aoa: i2sbus: clear stale prepared state
 Date: Mon,  4 May 2026 15:50:01 +0200
-Message-ID: <20260504135147.169772424@linuxfoundation.org>
+Message-ID: <20260504135145.201503728@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +63,199 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B6464BE539
+X-Rspamd-Queue-Id: 5192B4BF589
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,suse.com,gmx.de];
-	TAGGED_FROM(0.00)[bounces-243144-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243399-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 1221365f55281349da4f4ba41c05b57cd15f5c28 upstream.
+commit 5ed060d5491597490fb53ec69da3edc4b1e8c165 upstream.
 
-On the 32-bit parisc architecture, we always used the
--ffunction-sections compiler option to tell the compiler to put the
-functions into seperate text sections. This is necessary, otherwise
-"big" kernel modules like ext4 or ipv6 fail to load because some
-branches won't be able to reach their stubs.
+The i2sbus PCM code uses pi->active to constrain the sibling stream to
+an already prepared duplex format and rate in i2sbus_pcm_open().
 
-Commit 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related
-macros") broke this for parisc because all text sections will get
-unconditionally merged now.
+That state is set from i2sbus_pcm_prepare(), but the current code only
+clears it on close. As a result, the sibling stream can inherit stale
+constraints after the prepared state has been torn down.
 
-Introduce the ARCH_WANTS_MODULES_TEXT_SECTIONS config option which
-avoids the text section merge for modules, and fix this issue by
-enabling this option by default for 32-bit parisc.
+Clear pi->active when hw_params() or hw_free() tears down the prepared
+state, and set it again only after prepare succeeds.
 
-Fixes: 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related macros")
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: stable@vger.kernel.org # v6.19+
-Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Replace the stale FIXME in the duplex constraint comment with a description
+of the current driver behavior: i2sbus still programs a single shared
+transport configuration for both directions, so mixed formats are not
+supported in duplex mode.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260331-aoa-i2sbus-clear-stale-active-v2-1-3764ae2889a1@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/Kconfig         |    7 +++++++
- arch/parisc/Kconfig  |    1 +
- scripts/module.lds.S |    2 ++
- 3 files changed, 10 insertions(+)
+ sound/aoa/soundbus/i2sbus/pcm.c |   55 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 44 insertions(+), 11 deletions(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1128,6 +1128,13 @@ config ARCH_WANTS_MODULES_DATA_IN_VMALLO
- 	  For architectures like powerpc/32 which have constraints on module
- 	  allocation and need to allocate module data outside of module area.
- 
-+config ARCH_WANTS_MODULES_TEXT_SECTIONS
-+	bool
-+	help
-+	  For architectures like 32-bit parisc which require that functions in
-+	  modules have to keep code in own text sections (-ffunction-sections)
-+	  and to avoid merging all text into one big text section,
-+
- config ARCH_WANTS_EXECMEM_LATE
- 	bool
- 	help
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -8,6 +8,7 @@ config PARISC
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select ARCH_WANT_FRAME_POINTERS
-+	select ARCH_WANTS_MODULES_TEXT_SECTIONS if !64BIT
- 	select ARCH_HAS_CPU_CACHE_ALIASING
- 	select ARCH_HAS_DMA_ALLOC if PA11
- 	select ARCH_HAS_DMA_OPS
---- a/scripts/module.lds.S
-+++ b/scripts/module.lds.S
-@@ -41,9 +41,11 @@ SECTIONS {
- 	__kcfi_traps		0 : { KEEP(*(.kcfi_traps)) }
+--- a/sound/aoa/soundbus/i2sbus/pcm.c
++++ b/sound/aoa/soundbus/i2sbus/pcm.c
+@@ -165,17 +165,16 @@ static int i2sbus_pcm_open(struct i2sbus
+ 	 * currently in use (if any). */
+ 	hw->rate_min = 5512;
+ 	hw->rate_max = 192000;
+-	/* if the other stream is active, then we can only
+-	 * support what it is currently using.
+-	 * FIXME: I lied. This comment is wrong. We can support
+-	 * anything that works with the same serial format, ie.
+-	 * when recording 24 bit sound we can well play 16 bit
+-	 * sound at the same time iff using the same transfer mode.
++	/* If the other stream is already prepared, keep this stream
++	 * on the same duplex format and rate.
++	 *
++	 * i2sbus_pcm_prepare() still programs one shared transport
++	 * configuration for both directions, so mixed duplex formats
++	 * are not supported here.
+ 	 */
+ 	if (other->active) {
+-		/* FIXME: is this guaranteed by the alsa api? */
+ 		hw->formats &= pcm_format_to_bits(i2sdev->format);
+-		/* see above, restrict rates to the one we already have */
++		/* Restrict rates to the one already in use. */
+ 		hw->rate_min = i2sdev->rate;
+ 		hw->rate_max = i2sdev->rate;
+ 	}
+@@ -283,6 +282,23 @@ void i2sbus_wait_for_stop_both(struct i2
+ }
  #endif
  
-+#ifndef CONFIG_ARCH_WANTS_MODULES_TEXT_SECTIONS
- 	.text			0 : {
- 		*(.text .text.[0-9a-zA-Z_]*)
- 	}
-+#endif
++static void i2sbus_pcm_clear_active(struct i2sbus_dev *i2sdev, int in)
++{
++	struct pcm_info *pi;
++
++	guard(mutex)(&i2sdev->lock);
++
++	get_pcm_info(i2sdev, in, &pi, NULL);
++	pi->active = 0;
++}
++
++static inline int i2sbus_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params, int in)
++{
++	i2sbus_pcm_clear_active(snd_pcm_substream_chip(substream), in);
++	return 0;
++}
++
+ static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
+ {
+ 	struct i2sbus_dev *i2sdev = snd_pcm_substream_chip(substream);
+@@ -291,14 +307,27 @@ static inline int i2sbus_hw_free(struct
+ 	get_pcm_info(i2sdev, in, &pi, NULL);
+ 	if (pi->dbdma_ring.stopping)
+ 		i2sbus_wait_for_stop(i2sdev, pi);
++	i2sbus_pcm_clear_active(i2sdev, in);
+ 	return 0;
+ }
  
- 	.bss			0 : {
- 		*(.bss .bss.[0-9a-zA-Z_]*)
++static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream,
++				     struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 0);
++}
++
+ static int i2sbus_playback_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 0);
+ }
+ 
++static int i2sbus_record_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 1);
++}
++
+ static int i2sbus_record_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 1);
+@@ -335,7 +364,6 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		return -EINVAL;
+ 
+ 	runtime = pi->substream->runtime;
+-	pi->active = 1;
+ 	if (other->active &&
+ 	    ((i2sdev->format != runtime->format)
+ 	     || (i2sdev->rate != runtime->rate)))
+@@ -450,9 +478,11 @@ static int i2sbus_pcm_prepare(struct i2s
+ 
+ 	/* early exit if already programmed correctly */
+ 	/* not locking these is fine since we touch them only in this function */
+-	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
+-	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
++	if (in_le32(&i2sdev->intfregs->serial_format) == sfr &&
++	    in_le32(&i2sdev->intfregs->data_word_sizes) == dws) {
++		pi->active = 1;
+ 		return 0;
++	}
+ 
+ 	/* let's notify the codecs about clocks going away.
+ 	 * For now we only do mastering on the i2s cell... */
+@@ -490,6 +520,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		if (cii->codec->switch_clock)
+ 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
+ 
++	pi->active = 1;
+ 	return 0;
+ }
+ 
+@@ -734,6 +765,7 @@ static snd_pcm_uframes_t i2sbus_playback
+ static const struct snd_pcm_ops i2sbus_playback_ops = {
+ 	.open =		i2sbus_playback_open,
+ 	.close =	i2sbus_playback_close,
++	.hw_params =	i2sbus_playback_hw_params,
+ 	.hw_free =	i2sbus_playback_hw_free,
+ 	.prepare =	i2sbus_playback_prepare,
+ 	.trigger =	i2sbus_playback_trigger,
+@@ -802,6 +834,7 @@ static snd_pcm_uframes_t i2sbus_record_p
+ static const struct snd_pcm_ops i2sbus_record_ops = {
+ 	.open =		i2sbus_record_open,
+ 	.close =	i2sbus_record_close,
++	.hw_params =	i2sbus_record_hw_params,
+ 	.hw_free =	i2sbus_record_hw_free,
+ 	.prepare =	i2sbus_record_prepare,
+ 	.trigger =	i2sbus_record_trigger,
 
 
 
