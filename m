@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-243307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOwNLPyp+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:24 +0200
+	id WE0NNLys+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F07E4BEE77
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6F64BF746
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBA0E303D2EC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34F573032FB3
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E23D3DEAFA;
-	Mon,  4 May 2026 14:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8F13D3334;
+	Mon,  4 May 2026 14:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxXXdOnd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2Gwa2aR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EF63DEAED;
-	Mon,  4 May 2026 14:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F276315785;
+	Mon,  4 May 2026 14:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903549; cv=none; b=tqAdzv8rAgLNgbPuIeFwPMIJyo0MUc8mh4578VHYF5NjwPoZjfpZQHGq2z95AooMM0Sj+QyqScjxxurhqUmDkrBLGdL9w3pZ8guzbj5VDkeH2SAeuypDeyDshMrbXUu+//0Sz3aKAqHAPV49cGDo3MSmjrlml5eAlWfoGjFtdvo=
+	t=1777904625; cv=none; b=on4DyM1/WOX0gyHySoeOSHM+JNIzJ1YXmPofXT3/B/RDW093tjZPlahG0EIXgvT6Nj0Crcom5eTv5EeOPe7LYLY4NtXJz1IUmn7mETiwmOptotfcZaOhNcRVKPRXRDKageY88R8tnWQIjkE7OH9eqkjFvs2VVtcAhBtObJtjbtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903549; c=relaxed/simple;
-	bh=VGaKw8sL1qQ0g9NqhRfrxoQDpJwVjvmzB7M5f20j2aI=;
+	s=arc-20240116; t=1777904625; c=relaxed/simple;
+	bh=J54Z9jk1cohSxctF2CIshdbUMRjlvY+RBrloeP9QoVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2NcWqYQZDgfo5Q6MutRjfgzrPoj+wxO9KRdJwoIlZn+MJvndid12TAFBRj51DtXHD8URTnNoFLcg6toGusAOqt3fk6ooYCD8gLWq6u581VVAzvDp6Y7NsXJSMj16iGyCiPCEg0hRBMev64UkkuOMPCYz/ZVkHpSb4Tvf6D/X48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxXXdOnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB40C2BCB8;
-	Mon,  4 May 2026 14:05:49 +0000 (UTC)
+	 MIME-Version; b=V+S35kuGj0q/VauwUwbHbDUm5APxxggnUggklGaANdrjImyI4FnW86TdqnjY/ZnT5UmMsW8Kki5mYg3by3pFV/hzoE1yU3MVPUC+irMIqmatlCLPQpHtiHspsgA9RSTE1Sw15IMiV+AzwekVKPeBnmmhM1m+z+ZBh2Z2XMunhtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2Gwa2aR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB31C2BCF6;
+	Mon,  4 May 2026 14:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903549;
-	bh=VGaKw8sL1qQ0g9NqhRfrxoQDpJwVjvmzB7M5f20j2aI=;
+	s=korg; t=1777904625;
+	bh=J54Z9jk1cohSxctF2CIshdbUMRjlvY+RBrloeP9QoVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VxXXdOndOmxleLsLqOYB0YJnDe9ftamzlztRlK7o45GwVr2B9DQv7KORrEZTIkFUT
-	 onv8gtay7ATwphhbW7lswpIdDp8q0re+vhm2DcL8eNd17xmP5PPELPvgTEAPhppE3S
-	 usJi1uN/zv8W+BcTENcuaa810fqIvwpXoPeCxeiY=
+	b=O2Gwa2aRWhWQRfVv7JDoJxgLKTdDs20pjM31Zc5AYx/HkCtoWu2eV337uwkTS0tY/
+	 cbqGyC2hdfuEkjZoBoRUlpdgbk6bJa6jjjJs2xphtg1yRV+OrW/eh35jRhrqTvLSCa
+	 vpOGBpw/FfOF/NZDi1TbI5fromsP6ZFtFlNNape8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gayatri Kammela <Gayatri.Kammela@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Subject: [PATCH 7.0 245/307] x86/cpu: Disable FRED when PTI is forced on
-Date: Mon,  4 May 2026 15:52:10 +0200
-Message-ID: <20260504135152.048133994@linuxfoundation.org>
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Justinien Bouron <jbouron@amazon.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.12 112/215] tpm: Use kfree_sensitive() to free auth session in tpm_dev_release()
+Date: Mon,  4 May 2026 15:52:11 +0200
+Message-ID: <20260504135134.240916720@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F07E4BEE77
+X-Rspamd-Queue-Id: 7A6F64BF746
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243307-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243728-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,alien8.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Gunnar Kudrjavets <gunnarku@amazon.com>
 
-commit 932d922285ef4d0d655a6f5def2779ae86ca0d73 upstream.
+commit c424d2664f08c77f08b4580b5f0cbaabf7c229b2 upstream.
 
-FRED and PTI were never intended to work together. No FRED hardware is
-vulnerable to Meltdown and all of it should have LASS anyway.
-Nevertheless, if you boot a system with pti=on and fred=on, the kernel
-tries to do what is asked of it and dies a horrible death on the first
-attempt to run userspace (since it never switches to the user page
-tables).
+tpm_dev_release() uses plain kfree() to free chip->auth, which contains
+sensitive cryptographic material including HMAC session keys, nonces,
+and passphrase data (struct tpm2_auth).
 
-Disable FRED when PTI is forced on, and print a warning about it.
+Every other code path that frees this structure uses kfree_sensitive()
+to zero the memory before releasing it: both tpm2_end_auth_session()
+and tpm_buf_check_hmac_response() do so. The tpm_dev_release() path
+is the only one that does not, leaving key material in freed slab
+memory until it is eventually overwritten.
 
-A quick brain dump about what a FRED+PTI implementation would look like
-is below. I'm not sure it would make any sense to do it, but never say
-never. All I know is that it's way too complicated to be worth it today.
+Use kfree_sensitive() for consistency with the rest of the driver and
+to ensure session keys are scrubbed during device teardown.
 
-<brain dump>
-The SWITCH_TO_USER/KERNEL_CR3 bits are simple to fix (or at least we
-have the assembly tools to do it already), as is sticking the FRED entry
-text in .entry.text (it's not in there today).
-
-The nasty part is the stacks. Today, the CPU pops into the kernel on
-MSR_IA32_FRED_RSP0 which is normal old kernel memory and not mapped to
-userspace. The hardware pushes gunk on to MSR_IA32_FRED_RSP0, which is
-currently the task stacks. MSR_IA32_FRED_RSP0 would need to point
-elsewhere, probably cpu_entry_stack(). Then, start playing games with
-stacks on entry/exit, including copying gunk to and from the task stack.
-
-While I'd *like* to have PTI everywhere, I'm not sure it's worth mucking
-up the FRED code with PTI kludges. If a user wants fast entry/exit, they
-use FRED. If you want PTI (and sekuritay), you certainly don't care
-about fast entry and FRED isn't going to help you *all* that much, so
-you can just stay with the IDT.
-
-Plus, FRED hardware should have LASS which gives you a similar security
-profile to PTI without the CR3 munging.
-</brain dump>
-
-Reported-by: Gayatri Kammela <Gayatri.Kammela@amd.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://patch.msgid.link/20260421163136.E7C6788A@davehans-spike.ostc.intel.com
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Reviewed-by: Justinien Bouron <jbouron@amazon.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pti.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/char/tpm/tpm-chip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -105,6 +105,11 @@ void __init pti_check_boottime_disable(v
- 		pr_debug("PTI enabled, disabling INVLPGB\n");
- 		setup_clear_cpu_cap(X86_FEATURE_INVLPGB);
- 	}
-+
-+	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
-+		pr_debug("PTI enabled, disabling FRED\n");
-+		setup_clear_cpu_cap(X86_FEATURE_FRED);
-+	}
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -283,7 +283,7 @@ static void tpm_dev_release(struct devic
+ 	kfree(chip->work_space.context_buf);
+ 	kfree(chip->work_space.session_buf);
+ #ifdef CONFIG_TCG_TPM2_HMAC
+-	kfree(chip->auth);
++	kfree_sensitive(chip->auth);
+ #endif
+ 	kfree(chip);
  }
- 
- static int __init pti_parse_cmdline(char *arg)
 
 
 
