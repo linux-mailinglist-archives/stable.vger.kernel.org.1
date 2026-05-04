@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH2/Aous+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:19 +0200
+	id wCOjHnGn+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3582C4BF661
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 172594BE73E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4F056300A5B8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A510B300A339
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D703DDDD6;
-	Mon,  4 May 2026 14:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799973D9029;
+	Mon,  4 May 2026 14:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpHO0Lnn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdYqx9JP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18A3377575;
-	Mon,  4 May 2026 14:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9013D3334;
+	Mon,  4 May 2026 14:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904041; cv=none; b=qa6FauMSWETlDQgHVMVdIxenO2+MlVkDgJ0vUsP4mG+x24vZbiDJZFJsi7ltO4N5DBP1CN+cSsz7jG6QZNhLVzoex6fDLWcSuzXXv4rTyqhw8wbje1neNVrsbMCV0DK0RB/GKkCTXkq5Bosps8bRnMvoJ2ZRld1zoVKACYOVEro=
+	t=1777903304; cv=none; b=qjDNrfAM+lLLJ59hf7sZ+Q+ENjV4llwl5Vy2Cp2Y13PIyvSVZu1rym+4lYA+QwNHajx/hnt34gib3YDb5i2z0gYt1wkFttj+LTx0BBbjILEBlVWyTCaPrDZF9iGBI+E0g46UT8G9VCwVxWnuBCR0tjoYNsS1GIJk6vXl04FZg6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904041; c=relaxed/simple;
-	bh=pVJq+r7wRkxVsMFaLh/3mEP8lckzcI079Sq33yYifh8=;
+	s=arc-20240116; t=1777903304; c=relaxed/simple;
+	bh=HguybM0XmGUQ2g4F5Wf0MLPfw387OJPOAdFepbU3/y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWUsfEPLoqdtCGIjUVxj1PJH78t91jUvGIM4bQaI98gBL8S14BJQYKHFgY1GgephK+NkjYFKlLInnDNwBGkl8493h1xZVn5v0kyrsHgrrlVGvMAuWdoWig4ewRGMM6GjVGRw11PaAF902vJ1xbkN+/WMvHFodTbrNnNMUK41EAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpHO0Lnn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7CBC2BCC4;
-	Mon,  4 May 2026 14:14:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kZ5YrZ4vCozSWbSiY1Mn4GtoFKGHF4A1EnPSv6A7gptNxaX5Tyw9AcmwYVbmqL6Hs+iUNGvD1BtezRPL8isaqskGInqGRJXxY2F98MZ2p2QhNZrWBah28Bztn0ZMAXCSTJ5Ojyaij0/iwrPiUu4o/0dTEu0ndyjgQomo31GPris=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdYqx9JP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70CBC2BCF4;
+	Mon,  4 May 2026 14:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904041;
-	bh=pVJq+r7wRkxVsMFaLh/3mEP8lckzcI079Sq33yYifh8=;
+	s=korg; t=1777903304;
+	bh=HguybM0XmGUQ2g4F5Wf0MLPfw387OJPOAdFepbU3/y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpHO0LnnzguPMsjx4rNrmpuTrdo2UDZEeDLIfUKKmrX1wzeHR2P4myP8qda1BpnJX
-	 cBVb28y1f2T2TzlpMix68e+f3BOr5Xdhs4JOyaHnS3K/hLkJJlZjcsY6xPWSrLyAUw
-	 cprU7vDyuhyzu70+/xIlGGcjekOB2KJsDdCDP5pg=
+	b=OdYqx9JP+9MWIs/Ub07LOQYy77XzddiQN4JMEjTeLOdrf57Y8+3TlPf5VynLgbst3
+	 /iihaiSREtDjC45VQVCAq1LDOAYfZDo2PM/9QaY72ZhtkWnq8EaR3p287A5ILS58Qt
+	 nqr5jznob7AZpvuPEp01GzFr0PA+jaG+5SWS+LFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.18 128/275] drm/arcpgu: fix device node leak
+	"Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 7.0 183/307] pwm: imx-tpm: Count the number of enabled channels in probe
 Date: Mon,  4 May 2026 15:51:08 +0200
-Message-ID: <20260504135147.658101983@linuxfoundation.org>
+Message-ID: <20260504135149.758649318@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3582C4BF661
+X-Rspamd-Queue-Id: 172594BE73E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243499-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243212-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,bootlin.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,i.mx:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
 
-commit ad3ac32a3893a2bbcad545efc005a8e4e7ecf10c upstream.
+commit 3962c24f2d14e8a7f8a23f56b7ce320523947342 upstream.
 
-This function gets a device_node reference via
-of_graph_get_remote_port_parent() and stores it in encoder_node, but never
-puts that reference. Add it.
+On a soft reset TPM PWM IP may preserve its internal state from previous
+runtime, therefore on a subsequent OS boot and driver probe
+"enable_count" value and TPM PWM IP internal channels "enabled" states
+may get unaligned. In consequence on a suspend/resume cycle the call "if
+(--tpm->enable_count == 0)" may lead to "enable_count" overflow the
+system being blocked from entering suspend due to:
 
-There used to be a of_node_put(encoder_node) but it has been removed by
-mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
-arcpgu_drm_hdmi_init").
+   if (tpm->enable_count > 0)
+       return -EBUSY;
 
-Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
+Fix the problem by counting the enabled channels in probe function.
+
+Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Link: https://patch.msgid.link/20260311123309.348904-1-viorel.suman@oss.nxp.com
 Cc: stable@vger.kernel.org
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://patch.msgid.link/20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/arcpgu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-imx-tpm.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tiny/arcpgu.c
-+++ b/drivers/gpu/drm/tiny/arcpgu.c
-@@ -250,7 +250,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
- static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
- {
- 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
--	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
-+	struct device_node *encoder_node __free(device_node) = NULL;
-+	struct device_node *endpoint_node = NULL;
- 	struct drm_connector *connector = NULL;
- 	struct drm_device *drm = &arcpgu->drm;
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -352,7 +352,7 @@ static int pwm_imx_tpm_probe(struct plat
+ 	struct clk *clk;
+ 	void __iomem *base;
  	int ret;
+-	unsigned int npwm;
++	unsigned int i, npwm;
+ 	u32 val;
+ 
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+@@ -382,6 +382,13 @@ static int pwm_imx_tpm_probe(struct plat
+ 
+ 	mutex_init(&tpm->lock);
+ 
++	/* count the enabled channels */
++	for (i = 0; i < npwm; ++i) {
++		val = readl(base + PWM_IMX_TPM_CnSC(i));
++		if (FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val))
++			++tpm->enable_count;
++	}
++
+ 	ret = devm_pwmchip_add(&pdev->dev, chip);
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret, "failed to add PWM chip\n");
 
 
 
