@@ -1,75 +1,62 @@
-Return-Path: <stable+bounces-243075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AnsF6ml+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:56:57 +0200
+	id wKPmMoim+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2E94BE2A1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:56:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E614BE51D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E2DB300E2B6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8223B30316C6
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED1C3D6481;
-	Mon,  4 May 2026 13:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181C23DBD7F;
+	Mon,  4 May 2026 13:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGS0UcuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZ9BrUTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CAB3A63EC;
-	Mon,  4 May 2026 13:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0D13A63EC;
+	Mon,  4 May 2026 13:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902953; cv=none; b=M9Ci1sTue8lSF+pFtgCl6jEnDWyE/K+9LVWnVqZ1X053TypuzeKowdcg1WOsSYf3G3y970RIcxqOcDoA5CEY9nXfu0SyslZQHtBvk0CDMv/9+NuD346SJ9ZwfxZ0+cJX53aTlZRVqbLPquN5EfMO5PE9xNoYaFrek3nWULYmAIM=
+	t=1777902981; cv=none; b=kNFcUkxzjVckuBiuFbMGvKXqqLEH3PFrp+j0KdWUvB43DChkfNOOnKy8QT6QMmjPNyM59/xgRLVkf8fzRZ8/k/kjZkRQ9s8DQ3Jym6srt8m46KxSVpoXSDj0YpbJGzOJ+/OYXPdWHWbjCNWpobROwKkIlU6nsz+B/iAcCQwO8Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902953; c=relaxed/simple;
-	bh=h15FefVmHTszHNHAZI+xRAVvnDO+Bgk9GxHB6kccmIE=;
+	s=arc-20240116; t=1777902981; c=relaxed/simple;
+	bh=Jgq10qrupsWgctO8zsCEku7yFSyWmqc13YpdAXjqpTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2pHhFsaG1AlnMuWlGPdlGhXMp8Md5l91aFjoimhBCv6faV0ShmDzrXzMEtZoJvsc9Go/wdxUizAiOtJiM3ubf+gDIaLsFImPD1Iu1s9VtNkgzeJ8FqhbbMJtwfuiZCdrpcPNCB6wO4DJCXyzVx0QwvgSbbium7e0Gd5TmQlCvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGS0UcuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC119C2BCB8;
-	Mon,  4 May 2026 13:55:52 +0000 (UTC)
+	 MIME-Version; b=iS4R33h09LX+Cvt4CtGKb4pDl29SwQEYm/25HBbv9s44FwnURp21mxkyvnX5Fly8WUsaeH/5TsObn3hh+Yyi6kEYDZml2KCB3J6GpPelS2/WKot6iFf+gMsynLQfNNNRJu4gBTIOMBfWyPcP7abG6oznuJnWiYUT0CcI/klwYoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZ9BrUTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667F1C2BCB8;
+	Mon,  4 May 2026 13:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902953;
-	bh=h15FefVmHTszHNHAZI+xRAVvnDO+Bgk9GxHB6kccmIE=;
+	s=korg; t=1777902981;
+	bh=Jgq10qrupsWgctO8zsCEku7yFSyWmqc13YpdAXjqpTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGS0UcuAP5W+I/aa5mll+ddqBJj8uJjp2UjF7ItYocEW4/mfWcQh5lMQa7gXuR8ai
-	 tVUNnGHoLtdrECd8Pe1yHgj7FtMdUdb5VqZLCFx7W/ChhOeWNK3/g78fts5zrm8i7m
-	 ZFDizg/Qnq/N9vV7n4c0NMJ/iTCBI9RFE87yBAOM=
+	b=HZ9BrUTVMG0YTiTpaXokBOwI5eDFAwwyNRuH6TpAOze8E1M1+OSdmP02Z73a9IxjP
+	 MH2cz0H9Gmlx+Irw0DABdxK9YsJGyF1bMvOsEGwagRYnaO2E+zD/ndiqjohuGv7xoF
+	 0EwrV6OXbsB2WVi8tXKXPNUH8I8BQNL+s6LSrzEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Byungchul Park <byungchul@sk.com>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Nico Pache <npache@redhat.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Usama Arif <usama.arif@linux.dev>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 029/307] mm: fix deferred split queue races during migration
-Date: Mon,  4 May 2026 15:48:34 +0200
-Message-ID: <20260504135143.929287175@linuxfoundation.org>
+Subject: [PATCH 7.0 030/307] ocfs2: split transactions in dio completion to avoid credit exhaustion
+Date: Mon,  4 May 2026 15:48:35 +0200
+Message-ID: <20260504135143.965955019@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
 References: <20260504135142.814938198@linuxfoundation.org>
@@ -83,168 +70,217 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EC2E94BE2A1
+X-Rspamd-Queue-Id: 23E614BE51D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	TAGGED_FROM(0.00)[bounces-243075-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,nvidia.com,syzkaller.appspotmail.com,kernel.org,linux.alibaba.com,sk.com,gmail.com,arm.com,gourry.net,oracle.com,intel.com,redhat.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243086-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,suse.cz,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,a7067a757858ac8eb085];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Heming Zhao <heming.zhao@suse.com>
 
-commit 3bac01168982ec3e3bf87efdc1807c7933590a85 upstream.
+commit d647c5b2fbf81560818dacade360abc8c00a9665 upstream.
 
-migrate_folio_move() records the deferred split queue state from src and
-replays it on dst.  Replaying it after remove_migration_ptes(src, dst, 0)
-makes dst visible before it is requeued, so a concurrent rmap-removal path
-can mark dst partially mapped and trip the WARN in deferred_split_folio().
+During ocfs2 dio operations, JBD2 may report warnings via following
+call trace:
+ocfs2_dio_end_io_write
+ ocfs2_mark_extent_written
+  ocfs2_change_extent_flag
+   ocfs2_split_extent
+    ocfs2_try_to_merge_extent
+     ocfs2_extend_rotate_transaction
+      ocfs2_extend_trans
+       jbd2__journal_restart
+        start_this_handle
+         output: JBD2: kworker/6:2 wants too many credits credits:5450 rsv_credits:0 max:5449
 
-Move the requeue before remove_migration_ptes() so dst is back on the
-deferred split queue before it becomes visible again.
+To prevent exceeding the credits limit, modify ocfs2_dio_end_io_write() to
+handle extents in a batch of transaction.
 
-Because migration still holds dst locked at that point, teach
-deferred_split_scan() to requeue a folio when folio_trylock() fails.
-Otherwise a fully mapped underused folio can be dequeued by the shrinker
-and silently lost from split_queue.
+Additionally, relocate ocfs2_del_inode_from_orphan().  The orphan inode
+should only be removed from the orphan list after the extent tree update
+is complete.  This ensures that if a crash occurs in the middle of extent
+tree updates, we won't leave stale blocks beyond EOF.
 
-[ziy@nvidia.com: move the comment]
-  Link: https://lkml.kernel.org/r/FB71A764-0F10-4E5A-B4A0-BA4C7F138408@nvidia.com
-Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
-Link: https://lkml.kernel.org/r/20260401131032.13011-1-lance.yang@linux.dev
-Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: Usama Arif <usama.arif@linux.dev>
-Cc: <stable@vger.kernel.org>
+This patch also changes the logic for updating the inode size and removing
+orphan, making it similar to ext4_dio_write_end_io().  Both operations are
+performed only when everything looks good.
+
+Finally, thanks to Jans and Joseph for providing the bug fix prototype and
+suggestions.
+
+Link: https://lkml.kernel.org/r/20260402134328.27334-2-heming.zhao@suse.com
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Suggested-by: Jan Kara <jack@suse.cz>
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |   15 ++++++++++-----
- mm/migrate.c     |   18 +++++++++---------
- 2 files changed, 19 insertions(+), 14 deletions(-)
+ fs/ocfs2/aops.c |   74 ++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 45 insertions(+), 29 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4456,7 +4456,7 @@ retry:
- 				goto next;
- 		}
- 		if (!folio_trylock(folio))
--			goto next;
-+			goto requeue;
- 		if (!split_folio(folio)) {
- 			did_split = true;
- 			if (underused)
-@@ -4465,13 +4465,18 @@ retry:
- 		}
- 		folio_unlock(folio);
- next:
-+		/*
-+		 * If thp_underused() returns false, or if split_folio()
-+		 * succeeds, or if split_folio() fails in the case it was
-+		 * underused, then consider it used and don't add it back to
-+		 * split_queue.
-+		 */
- 		if (did_split || !folio_test_partially_mapped(folio))
- 			continue;
-+requeue:
- 		/*
--		 * Only add back to the queue if folio is partially mapped.
--		 * If thp_underused returns false, or if split_folio fails
--		 * in the case it was underused, then consider it used and
--		 * don't add it back to split_queue.
-+		 * Add back partially mapped folios, or underused folios that
-+		 * we could not lock this round.
- 		 */
- 		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
- 		if (list_empty(&folio->_deferred_list)) {
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1384,6 +1384,15 @@ static int migrate_folio_move(free_folio
- 		goto out;
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -37,6 +37,8 @@
+ #include "namei.h"
+ #include "sysfile.h"
  
- 	/*
-+	 * Requeue the destination folio on the deferred split queue if
-+	 * the source was on the queue.  The source is unqueued in
-+	 * __folio_migrate_mapping(), so we recorded the state from
-+	 * before move_to_new_folio().
-+	 */
-+	if (src_deferred_split)
-+		deferred_split_folio(dst, src_partially_mapped);
++#define OCFS2_DIO_MARK_EXTENT_BATCH 200
 +
-+	/*
- 	 * When successful, push dst to LRU immediately: so that if it
- 	 * turns out to be an mlocked page, remove_migration_ptes() will
- 	 * automatically build up the correct dst->mlock_count for it.
-@@ -1399,15 +1408,6 @@ static int migrate_folio_move(free_folio
- 	if (old_page_state & PAGE_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
+ static int ocfs2_symlink_get_block(struct inode *inode, sector_t iblock,
+ 				   struct buffer_head *bh_result, int create)
+ {
+@@ -2277,7 +2279,7 @@ static int ocfs2_dio_end_io_write(struct
+ 	struct ocfs2_alloc_context *meta_ac = NULL;
+ 	handle_t *handle = NULL;
+ 	loff_t end = offset + bytes;
+-	int ret = 0, credits = 0;
++	int ret = 0, credits = 0, batch = 0;
  
--	/*
--	 * Requeue the destination folio on the deferred split queue if
--	 * the source was on the queue.  The source is unqueued in
--	 * __folio_migrate_mapping(), so we recorded the state from
--	 * before move_to_new_folio().
--	 */
--	if (src_deferred_split)
--		deferred_split_folio(dst, src_partially_mapped);
+ 	ocfs2_init_dealloc_ctxt(&dealloc);
+ 
+@@ -2294,18 +2296,6 @@ static int ocfs2_dio_end_io_write(struct
+ 		goto out;
+ 	}
+ 
+-	/* Delete orphan before acquire i_rwsem. */
+-	if (dwc->dw_orphaned) {
+-		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
 -
- out_unlock_both:
- 	folio_unlock(dst);
- 	folio_set_owner_migrate_reason(dst, reason);
+-		end = end > i_size_read(inode) ? end : 0;
+-
+-		ret = ocfs2_del_inode_from_orphan(osb, inode, di_bh,
+-				!!end, end);
+-		if (ret < 0)
+-			mlog_errno(ret);
+-	}
+-
+ 	down_write(&oi->ip_alloc_sem);
+ 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 
+@@ -2326,24 +2316,25 @@ static int ocfs2_dio_end_io_write(struct
+ 
+ 	credits = ocfs2_calc_extend_credits(inode->i_sb, &di->id2.i_list);
+ 
+-	handle = ocfs2_start_trans(osb, credits);
+-	if (IS_ERR(handle)) {
+-		ret = PTR_ERR(handle);
+-		mlog_errno(ret);
+-		goto unlock;
+-	}
+-	ret = ocfs2_journal_access_di(handle, INODE_CACHE(inode), di_bh,
+-				      OCFS2_JOURNAL_ACCESS_WRITE);
+-	if (ret) {
+-		mlog_errno(ret);
+-		goto commit;
+-	}
+-
+ 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
++		if (!handle) {
++			handle = ocfs2_start_trans(osb, credits);
++			if (IS_ERR(handle)) {
++				ret = PTR_ERR(handle);
++				mlog_errno(ret);
++				goto unlock;
++			}
++			ret = ocfs2_journal_access_di(handle, INODE_CACHE(inode), di_bh,
++					OCFS2_JOURNAL_ACCESS_WRITE);
++			if (ret) {
++				mlog_errno(ret);
++				goto commit;
++			}
++		}
+ 		ret = ocfs2_assure_trans_credits(handle, credits);
+ 		if (ret < 0) {
+ 			mlog_errno(ret);
+-			break;
++			goto commit;
+ 		}
+ 		ret = ocfs2_mark_extent_written(inode, &et, handle,
+ 						ue->ue_cpos, 1,
+@@ -2351,19 +2342,44 @@ static int ocfs2_dio_end_io_write(struct
+ 						meta_ac, &dealloc);
+ 		if (ret < 0) {
+ 			mlog_errno(ret);
+-			break;
++			goto commit;
++		}
++
++		if (++batch == OCFS2_DIO_MARK_EXTENT_BATCH) {
++			ocfs2_commit_trans(osb, handle);
++			handle = NULL;
++			batch = 0;
+ 		}
+ 	}
+ 
+ 	if (end > i_size_read(inode)) {
++		if (!handle) {
++			handle = ocfs2_start_trans(osb, credits);
++			if (IS_ERR(handle)) {
++				ret = PTR_ERR(handle);
++				mlog_errno(ret);
++				goto unlock;
++			}
++		}
+ 		ret = ocfs2_set_inode_size(handle, inode, di_bh, end);
+ 		if (ret < 0)
+ 			mlog_errno(ret);
+ 	}
++
+ commit:
+-	ocfs2_commit_trans(osb, handle);
++	if (handle)
++		ocfs2_commit_trans(osb, handle);
+ unlock:
+ 	up_write(&oi->ip_alloc_sem);
++
++	/* everything looks good, let's start the cleanup */
++	if (!ret && dwc->dw_orphaned) {
++		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
++
++		ret = ocfs2_del_inode_from_orphan(osb, inode, di_bh, 0, 0);
++		if (ret < 0)
++			mlog_errno(ret);
++	}
+ 	ocfs2_inode_unlock(inode, 1);
+ 	brelse(di_bh);
+ out:
 
 
 
