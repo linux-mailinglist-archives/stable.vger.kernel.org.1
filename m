@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-243442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFS3MF6p+Gm6xgIAu9opvQ
-	(envelope-from <stable+bounces-243442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:46 +0200
+	id YFuvDTur+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793984BECF0
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4F64BF227
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B78D301DD86
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC368301DD86
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B433D5254;
-	Mon,  4 May 2026 14:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CF13DE43B;
+	Mon,  4 May 2026 14:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnfezN1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0U5LVuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B724935A3AD;
-	Mon,  4 May 2026 14:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBB8315785;
+	Mon,  4 May 2026 14:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903894; cv=none; b=EkwLBSpXT40OBqdQ4oHVK861/AR9V+xa1W9qXXmNnPvsmduzugYfvhOdnep+cLA3fA8b2XRQAJygb2+s9gQ16bO04R/TJEOEEmqtIO2nRiBaYc3HPQlQyUijHtjZIQniRzL3/d5B9i933ScpSDQz4W7OAO1MMzFBCPp0PISc4UA=
+	t=1777904403; cv=none; b=SyVYyD3AnKTbjH6cu/aciWgZSMDwsbzNfwfckl5NqmPLxXzh4KBVgQCtMwoFsESw2ri6YlvGRzXRiVRk2lKPH2Lqibuib6muFxR0lF6V/iQp+NTntosrcnDK/ibvDE4/hzVRh1Icb71vWJBSx4kKhoq7CpMq+o2WUcG0QV7eXPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903894; c=relaxed/simple;
-	bh=jXZVN2P7obYCWzwTL2Apwe/TKz1yTr56+Suc4/5iE8M=;
+	s=arc-20240116; t=1777904403; c=relaxed/simple;
+	bh=CLiMafQ/fiVqk2EIUjTNIharli7iUoqs7rYZLLxY8Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxOc3N3kgWUoVWoWLu3109EpPs4ZnjUuezVIHWdl9txVz8u/TfEQ1HdqK2BXrtUMf6Cw37ITWj6aQCp/QfxdgaF5LMuOcNOPJ6SGpP8o5BJr5DZjhzaUL22+ovGUtdu+EclM2FKD4KQsw5hjNXf/hJQxk9gXElrW7z52zxKFalA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnfezN1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC3BC2BCB8;
-	Mon,  4 May 2026 14:11:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P4/N3t/bqMUGrHTmH9T3qzGiOkKB4RAV64J2hC8lFSDDrtZcxNw15FzlS5AzWv7lccdXLkpySYovfpB1tDk50NTW6cj1vjT0miLmwdlDQhRoIcrYqnzsuPCAvfTHDFEv53VL6fG8UTZ0VG1RqEpHP/Tz7Q8AcwaZxyE9lHDyDVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0U5LVuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748C3C2BCB8;
+	Mon,  4 May 2026 14:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903894;
-	bh=jXZVN2P7obYCWzwTL2Apwe/TKz1yTr56+Suc4/5iE8M=;
+	s=korg; t=1777904403;
+	bh=CLiMafQ/fiVqk2EIUjTNIharli7iUoqs7rYZLLxY8Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnfezN1R6VZYUlt2xuVtEvNxfXZGa5xb93Mckgr11+YFUBLTcqS+AzRBU34V74EiB
-	 utBwvhEij+JFNIwXzz9y9HrtSKzjs/96HMXCLlZ1QDcOICPMXjwIPoYajRFlNEudIU
-	 WEPVcyAUNNFdm7O6PjpnOknHMU63U90a0MZQMnZw=
+	b=h0U5LVuXr5xIpZRc5jFgefvrzCFl1yPUSjII/C+6mCxj/71CvToZ872JN75zstKot
+	 taQtDIWS9/EuPv8Fz6OW+0J1sAsnPl2uM/sGeZWLKDkIjoTGSJJUzSR5/Z9dyPUej3
+	 MMrSNAdg9AOql83nsi3ccRfG4aPrtVoldSeqVGxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 104/275] ALSA: pcmtest: fix reference leak on failed device registration
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Fang Wang <32840572@qq.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 025/215] drm/amdgpu: Limit BO list entry count to prevent resource exhaustion
 Date: Mon,  4 May 2026 15:50:44 +0200
-Message-ID: <20260504135146.777053388@linuxfoundation.org>
+Message-ID: <20260504135131.096255467@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 793984BECF0
+X-Rspamd-Queue-Id: CF4F64BF227
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243442-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,qq.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243641-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qq.com:email,amd.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-commit 4ff036f95238f02c87e5d7c0a9d93748582a8950 upstream.
+[ Upstream commit 6270b1a5dab94665d7adce3dc78bc9066ed28bdd ]
 
-When platform_device_register() fails in mod_init(), the embedded struct
-device in pcmtst_pdev has already been initialized by
-device_initialize(), but the failure path returns the error without
-dropping the device reference for the current platform device:
+Userspace can pass an arbitrary number of BO list entries via the
+bo_number field. Although the previous multiplication overflow check
+prevents out-of-bounds allocation, a large number of entries could still
+cause excessive memory allocation (up to potentially gigabytes) and
+unnecessarily long list processing times.
 
-  mod_init()
-    -> platform_device_register(&pcmtst_pdev)
-       -> device_initialize(&pcmtst_pdev.dev)
-       -> setup_pdev_dma_masks(&pcmtst_pdev)
-       -> platform_device_add(&pcmtst_pdev)
+Introduce a hard limit of 128k entries per BO list, which is more than
+sufficient for any realistic use case (e.g., a single list containing all
+buffers in a large scene). This prevents memory exhaustion attacks and
+ensures predictable performance.
 
-This leads to a reference leak when platform_device_register() fails.
-Fix this by calling platform_device_put() before returning the error.
+Return -EINVAL if the requested entry count exceeds the limit
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
-
-Fixes: 315a3d57c64c5 ("ALSA: Implement the new Virtual PCM Test Driver")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 688b87d39e0aa8135105b40dc167d74b5ada5332)
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Link: https://patch.msgid.link/20260415193138.3861297-1-lgs201920130244@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fang Wang <32840572@qq.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/drivers/pcmtest.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/drivers/pcmtest.c
-+++ b/sound/drivers/pcmtest.c
-@@ -756,8 +756,10 @@ static int __init mod_init(void)
- 	if (err)
- 		return err;
- 	err = platform_device_register(&pcmtst_pdev);
--	if (err)
-+	if (err) {
-+		platform_device_put(&pcmtst_pdev);
- 		return err;
-+	}
- 	err = platform_driver_register(&pcmtst_pdrv);
- 	if (err)
- 		platform_device_unregister(&pcmtst_pdev);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+index 66fb37b643882..ded22f244adab 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+@@ -36,6 +36,7 @@
+ 
+ #define AMDGPU_BO_LIST_MAX_PRIORITY	32u
+ #define AMDGPU_BO_LIST_NUM_BUCKETS	(AMDGPU_BO_LIST_MAX_PRIORITY + 1)
++#define AMDGPU_BO_LIST_MAX_ENTRIES	(128 * 1024)
+ 
+ static void amdgpu_bo_list_free_rcu(struct rcu_head *rcu)
+ {
+@@ -190,6 +191,9 @@ int amdgpu_bo_create_list_entry_array(struct drm_amdgpu_bo_list_in *in,
+ 	const uint32_t bo_number = in->bo_number;
+ 	struct drm_amdgpu_bo_list_entry *info;
+ 
++	if (bo_number > AMDGPU_BO_LIST_MAX_ENTRIES)
++		return -EINVAL;
++
+ 	/* copy the handle array from userspace to a kernel buffer */
+ 	if (likely(info_size == bo_info_size)) {
+ 		info = vmemdup_array_user(uptr, bo_number, info_size);
+-- 
+2.53.0
+
 
 
 
