@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-243728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WE0NNLys+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:08 +0200
+	id iISEFEmo+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6F64BF746
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DD74BE94F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34F573032FB3
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:23:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A959300DED9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8F13D3334;
-	Mon,  4 May 2026 14:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A393DE423;
+	Mon,  4 May 2026 14:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2Gwa2aR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwJEXSpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F276315785;
-	Mon,  4 May 2026 14:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD5675801;
+	Mon,  4 May 2026 14:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904625; cv=none; b=on4DyM1/WOX0gyHySoeOSHM+JNIzJ1YXmPofXT3/B/RDW093tjZPlahG0EIXgvT6Nj0Crcom5eTv5EeOPe7LYLY4NtXJz1IUmn7mETiwmOptotfcZaOhNcRVKPRXRDKageY88R8tnWQIjkE7OH9eqkjFvs2VVtcAhBtObJtjbtk=
+	t=1777903552; cv=none; b=KNByWJTbGHBiynAW2V+Ris6koiJ5j3nPmEVlvAAGawCX+kM/KqsXSDWf+//OSANavvH1pe8MsZhwJv2cN06UkHAcMnGmtE6f0741IOkh7GbB5oW7OATSR7Gl9MW3oOvIUgLuuY4W+Wwub6bpwb79P0Abb4JA0rtq4ppK/yMeQpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904625; c=relaxed/simple;
-	bh=J54Z9jk1cohSxctF2CIshdbUMRjlvY+RBrloeP9QoVg=;
+	s=arc-20240116; t=1777903552; c=relaxed/simple;
+	bh=0dxOEZIR/GGyBZK4LUVH1goZU+FVwCyuVZFECGi9nYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+S35kuGj0q/VauwUwbHbDUm5APxxggnUggklGaANdrjImyI4FnW86TdqnjY/ZnT5UmMsW8Kki5mYg3by3pFV/hzoE1yU3MVPUC+irMIqmatlCLPQpHtiHspsgA9RSTE1Sw15IMiV+AzwekVKPeBnmmhM1m+z+ZBh2Z2XMunhtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2Gwa2aR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB31C2BCF6;
-	Mon,  4 May 2026 14:23:44 +0000 (UTC)
+	 MIME-Version; b=AwM+xoKkj4EhkKmJGGac34GX1oYE8KBwh/a9rilrtC5MYaUkbJsWqfX8kXCxAg20fKr2SsnpvTixY2LfRqOZkXdPTI0Sk5KA8JZIRH3NgU3c4NwPj77Yv7UHljnLl0EDxwCPYsJkKONoqKxPSE28tHsvpNeoypcBNcCiYFyiD4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwJEXSpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE09CC2BCB8;
+	Mon,  4 May 2026 14:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904625;
-	bh=J54Z9jk1cohSxctF2CIshdbUMRjlvY+RBrloeP9QoVg=;
+	s=korg; t=1777903552;
+	bh=0dxOEZIR/GGyBZK4LUVH1goZU+FVwCyuVZFECGi9nYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2Gwa2aRWhWQRfVv7JDoJxgLKTdDs20pjM31Zc5AYx/HkCtoWu2eV337uwkTS0tY/
-	 cbqGyC2hdfuEkjZoBoRUlpdgbk6bJa6jjjJs2xphtg1yRV+OrW/eh35jRhrqTvLSCa
-	 vpOGBpw/FfOF/NZDi1TbI5fromsP6ZFtFlNNape8=
+	b=PwJEXSpRYkv9GKdyRTweDQZnF4z0W44gfWkb3xC51N5LP3Z/uC9yCNhDCsltY550Q
+	 zS2yYvQ5Azv0LldfAUmHAH8iK5qPMlapP0nSOiozPdsEtXBdeeCWQt6zHwLfOzat2/
+	 BTq2Cio09RAMGJ/+bHVFuP+SnA9qkF9g6+rOHKzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Justinien Bouron <jbouron@amazon.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.12 112/215] tpm: Use kfree_sensitive() to free auth session in tpm_dev_release()
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: [PATCH 7.0 246/307] x86/shstk: Prevent deadlock during shstk sigreturn
 Date: Mon,  4 May 2026 15:52:11 +0200
-Message-ID: <20260504135134.240916720@linuxfoundation.org>
+Message-ID: <20260504135152.084053239@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A6F64BF746
+X-Rspamd-Queue-Id: 10DD74BE94F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -76,68 +77,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243308-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243728-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gunnar Kudrjavets <gunnarku@amazon.com>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-commit c424d2664f08c77f08b4580b5f0cbaabf7c229b2 upstream.
+commit 9874b2917b9fbc30956fee209d3c4aa47201c64e upstream.
 
-tpm_dev_release() uses plain kfree() to free chip->auth, which contains
-sensitive cryptographic material including HMAC session keys, nonces,
-and passphrase data (struct tpm2_auth).
+During sigreturn the shadow stack signal frame is popped. The kernel does
+this by reading the shadow stack using normal read accesses. When it can't
+assume the memory is shadow stack, it takes extra steps to makes sure it is
+reading actual shadow stack memory and not other normal readable memory. It
+does this by holding the mmap read lock while doing the access and checking
+the flags of the VMA.
 
-Every other code path that frees this structure uses kfree_sensitive()
-to zero the memory before releasing it: both tpm2_end_auth_session()
-and tpm_buf_check_hmac_response() do so. The tpm_dev_release() path
-is the only one that does not, leaving key material in freed slab
-memory until it is eventually overwritten.
+Unfortunately that is not safe. If the read of the shadow stack sigframe
+hits a page fault, the fault handler will try to recursively grab another
+mmap read lock. This normally works ok, but if a writer on another CPU is
+also waiting, the second read lock could fail and cause a deadlock.
 
-Use kfree_sensitive() for consistency with the rest of the driver and
-to ensure session keys are scrubbed during device teardown.
+Fix this by not holding mmap lock during the read access to userspace.
 
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Reviewed-by: Justinien Bouron <jbouron@amazon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Instead use mmap_lock_speculate_...() to watch for changes between dropping
+mmap lock and the userspace access. Retry if anything grabbed an mmap write
+lock in between and could have changed the VMA.
+
+These mmap_lock_speculate_...() helpers use mm::mm_lock_seq, which is only
+available when PER_VMA_LOCK is configured. So make X86_USER_SHADOW_STACK
+depend on it. On x86, PER_VMA_LOCK is a default configuration for SMP
+kernels. So drop support for the other configs under the assumption that
+the !SMP shadow stack user base does not exist.
+
+Currently there is a check that skips the lookup work when the SSP can be
+assumed to be on a shadow stack. While reorganizing the function, remove
+the optimization to make the tricky code flows more common, such that
+issues like this cannot escape detection for so long.
+
+Fixes: 7fad2a432cd3 ("x86/shstk: Check that signal frame is shadow stack mem")
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-chip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Kconfig        |    1 +
+ arch/x86/kernel/shstk.c |   42 +++++++++++++++++++++++-------------------
+ 2 files changed, 24 insertions(+), 19 deletions(-)
 
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -283,7 +283,7 @@ static void tpm_dev_release(struct devic
- 	kfree(chip->work_space.context_buf);
- 	kfree(chip->work_space.session_buf);
- #ifdef CONFIG_TCG_TPM2_HMAC
--	kfree(chip->auth);
-+	kfree_sensitive(chip->auth);
- #endif
- 	kfree(chip);
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1889,6 +1889,7 @@ config X86_USER_SHADOW_STACK
+ 	bool "X86 userspace shadow stack"
+ 	depends on AS_WRUSS
+ 	depends on X86_64
++	depends on PER_VMA_LOCK
+ 	select ARCH_USES_HIGH_VMA_FLAGS
+ 	select ARCH_HAS_USER_SHADOW_STACK
+ 	select X86_CET
+--- a/arch/x86/kernel/shstk.c
++++ b/arch/x86/kernel/shstk.c
+@@ -334,10 +334,8 @@ static int shstk_push_sigframe(unsigned
+ 
+ static int shstk_pop_sigframe(unsigned long *ssp)
+ {
+-	struct vm_area_struct *vma;
+ 	unsigned long token_addr;
+-	bool need_to_check_vma;
+-	int err = 1;
++	unsigned int seq;
+ 
+ 	/*
+ 	 * It is possible for the SSP to be off the end of a shadow stack by 4
+@@ -348,25 +346,35 @@ static int shstk_pop_sigframe(unsigned l
+ 	if (!IS_ALIGNED(*ssp, 8))
+ 		return -EINVAL;
+ 
+-	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
++	do {
++		struct vm_area_struct *vma;
++		bool valid_vma;
++		int err;
+ 
+-	if (need_to_check_vma)
+ 		if (mmap_read_lock_killable(current->mm))
+ 			return -EINTR;
+ 
+-	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
+-	if (unlikely(err))
+-		goto out_err;
+-
+-	if (need_to_check_vma) {
+ 		vma = find_vma(current->mm, *ssp);
+-		if (!vma || !(vma->vm_flags & VM_SHADOW_STACK)) {
+-			err = -EFAULT;
+-			goto out_err;
+-		}
++		valid_vma = vma && (vma->vm_flags & VM_SHADOW_STACK);
+ 
++		/*
++		 * VMAs can change between get_shstk_data() and find_vma().
++		 * Watch for changes and ensure that 'token_addr' comes from
++		 * 'vma' by recording a seqcount.
++		 *
++		 * Ignore the return value of mmap_lock_speculate_try_begin()
++		 * because the mmap lock excludes the possibility of writers.
++		 */
++		mmap_lock_speculate_try_begin(current->mm, &seq);
+ 		mmap_read_unlock(current->mm);
+-	}
++
++		if (!valid_vma)
++			return -EINVAL;
++
++		err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
++		if (err)
++			return err;
++	} while (mmap_lock_speculate_retry(current->mm, seq));
+ 
+ 	/* Restore SSP aligned? */
+ 	if (unlikely(!IS_ALIGNED(token_addr, 8)))
+@@ -379,10 +387,6 @@ static int shstk_pop_sigframe(unsigned l
+ 	*ssp = token_addr;
+ 
+ 	return 0;
+-out_err:
+-	if (need_to_check_vma)
+-		mmap_read_unlock(current->mm);
+-	return err;
  }
+ 
+ int setup_signal_shadow_stack(struct ksignal *ksig)
 
 
 
