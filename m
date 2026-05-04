@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHNgM9Wn+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:13 +0200
+	id WKcRHKep+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4174BE841
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:06:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B0A4BEDD3
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4F2733054365
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 996F3301D7CE
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD8A3DE45A;
-	Mon,  4 May 2026 13:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867501ADC83;
+	Mon,  4 May 2026 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nQzK5hl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zx1Ke8bO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEEB3DC4D5;
-	Mon,  4 May 2026 13:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F013A7F4C;
+	Mon,  4 May 2026 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903146; cv=none; b=poBtqA6GX/ntsstnMTN53LvVPIe8QRsLFeTXKBtnj6RABibagk3AWlrFNMQorbT8osr5s/EwxFB+pnQQYddlEelXnzQEo27pBYHFcNqtlY06r1af8jzY95anuDoU/hVLQYjBbujrrobNxn0GiDkp4IVUXZPa0AKWErELLqkgryA=
+	t=1777903799; cv=none; b=lz+KtKTPQ+Plfo4x76UtFhzt7Rg5jLpxCGOplMcyK2eR/rDSWAvpteUefZlexc7LDQZkZaqqdXx1MDDgTUF0xirM3ARKEodohTXeSVoKZVEBLjMBdq6AaMkI6qyCujvC4b4/ZcvYXw3a3bk9anXo+Wu906FE9p8/7YAOwoKUwro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903146; c=relaxed/simple;
-	bh=DwQGZBvOpbnX8hnAEWoBLsbydosMp1yyoH2eQyBj37o=;
+	s=arc-20240116; t=1777903799; c=relaxed/simple;
+	bh=OKBgdSFymcVHS90uBl9DTmD8XE/nf6AXI9H7hV9M1Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAhG8iUsSE9CRgDgnvEemKyd1Az/YVJyFJ23FG0GLbfW51ltj9hFL/ymUGfn+kv88FL+QnE7tEK31talC5bVZyoQqUxAgrC7nckRmvp4QjlhMwAY1OnQU0hLjFy1+1hsHze/RpYAQgJVPIBvxnvgAijLcQYkut10C1T3KLbthy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nQzK5hl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFA9C2BCB8;
-	Mon,  4 May 2026 13:59:05 +0000 (UTC)
+	 MIME-Version; b=qtaePPJFVhaSin2j0iZ881FrhbQ/zQRgHpWM2VpxFqWky3Xyw2tVLi+2HS2P7GrXdBHC6pvkB6CmZmnYJH9UtYmJGZa8erHYcN9zITHIg+s8eOk8w5BC+VrU0MgUC66e1rrW8SUZ/ZK7hO8MnGibZTZMWDCHRvnjhC5F089XiTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zx1Ke8bO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B22C2BCB8;
+	Mon,  4 May 2026 14:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903146;
-	bh=DwQGZBvOpbnX8hnAEWoBLsbydosMp1yyoH2eQyBj37o=;
+	s=korg; t=1777903799;
+	bh=OKBgdSFymcVHS90uBl9DTmD8XE/nf6AXI9H7hV9M1Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nQzK5hl7uzS01r0kkPM5tHMw0ua8uARYnsAP38joASSdOzaKzIWkDMgcc0pWgouk
-	 4DcZtIZDqRqzmzeg1GSD0VTzqsjj7d+rmPVlUXY2+DOUv9CeqZKUH02wyBrD4DAcvZ
-	 Vmyh9zx9l92GIN3gPBreH4OpbAWJxkmdeXF6n/hg=
+	b=zx1Ke8bOsLOW7C2O2JlIPWfYAk7vn9m7xbDN6/WKRPOAZnw+06L6rlNhoKdo4ajfj
+	 NIaAEJ7yKmYFcDm9iNXLPewU2YfvfQaM1SNzq7CpXS6B+EmKpy91GJDx6MSBvr7gGs
+	 4l6f2OQWPaP96wMFdMO9UoS+mEZAprvykb/meXVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Spencer Payton <spayton681@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 121/307] ALSA: hda/realtek - Add mute LED support for HP Victus 15-fa2xxx
-Date: Mon,  4 May 2026 15:50:06 +0200
-Message-ID: <20260504135147.352018109@linuxfoundation.org>
+	Li Xiao <252270051@hdu.edu.cn>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.18 067/275] ipmi:ssif: Clean up kthread on errors
+Date: Mon,  4 May 2026 15:50:07 +0200
+Message-ID: <20260504135145.421056583@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BF4174BE841
+X-Rspamd-Queue-Id: 24B0A4BEDD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243151-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243405-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,minyard.net:email,hdu.edu.cn:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Spencer Payton <spayton681@gmail.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit eacda758e3c01db98b5c231f56cf9a6e05ced75c upstream.
+commit 75c486cb1bcaa1a3ec3a6438498176a3a4998ae4 upstream.
 
-The mute LED on this laptop uses ALC245 but requires a quirk to work.
-This patch enables the existing ALC245_FIXUP_HP_MUTE_LED_COEFBIT
-quirk for the device.
+If an error occurs after the ssif kthread is created, but before the
+main IPMI code starts the ssif interface, the ssif kthread will not
+be stopped.
 
-Tested my Victus 15-fa2xxx (PCI SSID 103c:8dcd).
-The LED behaviour works as intended.
+So make sure the kthread is stopped on an error condition if it is
+running.
 
+Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
+Reported-by: Li Xiao <<252270051@hdu.edu.cn>
 Cc: stable@vger.kernel.org
-Signed-off-by: Spencer Payton <spayton681@gmail.com>
-Link: https://patch.msgid.link/20260421084918.14685-1-spayton681@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Li Xiao <252270051@hdu.edu.cn>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/char/ipmi/ipmi_ssif.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7153,6 +7153,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8d90, "HP EliteBook 16 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8dcd, "HP Victus 15-fa2xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8d9b, "HP 17 Turbine OmniBook 7 UMA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8d9c, "HP 17 Turbine OmniBook 7 DIS", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8d9d, "HP 17 Turbine OmniBook X UMA", ALC287_FIXUP_CS35L41_I2C_2),
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1270,8 +1270,10 @@ static void shutdown_ssif(void *send_inf
+ 	ssif_info->stopping = true;
+ 	timer_delete_sync(&ssif_info->watch_timer);
+ 	timer_delete_sync(&ssif_info->retry_timer);
+-	if (ssif_info->thread)
++	if (ssif_info->thread) {
+ 		kthread_stop(ssif_info->thread);
++		ssif_info->thread = NULL;
++	}
+ }
+ 
+ static void ssif_remove(struct i2c_client *client)
+@@ -1918,6 +1920,15 @@ static int ssif_probe(struct i2c_client
+ 
+  out:
+ 	if (rv) {
++		/*
++		 * If ipmi_register_smi() starts the interface, it will
++		 * call shutdown and that will free the thread and set
++		 * it to NULL.  Otherwise it must be freed here.
++		 */
++		if (ssif_info->thread) {
++			kthread_stop(ssif_info->thread);
++			ssif_info->thread = NULL;
++		}
+ 		if (addr_info)
+ 			addr_info->client = NULL;
+ 
 
 
 
