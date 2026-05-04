@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGLJLwWt+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:21 +0200
+	id WK3rNr6n+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCDB4BF827
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809534BE808
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F5D730247F9
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BFE28300C312
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFB03D5254;
-	Mon,  4 May 2026 14:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05173DDDDA;
+	Mon,  4 May 2026 14:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stCr2uux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/1ZxM6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41553D300A;
-	Mon,  4 May 2026 14:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A832D8DDF;
+	Mon,  4 May 2026 14:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904075; cv=none; b=MSxaK8fb7OcZnay9PZBzOAX6Qqvp4GQU0vYssd2s1lbs+F2JUbmafht9HWvxl2vTS9iiQRC5Z2HI7Ey88YILoweYa4CLOz/yazQVql2xeyX11JwXYAMttnxTlu/aoWG5sCS4aNcFDGLzfw7h1zWIkDlpu/YSBlEOPDjZsZloumE=
+	t=1777903426; cv=none; b=a/a4xlV/cX14vo7rTx9lZFACWjORc2SMLgFjV84cHVpJVObI1yxHFjEpu+QGbpsIInpT+yg+D+EqVOLEgpRLQeVpf0M+sJ4sc6kNpDFAbsvUEXcba6YGowne62eddGGfv7C4NmfQzoth4uJzzt+4cze446ZnOFmozwyw+mjCZjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904075; c=relaxed/simple;
-	bh=MsxmGeAh/P6nXPUq1/Zjkfdt9iT3ENz3cyI68W60nU8=;
+	s=arc-20240116; t=1777903426; c=relaxed/simple;
+	bh=xAWtrIYfiO+8ah01FwqG+W/asBN9ihxyA13i8MWfEF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQkgCnZhr+BbwMKrNNtTr+kAiTUMIm9NFU9PFR966y0ZgkyZrITE/ikybspj6pB0OQ9DNt6znLhRBF+PANsvvGnNUVaWAS/zfnUdOEVacS6/1uoTodnBPaSfsfxDH12WN9xkYJzz6Z/GYVi1mc3U3yzJ2pnSFRUi/a56W+t1F6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stCr2uux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816B2C2BCB8;
-	Mon,  4 May 2026 14:14:34 +0000 (UTC)
+	 MIME-Version; b=ZHQiUeudGtSADIyxiEuYiX3hRGPs5g/Kv4ASXntHUdZ6YqG6O8K4k5M3rg5cJLZWkkbsg7Kv8xS6PRKxo1hAnuscxmvr5CQ4LrF9kTlFamvgFI1NZGTE7iIhRZmwO1vwadEy9GoVkc73c9C/02RqL43k6Z8/AxvIl85V2STQrMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/1ZxM6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 062F6C2BCB8;
+	Mon,  4 May 2026 14:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904074;
-	bh=MsxmGeAh/P6nXPUq1/Zjkfdt9iT3ENz3cyI68W60nU8=;
+	s=korg; t=1777903426;
+	bh=xAWtrIYfiO+8ah01FwqG+W/asBN9ihxyA13i8MWfEF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stCr2uuxf2udGjuchIu0slZHgdmd/eNdUgGN1ukQXN3IhWy5G8leqMe3Q2t130m7D
-	 0MXJJfCfLqYleMU4pQGDljOXhsVoQifYpzs5/HL6thFtU90ywdK132vj1YJykNqe9a
-	 dXKgYk9qIojqdN/Vtg8upcjY57eU7IqNI9iNXJz0=
+	b=S/1ZxM6kvlc2Dw2UzxWwfhsmqnAzs+XwEVniR7eM2pBafT2WFV7BLm3sqS357EDZv
+	 2A3lnI0rn5WJb1t1hLbPa1zZJ+qeg3SWeuudz1JNJ6Qr++eq0mFV/9PNhLr7Mb8bhk
+	 IbaXypVK8ETx6VAghly2PXqabA99LAnVSLLs/Q0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 174/275] KVM: nSVM: Ensure AVIC is inhibited when restoring a vCPU to guest mode
+	Brian Ruley <brian.ruley@gehealthcare.com>,
+	Will Deacon <will@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 7.0 229/307] ARM: 9472/1: fix race condition on PG_dcache_clean in __sync_icache_dcache()
 Date: Mon,  4 May 2026 15:51:54 +0200
-Message-ID: <20260504135149.531813449@linuxfoundation.org>
+Message-ID: <20260504135151.471198445@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6DCDB4BF827
+X-Rspamd-Queue-Id: 809534BE808
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243259-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243512-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gehealthcare.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,armlinux.org.uk:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Brian Ruley <brian.ruley@gehealthcare.com>
 
-commit 24f7d36b824b65cf1a2db3db478059187b2a37b0 upstream.
+commit 75f9a484e817adea211c73f89ed938a2b2f90953 upstream.
 
-On nested VMRUN, KVM ensures AVIC is inhibited by requesting
-KVM_REQ_APICV_UPDATE, triggering a check of inhibit reasons, finding
-APICV_INHIBIT_REASON_NESTED, and disabling AVIC.
+This bug was already discovered and fixed for arm64 in
+commit 588a513d3425 ("arm64: Fix race condition on PG_dcache_clean in
+__sync_icache_dcache()").
 
-However, when KVM_SET_NESTED_STATE is performed on a vCPU not in guest
-mode with AVIC enabled, KVM_REQ_APICV_UPDATE is not requested, and AVIC
-is not inhibited.
+Verified with added instrumentation to track dcache flushes in a ring
+buffer, as shown by the (distilled) output:
 
-Request KVM_REQ_APICV_UPDATE in the KVM_SET_NESTED_STATE path if AVIC is
-active, similar to the nested VMRUN path.
+  kernel: SIGILL at b6b80ac0 cpu 1 pid 32663 linux_pte=8eff659f
+          hw_pte=8eff6e7e young=1 exec=1
+  kernel: dcache flush START   cpu0 pfn=8eff6 ts=48629557020154
+  kernel: dcache flush SKIPPED cpu1 pfn=8eff6 ts=48629557020154
+  kernel: dcache flush FINISH  cpu0 pfn=8eff6 ts=48629557036154
+  audisp-syslog: comm="journalctl" exe="/usr/bin/journalctl" sig=4 [...]
 
-Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260224225017.3303870-1-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Discussions in the mailing list mentioned that arch/arm is also affected
+but the fix was never applied to it [1][2]. Apply the change now, since
+the race condition can cause sporadic SIGILL's and SEGV's especially
+while under high memory pressure.
+
+Link: https://lore.kernel.org/all/adzMOdySgMIePcue@willie-the-truck [1]
+Link: https://lore.kernel.org/all/20210514095001.13236-1-catalin.marinas@arm.com [2]
+Signed-off-by: Brian Ruley <brian.ruley@gehealthcare.com>
+Reviewed-by: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 6012191aa9c6 ("ARM: 6380/1: Introduce __sync_icache_dcache() for VIPT caches")
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mm/flush.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1896,6 +1896,9 @@ static int svm_set_nested_state(struct k
+--- a/arch/arm/mm/flush.c
++++ b/arch/arm/mm/flush.c
+@@ -304,8 +304,10 @@ void __sync_icache_dcache(pte_t pteval)
+ 	else
+ 		mapping = NULL;
  
- 	svm->nested.force_msr_bitmap_recalc = true;
+-	if (!test_and_set_bit(PG_dcache_clean, &folio->flags.f))
++	if (!test_bit(PG_dcache_clean, &folio->flags.f)) {
+ 		__flush_dcache_folio(mapping, folio);
++		set_bit(PG_dcache_clean, &folio->flags.f);
++	}
  
-+	if (kvm_vcpu_apicv_active(vcpu))
-+		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
-+
- 	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
- 	ret = 0;
- out_free:
+ 	if (pte_exec(pteval))
+ 		__flush_icache_all();
 
 
 
