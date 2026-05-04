@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-243055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oI2jC2+l+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:55:59 +0200
+	id GAzAJdim+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506074BE220
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:55:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDB84BE5EC
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7AFAD300B9FC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:55:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B4203303EEB6
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F77E2E2F0E;
-	Mon,  4 May 2026 13:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3969D3D75CE;
+	Mon,  4 May 2026 13:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1lvlTt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okx1ATrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026423DDDD7;
-	Mon,  4 May 2026 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F078D34753C;
+	Mon,  4 May 2026 13:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902902; cv=none; b=nHBK5my4OUlOkfor8rrO9Na5QEdx13dnrkZdyXatFtaEFHzKQawaa+mG4Gw8/YqPG3qVEdZ9xnxyEWQEDbbgMc9Q7gBj1w1o9c8bbz0tjJezz3isn7+7Gitu5SgmX7rrYy2umv6aMHDiJwsvZ1ux4/m30kxM10bUXMmoxLnr1Uc=
+	t=1777903013; cv=none; b=EN8cl7pACtft6VK++r6fyh3ifUN44HJHaSbHiGaYv0iz0QA6qdMR/Nogj3DwFoQgHN7nUQ+4/USbqpb5Bi9Wpvp+9CeftLC05s7Yz9OG3xG+kWSZOVm4CBeBlJAbCvXC3NRSaFcLvJcFOz1V0TkiCJSpZ/uGGtTaJEAy1vglEJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902902; c=relaxed/simple;
-	bh=YAGye3cxkGWTAFcwsUAi0IK+s6iNtdc4kNmSazDpNF0=;
+	s=arc-20240116; t=1777903013; c=relaxed/simple;
+	bh=Rl/bOniHYplsBODF3rvz+StMlzHRVpgB2ZYq+654xlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nil3HqouGGvK2RzwU3yIG6d7mEqXa3to0H9YbyF1wiUOyX7CZw9CU4VAKzBPX7MN584f/ZKMBDVYsVppxkvlZvUYJhuxQ5+TozjrrtWYLaDX6FaMzvI9XBKw0JK2BvlxExotUoefsTQQb2dEzBtUM3RWjPOT5TqWuc8j0a+VrdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1lvlTt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A6FC2BCB8;
-	Mon,  4 May 2026 13:55:01 +0000 (UTC)
+	 MIME-Version; b=C5bGhQLoNB5kp5r+Q2bmm93rZ9JStb0euGLSn1sP1EJZGC9mykaGhvgQajeP/uqNjIXaGOSTO2P8+jTckkaQHtrXrJQBtVOuK7V8yugIl8Ij64z60gi7dsM8Ka2FyQ52+QEUuT6NzOjnf9vtSs1Q81nT6n/bzFQHMty0vGH9b4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okx1ATrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A686C2BCB8;
+	Mon,  4 May 2026 13:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902901;
-	bh=YAGye3cxkGWTAFcwsUAi0IK+s6iNtdc4kNmSazDpNF0=;
+	s=korg; t=1777903012;
+	bh=Rl/bOniHYplsBODF3rvz+StMlzHRVpgB2ZYq+654xlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1lvlTt9aQWOhvHgLO3wpRv/I+81DeCo3wttyfoW8dMGDwattkBIV2MIpYeai85/C
-	 XiD56zxX8iX35qRA+D6AZ1lZa6rIfFKHH4iuhOT+yF7NVxkKP6L5D50HEN0u6NGrbc
-	 BNqwzNxxOa2xACt/yAbZ/RTu39M+fci3pR2iTpo8=
+	b=Okx1ATrJA+9Bq6QeBfyVCWbwPyFUiR9yc5yXn78QBemOOH5NacYJZy//b1aTw4iAh
+	 5WwT4rUlEcEJTVI26/y81ERc4P4nedrBMwVjvJ7za+V8kdUw4VyjA+NOQA3ZZ7WWVT
+	 XqS/pfmkqH5soVAsh2wMpx94qFbiY99rdQ49ptBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 7.0 026/307] arm64: mm: Fix rodata=full block mapping support for realm guests
-Date: Mon,  4 May 2026 15:48:31 +0200
-Message-ID: <20260504135143.816400840@linuxfoundation.org>
+	Usama Arif <usama.arif@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 027/307] mm: migrate: requeue destination folio on deferred split queue
+Date: Mon,  4 May 2026 15:48:32 +0200
+Message-ID: <20260504135143.854779113@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
 References: <20260504135142.814938198@linuxfoundation.org>
@@ -66,213 +77,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 506074BE220
+X-Rspamd-Queue-Id: 5CDB84BE5EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,cmpxchg.org,nvidia.com,kernel.org,gmail.com,sk.com,gourry.net,linux.alibaba.com,intel.com,infradead.org,redhat.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243055-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-243098-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[sj.kernel.org:query timed out];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,arm.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Usama Arif <usama.arif@linux.dev>
 
-commit f12b435de2f2bb09ce406467020181ada528844c upstream.
+commit a2e0c0668a3486f96b86c50e02872c8e94fd4f9c upstream.
 
-Commit a166563e7ec37 ("arm64: mm: support large block mapping when
-rodata=full") enabled the linear map to be mapped by block/cont while
-still allowing granular permission changes on BBML2_NOABORT systems by
-lazily splitting the live mappings. This mechanism was intended to be
-usable by realm guests since they need to dynamically share dma buffers
-with the host by "decrypting" them - which for Arm CCA, means marking
-them as shared in the page tables.
+During folio migration, __folio_migrate_mapping() removes the source folio
+from the deferred split queue, but the destination folio is never
+re-queued.  This causes underutilized THPs to escape the shrinker after
+NUMA migration, since they silently drop off the deferred split list.
 
-However, it turns out that the mechanism was failing for realm guests
-because realms need to share their dma buffers (via
-__set_memory_enc_dec()) much earlier during boot than
-split_kernel_leaf_mapping() was able to handle. The report linked below
-showed that GIC's ITS was one such user. But during the investigation I
-found other callsites that could not meet the
-split_kernel_leaf_mapping() constraints.
+Fix this by recording whether the source folio was on the deferred split
+queue and its partially mapped state before move_to_new_folio() unqueues
+it, and re-queuing the destination folio after a successful migration if
+it was.
 
-The problem is that we block map the linear map based on the boot CPU
-supporting BBML2_NOABORT, then check that all the other CPUs support it
-too when finalizing the caps. If they don't, then we stop_machine() and
-split to ptes. For safety, split_kernel_leaf_mapping() previously
-wouldn't permit splitting until after the caps were finalized. That
-ensured that if any secondary cpus were running that didn't support
-BBML2_NOABORT, we wouldn't risk breaking them.
+By the time migrate_folio_move() runs, partially mapped folios without a
+pin have already been split by migrate_pages_batch().  So only two cases
+remain on the deferred list at this point:
+  1. Partially mapped folios with a pin (split failed).
+  2. Fully mapped but potentially underused folios.  The recorded
+     partially_mapped state is forwarded to deferred_split_folio() so that
+     the destination folio is correctly re-queued in both cases.
 
-I've fix this problem by reducing the black-out window where we refuse
-to split; there are now 2 windows. The first is from T0 until the page
-allocator is inititialized. Splitting allocates memory for the page
-allocator so it must be in use. The second covers the period between
-starting to online the secondary cpus until the system caps are
-finalized (this is a very small window).
+Because THPs are removed from the deferred_list, THP shinker cannot
+split the underutilized THPs in time.  As a result, users will show
+less free memory than before.
 
-All of the problematic callers are calling __set_memory_enc_dec() before
-the secondary cpus come online, so this solves the problem. However, one
-of these callers, swiotlb_update_mem_attributes(), was trying to split
-before the page allocator was initialized. So I have moved this call
-from arch_mm_preinit() to mem_init(), which solves the ordering issue.
-
-I've added warnings and return an error if any attempt is made to split
-in the black-out windows.
-
-Note there are other issues which prevent booting all the way to user
-space, which will be fixed in subsequent patches.
-
-Reported-by: Jinjiang Tu <tujinjiang@huawei.com>
-Closes: https://lore.kernel.org/all/0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com/
-Fixes: a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full")
-Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lkml.kernel.org/r/20260312104723.1351321-1-usama.arif@linux.dev
+Fixes: dafff3f4c850 ("mm: split underused THPs")
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/mmu.h |    2 +
- arch/arm64/mm/init.c         |    9 +++++++-
- arch/arm64/mm/mmu.c          |   45 ++++++++++++++++++++++++++++++-------------
- 3 files changed, 42 insertions(+), 14 deletions(-)
+ mm/migrate.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/arch/arm64/include/asm/mmu.h
-+++ b/arch/arm64/include/asm/mmu.h
-@@ -112,5 +112,7 @@ void kpti_install_ng_mappings(void);
- static inline void kpti_install_ng_mappings(void) {}
- #endif
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1358,6 +1358,8 @@ static int migrate_folio_move(free_folio
+ 	int rc;
+ 	int old_page_state = 0;
+ 	struct anon_vma *anon_vma = NULL;
++	bool src_deferred_split = false;
++	bool src_partially_mapped = false;
+ 	struct list_head *prev;
  
-+extern bool page_alloc_available;
-+
- #endif	/* !__ASSEMBLER__ */
- #endif
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -350,7 +350,6 @@ void __init arch_mm_preinit(void)
+ 	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
+@@ -1371,6 +1373,12 @@ static int migrate_folio_move(free_folio
+ 		goto out_unlock_both;
  	}
  
- 	swiotlb_init(swiotlb, flags);
--	swiotlb_update_mem_attributes();
- 
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can be
-@@ -377,6 +376,14 @@ void __init arch_mm_preinit(void)
- 	}
- }
- 
-+bool page_alloc_available __ro_after_init;
-+
-+void __init mem_init(void)
-+{
-+	page_alloc_available = true;
-+	swiotlb_update_mem_attributes();
-+}
-+
- void free_initmem(void)
- {
- 	void *lm_init_begin = lm_alias(__init_begin);
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -772,30 +772,51 @@ static inline bool force_pte_mapping(voi
- }
- 
- static DEFINE_MUTEX(pgtable_split_lock);
-+static bool linear_map_requires_bbml2;
- 
- int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
- {
- 	int ret;
- 
- 	/*
--	 * !BBML2_NOABORT systems should not be trying to change permissions on
--	 * anything that is not pte-mapped in the first place. Just return early
--	 * and let the permission change code raise a warning if not already
--	 * pte-mapped.
--	 */
--	if (!system_supports_bbml2_noabort())
--		return 0;
--
--	/*
- 	 * If the region is within a pte-mapped area, there is no need to try to
- 	 * split. Additionally, CONFIG_DEBUG_PAGEALLOC and CONFIG_KFENCE may
- 	 * change permissions from atomic context so for those cases (which are
- 	 * always pte-mapped), we must not go any further because taking the
--	 * mutex below may sleep.
-+	 * mutex below may sleep. Do not call force_pte_mapping() here because
-+	 * it could return a confusing result if called from a secondary cpu
-+	 * prior to finalizing caps. Instead, linear_map_requires_bbml2 gives us
-+	 * what we need.
- 	 */
--	if (force_pte_mapping() || is_kfence_address((void *)start))
-+	if (!linear_map_requires_bbml2 || is_kfence_address((void *)start))
- 		return 0;
- 
-+	if (!system_supports_bbml2_noabort()) {
-+		/*
-+		 * !BBML2_NOABORT systems should not be trying to change
-+		 * permissions on anything that is not pte-mapped in the first
-+		 * place. Just return early and let the permission change code
-+		 * raise a warning if not already pte-mapped.
-+		 */
-+		if (system_capabilities_finalized())
-+			return 0;
-+
-+		/*
-+		 * Boot-time: split_kernel_leaf_mapping_locked() allocates from
-+		 * page allocator. Can't split until it's available.
-+		 */
-+		if (WARN_ON(!page_alloc_available))
-+			return -EBUSY;
-+
-+		/*
-+		 * Boot-time: Started secondary cpus but don't know if they
-+		 * support BBML2_NOABORT yet. Can't allow splitting in this
-+		 * window in case they don't.
-+		 */
-+		if (WARN_ON(num_online_cpus() > 1))
-+			return -EBUSY;
++	if (folio_order(src) > 1 &&
++	    !data_race(list_empty(&src->_deferred_list))) {
++		src_deferred_split = true;
++		src_partially_mapped = folio_test_partially_mapped(src);
 +	}
 +
- 	/*
- 	 * Ensure start and end are at least page-aligned since this is the
- 	 * finest granularity we can split to.
-@@ -895,8 +916,6 @@ static int range_split_to_ptes(unsigned
- 	return ret;
- }
+ 	rc = move_to_new_folio(dst, src, mode);
+ 	if (rc)
+ 		goto out;
+@@ -1391,6 +1399,15 @@ static int migrate_folio_move(free_folio
+ 	if (old_page_state & PAGE_WAS_MAPPED)
+ 		remove_migration_ptes(src, dst, 0);
  
--static bool linear_map_requires_bbml2 __initdata;
--
- u32 idmap_kpti_bbml2_flag;
- 
- static void __init init_idmap_kpti_bbml2_flag(void)
++	/*
++	 * Requeue the destination folio on the deferred split queue if
++	 * the source was on the queue.  The source is unqueued in
++	 * __folio_migrate_mapping(), so we recorded the state from
++	 * before move_to_new_folio().
++	 */
++	if (src_deferred_split)
++		deferred_split_folio(dst, src_partially_mapped);
++
+ out_unlock_both:
+ 	folio_unlock(dst);
+ 	folio_set_owner_migrate_reason(dst, reason);
 
 
 
