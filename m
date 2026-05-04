@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-243178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMWtJDqo+GlexgIAu9opvQ
-	(envelope-from <stable+bounces-243178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:54 +0200
+	id 6PHKMv+s+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F4E4BE922
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E83A4BF810
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA6DC30970FC
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87E4B31B72B8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3CF3DDDDA;
-	Mon,  4 May 2026 14:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587653DE44B;
+	Mon,  4 May 2026 14:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIPaQpiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUmoQrQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3A93D0917;
-	Mon,  4 May 2026 14:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF3329E116;
+	Mon,  4 May 2026 14:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903216; cv=none; b=EldvEeZ5P2ApArbXdGKr4nAMi+arn8syZOmNm0iRD+cqPjnplZQ+d4mho3Kt10oSvuK831TLg1mnQScDOHAqYvphtB1cDZGS8SAVas7c7Ndx0SWZZvpt+KIsxCgP3ro/MR+zDpvQYbP8D6msCtOkIajbAMqhhbO0BCmkiBWxBss=
+	t=1777904378; cv=none; b=pbXkH7hbmdvfvYhIW6MpABfkEhhDXtAc58tkvPyqMxC2ZgU1ePgkEpwleB5qIhVK04A01btqwbzvQJSQAGrtngACGDsQbAXQ4lV4NE9QMNr9hKfo1pls7MVAlSSIR2LEs6eFnt16fdAgivxevSkKwwd6ZwaPQx+WwYBM/HeWuJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903216; c=relaxed/simple;
-	bh=qqzgYwrCq2l/MQIA6oMpEYxp3X8zQVFScssmLlwL4+c=;
+	s=arc-20240116; t=1777904378; c=relaxed/simple;
+	bh=dMU3DOFK/UMXOBMVMr1zHXVZmhNtGU/yhzqECLr+nRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViWL26LKW3/xyCGlZKtiiLIPRjDFsSQ24wNDl2M9bbElW1HuUWZclB6v6dOUCpill/fBgRp6JaXlYqusIPO7+Bfo/57okHchQ/l4CIC+RvLu7IGc0ua0p4FdXzaZUeEeJJyZcdhnluRqOib9m8p9iWwXqKto9UIfyYGhWEiVzcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIPaQpiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026C5C2BCB8;
-	Mon,  4 May 2026 14:00:15 +0000 (UTC)
+	 MIME-Version; b=C2T9p6bnlH9p88k6jeMJ5nuyNwSeb0tSQ1Ya2LYover6Qiw2uGXSyDNYx7pYVig+4nZzT2roteJSbBW5cYho+F4oKmGne56ORizoXEyjlH8P973+LPfDaBxOgtA7INpN21XwP6P5NYaJm2o6HAn+CYLK9RFEtgLMzisBUYoVtdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUmoQrQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42A0C2BCB8;
+	Mon,  4 May 2026 14:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903216;
-	bh=qqzgYwrCq2l/MQIA6oMpEYxp3X8zQVFScssmLlwL4+c=;
+	s=korg; t=1777904378;
+	bh=dMU3DOFK/UMXOBMVMr1zHXVZmhNtGU/yhzqECLr+nRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIPaQpiUnlCAxkMHszf3tBZuBJd7MlWnuYPKE7F1AAU2ZSnhNzEgC+hj38ulEXSlA
-	 tHez31uDUevko3Bl4bTXomWGqI+vp80u7yQZyfK8cczmQmmVmwSS6rCGmZ4ghiv3p8
-	 UhMkFIosXiHSWGeAflZHC97qruKB/M1CFsLsPjPY=
+	b=TUmoQrQdIYeMlb6W4yMBqPtQmVhm7/dgcU4+FfEU60M8wX1scHPa9E0qiHYXyT4EU
+	 rowmLhNhIc/2CORVXLEttrkXniOefo/YiUxN2/5gfRR52/vIT/MAsSm2lVFmapJTUT
+	 v86RvfFfNqhr1OJa/f6zJXFDTOSZxNwaWwo2vpQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 7.0 149/307] drm/arcpgu: fix device node leak
-Date: Mon,  4 May 2026 15:50:34 +0200
-Message-ID: <20260504135148.390609089@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.12 016/215] driver core: Dont let a device probe until its ready
+Date: Mon,  4 May 2026 15:50:35 +0200
+Message-ID: <20260504135130.767202378@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +66,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B9F4E4BE922
+X-Rspamd-Queue-Id: 1E83A4BF810
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -75,63 +78,238 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243630-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243178-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,harvard.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,samsung.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit ad3ac32a3893a2bbcad545efc005a8e4e7ecf10c upstream.
+commit a2225b6e834a838ae3c93709760edc0a169eb2f2 upstream.
 
-This function gets a device_node reference via
-of_graph_get_remote_port_parent() and stores it in encoder_node, but never
-puts that reference. Add it.
+The moment we link a "struct device" into the list of devices for the
+bus, it's possible probe can happen. This is because another thread
+can load the driver at any time and that can cause the device to
+probe. This has been seen in practice with a stack crawl that looks
+like this [1]:
 
-There used to be a of_node_put(encoder_node) but it has been removed by
-mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
-arcpgu_drm_hdmi_init").
+  really_probe()
+  __driver_probe_device()
+  driver_probe_device()
+  __driver_attach()
+  bus_for_each_dev()
+  driver_attach()
+  bus_add_driver()
+  driver_register()
+  __platform_driver_register()
+  init_module() [some module]
+  do_one_initcall()
+  do_init_module()
+  load_module()
+  __arm64_sys_finit_module()
+  invoke_syscall()
 
-Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
+As a result of the above, it was seen that device_links_driver_bound()
+could be called for the device before "dev->fwnode->dev" was
+assigned. This prevented __fw_devlink_pickup_dangling_consumers() from
+being called which meant that other devices waiting on our driver's
+sub-nodes were stuck deferring forever.
+
+It's believed that this problem is showing up suddenly for two
+reasons:
+1. Android has recently (last ~1 year) implemented an optimization to
+   the order it loads modules [2]. When devices opt-in to this faster
+   loading, modules are loaded one-after-the-other very quickly. This
+   is unlike how other distributions do it. The reproduction of this
+   problem has only been seen on devices that opt-in to Android's
+   "parallel module loading".
+2. Android devices typically opt-in to fw_devlink, and the most
+   noticeable issue is the NULL "dev->fwnode->dev" in
+   device_links_driver_bound(). fw_devlink is somewhat new code and
+   also not in use by all Linux devices.
+
+Even though the specific symptom where "dev->fwnode->dev" wasn't
+assigned could be fixed by moving that assignment higher in
+device_add(), other parts of device_add() (like the call to
+device_pm_add()) are also important to run before probe. Only moving
+the "dev->fwnode->dev" assignment would likely fix the current
+symptoms but lead to difficult-to-debug problems in the future.
+
+Fix the problem by preventing probe until device_add() has run far
+enough that the device is ready to probe. If somehow we end up trying
+to probe before we're allowed, __driver_probe_device() will return
+-EPROBE_DEFER which will make certain the device is noticed.
+
+In the race condition that was seen with Android's faster module
+loading, we will temporarily add the device to the deferred list and
+then take it off immediately when device_add() probes the device.
+
+Instead of adding another flag to the bitfields already in "struct
+device", instead add a new "flags" field and use that. This allows us
+to freely change the bit from different thread without worrying about
+corrupting nearby bits (and means threads changing other bit won't
+corrupt us).
+
+[1] Captured on a machine running a downstream 6.6 kernel
+[2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libmodprobe/libmodprobe.cpp?q=LoadModulesParallel
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://patch.msgid.link/20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 2023c610dc54 ("Driver core: add new device to bus's list before probing")
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20260406162231.v5.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/arcpgu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/core.c    |   15 +++++++++++++++
+ drivers/base/dd.c      |   20 ++++++++++++++++++++
+ include/linux/device.h |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 79 insertions(+)
 
---- a/drivers/gpu/drm/tiny/arcpgu.c
-+++ b/drivers/gpu/drm/tiny/arcpgu.c
-@@ -250,7 +250,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
- static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
- {
- 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
--	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
-+	struct device_node *encoder_node __free(device_node) = NULL;
-+	struct device_node *endpoint_node = NULL;
- 	struct drm_connector *connector = NULL;
- 	struct drm_device *drm = &arcpgu->drm;
- 	int ret;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3691,6 +3691,21 @@ int device_add(struct device *dev)
+ 		fw_devlink_link_device(dev);
+ 	}
+ 
++	/*
++	 * The moment the device was linked into the bus's "klist_devices" in
++	 * bus_add_device() then it's possible that probe could have been
++	 * attempted in a different thread via userspace loading a driver
++	 * matching the device. "ready_to_probe" being unset would have
++	 * blocked those attempts. Now that all of the above initialization has
++	 * happened, unblock probe. If probe happens through another thread
++	 * after this point but before bus_probe_device() runs then it's fine.
++	 * bus_probe_device() -> device_initial_probe() -> __device_attach()
++	 * will notice (under device_lock) that the device is already bound.
++	 */
++	device_lock(dev);
++	dev_set_ready_to_probe(dev);
++	device_unlock(dev);
++
+ 	bus_probe_device(dev);
+ 
+ 	/*
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -844,6 +844,26 @@ static int __driver_probe_device(const s
+ 	if (dev->driver)
+ 		return -EBUSY;
+ 
++	/*
++	 * In device_add(), the "struct device" gets linked into the subsystem's
++	 * list of devices and broadcast to userspace (via uevent) before we're
++	 * quite ready to probe. Those open pathways to driver probe before
++	 * we've finished enough of device_add() to reliably support probe.
++	 * Detect this and tell other pathways to try again later. device_add()
++	 * itself will also try to probe immediately after setting
++	 * "ready_to_probe".
++	 */
++	if (!dev_ready_to_probe(dev))
++		return dev_err_probe(dev, -EPROBE_DEFER, "Device not ready to probe\n");
++
++	/*
++	 * Set can_match = true after calling dev_ready_to_probe(), so
++	 * driver_deferred_probe_add() won't actually add the device to the
++	 * deferred probe list when dev_ready_to_probe() returns false.
++	 *
++	 * When dev_ready_to_probe() returns false, it means that device_add()
++	 * will do another probe() attempt for us.
++	 */
+ 	dev->can_match = true;
+ 	dev_dbg(dev, "bus: '%s': %s: matched device with driver %s\n",
+ 		drv->bus->name, __func__, drv->name);
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -500,6 +500,21 @@ struct device_physical_location {
+ };
+ 
+ /**
++ * enum struct_device_flags - Flags in struct device
++ *
++ * Each flag should have a set of accessor functions created via
++ * __create_dev_flag_accessors() for each access.
++ *
++ * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished enough
++ *		initialization that probe could be called.
++ */
++enum struct_device_flags {
++	DEV_FLAG_READY_TO_PROBE = 0,
++
++	DEV_FLAG_COUNT
++};
++
++/**
+  * struct device - The basic device structure
+  * @parent:	The device's "parent" device, the device to which it is attached.
+  * 		In most cases, a parent device is some sort of bus or host
+@@ -594,6 +609,7 @@ struct device_physical_location {
+  * @dma_skip_sync: DMA sync operations can be skipped for coherent buffers.
+  * @dma_iommu: Device is using default IOMMU implementation for DMA and
+  *		doesn't rely on dma_ops structure.
++ * @flags:	DEV_FLAG_XXX flags. Use atomic bitfield operations to modify.
+  *
+  * At the lowest level, every device in a Linux system is represented by an
+  * instance of struct device. The device structure contains the information
+@@ -716,8 +732,36 @@ struct device {
+ #ifdef CONFIG_IOMMU_DMA
+ 	bool			dma_iommu:1;
+ #endif
++
++	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
+ };
+ 
++#define __create_dev_flag_accessors(accessor_name, flag_name) \
++static inline bool dev_##accessor_name(const struct device *dev) \
++{ \
++	return test_bit(flag_name, dev->flags); \
++} \
++static inline void dev_set_##accessor_name(struct device *dev) \
++{ \
++	set_bit(flag_name, dev->flags); \
++} \
++static inline void dev_clear_##accessor_name(struct device *dev) \
++{ \
++	clear_bit(flag_name, dev->flags); \
++} \
++static inline void dev_assign_##accessor_name(struct device *dev, bool value) \
++{ \
++	assign_bit(flag_name, dev->flags, value); \
++} \
++static inline bool dev_test_and_set_##accessor_name(struct device *dev) \
++{ \
++	return test_and_set_bit(flag_name, dev->flags); \
++}
++
++__create_dev_flag_accessors(ready_to_probe, DEV_FLAG_READY_TO_PROBE);
++
++#undef __create_dev_flag_accessors
++
+ /**
+  * struct device_link - Device link representation.
+  * @supplier: The device on the supplier end of the link.
 
 
 
