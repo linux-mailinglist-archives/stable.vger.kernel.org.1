@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-243432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK1gCuKp+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:58 +0200
+	id aCdNKJmm+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFF04BEE5B
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6464BE539
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8D4F3000FC8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 945F63022BB9
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3A13D3334;
-	Mon,  4 May 2026 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B23F3DD53E;
+	Mon,  4 May 2026 13:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YL8K/VFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMYhZTr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F351D3B19D1;
-	Mon,  4 May 2026 14:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37D3DDDD7;
+	Mon,  4 May 2026 13:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903869; cv=none; b=FR2zjrbJlWOOzAxpy3g0CZstChLLJntNp7NmJyYdZg+ELLQa5/WRroE0hrjQMMgCskEXIwJrAtzsE7Rh9dGWVBa8CSjxzRl/zekULr+iXzhf9w5k+e8/hTZrK+Dbw8hUdGBeCYAxQHe1+EGrdFnyqu+XOcTeGxcURZHQPhuYOoM=
+	t=1777903131; cv=none; b=GRmv8jCc2+LbKqqzj1CDmRs3l8Ktu7hAKNmlQGpUoef1AXCX7TT+5ojcBs6eEKZE0UGsj+JdPkBjKserbGz3uD2/lD117GBIxS3i3YnkH7UM4kbPus0lHV/8PJyxM+lK087cKAwhPTcHZqPmUFjVhcPd5aVpmfPyMizfJTLWSlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903869; c=relaxed/simple;
-	bh=k7pGaJKN+ctqzB5SZ86i3Y1HF0ZK9i4se6jMQ7vCezk=;
+	s=arc-20240116; t=1777903131; c=relaxed/simple;
+	bh=1jraNgiHsMlH5L0ot1p3sQgwVJnC4GoEgnKdMcLE06M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7zyIzhvcREkS2k05Lj7EwaBXTG1y3x5//RgnF9gNb/0N9vgarZSObxGwKksCJR494ugY/XO3ylt8WfDxhrGc7NU5/4MS9WRKpMqwpEFFX+Dd2b+ia2XHNmsUwguuv/QL2imXuHdnUYUvpiS8BZPa848ftcAftr6cFPvVmO960c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YL8K/VFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C4FC2BCB8;
-	Mon,  4 May 2026 14:11:08 +0000 (UTC)
+	 MIME-Version; b=duJUCCs2z0EvqtZy+QmYnrC6NJG7sIbcTE0MpRPGFp1vTad+GQT6xPP5ZC6OJeL81fe0qgJJOBbpRi1VWnFnnN037hU6z/Z1ziB41vAIbE70qEDHa8jiJPjPyGZyBes/MnHM0X3eMj3BYu7930L60/kn7yyfkXW/8/cTXrmbwYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMYhZTr/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B6BC2BCB8;
+	Mon,  4 May 2026 13:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903868;
-	bh=k7pGaJKN+ctqzB5SZ86i3Y1HF0ZK9i4se6jMQ7vCezk=;
+	s=korg; t=1777903130;
+	bh=1jraNgiHsMlH5L0ot1p3sQgwVJnC4GoEgnKdMcLE06M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YL8K/VFmdUz4Gt8y8iyVumkfA5ctEB/jK6JlrHBp6e6snhU84qldFI9yjcX9o63Ty
-	 VgG2BYurNCtkcXoLVp7fC104kS540y7/HstnNQXNjY6IoJIXPB5UMY0YLCKs5+yIT/
-	 Khz/B9ghuIkxNDNP9idZ1d96R8JFaYio4FPDFcbc=
+	b=IMYhZTr/FRCUUHwq/SiShukdM+CdW33nIUxS1vTa8B4OiGzLIWFiXwhpBpFlVo1U0
+	 +7dXQT2GeOAgcKsu29tC862D2hg4vmu2jY8fWuEA58bjeVGt4sYfZVPmC4n8PG6pwi
+	 kZDr387vzYjCQgYGnzslTe5dzJ3aKX7l1WFF7rzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 060/275] mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
-Date: Mon,  4 May 2026 15:50:00 +0200
-Message-ID: <20260504135145.163005285@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 7.0 116/307] module.lds.S: Fix modules on 32-bit parisc architecture
+Date: Mon,  4 May 2026 15:50:01 +0200
+Message-ID: <20260504135147.169772424@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BAFF04BEE5B
+X-Rspamd-Queue-Id: 7B6464BE539
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -78,66 +77,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,suse.com,gmx.de];
+	TAGGED_FROM(0.00)[bounces-243144-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243432-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,linux-foundation.org:email,chromium.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 4fb61d95ad21c3b6f1c09f357ff49d70abb0535e upstream.
+commit 1221365f55281349da4f4ba41c05b57cd15f5c28 upstream.
 
-zs_page_migrate() uses copy_page() to copy the contents of a zspage page
-during migration.  However, copy_page() is not instrumented by KMSAN, so
-the shadow and origin metadata of the destination page are not updated.
+On the 32-bit parisc architecture, we always used the
+-ffunction-sections compiler option to tell the compiler to put the
+functions into seperate text sections. This is necessary, otherwise
+"big" kernel modules like ext4 or ipv6 fail to load because some
+branches won't be able to reach their stubs.
 
-As a result, subsequent accesses to the migrated page are reported as
-use-after-free by KMSAN, despite the data being correctly copied.
+Commit 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related
+macros") broke this for parisc because all text sections will get
+unconditionally merged now.
 
-Add a kmsan_copy_page_meta() call after copy_page() to propagate the KMSAN
-metadata to the new page, matching what copy_highpage() does internally.
+Introduce the ARCH_WANTS_MODULES_TEXT_SECTIONS config option which
+avoids the text section merge for modules, and fix this issue by
+enabling this option by default for 32-bit parisc.
 
-Link: https://lkml.kernel.org/r/20260321132912.93434-1-syoshida@redhat.com
-Fixes: afb2d666d025 ("zsmalloc: use copy_page for full page copy")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related macros")
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: stable@vger.kernel.org # v6.19+
+Suggested-by: Sami Tolvanen <samitolvanen@google.com>
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zsmalloc.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/Kconfig         |    7 +++++++
+ arch/parisc/Kconfig  |    1 +
+ scripts/module.lds.S |    2 ++
+ 3 files changed, 10 insertions(+)
 
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1708,6 +1708,7 @@ static int zs_page_migrate(struct page *
- 	 */
- 	d_addr = kmap_local_zpdesc(newzpdesc);
- 	copy_page(d_addr, s_addr);
-+	kmsan_copy_page_meta(zpdesc_page(newzpdesc), zpdesc_page(zpdesc));
- 	kunmap_local(d_addr);
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1128,6 +1128,13 @@ config ARCH_WANTS_MODULES_DATA_IN_VMALLO
+ 	  For architectures like powerpc/32 which have constraints on module
+ 	  allocation and need to allocate module data outside of module area.
  
- 	for (addr = s_addr + offset; addr < s_addr + PAGE_SIZE;
++config ARCH_WANTS_MODULES_TEXT_SECTIONS
++	bool
++	help
++	  For architectures like 32-bit parisc which require that functions in
++	  modules have to keep code in own text sections (-ffunction-sections)
++	  and to avoid merging all text into one big text section,
++
+ config ARCH_WANTS_EXECMEM_LATE
+ 	bool
+ 	help
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -8,6 +8,7 @@ config PARISC
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select ARCH_WANT_FRAME_POINTERS
++	select ARCH_WANTS_MODULES_TEXT_SECTIONS if !64BIT
+ 	select ARCH_HAS_CPU_CACHE_ALIASING
+ 	select ARCH_HAS_DMA_ALLOC if PA11
+ 	select ARCH_HAS_DMA_OPS
+--- a/scripts/module.lds.S
++++ b/scripts/module.lds.S
+@@ -41,9 +41,11 @@ SECTIONS {
+ 	__kcfi_traps		0 : { KEEP(*(.kcfi_traps)) }
+ #endif
+ 
++#ifndef CONFIG_ARCH_WANTS_MODULES_TEXT_SECTIONS
+ 	.text			0 : {
+ 		*(.text .text.[0-9a-zA-Z_]*)
+ 	}
++#endif
+ 
+ 	.bss			0 : {
+ 		*(.bss .bss.[0-9a-zA-Z_]*)
 
 
 
