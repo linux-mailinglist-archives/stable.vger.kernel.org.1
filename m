@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBO6FICx+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:28 +0200
+	id CLWLL2+r+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B0C4C001F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9019E4BF2FB
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 88BD830547A4
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 064533010642
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46853E120C;
-	Mon,  4 May 2026 14:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A253DE43B;
+	Mon,  4 May 2026 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJefTL5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUDbvWOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680DB3D8129;
-	Mon,  4 May 2026 14:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5337A1A6827;
+	Mon,  4 May 2026 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904749; cv=none; b=RHcWIc0pr9simvZ4OcSVL9jSsPyL7TRsgeS9wbvI2330S8y1g3D4o/fkpFJAPs1ISrfWd766qwvijfk9C81aYCtfLlJqYixFGcgkzcGEIqRjBR+KUC56oSn7hOf6H7LBIcqqXKuyOwioqePOENbaVKeIKDq0yfZ+BDlBOV5c744=
+	t=1777904324; cv=none; b=bcd+GjiXR88ev7Sm+1XPF6amlFgb/KYSprOxNja8n2OAk7p9Fhf80kDvxOwK1SVLmZjpUehxjg69h5IE7+2DCeadfI5WXZH9569tq7OQZNlw5shpvKmXVOoyZON/foV3cvARtJiYh+mmxUQfpUCTToMVFiiiyAWNRXpgM130a0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904749; c=relaxed/simple;
-	bh=G914j1P5/Sl5QiT6zYcF/Y189J+sT0FGOvktGR6zeHk=;
+	s=arc-20240116; t=1777904324; c=relaxed/simple;
+	bh=FkaVUg/5RkOADjYOXddRiRWh26q/fji9q2oRE4gwnlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=My2xJeYi7q+xKqgaTOgQvKazeWOjgJD2uIB9hZ3I+4BCGMw88ND2q4GBAyWiAKQfA+bv1DXZUdiSOMjcDBGoeQ35Vg2eHFrBDa3ruSFV9FABynR+GCpwqLpMX3YBGo9v/cuJJpWo0CfQqFIbh/3JYVZVdXb69dU0cdOhK2K9bA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJefTL5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26C8C2BCB8;
-	Mon,  4 May 2026 14:25:48 +0000 (UTC)
+	 MIME-Version; b=kjZUvTggfldtp37lL6DvvPPxniut6RrCvPnD2r1Ho+6prmMuGObTgdK9mrw1iYknlUZanKiEh0k6fhVvqmME/Te75U8lQkJWTVvrg4+Gi/suZVQb7loHb2PjDT55GSKwRvLS4KG4aadisCD4+1J8Wf3/gbuLtZCS+/emlUQzuQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUDbvWOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8CFC2BCB8;
+	Mon,  4 May 2026 14:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904749;
-	bh=G914j1P5/Sl5QiT6zYcF/Y189J+sT0FGOvktGR6zeHk=;
+	s=korg; t=1777904324;
+	bh=FkaVUg/5RkOADjYOXddRiRWh26q/fji9q2oRE4gwnlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJefTL5s5X53fC1DBndAa4MReg6V67ypyeC7uKlkITV79VhAjrN3YwFYbRfKDhv1P
-	 ObbB36zab1UFu16icZFTeSpVZxAK3eHfTHgDW0EsE9G2F2Qrk6imRSdtzKVJiB5RCI
-	 YTKtWFFxK9c0xju809hQMflYtRJi6ByoU5phJes8=
+	b=RUDbvWOoIxVqdWEPFikBML/FygZnsM1r9ko8hjAq+Ejmon9nAC158KzE8ExNASY2+
+	 NHyD7lBogJ6040jDK5M4QkUIct0slznhOoHh08MEClG5ha6kz5bn5bsvqMrVkW+XH3
+	 E5cmTbyALzudA4hHIMKDDPgsxQWYIzaDZ1dXs1Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 159/215] crypto: atmel-tdes - fix DMA sync direction
+	Tushar Sariya <tushar.97@hotmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 6.18 238/275] NFSv4.1: Apply session size limits on clone path
 Date: Mon,  4 May 2026 15:52:58 +0200
-Message-ID: <20260504135135.984321340@linuxfoundation.org>
+Message-ID: <20260504135151.888526932@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 53B0C4C001F
+X-Rspamd-Queue-Id: 9019E4BF2FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243609-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,hammerspace.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243776-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,hammerspace.com:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Tushar Sariya <tushar.97@hotmail.com>
 
-commit c8a9a647532f5c2a04180352693215e24e9dba03 upstream.
+commit 8c787b286f39c7584440b97b92f87cbe934c13ff upstream.
 
-Before DMA output is consumed by the CPU, ->dma_addr_out must be synced
-with dma_sync_single_for_cpu() instead of dma_sync_single_for_device().
-Using the wrong direction can return stale cache data on non-coherent
-platforms.
+nfs4_clone_server() builds a child nfs_server for same-server
+automounted submounts but never calls nfs4_session_limit_rwsize()
+or nfs4_session_limit_xasize() after nfs_clone_server(). This means
+the child mount can end up with rsize/wsize values that exceed the
+negotiated session channel limits, causing NFS4ERR_REQ_TOO_BIG and
+EIO on servers that enforce tight max_request_size budgets.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Fixes: 1f858040c2f7 ("crypto: atmel-tdes - add support for latest release of the IP (0x700)")
+Top-level mounts go through nfs4_server_common_setup() which calls
+these limiters after nfs_probe_server(). Apply the same clamping on
+the clone path for consistency.
+
+Fixes: 2b092175f5e3 ("NFS: Fix inheritance of the block sizes when automounting")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Tushar Sariya <tushar.97@hotmail.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-tdes.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/nfs/internal.h   |    2 ++
+ fs/nfs/nfs4client.c |    4 ++--
+ fs/nfs/nfs4proc.c   |    3 +++
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -294,8 +294,8 @@ static int atmel_tdes_crypt_pdc_stop(str
- 		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
- 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
- 	} else {
--		dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
--					   dd->dma_size, DMA_FROM_DEVICE);
-+		dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
-+					dd->dma_size, DMA_FROM_DEVICE);
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -253,6 +253,8 @@ extern struct nfs_client *nfs4_set_ds_cl
+ 					     u32 minor_version);
+ extern struct rpc_clnt *nfs4_find_or_create_ds_client(struct nfs_client *,
+ 						struct inode *);
++extern void nfs4_session_limit_rwsize(struct nfs_server *server);
++extern void nfs4_session_limit_xasize(struct nfs_server *server);
+ extern struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
+ 			const struct sockaddr_storage *ds_addr, int ds_addrlen,
+ 			int ds_proto, unsigned int ds_timeo,
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1033,7 +1033,7 @@ EXPORT_SYMBOL_GPL(nfs4_set_ds_client);
+  * Limit the mount rsize, wsize and dtsize using negotiated fore
+  * channel attributes.
+  */
+-static void nfs4_session_limit_rwsize(struct nfs_server *server)
++void nfs4_session_limit_rwsize(struct nfs_server *server)
+ {
+ #ifdef CONFIG_NFS_V4_1
+ 	struct nfs4_session *sess;
+@@ -1058,7 +1058,7 @@ static void nfs4_session_limit_rwsize(st
+ /*
+  * Limit xattr sizes using the channel attributes.
+  */
+-static void nfs4_session_limit_xasize(struct nfs_server *server)
++void nfs4_session_limit_xasize(struct nfs_server *server)
+ {
+ #ifdef CONFIG_NFS_V4_2
+ 	struct nfs4_session *sess;
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -11000,6 +11000,9 @@ static struct nfs_server *nfs4_clone_ser
+ 	if (IS_ERR(server))
+ 		return server;
  
- 		/* copy data */
- 		count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
-@@ -619,8 +619,8 @@ static int atmel_tdes_crypt_dma_stop(str
- 			dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
- 			dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
- 		} else {
--			dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
--				dd->dma_size, DMA_FROM_DEVICE);
-+			dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
-+						dd->dma_size, DMA_FROM_DEVICE);
- 
- 			/* copy data */
- 			count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
++	nfs4_session_limit_rwsize(server);
++	nfs4_session_limit_xasize(server);
++
+ 	error = nfs4_delegation_hash_alloc(server);
+ 	if (error) {
+ 		nfs_free_server(server);
 
 
 
