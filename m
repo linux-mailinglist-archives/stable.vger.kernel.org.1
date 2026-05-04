@@ -1,174 +1,155 @@
-Return-Path: <stable+bounces-242955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEcGHntg+GlJtgIAu9opvQ
-	(envelope-from <stable+bounces-242955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:01:47 +0200
+	id qMGuCplg+GnKtgIAu9opvQ
+	(envelope-from <stable+bounces-242957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:02:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CD94BAB3A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:01:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC124BAB50
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1374730471EE
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:57:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 088993072472
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEA831960A;
-	Mon,  4 May 2026 08:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AEF3491D6;
+	Mon,  4 May 2026 08:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqyK9TeW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XbxCgF/W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB09335067
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB11318EEE;
+	Mon,  4 May 2026 08:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777885017; cv=none; b=VgIuCeDQdwwMi2MlBq/dBIaI5uEHvkoaNPLE3W54Mb4PH+X4UjFaRSBrltYBCaCJodn53g3C7G1Hgkme5ae6nf+MF0dJZQqLV3ImhoQIRiHyCj3m4c4di00fatszlwi9hMghERyArIV+xNtLMFcjU0Ik54nxIJD8TYQUKgg8Tv0=
+	t=1777885053; cv=none; b=U3tA9nyPBOHv4wvDzusV18fX+9c/Ypc70nEf9KdY7v3VkEdHn2f2x7rveWpTKQ335z+2eluYolXttUA1U/SuJYT6hDcrTMtWdH+EDVbJCz2PHBCHMAllcEMXgJ5cGciQwXABaTKYgqxKyw/1OHikq8711SSXfn79av1e0W7sCkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777885017; c=relaxed/simple;
-	bh=+h6hqUf20FgOwmgRPPI6m1xyo5vyCS672QkOX8GbCdM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WqknjC29kAGyPyeyu+TBYktiMp3BOaZBHup+xNNzqD6bwaTmNY9EOtP4HeNZNz4GUV3IfHmUMilAGtM9h1K3Y4qzWREPYQWq7k2hoA67kvzWvst8KWw5LX+hhJl3+xQOLARIt/3mEHbGXgi6iCZSJ+FH9zBymeipEtfahCcZhdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqyK9TeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9230C2BCB8;
-	Mon,  4 May 2026 08:56:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777885017;
-	bh=+h6hqUf20FgOwmgRPPI6m1xyo5vyCS672QkOX8GbCdM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=SqyK9TeWqHfafj7Rb+DkVBlvkkODA/kG5giKMlHzOX40n6HQMhNagRmtll/7NgyYQ
-	 hx4CZoX2Sn4qVeYuCCl5EWFGBmTqLTf0Dug/7IqECD/guUheRbdT7FB5fdiignxU02
-	 s/Qe8oFeRkiloATy0FY19W6J8uwgr/JVmZgPsdkM=
-Subject: FAILED: patch "[PATCH] crypto: caam - guard HMAC key hex dumps in hash_digest_key" failed to apply to 5.10-stable tree
-To: thorsten.blum@linux.dev,herbert@gondor.apana.org.au
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:56:38 +0200
-Message-ID: <2026050438-conical-landscape-5b4d@gregkh>
+	s=arc-20240116; t=1777885053; c=relaxed/simple;
+	bh=DCB792sBP7heCFPmc4hb1oWEUUSwNd/IGJYThEbOIUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pqPwnGMcK7N8AcwbRPMF0V6MGlihD5lFXD5rOGh/bDNMkCrxfQdjWoGEfnE3ans6FJjI72BIkegoxNVbkMWDK64TMbTND7T5aNYbTxvAhwyZjW236Or7MwMUbEi28TmI+wAn1kfLGPbl4cKIPeP6l8UyPkyYw6NSPauqh2O2qZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XbxCgF/W; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777885053; x=1809421053;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DCB792sBP7heCFPmc4hb1oWEUUSwNd/IGJYThEbOIUM=;
+  b=XbxCgF/WnvLSLayWKKI+pYFsKeVDTQ10yvUBVCtYeQLvPDfHkYPFZMb4
+   oTKWskrxtkR4M5AZR4JsYcJRTau/bG9SarUJKjJnF3nr1gqt+VeJw8EGR
+   +ZPj06vzVpw8VV7NQhyWM12TdDVayK8NkQQXFTE/4vdB+M/8fvHwzzbqt
+   GI16/5ABOtICQKVP65cDwLm7HqkRohKVKi3HW4JIo9wJMxSPiq2fi9pDF
+   zoCFry5wTfUaLy1mcRM7sKwZICxy9YBRUcODdkumSBNulKxpAN7JvkF7/
+   ni23hpofi4D6EJDMIm8Uv9kaknjyMVwxFicbrEMyXoDtcen2mkKtDfDD3
+   w==;
+X-CSE-ConnectionGUID: ocxmXy4oT5mOEqyJeAASpw==
+X-CSE-MsgGUID: RkbBMY7QSlGUiB93EnnRoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="78789423"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="78789423"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 01:57:32 -0700
+X-CSE-ConnectionGUID: /bmu3p2XQp2+uo/+vqVLPA==
+X-CSE-MsgGUID: XB/y71JiRH2MlCGRyE4CBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="232814938"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.78])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 01:57:29 -0700
+Date: Mon, 4 May 2026 11:57:27 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>, linux-usb@vger.kernel.org,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Michael Jamet <michael.jamet@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] thunderbolt: property: reject u32 wrap in
+ tb_property_entry_valid()
+Message-ID: <afhfd76fx1b3tLup@ashevche-desk.local>
+References: <20260415123221.225149-1-michael.bommarito@gmail.com>
+ <cover.1777817011.git.michael.bommarito@gmail.com>
+ <eeedf1e42fd71d3686b352b402466a70482f8b22.1777817011.git.michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 00CD94BAB3A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eeedf1e42fd71d3686b352b402466a70482f8b22.1777817011.git.michael.bommarito@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: 9FC124BAB50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242955-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-242957-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,intel.com,linuxfoundation.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,linux.dev:email,apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,ashevche-desk.local:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
+On Sun, May 03, 2026 at 10:15:05AM -0400, Michael Bommarito wrote:
+> entry->value is u32 and entry->length is u16; the sum is performed in
+> u32 and wraps.  A malicious XDomain peer can pick
+> value = 0xffffff00, length = 0x100 so the sum 0x100000000 wraps to 0
+> and passes the > block_len check.  tb_property_parse() then passes
+> entry->value to parse_dwdata() as a dword offset into the property
+> block, reading attacker-directed memory far past the allocation.
+> 
+> For TEXT-typed entries with the "deviceid" or "vendorid" keys this
+> lands in xd->device_name / xd->vendor_name and is readable back via
+> the per-XDomain device_name / vendor_name sysfs attributes; the leak
+> is NUL-bounded (kstrdup() stops at the first zero byte) and
+> untargeted (the attacker picks a delta, not an absolute address).
+> DATA-typed entries are parsed into property->value.data but not
+> generically surfaced to userspace.
+> 
+> Use check_add_overflow() so a wrapped sum is rejected.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+...
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> +		if (check_add_overflow(entry->value, (u32)entry->length, &end) ||
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 177730a273b18e195263ed953853273e901b5064
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050438-conical-landscape-5b4d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Why is casting needed?
 
-Possible dependencies:
+> +		    end > block_len)
+>  			return false;
 
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 177730a273b18e195263ed953853273e901b5064 Mon Sep 17 00:00:00 2001
-From: Thorsten Blum <thorsten.blum@linux.dev>
-Date: Thu, 19 Mar 2026 10:29:33 +0100
-Subject: [PATCH] crypto: caam - guard HMAC key hex dumps in hash_digest_key
-
-Use print_hex_dump_devel() for dumping sensitive HMAC key bytes in
-hash_digest_key() to avoid leaking secrets at runtime when
-CONFIG_DYNAMIC_DEBUG is enabled.
-
-Fixes: 045e36780f11 ("crypto: caam - ahash hmac support")
-Fixes: 3f16f6c9d632 ("crypto: caam/qi2 - add support for ahash algorithms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
-index 553994228a17..854200850830 100644
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -3270,7 +3270,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 	dpaa2_fl_set_addr(out_fle, key_dma);
- 	dpaa2_fl_set_len(out_fle, digestsize);
- 
--	print_hex_dump_debug("key_in@" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("shdesc@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -3290,7 +3290,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 		/* in progress */
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
--		print_hex_dump_debug("digested key@" __stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@" __stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
- 	}
-diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
-index e0a23c55c10e..72cfe00df3f4 100644
---- a/drivers/crypto/caam/caamhash.c
-+++ b/drivers/crypto/caam/caamhash.c
-@@ -393,7 +393,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 	append_seq_store(desc, digestsize, LDST_CLASS_2_CCB |
- 			 LDST_SRCDST_BYTE_CONTEXT);
- 
--	print_hex_dump_debug("key_in@"__stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("jobdesc@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -408,7 +408,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
- 
--		print_hex_dump_debug("digested key@"__stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@"__stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
- 	}
 
 
