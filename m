@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-243647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WH6TBFqu+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:02 +0200
+	id PujREs+p+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5F64BFB0C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7A84BEE0A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A6920300BD5E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A371930228EB
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFE11A6827;
-	Mon,  4 May 2026 14:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FBF3B7742;
+	Mon,  4 May 2026 14:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwLu2PMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWEXtGrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF12315785;
-	Mon,  4 May 2026 14:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4CC35A3AD;
+	Mon,  4 May 2026 14:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904419; cv=none; b=FxmVNNREQQQwEr7BzK8VMi32ZK5aJ2PqLCzhsGw8WUduPCoumu2CgrxE0cYrj2rzADt8MUUx4O/8Fz6KelIXwyMNeZvvEYDHkX1oj9ujEst2pG2hPownUMII+xZ2wRQgN/rk9V+CdVujMNy7C5AIp94Btp7U8GV2jFNX06JB/Ac=
+	t=1777903853; cv=none; b=YR1LZt80/hbq5uMmO6ksxXX3gGEeIt64Ppqsf9ccl/IgjfDekdqf9r5wBke10fgQ36bNgl3ozN0vjVHT31X9LJc2mXIl59aIEZd3NAfgZbCmjhAX3JK5D/h/1tCAtmWBrXdw+ULkpXWs2R4uYlrbo7sEDGo6XugGbKRBVMJGR7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904419; c=relaxed/simple;
-	bh=DiDmRllkBbNY7pCwJ2/DXaPtcwe7ZCYSoHr0he+FOeU=;
+	s=arc-20240116; t=1777903853; c=relaxed/simple;
+	bh=A4007hzedcKP9FBrDLl701jnomveRINphlffDdEx3kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A6wilTLGmprc/4JpZf/GQaESZMKHTM0/uTTrMRFkWlzKsBB5mgtVYMrADPr9h4VGubGSWwc7nmt9aw/EnZSuTZxdgcGiGHBlx0gqLecwgm8FRLxIcdkcUKPsaYrogULtXeGxemSE8ROIilqERsaz1IbpysblRxGCQwzH051t2OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwLu2PMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D588BC2BCB8;
-	Mon,  4 May 2026 14:20:18 +0000 (UTC)
+	 MIME-Version; b=GnCHHEkw8q9Jbq7jmEJzT+GFhz9jjftbJu5y2pmhBPlowSFlAUIIJ0jbzTHaG2LZwWoFLhLSIn6UPg5XNdSKF0J9/CbEATxByfe61HFULskt8PJ5Gmg08Wtqz1THethTPSnVhwquj72464hq4gEL4FvLfl7j+GhPN2GF6Q2e3WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWEXtGrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13558C2BCB8;
+	Mon,  4 May 2026 14:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904419;
-	bh=DiDmRllkBbNY7pCwJ2/DXaPtcwe7ZCYSoHr0he+FOeU=;
+	s=korg; t=1777903853;
+	bh=A4007hzedcKP9FBrDLl701jnomveRINphlffDdEx3kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwLu2PMP4x537zP1+NKXL+7DP8oHuVFA+KyAajyDkK4Xb2glRK/8KdV3MaL/9H7am
-	 SqBLZuK+H+5GynZLYZTSaPG50XVJnrejiPcCCxuslWM2y7/9oWFfzqEUn/Pnuf5+PN
-	 7V457SgmiYp8yGpf4rgJrrtib1XCK2VUDe+yUuiA=
+	b=MWEXtGrw5EPOPM+B8NbXr3ZjNagvYvdSeu+pTu7abfUxY0H8JT92KoUGS5cyScL++
+	 f+EqLXEcVctOmMLaiwKXe7g8CyWF3q8TstynFwVSzF49D8J4T3Fpya6YNB5pxkVn6Z
+	 /5yNQQSdw3RtT/YPNLyMPTnBBDMymr1ZQOblOBy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 007/215] ALSA: usb-audio: Evaluate packsize caps at the right place
+	Simon Liebold <simonlie@amazon.de>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.18 086/275] selftests/mqueue: Fix incorrectly named file
 Date: Mon,  4 May 2026 15:50:26 +0200
-Message-ID: <20260504135130.443686544@linuxfoundation.org>
+Message-ID: <20260504135146.115680965@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0A5F64BFB0C
+X-Rspamd-Queue-Id: CC7A84BEE0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243647-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243426-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amazon.de:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Simon Liebold <simonlie@amazon.de>
 
-commit 52521e8398839105ef8eb22b3f0993f9b0d11a57 upstream.
+commit 64fac99037689020ad97e472ae898e96ea3616dc upstream.
 
-We introduced the upper bound checks of the packet sizes by the
-ep->maxframesize for avoiding the URB submission errors.  However, the
-check was applied at an incorrect place in the function
-snd_usb_endpoint_set_params() where ep->maxframesize isn't defined
-yet; the value is defined at a bit later position.  So this ended up
-with a failure at the first run while the second run works.
+Commit 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+intended to increase the timeout for mq_perf_tests from the default
+kselftest limit of 45 seconds to 180 seconds.
 
-For fixing it, move the check at the correct place, right after the
-calculation of ep->maxframesize in the same function.
+Unfortunately, the file storing this information was incorrectly named
+`setting` instead of `settings`, causing the kselftest runner not to
+pick up the limit and keep using the default 45 seconds limit.
 
-Fixes: 7fe8dec3f628 ("ALSA: usb-audio: Cap the packet size pre-calculations")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221292
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260410143220.1676344-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix this by renaming it to `settings` to ensure that the kselftest
+runner uses the increased timeout of 180 seconds for this test.
+
+Fixes: 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+Cc: <stable@vger.kernel.org> # 5.10.y
+Signed-off-by: Simon Liebold <simonlie@amazon.de>
+Link: https://lore.kernel.org/r/20260312140200.2224850-1-simonlie@amazon.de
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/endpoint.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mqueue/{setting => settings} | 0
+ tools/testing/selftests/mqueue/setting  |    1 -
+ tools/testing/selftests/mqueue/settings |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename tools/testing/selftests/mqueue/{setting => settings} (100%)
 
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -1400,9 +1400,6 @@ int snd_usb_endpoint_set_params(struct s
- 		goto unlock;
- 	}
- 
--	ep->packsize[0] = min(ep->packsize[0], ep->maxframesize);
--	ep->packsize[1] = min(ep->packsize[1], ep->maxframesize);
--
- 	/* calculate the frequency in 16.16 format */
- 	ep->freqm = ep->freqn;
- 	ep->freqshift = INT_MIN;
-@@ -1429,6 +1426,9 @@ int snd_usb_endpoint_set_params(struct s
- 	ep->maxframesize = ep->maxpacksize / ep->cur_frame_bytes;
- 	ep->curframesize = ep->curpacksize / ep->cur_frame_bytes;
- 
-+	ep->packsize[0] = min(ep->packsize[0], ep->maxframesize);
-+	ep->packsize[1] = min(ep->packsize[1], ep->maxframesize);
-+
- 	err = update_clock_ref_rate(chip, ep);
- 	if (err >= 0) {
- 		ep->need_setup = false;
+--- a/tools/testing/selftests/mqueue/setting
++++ /dev/null
+@@ -1 +0,0 @@
+-timeout=180
+--- /dev/null
++++ b/tools/testing/selftests/mqueue/settings
+@@ -0,0 +1 @@
++timeout=180
 
 
 
