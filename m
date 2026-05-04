@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEUHJ22r+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:33 +0200
+	id WHaSNTWu+GlIxwIAu9opvQ
+	(envelope-from <stable+bounces-243748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FD34BF2EE
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A644BFAB6
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8E52321F09D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B1EF43027C16
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6A63DEAD5;
-	Mon,  4 May 2026 14:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3723DEAD8;
+	Mon,  4 May 2026 14:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwSFNMxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2NzW92r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4783DE42E;
-	Mon,  4 May 2026 14:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7A93DE455;
+	Mon,  4 May 2026 14:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903517; cv=none; b=Rk9i6M4a5PAVidfkSSXcHRq2v52OfUWSe/ei+AVpSDOohNKshPmreKzC2LAV5qKWZgfKxx3nMRbOOriE4gVEtQzBw81xrXzf5kErCmlM6TJwlAkz9A8QpPLVccomGY9cDdlXOYctUscviyCZ3KxnKSQdBmIR+7arW0TCZ4NmL3U=
+	t=1777904677; cv=none; b=Pqdpbosruy2T3OlotH0fGFR0++7rw/t5XgxIal4n+nqrNi04rvig7uHd6FDmft86KzBmwezOUuOaRJMaxSP2FXcjUz86RpwIv7fhQABOPd11gZuF1vvyeFwQKRjymjZzncnQelv5l+3YefCN6vtJhjlGoIA0XM4f+tTB7zD8PyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903517; c=relaxed/simple;
-	bh=45B4nQgkZbEtiBjLfP+5b1YXXgfhxdHjf1wDt7+AqVw=;
+	s=arc-20240116; t=1777904677; c=relaxed/simple;
+	bh=twb3E4WC7re5aZQDVZ6pO7TXlnTvBpVFTgKJe1kJTb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQwm2qbm3KoayCedwqUK/XBBtV0qJZzOJ9qY2o5k6rbnDPzxQwFD0/Ag8Vn0ws+FM0BlKVZuM+yQKw/+j4SwTqcA+UZKLanJIg7OTvridskQBlqfASWNXDdoNUgTT+9fk4XdHxq2TOQPEYMIWSP7uygoJj/3ZrQ01JwJCsW1sB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwSFNMxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0812AC2BCC4;
-	Mon,  4 May 2026 14:05:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZgYG13Njg51yEQBLVu29fiEIY6ObtRDWUR6CmS1SOt81rsv9jzQYr9PkFUDNmoo/qyUWQHc64js1jEjR8UEu/6MFlqxi9udoUPjPvg7NRDXZ0UmlxuU3ajDypwCF2CWn43dtrvo22lCQhD5OTL20TD5iYtm3JQVPxR/1Mqlq0vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2NzW92r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FEAC2BCB8;
+	Mon,  4 May 2026 14:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903516;
-	bh=45B4nQgkZbEtiBjLfP+5b1YXXgfhxdHjf1wDt7+AqVw=;
+	s=korg; t=1777904677;
+	bh=twb3E4WC7re5aZQDVZ6pO7TXlnTvBpVFTgKJe1kJTb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwSFNMxA9WcnilIEU9ZV11Qf0jkRTKkT3dx4ydhUo7OCzqL0G5S7fwCsJr0gBuMPv
-	 24IyDR1DeIE1LNtalxi4oL7CncMdrp4Rq08+4+FxL1N+LKvhaLPTGDwkgggAbCT+Pc
-	 48EKcoPy9Vd8Wi2WuojNnQ3joE2sXfBvijj7DEec=
+	b=N2NzW92rltqnb3OPfJ9MBEOmBL2iXT+PcvIlIk3MIWr96BMZYRaynrgO0Wwc04kcu
+	 pNo91cq1VgqUTqFFLCiWJ1iI9DeolSUsyEU//72+IgXC6k+Fg9R2dG91lb4n0YwaSi
+	 58BmJV07iPs1752x+OW1AyZ0GTxseK4dETWcA+60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Lothar Rubusch <l.rubusch@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 7.0 264/307] crypto: atmel-sha204a - Fix error codes in OTP reads
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 130/215] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4, and CS
 Date: Mon,  4 May 2026 15:52:29 +0200
-Message-ID: <20260504135152.745186289@linuxfoundation.org>
+Message-ID: <20260504135134.897150893@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 26FD34BF2EE
+X-Rspamd-Queue-Id: 75A644BFAB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243294-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,gmail.com,gondor.apana.org.au];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243748-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,cr0.pg:url,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 094c276da6a0d4971c3faae09a36b51d096659b2 upstream.
+commit 96bd3e76a171a8e21a6387e54e4c420a81968492 upstream.
 
-Return -EINVAL from atmel_i2c_init_read_otp_cmd() on invalid addresses
-instead of -1. Since the OTP zone is accessed in 4-byte blocks, valid
-addresses range from 0 to OTP_ZONE_SIZE / 4 - 1. Fix the bounds check
-accordingly.
+According to the APM Volume #2, 15.5, Canonicalization and Consistency
+Checks (24593—Rev. 3.42—March 2024), the following condition (among
+others) results in a #VMEXIT with VMEXIT_INVALID (aka SVM_EXIT_ERR):
 
-In atmel_sha204a_otp_read(), propagate the actual error code from
-atmel_i2c_init_read_otp_cmd() instead of -1. Also, return -EIO instead
-of -EINVAL when the device is not ready.
+  EFER.LME, CR0.PG, CR4.PAE, CS.L, and CS.D are all non-zero.
 
+In the list of consistency checks done when EFER.LME and CR0.PG are set,
+add a check that CS.L and CS.D are not both set, after the existing
+check that CR4.PAE is set.
+
+This is functionally a nop because the nested VMRUN results in
+SVM_EXIT_ERR in HW, which is forwarded to L1, but KVM makes all
+consistency checks before a VMRUN is actually attempted.
+
+Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
 Cc: stable@vger.kernel.org
-Fixes: e05ce444e9e5 ("crypto: atmel-sha204a - add reading from otp zone")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Lothar Rubusch <l.rubusch@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-17-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-i2c.c     |    4 ++--
- drivers/crypto/atmel-sha204a.c |    7 ++++---
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/nested.c |    6 ++++++
+ arch/x86/kvm/svm/svm.h    |    1 +
+ 2 files changed, 7 insertions(+)
 
---- a/drivers/crypto/atmel-i2c.c
-+++ b/drivers/crypto/atmel-i2c.c
-@@ -72,8 +72,8 @@ EXPORT_SYMBOL(atmel_i2c_init_read_config
- 
- int atmel_i2c_init_read_otp_cmd(struct atmel_i2c_cmd *cmd, u16 addr)
- {
--	if (addr < 0 || addr > OTP_ZONE_SIZE)
--		return -1;
-+	if (addr >= OTP_ZONE_SIZE / 4)
-+		return -EINVAL;
- 
- 	cmd->word_addr = COMMAND;
- 	cmd->opcode = OPCODE_READ;
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -96,9 +96,10 @@ static int atmel_sha204a_rng_read(struct
- static int atmel_sha204a_otp_read(struct i2c_client *client, u16 addr, u8 *otp)
- {
- 	struct atmel_i2c_cmd cmd;
--	int ret = -1;
-+	int ret;
- 
--	if (atmel_i2c_init_read_otp_cmd(&cmd, addr) < 0) {
-+	ret = atmel_i2c_init_read_otp_cmd(&cmd, addr);
-+	if (ret < 0) {
- 		dev_err(&client->dev, "failed, invalid otp address %04X\n",
- 			addr);
- 		return ret;
-@@ -108,7 +109,7 @@ static int atmel_sha204a_otp_read(struct
- 
- 	if (cmd.data[0] == 0xff) {
- 		dev_err(&client->dev, "failed, device not ready\n");
--		return -EINVAL;
-+		return -EIO;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -310,6 +310,10 @@ static bool __nested_vmcb_check_save(str
+ 		    CC(!(save->cr0 & X86_CR0_PE)) ||
+ 		    CC(!kvm_vcpu_is_legal_cr3(vcpu, save->cr3)))
+ 			return false;
++
++		if (CC((save->cs.attrib & SVM_SELECTOR_L_MASK) &&
++		       (save->cs.attrib & SVM_SELECTOR_DB_MASK)))
++			return false;
  	}
  
- 	memcpy(otp, cmd.data+1, 4);
+ 	/* Note, SVM doesn't have any additional restrictions on CR4. */
+@@ -398,6 +402,8 @@ static void __nested_copy_vmcb_save_to_c
+ 	 * Copy only fields that are validated, as we need them
+ 	 * to avoid TOC/TOU races.
+ 	 */
++	to->cs = from->cs;
++
+ 	to->efer = from->efer;
+ 	to->cr0 = from->cr0;
+ 	to->cr3 = from->cr3;
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -136,6 +136,7 @@ struct kvm_vmcb_info {
+ };
+ 
+ struct vmcb_save_area_cached {
++	struct vmcb_seg cs;
+ 	u64 efer;
+ 	u64 cr4;
+ 	u64 cr3;
 
 
 
