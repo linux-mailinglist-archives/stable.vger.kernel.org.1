@@ -1,162 +1,365 @@
-Return-Path: <stable+bounces-243882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GxkOrzP+Glr1AIAu9opvQ
-	(envelope-from <stable+bounces-243882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:56:28 +0200
+	id wI/jOs/Q+Gm41AIAu9opvQ
+	(envelope-from <stable+bounces-243883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 19:01:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545104C1A7C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 18:56:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF534C1B09
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 19:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB6D63026AB2
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 16:53:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D46F630090B5
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 17:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439C13E3D87;
-	Mon,  4 May 2026 16:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA1D3E4C70;
+	Mon,  4 May 2026 17:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Kiv9IDdQ"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HfcNBqXA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2533E0233
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 16:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E0B3E3C5A;
+	Mon,  4 May 2026 17:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777913591; cv=none; b=mA7z6SncLzivic6Zp6aitmgLTEmJ0xVNafOVClx98Lx0J2NJ3t+imiBPMcG1afEef3y+3mM4U18Y0NPuryCVBFWTQN3oquhxsG8gkYPpSfSXs8fuAx474lORqniu2RLZ79eeLnzYCL3MS0P2GAVYJDRt5IPo4pV9OlJS0s3+aPo=
+	t=1777914059; cv=none; b=h1XLWP2ILzlbuLriu82CycRJ0UppYct6JjKaZ6d5J1aX/mw/X5BURysy3imYhUiy7PtKWfDUNw/2rN2f63MeVPTRtxmGZXtaNpYPwTjbdmHgbGyfWZe7qAOoGFpiU1ptV86ClYxtsYRdzbsRZLUkkzXj3HT3vlt5/rZZ5usD1+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777913591; c=relaxed/simple;
-	bh=VvoTMuBC6NabAMOjcL5+KrfCtlrzYsEb/kwkobz/TJM=;
+	s=arc-20240116; t=1777914059; c=relaxed/simple;
+	bh=rp+Jhejjuatd0hbki8yxt6aiHUP4PQ/nbRQzaS23LZ4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LITaDZZJ0tHQ6LdFEHBkddIBUpmlwjnyzfIWNb7S/Si9ikixYYxMGIgBbDQk6vl9arfSV/I0mgSfHIbDlQdAdEhJwSS3OcDNiy0Cx15pAKD8n7aP6hwh4tLw/p6ZK3uD9amhvOv+ud/iBQ6MrKCUAF+4dod34LCJ4S6NV/QA88A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Kiv9IDdQ; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48896199cbaso38598705e9.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 09:53:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1777913588; x=1778518388; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cq1UVChEUo34oLEdykFyKbSvPVU5W9ODBCkDev8EMiQ=;
-        b=Kiv9IDdQcQVShbEjJsnCLh0HnlEst57ZpGlYa7p+p8L3ZHeFDVEN+qo05bi2gOfjhH
-         6808GZx9rl8wbDU3Jn4uLTZUcB3BWiCd6tyDS/iKaaeTyNvAEeZMNm+9DaY5VSMV84W4
-         iP+QE4pfdHQmwLknvhDPJTQ6bkiuf7MEPDwUWiNE0sFeYGyuOOQO3YRGdCg/jMccMkss
-         Gu0YFMrgQZU3VwUxoGdRLmMLh+e36WT2B+sS+dhx078ITUiq7mSMRYXPe3V1IPfJEFsb
-         nwj/uRPdvpJZc1Z2PG7KKBrbXcmUBeTARo9e9MUSRB0VSb4N07cEYcVNNSoJf0LvSgiY
-         gxJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777913588; x=1778518388;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cq1UVChEUo34oLEdykFyKbSvPVU5W9ODBCkDev8EMiQ=;
-        b=VeU32WjlxKbgLq/fKyk4Mm1AgDbVMn8nxYZLtBZh/cmS8GxIu02PXanhgECnxmLODa
-         GgywIJPsgeYW8+uflMAAtBfYvSeRz0KiOxQJ6Fj/3hRGmdWjfsuapxiqBRTMPPDGUJCC
-         wRkK7Cp4HI8AQu8Fh3PDZyKyeF1iw6GsTomIx0hpsEyvQa3l7Hu0k5vXlISXIdhYnHHn
-         PK5K+/XEs/ZTLPUXMJz6Oxc2U3H5m2M4/OAriPCji0a6QI+Vc+sF3oRYSpU+dnbGOUOY
-         cMHZSXwNqHJumhysfzuvNpSds748x8W/QnfGlzlb9jkAsDoXPPkza3363lLjecRWlygy
-         z5kQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8ZMMemibgWao0fGK2Jsgxaf/8fbmo7E0Y7hfSQoHiZSagYvlFdCbKYh8wO67HUFTphPzLk4s8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0U7AkXQaTydxNk2npCy9L5t2T5hVqR7Tdn9GxjBMHADTPE/Bz
-	joEiDBAWK399RP3aYeiLBmkZIyNESABn5auYoMlgPHoI+VfucCQrkYY=
-X-Gm-Gg: AeBDietQDXA798OjucXW+UoOosDIvGAYaTHYKFkGRXr/e9rO1EidP6OHpXJ2VzPTCAD
-	bwcK0R6qP+9GJ7YgUJR/v2W+y5gpWGviKQ8ZneoT4gZtn/cOEjat7ClpC3CifdSlQcShFZtICfd
-	Cb48Pg5LCaFOi43nEQd/d3CyWRvuEQuARQK3yvUUxCGZGkGlvy/aEZ3VSmVRGtA9LD38uakbj4k
-	4QMcF79MI+Kl5UkWIzuGa8FAJ5ej6fuEukliTRWsgy/couc+z33cvbezVNtBEtfTI7qZKYdcGVn
-	T61BU4NgdVg1TIGJhSPhreLzu2WWwvROi27D1SIMLd6SPUt0jOEgcmewXFgXtHWK8h1nz5NWKsP
-	tuU2NIBAt4e+JvMbFV8QtHWxrsAcp7B8naL6E3sMvwmgKS8gla8K9vG8VG3TfSiVwLkmB3s9AXx
-	u5uaOdV8PazT+pVdPdvq52s+haLak6eAWsaE/BnvANVe8nnPdvUd5KBbCex/w+uriPUmRJApvOF
-	tNPiAISZPrcYg==
-X-Received: by 2002:a05:600c:5303:b0:48a:53ea:13eb with SMTP id 5b1f17b1804b1-48a9852c5c0mr190080195e9.5.1777913587969;
-        Mon, 04 May 2026 09:53:07 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ace33.dip0.t-ipconnect.de. [91.42.206.51])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8fe953besm118466215e9.2.2026.05.04.09.53.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 May 2026 09:53:07 -0700 (PDT)
-Message-ID: <58125764-0397-4b11-939d-605a30e4055e@googlemail.com>
-Date: Mon, 4 May 2026 18:53:06 +0200
+	 In-Reply-To:Content-Type; b=gxV00e9Lmz4u3NOvfJSQ5N1fiQqE78FfjlcleQ+tq80poD3MFV5UdI5m49jPTX+nv6iqJZQ3KYHhx4du1tmg6HpAUJuc5gEfA4vNOCrIK1c1UaN/TCVZ8wEKWru6PX5SJGtR12WGJaEbPoyFe5a/TPOMmkgL3Uw4UmpgtP64ukQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HfcNBqXA; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644Df3dF2245623;
+	Mon, 4 May 2026 17:00:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=lx4Snl
+	k0mfRM24bKTPYx5f4XjyIDQ3zq0XQb9GvE2Mk=; b=HfcNBqXAj5afnXfE5vEiAX
+	+KbGOK4J4Mi7HOdm441jFTIha+k1TpYzmn3KEo5MjuKNWwLlh5odyF2h43RPfEg3
+	sZbN1nVNKxkJOtJ5/aSzh3ZU204ib6W1czzn5Cu0q4QGjTnhGLpdJ9D7hZ2UA5hl
+	HkNWGjZcR0aT1tQ//yCWQ9aDseMtocAQGWMK8dGfbbecIIO6P9ZzbMX4+o4MQiHg
+	I0ZH+3uO9pbKSNf0E60iHZJSE4aLIsW9C8/tmPndkbReD4fzavnqlic3SKGFp8fH
+	IkZW2PsydE1FApRirJkLO/0WybWEBd7gyZwvutyhRpFIN79oPnb9G0vykC59g0/Q
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y183s9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 17:00:39 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 644Eir8V018285;
+	Mon, 4 May 2026 17:00:39 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9y5t6p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 17:00:39 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 644H0c9h23069274
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 May 2026 17:00:38 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2ABB358043;
+	Mon,  4 May 2026 17:00:38 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5726758060;
+	Mon,  4 May 2026 17:00:37 +0000 (GMT)
+Received: from [9.61.240.249] (unknown [9.61.240.249])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  4 May 2026 17:00:37 +0000 (GMT)
+Message-ID: <536665e8-47fa-48d7-b22b-1d7133001f74@linux.ibm.com>
+Date: Mon, 4 May 2026 10:00:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.18 000/275] 6.18.27-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260504135142.929052779@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 1/7] PCI: Allow per function PCI slots to fix slot
+ reset on s390
+To: Gerd Bayer <gbayer@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
+        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, stable@vger.kernel.org
+References: <20260421163031.704-1-alifm@linux.ibm.com>
+ <20260421163031.704-2-alifm@linux.ibm.com>
+ <e8758975c7e5007306096a165d05cf1ebf10ccec.camel@linux.ibm.com>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <e8758975c7e5007306096a165d05cf1ebf10ccec.camel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 545104C1A7C
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: yAQLfe-BNZp_qQIabfh9_bNVLJgAxnsg
+X-Proofpoint-GUID: yAQLfe-BNZp_qQIabfh9_bNVLJgAxnsg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDE1NCBTYWx0ZWRfX85tOrVNWsZzk
+ pDCdUx57yGVfGEoCX27sOwD4gYfj0ht1Z8N2frmXeXzuYlPYRwBGnX58MNfRx/GFCnxF6tVjXyX
+ zrcUQ1EAXuw8zkalBAyvZR8CYQ+XOpaP+huSRPhfBd8QBmOyz5iG9fMs/grllRGSllwqt/AXLoa
+ b4DwrNanmBC9nJOc9RKPS5M6sIYGR5/sWDLzDsffJbezRnyrNW5XbnOUzh8vuLkKC+tcv0fjEik
+ 6ESEVgKHi+4+vo3Rbx9ix5dHCzsuB/bG2KoTrUAHZSHv4FS6Ql7d+ReEFF8xS5n8ZwpMeBEGwq5
+ YWmfmTLYLQ76C99yRgou+fxPgLMUQYqVWujXVNJCDtGyNXewf/ysZxdmJiNyflLQ8nuQsNQfo23
+ 8hIL/fZUbsorbMkfoWwbAFmckSr6IPQg4fbb/GYYtrhe6nflxtlnATYLAt2ecPVNcfqHiKbDTpH
+ h/Mu8+MGpd63jmrK0iA==
+X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69f8d0b7 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=7oLPNsgWg75vrdFgU7cA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_05,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040154
+X-Rspamd-Queue-Id: ECF534C1B09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243882-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243883-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
 	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid,peters-netzplatz.de:url,mailvelope.com:url]
-
-Am 04.05.2026 um 15:49 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.18.27 release.
-> There are 275 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_SEVEN(0.00)[11]
 
 
-Beste Grüße,
-Peter Schneider
+On 5/4/2026 8:52 AM, Gerd Bayer wrote:
+> On Tue, 2026-04-21 at 09:30 -0700, Farhan Ali wrote:
+>> On s390 systems, which use a machine level hypervisor, PCI devices are
+>> always accessed through a form of PCI pass-through which fundamentally
+>> operates on a per PCI function granularity. This is also reflected in the
+>> s390 PCI hotplug driver which creates hotplug slots for individual PCI
+>> functions. Its reset_slot() function, which is a wrapper for
+>> zpci_hot_reset_device(), thus also resets individual functions.
+>>
+>> Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
+>> to multifunction devices. This approach worked fine on s390 systems that
+>> only exposed virtual functions as individual PCI domains to the operating
+>> system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
+>> s390 supports exposing the topology of multifunction PCI devices by
+>> grouping them in a shared PCI domain. This creates a problem when resetting
+>> a function through the hotplug driver's slot_reset() interface.
+>>
+>> When attempting to reset a function through the hotplug driver, the shared
+>> slot assignment causes the wrong function to be reset instead of the
+>> intended one. It also leaks memory as we do create a pci_slot object for
+>> the function, but don't correctly free it in pci_slot_release().
+>>
+> Hi Farhan,
+>
+> sorry for jumping this late into reviewing this, but I think I'd prefer
+> a different approach than extending the slot member to u16 to make the
+> full range of 256 usable:
+>
+>> Add a flag for struct pci_slot to allow per function PCI slots for
+>> functions managed through a hypervisor, which exposes individual PCI
+>> functions while retaining the topology. Since we can use all 8 bits
+>> for slot 'number' (for ARI devices), change slot 'number' u16 to
+>> account for special values -1 and PCI_SLOT_ALL_DEVICES.
+>>
+>> Fixes: 44510d6fa0c0 ("s390/pci: Handling multifunctions")
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: Niklas Schnelle <schnelle@linux.ibm.com>
+>> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+>> ---
+>>   drivers/pci/hotplug/rpaphp_slot.c |  2 +-
+>>   drivers/pci/pci.c                 |  5 +++--
+>>   drivers/pci/slot.c                | 33 +++++++++++++++++++++++--------
+>>   include/linux/pci.h               |  8 ++++++--
+>>   4 files changed, 35 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/drivers/pci/hotplug/rpaphp_slot.c b/drivers/pci/hotplug/rpaphp_slot.c
+>> index 67362e5b9971..92eabf5f61b9 100644
+>> --- a/drivers/pci/hotplug/rpaphp_slot.c
+>> +++ b/drivers/pci/hotplug/rpaphp_slot.c
+>> @@ -84,7 +84,7 @@ int rpaphp_register_slot(struct slot *slot)
+>>   	struct hotplug_slot *php_slot = &slot->hotplug_slot;
+>>   	u32 my_index;
+>>   	int retval;
+>> -	int slotno = -1;
+>> +	int slotno = PCI_SLOT_PLACEHOLDER;
+>>   
+>>   	dbg("%s registering slot:path[%pOF] index[%x], name[%s] pdomain[%x] type[%d]\n",
+>>   		__func__, slot->dn, slot->index, slot->name,
+>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>> index 8f7cfcc00090..d0c9f0166af5 100644
+>> --- a/drivers/pci/pci.c
+>> +++ b/drivers/pci/pci.c
+>> @@ -4865,8 +4865,9 @@ static int pci_reset_hotplug_slot(struct hotplug_slot *hotplug, bool probe)
+>>   
+>>   static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
+>>   {
+>> -	if (dev->multifunction || dev->subordinate || !dev->slot ||
+>> -	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
+>> +	if (dev->subordinate || !dev->slot ||
+>> +	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+>> +	    (dev->multifunction && !dev->slot->per_func_slot))
+>>   		return -ENOTTY;
+>>   
+>>   	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
+>> diff --git a/drivers/pci/slot.c b/drivers/pci/slot.c
+>> index e0b7fb43423c..3f6e5dce27a0 100644
+>> --- a/drivers/pci/slot.c
+>> +++ b/drivers/pci/slot.c
+>> @@ -37,7 +37,7 @@ static const struct sysfs_ops pci_slot_sysfs_ops = {
+>>   
+>>   static ssize_t address_read_file(struct pci_slot *slot, char *buf)
+>>   {
+>> -	if (slot->number == 0xff)
+>> +	if (slot->number == (u16)PCI_SLOT_PLACEHOLDER)
+>>   		return sysfs_emit(buf, "%04x:%02x\n",
+>>   				  pci_domain_nr(slot->bus),
+>>   				  slot->bus->number);
+>> @@ -72,6 +72,23 @@ static ssize_t cur_speed_read_file(struct pci_slot *slot, char *buf)
+>>   	return bus_speed_read(slot->bus->cur_bus_speed, buf);
+>>   }
+>>   
+>> +static bool pci_dev_matches_slot(struct pci_dev *dev, struct pci_slot *slot)
+>> +{
+>> +	if (slot->per_func_slot)
+>> +		return dev->devfn == slot->number;
+>> +
+>> +	return slot->number == PCI_SLOT_ALL_DEVICES ||
+>> +		PCI_SLOT(dev->devfn) == slot->number;
+>> +}
+>> +
+>> +static bool pci_slot_enabled_per_func(void)
+>> +{
+>> +	if (IS_ENABLED(CONFIG_S390))
+>> +		return true;
+>> +
+>> +	return false;
+>> +}
+>> +
+>>   static void pci_slot_release(struct kobject *kobj)
+>>   {
+>>   	struct pci_dev *dev;
+>> @@ -82,8 +99,7 @@ static void pci_slot_release(struct kobject *kobj)
+>>   
+>>   	down_read(&pci_bus_sem);
+>>   	list_for_each_entry(dev, &slot->bus->devices, bus_list)
+>> -		if (slot->number == PCI_SLOT_ALL_DEVICES ||
+>> -		    PCI_SLOT(dev->devfn) == slot->number)
+>> +		if (pci_dev_matches_slot(dev, slot))
+>>   			dev->slot = NULL;
+>>   	up_read(&pci_bus_sem);
+>>   
+>> @@ -176,8 +192,7 @@ void pci_dev_assign_slot(struct pci_dev *dev)
+>>   
+>>   	mutex_lock(&pci_slot_mutex);
+>>   	list_for_each_entry(slot, &dev->bus->slots, list)
+>> -		if (slot->number == PCI_SLOT_ALL_DEVICES ||
+>> -		    PCI_SLOT(dev->devfn) == slot->number)
+>> +		if (pci_dev_matches_slot(dev, slot))
+>>   			dev->slot = slot;
+>>   	mutex_unlock(&pci_slot_mutex);
+>>   }
+>> @@ -256,7 +271,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+>>   
+>>   	mutex_lock(&pci_slot_mutex);
+>>   
+>> -	if (slot_nr == -1)
+>> +	if (slot_nr == PCI_SLOT_PLACEHOLDER)
+>>   		goto placeholder;
+>>   
+>>   	/*
+>> @@ -287,6 +302,9 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+>>   	slot->bus = pci_bus_get(parent);
+>>   	slot->number = slot_nr;
+>>   
+>> +	if (pci_slot_enabled_per_func())
+>> +		slot->per_func_slot = 1;
+>> +
+>>   	slot->kobj.kset = pci_slots_kset;
+>>   
+>>   	slot_name = make_slot_name(name);
+>> @@ -307,8 +325,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+>>   
+>>   	down_read(&pci_bus_sem);
+>>   	list_for_each_entry(dev, &parent->devices, bus_list)
+>> -		if (slot_nr == PCI_SLOT_ALL_DEVICES ||
+>> -		    PCI_SLOT(dev->devfn) == slot_nr)
+>> +		if (pci_dev_matches_slot(dev, slot))
+>>   			dev->slot = slot;
+>>   	up_read(&pci_bus_sem);
+>>   
+>> diff --git a/include/linux/pci.h b/include/linux/pci.h
+>> index 2c4454583c11..d58982aa8730 100644
+>> --- a/include/linux/pci.h
+>> +++ b/include/linux/pci.h
+>> @@ -78,14 +78,18 @@
+>>    * and, if ARI Forwarding is enabled, functions may appear to be on multiple
+>>    * devices.
+>>    */
+>> -#define PCI_SLOT_ALL_DEVICES	0xfe
+>> +#define PCI_SLOT_ALL_DEVICES	0xfeff
+>> +
+>> +/* Used to identify a slot as a placeholder */
+>> +#define PCI_SLOT_PLACEHOLDER	-1
+>>   
+>>   /* pci_slot represents a physical slot */
+>>   struct pci_slot {
+>>   	struct pci_bus		*bus;		/* Bus this slot is on */
+>>   	struct list_head	list;		/* Node in list of slots */
+>>   	struct hotplug_slot	*hotplug;	/* Hotplug info (move here) */
+>> -	unsigned char		number;		/* Device nr, or PCI_SLOT_ALL_DEVICES */
+>> +	u16			number;		/* Device nr, or PCI_SLOT_ALL_DEVICES */
+>> +	unsigned int		per_func_slot:1; /* Allow per function slot */
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Hi Gerd,
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+
+> How about you introduce two additional single-bit flag members here for
+> - placeholder, and
+> - slot_all_devices
+> and avoid creating an artifically wide number member.
+>
+> Eventually, this means that the special cases "placeholder-slot" and
+> "bus-wide slot" should be broken out of pci_create_slot().
+>
+>>   	struct kobject		kobj;
+>>   };
+>>
+> Hope this makes any sense? It almost makes me wonder if this should be
+> handled with a pre-cursor patch to this...
+
+I would like to avoid doing this as part of this series, and not 
+increase it's scope too much. I do see your point about having separate 
+flags to indicate a placeholder/slot_all_devices, but I think we would 
+still need the special numbers unless we want to change pci_create_slot 
+API to pass in flags.
+
+Thanks
+
+Farhan
+
+>
+> Thanks,
+> Gerd
 
