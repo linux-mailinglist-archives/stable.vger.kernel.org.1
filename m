@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNy7GUer+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:55 +0200
+	id gJHXB+Kt+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B765D4BF245
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A924BF9E4
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0208730F3ACB
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0183F30EEDB4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11063DD53E;
-	Mon,  4 May 2026 14:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00813DE456;
+	Mon,  4 May 2026 14:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opODY0aK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmOam+9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6385C2D8DDF;
-	Mon,  4 May 2026 14:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936A8315785;
+	Mon,  4 May 2026 14:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903493; cv=none; b=lZNkRfy135jNjHDIsPxNTSbKnALA9aYE/35BpdbsVZwJgAfr03ysSfcEFPGAOdkqZ4hFbK8gXZ9t4iQUhvBSkDbObDGYcXc/9IPs+EvxIMt4aC3holmojoiOSGjGMXokEJx4EdI0UnBrcVu4BxQNfufMulylsLLmccDZJt/SDik=
+	t=1777904231; cv=none; b=pIH9zTykyPnCxE0bgUbnl3ixTJ4HGy+Ocw/jGmM7VQtXyH6mCvgabErLveMm9b9mmHu0IDLMOcqbuQeHIEmPQufVdOoFHWNOeKI8dwpyszhBpC4vtquOBlvTcxRwob4l3tMLd8uEskPuGhJDN9X+NgFiI4dWTq7doGXmdaRB+bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903493; c=relaxed/simple;
-	bh=uQIBGaLqA1+GNVhTbU0UuviEC4AFPkRK7Uz5PpqNOno=;
+	s=arc-20240116; t=1777904231; c=relaxed/simple;
+	bh=JYvyAf5yZx+0ktNHoVZc7CsZliyV/FPjDES+sfOHBtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iABzoF0Nin8qkdac8o8vWOo6u9b5HbvdRY3h8O7NzSCd8osnLuNDwOeNPO4v3+sK3mjeVdr08IUvZcE+++VJVAulV0QNieEGprBnS/59Dd9srITNIDFW5CNZBV77ni4hw4mFB+6zTiEHcooZreooITKpH8zYmYxUfdG5tRVR9sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opODY0aK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB451C2BCB8;
-	Mon,  4 May 2026 14:04:52 +0000 (UTC)
+	 MIME-Version; b=kjs6vHqONBlPpgiLC7bwjhN9GZVUZaCEue/PTga1CN7tjs/PSbUr8dolf9nM6f5vyMUY2t+P/XcciFYfBgT5xxVwpKxc25JQYNcG/1V2V83/TnGgMSSqX6a77CJRMq8ROq/cUPwR2wJCr9topMBqaZhlIgMt+1LG//Hc2CK9c7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmOam+9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F4CC2BCB8;
+	Mon,  4 May 2026 14:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903493;
-	bh=uQIBGaLqA1+GNVhTbU0UuviEC4AFPkRK7Uz5PpqNOno=;
+	s=korg; t=1777904231;
+	bh=JYvyAf5yZx+0ktNHoVZc7CsZliyV/FPjDES+sfOHBtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opODY0aK+vyEIfrpwmKTriO2bv18FQlmbU6PTPAQ29pwXjLrcH+6qWt+3cWnCpNsP
-	 r+HamPGGsxkShhMM5I006Ac373AugJMhBkdjPg4RFOyoO+z91qcTDlEPWl22Do2NUh
-	 qSQcp9MUFer3UJ10PjSEFk8AOP3QTHTyt5C4X7tg=
+	b=LmOam+9akVsvW0sHb7T0703lXAeDIRINWyYuhEBnRYQkjCelrFS23LY4yK0STEs/n
+	 lR7yjjFD2Q9FKisOjMuf6Xpkq50qp8Kj8cimb+BtVJ6CKjVWz/S9ylu66nAIo9/cXA
+	 IPYDElL0kfy4ySd2J7PcW3iltlMBoQctCF9b3i8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Unterwurzacher <jakob.unterwurzacher@theobroma-systems.com>,
-	Johan Hovold <johan@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 7.0 256/307] can: ucan: fix devres lifetime
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 201/275] amdgpu/jpeg: fix deepsleep register for jpeg 5_0_0 and 5_0_2
 Date: Mon,  4 May 2026 15:52:21 +0200
-Message-ID: <20260504135152.452222219@linuxfoundation.org>
+Message-ID: <20260504135150.541850510@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B765D4BF245
+X-Rspamd-Queue-Id: 84A924BF9E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,59 +80,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243285-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243573-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,pengutronix.de:email,theobroma-systems.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: David (Ming Qiang) Wu <David.Wu3@amd.com>
 
-commit fed4626501c871890da287bec62a96e52da1af89 upstream.
+commit e90dc3b2d73986610476b02c29d0074aa4d92fb0 upstream.
 
-USB drivers bind to USB interfaces and any device managed resources
-should have their lifetime tied to the interface rather than parent USB
-device. This avoids issues like memory leaks when drivers are unbound
-without their devices being physically disconnected (e.g. on probe
-deferral or configuration changes).
+PCTL0__MMHUB_DEEPSLEEP_IB is 0x69004 on MMHUB 4,1,0 and
+and 0x60804 on MMHUB 4,2,0. 0x62a04 is on MMHUB 1,8,0/1.
 
-Fix the control message buffer lifetime so that it is released on driver
-unbind.
+The DS bits are adjusted to cover more JPEG engines and MMHUB
+version.
 
-Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Jakob Unterwurzacher <jakob.unterwurzacher@theobroma-systems.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260327104520.1310158-1-johan@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/ucan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c |   52 +++++++++++++++++++++++++++----
+ 1 file changed, 46 insertions(+), 6 deletions(-)
 
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -1397,7 +1397,7 @@ static int ucan_probe(struct usb_interfa
- 	 */
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -736,15 +736,35 @@ static void jpeg_v4_0_3_dec_ring_set_wpt
+  */
+ void jpeg_v4_0_3_dec_ring_insert_start(struct amdgpu_ring *ring)
+ {
+-	if (!amdgpu_sriov_vf(ring->adev)) {
++	struct amdgpu_device *adev = ring->adev;
++
++	if (!amdgpu_sriov_vf(adev)) {
++		int jpeg_inst = GET_INST(JPEG, ring->me);
++		uint32_t value = 0x80004000; /* default DS14 */
++
+ 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
+ 			0, 0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x62a04); /* PCTL0_MMHUB_DEEPSLEEP_IB */
++
++		/* PCTL0__MMHUB_DEEPSLEEP_IB could be different on different mmhub version */
++		switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
++		case IP_VERSION(4, 1, 0):
++			amdgpu_ring_write(ring, 0x69004);
++			value = 0x80010000;
++			break;
++		case IP_VERSION(4, 2, 0):
++			amdgpu_ring_write(ring, 0x60804);
++			if (jpeg_inst & 1)
++				value = 0x80010000;
++			break;
++		default:
++			amdgpu_ring_write(ring, 0x62a04);
++			break;
++		}
  
- 	/* Prepare Memory for control transfers */
--	ctl_msg_buffer = devm_kzalloc(&udev->dev,
-+	ctl_msg_buffer = devm_kzalloc(&intf->dev,
- 				      sizeof(union ucan_ctl_payload),
- 				      GFP_KERNEL);
- 	if (!ctl_msg_buffer) {
+ 		amdgpu_ring_write(ring,
+ 				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
+ 					  0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x80004000);
++		amdgpu_ring_write(ring, value);
+ 	}
+ }
+ 
+@@ -757,15 +777,35 @@ void jpeg_v4_0_3_dec_ring_insert_start(s
+  */
+ void jpeg_v4_0_3_dec_ring_insert_end(struct amdgpu_ring *ring)
+ {
+-	if (!amdgpu_sriov_vf(ring->adev)) {
++	struct amdgpu_device *adev = ring->adev;
++
++	if (!amdgpu_sriov_vf(adev)) {
++		int jpeg_inst = GET_INST(JPEG, ring->me);
++		uint32_t value = 0x00004000; /* default DS14 */
++
+ 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
+ 			0, 0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x62a04);
++
++		/* PCTL0__MMHUB_DEEPSLEEP_IB could be different on different mmhub version */
++		switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
++		case IP_VERSION(4, 1, 0):
++			amdgpu_ring_write(ring, 0x69004);
++			value = 0x00010000;
++			break;
++		case IP_VERSION(4, 2, 0):
++			amdgpu_ring_write(ring, 0x60804);
++			if (jpeg_inst & 1)
++				value = 0x00010000;
++			break;
++		default:
++			amdgpu_ring_write(ring, 0x62a04);
++			break;
++		}
+ 
+ 		amdgpu_ring_write(ring,
+ 				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
+ 					  0, PACKETJ_TYPE0));
+-		amdgpu_ring_write(ring, 0x00004000);
++		amdgpu_ring_write(ring, value);
+ 	}
+ }
+ 
 
 
 
