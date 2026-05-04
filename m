@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-243322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0F2uLUiq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:40 +0200
+	id eBO6FICx+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38544BEF60
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B0C4C001F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1E7A302880B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:06:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 88BD830547A4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB1D3DF000;
-	Mon,  4 May 2026 14:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46853E120C;
+	Mon,  4 May 2026 14:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Xuveu8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJefTL5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5BD2E2F0E;
-	Mon,  4 May 2026 14:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680DB3D8129;
+	Mon,  4 May 2026 14:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903588; cv=none; b=I1SSXHq1aYnoq6YF+UNeDWuQ/cy6zMDG0tOR6ZJFrM7M9B/JgDFTm9YES6s81/ly2aDR+CErnqbO6xVfLUFHqFxhsEJl6BbBVzpDYNd01X9BdDMkqjh4sUKIfVPoCpITpXZu8WWPlB4zFZFgbWcADQi4dlVju8kqM8Ur2NRAG8U=
+	t=1777904749; cv=none; b=RHcWIc0pr9simvZ4OcSVL9jSsPyL7TRsgeS9wbvI2330S8y1g3D4o/fkpFJAPs1ISrfWd766qwvijfk9C81aYCtfLlJqYixFGcgkzcGEIqRjBR+KUC56oSn7hOf6H7LBIcqqXKuyOwioqePOENbaVKeIKDq0yfZ+BDlBOV5c744=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903588; c=relaxed/simple;
-	bh=ZyUIr5twpwaTtP5exLyjpSKzxEcmNyZCSfOYlC+d4Es=;
+	s=arc-20240116; t=1777904749; c=relaxed/simple;
+	bh=G914j1P5/Sl5QiT6zYcF/Y189J+sT0FGOvktGR6zeHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WY0RlTGsnhshdTloz5Vs79FtKMClrDpyObznL9/vVIysc07VSch0GuzDXqmdTmvVM4WZRI1A8I5y4wC6SBG+SJ+2lfjZpMI7I868ISR73iFHTDU6MbMUcA3uglvEL5+EE/ia/a2CU8RtHIQBSVL9ZPNTTatpjWsZTnHZvcWdQ1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Xuveu8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FBCC2BCF6;
-	Mon,  4 May 2026 14:06:27 +0000 (UTC)
+	 MIME-Version; b=My2xJeYi7q+xKqgaTOgQvKazeWOjgJD2uIB9hZ3I+4BCGMw88ND2q4GBAyWiAKQfA+bv1DXZUdiSOMjcDBGoeQ35Vg2eHFrBDa3ruSFV9FABynR+GCpwqLpMX3YBGo9v/cuJJpWo0CfQqFIbh/3JYVZVdXb69dU0cdOhK2K9bA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJefTL5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26C8C2BCB8;
+	Mon,  4 May 2026 14:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903588;
-	bh=ZyUIr5twpwaTtP5exLyjpSKzxEcmNyZCSfOYlC+d4Es=;
+	s=korg; t=1777904749;
+	bh=G914j1P5/Sl5QiT6zYcF/Y189J+sT0FGOvktGR6zeHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Xuveu8Bek+oBx0syDHD7e1EZXjyi/vPyf8C/xk8IdkibEOjkzxfFBnEiu9957F9E
-	 ZR2VI3VeZwkPW9CATEwNPbigEJg1pAQ7x8Ka0aWgc7r9uj0eyJjo4OzLesTNrmKFdB
-	 IgbE9u2yko/NyJZGyhT+YpAHMQrcjX/ZpCXFtVQ8=
+	b=pJefTL5s5X53fC1DBndAa4MReg6V67ypyeC7uKlkITV79VhAjrN3YwFYbRfKDhv1P
+	 ObbB36zab1UFu16icZFTeSpVZxAK3eHfTHgDW0EsE9G2F2Qrk6imRSdtzKVJiB5RCI
+	 YTKtWFFxK9c0xju809hQMflYtRJi6ByoU5phJes8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 293/307] mei: me: add nova lake point H DID
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 159/215] crypto: atmel-tdes - fix DMA sync direction
 Date: Mon,  4 May 2026 15:52:58 +0200
-Message-ID: <20260504135153.815081007@linuxfoundation.org>
+Message-ID: <20260504135135.984321340@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +63,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F38544BEF60
+X-Rspamd-Queue-Id: 53B0C4C001F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-243322-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-243776-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit a5a1804332afc7035d5c5b880548262e81d796bc ]
+commit c8a9a647532f5c2a04180352693215e24e9dba03 upstream.
 
-Add Nova Lake H device id.
+Before DMA output is consumed by the CPU, ->dma_addr_out must be synced
+with dma_sync_single_for_cpu() instead of dma_sync_single_for_device().
+Using the wrong direction can return stale cache data on non-coherent
+platforms.
 
-Cc: stable <stable@kernel.org>
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20260405141758.1634556-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
+Fixes: 1f858040c2f7 ("crypto: atmel-tdes - add support for latest release of the IP (0x700)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    1 +
- drivers/misc/mei/pci-me.c     |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/crypto/atmel-tdes.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -123,6 +123,7 @@
- #define PCI_DEVICE_ID_INTEL_MEI_WCL_P      0x4D70  /* Wildcat Lake P */
+--- a/drivers/crypto/atmel-tdes.c
++++ b/drivers/crypto/atmel-tdes.c
+@@ -294,8 +294,8 @@ static int atmel_tdes_crypt_pdc_stop(str
+ 		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
+ 	} else {
+-		dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
+-					   dd->dma_size, DMA_FROM_DEVICE);
++		dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
++					dd->dma_size, DMA_FROM_DEVICE);
  
- #define PCI_DEVICE_ID_INTEL_MEI_NVL_S      0x6E68  /* Nova Lake Point S */
-+#define PCI_DEVICE_ID_INTEL_MEI_NVL_H      0xD370  /* Nova Lake Point H */
+ 		/* copy data */
+ 		count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
+@@ -619,8 +619,8 @@ static int atmel_tdes_crypt_dma_stop(str
+ 			dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ 			dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
+ 		} else {
+-			dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
+-				dd->dma_size, DMA_FROM_DEVICE);
++			dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
++						dd->dma_size, DMA_FROM_DEVICE);
  
- /*
-  * MEI HW Section
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -130,6 +130,7 @@ static const struct pci_device_id mei_me
- 	{PCI_DEVICE_DATA(INTEL, MEI_WCL_P, MEI_ME_PCH15_CFG)},
- 
- 	{PCI_DEVICE_DATA(INTEL, MEI_NVL_S, MEI_ME_PCH15_CFG)},
-+	{PCI_DEVICE_DATA(INTEL, MEI_NVL_H, MEI_ME_PCH15_CFG)},
- 
- 	/* required last entry */
- 	{0, }
+ 			/* copy data */
+ 			count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
 
 
 
