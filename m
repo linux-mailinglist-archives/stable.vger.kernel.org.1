@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-243615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Os1AYOr+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243615-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:55 +0200
+	id CDcvLWSv+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33394BF336
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8234C4BFCD2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6B026301F49A
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 21F6F3094731
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CD63DE43B;
-	Mon,  4 May 2026 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65B03E0241;
+	Mon,  4 May 2026 14:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvG4GcYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDhSdWZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3401A6827;
-	Mon,  4 May 2026 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896113E0245;
+	Mon,  4 May 2026 14:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904339; cv=none; b=dWi1HUyIj9epROZT0vMcJSW+wlgv+wG+F6lnzhbu2DDmpzzncwWzGvHLODkzBcAqlaBub4mQNZC+ayBVpLxCapQNnzS0xHV00ikv39YMa6C7O1LNc7E6HiF2ITUl6G4LJKXkTFaw1xn5x8O2xmIYHETMmXQcAKbfE3WTcllkgvk=
+	t=1777904822; cv=none; b=Ep5ChZ/hBNFyzzWk9Kg7IJuhIx/XBKcJd/kMf05xLQSVPDPxyIPleCPWO/i3vVRPbFBkDecgTiyWk9ZC3ITMX6aQX3VMWWTXWKnFaJLxmSmGLm+QCfD8SN1yab5T1ufUbVSLC1lFdhNI5sI7e5oramAZSvoVr049UaRZ5XOCA7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904339; c=relaxed/simple;
-	bh=ZoA/dPOfZFabY8qbnWHcLfesxjb2/arAea0sRFoAhtg=;
+	s=arc-20240116; t=1777904822; c=relaxed/simple;
+	bh=MEJ+ApTdDM8PIl1kIT50aLWzH/+Ks2DwqBriynurZAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwLUteV+9TyKrkoPZ0NjXxDVXDTmztobDsnsT3J8mqXOZgejnemADbN78RhhAD+2BRH4yNj79EbTjU/5cl61Vkz8Bw6PMY1vATiFlDwqKATLl61TIXkSFFZDQyI0XRAxD0AD9oGvDmivOCgLj9qduCZdGFTH1QktoU0FeXRd368=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvG4GcYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10218C2BCB8;
-	Mon,  4 May 2026 14:18:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V6xdpnIu4+jCSLXj1ZQV7tLnMCYFrLBp0J4TjCRmw8e3U3Vf250bGOFYxoeITxMXBfxHTTMdvgjNI6QiTlkgFxjY6wGEgbzRuN1eKibFgTKx6FAwv7NUIaUYRi/CSQ6WcU8K46S/u8meY5Q8+N6xWDPLvcjx4k5464FC3K2HAAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDhSdWZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2110BC2BCC4;
+	Mon,  4 May 2026 14:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904339;
-	bh=ZoA/dPOfZFabY8qbnWHcLfesxjb2/arAea0sRFoAhtg=;
+	s=korg; t=1777904822;
+	bh=MEJ+ApTdDM8PIl1kIT50aLWzH/+Ks2DwqBriynurZAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvG4GcYBV9vmm7EqXQkeMDvIQJ2K+21mCZGJOJlBOpKLpvegVlBsBrfdd93YRNT4j
-	 IfiSghvODfjkYo3FNvY8HRmSJsK5OrURB2+fgBQQcc68QzC/S3pIyT3aG6P+pVWX24
-	 LYkrjWL5oxuVJG35TbsTh7WHE4cwwoEMWCI+uQgM=
+	b=YDhSdWZ3AS8hHorXAFXJV90UOJRvnNrrb0bDGBZLwmSCeaMTRu4t18TujEk9BnxEw
+	 IQlZbVf+6kBMX5sVobPaVMm6YxSRUl9CgiPLJyPFdP92VPXBmhYA2QeKHX8x4X+gGy
+	 Yc/PLuvzm7s4YspalGFVX75N5nSihtW6y1ROiu3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 267/275] ipv6: rpl: reserve mac_len headroom when recompressed SRH grows
+	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 188/215] ALSA: aoa: i2sbus: clear stale prepared state
 Date: Mon,  4 May 2026 15:53:27 +0200
-Message-ID: <20260504135152.956431855@linuxfoundation.org>
+Message-ID: <20260504135137.187106794@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +64,200 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D33394BF336
+X-Rspamd-Queue-Id: 8234C4BFCD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,suse.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243615-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_FROM(0.00)[bounces-243804-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 9e6bf146b55999a095bb14f73a843942456d1adc upstream.
+[ Upstream commit 5ed060d5491597490fb53ec69da3edc4b1e8c165 ]
 
-ipv6_rpl_srh_rcv() decompresses an RFC 6554 Source Routing Header, swaps
-the next segment into ipv6_hdr->daddr, recompresses, then pulls the old
-header and pushes the new one plus the IPv6 header back.  The
-recompressed header can be larger than the received one when the swap
-reduces the common-prefix length the segments share with daddr (CmprI=0,
-CmprE>0, seg[0][0] != daddr[0] gives the maximum +8 bytes).
+The i2sbus PCM code uses pi->active to constrain the sibling stream to
+an already prepared duplex format and rate in i2sbus_pcm_open().
 
-pskb_expand_head() was gated on segments_left == 0, so on earlier
-segments the push consumed unchecked headroom.  Once skb_push() leaves
-fewer than skb->mac_len bytes in front of data,
-skb_mac_header_rebuild()'s call to:
+That state is set from i2sbus_pcm_prepare(), but the current code only
+clears it on close. As a result, the sibling stream can inherit stale
+constraints after the prepared state has been torn down.
 
-	skb_set_mac_header(skb, -skb->mac_len);
+Clear pi->active when hw_params() or hw_free() tears down the prepared
+state, and set it again only after prepare succeeds.
 
-will store (data - head) - mac_len into the u16 mac_header field, which
-wraps to ~65530, and the following memmove() writes mac_len bytes ~64KiB
-past skb->head.
+Replace the stale FIXME in the duplex constraint comment with a description
+of the current driver behavior: i2sbus still programs a single shared
+transport configuration for both directions, so mixed formats are not
+supported in duplex mode.
 
-A single AF_INET6/SOCK_RAW/IPV6_HDRINCL packet over lo with a two
-segment type-3 SRH (CmprI=0, CmprE=15) reaches headroom 8 after one
-pass; KASAN reports a 14-byte OOB write in ipv6_rthdr_rcv.
-
-Fix this by expanding the head whenever the remaining room is less than
-the push size plus mac_len, and request that much extra so the rebuilt
-MAC header fits afterwards.
-
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Cc: stable <stable@kernel.org>
-Reported-by: Anthropic
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026042133-gout-unvented-1bd9@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260331-aoa-i2sbus-clear-stale-active-v2-1-3764ae2889a1@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/aoa/soundbus/i2sbus/pcm.c |   55 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 44 insertions(+), 11 deletions(-)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -491,6 +491,7 @@ static int ipv6_rpl_srh_rcv(struct sk_bu
- 	struct net *net = dev_net(skb->dev);
- 	struct inet6_dev *idev;
- 	struct ipv6hdr *oldhdr;
-+	unsigned int chdr_len;
- 	unsigned char *buf;
- 	int accept_rpl_seg;
- 	int i, err;
-@@ -592,8 +593,10 @@ looped_back:
- 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
- 	skb_postpull_rcsum(skb, oldhdr,
- 			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
--	if (unlikely(!hdr->segments_left)) {
--		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
-+	chdr_len = sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3);
-+	if (unlikely(!hdr->segments_left ||
-+		     skb_headroom(skb) < chdr_len + skb->mac_len)) {
-+		if (pskb_expand_head(skb, chdr_len + skb->mac_len, 0,
- 				     GFP_ATOMIC)) {
- 			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
- 			kfree_skb(skb);
-@@ -603,7 +606,7 @@ looped_back:
- 
- 		oldhdr = ipv6_hdr(skb);
+--- a/sound/aoa/soundbus/i2sbus/pcm.c
++++ b/sound/aoa/soundbus/i2sbus/pcm.c
+@@ -165,17 +165,16 @@ static int i2sbus_pcm_open(struct i2sbus
+ 	 * currently in use (if any). */
+ 	hw->rate_min = 5512;
+ 	hw->rate_max = 192000;
+-	/* if the other stream is active, then we can only
+-	 * support what it is currently using.
+-	 * FIXME: I lied. This comment is wrong. We can support
+-	 * anything that works with the same serial format, ie.
+-	 * when recording 24 bit sound we can well play 16 bit
+-	 * sound at the same time iff using the same transfer mode.
++	/* If the other stream is already prepared, keep this stream
++	 * on the same duplex format and rate.
++	 *
++	 * i2sbus_pcm_prepare() still programs one shared transport
++	 * configuration for both directions, so mixed duplex formats
++	 * are not supported here.
+ 	 */
+ 	if (other->active) {
+-		/* FIXME: is this guaranteed by the alsa api? */
+ 		hw->formats &= pcm_format_to_bits(i2sdev->format);
+-		/* see above, restrict rates to the one we already have */
++		/* Restrict rates to the one already in use. */
+ 		hw->rate_min = i2sdev->rate;
+ 		hw->rate_max = i2sdev->rate;
  	}
--	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
-+	skb_push(skb, chdr_len);
- 	skb_reset_network_header(skb);
- 	skb_mac_header_rebuild(skb);
- 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+@@ -283,6 +282,23 @@ void i2sbus_wait_for_stop_both(struct i2
+ }
+ #endif
+ 
++static void i2sbus_pcm_clear_active(struct i2sbus_dev *i2sdev, int in)
++{
++	struct pcm_info *pi;
++
++	guard(mutex)(&i2sdev->lock);
++
++	get_pcm_info(i2sdev, in, &pi, NULL);
++	pi->active = 0;
++}
++
++static inline int i2sbus_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params, int in)
++{
++	i2sbus_pcm_clear_active(snd_pcm_substream_chip(substream), in);
++	return 0;
++}
++
+ static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
+ {
+ 	struct i2sbus_dev *i2sdev = snd_pcm_substream_chip(substream);
+@@ -291,14 +307,27 @@ static inline int i2sbus_hw_free(struct
+ 	get_pcm_info(i2sdev, in, &pi, NULL);
+ 	if (pi->dbdma_ring.stopping)
+ 		i2sbus_wait_for_stop(i2sdev, pi);
++	i2sbus_pcm_clear_active(i2sdev, in);
+ 	return 0;
+ }
+ 
++static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream,
++				     struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 0);
++}
++
+ static int i2sbus_playback_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 0);
+ }
+ 
++static int i2sbus_record_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 1);
++}
++
+ static int i2sbus_record_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 1);
+@@ -335,7 +364,6 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		return -EINVAL;
+ 
+ 	runtime = pi->substream->runtime;
+-	pi->active = 1;
+ 	if (other->active &&
+ 	    ((i2sdev->format != runtime->format)
+ 	     || (i2sdev->rate != runtime->rate)))
+@@ -450,9 +478,11 @@ static int i2sbus_pcm_prepare(struct i2s
+ 
+ 	/* early exit if already programmed correctly */
+ 	/* not locking these is fine since we touch them only in this function */
+-	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
+-	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
++	if (in_le32(&i2sdev->intfregs->serial_format) == sfr &&
++	    in_le32(&i2sdev->intfregs->data_word_sizes) == dws) {
++		pi->active = 1;
+ 		return 0;
++	}
+ 
+ 	/* let's notify the codecs about clocks going away.
+ 	 * For now we only do mastering on the i2s cell... */
+@@ -490,6 +520,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		if (cii->codec->switch_clock)
+ 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
+ 
++	pi->active = 1;
+ 	return 0;
+ }
+ 
+@@ -746,6 +777,7 @@ static snd_pcm_uframes_t i2sbus_playback
+ static const struct snd_pcm_ops i2sbus_playback_ops = {
+ 	.open =		i2sbus_playback_open,
+ 	.close =	i2sbus_playback_close,
++	.hw_params =	i2sbus_playback_hw_params,
+ 	.hw_free =	i2sbus_playback_hw_free,
+ 	.prepare =	i2sbus_playback_prepare,
+ 	.trigger =	i2sbus_playback_trigger,
+@@ -814,6 +846,7 @@ static snd_pcm_uframes_t i2sbus_record_p
+ static const struct snd_pcm_ops i2sbus_record_ops = {
+ 	.open =		i2sbus_record_open,
+ 	.close =	i2sbus_record_close,
++	.hw_params =	i2sbus_record_hw_params,
+ 	.hw_free =	i2sbus_record_hw_free,
+ 	.prepare =	i2sbus_record_prepare,
+ 	.trigger =	i2sbus_record_trigger,
 
 
 
