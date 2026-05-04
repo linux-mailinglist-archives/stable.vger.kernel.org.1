@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGUjC0mr+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:57 +0200
+	id KNWgEZyt+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA654BF253
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:20:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEAE4BF96D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B2B98304B9B7
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6E90730CED0D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF793DE44F;
-	Mon,  4 May 2026 14:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130B53DEAF7;
+	Mon,  4 May 2026 14:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hi+qLoJQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaTwUi/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431733DE43B;
-	Mon,  4 May 2026 14:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9A53DE452;
+	Mon,  4 May 2026 14:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904221; cv=none; b=PUpnniMdjBEmDCqtVeqQRPR2PTC9qn7+0Gu9LEAxcES8DcTPJj+ISUn/gGgNMEt7Z6AO7VgdxBAhsU9h0Ejj3mfypCDpdSmj9F1GMQoA2UTNj/Ri5sKa4ukJS5KtBUf8GM121y2eCD/Z8+GCKG2Rfs1I+17f+oXkyQe4N0OmP9c=
+	t=1777904643; cv=none; b=jpsGRSrJTYavWcIrSQu5CkCIHeg8CrDJwrG2OA7QQyM13euoOJr+I9SveVyyffVIRVVbU2hiGxEE24Ff4BmgMXDHsalIC38UNTjDBTBmmrikhseAtZWfQnd6IVW3a8bo3OeKDyV2s+VuST+/GXVsQMB0ndSHrnPVykZz6Kxla2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904221; c=relaxed/simple;
-	bh=vbzzOETG/ZidjaxGGRdAMV0h2OAHA7KnacP8Jc+Bft4=;
+	s=arc-20240116; t=1777904643; c=relaxed/simple;
+	bh=bcLNndC5tLEVRhLTxxeL77acrGgFkqKWUpUu9NdcIZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPlpIljH9I4KBFV0LvZi0luMuKWkyfF5CErQQGtirFWu9cgh2NO7AzsrKfU2xl0w6ly/UwCaZ9KAELrEooXz805CXBUYsoMURj5r1+XyjS8isnNQc2WdUjv58MzsDC28V6yS2yIf0euuNUtbTUg2jVLCS479mTYFPxNw9fexPkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hi+qLoJQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF26DC2BCB8;
-	Mon,  4 May 2026 14:17:00 +0000 (UTC)
+	 MIME-Version; b=VqZLNAR/GhTdzyZHrKrXiCfqSSJHGmIcdupl1UVtbvkzEyygzlEOAc7BuJR1jU2rMVp5OXxtpIAOg+2HS0X3X36G+RRqtGgq4/jP3ZL4H77IvjkIFwmSvRqvS3lZcdGbgq2xxACUzwi9D6z+z/Xo9KQcF3cKPRLfZKpdfGHl66o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaTwUi/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343CAC2BCC4;
+	Mon,  4 May 2026 14:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904221;
-	bh=vbzzOETG/ZidjaxGGRdAMV0h2OAHA7KnacP8Jc+Bft4=;
+	s=korg; t=1777904643;
+	bh=bcLNndC5tLEVRhLTxxeL77acrGgFkqKWUpUu9NdcIZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hi+qLoJQsSUa1Rv9OFtiqzgJVKUTw5XWSy2MBrX/tNqyi8K/iJBBhHLw+vlWCDCkM
-	 OiCmksSe5/+P7h822QrvvufevwzrVY2TIKEIEck2Qh7P5YlaMYlTg+VpT9IixIwzCg
-	 Ju1JQEjUhscHDVwGN6O+Pyfs51Kgna7Z2NNrtaq8=
+	b=HaTwUi/VkmT2uSdhSgG1YNCw5A0pmITso23VsNy4sdbrKLmlHnKsaA6NpUNcv3+X2
+	 XA1pmWZmRS5k6JqBEiMDQcc1fGdDccgBNBoVsGirxH9/ZrKt3Wy2fxO8UCoxO4pAg1
+	 ZVEl2P4whVxCkFePdr/uLv/6lV9yPJ5ETDCb039s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.18 197/275] ext4: fix bounds check in check_xattrs() to prevent out-of-bounds access
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 118/215] KVM: x86: Defer non-architectural deliver of exception payload to userspace read
 Date: Mon,  4 May 2026 15:52:17 +0200
-Message-ID: <20260504135150.395208390@linuxfoundation.org>
+Message-ID: <20260504135134.465179590@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,211 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EAA654BF253
+X-Rspamd-Queue-Id: BCEAE4BF96D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243569-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mit.edu];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243735-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit eceafc31ea7b42c984ece10d79d505c0bb6615d5 upstream.
+commit d0ad1b05bbe6f8da159a4dfb6692b3b7ce30ccc8 upstream.
 
-The bounds check for the next xattr entry in check_xattrs() uses
-(void *)next >= end, which allows next to point within sizeof(u32)
-bytes of end. On the next loop iteration, IS_LAST_ENTRY() reads 4
-bytes via *(__u32 *)(entry), which can overrun the valid xattr region.
+When attempting to play nice with userspace that hasn't enabled
+KVM_CAP_EXCEPTION_PAYLOAD, defer KVM's non-architectural delivery of the
+payload until userspace actually reads relevant vCPU state, and more
+importantly, force delivery of the payload in *all* paths where userspace
+saves relevant vCPU state, not just KVM_GET_VCPU_EVENTS.
 
-For example, if next lands at end - 1, the check passes since
-next < end, but IS_LAST_ENTRY() reads 4 bytes starting at end - 1,
-accessing 3 bytes beyond the valid region.
+Ignoring userspace save/restore for the moment, delivering the payload
+before the exception is injected is wrong regardless of whether L1 or L2
+is running.  To make matters even more confusing, the flaw *currently*
+being papered over by the !is_guest_mode() check isn't even the same bug
+that commit da998b46d244 ("kvm: x86: Defer setting of CR2 until #PF
+delivery") was trying to avoid.
 
-Fix this by changing the check to (void *)next + sizeof(u32) > end,
-ensuring there is always enough space for the IS_LAST_ENTRY() read
-on the subsequent iteration.
+At the time of commit da998b46d244, KVM didn't correctly handle exception
+intercepts, as KVM would wait until VM-Entry into L2 was imminent to check
+if the queued exception should morph to a nested VM-Exit.  I.e. KVM would
+deliver the payload to L2 and then synthesize a VM-Exit into L1.  But the
+payload was only the most blatant issue, e.g. waiting to check exception
+intercepts would also lead to KVM incorrectly escalating a
+should-be-intercepted #PF into a #DF.
 
-Fixes: 3478c83cf26b ("ext4: improve xattr consistency checking and error reporting")
+That underlying bug was eventually fixed by commit 7709aba8f716 ("KVM: x86:
+Morph pending exceptions to pending VM-Exits at queue time"), but in the
+interim, commit a06230b62b89 ("KVM: x86: Deliver exception payload on
+KVM_GET_VCPU_EVENTS") came along and subtly added another dependency on
+the !is_guest_mode() check.
+
+While not recorded in the changelog, the motivation for deferring the
+!exception_payload_enabled delivery was to fix a flaw where a synthesized
+MTF (Monitor Trap Flag) VM-Exit would drop a pending #DB and clobber DR6.
+On a VM-Exit, VMX CPUs save pending #DB information into the VMCS, which
+is emulated by KVM in nested_vmx_update_pending_dbg() by grabbing the
+payload from the queue/pending exception.  I.e. prematurely delivering the
+payload would cause the pending #DB to not be recorded in the VMCS, and of
+course, clobber L2's DR6 as seen by L1.
+
+Jumping back to save+restore, the quirked behavior of forcing delivery of
+the payload only works if userspace does KVM_GET_VCPU_EVENTS *before*
+CR2 or DR6 is saved, i.e. before KVM_GET_SREGS{,2} and KVM_GET_DEBUGREGS.
+E.g. if userspace does KVM_GET_SREGS before KVM_GET_VCPU_EVENTS, then the
+CR2 saved by userspace won't contain the payload for the exception save by
+KVM_GET_VCPU_EVENTS.
+
+Deliberately deliver the payload in the store_regs() path, as it's the
+least awful option even though userspace may not be doing save+restore.
+Because if userspace _is_ doing save restore, it could elide KVM_GET_SREGS
+knowing that SREGS were already saved when the vCPU exited.
+
+Link: https://lore.kernel.org/all/20200207103608.110305-1-oupton@google.com
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20260224231429.31361-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260328150038.349497-1-kartikey406@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Tested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260218005438.2619063-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c |   62 +++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 39 insertions(+), 23 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -226,7 +226,7 @@ check_xattrs(struct inode *inode, struct
- 	/* Find the end of the names list */
- 	while (!IS_LAST_ENTRY(e)) {
- 		struct ext4_xattr_entry *next = EXT4_XATTR_NEXT(e);
--		if ((void *)next >= end) {
-+		if ((void *)next + sizeof(u32) > end) {
- 			err_str = "e_name out of bounds";
- 			goto errout;
- 		}
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -875,9 +875,6 @@ static void kvm_multiple_exception(struc
+ 		vcpu->arch.exception.error_code = error_code;
+ 		vcpu->arch.exception.has_payload = has_payload;
+ 		vcpu->arch.exception.payload = payload;
+-		if (!is_guest_mode(vcpu))
+-			kvm_deliver_exception_payload(vcpu,
+-						      &vcpu->arch.exception);
+ 		return;
+ 	}
+ 
+@@ -5328,18 +5325,8 @@ static int kvm_vcpu_ioctl_x86_set_mce(st
+ 	return 0;
+ }
+ 
+-static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
+-					       struct kvm_vcpu_events *events)
++static struct kvm_queued_exception *kvm_get_exception_to_save(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm_queued_exception *ex;
+-
+-	process_nmi(vcpu);
+-
+-#ifdef CONFIG_KVM_SMM
+-	if (kvm_check_request(KVM_REQ_SMI, vcpu))
+-		process_smi(vcpu);
+-#endif
+-
+ 	/*
+ 	 * KVM's ABI only allows for one exception to be migrated.  Luckily,
+ 	 * the only time there can be two queued exceptions is if there's a
+@@ -5350,21 +5337,46 @@ static void kvm_vcpu_ioctl_x86_get_vcpu_
+ 	if (vcpu->arch.exception_vmexit.pending &&
+ 	    !vcpu->arch.exception.pending &&
+ 	    !vcpu->arch.exception.injected)
+-		ex = &vcpu->arch.exception_vmexit;
+-	else
+-		ex = &vcpu->arch.exception;
++		return &vcpu->arch.exception_vmexit;
++
++	return &vcpu->arch.exception;
++}
++
++static void kvm_handle_exception_payload_quirk(struct kvm_vcpu *vcpu)
++{
++	struct kvm_queued_exception *ex = kvm_get_exception_to_save(vcpu);
+ 
+ 	/*
+-	 * In guest mode, payload delivery should be deferred if the exception
+-	 * will be intercepted by L1, e.g. KVM should not modifying CR2 if L1
+-	 * intercepts #PF, ditto for DR6 and #DBs.  If the per-VM capability,
+-	 * KVM_CAP_EXCEPTION_PAYLOAD, is not set, userspace may or may not
+-	 * propagate the payload and so it cannot be safely deferred.  Deliver
+-	 * the payload if the capability hasn't been requested.
++	 * If KVM_CAP_EXCEPTION_PAYLOAD is disabled, then (prematurely) deliver
++	 * the pending exception payload when userspace saves *any* vCPU state
++	 * that interacts with exception payloads to avoid breaking userspace.
++	 *
++	 * Architecturally, KVM must not deliver an exception payload until the
++	 * exception is actually injected, e.g. to avoid losing pending #DB
++	 * information (which VMX tracks in the VMCS), and to avoid clobbering
++	 * state if the exception is never injected for whatever reason.  But
++	 * if KVM_CAP_EXCEPTION_PAYLOAD isn't enabled, then userspace may or
++	 * may not propagate the payload across save+restore, and so KVM can't
++	 * safely defer delivery of the payload.
+ 	 */
+ 	if (!vcpu->kvm->arch.exception_payload_enabled &&
+ 	    ex->pending && ex->has_payload)
+ 		kvm_deliver_exception_payload(vcpu, ex);
++}
++
++static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
++					       struct kvm_vcpu_events *events)
++{
++	struct kvm_queued_exception *ex = kvm_get_exception_to_save(vcpu);
++
++	process_nmi(vcpu);
++
++#ifdef CONFIG_KVM_SMM
++	if (kvm_check_request(KVM_REQ_SMI, vcpu))
++		process_smi(vcpu);
++#endif
++
++	kvm_handle_exception_payload_quirk(vcpu);
+ 
+ 	memset(events, 0, sizeof(*events));
+ 
+@@ -5549,6 +5561,8 @@ static int kvm_vcpu_ioctl_x86_get_debugr
+ 	    vcpu->arch.guest_state_protected)
+ 		return -EINVAL;
+ 
++	kvm_handle_exception_payload_quirk(vcpu);
++
+ 	memset(dbgregs, 0, sizeof(*dbgregs));
+ 
+ 	BUILD_BUG_ON(ARRAY_SIZE(vcpu->arch.db) != ARRAY_SIZE(dbgregs->db));
+@@ -11782,6 +11796,8 @@ static void __get_sregs_common(struct kv
+ 	if (vcpu->arch.guest_state_protected)
+ 		goto skip_protected_regs;
+ 
++	kvm_handle_exception_payload_quirk(vcpu);
++
+ 	kvm_get_segment(vcpu, &sregs->cs, VCPU_SREG_CS);
+ 	kvm_get_segment(vcpu, &sregs->ds, VCPU_SREG_DS);
+ 	kvm_get_segment(vcpu, &sregs->es, VCPU_SREG_ES);
 
 
 
