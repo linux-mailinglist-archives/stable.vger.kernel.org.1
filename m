@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-243500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qP7PKYOq+GnXxgIAu9opvQ
-	(envelope-from <stable+bounces-243500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:39 +0200
+	id EGkuNZOu+GlIxwIAu9opvQ
+	(envelope-from <stable+bounces-243666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C13D4BEFE1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA4C4BFB98
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56A883040021
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4B385300D553
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CD63D75D7;
-	Mon,  4 May 2026 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE3E3D8129;
+	Mon,  4 May 2026 14:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBgpJBw8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hpv9pN4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDC41A9FAF;
-	Mon,  4 May 2026 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9DB1A6827;
+	Mon,  4 May 2026 14:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904044; cv=none; b=FGFP+amjybxrhDBhzI8fTmLLVAWjtyNu2fyVSUAB+cu57XImZSZxzpX386hw8zR0QRvextiCq5ekSueZPoN7Rebj/iUzPVz67v08DqgstS2s72TwVwIlUoLNtMl5vm+N0SKqFW5SC6jyFTuDub6bXkX0N9N7CZZ1g4/HGuAWxUM=
+	t=1777904468; cv=none; b=udYTDKSDuNncCVfTvoK/WkkKkMZVX3RtfGX+YVJXr0RMf2HdxXEO+BDxbqc5DmNFEUdmwahZxuDGUsYHkj6v667xo4rKTRjTyD327i7NZCESJgeIC360Iv/AfXJPSvCrVM7mZpfTSQ2Kb2HOAvJi9/ULsmP/3+H3VsNoFn0wShA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904044; c=relaxed/simple;
-	bh=xw7KMhsEKdGllxZ3xEZdCDsiKozC28k4aEtdt7TcOVI=;
+	s=arc-20240116; t=1777904468; c=relaxed/simple;
+	bh=6fmL3qZcT/oi9HAUtTE8kls2Es/5OtMTSHb+2X9zM1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtsFzqLD3l067nXah+5L8kaaNgaMzCbZ1OYHODPrqscyW2F7U+QF1oRnB7idOAXn3AtoFeHcRbS622171XlWl1NNHk7hAIL14FUKDaiPf8qFDf5yDX775GYwrY/Zm9wvgZmr0J2E5epPs2N/Zg4NcN08Jcngfuq9fOZ9my90vpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBgpJBw8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97689C2BCF4;
-	Mon,  4 May 2026 14:14:03 +0000 (UTC)
+	 MIME-Version; b=CW0qXpQ96vzlfPTDzRmLiagfkUcV0V8y73HdaABB/hQIX0sBWxjmp3Z4zbN2LciDAva2Z6Dixl03E7jpBPvqvUbVwo6XYN6irdihxYUSYrEdgbuvqcCio0DI2SDSxKbOZ8C9BkCnM7xiO0tIaICCfo1rKB2PqnQ/xDX8Riu4fI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hpv9pN4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE77EC2BCB8;
+	Mon,  4 May 2026 14:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904043;
-	bh=xw7KMhsEKdGllxZ3xEZdCDsiKozC28k4aEtdt7TcOVI=;
+	s=korg; t=1777904468;
+	bh=6fmL3qZcT/oi9HAUtTE8kls2Es/5OtMTSHb+2X9zM1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBgpJBw8BhOfYLALNYHTkVok8kHRQ7wWTt81hUhLft1X+eFl4m+xWXlVomjzBkGfM
-	 HFdyykIQPCYZgQlgNhk1pLpQXBjlTSwzOTqHkXjF7A6PkG7QIW0hemL42+L9cRDEiL
-	 SbpB+w/TIaxHADnj08BqX3s2zBEcOtPQHcWHoZ/s=
+	b=Hpv9pN4JaVuVDSrUR+0Zu3IBRvY6dyrOy18LXL2TlkkqRHxNWgNztLcl+JiMhj+tm
+	 j+Y8Bb4j/3IV+Hruv+cnYqpDkvJUqZJ+lfNN2c0wRdh1G+re1ipoqy80GId0AYc9Jd
+	 gZlryxT5ITEBBMsTu1sM6dGuJL/U/8noXHX4npsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	"Harry Yoo (Oracle)" <harry@kernel.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [PATCH 6.18 129/275] slub: fix data loss and overflow in krealloc()
+	Chen Ni <nichen@iscas.ac.cn>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 050/215] media: i2c: imx219: Check return value of devm_gpiod_get_optional() in imx219_probe()
 Date: Mon,  4 May 2026 15:51:09 +0200
-Message-ID: <20260504135147.695247263@linuxfoundation.org>
+Message-ID: <20260504135132.006041691@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,165 +66,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1C13D4BEFE1
+X-Rspamd-Queue-Id: CFA4C4BFB98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243500-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243666-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url]
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,raspberrypi.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 082a6d03a2d685a83a332666b500ad3966349588 upstream.
+commit 943b1f27a3eead21b22e2531a5432ea5910b60eb upstream.
 
-Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
-k[v]realloc") introduced the ability to force a reallocation if the
-original object does not satisfy new alignment or NUMA node, even when
-the object is being shrunk.
+The devm_gpiod_get_optional() function may return an error pointer
+(ERR_PTR) in case of a genuine failure during GPIO acquisition,
+not just NULL which indicates the legitimate absence of an optional
+GPIO.
 
-This introduced two bugs in the reallocation fallback path:
+Add an IS_ERR() check after the function call to catch such errors and
+propagate them to the probe function, ensuring the driver fails to load
+safely rather than proceeding with an invalid pointer.
 
-1. Data loss during NUMA migration: The jump to 'alloc_new' happens
-   before 'ks' and 'orig_size' are initialized. As a result, the
-   memcpy() in the 'alloc_new' block would copy 0 bytes into the new
-   allocation.
-
-2. Buffer overflow during shrinking: When shrinking an object while
-   forcing a new alignment, 'new_size' is smaller than the old size.
-   However, the memcpy() used the old size ('orig_size ?: ks'), leading
-   to an out-of-bounds write.
-
-The same overflow bug exists in the kvrealloc() fallback path, where the
-old bucket size ksize(p) is copied into the new buffer without being
-bounded by the new size.
-
-A simple reproducer:
-
-	// e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
-	while (1) {
-		void *p = kmalloc(128, GFP_KERNEL);
-		p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
-		kfree(p);
-	}
-
-demonstrates the issue:
-
-  ==================================================================
-  BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
-
-  Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
-   memcpy_orig+0x68/0x130
-   krealloc_node_align_noprof+0x1c8/0x340
-   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-   lkdtm_do_action+0x3a/0x60 [lkdtm]
-   ...
-
-  kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
-
-  allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
-   krealloc_node_align_noprof+0x19c/0x340
-   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-   lkdtm_do_action+0x3a/0x60 [lkdtm]
-   ...
-  ==================================================================
-
-Fix it by moving the old size calculation to the top of __do_krealloc()
-and bounding all copy lengths by the new allocation size.
-
-Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
+Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
 Cc: stable@vger.kernel.org
-Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
-Signed-off-by: Marco Elver <elver@google.com>
-Link: https://patch.msgid.link/20260416132837.3787694-1-elver@google.com
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/media/i2c/imx219.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6999,16 +6999,6 @@ __do_krealloc(const void *p, size_t new_
- 	if (!kasan_check_byte(p))
- 		return NULL;
+--- a/drivers/media/i2c/imx219.c
++++ b/drivers/media/i2c/imx219.c
+@@ -1176,6 +1176,9 @@ static int imx219_probe(struct i2c_clien
+ 	/* Request optional enable pin */
+ 	imx219->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						     GPIOD_OUT_HIGH);
++	if (IS_ERR(imx219->reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(imx219->reset_gpio),
++				     "failed to get reset gpio\n");
  
--	/*
--	 * If reallocation is not necessary (e. g. the new size is less
--	 * than the current allocated size), the current allocation will be
--	 * preserved unless __GFP_THISNODE is set. In the latter case a new
--	 * allocation on the requested node will be attempted.
--	 */
--	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
--		     nid != page_to_nid(virt_to_page(p)))
--		goto alloc_new;
--
- 	if (is_kfence_address(p)) {
- 		ks = orig_size = kfence_ksize(p);
- 	} else {
-@@ -7027,6 +7017,16 @@ __do_krealloc(const void *p, size_t new_
- 		}
- 	}
- 
-+	/*
-+	 * If reallocation is not necessary (e. g. the new size is less
-+	 * than the current allocated size), the current allocation will be
-+	 * preserved unless __GFP_THISNODE is set. In the latter case a new
-+	 * allocation on the requested node will be attempted.
-+	 */
-+	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
-+		     nid != page_to_nid(virt_to_page(p)))
-+		goto alloc_new;
-+
- 	/* If the old object doesn't fit, allocate a bigger one */
- 	if (new_size > ks)
- 		goto alloc_new;
-@@ -7061,7 +7061,7 @@ alloc_new:
- 	if (ret && p) {
- 		/* Disable KASAN checks as the object's redzone is accessed. */
- 		kasan_disable_current();
--		memcpy(ret, kasan_reset_tag(p), orig_size ?: ks);
-+		memcpy(ret, kasan_reset_tag(p), min(new_size, (size_t)(orig_size ?: ks)));
- 		kasan_enable_current();
- 	}
- 
-@@ -7288,7 +7288,7 @@ void *kvrealloc_node_align_noprof(const
- 		if (p) {
- 			/* We already know that `p` is not a vmalloc address. */
- 			kasan_disable_current();
--			memcpy(n, kasan_reset_tag(p), ksize(p));
-+			memcpy(n, kasan_reset_tag(p), min(size, ksize(p)));
- 			kasan_enable_current();
- 
- 			kfree(p);
+ 	/*
+ 	 * The sensor must be powered for imx219_identify_module()
 
 
 
