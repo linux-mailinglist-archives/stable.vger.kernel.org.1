@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-243696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MXaB3Gs+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:53 +0200
+	id QJbXBo2q+GnXxgIAu9opvQ
+	(envelope-from <stable+bounces-243515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57A64BF5E0
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAE24BF00C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 29D4C303B4DF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C015300B461
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B013DE452;
-	Mon,  4 May 2026 14:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97343D5254;
+	Mon,  4 May 2026 14:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qb4E9LHH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vz9i0AsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73493DE44F;
-	Mon,  4 May 2026 14:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D72E3BE630;
+	Mon,  4 May 2026 14:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904542; cv=none; b=Nhyh0pEtmlcBEZUM1aic2DC/LHBAP/0x8o9orDHEoZZZtZv04gaRstXub0JL091fw5F1xwgNPcxU/ihFfn4PGpZVkd09MrsYC6SGNZbbjCSJfRQmZtb34bDytcLqWOaXZyeHqkNWwgjQg2K0EuiT9XvP5Z/x97NQZELETHEXou4=
+	t=1777904082; cv=none; b=k8HVat7/ldy45rWjeoW0PlfoqZoGLqbN8LVzai6RaYsre2HlbAP3GuYN6hHQhkumMKF8ygm8+6Y7fAyIkMM+GXo79MtMHchhHT9loNNtluYk1s148zIvRUjnx+arNT18l0oVsWB5eNGdGq3473mxHq0D6PZPjGRk+wAJCjfNr4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904542; c=relaxed/simple;
-	bh=DR8dcueP0cGGxdKygerIXDBp7FY1FynfIvfD9jaR6fI=;
+	s=arc-20240116; t=1777904082; c=relaxed/simple;
+	bh=KxtXCqojtfaZdwrucVMG5XarfHyVHyG4mU5yQ9BCft4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLjXK+f/G4ssGX+N/B7+mDCgs+Qbcy93sDdHbML/RCU/UzTgT7Qm8dkT+wY78z2zePf0AlQni7+4kzlPXzYeEgO2Uowni57JrKoH8K7U1D+A0yr6dhYuhxKy1lqvD4l9NUOqHZKM7kyhU+Y7q5DSaHpUX9DrX5jVH+HtY3aSwqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qb4E9LHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A754C2BCB8;
-	Mon,  4 May 2026 14:22:22 +0000 (UTC)
+	 MIME-Version; b=FleVr8Jt2cPnseH0ED4j9fHYyRWDCkPQRcQboY99Y+4m/Qt32IZnwNCPnMmLrLFzRrm+bK/NpBI7IBCPeveg7xsRme39eEoTjjnstjItaS5uV648tkbiZeI+CZQEAhqhLfab/vf+o8wBhWvCTC6su9ZEXiyylVzh1612aTl5jfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vz9i0AsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DF9C2BCC4;
+	Mon,  4 May 2026 14:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904542;
-	bh=DR8dcueP0cGGxdKygerIXDBp7FY1FynfIvfD9jaR6fI=;
+	s=korg; t=1777904082;
+	bh=KxtXCqojtfaZdwrucVMG5XarfHyVHyG4mU5yQ9BCft4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qb4E9LHHfwFKCdaOCiLPT2Y5qGiOlY/7L1HkiqgEg+HvNWi6w82RprTWBcORmIycY
-	 B928vdNAQhPuX8rxU76BiGDQb0v8hbIuzsxQHHd1j0qyoOvoD08yCkRvMuBhbwxOsw
-	 vBGtJLPTKm0rW2//aOBy6IqVhDSkcn4xKrAJMLqQ=
+	b=Vz9i0AsVYhhKHh0K6L7s2auiK9Jv8SEk59SbemoRrAcQEAFF5c+Hb/GcctodQQ5mM
+	 rHbLz2Elh2WHFBcKZuU7FTXkvcLacv5EK9Tmx3rmt59wwByTt2UEl5gWaj+JzleMQq
+	 duzPCabcFgntD21fqqOluXqVIX/BmMFebM7Z0SVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 080/215] iio: adc: ad7768-1: fix one-shot mode data acquisition
+	Jacqueline Wong <jacqwong@google.com>,
+	Jordan Hand <jhand@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.18 159/275] tpm: tpm_tis: stop transmit if retries are exhausted
 Date: Mon,  4 May 2026 15:51:39 +0200
-Message-ID: <20260504135133.085449531@linuxfoundation.org>
+Message-ID: <20260504135148.910264608@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B57A64BF5E0
+X-Rspamd-Queue-Id: DAAE24BF00C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243696-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243515-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,analog.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,baylibre.com:email,huawei.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Jacqueline Wong <jacqwong@google.com>
 
-commit 8be19e233744961db6069da9c9ab63eb085a0447 upstream.
+commit 949692da7211572fac419b2986b6abc0cd1aeb76 upstream.
 
-According to the datasheet, one-shot mode requires a SYNC_IN pulse to
-trigger a new sample conversion. In the current implementation, No sync
-pulse was sent after switching to one-shot mode and reinit_completion()
-was called before mode switching, creating a race condition where spurious
-interrupts during mode change could trigger completion prematurely.
+tpm_tis_send_main() will attempt to retry sending data TPM_RETRY times.
+Currently, if those retries are exhausted, the driver will attempt to
+call execute. The TPM will be in the wrong state, leading to the
+operation simply timing out.
 
-Fix by sending a sync pulse after configuring one-shot mode and
-reinit_completion() to ensure it only waits for the actual conversion
-completion.
+Instead, if there is still an error after retries are exhausted, return
+that error immediately.
 
-Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: 280db21e153d8 ("tpm_tis: Resend command to recover from data transfer errors")
+Signed-off-by: Jacqueline Wong <jacqwong@google.com>
+Signed-off-by: Jordan Hand <jhand@google.com>
+Link: https://lore.kernel.org/r/20260415160006.2275325-3-jacqwong@google.com
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7768-1.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -241,12 +241,17 @@ static int ad7768_scan_direct(struct iio
- 	struct ad7768_state *st = iio_priv(indio_dev);
- 	int readval, ret;
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -557,11 +557,16 @@ static int tpm_tis_send_main(struct tpm_
+ 			break;
+ 		else if (rc != -EAGAIN && rc != -EIO)
+ 			/* Data transfer failed, not recoverable */
+-			return rc;
++			goto out_err;
  
--	reinit_completion(&st->completion);
--
- 	ret = ad7768_set_mode(st, AD7768_ONE_SHOT);
- 	if (ret < 0)
- 		return ret;
+ 		usleep_range(priv->timeout_min, priv->timeout_max);
+ 	}
  
-+	reinit_completion(&st->completion);
++	if (rc == -EAGAIN || rc == -EIO) {
++		dev_err(&chip->dev, "Exhausted %d tpm_tis_send_data retries\n", TPM_RETRY);
++		goto out_err;
++	}
 +
-+	/* One-shot mode requires a SYNC pulse to generate a new sample */
-+	ret = ad7768_send_sync_pulse(st);
-+	if (ret)
-+		return ret;
-+
- 	ret = wait_for_completion_timeout(&st->completion,
- 					  msecs_to_jiffies(1000));
- 	if (!ret)
+ 	/* go and do it */
+ 	rc = tpm_tis_write8(priv, TPM_STS(priv->locality), TPM_STS_GO);
+ 	if (rc < 0)
 
 
 
