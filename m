@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-243220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKTaM+uo+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:51 +0200
+	id UDwvMKuv+GkPzAIAu9opvQ
+	(envelope-from <stable+bounces-243673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:39:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A58A4BEAFE
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCA14BFD54
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D413A301A266
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B550D300D77F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1944A3DDDD6;
-	Mon,  4 May 2026 14:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597B83DF012;
+	Mon,  4 May 2026 14:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kt/9VzJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwvzMJWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C0F3D9029;
-	Mon,  4 May 2026 14:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA933DEAC8;
+	Mon,  4 May 2026 14:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903325; cv=none; b=QyKjFOJytLj6BErvQdu1BE0nHPASyIz6yyYvQyHIzLpITfa3w2iwcIeQ85geqt35UcCKlGObYuGYm/15A+L8wkjdAuN4v7Q0wUx6nelCKR94VRpZ5SzrBD03Ltdetd8wWz6JMYePUDkhSC205WXdnGyKgFKJhRZ8Cw2ptrKcP00=
+	t=1777904484; cv=none; b=WXI9j1NvKgvQAIvWQTL4inDygXRMiskRnRtOxtMEJMbtYAzIFe0APumAPrcmykFOmojsIK612Hj5IB/Fc1fhpn2vW/c3s7ti/ryanemqA9Z9wIhFlon0vqiWY9Wjm5eKN/jaJhBQL95Ye2aE50v3r/1IJ6/qOiUeO3kYKAo6sPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903325; c=relaxed/simple;
-	bh=GZwBC9tK6SH5MUY/TDggBC3AVanLhKiZRacMSOC2p6U=;
+	s=arc-20240116; t=1777904484; c=relaxed/simple;
+	bh=nBSeOpXkAsrfVgnh+IXrriU6vYH+w1mkHnrscLY8tSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPHTec9haD31R++g755MvCGBfKm5YLUPPfy2MrrMdem87/GpeTY5ByryjYQCW1gCEy+PIUGlUxzsP5yGs1JbvWjXhTjzvtJuznUaFW+AI5FiBNa57fQZRO8fJDmmfjdGHItX6R/o8E31tc6QQlxRz4vvbX+ji/2LIxD1/YBSU/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kt/9VzJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66533C2BCB8;
-	Mon,  4 May 2026 14:02:05 +0000 (UTC)
+	 MIME-Version; b=cr2abEUJbXmMMtSJivLPt4csqRW9AYnuU2qfrFGvJ2OcXeQMyVDterISvMAyb4iY39R+GaDtFSn0z/KrNX7KYL5rw2VtpSrcCW1GNP+fFbfB1lZL0y9B1uB75HiSQkGNz6XKohb8VMz/na0GCfywBAtMakbuD4Ny7VRUjITrXxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwvzMJWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E9CC2BCF4;
+	Mon,  4 May 2026 14:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903325;
-	bh=GZwBC9tK6SH5MUY/TDggBC3AVanLhKiZRacMSOC2p6U=;
+	s=korg; t=1777904483;
+	bh=nBSeOpXkAsrfVgnh+IXrriU6vYH+w1mkHnrscLY8tSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kt/9VzJgvmmrOP+Le54VHjd0v96T1OiKrzJebbEEVVEb61uyz/qAfhxYvBaXmQAjN
-	 JQrfdI+jokumRRmVYACEn8gb1NJTRyxuCLuhdCKSLAQV5AcGMkgAs0QDqJMaVizSI8
-	 OcXvBYSCJrbi8Wv59wovbFwdrFjQ98UjbhVgslEA=
+	b=PwvzMJWVyNsSo9yWJoeuSI5GswfwDP9liWxhgE3knpgwmtDMpdmNQmxDwgYItZcec
+	 iYixw0O3hHKkBnkDtL5oVNwZKAPkCG6mOxcVYkjnwVUhVfzKnURyvKaxdO51fnSnqb
+	 Rb2BgFApvmAEXksw6wGk3ESUeBqjOpQGH0S90SeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	chenyichong <chenyichong@uniontech.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 190/307] mm/vmalloc: take vmap_purge_lock in shrinker
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.12 056/215] erofs: fix the out-of-bounds nameoff handling for trailing dirents
 Date: Mon,  4 May 2026 15:51:15 +0200
-Message-ID: <20260504135150.030948040@linuxfoundation.org>
+Message-ID: <20260504135132.222870944@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +65,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2A58A4BEAFE
+X-Rspamd-Queue-Id: BFCA14BFD54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,uniontech.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-243220-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-243673-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,uniontech.com:email,linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,sashiko.dev:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit ec05f51f1e65bce95528543eb73fda56fd201d94 upstream.
+commit d18a3b5d337fa412a38e776e6b4b857a58836575 upstream.
 
-decay_va_pool_node() can be invoked concurrently from two paths:
-__purge_vmap_area_lazy() when pools are being purged, and the shrinker via
-vmap_node_shrink_scan().
+Currently we already have boundary-checks for nameoffs, but the trailing
+dirents are special since the namelens are calculated with strnlen()
+with unchecked nameoffs.
 
-However, decay_va_pool_node() is not safe to run concurrently, and the
-shrinker path currently lacks serialization, leading to races and possible
-leaks.
+If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
+maxsize - nameoff can underflow, causing strnlen() to read past the
+directory block.
 
-Protect decay_va_pool_node() by taking vmap_purge_lock in the shrinker
-path to ensure serialization with purge users.
+nameoff0 should also be verified to be a multiple of
+`sizeof(struct erofs_dirent)` as well [1].
 
-Link: https://lore.kernel.org/20260413192646.14683-1-urezki@gmail.com
-Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-Cc: chenyichong <chenyichong@uniontech.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
+
+Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmalloc.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/erofs/dir.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -5416,6 +5416,7 @@ vmap_node_shrink_scan(struct shrinker *s
- {
- 	struct vmap_node *vn;
+--- a/fs/erofs/dir.c
++++ b/fs/erofs/dir.c
+@@ -18,20 +18,18 @@ static int erofs_fill_dentries(struct in
+ 		const char *de_name = (char *)dentry_blk + nameoff;
+ 		unsigned int de_namelen;
  
-+	guard(mutex)(&vmap_purge_lock);
- 	for_each_vmap_node(vn)
- 		decay_va_pool_node(vn, true);
+-		/* the last dirent in the block? */
+-		if (de + 1 >= end)
+-			de_namelen = strnlen(de_name, maxsize - nameoff);
+-		else
++		/* non-trailing dirent in the directory block? */
++		if (de + 1 < end)
+ 			de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
++		else if (maxsize <= nameoff)
++			goto err_bogus;
++		else
++			de_namelen = strnlen(de_name, maxsize - nameoff);
  
+-		/* a corrupted entry is found */
+-		if (nameoff + de_namelen > maxsize ||
+-		    de_namelen > EROFS_NAME_LEN) {
+-			erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+-				  EROFS_I(dir)->nid);
+-			DBG_BUGON(1);
+-			return -EFSCORRUPTED;
+-		}
++		/* a corrupted entry is found (including negative namelen) */
++		if (!in_range32(de_namelen, 1, EROFS_NAME_LEN) ||
++		    nameoff + de_namelen > maxsize)
++			goto err_bogus;
+ 
+ 		if (!dir_emit(ctx, de_name, de_namelen,
+ 			      le64_to_cpu(de->nid), d_type))
+@@ -40,6 +38,10 @@ static int erofs_fill_dentries(struct in
+ 		ctx->pos += sizeof(struct erofs_dirent);
+ 	}
+ 	return 0;
++err_bogus:
++	erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
++	DBG_BUGON(1);
++	return -EFSCORRUPTED;
+ }
+ 
+ static int erofs_readdir(struct file *f, struct dir_context *ctx)
+@@ -67,7 +69,7 @@ static int erofs_readdir(struct file *f,
+ 		}
+ 
+ 		nameoff = le16_to_cpu(de->nameoff);
+-		if (nameoff < sizeof(struct erofs_dirent) || nameoff >= bsz) {
++		if (!nameoff || nameoff >= bsz || (nameoff % sizeof(*de))) {
+ 			erofs_err(sb, "invalid de[0].nameoff %u @ nid %llu",
+ 				  nameoff, EROFS_I(dir)->nid);
+ 			err = -EFSCORRUPTED;
 
 
 
