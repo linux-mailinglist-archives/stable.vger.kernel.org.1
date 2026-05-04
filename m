@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-243797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gABvC5mx+GlizAIAu9opvQ
-	(envelope-from <stable+bounces-243797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:53 +0200
+	id UPOpIWSr+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B724C0063
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556484BF2D0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C777C3013312
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB149300C003
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8D63DEADB;
-	Mon,  4 May 2026 14:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749B13DE43C;
+	Mon,  4 May 2026 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zo/KtphY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VQLZ12T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7433DEAFF;
-	Mon,  4 May 2026 14:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381DB1A6827;
+	Mon,  4 May 2026 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904803; cv=none; b=hvN9jnUmiSAGlLqxJxi9ZLWGumpJRQld3cd6Nj6axbAVJkbwoRLQ01zRBXk9P9BI8aH8yBfXmVa55tVAgEDRUWik+OXM51Hf+CyLKaZY+IiWCe/Y320QEi+ZxuWk5mm+ZMBzY9vEidFc4jDaBUHCiqbnc9kZXKCX+q+3WNH87po=
+	t=1777904301; cv=none; b=r+L+gdwZsSOK4vZ2hK395gJK+JZVS0nSYiUD5bOice6/ftjQLef+ka1AD92Ry4sJia+X4POBVZP+sYqyoVgoHG4QxzljQgpmuivJ2rivlC05oAnLU3fzCqV0CcXPKvUR3MV579ipYlwg4AG2X1fSZsrQyK1QbHvmsyRwIrAUP5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904803; c=relaxed/simple;
-	bh=gBWHB7gXFWxTwo31zxp+2tNrqttJcFdMcNU8YOMnxcY=;
+	s=arc-20240116; t=1777904301; c=relaxed/simple;
+	bh=49PBP9RqFyq6yhtd2JZE1g/yx7Apu2UqpQrmm9LGQ+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pASrdgDvr5ceBK9WRINiAnGEMfHsHGw+legjwrTJWiRPtFTGoaCVhciOQHSbn0XJs5xPlfZzuqlnbr9hsd0o8YalPFlIe6stw4pATiqtwp+2SwI9y90L1SQSCaAqwUkjJsuBsNCNCb3KLNfwJ1i5qrdlTH7y7mJR8O/FQ2d7+ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zo/KtphY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B17C2BCB8;
-	Mon,  4 May 2026 14:26:42 +0000 (UTC)
+	 MIME-Version; b=DpTQDKGyLMuM7Pn3/fSkGr4oRNvE5ay7mlt5Ol6No+3TIE6o4cS+Jt48FNs5swFreZkk0v8JhapCFhK88P1Oa0xZwffIYW9bOXm6ZeU5sY6tyAEMj0qXUp0Pa+8ekQ8OypNJkEPCQo9tcRwdZTryRvpOjBVtATmY6fauVkdIccE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VQLZ12T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93371C2BCF4;
+	Mon,  4 May 2026 14:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904803;
-	bh=gBWHB7gXFWxTwo31zxp+2tNrqttJcFdMcNU8YOMnxcY=;
+	s=korg; t=1777904300;
+	bh=49PBP9RqFyq6yhtd2JZE1g/yx7Apu2UqpQrmm9LGQ+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zo/KtphYmdX4/fZx2Gz4HsamlBsDQcyXECLvZ3sVN6YD58p5LZH+5yvFsD9dofc/u
-	 SgfrG+tjFXcmYVhFwwbxNGHIASIbNBq90d77rNadAwkz25MPS6qMII2mYkP1vzAAWe
-	 NW1ja2n9Q/UWhUc/SWRxv8rY/lhCBYaQc54teaVU=
+	b=2VQLZ12TXmRSpaJ128z8GhqT8d7XT6XUizNwkwv6Iwb4XJgQOs6y7XuufYiq1WX8v
+	 1uGZYN0TW6b7rqLRPDaa8rPStQLIj5yFtnUBC1nf2AJVEAr/dTxsz+1aQcUPJCHToR
+	 DtK/tf7ZCD5Fid63hv2UrSgcOfu3D+0tNQkT0VDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/215] wifi: mt76: mt792x: describe USB WFSYS reset with a descriptor
+Subject: [PATCH 6.18 260/275] net: qrtr: ns: Limit the maximum server registration per node
 Date: Mon,  4 May 2026 15:53:20 +0200
-Message-ID: <20260504135136.825473738@linuxfoundation.org>
+Message-ID: <20260504135152.700212489@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +66,143 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22B724C0063
+X-Rspamd-Queue-Id: 556484BF2D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-243600-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243797-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,mediatek.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit e6f48512c1ceebcd1ce6bb83df3b3d56a261507d ]
+[ Upstream commit d5ee2ff98322337951c56398e79d51815acbf955 ]
 
-Prepare mt792xu_wfsys_reset() for chips that share the same USB WFSYS
-reset flow but use different register definitions.
+Current code does no bound checking on the number of servers added per
+node. A malicious client can flood NEW_SERVER messages and exhaust memory.
 
-This is a pure refactor of the current mt7921u path and keeps the reset
-sequence unchanged.
+Fix this issue by limiting the maximum number of server registrations to
+256 per node. If the NEW_SERVER message is received for an old port, then
+don't restrict it as it will get replaced. While at it, also rate limit
+the error messages in the failure path of qrtr_ns_worker().
 
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20260311002825.15502-1-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Stable-dep-of: 56154fef47d1 ("wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling")
+Note that the limit of 256 is chosen based on the current platform
+requirements. If requirement changes in the future, this limit can be
+increased.
+
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-1-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt792x_usb.c |   40 +++++++++++++++++++-----
- 1 file changed, 32 insertions(+), 8 deletions(-)
+ net/qrtr/ns.c |   26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-@@ -206,6 +206,24 @@ static void mt792xu_epctl_rst_opt(struct
- 	mt792xu_uhw_wr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT, val);
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -68,8 +68,14 @@ struct qrtr_server {
+ struct qrtr_node {
+ 	unsigned int id;
+ 	struct xarray servers;
++	u32 server_count;
+ };
+ 
++/* Max server limit is chosen based on the current platform requirements. If the
++ * requirement changes in the future, this value can be increased.
++ */
++#define QRTR_NS_MAX_SERVERS 256
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -230,6 +236,17 @@ static struct qrtr_server *server_add(un
+ 	if (!service || !port)
+ 		return NULL;
+ 
++	node = node_get(node_id);
++	if (!node)
++		return NULL;
++
++	/* Make sure the new servers per port are capped at the maximum value */
++	old = xa_load(&node->servers, port);
++	if (!old && node->server_count >= QRTR_NS_MAX_SERVERS) {
++		pr_err_ratelimited("QRTR client node %u exceeds max server limit!\n", node_id);
++		return NULL;
++	}
++
+ 	srv = kzalloc(sizeof(*srv), GFP_KERNEL);
+ 	if (!srv)
+ 		return NULL;
+@@ -239,10 +256,6 @@ static struct qrtr_server *server_add(un
+ 	srv->node = node_id;
+ 	srv->port = port;
+ 
+-	node = node_get(node_id);
+-	if (!node)
+-		goto err;
+-
+ 	/* Delete the old server on the same port */
+ 	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
+ 	if (old) {
+@@ -253,6 +266,8 @@ static struct qrtr_server *server_add(un
+ 		} else {
+ 			kfree(old);
+ 		}
++	} else {
++		node->server_count++;
+ 	}
+ 
+ 	trace_qrtr_ns_server_add(srv->service, srv->instance,
+@@ -293,6 +308,7 @@ static int server_del(struct qrtr_node *
+ 	}
+ 
+ 	kfree(srv);
++	node->server_count--;
+ 
+ 	return 0;
  }
+@@ -681,7 +697,7 @@ static void qrtr_ns_worker(struct work_s
+ 		}
  
-+struct mt792xu_wfsys_desc {
-+	u32 rst_reg;
-+	u32 done_reg;
-+	u32 done_mask;
-+	u32 done_val;
-+	u32 delay_ms;
-+	bool need_status_sel;
-+};
-+
-+static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
-+	.rst_reg = MT_CBTOP_RGU_WF_SUBSYS_RST,
-+	.done_reg = MT_UDMA_CONN_INFRA_STATUS,
-+	.done_mask = MT_UDMA_CONN_WFSYS_INIT_DONE,
-+	.done_val = MT_UDMA_CONN_WFSYS_INIT_DONE,
-+	.delay_ms = 0,
-+	.need_status_sel = true,
-+};
-+
- int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
- {
- 	int err;
-@@ -236,25 +254,31 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+ 		if (ret < 0)
+-			pr_err("failed while handling packet from %d:%d",
++			pr_err_ratelimited("failed while handling packet from %d:%d",
+ 			       sq.sq_node, sq.sq_port);
+ 	}
  
- int mt792xu_wfsys_reset(struct mt792x_dev *dev)
- {
-+	const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
- 	u32 val;
- 	int i;
- 
- 	mt792xu_epctl_rst_opt(dev, false);
- 
--	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
-+	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
- 	val |= MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
--	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
-+	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
- 
--	usleep_range(10, 20);
-+	if (desc->delay_ms)
-+		msleep(desc->delay_ms);
-+	else
-+		usleep_range(10, 20);
- 
--	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
-+	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
- 	val &= ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
--	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
-+	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
-+
-+	if (desc->need_status_sel)
-+		mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
- 
--	mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
- 	for (i = 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
--		val = mt792xu_uhw_rr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS);
--		if (val & MT_UDMA_CONN_WFSYS_INIT_DONE)
-+		val = mt792xu_uhw_rr(&dev->mt76, desc->done_reg);
-+		if ((val & desc->done_mask) == desc->done_val)
- 			break;
- 
- 		msleep(100);
 
 
 
