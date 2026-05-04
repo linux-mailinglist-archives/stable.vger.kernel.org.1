@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-243446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNdNGmmp+Gm5xgIAu9opvQ
-	(envelope-from <stable+bounces-243446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:57 +0200
+	id CBsLGGKr+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65A04BED17
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5DB4BF2BC
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15B2D302DF8A
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C216302A4C8
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6D93D75D7;
-	Mon,  4 May 2026 14:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05093DE456;
+	Mon,  4 May 2026 14:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymRgLfLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgNyk9YC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9183B19D1;
-	Mon,  4 May 2026 14:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37D33DE43C;
+	Mon,  4 May 2026 14:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903905; cv=none; b=J6W4hbauBjdRF5Rz9CQRdXhOhr+LzcmwL/vQulu9pVUtiHp1Wp43ne+fabwOD+KzcuX3evhoRcsMd/Eec+98M0mr2wPVIQdnVQfeQ40ApwezpcHwMDtInwNJxXeJjkEpvj6xdNZ4Nd7UyYNvYxu3biLN2Kvaz93D+Pftl70ip/g=
+	t=1777904429; cv=none; b=lZjxPC2PV6RGCurHxCYhGq59tRDyJo7Kjf9e1zV6BpZlSCIo5qqIdtPqVou800MRY7pU4Y4LiXiz/MEXIl+Z4Vb4ASnRyyQX72kkXmBiB+L8A2GsqKMOwUSqh9jMwgwoUTDKjfp/l4QQCcUGPKyGXweecHOcDgHMRMfvfdpoHj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903905; c=relaxed/simple;
-	bh=YkP91w8Wdox6Br09cGHLCfAaXOJbKc8Hi1yPRudlmhk=;
+	s=arc-20240116; t=1777904429; c=relaxed/simple;
+	bh=Qw1xDlb6MAPFvHZvXe3bn/LTwdKZw3KvuvqWUEvC9CY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHviz8ny/odj+jPy4/N7vip8gaW1/b/LsyV5CwSkaTMW6jju53mmATpKaydAxzbSd74b3M633pYWAqcoOzcnNhxWBkt7AxTyg/nBPscHmvu2WscihWjac9UdPu4n0TXy5FazXqE8qVmRS8N1sVgvFUaPyPzwJzB80JGcbXno4Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymRgLfLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99608C2BCB8;
-	Mon,  4 May 2026 14:11:44 +0000 (UTC)
+	 MIME-Version; b=WN88Or4ZncuSYeAZUUuZYKo+P3ikbssTNOEMybiZSMODeHko29jsWUOftWpSlDB99NWCsKL/tWLWaASVG7Qsevlg4A6FRcycDLReu6/LZPuCVK8TiYy/C9PUEqb3dxUIVVefZPho6IpbNnNGu128cVw8gaC60kzaxlFht8RZhac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgNyk9YC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4961EC2BCB8;
+	Mon,  4 May 2026 14:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903904;
-	bh=YkP91w8Wdox6Br09cGHLCfAaXOJbKc8Hi1yPRudlmhk=;
+	s=korg; t=1777904429;
+	bh=Qw1xDlb6MAPFvHZvXe3bn/LTwdKZw3KvuvqWUEvC9CY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymRgLfLB7dTFe6B5sZYX6ezJnG3M1tRFLw9CaRPE6CMoYp6pxZFeAhFICyY8nhZLn
-	 JfXXn5B9soJdT86Z6fbskYtNxkgg9qg/Yt0xWtSCX4XAMsbBObqu52KOQIi2Hu3wgB
-	 0uG9oN0NwtpdGI01l7dJ5TT+p7DfRWp4qHKRQhV0=
+	b=UgNyk9YCFRWoAgs5ndzUl8np0Du9t7XLxtcH53aeJOz8y5KjWR4SCP5RaMQMywmjm
+	 9+gjFo0Z5xn9EMShhHD6MwDWhQ7sZa6gsWSvTS6+fXaSA00Tt1eTJsp2SDmBYqhxMK
+	 L7ULIGXoL5uTImWA1aU9mjxkWLM/4ppcnVubkL+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 107/275] iio: adc: ad7768-1: remove switch to one-shot mode
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Avinesh Kumar <avinesh.kumar@suse.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Geffon <bgeffon@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 028/215] zram: do not forget to endio for partial discard requests
 Date: Mon,  4 May 2026 15:50:47 +0200
-Message-ID: <20260504135146.885469257@linuxfoundation.org>
+Message-ID: <20260504135131.204615573@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,14 +69,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E65A04BED17
+X-Rspamd-Queue-Id: CB5DB4BF2BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +84,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243446-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243651-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,82 +93,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,baylibre.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit 81fdc3127d013a552465c3bf9829afbed5184406 upstream.
+commit e3668b371329ea036ff022ce8ecc82f8befcf003 upstream.
 
-wideband low ripple FIR Filter is not available in one-shot mode. In
-order to make direct reads work for all filter options, remove the
-switch for one-shot mode and guarantee device is always in continuous
-conversion mode.
+As reported by Qu Wenruo and Avinesh Kumar, the following
 
-Fixes: fb1d3b24ebf5 ("iio: adc: ad7768-1: add filter type and oversampling ratio attributes")
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+ getconf PAGESIZE
+ 65536
+ blkdiscard -p 4k /dev/zram0
+
+takes literally forever to complete.  zram doesn't support partial
+discards and just returns immediately w/o doing any discard work in such
+cases.  The problem is that we forget to endio on our way out, so
+blkdiscard sleeps forever in submit_bio_wait().  Fix this by jumping to
+end_bio label, which does bio_endio().
+
+Link: https://lore.kernel.org/20260331074255.777019-1-senozhatsky@chromium.org
+Fixes: 0120dd6e4e20 ("zram: make zram_bio_discard more self-contained")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Qu Wenruo <wqu@suse.com>
+Closes: https://lore.kernel.org/linux-block/92361cd3-fb8b-482e-bc89-15ff1acb9a59@suse.com
+Tested-by: Qu Wenruo <wqu@suse.com>
+Reported-by: Avinesh Kumar <avinesh.kumar@suse.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1256530
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7768-1.c |   21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ drivers/block/zram/zram_drv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -389,17 +389,8 @@ static int ad7768_scan_direct(struct iio
- 	struct ad7768_state *st = iio_priv(indio_dev);
- 	int readval, ret;
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2017,7 +2017,7 @@ static void zram_bio_discard(struct zram
+ 	 */
+ 	if (offset) {
+ 		if (n <= (PAGE_SIZE - offset))
+-			return;
++			goto end_bio;
  
--	ret = ad7768_set_mode(st, AD7768_ONE_SHOT);
--	if (ret < 0)
--		return ret;
--
- 	reinit_completion(&st->completion);
- 
--	/* One-shot mode requires a SYNC pulse to generate a new sample */
--	ret = ad7768_send_sync_pulse(st);
--	if (ret)
--		return ret;
--
- 	ret = wait_for_completion_timeout(&st->completion,
- 					  msecs_to_jiffies(1000));
- 	if (!ret)
-@@ -418,14 +409,6 @@ static int ad7768_scan_direct(struct iio
- 	if (st->oversampling_ratio == 8)
- 		readval >>= 8;
- 
--	/*
--	 * Any SPI configuration of the AD7768-1 can only be
--	 * performed in continuous conversion mode.
--	 */
--	ret = ad7768_set_mode(st, AD7768_CONTINUOUS);
--	if (ret < 0)
--		return ret;
--
- 	return readval;
- }
- 
-@@ -1025,6 +1008,10 @@ static int ad7768_setup(struct iio_dev *
- 			return ret;
+ 		n -= (PAGE_SIZE - offset);
+ 		index++;
+@@ -2032,6 +2032,7 @@ static void zram_bio_discard(struct zram
+ 		n -= PAGE_SIZE;
  	}
  
-+	ret = ad7768_set_mode(st, AD7768_CONTINUOUS);
-+	if (ret)
-+		return ret;
-+
- 	/* For backwards compatibility, try the adi,sync-in-gpios property */
- 	st->gpio_sync_in = devm_gpiod_get_optional(&st->spi->dev, "adi,sync-in",
- 						   GPIOD_OUT_LOW);
++end_bio:
+ 	bio_endio(bio);
+ }
+ 
 
 
 
