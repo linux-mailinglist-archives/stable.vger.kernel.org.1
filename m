@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Ej/A+Wo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:45 +0200
+	id uIWuLLWr+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD764BEAE0
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C9B4BF3B9
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A2345301D31B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:01:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D250C3028F5D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B433D5667;
-	Mon,  4 May 2026 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E683DE43C;
+	Mon,  4 May 2026 14:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DZeubnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSNGIPdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75499378D8C;
-	Mon,  4 May 2026 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277013DE443;
+	Mon,  4 May 2026 14:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903315; cv=none; b=YpvER7uzc2UJ9n5PG/D6evepgN1Y84AtgzKy8/T0eKbJkz/Gcj6oBUnWnKlTu0YjXVtbyz+OdAf2749oFau1JYBUvqP+eQ2fxdsKYD/k7RG+qkKjI+uk7jyXaAmeCd4+Q527+6ubN4NiVYh4/ev4ADxf8xbzP7Yyk+5xwHwkVlc=
+	t=1777904476; cv=none; b=MvVrbFWlyBoFSmfY2oLcO+uc3TNgjDyGF/DgBa0A+GkIAQs/fmY364M+6RLelO1mvmbAJGjEVVNE74wBlnVRfKSgc9LPFJgRRdmdsf1BRKAfoHzC0gwLQf1+jlQZkA7oMmmPYn9dS+ttER86wG1J4JWw5J8eusa5Y2xFQAU2fjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903315; c=relaxed/simple;
-	bh=pBpSD8p2OK721IFUai9BqA8L3Pt/ll2ok4mIS7sqPQ4=;
+	s=arc-20240116; t=1777904476; c=relaxed/simple;
+	bh=ETq3TBjWsmH6GV43qsf2yUmWj5FpEPoYLTTk0T7Ruoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvtvTqan8CksQ5LTJhk6XX5OHJBqkxNqDXSzMDssZB8EzQU0UNpQWC2A2lsP+7pzn2P+owLFseo599qDMnTshrBrMcPCrpFUV25jLK7ncrh5AAPXMUn1JekL4CP0/KEIFgmw7DLEDci3xqKlIidcIk/GCP5I5tNeyrYFioeEsB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DZeubnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A009C2BCB8;
-	Mon,  4 May 2026 14:01:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jUBzEY61dYFOzvbz69eXT9ZwT9IyBTqBGUl2aKzvfCMAVElffZIfp0pnnA+8jTS6qdvXvxJU4i2fRjl66aVKVjVut/NxowZ4PbPTtwolvWMaz+hXqR3UlxghyKX+YMirJvroXKaiaq1UzlIEoyPwNroM/73TAzuntCqTIVqKP2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSNGIPdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F07C2BCB8;
+	Mon,  4 May 2026 14:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903315;
-	bh=pBpSD8p2OK721IFUai9BqA8L3Pt/ll2ok4mIS7sqPQ4=;
+	s=korg; t=1777904476;
+	bh=ETq3TBjWsmH6GV43qsf2yUmWj5FpEPoYLTTk0T7Ruoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DZeubnrfOBTFboEHWjbB6RqnFM86Xb1aYplqP1dZp9E7uQo9CmT9r4y51wS8jHA3
-	 pqPvgPmrJYEuqA4aNUCrxxfLgafZJc1QmmP4Y/uC/MhdnoBZKi44FWkt/TtHGwaImZ
-	 m5ETShYjXQf+/zZEbhpHh6KAMyFVEEr6NpTyc2H4=
+	b=rSNGIPdlnY9VhvrA4/N7NPgDl8NlGgp1MA9DmQYKYORuQyjdMz8zMOntnpzSjj90C
+	 5Q+WAtK3ZfuLzoeBiA0WaLtRmvjgLczTfhvknYxUvaa1bmRvLWzMQowDD2rQInr7EN
+	 DDNq9a7zyezZ3xuAwjbZfzzhrZJneFkRji4x8VR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacqueline Wong <jacqwong@google.com>,
-	Jordan Hand <jhand@google.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 7.0 187/307] tpm: tpm_tis: add error logging for data transfer
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 053/215] ALSA: aoa: i2sbus: fix OF node lifetime handling
 Date: Mon,  4 May 2026 15:51:12 +0200
-Message-ID: <20260504135149.916247031@linuxfoundation.org>
+Message-ID: <20260504135132.113852025@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2CD764BEAE0
+X-Rspamd-Queue-Id: 73C9B4BF3B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243669-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243216-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacqueline Wong <jacqwong@google.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 0471921e2d1043dcc6de5cffb49dd37709521abe upstream.
+commit 4ec93f070eda6b765b62efcaed9241c3b3b0b6ad upstream.
 
-Add logging to more easily determine reason for transmit failure
+i2sbus_add_dev() keeps the matched "sound" child pointer after
+for_each_child_of_node() has dropped the iterator reference. Take an
+extra reference before saving that node and drop it after the
+layout-id/device-id lookup is complete.
 
-Cc: stable@vger.kernel.org # v6.6+
-Fixes: 280db21e153d8 ("tpm_tis: Resend command to recover from data transfer errors")
-Signed-off-by: Jacqueline Wong <jacqwong@google.com>
-Signed-off-by: Jordan Hand <jhand@google.com>
-Link: https://lore.kernel.org/r/20260415160006.2275325-2-jacqwong@google.com
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+The function also stores np in dev->sound.ofdev.dev.of_node without
+taking a reference for the embedded soundbus device. Since i2sbus
+overrides the embedded platform device release callback, balance that
+reference explicitly in the local error path and in i2sbus_release_dev().
+
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260330-aoa-i2sbus-ofnode-lifetime-v1-1-51c309f4ff06@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/aoa/soundbus/i2sbus/core.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -471,6 +471,8 @@ static int tpm_tis_send_data(struct tpm_
- 		status = tpm_tis_status(chip);
- 		if (!itpm && (status & TPM_STS_DATA_EXPECT) == 0) {
- 			rc = -EIO;
-+			dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be set. sts = 0x%08x\n",
-+				status);
- 			goto out_err;
+--- a/sound/aoa/soundbus/i2sbus/core.c
++++ b/sound/aoa/soundbus/i2sbus/core.c
+@@ -84,6 +84,7 @@ static void i2sbus_release_dev(struct de
+ 	for (i = aoa_resource_i2smmio; i <= aoa_resource_rxdbdma; i++)
+ 		free_irq(i2sdev->interrupts[i], i2sdev);
+ 	i2sbus_control_remove_dev(i2sdev->control, i2sdev);
++	of_node_put(i2sdev->sound.ofdev.dev.of_node);
+ 	mutex_destroy(&i2sdev->lock);
+ 	kfree(i2sdev);
+ }
+@@ -149,7 +150,6 @@ static int i2sbus_get_and_fixup_rsrc(str
+ }
+ 
+ /* Returns 1 if added, 0 for otherwise; don't return a negative value! */
+-/* FIXME: look at device node refcounting */
+ static int i2sbus_add_dev(struct macio_dev *macio,
+ 			  struct i2sbus_control *control,
+ 			  struct device_node *np)
+@@ -180,8 +180,9 @@ static int i2sbus_add_dev(struct macio_d
+ 	i = 0;
+ 	for_each_child_of_node(np, child) {
+ 		if (of_node_name_eq(child, "sound")) {
++			of_node_put(sound);
+ 			i++;
+-			sound = child;
++			sound = of_node_get(child);
  		}
  	}
-@@ -491,6 +493,8 @@ static int tpm_tis_send_data(struct tpm_
- 	status = tpm_tis_status(chip);
- 	if (!itpm && (status & TPM_STS_DATA_EXPECT) != 0) {
- 		rc = -EIO;
-+		dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be unset. sts = 0x%08x\n",
-+			status);
- 		goto out_err;
+ 	if (i == 1) {
+@@ -207,6 +208,7 @@ static int i2sbus_add_dev(struct macio_d
+ 			}
+ 		}
  	}
- 
++	of_node_put(sound);
+ 	/* for the time being, until we can handle non-layout-id
+ 	 * things in some fabric, refuse to attach if there is no
+ 	 * layout-id property or we haven't been forced to attach.
+@@ -221,7 +223,7 @@ static int i2sbus_add_dev(struct macio_d
+ 	mutex_init(&dev->lock);
+ 	spin_lock_init(&dev->low_lock);
+ 	dev->sound.ofdev.archdata.dma_mask = macio->ofdev.archdata.dma_mask;
+-	dev->sound.ofdev.dev.of_node = np;
++	dev->sound.ofdev.dev.of_node = of_node_get(np);
+ 	dev->sound.ofdev.dev.dma_mask = &dev->sound.ofdev.archdata.dma_mask;
+ 	dev->sound.ofdev.dev.parent = &macio->ofdev.dev;
+ 	dev->sound.ofdev.dev.release = i2sbus_release_dev;
+@@ -329,6 +331,7 @@ static int i2sbus_add_dev(struct macio_d
+ 	for (i=0;i<3;i++)
+ 		release_and_free_resource(dev->allocated_resource[i]);
+ 	mutex_destroy(&dev->lock);
++	of_node_put(dev->sound.ofdev.dev.of_node);
+ 	kfree(dev);
+ 	return 0;
+ }
 
 
 
