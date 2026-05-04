@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-243414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK8MEfCo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:56 +0200
+	id QCwQOPam+GkExgIAu9opvQ
+	(envelope-from <stable+bounces-243162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EFA4BEB25
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9374BE667
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CF28301C111
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4EE54302B535
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B265E3CEB89;
-	Mon,  4 May 2026 14:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048E63DDDD7;
+	Mon,  4 May 2026 13:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrCgLEo5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IO0cae20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F8B1ADC83;
-	Mon,  4 May 2026 14:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97EB34F483;
+	Mon,  4 May 2026 13:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903822; cv=none; b=Z3xakvYQpaYiORAlMmHb91ygmKv1b2bVOKHtjmaBwuL/hleBA+ryv2JBmSAxpgMfgMC0dYTX60g2xfurCL4/xHI8dk39tZkeTA7z3l8prp0aTZnNM02nFr3vAh/hqv/94sjkye6GIEmjZQ8P/RpULEt4ZKv9juRReNMkbZ7O9Sg=
+	t=1777903174; cv=none; b=BQ1J7l8J2VFtObOQPkUIkONaPkotvCNbRLPaYC1KFKV38tN2IGD5/pw4iR3WT0+c7np8ikO0ZHGqtZe2v683JeMuA9OFhDImVsAb/Tuonivu8wb6UWX07AkqLTPxUfESGTGYGkUIaujbPc8roObriDkQISfxAJiXxSup54CuYQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903822; c=relaxed/simple;
-	bh=2HHmbxcW8v0HWcA1NeN3G1Z8jdN8Ew6d+sxtjeoDmSA=;
+	s=arc-20240116; t=1777903174; c=relaxed/simple;
+	bh=Uz43zo/p8drJJGngbqu4jMtQg86Leyz0oC6EhVMiuOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/ar45C4KD0aT/qygSYEUPthVBP9BKVf7Zwtvx5m9J8sSY89f8OCaDOKBe6jprw9QqawfnMv3hGgiSfxKep4xXbdGAZgDAqCL1qla2UKZIgYxdLPVE5fTTJylY5wt4L8+a6f0VQvcNFEuApeJ2cDrV4K8O7OnvXFjQ80cMwQyas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrCgLEo5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09864C2BCB8;
-	Mon,  4 May 2026 14:10:21 +0000 (UTC)
+	 MIME-Version; b=PLhCZ+hMBzNl+3VcJ52DSt3jI4ZRpxNMq44ihaI62ChXLrxe/yaEtA5DjJUj0pb3GMl0uWkU8c6vlC7gMrveHHMRqp5Hv03DPAuXGu396imcRERMVou8pBYCannpPE2OVbyQ+7utNn21P8TYvXrG5DIoboRfMQM4nm0eltMgyYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IO0cae20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECF8C2BCB8;
+	Mon,  4 May 2026 13:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903822;
-	bh=2HHmbxcW8v0HWcA1NeN3G1Z8jdN8Ew6d+sxtjeoDmSA=;
+	s=korg; t=1777903174;
+	bh=Uz43zo/p8drJJGngbqu4jMtQg86Leyz0oC6EhVMiuOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrCgLEo5oSTxnqvtUQvvZaCQkZGmECjQnE0kNuG+tYeIjGCgQcHC/d4ZZZF0BrmUX
-	 1gbB8Lm2Q6J/NZc7aLEHshOmssgLYjTsx/rdkoCz657MTCVmo2cCLd5Wo4OQkMeEHU
-	 5JkuEXqxl88zvY2oEfUVVz/QCDw+F6GS+sJiZGBE=
+	b=IO0cae20L6tep3VdMlEJiY64lrKepIRKsrnCJiJjIVIxwho8aGSoJ6Ui4oozmZcTp
+	 tS7ImHkK86CLTVLeY8IqxHf+Y2BCUycHbQDFeNzhZofICtytgXAMJbKUt+29t5dpeO
+	 1gTXhBhmQlJLn2GYe02/g/oXT0NGU+zhz/LTv46U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Frank van der Linden <fvdl@google.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 075/275] mm/hugetlb: fix early boot crash on parameters without = separator
-Date: Mon,  4 May 2026 15:50:15 +0200
-Message-ID: <20260504135145.714071924@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 131/307] rxrpc: Fix re-decryption of RESPONSE packets
+Date: Mon,  4 May 2026 15:50:16 +0200
+Message-ID: <20260504135147.719711118@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,14 +68,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D7EFA4BEB25
+X-Rspamd-Queue-Id: 6A9374BE667
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -82,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243414-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243162-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,53 +92,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linux-foundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,infradead.org:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: David Howells <dhowells@redhat.com>
 
-commit c45b354911d01565156e38d7f6bc07edb51fc34c upstream.
+commit 0422e7a4883f25101903f3e8105c0808aa5f4ce9 upstream.
 
-If hugepages, hugepagesz, or default_hugepagesz are specified on the
-kernel command line without the '=' separator, early parameter parsing
-passes NULL to hugetlb_add_param(), which dereferences it in strlen() and
-can crash the system during early boot.
+If a RESPONSE packet gets a temporary failure during processing, it may end
+up in a partially decrypted state - and then get requeued for a retry.
 
-Reject NULL values in hugetlb_add_param() and return -EINVAL instead.
+Fix this by just discarding the packet; we will send another CHALLENGE
+packet and thereby elicit a further response.  Similarly, discard an
+incoming CHALLENGE packet if we get an error whilst generating a RESPONSE;
+the server will send another CHALLENGE.
 
-Link: https://lore.kernel.org/20260409105437.108686-4-thorsten.blum@linux.dev
-Fixes: 5b47c02967ab ("mm/hugetlb: convert cmdline parameters from setup to early")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Closes: https://sashiko.dev/#/patchset/20260422161438.2593376-4-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260423200909.3049438-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/trace/events/rxrpc.h |    1 -
+ net/rxrpc/conn_event.c       |   14 ++------------
+ 2 files changed, 2 insertions(+), 13 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4787,6 +4787,9 @@ static __init int hugetlb_add_param(char
- 	size_t len;
- 	char *p;
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -285,7 +285,6 @@
+ 	EM(rxrpc_conn_put_unidle,		"PUT unidle  ") \
+ 	EM(rxrpc_conn_put_work,			"PUT work    ") \
+ 	EM(rxrpc_conn_queue_challenge,		"QUE chall   ") \
+-	EM(rxrpc_conn_queue_retry_work,		"QUE retry-wk") \
+ 	EM(rxrpc_conn_queue_rx_work,		"QUE rx-work ") \
+ 	EM(rxrpc_conn_see_new_service_conn,	"SEE new-svc ") \
+ 	EM(rxrpc_conn_see_reap_service,		"SEE reap-svc") \
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -389,7 +389,6 @@ again:
+ static void rxrpc_do_process_connection(struct rxrpc_connection *conn)
+ {
+ 	struct sk_buff *skb;
+-	int ret;
  
-+	if (!s)
-+		return -EINVAL;
-+
- 	if (hugetlb_param_index >= HUGE_MAX_CMDLINE_ARGS)
- 		return -EINVAL;
+ 	if (test_and_clear_bit(RXRPC_CONN_EV_CHALLENGE, &conn->events))
+ 		rxrpc_secure_connection(conn);
+@@ -398,17 +397,8 @@ static void rxrpc_do_process_connection(
+ 	 * connection that each one has when we've finished with it */
+ 	while ((skb = skb_dequeue(&conn->rx_queue))) {
+ 		rxrpc_see_skb(skb, rxrpc_skb_see_conn_work);
+-		ret = rxrpc_process_event(conn, skb);
+-		switch (ret) {
+-		case -ENOMEM:
+-		case -EAGAIN:
+-			skb_queue_head(&conn->rx_queue, skb);
+-			rxrpc_queue_conn(conn, rxrpc_conn_queue_retry_work);
+-			break;
+-		default:
+-			rxrpc_free_skb(skb, rxrpc_skb_put_conn_work);
+-			break;
+-		}
++		rxrpc_process_event(conn, skb);
++		rxrpc_free_skb(skb, rxrpc_skb_put_conn_work);
+ 	}
+ }
  
 
 
