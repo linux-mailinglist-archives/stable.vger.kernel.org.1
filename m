@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-243338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELXWCe+r+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:43 +0200
+	id cPvTFeCv+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDDB4BF45A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4114BFDCA
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2354F30D532F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4224530673C4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD0B3D8129;
-	Mon,  4 May 2026 14:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E703E3D9C;
+	Mon,  4 May 2026 14:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGHFJW+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQY14o+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFD63D9029;
-	Mon,  4 May 2026 14:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465FE3E3D8F;
+	Mon,  4 May 2026 14:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903629; cv=none; b=egG/GQnv/dvTbmCB846feqRQnJsmEjGqN0WEnkgpaDMHf7xqSZk8dhGQK9Lajljqw2OtC95ydFS49ZTiRkC2Ah2jCJw+LrKnvRDjJ/JsrmpHPgR2xzjXdkDUILUN7bx6g8FSht4NPM4XpZf+0VV0u2PEn/zzb3B57qbQuUKfKac=
+	t=1777904871; cv=none; b=RzwJg15qgP5n0mupcNWKPNGdyshH6mlzYRijG//XldrcA4LRduT70jlcJY4bkaqe94CY1dEGGaQVi5hJjsD/V459NyCJ6cw5Bg1y9/Ro/HFo5DEXkt5bwWkaRr5ZPZ2UFyb1y7XPTLmkmhQ5yecfDqcmvUYkgUKDVJi4uF939fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903629; c=relaxed/simple;
-	bh=x2Cdv+aEHfgAARAZrzw6yRIL7QUtQbEP02Qiyiw4Opc=;
+	s=arc-20240116; t=1777904871; c=relaxed/simple;
+	bh=kPoDmjoyScaVAYznQs9yrP7VRiOZdZ29AMH5AJaL/yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DKkrKXkRTKmyBoDXSYYyjarFvADCcOjftkdGsLAZNTfAfx0AqReJQF7Qfb7Mogd/uWPthTBuFTdbmPXxGKhzsg4vWNQi7kJHwv7s2XLdY1xMprKHffxG1MqGCZiznhrscsVpfw34FByzhwyGQHqgTP0AfrFkoaeni2NAhYA9vag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGHFJW+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7302C2BCB8;
-	Mon,  4 May 2026 14:07:08 +0000 (UTC)
+	 MIME-Version; b=GR2+Z6SuZ23Fk9KYbYg0t0j/W1R9hZLIdjZJK9uU4/aJprQhcqyjQRq6Jo+5awVA+K6GovAc55ekOQZeF8jdEQZNAUJ3VMuSmh0pKLxHAN+ypZrmzYTC4qwjp3VH+9aneYCP6rOIqrxcRlgesP2opfzKeOli9EdLQhXbKTLmIyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQY14o+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E88C2BCB8;
+	Mon,  4 May 2026 14:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903629;
-	bh=x2Cdv+aEHfgAARAZrzw6yRIL7QUtQbEP02Qiyiw4Opc=;
+	s=korg; t=1777904871;
+	bh=kPoDmjoyScaVAYznQs9yrP7VRiOZdZ29AMH5AJaL/yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGHFJW+Mj4hRUzxywL/s1egjca0izwGUxeaIj+fHFtMsd41psbTSf0nI7dNzhzgDZ
-	 8PiizEGdc4sLawFuNpLT0nhIw78c1Mfqy6B03xSBYiO0OstX+5g8zSbL7G969FoIrW
-	 rJsgMR0qPfM3p8qzhsHXOn62TP163K6cNBLp/8sA=
+	b=DQY14o+xqnF0cig6hstoyFhv2zDVzetWfDXOTkDFOYyQfO+P3nezVcmmZLlzejvnE
+	 DVuM01j7g7rCnqEdD8V8gCwGfYLNxSiQDo6Mm3u+9eo9GY2bWgY0nT2LlXUAqX3IiK
+	 LRfF2I1YYRIW2Wh9bfM1VaVaO6F3TBon7xwlLWUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Kai Ma <k4729.23098@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 7.0 307/307] netfilter: reject zero shift in nft_bitwise
-Date: Mon,  4 May 2026 15:53:12 +0200
-Message-ID: <20260504135154.321404125@linuxfoundation.org>
+	syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 174/215] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in f2fs_write_end_io()
+Date: Mon,  4 May 2026 15:53:13 +0200
+Message-ID: <20260504135136.551763603@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +67,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7BDDB4BF45A
+X-Rspamd-Queue-Id: 0F4114BFDCA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-243338-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,suse.de,netfilter.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-243824-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TAGGED_RCPT(0.00)[stable,6e4cb1cac5efc96ea0ca];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,xiaomi.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Ma <k4729.23098@gmail.com>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit fe11e5c40817b84abaa5d83bfb6586d8412bfd07 upstream.
+[ Upstream commit 2d9c4a4ed4eef1f82c5b16b037aee8bad819fd53 ]
 
-Reject zero shift operands for nft_bitwise left and right shift
-expressions during initialization.
+The xfstests case "generic/107" and syzbot have both reported a NULL
+pointer dereference.
 
-The carry propagation logic computes the carry from the adjacent 32-bit
-word using BITS_PER_TYPE(u32) - shift. A zero shift operand turns this
-into a 32-bit shift, which is undefined behaviour.
+The concurrent scenario that triggers the panic is as follows:
 
-Reject zero shift operands in the control plane, alongside the existing
-check for values greater than or equal to 32, so malformed rules never
-reach the packet path.
+F2FS_WB_CP_DATA write callback          umount
+                                        - f2fs_write_checkpoint
+                                         - f2fs_wait_on_all_pages(sbi, F2FS_WB_CP_DATA)
+- blk_mq_end_request
+ - bio_endio
+  - f2fs_write_end_io
+   : dec_page_count(sbi, F2FS_WB_CP_DATA)
+   : wake_up(&sbi->cp_wait)
+                                        - kill_f2fs_super
+                                         - kill_block_super
+                                          - f2fs_put_super
+                                           : iput(sbi->node_inode)
+                                           : sbi->node_inode = NULL
+   : f2fs_in_warm_node_list
+    - is_node_folio // sbi->node_inode is NULL and panic
 
-Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
+The root cause is that f2fs_put_super() calls iput(sbi->node_inode) and
+sets sbi->node_inode to NULL after sbi->nr_pages[F2FS_WB_CP_DATA] is
+decremented to zero. As a result, f2fs_in_warm_node_list() may
+dereference a NULL node_inode when checking whether a folio belongs to
+the node inode, leading to a panic.
+
+This patch fixes the issue by calling f2fs_in_warm_node_list() before
+decrementing sbi->nr_pages[F2FS_WB_CP_DATA], thus preventing the
+use-after-free condition.
+
 Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Kai Ma <k4729.23098@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 50fa53eccf9f ("f2fs: fix to avoid broken of dnode block list")
+Reported-by: syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_bitwise.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/data.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -196,7 +196,8 @@ static int nft_bitwise_init_shift(struct
- 	if (err < 0)
- 		return err;
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -355,6 +355,8 @@ static void f2fs_write_end_io(struct bio
  
--	if (priv->data.data[0] >= BITS_PER_TYPE(u32)) {
-+	if (!priv->data.data[0] ||
-+	    priv->data.data[0] >= BITS_PER_TYPE(u32)) {
- 		nft_data_release(&priv->data, desc.type);
- 		return -EINVAL;
+ 		f2fs_bug_on(sbi, page->mapping == NODE_MAPPING(sbi) &&
+ 				page_folio(page)->index != nid_of_node(page));
++		if (f2fs_in_warm_node_list(sbi, page))
++			f2fs_del_fsync_node_entry(sbi, page);
+ 
+ 		dec_page_count(sbi, type);
+ 
+@@ -366,8 +368,6 @@ static void f2fs_write_end_io(struct bio
+ 				wq_has_sleeper(&sbi->cp_wait))
+ 			wake_up(&sbi->cp_wait);
+ 
+-		if (f2fs_in_warm_node_list(sbi, page))
+-			f2fs_del_fsync_node_entry(sbi, page);
+ 		clear_page_private_gcing(page);
+ 		end_page_writeback(page);
  	}
 
 
