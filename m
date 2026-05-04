@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eE66AQKs+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:02 +0200
+	id GCqpKJmm+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631C24BF497
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAA64BE530
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E205302E91D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DB6A3035899
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AA23DEAE4;
-	Mon,  4 May 2026 14:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE803D6489;
+	Mon,  4 May 2026 13:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8I7Jv52"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGrYm3z2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32A73DEACB;
-	Mon,  4 May 2026 14:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EDE20DD51;
+	Mon,  4 May 2026 13:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903673; cv=none; b=LLo0K2efyAn7TtehoVUnXwvtIB1roFYYvTEI/NAPZVkuxXPHEmJv1huOniO6H6lemMDzfdtbtboZ0G+fsJH61IOp068/OOnVAJztp6inY/HaBtosOQzwFor77WnPvGhyu/CdIMlx+luFM4da+UUjd2ei1OPH47H6Bo5w2/WkP3M=
+	t=1777902989; cv=none; b=WnOMS1kOje5g3PeGelCNb94Q/lFrnF4kxbrL5ZpYI8z/vsfisdrrJJjPd1gX1CXFuDplFAH8A09n/hhGOinqfi1x+OBqgex68AuSfBFkpaNf0a4P2n6NF1qCarwL9gbfRoZi+6gyBP2Zre81FdmJ34eRhHUpB3gDyv5j07lTyto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903673; c=relaxed/simple;
-	bh=J4Y4hXCluyAxgdUioJ5vwvSh0Ht3LT5pPV+9kg57g3Q=;
+	s=arc-20240116; t=1777902989; c=relaxed/simple;
+	bh=cVm3sHvK/npwnjMxg3xiDp59oRsbMy1oKX+WqMb6n7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PM7WX/+VAqYa0qjkOUjByQKUa0rLUJqeMax+7I3oOVfzTaxbHltazS9C85xEZPgqQGfcJVx5HUr/dCX0QqTmQ7ayvZFv2RktqmBiymWGKYv69+pG0TwgckBoyn0L7+mC7AJimAdThs9r9zcaYZXCSJXxHXtW27Z1EHJVFoBUwfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8I7Jv52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AE3C2BCB8;
-	Mon,  4 May 2026 14:07:52 +0000 (UTC)
+	 MIME-Version; b=P5rHcOGpvsvQWLb7qDiIasVQM5jnWtlo7pTqEDiXc9YZ2VAjKMw0yzUeux1zzjdG5QCIGs36eZEfZzD60CC8Ll4fZgTnaIK4bUTNPY96vuMmqdI54EKiuaCTu7zPVN3WvyJzax+8snwj1AMGqD/vmWbY/OpYYWc9BJpn/LNo+bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGrYm3z2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19457C2BCB8;
+	Mon,  4 May 2026 13:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903672;
-	bh=J4Y4hXCluyAxgdUioJ5vwvSh0Ht3LT5pPV+9kg57g3Q=;
+	s=korg; t=1777902989;
+	bh=cVm3sHvK/npwnjMxg3xiDp59oRsbMy1oKX+WqMb6n7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8I7Jv52N7KpeXm81rCkqHhyVS5/ibeZVP8xp292bNL5xHJnhkzp+xYEdVgi/FWf+
-	 1a5BlE1IzIfOTB4qfbULLNNa0QB3wRSfHhyQoBWYj1FioUa0g1QBocGJ2v+eYcIMHC
-	 jMvvbrv7UbOe3oSjfl3tuEADtNtz0kpqXb/vGKBM=
+	b=tGrYm3z2KYILG2n4pMWc4kpd/a6+dLjJMDeMbo1V7yPobwLgqWUDrZhcAAhUgQPM8
+	 EFHUrjBhoKy9Epx2kSlj2Oro8u85KnMmwTXlyLAOFPvKXUdHFaFzK8WYyNjRbefGdj
+	 6D8kwpzNcwi8fpU4YFoB4L2kqqy7u0V51v2lSBuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.18 004/275] usb: xhci: Make usb_host_endpoint.hcpriv survive endpoint_disable()
+	Rong Zhang <i@rong.moe>,
+	Arun Raghavan <arunr@valvesoftware.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 059/307] Revert "ALSA: usb: Increase volume range that triggers a warning"
 Date: Mon,  4 May 2026 15:49:04 +0200
-Message-ID: <20260504135143.098994818@linuxfoundation.org>
+Message-ID: <20260504135145.041394919@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 631C24BF497
+X-Rspamd-Queue-Id: 4CAA64BE530
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243355-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-243089-lists,stable=lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[rong.moe:query timed out];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,valvesoftware.com:email,rong.moe:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Rong Zhang <i@rong.moe>
 
-commit 25e531b422dc2ac90cdae3b6e74b5cdeb081440d upstream.
+commit 41d78cb724f4b40b7548af420ccfe524b14023bb upstream.
 
-xHCI hardware maintains its endpoint state between add_endpoint()
-and drop_endpoint() calls followed by successful check_bandwidth().
-So does the driver.
+UAC uses 2 bytes to store volume values, so the maximum volume range is
+0xFFFF (65535, val = -32768/32767/1).
 
-Core may call endpoint_disable() during xHCI endpoint life, so don't
-clear host_ep->hcpriv then, because this breaks endpoint_reset().
+The reverted commit bumpped the range of triggering the warning to >
+65535, effectively making the range check a no-op. It didn't fix
+anything but covered any potential problems and deviated from the
+original intention of the range check.
 
-If a driver calls usb_set_interface(), submits URBs which make host
-sequence state non-zero and calls usb_clear_halt(), the device clears
-its sequence state but xhci_endpoint_reset() bails out. The next URB
-malfunctions: USB2 loses one packet, USB3 gets Transaction Error or
-may not complete at all on some (buggy?) HCs from ASMedia and AMD.
-This is triggered by uvcvideo on bulk video devices.
+This reverts commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62.
 
-The code was copied from ehci_endpoint_disable() but it isn't needed
-here - hcpriv should only be NULL on emulated root hub endpoints.
-It might prevent resetting and inadvertently enabling a disabled and
-dropped endpoint, but core shouldn't try to reset dropped endpoints.
-
-Document xhci requirements regarding hcpriv. They are currently met.
-
-Fixes: 18b74067ac78 ("xhci: Fix use-after-free regression in xhci clear hub TT implementation")
+Fixes: 6b971191fcfc ("ALSA: usb: Increase volume range that triggers a warning")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20260402131342.2628648-26-mathias.nyman@linux.intel.com
+Signed-off-by: Rong Zhang <i@rong.moe>
+Acked-by: Arun Raghavan <arunr@valvesoftware.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260303194805.266158-2-i@rong.moe
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.c |    1 -
- include/linux/usb.h     |    3 ++-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -3278,7 +3278,6 @@ rescan:
- 		xhci_dbg(xhci, "endpoint disable with ep_state 0x%x\n",
- 			 ep->ep_state);
- done:
--	host_ep->hcpriv = NULL;
- 	spin_unlock_irqrestore(&xhci->lock, flags);
- }
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1820,10 +1820,11 @@ static void __build_feature_ctl(struct u
  
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -55,7 +55,8 @@ struct ep_device;
-  * @eusb2_isoc_ep_comp: eUSB2 isoc companion descriptor for this endpoint
-  * @urb_list: urbs queued to this endpoint; maintained by usbcore
-  * @hcpriv: for use by HCD; typically holds hardware dma queue head (QH)
-- *	with one or more transfer descriptors (TDs) per urb
-+ *	with one or more transfer descriptors (TDs) per urb; must be preserved
-+ *	by core while BW is allocated for the endpoint
-  * @ep_dev: ep_device for sysfs info
-  * @extra: descriptors following this endpoint in the configuration
-  * @extralen: how many bytes of "extra" are valid
+ 	range = (cval->max - cval->min) / cval->res;
+ 	/*
+-	 * There are definitely devices with a range of ~20,000, so let's be
+-	 * conservative and allow for a bit more.
++	 * Are there devices with volume range more than 255? I use a bit more
++	 * to be sure. 384 is a resolution magic number found on Logitech
++	 * devices. It will definitively catch all buggy Logitech devices.
+ 	 */
+-	if (range > 65535) {
++	if (range > 384) {
+ 		usb_audio_warn(mixer->chip,
+ 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
+ 			       range);
 
 
 
