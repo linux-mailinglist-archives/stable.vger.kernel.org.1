@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOYwD5Ws+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:29 +0200
+	id IIcVL5So+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DE94BF67E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4774BEA0B
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D93053041691
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC20E305C8E5
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12643DE44F;
-	Mon,  4 May 2026 14:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B524F3D904D;
+	Mon,  4 May 2026 14:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdY/wZaQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NEwyh5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BAC3D9DBB;
-	Mon,  4 May 2026 14:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793CD37881B;
+	Mon,  4 May 2026 14:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904578; cv=none; b=oqFKhRsCNhUAph+qRvrahfzeNEP5ph2dhQFoehydNUuZuc1c2qLg4h8bRTlFhvzuG/tubccKQgNY1yqMxK0cxsyPKWvyhrGnjgLmm1zKQr9osGkgFrPjEjEqZTalbVLi0uk8HYo3EezDc7AHyxxaANE4yd0ScW1PCGEU/3CCsZM=
+	t=1777903354; cv=none; b=Gl/nTkZS+0HmGDN7LN/h79D013bgMxJ2BPCI8MjgETgX+X/BiB4L/7F1y75EI0RTgfsSyKH0VG1xWguazAepl9cpKPtidJy7lJM24AGQJHtwuED0wG2L9RAW09XMBx5O2qyOJDpbo4jz3Nsd4j3nqt2yd5Sx9rrSQ+ROUkzLQMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904578; c=relaxed/simple;
-	bh=g6bSWw2INX/I/q7j48MSlrh4QoT1RqiMOKI/2rYG/Fs=;
+	s=arc-20240116; t=1777903354; c=relaxed/simple;
+	bh=JQV1H79JvouDNdizm9gJjeqYf1bnu8SlIEWmA++nGY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4fEo+UBCAyvXk1KBYzd/ek3E0sctKPQSHTrZBH66o/4/OO7ogLK/AUZIl+Y1yCQNI9yKHBbp/+Fy6rynlr4UllILis0Yrvof91QQkRQyuM5FRwEzcakrJGj/CF7IA4PXdVdRoA/Pb6ZIF8SXJfQhI0NWsDdmlqZYgqhh59/x0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdY/wZaQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49149C2BCB8;
-	Mon,  4 May 2026 14:22:58 +0000 (UTC)
+	 MIME-Version; b=ly2uvHFPZlXQy9rzY2Ng+6yFGpQvq+gcQMz7EgiupH5X4b9fn8i3FRrs4jEmwDFetK3yx8S0p66J+oQrsPp+4aFYkbKTWC2CMvnNcspCl/K/p2qjXC8xz2IX4QfQaTGYWKkyHyRufY8cZnpoVPSpVBWyja8HHPBu2RKSF/92KtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NEwyh5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F587C2BCB8;
+	Mon,  4 May 2026 14:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904578;
-	bh=g6bSWw2INX/I/q7j48MSlrh4QoT1RqiMOKI/2rYG/Fs=;
+	s=korg; t=1777903354;
+	bh=JQV1H79JvouDNdizm9gJjeqYf1bnu8SlIEWmA++nGY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdY/wZaQDCT7ind4mUTuE3GwETBvYed3ajKSI4VsXoyH8oAx7+WDDT3s4pBs32Tm/
-	 x+9LnOteOeEKNzHdleyQxtEaIr5sPf9vqQG3IElrlqgVDmSwHGfvdUQ6EDKfvzsCON
-	 EoFaSER76bf0ZOtkXMngdZ5sUZdvy1SRebJuyyvY=
+	b=2NEwyh5W+NiVrrL9PXIMtT7Za0w6xhENlhpxjUlZnuoKnaI0/IP7vANGyTd0/1dBe
+	 gVaXptGTF3jGGpYvpKLHM1Cujyyy2JPx4mYqg6xAZJKDUQ2CBrnUk4ugg8e3rPiw+1
+	 jGhnzpfT+rLrkY8PXQXXrGQv1rAfTWs9Lr8bfda4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Liebold <simonlie@amazon.de>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.12 066/215] selftests/mqueue: Fix incorrectly named file
+	Bibo Mao <maobibo@loongson.cn>,
+	Tao Cui <cuitao@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 7.0 200/307] LoongArch: KVM: Use CSR_CRMD_PLV in kvm_arch_vcpu_in_kernel()
 Date: Mon,  4 May 2026 15:51:25 +0200
-Message-ID: <20260504135132.581916986@linuxfoundation.org>
+Message-ID: <20260504135150.409037179@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4DE94BF67E
+X-Rspamd-Queue-Id: 4F4774BEA0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,60 +81,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243710-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243231-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amazon.de:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Liebold <simonlie@amazon.de>
+From: Tao Cui <cuitao@kylinos.cn>
 
-commit 64fac99037689020ad97e472ae898e96ea3616dc upstream.
+commit da773ea3f59032f659bfc4c450ca86e384786168 upstream.
 
-Commit 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
-intended to increase the timeout for mq_perf_tests from the default
-kselftest limit of 45 seconds to 180 seconds.
+The function reads LOONGARCH_CSR_CRMD but uses CSR_PRMD_PPLV to
+extract the privilege level. While both masks have the same value
+(0x3), CSR_CRMD_PLV is the semantically correct constant for CRMD.
 
-Unfortunately, the file storing this information was incorrectly named
-`setting` instead of `settings`, causing the kselftest runner not to
-pick up the limit and keep using the default 45 seconds limit.
-
-Fix this by renaming it to `settings` to ensure that the kselftest
-runner uses the increased timeout of 180 seconds for this test.
-
-Fixes: 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
-Cc: <stable@vger.kernel.org> # 5.10.y
-Signed-off-by: Simon Liebold <simonlie@amazon.de>
-Link: https://lore.kernel.org/r/20260312140200.2224850-1-simonlie@amazon.de
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mqueue/{setting => settings} | 0
- tools/testing/selftests/mqueue/setting  |    1 -
- tools/testing/selftests/mqueue/settings |    1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename tools/testing/selftests/mqueue/{setting => settings} (100%)
+ arch/loongarch/kvm/vcpu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mqueue/setting
-+++ /dev/null
-@@ -1 +0,0 @@
--timeout=180
---- /dev/null
-+++ b/tools/testing/selftests/mqueue/settings
-@@ -0,0 +1 @@
-+timeout=180
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -402,7 +402,7 @@ bool kvm_arch_vcpu_in_kernel(struct kvm_
+ 	val = gcsr_read(LOONGARCH_CSR_CRMD);
+ 	preempt_enable();
+ 
+-	return (val & CSR_PRMD_PPLV) == PLV_KERN;
++	return (val & CSR_CRMD_PLV) == PLV_KERN;
+ }
+ 
+ #ifdef CONFIG_GUEST_PERF_EVENTS
 
 
 
