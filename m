@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-243105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GN7rGPOm+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:27 +0200
+	id ILEoAT6s+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1730C4BE642
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BDEE4BF530
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3C4130451FB
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C76A9327B33D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A913DBD7F;
-	Mon,  4 May 2026 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EB73AA4F8;
+	Mon,  4 May 2026 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGvetHcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYoWbV1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B883D6489;
-	Mon,  4 May 2026 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D92A40DFD4;
+	Mon,  4 May 2026 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903030; cv=none; b=q1AlWiNv2ky+mZB7wpNbvM/1O4p+F1qd5EHzeZHI+H1CVM8aaZqf3xXfynDDDfGcEAXtJLGrKef2jaerlQ2eVo4Hb71SRE3GIf3BOb2OVgJY7+af/0N12JVu9M9+rMr/7e6PGplwcMt1sAw/Q9HWIKJWobvK/dqcyNphT8cGiBk=
+	t=1777903768; cv=none; b=lshp1ubnef4E/KoFR7BRy71AUYoKNzZonRAVywTn2r5zYAp/DVoUJf5wO3SgTDyOEvYrhON8m8GXmmKhAL7R3/7Lwd6itVZ/T+6vmO98Fe2Tjj4WTD5v0V8yvOuRVH8mdDKHf09P8SdAbwPox2U1OO0fXtDtYCjUoCvlZbmPHLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903030; c=relaxed/simple;
-	bh=mXTL8VZw5Ad+m06X8r0P3a5RG7jjsQ1X6dewpDk2Rig=;
+	s=arc-20240116; t=1777903768; c=relaxed/simple;
+	bh=vLXErgxVnxIYUtHX8Vj501Mz1gqgF6+c3h6rdGvkoPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idWeBWuk5SESXo/LxmLQczbVZZd8AQK5quU510xhMQYFatXjt1uFIcv9aYUkGXx1maizVoZmHn3M3YBNmdHt7UM11msYNbzTQ6FkY82o/uFsfBYpc7WPNK0yOHQFJ4c6vOL7JTMaGqQUsWtRz+gVTasbgEw6eU0BEs+lY8FYo9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGvetHcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CED2C2BCB8;
-	Mon,  4 May 2026 13:57:10 +0000 (UTC)
+	 MIME-Version; b=iJ1fObeqFs5+Opiak+8CsBu8Ev0NW4YCrg+/3nscsjIiE+J8jlbXyn3YxwJfTma/S0W8OSitazMTWWPub3/GkkSw6bYH4atXys0hGJGrXvNRcTNU9R+F6Or+A2CbWfbqz9aGVolDPB3FR4gIwfr8jPSDDhgmQm3uf6KsA6lK7SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYoWbV1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66F6C2BCB8;
+	Mon,  4 May 2026 14:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903030;
-	bh=mXTL8VZw5Ad+m06X8r0P3a5RG7jjsQ1X6dewpDk2Rig=;
+	s=korg; t=1777903768;
+	bh=vLXErgxVnxIYUtHX8Vj501Mz1gqgF6+c3h6rdGvkoPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGvetHcOwnQUKCXVOzPSOFpdOv7o/C6fm5zJHv4JfAJxUc9gku4rIvCwvPZgdTYFY
-	 yZstprCO1LiCe1qZ46opZNi/kc6Cw+QHLUk8UEdXo14pceUj59HT6yKSGsnNkscQA1
-	 A4FkFHtWCwrndhY3wwYuh3qKBlY+ZlsuI0k6cjmY=
+	b=sYoWbV1t5ZVD7A2sXokKYRX6dgIrp4FpM7SKr6/B47fhgJNG75a9aaXf0V+SdAJJ1
+	 8G1B+wg9p+Y7XZ3Kuv8IUR/0+ycxBVyx3bwj71/9VVSvaaVaREYOZZEOcqV1vDUTI5
+	 q28HIe/uFKd6K2k3spLAxV6V1l/J1XRkLxH7GVvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 077/307] media: rc: igorplugusb: heed coherency rules
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Brian Norris <briannorris@chromium.org>,
+	chrome-platform@lists.linux.dev
+Subject: [PATCH 6.18 022/275] firmware: google: framebuffer: Do not mark framebuffer as busy
 Date: Mon,  4 May 2026 15:49:22 +0200
-Message-ID: <20260504135145.711257167@linuxfoundation.org>
+Message-ID: <20260504135143.762785265@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +67,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1730C4BE642
+X-Rspamd-Queue-Id: 5BDEE4BF530
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243105-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243393-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[mess.org:query timed out];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mess.org:email,suse.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sholland.org:email,chromium.org:email,suse.de:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit eac69475b01fe1e861dfe3960b57fa95671c132e upstream.
+commit f3850d399de3b6142b02315227ef9e772ed0c302 upstream.
 
-In a control request, the USB request structure
-can be subject to DMA on some HCs. Hence it must obey
-the rules for DMA coherency. Allocate it separately.
+Remove the flag IORESOURCE_BUSY flag from coreboot's framebuffer
+resource. It prevents simpledrm from successfully requesting the
+range for its own use; resulting in errors such as
 
-Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[    2.775430] simple-framebuffer simple-framebuffer.0: [drm] could not acquire memory region [mem 0x80000000-0x80407fff flags 0x80000200]
+
+As with other uses of simple-framebuffer, the simple-framebuffer
+device should only declare it's I/O resources, but not actively use
+them.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer driver")
+Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Acked-by: Julius Werner <jwerner@chromium.org>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Brian Norris <briannorris@chromium.org>
+Cc: Julius Werner <jwerner@chromium.org>
+Cc: chrome-platform@lists.linux.dev
+Cc: <stable@vger.kernel.org> # v4.18+
+Link: https://patch.msgid.link/20260217155836.96267-3-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/igorplugusb.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/firmware/google/framebuffer-coreboot.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/rc/igorplugusb.c
-+++ b/drivers/media/rc/igorplugusb.c
-@@ -34,7 +34,7 @@ struct igorplugusb {
- 	struct device *dev;
+--- a/drivers/firmware/google/framebuffer-coreboot.c
++++ b/drivers/firmware/google/framebuffer-coreboot.c
+@@ -67,7 +67,7 @@ static int framebuffer_probe(struct core
+ 		return -ENODEV;
  
- 	struct urb *urb;
--	struct usb_ctrlrequest request;
-+	struct usb_ctrlrequest *request;
- 
- 	struct timer_list timer;
- 
-@@ -122,7 +122,7 @@ static void igorplugusb_cmd(struct igorp
- {
- 	int ret;
- 
--	ir->request.bRequest = cmd;
-+	ir->request->bRequest = cmd;
- 	ir->urb->transfer_flags = 0;
- 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
- 	if (ret && ret != -EPERM)
-@@ -164,13 +164,17 @@ static int igorplugusb_probe(struct usb_
- 	if (!ir)
- 		return -ENOMEM;
- 
-+	ir->request = kzalloc_obj(*ir->request, GFP_KERNEL);
-+	if (!ir->request)
-+		goto fail;
-+
- 	ir->dev = &intf->dev;
- 
- 	timer_setup(&ir->timer, igorplugusb_timer, 0);
- 
--	ir->request.bRequest = GET_INFRACODE;
--	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
--	ir->request.wLength = cpu_to_le16(MAX_PACKET);
-+	ir->request->bRequest = GET_INFRACODE;
-+	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
-+	ir->request->wLength = cpu_to_le16(MAX_PACKET);
- 
- 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!ir->urb)
-@@ -228,6 +232,7 @@ fail:
- 	usb_free_urb(ir->urb);
- 	rc_free_device(ir->rc);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- 
- 	return ret;
- }
-@@ -243,6 +248,7 @@ static void igorplugusb_disconnect(struc
- 	usb_unpoison_urb(ir->urb);
- 	usb_free_urb(ir->urb);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- }
- 
- static const struct usb_device_id igorplugusb_table[] = {
+ 	memset(&res, 0, sizeof(res));
+-	res.flags = IORESOURCE_MEM | IORESOURCE_BUSY;
++	res.flags = IORESOURCE_MEM;
+ 	res.name = "Coreboot Framebuffer";
+ 	res.start = fb->physical_address;
+ 	length = PAGE_ALIGN(fb->y_resolution * fb->bytes_per_line);
 
 
 
