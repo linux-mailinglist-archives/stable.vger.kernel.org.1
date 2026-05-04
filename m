@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-243761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNvFHWGx+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:46:57 +0200
+	id CJ+4Npyq+GnXxgIAu9opvQ
+	(envelope-from <stable+bounces-243340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467454BFFEC
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9E14BF04C
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 006E030BDDDF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3FBBC3007A4D
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B3F3DFC64;
-	Mon,  4 May 2026 14:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50163DF006;
+	Mon,  4 May 2026 14:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUuwnQU9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHr71sku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9E12D8DDF;
-	Mon,  4 May 2026 14:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50F3DEFF0;
+	Mon,  4 May 2026 14:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904710; cv=none; b=e9QrEQh/iK9YzT6J2c/Au2KlTQ84nWmtShzeXLPhwTeyZUQ/DobeQsyeOW9H3vu1LRxRtgkBPWJFt5IxIjGQpxA75bhgY1nEGDIZZva53mOUrlL9DXmxpY4WDgAkwQMpnhiC8/rB+9ChTb4x2vfr5HhmSqHy+LuWbC5s87HKdP8=
+	t=1777903634; cv=none; b=gIAD9XF1DqLaCKBjd7MiBecnQQobYcyQHuj5GlAKADuGomWVUok7RQA5MkDwzZo489k/L5Z5h9cEbUyWj5J4etK+dgsvFzi9M/ysQoQwjNk3MrVW9EwIG1AiKa1HZWJ2/rtN1PGOGQDd3P0GL0O9l4s6SiWiQySFiSLo5AgridE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904710; c=relaxed/simple;
-	bh=tiM6uxGddsaBGFYBVHY92c6G+/hrhaDc4tjjpGUJg3s=;
+	s=arc-20240116; t=1777903634; c=relaxed/simple;
+	bh=afXRl8ES2Stzpu0Y/WyTuYF7NMKUJ6Z29I4JBq+UTls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsVptwOI/w16PfLaY++Z+zdMxBKzEjtBoed2j08LLORuCQYjUSl9Q2zS5jn/JPlJiwWWKaRcEs19nL29DS44NJscN66or3/PYyjiOOQDjeMRCbmEK/LR+dR50ETdUa8h9+Aq2+CBqJAeOJYGA9xWvz8CoSyC1n+7BHszJ8L3LqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUuwnQU9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7308FC2BCB8;
-	Mon,  4 May 2026 14:25:10 +0000 (UTC)
+	 MIME-Version; b=F7OLSqsTwsiqpiqAr55e8NPyVIZ8M2q61cPqSF/WQo8bxr1KwIlo5ljB8CUWRj7gRXR/vZ8RXUclNCwL/tw+myNchSiR7SOBSftUUev76+4Y7Ey0c5hS+0GYC0vufzUP9SDop8fB09w6Hmw+3oE2Ioc2vTpIRwNJA5luvfcMG4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHr71sku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065A2C2BCB8;
+	Mon,  4 May 2026 14:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904710;
-	bh=tiM6uxGddsaBGFYBVHY92c6G+/hrhaDc4tjjpGUJg3s=;
+	s=korg; t=1777903634;
+	bh=afXRl8ES2Stzpu0Y/WyTuYF7NMKUJ6Z29I4JBq+UTls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUuwnQU9WwLnix6qOOlytdPJd+0uY3hC1sLipOI0rCL+EwP6BDl/HTHNnz97IYJIU
-	 iba85+2jImPa9OIAgA0jvExoTh3z2F+bOR9EeCMG7weva86Ft1j+QpyxvLLV7QZin5
-	 g+z13gNDDdpSKGR/IdlvGgBlzMBhQ2zPWHlp5o1k=
+	b=hHr71sku0/kmhmnG6hVQaJYkMz3IJ2lLgjQwIf0HpUw7cSnUwjVXDm/Pv5UDXszwc
+	 XOaColERtG6PV0sFB+4btNMpwjsd7ZFfVUpR2Jo+73TIRTWS3Mv21jekOhx/qlw7OS
+	 Jz9lOaRhThZuBQ14XgB3X7cAbCnLStt//d2K7Hl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gayatri Kammela <Gayatri.Kammela@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Subject: [PATCH 6.12 145/215] x86/cpu: Disable FRED when PTI is forced on
+	Tobias Gaertner <tob.gaertner@me.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 7.0 279/307] ntfs3: fix integer overflow in run_unpack() volume boundary check
 Date: Mon,  4 May 2026 15:52:44 +0200
-Message-ID: <20260504135135.455815084@linuxfoundation.org>
+Message-ID: <20260504135153.292282871@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +63,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 467454BFFEC
+X-Rspamd-Queue-Id: 0A9E14BF04C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243340-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,paragon-software.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243761-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,alien8.de:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,me.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,paragon-software.com:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Tobias Gaertner <tob.gaertner@me.com>
 
-commit 932d922285ef4d0d655a6f5def2779ae86ca0d73 upstream.
+commit 984a415f019536ea2d24de9010744e5302a9a948 upstream.
 
-FRED and PTI were never intended to work together. No FRED hardware is
-vulnerable to Meltdown and all of it should have LASS anyway.
-Nevertheless, if you boot a system with pti=on and fred=on, the kernel
-tries to do what is asked of it and dies a horrible death on the first
-attempt to run userspace (since it never switches to the user page
-tables).
+The volume boundary check `lcn + len > sbi->used.bitmap.nbits` uses raw
+addition which can wrap around for large lcn and len values, bypassing
+the validation.  Use check_add_overflow() as is already done for the
+adjacent prev_lcn + dlcn and vcn64 + len checks added by commit
+3ac37e100385 ("ntfs3: Fix integer overflow in run_unpack()").
 
-Disable FRED when PTI is forced on, and print a warning about it.
+Found by fuzzing with a source-patched harness (LibAFL + QEMU).
 
-A quick brain dump about what a FRED+PTI implementation would look like
-is below. I'm not sure it would make any sense to do it, but never say
-never. All I know is that it's way too complicated to be worth it today.
-
-<brain dump>
-The SWITCH_TO_USER/KERNEL_CR3 bits are simple to fix (or at least we
-have the assembly tools to do it already), as is sticking the FRED entry
-text in .entry.text (it's not in there today).
-
-The nasty part is the stacks. Today, the CPU pops into the kernel on
-MSR_IA32_FRED_RSP0 which is normal old kernel memory and not mapped to
-userspace. The hardware pushes gunk on to MSR_IA32_FRED_RSP0, which is
-currently the task stacks. MSR_IA32_FRED_RSP0 would need to point
-elsewhere, probably cpu_entry_stack(). Then, start playing games with
-stacks on entry/exit, including copying gunk to and from the task stack.
-
-While I'd *like* to have PTI everywhere, I'm not sure it's worth mucking
-up the FRED code with PTI kludges. If a user wants fast entry/exit, they
-use FRED. If you want PTI (and sekuritay), you certainly don't care
-about fast entry and FRED isn't going to help you *all* that much, so
-you can just stay with the IDT.
-
-Plus, FRED hardware should have LASS which gives you a similar security
-profile to PTI without the CR3 munging.
-</brain dump>
-
-Reported-by: Gayatri Kammela <Gayatri.Kammela@amd.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://patch.msgid.link/20260421163136.E7C6788A@davehans-spike.ostc.intel.com
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tobias Gaertner <tob.gaertner@me.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pti.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ntfs3/run.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -412,6 +412,11 @@ pti_clone_pgtable(unsigned long start, u
- 			BUG();
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -1065,9 +1065,15 @@ int run_unpack(struct runs_tree *run, st
+ 			return -EOPNOTSUPP;
  		}
- 	}
+ #endif
+-		if (lcn != SPARSE_LCN64 && lcn + len > sbi->used.bitmap.nbits) {
+-			/* LCN range is out of volume. */
+-			return -EINVAL;
++		if (lcn != SPARSE_LCN64) {
++			u64 lcn_end;
 +
-+	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
-+		pr_debug("PTI enabled, disabling FRED\n");
-+		setup_clear_cpu_cap(X86_FEATURE_FRED);
-+	}
- }
++			if (check_add_overflow(lcn, len, &lcn_end))
++				return -EINVAL;
++			if (lcn_end > sbi->used.bitmap.nbits) {
++				/* LCN range is out of volume. */
++				return -EINVAL;
++			}
+ 		}
  
- #ifdef CONFIG_X86_64
+ 		if (!run)
 
 
 
