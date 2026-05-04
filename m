@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-243542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MiQGYqt+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:34 +0200
+	id 8Jw8Nvys+GkixwIAu9opvQ
+	(envelope-from <stable+bounces-243543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06F94BF946
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:30:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F26A84BF802
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 814B230672E5
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FC21304C932
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEB83DE428;
-	Mon,  4 May 2026 14:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1061C68F;
+	Mon,  4 May 2026 14:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpR4uvEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/QenA+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1501C68F;
-	Mon,  4 May 2026 14:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E26C3DE425;
+	Mon,  4 May 2026 14:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904152; cv=none; b=sApQai0xJg8YBSnHocgH1znCPvWq863A2umelr6Xu2IAVFn7r9t88iBm014dLF+7y5cco4jaFZBl8cRQ1boYC76F1Ki0T9eslKIvITMXdrv7OGDG3Edlod3bdeXOqOAy9DOEf/EEwRcZFHuddCOukcedrCqYPc7yuntbySdip4g=
+	t=1777904154; cv=none; b=Lb4L8xFioGglxW9N0XYIhbjbNzNl0kJVq1CSDUVsRoFsOk5tXh0laMaQf3ODPnc59VFFnnsUbBGaonWtCghUVwPY7ZKVGcLhu0rgtEjytS9nkXCN3VcfaHCddqu7Y7VzRoATj3jfiavWfftTfPLMw1Jv5ggVibzjIb/F8BpvQP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904152; c=relaxed/simple;
-	bh=CwuL2IY6fztOfJrYJ12yR3Q+exVtNLx9+wDryF2yTnU=;
+	s=arc-20240116; t=1777904154; c=relaxed/simple;
+	bh=YMTC/wzjQdRaNt0QlRX/1HCPaoJbDF4Q2MGGiT6Z1ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNboaPa8fKyscShCgfWya8PuhJ3RuPZBYdXJz0Mw1WBvjS/z//41K18VUqQw02MQek6SfI441kncFZ1LVtKwqis5kv1rK7+He3K/cxqepxCdNF/nsSjim320UuPBRR6jk/lyiowm+Fh7tCzmwGoVBkzEGp5EQvXhMVQ2WfBawRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpR4uvEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B15C2BCB8;
-	Mon,  4 May 2026 14:15:51 +0000 (UTC)
+	 MIME-Version; b=hkhLf/lLQ/jv+LbmrxKwp5x9gOJ4nbPnEwhn9oo5/Df2Oyjfjh6d1/iByWnpuOa3iEEgtbG4WZqRv/rKMi3zJy212xND5pRnql2r25W8HFsca0UmhifQz5GyKQxsKfazwmh1l7R8yUEnbVwQtIbOBnK7GfXC7SsyEkO2R36hbI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/QenA+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24648C2BCB8;
+	Mon,  4 May 2026 14:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904151;
-	bh=CwuL2IY6fztOfJrYJ12yR3Q+exVtNLx9+wDryF2yTnU=;
+	s=korg; t=1777904154;
+	bh=YMTC/wzjQdRaNt0QlRX/1HCPaoJbDF4Q2MGGiT6Z1ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IpR4uvEsvbe1E74YTIZwPeJEzvieh+cHFBn6ai7T0YPoi22oEmz5TglnoSMGACJYi
-	 HebEi+umpwp30Rnc00WfYnoe23TmI7l352Crh7P0DRaA+hrIfqsVqZHlDqAgkJ84l3
-	 fkogqxzBNJ0GEwbwqHGNENwf+a1iPw2jkiZT8CqY=
+	b=l/QenA+yB2BnG4AyKCOU6/doFfO5CqKOcGi5tum+JM/nkakBNA+yaKKt/vZl8Vk0w
+	 9lYJGvo1nZVyjAmKtxf7u9rM2DzODHEsn2gbi7QG0pmfMHW7zHrbAERmHMOucLVZbE
+	 bn/YiYMM5y8gF88bNoPAQ1qeO7E1DNLuxcOY4iLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FengWei Shih <dannyshih@synology.com>,
-	Chia-Ming Chang <chiamingc@synology.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
 	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.18 204/275] md/raid5: fix soft lockup in retry_aligned_read()
-Date: Mon,  4 May 2026 15:52:24 +0200
-Message-ID: <20260504135150.656759509@linuxfoundation.org>
+Subject: [PATCH 6.18 205/275] md/raid5: validate payload size before accessing journal metadata
+Date: Mon,  4 May 2026 15:52:25 +0200
+Message-ID: <20260504135150.693801360@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
 References: <20260504135142.929052779@linuxfoundation.org>
@@ -64,89 +63,179 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E06F94BF946
+X-Rspamd-Queue-Id: F26A84BF802
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243543-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243542-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,fnnas.com:email,synology.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,fnnas.com:email]
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Ming Chang <chiamingc@synology.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 7f9f7c697474268d9ef9479df3ddfe7cdcfbbffc upstream.
+commit b0cc3ae97e893bf54bbce447f4e9fd2e0b88bff9 upstream.
 
-When retry_aligned_read() encounters an overlapped stripe, it releases
-the stripe via raid5_release_stripe() which puts it on the lockless
-released_stripes llist. In the next raid5d loop iteration,
-release_stripe_list() drains the stripe onto handle_list (since
-STRIPE_HANDLE is set by the original IO), but retry_aligned_read()
-runs before handle_active_stripes() and removes the stripe from
-handle_list via find_get_stripe() -> list_del_init(). This prevents
-handle_stripe() from ever processing the stripe to resolve the
-overlap, causing an infinite loop and soft lockup.
+r5c_recovery_analyze_meta_block() and
+r5l_recovery_verify_data_checksum_for_mb() iterate over payloads in a
+journal metadata block using on-disk payload size fields without
+validating them against the remaining space in the metadata block.
 
-Fix this by using __release_stripe() with temp_inactive_list instead
-of raid5_release_stripe() in the failure path, so the stripe does not
-go through the released_stripes llist. This allows raid5d to break out
-of its loop, and the overlap will be resolved when the stripe is
-eventually processed by handle_stripe().
+A corrupted journal contains payload sizes extending beyond the PAGE_SIZE
+boundary can cause out-of-bounds reads when accessing payload fields or
+computing offsets.
 
-Fixes: 773ca82fa1ee ("raid5: make release_stripe lockless")
+Add bounds validation for each payload type to ensure the full payload
+fits within meta_size before processing.
+
+Fixes: b4c625c67362 ("md/r5cache: r5cache recovery: part 1")
 Cc: stable@vger.kernel.org
-Signed-off-by: FengWei Shih <dannyshih@synology.com>
-Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
-Link: https://lore.kernel.org/linux-raid/20260402061406.455755-1-chiamingc@synology.com/
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://lore.kernel.org/linux-raid/SYBPR01MB78815E78D829BB86CD7C8015AF5FA@SYBPR01MB7881.ausprd01.prod.outlook.com/
 Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/md/raid5-cache.c |   48 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 15 deletions(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -6635,7 +6635,13 @@ static int  retry_aligned_read(struct r5
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -2002,15 +2002,27 @@ r5l_recovery_verify_data_checksum_for_mb
+ 		return -ENOMEM;
+ 
+ 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
++		sector_t payload_len;
++
+ 		payload = (void *)mb + mb_offset;
+ 		payload_flush = (void *)mb + mb_offset;
+ 
+ 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) {
++			payload_len = sizeof(struct r5l_payload_data_parity) +
++				(sector_t)sizeof(__le32) *
++				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 			if (r5l_recovery_verify_data_checksum(
+ 				    log, ctx, page, log_offset,
+ 				    payload->checksum[0]) < 0)
+ 				goto mismatch;
+ 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_PARITY) {
++			payload_len = sizeof(struct r5l_payload_data_parity) +
++				(sector_t)sizeof(__le32) *
++				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 			if (r5l_recovery_verify_data_checksum(
+ 				    log, ctx, page, log_offset,
+ 				    payload->checksum[0]) < 0)
+@@ -2023,22 +2035,18 @@ r5l_recovery_verify_data_checksum_for_mb
+ 				    payload->checksum[1]) < 0)
+ 				goto mismatch;
+ 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+-			/* nothing to do for R5LOG_PAYLOAD_FLUSH here */
++			payload_len = sizeof(struct r5l_payload_flush) +
++				(sector_t)le32_to_cpu(payload_flush->size);
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 		} else /* not R5LOG_PAYLOAD_DATA/PARITY/FLUSH */
+ 			goto mismatch;
+ 
+-		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+-			mb_offset += sizeof(struct r5l_payload_flush) +
+-				le32_to_cpu(payload_flush->size);
+-		} else {
+-			/* DATA or PARITY payload */
++		if (le16_to_cpu(payload->header.type) != R5LOG_PAYLOAD_FLUSH) {
+ 			log_offset = r5l_ring_add(log, log_offset,
+ 						  le32_to_cpu(payload->size));
+-			mb_offset += sizeof(struct r5l_payload_data_parity) +
+-				sizeof(__le32) *
+-				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
+ 		}
+-
++		mb_offset += payload_len;
+ 	}
+ 
+ 	put_page(page);
+@@ -2089,6 +2097,7 @@ r5c_recovery_analyze_meta_block(struct r
+ 	log_offset = r5l_ring_add(log, ctx->pos, BLOCK_SECTORS);
+ 
+ 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
++		sector_t payload_len;
+ 		int dd;
+ 
+ 		payload = (void *)mb + mb_offset;
+@@ -2097,6 +2106,12 @@ r5c_recovery_analyze_meta_block(struct r
+ 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+ 			int i, count;
+ 
++			payload_len = sizeof(struct r5l_payload_flush) +
++				(sector_t)le32_to_cpu(payload_flush->size);
++			if (mb_offset + payload_len >
++			    le32_to_cpu(mb->meta_size))
++				return -EINVAL;
++
+ 			count = le32_to_cpu(payload_flush->size) / sizeof(__le64);
+ 			for (i = 0; i < count; ++i) {
+ 				stripe_sect = le64_to_cpu(payload_flush->flush_stripes[i]);
+@@ -2110,12 +2125,17 @@ r5c_recovery_analyze_meta_block(struct r
+ 				}
+ 			}
+ 
+-			mb_offset += sizeof(struct r5l_payload_flush) +
+-				le32_to_cpu(payload_flush->size);
++			mb_offset += payload_len;
+ 			continue;
  		}
  
- 		if (!add_stripe_bio(sh, raid_bio, dd_idx, 0, 0)) {
--			raid5_release_stripe(sh);
-+			int hash;
+ 		/* DATA or PARITY payload */
++		payload_len = sizeof(struct r5l_payload_data_parity) +
++			(sector_t)sizeof(__le32) *
++			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++		if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++			return -EINVAL;
 +
-+			spin_lock_irq(&conf->device_lock);
-+			hash = sh->hash_lock_index;
-+			__release_stripe(conf, sh,
-+					 &conf->temp_inactive_list[hash]);
-+			spin_unlock_irq(&conf->device_lock);
- 			conf->retry_read_aligned = raid_bio;
- 			conf->retry_read_offset = scnt;
- 			return handled;
+ 		stripe_sect = (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) ?
+ 			raid5_compute_sector(
+ 				conf, le64_to_cpu(payload->location), 0, &dd,
+@@ -2180,9 +2200,7 @@ r5c_recovery_analyze_meta_block(struct r
+ 		log_offset = r5l_ring_add(log, log_offset,
+ 					  le32_to_cpu(payload->size));
+ 
+-		mb_offset += sizeof(struct r5l_payload_data_parity) +
+-			sizeof(__le32) *
+-			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++		mb_offset += payload_len;
+ 	}
+ 
+ 	return 0;
 
 
 
