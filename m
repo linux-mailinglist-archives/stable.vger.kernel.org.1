@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOLlFPGv+GkPzAIAu9opvQ
-	(envelope-from <stable+bounces-243702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:49 +0200
+	id WDODKCCt+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DB24BFDE1
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:40:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301444BF870
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 382C8301FB3E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50B9A306031C
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC883DE452;
-	Mon,  4 May 2026 14:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557F61C68F;
+	Mon,  4 May 2026 14:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CX9tAk02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSU8JWz6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324243D9DBB;
-	Mon,  4 May 2026 14:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189F51A6827;
+	Mon,  4 May 2026 14:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904558; cv=none; b=XI9iTyaQZ9Mq11t20dKs1P+kGd8ApWFJtDbKzSVUevNINsPgACEiXS3CdEX09qTOal86w//f2Co7o+5lCi8H8mkRE0HJeC3iZba8dcVEeQu/kR1h8iX5KEUId8P9tUyEQTznu/aA7tl36VmJG2bJ4U/tAmlE6+gLH8kTKYSBXWY=
+	t=1777904139; cv=none; b=JNPbXOyq25J/mcmsx8ILp6Xie3X0Kp10HNPondHcpkOW9ffWIULabBva0W2kHGCPR5H4OUJEJxqmlnolgZRgvmu5OJYP2ta5/up8dxkBQBABLB6MM9M1bZeIVr/h8FUk2S9xYCPqeg8QuWppm2v2jtquiqA9P90RSjZ+PzKzNnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904558; c=relaxed/simple;
-	bh=lEx0UlY26muFrkRT44Zvif6Vlq63AXO/xUU2myDgYd4=;
+	s=arc-20240116; t=1777904139; c=relaxed/simple;
+	bh=Km0f2coy4htRufn412WGBY7zpHazFUl3zKqTdYC6bRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtYz/9luhw/tgI0ep1RRUv4RXuYBqDVcwkmxuHNIcKtF2o5loWdWbKzB0w1C5DamQxTvjlW+TFjpBRyb00+SkXCdpH2Fa6vDWG1JFG/HKjpGVRiLGbVJtd9F590B9Rv5ht/eot7mLPoPulB0IBf+Dm+ZsmBhh5/TgMjNjOQ7kbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CX9tAk02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA673C2BCB8;
-	Mon,  4 May 2026 14:22:37 +0000 (UTC)
+	 MIME-Version; b=Ik+m3L21w5UwP9AfShv3cIwXpCfb4eD0H1FccT5HEV75mbMXlVDB177Pavx8NQXYo7byF1bxm8L0F4nC+Dt9A2F+mwagudjj8GhX/iOOF7Y4+dlp3xoQSBoU3veUYP6DCskDkkqvyzdJKDQTAR0fuf0CCDE60oylw2IhBEO5vis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSU8JWz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A52C2BCB8;
+	Mon,  4 May 2026 14:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904558;
-	bh=lEx0UlY26muFrkRT44Zvif6Vlq63AXO/xUU2myDgYd4=;
+	s=korg; t=1777904139;
+	bh=Km0f2coy4htRufn412WGBY7zpHazFUl3zKqTdYC6bRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CX9tAk02FUAFb1cm28oFpcBFdmduCOAktbOcYolgpjjuVKrS1tHCqH5cOvm4t7oWz
-	 nIvTR08mouwRZSR0XRassowll7kXEIeCnAzCi0X/h7k/zen3ZrKpeILWMGIn5KWE3s
-	 ZK4u2JTZoIfM2t/fL3+Acg+vx2w/+m9Jipd71WVQ=
+	b=ZSU8JWz6cwuMo7CUh6x1r2G1VvUwNAiEgaJtKoz0qBDbKdJPYHhPvGYajBgiYjM7E
+	 CKeSG++/guNoQ8/si2b0gYouQFBXgGcWS1VqUVD1Sd0kWWfQNJ2WhqBIMqLctmge0l
+	 gOTRG10w+x3MHbrUZn4UXH1i/EhrHqbzlo9gGGg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 6.12 085/215] arm64: dts: marvell: uDPU: add ethernet aliases
-Date: Mon,  4 May 2026 15:51:44 +0200
-Message-ID: <20260504135133.266264429@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 165/275] mm/damon/core: use time_in_range_open() for damos quota window start
+Date: Mon,  4 May 2026 15:51:45 +0200
+Message-ID: <20260504135149.180702821@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 46DB24BFDE1
+X-Rspamd-Queue-Id: 301444BF870
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243702-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243537-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,47 +91,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sartura.hr:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: SeongJae Park <sj@kernel.org>
 
-commit 38f09c97340cd23f976242e6cb1e7aa4c8ed28d0 upstream.
+commit 049a57421dd67a28c45ae7e92c36df758033e5fa upstream.
 
-On eDPU plus, which is an updated revision of eDPU which uses an external
-MV88E6361 switch we are relying on U-Boot to detect the board, and then
-enable and disable the required nodes for that revision.
+damos_adjust_quota() uses time_after_eq() to show if it is time to start a
+new quota charge window, comparing the current jiffies and the scheduled
+next charge window start time.  If it is, the next charge window start
+time is updated and the new charge window starts.
 
-However, it seems that I missed adding the required aliases for ethernet
-controllers, and this worked as in OpenWrt we had added those locally.
+The time check and next window start time update is skipped while the
+scheme is deactivated by the watermarks.  Let's suppose the deactivation
+is kept more than LONG_MAX jiffies (assuming CONFIG_HZ of 250, more than
+99 days in 32 bit systems and more than one billion years in 64 bit
+systems), resulting in having the jiffies larger than the next charge
+window start time + LONG_MAX.  Then, the time_after_eq() call can return
+false until another LONG_MAX jiffies are passed.
 
-Cc: stable@vger.kernel.org
-Fixes: 660b8b2f3944 ("arm64: dts: marvell: eDPU: add support for version with external switch")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+This means the scheme can continue working after being reactivated by the
+watermarks.  But, soon, the quota will be exceeded and the scheme will
+again effectively stop working until the next charge window starts.
+Because the current charge window is extended to up to LONG_MAX jiffies,
+however, it will look like it stopped unexpectedly and indefinitely, from
+the user's perspective.
+
+Fix this by using !time_in_range_open() instead.
+
+The issue was discovered [1] by sashiko.
+
+Link: https://lore.kernel.org/20260329152306.45796-1-sj@kernel.org
+Link: https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org [1]
+Fixes: ee801b7dd782 ("mm/damon/schemes: activate schemes based on a watermarks mechanism")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi |    5 +++++
- 1 file changed, 5 insertions(+)
+ mm/damon/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-+++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-@@ -15,6 +15,11 @@
- #include "armada-372x.dtsi"
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2179,7 +2179,8 @@ static void damos_adjust_quota(struct da
+ 	}
  
- / {
-+	aliases {
-+		ethernet0 = &eth0;
-+		ethernet1 = &eth1;
-+	};
-+
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
+ 	/* New charge window starts */
+-	if (time_after_eq(jiffies, quota->charged_from +
++	if (!time_in_range_open(jiffies, quota->charged_from,
++				quota->charged_from +
+ 				msecs_to_jiffies(quota->reset_interval))) {
+ 		if (quota->esz && quota->charged_sz >= quota->esz)
+ 			s->stat.qt_exceeds++;
 
 
 
