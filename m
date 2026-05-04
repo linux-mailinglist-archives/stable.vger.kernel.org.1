@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-243184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cElmOnuo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:59 +0200
+	id 2KDNCeqp+Gm5xgIAu9opvQ
+	(envelope-from <stable+bounces-243437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5664BE9C2
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75DD4BEE69
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56A48304604E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 305EB300DEFF
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596233B19D1;
-	Mon,  4 May 2026 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FDA35A3AD;
+	Mon,  4 May 2026 14:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iu2oX310"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GV/43oot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2323D5667;
-	Mon,  4 May 2026 14:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDF33A7F4C;
+	Mon,  4 May 2026 14:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903232; cv=none; b=vArOvegwcDxQT+ynMqVur9GjSmt0p7hEV/L6TczfNsoBiI69661sWfzXhV+6bDz8szO5mvlVijxa0BEu1HPaosnhPTB/B031YB4ieQ+eSg+c14WTHNKul5Xk41ZNPcdvcSu+DHvdQ9u8p24TlJeLbr//qkqoI2JX3RpkxcNnHWU=
+	t=1777903881; cv=none; b=t/AwKmUboODfeWKr6ef8/qJNyRhrjs+aPIflO9j5CkeZgfFOlT6tsRHyKooZGyRaZvJnJGPKryJmqbPcnCWwJFRtIDO+obnemg3SuxmGKYhlZfzSHSjYvqSJxD+/S7+mBPYr1dzTrwz9MaCiL9DGlCIIghtniFS7t5qYr/ezm3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903232; c=relaxed/simple;
-	bh=w8p4aIPkvv3tpB1oxPwOjy750NMthCHJXCg2oBPsptw=;
+	s=arc-20240116; t=1777903881; c=relaxed/simple;
+	bh=RI8dDWjxDXOzGo9U95at712ZI+4DatNGTDy8P+oOtNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1QCSXsEzq/s2bpT1YId38CQrWzUBUqBJBB78baATdu/eFQ3e2Lzw5oZrKlo7dHQWNnzJ7e2SeyYk+4OGeiYx+0MTSfRvFEILwwQdUgT1JamRQH+AMFnH0B+XuDnlG9lultwOdLh/KJwVmYDDZ5pimDUpp6RyQMPwyPp7wyB1m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iu2oX310; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C06C2BCB8;
-	Mon,  4 May 2026 14:00:31 +0000 (UTC)
+	 MIME-Version; b=r9Bvlma+MV0HalHuzvRxQYHNblUIfhApARHQbrlThgCHjMrt/v7O98+gloD118LM+MdKgEqQyAFnpotXa1qgTEakthJ8Kyqt9UZECS3Vsja2uJUwpHyiC18deJ5ViTkfNM3b+oF3iBgy4YwSRUhJjhxRG/tvoUPFijDs0l55gnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GV/43oot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6560BC2BCB8;
+	Mon,  4 May 2026 14:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903231;
-	bh=w8p4aIPkvv3tpB1oxPwOjy750NMthCHJXCg2oBPsptw=;
+	s=korg; t=1777903881;
+	bh=RI8dDWjxDXOzGo9U95at712ZI+4DatNGTDy8P+oOtNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iu2oX310RsxCUQ8IczZsEechXjknKusaWKuHz6WkzWG5awzM+QLh8PEfXC6twlGoc
-	 fnfdI0RcQmDbzw29Pv7K3MA/gwtSaXVP+bpfh9w3AMTx/Lekc4m4BK2Hmtjf5xJo7f
-	 5RtyPKdgz+VFU+TvrSiD+ErNnKMRUa02XCCGmgCg=
+	b=GV/43ootvsa0Q4YxKSb00mtSHGzAzdRg+Rtcno61S2yNuP8a9uRuP9Z3I/6Pjkf71
+	 snvPK0p5HeJjXjEVr9gYrjdEIJaLoNnSV9h8hwR5Yr6OF6qHzclQfGAt4fQKAdLwZZ
+	 G5MJZzz6xJJ8ZDIbyuwYKyVIAtJF2rl2L7JevTGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 154/307] ipv4: icmp: validate reply type before using icmp_pointers
+	Jake Lamberson <lamberson.jake@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 099/275] ALSA: core: Fix potential data race at fasync handling
 Date: Mon,  4 May 2026 15:50:39 +0200
-Message-ID: <20260504135148.583557240@linuxfoundation.org>
+Message-ID: <20260504135146.594611638@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +63,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0C5664BE9C2
+X-Rspamd-Queue-Id: B75DD4BEE69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243184-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243437-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 67bf002a2d7387a6312138210d0bd06e3cf4879b upstream.
+commit 8146cd333d235ed32d48bb803fdf743472d7c783 upstream.
 
-Extended echo replies use ICMP_EXT_ECHOREPLY as the outbound reply type.
-That value is outside the range covered by icmp_pointers[], which only
-describes the traditional ICMP types up to NR_ICMP_TYPES.
+In snd_fasync_work_fn(), which is the offload work for traversing and
+processing the pending fasync list, the call of kill_fasync() is done
+outside the snd_fasync_lock for avoiding deadlocks.  The problem is
+that its the references of fasync->on, fasync->signal and fasync->poll
+are done there also outside the lock.  Since these may be modified by
+snd_kill_fasync() call concurrently from other process, inconsistent
+values might be passed to kill_fasync().  Although there shouldn't be
+critical UAF, it's still better to be addressed.
 
-Avoid consulting icmp_pointers[] for reply types outside that range, and
-use array_index_nospec() for the remaining in-range lookup. Normal ICMP
-replies keep their existing behavior unchanged.
+This patch moves the kill_fasync() argument evaluations inside the
+snd_fasync_lock for avoiding the data races above.  The handling in
+fasync->on flag is optimized in the loop to skip directly.
 
-Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/0dace90c01a5978e829ca741ef684dbd7304ce62.1776628519.git.caoruide123@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also, for more clarity, snd_fasync_free() takes the lock and unlink
+the pending entry more directly instead of clearing fasync->on flag.
+
+Reported-by: Jake Lamberson <lamberson.jake@gmail.com>
+Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260420061721.3253644-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/icmp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/core/misc.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -64,6 +64,7 @@
- #include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/fcntl.h>
-+#include <linux/nospec.h>
- #include <linux/socket.h>
- #include <linux/in.h>
- #include <linux/inet.h>
-@@ -373,7 +374,9 @@ static int icmp_glue_bits(void *from, ch
- 				      to, len);
+--- a/sound/core/misc.c
++++ b/sound/core/misc.c
+@@ -100,14 +100,18 @@ static LIST_HEAD(snd_fasync_list);
+ static void snd_fasync_work_fn(struct work_struct *work)
+ {
+ 	struct snd_fasync *fasync;
++	int signal, poll;
  
- 	skb->csum = csum_block_add(skb->csum, csum, odd);
--	if (icmp_pointers[icmp_param->data.icmph.type].error)
-+	if (icmp_param->data.icmph.type <= NR_ICMP_TYPES &&
-+	    icmp_pointers[array_index_nospec(icmp_param->data.icmph.type,
-+					     NR_ICMP_TYPES + 1)].error)
- 		nf_ct_attach(skb, icmp_param->skb);
- 	return 0;
+ 	spin_lock_irq(&snd_fasync_lock);
+ 	while (!list_empty(&snd_fasync_list)) {
+ 		fasync = list_first_entry(&snd_fasync_list, struct snd_fasync, list);
+ 		list_del_init(&fasync->list);
++		if (!fasync->on)
++			continue;
++		signal = fasync->signal;
++		poll = fasync->poll;
+ 		spin_unlock_irq(&snd_fasync_lock);
+-		if (fasync->on)
+-			kill_fasync(&fasync->fasync, fasync->signal, fasync->poll);
++		kill_fasync(&fasync->fasync, signal, poll);
+ 		spin_lock_irq(&snd_fasync_lock);
+ 	}
+ 	spin_unlock_irq(&snd_fasync_lock);
+@@ -158,7 +162,10 @@ void snd_fasync_free(struct snd_fasync *
+ {
+ 	if (!fasync)
+ 		return;
+-	fasync->on = 0;
++
++	scoped_guard(spinlock_irq, &snd_fasync_lock)
++		list_del_init(&fasync->list);
++
+ 	flush_work(&snd_fasync_work);
+ 	kfree(fasync);
  }
 
 
