@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KD74CtOu+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:36:03 +0200
+	id yJUKBlWq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E38F4BFBD3
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:36:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 857CF4BEF95
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 28700301D32B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7C3DF3023A63
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC76F3DE443;
-	Mon,  4 May 2026 14:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913833DE43C;
+	Mon,  4 May 2026 14:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DShm5Syp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuVWfolA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0D6315785;
-	Mon,  4 May 2026 14:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2D03DDDD6;
+	Mon,  4 May 2026 14:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904527; cv=none; b=eQk/kymvDjwXfOCWyEZO+umYZfnBNIc8aFCFQhnMyblVEvNehHdpKvVC4D7mF9izFgrDDmXiqXVWcPFlE32Bmowq3qVskLKaMFgtfyYYgJ1NBOfiGLNThXVgD9+fZ3sRTwXFSOQgap/XqezqOcbdXRe6559M0xrtQ4rJHNEqoDY=
+	t=1777904026; cv=none; b=I4PgDig/DdyzbqXC4VZVGmZg/1kGT9atBBry/zvayiFUb5H0IGUbGUZCoZMVlj1OKqmDHlpFClf7GAJEDsqhD5GVQ/NRdi1h34z3b7uUBcmOBnSIfbTn9FMUVXjYGYuZ45c/m7pjA6s8xeC5UtRB0IHjLV9B/V/8Miuv//rbHjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904527; c=relaxed/simple;
-	bh=9i6oaUeWIgHdl557BUdgaYMHVLDn7m4K7XzVkxNtylo=;
+	s=arc-20240116; t=1777904026; c=relaxed/simple;
+	bh=LdeMqir73GD4TUL+1U9b21iAbx5+8Rhm29bdeD07vVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzUsUaBnTj5AKaRUxOHPqaO6cecr4FMq5RryxK1eFk9GObjiLG5Jge3EUyBHNrSTKtenZxpg+YzK2pLVYM6EcVeWPKTEU9cQ9zYnUMVlctbwYbWOt92pCVTA+PCSWg2Nmf3iMwjgZw1s4YIiohoiQmY1nJEG2nn6AMn7n/d9AJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DShm5Syp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151EDC2BCB8;
-	Mon,  4 May 2026 14:22:06 +0000 (UTC)
+	 MIME-Version; b=tfRqy7AQsB6SEtaUR1+jf1sTVqNo8BSmxPbgf8YpIILeZxKReAZEa5u5+a87nJC0wyWs5ktM4nZ/636spuQGCMJHi4BrOLlw5IEBhkSyPfaUp6Ggy0fOzavg0E5LMwZ9ZZnVm6uk8B1ZnQHXuAH+9/Gx1BvBwX9VQBBSL9pFe8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuVWfolA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A247CC2BCB8;
+	Mon,  4 May 2026 14:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904527;
-	bh=9i6oaUeWIgHdl557BUdgaYMHVLDn7m4K7XzVkxNtylo=;
+	s=korg; t=1777904026;
+	bh=LdeMqir73GD4TUL+1U9b21iAbx5+8Rhm29bdeD07vVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DShm5SypiydcUBUfKUZ57iODJ8tNHpsm4gCUN1grG4xM4LYNcdMjdHAjKWt7NSgBc
-	 3HmtGNuEWYNbK15KV2mzE/lH6Ai0MkX0QqVOciqdSVKMssyx3H/ZSNw1bsTVkLD09A
-	 eFRnTtukRTt7KdtCkzITR4fIylj2M72gOjIT6Gr0=
+	b=JuVWfolANOsVKwqY/5ma89yM6IkVjBAV2ubXiHDeA8dOdc1gKUBuu+RMk9GEbROw3
+	 JtAEv0poIr3vCAD2nn+NQOiZBKu5G3lYalkp2c/aDR6RaDAr6k5YK/Fcv957YsPUEj
+	 Q+0ZfMKjzwlPlH8J+f1Qat3m9H3j5iWaxE0xWxFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jake Lamberson <lamberson.jake@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 074/215] ALSA: core: Fix potential data race at fasync handling
+	Paul Louvel <paul.louvel@bootlin.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.18 153/275] crypto: talitos - rename first/last to first_desc/last_desc
 Date: Mon,  4 May 2026 15:51:33 +0200
-Message-ID: <20260504135132.870298758@linuxfoundation.org>
+Message-ID: <20260504135148.622106543@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,235 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E38F4BFBD3
+X-Rspamd-Queue-Id: 857CF4BEF95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243690-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243493-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Paul Louvel <paul.louvel@bootlin.com>
 
-commit 8146cd333d235ed32d48bb803fdf743472d7c783 upstream.
+commit a1b80018b8cec27fc06a8b04a7f8b5f6cfe86eae upstream.
 
-In snd_fasync_work_fn(), which is the offload work for traversing and
-processing the pending fasync list, the call of kill_fasync() is done
-outside the snd_fasync_lock for avoiding deadlocks.  The problem is
-that its the references of fasync->on, fasync->signal and fasync->poll
-are done there also outside the lock.  Since these may be modified by
-snd_kill_fasync() call concurrently from other process, inconsistent
-values might be passed to kill_fasync().  Although there shouldn't be
-critical UAF, it's still better to be addressed.
+Previous commit introduces a new last_request variable in the context
+structure.
 
-This patch moves the kill_fasync() argument evaluations inside the
-snd_fasync_lock for avoiding the data races above.  The handling in
-fasync->on flag is optimized in the loop to skip directly.
+Renaming the first/last existing member variable in the context
+structure to improve readability.
 
-Also, for more clarity, snd_fasync_free() takes the lock and unlink
-the pending entry more directly instead of clearing fasync->on flag.
-
-Reported-by: Jake Lamberson <lamberson.jake@gmail.com>
-Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260420061721.3253644-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/misc.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/crypto/talitos.c |   46 +++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
---- a/sound/core/misc.c
-+++ b/sound/core/misc.c
-@@ -100,14 +100,18 @@ static LIST_HEAD(snd_fasync_list);
- static void snd_fasync_work_fn(struct work_struct *work)
- {
- 	struct snd_fasync *fasync;
-+	int signal, poll;
+--- a/drivers/crypto/talitos.c
++++ b/drivers/crypto/talitos.c
+@@ -869,8 +869,8 @@ struct talitos_ahash_req_ctx {
+ 	u8 buf[2][HASH_MAX_BLOCK_SIZE];
+ 	int buf_idx;
+ 	unsigned int swinit;
+-	unsigned int first;
+-	unsigned int last;
++	unsigned int first_desc;
++	unsigned int last_desc;
+ 	unsigned int last_request;
+ 	unsigned int to_hash_later;
+ 	unsigned int nbuf;
+@@ -889,8 +889,8 @@ struct talitos_export_state {
+ 	u32 hw_context[TALITOS_MDEU_MAX_CONTEXT_SIZE / sizeof(u32)];
+ 	u8 buf[HASH_MAX_BLOCK_SIZE];
+ 	unsigned int swinit;
+-	unsigned int first;
+-	unsigned int last;
++	unsigned int first_desc;
++	unsigned int last_desc;
+ 	unsigned int to_hash_later;
+ 	unsigned int nbuf;
+ };
+@@ -1722,7 +1722,7 @@ static void common_nonsnoop_hash_unmap(s
+ 	if (desc->next_desc &&
+ 	    desc->ptr[5].ptr != desc2->ptr[5].ptr)
+ 		unmap_single_talitos_ptr(dev, &desc2->ptr[5], DMA_FROM_DEVICE);
+-	if (req_ctx->last)
++	if (req_ctx->last_desc)
+ 		memcpy(areq->result, req_ctx->hw_context,
+ 		       crypto_ahash_digestsize(tfm));
  
- 	spin_lock_irq(&snd_fasync_lock);
- 	while (!list_empty(&snd_fasync_list)) {
- 		fasync = list_first_entry(&snd_fasync_list, struct snd_fasync, list);
- 		list_del_init(&fasync->list);
-+		if (!fasync->on)
-+			continue;
-+		signal = fasync->signal;
-+		poll = fasync->poll;
- 		spin_unlock_irq(&snd_fasync_lock);
--		if (fasync->on)
--			kill_fasync(&fasync->fasync, fasync->signal, fasync->poll);
-+		kill_fasync(&fasync->fasync, signal, poll);
- 		spin_lock_irq(&snd_fasync_lock);
+@@ -1759,7 +1759,7 @@ static void ahash_done(struct device *de
+ 		 container_of(desc, struct talitos_edesc, desc);
+ 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
+ 
+-	if (!req_ctx->last && req_ctx->to_hash_later) {
++	if (!req_ctx->last_desc && req_ctx->to_hash_later) {
+ 		/* Position any partial block for next update/final/finup */
+ 		req_ctx->buf_idx = (req_ctx->buf_idx + 1) & 1;
+ 		req_ctx->nbuf = req_ctx->to_hash_later;
+@@ -1825,7 +1825,7 @@ static int common_nonsnoop_hash(struct t
+ 	/* first DWORD empty */
+ 
+ 	/* hash context in */
+-	if (!req_ctx->first || req_ctx->swinit) {
++	if (!req_ctx->first_desc || req_ctx->swinit) {
+ 		map_single_talitos_ptr_nosync(dev, &desc->ptr[1],
+ 					      req_ctx->hw_context_size,
+ 					      req_ctx->hw_context,
+@@ -1833,7 +1833,7 @@ static int common_nonsnoop_hash(struct t
+ 		req_ctx->swinit = 0;
  	}
- 	spin_unlock_irq(&snd_fasync_lock);
-@@ -163,7 +167,10 @@ void snd_fasync_free(struct snd_fasync *
- {
- 	if (!fasync)
- 		return;
--	fasync->on = 0;
-+
-+	scoped_guard(spinlock_irq, &snd_fasync_lock)
-+		list_del_init(&fasync->list);
-+
- 	flush_work(&snd_fasync_work);
- 	kfree(fasync);
- }
+ 	/* Indicate next op is not the first. */
+-	req_ctx->first = 0;
++	req_ctx->first_desc = 0;
+ 
+ 	/* HMAC key */
+ 	if (ctx->keylen)
+@@ -1866,7 +1866,7 @@ static int common_nonsnoop_hash(struct t
+ 	/* fifth DWORD empty */
+ 
+ 	/* hash/HMAC out -or- hash context out */
+-	if (req_ctx->last)
++	if (req_ctx->last_desc)
+ 		map_single_talitos_ptr(dev, &desc->ptr[5],
+ 				       crypto_ahash_digestsize(tfm),
+ 				       req_ctx->hw_context, DMA_FROM_DEVICE);
+@@ -1908,7 +1908,7 @@ static int common_nonsnoop_hash(struct t
+ 		if (sg_count > 1)
+ 			sync_needed = true;
+ 		copy_talitos_ptr(&desc2->ptr[5], &desc->ptr[5], is_sec1);
+-		if (req_ctx->last)
++		if (req_ctx->last_desc)
+ 			map_single_talitos_ptr_nosync(dev, &desc->ptr[5],
+ 						      req_ctx->hw_context_size,
+ 						      req_ctx->hw_context,
+@@ -1964,7 +1964,7 @@ static int ahash_process_req_one(struct
+ 	bool is_sec1 = has_ftr_sec1(priv);
+ 	u8 *ctx_buf = req_ctx->buf[req_ctx->buf_idx];
+ 
+-	if (!req_ctx->last && (nbytes + req_ctx->nbuf <= blocksize)) {
++	if (!req_ctx->last_desc && (nbytes + req_ctx->nbuf <= blocksize)) {
+ 		/* Buffer up to one whole block */
+ 		nents = sg_nents_for_len(req_ctx->request_sl, nbytes);
+ 		if (nents < 0) {
+@@ -1981,7 +1981,7 @@ static int ahash_process_req_one(struct
+ 	nbytes_to_hash = nbytes + req_ctx->nbuf;
+ 	to_hash_later = nbytes_to_hash & (blocksize - 1);
+ 
+-	if (req_ctx->last)
++	if (req_ctx->last_desc)
+ 		to_hash_later = 0;
+ 	else if (to_hash_later)
+ 		/* There is a partial block. Hash the full block(s) now */
+@@ -2041,19 +2041,19 @@ static int ahash_process_req_one(struct
+ 	edesc->desc.hdr = ctx->desc_hdr_template;
+ 
+ 	/* On last one, request SEC to pad; otherwise continue */
+-	if (req_ctx->last)
++	if (req_ctx->last_desc)
+ 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_PAD;
+ 	else
+ 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_CONT;
+ 
+ 	/* request SEC to INIT hash. */
+-	if (req_ctx->first && !req_ctx->swinit)
++	if (req_ctx->first_desc && !req_ctx->swinit)
+ 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_INIT;
+ 
+ 	/* When the tfm context has a keylen, it's an HMAC.
+ 	 * A first or last (ie. not middle) descriptor must request HMAC.
+ 	 */
+-	if (ctx->keylen && (req_ctx->first || req_ctx->last))
++	if (ctx->keylen && (req_ctx->first_desc || req_ctx->last_desc))
+ 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_HMAC;
+ 
+ 	return common_nonsnoop_hash(edesc, req_ctx->areq, nbytes_to_hash, ahash_done);
+@@ -2076,7 +2076,7 @@ static void sec1_ahash_process_remaining
+ 			req_ctx->remaining_ahash_request_bytes;
+ 
+ 		if (req_ctx->last_request)
+-			req_ctx->last = 1;
++			req_ctx->last_desc = 1;
+ 	}
+ 
+ 	err = ahash_process_req_one(req_ctx->areq,
+@@ -2103,7 +2103,7 @@ static int ahash_process_req(struct ahas
+ 		if (nbytes > TALITOS1_MAX_DATA_LEN)
+ 			nbytes = TALITOS1_MAX_DATA_LEN;
+ 		else if (req_ctx->last_request)
+-			req_ctx->last = 1;
++			req_ctx->last_desc = 1;
+ 	}
+ 
+ 	req_ctx->current_ahash_request_bytes = nbytes;
+@@ -2124,14 +2124,14 @@ static int ahash_init(struct ahash_reque
+ 	/* Initialize the context */
+ 	req_ctx->buf_idx = 0;
+ 	req_ctx->nbuf = 0;
+-	req_ctx->first = 1; /* first indicates h/w must init its context */
++	req_ctx->first_desc = 1; /* first_desc indicates h/w must init its context */
+ 	req_ctx->swinit = 0; /* assume h/w init of context */
+ 	size =	(crypto_ahash_digestsize(tfm) <= SHA256_DIGEST_SIZE)
+ 			? TALITOS_MDEU_CONTEXT_SIZE_MD5_SHA1_SHA256
+ 			: TALITOS_MDEU_CONTEXT_SIZE_SHA384_SHA512;
+ 	req_ctx->hw_context_size = size;
+ 	req_ctx->last_request = 0;
+-	req_ctx->last = 0;
++	req_ctx->last_desc = 0;
+ 	INIT_WORK(&req_ctx->sec1_ahash_process_remaining, sec1_ahash_process_remaining);
+ 
+ 	dma = dma_map_single(dev, req_ctx->hw_context, req_ctx->hw_context_size,
+@@ -2224,8 +2224,8 @@ static int ahash_export(struct ahash_req
+ 	       req_ctx->hw_context_size);
+ 	memcpy(export->buf, req_ctx->buf[req_ctx->buf_idx], req_ctx->nbuf);
+ 	export->swinit = req_ctx->swinit;
+-	export->first = req_ctx->first;
+-	export->last = req_ctx->last;
++	export->first_desc = req_ctx->first_desc;
++	export->last_desc = req_ctx->last_desc;
+ 	export->to_hash_later = req_ctx->to_hash_later;
+ 	export->nbuf = req_ctx->nbuf;
+ 
+@@ -2250,8 +2250,8 @@ static int ahash_import(struct ahash_req
+ 	memcpy(req_ctx->hw_context, export->hw_context, size);
+ 	memcpy(req_ctx->buf[0], export->buf, export->nbuf);
+ 	req_ctx->swinit = export->swinit;
+-	req_ctx->first = export->first;
+-	req_ctx->last = export->last;
++	req_ctx->first_desc = export->first_desc;
++	req_ctx->last_desc = export->last_desc;
+ 	req_ctx->to_hash_later = export->to_hash_later;
+ 	req_ctx->nbuf = export->nbuf;
+ 
 
 
 
