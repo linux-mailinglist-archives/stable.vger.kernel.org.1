@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JXOAXqs+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:02 +0200
+	id 4BdGMDWq+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905674BF604
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB814BEF22
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81ADC3022F69
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3707D3033185
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE6A3DE43C;
-	Mon,  4 May 2026 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274A73D300A;
+	Mon,  4 May 2026 14:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmlRMqCK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anMA1itF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8134B315785;
-	Mon,  4 May 2026 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED80377575;
+	Mon,  4 May 2026 14:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904550; cv=none; b=IKZwwzmtLEokt4lSWFsI/BKUQ0MCX2sBYisgeNyNEbnLsYLRfMPZrqm2nHQLKIcH6ub0lG3lQMHrZqMMaCc4NES+hwTZ1Pa2MUSKxGR+/HJHu8CuuCkabw5hnetAznXB/QcmuwKxBWXF5pzzgzLvzuF+XCk99vuF7e4XnnMhCm8=
+	t=1777904002; cv=none; b=THC/T5ADsINfGs5HeTmCtLN1M85x9nSllK8j1hZUotMmuDXKmIHVOz+8FSoamhqMbd/lSYLSKsml2kB7LVvpa13NQxaeFK0AbqAA+DTHuSCqS5ANQHtDQ0T3fGwvud70xW3rewsccpwtQkRxRa7JVvY6EshYnyi6+3Y7S0mzD5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904550; c=relaxed/simple;
-	bh=y+DYwidX/MKQp0Mb+2Rk0eYPrg+y1Eiyd4dKHOz4HJc=;
+	s=arc-20240116; t=1777904002; c=relaxed/simple;
+	bh=kncTuoCVznGYmaxB/IuYGi747pbGtWD0iqNOADacmEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yp1bPMQyevYX7TRplvjiST6RdnzaIQidFMXITAeYMhxrA2toBY31293pUG8JoK77BEIJ24EOoTOnFPoEZly7g11F2r9EHpuz6ReRMCkvMX1K9bz/5tfwPsHSQJ62EKIBiKUmuV4rLlKnzyq5TFwViw+M+L0GDh7/AsWWYBe6ZFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmlRMqCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186FFC2BCB8;
-	Mon,  4 May 2026 14:22:29 +0000 (UTC)
+	 MIME-Version; b=crbZ0+GK7QOuNF1O8L7VEVH2L8zgYj/17enotoj7wpfEzLq4JEpcbfAqUQUAA1lcR1xsZ2fpFo4J6Zqivtybx7IT9ibcAWpbV3Yc7wEqFtNQ2ctE3eW+3hiaunSWMrsqUWmQKPBnl0EVtd916W1V4/cqHehp7yarxRyIutoKCJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anMA1itF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FA1C2BCB8;
+	Mon,  4 May 2026 14:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904550;
-	bh=y+DYwidX/MKQp0Mb+2Rk0eYPrg+y1Eiyd4dKHOz4HJc=;
+	s=korg; t=1777904002;
+	bh=kncTuoCVznGYmaxB/IuYGi747pbGtWD0iqNOADacmEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmlRMqCKaa9fLHgL+qaNDYdtyDi2oApM1Nm7xGtVjyFpZb4klvD62OonYbbZ4zHBa
-	 1NanRRZm75yO5UhYgvAg7E4CLL4Ub8yD9Z+KBYkhQ2xN8pW7r7IzG8mzWMm5xlbKTj
-	 WAS++UetssB5V9CWtRkyHT8L8uGGCHygYuRaR9j8=
+	b=anMA1itF0AhkPTmb7WFybSWDXk5V8kAgErrNiaMP9XyRwk1L0AyCd+Vr1abQzn8V9
+	 DXb6rlL9r+ZdkPQtgdzZsyWuIASdBCC3b4FoCRpcguqYdi5dMV7HmbHrV8dLsPfKOI
+	 /wFujYN9QtA78A0y89swMCky6J7dlsmnq7KhsNK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Salisbury <joseph.salisbury@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.12 065/215] sched: Use u64 for bandwidth ratio calculations
-Date: Mon,  4 May 2026 15:51:24 +0200
-Message-ID: <20260504135132.545354226@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Liu <b-liu@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 145/275] mmc: block: use single block write in retry
+Date: Mon,  4 May 2026 15:51:25 +0200
+Message-ID: <20260504135148.308477872@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 905674BF604
+X-Rspamd-Queue-Id: 5AB814BEF22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243699-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243484-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,79 +90,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:url,ti.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kernel.dk:email,linaro.org:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Salisbury <joseph.salisbury@oracle.com>
+From: Bin Liu <b-liu@ti.com>
 
-commit c6e80201e057dfb7253385e60bf541121bf5dc33 upstream.
+commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
 
-to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
-runtime values, but it returns unsigned long.  tg_rt_schedulable() also
-stores the current group limit and the accumulated child sum in unsigned
-long.
+Due to errata i2493[0], multi-block write would still fail in retries.
 
-On 32-bit builds, large bandwidth ratios can be truncated and the RT
-group sum can wrap when enough siblings are present.  That can let an
-overcommitted RT hierarchy pass the schedulability check, and it also
-narrows the helper result for other callers.
+With i2493, the MMC interface has the potential of write failures when
+issuing multi-block writes operating in HS200 mode with excessive IO
+supply noise.
 
-Return u64 from to_ratio() and use u64 for the RT group totals so
-bandwidth ratios are preserved and compared at full width on both 32-bit
-and 64-bit builds.
+While the errata provides guidance in hardware design and layout to
+minimize the IO supply noise, in theory the write failure cannot be
+resolved in hardware. The software solution to ensure the data integrity
+is to add minimum 5us delay between block writes. Single-block write is
+the practical way to introduce the delay.
 
-Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
-Assisted-by: Codex:GPT-5
-Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+This patch reuses recovery_mode flag, and switches to single-block
+write in retry when multi-block write fails. It covers both CQE and
+non-CQE cases.
+
+[0] https://www.ti.com/lit/pdf/sprz582
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@oracle.com
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c  |    2 +-
- kernel/sched/rt.c    |    2 +-
- kernel/sched/sched.h |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/mmc/core/block.c |   12 ++++++++++--
+ drivers/mmc/core/queue.h |    3 +++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4794,7 +4794,7 @@ void sched_post_fork(struct task_struct
- 	scx_post_fork(p);
- }
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1404,6 +1404,9 @@ static void mmc_blk_data_prep(struct mmc
+ 		    rq_data_dir(req) == WRITE &&
+ 		    (md->flags & MMC_BLK_REL_WR);
  
--unsigned long to_ratio(u64 period, u64 runtime)
-+u64 to_ratio(u64 period, u64 runtime)
- {
- 	if (runtime == RUNTIME_INF)
- 		return BW_UNIT;
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2707,7 +2707,7 @@ static int tg_rt_schedulable(struct task
- {
- 	struct rt_schedulable_data *d = data;
- 	struct task_group *child;
--	unsigned long total, sum = 0;
-+	u64 total, sum = 0;
- 	u64 period, runtime;
++	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
++		recovery_mode = 1;
++
+ 	memset(brq, 0, sizeof(struct mmc_blk_request));
  
- 	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2698,7 +2698,7 @@ extern void init_dl_entity(struct sched_
- #define MAX_BW_BITS		(64 - BW_SHIFT)
- #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
+ 	mmc_crypto_prepare_req(mqrq);
+@@ -1543,10 +1546,13 @@ static void mmc_blk_cqe_complete_rq(stru
+ 		err = 0;
  
--extern unsigned long to_ratio(u64 period, u64 runtime);
-+extern u64 to_ratio(u64 period, u64 runtime);
+ 	if (err) {
+-		if (mqrq->retries++ < MMC_CQE_RETRIES)
++		if (mqrq->retries++ < MMC_CQE_RETRIES) {
++			if (rq_data_dir(req) == WRITE)
++				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 			blk_mq_requeue_request(req, true);
+-		else
++		} else {
+ 			blk_mq_end_request(req, BLK_STS_IOERR);
++		}
+ 	} else if (mrq->data) {
+ 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
+ 			blk_mq_requeue_request(req, true);
+@@ -2088,6 +2094,8 @@ static void mmc_blk_mq_complete_rq(struc
+ 	} else if (!blk_rq_bytes(req)) {
+ 		__blk_mq_end_request(req, BLK_STS_IOERR);
+ 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
++		if (rq_data_dir(req) == WRITE)
++			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 		blk_mq_requeue_request(req, true);
+ 	} else {
+ 		if (mmc_card_removed(mq->card))
+--- a/drivers/mmc/core/queue.h
++++ b/drivers/mmc/core/queue.h
+@@ -61,6 +61,8 @@ enum mmc_drv_op {
+ 	MMC_DRV_OP_GET_EXT_CSD,
+ };
  
- extern void init_entity_runnable_average(struct sched_entity *se);
- extern void post_init_entity_util_avg(struct task_struct *p);
++#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
++
+ struct mmc_queue_req {
+ 	struct mmc_blk_request	brq;
+ 	struct scatterlist	*sg;
+@@ -69,6 +71,7 @@ struct mmc_queue_req {
+ 	void			*drv_op_data;
+ 	unsigned int		ioc_count;
+ 	int			retries;
++	u32			flags;
+ };
+ 
+ struct mmc_queue {
 
 
 
