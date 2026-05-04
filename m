@@ -1,195 +1,167 @@
-Return-Path: <stable+bounces-242958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHkqOb9f+GlJtgIAu9opvQ
-	(envelope-from <stable+bounces-242958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:58:39 +0200
+	id 6OyaDbdg+GnKtgIAu9opvQ
+	(envelope-from <stable+bounces-242959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:02:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B9E4BAA92
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 10:58:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1164BAB60
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81CAE300FC72
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:58:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4FFA73017381
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9CA3491C7;
-	Mon,  4 May 2026 08:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FA934A3B1;
+	Mon,  4 May 2026 08:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQOt20ym"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PgHh/0jK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67882318B9D
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5931EE7D5;
+	Mon,  4 May 2026 08:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777885116; cv=none; b=DVKJ2eJA3zr7dLlCbuER08QIt/cP6Ulyo8HjFwrDvEcpIrPxEwVOEaiE/j+Ix/fVP1BZ0V8uAkljynFaKBIJmjngWkvsmd2pB6PZDtpIXsXRxJY0tbxPDaET7/dLwfJtLp4L/9aT1wFpT87q6PDGYq2TPQR9TrSzh3hgcmuW+K4=
+	t=1777885148; cv=none; b=fRjC7a8HddjcpE7bTpHMGUALZubV6JnCsVOXq/56hqqpte4Rycvoh6c90smuVqksCY83ODz6mEcGya8Mpy7/fiBDJibo/HHq1ONpGyHWtGm8u7XOg3/IW8C07MFwyXiZZdjxypQ5lb0kFSGtdyRJct43ZmCfVj21D8hkQw4hnzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777885116; c=relaxed/simple;
-	bh=pQVWlpdLv84PHJyCM1QSe+YKzXVEOGkXmAxtpb/U4bk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vCpzlEZpbAul19dA1m/wX3pHFn8lFrSW7JJs4l3GoVIjf23eFe2aUS+4LE1vknSlIAIi9cbrEs2PLjB3+1JoP9iKKJywrlsTm5EhiqZpuwVGSs43XzO3D9zYKdolbSy1DnHMaIaeNsWidrh4Bn43deYwkRyhjW6sQtlVcVIHlYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQOt20ym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C324C2BCB8;
-	Mon,  4 May 2026 08:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777885116;
-	bh=pQVWlpdLv84PHJyCM1QSe+YKzXVEOGkXmAxtpb/U4bk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=UQOt20ym9rrfx5jWMS+Uy8P1ApU8bfwlq8EzdGeUynCbFjLAtOAMvIVi4thDRS5r4
-	 aJamf/rZZ8FFUsdZ4VI+QOY3nHAtDi7PeUmF+hbJB1HvJT6YxrF0xd9OX1BHySKSVc
-	 Rj4Ywfm5e/UWWZ8PiHZb+UjDmxe82fPCTANe1XM8=
-Subject: FAILED: patch "[PATCH] rtmutex: Use waiter::task instead of current in" failed to apply to 5.15-stable tree
-To: keenanat2000@gmail.com,bird@lzu.edu.cn,tglx@kernel.org,tomapufckgml@gmail.com,yifanwucs@gmail.com,yuantan098@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 May 2026 10:58:33 +0200
-Message-ID: <2026050433-granular-zookeeper-b705@gregkh>
+	s=arc-20240116; t=1777885148; c=relaxed/simple;
+	bh=md8M+y7PGErVo3Oqco55fYhFLtk9XUgZsiTX4Vt/Q+c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lWKP+cwr3upy9lNiKd910/wehpThxGbgCpQeZXmeYNs14KTRAndeJ4TwRl2tQsuyXnd0Ww6cMhXRYfO32H+rYIIHJBUF86NwbXhBqnJVbrf9mxRgu6qs3G1KQvF65SKhXX63NU7Fgd0OMkr0IMt+0CSgdjiKM9uBopJjbwhPDVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PgHh/0jK; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777885147; x=1809421147;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=md8M+y7PGErVo3Oqco55fYhFLtk9XUgZsiTX4Vt/Q+c=;
+  b=PgHh/0jKeqTGgeISpjHHw0soOTKl3WIWbbqQ8/ZDEiZm9DGT2nHNbwAY
+   oo15u3SBz0cRcgw4JMUPgVdkFreNf91+fsJ5OIuIbN9ai5YlXVL2t0Kas
+   ZWAGWCzMDK7o7WzIdMh9WIX5uRo9IcmuLc5kOv5PWoX2X9K23Ks5V/eqB
+   hQeyCc0mxMB31JByl0P+DmsOMb1QPlBY1k0mvCtLw/x1GRrBKieumNGsj
+   R4gUVr2CverSrnWhU3wgkuSm42VgjyiCFAG6r6GycFZbyc2/cGdYJ/u2r
+   VJAl+EMttDKWCafCm01Mbg3SSFs5503BmwTk7/X0giKMWbh86NXzjAUL/
+   w==;
+X-CSE-ConnectionGUID: XG8qySCNQfmq4oCYyzZ0Sw==
+X-CSE-MsgGUID: o8blUSFBRYqs6EvaxrVxDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="78789545"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="78789545"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 01:59:07 -0700
+X-CSE-ConnectionGUID: QHAyp3NLS4SISMntM2/IlA==
+X-CSE-MsgGUID: S7VqsK6iQ8+CKh8nSVRrrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="232815003"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.78])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 01:59:04 -0700
+Date: Mon, 4 May 2026 11:59:02 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>, linux-usb@vger.kernel.org,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Michael Jamet <michael.jamet@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] thunderbolt: property: reject dir_len < 4 to
+ prevent size_t underflow
+Message-ID: <afhf1nyYlzy4Xm6q@ashevche-desk.local>
+References: <20260415123221.225149-1-michael.bommarito@gmail.com>
+ <cover.1777817011.git.michael.bommarito@gmail.com>
+ <e3c84da6e0c1defbb07e712939df0db1b2019fff.1777817011.git.michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 40B9E4BAA92
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e3c84da6e0c1defbb07e712939df0db1b2019fff.1777817011.git.michael.bommarito@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: 9D1164BAB60
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-242958-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-242959-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lzu.edu.cn,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,intel.com,linuxfoundation.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:dkim]
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,ashevche-desk.local:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
+On Sun, May 03, 2026 at 10:15:06AM -0400, Michael Bommarito wrote:
+> On the non-root path, __tb_property_parse_dir() takes dir_len from
+> entry->length (u16 widened to size_t).  Two distinct OOB conditions
+> follow when entry->length < 4:
+> 
+> 1. The non-root path begins with kmemdup(&block[dir_offset],
+>    sizeof(*dir->uuid), ...) which always reads 4 dwords from
+>    dir_offset.  tb_property_entry_valid() only enforces
+>    dir_offset + entry->length <= block_len, so a crafted entry
+>    with dir_offset close to the end of the property block and
+>    entry->length in 0..3 passes that gate but lets the UUID copy
+>    run off the block (e.g. dir_offset = 497, dir_len = 3 in a
+>    500-dword block reads block[497..501]).
+> 
+> 2. After the kmemdup, content_len = dir_len - 4 underflows size_t
+>    to ~SIZE_MAX, nentries becomes SIZE_MAX / 4, and the entry
+>    walk runs OOB on each iteration until an entry fails
+>    validation or the kernel oopses on an unmapped page.
+> 
+> Reject dir_len < 4 on the non-root path *before* the UUID kmemdup,
+> which closes both holes.
+> 
+> Also move INIT_LIST_HEAD(&dir->properties) up to immediately after
+> the dir allocation so the new error-return path (and the existing
+> uuid-alloc failure path) calling tb_property_free_dir() sees a
+> walkable list rather than the zero-initialized NULL next/prev that
+> list_for_each_entry_safe() would oops on.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+...
 
-To reproduce the conflict and resubmit, you may use the following commands:
+>  	dir = kzalloc_obj(*dir);
+>  	if (!dir)
+>  		return NULL;
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050433-granular-zookeeper-b705@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
++ blank line.
 
-Possible dependencies:
+> +	INIT_LIST_HEAD(&dir->properties);
+>  
 
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 Mon Sep 17 00:00:00 2001
-From: Keenan Dong <keenanat2000@gmail.com>
-Date: Wed, 8 Apr 2026 16:46:00 +0800
-Subject: [PATCH] rtmutex: Use waiter::task instead of current in
- remove_waiter()
-
-remove_waiter() is used by the slowlock paths, but it is also used for
-proxy-lock rollback in rt_mutex_start_proxy_lock() when invoked from
-futex_requeue().
-
-In the latter case waiter::task is not current, but remove_waiter()
-operates on current for the dequeue operation. That results in several
-problems:
-
-  1) the rbtree dequeue happens without waiter::task::pi_lock being held
-
-  2) the waiter task's pi_blocked_on state is not cleared, which leaves a
-     dangling pointer primed for UAF around.
-
-  3) rt_mutex_adjust_prio_chain() operates on the wrong top priority waiter
-     task
-
-Use waiter::task instead of current in all related operations in
-remove_waiter() to cure those problems.
-
-[ tglx: Fixup rt_mutex_adjust_prio_chain(), add a comment and amend the
-  	changelog ]
-
-Fixes: 8161239a8bcc ("rtmutex: Simplify PI algorithm and make highest prio task get lock")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index ccaba6148b61..4f386ea6c792 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1544,6 +1544,8 @@ static bool rtmutex_spin_on_owner(struct rt_mutex_base *lock,
-  *
-  * Must be called with lock->wait_lock held and interrupts disabled. It must
-  * have just failed to try_to_take_rt_mutex().
-+ *
-+ * When invoked from rt_mutex_start_proxy_lock() waiter::task != current !
-  */
- static void __sched remove_waiter(struct rt_mutex_base *lock,
- 				  struct rt_mutex_waiter *waiter)
-@@ -1551,14 +1553,15 @@ static void __sched remove_waiter(struct rt_mutex_base *lock,
- {
- 	bool is_top_waiter = (waiter == rt_mutex_top_waiter(lock));
- 	struct task_struct *owner = rt_mutex_owner(lock);
-+	struct task_struct *waiter_task = waiter->task;
- 	struct rt_mutex_base *next_lock;
- 
- 	lockdep_assert_held(&lock->wait_lock);
- 
--	raw_spin_lock(&current->pi_lock);
--	rt_mutex_dequeue(lock, waiter);
--	current->pi_blocked_on = NULL;
--	raw_spin_unlock(&current->pi_lock);
-+	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
-+		rt_mutex_dequeue(lock, waiter);
-+		waiter_task->pi_blocked_on = NULL;
-+	}
- 
- 	/*
- 	 * Only update priority if the waiter was the highest priority
-@@ -1594,7 +1597,7 @@ static void __sched remove_waiter(struct rt_mutex_base *lock,
- 	raw_spin_unlock_irq(&lock->wait_lock);
- 
- 	rt_mutex_adjust_prio_chain(owner, RT_MUTEX_MIN_CHAINWALK, lock,
--				   next_lock, NULL, current);
-+				   next_lock, NULL, waiter_task);
- 
- 	raw_spin_lock_irq(&lock->wait_lock);
- }
 
 
