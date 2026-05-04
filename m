@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPY+KFKo+Gl+xgIAu9opvQ
-	(envelope-from <stable+bounces-243085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:18 +0200
+	id 4InOK/+r+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449774BE96D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:08:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A764BF483
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF7F2300AC8D
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:56:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 797B630BD8DB
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8548320DD51;
-	Mon,  4 May 2026 13:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBC03DEAED;
+	Mon,  4 May 2026 14:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6xTy6hr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJrgM5hh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486FD3D6481;
-	Mon,  4 May 2026 13:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D739E3DEACB;
+	Mon,  4 May 2026 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902979; cv=none; b=BaRVIwfY1yqyWtR2ahGW5p+xySEWzm41mdL4DTVMbE/lZ7YcMBRlCEalqf8cD6ECb0ixrM7F5o2EgepuYeJcesVcFrhSzzcGE/AFKW9TP10dQnaur0/ZNfJJv6e+NV45HInCqVKZ/JKX4/ZFzhpV+gYnySXtqsJl1vGP+7Bd+6k=
+	t=1777903667; cv=none; b=VzvvSk1tHzAI3Boa3rWfSWaJd7Y4xSDkDMaDSzYKT3pJ3RyWWobCCoWqO4RVQH6hd4LB9cCeT05lNqxRo1iPtitWZIhwoE1jkmkQTdd31bjBtyV3i4rIcRl+4gNiC8xd6HZrxeXJeDcNsKzzi7vVYcUaD0ihVvvIR0c10UJRg8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902979; c=relaxed/simple;
-	bh=psYC/UQLdiLg5hywByXPyU7RqJLMYJyn9bxUpVGBwTg=;
+	s=arc-20240116; t=1777903667; c=relaxed/simple;
+	bh=54RD0Fu6TwZvdIu02Qj8FhZb4luekgCH/f5Plr0V0u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jB7ospnh9iPk4YJkhgr2G/mbjjj0Fv5lVqoXA1/fNjhTl//ldMJyYdmJ4dtcTnTQX32L9YOmtM3NjUiRFL2zrS+M0AVO6uvNCCEY7T+a9TnlFcjwDpjTdfU6oVDHFQfa7eUVk9QO2LqY6zhR50AjAdjJJGLUWDbMLnr94Exr7bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6xTy6hr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2279C2BCB8;
-	Mon,  4 May 2026 13:56:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZLOQSgR6phetJ/zeeZ+nAx1nWEckdvlABCAStmcDge0IDZOv44e6dx3U44IbpmgbcTilWUTAWoTLIjzaTQNMda78oYEKW+OK99+3WDmIRN72zQJl7MlVtLi9ETLK3J2m88HqmYFNxH5KAxAWmBaP+sB68Qc83BlEKDleuGGttH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJrgM5hh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D05EC2BCB8;
+	Mon,  4 May 2026 14:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902979;
-	bh=psYC/UQLdiLg5hywByXPyU7RqJLMYJyn9bxUpVGBwTg=;
+	s=korg; t=1777903667;
+	bh=54RD0Fu6TwZvdIu02Qj8FhZb4luekgCH/f5Plr0V0u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6xTy6hrT+QTmj26yhm8NzVPKF0G47+z8fZiRw/fca5zkFFxrSbTar2uPBGhgZ8Z0
-	 ngPqFwJWyo7QTZKurkEnlgnRN/HradhqRqrPYix0bEd5sHaLQkkeBSm8FG3mxA17u6
-	 P56PIzob3jJRUtail2E9U258q/oxg8hEQRXTDpnk=
+	b=rJrgM5hh/16n9dM+x1xiw2SVQOK6A3E2xm2U/3Y8KT1VWYInD+BsUFRpO2B69PYEO
+	 d1dhOll/b4p+FNM+oAsz5q//A1GwS85VaiVv7sDjD4Eqg7IqkzLNZ0PGf3YuG/Uyfs
+	 37LHgPhfZDSp2bqGfGpM6EPuVVKljiEekANXUAlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 056/307] media: mtk-jpeg: fix use-after-free in release path due to uncancelled work
-Date: Mon,  4 May 2026 15:49:01 +0200
-Message-ID: <20260504135144.929996566@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 002/275] ALSA: usb-audio: Avoid false E-MU sample-rate notifications
+Date: Mon,  4 May 2026 15:49:02 +0200
+Message-ID: <20260504135143.025217567@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 449774BE96D
+X-Rspamd-Queue-Id: 14A764BF483
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [5.34 / 15.00];
-	SEM_URIBL(3.50)[zju.edu.cn:email];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243085-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-243353-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,body];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.806];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,zju.edu.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 34c519feef3e4fcff1078dc8bdb25fbbbd10303f upstream.
+commit fca9c850042a7ab4828ce3a9caa8bc40ea09856a upstream.
 
-The mtk_jpeg_release() function frees the context structure (ctx) without
-first cancelling any pending or running work in ctx->jpeg_work. This
-creates a race window where the workqueue callback may still be accessing
-the context memory after it has been freed.
+snd_emuusb_set_samplerate() unconditionally notifies the E-MU
+SampleRate Extension Unit control after issuing SET_CUR.
 
-Race condition:
+If snd_usb_mixer_set_ctl_value() fails, the control value has not
+changed, yet snd_usb_mixer_notify_id() still invalidates the cache and
+emits a value-change event to userspace.
 
-    CPU 0 (release)                    CPU 1 (workqueue)
-    ----------------                   ------------------
-    close()
-      mtk_jpeg_release()
-                                       mtk_jpegenc_worker()
-                                         ctx = work->data
-                                         // accessing ctx
+Notify the control only after a successful write.
 
-        kfree(ctx)  // freed!
-                                         access ctx  // UAF!
-
-The work is queued via queue_work() during JPEG encode/decode operations
-(via mtk_jpeg_device_run). If the device is closed while work is pending
-or running, the work handler will access freed memory.
-
-Fix this by calling cancel_work_sync() BEFORE acquiring the mutex. This
-ordering is critical: if cancel_work_sync() is called after mutex_lock(),
-and the work handler also tries to acquire the same mutex, it would cause
-a deadlock.
-
-Note: The open error path does NOT need cancel_work_sync() because
-INIT_WORK() only initializes the work structure - it does not schedule
-it. Work is only scheduled later during ioctl operations.
-
-Fixes: 5fb1c2361e56 ("mtk-jpegenc: add jpeg encode worker interface")
+Fixes: 7d2b451e65d2 ("ALSA: usb-audio - Added functionality for E-mu 0404USB/0202USB/TrackerPre")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260421-alsa-emuusb-samplerate-notify-v1-1-8b63bbc1d7f1@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/mixer_quirks.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1202,6 +1202,7 @@ static int mtk_jpeg_release(struct file
- 	struct mtk_jpeg_dev *jpeg = video_drvdata(file);
- 	struct mtk_jpeg_ctx *ctx = mtk_jpeg_file_to_ctx(file);
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1538,15 +1538,17 @@ void snd_emuusb_set_samplerate(struct sn
+ {
+ 	struct usb_mixer_interface *mixer;
+ 	struct usb_mixer_elem_info *cval;
++	int err;
+ 	int unitid = 12; /* SampleRate ExtensionUnit ID */
  
-+	cancel_work_sync(&ctx->jpeg_work);
- 	mutex_lock(&jpeg->lock);
- 	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
+ 	list_for_each_entry(mixer, &chip->mixer_list, list) {
+ 		if (mixer->id_elems[unitid]) {
+ 			cval = mixer_elem_list_to_info(mixer->id_elems[unitid]);
+-			snd_usb_mixer_set_ctl_value(cval, UAC_SET_CUR,
+-						    cval->control << 8,
+-						    samplerate_id);
+-			snd_usb_mixer_notify_id(mixer, unitid);
++			err = snd_usb_mixer_set_ctl_value(cval, UAC_SET_CUR,
++							  cval->control << 8,
++							  samplerate_id);
++			if (!err)
++				snd_usb_mixer_notify_id(mixer, unitid);
+ 			break;
+ 		}
+ 	}
 
 
 
