@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-243829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6ESpJGGv+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:25 +0200
+	id SDV0GKOq+GnXxgIAu9opvQ
+	(envelope-from <stable+bounces-243333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD964BFCBD
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF55E4BF06F
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 06DC03115DFF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:30:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D8BB3041AAD
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5C03E0C7B;
-	Mon,  4 May 2026 14:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8323E0240;
+	Mon,  4 May 2026 14:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fu3SFQ7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dmx6RLti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A75E3E3DB9;
-	Mon,  4 May 2026 14:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6E43DE44A;
+	Mon,  4 May 2026 14:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904884; cv=none; b=BG+OOS/0n1/5/OAx1xEljBZGz43K81ZmQgdAR3jPHpPbfeyDDBrVjYNeRphCGR8lAKv132/timc90mGWCVKPNFeCYN1W9N2iaT12CswJdsPRfId+ojhTlHUxTEdm5urbkHfvLwtcScFz80lXgd7GNxU0l+EbtlGoZa1WGzdYnnQ=
+	t=1777903616; cv=none; b=gkYrPF3E5BT7ujsymaxnvBh6Q8mtrYVKa5pu7sj/SS+F+FDFI4HF4lXQp8Zj+6iQfnqtcYq9MFWbddceuUBHJCVtZhjKojsb61Eu8Aqrj1nMXNyZPSuDYZ7mwa5vNyX3s6AhrOb+Ob2BhncNdPvDHoFtwyKfr/WkDdhgqEwcR/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904884; c=relaxed/simple;
-	bh=mHNyCotEL8TLLiITSk7OTqORCvSmOP/CdOOpkBy46FY=;
+	s=arc-20240116; t=1777903616; c=relaxed/simple;
+	bh=lRCeTMOZq5Rthb+rmv2xshgSVz3OBhPQNzcMhy9Psnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUX0ZkviXaGRFA9iIJIJo+KtqMFiPmrjJ3UQ702X4FLE0JU8XhphIpQgyWTZnQ3O7g73ud25/xJVsDoSLkmiFv+/ElwRcME7BjmYUxFDD88qSItpIGM5PZpED5JeGhVGODf6mOgo1YoRdaFFUMKR9ymGDQxVHUu74o2yY6Phyxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fu3SFQ7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B83C2BCB8;
-	Mon,  4 May 2026 14:28:03 +0000 (UTC)
+	 MIME-Version; b=JzEdLG21Z4cOYAkETepQY33AuGfLeUfUie72W48OObe+kv9x8iar1/uYykHAWD8baYPI2BJWADOtGHgv5DS9Mwh4e+j3H6zclxir1H37quUfXoGwbP9KrEU+hmpKR6D/P/dU4FN1GE9KnRKL8mbuokn5HhXeYuQW7V19r7ER220=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dmx6RLti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E972DC2BCB8;
+	Mon,  4 May 2026 14:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904884;
-	bh=mHNyCotEL8TLLiITSk7OTqORCvSmOP/CdOOpkBy46FY=;
+	s=korg; t=1777903616;
+	bh=lRCeTMOZq5Rthb+rmv2xshgSVz3OBhPQNzcMhy9Psnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fu3SFQ7sU+q9Qws865I3VvGZ35NBAutEQTmD2TGb1aVKvONWxsNYhSUaHRGPICnNk
-	 8OFuHGK392XSXx0WyDYhy8BeTGkHdToDQBKGEmDdvieHyHB5edl5btY98EKdGy1jdQ
-	 5y7RGI+S3hP1dhXVqPg2bW4ZCS6HIlV+cYCSsmCg=
+	b=Dmx6RLtiDRV01++0Zu4qoeCIL8R2r5qz+e0tb0qOSm11IR3N9xkcrUvw7WJLBsXnf
+	 VgumMi5Gi/DX3Haw/SQuCxNtpp4bnAcOi8oK6lRFPn9ueuJnUV3MqV06NyYGVpRPaP
+	 1ecJCKXU1gmNccfvX4jGvVvL8EP0k8SVtOKQbxas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Gaertner <tob.gaertner@me.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.12 169/215] ntfs3: fix integer overflow in run_unpack() volume boundary check
+	Marco Elver <elver@google.com>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 303/307] vmalloc: fix buffer overflow in vrealloc_node_align()
 Date: Mon,  4 May 2026 15:53:08 +0200
-Message-ID: <20260504135136.359294218@linuxfoundation.org>
+Message-ID: <20260504135154.175645089@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +66,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0BD964BFCBD
+X-Rspamd-Queue-Id: DF55E4BF06F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243829-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,paragon-software.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,gmail.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-243333-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,paragon-software.com:email,me.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Gaertner <tob.gaertner@me.com>
+From: Marco Elver <elver@google.com>
 
-commit 984a415f019536ea2d24de9010744e5302a9a948 upstream.
+commit 82d1f01292d3f09bf063f829f8ab8de12b4280a1 upstream.
 
-The volume boundary check `lcn + len > sbi->used.bitmap.nbits` uses raw
-addition which can wrap around for large lcn and len values, bypassing
-the validation.  Use check_add_overflow() as is already done for the
-adjacent prev_lcn + dlcn and vcn64 + len checks added by commit
-3ac37e100385 ("ntfs3: Fix integer overflow in run_unpack()").
+Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
+vrealloc") added the ability to force a new allocation if the current
+pointer is on the wrong NUMA node, or if an alignment constraint is not
+met, even if the user is shrinking the allocation.
 
-Found by fuzzing with a source-patched harness (LibAFL + QEMU).
+On this path (need_realloc), the code allocates a new object of 'size'
+bytes and then memcpy()s 'old_size' bytes into it.  If the request is to
+shrink the object (size < old_size), this results in an out-of-bounds
+write on the new buffer.
 
-Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tobias Gaertner <tob.gaertner@me.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fix this by bounding the copy length by the new allocation size.
+
+Link: https://lore.kernel.org/20260420114805.3572606-2-elver@google.com
+Fixes: 4c5d3365882d ("mm/vmalloc: allow to set node and align in vrealloc")
+Signed-off-by: Marco Elver <elver@google.com>
+Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/run.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ mm/vmalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -1020,9 +1020,15 @@ int run_unpack(struct runs_tree *run, st
- 			return -EOPNOTSUPP;
- 		}
- #endif
--		if (lcn != SPARSE_LCN64 && lcn + len > sbi->used.bitmap.nbits) {
--			/* LCN range is out of volume. */
--			return -EINVAL;
-+		if (lcn != SPARSE_LCN64) {
-+			u64 lcn_end;
-+
-+			if (check_add_overflow(lcn, len, &lcn_end))
-+				return -EINVAL;
-+			if (lcn_end > sbi->used.bitmap.nbits) {
-+				/* LCN range is out of volume. */
-+				return -EINVAL;
-+			}
- 		}
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4361,7 +4361,7 @@ need_realloc:
+ 		return NULL;
  
- 		if (!run)
+ 	if (p) {
+-		memcpy(n, p, old_size);
++		memcpy(n, p, min(size, old_size));
+ 		vfree(p);
+ 	}
+ 
 
 
 
