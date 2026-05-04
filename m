@@ -1,185 +1,161 @@
-Return-Path: <stable+bounces-242960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEJpFgdh+GlJtgIAu9opvQ
-	(envelope-from <stable+bounces-242960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:04:07 +0200
+	id IIGbBDRh+GlJtgIAu9opvQ
+	(envelope-from <stable+bounces-242961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:04:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8274BAB95
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8DF4BABAC
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 11:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0DFCB3022938
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 08:59:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2DDA3028F73
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 09:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A49347507;
-	Mon,  4 May 2026 08:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB34E34DCFF;
+	Mon,  4 May 2026 09:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdoN1PfQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GpL7cEpj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F4B2AEF5
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 08:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC6F34DB4F;
+	Mon,  4 May 2026 09:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777885173; cv=none; b=CatjV0JhdlHc8d5Ig/GRU0gwvtLq494gWVx7da32Qwtj9mcN4HBP/c8+I4KwbDI65jB/NIXGNK5Ene8FYFZ9FEF0ksJcdpkG97KDe8/tnuwJYu8JZn+vL99w/eb2azzl0WWWgtvcsXHCFU8yh8qFuk31ChM3mQv9WHyuYjq/9nY=
+	t=1777885280; cv=none; b=KIAWk4sjc3MiAe6XATyTfzYu+Xyc47RujffTY5joDNIvUTlxYaw/K742A+LkCE4eNYk8BlPC5SecLBvgZvFwl5q82BUi3tyubg0lo7PNxwQo4Jo0vBIZjxqzfyA3VN3iuyL19BkZar1EBPSveujHZlTl+gTsayCfYjPH7o/3gzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777885173; c=relaxed/simple;
-	bh=1wKw7hCRVzNFFy1f4oimRbkr7JRSArL5iWMTZN82Xt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqL5ItebpkpYe4UdHbTTB/LA5nc8CsColTRjdk0Xyommz5B//gRwOewasUAVZjEQN123NkD6deG3yNE16AOEioxZ09kOrzwfWYOLaK53NNKJx0WFUdJTLPhHYejwEgARvtDTTlbd5vdRrwsljIukhX2fJzlG2kShBI+xcTpaxqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdoN1PfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7658C2BCB9;
-	Mon,  4 May 2026 08:59:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777885173;
-	bh=1wKw7hCRVzNFFy1f4oimRbkr7JRSArL5iWMTZN82Xt0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdoN1PfQuew4PDoDjLzQfXNpYV7ArS5SSjAAoyE9gIgsDiZ2n2ni6oR+QRpjYBoGP
-	 48beiJh0QZr6y1/ZxVv+bUr+k+82KxOVxi+/DV1nLTY1N1NM3vmTyOrgcvz+WO+OTw
-	 cvi66ef4NoSSRLExsTb6j8zEEkUup971tU99Z6Yfe58Z7xoXaLVeXasjHIT86MN/kd
-	 0PyNss8HbVnMA/8TXz/ZDuRc4PE/G1lMMwlYpQi6xL3Ar17KYHDjfcwZtbZAZ2v5p3
-	 McgI8hOsXXGwjBWi5y4ixV0s7JMHZaWXbVU3rzXqFAEAI/b9bBqS0HKHzeInhbP/Hv
-	 Q2PxyqYuSJ94Q==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yuan Zhaoming <yuanzm2@lenovo.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] net: mctp: fix don't require received header reserved bits to be zero
-Date: Mon,  4 May 2026 04:59:28 -0400
-Message-ID: <20260504085928.1894173-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050124-donation-unloved-dc45@gregkh>
-References: <2026050124-donation-unloved-dc45@gregkh>
+	s=arc-20240116; t=1777885280; c=relaxed/simple;
+	bh=HPD8OIpg97Kw7qpYamrITGpD8pXMmw6ypaUAhsB5Cz8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KNJsaIRQU17FZsyVnVQTuzeax707Kz+fY3JqY3lp//tJ2vEhzdKoHaDh7yylhc4tdu2myyzvjeDukrcN97PI95S0t3vEXD0ny/GK30SkYcs358XBGhNQAhp6p0d+2j0Cb49IZRTfB1ee0cvycxE4DuzNHSwSjGMaN+LQCRTbu7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GpL7cEpj; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777885280; x=1809421280;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HPD8OIpg97Kw7qpYamrITGpD8pXMmw6ypaUAhsB5Cz8=;
+  b=GpL7cEpjMQHQpko1yAJu0IKfgzBgPGWqXnf+aCjCOqCodBsEPssrCCL5
+   k83/2uEl3vEy/BIgeoP9AugdtLEpFbphy6AXTYAqnaN0QhL2TDaZdJfQy
+   d+Lb2O4YapcwgufyXOkVGmD0HrcnoYgpxHZypaVErDQWLYTkpw3F+LUMz
+   vbtHtDNdJAXPu+y1J3ozW+zo8UC3A3pN3TJmM6eVh1kBYjmoCmZ7mOn5H
+   5hvj4iNoQ1XCxko+b2ae/JhLZLPIuFZVUjwo0hsxOpQyb+8/cHxd5iDQ1
+   Ta3v6DvFka3cpq+VjpD9gQfNllJEbJ/9jQ/KUl7rlm6rcrmwm/S0RMkma
+   A==;
+X-CSE-ConnectionGUID: L1hrcwD5SI6VME9ccC4zEg==
+X-CSE-MsgGUID: R82OL6jMQCqHlz3Xp1TyBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="78839199"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="78839199"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 02:01:19 -0700
+X-CSE-ConnectionGUID: xXSUuNw8QRSgwEdLcEWb9w==
+X-CSE-MsgGUID: yUUHWuwUTeaT+ggp89i3/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="235336644"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.78])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 02:01:16 -0700
+Date: Mon, 4 May 2026 12:01:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>, linux-usb@vger.kernel.org,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Michael Jamet <michael.jamet@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] thunderbolt: property: cap recursion depth in
+ __tb_property_parse_dir()
+Message-ID: <afhgWlu2qiwqSLUQ@ashevche-desk.local>
+References: <20260415123221.225149-1-michael.bommarito@gmail.com>
+ <cover.1777817011.git.michael.bommarito@gmail.com>
+ <ce8ca06ea5f7a9aa1bf4a82a5aa764b22256f908.1777817011.git.michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CA8274BAB95
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ce8ca06ea5f7a9aa1bf4a82a5aa764b22256f908.1777817011.git.michael.bommarito@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: AF8DF4BABAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242960-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-242961-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,intel.com,linuxfoundation.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ashevche-desk.local:mid]
 
-From: Yuan Zhaoming <yuanzm2@lenovo.com>
+On Sun, May 03, 2026 at 10:15:07AM -0400, Michael Bommarito wrote:
+> A DIRECTORY entry's value field is used as the dir_offset for a
+> recursive call into __tb_property_parse_dir() with no depth counter.
+> A crafted peer that chains DIRECTORY entries into a back-reference
+> loop drives the parser until the kernel stack is exhausted and the
+> guard page fires.  Any untrusted XDomain peer (cable, dock, in-line
+> inspector, adjacent host) that reaches the PROPERTIES_REQUEST
+> control-plane exchange can trigger this without authentication.
+> 
+> Thread a depth counter through tb_property_parse() and
+> __tb_property_parse_dir(), and reject blocks that exceed
+> TB_PROPERTY_MAX_DEPTH = 8.  That is comfortably larger than any
+> observed legitimate XDomain layout.
+> 
+> Operators who do not need XDomain host-to-host discovery can disable
+> the path entirely with thunderbolt.xdomain=0 on the kernel command
+> line.
 
-[ Upstream commit a663bac71a2f0b3ac6c373168ca57b2a6e6381aa ]
+...
 
-From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
-the MCTP header contains a 4 bit reserved field, and 4 bit version.
+>  	for (i = 0; i < nentries; i++) {
+>  		struct tb_property *property;
+>  
+> -		property = tb_property_parse(block, block_len, &entries[i]);
+> +		property = tb_property_parse(block, block_len, &entries[i],
+> +					     depth);
 
-On our current receive path, we require those 4 reserved bits to be
-zero, but the 9500-8i card is non-conformant, and may set these
-reserved bits.
+I would leave this on a single line (yes, slightly longer than 80 characters).
 
-DSP0236 states that the reserved bits must be written as zero, and
-ignored when read. While the device might not conform to the former,
-we should accept these message to conform to the latter.
+>  		if (!property) {
+>  			tb_property_free_dir(dir);
+>  			return NULL;
 
-Relax our check on the MCTP version byte to allow non-zero bits in the
-reserved field.
-
-Fixes: 889b7da23abf ("mctp: Add initial routing framework")
-Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
-Cc: stable@vger.kernel.org
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260417141340.5306-1-yuanzhaoming901030@126.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/net/mctp.h | 3 +++
- net/mctp/route.c   | 8 ++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index 8c225091e46cf..b516d7891cae7 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -25,6 +25,9 @@ struct mctp_hdr {
- #define MCTP_VER_MIN	1
- #define MCTP_VER_MAX	1
- 
-+/* Definitions for ver field */
-+#define MCTP_HDR_VER_MASK	GENMASK(3, 0)
-+
- /* Definitions for flags_seq_tag field */
- #define MCTP_HDR_FLAG_SOM	BIT(7)
- #define MCTP_HDR_FLAG_EOM	BIT(6)
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 48d32bfd38636..c6469d7fed199 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -229,6 +229,7 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 	unsigned long f;
- 	u8 tag, flags;
- 	int rc;
-+	u8 ver;
- 
- 	msk = NULL;
- 	rc = -EINVAL;
-@@ -246,7 +247,8 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 	mh = mctp_hdr(skb);
- 	skb_pull(skb, sizeof(struct mctp_hdr));
- 
--	if (mh->ver != 1)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto out;
- 
- 	flags = mh->flags_seq_tag & (MCTP_HDR_FLAG_SOM | MCTP_HDR_FLAG_EOM);
-@@ -859,6 +861,7 @@ static int mctp_pkttype_receive(struct sk_buff *skb, struct net_device *dev,
- 	struct mctp_skb_cb *cb;
- 	struct mctp_route *rt;
- 	struct mctp_hdr *mh;
-+	u8 ver;
- 
- 	/* basic non-data sanity checks */
- 	if (dev->type != ARPHRD_MCTP)
-@@ -872,7 +875,8 @@ static int mctp_pkttype_receive(struct sk_buff *skb, struct net_device *dev,
- 
- 	/* We have enough for a header; decode and route */
- 	mh = mctp_hdr(skb);
--	if (mh->ver < MCTP_VER_MIN || mh->ver > MCTP_VER_MAX)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto err_drop;
- 
- 	cb = __mctp_cb(skb);
 -- 
-2.53.0
+With Best Regards,
+Andy Shevchenko
+
 
 
