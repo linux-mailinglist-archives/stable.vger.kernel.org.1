@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCqpKJmm+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:57 +0200
+	id KEajETKp+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAA64BE530
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E077C4BEC3E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DB6A3035899
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:56:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6952300AB0E
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE803D6489;
-	Mon,  4 May 2026 13:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7EC3DEAD6;
+	Mon,  4 May 2026 14:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGrYm3z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjCUtoVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EDE20DD51;
-	Mon,  4 May 2026 13:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820CC3DE43E;
+	Mon,  4 May 2026 14:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902989; cv=none; b=WnOMS1kOje5g3PeGelCNb94Q/lFrnF4kxbrL5ZpYI8z/vsfisdrrJJjPd1gX1CXFuDplFAH8A09n/hhGOinqfi1x+OBqgex68AuSfBFkpaNf0a4P2n6NF1qCarwL9gbfRoZi+6gyBP2Zre81FdmJ34eRhHUpB3gDyv5j07lTyto=
+	t=1777903675; cv=none; b=aiOi9XJRnhPS9nETzCvL1tZ7YTYG0PsFtq0+3T2jtRa4/g9t0TTa+xwZGvor0uwu7B3wqgLeLEtVfCrJH4DLgLkPXf34dFJ/g31Qd9WdBeX7UVAmngrysXjHR8EzL42k+zVfoNbW1KWxObjT8cz3XvtcFMrx0om/YnP7dQr9oSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902989; c=relaxed/simple;
-	bh=cVm3sHvK/npwnjMxg3xiDp59oRsbMy1oKX+WqMb6n7g=;
+	s=arc-20240116; t=1777903675; c=relaxed/simple;
+	bh=GtkaY5LbgJ7N8RB5C3HWjDo23iwaslqKa6G979RYRGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5rHcOGpvsvQWLb7qDiIasVQM5jnWtlo7pTqEDiXc9YZ2VAjKMw0yzUeux1zzjdG5QCIGs36eZEfZzD60CC8Ll4fZgTnaIK4bUTNPY96vuMmqdI54EKiuaCTu7zPVN3WvyJzax+8snwj1AMGqD/vmWbY/OpYYWc9BJpn/LNo+bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGrYm3z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19457C2BCB8;
-	Mon,  4 May 2026 13:56:28 +0000 (UTC)
+	 MIME-Version; b=oLcH+9RfhNB4hVybWNixXXogSKmzkTZYzzc7nJ5V14obO/NhS8JNHTxI/5wNnIlISJE7VCh0JqDfUsKiON6EqcGmnpbrCz4Dh0AQPhLvLhmxpkBDsQgPow5Z+TfBLev98frJ/XpXXJijiIZVoTB05d/UXYXQqlBf/JcsmArUuD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjCUtoVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C64C2BCC4;
+	Mon,  4 May 2026 14:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777902989;
-	bh=cVm3sHvK/npwnjMxg3xiDp59oRsbMy1oKX+WqMb6n7g=;
+	s=korg; t=1777903675;
+	bh=GtkaY5LbgJ7N8RB5C3HWjDo23iwaslqKa6G979RYRGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGrYm3z2KYILG2n4pMWc4kpd/a6+dLjJMDeMbo1V7yPobwLgqWUDrZhcAAhUgQPM8
-	 EFHUrjBhoKy9Epx2kSlj2Oro8u85KnMmwTXlyLAOFPvKXUdHFaFzK8WYyNjRbefGdj
-	 6D8kwpzNcwi8fpU4YFoB4L2kqqy7u0V51v2lSBuU=
+	b=wjCUtoVGju9MGB1Agu/YPvLyTTECfoNSH7ostv5GM6ERVdItrD4+WD0FxCPGaQJio
+	 90wG8kysY4Z/2hvoI0ILpvcjxaeC2A5At43EcYwH/wHltUQjrPuEtuiL3HkHJP+6Wo
+	 C5qxDhKP9vs3+FKTxmGQ7B1vXjYjoGLbGXCJwOPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Zhang <i@rong.moe>,
-	Arun Raghavan <arunr@valvesoftware.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 059/307] Revert "ALSA: usb: Increase volume range that triggers a warning"
-Date: Mon,  4 May 2026 15:49:04 +0200
-Message-ID: <20260504135145.041394919@linuxfoundation.org>
+	Peter Chen <peter.chen@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.18 005/275] usb: chipidea: otg: not wait vbus drop if use role_switch
+Date: Mon,  4 May 2026 15:49:05 +0200
+Message-ID: <20260504135143.136831217@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4CAA64BE530
+X-Rspamd-Queue-Id: E077C4BEC3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243089-lists,stable=lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[rong.moe:query timed out];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243356-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,valvesoftware.com:email,rong.moe:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 41d78cb724f4b40b7548af420ccfe524b14023bb upstream.
+commit a4e99587102a83ee911c670752fbca694c7e557f upstream.
 
-UAC uses 2 bytes to store volume values, so the maximum volume range is
-0xFFFF (65535, val = -32768/32767/1).
+The usb role switch will update ID and VBUS states at the same time, and
+vbus will not drop when execute data role swap in Type-C usecase. So lets
+not wait vbus drop in usb role switch case too.
 
-The reverted commit bumpped the range of triggering the warning to >
-65535, effectively making the range check a no-op. It didn't fix
-anything but covered any potential problems and deviated from the
-original intention of the range check.
-
-This reverts commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62.
-
-Fixes: 6b971191fcfc ("ALSA: usb: Increase volume range that triggers a warning")
+Fixes: e1b5d2bed67c ("usb: chipidea: core: handle usb role switch in a common way")
 Cc: stable@vger.kernel.org
-Signed-off-by: Rong Zhang <i@rong.moe>
-Acked-by: Arun Raghavan <arunr@valvesoftware.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260303194805.266158-2-i@rong.moe
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260402071457.2516021-3-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/chipidea/otg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1820,10 +1820,11 @@ static void __build_feature_ctl(struct u
+--- a/drivers/usb/chipidea/otg.c
++++ b/drivers/usb/chipidea/otg.c
+@@ -187,8 +187,8 @@ void ci_handle_id_switch(struct ci_hdrc
  
- 	range = (cval->max - cval->min) / cval->res;
- 	/*
--	 * There are definitely devices with a range of ~20,000, so let's be
--	 * conservative and allow for a bit more.
-+	 * Are there devices with volume range more than 255? I use a bit more
-+	 * to be sure. 384 is a resolution magic number found on Logitech
-+	 * devices. It will definitively catch all buggy Logitech devices.
- 	 */
--	if (range > 65535) {
-+	if (range > 384) {
- 		usb_audio_warn(mixer->chip,
- 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
- 			       range);
+ 		ci_role_stop(ci);
+ 
+-		if (role == CI_ROLE_GADGET &&
+-				IS_ERR(ci->platdata->vbus_extcon.edev))
++		if (role == CI_ROLE_GADGET && !ci->role_switch &&
++		    IS_ERR(ci->platdata->vbus_extcon.edev))
+ 			/*
+ 			 * Wait vbus lower than OTGSC_BSV before connecting
+ 			 * to host. If connecting status is from an external
 
 
 
