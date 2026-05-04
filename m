@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKtnF3Sr+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:40 +0200
+	id yLitF7Gn+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617A04BF302
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F064E4BE7DA
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 42D27306BE91
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 052193037DDF
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83963CEB89;
-	Mon,  4 May 2026 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB65A3DEAD3;
+	Mon,  4 May 2026 13:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jp5wrKpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6zclTh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0531ADC83;
-	Mon,  4 May 2026 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB3B3DEAC4;
+	Mon,  4 May 2026 13:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903809; cv=none; b=XW3gMB3GRuFu0fD2qLSoWU1UsdOpzRGc4f+1PtuB3Iij6hdTcp7RPUzPuietvrb1O3NjFzIQ02zbXo3s/Cp5Qw8KnsJNOxiT1E1rI2bHfE+ydOfok0gtnt2YgN1cKdB/G60nXZozAEvhL6qDqQ2NYIwS8pTD4g32I299dF1KWLc=
+	t=1777903110; cv=none; b=SEttq2C7zoUa7ooQuus/jyvD/AhZZXmuuJzIs0mU1qdospmg8vgQe8FiwWmoJvE9jVHJUUyRIfvkJp/kuL4Ymjkr+dezBEdkzCEm1OMQkJH0c+Regpga4uxaYQjTtwVP5xhTBT4BXLeejcBfPFAntdszJBSxVqd6U4c/EHrTbHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903809; c=relaxed/simple;
-	bh=c2n4UJkfU1jWyzlGNLVXXYcZWpnDMXIpLwSOs19mVC8=;
+	s=arc-20240116; t=1777903110; c=relaxed/simple;
+	bh=A33vXjm09Gh4UwbU0raWqdYSE9Y8TriLzlRhLzaoJFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dy+ZrGbhXUcNbdCw6YnxCa0WaMFqYc9HV+zpmnYdmTe9mBMYL6eISrLWUvD7Gmci4sr/Hu8oEGEoizBKD3JM8dw4GFA2Axv/unxOmZU5rzphL1JIv92hQ+b0v+2LF+CThruCr7uY/N2jAcbge47xkax5pXEQi+IhhU+7Qo0/O+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jp5wrKpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E921C2BCB8;
-	Mon,  4 May 2026 14:10:09 +0000 (UTC)
+	 MIME-Version; b=Jba54AFiZloNHEbNObHlXbGNp1TJ5tsfzh+3bYw5db8sJ41nKCkpx9E4t1neKXZen5bEfvxZtJ3hbYOsfa1rz2EQMAhS3ZYt268qLVVJ0VQw0xOc7tdFuNh2PoCj95jNRO++L8vuGI9ZB15WfZ3YK7v0TFcib4i3ggaMJa6mzik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6zclTh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D11C2BCB8;
+	Mon,  4 May 2026 13:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903809;
-	bh=c2n4UJkfU1jWyzlGNLVXXYcZWpnDMXIpLwSOs19mVC8=;
+	s=korg; t=1777903110;
+	bh=A33vXjm09Gh4UwbU0raWqdYSE9Y8TriLzlRhLzaoJFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jp5wrKpx53AjtByxey9Y0tPLwCqV/BLjLs/FwWIq9L5NFKtJDL+vgGdXMYcDswF6L
-	 LnFy+BT3VWqfGxVfoorxrqbQFCIeM2b3cwGbUhVmF1GvxaDdtV2kIzEHIEkj8FSEVO
-	 yQQ3NVHxFVh0lwycL14uHCtS4ut0HG+7T37Y/I6o=
+	b=r6zclTh8//YUTKekCPMrgYrbxLLTCcu3m1lN+W8run3T0auUWvMVZKhDaWeQ94N/T
+	 Wo6GTiPqTbAm7IyDhJEk6U9HC6LkWOAI73FsN0ZWlr3T2oZ7Qa0UOThO2Npd8NWM81
+	 wgsK7l2OFPZ8iYmvTc2duNWsp0GLspgyJtIZk9Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.18 053/275] PCI: endpoint: pci-epf-ntb: Remove duplicate resource teardown
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 108/307] io_uring/timeout: check unused sqe fields
 Date: Mon,  4 May 2026 15:49:53 +0200
-Message-ID: <20260504135144.904763080@linuxfoundation.org>
+Message-ID: <20260504135146.874658653@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,157 +63,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 617A04BF302
+X-Rspamd-Queue-Id: F064E4BE7DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243409-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243136-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,valinux.co.jp:email,nxp.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 3446beddba450c8d6f9aca2f028712ac527fead3 upstream.
+commit 484ae637a3e3d909718de7c07afd3bb34b6b8504 upstream.
 
-epf_ntb_epc_destroy() duplicates the teardown that the caller is
-supposed to do later. This leads to an oops when .allow_link fails or
-when .drop_link is performed. Remove the helper.
+Zero check unused SQE fields addr3 and pad2 for timeout and timeout
+update requests. They're not needed now, but could be used sometime
+in the future.
 
-Also drop pci_epc_put(). EPC device refcounting is tied to configfs EPC
-group lifetime, and pci_epc_put() in the .drop_link path is sufficient.
-
-Fixes: 8b821cf76150 ("PCI: endpoint: Add EP function driver to provide NTB functionality")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-3-den@valinux.co.jp
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-ntb.c |   56 ---------------------------
- 1 file changed, 2 insertions(+), 54 deletions(-)
+ io_uring/timeout.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pci/endpoint/functions/pci-epf-ntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-ntb.c
-@@ -1495,47 +1495,6 @@ err_alloc_peer_mem:
- }
+--- a/io_uring/timeout.c
++++ b/io_uring/timeout.c
+@@ -449,6 +449,8 @@ int io_timeout_remove_prep(struct io_kio
  
- /**
-- * epf_ntb_epc_destroy_interface() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-- * @type: PRIMARY interface or SECONDARY interface
-- *
-- * Unbind NTB function device from EPC and relinquish reference to pci_epc
-- * for each of the interface.
-- */
--static void epf_ntb_epc_destroy_interface(struct epf_ntb *ntb,
--					  enum pci_epc_interface_type type)
--{
--	struct epf_ntb_epc *ntb_epc;
--	struct pci_epc *epc;
--	struct pci_epf *epf;
--
--	if (type < 0)
--		return;
--
--	epf = ntb->epf;
--	ntb_epc = ntb->epc[type];
--	if (!ntb_epc)
--		return;
--	epc = ntb_epc->epc;
--	pci_epc_remove_epf(epc, epf, type);
--	pci_epc_put(epc);
--}
--
--/**
-- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-- *
-- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
-- */
--static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
--{
--	enum pci_epc_interface_type type;
--
--	for (type = PRIMARY_INTERFACE; type <= SECONDARY_INTERFACE; type++)
--		epf_ntb_epc_destroy_interface(ntb, type);
--}
--
--/**
-  * epf_ntb_epc_create_interface() - Create and initialize NTB EPC interface
-  * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-  * @epc: struct pci_epc to which a particular NTB interface should be associated
-@@ -1614,15 +1573,8 @@ static int epf_ntb_epc_create(struct epf
+ 	if (unlikely(req->flags & (REQ_F_FIXED_FILE | REQ_F_BUFFER_SELECT)))
+ 		return -EINVAL;
++	if (sqe->addr3 || sqe->__pad2[0])
++		return -EINVAL;
+ 	if (sqe->buf_index || sqe->len || sqe->splice_fd_in)
+ 		return -EINVAL;
  
- 	ret = epf_ntb_epc_create_interface(ntb, epf->sec_epc,
- 					   SECONDARY_INTERFACE);
--	if (ret) {
-+	if (ret)
- 		dev_err(dev, "SECONDARY intf: Fail to create NTB EPC\n");
--		goto err_epc_create;
--	}
--
--	return 0;
--
--err_epc_create:
--	epf_ntb_epc_destroy_interface(ntb, PRIMARY_INTERFACE);
+@@ -521,6 +523,8 @@ static int __io_timeout_prep(struct io_k
+ 	unsigned flags;
+ 	u32 off = READ_ONCE(sqe->off);
  
- 	return ret;
- }
-@@ -1887,7 +1839,7 @@ static int epf_ntb_bind(struct pci_epf *
- 	ret = epf_ntb_init_epc_bar(ntb);
- 	if (ret) {
- 		dev_err(dev, "Failed to create NTB EPC\n");
--		goto err_bar_init;
-+		return ret;
- 	}
- 
- 	ret = epf_ntb_config_spad_bar_alloc_interface(ntb);
-@@ -1909,9 +1861,6 @@ static int epf_ntb_bind(struct pci_epf *
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
- 
--err_bar_init:
--	epf_ntb_epc_destroy(ntb);
--
- 	return ret;
- }
- 
-@@ -1927,7 +1876,6 @@ static void epf_ntb_unbind(struct pci_ep
- 
- 	epf_ntb_epc_cleanup(ntb);
- 	epf_ntb_config_spad_bar_free(ntb);
--	epf_ntb_epc_destroy(ntb);
- }
- 
- #define EPF_NTB_R(_name)						\
++	if (sqe->addr3 || sqe->__pad2[0])
++		return -EINVAL;
+ 	if (sqe->buf_index || sqe->len != 1 || sqe->splice_fd_in)
+ 		return -EINVAL;
+ 	if (off && is_timeout_link)
 
 
 
