@@ -1,226 +1,216 @@
-Return-Path: <stable+bounces-242998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-242999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHG5KeOD+Gn0wAIAu9opvQ
-	(envelope-from <stable+bounces-242998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 13:32:51 +0200
+	id mAz6JCiE+Gn0wAIAu9opvQ
+	(envelope-from <stable+bounces-242999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 13:34:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413A54BC662
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 13:32:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB94BC68E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 13:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC57030191A6
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 11:32:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 689EA3011103
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 11:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37C73B8D7E;
-	Mon,  4 May 2026 11:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09D03BD646;
+	Mon,  4 May 2026 11:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0wmV7k0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PjceFGdu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QMQEroo/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77383A6B6A
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 11:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777894368; cv=none; b=tgK1zstp5QCKMxkeHi79O7EuwqobseOV+z5DyjvCL/6M1YRcjrFTjTes+e4pF8+AGXwzsBHNfbKfQIcu3lN2Ri1MuWeDTH0RbV2SNSsXIWrabL+CWj5Z2OzjSBdKsag9rIOaal5N/4j9Z/rTmZsvRx5kKEnVhZJySEfSh8YREMQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777894368; c=relaxed/simple;
-	bh=9qvbkkqtQvJb0BCmyt8ojgvNHEoxighhFkZ6fc9eN/8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKQkBWsYc6+WRYVgWONxva3SuYIf7mogk9/12GTdU0azMQsK98iLcS61uggLOO+8D44Nle69CTPM/SuxQ7qU3h6jw486bndFyoSo52ommN+j7hgoh/jrsnfPqunZ07Zdcv5HPeU6MnbGOeVoB01E051q0wC9ExQtMGpiFjksfek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0wmV7k0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EB3C2BCB8;
-	Mon,  4 May 2026 11:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777894368;
-	bh=9qvbkkqtQvJb0BCmyt8ojgvNHEoxighhFkZ6fc9eN/8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0wmV7k0nEaUEKTCUXhwQXHEJWNe4peAgZSpW70JmWq8Ay13fPp9KyrigUVb9Mfwo
-	 eDNVY0leUaIQcU9EEiMOj0VYUigy0uTGZR8su+BaTjg986yWf+pesOK3RJXXf4oW9K
-	 FV9dmSqUbDgSVIHIyY678zNBlsi9ttycVtRJlmW4M3mbO+qIsROucosC7iiAIs1JJC
-	 /voT+cm0UqPHVpK8dO+FyGDfebl+ucTGvQf7MkL623jTrC0VitjBsQt16d2pU/lg7U
-	 TsmRWVRPlqczWNZ7o5Hm7W7uDv8vrdCOIuLmJAu2vxiHnusXnch+FsCtTDneHPoy16
-	 8pMDunb1PFiTA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] spi: fix resource leaks on device setup failure
-Date: Mon,  4 May 2026 07:32:43 -0400
-Message-ID: <20260504113243.2090208-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050102-rebate-unsafe-bada@gregkh>
-References: <2026050102-rebate-unsafe-bada@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F4D3B8D7E
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 11:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777894423; cv=pass; b=iaHbI46HtoVPcS+fRybEsB751L1wIt5erxVBdstywvq/ozrzb1q34Z8quKMs1EnMtKE4GFgGbRgTyRiRriHiz85hQ31rkeVCQYwyHt59VNs4jBn3K5bZ2r/EE1ZaCxnEh07ngShZuoMtbywtZBVGlyJPUIyhJBfgKhcyYw9fSJk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777894423; c=relaxed/simple;
+	bh=8SDLmHevIlwB/u7ZlGuFSlD6zurYax3/7No2hDObsOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hbb5gFcfDwwyDm+d7YLYdlIsYhGo9JdTc4liT3LbssonPr5OAtZH6SXiGxzCfy2fNFwXEHoPMRiTjiWG+ytTM5PJ5A4gaJQXMIYEn+uv66unlpE10vvxpgd9L0ZzlDgpmtRuebjMyzy5aZLC9NLP0BiUCUGlwYIPtkOtJoGJag8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PjceFGdu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QMQEroo/; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777894421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cqnd2v1SDhrP0TeXptQ4w+p6QPtBOu2LtlAfgl/gb2A=;
+	b=PjceFGduW4Z2BFdosDdZX526+/SOJG9gTqNlH2UHPlsbG3U2VuIt4EnwE9kE9A1ej4VmB7
+	6RuQ/dx6yDWi3teq32AXecgNB/ki9yfd7DzyjvQqVNDIJVr8+dcnQogv/KoCQC7zQFixhB
+	/kxnqDpl0ZhAJE7QaOA21zWLkfsM3ZU=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-21-49Iy-P6BMbSp-0AQRA5Z9Q-1; Mon, 04 May 2026 07:33:40 -0400
+X-MC-Unique: 49Iy-P6BMbSp-0AQRA5Z9Q-1
+X-Mimecast-MFC-AGG-ID: 49Iy-P6BMbSp-0AQRA5Z9Q_1777894419
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7bd9c8d6de1so3521207b3.2
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 04:33:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777894419; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EFxtZ3r9LY08SfQ9nubR12autXJfQS4izW4CnBEFpL7auVgJ0skmdHhSbnFLTBcAE4
+         cCsSjSyDThxxK/59Wdt/zc4eO25V8hAaoi9A7t4MxzEPmeu4wqRx0gNbS7N2ilqoO3jf
+         UwVmZ0x5hPBWK6/liLVH0QyCI011gbLrwbn2JaiQ9moGx8P5PMLsGVSV67+F+dX3WNv8
+         RUkYrlEa6/UmOZo61ZcyRo8WlY2a7hrml/4GpXi6ovEWYGOJW8kpARgGPwDCCEpfUIiD
+         NBYa7lE8q/v9DTvaMUp0i1ToJ42c4vH+Yga//nWu/bEDunMto/SPRO0uJDId3v1vTRcd
+         QWIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cqnd2v1SDhrP0TeXptQ4w+p6QPtBOu2LtlAfgl/gb2A=;
+        fh=tSE2QfRzm8xzMMfrzRlKT9ILUoK9Wq82KtwrwHm/sN8=;
+        b=etqKIutDfZ4rtUIq826HOQdkLDHxtnSSFxbulLCKIRu9mI6nRlC7Cpte0rzx6oYjsq
+         LGlp9GwB+0eOXZSiht7ajwWZoKlRF2HBankyjM1pHEt5m+5ECj8aN/UwT/Q+KLdef5lT
+         SeIxHS8eYO7MFh80DYCc8y5FRmuL3GEe/X65+APAjvtCRqu7IOMzAXpOpLo8vAzAiTUJ
+         J27FNMoYRAYWi7cV5PIWWEQUmPeWvlHSa8Mso+F0dNnIq6Nzqa5f0rT0SgQ4jSSsplBX
+         m9Mklva9yFVhtF3aRP/XbEZ4AW0M8jSg/vxWW59Kxzcy/ce+BAfZLmitc/A78MPibXXP
+         Ecgg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777894419; x=1778499219; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cqnd2v1SDhrP0TeXptQ4w+p6QPtBOu2LtlAfgl/gb2A=;
+        b=QMQEroo/8mTRLEevVh63gmXU5Hg6D458HhALzvm9ARPMwfYKufwh9eJiBOr86VybzV
+         x7IJi+Iu/vP1r6mnMWJw9Gke77mVkjvZLsRZ0dHP7s35NCSQnFPFaKxnFi4M66CGhHDi
+         BZpa3B5tfpx0yJzeNN2jmYOebjPL8cRfFi9HxdcuvePPbYcbR4VvUTKNgsTUaHfQUFYf
+         kLRwqgTVlTx35AkG/aBKmcyPphpwvPFYbYlfVQeFZeAzRlPG+am9vi0FOKUnsEIK9ivx
+         whqbF5VjsCrpPyolyO6QWuPhwd9wKVXg/682l+jwykZD3ynPMq5GKzGO38XX6bQ0e5WZ
+         iI1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777894419; x=1778499219;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cqnd2v1SDhrP0TeXptQ4w+p6QPtBOu2LtlAfgl/gb2A=;
+        b=VifBxrUiircVwb9N4D7AvX28I+e+796ysOEVOA9Hgpd46yanFxBqsDOF2q9EX7Vl4M
+         zEaWl1ldYTi6qWIa32e+PhNsMJagle32MmEJGkAUuhL1+jHt4sDXyLZbTBoZ0Y6U/X6n
+         4a06lXY0dMeOkNh9jneyDD4A6zW/HClGOCzxAhHco/c36IBTqQGxUqsJM82mmr2th70O
+         6F/ZYA4mXpjEkeQiPD531KbEzsIsBSbrb0aywBarhNLcT3UrfYxgHmUL7w12gM6QanAf
+         IB9m/9//xxNFgivrupR2+jqHMVHiMXfZwfyJ0zu6Esr+7td4BBtSZUYYWuJJJpNDEKLm
+         S5DQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/LiL0xTv8Jp3wtpk/yl823qpeFu5P6Me0C3HB7ppKcKTxhVAU26oSA9kZUgPJ9GQ1iifz0HJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0pPRl16F9XnMTu9yE04VnX1PKEqwYMy1MkwkD3p410cX/qMhi
+	14N/fDh1pVHj+shPnjTTjLl5J2I4m+35F4FyCHQmfMFT+reBiNoefEZ1alyiijTNH7XeDptgDXm
+	TvjlxVhwAQwAhEYCIzcktSGzUTZXO4qioK8/hl8TvZlihk3vjf2C2itX+Ti/BHSyhh2AyrYedeY
+	uU/44gDNx1Fs7RHAihCyJlQZIhQzXKYbtR
+X-Gm-Gg: AeBDieuSQZH9ZD2bjCaujL2DiF0K/MNFXe5pFaLRBgkmOGjXi1pxYxLO3Vabtzpwh6X
+	ycwUsqJk2FjFpincSxnpZSLSEQVRCSWNwYMkYlwp1vH0jVwH1vW4AJJ0DozpQJ0iQ6ilQoWY+JH
+	uuuUdH6Dez1B5DokRuXvAhXQnlpBsOeGOWaAnECjPsFCDA+MxUn+TRLkeiew+jcuTomnY5unLOU
+	oMLcN8lCDNy+Otk1wD1MT1UYN4YQpkKh0CH6aCzyS3ix7UgPK77oWGSRoCKVaGu9uTpkbQB6dL3
+X-Received: by 2002:a05:690c:93:b0:7bd:73f3:7a67 with SMTP id 00721157ae682-7bd770b299bmr97676487b3.28.1777894419470;
+        Mon, 04 May 2026 04:33:39 -0700 (PDT)
+X-Received: by 2002:a05:690c:93:b0:7bd:73f3:7a67 with SMTP id
+ 00721157ae682-7bd770b299bmr97676187b3.28.1777894418970; Mon, 04 May 2026
+ 04:33:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 413A54BC662
+References: <20260501110203.18771-1-tristmd@gmail.com>
+In-Reply-To: <20260501110203.18771-1-tristmd@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Mon, 4 May 2026 13:33:28 +0200
+X-Gm-Features: AVHnY4L9bmQa5IUNT3tNlIxYBRuA1RsJ3l5yFYV1uqU02xQgIy4-3k0W5T6qgdg
+Message-ID: <CAHc6FU6drG2y+dD-gkuq52uKUXzdGzBA6dNiwPe79-SF9J2hvg@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: fix use-after-free in gfs2_qd_dealloc
+To: Tristan Madani <tristmd@gmail.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Tristan Madani <tristan@talencesecurity.com>, 
+	syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E3AB94BC68E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-242998-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-242999-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[agruenba@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,42a37bf8045847d8f9d2];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,mail.gmail.com:mid,talencesecurity.com:email,appspotmail.com:email]
 
-From: Johan Hovold <johan@kernel.org>
+On Fri, May 1, 2026 at 1:02=E2=80=AFPM Tristan Madani <tristmd@gmail.com> w=
+rote:
+> From: Tristan Madani <tristan@talencesecurity.com>
+>
+> gfs2_qd_dealloc(), called as an RCU callback from gfs2_qd_dispose(),
+> accesses the superblock object sdp through qd->qd_sbd after freeing qd.
+> It does so to decrement sd_quota_count and wake up sd_kill_wait.
+>
+> However, by the time the RCU callback runs, gfs2_put_super() may have
+> already freed sdp via free_sbd().  This can happen when
+> gfs2_quota_cleanup() is called during unmount: it disposes of quota
+> objects via call_rcu() and then waits on sd_kill_wait with a 60-second
+> timeout.  If the timeout expires, or if gfs2_gl_hash_clear() triggers
+> additional qd_put() calls that schedule more RCU callbacks after the
+> wait completes, gfs2_put_super() will proceed to free the superblock
+> while RCU callbacks referencing it are still pending.
+>
+> Add an rcu_barrier() before free_sbd() in gfs2_put_super() to ensure
+> all pending RCU callbacks (including gfs2_qd_dealloc) have completed
+> before the superblock is freed.
+>
+> Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
+> Reported-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D42a37bf8045847d8f9d2
+> Tested-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+> ---
+>  fs/gfs2/super.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+> index a2ea121331f18..4d854556b5299 100644
+> --- a/fs/gfs2/super.c
+> +++ b/fs/gfs2/super.c
+> @@ -643,6 +643,7 @@ static void gfs2_put_super(struct super_block *sb)
+>         gfs2_delete_debugfs_file(sdp);
+>
+>         gfs2_sys_fs_del(sdp);
+> +       rcu_barrier();
+>         free_sbd(sdp);
+>  }
+>
+> --
+> 2.47.3
+>
 
-[ Upstream commit db357034f7e0cf23f233f414a8508312dfe8fbbe ]
+Applied, thanks.
 
-Make sure to call controller cleanup() if spi_setup() fails while
-registering a device to avoid leaking any resources allocated by
-setup().
-
-Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Saravana Kannan <saravanak@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi.c | 61 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 0c3200d08fe46..2cb110f252cc8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -42,6 +42,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_stop);
- 
- #include "internals.h"
- 
-+static int __spi_setup(struct spi_device *spi, bool initial_setup);
-+
- static DEFINE_IDR(spi_master_idr);
- 
- static void spidev_release(struct device *dev)
-@@ -735,7 +737,7 @@ static int __spi_add_device(struct spi_device *spi)
- 	 * normally rely on the device being setup.  Devices
- 	 * using SPI_CS_HIGH can't coexist well otherwise...
- 	 */
--	status = spi_setup(spi);
-+	status = __spi_setup(spi, true);
- 	if (status < 0) {
- 		dev_err(dev, "can't setup %s, status %d\n",
- 				dev_name(&spi->dev), status);
-@@ -3879,27 +3881,7 @@ static int spi_set_cs_timing(struct spi_device *spi)
- 	return status;
- }
- 
--/**
-- * spi_setup - setup SPI mode and clock rate
-- * @spi: the device whose settings are being modified
-- * Context: can sleep, and no requests are queued to the device
-- *
-- * SPI protocol drivers may need to update the transfer mode if the
-- * device doesn't work with its default.  They may likewise need
-- * to update clock rates or word sizes from initial values.  This function
-- * changes those settings, and must be called from a context that can sleep.
-- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-- * effect the next time the device is selected and data is transferred to
-- * or from it.  When this function returns, the SPI device is deselected.
-- *
-- * Note that this call will fail if the protocol driver specifies an option
-- * that the underlying controller or its driver does not support.  For
-- * example, not all hardware supports wire transfers using nine bit words,
-- * LSB-first wire encoding, or active-high chipselects.
-- *
-- * Return: zero on success, else a negative error code.
-- */
--int spi_setup(struct spi_device *spi)
-+static int __spi_setup(struct spi_device *spi, bool initial_setup)
- {
- 	unsigned	bad_bits, ugly_bits;
- 	int		status;
-@@ -3984,7 +3966,7 @@ int spi_setup(struct spi_device *spi)
- 	status = spi_set_cs_timing(spi);
- 	if (status) {
- 		mutex_unlock(&spi->controller->io_mutex);
--		return status;
-+		goto err_cleanup;
- 	}
- 
- 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
-@@ -3993,7 +3975,7 @@ int spi_setup(struct spi_device *spi)
- 			mutex_unlock(&spi->controller->io_mutex);
- 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
- 				status);
--			return status;
-+			goto err_cleanup;
- 		}
- 
- 		/*
-@@ -4030,6 +4012,37 @@ int spi_setup(struct spi_device *spi)
- 			status);
- 
- 	return status;
-+
-+err_cleanup:
-+	if (initial_setup)
-+		spi_cleanup(spi);
-+
-+	return status;
-+}
-+
-+/**
-+ * spi_setup - setup SPI mode and clock rate
-+ * @spi: the device whose settings are being modified
-+ * Context: can sleep, and no requests are queued to the device
-+ *
-+ * SPI protocol drivers may need to update the transfer mode if the
-+ * device doesn't work with its default.  They may likewise need
-+ * to update clock rates or word sizes from initial values.  This function
-+ * changes those settings, and must be called from a context that can sleep.
-+ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-+ * effect the next time the device is selected and data is transferred to
-+ * or from it.  When this function returns, the SPI device is deselected.
-+ *
-+ * Note that this call will fail if the protocol driver specifies an option
-+ * that the underlying controller or its driver does not support.  For
-+ * example, not all hardware supports wire transfers using nine bit words,
-+ * LSB-first wire encoding, or active-high chipselects.
-+ *
-+ * Return: zero on success, else a negative error code.
-+ */
-+int spi_setup(struct spi_device *spi)
-+{
-+	return __spi_setup(spi, false);
- }
- EXPORT_SYMBOL_GPL(spi_setup);
- 
--- 
-2.53.0
+Andreas
 
 
