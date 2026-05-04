@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-243119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJUyAFim+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:52 +0200
+	id GCNVEPOq+GnXxgIAu9opvQ
+	(envelope-from <stable+bounces-243372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726E24BE471
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16C44BF125
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FD27303F07C
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C97F302EEC4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF7F3DDDBC;
-	Mon,  4 May 2026 13:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247313DDDDF;
+	Mon,  4 May 2026 14:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cju7FQPP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzCewt3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18372E2F0E;
-	Mon,  4 May 2026 13:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6383B7742;
+	Mon,  4 May 2026 14:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903067; cv=none; b=JGd3q/vVArl+oIjLkWBwrrBfP2iFdr47M9y+sa9zLU/P71ejjoArKdDo6a8uce8HzdCU3M6/TTcsdCqBJjkMMhPh9TlZfTGyxbQyt+ZqNamDAIMtAyHolGgJdhuG6SiSCkw9KtbaEo494B5GKabw09wuAELtF5s7YYcRKxEStLk=
+	t=1777903716; cv=none; b=WKIiTzLV1STjDcZJVw/sbrcb83g1zcG9liUY+bl76R9K/DDuUONJHDGJqjL5sap68ygJ66VXR0qWa5lYiUKAULecnWOw3NGB9pxk4tjIfXJzKTk/6tXQw12itYPDyJ+KMsqyQwkTLYsRNIEqNxsnuN87UJZNjnAXDvyFaQO2fBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903067; c=relaxed/simple;
-	bh=yFbQYF4G54rBF2G8XCIdaYZIDpJWwf04TaAKMzi9Pvw=;
+	s=arc-20240116; t=1777903716; c=relaxed/simple;
+	bh=k829WgxZKRaEG/RaxEL15Ul4To1wbxALnUYu0dNn488=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWuE9cE2cdcezJ8I3iYTLnLRdfb5tA/VD6+S/VTvuVfgoNK3O/OKj41GxfCYJDzk9ft1jRfr0OFDBEhAZ1fpAvntbL/Rq0dCE8O722jksy0uq8/AjK3zuyBFqH74ySBQ4urWcb1vWTpG3ivGLptmPUkdpB/OLoiaddwxp8y4syU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cju7FQPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369C5C2BCC4;
-	Mon,  4 May 2026 13:57:46 +0000 (UTC)
+	 MIME-Version; b=e16zvsvoqgAyNGZ56PXYJlu+4elBViCX4177Bq/Bd4kUkuDBBB7ynFm49LPSq/9TGmhcvOoJ9WWLUFy2d8mMSBSaMmYY6uCEQddH5EeR0O5w9RwphtWVIUxZcOklSjQDbczp7wNQELFyY7ErP5JToJQcAeFUGiDqgpeSTKbiRHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzCewt3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718DBC2BCB8;
+	Mon,  4 May 2026 14:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903066;
-	bh=yFbQYF4G54rBF2G8XCIdaYZIDpJWwf04TaAKMzi9Pvw=;
+	s=korg; t=1777903716;
+	bh=k829WgxZKRaEG/RaxEL15Ul4To1wbxALnUYu0dNn488=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cju7FQPPe2fB1dJeM0LgSG0BGYbDonrV/TDZ+hyhX1oJ542PAOfkWjUQX1mBB8Grh
-	 GSN/ojirZz1YzDoUJShQvlI93p6o2hLSlSBz4e58A8HuTeEY/7GaYT3mj5n7/F8EI/
-	 +7xUTSor8fXhyXtc7fuZX/VWdn1LIAR16v4WcyWs=
+	b=jzCewt3ka4cUi/XuhUf1UkDtahJbZZ2Bha7pdXkIYNYzjDkPcGVJ/ZxkYJwQA8x2m
+	 lpPzgnGqhcdbAVJ0cK6W/FEQE8Ci9wFp52HaGuVfizJBBejhcuT6wYpL+7ph5tP9ED
+	 sgVKxMqH+xm9TxGkTerb5pGdeYOZZajvFZb71NSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 7.0 090/307] PCI: cadence: Use cdns_pcie_read_sz() for byte or word read access
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.18 035/275] thermal: core: Fix thermal zone governor cleanup issues
 Date: Mon,  4 May 2026 15:49:35 +0200
-Message-ID: <20260504135146.201830703@linuxfoundation.org>
+Message-ID: <20260504135144.241970685@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 726E24BE471
+X-Rspamd-Queue-Id: A16C44BF125
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -75,128 +74,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243372-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243119-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit d9cf7154deed71a4f23e81101571c79cdc77be00 upstream.
+commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 upstream.
 
-The commit 18ac51ae9df9 ("PCI: cadence: Implement capability search
-using PCI core APIs") assumed all the platforms using Cadence PCIe
-controller support byte and word register accesses. This is not true
-for all platforms (e.g., TI J721E SoC, which only supports dword
-register accesses).
+If thermal_zone_device_register_with_trips() fails after adding
+a thermal governor to the thermal zone being registered, the
+governor is not removed from it as appropriate which may lead to
+a memory leak.
 
-This causes capability searches via cdns_pcie_find_capability() to fail
-on such platforms.
+In turn, thermal_zone_device_unregister() calls thermal_set_governor()
+without acquiring the thermal zone lock beforehand which may race with
+a governor update via sysfs and may lead to a use-after-free in that
+case.
 
-Fix this by using cdns_pcie_read_sz() for config read functions, which
-properly handles size-aligned accesses. Remove the now-unused byte and
-word read wrapper functions (cdns_pcie_readw and cdns_pcie_readb).
+Address these issues by adding two thermal_set_governor() calls, one to
+thermal_release() to remove the governor from the given thermal zone,
+and one to the thermal zone registration error path to cover failures
+preceding the thermal zone device registration.
 
-Fixes: 18ac51ae9df9 ("PCI: cadence: Implement capability search using PCI core APIs")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260402085545.284457-1-a-garg7@ti.com
+Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each thermal zone")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence.h |   56 +++++++++++---------------
- 1 file changed, 25 insertions(+), 31 deletions(-)
+ drivers/thermal/thermal_core.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -249,37 +249,6 @@ static inline u32 cdns_pcie_hpa_readl(st
- 	return readl(pcie->reg_base + reg);
- }
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -964,6 +964,7 @@ static void thermal_release(struct devic
+ 		     sizeof("thermal_zone") - 1)) {
+ 		tz = to_thermal_zone(dev);
+ 		thermal_zone_destroy_device_groups(tz);
++		thermal_set_governor(tz, NULL);
+ 		mutex_destroy(&tz->lock);
+ 		complete(&tz->removal);
+ 	} else if (!strncmp(dev_name(dev), "cooling_device",
+@@ -1607,8 +1608,10 @@ thermal_zone_device_register_with_trips(
+ 	/* sys I/F */
+ 	/* Add nodes that are always present via .groups */
+ 	result = thermal_zone_create_device_groups(tz);
+-	if (result)
++	if (result) {
++		thermal_set_governor(tz, NULL);
+ 		goto remove_id;
++	}
  
--static inline u16 cdns_pcie_readw(struct cdns_pcie *pcie, u32 reg)
--{
--	return readw(pcie->reg_base + reg);
--}
--
--static inline u8 cdns_pcie_readb(struct cdns_pcie *pcie, u32 reg)
--{
--	return readb(pcie->reg_base + reg);
--}
--
--static inline int cdns_pcie_read_cfg_byte(struct cdns_pcie *pcie, int where,
--					  u8 *val)
--{
--	*val = cdns_pcie_readb(pcie, where);
--	return PCIBIOS_SUCCESSFUL;
--}
--
--static inline int cdns_pcie_read_cfg_word(struct cdns_pcie *pcie, int where,
--					  u16 *val)
--{
--	*val = cdns_pcie_readw(pcie, where);
--	return PCIBIOS_SUCCESSFUL;
--}
--
--static inline int cdns_pcie_read_cfg_dword(struct cdns_pcie *pcie, int where,
--					   u32 *val)
--{
--	*val = cdns_pcie_readl(pcie, where);
--	return PCIBIOS_SUCCESSFUL;
--}
--
- static inline u32 cdns_pcie_read_sz(void __iomem *addr, int size)
- {
- 	void __iomem *aligned_addr = PTR_ALIGN_DOWN(addr, 0x4);
-@@ -320,6 +289,31 @@ static inline void cdns_pcie_write_sz(vo
- 	writel(val, aligned_addr);
- }
+ 	result = device_register(&tz->device);
+ 	if (result)
+@@ -1721,8 +1724,6 @@ void thermal_zone_device_unregister(stru
  
-+static inline int cdns_pcie_read_cfg_byte(struct cdns_pcie *pcie, int where,
-+					  u8 *val)
-+{
-+	void __iomem *addr = pcie->reg_base + where;
-+
-+	*val = cdns_pcie_read_sz(addr, 0x1);
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+static inline int cdns_pcie_read_cfg_word(struct cdns_pcie *pcie, int where,
-+					  u16 *val)
-+{
-+	void __iomem *addr = pcie->reg_base + where;
-+
-+	*val = cdns_pcie_read_sz(addr, 0x2);
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+static inline int cdns_pcie_read_cfg_dword(struct cdns_pcie *pcie, int where,
-+					   u32 *val)
-+{
-+	*val = cdns_pcie_readl(pcie, where);
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
- /* Root Port register access */
- static inline void cdns_pcie_rp_writeb(struct cdns_pcie *pcie,
- 				       u32 reg, u8 value)
+ 	cancel_delayed_work_sync(&tz->poll_queue);
+ 
+-	thermal_set_governor(tz, NULL);
+-
+ 	thermal_thresholds_exit(tz);
+ 	thermal_remove_hwmon_sysfs(tz);
+ 	ida_free(&thermal_tz_ida, tz->id);
 
 
 
