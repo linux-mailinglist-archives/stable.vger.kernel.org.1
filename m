@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-243795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEsUKmGv+GkPzAIAu9opvQ
-	(envelope-from <stable+bounces-243795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:25 +0200
+	id AM4xAGKr+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5484E4BFCBF
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B15D74BF2BB
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6C0253041C71
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09F0B300B1BC
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745AF3DEAF2;
-	Mon,  4 May 2026 14:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58063DEAC1;
+	Mon,  4 May 2026 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oc1KTHp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFQbQP6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D8B3DEADB;
-	Mon,  4 May 2026 14:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC02C3DEACB;
+	Mon,  4 May 2026 14:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904798; cv=none; b=FdYEgTV3J0m3uZAHuGuNZQ/DFsnj9w6GvPYwjxw3nyJ0pMx94tdeJ8WscqYG+N7Gpv3olgXH9sJhwgIcyiCLbe1e335k73R3H38hOVzVSRCr2fNqeD0IZcU6T29I4fWz6zQHIrHRVBIwTlj3Tw1m8AV0sqdOg9CFfaeaMeL15p0=
+	t=1777904293; cv=none; b=VJpbGld0o+Wr+eVJGatpqBmRWTamrWRIW8aT7SGHJ4vTuparorKxe303T4bMlijrxTryEDG/ZL+FeOrpS1lVP4MRjQvDFmektT1Yo3cv9zRu7AaFuFGJ+HT449ZSwptxNf0YRycURIedSnA4CDFd6SALGnHLXpFGAQbdYEn7mj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904798; c=relaxed/simple;
-	bh=OVcI8O9K7/0H2Ns/eIAkmdB7o09FYBS5srAGscAPTpg=;
+	s=arc-20240116; t=1777904293; c=relaxed/simple;
+	bh=O11ornRmk/TTzS01dknH4Doj6sN3xAAC6mz4Y0cN9GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnJzKLcIDdb3lURBr5L7M3x1qp+wSLqwOW6ZCzbBMoFR1GSLovHq4ctkqckAo54O1pNTSjzYPVuJ2O6rfs9fnglvr7/HBqEn/azQws8TaQaYLmP6uM+2HjFKdJqVwTLDDNjiaUUkFjcUy/hD4r2HmDfvIKFucOZkiAq8JxQWt7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oc1KTHp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C109BC2BCB8;
-	Mon,  4 May 2026 14:26:37 +0000 (UTC)
+	 MIME-Version; b=AHegAS5pPR9G2BHPqaCiBqt6Sr1UIkmIJs9cheMzfpiwPj27EPXdZ4wb2T3TjYzQSsqu42G/vFZjvY6BvwAT53QH+91gSUB92ym/InCrj+N8TUQqsygRrMDLQO7kAU9vqvjnWkyRV2mNyUECG8gIUI53WG4Tik+hLsebme641f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFQbQP6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3226C2BCF4;
+	Mon,  4 May 2026 14:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904798;
-	bh=OVcI8O9K7/0H2Ns/eIAkmdB7o09FYBS5srAGscAPTpg=;
+	s=korg; t=1777904293;
+	bh=O11ornRmk/TTzS01dknH4Doj6sN3xAAC6mz4Y0cN9GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oc1KTHp6o3fwwhSdf0rjON3oZzpQ7u5cwNVweNp9PoY7Rhktn7xCyfw/fo8qCIjdX
-	 /Jq3J0wTu+eEmdfCiWPjQLyI2fCrYHSEfgHjoFJMUTV3u1VTiweIxJWOXcMNfIkr6O
-	 35c6ZIsVSI3Dg9xMaKBrLVLin47IwO1Q88Sqg5YI=
+	b=uFQbQP6fucZxjkt5kLY7shPudYr4R0xNa3W+Brz1+LUugNKqLBoZCOCgGWFxLZOyQ
+	 IlCNyJJ4GNbuZduA0+A72vdh4BMf0j8rGnqIMN217P9YqCi0ZDUoGmavNdtS0B0NS+
+	 Yk4wJwg4Ut+0ON2T56j3GpQLoGr/b3tXwfShd0/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/215] ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()
+Subject: [PATCH 6.18 258/275] iio: frequency: admv1013: add dev variable
 Date: Mon,  4 May 2026 15:53:18 +0200
-Message-ID: <20260504135136.748034376@linuxfoundation.org>
+Message-ID: <20260504135152.624262028@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5484E4BFCBF
+X-Rspamd-Queue-Id: B15D74BF2BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -77,92 +77,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-243795-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243597-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,analog.com:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-[ Upstream commit def036ef87f8641c1c525d5ae17438d7a1006491 ]
+[ Upstream commit e61b5bb0e91390adee41eaddc0a1a7d55d5652b2 ]
 
-rcount is intended to be connection-specific: 2 for curr_conn, 1 for
-every other connection sharing the same session.  However, it is
-initialised only once before the hash iteration and is never reset.
-After the loop visits curr_conn, later sibling connections are also
-checked against rcount == 2, so a sibling with req_running == 1 is
-incorrectly treated as idle.  This makes the outcome depend on the
-hash iteration order: whether a given sibling is checked against the
-loose (< 2) or the strict (< 1) threshold is decided by whether it
-happens to be visited before or after curr_conn.
+Introduce a local struct device pointer in functions that reference
+&spi->dev for device-managed resource calls and device property reads,
+improving code readability.
 
-The function's contract is "wait until every connection sharing this
-session is idle" so that destroy_previous_session() can safely tear
-the session down.  The latched rcount violates that contract and
-reopens the teardown race window the wait logic was meant to close:
-destroy_previous_session() may proceed before sibling channels have
-actually quiesced, overlapping session teardown with in-flight work
-on those connections.
-
-Recompute rcount inside the loop so each connection is compared
-against its own threshold regardless of iteration order.
-
-This is a code-inspection fix for an iteration-order-dependent logic
-error; a targeted reproducer would require SMB3 multichannel with
-in-flight work on a sibling channel landing after curr_conn in hash
-order, which is not something that can be triggered reliably.
-
-Fixes: 76e98a158b20 ("ksmbd: fix race condition between destroy_previous_session() and smb2 operations()")
-Cc: stable@vger.kernel.org
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: aac0a51b1670 ("iio: frequency: admv1013: fix NULL pointer dereference on str")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/frequency/admv1013.c |   29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -180,7 +180,7 @@ int ksmbd_conn_wait_idle_sess_id(struct
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -518,11 +518,11 @@ static int admv1013_properties_parse(str
  {
- 	struct ksmbd_conn *conn;
- 	int rc, retry_count = 0, max_timeout = 120;
--	int rcount = 1, bkt;
-+	int rcount, bkt;
+ 	int ret;
+ 	const char *str;
+-	struct spi_device *spi = st->spi;
++	struct device *dev = &st->spi->dev;
  
- retry_idle:
- 	if (retry_count >= max_timeout)
-@@ -189,8 +189,7 @@ retry_idle:
- 	down_read(&conn_list_lock);
- 	hash_for_each(conn_list, bkt, conn, hlist) {
- 		if (conn->binding || xa_load(&conn->sessions, sess_id)) {
--			if (conn == curr_conn)
--				rcount = 2;
-+			rcount = (conn == curr_conn) ? 2 : 1;
- 			if (atomic_read(&conn->req_running) >= rcount) {
- 				rc = wait_event_timeout(conn->req_running_q,
- 					atomic_read(&conn->req_running) < rcount,
+-	st->det_en = device_property_read_bool(&spi->dev, "adi,detector-enable");
++	st->det_en = device_property_read_bool(dev, "adi,detector-enable");
+ 
+-	ret = device_property_read_string(&spi->dev, "adi,input-mode", &str);
++	ret = device_property_read_string(dev, "adi,input-mode", &str);
+ 	if (ret)
+ 		st->input_mode = ADMV1013_IQ_MODE;
+ 
+@@ -533,7 +533,7 @@ static int admv1013_properties_parse(str
+ 	else
+ 		return -EINVAL;
+ 
+-	ret = device_property_read_string(&spi->dev, "adi,quad-se-mode", &str);
++	ret = device_property_read_string(dev, "adi,quad-se-mode", &str);
+ 	if (ret)
+ 		st->quad_se_mode = ADMV1013_SE_MODE_DIFF;
+ 
+@@ -546,11 +546,11 @@ static int admv1013_properties_parse(str
+ 	else
+ 		return -EINVAL;
+ 
+-	ret = devm_regulator_bulk_get_enable(&st->spi->dev,
++	ret = devm_regulator_bulk_get_enable(dev,
+ 					     ARRAY_SIZE(admv1013_vcc_regs),
+ 					     admv1013_vcc_regs);
+ 	if (ret) {
+-		dev_err_probe(&spi->dev, ret,
++		dev_err_probe(dev, ret,
+ 			      "Failed to request VCC regulators\n");
+ 		return ret;
+ 	}
+@@ -562,9 +562,10 @@ static int admv1013_probe(struct spi_dev
+ {
+ 	struct iio_dev *indio_dev;
+ 	struct admv1013_state *st;
++	struct device *dev = &spi->dev;
+ 	int ret, vcm_uv;
+ 
+-	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+@@ -581,20 +582,20 @@ static int admv1013_probe(struct spi_dev
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "vcm");
++	ret = devm_regulator_get_enable_read_voltage(dev, "vcm");
+ 	if (ret < 0)
+-		return dev_err_probe(&spi->dev, ret,
++		return dev_err_probe(dev, ret,
+ 				     "failed to get the common-mode voltage\n");
+ 
+ 	vcm_uv = ret;
+ 
+-	st->clkin = devm_clk_get_enabled(&spi->dev, "lo_in");
++	st->clkin = devm_clk_get_enabled(dev, "lo_in");
+ 	if (IS_ERR(st->clkin))
+-		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
++		return dev_err_probe(dev, PTR_ERR(st->clkin),
+ 				     "failed to get the LO input clock\n");
+ 
+ 	st->nb.notifier_call = admv1013_freq_change;
+-	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
++	ret = devm_clk_notifier_register(dev, st->clkin, &st->nb);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -606,11 +607,11 @@ static int admv1013_probe(struct spi_dev
+ 		return ret;
+ 	}
+ 
+-	ret = devm_add_action_or_reset(&spi->dev, admv1013_powerdown, st);
++	ret = devm_add_action_or_reset(dev, admv1013_powerdown, st);
+ 	if (ret)
+ 		return ret;
+ 
+-	return devm_iio_device_register(&spi->dev, indio_dev);
++	return devm_iio_device_register(dev, indio_dev);
+ }
+ 
+ static const struct spi_device_id admv1013_id[] = {
 
 
 
