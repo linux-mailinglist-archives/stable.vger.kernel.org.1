@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-243470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAhbAEeq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:39 +0200
+	id 4OQjA3in+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC974BEF58
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2ED4BE750
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 497AB30409DF
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 120F530182E6
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117133DDDD6;
-	Mon,  4 May 2026 14:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32983D904D;
+	Mon,  4 May 2026 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqXwt7+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imM6uwx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E293D3334;
-	Mon,  4 May 2026 14:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A591B3D5667;
+	Mon,  4 May 2026 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903966; cv=none; b=i22WL5fNHZourzGWWTwjDt9TMPXnIZut5dFBJwvwF3mpk6aRgA560UVGK/2QbEPv1V0b5K8oDI9H6psoYR8L0zSE959qxy89VA6AjXoa05T1jkASv9idRlg2zL5vBA98IS3bIdymZ9+66xXJpdClCgXrZmf148z5GuWqDXg+5SU=
+	t=1777903320; cv=none; b=UwtkJgCsnaZNThtUd2fbjej87pFQXL0COuIXD9/t+KMYYyFZLOpTmHQLtRKkQmHNYsZlxoi7gR6ZzXodRhz0fKWHnje56IWGR8PQavotqtEdH1FIqqvjRNGM7OlQpDVBW/+GTcr5wSpE7aZZYre9EjLkc4z4GdSsmxT2Q0Uf3ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903966; c=relaxed/simple;
-	bh=HTmxVLIwnODIYzgpzd+Gu3DL2AECVSskSsNzQndp64g=;
+	s=arc-20240116; t=1777903320; c=relaxed/simple;
+	bh=/LBDcwDyiyuVhaktfNXwa7t/KY24rVNm5GHBQjZWNwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TbRoYvCWfJggi3otqcyUrTa3mHrjUBerKndhdxPJUjJzILUKcgXnra4RJTmvm+laUdGHjzCSB/893vOVCfHZMM8VKomFdLxL/YERFp/kwjMGCfyiQRjtdtG9q336JRJ7ZcKnpw97eNkFd5mGN+PIUVJtgImZ84vWg8TP2McscF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqXwt7+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E989C2BCB8;
-	Mon,  4 May 2026 14:12:46 +0000 (UTC)
+	 MIME-Version; b=Sta1Sh2F3QpanbOlYPr+wXmVAUDkYVwtNUK7/pz3omLFz7KMjGrSXdOhtIbx++AxzCzlbM1e3QfC3Vu35gZtgPIiYvwDI2Svw6CfSCuGy944jaLoQp9pHzKNLQSJS4/hNcZcFNHCjQvbPeqOJDM8V+/M/uB2hiRyD8YzJc3g+DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imM6uwx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A04C2BCB8;
+	Mon,  4 May 2026 14:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903966;
-	bh=HTmxVLIwnODIYzgpzd+Gu3DL2AECVSskSsNzQndp64g=;
+	s=korg; t=1777903320;
+	bh=/LBDcwDyiyuVhaktfNXwa7t/KY24rVNm5GHBQjZWNwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UqXwt7+ouQd5TrqyUNBrcAzvvaPUAV85dYrzX8ZttR3WjLpvtoTKay6kOR9iJqGWH
-	 tegfkJwN4EQsS2M0Sd5F1IT5JuqtLQXFbRkRz/x4GJLWJ0+W756YVl/WCy5t9UpVbo
-	 M5opZQ9CKTF2jIQe/mViNlgIncC/JbcjqVB92+bI=
+	b=imM6uwx8Twp+Hepu2WgdUiFAr2fTp3yHLVAIVDCYnaOMNZ14WWkh5MJkKAhOLwvqa
+	 deqCdhOngVswNIjcJc7/ipH4NUeGBTEjZN3ZwQJL+hpZri7szXxHTA7vM19xmEQHvp
+	 D/MOCav9t2cZ9hOoIQep3kY+NZSjT0U5K5A+5lm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 132/275] ipv4: icmp: validate reply type before using icmp_pointers
-Date: Mon,  4 May 2026 15:51:12 +0200
-Message-ID: <20260504135147.805067146@linuxfoundation.org>
+	Jacqueline Wong <jacqwong@google.com>,
+	Jordan Hand <jhand@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 7.0 188/307] tpm: tpm_tis: stop transmit if retries are exhausted
+Date: Mon,  4 May 2026 15:51:13 +0200
+Message-ID: <20260504135149.954945602@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AAC974BEF58
+X-Rspamd-Queue-Id: BF2ED4BE750
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243470-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243218-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Jacqueline Wong <jacqwong@google.com>
 
-commit 67bf002a2d7387a6312138210d0bd06e3cf4879b upstream.
+commit 949692da7211572fac419b2986b6abc0cd1aeb76 upstream.
 
-Extended echo replies use ICMP_EXT_ECHOREPLY as the outbound reply type.
-That value is outside the range covered by icmp_pointers[], which only
-describes the traditional ICMP types up to NR_ICMP_TYPES.
+tpm_tis_send_main() will attempt to retry sending data TPM_RETRY times.
+Currently, if those retries are exhausted, the driver will attempt to
+call execute. The TPM will be in the wrong state, leading to the
+operation simply timing out.
 
-Avoid consulting icmp_pointers[] for reply types outside that range, and
-use array_index_nospec() for the remaining in-range lookup. Normal ICMP
-replies keep their existing behavior unchanged.
+Instead, if there is still an error after retries are exhausted, return
+that error immediately.
 
-Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/0dace90c01a5978e829ca741ef684dbd7304ce62.1776628519.git.caoruide123@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: 280db21e153d8 ("tpm_tis: Resend command to recover from data transfer errors")
+Signed-off-by: Jacqueline Wong <jacqwong@google.com>
+Signed-off-by: Jordan Hand <jhand@google.com>
+Link: https://lore.kernel.org/r/20260415160006.2275325-3-jacqwong@google.com
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/icmp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/char/tpm/tpm_tis_core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -64,6 +64,7 @@
- #include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/fcntl.h>
-+#include <linux/nospec.h>
- #include <linux/socket.h>
- #include <linux/in.h>
- #include <linux/inet.h>
-@@ -362,7 +363,9 @@ static int icmp_glue_bits(void *from, ch
- 				      to, len);
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -556,11 +556,16 @@ static int tpm_tis_send_main(struct tpm_
+ 			break;
+ 		else if (rc != -EAGAIN && rc != -EIO)
+ 			/* Data transfer failed, not recoverable */
+-			return rc;
++			goto out_err;
  
- 	skb->csum = csum_block_add(skb->csum, csum, odd);
--	if (icmp_pointers[icmp_param->data.icmph.type].error)
-+	if (icmp_param->data.icmph.type <= NR_ICMP_TYPES &&
-+	    icmp_pointers[array_index_nospec(icmp_param->data.icmph.type,
-+					     NR_ICMP_TYPES + 1)].error)
- 		nf_ct_attach(skb, icmp_param->skb);
- 	return 0;
- }
+ 		usleep_range(priv->timeout_min, priv->timeout_max);
+ 	}
+ 
++	if (rc == -EAGAIN || rc == -EIO) {
++		dev_err(&chip->dev, "Exhausted %d tpm_tis_send_data retries\n", TPM_RETRY);
++		goto out_err;
++	}
++
+ 	/* go and do it */
+ 	rc = tpm_tis_write8(priv, TPM_STS(priv->locality), TPM_STS_GO);
+ 	if (rc < 0)
 
 
 
