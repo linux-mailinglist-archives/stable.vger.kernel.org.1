@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-243812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNAyCb2w+GkdzAIAu9opvQ
-	(envelope-from <stable+bounces-243812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:13 +0200
+	id wDCRMk2u+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5EB4BFF4F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:44:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C402D4BFAF0
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D7CF3030746
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A58CC316605B
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913E53E277E;
-	Mon,  4 May 2026 14:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0549F315785;
+	Mon,  4 May 2026 14:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOLBtjxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrfsGOKk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547F236309C;
-	Mon,  4 May 2026 14:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA483DE443;
+	Mon,  4 May 2026 14:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904843; cv=none; b=aHKRpiaO2bWllHQ2X7MAM/3mB+JPWAL39QYr+aRVEv0MhhcqJZdXgE5PN5vZ2kYL/GX8JTYA5uukOrycNrrVAvf9IIjxkINZxXyJC6m/+ycICNeJoGPVxvHZDvd9cCFA9IwJ64JQTdhXlr0S1JDSxCSK2XvrBzvQHmtkkfc+VQY=
+	t=1777904331; cv=none; b=SGpp1GxK0Ow+/KrrpKQ0VqgFlnr5qGsmMk4XvWomgPoAA0Btjm6Uc06wR8YfibA22s+Z3qq2SUN2OWRCOc3mkxauPdHeHAw20a0q5I/l8m351jgYqc7kNBExH1kCbngZI4ZjXemAc2NqdIlKDUj1BpQhcEugsXGUzqJmWafuqQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904843; c=relaxed/simple;
-	bh=QqaKcGcpUAvT5INq0UOOYFle0qaMuWrOg+VVtCGk0LA=;
+	s=arc-20240116; t=1777904331; c=relaxed/simple;
+	bh=iilDlDrnxRLVdASVg6Sxvci/cgYCKtPSo2/XsCsmU5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/BBZlWDtX/vbduZOJfKadlnppq4+3qjuBa6FEFpO7GLgSGOe0X1qDmykGPbEAbJtOdCO0waSL/76aimSB3cTq+wyutKLBrWvJmpK4ReacypH+Lt/UFX0YU+j+0JLIpb+tNNw2nloAzwQAThebTv74rzlAn0fr4jVtjdgBpGHJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOLBtjxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C24C2BCB8;
-	Mon,  4 May 2026 14:27:22 +0000 (UTC)
+	 MIME-Version; b=RoOIyPRGIFX7l5V1miyviA8QJ85ch3CzmSBjCkj48P2sht3IeqHVSlUrWi/2aoEckBQCOlkZ3y8ic10gNad/iEfhKtVL2Akz/VMKIwjc8d1tTP9gFVGgmpL2PgXcjWKY+P6ce3Wvkhe4/5sJmo0kZAPXmMQsreuEustAp9tioTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrfsGOKk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CE8C2BCB8;
+	Mon,  4 May 2026 14:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904842;
-	bh=QqaKcGcpUAvT5INq0UOOYFle0qaMuWrOg+VVtCGk0LA=;
+	s=korg; t=1777904331;
+	bh=iilDlDrnxRLVdASVg6Sxvci/cgYCKtPSo2/XsCsmU5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOLBtjxKeLrpIcQtm7B32/GlXWcUpycwRTE71IqGwu9tkUm4cn/TOeldWOC4IagZo
-	 rgcmy+QrQPjDcwVoJjOAMb/WCR9MMFDrmwMQkVcJSjEy/PLkDDd7MNX8qnJbLU6myv
-	 ggkmww8FoL7K1TU4LB8D390/5yU1fke+LhZTDG1Q=
+	b=GrfsGOKkZmk4qa1sEtMkJWJGD4Rl0GU/0XiT+zHzwd1N5FVbvGTiuZgSN8ORnCT10
+	 l0SQGS+C2OJdf5wypUD1vu3zpY883b5Qo8sfRRu+Tm6BIhOMWAjX/3C961bEopHimH
+	 Y7oDs7fAQ8+reSByQZvSYjo6tkYx5gJgFk6wCso4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/215] iio: frequency: admv1013: add dev variable
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Simon Horman <horms@kernel.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 274/275] net: ipv6: fix NOREF dst use in seg6 and rpl lwtunnels
 Date: Mon,  4 May 2026 15:53:34 +0200
-Message-ID: <20260504135137.609182155@linuxfoundation.org>
+Message-ID: <20260504135153.208696658@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,151 +65,160 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB5EB4BFF4F
+X-Rspamd-Queue-Id: C402D4BFAF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243812-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-243612-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,kernel.org,gmail.com,redhat.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniroma2.it:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-[ Upstream commit e61b5bb0e91390adee41eaddc0a1a7d55d5652b2 ]
+commit f9c52a6ba9780bd27e0bf4c044fd91c13c778b6e upstream.
 
-Introduce a local struct device pointer in functions that reference
-&spi->dev for device-managed resource calls and device property reads,
-improving code readability.
+seg6_input_core() and rpl_input() call ip6_route_input() which sets a
+NOREF dst on the skb, then pass it to dst_cache_set_ip6() invoking
+dst_hold() unconditionally.
+On PREEMPT_RT, ksoftirqd is preemptible and a higher-priority task can
+release the underlying pcpu_rt between the lookup and the caching
+through a concurrent FIB lookup on a shared nexthop.
+Simplified race sequence:
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: aac0a51b1670 ("iio: frequency: admv1013: fix NULL pointer dereference on str")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ksoftirqd/X                       higher-prio task (same CPU X)
+  -----------                       --------------------------------
+  seg6_input_core(,skb)/rpl_input(skb)
+    dst_cache_get()
+      -> miss
+    ip6_route_input(skb)
+      -> ip6_pol_route(,skb,flags)
+         [RT6_LOOKUP_F_DST_NOREF in flags]
+        -> FIB lookup resolves fib6_nh
+           [nhid=N route]
+        -> rt6_make_pcpu_route()
+           [creates pcpu_rt, refcount=1]
+             pcpu_rt->sernum = fib6_sernum
+             [fib6_sernum=W]
+           -> cmpxchg(fib6_nh.rt6i_pcpu,
+                      NULL, pcpu_rt)
+              [slot was empty, store succeeds]
+      -> skb_dst_set_noref(skb, dst)
+         [dst is pcpu_rt, refcount still 1]
+
+                                    rt_genid_bump_ipv6()
+                                      -> bumps fib6_sernum
+                                         [fib6_sernum from W to Z]
+                                    ip6_route_output()
+                                      -> ip6_pol_route()
+                                        -> FIB lookup resolves fib6_nh
+                                           [nhid=N]
+                                        -> rt6_get_pcpu_route()
+                                             pcpu_rt->sernum != fib6_sernum
+                                             [W <> Z, stale]
+                                          -> prev = xchg(rt6i_pcpu, NULL)
+                                          -> dst_release(prev)
+                                             [prev is pcpu_rt,
+                                              refcount 1->0, dead]
+
+    dst = skb_dst(skb)
+    [dst is the dead pcpu_rt]
+    dst_cache_set_ip6(dst)
+      -> dst_hold() on dead dst
+      -> WARN / use-after-free
+
+For the race to occur, ksoftirqd must be preemptible (PREEMPT_RT without
+PREEMPT_RT_NEEDS_BH_LOCK) and a concurrent task must be able to release
+the pcpu_rt. Shared nexthop objects provide such a path, as two routes
+pointing to the same nhid share the same fib6_nh and its rt6i_pcpu
+entry.
+
+Fix seg6_input_core() and rpl_input() by calling skb_dst_force() after
+ip6_route_input() to force the NOREF dst into a refcounted one before
+caching.
+The output path is not affected as ip6_route_output() already returns a
+refcounted dst.
+
+Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
+Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260421094735.20997-1-andrea.mayer@uniroma2.it
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/frequency/admv1013.c |   29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ net/ipv6/rpl_iptunnel.c  |    9 +++++++++
+ net/ipv6/seg6_iptunnel.c |    9 +++++++++
+ 2 files changed, 18 insertions(+)
 
---- a/drivers/iio/frequency/admv1013.c
-+++ b/drivers/iio/frequency/admv1013.c
-@@ -518,11 +518,11 @@ static int admv1013_properties_parse(str
- {
- 	int ret;
- 	const char *str;
--	struct spi_device *spi = st->spi;
-+	struct device *dev = &st->spi->dev;
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -287,7 +287,16 @@ static int rpl_input(struct sk_buff *skb
  
--	st->det_en = device_property_read_bool(&spi->dev, "adi,detector-enable");
-+	st->det_en = device_property_read_bool(dev, "adi,detector-enable");
+ 	if (!dst) {
+ 		ip6_route_input(skb);
++
++		/* ip6_route_input() sets a NOREF dst; force a refcount on it
++		 * before caching or further use.
++		 */
++		skb_dst_force(skb);
+ 		dst = skb_dst(skb);
++		if (unlikely(!dst)) {
++			err = -ENETUNREACH;
++			goto drop;
++		}
  
--	ret = device_property_read_string(&spi->dev, "adi,input-mode", &str);
-+	ret = device_property_read_string(dev, "adi,input-mode", &str);
- 	if (ret)
- 		st->input_mode = ADMV1013_IQ_MODE;
+ 		/* cache only if we don't create a dst reference loop */
+ 		if (!dst->error && lwtst != dst->lwtstate) {
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -500,7 +500,16 @@ static int seg6_input_core(struct net *n
  
-@@ -533,7 +533,7 @@ static int admv1013_properties_parse(str
- 	else
- 		return -EINVAL;
+ 	if (!dst) {
+ 		ip6_route_input(skb);
++
++		/* ip6_route_input() sets a NOREF dst; force a refcount on it
++		 * before caching or further use.
++		 */
++		skb_dst_force(skb);
+ 		dst = skb_dst(skb);
++		if (unlikely(!dst)) {
++			err = -ENETUNREACH;
++			goto drop;
++		}
  
--	ret = device_property_read_string(&spi->dev, "adi,quad-se-mode", &str);
-+	ret = device_property_read_string(dev, "adi,quad-se-mode", &str);
- 	if (ret)
- 		st->quad_se_mode = ADMV1013_SE_MODE_DIFF;
- 
-@@ -546,11 +546,11 @@ static int admv1013_properties_parse(str
- 	else
- 		return -EINVAL;
- 
--	ret = devm_regulator_bulk_get_enable(&st->spi->dev,
-+	ret = devm_regulator_bulk_get_enable(dev,
- 					     ARRAY_SIZE(admv1013_vcc_regs),
- 					     admv1013_vcc_regs);
- 	if (ret) {
--		dev_err_probe(&spi->dev, ret,
-+		dev_err_probe(dev, ret,
- 			      "Failed to request VCC regulators\n");
- 		return ret;
- 	}
-@@ -562,9 +562,10 @@ static int admv1013_probe(struct spi_dev
- {
- 	struct iio_dev *indio_dev;
- 	struct admv1013_state *st;
-+	struct device *dev = &spi->dev;
- 	int ret, vcm_uv;
- 
--	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
-@@ -581,20 +582,20 @@ static int admv1013_probe(struct spi_dev
- 	if (ret)
- 		return ret;
- 
--	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "vcm");
-+	ret = devm_regulator_get_enable_read_voltage(dev, "vcm");
- 	if (ret < 0)
--		return dev_err_probe(&spi->dev, ret,
-+		return dev_err_probe(dev, ret,
- 				     "failed to get the common-mode voltage\n");
- 
- 	vcm_uv = ret;
- 
--	st->clkin = devm_clk_get_enabled(&spi->dev, "lo_in");
-+	st->clkin = devm_clk_get_enabled(dev, "lo_in");
- 	if (IS_ERR(st->clkin))
--		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
-+		return dev_err_probe(dev, PTR_ERR(st->clkin),
- 				     "failed to get the LO input clock\n");
- 
- 	st->nb.notifier_call = admv1013_freq_change;
--	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
-+	ret = devm_clk_notifier_register(dev, st->clkin, &st->nb);
- 	if (ret)
- 		return ret;
- 
-@@ -606,11 +607,11 @@ static int admv1013_probe(struct spi_dev
- 		return ret;
- 	}
- 
--	ret = devm_add_action_or_reset(&spi->dev, admv1013_powerdown, st);
-+	ret = devm_add_action_or_reset(dev, admv1013_powerdown, st);
- 	if (ret)
- 		return ret;
- 
--	return devm_iio_device_register(&spi->dev, indio_dev);
-+	return devm_iio_device_register(dev, indio_dev);
- }
- 
- static const struct spi_device_id admv1013_id[] = {
+ 		/* cache only if we don't create a dst reference loop */
+ 		if (!dst->error && lwtst != dst->lwtstate) {
 
 
 
