@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHX3Gmem+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:07 +0200
+	id MKtnF3Sr+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892144BE4B0
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:00:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617A04BF302
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DBCAB301DF68
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:58:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 42D27306BE91
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0943DE443;
-	Mon,  4 May 2026 13:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83963CEB89;
+	Mon,  4 May 2026 14:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrC2VBwG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jp5wrKpx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52B33DE425;
-	Mon,  4 May 2026 13:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0531ADC83;
+	Mon,  4 May 2026 14:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903107; cv=none; b=jby1pbDlzCQIk7cU3lcXIcnq6Y3fPSMLOwzBjOmpp7jejm9tz0n16AQ26IL5OIW04NNVi0QA7WPxxfcCzswwEQnuvcdG92QXWpTw+g7bYcpKhVncD4SSyYQLpvaXvPN8Q7s04HSbwJkL/52vWPBcGuBwDCHXNvwMdQDECM/DvKw=
+	t=1777903809; cv=none; b=XW3gMB3GRuFu0fD2qLSoWU1UsdOpzRGc4f+1PtuB3Iij6hdTcp7RPUzPuietvrb1O3NjFzIQ02zbXo3s/Cp5Qw8KnsJNOxiT1E1rI2bHfE+ydOfok0gtnt2YgN1cKdB/G60nXZozAEvhL6qDqQ2NYIwS8pTD4g32I299dF1KWLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903107; c=relaxed/simple;
-	bh=TIKV3hkLX7KZabYo25DTu0tX/YVAq97jdt3JYIdgXpU=;
+	s=arc-20240116; t=1777903809; c=relaxed/simple;
+	bh=c2n4UJkfU1jWyzlGNLVXXYcZWpnDMXIpLwSOs19mVC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqHxqKIawQNBNC13lZ6c/elURu7ZU7y9ZTurVdxSbgM7oACn1ul9WeXfmtxq4h7/hx8jk4SuZoinXyIlQMY1lSxdWZeIjImvnGG4d66vftBu5NhEBfJ8N02Cyheu8hbw2J3lkOlhMM3h7xG9OBQA4I2dEgGzbqiDEGAiuoAUeuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrC2VBwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAEDC2BCC4;
-	Mon,  4 May 2026 13:58:27 +0000 (UTC)
+	 MIME-Version; b=dy+ZrGbhXUcNbdCw6YnxCa0WaMFqYc9HV+zpmnYdmTe9mBMYL6eISrLWUvD7Gmci4sr/Hu8oEGEoizBKD3JM8dw4GFA2Axv/unxOmZU5rzphL1JIv92hQ+b0v+2LF+CThruCr7uY/N2jAcbge47xkax5pXEQi+IhhU+7Qo0/O+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jp5wrKpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E921C2BCB8;
+	Mon,  4 May 2026 14:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903107;
-	bh=TIKV3hkLX7KZabYo25DTu0tX/YVAq97jdt3JYIdgXpU=;
+	s=korg; t=1777903809;
+	bh=c2n4UJkfU1jWyzlGNLVXXYcZWpnDMXIpLwSOs19mVC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZrC2VBwGhsYqcnLqp0hez3OXqMD61oDHKQwqy84u5LR7V+7iE8LTZexC8Ll8gTxcl
-	 A4+dH/C79wF1r4Y+U1oank0NtmYfu7gbinTNCBnv82928IeA2mIAIRKDi9DPbkFwSQ
-	 M8Q1ggnrJITDc8R7HJuqin0WCSZTWwp99PChbafI=
+	b=jp5wrKpx53AjtByxey9Y0tPLwCqV/BLjLs/FwWIq9L5NFKtJDL+vgGdXMYcDswF6L
+	 LnFy+BT3VWqfGxVfoorxrqbQFCIeM2b3cwGbUhVmF1GvxaDdtV2kIzEHIEkj8FSEVO
+	 yQQ3NVHxFVh0lwycL14uHCtS4ut0HG+7T37Y/I6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngmin Choi <youngminchoi94@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 107/307] io_uring/zcrx: return back two step unregistration
-Date: Mon,  4 May 2026 15:49:52 +0200
-Message-ID: <20260504135146.836152201@linuxfoundation.org>
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.18 053/275] PCI: endpoint: pci-epf-ntb: Remove duplicate resource teardown
+Date: Mon,  4 May 2026 15:49:53 +0200
+Message-ID: <20260504135144.904763080@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,179 +64,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 892144BE4B0
+X-Rspamd-Queue-Id: 617A04BF302
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243135-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243409-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kernel.dk:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,valinux.co.jp:email,nxp.com:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit e5361d25e241ac3a23177fa74ae91d049bad00d3 upstream.
+commit 3446beddba450c8d6f9aca2f028712ac527fead3 upstream.
 
-There are reports where io_uring instance removal takes too long and an
-ifq reallocation by another zcrx instance fails. Split zcrx destruction
-into two steps similarly how it was before, first close the queue early
-but maintain zcrx alive, and then when all inflight requests are
-completed, drop the main zcrx reference. For extra protection, mark
-terminated zcrx instances in xarray and warn if we double put them.
+epf_ntb_epc_destroy() duplicates the teardown that the caller is
+supposed to do later. This leads to an oops when .allow_link fails or
+when .drop_link is performed. Remove the helper.
 
-Cc: stable@vger.kernel.org # 6.19+
-Link: https://github.com/axboe/liburing/issues/1550
-Reported-by: Youngmin Choi <youngminchoi94@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://patch.msgid.link/0ce21f0565ab4358668922a28a8a36922dfebf76.1774261953.git.asml.silence@gmail.com
-[axboe: NULL ifq before break inside scoped guard]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Also drop pci_epc_put(). EPC device refcounting is tied to configfs EPC
+group lifetime, and pci_epc_put() in the .drop_link path is sufficient.
+
+Fixes: 8b821cf76150 ("PCI: endpoint: Add EP function driver to provide NTB functionality")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260226084142.2226875-3-den@valinux.co.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    4 ++++
- io_uring/zcrx.c     |   46 +++++++++++++++++++++++++++++++++++++++++++---
- io_uring/zcrx.h     |    4 ++++
- 3 files changed, 51 insertions(+), 3 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-ntb.c |   56 ---------------------------
+ 1 file changed, 2 insertions(+), 54 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2308,6 +2308,10 @@ static __cold void io_ring_exit_work(str
- 	struct io_tctx_node *node;
- 	int ret;
- 
-+	mutex_lock(&ctx->uring_lock);
-+	io_terminate_zcrx(ctx);
-+	mutex_unlock(&ctx->uring_lock);
-+
- 	/*
- 	 * If we're doing polled IO and end up having requests being
- 	 * submitted async (out-of-line), then completions can come in while
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -624,12 +624,17 @@ static void io_zcrx_scrub(struct io_zcrx
- 	}
+--- a/drivers/pci/endpoint/functions/pci-epf-ntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-ntb.c
+@@ -1495,47 +1495,6 @@ err_alloc_peer_mem:
  }
  
--static void zcrx_unregister(struct io_zcrx_ifq *ifq)
-+static void zcrx_unregister_user(struct io_zcrx_ifq *ifq)
- {
- 	if (refcount_dec_and_test(&ifq->user_refs)) {
- 		io_close_queue(ifq);
- 		io_zcrx_scrub(ifq);
- 	}
-+}
-+
-+static void zcrx_unregister(struct io_zcrx_ifq *ifq)
-+{
-+	zcrx_unregister_user(ifq);
- 	io_put_zcrx_ifq(ifq);
+ /**
+- * epf_ntb_epc_destroy_interface() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
+- * @type: PRIMARY interface or SECONDARY interface
+- *
+- * Unbind NTB function device from EPC and relinquish reference to pci_epc
+- * for each of the interface.
+- */
+-static void epf_ntb_epc_destroy_interface(struct epf_ntb *ntb,
+-					  enum pci_epc_interface_type type)
+-{
+-	struct epf_ntb_epc *ntb_epc;
+-	struct pci_epc *epc;
+-	struct pci_epf *epf;
+-
+-	if (type < 0)
+-		return;
+-
+-	epf = ntb->epf;
+-	ntb_epc = ntb->epc[type];
+-	if (!ntb_epc)
+-		return;
+-	epc = ntb_epc->epc;
+-	pci_epc_remove_epf(epc, epf, type);
+-	pci_epc_put(epc);
+-}
+-
+-/**
+- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
+- *
+- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
+- */
+-static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
+-{
+-	enum pci_epc_interface_type type;
+-
+-	for (type = PRIMARY_INTERFACE; type <= SECONDARY_INTERFACE; type++)
+-		epf_ntb_epc_destroy_interface(ntb, type);
+-}
+-
+-/**
+  * epf_ntb_epc_create_interface() - Create and initialize NTB EPC interface
+  * @ntb: NTB device that facilitates communication between HOST1 and HOST2
+  * @epc: struct pci_epc to which a particular NTB interface should be associated
+@@ -1614,15 +1573,8 @@ static int epf_ntb_epc_create(struct epf
+ 
+ 	ret = epf_ntb_epc_create_interface(ntb, epf->sec_epc,
+ 					   SECONDARY_INTERFACE);
+-	if (ret) {
++	if (ret)
+ 		dev_err(dev, "SECONDARY intf: Fail to create NTB EPC\n");
+-		goto err_epc_create;
+-	}
+-
+-	return 0;
+-
+-err_epc_create:
+-	epf_ntb_epc_destroy_interface(ntb, PRIMARY_INTERFACE);
+ 
+ 	return ret;
  }
- 
-@@ -885,6 +890,36 @@ static struct net_iov *__io_zcrx_get_fre
- 	return &area->nia.niovs[niov_idx];
- }
- 
-+static inline bool is_zcrx_entry_marked(struct io_ring_ctx *ctx, unsigned long id)
-+{
-+	return xa_get_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
-+}
-+
-+static inline void set_zcrx_entry_mark(struct io_ring_ctx *ctx, unsigned long id)
-+{
-+	xa_set_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
-+}
-+
-+void io_terminate_zcrx(struct io_ring_ctx *ctx)
-+{
-+	struct io_zcrx_ifq *ifq;
-+	unsigned long id = 0;
-+
-+	lockdep_assert_held(&ctx->uring_lock);
-+
-+	while (1) {
-+		scoped_guard(mutex, &ctx->mmap_lock)
-+			ifq = xa_find(&ctx->zcrx_ctxs, &id, ULONG_MAX, XA_PRESENT);
-+		if (!ifq)
-+			break;
-+		if (WARN_ON_ONCE(is_zcrx_entry_marked(ctx, id)))
-+			break;
-+		set_zcrx_entry_mark(ctx, id);
-+		id++;
-+		zcrx_unregister_user(ifq);
-+	}
-+}
-+
- void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
- {
- 	struct io_zcrx_ifq *ifq;
-@@ -896,12 +931,17 @@ void io_unregister_zcrx_ifqs(struct io_r
- 			unsigned long id = 0;
- 
- 			ifq = xa_find(&ctx->zcrx_ctxs, &id, ULONG_MAX, XA_PRESENT);
--			if (ifq)
-+			if (ifq) {
-+				if (WARN_ON_ONCE(!is_zcrx_entry_marked(ctx, id))) {
-+					ifq = NULL;
-+					break;
-+				}
- 				xa_erase(&ctx->zcrx_ctxs, id);
-+			}
- 		}
- 		if (!ifq)
- 			break;
--		zcrx_unregister(ifq);
-+		io_put_zcrx_ifq(ifq);
+@@ -1887,7 +1839,7 @@ static int epf_ntb_bind(struct pci_epf *
+ 	ret = epf_ntb_init_epc_bar(ntb);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to create NTB EPC\n");
+-		goto err_bar_init;
++		return ret;
  	}
  
- 	xa_destroy(&ctx->zcrx_ctxs);
---- a/io_uring/zcrx.h
-+++ b/io_uring/zcrx.h
-@@ -71,6 +71,7 @@ int io_zcrx_ctrl(struct io_ring_ctx *ctx
- int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 			 struct io_uring_zcrx_ifq_reg __user *arg);
- void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx);
-+void io_terminate_zcrx(struct io_ring_ctx *ctx);
- int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 		 struct socket *sock, unsigned int flags,
- 		 unsigned issue_flags, unsigned int *len);
-@@ -85,6 +86,9 @@ static inline int io_register_zcrx_ifq(s
- static inline void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
- {
+ 	ret = epf_ntb_config_spad_bar_alloc_interface(ntb);
+@@ -1909,9 +1861,6 @@ static int epf_ntb_bind(struct pci_epf *
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
+ 
+-err_bar_init:
+-	epf_ntb_epc_destroy(ntb);
+-
+ 	return ret;
  }
-+static inline void io_terminate_zcrx(struct io_ring_ctx *ctx)
-+{
-+}
- static inline int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 			       struct socket *sock, unsigned int flags,
- 			       unsigned issue_flags, unsigned int *len)
+ 
+@@ -1927,7 +1876,6 @@ static void epf_ntb_unbind(struct pci_ep
+ 
+ 	epf_ntb_epc_cleanup(ntb);
+ 	epf_ntb_config_spad_bar_free(ntb);
+-	epf_ntb_epc_destroy(ntb);
+ }
+ 
+ #define EPF_NTB_R(_name)						\
 
 
 
