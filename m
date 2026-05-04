@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-243630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PHKMv+s+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:15 +0200
+	id OKf5CCan+GlexgIAu9opvQ
+	(envelope-from <stable+bounces-243179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:03:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E83A4BF810
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:28:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8234BE6BC
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87E4B31B72B8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:19:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 58C843008C08
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587653DE44B;
-	Mon,  4 May 2026 14:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E55F3D3308;
+	Mon,  4 May 2026 14:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUmoQrQd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0EkTB7e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF3329E116;
-	Mon,  4 May 2026 14:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41710347BA9;
+	Mon,  4 May 2026 14:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904378; cv=none; b=pbXkH7hbmdvfvYhIW6MpABfkEhhDXtAc58tkvPyqMxC2ZgU1ePgkEpwleB5qIhVK04A01btqwbzvQJSQAGrtngACGDsQbAXQ4lV4NE9QMNr9hKfo1pls7MVAlSSIR2LEs6eFnt16fdAgivxevSkKwwd6ZwaPQx+WwYBM/HeWuJU=
+	t=1777903219; cv=none; b=X1j7Rsuuaw22vOZzWezLK/xFmll2ZKCDHkaIj3Dq+uN4FvtceMG5ZXNER0fg2RAFV1Yb//NKtcemo7aE6Wm/5lC7jI0oqYYA7OYbpzt4rVYBgzYOiH+bA9Vyv2+HSwgrjL+QMbb4HdbCQg5Oy8/X4i6/PkbNlppufpblw8rmdzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904378; c=relaxed/simple;
-	bh=dMU3DOFK/UMXOBMVMr1zHXVZmhNtGU/yhzqECLr+nRQ=;
+	s=arc-20240116; t=1777903219; c=relaxed/simple;
+	bh=p5REswEx8k5wjJk/7DGmuDz+Mno1SYjoAA1PYZ29q1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2T9p6bnlH9p88k6jeMJ5nuyNwSeb0tSQ1Ya2LYover6Qiw2uGXSyDNYx7pYVig+4nZzT2roteJSbBW5cYho+F4oKmGne56ORizoXEyjlH8P973+LPfDaBxOgtA7INpN21XwP6P5NYaJm2o6HAn+CYLK9RFEtgLMzisBUYoVtdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUmoQrQd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42A0C2BCB8;
-	Mon,  4 May 2026 14:19:37 +0000 (UTC)
+	 MIME-Version; b=j9B4LdNum7Jamy8lHeDhiad3ayai10+IeZUtVEXzqsWZ7VsfsYlpXODyaqdyC4VjI88+aCXwcCWgY6MyWt4ovUxmwxhlTsx7eCh4cWvf6C7LjVlsVKwGVmLYdH5MEQuq+C4pwv4BNF/qPKVB56ODfIw8GCw45ydtZY8t6q1Heuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0EkTB7e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92217C2BCB8;
+	Mon,  4 May 2026 14:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904378;
-	bh=dMU3DOFK/UMXOBMVMr1zHXVZmhNtGU/yhzqECLr+nRQ=;
+	s=korg; t=1777903218;
+	bh=p5REswEx8k5wjJk/7DGmuDz+Mno1SYjoAA1PYZ29q1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUmoQrQdIYeMlb6W4yMBqPtQmVhm7/dgcU4+FfEU60M8wX1scHPa9E0qiHYXyT4EU
-	 rowmLhNhIc/2CORVXLEttrkXniOefo/YiUxN2/5gfRR52/vIT/MAsSm2lVFmapJTUT
-	 v86RvfFfNqhr1OJa/f6zJXFDTOSZxNwaWwo2vpQk=
+	b=G0EkTB7eQl3I3UBOkTxWlWFqIUJLvLX8XeDL6DUoexW/Ms8vMXURbldjXAkScWT64
+	 TbdzTMI7WNwaD4PrOrCZUr/SH4V0MpT+QVYVb3F9QJxfq/fXuTxil/YELp53nvmOjy
+	 Jy9e8s0hH9vvwoSQQ9A0oE8nWxLeI9+0/m0oPWd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 6.12 016/215] driver core: Dont let a device probe until its ready
+	Marco Elver <elver@google.com>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH 7.0 150/307] slub: fix data loss and overflow in krealloc()
 Date: Mon,  4 May 2026 15:50:35 +0200
-Message-ID: <20260504135130.767202378@linuxfoundation.org>
+Message-ID: <20260504135148.428451749@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,250 +64,165 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E83A4BF810
+X-Rspamd-Queue-Id: AC8234BE6BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243630-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243179-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,harvard.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,samsung.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sashiko.dev:url]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Marco Elver <elver@google.com>
 
-commit a2225b6e834a838ae3c93709760edc0a169eb2f2 upstream.
+commit 082a6d03a2d685a83a332666b500ad3966349588 upstream.
 
-The moment we link a "struct device" into the list of devices for the
-bus, it's possible probe can happen. This is because another thread
-can load the driver at any time and that can cause the device to
-probe. This has been seen in practice with a stack crawl that looks
-like this [1]:
+Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
+k[v]realloc") introduced the ability to force a reallocation if the
+original object does not satisfy new alignment or NUMA node, even when
+the object is being shrunk.
 
-  really_probe()
-  __driver_probe_device()
-  driver_probe_device()
-  __driver_attach()
-  bus_for_each_dev()
-  driver_attach()
-  bus_add_driver()
-  driver_register()
-  __platform_driver_register()
-  init_module() [some module]
-  do_one_initcall()
-  do_init_module()
-  load_module()
-  __arm64_sys_finit_module()
-  invoke_syscall()
+This introduced two bugs in the reallocation fallback path:
 
-As a result of the above, it was seen that device_links_driver_bound()
-could be called for the device before "dev->fwnode->dev" was
-assigned. This prevented __fw_devlink_pickup_dangling_consumers() from
-being called which meant that other devices waiting on our driver's
-sub-nodes were stuck deferring forever.
+1. Data loss during NUMA migration: The jump to 'alloc_new' happens
+   before 'ks' and 'orig_size' are initialized. As a result, the
+   memcpy() in the 'alloc_new' block would copy 0 bytes into the new
+   allocation.
 
-It's believed that this problem is showing up suddenly for two
-reasons:
-1. Android has recently (last ~1 year) implemented an optimization to
-   the order it loads modules [2]. When devices opt-in to this faster
-   loading, modules are loaded one-after-the-other very quickly. This
-   is unlike how other distributions do it. The reproduction of this
-   problem has only been seen on devices that opt-in to Android's
-   "parallel module loading".
-2. Android devices typically opt-in to fw_devlink, and the most
-   noticeable issue is the NULL "dev->fwnode->dev" in
-   device_links_driver_bound(). fw_devlink is somewhat new code and
-   also not in use by all Linux devices.
+2. Buffer overflow during shrinking: When shrinking an object while
+   forcing a new alignment, 'new_size' is smaller than the old size.
+   However, the memcpy() used the old size ('orig_size ?: ks'), leading
+   to an out-of-bounds write.
 
-Even though the specific symptom where "dev->fwnode->dev" wasn't
-assigned could be fixed by moving that assignment higher in
-device_add(), other parts of device_add() (like the call to
-device_pm_add()) are also important to run before probe. Only moving
-the "dev->fwnode->dev" assignment would likely fix the current
-symptoms but lead to difficult-to-debug problems in the future.
+The same overflow bug exists in the kvrealloc() fallback path, where the
+old bucket size ksize(p) is copied into the new buffer without being
+bounded by the new size.
 
-Fix the problem by preventing probe until device_add() has run far
-enough that the device is ready to probe. If somehow we end up trying
-to probe before we're allowed, __driver_probe_device() will return
--EPROBE_DEFER which will make certain the device is noticed.
+A simple reproducer:
 
-In the race condition that was seen with Android's faster module
-loading, we will temporarily add the device to the deferred list and
-then take it off immediately when device_add() probes the device.
+	// e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
+	while (1) {
+		void *p = kmalloc(128, GFP_KERNEL);
+		p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
+		kfree(p);
+	}
 
-Instead of adding another flag to the bitfields already in "struct
-device", instead add a new "flags" field and use that. This allows us
-to freely change the bit from different thread without worrying about
-corrupting nearby bits (and means threads changing other bit won't
-corrupt us).
+demonstrates the issue:
 
-[1] Captured on a machine running a downstream 6.6 kernel
-[2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libmodprobe/libmodprobe.cpp?q=LoadModulesParallel
+  ==================================================================
+  BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
 
+  Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
+   memcpy_orig+0x68/0x130
+   krealloc_node_align_noprof+0x1c8/0x340
+   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+   lkdtm_do_action+0x3a/0x60 [lkdtm]
+   ...
+
+  kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
+
+  allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
+   krealloc_node_align_noprof+0x19c/0x340
+   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+   lkdtm_do_action+0x3a/0x60 [lkdtm]
+   ...
+  ==================================================================
+
+Fix it by moving the old size calculation to the top of __do_krealloc()
+and bounding all copy lengths by the new allocation size.
+
+Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
 Cc: stable@vger.kernel.org
-Fixes: 2023c610dc54 ("Driver core: add new device to bus's list before probing")
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patch.msgid.link/20260406162231.v5.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
+Signed-off-by: Marco Elver <elver@google.com>
+Link: https://patch.msgid.link/20260416132837.3787694-1-elver@google.com
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c    |   15 +++++++++++++++
- drivers/base/dd.c      |   20 ++++++++++++++++++++
- include/linux/device.h |   44 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 79 insertions(+)
+ mm/slub.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3691,6 +3691,21 @@ int device_add(struct device *dev)
- 		fw_devlink_link_device(dev);
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6569,16 +6569,6 @@ __do_krealloc(const void *p, size_t new_
+ 	if (!kasan_check_byte(p))
+ 		return NULL;
+ 
+-	/*
+-	 * If reallocation is not necessary (e. g. the new size is less
+-	 * than the current allocated size), the current allocation will be
+-	 * preserved unless __GFP_THISNODE is set. In the latter case a new
+-	 * allocation on the requested node will be attempted.
+-	 */
+-	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
+-		     nid != page_to_nid(virt_to_page(p)))
+-		goto alloc_new;
+-
+ 	if (is_kfence_address(p)) {
+ 		ks = orig_size = kfence_ksize(p);
+ 	} else {
+@@ -6597,6 +6587,16 @@ __do_krealloc(const void *p, size_t new_
+ 		}
  	}
  
 +	/*
-+	 * The moment the device was linked into the bus's "klist_devices" in
-+	 * bus_add_device() then it's possible that probe could have been
-+	 * attempted in a different thread via userspace loading a driver
-+	 * matching the device. "ready_to_probe" being unset would have
-+	 * blocked those attempts. Now that all of the above initialization has
-+	 * happened, unblock probe. If probe happens through another thread
-+	 * after this point but before bus_probe_device() runs then it's fine.
-+	 * bus_probe_device() -> device_initial_probe() -> __device_attach()
-+	 * will notice (under device_lock) that the device is already bound.
++	 * If reallocation is not necessary (e. g. the new size is less
++	 * than the current allocated size), the current allocation will be
++	 * preserved unless __GFP_THISNODE is set. In the latter case a new
++	 * allocation on the requested node will be attempted.
 +	 */
-+	device_lock(dev);
-+	dev_set_ready_to_probe(dev);
-+	device_unlock(dev);
++	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
++		     nid != page_to_nid(virt_to_page(p)))
++		goto alloc_new;
 +
- 	bus_probe_device(dev);
+ 	/* If the old object doesn't fit, allocate a bigger one */
+ 	if (new_size > ks)
+ 		goto alloc_new;
+@@ -6631,7 +6631,7 @@ alloc_new:
+ 	if (ret && p) {
+ 		/* Disable KASAN checks as the object's redzone is accessed. */
+ 		kasan_disable_current();
+-		memcpy(ret, kasan_reset_tag(p), orig_size ?: ks);
++		memcpy(ret, kasan_reset_tag(p), min(new_size, (size_t)(orig_size ?: ks)));
+ 		kasan_enable_current();
+ 	}
  
- 	/*
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -844,6 +844,26 @@ static int __driver_probe_device(const s
- 	if (dev->driver)
- 		return -EBUSY;
+@@ -6865,7 +6865,7 @@ void *kvrealloc_node_align_noprof(const
+ 		if (p) {
+ 			/* We already know that `p` is not a vmalloc address. */
+ 			kasan_disable_current();
+-			memcpy(n, kasan_reset_tag(p), ksize(p));
++			memcpy(n, kasan_reset_tag(p), min(size, ksize(p)));
+ 			kasan_enable_current();
  
-+	/*
-+	 * In device_add(), the "struct device" gets linked into the subsystem's
-+	 * list of devices and broadcast to userspace (via uevent) before we're
-+	 * quite ready to probe. Those open pathways to driver probe before
-+	 * we've finished enough of device_add() to reliably support probe.
-+	 * Detect this and tell other pathways to try again later. device_add()
-+	 * itself will also try to probe immediately after setting
-+	 * "ready_to_probe".
-+	 */
-+	if (!dev_ready_to_probe(dev))
-+		return dev_err_probe(dev, -EPROBE_DEFER, "Device not ready to probe\n");
-+
-+	/*
-+	 * Set can_match = true after calling dev_ready_to_probe(), so
-+	 * driver_deferred_probe_add() won't actually add the device to the
-+	 * deferred probe list when dev_ready_to_probe() returns false.
-+	 *
-+	 * When dev_ready_to_probe() returns false, it means that device_add()
-+	 * will do another probe() attempt for us.
-+	 */
- 	dev->can_match = true;
- 	dev_dbg(dev, "bus: '%s': %s: matched device with driver %s\n",
- 		drv->bus->name, __func__, drv->name);
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -500,6 +500,21 @@ struct device_physical_location {
- };
- 
- /**
-+ * enum struct_device_flags - Flags in struct device
-+ *
-+ * Each flag should have a set of accessor functions created via
-+ * __create_dev_flag_accessors() for each access.
-+ *
-+ * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished enough
-+ *		initialization that probe could be called.
-+ */
-+enum struct_device_flags {
-+	DEV_FLAG_READY_TO_PROBE = 0,
-+
-+	DEV_FLAG_COUNT
-+};
-+
-+/**
-  * struct device - The basic device structure
-  * @parent:	The device's "parent" device, the device to which it is attached.
-  * 		In most cases, a parent device is some sort of bus or host
-@@ -594,6 +609,7 @@ struct device_physical_location {
-  * @dma_skip_sync: DMA sync operations can be skipped for coherent buffers.
-  * @dma_iommu: Device is using default IOMMU implementation for DMA and
-  *		doesn't rely on dma_ops structure.
-+ * @flags:	DEV_FLAG_XXX flags. Use atomic bitfield operations to modify.
-  *
-  * At the lowest level, every device in a Linux system is represented by an
-  * instance of struct device. The device structure contains the information
-@@ -716,8 +732,36 @@ struct device {
- #ifdef CONFIG_IOMMU_DMA
- 	bool			dma_iommu:1;
- #endif
-+
-+	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
- };
- 
-+#define __create_dev_flag_accessors(accessor_name, flag_name) \
-+static inline bool dev_##accessor_name(const struct device *dev) \
-+{ \
-+	return test_bit(flag_name, dev->flags); \
-+} \
-+static inline void dev_set_##accessor_name(struct device *dev) \
-+{ \
-+	set_bit(flag_name, dev->flags); \
-+} \
-+static inline void dev_clear_##accessor_name(struct device *dev) \
-+{ \
-+	clear_bit(flag_name, dev->flags); \
-+} \
-+static inline void dev_assign_##accessor_name(struct device *dev, bool value) \
-+{ \
-+	assign_bit(flag_name, dev->flags, value); \
-+} \
-+static inline bool dev_test_and_set_##accessor_name(struct device *dev) \
-+{ \
-+	return test_and_set_bit(flag_name, dev->flags); \
-+}
-+
-+__create_dev_flag_accessors(ready_to_probe, DEV_FLAG_READY_TO_PROBE);
-+
-+#undef __create_dev_flag_accessors
-+
- /**
-  * struct device_link - Device link representation.
-  * @supplier: The device on the supplier end of the link.
+ 			kfree(p);
 
 
 
