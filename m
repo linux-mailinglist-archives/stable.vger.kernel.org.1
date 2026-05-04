@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-243235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLRmEx2p+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:41 +0200
+	id GLE4A/ir+Gn2xgIAu9opvQ
+	(envelope-from <stable+bounces-243655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80C84BEBCC
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50524BF46A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E4473060D47
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1665B3015708
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F83A3DDDD6;
-	Mon,  4 May 2026 14:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A0B3DE43B;
+	Mon,  4 May 2026 14:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JomVn/0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFTwDrdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74AB347BA9;
-	Mon,  4 May 2026 14:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1962315785;
+	Mon,  4 May 2026 14:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903364; cv=none; b=SjBaHA4sP7HJxW1eif4f7qC2/qIySgSP+zg2paEBFQkSwUN/Cp648GduVQcXUzFm3B8tKB/ANKf+ex3UMArnYVffLcXxXXNS4fkErMNSBBlzm/gN11SgieuvzGQHEtn2TXKeyriC9rQJcxebQ8nGQeG33yW0P7RdmlV0G6czM0Y=
+	t=1777904440; cv=none; b=mw8fMaMiCwDyy8dB5Kq7C/RNCb4C3L1hbLHyexgB/I68VnwPw0JEhCJK98rRTOMQXT8EZXnTwdZ558q6npIezTh3VQfJg6pWPIdvBEZJn2i+FsDiEZ9x/qTN+fQfCaWOUWH8ayKVGfNz4sayp8YDwrV5Q6T4Ak0RR/5FSnNdTm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903364; c=relaxed/simple;
-	bh=FYWD20yZsFcHh/wnlmDumIsrluGY3iwEsskM0DIIqrA=;
+	s=arc-20240116; t=1777904440; c=relaxed/simple;
+	bh=jk2kKMc0GpZJpdQejgURcxm5PWTCQp7z4wUBDz+NxJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHwU2mbQsa6P2R19+fwocsKxJtFekUWAT8hmxls6O7782sodRHEoi9pN7k7T17l3jdaJyY3mg2r4SB/Ygs67Emum1AqSHwR/4PN3rE7GZ9Oic/reqXC5C6K3sNXnMhvYpi6Kbqi5CZmAG+EbZyQ90SLtKEoHs2/uuYxkYGk1iDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JomVn/0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C87AC2BCC4;
-	Mon,  4 May 2026 14:02:44 +0000 (UTC)
+	 MIME-Version; b=X7A/viqdPLPVvzn+ZGiWAU9stbqZKo95Wopy9pagKTO+McpVN77/RnWcY6aS53YgdGT8dqL7ktZbIH77/KofzD0hhD7pqoaVV2o3pBB/dh08KWKwuLrzx0PuOkUl32u2eApc7lC2rOOc6Vv1Fw8/Mj1/ZI+0UYK7JYvkODCCCmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFTwDrdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8788FC2BCC4;
+	Mon,  4 May 2026 14:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903364;
-	bh=FYWD20yZsFcHh/wnlmDumIsrluGY3iwEsskM0DIIqrA=;
+	s=korg; t=1777904439;
+	bh=jk2kKMc0GpZJpdQejgURcxm5PWTCQp7z4wUBDz+NxJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JomVn/0JD9r+8UfMZJFi2e++KIgpfaNtZeCBXrmjMaNuZVXCZuxJ0Uoc7DZm1ziJU
-	 IQ1SKzwk/LQxmBVbYiWbToznFExgNtNQ2ZqH1LP5F40eqZB0990fVuBaQaYk3e8Ik6
-	 hZ9jjd+cvgXpBr6RsOa0K+Bk45ID7mouGm6pt6dU=
+	b=WFTwDrdWZ6Tn7FnEuz4cSnD5KuaYVI1LksS0b5gjdFfbeMtSDwD52qvgXWoHE36GJ
+	 6ad49nPSCwCKvxYISs0LZ7ICEKbWRnrWui80/c+Kuve/unN+9dN6Xz05CtoHkE6K9B
+	 a9aR33XVBlmeyvyXENYlmmMIlq6V3kAR34EgP4Nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Bin Liu <b-liu@ti.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 7.0 173/307] mmc: block: use single block write in retry
-Date: Mon,  4 May 2026 15:50:58 +0200
-Message-ID: <20260504135149.375064778@linuxfoundation.org>
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 040/215] media: amphion: Fix race between m2m job_abort and device_run
+Date: Mon,  4 May 2026 15:50:59 +0200
+Message-ID: <20260504135131.646946433@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +64,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A80C84BEBCC
+X-Rspamd-Queue-Id: B50524BF46A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243655-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243235-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,ti.com:url,ti.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
+commit 8cd35ceadcfc8c5da2eb7f7ce24525ce9d4ee62e upstream.
 
-Due to errata i2493[0], multi-block write would still fail in retries.
+Fix kernel panic caused by race condition where v4l2_m2m_ctx_release()
+frees m2m_ctx while v4l2_m2m_try_run() is about to call device_run
+with the same context.
 
-With i2493, the MMC interface has the potential of write failures when
-issuing multi-block writes operating in HS200 mode with excessive IO
-supply noise.
+Race sequence:
+  v4l2_m2m_try_run():           v4l2_m2m_ctx_release():
+    lock/unlock                   v4l2_m2m_cancel_job()
+                                    job_abort()
+                                      v4l2_m2m_job_finish()
+                                  kfree(m2m_ctx)  <- frees ctx
+    device_run()  <- use-after-free crash at 0x538
 
-While the errata provides guidance in hardware design and layout to
-minimize the IO supply noise, in theory the write failure cannot be
-resolved in hardware. The software solution to ensure the data integrity
-is to add minimum 5us delay between block writes. Single-block write is
-the practical way to introduce the delay.
+Crash trace:
+  Unable to handle kernel read from unreadable memory at virtual address
+  0000000000000538
+  v4l2_m2m_try_run+0x78/0x138
+  v4l2_m2m_device_run_work+0x14/0x20
 
-This patch reuses recovery_mode flag, and switches to single-block
-write in retry when multi-block write fails. It covers both CQE and
-non-CQE cases.
+The amphion vpu driver does not rely on the m2m framework's device_run
+callback to perform encode/decode operations.
 
-[0] https://www.ti.com/lit/pdf/sprz582
+Fix the race by preventing m2m framework job scheduling entirely:
+- Add job_ready callback returning 0 (no jobs ready for m2m framework)
+- Remove job_abort callback to avoid the race condition
+
+Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
 Cc: stable@vger.kernel.org
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |   12 ++++++++++--
- drivers/mmc/core/queue.h |    3 +++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/media/platform/amphion/vpu_v4l2.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1401,6 +1401,9 @@ static void mmc_blk_data_prep(struct mmc
- 		    rq_data_dir(req) == WRITE &&
- 		    (md->flags & MMC_BLK_REL_WR);
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -448,17 +448,14 @@ static void vpu_m2m_device_run(void *pri
+ {
+ }
  
-+	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
-+		recovery_mode = 1;
-+
- 	memset(brq, 0, sizeof(struct mmc_blk_request));
+-static void vpu_m2m_job_abort(void *priv)
++static int vpu_m2m_job_ready(void *priv)
+ {
+-	struct vpu_inst *inst = priv;
+-	struct v4l2_m2m_ctx *m2m_ctx = inst->fh.m2m_ctx;
+-
+-	v4l2_m2m_job_finish(m2m_ctx->m2m_dev, m2m_ctx);
++	return 0;
+ }
  
- 	mmc_crypto_prepare_req(mqrq);
-@@ -1540,10 +1543,13 @@ static void mmc_blk_cqe_complete_rq(stru
- 		err = 0;
- 
- 	if (err) {
--		if (mqrq->retries++ < MMC_CQE_RETRIES)
-+		if (mqrq->retries++ < MMC_CQE_RETRIES) {
-+			if (rq_data_dir(req) == WRITE)
-+				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 			blk_mq_requeue_request(req, true);
--		else
-+		} else {
- 			blk_mq_end_request(req, BLK_STS_IOERR);
-+		}
- 	} else if (mrq->data) {
- 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
- 			blk_mq_requeue_request(req, true);
-@@ -2085,6 +2091,8 @@ static void mmc_blk_mq_complete_rq(struc
- 	} else if (!blk_rq_bytes(req)) {
- 		__blk_mq_end_request(req, BLK_STS_IOERR);
- 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
-+		if (rq_data_dir(req) == WRITE)
-+			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 		blk_mq_requeue_request(req, true);
- 	} else {
- 		if (mmc_card_removed(mq->card))
---- a/drivers/mmc/core/queue.h
-+++ b/drivers/mmc/core/queue.h
-@@ -61,6 +61,8 @@ enum mmc_drv_op {
- 	MMC_DRV_OP_GET_EXT_CSD,
+ static const struct v4l2_m2m_ops vpu_m2m_ops = {
+ 	.device_run = vpu_m2m_device_run,
+-	.job_abort = vpu_m2m_job_abort
++	.job_ready = vpu_m2m_job_ready,
  };
  
-+#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
-+
- struct mmc_queue_req {
- 	struct mmc_blk_request	brq;
- 	struct scatterlist	*sg;
-@@ -69,6 +71,7 @@ struct mmc_queue_req {
- 	void			*drv_op_data;
- 	unsigned int		ioc_count;
- 	int			retries;
-+	u32			flags;
- };
- 
- struct mmc_queue {
+ static int vpu_vb2_queue_setup(struct vb2_queue *vq,
 
 
 
