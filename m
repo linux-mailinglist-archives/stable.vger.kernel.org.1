@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-243816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHLdJimv+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:29 +0200
+	id KEU5Ow6u+GlIxwIAu9opvQ
+	(envelope-from <stable+bounces-243590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221104BFC6F
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7334BFA41
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2781530D1FCB
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:29:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8D58307A8BE
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F773E0C55;
-	Mon,  4 May 2026 14:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C253D9DBB;
+	Mon,  4 May 2026 14:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXUX1Khf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiRX63DO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4926C3DF001;
-	Mon,  4 May 2026 14:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C253DE43C;
+	Mon,  4 May 2026 14:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904853; cv=none; b=WJxSDdNzayxsm3EjsY46QbqSY91l30YiAvipqpKPly3DCyTsYWHuuN+WheUZlp/rTUBZmyYVe/E51ysF0TFEHPyiYE0AymewpOi/qdFF50LudMPr7zVmbB0bmJoNZROd3Gq8+Hz1q9YaRXWjS7PkSBY5wyCuzvxSmhJCPRC6RlA=
+	t=1777904275; cv=none; b=HC/fSTL0/jkDTb+curjvxBmq4CxSf9saLwz5obWcNLC/l9nO0FdAttrzoN/abtT79obJybRp87jQL0zTTEigT1rk5xUXSb4NXDvY++Kzx/lwznl4nXKCBPJVgIncnb7hP8pwgdVGOHeVJiGb71N91xlxnEHKE5d1gkRHTh7+bEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904853; c=relaxed/simple;
-	bh=UXMNDHbiDhk109GoSYid5SjUhdkSIp/XyOCK4ccCeVc=;
+	s=arc-20240116; t=1777904275; c=relaxed/simple;
+	bh=A88Lgn36cFnp6TZLVX4V0MSHC5oXGmsKLkKPseL7YFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMjf92sC0x2oJf0y5VMh67VYCGXajI/7nbFGn/FmbzbKnE10Ga15RdkC2CPafRNSXW1rIPw6zY4y/Ggmy6MDXcdHZFTMC6HemxCR9cslAfUZYAiyE7WwjRlAf09c/Hjlwg59CoGWxY55B1x2q8PxwmXaOZiAj3mnwLMgsxMI4Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXUX1Khf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F9CC2BCB8;
-	Mon,  4 May 2026 14:27:32 +0000 (UTC)
+	 MIME-Version; b=QT2cTTCNUTCNnjh/UmIJJz95KvvFCz8BFnMEzKT3KNqx9Y9DDhbAJ7dM5mjlBVzvWigH4K5hQDhkBfcfR+4cik7Na0Cc+cJwqrXmeUSgRWFNVXk8OSfE7NV1DWoVDpalFenJUf7c0cdKwY7f6Rif/dX9rwAbBrSsUBLcmvciGf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiRX63DO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF7CC2BCB8;
+	Mon,  4 May 2026 14:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904853;
-	bh=UXMNDHbiDhk109GoSYid5SjUhdkSIp/XyOCK4ccCeVc=;
+	s=korg; t=1777904275;
+	bh=A88Lgn36cFnp6TZLVX4V0MSHC5oXGmsKLkKPseL7YFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXUX1KhflAx4tLWDShpvKJusNCvdOCDdqrqR5K7vsB7Ck7sjdEXMOfYJEUBBqoeU9
-	 H+4YNvE8Bt0Djmz3gtXO6qfff9dHxrfr960Aeaqu3L+O04sF+x2pVY54veM3AuQY1f
-	 4XrOinhJZ2fHDl1qzVILsVqwgo6xhLhnCbkuKpoM=
+	b=IiRX63DOfFaUO5aViJJASlNekMkLMMZK1vzH23nQzoS3pBMQf8Qn5X1n7XvqqtiSI
+	 3So/ji6PHnu5HqIdODyOikHGVbW5lfhRfRCX9Kpo7o4l4rg/ntMnRqRzg3DRbsFAXC
+	 UIqeNuwK19AC8PMFZwvv41h/Zr3nAfyg/a99VQVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 172/215] seg6: fix seg6 lwtunnel output redirect for L2 reduced encap mode
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 251/275] mei: me: add nova lake point H DID
 Date: Mon,  4 May 2026 15:53:11 +0200
-Message-ID: <20260504135136.470229228@linuxfoundation.org>
+Message-ID: <20260504135152.364720802@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +65,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 221104BFC6F
+X-Rspamd-Queue-Id: BB7334BFA41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243816-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-243590-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uniroma2.it:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,l2encaps.red:url,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit ade67d5f588832c7ba131aadd4215a94ce0a15c8 upstream.
+[ Upstream commit a5a1804332afc7035d5c5b880548262e81d796bc ]
 
-When SEG6_IPTUN_MODE_L2ENCAP_RED (L2ENCAP_RED) was introduced, the
-condition in seg6_build_state() that excludes L2 encap modes from
-setting LWTUNNEL_STATE_OUTPUT_REDIRECT was not updated to account for
-the new mode.
-As a consequence, L2ENCAP_RED routes incorrectly trigger seg6_output()
-on the output path, where the packet is silently dropped because
-skb_mac_header_was_set() fails on L3 packets.
+Add Nova Lake H device id.
 
-Extend the check to also exclude L2ENCAP_RED, consistent with L2ENCAP.
-
-Fixes: 13f0296be8ec ("seg6: add support for SRv6 H.L2Encaps.Red behavior")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260418162838.31979-1-andrea.mayer@uniroma2.it
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260405141758.1634556-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_iptunnel.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -715,7 +715,8 @@ static int seg6_build_state(struct net *
- 	newts->type = LWTUNNEL_ENCAP_SEG6;
- 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -123,6 +123,7 @@
+ #define PCI_DEVICE_ID_INTEL_MEI_WCL_P      0x4D70  /* Wildcat Lake P */
  
--	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP)
-+	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP &&
-+	    tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP_RED)
- 		newts->flags |= LWTUNNEL_STATE_OUTPUT_REDIRECT;
+ #define PCI_DEVICE_ID_INTEL_MEI_NVL_S      0x6E68  /* Nova Lake Point S */
++#define PCI_DEVICE_ID_INTEL_MEI_NVL_H      0xD370  /* Nova Lake Point H */
  
- 	newts->headroom = seg6_lwt_headroom(tuninfo);
+ /*
+  * MEI HW Section
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -130,6 +130,7 @@ static const struct pci_device_id mei_me
+ 	{PCI_DEVICE_DATA(INTEL, MEI_WCL_P, MEI_ME_PCH15_CFG)},
+ 
+ 	{PCI_DEVICE_DATA(INTEL, MEI_NVL_S, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_NVL_H, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
+ 	{0, }
 
 
 
