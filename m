@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-243705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMZ2F4es+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243705-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:15 +0200
+	id GIhAKbin+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B344BF64D
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:26:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876384BE7F2
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 257563019FEA
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:22:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB156300A33F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B843DE43C;
-	Mon,  4 May 2026 14:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0C33DE42C;
+	Mon,  4 May 2026 14:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I13mPwRo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmpfuOgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE3135A3AD;
-	Mon,  4 May 2026 14:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D4C3DDDDA;
+	Mon,  4 May 2026 14:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904565; cv=none; b=h2G9F/lZ5CJaBjxyZDOPGOsZLR+nN0Xllf4rgOjAVkxwakhiOMWu0s+P/jjYV2zRTKLJObfM+21ijofPR5+NWIMdb0b8kIliNNODsqffX41YXiH9YLOqpHJYLCvoFfT+dDxvYZAB64zGsCKYInix8Wx4dgCzMGyKf4Ghewo+4tU=
+	t=1777903406; cv=none; b=GPVn/qR/XB/9OSRiMqAoBRtWrIUutJrMqgwT4ZR5xyLhnTKvLGUAD7fOmVYzm+nPU+KuXPjotll+VC0JC68n9B2CNxNwB4CN1P+9w/euon8sMg6rxgo8JsZNI7stUBgPIQpvjsrpT6lXV6wJfN0tf7AE0MUQMvnmV6MIt7dVxKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904565; c=relaxed/simple;
-	bh=KettIShVQn+XoNVg4N/Y8HUQQDDir2jfGe0eL6bU6Zk=;
+	s=arc-20240116; t=1777903406; c=relaxed/simple;
+	bh=3GidTrf8t3bbOGf3X+wBEhg52hTQ6T5apVjdDNa10Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INviV3uY7ooS3+dz1Yw9lKrXn0xJ5H308wFeIZZDobPLXWxCoFQrJY5Yaan9tPejnGczLY5CPh2f636wGHxUckBYqHGmGkx4o1SvFe02olwRow5XPhRg8057gTVNqYsnUOKzaxfPZXVuly/5gPDiLjARwV9ylX9G3TIyV6RYa0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I13mPwRo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E197C2BCB8;
-	Mon,  4 May 2026 14:22:45 +0000 (UTC)
+	 MIME-Version; b=Wapa5Wiydqijm1kLPbxSPaeAEH3/bamc9AOpZNeWCu13feJvvDgT4wAW+RO7WI+nGKRe9FvxEGM+K4zjcl7jWH7SdLRz0vcL6oYrKmJ5P++uSbPSoesTkjThgf5ye9uTN21h5vKfr6/qSuSH/yyQ/KZb1+6CBqd0q5j4LV+vzTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmpfuOgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4A0C2BCB8;
+	Mon,  4 May 2026 14:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904565;
-	bh=KettIShVQn+XoNVg4N/Y8HUQQDDir2jfGe0eL6bU6Zk=;
+	s=korg; t=1777903405;
+	bh=3GidTrf8t3bbOGf3X+wBEhg52hTQ6T5apVjdDNa10Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I13mPwRoNYHXBi06lo/1R/OU2ADury+EfAM5Qg0xcv0kTG3mlzYB5I+qNKqiKgA6N
-	 GU8J5d0EOdLnXBZEIzg2wWVHX0cqjd3YPGQx2VsqqqT343C+LzKgzjOCh8Qa7BLEqu
-	 MYFw+Zg4yrhjfBnhdb4Bts6iEzGb35h8s+Ee6mcY=
+	b=UmpfuOgxL5OKiWJ0qLmtfhlVM0KSaZ6js8aZ04mrjAWrjepzKuokDcpbq4lYTgv+j
+	 wxoIm4U0iumAAkbMeqhvg26GEnGn6T/ieKYgknraOt+e4vQ+3OTrxZ+dUnxszCxaXz
+	 TLy2dQs83Ce4FquA7ePD3EYSqe/Rr5M4x9ViOxmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 088/215] net: txgbe: fix firmware version check
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 222/307] KVM: nSVM: Clear EVENTINJ fields in vmcb12 on nested #VMEXIT
 Date: Mon,  4 May 2026 15:51:47 +0200
-Message-ID: <20260504135133.373854327@linuxfoundation.org>
+Message-ID: <20260504135151.215104911@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02B344BF64D
+X-Rspamd-Queue-Id: 876384BE7F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243705-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243251-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,58 +89,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,trustnetic.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit c263f644add3d6ad81f9d62a99284fde408f0caa upstream.
+commit 69b721a86d0dcb026f6db7d111dcde7550442d2e upstream.
 
-For the device SP, the firmware version is a 32-bit value where the
-lower 20 bits represent the base version number. And the customized
-firmware version populates the upper 12 bits with a specific
-identification number.
+According to the APM, from the reference of the VMRUN instruction:
 
-For other devices AML 25G and 40G, the upper 12 bits of the firmware
-version is always non-zero, and they have other naming conventions.
+  Upon #VMEXIT, the processor performs the following actions in order to
+  return to the host execution context:
 
-Only SP devices need to check this to tell if XPCS will work properly.
-So the judgement of MAC type is added here.
+  ...
 
-And the original logic compared the entire 32-bit value against 0x20010,
-which caused the outdated base firmwares bypass the version check
-without a warning. Apply a mask 0xfffff to isolate the lower 20 bits for
-an accurate base version comparison.
+  clear EVENTINJ field in VMCB
 
-Fixes: ab928c24e6cd ("net: txgbe: add FW version warning")
+KVM already syncs EVENTINJ fields from vmcb02 to cached vmcb12 on every
+L2->L0  #VMEXIT. Since these fields are zeroed by the CPU on #VMEXIT, they
+will mostly be zeroed in vmcb12 on nested #VMEXIT by nested_svm_vmexit().
+
+However, this is not the case when:
+
+  1. Consistency checks fail, as nested_svm_vmexit() is not called.
+  2. Entering guest mode fails before L2 runs (e.g. due to failed load of
+     CR3).
+
+(2) was broken by commit 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB
+controls updated by the processor on every vmexit"), as prior to that
+nested_svm_vmexit() always zeroed EVENTINJ fields.
+
+Explicitly clear the fields in all nested #VMEXIT code paths.
+
+Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
+Fixes: 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB controls updated by the processor on every vmexit")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/C787AA5C07598B13+20260422071837.372731-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-12-yosry@kernel.org
+[sean: massage changelog formatting]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -668,7 +668,8 @@ static int txgbe_probe(struct pci_dev *p
- 			 "0x%08x", etrack_id);
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1045,6 +1045,8 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
+ 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
+ 		vmcb12->control.exit_info_1  = 0;
+ 		vmcb12->control.exit_info_2  = 0;
++		vmcb12->control.event_inj = 0;
++		vmcb12->control.event_inj_err = 0;
+ 		svm_set_gif(svm, false);
+ 		goto out;
  	}
+@@ -1188,9 +1190,9 @@ static int nested_svm_vmexit_update_vmcb
+ 	if (nested_vmcb12_has_lbrv(vcpu))
+ 		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
  
--	if (etrack_id < 0x20010)
-+	if (wx->mac.type == wx_mac_sp &&
-+	    ((etrack_id & 0xfffff) < 0x20010))
- 		dev_warn(&pdev->dev, "Please upgrade the firmware to 0x20010 or above.\n");
++	vmcb12->control.event_inj	  = 0;
++	vmcb12->control.event_inj_err	  = 0;
+ 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
+-	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
+-	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
  
- 	txgbe = devm_kzalloc(&pdev->dev, sizeof(*txgbe), GFP_KERNEL);
+ 	trace_kvm_nested_vmexit_inject(vmcb12->control.exit_code,
+ 				       vmcb12->control.exit_info_1,
 
 
 
