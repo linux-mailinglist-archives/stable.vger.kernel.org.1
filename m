@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-243433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNg6HvWq+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:33 +0200
+	id 8KyDB1is+GnHxgIAu9opvQ
+	(envelope-from <stable+bounces-243398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E854D4BF12C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925CC4BF582
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B59430233E0
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2412304D5F7
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05653D5645;
-	Mon,  4 May 2026 14:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994D33D9029;
+	Mon,  4 May 2026 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZP/iikn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WniD3s9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822D93B19D1;
-	Mon,  4 May 2026 14:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0CE1ADC83;
+	Mon,  4 May 2026 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903871; cv=none; b=eVm67mZ86MkpYUHpbFDtLQb1clPaznKo8tpj//3aQP83qdxC1t6FOOXCc0UQptBhMOnjPq4WVSjhEiiYQcCp6d+kUpBMY++uD76qUFdIyPlqp38RIKQ314n3xIXOxFze9ch8tJvt7+nP3qm5ppOvHft2dZHRJJtifqNNXo4q2f0=
+	t=1777903781; cv=none; b=LqIQ3ruyCKGSu5RA78j2eHPtkAKBHTveZIiINnrclvMeHVtaHG5bSmjkgvMJi+a5mQHHJFnIPiAmuov8MtBD4PAVgSHmbg0nmoppGAb3bovY7EMG7eg2KzhRIjEndttSvqmYOT4nfaPyKkwH80Ms39ifQMyYCyenDix/0UfvpUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903871; c=relaxed/simple;
-	bh=gENbwNyFLzvlAwdmSo1+TQ8Zqbd26x8vfQLvNtGiOaY=;
+	s=arc-20240116; t=1777903781; c=relaxed/simple;
+	bh=qwW0R1iSaaC9y73sCITf5w8wGPJLOoxhs6B4t5ljCiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pb/uxQFDsFa0ePmAA/ZLq6usYpZtvoM2dAKu9RYmF8Hsv71Sd9Cw0nm3AzcIDwJK55IRiLVAVAGiTSlmFhTN+6iTLyfzqxU5lfT3oRzRSSsNkIQ0SBkkdcJ7lkw1wHgtm7um2K2Ct48fqPxD0dz4yWqM1Md+P8QU9Xp+Kg5BrLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZP/iikn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1880EC2BCB8;
-	Mon,  4 May 2026 14:11:10 +0000 (UTC)
+	 MIME-Version; b=FS4A6G3PW4b1jn0lo1Kr69RedPdAY7oo9WCXr6klr+J2cewEM0lMs6axyGVk12SkW4o94Ct3CeFlbCb+IB91Np0Ov+spAyLXu+w04ERFx1efdhCf5n8p7x9v3Ob767v6DDArMDc+MOnj/2uq9qBnDXSEf8+Cb4WwB+A5J7R6OY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WniD3s9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D4FC2BCC4;
+	Mon,  4 May 2026 14:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903871;
-	bh=gENbwNyFLzvlAwdmSo1+TQ8Zqbd26x8vfQLvNtGiOaY=;
+	s=korg; t=1777903781;
+	bh=qwW0R1iSaaC9y73sCITf5w8wGPJLOoxhs6B4t5ljCiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZP/iikn8UoJ8ZhlBC2SswZy1ppcEQbBQ+kTOrwHXrv3pD3Fn6+Xu9OIdFG5XksEJ
-	 t3+gZlZx2ExdA1J3CHZPb1Og+EJojlzopPXqGUXyDjfODuSjn5h9vjLF9Wu+d05qgz
-	 px0d+3ztXZQ6RvtteUZVAndVnBNeeAaBbDmODnBM=
+	b=WniD3s9X/ZLqbyxGp3n87nNrIRAOOHp4fYUWjSZcrFlingGu5M2Ss2gqAGJMXrpSC
+	 MfAaRbtcFakmpd6tJlTxMiBI7n3mTMauEReOhUMF24hkGd8/KTAUFUi9HdSbSYaYj5
+	 D0dlWVtu0cS2AwsKxR1PrngX868I4f8sAXe4q/8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 051/275] media: mtk-jpeg: fix use-after-free in release path due to uncancelled work
-Date: Mon,  4 May 2026 15:49:51 +0200
-Message-ID: <20260504135144.831724790@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lothar Rubusch <l.rubusch@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.18 052/275] crypto: atmel-sha204a - Fix OTP sysfs read and error handling
+Date: Mon,  4 May 2026 15:49:52 +0200
+Message-ID: <20260504135144.868749118@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
 References: <20260504135142.929052779@linuxfoundation.org>
@@ -64,101 +64,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E854D4BF12C
+X-Rspamd-Queue-Id: 925CC4BF582
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [5.34 / 15.00];
-	SEM_URIBL(3.50)[zju.edu.cn:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243433-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,body];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243398-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,gmail.com,gondor.apana.org.au];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.800];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zju.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email]
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 34c519feef3e4fcff1078dc8bdb25fbbbd10303f upstream.
+commit 635c3a757a567b2479639237f5f0d4d9439015f1 upstream.
 
-The mtk_jpeg_release() function frees the context structure (ctx) without
-first cancelling any pending or running work in ctx->jpeg_work. This
-creates a race window where the workqueue callback may still be accessing
-the context memory after it has been freed.
+Fix otp_show() to read and print all 64 bytes of the OTP zone.
+Previously, the loop only printed half of the OTP (32 bytes), and
+partial output was returned on read errors.
 
-Race condition:
+Propagate the actual error from atmel_sha204a_otp_read() instead of
+producing partial output.
 
-    CPU 0 (release)                    CPU 1 (workqueue)
-    ----------------                   ------------------
-    close()
-      mtk_jpeg_release()
-                                       mtk_jpegenc_worker()
-                                         ctx = work->data
-                                         // accessing ctx
+Replace sprintf() with sysfs_emit_at(), which is preferred for
+formatting sysfs output because it provides safer bounds checking.
 
-        kfree(ctx)  // freed!
-                                         access ctx  // UAF!
-
-The work is queued via queue_work() during JPEG encode/decode operations
-(via mtk_jpeg_device_run). If the device is closed while work is pending
-or running, the work handler will access freed memory.
-
-Fix this by calling cancel_work_sync() BEFORE acquiring the mutex. This
-ordering is critical: if cancel_work_sync() is called after mutex_lock(),
-and the work handler also tries to acquire the same mutex, it would cause
-a deadlock.
-
-Note: The open error path does NOT need cancel_work_sync() because
-INIT_WORK() only initializes the work structure - it does not schedule
-it. Work is only scheduled later during ioctl operations.
-
-Fixes: 5fb1c2361e56 ("mtk-jpegenc: add jpeg encode worker interface")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 13909a0c8897 ("crypto: atmel-sha204a - provide the otp content")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Lothar Rubusch <l.rubusch@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/atmel-sha204a.c |   20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1209,6 +1209,7 @@ static int mtk_jpeg_release(struct file
- 	struct mtk_jpeg_dev *jpeg = video_drvdata(file);
- 	struct mtk_jpeg_ctx *ctx = mtk_jpeg_file_to_ctx(file);
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -15,6 +15,7 @@
+ #include <linux/module.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
++#include <linux/sysfs.h>
+ #include <linux/workqueue.h>
+ #include "atmel-i2c.h"
  
-+	cancel_work_sync(&ctx->jpeg_work);
- 	mutex_lock(&jpeg->lock);
- 	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
+@@ -120,21 +121,22 @@ static ssize_t otp_show(struct device *d
+ {
+ 	u16 addr;
+ 	u8 otp[OTP_ZONE_SIZE];
+-	char *str = buf;
+ 	struct i2c_client *client = to_i2c_client(dev);
+-	int i;
++	ssize_t len = 0;
++	int i, ret;
+ 
+-	for (addr = 0; addr < OTP_ZONE_SIZE/4; addr++) {
+-		if (atmel_sha204a_otp_read(client, addr, otp + addr * 4) < 0) {
++	for (addr = 0; addr < OTP_ZONE_SIZE / 4; addr++) {
++		ret = atmel_sha204a_otp_read(client, addr, otp + addr * 4);
++		if (ret < 0) {
+ 			dev_err(dev, "failed to read otp zone\n");
+-			break;
++			return ret;
+ 		}
+ 	}
+ 
+-	for (i = 0; i < addr*2; i++)
+-		str += sprintf(str, "%02X", otp[i]);
+-	str += sprintf(str, "\n");
+-	return str - buf;
++	for (i = 0; i < OTP_ZONE_SIZE; i++)
++		len += sysfs_emit_at(buf, len, "%02X", otp[i]);
++	len += sysfs_emit_at(buf, len, "\n");
++	return len;
+ }
+ static DEVICE_ATTR_RO(otp);
+ 
 
 
 
