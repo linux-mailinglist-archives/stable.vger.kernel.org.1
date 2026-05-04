@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-243766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243767-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNatBh6v+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:18 +0200
+	id EKbtEHWx+GkdzAIAu9opvQ
+	(envelope-from <stable+bounces-243767-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5934BFC53
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:37:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD94C000A
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49E5E30ADCE8
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9604F3061A46
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411333E1222;
-	Mon,  4 May 2026 14:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC053E1228;
+	Mon,  4 May 2026 14:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6+/lyaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0u5i1KWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268D3DFC74;
-	Mon,  4 May 2026 14:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909F53DE443;
+	Mon,  4 May 2026 14:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904724; cv=none; b=VHho9bM38S3B6WhetisTlWvoGWdgCIm5XwFmT7Q7AxKjlGc9fxq8bktOs2wpvKzur68kPv1B/429VMfRxaTTqknknrQLbxiZV49YQrYzAWwLGtT8l5Zb7mpVXHjQoBNDvMXVjMcoxtkE7wAO3CH9lGTveBALjiO+12b/EkPaxMY=
+	t=1777904726; cv=none; b=uqwEq5zpgg9sQE28Bsc6xDb3oBI8kwK6OeIiYrgeOOw6kZeCqdfJ5Mh55EP32OpdO++eXGc1h7uplUmrNkrNMpALQDL06SX21V3EKVD5ZbaSr0y5/wPYHtAz9iYhdhTaxrqNRLGayUx9OVFIFC8O65eHWRumefX+rLHmWVLP328=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904724; c=relaxed/simple;
-	bh=J3ispVzi28WzJdoFtT2jcBVb9NnkIk6znf9u2614XbU=;
+	s=arc-20240116; t=1777904726; c=relaxed/simple;
+	bh=mK8wlVE0dlQYoMgL5s99z+uj7Q7Xv6gsCaa0QGacVFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQOPyggggHImpelzFr0+g48t4pTePdz0OQclbHBuSrUdvvZzzS5ahMRyEbcQTzXEs1ifGce7uPOa7cqZ2lXwvszihUUIQ//lLrklKWhXfzP9JCIiFSR99Xv6xCCYZjSgFLU5B78xEzhaKp7mbS7cvryPTax7BJq39AkdA7I/bjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6+/lyaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4503EC2BCB8;
-	Mon,  4 May 2026 14:25:23 +0000 (UTC)
+	 MIME-Version; b=PWecUdjCWmOPbnVHViNsFDqJwoNo4dzxCg2vpgCku25nOtxgNQJbszDo3nJ7LRRRRpSlywE/5vURcb1RCSGU/cTAe9dS0An2UJ5Wqzfs+y1UhzZi5Lw9KBHzQrGpjuQPVUWZ3Jr6sEeLiBrlfqcW7/7TR5zj07b2had8LAyFV4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0u5i1KWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AC1C2BCB8;
+	Mon,  4 May 2026 14:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904723;
-	bh=J3ispVzi28WzJdoFtT2jcBVb9NnkIk6znf9u2614XbU=;
+	s=korg; t=1777904726;
+	bh=mK8wlVE0dlQYoMgL5s99z+uj7Q7Xv6gsCaa0QGacVFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6+/lyaEioa2DoSm0f1Bov/wNnUB0D51+ZsvOZaDwqDkhGwZYkU0qci+P7JsfHb7h
-	 rWETlw1F1HOJyY/4gvU09D8fw6797k69DhBbXz8dKRlJ7Ct2NiDTphcQ7nYjhTcU1p
-	 izE38g03q3vU5FEnTFgknrTNxlGbgQcwe2YDZxT8=
+	b=0u5i1KWJEG4gctmjYJ/iowaq2jv0F0HdfPb0kW42lSBDnM885nQ+1skVUYd1nDJnn
+	 gx1BhvZkPBPL6hHzyJKOoZxSS2OvtNPl3jN6PFQe/pT6VT2u9j+ZU5NPngW2Wt4eOy
+	 ZyAW9QmAAerfL845a7HPcvG79tMthq7w9X4oR7Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.12 150/215] apparmor: use target tasks context in apparmor_getprocattr()
-Date: Mon,  4 May 2026 15:52:49 +0200
-Message-ID: <20260504135135.647806264@linuxfoundation.org>
+	Shuvam Pandey <shuvampandey1@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 151/215] Bluetooth: hci_event: fix potential UAF in SSP passkey handlers
+Date: Mon,  4 May 2026 15:52:50 +0200
+Message-ID: <20260504135135.684147878@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
 References: <20260504135130.169210693@linuxfoundation.org>
@@ -64,103 +63,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CD5934BFC53
+X-Rspamd-Queue-Id: 3CFD94C000A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-243767-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243766-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualys.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cengiz Can <cengiz.can@canonical.com>
+From: Shuvam Pandey <shuvampandey1@gmail.com>
 
-commit 4afc61702bdcc3b9b519749ef966cf762a6e7051 upstream.
+commit 85fa3512048793076eef658f66489112dcc91993 upstream.
 
-apparmor_getprocattr() incorrectly calls task_ctx(current) instead of
-task_ctx(task) when retrieving prev and exec attributes, returning the
-caller's labels rather than the target's.
+hci_conn lookup and field access must be covered by hdev lock in
+hci_user_passkey_notify_evt() and hci_keypress_notify_evt(), otherwise
+the connection can be freed concurrently.
 
-Fix by passing task to task_ctx().
+Extend the hci_dev_lock critical section to cover all conn usage in both
+handlers.
 
-The issue can be reproduced when a process with an onexec transition
-(e.g., configured by a container runtime) is inspected via
-/proc/<pid>/attr/apparmor/exec. The reader's own value is returned
-instead of the target's.
+Keep the existing keypress notification behavior unchanged by routing
+the early exits through a common unlock path.
 
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Fixes: 3b529a7600d8 ("apparmor: move task domain change info to task security")
+Fixes: 92a25256f142 ("Bluetooth: mgmt: Implement support for passkey notification")
 Cc: stable@vger.kernel.org
-Co-developed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
-Co-developed-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/lsm.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ net/bluetooth/hci_event.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -823,25 +823,23 @@ static int apparmor_getprocattr(struct t
- 				char **value)
- {
- 	int error = -ENOENT;
--	/* released below */
--	const struct cred *cred = get_task_cred(task);
--	struct aa_task_ctx *ctx = task_ctx(current);
- 	struct aa_label *label = NULL;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5412,9 +5412,11 @@ static void hci_user_passkey_notify_evt(
  
-+	rcu_read_lock();
- 	if (strcmp(name, "current") == 0)
--		label = aa_get_newest_label(cred_label(cred));
--	else if (strcmp(name, "prev") == 0  && ctx->previous)
--		label = aa_get_newest_label(ctx->previous);
--	else if (strcmp(name, "exec") == 0 && ctx->onexec)
--		label = aa_get_newest_label(ctx->onexec);
-+		label = aa_get_newest_cred_label(__task_cred(task));
-+	else if (strcmp(name, "prev") == 0  && task_ctx(task)->previous)
-+		label = aa_get_newest_label(task_ctx(task)->previous);
-+	else if (strcmp(name, "exec") == 0 && task_ctx(task)->onexec)
-+		label = aa_get_newest_label(task_ctx(task)->onexec);
- 	else
- 		error = -EINVAL;
-+	rcu_read_unlock();
+ 	bt_dev_dbg(hdev, "");
  
- 	if (label)
- 		error = aa_getprocattr(label, value, true);
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
  
- 	aa_put_label(label);
--	put_cred(cred);
- 
- 	return error;
+ 	conn->passkey_notify = __le32_to_cpu(ev->passkey);
+ 	conn->passkey_entered = 0;
+@@ -5423,6 +5425,9 @@ static void hci_user_passkey_notify_evt(
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
++
++unlock:
++	hci_dev_unlock(hdev);
  }
+ 
+ static void hci_keypress_notify_evt(struct hci_dev *hdev, void *data,
+@@ -5433,14 +5438,16 @@ static void hci_keypress_notify_evt(stru
+ 
+ 	bt_dev_dbg(hdev, "");
+ 
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
+ 
+ 	switch (ev->type) {
+ 	case HCI_KEYPRESS_STARTED:
+ 		conn->passkey_entered = 0;
+-		return;
++		goto unlock;
+ 
+ 	case HCI_KEYPRESS_ENTERED:
+ 		conn->passkey_entered++;
+@@ -5455,13 +5462,16 @@ static void hci_keypress_notify_evt(stru
+ 		break;
+ 
+ 	case HCI_KEYPRESS_COMPLETED:
+-		return;
++		goto unlock;
+ 	}
+ 
+ 	if (hci_dev_test_flag(hdev, HCI_MGMT))
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_simple_pair_complete_evt(struct hci_dev *hdev, void *data,
 
 
 
