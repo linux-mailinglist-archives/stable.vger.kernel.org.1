@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-243458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAqUHBGs+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:17 +0200
+	id kLRmEx2p+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782BA4BF4AE
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A80C84BEBCC
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 33579306F91E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:12:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E4473060D47
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7053D3334;
-	Mon,  4 May 2026 14:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F83A3DDDD6;
+	Mon,  4 May 2026 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdL047ah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JomVn/0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3336D35A3AD;
-	Mon,  4 May 2026 14:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74AB347BA9;
+	Mon,  4 May 2026 14:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903936; cv=none; b=k9oh+baStY4X4Ie0k1LKObOIa47iayKgjLNLUDbdF2UoYr7IfXGeSd8p3/7L5zIpQ+BkeMNpC6Co+FIEUV4qJ9Nd6bjwF1uWUxR3wdr8v0x/NsE9c0poAatg8j7evt6NwOOH2QEEH3tdsp9YKlVpYl7lv3BZJUF2hyR1BPj/UEY=
+	t=1777903364; cv=none; b=SjBaHA4sP7HJxW1eif4f7qC2/qIySgSP+zg2paEBFQkSwUN/Cp648GduVQcXUzFm3B8tKB/ANKf+ex3UMArnYVffLcXxXXNS4fkErMNSBBlzm/gN11SgieuvzGQHEtn2TXKeyriC9rQJcxebQ8nGQeG33yW0P7RdmlV0G6czM0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903936; c=relaxed/simple;
-	bh=0te0Xg0GDDXSsI+LDqMgTcSFjRvwkkYO8px1yLDgtHU=;
+	s=arc-20240116; t=1777903364; c=relaxed/simple;
+	bh=FYWD20yZsFcHh/wnlmDumIsrluGY3iwEsskM0DIIqrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HL7vK4l26jrRw6Ddztq8pQaLPi0fCRGTxq+I2f9EiF3tNNGI6OcS+DB5OqMjutnG6/aE0LT86BcEHwZk+LZxZashry5XID0FTMugr033s5/Pz/ZUVuqLXymHgErXPJiGl7AaaLdHZU35nQOwfR3COH8bryUlc50/ZIYuWXjpHaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdL047ah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88415C2BCB8;
-	Mon,  4 May 2026 14:12:15 +0000 (UTC)
+	 MIME-Version; b=JHwU2mbQsa6P2R19+fwocsKxJtFekUWAT8hmxls6O7782sodRHEoi9pN7k7T17l3jdaJyY3mg2r4SB/Ygs67Emum1AqSHwR/4PN3rE7GZ9Oic/reqXC5C6K3sNXnMhvYpi6Kbqi5CZmAG+EbZyQ90SLtKEoHs2/uuYxkYGk1iDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JomVn/0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C87AC2BCC4;
+	Mon,  4 May 2026 14:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903935;
-	bh=0te0Xg0GDDXSsI+LDqMgTcSFjRvwkkYO8px1yLDgtHU=;
+	s=korg; t=1777903364;
+	bh=FYWD20yZsFcHh/wnlmDumIsrluGY3iwEsskM0DIIqrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdL047ahclXL3Aps07l82VBkAQM6KqF5euPSe2j/TZtzmzLNWQXRJ3OmUCQo9YkwF
-	 Ix5aCYhfaiGbXi/BHHwKRyuFL1nwzRypiq6LgSLeh1uyBr5Ha4dH2p8CAKMn9xrjmv
-	 7EukxBB6TN8m8vz+yCDEfyAh+UqoXJ79cY6q/vxU=
+	b=JomVn/0JD9r+8UfMZJFi2e++KIgpfaNtZeCBXrmjMaNuZVXCZuxJ0Uoc7DZm1ziJU
+	 IQ1SKzwk/LQxmBVbYiWbToznFExgNtNQ2ZqH1LP5F40eqZB0990fVuBaQaYk3e8Ik6
+	 hZ9jjd+cvgXpBr6RsOa0K+Bk45ID7mouGm6pt6dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 6.18 118/275] arm64: dts: marvell: uDPU: add ethernet aliases
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Liu <b-liu@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 7.0 173/307] mmc: block: use single block write in retry
 Date: Mon,  4 May 2026 15:50:58 +0200
-Message-ID: <20260504135147.291539811@linuxfoundation.org>
+Message-ID: <20260504135149.375064778@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 782BA4BF4AE
+X-Rspamd-Queue-Id: A80C84BEBCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,58 +81,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-243458-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243235-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,ti.com:url,ti.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Bin Liu <b-liu@ti.com>
 
-commit 38f09c97340cd23f976242e6cb1e7aa4c8ed28d0 upstream.
+commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
 
-On eDPU plus, which is an updated revision of eDPU which uses an external
-MV88E6361 switch we are relying on U-Boot to detect the board, and then
-enable and disable the required nodes for that revision.
+Due to errata i2493[0], multi-block write would still fail in retries.
 
-However, it seems that I missed adding the required aliases for ethernet
-controllers, and this worked as in OpenWrt we had added those locally.
+With i2493, the MMC interface has the potential of write failures when
+issuing multi-block writes operating in HS200 mode with excessive IO
+supply noise.
 
+While the errata provides guidance in hardware design and layout to
+minimize the IO supply noise, in theory the write failure cannot be
+resolved in hardware. The software solution to ensure the data integrity
+is to add minimum 5us delay between block writes. Single-block write is
+the practical way to introduce the delay.
+
+This patch reuses recovery_mode flag, and switches to single-block
+write in retry when multi-block write fails. It covers both CQE and
+non-CQE cases.
+
+[0] https://www.ti.com/lit/pdf/sprz582
 Cc: stable@vger.kernel.org
-Fixes: 660b8b2f3944 ("arm64: dts: marvell: eDPU: add support for version with external switch")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mmc/core/block.c |   12 ++++++++++--
+ drivers/mmc/core/queue.h |    3 +++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-+++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-@@ -15,6 +15,11 @@
- #include "armada-372x.dtsi"
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1401,6 +1401,9 @@ static void mmc_blk_data_prep(struct mmc
+ 		    rq_data_dir(req) == WRITE &&
+ 		    (md->flags & MMC_BLK_REL_WR);
  
- / {
-+	aliases {
-+		ethernet0 = &eth0;
-+		ethernet1 = &eth1;
-+	};
++	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
++		recovery_mode = 1;
 +
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
+ 	memset(brq, 0, sizeof(struct mmc_blk_request));
+ 
+ 	mmc_crypto_prepare_req(mqrq);
+@@ -1540,10 +1543,13 @@ static void mmc_blk_cqe_complete_rq(stru
+ 		err = 0;
+ 
+ 	if (err) {
+-		if (mqrq->retries++ < MMC_CQE_RETRIES)
++		if (mqrq->retries++ < MMC_CQE_RETRIES) {
++			if (rq_data_dir(req) == WRITE)
++				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 			blk_mq_requeue_request(req, true);
+-		else
++		} else {
+ 			blk_mq_end_request(req, BLK_STS_IOERR);
++		}
+ 	} else if (mrq->data) {
+ 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
+ 			blk_mq_requeue_request(req, true);
+@@ -2085,6 +2091,8 @@ static void mmc_blk_mq_complete_rq(struc
+ 	} else if (!blk_rq_bytes(req)) {
+ 		__blk_mq_end_request(req, BLK_STS_IOERR);
+ 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
++		if (rq_data_dir(req) == WRITE)
++			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 		blk_mq_requeue_request(req, true);
+ 	} else {
+ 		if (mmc_card_removed(mq->card))
+--- a/drivers/mmc/core/queue.h
++++ b/drivers/mmc/core/queue.h
+@@ -61,6 +61,8 @@ enum mmc_drv_op {
+ 	MMC_DRV_OP_GET_EXT_CSD,
+ };
+ 
++#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
++
+ struct mmc_queue_req {
+ 	struct mmc_blk_request	brq;
+ 	struct scatterlist	*sg;
+@@ -69,6 +71,7 @@ struct mmc_queue_req {
+ 	void			*drv_op_data;
+ 	unsigned int		ioc_count;
+ 	int			retries;
++	u32			flags;
+ };
+ 
+ struct mmc_queue {
 
 
 
