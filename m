@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-243118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLyeDk6m+GkExgIAu9opvQ
-	(envelope-from <stable+bounces-243118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:42 +0200
+	id uDwkCvGq+GnXxgIAu9opvQ
+	(envelope-from <stable+bounces-243371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74A34BE444
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8759F4BF11E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 350E2303D32E
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:57:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DD0E3141E4F
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793D3DDDDC;
-	Mon,  4 May 2026 13:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0B740DFD4;
+	Mon,  4 May 2026 14:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZkQVCUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAs/e/2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FAC3DDDD2;
-	Mon,  4 May 2026 13:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404EE3DE420;
+	Mon,  4 May 2026 14:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903064; cv=none; b=CP7qMGTMG6faipPGcgbCPzGeBQO1pdDZqH5uoh4nqngZvYvfpph49nZgDTjtrVJ6AuS9hxoUqDJcRZsIgGlitbGp/PT06saJ3Jk12z7AvwFBAqkAmhlnvae3ZPrhzyDLL3kUHfywGAq4xJZanCWt8QMvoYh8sUqY95HEXofckaY=
+	t=1777903714; cv=none; b=JSO20wiaALN1BVDjGc3FBrd381sPTIeoVom+vP0/s3ZSqi3uhCFkQC+VhFks3ixlTDpffChdbjQUzjftJ6OaKsoZ1awb7ZHohegiuHbOAa+oMHMe19wAI2fvt0tytz5QZyglcFf4olsX5WGBW+lT5/HOCZ+kD4X/Z0cBCvn0PQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903064; c=relaxed/simple;
-	bh=Qp1QQLg3WZm4C2BMqoS/mZKG+ddqvs6Lwp3zodzXGII=;
+	s=arc-20240116; t=1777903714; c=relaxed/simple;
+	bh=6SfB0NjAW4yaTncacdw04ApRWWvwVXoCkW5ov51ypwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBaVx5OuSQW451Td2Fj7hmHIr1ore8GeK2QDWCNbgrsSHsshh/euC3ETxQ8LkpBXy3whKeoOfBAhZ/HBChqvQfn17NJ4V9CdAW4fGe1vQtsMz0bp0U777j9MOViV13WG0DwjPDuZEzHsXjMCow+FLUziqTAbXTyP6ULWNgfpXgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZkQVCUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A289DC2BCC4;
-	Mon,  4 May 2026 13:57:43 +0000 (UTC)
+	 MIME-Version; b=LJiDkpOIhtTQvTgUneeBbqYGvUpmevcbJDHaIpFk6hEpAWwHE0fBNXqfBrO1BLyCIIubWueJsiO4BY29qpfwNaaFStf//rQdjh3lJk8u70ZVDWPCyVBHknFslzASv3TP+sZBH3O0YQLr81qbFMh4P0qqMXW7PIi0TCIaOWvy/E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAs/e/2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA779C2BCB8;
+	Mon,  4 May 2026 14:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903064;
-	bh=Qp1QQLg3WZm4C2BMqoS/mZKG+ddqvs6Lwp3zodzXGII=;
+	s=korg; t=1777903714;
+	bh=6SfB0NjAW4yaTncacdw04ApRWWvwVXoCkW5ov51ypwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZkQVCUULtaqqLaqr403VyjMkU+qsRhFKXLEefB0V/tZDltTSP77v7k9Ze4QziAWW
-	 pI4Q+BU3aQGbMPmNSiCeDjxQkhpoeGBw2IQQ3WMaYxsZ9V28aVDLA253MzAu1uHR10
-	 ONXRT8E+pth75sPCmGJ5hkMyT4u7Weze4CivplMY=
+	b=GAs/e/2I4k3lDif3bCG6FdtWN/5XIuKA7G9vuwExrKiyV5pgzi2wRIZKyith/4haI
+	 3n642WeDzT8xG2LaT6h0qyIh8KjgwClDovWCqYy3UY4bde7H5aQ/sJ+n1O9LHMV0Ao
+	 Snr4N4FAN3GMxwi7YYinNhFecsRid0OUU4zTHoLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 7.0 089/307] parisc: Drop ip_fast_csum() inline assembly implementation
+	Johannes Berg <johannes@sipsolutions.net>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 034/275] um: drivers: call kernel_strrchr() explicitly in cow_user.c
 Date: Mon,  4 May 2026 15:49:34 +0200
-Message-ID: <20260504135146.163754726@linuxfoundation.org>
+Message-ID: <20260504135144.205891234@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,10 +64,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B74A34BE444
+X-Rspamd-Queue-Id: 8759F4BF11E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -75,290 +78,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243118-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243371-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,gmx.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,waldorf-gmbh.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sipsolutions.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 3dd31a370c1dccb580f729af7c580ccb1ae3c0c9 upstream.
+commit 91e901c65b4da02a6fd543e3f0049829ae9645b7 upstream.
 
-The assembly code of ip_fast_csum() triggers unaligned access warnings
-if the IP header isn't correctly aligned:
+Building ARCH=um on glibc >= 2.43 fails:
 
- Kernel: unaligned access to 0x173d22e76 in inet_gro_receive+0xbc/0x2e8 (iir 0x0e8810b6)
- Kernel: unaligned access to 0x173d22e7e in inet_gro_receive+0xc4/0x2e8 (iir 0x0e88109a)
- Kernel: unaligned access to 0x173d22e82 in inet_gro_receive+0xc8/0x2e8 (iir 0x0e90109d)
- Kernel: unaligned access to 0x173d22e7a in inet_gro_receive+0xd0/0x2e8 (iir 0x0e9810b8)
- Kernel: unaligned access to 0x173d22e86 in inet_gro_receive+0xdc/0x2e8 (iir 0x0e8810b8)
+  arch/um/drivers/cow_user.c: error: implicit declaration of
+  function 'strrchr' [-Wimplicit-function-declaration]
 
-We have the option to a) ignore the warnings, b) work around it by
-adding more code to check for alignment, or c) to switch to the generic
-implementation and rely on the compiler to optimize the code.
+glibc 2.43's C23 const-preserving strrchr() macro does not survive
+UML's global -Dstrrchr=kernel_strrchr remap from arch/um/Makefile.
+Call kernel_strrchr() directly in cow_user.c so the source no longer
+depends on the -D rewrite.
 
-Let's go with c), because a) isn't nice, and b) would effectively lead
-to an implementation which is basically equal to c).
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v7.0+
+Fixes: 2c51a4bc0233 ("um: fix strrchr() problems")
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260408070102.2325572-1-michael.bommarito@gmail.com
+[remove unnecessary 'extern']
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Kconfig                |    3 +
- arch/parisc/include/asm/checksum.h |   89 ---------------------------------
- arch/parisc/lib/Makefile           |    2 
- arch/parisc/lib/checksum.c         |   99 -------------------------------------
- 4 files changed, 6 insertions(+), 187 deletions(-)
- delete mode 100644 arch/parisc/lib/checksum.c
+ arch/um/drivers/cow_user.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -130,6 +130,9 @@ config GENERIC_BUG
- config GENERIC_BUG_RELATIVE_POINTERS
- 	bool
+--- a/arch/um/drivers/cow_user.c
++++ b/arch/um/drivers/cow_user.c
+@@ -15,6 +15,12 @@
+ #include "cow.h"
+ #include "cow_sys.h"
  
-+config GENERIC_CSUM
-+	def_bool y
++/*
++ * arch/um/Makefile remaps strrchr to kernel_strrchr; call the kernel
++ * name directly to avoid glibc >= 2.43's C23 strrchr macro.
++ */
++char *kernel_strrchr(const char *, int);
 +
- config GENERIC_HWEIGHT
- 	bool
- 	default y
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -4,73 +4,7 @@
+ #define PATH_LEN_V1 256
  
- #include <linux/in6.h>
- 
--/*
-- * computes the checksum of a memory block at buff, length len,
-- * and adds in "sum" (32-bit)
-- *
-- * returns a 32-bit number suitable for feeding into itself
-- * or csum_tcpudp_magic
-- *
-- * this function must be called with even lengths, except
-- * for the last fragment, which may be odd
-- *
-- * it's best to have buff aligned on a 32-bit boundary
-- */
--extern __wsum csum_partial(const void *, int, __wsum);
--
--/*
-- *	Optimized for IP headers, which always checksum on 4 octet boundaries.
-- *
-- *	Written by Randolph Chung <tausq@debian.org>, and then mucked with by
-- *	LaMont Jones <lamont@debian.org>
-- */
--static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
--{
--	unsigned int sum;
--	unsigned long t0, t1, t2;
--
--	__asm__ __volatile__ (
--"	ldws,ma		4(%1), %0\n"
--"	addib,<=	-4, %2, 2f\n"
--"\n"
--"	ldws		4(%1), %4\n"
--"	ldws		8(%1), %5\n"
--"	add		%0, %4, %0\n"
--"	ldws,ma		12(%1), %3\n"
--"	addc		%0, %5, %0\n"
--"	addc		%0, %3, %0\n"
--"1:	ldws,ma		4(%1), %3\n"
--"	addib,>		-1, %2, 1b\n"
--"	addc		%0, %3, %0\n"
--"\n"
--"	extru		%0, 31, 16, %4\n"
--"	extru		%0, 15, 16, %5\n"
--"	addc		%4, %5, %0\n"
--"	extru		%0, 15, 16, %5\n"
--"	add		%0, %5, %0\n"
--"	subi		-1, %0, %0\n"
--"2:\n"
--	: "=r" (sum), "=r" (iph), "=r" (ihl), "=r" (t0), "=r" (t1), "=r" (t2)
--	: "1" (iph), "2" (ihl)
--	: "memory");
--
--	return (__force __sum16)sum;
--}
--
--/*
-- *	Fold a partial checksum
-- */
--static inline __sum16 csum_fold(__wsum csum)
--{
--	u32 sum = (__force u32)csum;
--	/* add the swapped two 16-bit halves of sum,
--	   a possible carry from adding the two 16-bit halves,
--	   will carry from the lower half into the upper half,
--	   giving us the correct sum in the upper half. */
--	sum += (sum << 16) + (sum >> 16);
--	return (__force __sum16)(~sum >> 16);
--}
-- 
-+#define csum_tcpudp_nofold csum_tcpudp_nofold
- static inline __wsum csum_tcpudp_nofold(__be32 saddr, __be32 daddr,
- 					__u32 len, __u8 proto,
- 					__wsum sum)
-@@ -85,26 +19,7 @@ static inline __wsum csum_tcpudp_nofold(
- 	return sum;
- }
- 
--/*
-- * computes the checksum of the TCP/UDP pseudo-header
-- * returns a 16-bit checksum, already complemented
-- */
--static inline __sum16 csum_tcpudp_magic(__be32 saddr, __be32 daddr,
--					__u32 len, __u8 proto,
--					__wsum sum)
--{
--	return csum_fold(csum_tcpudp_nofold(saddr,daddr,len,proto,sum));
--}
--
--/*
-- * this routine is used for miscellaneous IP-like checksums, mainly
-- * in icmp.c
-- */
--static inline __sum16 ip_compute_csum(const void *buf, int len)
--{
--	 return csum_fold (csum_partial(buf, len, 0));
--}
--
-+#include <asm-generic/checksum.h>
- 
- #define _HAVE_ARCH_IPV6_CSUM
- static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
---- a/arch/parisc/lib/Makefile
-+++ b/arch/parisc/lib/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for parisc-specific library files
- #
- 
--lib-y	:= lusercopy.o bitops.o checksum.o io.o memset.o memcpy.o \
-+lib-y	:= lusercopy.o bitops.o io.o memset.o memcpy.o \
- 	   ucmpdi2.o delay.o
- 
- obj-y	:= iomap.o
---- a/arch/parisc/lib/checksum.c
-+++ /dev/null
-@@ -1,99 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * INET		An implementation of the TCP/IP protocol suite for the LINUX
-- *		operating system.  INET is implemented using the  BSD Socket
-- *		interface as the means of communication with the user level.
-- *
-- *		MIPS specific IP/TCP/UDP checksumming routines
-- *
-- * Authors:	Ralf Baechle, <ralf@waldorf-gmbh.de>
-- *		Lots of code moved from tcp.c and ip.c; see those files
-- *		for more names.
-- */
--#include <linux/module.h>
--#include <linux/types.h>
--
--#include <net/checksum.h>
--#include <asm/byteorder.h>
--#include <asm/string.h>
--#include <linux/uaccess.h>
--
--#define addc(_t,_r)                     \
--	__asm__ __volatile__ (          \
--"       add             %0, %1, %0\n"   \
--"       addc            %0, %%r0, %0\n" \
--	: "=r"(_t)                      \
--	: "r"(_r), "0"(_t));
--
--static inline unsigned int do_csum(const unsigned char * buff, int len)
--{
--	int odd, count;
--	unsigned int result = 0;
--
--	if (len <= 0)
--		goto out;
--	odd = 1 & (unsigned long) buff;
--	if (odd) {
--		result = be16_to_cpu(*buff);
--		len--;
--		buff++;
--	}
--	count = len >> 1;		/* nr of 16-bit words.. */
--	if (count) {
--		if (2 & (unsigned long) buff) {
--			result += *(unsigned short *) buff;
--			count--;
--			len -= 2;
--			buff += 2;
--		}
--		count >>= 1;		/* nr of 32-bit words.. */
--		if (count) {
--			while (count >= 4) {
--				unsigned int r1, r2, r3, r4;
--				r1 = *(unsigned int *)(buff + 0);
--				r2 = *(unsigned int *)(buff + 4);
--				r3 = *(unsigned int *)(buff + 8);
--				r4 = *(unsigned int *)(buff + 12);
--				addc(result, r1);
--				addc(result, r2);
--				addc(result, r3);
--				addc(result, r4);
--				count -= 4;
--				buff += 16;
--			}
--			while (count) {
--				unsigned int w = *(unsigned int *) buff;
--				count--;
--				buff += 4;
--				addc(result, w);
--			}
--			result = (result & 0xffff) + (result >> 16);
--		}
--		if (len & 2) {
--			result += *(unsigned short *) buff;
--			buff += 2;
--		}
--	}
--	if (len & 1)
--		result += le16_to_cpu(*buff);
--	result = csum_from32to16(result);
--	if (odd)
--		result = swab16(result);
--out:
--	return result;
--}
--
--/*
-- * computes a partial checksum, e.g. for TCP/UDP fragments
-- */
--/*
-- * why bother folding?
-- */
--__wsum csum_partial(const void *buff, int len, __wsum sum)
--{
--	unsigned int result = do_csum(buff, len);
--	addc(result, sum);
--	return (__force __wsum)csum_from32to16(result);
--}
--
--EXPORT_SYMBOL(csum_partial);
+ /* unsigned time_t works until year 2106 */
+@@ -153,7 +159,7 @@ static int absolutize(char *to, int size
+ 			   errno);
+ 		return -1;
+ 	}
+-	slash = strrchr(from, '/');
++	slash = kernel_strrchr(from, '/');
+ 	if (slash != NULL) {
+ 		*slash = '\0';
+ 		if (chdir(from)) {
 
 
 
