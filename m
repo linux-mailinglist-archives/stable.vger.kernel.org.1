@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-243268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEXIDlCp+GmdxgIAu9opvQ
-	(envelope-from <stable+bounces-243268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:32 +0200
+	id UOtwCFCt+GkuxwIAu9opvQ
+	(envelope-from <stable+bounces-243522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4863B4BECAA
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:12:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769B64BF8C6
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 08CB43030F9F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:04:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 277583053DD7
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A5537881B;
-	Mon,  4 May 2026 14:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDA83DDDD6;
+	Mon,  4 May 2026 14:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n75pHNbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeGs73mZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0CE75801;
-	Mon,  4 May 2026 14:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3C13BE630;
+	Mon,  4 May 2026 14:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903449; cv=none; b=U7zpkIrDE1rLA+5YdzG/DW8aRYsP/R001N1YTGjPUSElQasmRbF5LubGUsj98sa88XuaAjlXjC4fSn54fTe9KTzwf6gN/8rI+BvZmfDIgN4c0f8sV7TKRUJBYulwYx8NEQinDjbDuAU2Ce9/Xb7GqJBcrRjkTYiP5rflaV6mB9Y=
+	t=1777904100; cv=none; b=TPnsEGQacM5GJbo3KzbB8yF+hIQVKqGAhEfpxNeOjIS45Il+rBp4e/IpMJ+GrN4kJBxPlPZYp5cDDJfEGDA/nuM5acFmm1nI1FJAfv0qk+3mugqFSizdUeEgEEh0ievhIgqVE56wgnjQ1thlzkIzGwv39t79vUIsDQLI1glM4QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903449; c=relaxed/simple;
-	bh=H+EN4AnIptkunN3CefOPh8hm9iUeyQr5a8n3mE5JwfU=;
+	s=arc-20240116; t=1777904100; c=relaxed/simple;
+	bh=c+K3jTg/hFccIIY/wf5HmHA/meaNoQ8G8VcAOHUFkoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4spRimKEXTphnYyL4sYR9u3VApDVZGXloy27yRCwc5txTZXe+NsSV3SuWXUtO3zuqGm4MU+hOzj+teAx6qIUZcfEHjcvToWwFakTATwPjHNi782hPwFYyhScmaPfB4lJYh3QzyFJqWl7ZCvUU+dhRPbmpgY4jmy0rj1cg9e6XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n75pHNbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E957C2BCB8;
-	Mon,  4 May 2026 14:04:09 +0000 (UTC)
+	 MIME-Version; b=hGSynWjvXTrdXg2hvH82B/iKKLXozMoQTjsyEvxTsjdJw5B+P6EzkRwRN8sFem/szwN5MbD4kRMK6p5lIPT85q1mpqDfJPXL/HkhaWzGbgKF5EbxfjahDg630tdmAXSBJmC8tckHtJItPldgsAIiv6Tn/UGzP0NTgjB1qlAh6MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeGs73mZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF67C2BCB8;
+	Mon,  4 May 2026 14:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903449;
-	bh=H+EN4AnIptkunN3CefOPh8hm9iUeyQr5a8n3mE5JwfU=;
+	s=korg; t=1777904100;
+	bh=c+K3jTg/hFccIIY/wf5HmHA/meaNoQ8G8VcAOHUFkoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n75pHNbU85R0SAmL9SdMZfNunNJiXePw0MSBwLkZR7FmOou+mseYFHBccsg6u+YC2
-	 nhyoyYVRAradMbdE9IhkNxqLAs/0xNTTKUPIG77JBZeBd9H06pdqHdprfj9Q3HhNVf
-	 UZu8GLb/Vgx3g5jOgsNbls55eNmQmgH3Kacm+1mw=
+	b=aeGs73mZIR01/hG7nRN8H9ABDkdb7QWxZZ3y91Nv7lXnzoDA7zKWCeLX1RN16edf2
+	 Tr53w2iKhb8A/qVAxIzDvzDX/sREQtzlbOVAPFghlNu6psaE8TbIZBK2n0+v0n96NV
+	 XLY4h674Vil04dlqQUMqfw+PpSgx8mkoKP39Px7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 7.0 237/307] md/md-llbitmap: skip reading rdevs that are not in_sync
-Date: Mon,  4 May 2026 15:52:02 +0200
-Message-ID: <20260504135151.759611026@linuxfoundation.org>
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.18 183/275] KVM: nSVM: Refactor checking LBRV enablement in vmcb12 into a helper
+Date: Mon,  4 May 2026 15:52:03 +0200
+Message-ID: <20260504135149.875248047@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4863B4BECAA
+X-Rspamd-Queue-Id: 769B64BF8C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243268-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243522-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,fnnas.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 7701e68b5072faa03a8f30b4081dc16df9092381 upstream.
+commit 290c8d82023ab0e1d2782d37136541e017174d7c upstream.
 
-When reading bitmap pages from member disks, the code iterates through
-all rdevs and attempts to read from the first available one. However,
-it only checks for raid_disk assignment and Faulty flag, missing the
-In_sync flag check.
+Refactor the vCPU cap and vmcb12 flag checks into a helper. The
+unlikely() annotation is dropped, it's unlikely (huh) to make a
+difference and the CPU will probably predict it better on its own.
 
-This can cause bitmap data to be read from spare disks that are still
-being rebuilt and don't have valid bitmap information yet. Reading
-stale or uninitialized bitmap data from such disks can lead to
-incorrect dirty bit tracking, potentially causing data corruption
-during recovery or normal operation.
-
-Add the In_sync flag check to ensure bitmap pages are only read from
-fully synchronized member disks that have valid bitmap data.
-
-Cc: stable@vger.kernel.org
-Fixes: 5ab829f1971d ("md/md-llbitmap: introduce new lockless bitmap")
-Link: https://lore.kernel.org/linux-raid/20260223024038.3084853-2-yukuai@fnnas.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-7-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-llbitmap.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/md/md-llbitmap.c
-+++ b/drivers/md/md-llbitmap.c
-@@ -459,7 +459,8 @@ static struct page *llbitmap_read_page(s
- 	rdev_for_each(rdev, mddev) {
- 		sector_t sector;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -608,6 +608,12 @@ void nested_vmcb02_compute_g_pat(struct
+ 	svm->nested.vmcb02.ptr->save.g_pat = svm->vmcb01.ptr->save.g_pat;
+ }
  
--		if (rdev->raid_disk < 0 || test_bit(Faulty, &rdev->flags))
-+		if (rdev->raid_disk < 0 || test_bit(Faulty, &rdev->flags) ||
-+		    !test_bit(In_sync, &rdev->flags))
- 			continue;
++static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
++{
++	return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
++		(to_svm(vcpu)->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK);
++}
++
+ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12)
+ {
+ 	bool new_vmcb12 = false;
+@@ -673,8 +679,7 @@ static void nested_vmcb02_prepare_save(s
+ 		vmcb_mark_dirty(vmcb02, VMCB_DR);
+ 	}
  
- 		sector = mddev->bitmap_info.offset +
+-	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+-		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
++	if (nested_vmcb12_has_lbrv(vcpu)) {
+ 		/*
+ 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
+ 		 * svm_set_msr's definition of reserved bits.
+@@ -1189,8 +1194,7 @@ int nested_svm_vmexit(struct vcpu_svm *s
+ 	if (!nested_exit_on_intr(svm))
+ 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
+ 
+-	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+-		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
++	if (nested_vmcb12_has_lbrv(vcpu)) {
+ 		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+ 	} else {
+ 		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
 
 
 
