@@ -1,153 +1,134 @@
-Return-Path: <stable+bounces-243302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDxyMH2r+Gn2xgIAu9opvQ
-	(envelope-from <stable+bounces-243302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:49 +0200
+	id 0NF3LOOk+GnQxQIAu9opvQ
+	(envelope-from <stable+bounces-243036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:53:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F544BF321
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:21:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B144BE154
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 15:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAEDC329C6BB
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:05:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8154330164B4
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342393DE459;
-	Mon,  4 May 2026 14:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33803DA7D7;
+	Mon,  4 May 2026 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkYcid8J"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MZIc41sZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB79F2E2F0E;
-	Mon,  4 May 2026 14:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1313DE425
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 13:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903537; cv=none; b=mrtdhWHKvALHSkxr3/xvEx5ZxHbg0/0tmXANaRZqxoRZcn+3bOZsIbltMpG9CIScIGhBlQ03I3iybonC/1p4e8UFr/L4Rox6HIbnnY4LkhIj4mz/1soJ2+r6oK8zntp8u/VqLrgVp2CTFjLTswYH2CTA4wniX3LBD3HlZQjZm8s=
+	t=1777902770; cv=none; b=t4pRgJrsIE+4VrqSTGsKxR9fzsi9GVdVskF8MIgagmDPvRMPjTsjIA6HFvVD7a8O/CiEUtaa6MWA8Fi1S/RTuNq7kjkz4YcwknEf13TQIH/kFVbTCDUhfGUGr7A3oScnjF9kiQZpEuViZfjVFoSF+F6MviKHSTwqLb3gyAjxni4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903537; c=relaxed/simple;
-	bh=bWDFVvKZlkb0VqHYI3d3+Yb/iW0fbZJ4xqLEDfYtjpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/gfmyiXeGeV1SBG5FXZa/mvX624ILzgCqiFDBXe5o1kRV4GtLwBklUHms+i8mrwoioVxR7y08R0yr1jvE0QgKgj9P4iXYpTm3kjG/gYmTlRJ90pN3dgSgpMKIX+jqmMVGDpwwRoTQVFuo+YlF3PJkjkP5TT8PPFN5XTSRZkzSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkYcid8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81071C2BCF4;
-	Mon,  4 May 2026 14:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903536;
-	bh=bWDFVvKZlkb0VqHYI3d3+Yb/iW0fbZJ4xqLEDfYtjpM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkYcid8JbwHYQ8Hf1F4oOVgviENmC3druQWj8EwUceXvZ9xEiAF9QsM4E75p3aboX
-	 9f4w907pAw1iT5nXRwUqtYZi4regfTSvlIuUHcR+WufhDvo/bX+6QKFNh+0Cd7vMLf
-	 F47FBaaT2bbprMl50LVJDdCww6gTW3qIjw8Ucc/o=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 7.0 271/307] erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()
-Date: Mon,  4 May 2026 15:52:36 +0200
-Message-ID: <20260504135153.003977544@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1777902770; c=relaxed/simple;
+	bh=EnKBfyuObT8bqP9o5rdUDsYVc9jpV+QkAnEpaBnIASA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Dzbd0Dfo19lvm1bYwEH1QCd8fdagUpDvpNm2BfgFadcxcz0+0OkM0M78mbYJvSTELHPkIKr/shLxrHnSc5QCKVODvgIyOCA+8/2+vfonoDk9Z9fEU9rNKpL3i0706vPPy/a5+Q6bnFFtxfc51hS4euoUOiSe4Nu+auGCyn5bQN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MZIc41sZ; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9063DC5D72E;
+	Mon,  4 May 2026 13:53:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F6135FD5F;
+	Mon,  4 May 2026 13:52:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2EA3211AD20F1;
+	Mon,  4 May 2026 15:52:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777902758; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=PMEhp+w9Nspq/lfo78XgrxWdY0LVag6tZoHKrUtgTdk=;
+	b=MZIc41sZtRjrn7OAEgYMGmWUtTfF9aNBGixF0VDB/D9RGBwHknRA2NnPgZinjYdi7hpvU/
+	O0+NzjYE8WD5P7uJu1qtpVVk3oZ65aLtsVQnfqG6ulrgx5CPV7oA3W3QkD2cPlTTf8U6/k
+	SoG4OqCuFhFJ8vxMNoXWI8FhuKqEhe8uA+GGBodv5JGDEgdLDdPKYXtjM3jkEuIvtmXuqf
+	GXkyZCfW8QRHXKZhBwipatBz0Npmwbf/f6BYM6c7QkgbtBsHrkEztP3MIgRQyVHggwGweW
+	5+1Hi97C6V6tgXn2eqmt/yAcKVVUTYBW1MJqLO8wCA5uBGiJXSKPoqeKnVb7JA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Lee Jones <lee@kernel.org>, Valery Borovsky <vebohr@gmail.com>
+Cc: Ben Dooks <ben@fluff.org.uk>, Vincent Sanders <vince@arm.linux.org.uk>, 
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260504124841.443496-1-vebohr@gmail.com>
+References: <6b4a9f5ae8a316b6f07f72f2fe3f0b8fc5f18dff.1777889235.git.vebohr@gmail.com>
+ <20260504124841.443496-1-vebohr@gmail.com>
+Subject: Re: [PATCH v2] mfd: sm501: fix reference leak on failed device
+ registration
+Message-Id: <177790275684.156214.6563585281874262911.b4-ty@bootlin.com>
+Date: Mon, 04 May 2026 15:52:36 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 35F544BF321
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 09B144BE154
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243302-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243036-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:dkim,bootlin.com:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+On Mon, 04 May 2026 15:48:41 +0300, Valery Borovsky wrote:
+> When platform_device_register() fails in sm501_register_device(), the
+> platform device allocated by sm501_create_subdev() has its struct device
+> initialized by device_initialize() inside platform_device_register(). The
+> error path logs the error but returns without dropping the device reference,
+> leaking the memory allocated by sm501_create_subdev():
+> 
+>   sm501_register_device()
+>     -> platform_device_register(pdev)
+>        -> device_initialize(&pdev->dev)   /* kref = 1 */
+>        -> platform_device_add(pdev)       /* fails */
+>     <- dev_err() called, kref still 1, sm501_device_release never called
+> 
+> [...]
 
-------------------
+Applied to mtd/next, thanks!
 
-From: Junrui Luo <moonafterrain@outlook.com>
+[1/1] mfd: sm501: fix reference leak on failed device registration
+      commit: faa9bba3fe2f37e7dcb26d4501d890fbfd7df160
 
-commit 21e161de2dc660b1bb70ef5b156ab8e6e1cca3ab upstream.
+Patche(s) should be available on mtd/linux.git and will be
+part of the next PR (provided that no robot complains by then).
 
-Some crafted images can have illegal (!partial_decoding &&
-m_llen < m_plen) extents, and the LZ4 inplace decompression path
-can be wrongly hit, but it cannot handle (outpages < inpages)
-properly: "outpages - inpages" wraps to a large value and
-the subsequent rq->out[] access reads past the decompressed_pages
-array.
-
-However, such crafted cases can correctly result in a corruption
-report in the normal LZ4 non-inplace path.
-
-Let's add an additional check to fix this for backporting.
-
-Reproducible image (base64-encoded gzipped blob):
-
-H4sIAJGR12kCA+3SPUoDQRgG4MkmkkZk8QRbRFIIi9hbpEjrHQI5ghfwCN5BLCzTGtLbBI+g
-dilSJo1CnIm7GEXFxhT6PDDwfrs73/ywIQD/1ePD4r7Ou6ETsrq4mu7XcWfj++Pb58nJU/9i
-PNtbjhan04/9GtX4qVYc814WDqt6FaX5s+ZwXXeq52lndT6IuVvlblytLMvh4Gzwaf90nsvz
-2DF/21+20T/ldgp5s1jXRaN4t/8izsy/OUB6e/Qa79r+JwAAAAAAAL52vQVuGQAAAP6+my1w
-ywAAAAAAAADwu14ATsEYtgBQAAA=
-
-$ mount -t erofs -o cache_strategy=disabled foo.erofs /mnt
-$ dd if=/mnt/data of=/dev/null bs=4096 count=1
-
-Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/erofs/decompressor.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -145,6 +145,7 @@ static void *z_erofs_lz4_handle_overlap(
- 	oend = rq->pageofs_out + rq->outputsize;
- 	omargin = PAGE_ALIGN(oend) - oend;
- 	if (!rq->partial_decoding && may_inplace &&
-+	    rq->outpages >= rq->inpages &&
- 	    omargin >= LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize)) {
- 		for (i = 0; i < rq->inpages; ++i)
- 			if (rq->out[rq->outpages - rq->inpages + i] !=
-
+Kind regards,
+Miquèl
 
 
