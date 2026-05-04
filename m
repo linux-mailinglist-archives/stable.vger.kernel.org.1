@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-243534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFtNFOqs+GkixwIAu9opvQ
-	(envelope-from <stable+bounces-243534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:54 +0200
+	id gOahH8Wo+Gl+xgIAu9opvQ
+	(envelope-from <stable+bounces-243246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0664BF7D4
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:27:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D424BEA7E
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 364DA300B28F
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:15:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F7F43085B43
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3BA3DE425;
-	Mon,  4 May 2026 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B5D3D904D;
+	Mon,  4 May 2026 14:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwic7mf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVwNQZOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAB537D11B;
-	Mon,  4 May 2026 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF163DC4D5;
+	Mon,  4 May 2026 14:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904131; cv=none; b=XT+K2aRrY+QwM6rNoJOwN/ZMjj+D09UKqQbt2Nm+QS9+FgmPkNoM6OmwN76arq0ZOUUj2nOzv8tU6SbG6mWFAp4xjwFcZv5wQeRTU768D2uCJlTWsyqjQleXBfcCionT/1urV0uMZ4Qpgevui/2J+p8mTAaDVxBiwe/AsKK21Rg=
+	t=1777903393; cv=none; b=fn2Xy5ZSLYq7wtA85b+4CfLglFm7qfrs+Qpxs/besqehEenQN1B7bkcfmWqGFEbJbYzLToYO8sw7SPka6/zortnOK58GCUaBt/byOkyUEzHpwcmllM1rqoXOnaSOC2016jq7AKT5/VBcz134sRsWyUNx8FdHVnwmCBmeEFrbYF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904131; c=relaxed/simple;
-	bh=fCI4jqhH01adjbhNNox9Vv4NlxAGYi86baOL68VW66Q=;
+	s=arc-20240116; t=1777903393; c=relaxed/simple;
+	bh=ZAoE8ByVM+pEluMzbWJO+WryfKsCaJ8tHtZd38PS82U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qU7DTG8DLbyWuLHPMjGf3YFsG12SbrgzzQAquin0Fa8k8Mtb3+OmZU8jQOfNBs9CuwbhDTrOaLC9FUHvri/hRHauRvabyEmytFMJseKLQMKjKa7O7Mg90DAaioIc9rsfDAwB87K6XiMeDPn02+dK7RHKfsq+Pc0STnZfpbEd22c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwic7mf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F405FC2BCB8;
-	Mon,  4 May 2026 14:15:30 +0000 (UTC)
+	 MIME-Version; b=RmlV4EGPENBZvLCMJjFR5r95sUvPcBiFjnkB98IR/7wn4ES1yrMJ+8LUDOTyiOl55wixOGsVwc7WNDhBRJqHn1Fk7L2xQBgAl/mnp/GVkC+I1+B1ohx0orRhl+doCzLo/I0X2Kvskbq44Bl0PMGWApOA5RxwrpCgQndnqj5urak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVwNQZOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC284C2BCB8;
+	Mon,  4 May 2026 14:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904131;
-	bh=fCI4jqhH01adjbhNNox9Vv4NlxAGYi86baOL68VW66Q=;
+	s=korg; t=1777903393;
+	bh=ZAoE8ByVM+pEluMzbWJO+WryfKsCaJ8tHtZd38PS82U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwic7mf4SFBlDm+2wH1Zzuvk+sRWY5Uf9jadcPde8D/p7uQHiooZabrJqcRMSmwBk
-	 FT61/jsp2Orc5OjrCCeOl/9ug19LpJ/SsVIrm6ZJSvYMUlXpTBEVl/mn4tVLv+ny3n
-	 BVrvffvDS3hQ58g2Wo6F4+KHfcFeORvc17kVgwUY=
+	b=TVwNQZOCk/ga/zXO7xTVtCGIc67JFdE3XI7GYO+bcbVARoBqJmEHm59S/5Ls+gH1j
+	 GPIyI9SfXxK/qF/q8KN2bArYzDgGWA0VHxuVGuf3GWTebjUCJvi96YrH4vA2jfiBkw
+	 HzqfXfCQL+jM0pK8ZyeHVDY6DImmr9Tk91RrqzPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jackie Liu <liuyun01@kylinos.cn>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Gregory Price <gourry@gourry.net>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 162/275] mm/mempolicy: fix memory leaks in weighted_interleave_auto_store()
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 217/307] KVM: nSVM: Refactor checking LBRV enablement in vmcb12 into a helper
 Date: Mon,  4 May 2026 15:51:42 +0200
-Message-ID: <20260504135149.065364268@linuxfoundation.org>
+Message-ID: <20260504135151.030835824@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+References: <20260504135142.814938198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,114 +63,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4A0664BF7D4
+X-Rspamd-Queue-Id: 14D424BEA7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-243534-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,gmail.com,gourry.net,nvidia.com,sk.com,kernel.org,linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243246-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackie Liu <liuyun01@kylinos.cn>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 6fae274ce0e3109cbbc4c18b354eaace1f0af7d7 upstream.
+commit 290c8d82023ab0e1d2782d37136541e017174d7c upstream.
 
-weighted_interleave_auto_store() fetches old_wi_state inside the if
-(!input) block only.  This causes two memory leaks:
+Refactor the vCPU cap and vmcb12 flag checks into a helper. The
+unlikely() annotation is dropped, it's unlikely (huh) to make a
+difference and the CPU will probably predict it better on its own.
 
-1. When a user writes "false" and the current mode is already manual,
-   the function returns early without freeing the freshly allocated
-   new_wi_state.
-
-2. When a user writes "true", old_wi_state stays NULL because the
-   fetch is skipped entirely. The old state is then overwritten by
-   rcu_assign_pointer() but never freed, since the cleanup path is
-   gated on old_wi_state being non-NULL. A user can trigger this
-   repeatedly by writing "1" in a loop.
-
-Fix both leaks by moving the old_wi_state fetch before the input check,
-making it unconditional.  This also allows a unified early return for both
-"true" and "false" when the requested mode matches the current mode.
-
-Link: https://lore.kernel.org/20260401005702.7096-1-liu.yun@linux.dev
-Link: https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev
-Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.16+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-7-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempolicy.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ arch/x86/kvm/svm/nested.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -3636,18 +3636,19 @@ static ssize_t weighted_interleave_auto_
- 		new_wi_state->iw_table[i] = 1;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -651,6 +651,12 @@ void nested_vmcb02_compute_g_pat(struct
+ 	svm->nested.vmcb02.ptr->save.g_pat = svm->vmcb01.ptr->save.g_pat;
+ }
  
- 	mutex_lock(&wi_state_lock);
--	if (!input) {
--		old_wi_state = rcu_dereference_protected(wi_state,
--					lockdep_is_held(&wi_state_lock));
--		if (!old_wi_state)
--			goto update_wi_state;
--		if (input == old_wi_state->mode_auto) {
--			mutex_unlock(&wi_state_lock);
--			return count;
--		}
-+	old_wi_state = rcu_dereference_protected(wi_state,
-+				lockdep_is_held(&wi_state_lock));
++static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
++{
++	return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
++		(to_svm(vcpu)->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK);
++}
 +
-+	if (old_wi_state && input == old_wi_state->mode_auto) {
-+		mutex_unlock(&wi_state_lock);
-+		kfree(new_wi_state);
-+		return count;
-+	}
- 
--		memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
--					       nr_node_ids * sizeof(u8));
-+	if (!input) {
-+		if (old_wi_state)
-+			memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
-+						       nr_node_ids * sizeof(u8));
- 		goto update_wi_state;
+ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12)
+ {
+ 	bool new_vmcb12 = false;
+@@ -715,8 +721,7 @@ static void nested_vmcb02_prepare_save(s
+ 		vmcb_mark_dirty(vmcb02, VMCB_DR);
  	}
  
+-	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+-		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
++	if (nested_vmcb12_has_lbrv(vcpu)) {
+ 		/*
+ 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
+ 		 * svm_set_msr's definition of reserved bits.
+@@ -1243,8 +1248,7 @@ int nested_svm_vmexit(struct vcpu_svm *s
+ 	if (!nested_exit_on_intr(svm))
+ 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
+ 
+-	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+-		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
++	if (nested_vmcb12_has_lbrv(vcpu)) {
+ 		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+ 	} else {
+ 		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
 
 
 
