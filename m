@@ -1,150 +1,151 @@
-Return-Path: <stable+bounces-243862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ON9lLfO9+Gnh0AIAu9opvQ
-	(envelope-from <stable+bounces-243862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 17:40:35 +0200
+	id OJvpCzTA+Gnh0AIAu9opvQ
+	(envelope-from <stable+bounces-243863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 17:50:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259474C0D0A
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 17:40:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9E84C0E0D
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 17:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B950301B90A
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 15:39:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39647303E2CA
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 15:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC473E022A;
-	Mon,  4 May 2026 15:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FBE3DA7ED;
+	Mon,  4 May 2026 15:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mrK6vOjV"
+	dkim=pass (2048-bit key) header.d=innora.ai header.i=@innora.ai header.b="pMVP8K1P"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3A83E0C55
-	for <stable@vger.kernel.org>; Mon,  4 May 2026 15:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5533321A2
+	for <stable@vger.kernel.org>; Mon,  4 May 2026 15:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777909185; cv=none; b=ZCsLDOUe7l359rWsrfrndrPLZO/01vmFz+q4/PoRtKMPu7ZoXe0eAnEvRnBjwvoE7NbuPU4KRUOL7pRfwztXJNwbUWSnBfeBwCY40oEqt+/S4lGhq6Pb7geijvYdR+OkGZ8Sa478Csi54I6xwDeGAgLO2kbUd+3dGwXMJdvfbM0=
+	t=1777909733; cv=none; b=G50lyCTPpLKPpoAOTsxSc3GCV4s48Sev4ecFaTWiDfgOWGdn2+M1O38q69BZGRKsuGnNWEqf0BVgt1z2DUg6PxTupiJlFVn3UAGCQ7uN+lMI3IEFifwjtNJRFt063E49IpKP7iuikKQ9rjZQ50Zt3QkEvs30pXo5viJnL9cn4Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777909185; c=relaxed/simple;
-	bh=AEH4Fq0siKNTVEACtsyUHL32qVGD6A5nC1XUA2IdHZ0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GI1d3EmGBGa6em1v9NP2xo5xYZAP0Cm94X0lgJ+PPTdlIzzZEIf/sLRnR6iOR5CDP29SeF3YEQotTsDkbZ2dpru3KRChAI/PfXnksN+gjlMwVP3y4YYRsk4mphDbl1C+zDmRPdaGZyewUxei2iYNeMWph5CawDYQkRlqwoulDkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mrK6vOjV; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B3FCCC5D72E;
-	Mon,  4 May 2026 15:40:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4B8055FD5F;
-	Mon,  4 May 2026 15:39:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A97F11AD2BA5;
-	Mon,  4 May 2026 17:39:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777909181; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=bwhElTLpoPeu4nxk9VnwUqKbxxQ2g2S7oxle4dtyMlE=;
-	b=mrK6vOjVS6tGJb24NxflSwNQeykZklcuChS8YtAMJByoV5PblLa1wXvv8RrvXnqqDQ3Q4a
-	fxLVcw9ugnzZCcdT4NmNh1KKxJMim31NhhZNoXHY15vjWWtBW7h4iNYEYcaqxyonsKZXxr
-	gFNoaPwg1ckpuH1DcAg7A5Ij9yQ4bO3O74rE/SlFnVlaKf26s5sqjaA891bs8rY/O+Ay7j
-	+DBdMFEFanjki7x7DfZmirb6PuLEFqT3nkph/vrr/MIF4UJlljpD2xDGRmqIHlJ0cPMxdj
-	1lsSrFZOG5zj/M2VvnWp5Dz/wiwppiBdQlqp6/K/T2xaUEcYDjuGx9BdhRVyCQ==
-From: Paul Louvel <paul.louvel@bootlin.com>
-Date: Mon, 04 May 2026 17:38:30 +0200
-Subject: [PATCH 4/4] crypto: talitos - fix invalid submit_count initial
- value
+	s=arc-20240116; t=1777909733; c=relaxed/simple;
+	bh=04Y/K5VDRi25LK9LlB/Zbr8srRm7zmupjNgFmjG7L84=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OBio5hVMcGVs1ITPgy2lwhhX/uCVUDzccES3wSwCHJmxfcpVw5RIHIcdDEyuaQ1HmBlppvsQRuocNTCFsWbCerI0ZH6TYyA7g0X3nhWmYonmk4ZSAjuKqpk4ixMDGXUNZ3wIqVTqQNWnZK/eMJLJ5IC7ofuNLY3i3JB2olqe9JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innora.ai; spf=pass smtp.mailfrom=innora.ai; dkim=pass (2048-bit key) header.d=innora.ai header.i=@innora.ai header.b=pMVP8K1P; arc=none smtp.client-ip=57.129.93.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innora.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innora.ai
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=innora.ai;
+	s=protonmail2; t=1777909715; x=1778168915;
+	bh=+jHcaP3g5S6HHwy4F6oN4vGmat21NwzUyYuheLKpT4A=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=pMVP8K1PTjzB5KtLFC3Ebah+FvBWZ7fnyZZrrykWpPz45xggvmdtd/E+g296IU9bD
+	 q2QR87XIB89R8P+QOOxa8WChXP1uHKCCeASKDPAEHmqGXhfDMTrPX2OFnvajL0TOAW
+	 fKe39p8Gk7dv3kEbsssUPNaMl1f7S1OefzaP491jz2irUE9MLcFFaBd2udcdNZp/RM
+	 +faJ/cORLZUfusoPu0hM1MbkLPLfSfVrq6+BN2kTeJYi2ETIZa6iHHmPHm9q05jqUz
+	 Vy9JvhGWicD7VU9hxHkSlorbwcoa5huMk9FcPamFub1tslFB92NCuaW2P3QujVXEYC
+	 XRze5NPP93k5Q==
+Date: Mon, 04 May 2026 15:48:30 +0000
+To: Greg KH <gregkh@linuxfoundation.org>
+From: Feng Ning <feng@innora.ai>
+Cc: Feng Ning <feng@innora.ai>, linux-staging@lists.linux.dev, Luka Gejak <luka.gejak@linux.dev>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6] staging: rtl8723bs: fix heap buffer overflow in cfg80211_rtw_add_key()
+Message-ID: <20260504154823.52057-1-feng@innora.ai>
+In-Reply-To: <2026050417-monkhood-backless-4c3e@gregkh>
+References: <20260413113224.5201-1-feng@innora.ai> <2026042626-tabloid-suitor-33c5@gregkh> <20260427111738.33069-1-feng@innora.ai> <2026050417-monkhood-backless-4c3e@gregkh>
+Feedback-ID: 140578448:user:proton
+X-Pm-Message-ID: 540f3df26f76d6b45f51ef858be4274927d84568
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-4-c97c641976f5@bootlin.com>
-References: <20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5@bootlin.com>
-In-Reply-To: <20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5@bootlin.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>, 
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
- David Howells <dhowells@redhat.com>, 
- Kim Phillips <kim.phillips@freescale.com>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Herve Codina <herve.codina@bootlin.com>, 
- Paul Louvel <paul.louvel@bootlin.com>, 
- Christophe Leroy <chleroy@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777909177; l=1086;
- i=paul.louvel@bootlin.com; s=20260313; h=from:subject:message-id;
- bh=AEH4Fq0siKNTVEACtsyUHL32qVGD6A5nC1XUA2IdHZ0=;
- b=ZksKLsqHf0MDCXf2RZ4SRYvim1JYyVXgEG/5XrffuuWSy6RL4NDlLzkUU94RaUvGsUXzP3Kc/
- dV+xxTGxyWIB6wUP/qlshD0wnrzdA4tHhypXMP+PgXqvFzqgVRedX8n
-X-Developer-Key: i=paul.louvel@bootlin.com; a=ed25519;
- pk=eLW50NT18UAvUT5cAcYf88zNbBCZDLFXuptpyLVhVIU=
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 259474C0D0A
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7E9E84C0E0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[innora.ai,reject];
+	R_DKIM_ALLOW(-0.20)[innora.ai:s=protonmail2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243862-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-243863-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[paul.louvel@bootlin.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[feng@innora.ai,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[innora.ai:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,innora.ai:dkim,innora.ai:mid]
 
-The submit_count atomic counter is initialized to -(chfifo_len - 1), but
-since atomic_inc_not_zero() rejects increments when the value is zero,
-one FIFO slot is always wasted. With chfifo_len = 24, only 23
-descriptors can be submitted before getting -EAGAIN in talitos_submit().
+On Mon, May 04, 2026 at 04:12:44PM +0200, Greg KH wrote:
+> What about these review comments:
+>         https://sashiko.dev/#/patchset/20260427111738.33069-1-feng@innora=
+.ai
+>
+> Are they incorrect?
+>
+> And was this tested on real hardware?
 
-Fix by initializing submit_count to -chfifo_len so that the counter
-reaches zero only after all chfifo_len slots are occupied.
+Hi Greg,
 
-Cc: stable@vger.kernel.org
-Fixes: 4b99262881213 ("crypto: talitos - align locks on cache lines")
-Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
----
- drivers/crypto/talitos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you for the pointer to the Sashiko review.
 
-diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
-index 8d063ad5639c..429db3ee9123 100644
---- a/drivers/crypto/talitos.c
-+++ b/drivers/crypto/talitos.c
-@@ -3575,7 +3575,7 @@ static int talitos_probe(struct platform_device *ofdev)
- 		}
- 
- 		atomic_set(&priv->chan[i].submit_count,
--			   -(priv->chfifo_len - 1));
-+			   -priv->chfifo_len);
- 	}
- 
- 	dma_set_mask(dev, DMA_BIT_MASK(36));
+Regarding the review comment (Medium): Sashiko suggests returning -EINVAL
+when params->seq_len exceeds sizeof(param->u.crypt.seq), rather than
+silently truncating with min_t().
 
--- 
-2.53.0
+The comment raises a valid point.  I chose min_t() for two reasons:
+
+  1. The upstream cfg80211 framework does not enforce an upper bound on
+     seq_len before reaching the driver, so a strict -EINVAL could
+     break any existing userspace that happens to pass seq_len > 8
+     (even if no standard cipher requires more than 6 bytes).
+
+  2. Staging drivers historically favour silent clamping over hard
+     rejections for parameters that are out of the ordinary but
+     otherwise harmless -- the primary goal was to close the overflow,
+     not to police the caller.
+
+That said, I can see the argument for -EINVAL: it makes the contract
+explicit and avoids installing a key with a truncated sequence counter
+that could produce unexpected crypto behaviour.
+
+I am happy to send v7 with -EINVAL if you prefer that approach.
+Alternatively, if min_t() is acceptable as-is, I can add a brief
+comment in the code explaining why truncation is intentional.
+
+Please let me know which direction you prefer and I will follow up
+promptly.
+
+Regarding hardware testing: I do not currently have a physical
+rtl8723bs device.  My verification was based on code review of the
+cfg80211 key installation path and static analysis confirming that
+ieee_param.crypt.seq is an 8-byte fixed buffer while params->seq_len
+is fully userspace-controlled via NL80211_CMD_NEW_KEY.
+
+I understand this is a limitation.  If hardware testing is required
+before merge I can source a RTL8723BU/BS USB dongle (approximately
+1-2 weeks), or alternatively a community member with the hardware
+could confirm the fix.  Please advise on your preference.
+
+Thanks,
+Feng Ning
 
 
