@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-243682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CC6wNy+s+GnHxgIAu9opvQ
-	(envelope-from <stable+bounces-243682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:47 +0200
+	id CHSOGJGp+Gm6xgIAu9opvQ
+	(envelope-from <stable+bounces-243450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C054BF50C
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8E84BED89
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:13:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9D68307728B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:21:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4202F30387BF
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F9829E116;
-	Mon,  4 May 2026 14:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B767F3CF664;
+	Mon,  4 May 2026 14:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkCiLxLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tv0g2QQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5131A6827;
-	Mon,  4 May 2026 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8253B19D1;
+	Mon,  4 May 2026 14:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904507; cv=none; b=NKlnk8/fJ9Q7Tm6/vKKhIpy7OGW6xkrkg+68BdNf9YyzKVQZajNw4iiHNc9u/zV7jOeM5yJXKVHKXTEy+jGEmV94YR1OxY54SP4oNY0WX5+U60Empv9q7CXwSI+0xYw/JxEPl3+nc4703vG5cbCLy8N6tBAI5rpfcmCdhwv4MWE=
+	t=1777903915; cv=none; b=mnIMpG1A5MXU2j2gLZRFUBtJk8AQvgs9+H0kNh5TkU8QgzLTqNNUGYB+CTrcapIiHRVV6yxeskk3uyvGKfSgWHoaN9+RJpRhgrrZSDfKXbEWW6sKt9TNm4TAkqvzSg2J2Qk0607ba0YUltpehrAonwwMdSJLM2IwA1tIP1e1/HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904507; c=relaxed/simple;
-	bh=6abax6E2vDbHtbdYTo7OhpJ0fZ1ilEde8A9afziTe58=;
+	s=arc-20240116; t=1777903915; c=relaxed/simple;
+	bh=NcZGgN+Z58Nl4nske0FSyCmvBp7T4+NQ1I72lz+pIf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgyY0+wdgY7EmK2+Z35UJAKe4joRnVbQ1kbeRULulhTe/9Skrwc/ivx3OUoA4Yf4FWgVPYCKQbyhA4CaPfKq8G9PZVynQ/Gy0A0ZQ13fGHOdVXEiPe2vow8bQRVG/Q5Y9IqZ/sTdlWJDFmQv687y711aherjlmsBHLsL3pIg9+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkCiLxLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BAFC2BCB8;
-	Mon,  4 May 2026 14:21:46 +0000 (UTC)
+	 MIME-Version; b=i2HkngdL0U0RmrjR/uLH7ViiCInJjkobOS7G4RmSVi6AItIibwNJSfE2gucnGOZ5i9+q8fBPhzPMgm5trkRYBn6bKn+amX4C0g2U1+spIOIq25u5brfwNGMuFNP8wUaeISj0f/Rl5ppMA/PNKq5723t1R7Zd95EbVqbGRiFN7Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tv0g2QQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10601C2BCB8;
+	Mon,  4 May 2026 14:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904506;
-	bh=6abax6E2vDbHtbdYTo7OhpJ0fZ1ilEde8A9afziTe58=;
+	s=korg; t=1777903915;
+	bh=NcZGgN+Z58Nl4nske0FSyCmvBp7T4+NQ1I72lz+pIf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkCiLxLXAoOzFB7sgeHi130CsLz+f4lpz3T8J/v8VqaTxEUe80wkhVh8Gvcl5KnJo
-	 Wsy9Oh9R7bmPMnUwcOv6GYiAPLWyiyATZu6GmlEl7HZUcQ1NdtTjb2PGqIIWLukWz1
-	 8mqbJ8MZq1Qbo5ZOu1OhSJMVcgaVjJQ/TQlb8ypk=
+	b=Tv0g2QQmOG8HirauYa/OyKJs5ICkWkm7ntD5ZoviOnK7pTheogy6N36BHGigh45ZG
+	 b5vu7coBL/npjm5pDfUdxKeRz0V826uB8SsD/QKDISWHZnGNd/JDtpXR0lDo64WceU
+	 npRGyEG1z/kutNlLbuAChGkRAE5ZvV9Hb2qujzXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 032/215] um: drivers: call kernel_strrchr() explicitly in cow_user.c
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 111/275] rxrpc: Fix rxkad crypto unalignment handling
 Date: Mon,  4 May 2026 15:50:51 +0200
-Message-ID: <20260504135131.348480612@linuxfoundation.org>
+Message-ID: <20260504135147.034839193@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-References: <20260504135130.169210693@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +68,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 72C054BF50C
+X-Rspamd-Queue-Id: 0C8E84BED89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243682-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,intel.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243450-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,msgid.link:url,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,auristor.com:email]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 91e901c65b4da02a6fd543e3f0049829ae9645b7 upstream.
+commit def304aae2edf321d2671fd6ca766a93c21f877e upstream.
 
-Building ARCH=um on glibc >= 2.43 fails:
+Fix handling of a packet with a misaligned crypto length.  Also handle
+non-ENOMEM errors from decryption by aborting.  Further, remove the
+WARN_ON_ONCE() so that it can't be remotely triggered (a trace line can
+still be emitted).
 
-  arch/um/drivers/cow_user.c: error: implicit declaration of
-  function 'strrchr' [-Wimplicit-function-declaration]
-
-glibc 2.43's C23 const-preserving strrchr() macro does not survive
-UML's global -Dstrrchr=kernel_strrchr remap from arch/um/Makefile.
-Call kernel_strrchr() directly in cow_user.c so the source no longer
-depends on the -D rewrite.
-
-Fixes: 2c51a4bc0233 ("um: fix strrchr() problems")
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260408070102.2325572-1-michael.bommarito@gmail.com
-[remove unnecessary 'extern']
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: f93af41b9f5f ("rxrpc: Fix missing error checks for rxkad encryption/decryption failure")
+Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260422161438.2593376-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/cow_user.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/trace/events/rxrpc.h |    1 +
+ net/rxrpc/rxkad.c            |    9 +++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/um/drivers/cow_user.c
-+++ b/arch/um/drivers/cow_user.c
-@@ -15,6 +15,12 @@
- #include "cow.h"
- #include "cow_sys.h"
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -37,6 +37,7 @@
+ 	EM(rxkad_abort_1_short_encdata,		"rxkad1-short-encdata")	\
+ 	EM(rxkad_abort_1_short_header,		"rxkad1-short-hdr")	\
+ 	EM(rxkad_abort_2_short_check,		"rxkad2-short-check")	\
++	EM(rxkad_abort_2_crypto_unaligned,	"rxkad2-crypto-unaligned") \
+ 	EM(rxkad_abort_2_short_data,		"rxkad2-short-data")	\
+ 	EM(rxkad_abort_2_short_header,		"rxkad2-short-hdr")	\
+ 	EM(rxkad_abort_2_short_len,		"rxkad2-short-len")	\
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -510,6 +510,9 @@ static int rxkad_verify_packet_2(struct
+ 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
+ 					  rxkad_abort_2_short_header);
  
-+/*
-+ * arch/um/Makefile remaps strrchr to kernel_strrchr; call the kernel
-+ * name directly to avoid glibc >= 2.43's C23 strrchr macro.
-+ */
-+char *kernel_strrchr(const char *, int);
++	/* Don't let the crypto algo see a misaligned length. */
++	sp->len = round_down(sp->len, 8);
 +
- #define PATH_LEN_V1 256
- 
- /* unsigned time_t works until year 2106 */
-@@ -153,7 +159,7 @@ static int absolutize(char *to, int size
- 			   errno);
- 		return -1;
+ 	/* Decrypt the skbuff in-place.  TODO: We really want to decrypt
+ 	 * directly into the target buffer.
+ 	 */
+@@ -543,8 +546,10 @@ static int rxkad_verify_packet_2(struct
+ 	if (sg != _sg)
+ 		kfree(sg);
+ 	if (ret < 0) {
+-		WARN_ON_ONCE(ret != -ENOMEM);
+-		return ret;
++		if (ret == -ENOMEM)
++			return ret;
++		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
++					  rxkad_abort_2_crypto_unaligned);
  	}
--	slash = strrchr(from, '/');
-+	slash = kernel_strrchr(from, '/');
- 	if (slash != NULL) {
- 		*slash = '\0';
- 		if (chdir(from)) {
+ 
+ 	/* Extract the decrypted packet length */
 
 
 
