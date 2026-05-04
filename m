@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-243129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH+nBOym+GnQxQIAu9opvQ
-	(envelope-from <stable+bounces-243129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:20 +0200
+	id OHW+Lyep+GmdxgIAu9opvQ
+	(envelope-from <stable+bounces-243351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B184BE62E
-	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:02:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06B94BEBFF
+	for <lists+stable@lfdr.de>; Mon, 04 May 2026 16:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0173C301FD7B
-	for <lists+stable@lfdr.de>; Mon,  4 May 2026 13:58:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C9DA5300DEE2
+	for <lists+stable@lfdr.de>; Mon,  4 May 2026 14:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDB13DDDD2;
-	Mon,  4 May 2026 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30C73DF003;
+	Mon,  4 May 2026 14:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSu5+mT7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuiW9gpn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6015E34753C;
-	Mon,  4 May 2026 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50DD34F483;
+	Mon,  4 May 2026 14:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777903092; cv=none; b=h9zMWP+XaUBgOaEa5S+ExiCiQJYsGZAHqohR4MXhV6Zu7EITvBpALjBN3aZPQRoCQ1wbM0hL4M9bj116jvZOnYSf+hIW+oak4IvyFw+GOz5jbE3foP/+sY/E58GdWJVmlBbH0yO3wp1eX2Kr8NanqbJRKIruWm2zIfBt2vcJpKQ=
+	t=1777903662; cv=none; b=aWJjBRYSi5N7PuT5Bcehowd22UPDlt0BPhrjhJZQKbuZjv0KL8tnR2TvfBZkou/EFQNyN97tQAvOTSgUQfGpfKn9SCR2NW4wjwjC7Yv8AcdclBPHQ+avH0NzkHQKr1GZA0HobOiEpbbhSgJUrheV/HtpslEIuJgSdQGX1r/TbYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777903092; c=relaxed/simple;
-	bh=8PpYteYZLHAFObx0el1xQFKtf9RQQWz+9S+uT84fmNU=;
+	s=arc-20240116; t=1777903662; c=relaxed/simple;
+	bh=Da1w/8nB0VJc57jkULUCi77d8/fH7chdLR+kUaKJY/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EYlLnDzk+dcHivUfeAXc9mV8bPvIeKggacLh5/wxHEzE/h3beLyMrHHCRTAeDaCPSNaEOvp5fwSUZ+fEYAwfSoGnIOloiYjWlSob08FbXCsMzF2PJZd6sxb0ehGAm33fxVVaK6EIetWGhoeXjmT9pmoz8e75zD3ztLCcq4k4gpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSu5+mT7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA09C2BCB8;
-	Mon,  4 May 2026 13:58:11 +0000 (UTC)
+	 MIME-Version; b=bRIic13dG8CqA+GYrw13NuGv70fC1GV5T1vtu1oACxm8GpT0ize7MEU3DiRNzKtf/VOyI9SVFSllDrM1Ne4VZOvStY4h9rCHYTvg/Ir2A2jJXRuVgPa02g2KSdHm2rwkXsN3Au9tePnBllwJQHRdSomkkSTX8AgSDlkMwB9nO68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuiW9gpn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B49DC2BCB8;
+	Mon,  4 May 2026 14:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777903092;
-	bh=8PpYteYZLHAFObx0el1xQFKtf9RQQWz+9S+uT84fmNU=;
+	s=korg; t=1777903662;
+	bh=Da1w/8nB0VJc57jkULUCi77d8/fH7chdLR+kUaKJY/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSu5+mT7eDr3OrJnQWPqphj8rBUjc7g97El8w8XG/6AJ/hzdWhvgKt7++UX+BmU+b
-	 ra2aExBE/ccZQWx439LjnwkrDvNHcO+V1kpySstFD1oCIrFeHIMIoYr53XBzu5D5fz
-	 DS1GIC2otItoZMj18c3wauBAjz7m0ZSUtffqnMHs=
+	b=JuiW9gpnQHcCkpitb2qQpLltVq47H7sIHnHLuLzUiq1cF2tGvN/wMg3oT+9wpqi6t
+	 jY/r8jYrrIpU+WGnQCpkSKAMNKt4CiBzdSAKf3fht5bwbpd4KgQJfXbEEcGyycDb+1
+	 FISjYCDR1jCCFNJbCab30/AdmuFxPKVkQ3WaK5t0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 068/307] ALSA: aoa: i2sbus: fix OF node lifetime handling
-Date: Mon,  4 May 2026 15:49:13 +0200
-Message-ID: <20260504135145.373340317@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>
+Subject: [PATCH 6.18 014/275] ibmasm: fix OOB reads in command_file_write due to missing size checks
+Date: Mon,  4 May 2026 15:49:14 +0200
+Message-ID: <20260504135143.469252304@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-References: <20260504135142.814938198@linuxfoundation.org>
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+References: <20260504135142.929052779@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 63B184BE62E
+X-Rspamd-Queue-Id: A06B94BEBFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243129-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243351-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit 4ec93f070eda6b765b62efcaed9241c3b3b0b6ad upstream.
+commit 0eb09f737428e482a32a2e31e5e223f2b35a71d3 upstream.
 
-i2sbus_add_dev() keeps the matched "sound" child pointer after
-for_each_child_of_node() has dropped the iterator reference. Take an
-extra reference before saving that node and drop it after the
-layout-id/device-id lookup is complete.
+The command_file_write() handler allocates a kernel buffer of exactly
+count bytes and copies user data into it, but does not validate the
+buffer against the dot command protocol before passing it to
+get_dot_command_size() and get_dot_command_timeout().
 
-The function also stores np in dev->sound.ofdev.dev.of_node without
-taking a reference for the embedded soundbus device. Since i2sbus
-overrides the embedded platform device release callback, balance that
-reference explicitly in the local error path and in i2sbus_release_dev().
+Since both the allocation size (count) and the header fields (command_size,
+data_size) are independently user-controlled, an attacker can cause
+get_dot_command_size() to return a value exceeding the allocation,
+triggering OOB reads in get_dot_command_timeout() and an out-of-bounds
+memcpy_toio() that leaks kernel heap memory to the service processor.
 
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Fix with two guards: reject writes smaller than sizeof(struct
+dot_command_header) before allocation, then after copying user data
+reject commands where the buffer is smaller than the total size declared
+by the header (sizeof(header) + command_size + data_size). This ensures
+all subsequent header and payload field accesses stay within the buffer.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260330-aoa-i2sbus-ofnode-lifetime-v1-1-51c309f4ff06@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260314165355.548119-1-LivelyCarpet87@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/aoa/soundbus/i2sbus/core.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/misc/ibmasm/ibmasmfs.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/sound/aoa/soundbus/i2sbus/core.c
-+++ b/sound/aoa/soundbus/i2sbus/core.c
-@@ -84,6 +84,7 @@ static void i2sbus_release_dev(struct de
- 	for (i = aoa_resource_i2smmio; i <= aoa_resource_rxdbdma; i++)
- 		free_irq(i2sdev->interrupts[i], i2sdev);
- 	i2sbus_control_remove_dev(i2sdev->control, i2sdev);
-+	of_node_put(i2sdev->sound.ofdev.dev.of_node);
- 	mutex_destroy(&i2sdev->lock);
- 	kfree(i2sdev);
- }
-@@ -147,7 +148,6 @@ static int i2sbus_get_and_fixup_rsrc(str
- }
+--- a/drivers/misc/ibmasm/ibmasmfs.c
++++ b/drivers/misc/ibmasm/ibmasmfs.c
+@@ -303,6 +303,8 @@ static ssize_t command_file_write(struct
+ 		return -EINVAL;
+ 	if (count == 0 || count > IBMASM_CMD_MAX_BUFFER_SIZE)
+ 		return 0;
++	if (count < sizeof(struct dot_command_header))
++		return -EINVAL;
+ 	if (*offset != 0)
+ 		return 0;
  
- /* Returns 1 if added, 0 for otherwise; don't return a negative value! */
--/* FIXME: look at device node refcounting */
- static int i2sbus_add_dev(struct macio_dev *macio,
- 			  struct i2sbus_control *control,
- 			  struct device_node *np)
-@@ -178,8 +178,9 @@ static int i2sbus_add_dev(struct macio_d
- 	i = 0;
- 	for_each_child_of_node(np, child) {
- 		if (of_node_name_eq(child, "sound")) {
-+			of_node_put(sound);
- 			i++;
--			sound = child;
-+			sound = of_node_get(child);
- 		}
+@@ -319,6 +321,11 @@ static ssize_t command_file_write(struct
+ 		return -EFAULT;
  	}
- 	if (i == 1) {
-@@ -205,6 +206,7 @@ static int i2sbus_add_dev(struct macio_d
- 			}
- 		}
- 	}
-+	of_node_put(sound);
- 	/* for the time being, until we can handle non-layout-id
- 	 * things in some fabric, refuse to attach if there is no
- 	 * layout-id property or we haven't been forced to attach.
-@@ -219,7 +221,7 @@ static int i2sbus_add_dev(struct macio_d
- 	mutex_init(&dev->lock);
- 	spin_lock_init(&dev->low_lock);
- 	dev->sound.ofdev.archdata.dma_mask = macio->ofdev.archdata.dma_mask;
--	dev->sound.ofdev.dev.of_node = np;
-+	dev->sound.ofdev.dev.of_node = of_node_get(np);
- 	dev->sound.ofdev.dev.dma_mask = &dev->sound.ofdev.archdata.dma_mask;
- 	dev->sound.ofdev.dev.parent = &macio->ofdev.dev;
- 	dev->sound.ofdev.dev.release = i2sbus_release_dev;
-@@ -327,6 +329,7 @@ static int i2sbus_add_dev(struct macio_d
- 	for (i=0;i<3;i++)
- 		release_and_free_resource(dev->allocated_resource[i]);
- 	mutex_destroy(&dev->lock);
-+	of_node_put(dev->sound.ofdev.dev.of_node);
- 	kfree(dev);
- 	return 0;
- }
+ 
++	if (count < get_dot_command_size(cmd->buffer)) {
++		command_put(cmd);
++		return -EINVAL;
++	}
++
+ 	spin_lock_irqsave(&command_data->sp->lock, flags);
+ 	if (command_data->command) {
+ 		spin_unlock_irqrestore(&command_data->sp->lock, flags);
 
 
 
