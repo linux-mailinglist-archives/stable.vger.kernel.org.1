@@ -1,174 +1,247 @@
-Return-Path: <stable+bounces-243966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGXHC2p8+Wl59AIAu9opvQ
-	(envelope-from <stable+bounces-243966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:13:14 +0200
+	id rESMOQJ9+Wmd9AIAu9opvQ
+	(envelope-from <stable+bounces-243967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:15:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9193B4C6BDE
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:13:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A05EC4C6BF8
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3CFF3027971
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 05:12:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D48D6300B98E
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 05:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDEE3BED5F;
-	Tue,  5 May 2026 05:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F0D3BE628;
+	Tue,  5 May 2026 05:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ATGH2O+s"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bt008oxv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4A735A938
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 05:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C7D22083;
+	Tue,  5 May 2026 05:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777957963; cv=none; b=Jbec30q03Jl90KN7eoIeOWmODDusPHm+QDBdUEn9TzH82Da3Xxek+C5eYzdrAVL3+CGbpCg3ro123owTCbdKC6ZwCA3etstVvRKnI4jStFR8ojBGzTzYugXAFuOoi8irg3pK/9LG+i06MqAxGDZjMQ5VjtUK+eZfYDRWmKr7Syg=
+	t=1777958139; cv=none; b=mMCgCUWhdBmHXkvwecDKlVvg3KpCYSZNqJ9U/5iU2XYfPi3rkRas0B2ERDK7xQRDdFZiFddbWVUA5N32etgGK6uU0Da76e1CvD8/mKSBk9sOjKvXGurAkIDZbhhwPAfIzWpoVfFqlS5r2rkcxJUgZcCQ1hu8ZCp6fOOwp7PzM7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777957963; c=relaxed/simple;
-	bh=iUgeGSsqv7MOSHVQK8yrYNQjBQhy4lMDkURuG/cYfgk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i9NDGXuh8BpgndI/J/dzxdksY1WDLlau4FvpJICbdFZTEiPO3WOsgF3hPgVl1hcWMfvgnsHc0RoLm4y4DGYPZDnIi6VXo0uKaYLsKZDm7ArvDUpeYa08iSLna5+U2zUHFMrJzMIzkNIY/1CCtvuwo6W+O+W8a/sya/mXQWErvA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ATGH2O+s; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-36534668247so1911811a91.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 22:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777957961; x=1778562761; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NrhTMqHn+rMdQZeR0f4MqPn+xrSow9rW/RMkyGQyv4Q=;
-        b=ATGH2O+swMAsO4QhgOqgtXsjMBSGxUHlO6WqLXQvHOu+dMrJB6f5zYw/2oSa1TMQ4k
-         Y65WnbOUjJRzFXz7zNn9y6MQ+f3kTUd0zOviw4JeY5aCaF41HSui9ClbWkgfqTnPuhjG
-         UGsZfibRcsh/qCoMj2sC7z4dvTRHbV1BbCJ6oXmNivv78JK+nWBD2jxEPa5daL2aROg3
-         tkhF0qCSJOwpZmhS/mqHJEo+aFswaKF1D6f5eSfANPgK6iqy4ZDEYh9WUAYd/INwzQds
-         5qxLSg+PUYHgzmKbrmU0qGYyqrZFB+/VvyLnbnxhhLEAUkK4XYz0+RTQup+qWhYN2rCU
-         z61Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777957961; x=1778562761;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NrhTMqHn+rMdQZeR0f4MqPn+xrSow9rW/RMkyGQyv4Q=;
-        b=mcFcOVA1hZr5pAfB5/O5/fK/f2cqfJ/7zjyKyBuprv7c4AQGX4dmbwasEHRjeP79gb
-         1pEQDz8H3eFARc9eZBhBQhdkTr9okdnXyQJ7N9Bc5X8+9ZbG8UbkSOOJBnwM3fwe3sAA
-         0ZNKILIlww9xrTMRgDgBspr3kRGqo+nNMoa71IEQO4yE5JGL/LZS51iPO5SWLKidQ6Id
-         yL3Z/AtvNO8viO37TJH/gVLUXl9Wty+evAyKhxFeTOt6ZcVjOseYOI96pEKgv/1VPWvx
-         /R0XlTYYDIu5wZnw2ldFLV1hSod5iSnFOL4+aC0BvkENKdGqXItoPxzHx6URdraCVkzn
-         o0jg==
-X-Forwarded-Encrypted: i=1; AFNElJ/p4v/jafmS2x9FLznWxmUSfATQun3eYFCjZ+k7G5wQBweD10EAyzQL34kNBHgyfsLiYonZrvE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2cglTZCjtcB6S0XdLEu/u3tqWHjdX3DYlq0CsvD9tVDjH6dHW
-	/YU8y3MoHIDemoUI8qsHN8uXcZ2KiphJV5MH0OPKXTaGcai6u6oDl/kl
-X-Gm-Gg: AeBDietcQEEQfuLmB5A5BaQ2X0kpl2b9uGaBGgdD0MFVE03TPZI//qxXGXR8f40B2MY
-	nPW+dk2UzQEWqd8xIfbrqtyxNR9RQBzWl71kgxWW7uYZLj9KSCBGMNx+EX1JwAPNKPfJX0qsq9J
-	poeiLBDe81ebLsz9NsAAu58OF/NlMGTgfzI3XjcD5f0yR6xCAsLPCA5FxiMMbgDia2ngAGaPC5H
-	EN+b+ClhmFZwW8Ln/X1vX3u//uLT35fBGEYA72o5dZy/r1u82o8fwcbPgUjL899KFi5E3flfe7z
-	c8IzjM7TFp2md4fplb1hj1F77FlaWycVdHNwys+ARI6TJc5Pfkp0RjyNtjNu1i7jq20MykQXRW5
-	Vz8Xj+IKEQ6viaaIySlptrpqiChyZcCWU37KqSDSS9i2dtzbReq85oj3ugsDta9wF7leLqAEIKv
-	UnUgk51JhYBPTd5E9mTDL4n+UNIFH9PdgqYZjx/U14MO74wCJ3hr2Hx19EZCerdS2v9Waq7fXjv
-	0pUEocCTncsct67UZgAAAL3qZX+BgXXWgwzO5LzbClJ+HiKjM+soy2gtMZJspadv7Doi09Ctj0=
-X-Received: by 2002:a17:902:f651:b0:2b0:6e12:bb21 with SMTP id d9443c01a7336-2b9f2846196mr116836475ad.41.1777957960980;
-        Mon, 04 May 2026 22:12:40 -0700 (PDT)
-Received: from alchemy-Precision-3630-Tower.tail7db246.ts.net ([156.146.97.67])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae0e5fasm120896855ad.54.2026.05.04.22.12.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 22:12:40 -0700 (PDT)
-From: Pratham Gupta <pratham36gupta@gmail.com>
-To: netfilter-devel@vger.kernel.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Pratham Gupta <pratham36gupta@gmail.com>
-Subject: [PATCH net] netfilter: ctnetlink: use nf_ct_exp_net() in expectation dump
-Date: Mon,  4 May 2026 22:11:57 -0700
-Message-ID: <20260505051157.3895177-1-pratham36gupta@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1777958139; c=relaxed/simple;
+	bh=A8dqybLGdBd9AeDi/XiA0DySjlsRjMMkQbqYXoc7gNM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ep+Yyuv4tCVir63bhPHaJzqtfeQafw4hqqYGOxEYlF0ii0bl4fsRgii5BuPTHQm24+0GpP7TswavMbzU5f2QEqtNH0BnK2Vn7MNaAII1v7a2WEbKgu/MUYT0AmmZXxvTl2MpNiAOUeUnt//KV2p4b9vZsQmDH3I3ndHpoXbp4vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bt008oxv; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777958138; x=1809494138;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=A8dqybLGdBd9AeDi/XiA0DySjlsRjMMkQbqYXoc7gNM=;
+  b=Bt008oxvpM4EfGmtQz761ieqr4PcPlr8fexcatUaBHJNzYC/7ESiig/h
+   3udm9g5v0Ytdz7DOLvbAkWi+tIGlcvSfPxaQftmawwdFj4u4AapxZq1vZ
+   fFIbUPCl1nKiprAUDruCXO3JoIPy1ZF5TajtF0AGLJ9sGM0bIl220ggbP
+   9RRQoYjgqFU0sVeW/tVvFP+EzUwfN5dZO9WZtRpGbaveRvf4CSULfDr90
+   zm+v7ZBH0Bdz+HjAgHmGJ2jSKU1fhmw2wKJVeCaMI1n/4WfI9cE0PR1ou
+   8cMynMhwBK9E/JrnW0c9RDW+2B6HPl6g5rTiFgAlc7udy5kCs4oqfO3Iu
+   g==;
+X-CSE-ConnectionGUID: m86HzcAbTbGd4TEgw09i9Q==
+X-CSE-MsgGUID: sOE/JpI3SqGyyPu06zDgpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="89126411"
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="89126411"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 22:15:36 -0700
+X-CSE-ConnectionGUID: gwAKZw3gSWaBXl0DMIOG5g==
+X-CSE-MsgGUID: kyNdlXviR2ikO1/rB/o/9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="239683482"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 22:15:36 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH net 00/13] Intel Wired LAN Driver Updates 2026-05-04 (i40e,
+ ice, idpf)
+Date: Mon, 04 May 2026 22:14:13 -0700
+Message-Id: <20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9193B4C6BDE
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMyw6CMBBFf4XcNZPUakH4FcJCcaqDppAWHwnh3
+ x1geU7uPTMSR+GEOpsR+SNJhqBwyDN0j0u4M8lNGdbYwjhzov5J8n1R4IlWR8aRWl85W5zt0ZW
+ lh37HyF5+W7eBbtHuMr2vPXfTWsSy/AE0Pb4bfgAAAA==
+X-Change-ID: 20260504-jk-iwl-net-2026-05-04-f9526823577f
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Piotr Kwapulinski <piotr.kwapulinski@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Michal Kubiak <michal.kubiak@intel.com>, 
+ Joshua Hay <joshua.a.hay@intel.com>, 
+ Madhu Chittim <madhu.chittim@intel.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>, 
+ Grzegorz Nitka <grzegorz.nitka@intel.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
+ Jacob Keller <jacob.e.keller@intel.com>, Matt Vollrath <tactii@gmail.com>, 
+ Sunitha Mekala <sunithax.d.mekala@intel.com>, Kohei Enju <kohei@enjuk.jp>, 
+ Paul Menzel <pmenzel@molgen.mpg.de>, Simon Horman <horms@kernel.org>, 
+ Emil Tantilov <emil.s.tantilov@intel.com>, 
+ Samuel Salin <Samuel.salin@intel.com>, 
+ Patryk Holda <patryk.holda@intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, stable@kernel.org, 
+ Marcin Szycik <marcin.szycik@linux.intel.com>, 
+ Bart Van Assche <bvanassche@acm.org>, intel-wired-lan@lists.osuosl.org, 
+ Arpana Arland <arpanax.arland@intel.com>, Rinitha S <sx.rinitha@intel.com>
+X-Mailer: b4 0.16-dev-ea14f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4026;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=A8dqybLGdBd9AeDi/XiA0DySjlsRjMMkQbqYXoc7gNM=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyfNR8nLNzxUcAoS0991pWfubHHE/jELkVIcd/QjPi/f
+ tpstU8HOkpZGMS4GGTFFFkUHEJWXjeeEKb1xlkOZg4rE8gQBi5OAZhIogsjw2uj6ct6Fm33jPBN
+ b48s/rNP7UL9nW/NL7W72b4fD0vX0WRkeBgyI9DvXq64zmQdtftqlgfKN3p4ir1W0MyX81n/WOo
+ lDwA=
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+X-Rspamd-Queue-Id: A05EC4C6BF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-243966-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[36];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pratham36gupta@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-243967-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,gmail.com,enjuk.jp,molgen.mpg.de,kernel.org,linuxfoundation.org,linux.intel.com,acm.org,lists.osuosl.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-Commit 02a3231b6d82 ("netfilter: nf_conntrack_expect: store netns and zone in expectation")
-introduced exp->net so RCU-only expectation paths no longer need to
-dereference exp->master for netns lookups.
+Matt Volrath fixes two issues with the i40e driver probe routine, ensuring
+that PTP is properly cleaned up if the probe fails.
 
-Commit 3db5647984de ("netfilter: nf_conntrack_expect: skip expectations in other netns via proc")
-updated the proc path accordingly, but ctnetlink_exp_dump_table() still
-compares against nf_ct_net(exp->master).
+Maciej fixes the i40e driver logic to keep the q_vectors array in sync with
+changes to the channel count via ethtool.
 
-Use nf_ct_exp_net(exp) here as well so the netlink dump path matches
-the rest of the March 2026 expectation netns/RCU cleanup.
+Emil corrects the initialization of the read_dev_clk_lock spinlock in
+idpf_ptp_init, ensuring it is initialized prior to when the
+ptp_schedule_worker() is called.
 
-Fixes: 02a3231b6d82 ("netfilter: nf_conntrack_expect: store netns and zone in expectation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pratham Gupta <pratham36gupta@gmail.com>
+Josh fixes the idpf driver to prevent enabling XDP if the queue based
+scheduling is not supported by the firmware.
+
+Josh fixes the idpf skb data path for handling queue based scheduling.
+
+Josh fixes an XDP crash in the soft reset error path, restoring the
+original configuration if idpf_xdp_setup_prog() fails.
+
+Greg KH fixes a double free and use-after free in the idpf auxiliary device
+error paths.
+
+Marcin fixes ice_set_rss_hfunc() to use the correct q_opt_flags field,
+correcting the assignment and preventing submission of invalid data to the
+firmware.
+
+Bart corrects the locking in ice_dcb_rebuild(), ensuring that the tc_mutex
+is held over the entire operation.
+
+Grzegorz fixes the ordering of ice_ptp_link_change() in ice_up_complete()
+ensuring that the PTP timestamps will not be enabled before the PTP timer
+is actually re-initialized.
+
+Ivan fixes the rclk pin state get for E810 devices, ensuring the index is
+properly offset by the base_rclk_idx value. This ensures that the correct
+pin index is used to look up recovered clock state. He additionally adds
+bounds checking to prevent attempting to access pins outside of the pin
+state array.
+
+Ivan also moves the CGU register macros to the top of ice_dpll.h, inside
+the header guard to avoid duplicate macro definitions should the ice_dpll.h
+header is included multiple times.
+
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
-Tested expectation create/dump/delete on the host and in fresh Ubuntu 24.04
-Docker userspace. Concurrent namespace churn/dump testing did not reproduce
-a cross-netns leak.
- net/netfilter/nf_conntrack_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Bart Van Assche (1):
+      ice: fix locking in ice_dcb_rebuild()
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index eda5fe4a75c8..8ae3f6acc2d2 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3158,7 +3158,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 			if (l3proto && exp->tuple.src.l3num != l3proto)
- 				continue;
- 
--			if (!net_eq(nf_ct_net(exp->master), net))
-+			if (!net_eq(nf_ct_exp_net(exp), net))
- 				continue;
- 
- 			if (cb->args[1]) {
--- 
-2.43.0
+Emil Tantilov (2):
+      idpf: fix read_dev_clk_lock spinlock init in idpf_ptp_init()
+      idpf: fix xdp crash in soft reset error path
+
+Greg Kroah-Hartman (1):
+      idpf: fix double free and use-after-free in aux device error paths
+
+Grzegorz Nitka (1):
+      ice: fix PTP hang for E825C devices
+
+Ivan Vecera (2):
+      ice: dpll: fix rclk pin state get for E810
+      ice: dpll: fix misplaced header macros
+
+Joshua Hay (2):
+      idpf: do not enable XDP if queue based scheduling is not supported
+      idpf: fix skb datapath queue based scheduling crashes and timeouts
+
+Maciej Fijalkowski (1):
+      i40e: keep q_vectors array in sync with channel count changes
+
+Marcin Szycik (1):
+      ice: fix setting RSS VSI hash for E830
+
+Matt Vollrath (2):
+      i40e: Cleanup PTP registration on probe failure
+      i40e: Cleanup PTP pins on probe failure
+
+ drivers/net/ethernet/intel/i40e/i40e.h          |  1 +
+ drivers/net/ethernet/intel/ice/ice_dpll.h       | 32 ++++++-------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h     | 12 +++--
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.h |  4 +-
+ drivers/net/ethernet/intel/i40e/i40e_main.c     | 36 ++++++++++++---
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c      |  3 +-
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c    |  4 +-
+ drivers/net/ethernet/intel/ice/ice_dpll.c       |  5 ++
+ drivers/net/ethernet/intel/ice/ice_main.c       |  6 +--
+ drivers/net/ethernet/intel/idpf/idpf_idc.c      |  6 +++
+ drivers/net/ethernet/intel/idpf/idpf_lib.c      |  4 +-
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c      |  4 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c     | 61 ++++++++++++++-----------
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 19 ++------
+ drivers/net/ethernet/intel/idpf/xdp.c           | 15 ++++--
+ drivers/net/ethernet/intel/idpf/xsk.c           |  4 +-
+ 16 files changed, 132 insertions(+), 84 deletions(-)
+---
+base-commit: bd3a4795d5744f59a1f485379f1303e5e606f377
+change-id: 20260504-jk-iwl-net-2026-05-04-f9526823577f
+
+Best regards,
+--  
+Jacob Keller <jacob.e.keller@intel.com>
 
 
