@@ -1,90 +1,89 @@
-Return-Path: <stable+bounces-244160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAqVOlL9+WkqFwMAu9opvQ
-	(envelope-from <stable+bounces-244160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:23:14 +0200
+	id kOz2MXX7+WmNFgMAu9opvQ
+	(envelope-from <stable+bounces-244161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:15:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404664CF529
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:23:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFF74CF336
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3706D309197E
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 14:14:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8058D301F7D1
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 14:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0F5480DC9;
-	Tue,  5 May 2026 14:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBF548097C;
+	Tue,  5 May 2026 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mjXWmkQp";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4qgklIjS"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TdEGfjDp";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aTlrONC6"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F4F48094B;
-	Tue,  5 May 2026 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC0448033F;
+	Tue,  5 May 2026 14:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777990419; cv=none; b=Vj3qGP4w8p4s+XOjsw49aZbHbNkLesJXP2I9A1KYK7eK0ubViewXO1KI/QrA57GoJ40Tz5UxVru7ILGEs/RC8JP/0h3U2A4oDFN/f4sgVJgDYNb71aElVSzdMtOo9yubV09ReeQl/QjsWt2W3EFL4850ND5dh2k+yuuWXc0OIdw=
+	t=1777990422; cv=none; b=rfk0vOoQKe96czreXpzZaEuHyaqgUYPPtkVDX4ihpwWS1tvbDab/ZAXyPz8fjisFnPV4wdfoCNL5xQ6R2BB8mkNmUDQIwuEuPxjebqn21725Ih4kjEvOWkV0zRXp98KqYnAZajO0mYqot0cwEsnKhpKE4mYJcAoONhYqbWn+7Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777990419; c=relaxed/simple;
-	bh=cS9UQ2LE7gyq+pKPhW/92Qkg7TAmjnc9knsajJ3GfHQ=;
+	s=arc-20240116; t=1777990422; c=relaxed/simple;
+	bh=bLuLAiHittuEFjumRsymQWP2Fcd3Wj4SWlekyAt6q44=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=TtFaJl5iQiQlbHr7UKX4tT5pObpGEQLXEuekWA2crjd8Dsm+lpAXDJk0j373jF4+smuz6lIjjPc7KKlVpdSW/nDg6xrG6RLKF+p/ZFSgWozd4qtV5u5k76GHqWe5gC2/hadrMm9KMUG824//zhmSx+LL+HZDTOEhempzJIBa1qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mjXWmkQp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4qgklIjS; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=n1yUOxcWevNJQez6/8+Gu87DqZt6/ApeqFvgS3mPurHm4+N5qSbErcHUhcYQ3xAOAM4x/RgnhGNb5LT9XZGepqnWl/KKDi5hyy6WG+y7S4J/dw3DUITxQDxEor9ZVYAFs58knUzdYH+bAGh6skwq8VxPgdN2FFaP2SA6BNB7Rss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TdEGfjDp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aTlrONC6; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 05 May 2026 14:13:34 -0000
+Date: Tue, 05 May 2026 14:13:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1777990416;
+	s=2020; t=1777990417;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sXK9sfh74wTOx4op38UNS/5dvNksMDwGVQrqKFifrUM=;
-	b=mjXWmkQpQbF6bs+A3hkTKbofqq1Qms+u+42tIEqRJXQYKsbxihLFaZtoadueG6Rn3zx9ZK
-	bAALDkXWvMQSj8g+PikoYKFY9ltT+xRVsij8OiMbOOqdkoSdJ4jIXdhlEEPOtq/OMfvybH
-	ju0k9oRHJWhFEjsfutDhoM7bzR7ffdHEpi8ptitb0hvH5R0i+fRZe5rj1Jkt3Q4aKaVLTY
-	0fRzO5zBHAK8eiL8/lk6A4hciBmnvTckV0fnpLc+d6KTiAv2jAO+xNpxJharMbFBvNKK4s
-	rz46iOp/DhrCbRdei2iHZUzkZwRhCIs660Yu2hyGbYpvPYAUxZRQKM6UK6dE+Q==
+	bh=M8USkwCZuh44tvaAm4gCqqT+msbTAZ1OZXV6+wHPRa4=;
+	b=TdEGfjDpww3/dLgxiTuoe34zUqnaKKLVdIknDBh40Na38D2Ki6WgpNVeroi1D3xDnQNeRi
+	WboBbe0EF0YJgsKRgHH3oy9ov/AMBFaXZiNzJeWkMLr3eM7cUVFjNozNWFwofhRf5+BcfI
+	XVmm/xCObDqsutrZisMghTGm+yOQWcjlLJf7aQtVdHgSnwoYM+95/Z0NyBhJ6LwwGHiw9x
+	13R/BX+eUk5+k6rs25kAxZWQMNhE9lBxJlXh1d//McihC/TNj08SjJDHchezDW49YYBfzR
+	qJMuY/svuSNTWxZhTNDpe9roxz2sGNRhP4aClXDw7fFooLdW2DZzmt8vryUPPA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1777990416;
+	s=2020e; t=1777990417;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sXK9sfh74wTOx4op38UNS/5dvNksMDwGVQrqKFifrUM=;
-	b=4qgklIjSxfNHAzawUxcNZrW3yrMHLg6h1E/445fnCEufAx4vOhg+XQ1h9n8/hkufDRe92y
-	zvLTLG+iFeX6q3Dg==
+	bh=M8USkwCZuh44tvaAm4gCqqT+msbTAZ1OZXV6+wHPRa4=;
+	b=aTlrONC6egpoOCCV/748DoY90x8Ae81wp5M3ftHhlj8DJlw41BCi+/FBF5EWbKYYx4zWkv
+	5qZiBWZs96+g2tDA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] rseq: Implement read only ABI enforcement for
- optimized RSEQ V2 mode
+Subject: [tip: sched/urgent] selftests/rseq: Validate legacy behavior
 Cc: Thomas Gleixner <tglx@kernel.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Dmitry Vyukov <dvyukov@google.com>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260428224427.845230956@kernel.org>
-References: <20260428224427.845230956@kernel.org>
+In-Reply-To: <20260428224427.764705536@kernel.org>
+References: <20260428224427.764705536@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177799041465.424702.1139943311887662662.tip-bot2@tip-bot2>
+Message-ID: <177799041603.424702.4340958887872175344.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 404664CF529
+X-Rspamd-Queue-Id: AFFF74CF336
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -92,11 +91,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244160-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244161-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
@@ -112,153 +111,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linutronix.de:dkim,infradead.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,run_param_test.sh:url,run_legacy_check.sh:url,linutronix.de:dkim,infradead.org:email,msgid.link:url,vger.kernel.org:replyto]
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     867d5e3305886b78109e68983783a8688341ec31
-Gitweb:        https://git.kernel.org/tip/867d5e3305886b78109e68983783a868834=
-1ec31
+Commit-ID:     3cc32166b3e3c9a333a011619d9676bc1024b22c
+Gitweb:        https://git.kernel.org/tip/3cc32166b3e3c9a333a011619d9676bc102=
+4b22c
 Author:        Thomas Gleixner <tglx@kernel.org>
-AuthorDate:    Sun, 26 Apr 2026 16:21:02 +02:00
+AuthorDate:    Sun, 26 Apr 2026 17:51:07 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 05 May 2026 16:03:11 +02:00
 
-rseq: Implement read only ABI enforcement for optimized RSEQ V2 mode
+selftests/rseq: Validate legacy behavior
 
-The optimized RSEQ V2 mode requires that user space adheres to the ABI
-specification and does not modify the read-only fields cpu_id_start,
-cpu_id, node_id and mm_cid behind the kernel's back.
+The RSEQ legacy mode behavior requires that the ID fields in the rseq
+region are unconditionally updated on every context switch and before
+signal delivery even if not required by the ABI specification.
 
-While the kernel does not rely on these fields, the adherence to this is a
-fundamental prerequisite to allow multiple entities, e.g. libraries, in an
-application to utilize the full potential of RSEQ without stepping on each
-other toes.
+To ensure that this behavior is preserved for legacy users in the future,
+add a test which validates that with a sleep() and a signal sent to self.
 
-Validate this adherence on every update of these fields. If the kernel
-detects that user space modified the fields, the application is force
-terminated.
+Provide a run script which prevents GLIBC from registering a RSEQ region,
+so that the test can register it's own legacy sized region.
 
-Fixes: d6200245c75e ("rseq: Allow registering RSEQ with slice extension")
+Fixes: 566d8015f7ee ("rseq: Avoid CPU/MM CID updates when no event pending")
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 Tested-by: Dmitry Vyukov <dvyukov@google.com>
-Link: https://patch.msgid.link/20260428224427.845230956%40kernel.org
+Link: https://patch.msgid.link/20260428224427.764705536%40kernel.org
 Cc: stable@vger.kernel.org
 ---
- include/linux/rseq_entry.h | 71 ++++++++++++++-----------------------
- 1 file changed, 28 insertions(+), 43 deletions(-)
+ tools/testing/selftests/rseq/Makefile            |  5 +-
+ tools/testing/selftests/rseq/legacy_check.c      | 65 +++++++++++++++-
+ tools/testing/selftests/rseq/run_legacy_check.sh |  4 +-
+ 3 files changed, 72 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/rseq/legacy_check.c
+ create mode 100644 tools/testing/selftests/rseq/run_legacy_check.sh
 
-diff --git a/include/linux/rseq_entry.h b/include/linux/rseq_entry.h
-index 934db41..fde12cf 100644
---- a/include/linux/rseq_entry.h
-+++ b/include/linux/rseq_entry.h
-@@ -248,7 +248,6 @@ static __always_inline bool rseq_grant_slice_extension(un=
-signed long ti_work, un
- #endif /* !CONFIG_RSEQ_SLICE_EXTENSION */
+diff --git a/tools/testing/selftests/rseq/Makefile b/tools/testing/selftests/=
+rseq/Makefile
+index 0d1947c..0293a2f 100644
+--- a/tools/testing/selftests/rseq/Makefile
++++ b/tools/testing/selftests/rseq/Makefile
+@@ -22,9 +22,10 @@ TEST_GEN_PROGS_EXTENDED =3D librseq.so \
+ 	param_test_compare_twice \
+ 	param_test_mm_cid \
+ 	param_test_mm_cid_compare_twice \
+-	syscall_errors_test
++	syscall_errors_test \
++	legacy_check
 =20
- bool rseq_debug_update_user_cs(struct task_struct *t, struct pt_regs *regs, =
-unsigned long csaddr);
--bool rseq_debug_validate_ids(struct task_struct *t);
+-TEST_PROGS =3D run_param_test.sh run_syscall_errors_test.sh
++TEST_PROGS =3D run_param_test.sh run_syscall_errors_test.sh run_legacy_check=
+.sh
 =20
- static __always_inline void rseq_note_user_irq_entry(void)
- {
-@@ -368,43 +367,6 @@ efault:
- 	return false;
- }
+ TEST_FILES :=3D settings
 =20
--/*
-- * On debug kernels validate that user space did not mess with it if the
-- * debug branch is enabled.
-- */
--bool rseq_debug_validate_ids(struct task_struct *t)
--{
--	struct rseq __user *rseq =3D t->rseq.usrptr;
--	u32 cpu_id, uval, node_id;
--
--	/*
--	 * On the first exit after registering the rseq region CPU ID is
--	 * RSEQ_CPU_ID_UNINITIALIZED and node_id in user space is 0!
--	 */
--	node_id =3D t->rseq.ids.cpu_id !=3D RSEQ_CPU_ID_UNINITIALIZED ?
--		  cpu_to_node(t->rseq.ids.cpu_id) : 0;
--
--	scoped_user_read_access(rseq, efault) {
--		unsafe_get_user(cpu_id, &rseq->cpu_id_start, efault);
--		if (cpu_id !=3D t->rseq.ids.cpu_id)
--			goto die;
--		unsafe_get_user(uval, &rseq->cpu_id, efault);
--		if (uval !=3D cpu_id)
--			goto die;
--		unsafe_get_user(uval, &rseq->node_id, efault);
--		if (uval !=3D node_id)
--			goto die;
--		unsafe_get_user(uval, &rseq->mm_cid, efault);
--		if (uval !=3D t->rseq.ids.mm_cid)
--			goto die;
--	}
--	return true;
--die:
--	t->rseq.event.fatal =3D true;
--efault:
--	return false;
--}
--
- #endif /* RSEQ_BUILD_SLOW_PATH */
-=20
- /*
-@@ -519,12 +481,32 @@ bool rseq_set_ids_get_csaddr(struct task_struct *t, str=
-uct rseq_ids *ids,
- {
- 	struct rseq __user *rseq =3D t->rseq.usrptr;
-=20
--	if (static_branch_unlikely(&rseq_debug_enabled)) {
--		if (!rseq_debug_validate_ids(t))
--			return false;
--	}
--
- 	scoped_user_rw_access(rseq, efault) {
-+		/* Validate the R/O fields for debug and optimized mode */
-+		if (static_branch_unlikely(&rseq_debug_enabled) || rseq_v2(t)) {
-+			u32 cpu_id, uval, node_id;
+diff --git a/tools/testing/selftests/rseq/legacy_check.c b/tools/testing/self=
+tests/rseq/legacy_check.c
+new file mode 100644
+index 0000000..3f7de4e
+--- /dev/null
++++ b/tools/testing/selftests/rseq/legacy_check.c
+@@ -0,0 +1,65 @@
++// SPDX-License-Identifier: GPL-2.0
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
++#endif
 +
-+			/*
-+			 * On the first exit after registering the rseq region CPU ID is
-+			 * RSEQ_CPU_ID_UNINITIALIZED and node_id in user space is 0!
-+			 */
-+			node_id =3D t->rseq.ids.cpu_id !=3D RSEQ_CPU_ID_UNINITIALIZED ?
-+				cpu_to_node(t->rseq.ids.cpu_id) : 0;
++#include <errno.h>
++#include <signal.h>
++#include <stdint.h>
++#include <unistd.h>
 +
-+			unsafe_get_user(cpu_id, &rseq->cpu_id_start, efault);
-+			if (cpu_id !=3D t->rseq.ids.cpu_id)
-+				goto die;
-+			unsafe_get_user(uval, &rseq->cpu_id, efault);
-+			if (uval !=3D cpu_id)
-+				goto die;
-+			unsafe_get_user(uval, &rseq->node_id, efault);
-+			if (uval !=3D node_id)
-+				goto die;
-+			unsafe_get_user(uval, &rseq->mm_cid, efault);
-+			if (uval !=3D t->rseq.ids.mm_cid)
-+				goto die;
-+		}
++#include "rseq.h"
 +
- 		unsafe_put_user(ids->cpu_id, &rseq->cpu_id_start, efault);
- 		unsafe_put_user(ids->cpu_id, &rseq->cpu_id, efault);
- 		unsafe_put_user(node_id, &rseq->node_id, efault);
-@@ -543,6 +525,9 @@ bool rseq_set_ids_get_csaddr(struct task_struct *t, struc=
-t rseq_ids *ids,
- 	rseq_stat_inc(rseq_stats.ids);
- 	rseq_trace_update(t, ids);
- 	return true;
++#include "../kselftest_harness.h"
 +
-+die:
-+	t->rseq.event.fatal =3D true;
- efault:
- 	return false;
- }
++FIXTURE(legacy)
++{
++};
++
++static int cpu_id_in_sigfn =3D -1;
++
++static void sigfn(int sig)
++{
++	struct rseq_abi *rs =3D rseq_get_abi();
++
++	cpu_id_in_sigfn =3D rs->cpu_id_start;
++}
++
++FIXTURE_SETUP(legacy)
++{
++	int res =3D __rseq_register_current_thread(true, true);
++
++	switch (res) {
++	case -ENOSYS:
++		SKIP(return, "RSEQ not enabled\n");
++	case -EBUSY:
++		SKIP(return, "GLIBC owns RSEQ. Disable GLIBC RSEQ registration\n");
++	default:
++		ASSERT_EQ(res, 0);
++	}
++
++	ASSERT_NE(signal(SIGUSR1, sigfn), SIG_ERR);
++}
++
++FIXTURE_TEARDOWN(legacy)
++{
++}
++
++TEST_F(legacy, legacy_test)
++{
++	struct rseq_abi *rs =3D rseq_get_abi();
++
++	ASSERT_NE(rs, NULL);
++
++	/* Overwrite rs::cpu_id_start */
++	rs->cpu_id_start =3D -1;
++	sleep(1);
++	ASSERT_NE(rs->cpu_id_start, -1);
++
++	rs->cpu_id_start =3D -1;
++	ASSERT_EQ(raise(SIGUSR1), 0);
++	ASSERT_NE(rs->cpu_id_start, -1);
++	ASSERT_NE(cpu_id_in_sigfn, -1);
++}
++
++TEST_HARNESS_MAIN
+diff --git a/tools/testing/selftests/rseq/run_legacy_check.sh b/tools/testing=
+/selftests/rseq/run_legacy_check.sh
+new file mode 100644
+index 0000000..5577b46
+--- /dev/null
++++ b/tools/testing/selftests/rseq/run_legacy_check.sh
+@@ -0,0 +1,4 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++GLIBC_TUNABLES=3D"${GLIBC_TUNABLES:-}:glibc.pthread.rseq=3D0" ./legacy_check
 
