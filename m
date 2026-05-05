@@ -1,146 +1,136 @@
-Return-Path: <stable+bounces-244029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFaTBbi4+WmNBAMAu9opvQ
-	(envelope-from <stable+bounces-244029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:30:32 +0200
+	id SGuVEXS6+WlICwMAu9opvQ
+	(envelope-from <stable+bounces-244030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:37:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BD24C9B5E
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:30:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55634C9EBD
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A60333008D43
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 09:30:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E0C430707DE
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 09:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05213126C4;
-	Tue,  5 May 2026 09:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F214E3242CF;
+	Tue,  5 May 2026 09:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="naIMprh7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/RefMnU"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22992F6910;
-	Tue,  5 May 2026 09:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37F53016F2;
+	Tue,  5 May 2026 09:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777973426; cv=none; b=KVeiL0HWCBA1Xs9oAcDX3QSu2vOJjnnV/CsQfuNbOdB9ukcXQP8Wt5Iv2ZNOXgHxTUbY9k5aDf/LbFJQzgYpAwVFZUD6bAqdAl77TOGnyH7dL6Zm2aWIvq6qBgJhq36Z79b1jnYNeATKGiCSjZvbzKrOS8KGiuWLqUencNzySbo=
+	t=1777973532; cv=none; b=BDvYsbrcY3wKSI/3GMdIr7ZQSh0qgQeinxuWKMhqk2eHwgZeCEiy1zeNyExS2NeYbfyUF09qwN1tEosH30sPCOqJydal8nQTHqBgTULvkgKSzrFcFLljnWGOWfMaqvJ+33X+d/6MLhSJaRzza9oj76rV+aEKNBr7ha3WxOUHlIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777973426; c=relaxed/simple;
-	bh=LdjSLyepUOKVFjsGIp3W8ZnMtwsGA4HY10BzrVAz7yI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aYLv4boJWgdDDfJAbqeJIYT6GoGNuVjDqupby1CsiyxuJp/QDYSc8XHSkttssOFWnoJyVfiYYmx1B9TzfPar7H0G1oPmrYjOmnWHPw35ZSF00RY5o+4k/7ikxVzzgEKPaWgosb/e7EoCCppu1tObDArQsayyu1NMFecGoOir98E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=naIMprh7; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=QNLOEXFxq4uiqG2FBjx7y5UulD3vGj5gX9vl2RjNT68=; 
-	b=naIMprh7/p53cXXpze96WKbbfz5st0pY2gSh3UBEuXWwRMTvsODxYYgE4mttHmOIXJYeC7e5oMk
-	+Qn/dklp9eY9xsclyGS4j15Q3w8sL7BZxSbIWpLlB0/oYXutLdR3tVuE0mj0LBdBBCg4U3l6t09GW
-	IDI57buDhZ0bwS8rhoSDIp16VNmD/UNAg/75DG854TJNEzch4PNzzR1Di4aRDhSxNjEBIqNW4guWX
-	NepUxGYJG2p6KaadCrgzDqWQ7E+MqTVJPkoyDt+QEsI+B1cwpMbU/gbu9A6EWJQ97vGzkWqFV9ekg
-	wpNjkeck6ZbNAjUf8kj9S4f+jvgOgmMTnnmA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wKC6U-00BNzu-0K;
-	Tue, 05 May 2026 17:30:11 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 05 May 2026 17:30:10 +0800
-Date: Tue, 5 May 2026 17:30:10 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Linus Walleij <linusw@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	stable@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] crypto: atmel-sha204a - drop hwrng quality reduction
- for ATSHA204A
-Message-ID: <afm4osSDHTltfoIJ@gondor.apana.org.au>
-References: <20260428101430.514838-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1777973532; c=relaxed/simple;
+	bh=C5mXDN8AYXkPUoovFe0V6BMOhcKGdgVIXmCE1Uob2g0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nbHAgvMLFnLK2tNbTJL2sJvIGtOg7b+UkBf5y31WejLzxWR1UxRKZ0etiZgt4CSH5mDZHvz36Q8dpE2PH1KCqRrX3m25X6lI2ylrCYEeMEMsih5k0b3ClPbYVyPIo1PN/cVjIqxjtRTavWRkhkkDUqKPpCiUdseGB716gVi556o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/RefMnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EF6C2BCB4;
+	Tue,  5 May 2026 09:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777973532;
+	bh=C5mXDN8AYXkPUoovFe0V6BMOhcKGdgVIXmCE1Uob2g0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A/RefMnUnExWI5VODjh7yf6tZw0+GnNBTVzd4vOgSeFA7JU0AazL1iMwk8KWlGGtf
+	 EDU0GKZgQ92xsEFPv8bS/pI0HowMxqvdbsHSNJLS5ZsZIBiTPZoP7YQg1GhJB31Ukj
+	 1F9cJJOoXWnki3oOaUUv/iagDexSuEJna8dD1tVKTchTtEpXoNHWmPIMopYp39Xsqa
+	 4obD40HCYkwOrFePGuJiBeMeusXo6E5olO5mM8EY93aLHqyMT4lU0OBPdCS3Sm9ZoQ
+	 9Qr2S0nIRjCmc3up8yKi7P8EovrNgUxPqFWiXZwtgaaPEFp0yyuXm0ks5q+mNQeYdZ
+	 GzZXDI2/CbSBQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.12 000/215] 6.12.86-rc1 review
+Date: Tue,  5 May 2026 11:31:54 +0200
+Message-ID: <20260505093154.244209-1-ojeda@kernel.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428101430.514838-3-thorsten.blum@linux.dev>
-X-Rspamd-Queue-Id: B0BD24C9B5E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B55634C9EBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244029-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-244030-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:url,apana.org.au:email,microchip.com:url,gondor.apana.org.au:dkim,gondor.apana.org.au:mid,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
 
-On Tue, Apr 28, 2026 at 12:14:32PM +0200, Thorsten Blum wrote:
-> Commit 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to
-> lowest possible") reduced the hwrng quality to 1 based on a review by
-> Bill Cox [1]. However, despite its title, the review only tested the
-> ATSHA204, not the ATSHA204A.
-> 
-> In the same thread, Atmel engineer Landon Cox wrote "this behavior has
-> been eliminated entirely"[2] in the ATSHA204A and "this problem does not
-> affect the ATECC108 or the ATECC108A (or the ATSHA204A)"[3].
-> 
-> According to the official ATSHA204A datasheet [4], the device contains a
-> high-quality hardware RNG that combines its output with an internal seed
-> value stored in EEPROM or SRAM to generate random numbers. The device
-> also implements all security functions using SHA-256, and the driver
-> uses the chip's Random command in seed-update mode.
-> 
-> Keep 'quality = 1' for ATSHA204, but drop the explicit hwrng quality
-> reduction for ATSHA204A and fall back to the hwrng core default.
-> 
-> [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-> [2] https://www.metzdowd.com/pipermail/cryptography/2014-December/023852.html
-> [3] https://www.metzdowd.com/pipermail/cryptography/2014-December/023886.html
-> [4] https://ww1.microchip.com/downloads/en/DeviceDoc/ATSHA204A-Data-Sheet-40002025A.pdf
-> 
-> Fixes: 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to lowest possible")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
-> Changes in v2:
-> - Drop the enum and dereference match data if needed as suggested by Ard
-> - Keep the review comment
-> - v1: https://lore.kernel.org/lkml/20260427124030.315590-3-thorsten.blum@linux.dev/
-> ---
->  drivers/crypto/atmel-sha204a.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
+On Mon, 04 May 2026 15:50:19 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.86 release.
+> There are 215 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 06 May 2026 13:50:52 +0000.
+> Anything received after that time might be too late.
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
+
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+
+The Clippy pin-init-related warnings are gone, as expected.
+
+Thanks!
+
+Cheers,
+Miguel
 
