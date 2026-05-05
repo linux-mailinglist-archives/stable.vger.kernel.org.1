@@ -1,268 +1,222 @@
-Return-Path: <stable+bounces-244250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJDQFZUw+mkGKwMAu9opvQ
-	(envelope-from <stable+bounces-244250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:01:57 +0200
+	id oNl/AZ8y+mlXKgMAu9opvQ
+	(envelope-from <stable+bounces-244251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:10:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87F54D2731
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:01:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645B84D282A
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2EAB306B26D
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 18:01:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37601302304E
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 18:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C294A33F2;
-	Tue,  5 May 2026 18:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09864A2E15;
+	Tue,  5 May 2026 18:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R2iPwoLr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLo+vqj6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8004A3402
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 18:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778004101; cv=pass; b=fzkfaj7dDxccw7aBgIMnasd1eKO4m9W3DkKpS+0pFH+Dk/oQcX87b8irdZKpDWIwTEbVwaS9ocWgZNFm4PM2vurVn5n6psrWajFAUfraKbh897gvkHj1oGVKFxP2cANFyPW4KWb2FoDo6FaNuR05RiXI1EAAwaWSF0ZEGwb1FbE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778004101; c=relaxed/simple;
-	bh=f+ypqmN+lQj0IF/Oa+7CTxDcYQldd91C7IUoR3r3pGw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aUzFElBRXCXNCeMwiupFLrXkh4eJ/UB2klUvS7vFIEPFB7+cEmtZNLe1UnyExf5+0JNYrasgwghBPlRPWYH/6oUATVolGuZr7kCiyrl1q77Qa9pXe7lWHP/NrGuxyk9h4Rmtr+DgTwvgceyWIIKTn86/VkcAdUtcYqgF6mmclVc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R2iPwoLr; arc=pass smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bb3c4d8cc29so885307066b.1
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 11:01:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778004098; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NR0qc+gOeD9yGJUcwMZsoJsyqssyCY42FZIYxhu49yDGba7DblP4pvKtQeBaFGtedQ
-         8HB8RCfnnojBDgFiF+GUPzvDWqPKqOTmt0lbG+mSECRkYelBiVIG6c5qxFFniLOVd6wG
-         qtmgEtFohfgUULKF6fuMZhBYSX2LAVMFN3hYE+DkeYrn8bBnxzJOnMlg5q4MJzLEW61d
-         fl1mxEKLLLfhSU3Xh+akNjmEK/wfYhUGh52Am+9a1IukGc4DsBi/SDNGi+dV2K+vbuXS
-         KzvupLZiqiq3rnxKD0vh4bDu55bgEpTSHGsZpuNTsxMrGQ6i/CS/+phU+4HdQ0V/kCW0
-         wIyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nQUZmjv7aHFLMaMFauN5kz/OKqGsuDJKsdlinZQqRbc=;
-        fh=IxFPf/xNOkmclNDO4DAVu1HRKl0HHGVmAgBraRB6o68=;
-        b=IFZ6S3jKTAcky57O+15yvpMC/8M/O9fv9aKsybgs8SfoQfusvmllhvsSvnGAHnO1N4
-         ZaWRaaBbilOqWSoQqgQqqY48fEAhE3dtlQSwTrM295gxATXNjx0BG0J2np7lFqbaNoyH
-         HjUHnCsdzAqFGpQXM3iOkVyrB5AATMpW+KtWp/B6wY3kK9gsscKaZsgViUcQCgZYQial
-         eVvGd3zN5Yx0yLaRY9kFCmmGACPaOn7MFUdxPe2xJGRAN3Jv8SJu5y8ahkVlDznctNQ6
-         S4sOC84IvMKdciXaAmiptV6GfQw/o23JZyRA2DykWjzdeBVyUNaTK+nbzyAs9APVQHxV
-         qonA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332A847ECFA
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 18:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778004633; cv=none; b=BrWA72BL4gWjYtZYlenQbA56QG0hw9K8YoDGjjixPAlkoZcudbFAkmnSN7Vo5FGIxKufZYnTcic94Z2MflKeWVIPnmPb33fm5RNWINeEl++9HEwlWiM+a4jQQYMtNHBEWh3ldON7qyBiganMDh1uCeAhXvTHTpXNAQDzzhlDoXM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778004633; c=relaxed/simple;
+	bh=ElxIShu9MGvxI7R5VGs6SocS6NurX6IGYv2XYH5ULlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BTLGSp0jChty2ONC7bjSjcILNyGzadhTxo0rOyposBHV55W+Ihk5hW88JflGGsHKrxpeyikArMDSkRNrFP6CbkVXKbpWT+nQ6Yg8eC5CFMlfca6FQe7eOYN5Wppj0M7qJdnPQxR7WeY7wo5R9qkIUqFLPR9rfqAYz6a1CXGRfsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLo+vqj6; arc=none smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2f3c623322bso2741955eec.0
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 11:10:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778004098; x=1778608898; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nQUZmjv7aHFLMaMFauN5kz/OKqGsuDJKsdlinZQqRbc=;
-        b=R2iPwoLriEdbZIs7QFPcadX0XQOBNAqZKPkb4cQSOmgsII66gC+kw1VRegDRBgGNFx
-         aHMgHpysJVtd92bEhROI60a5BN9PlmRal06adw60CmQFseJtTC0RUh7H+/k4tHmr274B
-         e9kAAe4deDTS1ByYbJsS/kaRewxd0esQW/FRv/341oaB1D90YQ+7co57XQLf4JYfgFa/
-         GuhtEbdiRngj2NpfWlswK6AloDZShpfWaM5YCRRZGlIbUBjBA1BYpk/D7ude5Jsek3tk
-         GQsyc5FlbDqcM3e51HpktYcyapenoZF9WqlUIFKU0xnBWWwY0FxnS0yS7PaEuXO2Cqab
-         ALqA==
+        d=gmail.com; s=20251104; t=1778004631; x=1778609431; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zx1umsJBGhZmdqwnCrzKLY80VDbMmJnRMhO75GMdDI8=;
+        b=JLo+vqj6OjmX64DTdv2EKZuKahrXy3mYa8WXVVb0Mh/4LGEg4/IYfAjOj6tYTKbCK3
+         L1IHjlXCV05tPq8Dfm52qrtAUvZBK9i8ywXgFAhucceSNoW3valsK2kwYAI2+yMw/jW8
+         wL3BgZrYIw+iGwkuse8H1aknJZkegO5d+iBmRHZ3kEgZcVh9IxPcLTN++Xm6D5NzYFDw
+         2oa3EelnLn7h66wmDW2MS175k/A/pO8qGrMKn4uPGCjV37eK5LvDKG7rcLry617Q5dIp
+         EDX3/5rm66ApK6OOxrkuM3BCWziPtWdFJEazapQDrsBEJ0WD2ZsyqAHv3ZFzN+laP+sN
+         yyqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778004098; x=1778608898;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nQUZmjv7aHFLMaMFauN5kz/OKqGsuDJKsdlinZQqRbc=;
-        b=gBr7AF1ly6NBs+GVjcPY3xeTXpdfy6bK9ZMBWGN/wPw25rZebUAKPqL7G/WqK7UCr3
-         pr0khpScsixT65OkSIFtYAoY4wX+pI71RFLNB/Y/fA6ixZsTdoRPuIfj20wiBaJenx+E
-         aggjOidQaI4HQ2bLl5wSjY5o+FhgeByhAj62E8j9dsaHiFesD5fKfRHvJHX3/kNs6DZZ
-         4InlL9Sk/ya1ACKy4n4szmNBPvpOZWGDjG+jMHt0IfYGw4BwIdEnCRvgv56avnJZ7PLi
-         kPgiMsiYPySBOpQVj9G2Nu2JPfapfqfx596TiF1kr5usYIczRZBNyZ9V+0qZGuhQVMS+
-         vxVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ985VAPPuVAaHqgwRSAptoJDOKF2JgLxYja24VS5mLHyaPbypDnsrs8ePCa71TtY1/6QiNLrEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSG6nwh0TZhqQi55ri81G/WqY0kYFFTfRdw7AMF1/lOxLosKnZ
-	o4D/lDqV/nbi60uFG0Is09D7GODnvPIMiLgJ20jplM8CJ7vP52TgoggVD/Q8OZe4GifpJYcJuhQ
-	K1f095ulBEYOQxC0I5HyEPsPvWhYv5qyBdsMMSSeY
-X-Gm-Gg: AeBDievDHnUr3oTN1TAD8xfn4/emuFGj33xsRjXHUz4r9v2t1OcBtp5B40qzkR1563a
-	jVU6mQLyf42rOQtpjgKYWij6358iTF6VOVAbq5IEO/XoWoRltsLPFG88ZeKu1NScgqWbGJyK9z0
-	5Nves2vh9wS3tp/VR580jASqsz5JczThLnEmuDUy0wVRYKDnqcANa2hsJmnWGMZL/UGQlxbdZby
-	cWn1fCG9ySdjAMTXF+dYXRemibpepKw3YpYd96C6FIj9hmXgeVRTdVErKgLMkv5H2ljy3UKoTT5
-	+W0oOvc6r/srYzVcAS4iCgwvkpUyBsqv4zxhzgixhfRNmeR+TYdXczlmfwdwMpTp69SZFnSAGsu
-	bV5CbJHD+8CF1H1YJoPIS2bLRjQ==
-X-Received: by 2002:a17:906:9f87:b0:ba7:cc67:488b with SMTP id
- a640c23a62f3a-bbffab33111mr887380266b.5.1778004097049; Tue, 05 May 2026
- 11:01:37 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778004631; x=1778609431;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zx1umsJBGhZmdqwnCrzKLY80VDbMmJnRMhO75GMdDI8=;
+        b=JOU3gPLyejLWrX1Q5IxTrvF1pteFJaBn6YBScCLfeiyI9goZ/TDb3yUPBeTwchDD5E
+         VKfNGKF4hQCQYDsEjTrskfAF06zeu9S11hHADrEYrC1/XCohh8/OuSCGe2W1+P2G6yQD
+         +yEPdUu7sOu+2jmx7+MIJyUZ3L1N6peD6vKAbIYjex+q2yUctOeX3rDMqxpbrwP6cITk
+         wQQ0HoFUXY8OzaDANIjY/gAUw5TVkL3X85JGIZeIXjaqSmg/HMT6UNyzBYxKg1wuky0C
+         Bv8CBSsWcussUmb7xz68Nm0ODyeX4P/AkJtJqgwQEnJ6PJra3l/n5xeFNi5LS48jYaJu
+         9OaQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9fwV/HsRya4MTs8SvJJs+fS3LV+QoWYDYDakTokt8bul9DbRijUIu2n0erf1frYdgKtHtV+z0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuZUwV/H5pS8TTjD0ChPrzj8Jhb/FpixoXJRwT6U094v98i+2d
+	v9MEeM+gbeqtkD5gl4bgcEbS5NyOQ+glBvGmaVKAeeyfeG0YaduMQw5obK3Zdg==
+X-Gm-Gg: AeBDievoYh6GwRwJMmmgmR7++meLYlxkWe2H/ZPJL+DCKYVJMIsgZ8PJqYvgsBInVhj
+	o+U0qV/lkpXXp8XwGY4LO/VNEMY2w5vSBiTQuqendEGqRUyITOzLCRibbzwyU727hQiJ4insb2Y
+	h9u/NJhB03AOyJZKwngGQVdpU/ypAYa8mmo9JJVcNL91h0EsidF+3Df4GZmppMueWVEdeyTlQL6
+	tzGixzR9scVtl51BYt2aXXP+FF0OeLZuxary2Du4XpRCqDXs1QYpmv62bIgWn8LuNEFzNDOPwhm
+	zvxHhURju6pmZaXPAuKdjmOSFHrZrRnN9tzI3xGaxCKpOGz8cGH+jFDZizSPgbRnTrZl7+u2PBH
+	n5AgRI9kRdzQQpHpBOkApSPf6xc+IYQYTT/YvhnssQChZ7bdzVDW8lfgBADBfcDg2j6dntz3RjV
+	eJ+c7K8pcCDo18jxZV+8lAWBTGcwWb82ucr2e+gUvB8n91J2Z79J13a8Lt8vHLbvUTqsX9myMC6
+	6A=
+X-Received: by 2002:a05:7300:ec11:b0:2e5:5bf4:8869 with SMTP id 5a478bee46e88-2f54c87cd18mr185786eec.21.1778004631036;
+        Tue, 05 May 2026 11:10:31 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:94ef:a6f3:2c96:2d58])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3889d611sm28496253eec.1.2026.05.05.11.10.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 11:10:30 -0700 (PDT)
+Date: Tue, 5 May 2026 11:10:26 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Kris Bahnsen <kris@embeddedts.com>
+Cc: Marek Vasut <marex@denx.de>, stable@vger.kernel.org, 
+	Mark Featherston <mark@embeddedts.com>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] Input: ads7846 - don't use scratch for tx_buf when
+ clearing register
+Message-ID: <afoyU46tsEhpf0I-@google.com>
+References: <20260430173739.3843425-1-kris@embeddedTS.com>
+ <aflcL6y_ugHV5p8s@google.com>
+ <c49600c3-a78d-4d74-82bd-7f95328388a5@embeddedTS.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260504224213.1049426-2-jthoughton@google.com>
- <20260504231048.1184273-1-jthoughton@google.com> <afohshVlK9YcBk-f@google.com>
-In-Reply-To: <afohshVlK9YcBk-f@google.com>
-From: James Houghton <jthoughton@google.com>
-Date: Tue, 5 May 2026 11:01:00 -0700
-X-Gm-Features: AVHnY4J0Tr074uKX9gnTkNPmv46TNeS2NEyt9u-k5f94BeNvCS-2m8Zf89eFVRE
-Message-ID: <CADrL8HX223b3YS8aHr7b=AZZ2J5ga+-SwLQX9Rs9Ep=rMM5wUA@mail.gmail.com>
-Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in kvm_arch_flush_shadow_all()
-To: Sean Christopherson <seanjc@google.com>
-Cc: chenhuacai@kernel.org, gshan@redhat.com, jhogan@kernel.org, 
-	joey.gouly@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, maobibo@loongson.cn, 
-	maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com, ricarkol@google.com, 
-	shahuang@redhat.com, stable@vger.kernel.org, suzuki.poulose@arm.com, 
-	yuzenghui@huawei.com, zhaotianrui@loongson.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D87F54D2731
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c49600c3-a78d-4d74-82bd-7f95328388a5@embeddedTS.com>
+X-Rspamd-Queue-Id: 645B84D282A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-244251-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244250-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jthoughton@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On Tue, May 5, 2026 at 10:05=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Mon, May 04, 2026, James Houghton wrote:
-> > On Mon, May 4, 2026 at 3:42=E2=80=AFPM James Houghton <jthoughton@googl=
-e.com> wrote:
-> > >
-> > > kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
-> > > concurrently in the event that the KVM's `mm` is __mmput() at the
-> > > same time that last reference to the KVM is being dropped.
-> > >
-> > > T1              T2
-> > > KVM_CREATE_VM
-> > >                 Get VM file from T1
-> > > close VM
-> > > exit_mm()       close VM
-> > >
-> > > T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all()=
-,
-> > >     with only the KVM srcu read lock held.
-> > >
-> > > T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
-> > >     kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
-> > >     again, with only the KVM srcu read lock held.
-> > >
-> > > This leads to a potential double-free of
-> > > kvm->arch.kvm_mmu_free_memory_cache and now with NV
-> > > kvm->arch.nested_mmus.
->
-> ...
->
-> > >  void kvm_uninit_stage2_mmu(struct kvm *kvm)
-> > >  {
-> > > -       kvm_free_stage2_pgd(&kvm->arch.mmu);
-> > > +       lockdep_assert_held_write(&kvm->mmu_lock);
-> >
-> > *facepalm*.... this doesn't account for the other callers of
-> > kvm_uninit_stage2_mmu(). They will get lockdep warnings.
-> >
-> > I've attached a diff to the bottom of this reply that *does* deal with =
-them.
-> > :( Sorry.
->
-> ...
->
-> > > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > > index 883b6c1008fb..977598bff5e6 100644
-> > > --- a/arch/arm64/kvm/nested.c
-> > > +++ b/arch/arm64/kvm/nested.c
-> > > @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kv=
-m)
-> > >  {
-> > >         int i;
-> > >
-> > > +       guard(write_lock)(&kvm->mmu_lock);
-> > > +
-> > >         for (i =3D 0; i < kvm->arch.nested_mmus_size; i++) {
-> > >                 struct kvm_s2_mmu *mmu =3D &kvm->arch.nested_mmus[i];
-> > >
-> > >                 if (!WARN_ON(atomic_read(&mmu->refcnt)))
-> > > -                       kvm_free_stage2_pgd(mmu);
-> > > +                       kvm_free_stage2_pgd_locked(mmu);
-> > >         }
-> > >         kvfree(kvm->arch.nested_mmus);
-> > >         kvm->arch.nested_mmus =3D NULL;
-> > > --
-> > > 2.54.0.545.g6539524ca2-goog
-> >
-> > And here is the diff that should fix this patch. (Sorry!!)
->
-> There are more issues.  kvm->arch.mmu.split_page_cache can be freed by
-> kvm_arch_commit_memory_region(), which holds slots_lock and slots_arch_lo=
-ck,
-> but not mmu_lock.
+On Tue, May 05, 2026 at 09:21:50AM -0700, Kris Bahnsen wrote:
+> Dmitry,
+> 
+> On 5/4/26 8:01 PM, Dmitry Torokhov wrote:
+> > Hi Kris,
+> > 
+> > On Thu, Apr 30, 2026 at 05:37:38PM +0000, Kris Bahnsen wrote:
+> >> The workaround for XPT2046 clears the command register, giving the
+> >> touchscreen controller a NOP. The change incorrectly re-uses the
+> >> req->scratch variable which is used as rx_buf for xfer[5], so by
+> >> the time xfer[6] occurs, the contents of req->scratch may not be
+> >> 0. It was found that the touchscreen controller can end up in
+> >> a completely unresponsive state due to it being given a command
+> >> the driver does not expect.
+> >>
+> >> Instead, rely on the spi_transfer behavior of tx_buf being NULL to
+> >> transmit all 0 bits and use the scratch variable for the rx_buf for
+> >> both the 1 byte command to and 2 byte response from the controller.
+> >>
+> >> This change was tested on real TSC2046 and ADS7843 controllers,
+> >> but not the XPT2046 the workaround was originally created for.
+> >> Confirming that the original modification to clear the command
+> >> register does not impact either real controller.
+> >>
+> >> Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
+> >> Cc: stable@vger.kernel.org
+> >> Co-developed-by: Mark Featherston <mark@embeddedTS.com>
+> >> Signed-off-by: Mark Featherston <mark@embeddedTS.com>
+> >> Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
+> >> ---
+> >>
+> >> V1 -> V2: Don't use rx_buf when clearing command reg
+> >> V2 -> V3: Modify original 2 xfer command to eliminate dev_err()
+> >>           output on xfer with len and NULL buffers
+> >>
+> >>  drivers/input/touchscreen/ads7846.c | 3 +--
+> >>  1 file changed, 1 insertion(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+> >> index 4b39f7212d35c..488bcc8393293 100644
+> >> --- a/drivers/input/touchscreen/ads7846.c
+> >> +++ b/drivers/input/touchscreen/ads7846.c
+> >> @@ -403,8 +403,7 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
+> >>  	spi_message_add_tail(&req->xfer[5], &req->msg);
+> >>  
+> >>  	/* clear the command register */
+> >> -	req->scratch = 0;
+> >> -	req->xfer[6].tx_buf = &req->scratch;
+> >> +	req->xfer[6].rx_buf = &req->scratch;
+> > 
+> > Sashiko (I believe correctly) pointed out that by doing this "scratch"
+> > is now write only and this may cause DMA from the device stomp on
+> > message status and other unrelated data that shares the same cacheline
+> > with scracth. While it was already a problem before now it is even more
+> > likely.
+> > 
+> > Since scratch is now write-only I believe moving it below "sample"
+> > forces it into separate cacheline and fixes this problem. Could you
+> > please try making this change?
+> 
+> Apologies, I'm not quite certain I understand what you mean by
+> "moving it below sample." Do you mean relocating the xfer[6] block
+> immediately below the xfer[3] block like so? If yes, I can get this
+> tested and a v4 patch together. If not, can you please clarify?
 
-Thanks. I also noticed that kvm->arch.mmu.split_page_cache is
-documented as being protected by kvm->slots_lock; we should be holding
-it here. But we cannot take it here because we are already holding the
-KVM srcu lock.
+I meant doing this:
 
-> IMO, the handling of kvm->arch.mmu.split_page_cache should be reworked.  =
-I don't
-> entirely get the motivation for aggressively freeing the cache.  The cach=
-e will
-> only be filled if KVM actually does eager page splitting, so it's not lik=
-e KVM is
-> burning pages for setups that will never use the cache.
->
-> Maybe I'm underestimating how many pages arm64 needs in the worst case sc=
-enario?
-> (I can't follow the math, too many macros).  But if KVM is configuring th=
-e cache
-> with a capacity that's _so_ high that the "wasted" memory is problematic,=
- then we
-> probably should we revisit the capacity and algorithm.  E.g. if KVM is sp=
-litting
-> from 1GiB =3D> 4KiB in a single pass (I can't tell if KVM does this on ar=
-m64), then
-> we could break that into a 1GiB =3D> 2MiB =3D> 4KiB sequence.
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index 093f4b56cc18..04ba98b62f70 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -328,7 +328,6 @@ struct ser_req {
+ 	u8			ref_on;
+ 	u8			command;
+ 	u8			ref_off;
+-	u16			scratch;
+ 	struct spi_message	msg;
+ 	struct spi_transfer	xfer[8];
+ 	/*
+@@ -336,6 +335,7 @@ struct ser_req {
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+ 	__be16 sample ____cacheline_aligned;
++	u16 scratch;
+ };
+ 
+ struct ads7845_ser_req {
 
-I'm not sure I've fully understood the point you're making, but I
-*think* we can just drop the
-    kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
-line from kvm_uninit_stage2_mmu(). It will get freed when the VM is
-destroyed anyway.
+Thanks.
 
-So I'm thinking of splitting this patch into two (unless someone tells
-me otherwise):
-
-1. Drop the kvm_mmu_free_memory_cache() from kvm_uninit_stage2_mmu()
-    Fixes: e7bf7a490c68 ("KVM: arm64: Split huge pages when dirty
-logging is enabled")
-
-2. Grab the MMU write lock around the kvfree(nested_mmus) bit in
-kvm_arch_flush_shadow_all(); do the kvfree() without holding the the
-lock.
-    Fixes: 4f128f8e1aaac ("KVM: arm64: nv: Support multiple nested
-Stage-2 mmu structures")
+-- 
+Dmitry
 
