@@ -1,167 +1,128 @@
-Return-Path: <stable+bounces-244175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJJxKZMF+mkEIgMAu9opvQ
-	(envelope-from <stable+bounces-244175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:58:27 +0200
+	id 6H82OUkF+mkEIgMAu9opvQ
+	(envelope-from <stable+bounces-244176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:57:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0FE4CFD26
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:58:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605C04CFCF8
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24DE93017263
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 14:55:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2398E302BBC6
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 14:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D12542317B;
-	Tue,  5 May 2026 14:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA50647ECE8;
+	Tue,  5 May 2026 14:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i5lXJaYD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iZUdRDG0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B3534677D
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 14:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777992919; cv=pass; b=J20aboHN70eTWihrRwhQa0qK8EYklbZBJ9Vf/yqAKPn+NG4al1DEiggVZ5WISJZbBlCWzcTJLbgP5nL+5YqBEzukBcCGfY98WEzM0kftEyPIg32ezBsYaXLFXvzWXo6E7RsilsA3hwm26olGMDn7P4d61bQ6LRcXgHi0YMgJoko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777992919; c=relaxed/simple;
-	bh=veOyjPdO5oUFuy0DymgzCOLcYHy6fQVPHt5NSJsozBA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qm4Dk2EglHZsY9nWYWKagpoHjNOS76YkSIjIEcPR6ATmt563WvwGeM7BvI7d3JH/h1fkqzKUroC4tKRVBKHeNOSkG7f9QRU80zJK37oMfzXsSY6TrM6hh/aGwbLE2Exityg8mayuPFpVTFo7URVOKnlMFiMSH+hCf/wPPhelbQo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i5lXJaYD; arc=pass smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65c24be9e4bso4569862d50.1
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 07:55:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777992918; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WBVhaaxW/BfoUaL//Z+HJ7u91bEwE4jOIhGMcAkfF8fTlwJkfI1CgT+/m96QdNXr1R
-         QSFZNuU6n78RTiRWuvlpAiYZS8qtON4hta/MuB10+dLgtJ8wYP+CLc2pHcOd4f3J2qS/
-         9fmjm++nmWhIqjl61dVnxkkPI4mwFsSaT57opRJ3mLios19IEqqxfVMFqJB6dP9KF5Fd
-         aB0h4OpRYyoyVOLAKxrojL4DFPrIiGh5mdy9VBCBCh59BqcOTQwepHJHEZSIP00UDt+M
-         15w5lOTmseHQtYIwalqEshGbXEiEsjIVkDwnBeRDUteGQKjkIYW+8x3QkcWKFcguxawz
-         i8XA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=AnKXamoSsrvY3KYd/KYUeOyDTUDrk7xjkhda/0sSEmQ=;
-        fh=IIiydIAELXeLP8pSNugn7AALmn+wK/wEB2B9+GzeixA=;
-        b=lsh1A4uohIsSPM8X8wD8pF2eK3JnL8NZP1dZCacGytCZLszLXEVHGh1+r8ajzT7HWl
-         VEM5pgUBQDc1Vyu9u4bemEBzN42fjHk+5nlvFgo/S0/qWxl3o489bCyNmBOsD0MyKhh4
-         B9sF5PvcHjEyDbklWmuRNufhGzDFkkZnjbH6lni1B1ZArIWY3zDf0WYTAeRmzpQU3UhI
-         dEhqt/NRHF7qyB110lTVmuDlXeBPiOj8ySGqr97DPYBzPVcslibxix4yhsM12W1+mkGN
-         sDRNEKR3urMWYzto1nbXRCHSSpi/9cQaoaQBu8gRRRd2/CbDIkfxNFtSECib19oiKdZG
-         SBIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777992918; x=1778597718; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AnKXamoSsrvY3KYd/KYUeOyDTUDrk7xjkhda/0sSEmQ=;
-        b=i5lXJaYDeAyRjVYcLjcmxh9HAINkZUzaifAcGKJJBIqQHoGxVzkFc0Iq8IzhKnkvfN
-         +y87BB1i94vO4joAdHIKdgSJI4p6Rgv9lNKfNGu76+6mUDTZ3nhT2DSjFpKnVb9VhLTu
-         lYu9nnEyG6XPqiOQndwdQUVIBxirBPyNmAzJZySUT904mK32k98U2HXoacYNkTc8vGqq
-         7xJ6uZdeqdVq+YG0IGhoaV3Ln8nyCfx9MS5pB01c177xLWj9i46ebJW3y1rLBYLehQc1
-         /NlDY++VaFZJroCVOMJralgjoUHL9eWKtx7nr4B/iRWQ+ixqpgCF7MJRJ0K/BnWRJR6q
-         88Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777992918; x=1778597718;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AnKXamoSsrvY3KYd/KYUeOyDTUDrk7xjkhda/0sSEmQ=;
-        b=MIedcz6xY1ToC68T4JgIA11IQrsP5iTL5BPLFanqPioRzOi8I4ZkjvezI2UgzC5/pm
-         vKkY1drtzTMqyDgc196JK1Ul3h3WBx+doB51jWur9tnh46sTEMd5j7XQ9l+eF1ZLfPiV
-         UFpZifp3Brhlm17Hx+4W5Ovx8r7mE9vtwiWv7dGbvyKfBYsRPzDNAWoWqJkkIUqux8F6
-         zXATKSxAQXR35qrM78L3fSDdgSag7fHaoPF2AXMiTkIQsNBEUYszxQJ63AFsdWG08oQx
-         GqxMZAV1Plz5hPErRTRso0iByit6W2S2TlkanjhcluSFypXFpXNojKBR1vbgLyzPRwhs
-         TJbQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8jgQd2RGRjTGSaKKAexD9H0280xPFHagZTJ81Be+uozx6ztdBH5F8TyFYRXhtDYIGl0idpjQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycI9Dr/03eOZ4qFowozjmCQ+LgFHkWtOkMufsBRMbiCTkMl5ST
-	FMoE01gMqg1d9cWiops/ibE6oPOAGKb/Ltqf1kZunwD0lZ8p5NeeFh731uAYAEmEa0tYXGhXX+k
-	gmIb59R1PL582EqUux26Z8uD+BlWcgzc=
-X-Gm-Gg: AeBDiesbhANfi7bFC41cn2MLyL8ZmC/Q8daLyitPxYPe2YEcMt46jO4zgFbFy3K2N8F
-	Hlb581Fda+EZYtLqFE587yi+INZgs6o/A72GBhJvC9ZCBQhe2dNr7q15mP1IsFbY8sWPv97sUCF
-	Aw1GXvvhA8vP/gq68ACvL3XHnUO43xsqZHOD6ylMH5U9wMB10bFndqPmlZlQaLLpOlCBFL2a3ys
-	sp1beqmpUI13paxRixFGpEmQVc55585UtEoT9AGwPLXd72Jn67ozq94mrnpyKYHfGwIN7JX5wYs
-	mCqnm02duRhBgSNdtwg=
-X-Received: by 2002:a05:690e:4812:b0:65c:4066:d177 with SMTP id
- 956f58d0204a3-65c69c466a7mr2747030d50.9.1777992917582; Tue, 05 May 2026
- 07:55:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAB330216D
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 14:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777993030; cv=none; b=eItghOFzi2xFXhB2HL+yp02wO64+GU1x4Ajf3Lr3QRbQtLnT341cx5OV47y7WUEEohQk76abaA6T6CFqprwReSQf8DwzXH1wVmI8vUc4THlsC8D70lsBNWB5wTx9OYyvfSLd5poKARaeeTdSlL/4ta50vUOkMooa/t2ce14frc8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777993030; c=relaxed/simple;
+	bh=R5PKQRDFxFRfs/opeVZTDRMnekNqOfgWTVe0W2o815w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=SuCytKWywmzYP097Dx+QwLE0epQ2t6M3NqrGGmM9Qh48gy78r6H72y2llQETQd4sJueHbrr+j35TbLN3oHM9p9w5JdGnNTPaTevz0VMZHI6aMzTXV7KkiLZQj6m+GE4/EWuFwWOCmOPgY5+sOdgK4VoAdNL6WW6nfcE2sx9Vz6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iZUdRDG0; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1C3771A3515;
+	Tue,  5 May 2026 14:57:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E34336053C;
+	Tue,  5 May 2026 14:57:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 172B511AD0286;
+	Tue,  5 May 2026 16:57:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777993026; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3ykqrj8TMl/CACkCKsorqSvBm2kVfs95MQdBQxVzySg=;
+	b=iZUdRDG0VkCisPZi3M/wzFLahpfFDlDBIQR6KmTPBz8U9mYcpOpfp7k1EFVh4nA4ICl3Uv
+	UXZeoU7CNw+ZPbDQ3Q8KP16FGpSsW/cUy2KshCbJGQD3wBxTFJE3dMBdQI+WmawhIIyuWU
+	jN/Gl4gTDT1uXsf7j+7CyWDNmIPLN0RM6rDkkMYGO2aA+kEEM2MDZblCQvDcUcP2Gm9qiH
+	5NR2bMB1H7/uQHQjBIqDW+YMHfBvGdo9UyzRFWzrPw+gsAjvdGxxXVZBqPodp/PSVbd2Af
+	0t00igisIjIb/II2YaC7NaM/xKpCr2Jc8XgnnGBXv3G8jHNR3w12Y1M4FmxJGg==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ Osama Abdelkader <osama.abdelkader@gmail.com>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20260423200622.325076-1-osama.abdelkader@gmail.com>
+References: <20260423200622.325076-1-osama.abdelkader@gmail.com>
+Subject: Re: (subset) [PATCH v3 1/3] drm/sti: remove bridge when sti_hda
+ component_add fails
+Message-Id: <177799302281.1269303.8720982379934816219.b4-ty@b4>
+Date: Tue, 05 May 2026 16:57:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260226153250.18079-1-lgs201920130244@gmail.com> <2026040232-ungloved-bonnet-a407@gregkh>
-In-Reply-To: <2026040232-ungloved-bonnet-a407@gregkh>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Tue, 5 May 2026 22:55:08 +0800
-X-Gm-Features: AVHnY4LW0K5qkKKaICN6pMky7MvIuguMQJ0BtIgKwRnmZeOiOtAkYvSDcll-dkg
-Message-ID: <CANUHTR86gywBzYuoaM-drt2==KBPtJT2a38VGza7eK6bmVuPmg@mail.gmail.com>
-Subject: Re: [PATCH v4] uio: uio_pci_generic_sva: fix double free of
- devm_kzalloc() memory
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Yaxing Guo <guoyaxing@bosc.ac.cn>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 0B0FE4CFD26
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 605C04CFCF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244175-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-244176-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[foss.st.com,gmail.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:email]
 
-Hi Greg,
 
-Thanks for reviewing.
+On Thu, 23 Apr 2026 22:06:19 +0200, Osama Abdelkader wrote:
+> Use devm_drm_bridge_add() so the bridge is released if probe fails after
+> registration, and drop the manual drm_bridge_remove() in remove().
+> 
+> Check the return value of devm_drm_bridge_add().
 
-On Thu, 2 Apr 2026 at 21:52, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> Breaks the build, how did you test this:
->   CC [M]  drivers/uio/uio_pci_generic_sva.o
-> drivers/uio/uio_pci_generic_sva.c:147:26: error: unused variable 'udev' [-Werror,-Wunused-variable]
->   147 |         struct uio_pci_sva_dev *udev = pci_get_drvdata(pdev);
->       |                                 ^~~~
-> 1 error generated.
->
-> {sigh}
+Applied, thanks!
 
-Sorry, I missed the now-unused local variable in remove() after removing
-the kfree() call.
+[2/3] drm/exynos: remove bridge when component_add fails
+      commit: 26f6654a9a60eb4d241f42a0ec85412e8821480b
 
-I will send a v5 which also removes the pci_get_drvdata() assignment from
-remove(), and I will make sure it builds before resending.
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Thanks for catching this.
 
