@@ -1,135 +1,164 @@
-Return-Path: <stable+bounces-244117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHJ+Cprb+WkmEwMAu9opvQ
-	(envelope-from <stable+bounces-244117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 13:59:22 +0200
+	id 4Eg2GTzd+WkwEwMAu9opvQ
+	(envelope-from <stable+bounces-244118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:06:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6554CD1F8
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 13:59:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EF74CD32C
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEA25300B75E
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 11:59:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B75B3009B0B
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 12:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E433139A803;
-	Tue,  5 May 2026 11:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AD1407586;
+	Tue,  5 May 2026 12:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VATPlcyK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uAkxAcxU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A659237CD5E;
-	Tue,  5 May 2026 11:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD0F406277;
+	Tue,  5 May 2026 12:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777982340; cv=none; b=PSJW2YMG4OIsV5NhaWli5fHF2zbKn0AkCgj84mN5w8HeJC285+3KHzT3EplYACjBedu5+QakM1g9Naga7DfAFwjJ2bcmHxNrMMhqoE3fDC3fX5Dr+ExS/1HTUgOXwaXGyiAX7EE1RwtyXUmPqc0FRu7jjFU0oFfTb+vFCKXi3t0=
+	t=1777982497; cv=none; b=V+V04/ueRtjWXg2OgFsQXhY9ry4Quhke7fFxyWcBrFXRRiogE7TBAvUmne5hw+Q9RpdYt/9JShf8FiwLztOZzWcHdbBFLz1R8CmMIZWpJhNUygmFTiu3+Fs/qwJhXKH0S0f3xxlq9MVaLuUiDlrlWIXXZ7BQLX+LfiP17sbf5H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777982340; c=relaxed/simple;
-	bh=TjfTnidfflrxMf3b6EDtfmJYplXxIam76T/lXVeSZ4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s6jfAKrvhE6NLDk6VPGtn90xQ7K4FnA/XKFT+RVMMAUH82HJkX8ore75h8lKpBdevOKQQHwgw/zlkou+oI7zlJ+yoFz5ou5NJbeB675X0D6KqzpYbrKGug0dnd1ecbk0lbODZCqKG3S77fgN+6U9Nr7Ze8lE1kkanFtC0MdxrtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VATPlcyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25506C2BCB4;
-	Tue,  5 May 2026 11:59:00 +0000 (UTC)
+	s=arc-20240116; t=1777982497; c=relaxed/simple;
+	bh=uVXKQh2MW7c3f089I8xTZMqN+Usqz7SnBNyZh419ucY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=e+R6OzpUGS24by5dfeYJ4mtn8ht0c+fJB4sMC9AcdSZSASIDU418rbjjeouVdzrz7tcy7qQkg/cBPKYMbIouYyngyr8n9Tb8WKpDzbhLK6CaOtcjBVW+wgPGeX2K8hXDDrIZxUuXQ26fOtY3t6GgYZXcXL0wNJnLOAQiOlDyVFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uAkxAcxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75770C2BCB4;
+	Tue,  5 May 2026 12:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777982340;
-	bh=TjfTnidfflrxMf3b6EDtfmJYplXxIam76T/lXVeSZ4g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VATPlcyKanjQg4Ws8pge+ie7G6uEc+P61Ot9CPfOilIROk78F6+txIwnsQ1LcMTeW
-	 yGQ5RXYMrexhy2ZrFylfznazOvZNdoFR+7e9HW1aqLQRMja+8lbNhcaO9YQCA3gpKN
-	 FcV4j2AS6X0yuROI/5oPgbf6dlVGZEEUCvB6jxRVJj2Jp+SdcH6wDeJkMYGY9E+RPS
-	 cp9eJHODcxz9rm0xQUPtmUDlohUsUGnH/R8GckbN7M2JCtap6xnFcC5OByeoeacYDr
-	 jMWG3f3stCPahBSYu2xcq4avZJ8B7hN3MDM4Es099dndaB7kGL+HzSX4VU9fNXQye8
-	 xmoIyQVRhpKAQ==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 86F0E1AC5871; Tue, 05 May 2026 12:58:57 +0100 (BST)
-Date: Tue, 5 May 2026 20:58:57 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 7.0 000/307] 7.0.4-rc1 review
-Message-ID: <afnbgXNTLSkVcRq-@sirena.co.uk>
-References: <20260504135142.814938198@linuxfoundation.org>
+	s=k20201202; t=1777982497;
+	bh=uVXKQh2MW7c3f089I8xTZMqN+Usqz7SnBNyZh419ucY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uAkxAcxU5TdvQVeRhopT444ePNjqSylKsGJ8+mlbRznXzEEjkOF0ZHFab0n9lB2MU
+	 2vWZdZ9VP2Us9efFLvEbKnr9/AMy7wUyxRpR2SwTFxVJfNzM9fAJmxuV3DK29mUAUj
+	 9kf8/ErmRKJLzkr3A3sDu4Ytu/UXjmy1vz6JaoIwaG3nqGemiO3fC7/K603lMtnSf5
+	 dmw8JGrsAqZsvsVePJwQRTDf3JGkBtXVI/+WiST4nVf4ryI64SmFS4IZod/nYVXieR
+	 fHOnV0eOoOGkVVyU7svJVunmnHCeVdoaE6/BNYcKBsCT3tdaeYLqDzT4XMRcmhkCDS
+	 M+k99LmSfNzeA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Hans de Goede <hansg@kernel.org>,
+	linux-fbdev@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] firmware: google: framebuffer: Do not unregister platform device
+Date: Tue,  5 May 2026 08:01:31 -0400
+Message-ID: <20260505120131.663403-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050336-tainted-hundredth-63d4@gregkh>
+References: <2026050336-tainted-hundredth-63d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Oxxqey9RoXKa+PnH"
-Content-Disposition: inline
-In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
-X-Cookie: Alex Haley was adopted!
-X-Rspamd-Queue-Id: 8F6554CD1F8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C3EF74CD32C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244117-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244118-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sirena.co.uk:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,chromium.org:email]
 
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
---Oxxqey9RoXKa+PnH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[ Upstream commit 5cd28bd28c8ce426b56ce4230dbd17537181d5ad ]
 
-On Mon, May 04, 2026 at 03:48:05PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.0.4 release.
-> There are 307 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+The native driver takes over the framebuffer aperture by removing the
+system- framebuffer platform device. Afterwards the pointer in drvdata
+is dangling. Remove the entire logic around drvdata and let the kernel's
+aperture helpers handle this. The platform device depends on the native
+hardware device instead of the coreboot device anyway.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+When commit 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer
+driver") added the coreboot framebuffer code, the kernel did not support
+device-based aperture management. Instead native driviers only removed
+the conflicting fbdev device. At that point, unregistering the framebuffer
+device most likely worked correctly. It was definitely broken after
+commit d9702b2a2171 ("fbdev/simplefb: Do not use struct
+fb_info.apertures"). So take this commit for the Fixes tag. Earlier
+releases might work depending on the native hardware driver.
 
---Oxxqey9RoXKa+PnH
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: d9702b2a2171 ("fbdev/simplefb: Do not use struct fb_info.apertures")
+Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Acked-by: Julius Werner <jwerner@chromium.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Hans de Goede <hansg@kernel.org>
+Cc: linux-fbdev@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v6.3+
+Link: https://patch.msgid.link/20260217155836.96267-2-tzimmermann@suse.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/firmware/google/framebuffer-coreboot.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/firmware/google/framebuffer-coreboot.c b/drivers/firmware/google/framebuffer-coreboot.c
+index c323a818805cc..a83ef081efe02 100644
+--- a/drivers/firmware/google/framebuffer-coreboot.c
++++ b/drivers/firmware/google/framebuffer-coreboot.c
+@@ -64,22 +64,12 @@ static int framebuffer_probe(struct coreboot_device *dev)
+ 						 sizeof(pdata));
+ 	if (IS_ERR(pdev))
+ 		pr_warn("coreboot: could not register framebuffer\n");
+-	else
+-		dev_set_drvdata(&dev->dev, pdev);
+ 
+ 	return PTR_ERR_OR_ZERO(pdev);
+ }
+ 
+-static void framebuffer_remove(struct coreboot_device *dev)
+-{
+-	struct platform_device *pdev = dev_get_drvdata(&dev->dev);
+-
+-	platform_device_unregister(pdev);
+-}
+-
+ static struct coreboot_driver framebuffer_driver = {
+ 	.probe = framebuffer_probe,
+-	.remove = framebuffer_remove,
+ 	.drv = {
+ 		.name = "framebuffer",
+ 	},
+-- 
+2.53.0
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn524AACgkQJNaLcl1U
-h9AwWgf+OiT1CCRJcCI4BA5dAYeU1MJiBa5R7FnEdcLm9dbCvNHhcRWJyxtNor/s
-gmSN0zKt9PAtXhT8HHTiUXvKDfO7J1u6B5OP2G7Lue7bG5vWBwhy1G4FPIgdYjJh
-PpNU7bj8gaDmXpjO1BH8VACS0GqvHApLsHjQgMPAr1Oh0dRMH76UHTvdGjdrclc4
-aTQVpjtPw2TVV3mwntzG7YE9H5zWdQ9xhlsm6VhHXyx9PRSyno2CrT7sSLkDOeKd
-B0V85BgB85D9A9vkjsl6snTAGlRJa+LUWo/KmRivhjOvUSGh/jeixz1pa4+dffBG
-KXUPdivX7IwRrQyBt6UooJirnf19Qw==
-=IH3L
------END PGP SIGNATURE-----
-
---Oxxqey9RoXKa+PnH--
 
