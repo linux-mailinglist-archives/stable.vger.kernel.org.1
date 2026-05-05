@@ -1,104 +1,104 @@
-Return-Path: <stable+bounces-244272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAoZF+pu+mnJOwMAu9opvQ
-	(envelope-from <stable+bounces-244272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:27:54 +0200
+	id cIt0Ie9u+mnJOwMAu9opvQ
+	(envelope-from <stable+bounces-244274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:27:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61304D44B7
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E01A4D44EC
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE1FC3024286
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 22:27:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7A9C303ACD0
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 22:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49309494A1D;
-	Tue,  5 May 2026 22:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3060494A1D;
+	Tue,  5 May 2026 22:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Gx9Bc2co"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O3BiqMzp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f99.google.com (mail-vs1-f99.google.com [209.85.217.99])
+Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA52C48B362
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 22:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A6A48B362
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 22:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778020070; cv=none; b=LhwFGvk3P/eU+aZNGeMn0eFuVsNxU2Zy07QwuRzu9E0jdn7pMFCZGp9jwHSkIGq8yWZTZTgRUWYAT8XLmssZLfpYPtE9O2GjbQ+j8UX5BZNkgVRlsfKmJgVeKg/xuU8GeFr83n4dq5ALWIzI6uNdQvU4wlYDi6h1n5DrtxpMaCo=
+	t=1778020073; cv=none; b=Jf30Quc//zLl/vFzZa7prwrAaF9tNytlaMRXOQ5mEYjS/aNrP1mpMzwUCJPPyIylAHIM71bxk2fJ9+2lR+1nv8cP0IjgmU8aZQjDiYGPrSuBuUfPal4OwSWhkF1U2iRevVX82PYVGVxe2NWl3HgXzIkklCuNoPtiW+OLaYmCw/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778020070; c=relaxed/simple;
-	bh=2/8FfO3GqvBYQ4gQmnKFP7trLnUxdWBsrFyIDjRM2LQ=;
+	s=arc-20240116; t=1778020073; c=relaxed/simple;
+	bh=6ElAwqAYGnTZd8Glj0oiwZd+BCgi/w96WOF9bPgn3vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S064WIQ34Z/be38VEc0ZuMaIOXEMeSgPk3PEmF8EXt2PgYYAtxnepBE3XK/Iy1yuWJG2yLGhvO7RvAd40Sw906VjkN7xGs23FuTm64Re/YK1QSCMPrruZBuWwsZ7prXGccXPazoYZOPPruiSPrRAepzBhUv59/A1Fqw0MAJLROA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Gx9Bc2co; arc=none smtp.client-ip=209.85.217.99
+	 MIME-Version; b=rpKVWvasHvknhO07EymG+g0XRGO3hy8lHVDB15mx43auOK1jH52cDMjtQuv9CRCt7u2hIN9cbX0V0+JbevO+Tb1jkNoBGwwyeT8ueXScXgWHOFJ3cHuA27G9i+XY205Fb+ScMpgFpNa7gpTwI/H6BD86Z4aw4IqZDp7jw04bKcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O3BiqMzp; arc=none smtp.client-ip=209.85.215.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-vs1-f99.google.com with SMTP id ada2fe7eead31-62e902f69e4so2281443137.2
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:27:48 -0700 (PDT)
+Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-c798fc1a28cso2051812a12.3
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:27:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778020067; x=1778624867;
+        d=1e100.net; s=20251104; t=1778020072; x=1778624872;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RkYkweVqiLjHd6nDA8uZMmZt+cHr4cYV5wff2Vr4jcU=;
-        b=jJGfs2j3WTpWdNoazVQWhKAUL7kpnfK1W76Tbd4IfuANEL40BLjQxW88PmZp4oZ+Ua
-         jkZD+eDSs3uT8EOIKT20dGPBsbSw0EKxnLrCw0WNZ3y2BMPoDXB6Gb3SrhSq7iA9Cl3s
-         8jXExD8g2uox4g3YNZN2QiDJ50eowjvB4lB2VS0XE9BodWe1XurtNKdxJhefPhS5qp7S
-         5/t0OwMqMrox4KA9IgSmT+tPna85ikLhdYNTj6oGRPmJjr1k18E37zDQwxDmb7a2htOs
-         gJ54sS1BjvUNFbf6NnapmNSCnAamBdNDbWn7hN2k6+XhXyr8aV1eKFQ2Nq7BI0vJPWwv
-         k55Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+vaaY8mPnRP0I+Cs5xx1ySDn/9IFXsWIFG0pdEUm2gRSP4qMSRFXZPNqYaFsrTVFRr+Ptf5ZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdHYwTXOBGl7SB2/2ijab5fydwd+vqlkHI99EsmlFuezJ+gCYb
-	wR/zZ3Ccm9OtqyFpDUFJEMnrcr41/i76H4j9MAZBxyJdaWkz1hyQwnsQ4yWkytGZYEHieCFFJZq
-	tswZp/0wE5AIUe/Zvc0S3tVskgNbOAfHmMdYThbGqik5VwGS4dn16s3Wie77DoY0p+OHVutOlqM
-	OasI2rvL7WikR/asJ1lTnPQXOv13iQMFStfMjVg77ZqxWFDi/tM1pJd+cmSyOavrFpXH9q7TK9s
-	Owj2vUJ
-X-Gm-Gg: AeBDievHawgM6rr1T7sA+KKAk7pnSvTHR7mXywOaav8YuI5jfquH3bzmLNu1apmqVA9
-	D2ASBzzIAThxdqZTKoDu9G0a6nVoS+VfTiYfPMyFDli2awpKHCjQsUoRkTM9yTOskNGpRYRIsTz
-	l+NEkZJ25AmH+E1+l0axY1bdAhHQN8Ixj7lvve13u44SWASYT+qQSTlBvIsQr2c8SRqxjE6eeiL
-	bzbhMQY5Cm82lUWPaCtqz6RXrdcayFuG9zl1Ucpkvg34I24FR0vzJkNchgbmpb8PNKRIp+scMIr
-	WdZ3q77QDUgJA7AoHw7ruhvFxGSu4+oaPe9m3vxjzbfr61CxSGeAWBBPUmBwRmLlRY0nckRpfFp
-	Mp8fB+7T7fIu+loWYEHKblQq5u4wq1BQJ1hbeu5JH7fD8HtyVaqjUL6NfNBAe9IOUwlRRATwtZG
-	BpojVXhPsLBbtpe/HoEY/Et6NgGQZernEKX1FMBq9pt9XQeyJ4SQYFJpZ3UFVocWrA
-X-Received: by 2002:a05:6102:4429:b0:62f:9d2:a4f3 with SMTP id ada2fe7eead31-630f8fdeb80mr377265137.15.1778020067539;
-        Tue, 05 May 2026 15:27:47 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-21.dlp.protect.broadcom.com. [144.49.247.21])
-        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-62bfbc7cc20sm1141607137.4.2026.05.05.15.27.47
+        bh=zUzPAGUmnW9nuYsWnE/ryysW/QEIR4wcMfsbCfzx84w=;
+        b=IlQGkxveEigjVBnJBToxEsJ5zSN/6XPFY7/vk1e13Z0FmtFGkVWFgZQ5fDK2BGnsy+
+         NTq/6HYgk1p1RiWGaEk8vQikwG15psE4z8H9XFZ1Y0GzH7JNAkLtOMCbKDSuPP+/ICmW
+         pBvdKs4gKEzUDtgkqyAxtTSnFHeLMnr3lQHdsuzlzp74xCCJd8GdSdThNbzdjmTpNYXS
+         rKIVGVfybqSxURWo1UArXVAah7TCLI0GMUrKYSFzC212qOARWMBve3eiV4zHBo8aBYVk
+         VLok6sRk6bPYRTtdZUnav12+tdXVyA4MXLGjH1eaa1XbPtVAH4skB2qpoMmxuL6jHOUW
+         uHCA==
+X-Forwarded-Encrypted: i=1; AFNElJ/QlCBDcZh7jc0WFH4hQvg42F7HIO2omckvCVjE3cQ0vS86LD7OmAkBK1AgxYJC2M3lnv32/Uw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpzglFBce22RdWZPf6iki0XltO5yKRgnfs0HdyP60zQNbVvInY
+	qhrAbRA0byOpVflMZPsbLOeydeoZQZ6RKJ+hf+DxE0D2LFSRINIayBJmXM2wqaZaS00aXMfEDR9
+	pm1xJWJ4Apqx+d8qpbY/cLIOQWnU/JrwDLD1kzXqicGJL+hxWQxM4Lfl1eLsYxZzFEP68FM+uzW
+	N5UF010HYPnHk0jYmy68oJJSDSKg+b5ayWqpcjGljV3z7qItPPGadPmRKXlFW+f5TCpnYuHPJFr
+	txd5FV5
+X-Gm-Gg: AeBDievcVVOwoon2MkrUwRssKqC7jKnSTMFa7a6+cA0E9+zEiwk30QIVwuyLEJQsTfg
+	hlEj43AmWpSqfp0/dXKM7apgQs+Yyu2mucZ+DYvaHY4zOHLzQWUYcx836YH1sbMa+pM9tinq1Fl
+	74pR8SPdPOIoO2IFiB8YR10PRsCQFVpCtUEcIQzCpc3MIY+5ICAX2QTof0lE8kch+0zK6k46/MQ
+	vAmIJG1Pjf8uQRIa0xLw0teWY5p1wq+zKdR/kXo6AnDOMo2+pIRMu66nNxwptsdYTEoR/wjcjWr
+	95BvQo/FXeDs3MqlApfLBjoCT8F4wQDFLYZmZ3KmibrSYNFS//o9aqQZYjCN5mUcmYMEJooOYrA
+	pTwJBWCoGuBtWI/jC256zm/Uc2S92Y+GG6IKWr2wKsUppyNcH3rGIm4dOrpy9H1qnY6Qqyaekeg
+	KmKVglIz1aYv2l1nD+5bW0NWph7MPqdc2OFNJ+6r5ODnr5wcu1EJ/D2jRQNWyp+AgHo6g=
+X-Received: by 2002:a05:6a21:328e:b0:3a3:a5cd:560d with SMTP id adf61e73a8af0-3aa5a903f41mr721174637.9.1778020071550;
+        Tue, 05 May 2026 15:27:51 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-121.dlp.protect.broadcom.com. [144.49.247.121])
+        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-c8242bbe61bsm24923a12.7.2026.05.05.15.27.48
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 05 May 2026 15:27:47 -0700 (PDT)
+        Tue, 05 May 2026 15:27:51 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8b1f4478ca7so157417916d6.3
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:27:47 -0700 (PDT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8aca14d1faaso223880656d6.3
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1778020067; x=1778624867; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1778020068; x=1778624868; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RkYkweVqiLjHd6nDA8uZMmZt+cHr4cYV5wff2Vr4jcU=;
-        b=Gx9Bc2coSVtJDNG/Gk2Vpp+06A0oVELHuGmFYpVDfJVjb/GVEsLuoCyb4IBjT34NbN
-         NQXxzUWqzqC9CgPlPrDODOtEwd5ALByqZawFKhgRL/39OFcD+oP+ihKrRD6l5aSuEbL0
-         PlH5bi2rZNuKo/uQZJ6icJOYrEo2wqQ7RNJoA=
-X-Forwarded-Encrypted: i=1; AFNElJ+5vnetep9t/eiG7Lx93gfzjFS4iWLWoZWTHepUvsalwyg31GtERnRNNqM3CiTPbawQ49LBR1s=@vger.kernel.org
-X-Received: by 2002:a0c:e01a:0:b0:89c:6bc6:e4fd with SMTP id 6a1803df08f44-8bc43cfdc0fmr10093136d6.19.1778020066867;
-        Tue, 05 May 2026 15:27:46 -0700 (PDT)
-X-Received: by 2002:a0c:e01a:0:b0:89c:6bc6:e4fd with SMTP id 6a1803df08f44-8bc43cfdc0fmr10092836d6.19.1778020066420;
-        Tue, 05 May 2026 15:27:46 -0700 (PDT)
+        bh=zUzPAGUmnW9nuYsWnE/ryysW/QEIR4wcMfsbCfzx84w=;
+        b=O3BiqMzpHLHY7+FBJ0FTJ4ElYIjDTAwug6E+c5yzdh8XHPb1OidF5dzR6FvuuiZyTo
+         jPsPgw9FU2EBfdaSfwf6ll1Tv4EfM9nDkFIC4cI+82oHHhbTTWnPgx0G0Uqbej5zw6LX
+         p/GazB7QNv/Nm0AJ22r6wPxsrgs7zUbVjZcEw=
+X-Forwarded-Encrypted: i=1; AFNElJ8jfI+n/Fz7ponlpbE4RQ4nO8Xl8eHvn5zYKjF5qq0lHjLRk1Huug+rfHm6vIBVgmFfUQXPfUM=@vger.kernel.org
+X-Received: by 2002:a05:6214:450c:b0:8a1:478a:e580 with SMTP id 6a1803df08f44-8bc422a64f8mr10868246d6.8.1778020067960;
+        Tue, 05 May 2026 15:27:47 -0700 (PDT)
+X-Received: by 2002:a05:6214:450c:b0:8a1:478a:e580 with SMTP id 6a1803df08f44-8bc422a64f8mr10867776d6.8.1778020067409;
+        Tue, 05 May 2026 15:27:47 -0700 (PDT)
 Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b539aa6f5fsm162692886d6.21.2026.05.05.15.27.44
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b539aa6f5fsm162692886d6.21.2026.05.05.15.27.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 15:27:44 -0700 (PDT)
+        Tue, 05 May 2026 15:27:46 -0700 (PDT)
 From: Zack Rusin <zack.rusin@broadcom.com>
 To: dri-devel@lists.freedesktop.org
 Cc: ian.forbes@broadcom.com,
 	maaz.mombasawala@broadcom.com,
 	Zack Rusin <zack.rusin@broadcom.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 02/12] drm/vmwgfx: reject DX_BIND_QUERY without a DX context
-Date: Tue,  5 May 2026 18:22:23 -0400
-Message-ID: <20260505222728.519626-3-zack.rusin@broadcom.com>
+Subject: [PATCH 03/12] drm/vmwgfx: clamp dirty-page range with min, not max
+Date: Tue,  5 May 2026 18:22:24 -0400
+Message-ID: <20260505222728.519626-4-zack.rusin@broadcom.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260505222728.519626-1-zack.rusin@broadcom.com>
 References: <20260505222728.519626-1-zack.rusin@broadcom.com>
@@ -110,7 +110,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Rspamd-Queue-Id: C61304D44B7
+X-Rspamd-Queue-Id: 3E01A4D44EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -125,7 +125,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244272-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244274-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
@@ -142,52 +142,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
 
-vmw_cmd_dx_bind_query() unconditionally dereferences
-sw_context->dx_ctx_node->ctx.  Userspace can trigger a NULL pointer
-dereference from any render-node fd by submitting an execbuf with
-dx_context_handle == SVGA3D_INVALID_ID and a SVGA_3D_CMD_DX_BIND_QUERY
-opcode in the command stream: dx_ctx_node is left NULL and the kernel
-oopses on the assignment.  The same NULL is then re-read in
-vmw_resources_reserve() via vmw_context_get_dx_query_mob().
+vmw_bo_dirty_transfer_to_res() and vmw_bo_dirty_clear() compute the
+intersection of a resource's page range with the BO's tracked dirty
+range, but clamp res_end against dirty->end with max() instead of
+min().  When dirty->end exceeds the resource end, the loop walks past
+the resource's pages, calls vmw_resource_dirty_update() for ranges
+owned by other resources sharing the same backing MOB and clears
+their pending dirty bits via bitmap_clear().  The result is silent
+loss of writeback for unrelated resources whenever two resources
+share a MOB.
 
-All sibling DX handlers fail-close on a missing dx_ctx_node using
-VMW_GET_CTX_NODE().  Use the same pattern here, returning -EINVAL up
-front before any relocation state is published.
+Use min() in both functions so the loop is bounded to the
+intersection of the resource and dirty ranges.
 
-Fixes: 9c079b8ce8bf ("drm/vmwgfx: Adapt execbuf to the new validation api")
+Fixes: b7468b15d271 ("drm/vmwgfx: Implement an infrastructure for write-coherent resources")
+Fixes: 965544150d1c ("drm/vmwgfx: Refactor cursor handling")
 Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-4.7
 Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index e1f18020170a..b07f052474d0 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1272,9 +1272,13 @@ static int vmw_cmd_dx_bind_query(struct vmw_private *dev_priv,
- 				 SVGA3dCmdHeader *header)
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXBindQuery);
-+	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
- 	struct vmw_bo *vmw_bo;
- 	int ret;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
+index 45561bc1c9ef..8ab88f388652 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
+@@ -311,7 +311,7 @@ void vmw_bo_dirty_transfer_to_res(struct vmw_resource *res)
+ 		return;
  
-+	if (!ctx_node)
-+		return -EINVAL;
-+
- 	cmd = container_of(header, typeof(*cmd), header);
+ 	cur = max(res_start, dirty->start);
+-	res_end = max(res_end, dirty->end);
++	res_end = min(res_end, dirty->end);
+ 	while (cur < res_end) {
+ 		unsigned long num;
  
- 	/*
-@@ -1288,7 +1292,7 @@ static int vmw_cmd_dx_bind_query(struct vmw_private *dev_priv,
- 		return ret;
+@@ -347,7 +347,7 @@ void vmw_bo_dirty_clear(struct vmw_bo *vbo)
+ 		return;
  
- 	sw_context->dx_query_mob = vmw_bo;
--	sw_context->dx_query_ctx = sw_context->dx_ctx_node->ctx;
-+	sw_context->dx_query_ctx = ctx_node->ctx;
- 	return 0;
- }
+ 	cur = max(res_start, dirty->start);
+-	res_end = max(res_end, dirty->end);
++	res_end = min(res_end, dirty->end);
+ 	while (cur < res_end) {
+ 		unsigned long num;
  
 -- 
 2.51.0
