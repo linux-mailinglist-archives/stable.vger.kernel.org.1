@@ -1,178 +1,120 @@
-Return-Path: <stable+bounces-244002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Jj7OWee+Wl9+QIAu9opvQ
-	(envelope-from <stable+bounces-244002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:38:15 +0200
+	id ELVMIGOh+WnR+QIAu9opvQ
+	(envelope-from <stable+bounces-244003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:50:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E134C8142
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:38:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6344C8435
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02EB130010C8
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 07:38:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BACAA301CFA6
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 07:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8FC218821;
-	Tue,  5 May 2026 07:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EC73E6390;
+	Tue,  5 May 2026 07:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMjUfsuW"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UsA7P2B8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28CA3AC0CB
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 07:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA38290DBB;
+	Tue,  5 May 2026 07:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777966693; cv=none; b=cdbigYvisFzjEynm9jGL9yI6Oc28mbRMsoTVo6GBIJ+f/eFh8sgVT5zld6nvVZR/BBbMMedU7QljqlbRblT2Hlz6LnO4PyvaJw2S7EI/kITLzAXFrr2jjGnwyeYgnKAtnOR3uB9Q/7IMvzMGTXYpjwER1eKJMJTwHGJXTFd5oCs=
+	t=1777967430; cv=none; b=ixLlxeMt8JGsIwHr4XnZ89vfm6OKIEk7NVRcNSLLCo15ebUBnGED4fXoIZJCp7ixAXsFPf308uaVsiKDuWhfy0Qoasi41gMJQJBNrpCc8rskWPuDU//o5+88d2A1BvvPe3xw7Amm1neQIOYAa1eZi5+IXLSyDWzTgBKPJvGJdj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777966693; c=relaxed/simple;
-	bh=93QLUM1Z2mFgOUBbpdOj6M1lXWvnwwPsxVzykmxIC0g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUpGlFkPfKAuo3FCUIgYO3BuTdkAPGhROkOZUUOJncgG/+nhjMv2WjguX2a2EahJ/+G1pwGm4Sd2P0J2Dysx0Suj5oh/xY7B711rwbnDzDuMCMBmrLlnURz5TiOVD/HmmGq4sqdxxffweuTWRzQ8Ectap3ff2s7Rp45p60LPvJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMjUfsuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29254C2BCB4;
-	Tue,  5 May 2026 07:38:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777966693;
-	bh=93QLUM1Z2mFgOUBbpdOj6M1lXWvnwwPsxVzykmxIC0g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FMjUfsuWH1u76O/HrPVoNfYWnf/1WL7fIfaRlMW7qNKvPttWFiaG1n2wPwwN7PVU0
-	 BQPa5rkCFlOZn19PitPCwn4KTPWioyZUoQBmmpL+N192iU+z4lIO2nwH5xFBZzPVVK
-	 KPb4jzRoZuUjXzZru+Wd7LlBvVJ47bfRE25EQSU1H4DTYstU8zf1LaBWJNhD/1dcKP
-	 rjxy1VuMioPuiRzMyJu/fLfX33ck1iD/KXkDJriZhoUysuGyvrvrzS2uOj7SrB2F7J
-	 gnUarzO5rE4xo007v0l57lkPB4o4G7Avxl86aclpkVK50P8OrVZENiiYU003X3woGu
-	 bEuz/0VpeKqiA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Carlier <devnexen@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y] octeon_ep_vf: add NULL check for napi_build_skb()
-Date: Tue,  5 May 2026 03:38:09 -0400
-Message-ID: <20260505073809.427518-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050148-renounce-robin-688e@gregkh>
-References: <2026050148-renounce-robin-688e@gregkh>
+	s=arc-20240116; t=1777967430; c=relaxed/simple;
+	bh=OdW81qkiJ/RlFzHtj6wlLdBZQJ90u3tXqrwDP0yVULU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Fn2io3e87ctnHWa+jA/dZhxeHHaljryugpSKlRxwJjCjOY8TKmUEF4K5yAMMIZyTznWGi9L8TgTsJ1mhr/5A3MwVmTmorWDRkZlRL4V/N8UmJ/nfaLU/M4JD99wBcXgKO7Uae9Brl9RvsonRNuaNiMGME+/nKz9pOpl0pawPFa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UsA7P2B8; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 64DBC4E42BCF;
+	Tue,  5 May 2026 07:50:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 288D35FD9D;
+	Tue,  5 May 2026 07:50:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 20E3E11AD1006;
+	Tue,  5 May 2026 09:50:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777967424; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LOLxxzEAMizK1N6MnTWd69181RhDona4ue7L+aw+YA8=;
+	b=UsA7P2B8feoFxoCTKXhBTkhk9Xpie8FO9SW12TNXFxG38cUGVWBA/DPHiZhn4Lf9jNbIqA
+	xGGEO636XKZGZy4PxuNOfQp+OhY/E/XcTQGx7IQsc3PTglvhxE1J0NdwePZS3jX1+BkrlP
+	+PXW+SmIZ8OWLnw/vfU0CsLR9Hm4pwKm2tfqn++ON3N7rmHPgIrygIlYI9fiTiPumh0Sav
+	wgMtlIwM1RGIk+8Id36bYpgqaITdlU//5tRPUx/oqIarewq8ZbUDuuicRlApSVYtF05FQM
+	NK0DM8bi0CbesfTpdCgCVb6Ed4ae5Nd3Yh6JfcJNOpuZKmt/r8+VMIzNYuE5og==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Arseniy Krasnov <avkrasnov@rulkc.org>
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  Frieder Schrempf <frieder.schrempf@kontron.de>,  Boris
+ Brezillon <bbrezillon@kernel.org>,  linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  rulkc@linuxtesting.org,
+  oxffffaa@gmail.com,  stable@vger.kernel.org
+Subject: Re: [PATCH v1] mtd: rawnand: fix condition in 'nand_select_target()'
+In-Reply-To: <20260504221012.1310605-1-avkrasnov@rulkc.org> (Arseniy Krasnov's
+	message of "Tue, 5 May 2026 01:10:12 +0300")
+References: <20260504221012.1310605-1-avkrasnov@rulkc.org>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Tue, 05 May 2026 09:50:19 +0200
+Message-ID: <87mryeqoqs.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 90E134C8142
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 0A6344C8435
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244002-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	FREEMAIL_CC(0.00)[nod.at,ti.com,kontron.de,kernel.org,lists.infradead.org,vger.kernel.org,linuxtesting.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244003-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	TO_DN_SOME(0.00)[]
 
-From: David Carlier <devnexen@gmail.com>
+Hi,
 
-[ Upstream commit dd66b42854705e4e4ee7f14d260f86c578bed3e3 ]
+On 05/05/2026 at 01:10:12 +03, Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
 
-napi_build_skb() can return NULL on allocation failure. In
-__octep_vf_oq_process_rx(), the result is used directly without a NULL
-check in both the single-buffer and multi-fragment paths, leading to a
-NULL pointer dereference.
+Two important typos in the commit log :-)
 
-Add NULL checks after both napi_build_skb() calls, properly advancing
-descriptors and consuming remaining fragments on failure.
+> 'cs' here must in range [0:nanddev_ntargets).
 
-Fixes: 1cd3b407977c ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260409184009.930359-3-devnexen@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ inlined missing octep_vf_oq_next_idx() helper as read_idx++ with wraparound ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../marvell/octeon_ep_vf/octep_vf_rx.c        | 36 +++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+                be                           [
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-index b579d5b545c46..8347e696937cd 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-@@ -409,10 +409,17 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
- 			data_offset = OCTEP_VF_OQ_RESP_HW_SIZE;
- 			rx_ol_flags = 0;
- 		}
--		rx_bytes += buff_info->len;
--
- 		if (buff_info->len <= oq->max_single_buffer_size) {
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				desc_used++;
-+				read_idx++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			skb_put(skb, buff_info->len);
- 			read_idx++;
-@@ -424,6 +431,31 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
- 			u16 data_len;
- 
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				desc_used++;
-+				read_idx++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				data_len = buff_info->len - oq->max_single_buffer_size;
-+				while (data_len) {
-+					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
-+						       PAGE_SIZE, DMA_FROM_DEVICE);
-+					buff_info = (struct octep_vf_rx_buffer *)
-+						    &oq->buff_info[read_idx];
-+					buff_info->page = NULL;
-+					if (data_len < oq->buffer_size)
-+						data_len = 0;
-+					else
-+						data_len -= oq->buffer_size;
-+					desc_used++;
-+					read_idx++;
-+					if (read_idx == oq->max_count)
-+						read_idx = 0;
-+				}
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			/* Head fragment includes response header(s);
- 			 * subsequent fragments contains only data.
--- 
-2.53.0
-
+Thanks,
+Miqu=C3=A8l
 
