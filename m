@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-244080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHwWAkrK+WmFEAMAu9opvQ
-	(envelope-from <stable+bounces-244080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:30 +0200
+	id KAtpBDzK+WmFEAMAu9opvQ
+	(envelope-from <stable+bounces-244079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708114CBBA6
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7544CBB96
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F098C3095579
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 10:24:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5AD4312787A
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 10:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48ED04418E3;
-	Tue,  5 May 2026 10:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5954418D4;
+	Tue,  5 May 2026 10:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCWFiFh9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xkv85H2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B9F44102B
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 10:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22B0441030
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 10:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777976264; cv=none; b=sJR4AVAECtDyD/iZm9xrm9DmazquoWmx5BvKdwEIB87SjpBJWSyCbmXZoVRHbA6Ep9lXuaXZLx3HWrDpJFtYnDSMbfLI4eFAUFDHrsnYsDsjTYM0hiVjKEmz8dvfyQJN9LMMwHLC6k8/1kWB+KgFAfXvFWqzDSDQ+7hWVdFKg2U=
+	t=1777976262; cv=none; b=rKJccnu2OQMNK8j5mdWT9cEa0mw7AWgpXB9aXO7o9moX5dehRHCdRVavDEDP8/MT+GLEXecudGEULGMCVJNE7Sj253jbW/Mh3pMMXjUNQVUtwM6x/oPSBQdc30qdCZtuIIgKV8p3toJGXBKQdYdmHIguwEHztdgi7s2g1YBW/xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777976264; c=relaxed/simple;
-	bh=PIMYnevEk5SDSzPdyWQ67YbvCvcCq2hiG/6AdeGhjfY=;
+	s=arc-20240116; t=1777976262; c=relaxed/simple;
+	bh=0G3jKIOwzoW4z7ls4qjGpJpEjTAoncaHosqx3QtyM6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmdL77xXbrVVqdr6mhlJVNeZvydd6PYnhdpvIf11YhwIbFuSSgcpeRMdjkAsN7+gFXTqDFO6wU/oonGYKI92ADfCUxeSokj2SrD4Z9HL88WcALrBx5S6BFYHpffQq5sdNst5hPhtR5sbGQsWEh6Y/nuqcgdJnqmKBd++sJ5kENM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCWFiFh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0754C2BCC7;
-	Tue,  5 May 2026 10:17:42 +0000 (UTC)
+	 MIME-Version; b=jd/jpbPUSg8r36HrG+w148i4xQ1WtMGA0G3t9p2G3rdOLI8NF5z0t4+FhSZEav4z2KIfEGW19QOtxAzYRrV+KesCjFfwlVcxHf99ay9AVIYOh36jvgTW6sZo34Gt+j2PYc046zRluJNd7/hw1eJ5RRTanF73py6IhgYMPPv7ZOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xkv85H2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E0DC2BCC9;
+	Tue,  5 May 2026 10:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777976263;
-	bh=PIMYnevEk5SDSzPdyWQ67YbvCvcCq2hiG/6AdeGhjfY=;
+	s=k20201202; t=1777976262;
+	bh=0G3jKIOwzoW4z7ls4qjGpJpEjTAoncaHosqx3QtyM6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FCWFiFh9dPJa+cE59ukZLr0pkMJr5TNcJ3X9hBnGkpZBsS2LyWQ6cdJkexT97Sl8o
-	 vbRNe/aw++Chh18AI9gX+ZskxSnewoBcvVVuUYBhit4Q7/Ak5fQEs+dS4Lk8bw1wwL
-	 WfOlEmd6XpIJ97ZaVl+qxF/MG4XDtgihsc/a9JhZOICDbKR1ZyMlLPcsgL9FZyhG1d
-	 Voc/3MuRVN9BkQxic5E8Fm3GGWbxLFCXLqUBGp+O79L5XZN+UrmutF/8aCTgP3bLc/
-	 ENw+FWLRkMyWV2sa05gxut2JlGglYSNWtAVlspKSqOCMbPv/9WHkpqS6iLxwbjFq45
-	 1wn6aKtqbfECQ==
+	b=Xkv85H2gjzD2ZX9wMplb86OMsBwmv2ZS53SHkLNrmx6IqkPGDl6MoMj4lPebAtDZ6
+	 QKJq/zoOFsrUrSx5+VHqzt2qyUo0eTwuJ7uvVIy8d8bjD4ctj3QfkknCg3eKv3H6BS
+	 ZBXWPCEsgQhORLSDLIqrVSR7T0ahM2sAom2JstH4hDDmDbIaLKlc4mQm2C+zvQlYoo
+	 k0C8ZW+Ue97u39IPmweuZ/7aEfYL53cayi1eZ4FkLkuqfG0wpW5zmzMdrD9Vep/kxa
+	 aTc9Ei7PyUcFCzp2BpFLk0x4IIXL5eAaOe9hA1IJPEReoD39YdVk+499C4VwYKnM2S
+	 Wd+/+PTfvknYw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Luke Wang <ziniu.wang_1@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 3/3] mmc: core: Optimize time for secure erase/trim for some Kingston eMMCs
-Date: Tue,  5 May 2026 06:17:31 -0400
-Message-ID: <20260505101731.582352-3-sashal@kernel.org>
+Subject: [PATCH 7.0.y 1/2] crypto: qat - fix indentation of macros in qat_hal.c
+Date: Tue,  5 May 2026 06:17:37 -0400
+Message-ID: <20260505101738.582879-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260505101731.582352-1-sashal@kernel.org>
-References: <2026050303-enroll-hulk-16c2@gregkh>
- <20260505101731.582352-1-sashal@kernel.org>
+In-Reply-To: <2026050339-tumble-sponge-5d2f@gregkh>
+References: <2026050339-tumble-sponge-5d2f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 708114CBBA6
+X-Rspamd-Queue-Id: 7C7544CBB96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -71,19 +71,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244080-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-244079-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,101 +91,61 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email]
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
 
-[ Upstream commit d6bf2e64dec87322f2b11565ddb59c0e967f96e3 ]
+[ Upstream commit 4963b39e3a3feed07fbf4d5cc2b5df8498888285 ]
 
-Kingston eMMC IY2964 and IB2932 takes a fixed ~2 seconds for each secure
-erase/trim operation regardless of size - that is, a single secure
-erase/trim operation of 1MB takes the same time as 1GB. With default
-calculated 3.5MB max discard size, secure erase 1GB requires ~300 separate
-operations taking ~10 minutes total.
+The macros in qat_hal.c were using a mixture of tabs and spaces.
+Update all macro indentation to use tabs consistently, matching the
+predominant style.
 
-Add a card quirk, MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME, to set maximum
-secure erase size for those devices. This allows 1GB secure erase to
-complete in a single operation, reducing time from 10 minutes to just 2
-seconds.
+This does not introduce any functional change.
 
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: e7dcb722bb75 ("crypto: qat - fix firmware loading failure for GEN6 devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/card.h   | 5 +++++
- drivers/mmc/core/queue.c  | 9 +++++++--
- drivers/mmc/core/quirks.h | 9 +++++++++
- include/linux/mmc/card.h  | 1 +
- 4 files changed, 22 insertions(+), 2 deletions(-)
+ drivers/crypto/intel/qat/qat_common/qat_hal.c | 22 +++++++++----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-index a9619dd452708..a7c364d0030ad 100644
---- a/drivers/mmc/core/card.h
-+++ b/drivers/mmc/core/card.h
-@@ -311,4 +311,9 @@ static inline int mmc_card_broken_mdt(const struct mmc_card *c)
- 	return c->quirks & MMC_QUIRK_BROKEN_MDT;
- }
+diff --git a/drivers/crypto/intel/qat/qat_common/qat_hal.c b/drivers/crypto/intel/qat/qat_common/qat_hal.c
+index 7a6ba6f22e3e8..0f5a2690690a1 100644
+--- a/drivers/crypto/intel/qat/qat_common/qat_hal.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_hal.c
+@@ -9,17 +9,17 @@
+ #include "icp_qat_hal.h"
+ #include "icp_qat_uclo.h"
  
-+static inline int mmc_card_fixed_secure_erase_trim_time(const struct mmc_card *c)
-+{
-+	return c->quirks & MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME;
-+}
-+
- #endif
-diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
-index 284856c8f6559..eb1053d8cae72 100644
---- a/drivers/mmc/core/queue.c
-+++ b/drivers/mmc/core/queue.c
-@@ -184,8 +184,13 @@ static void mmc_queue_setup_discard(struct mmc_card *card,
- 		return;
+-#define BAD_REGADDR	       0xffff
+-#define MAX_RETRY_TIMES	   10000
+-#define INIT_CTX_ARB_VALUE	0x0
+-#define INIT_CTX_ENABLE_VALUE     0x0
+-#define INIT_PC_VALUE	     0x0
+-#define INIT_WAKEUP_EVENTS_VALUE  0x1
+-#define INIT_SIG_EVENTS_VALUE     0x1
+-#define INIT_CCENABLE_VALUE       0x2000
+-#define RST_CSR_QAT_LSB	   20
+-#define RST_CSR_AE_LSB		  0
+-#define MC_TIMESTAMP_ENABLE       (0x1 << 7)
++#define BAD_REGADDR			0xffff
++#define MAX_RETRY_TIMES			10000
++#define INIT_CTX_ARB_VALUE		0x0
++#define INIT_CTX_ENABLE_VALUE		0x0
++#define INIT_PC_VALUE			0x0
++#define INIT_WAKEUP_EVENTS_VALUE	0x1
++#define INIT_SIG_EVENTS_VALUE		0x1
++#define INIT_CCENABLE_VALUE		0x2000
++#define RST_CSR_QAT_LSB			20
++#define RST_CSR_AE_LSB			0
++#define MC_TIMESTAMP_ENABLE		(0x1 << 7)
  
- 	lim->max_hw_discard_sectors = max_discard;
--	if (mmc_card_can_secure_erase_trim(card))
--		lim->max_secure_erase_sectors = max_discard;
-+	if (mmc_card_can_secure_erase_trim(card)) {
-+		if (mmc_card_fixed_secure_erase_trim_time(card))
-+			lim->max_secure_erase_sectors = UINT_MAX >> card->erase_shift;
-+		else
-+			lim->max_secure_erase_sectors = max_discard;
-+	}
-+
- 	if (mmc_card_can_trim(card) && card->erased_byte == 0)
- 		lim->max_write_zeroes_sectors = max_discard;
- 
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index f5e8a0f6d11b9..6f727b4a60a52 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -153,6 +153,15 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
-+	/*
-+	 * On Some Kingston eMMCs, secure erase/trim time is independent
-+	 * of erase size, fixed at approximately 2 seconds.
-+	 */
-+	MMC_FIXUP("IY2964", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
-+		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
-+	MMC_FIXUP("IB2932", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
-+		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
-+
- 	END_FIXUP
- };
- 
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index fd0cb188c46e2..8151f2240db41 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -331,6 +331,7 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
- #define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
- #define MMC_QUIRK_BROKEN_MDT    (1<<19) /* Wrong manufacturing year */
-+#define MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME	(1<<20) /* Secure erase/trim time is fixed regardless of size */
- 
- 	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
+ #define IGNORE_W1C_MASK ((~(1 << CE_BREAKPOINT_BITPOS)) & \
+ 	(~(1 << CE_CNTL_STORE_PARITY_ERROR_BITPOS)) & \
 -- 
 2.53.0
 
