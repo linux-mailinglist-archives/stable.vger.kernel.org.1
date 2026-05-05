@@ -1,187 +1,234 @@
-Return-Path: <stable+bounces-243949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGaULJ5d+WmO8AIAu9opvQ
-	(envelope-from <stable+bounces-243949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 05:01:50 +0200
+	id CDqYEcxg+WnW8AIAu9opvQ
+	(envelope-from <stable+bounces-243951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 05:15:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEF24C6170
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 05:01:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF35A4C61E1
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 05:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3AE0301AA6B
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 03:01:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5FB2B3027341
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 03:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B707B3A1CFE;
-	Tue,  5 May 2026 03:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB71C3AB282;
+	Tue,  5 May 2026 03:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RPUUYsu9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lioe76Zt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C17735C1A1
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 03:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FF33A7859;
+	Tue,  5 May 2026 03:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777950096; cv=none; b=JNrqjTuhCaXaJiyadDwPvW0xLbmvvg4c3qi499fZEbLfpGkiGmK+4JLiPpGUZmjEF23CjdyXIq3xtdTxzXqQdna1Nwg2CPtXKFkJTNhuLeWVWXdiTH4gk6GF9uUVScS8lroiiHI8EZo9ujCLdCCKA4D1WnYYM4eRaeww1hGmyWI=
+	t=1777950902; cv=none; b=MG2a1f6wCILXRHFnkE08XFyYnLhiUtH10tMSu8ZbulSQBHtbyDY9ZaAqVa6oW5FZNTrqnE6W6qk8ST+pfOLxKMFbQkqnTFbmXjr7ATN3L0zMCOgwmOAtCQKYdLD66BSNY6p+mgWTlFedMdEYfNAo5KEPkhK8zST1bcMKJEulVnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777950096; c=relaxed/simple;
-	bh=1ZZq3AZcXhdVVTCNk7Y6efOxIfjWHrNXrTwSSibK9+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sKKjzXTWKGR/invt4VzZZembtdSfo4AY714DCKlMMTPXNkUKZhFscJufJlQoSdvox+6JshRsvwe8nUzGkUTYdFXHvyYB3rgv4VuqPvo3cquhZWeBoI4tLn1OeVRl/FhVK9+N9pRs2Frw5QL21GvGqYsDGjxc0YYQl8yht37ArzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RPUUYsu9; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ee990e8597so4726651eec.1
-        for <stable@vger.kernel.org>; Mon, 04 May 2026 20:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777950094; x=1778554894; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=El9tXtPSumoZ+MStmDgSuEySorMFvbhYEvY/QycU3Vk=;
-        b=RPUUYsu9Jc17qV39uZNMtCuh2kXqJ3Xr2PodS9bZLuEUZO8SMXVnBrVbDS8k8uBmqM
-         54beor3a4LtE3lJ/uWIyNE/eFBKta4aWibf5WIjMlv2ZbXwcpvEiAzgB1tL4B7x9/cfV
-         qg9jYsDa/27uV1iCoFmXVmaR8WoT8/KuAWrTjE+8g90h5nVNs5C/c+ONtVFQ5/Ua+TKi
-         8/g6kVu3fwvupNpPzMy49Ol0QdeQH/9UhCk96ELuQzPlLkr2AzZBB8Ay/yDqDXY/pGoW
-         Tq1PrAsF4uxMpq5KJSC+il+XBU6yBWUCM261Fw20xMT2fspVL/FuIvGVlIPALgFIIMMg
-         e2yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777950094; x=1778554894;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=El9tXtPSumoZ+MStmDgSuEySorMFvbhYEvY/QycU3Vk=;
-        b=D8CBzrlro8YlGN0AzEfX1lKJx+Clj/bgIgnqsOCw/R3H8a2W60bURA05LjziCokvyt
-         xzoALrn78HBQBal0PTdOMR5tIb90RWOsrPZ/3IS82hsLq9SuzLH6DwoUW0dixUfynC77
-         jR6nFGeGvvbQi8mDuK1UYBbzCpYIbcRzFOm0o4W/VLESGXj2LNw+2SucwbZbyQGBZRAs
-         i2JM5vwXS45czV5IPT0kqeO9XBJfxtd961swEnQ1IYsgAAkqBSHn6Z4ZdOmygo+7Qwbo
-         MAJSgrcXuFoyBZIfusW6AVjEtbJFifOKT303ByJFBeMgcMHfzsD7KBwju1AFZ7VFOgGC
-         zghg==
-X-Forwarded-Encrypted: i=1; AFNElJ989FSQ/iRn3MIawLO4Fco7qtjvdfCNGvjb9l5RMyuPm4905kRVaZiEsvQ/JXQMu07JJffrAnQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/IpEnTMOvKYhu4cY+YcswpOs1/GVRamNw4E8+SP+fDJp7W7LS
-	XMtwr076qVhNs55yAhEFKcfwwBczU7GtltDoEkyQGBxuyhwBl3orJTQoaXFgpQ==
-X-Gm-Gg: AeBDieu40jXXgNvgzbXwGF9tuEtKtVC7DYFFoiIDDBddkJXr9rdiVXkJa9kQaRYXWhC
-	JbLtwxCJKuHsZapk/7mhSSELyN66PQEvWlnhhcx7UG615CUiEFqLMqcUOfXn/ZTsrACl/99txI1
-	sRlZpNJSgb/n+aANIzG48LwqE5vSzwBgHTHg3K8hbOgNi4BTN1hESDX+caPB6Rammm6c0mTbK4g
-	T1yKanf/ce/JeoHSHspXVXY+11GOkg97esBFGOVfx/EeurcXgTKeeO+IrGkjonw+Evc5PW1m8HT
-	VIV1Unuhf3awbURNXKxrxLoPqTuFCdL8n+fFSuZhbJOQyjr/djjEcXbx6aEs9NfIHRhUA8Q/0XS
-	34VxOib2WSCuetGlCgK8JswmjreTGWx4tLrlQYGqmSItpezM9eAtQDO3wG9HAozTpmW0ZZUxGIO
-	+X6hBH8dBQIKJd58RpJRz5wboEza+1nGkVslShobK1c6CNb4gQ39Xuza6THE7jBoouIVMTS6T/p
-	Hc=
-X-Received: by 2002:a05:7300:bc9a:b0:2d3:f43c:d684 with SMTP id 5a478bee46e88-2f40745dcc3mr566666eec.2.1777950093512;
-        Mon, 04 May 2026 20:01:33 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:94ef:a6f3:2c96:2d58])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3b781555sm19279870eec.21.2026.05.04.20.01.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 20:01:32 -0700 (PDT)
-Date: Mon, 4 May 2026 20:01:29 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Kris Bahnsen <kris@embeddedts.com>
-Cc: Marek Vasut <marex@denx.de>, stable@vger.kernel.org, 
-	Mark Featherston <mark@embeddedts.com>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] Input: ads7846 - don't use scratch for tx_buf when
- clearing register
-Message-ID: <aflcL6y_ugHV5p8s@google.com>
-References: <20260430173739.3843425-1-kris@embeddedTS.com>
+	s=arc-20240116; t=1777950902; c=relaxed/simple;
+	bh=0hnl5LiK9JetEo5y2dEGrpJApTWcKUejox+F223rtO0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=umip6D5uddEC62wm+R2FsIV9oqJJuvb2XnaqPEdq/rzGrMopB7IOm08pYoo4EnPa4fEQ57tfrI53X0/JIvmO24sLwjLkgdPDxhUyFzuu31PTa+tcUWKp2m3PWlSWawBkULbnMSO4NP/nt8MLaT3FsSryT4y+5jg//sNrK9hrpds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lioe76Zt; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777950900; x=1809486900;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0hnl5LiK9JetEo5y2dEGrpJApTWcKUejox+F223rtO0=;
+  b=lioe76ZtMs4kGXLvI7TRx0nnvE01LfrnnFLA4tpcN16HV9k34ddU/1ei
+   mq1+h/kHrGlGZW7XiO9RH2OUfUVkDl6ytbqh8q2GNbhMlAhtIhGNZQS+r
+   ktQjEGjhtNkhXblktcr9Vrxt04Kdp/nr7ZjnZV1jfkQLet7jNRyYbBrCy
+   124sK/ayvzBkgB0jVVAI6Lu7SawJdupRyyQz6wWJIqLbHe8EQjGW66nYh
+   6vhznmoP5cMOssQ3e2fBrqiu9XXagnLMOs89TijRwlLOR0blHUzXq6jkC
+   W0ORt7eaG4Ize4FDCPo+XIPxWQ01bJk+fOJ2mfzYeNkHyVXfCUWVy8yvQ
+   Q==;
+X-CSE-ConnectionGUID: vCtiSuArQqqrBOv6dznMjg==
+X-CSE-MsgGUID: QTjgH9uKQjq4CQ5sR0xi7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="78837538"
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="78837538"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 20:14:55 -0700
+X-CSE-ConnectionGUID: wffLoEc5ShSxn8waASDU3w==
+X-CSE-MsgGUID: HfEqPezSRKmRRPOrT5QLFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="235939034"
+Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 20:14:56 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] drm/ttm: Drop tt->restore after successful restore
+Date: Mon,  4 May 2026 20:14:49 -0700
+Message-Id: <20260505031450.3262489-2-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260505031450.3262489-1-matthew.brost@intel.com>
+References: <20260505031450.3262489-1-matthew.brost@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260430173739.3843425-1-kris@embeddedTS.com>
-X-Rspamd-Queue-Id: 1AEF24C6170
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BF35A4C61E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243949-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux.intel.com,amd.com,intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-243951-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TO_DN_SOME(0.00)[]
 
-Hi Kris,
+ttm_pool_restore_and_alloc() can successfully complete the restore
+process via ttm_pool_restore_commit(), but tt->restore is not dropped
+afterward. As a result, subsequent backup/restore flows observe what
+appears to be a completed restore, while in reality shmem handles are
+still installed in tt->pages, leading to the stack trace below.
 
-On Thu, Apr 30, 2026 at 05:37:38PM +0000, Kris Bahnsen wrote:
-> The workaround for XPT2046 clears the command register, giving the
-> touchscreen controller a NOP. The change incorrectly re-uses the
-> req->scratch variable which is used as rx_buf for xfer[5], so by
-> the time xfer[6] occurs, the contents of req->scratch may not be
-> 0. It was found that the touchscreen controller can end up in
-> a completely unresponsive state due to it being given a command
-> the driver does not expect.
-> 
-> Instead, rely on the spi_transfer behavior of tx_buf being NULL to
-> transmit all 0 bits and use the scratch variable for the rx_buf for
-> both the 1 byte command to and 2 byte response from the controller.
-> 
-> This change was tested on real TSC2046 and ADS7843 controllers,
-> but not the XPT2046 the workaround was originally created for.
-> Confirming that the original modification to clear the command
-> register does not impact either real controller.
-> 
-> Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Mark Featherston <mark@embeddedTS.com>
-> Signed-off-by: Mark Featherston <mark@embeddedTS.com>
-> Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
-> ---
-> 
-> V1 -> V2: Don't use rx_buf when clearing command reg
-> V2 -> V3: Modify original 2 xfer command to eliminate dev_err()
->           output on xfer with len and NULL buffers
-> 
->  drivers/input/touchscreen/ads7846.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-> index 4b39f7212d35c..488bcc8393293 100644
-> --- a/drivers/input/touchscreen/ads7846.c
-> +++ b/drivers/input/touchscreen/ads7846.c
-> @@ -403,8 +403,7 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
->  	spi_message_add_tail(&req->xfer[5], &req->msg);
->  
->  	/* clear the command register */
-> -	req->scratch = 0;
-> -	req->xfer[6].tx_buf = &req->scratch;
-> +	req->xfer[6].rx_buf = &req->scratch;
+Fix this by freeing and dropping tt->restore in
+ttm_pool_restore_and_alloc() upon successful completion of the restore.
 
-Sashiko (I believe correctly) pointed out that by doing this "scratch"
-is now write only and this may cause DMA from the device stomp on
-message status and other unrelated data that shares the same cacheline
-with scracth. While it was already a problem before now it is even more
-likely.
+20545 [  309.784531] RIP: 0010:sg_alloc_append_table_from_pages+0x38c/0x490
+20547 [  309.809570] RSP: 0018:ffffc9000623b838 EFLAGS: 00010206
+20548 [  309.814827] RAX: 0000000000001000 RBX: ffff88816e42a160 RCX: 0000000000000000
+20549 [  309.821986] RDX: 0000000000002000 RSI: 0000000000000003 RDI: 0000000000001000
+20550 [  309.829147] RBP: ffff88816e42a168 R08: 0000000000000002 R09: 000000007ffff000
+20551 [  309.836310] R10: ffffc9000623b928 R11: 0000000000000000 R12: 000000007ffff000
+20552 [  309.843471] R13: ffff88815ba5a100 R14: 0000000000000000 R15: 0000000000000001
+20553 [  309.850634] FS:  00007f9ff305e700(0000) GS:ffff888276c94000(0000) knlGS:0000000000000000
+20554 [  309.858749] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+20555 [  309.864519] CR2: 00007f9fca701000 CR3: 00000001565e2005 CR4: 0000000008f70ef0
+20556 [  309.871678] PKRU: 55555558
+20557 [  309.874403] Call Trace:
+20558 [  309.876866]  <TASK>
+20559 [  309.878988]  sg_alloc_table_from_pages_segment+0x60/0x100
+20560 [  309.884415]  ? ttm_resource_manager_usage+0x36/0x60 [ttm]
+20561 [  309.889845]  ? xe_tt_map_sg+0x7d/0xd0 [xe]
+20562 [  309.894045]  xe_tt_map_sg+0x7d/0xd0 [xe]
+20563 [  309.898037]  xe_bo_move+0x927/0xaa0 [xe]
+20564 [  309.902029]  ttm_bo_handle_move_mem+0xba/0x170 [ttm]
+20565 [  309.907022]  ttm_bo_validate+0xbe/0x190 [ttm]
+20566 [  309.911405]  xe_bo_validate+0x9a/0x120 [xe]
+20567 [  309.915663]  xe_gpuvm_validate+0xd9/0x140 [xe]
+20568 [  309.920206]  drm_gpuvm_validate+0x2f0/0x5b0 [drm_gpuvm]
+20569 [  309.925459]  ? drm_exec_lock_obj+0x63/0x210 [drm_exec]
+20570 [  309.930627]  xe_vm_validate_rebind+0x46/0xb0 [xe]
+20571 [  309.935428]  xe_exec_fn+0x20/0x40 [xe]
+20572 [  309.939249]  drm_gpuvm_exec_lock+0x78/0xc0 [drm_gpuvm]
+20573 [  309.944410]  xe_validation_exec_lock+0x5a/0xa0 [xe]
+20574 [  309.949385]  xe_exec_ioctl+0x806/0xc30 [xe]
+20575 [  309.953639]  ? ttwu_queue_wakelist+0xd9/0xf0
+20576 [  309.957935]  ? __pfx_xe_exec_fn+0x10/0x10 [xe]
+20577 [  309.962449]  ? __wake_up_common+0x73/0xa0
+20578 [  309.966482]  ? __pfx_xe_exec_ioctl+0x10/0x10 [xe]
+20579 [  309.971263]  drm_ioctl_kernel+0xa3/0x100
+20580 [  309.975209]  drm_ioctl+0x213/0x440
+20581 [  309.978637]  ? __pfx_xe_exec_ioctl+0x10/0x10 [xe]
+20582 [  309.983415]  xe_drm_ioctl+0x67/0xd0 [xe]
+20583 [  309.987408]  __x64_sys_ioctl+0x7f/0xd0
 
-Since scratch is now write-only I believe moving it below "sample"
-forces it into separate cacheline and fixes this problem. Could you
-please try making this change?
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: b63d715b8090 ("drm/ttm/pool, drm/ttm/tt: Provide a helper to shrink pages")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 
-Thanks.
+---
 
+v3:
+ - Call ttm_pool_apply_caching after freeing local restore (sashiko)
+ - Save alloc in snapshot on restore failure (sashiko)
+---
+ drivers/gpu/drm/ttm/ttm_pool.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+index 278bbe7a11ad..53d1e36f0b48 100644
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -902,6 +902,7 @@ int ttm_pool_restore_and_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ {
+ 	struct ttm_pool_tt_restore *restore = tt->restore;
+ 	struct ttm_pool_alloc_state alloc;
++	int ret;
+ 
+ 	if (WARN_ON(!ttm_tt_is_backed_up(tt)))
+ 		return -EINVAL;
+@@ -925,14 +926,22 @@ int ttm_pool_restore_and_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 	} else {
+ 		alloc = restore->snapshot_alloc;
+ 		if (ttm_pool_restore_valid(restore)) {
+-			int ret = ttm_pool_restore_commit(restore, tt->backup,
+-							  ctx, &alloc);
++			ret = ttm_pool_restore_commit(restore, tt->backup,
++						      ctx, &alloc);
+ 
+ 			if (ret)
+ 				return ret;
+ 		}
+-		if (!alloc.remaining_pages)
++		if (!alloc.remaining_pages) {
++			kfree(tt->restore);
++			tt->restore = NULL;
++
++			ret = ttm_pool_apply_caching(&alloc);
++			if (ret)
++				return ret;
++
+ 			return 0;
++		}
+ 	}
+ 
+ 	return __ttm_pool_alloc(pool, tt, ctx, &alloc, restore);
 -- 
-Dmitry
+2.34.1
+
 
