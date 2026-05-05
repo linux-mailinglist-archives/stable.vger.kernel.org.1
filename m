@@ -1,203 +1,199 @@
-Return-Path: <stable+bounces-244139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJzkFn3o+WmdFAMAu9opvQ
-	(envelope-from <stable+bounces-244139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:54:21 +0200
+	id cG90Bqvq+WkLFQMAu9opvQ
+	(envelope-from <stable+bounces-244140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:03:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84944CDFE5
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:54:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830E94CE1E8
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5613A3002782
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 12:54:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 97EFC306CB38
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 13:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58A3423A9C;
-	Tue,  5 May 2026 12:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DD742EEA6;
+	Tue,  5 May 2026 13:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="V3lNqB6Z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YRUgOuX7";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cO2d3KVD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A0E37CD54
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 12:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAD3274B39
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 13:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777985656; cv=none; b=szoZD9Hs3bCEBJHUd01/m8HimXZkJGWcjvYb/JpFNkwejel0EnkncAAKd7d5OOWIUh9f6Ut1z/Fyxg+89zoAGICsxutW2FUHny5jpQMKF3SUE3vqe1fhz5Tcoo1CWkQIM3YpfpTKehcDAa9L5UvCHKhNQwU3lG/RAzUqlokPnlg=
+	t=1777986070; cv=none; b=CIbtdKOhlYqjIDEadZGemWh4zcsBc1EcNf1l0HhIC9d+y/PXxYkBSQMqiohUnBpEA/STSaXJmuby1M8A4qeypEgPxhhQI+cvl5RJDqeJd7rTfD2q3287d+6m54/XoaOy4oVyA0Z8F9Mo8Qwjun7kNcVe4aH1d1eAmUzXq98VLzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777985656; c=relaxed/simple;
-	bh=97dcqovbHD0hlxgjvuKPi4RQ7TGsWrKChMfLAXdeKSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+5kXn1Vo57/8XEeJCmY6JNKyjxXJ71nhR5cOntoqx10N7fglfCff4JwJnffaHRy5jooY8VEJWnfj5ofsrRaquxyuy4rcxh5xSuDPLbPFE4fdvC0oEstF+MpFH5UbuilHd43ACIUUQbBquFsn35JCsY7AXFvQ7HGQyQemqwzlQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=V3lNqB6Z; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-415c8a4d2e6so2306930fac.0
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 05:54:12 -0700 (PDT)
+	s=arc-20240116; t=1777986070; c=relaxed/simple;
+	bh=GYtI7bDD+MMFGyL+yGGnqCAyzGu+/x6qxQ2tUmlG8HE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hkIvVNkNsVdi7jSPb+9/KQAWp3dspqz+5c8yt4tMTOPkRg3Gl8g3g4vgbHWzPBdF2EdtW8UMNVItPzmYVcHgg54Cc81ZldQG96ObUvO1T4o29MuIdaDLpAmK6147KioFhbo6srJIFAYasrABo8Ghp6motw0PggL5xOq6DzVuizc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YRUgOuX7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cO2d3KVD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777986066;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ify9Bi6CHKsDFsBeOr/60tpIhk/Zdvw/emSfXb/I8Gw=;
+	b=YRUgOuX7qaTwK6CSnAuCkQJy2AosO8QFiNuWqrUwpdrqlusG6xGcguAB0Lxu6+x0GukeKW
+	3iMGvGxOBlAioBkLENQS+ixFmvemA2nci9YhYKhUZpOM/iMZcR3vP/nnYg/VtRVOE0K7zb
+	YevXeUU2YyodaSQwvBArgnCyn5NihWw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-203-X8QF1PyTP9S0xrYQd4m4BQ-1; Tue, 05 May 2026 09:01:05 -0400
+X-MC-Unique: X8QF1PyTP9S0xrYQd4m4BQ-1
+X-Mimecast-MFC-AGG-ID: X8QF1PyTP9S0xrYQd4m4BQ_1777986064
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488c2aa6becso37273785e9.2
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 06:01:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1777985651; x=1778590451; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/ixHlQF/6N+sd7aWPsMAhIdhMfBiCGbCBVVjJcBst60=;
-        b=V3lNqB6Z879k6pmtD2ZTJhUK6Ds65/u3CPQk7ku8w83Q6AHloAGDhypCC6kvYJcCLZ
-         P5UNk4zi8MCZByqTfKrcMoWSU5RaLYOqgUZV7jtaX5oPz14RzgevBsBf3BhiU2XP/JK+
-         DFvXCAs8vnpV5xV/+0zTBKoEPIM2aZowrWE+JCgliGSGEpyGJNFxo3AxPfkZO88OZrkA
-         B4JH2FE8h4s8iexgEyryGeua/Kofh9GZMS89B3rdq/nZsMjyVZ3g/yZ9xMxQS25fi0ud
-         RLImNTt3ayrXELCZ6dqDqhFInxFXvkBfdEGZ8M+e7yLGpL83TFRWx1sQAUN1nS5faYb7
-         UF0g==
+        d=redhat.com; s=google; t=1777986064; x=1778590864; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ify9Bi6CHKsDFsBeOr/60tpIhk/Zdvw/emSfXb/I8Gw=;
+        b=cO2d3KVDAE6qASLPkN6LkUjZRg+KnWcmCubgsKCDzTW8mISkH91B+BwoGeqxew4aQp
+         IilFpSOsli5REqQ0kK0VdhXfnFvTmMlMnaJTJ5oTOWt3GXXlMh5DzZ58mfVsSqBPAtH+
+         whRywUlAv6K3BSi6FYMaI868ktVQEzbCm5L2Ue0iVYJ4wxYcvm0BBqE114Mbyu3Ebvq1
+         pEwEK07iqFb/28+4tEVw8zHKqzPNt0mCgPkNUTnaaBeOARasWyAC3ZBEZ0Eydz0OjBz3
+         oyMB2PUDMjkI4jVNOesTKKaVKlDTUs0Coq3g157qXGwLLE+SE3VfS+uOjmyL/IpEl4d0
+         3xQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777985651; x=1778590451;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/ixHlQF/6N+sd7aWPsMAhIdhMfBiCGbCBVVjJcBst60=;
-        b=c5B7imoQSN62eNP39OX59YroB+oBUg27+nBnhGYqDH00bF7RP+KlVkC4I987fzRnTu
-         TCln2LS6oF1tJaPx75QfbQwftOAOcoA1Znnm9axcv93x+UkU7ZWP3bbbJUs5oVzwqrMy
-         L9x0wFlci8/WCvVWEeAhH0vi+VB5Wt7pL3z7auSY24w/EvL2kJ6ELitPqCOdJwFecdu5
-         pZ9jM0UqMVGnzjR07e74spC11Z5SrF5GCkE9nx+8avgs+orWl5jfT5AmBrgoQDzXIXdJ
-         K/ifc6DN9WEphGbWFP5c7l3e1xOHzq3Rqqa3W+SLOpc3yk+DcN0u0rqSPwoA8pRTGB+6
-         wTKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8ZR7XmBBqy/s7CIRsSB7JPa2MYqI4xXnQsWh+5iuz7re0saV8BwClH4RoF5WabNf5vG0aajOg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeuRobsS5Pu0Vu7Pl8dI74CmWRkQ3u3iobvGE7KduFkZlL3Lwk
-	n9b+kLIER8Djw0WC8tY9H6WZLRtcarDFIUGBAmbSNXLANMaycs4ELgK+RjYlJF+wfaNIdXrpRkd
-	OBP+E
-X-Gm-Gg: AeBDiesTmsAUdTeFM325k/JyLQJhh5h+dj7ltTkWbvZ1POLd9UQ1ybC+Aj2qIpyXWVe
-	K/EbOSLfL3msLYg6V879YXhjSFmUiULFKD0Eh9yWiKWdwMZm1NO4z9xDqeu7IIgrFTewAURnDlt
-	F/KtJCXFOE6XQSDqoEir+2C1VfMIOEHD1fUHHbOyo+B1UWtdq/OZNXwBS8iVjMPE7ghiqaMyaGy
-	VqLEofCGFf1CG70t2Et6s/XeHq4rvsxs6ugpLQknDcN2ivVV3ZT8SrUCO2D/Opqtu8RMzBILE7j
-	k3XT/MONPC0bMkNZfMt61sGc3skeG2G+hIzgtKL25MzFsV+ywPzDhaVf/ZCpXjaMp31W42IqnXg
-	jT4+nShD35AnS4/EVhbAbURSPRkplvXTfqKo4ga/5lyVf2KCZ5faBDjPkA16FoUWFUxLr+ofCYW
-	73sP45+k0OzkF0Nsl57vjIVsaqKyzspoeJINN4SWYtkNiJVbvzdj/F6BuC5k1j+PX0tH0lySQ2c
-	snfIZqTwO5lSsosHMRMYD9kH3RonTXARw==
-X-Received: by 2002:a05:6870:8197:b0:41b:c797:5953 with SMTP id 586e51a60fabf-434d412d2e7mr1588313fac.24.1777985651507;
-        Tue, 05 May 2026 05:54:11 -0700 (PDT)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:4a29:1d2:a1fb:6ae])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-434548ccb52sm13616431fac.1.2026.05.05.05.54.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 05:54:09 -0700 (PDT)
-Date: Tue, 5 May 2026 07:54:06 -0500
-From: Corey Minyard <corey@minyard.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Li Xiao <252270051@hdu.edu.cn>
-Subject: Re: [PATCH 7.0 073/307] ipmi:ssif: Clean up kthread on errors
-Message-ID: <afnoboEQIXI0aQSk@mail.minyard.net>
-Reply-To: corey@minyard.net
-References: <20260504135142.814938198@linuxfoundation.org>
- <20260504135145.562837603@linuxfoundation.org>
- <2bdd7732-e20d-4d67-8f3e-2b9a9a791edf@kernel.org>
- <2026050523-blandness-calibrate-93c5@gregkh>
+        d=1e100.net; s=20251104; t=1777986064; x=1778590864;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ify9Bi6CHKsDFsBeOr/60tpIhk/Zdvw/emSfXb/I8Gw=;
+        b=m4hCHkppr/rBSYlqtnHw6zEyA0xdF/JfqN0f0ICW9O5cU5pmTmTMZHLZWmZ3RrDoiU
+         ZU+e3sj/Wu11Rcj6308T0KZNwCzLnTaWrAbGNGGAG1cK4rjefK74RtO+wzm8mjw2tglW
+         n4n+fhsEfPaq+O94BrRqrZf0eoo9qeC4bOSzF8UN/xoLRqjufMBxLtFjaWCjoA6iwxha
+         OcramitYNxQfKx1idHrxSCFmMOWQIzJTki0wgSOXtU0aNbS77gKgzB0KchDV+0reoj5N
+         xuoiW3eknWaJ+JRZzQngsRZMmQ+N8tpGe2HXAN0M3z+8+wdLcXcz6fOoue+79Jtt6Vp/
+         kaCA==
+X-Gm-Message-State: AOJu0Ywkz+oLFCbLC90lLPX2q8htFENem8ALk6szfZaaVyKjoK1LPq3V
+	8/HNgYPXA0SdBmFTE9B98RKXG0rV2DDF9FvDHEb4UMILG6uigsPRUScB6CAsa92cgvlsOYRPjpa
+	Bx5A+E17FZMDGVDAqLA1hjFJ8VeXxZh5qFtqu9yFiG7qims5S8l7rnB3G2g==
+X-Gm-Gg: AeBDievFJotVXcx71+Syxl9k5Uw86F3277SbFCYUTOiz9IrPcQCUlbE0DNsIQI55clu
+	pZnqXLOgEC6KlzWeeEcTKzz5T180kTmdpuVNoeMq8jSqnN/61bgF/yTTean+2JKZUt2HfOAvMmE
+	9HKP8q2236+W5bEvYCT3rWkitQ+DxQR7BWT/afYUi9jvzpMtxL9OIF0vGDLo8BCeFjwY0PiVZnm
+	r5iB6iOY5J64mm3Wo5fIZ7zq5X2mpp6tgDftl6/SIKEZwNxzB2sgheFCp7+q43JRctcKpzlwHgH
+	IDT/LJET5TSAl91NdDlTxT75lgymVGKLwCWnWuGNxyRhb+tCKcRsbe3KnmXZNNAj/M3nppzSrJO
+	TQEYCgs6jaLqZAzC7q1kY021JdmARFNNCIlUVcO3PcYW0ZIBSLQhz/miR3o2xBkjGtcY=
+X-Received: by 2002:a05:600c:c16a:b0:489:1cda:bbb7 with SMTP id 5b1f17b1804b1-48d18ceb33dmr49000295e9.25.1777986064109;
+        Tue, 05 May 2026 06:01:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:c16a:b0:489:1cda:bbb7 with SMTP id 5b1f17b1804b1-48d18ceb33dmr48999545e9.25.1777986063581;
+        Tue, 05 May 2026 06:01:03 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.155.47])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a820c8556sm391720155e9.4.2026.05.05.06.01.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2026 06:01:03 -0700 (PDT)
+Message-ID: <be3bc819-b695-4626-a1e3-a9f791d59001@redhat.com>
+Date: Tue, 5 May 2026 15:01:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026050523-blandness-calibrate-93c5@gregkh>
-X-Rspamd-Queue-Id: C84944CDFE5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] tipc: fix UAF race in
+ tipc_mon_peer_up/down/remove_peer vs bearer teardown
+To: SnailSploit | Kai Aizen <kai.aizen.dev@gmail.com>, netdev@vger.kernel.org
+Cc: stable@vger.kernel.org, jmaloy@redhat.com, ying.xue@windriver.com,
+ kuba@kernel.org, tipc-discussion@lists.sourceforge.net,
+ tung.q.nguyen@dektech.com.au, lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+ syzkaller-bugs@googlegroups.com,
+ SnailSploit | Kai Aizen <95986478+SnailSploit@users.noreply.github.com>,
+ syzbot ci <syzbot+ci779e8ed86620f383@syzkaller.appspotmail.com>
+References: <CALynFi5d0DuGW50xq7xQnsDPdEuN5jBGTqh8bcsUwxk6L-FAdA@mail.gmail.com>
+ <80ae67e96de2f702028e5bacc89db4575e1531ca.1777559945.git.kai.aizen.dev@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <80ae67e96de2f702028e5bacc89db4575e1531ca.1777559945.git.kai.aizen.dev@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 830E94CE1E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244139-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,hdu.edu.cn:email];
-	RCPT_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244140-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,SnailSploit,ci779e8ed86620f383];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[corey@minyard.net]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On Tue, May 05, 2026 at 12:06:29PM +0200, Greg Kroah-Hartman wrote:
-> On Tue, May 05, 2026 at 11:10:29AM +0200, Jiri Slaby wrote:
-> > On 04. 05. 26, 15:49, Greg Kroah-Hartman wrote:
-> > > 7.0-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Corey Minyard <corey@minyard.net>
-> > > 
-> > > commit 75c486cb1bcaa1a3ec3a6438498176a3a4998ae4 upstream.
-> > > 
-> > > If an error occurs after the ssif kthread is created, but before the
-> > > main IPMI code starts the ssif interface, the ssif kthread will not
-> > > be stopped.
-> > > 
-> > > So make sure the kthread is stopped on an error condition if it is
-> > > running.
-> > > 
-> > > Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-> > > Reported-by: Li Xiao <<252270051@hdu.edu.cn>
-> > > Cc: stable@vger.kernel.org
-> > > Reviewed-by: Li Xiao <252270051@hdu.edu.cn>
-> > > Signed-off-by: Corey Minyard <corey@minyard.net>
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > ---
-> > >   drivers/char/ipmi/ipmi_ssif.c |   13 ++++++++++++-
-> > >   1 file changed, 12 insertions(+), 1 deletion(-)
-> > > 
-> > > --- a/drivers/char/ipmi/ipmi_ssif.c
-> > > +++ b/drivers/char/ipmi/ipmi_ssif.c
-> > > @@ -1268,8 +1268,10 @@ static void shutdown_ssif(void *send_inf
-> > >   	ssif_info->stopping = true;
-> > >   	timer_delete_sync(&ssif_info->watch_timer);
-> > >   	timer_delete_sync(&ssif_info->retry_timer);
-> > > -	if (ssif_info->thread)
-> > > +	if (ssif_info->thread) {
-> > >   		kthread_stop(ssif_info->thread);
-> > > +		ssif_info->thread = NULL;
-> > > +	}
-> > >   }
-> > >   static void ssif_remove(struct i2c_client *client)
-> > > @@ -1916,6 +1918,15 @@ static int ssif_probe(struct i2c_client
-> > >    out:
-> > >   	if (rv) {
-> > > +		/*
-> > > +		 * If ipmi_register_smi() starts the interface, it will
-> > > +		 * call shutdown and that will free the thread and set
-> > > +		 * it to NULL.  Otherwise it must be freed here.
-> > > +		 */
-> > > +		if (ssif_info->thread) {
-> > 
-> > This 'if' reportedly needs:
-> > commit a8aebe93a4938c0ca1941eeaae821738f869be3d
-> > Author: Corey Minyard <corey@minyard.net>
-> > Date:   Tue Apr 21 06:50:22 2026 -0500
-> > 
-> >     ipmi:ssif: NULL thread on error
-> > 
-> 
-> Thanks, now queued up.
+On 4/30/26 5:26 PM, SnailSploit | Kai Aizen wrote:
+> @@ -422,9 +422,12 @@ static bool tipc_mon_add_peer(struct tipc_monitor *mon, u32 addr,
+>  void tipc_mon_peer_up(struct net *net, u32 addr, int bearer_id)
+>  {
+>  	struct tipc_monitor *mon = tipc_monitor(net, bearer_id);
+> -	struct tipc_peer *self = get_self(net, bearer_id);
+> +	struct tipc_peer *self;
+>  	struct tipc_peer *peer, *head;
 
-Thank you Jiri and Greg, this is correct.
+Minor nit: please respect the reverse christmas tree order above.
 
--corey
+>  
+> +	if (!mon)
+> +		return;
 
-> 
-> greg k-h
+Also an empty line here (and other similar places in the patch) will
+make the code more readable.
+> @@ -663,7 +666,7 @@ int tipc_mon_create(struct net *net, int bearer_id)
+>  		kfree(dom);
+>  		return -ENOMEM;
+>  	}
+> -	tn->monitors[bearer_id] = mon;
+> +	rcu_assign_pointer(tn->monitors[bearer_id], mon);
+>  	rwlock_init(&mon->lock);
+>  	mon->net = net;
+>  	mon->peer_cnt = 1;
+
+Sashiko says:
+
+Does rcu_assign_pointer() publish the mon object before its lock
+and fields are fully initialized?
+Since rcu_assign_pointer() provides a release barrier, a concurrent
+lockless RCU reader (like tipc_mon_peer_up()) could observe the new
+mon pointer and attempt to acquire write_lock_bh(&mon->lock) before
+rwlock_init(&mon->lock) has executed, or dereference a still-NULL
+mon->self.
+Should the publication step be moved to the absolute end of the
+initialization sequence?
+
+Note that sashiko has more remarks, even if they looks like pre-existing
+issues to me.
+
+/P
+
 
