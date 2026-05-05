@@ -1,127 +1,153 @@
-Return-Path: <stable+bounces-244258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EHoMqJI+mmJMAMAu9opvQ
-	(envelope-from <stable+bounces-244258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 21:44:34 +0200
+	id KIKMKN5O+mndMAMAu9opvQ
+	(envelope-from <stable+bounces-244260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 22:11:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8254D3379
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 21:44:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F33634D37CE
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 22:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E587A30480D0
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 19:44:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E87330DA748
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 20:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA5B3C8729;
-	Tue,  5 May 2026 19:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E343D9025;
+	Tue,  5 May 2026 20:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oA5hg/8D"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Lj0pDdPs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B2C3D5648;
-	Tue,  5 May 2026 19:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB6A2DECBA
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 20:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778010268; cv=none; b=ageWSz2pb+pv/y9R1ZcWlTWozu0FLclf82/vnDqClwmlniPMGx/UsT3Feh6lcjK9ogJtC93UaoNOysVbz+DtyQ9dBTUU0YDRXm/EQbEbBmUWRMr8lQpNlER8HjppiHtTUv9DKTNfseKA0VS8bKm8mMRNVr9oZjkoTXvPfQA3AhE=
+	t=1778011491; cv=none; b=t01cVDjYTZirx/rNkyNh5szW8UL1lKGTQcJelkmxoijeKiIWH48mu0VO210gQsC60tiLDQBwg9vzv/PmjibZQwED7NKmXSlqRy7Wool/U10Q5LZoml0lYQyofOCr8BVACbC4QUWrL8rbKqEUMCmyenQfg21J1fLG9s3EJ7Txzog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778010268; c=relaxed/simple;
-	bh=OGtcBVn9FNPkzgL7jr/JLAoaV2N1LFR9tOeyAnA2iRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UXXx8nuLXXGp6algq1crneRKmtzPdz/seBUiF9p7joCwkS2t5zAmClQksqwxGhcI6HbDsQWsU8OML7sa0YV+OTSJEez3xcvMxJ3cC1pgGnYBF6aMcOzv15dmlwFJ7JXy4P1eSLCAJszI9LalhCKZh7Bv4t63yuyY4XftA0AZdc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oA5hg/8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F10C2BCC7;
-	Tue,  5 May 2026 19:44:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778010267;
-	bh=OGtcBVn9FNPkzgL7jr/JLAoaV2N1LFR9tOeyAnA2iRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oA5hg/8DmCuEcReclaATo6yiNOoUtG7EOuK1WalAxj9QVTV/W3cHSEPS2CrYW1tCL
-	 vhuVktAb7EZdkZfA9dSExmyV5ZkbaAh2VU2zfdrZYA3RTsGYveIDTGu3/AmeFoYTR7
-	 0nJPIcQU8ytuFeS3m+ivmeQi/Utrrd+AXllg5VOq7IdEuAh11jHxc+T90ZUyvW/8mA
-	 v323KrFTR3I4Xih8BqsImplxEamaOFUqzc+e73hiNz+A/nbLud5NFVuCDAJfsRoEjd
-	 7JT5g6lgNhOQIZ5fwBlvMf0oLV9ZBuir2oEHtvgAE4NU8cNeKpqMU0Dhwz1y1Q8C8T
-	 xa99OQsLeN5sw==
-Date: Tue, 5 May 2026 14:44:25 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org, devicetree@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable] scripts/dtc: Remove unused dts_version in
- dtc-lexer.l
-Message-ID: <177801026318.3805973.8766967716439336298.robh@kernel.org>
-References: <20260420-stable-dts-unused-but-set-global-v1-1-9bdfba6889bb@kernel.org>
+	s=arc-20240116; t=1778011491; c=relaxed/simple;
+	bh=MmoaovAWFRTFBc9PhK7nEaBrmzdaJ4bRRxyyepxPf8E=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=G30+/Ck8Gx9ZYeuXtAD5yn802CoavwNmt2APoV2C+ts3NCbRET8kpdO3vRw0UMSCfeb5IjUblnx9XM/uXn0VxHhbRMRlrd3XfDax2lXAvl/rkgFPCWLufWWOIiCzbCnS9alScnwXnkBthNInFn+7hlIFqkGZWT9lcxSJcDTxySA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Lj0pDdPs; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 05 May 2026 22:04:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778011478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LmuVpxHvRehCyVtpfMoFPpSUr10pei5H6v2Vlv6Qqls=;
+	b=Lj0pDdPszd8Z3lXZtbgHowUHmW48SAGb+yAihyKn8hs3mcj4GQkEHLFqpNBXKSvVfXq/Ud
+	iQZBF4KPW4Bo7bpa+z7oG8AwoZvefR2MhLiK/e0Pj3fDrqNNsbMVj11/v64y6I0IkUPTYl
+	kT545uRzttloJNlHtLV9gMWKgrsw/X4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Luka Gejak <luka.gejak@linux.dev>
+To: Greg KH <gregkh@linuxfoundation.org>, Feng Ning <feng@innora.ai>
+CC: linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, luka.gejak@linux.dev
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6=5D_staging=3A_rtl8723bs=3A_fix_hea?=
+ =?US-ASCII?Q?p_buffer_overflow_in_cfg80211=5Frtw=5Fadd=5Fkey=28=29?=
+In-Reply-To: <2026050434-unpadded-sandstone-0412@gregkh>
+References: <20260413113224.5201-1-feng@innora.ai> <2026042626-tabloid-suitor-33c5@gregkh> <20260427111738.33069-1-feng@innora.ai> <2026050417-monkhood-backless-4c3e@gregkh> <20260504154823.52057-1-feng@innora.ai> <2026050458-numbness-haven-1ae4@gregkh> <20260504163828.90294-1-feng@innora.ai> <2026050434-unpadded-sandstone-0412@gregkh>
+Message-ID: <F9E617FC-FE79-4EA7-A5FD-004997CC127D@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260420-stable-dts-unused-but-set-global-v1-1-9bdfba6889bb@kernel.org>
-X-Rspamd-Queue-Id: 2C8254D3379
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: F33634D37CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244258-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244260-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid,linuxfoundation.org:email]
 
+On May 4, 2026 7:01:00 PM GMT+02:00, Greg KH <gregkh@linuxfoundation=2Eorg>=
+ wrote:
+>On Mon, May 04, 2026 at 04:38:35PM +0000, Feng Ning wrote:
+>> On Mon, May 04, 2026 at 06:03:02PM +0200, Greg KH wrote:
+>> > Let's fix this in a way that the code can be moved out of staging
+>> > someday please=2E
+>> >
+>> > > That said, I can see the argument for -EINVAL: it makes the contrac=
+t
+>> > > explicit and avoids installing a key with a truncated sequence coun=
+ter
+>> > > that could produce unexpected crypto behaviour=2E
+>> >
+>> > Yes, that is better=2E
+>> >
+>> > > Regarding hardware testing: I do not currently have a physical
+>> > > rtl8723bs device=2E
+>> >
+>> > Ideally someone can test this on the real hardware=2E  I'm loath to t=
+ake
+>> > real patches for this driver without that happening=2E
+>>=20
+>> Hi Greg,
+>>=20
+>> Thank you=2E  I will change the silent truncation to an explicit -EINVA=
+L
+>> when seq_len > sizeof(param->u=2Ecrypt=2Eseq) for the next iteration=2E
+>>=20
+>> Regarding testing: I do not have access to RTL8723BS/BU hardware to
+>> verify this, and I will not resubmit as a regular PATCH without a
+>> Tested-by from real hardware=2E
+>>=20
+>> Would you prefer I send the -EINVAL revision as an RFC on
+>> linux-staging and linux-wireless to ask for a community tester, or
+>> should I drop the patch until someone with the hardware picks up the
+>> thread?
+>
+>Submit the patch and ask for someone to test it=2E  I think Luka here sai=
+d
+>they were getting a device, and I might have one somewhere around here
+>as well if I dig hard enough=2E=2E=2E
+>
+>thanks,
+>
+>greg k-h
 
-On Mon, 20 Apr 2026 17:36:46 -0700, Nathan Chancellor wrote:
-> This patch is for stable only. Commit 5a09df20872c ("scripts/dtc: Update
-> to upstream version v1.7.2-69-g53373d135579") upstream applied it as
-> part of a regular scripts/dtc sync, which may be unsuitable for older
-> versions of stable where the warning it fixes is present.
-> 
-> A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
-> in clang under a new subwarning, -Wunused-but-set-global, points out an
-> unused static global variable in dtc-lexer.lex.c (compiled from
-> dtc-lexer.l):
-> 
->   scripts/dtc/dtc-lexer.lex.c:641:12: warning: variable 'dts_version' set but not used [-Wunused-but-set-global]
->     641 | static int dts_version = 1;
->         |            ^
-> 
-> Remove it to clear up the warning, as it is truly unused.
-> 
-> Fixes: 658f29a51e98 ("of/flattree: Update dtc to current mainline.")
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
-> This should apply cleanly to all supported stable branches.
-> ---
->  scripts/dtc/dtc-lexer.l | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-
+Hi Greg,
+my hardware (medion akoya s2218 laptop) is currently on its way from=20
+Germany and should arrive in approximetely 10-14 days (approximation=20
+is based on time that it took other orders to arrive from same area)=2E
+Once it arrives I would be happy to serve as a tester if necessary=2E
+Best regards,
+Luka Gejak
 
