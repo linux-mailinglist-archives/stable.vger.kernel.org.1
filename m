@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-243979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eL2qC0l9+WmZ9AIAu9opvQ
-	(envelope-from <stable+bounces-243979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:16:57 +0200
+	id +BWPCMt9+WmZ9AIAu9opvQ
+	(envelope-from <stable+bounces-243978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:19:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E112C4C6C65
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:16:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28724C6CFC
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 07:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2F55301AA5C
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 05:16:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 78BD53059782
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 05:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049073CBE77;
-	Tue,  5 May 2026 05:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31BE3CB2D7;
+	Tue,  5 May 2026 05:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bb+2xclN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m7/F84I+"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36BD3C8700;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6E33C6A27;
 	Tue,  5 May 2026 05:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777958146; cv=none; b=JzYOYCaou5WgvhFBFfmuLfvWKlnd5tewYfQI2ZkLW4j3L8Ct0jwADfo3RElma93F/DYJ9SW3bPj/HPaNstdZO0/D04yRf+L7+n1YQSPlDRgUqNX9cAYI2CahSm6ypeinXJhWtA0LiIxRDH+gz8FvKqLOJ06ZynYfdKIE/gkmm0Q=
+	t=1777958146; cv=none; b=DZRgc5XNf+hF611wdVVzHkTZ7g3b1btGHOJ7hkk7t57C1LRRV2AGEXW4nqqFk6OKJB/iMQjhbZIRAENc6MwcN7I8ikxY2q3gAxe/D6nGYFVvHZMkQtBXKpjnQNNC2x6DeyvUxt4kWTSw6Nr63thUsPRUlX3fx4/KEMlnFNQ+p48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777958146; c=relaxed/simple;
-	bh=YLjFki62a5oOQqEFFf8SszsHR4sTr7mY8+C81ZB2tE8=;
+	bh=Dph0JQ+anecb94Vp28WBMuX6Fyz0CvXzNpx9y7OL+5s=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d2sXCzsSgvdje6sqU547ZX3tSkPUKubInK2PJCd4wztccESi9zULOLRc7FKC0Ybw/25JH5jKhL/y/Y5gW9Hzof7lKmKulWMCyq8jSBOaP2zyKlRj27/dE8TCsFlbt6WzWXX+2AMfDSLLUEMbKin6izvMTklQVc371tJxsRp2NRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bb+2xclN; arc=none smtp.client-ip=198.175.65.11
+	 In-Reply-To:To:Cc; b=j6Pzp3RRjvyNKfMjotAwQKSGp/cwbEB9ptvxrSolCHmg5YvztmbIYA4grTKYtI4XWjiSCqowGnP63lZq2M6psYWF2PAkls9bopFzZjWlS6Sb6Ra4yJshTMqCQUqBvzq8QRVLKQ4BBnDUiVAs3ipNBSXn5XJHs+v68p94nEcmUM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m7/F84I+; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777958145; x=1809494145;
+  t=1777958144; x=1809494144;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=YLjFki62a5oOQqEFFf8SszsHR4sTr7mY8+C81ZB2tE8=;
-  b=Bb+2xclNRCt/saQCqycaapYTkiOVEn2TR6wA7g5u5PIxWx6vVam1lxS7
-   PJpuCy2TVhoXpfiQax5AXSanKrAl5hJHyHpW3lMapx79HoejDD9IRXCBA
-   VRaGV5HTfKg0w75MJBJobxKgCmZlOSMwGNkjuaCYMkj65eNhOwnL9atQJ
-   i0U07n+cL5WWHoUKsmdr7ElgX4laZT1zIRtJQcmPS0tCvy4iMVmzE5Vji
-   WXW26uMhy479aybBVFQykdDLnD0XnK9TaxMD3/WcKvUBlO2ZGQHcIngBz
-   ennl7Fv+h0bay+w8xanykZhjT6ugV0OZ4+4/Jaa1rMNkk+rN4zpXYoNng
-   w==;
-X-CSE-ConnectionGUID: 5uT1qG6UQi2QW5GV8RR/7g==
-X-CSE-MsgGUID: jXLXb776RWe6KvLw0zoEcA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="89126491"
+  bh=Dph0JQ+anecb94Vp28WBMuX6Fyz0CvXzNpx9y7OL+5s=;
+  b=m7/F84I+qYa3HF99Rap3jbUtvx5XMryQ3sL32zXny2E+DyY2bQ2F0k/t
+   QcrpjLXVLDA8kQXosT3qwNOyl1eQpws8BElU+FsrgsMWH1du0aSKzvAkn
+   3SaFK6iPAgHjT+F/1iVTVBHX/i9gtwEE6MqILBNlzr4MRt3Ln7Xcr/XJk
+   1eXjv2pg3m+kKQtxiOPaWrCnuvatxhS/ZCg/g8WoIUeqhIBMtbMaKaNaX
+   3gj0UoH5Kj5b6c2mY+ZaicP6sXOyAGAuE2ul2tWtKnUDunFJZrMcx6zBM
+   EdEhF0OUl+EVpiQTQvdPUXEOqbfV3mzJ+oc8550cQVN797O5itKd3I2hA
+   g==;
+X-CSE-ConnectionGUID: jtzHx5alSo6DTN0+VkaVMg==
+X-CSE-MsgGUID: C8I13dHHQee4H5vlf3g6kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="89126494"
 X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
-   d="scan'208";a="89126491"
+   d="scan'208";a="89126494"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
   by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 22:15:38 -0700
-X-CSE-ConnectionGUID: ewAyWPGgRuO01BBQHxsV+A==
-X-CSE-MsgGUID: GHUg39z6SkemrUUKn6QCPA==
+X-CSE-ConnectionGUID: y1UgR6pmREWbDoKh2XFK7g==
+X-CSE-MsgGUID: MzembMjaS3GrF4JlXAAPng==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
-   d="scan'208";a="239683519"
+   d="scan'208";a="239683523"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 22:15:38 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Mon, 04 May 2026 22:14:24 -0700
-Subject: [PATCH net 11/13] ice: fix PTP hang for E825C devices
+Date: Mon, 04 May 2026 22:14:25 -0700
+Subject: [PATCH net 12/13] ice: dpll: fix rclk pin state get for E810
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260504-jk-iwl-net-2026-05-04-v1-11-a222a88bd962@intel.com>
+Message-Id: <20260504-jk-iwl-net-2026-05-04-v1-12-a222a88bd962@intel.com>
 References: <20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com>
 In-Reply-To: <20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -90,104 +90,92 @@ To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
  Dave Ertman <david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>, 
  Grzegorz Nitka <grzegorz.nitka@intel.com>
 Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
- Jacob Keller <jacob.e.keller@intel.com>, Simon Horman <horms@kernel.org>, 
- Rinitha S <sx.rinitha@intel.com>
+ Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2462;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2036;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=iI4ScMU3ILa3GIAQXZEqO3NlFEEDbS6ziZzKecX9dgc=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyfNd8Vl/5JnPxTeP3n4we2XWzh6nv3+EJpu7qtr1Nh2
- 1Rpp4ryjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACby24vhD3egpVfUz42Z58rP
- p7YEL5lz1GeBFvu0+8Z9ZzK5uT2X7GX4Z7rzidB7gXhrq0/tPwPLX2xYdnWVnGmk/+OFr7PXBZ6
- axQUA
+ bh=ms7PFgLEc+jny3dlilGgZtwU2AkyADtgLa4SrZzp5BA=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyfNT/kzOYa1J1ru+nV6jl3CiPDMamwtetWTC9qWlL00
+ Nls9jmXjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACaS28PIcHSLT5Wx16b5eW7v
+ qhZPqJHOMs9WfD/9/iZdo0cRMTGfBBj+x398KHP0YMXDly5B319lfZvXmW7m4Ww7V3CX3c2Er7f
+ luAE=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
-X-Rspamd-Queue-Id: E112C4C6C65
+X-Rspamd-Queue-Id: C28724C6CFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-243979-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243978-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-Change the order of PTP reconfiguration when port goes down or up
-(ice_down and ice_up calls) to be more graceful and consistent from
-timestamp interrupts processing perspective.
+The refactoring of ice_dpll_rclk_state_on_pin_get() to use
+ice_dpll_pin_get_parent_idx() omitted the base_rclk_idx adjustment that was
+correctly added in the ice_dpll_rclk_state_on_pin_set() path. This breaks
+E810 devices where base_rclk_idx is non-zero, causing the wrong hardware
+index to be used for pin state lookup and incorrect recovered clock state
+to be reported via the DPLL subsystem. E825C is unaffected as its
+base_rclk_idx is 0.
 
-For both calls (ice_up and ice_down), accompanying ice_ptp_link_change
-is called which starts/stops PTP timer. This patch changes the order:
-- while link goes down: disable net device Tx first (netif_carrier_off,
-  netif_tx_disable), then call ice_ptp_link_change
-- while link goes up: ice_ptp_link_change called first, then re-enable
-  net device Tx (netif_tx_start_all_queues)
+While at it, add bounds check against ICE_DPLL_RCLK_NUM_MAX on hw_idx after
+the base_rclk_idx subtraction in both ice_dpll_rclk_state_on_pin_{get,set}()
+to prevent out-of-bounds access on the pin state array.
 
-Otherwise, there is a narrow window in which PTP timestamp request has
-been triggered and timestamp processing occurs when PTP timer is not
-enabled yet (up case) or already disabled (down case). This may lead to
-undefined behavior and receiving invalid timestamps. This case was
-observed on E825C devices only.
-
-Fixes: 6b1ff5d39228 ("ice: always call ice_ptp_link_change and make it void")
-Cc: stable@vger.kernel.org
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com>
+Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin discovery")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index c52c465280f7..8cc9d0521988 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -6732,10 +6732,10 @@ static int ice_up_complete(struct ice_vsi *vsi)
- 	    (vsi->port_info->phy.link_info.link_info & ICE_AQ_LINK_UP) &&
- 	    ((vsi->netdev && (vsi->type == ICE_VSI_PF ||
- 			      vsi->type == ICE_VSI_SF)))) {
-+		ice_ptp_link_change(pf, true);
- 		ice_print_link_msg(vsi, true);
- 		netif_tx_start_all_queues(vsi->netdev);
- 		netif_carrier_on(vsi->netdev);
--		ice_ptp_link_change(pf, true);
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 27b460926bac..892bc7c2e28b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -2523,6 +2523,8 @@ ice_dpll_rclk_state_on_pin_set(const struct dpll_pin *pin, void *pin_priv,
+ 	if (hw_idx < 0)
+ 		goto unlock;
+ 	hw_idx -= pf->dplls.base_rclk_idx;
++	if (hw_idx >= ICE_DPLL_RCLK_NUM_MAX)
++		goto unlock;
  
- 	/* Perform an initial read of the statistics registers now to
-@@ -7263,9 +7263,9 @@ int ice_down(struct ice_vsi *vsi)
+ 	if ((enable && p->state[hw_idx] == DPLL_PIN_STATE_CONNECTED) ||
+ 	    (!enable && p->state[hw_idx] == DPLL_PIN_STATE_DISCONNECTED)) {
+@@ -2586,6 +2588,9 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
+ 	hw_idx = ice_dpll_pin_get_parent_idx(p, parent_pin);
+ 	if (hw_idx < 0)
+ 		goto unlock;
++	hw_idx -= pf->dplls.base_rclk_idx;
++	if (hw_idx >= ICE_DPLL_RCLK_NUM_MAX)
++		goto unlock;
  
- 	if (vsi->netdev) {
- 		vlan_err = ice_vsi_del_vlan_zero(vsi);
--		ice_ptp_link_change(vsi->back, false);
- 		netif_carrier_off(vsi->netdev);
- 		netif_tx_disable(vsi->netdev);
-+		ice_ptp_link_change(vsi->back, false);
- 	}
- 
- 	ice_vsi_dis_irq(vsi);
+ 	ret = ice_dpll_pin_state_update(pf, p, ICE_DPLL_PIN_TYPE_RCLK_INPUT,
+ 					extack);
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
