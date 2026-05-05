@@ -1,154 +1,143 @@
-Return-Path: <stable+bounces-244202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFsjMqMO+mntIgMAu9opvQ
-	(envelope-from <stable+bounces-244202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:37:07 +0200
+	id CGleCAkP+mntIgMAu9opvQ
+	(envelope-from <stable+bounces-244203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:38:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402AB4D04BD
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:37:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB7F4D050B
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 36EFC301A161
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:37:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58EF2303CE04
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D8C480DE9;
-	Tue,  5 May 2026 15:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFDA481259;
+	Tue,  5 May 2026 15:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="e2IXY38l"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MUGBWgbz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0933139D6FA
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 15:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F8B480950
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 15:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777995425; cv=none; b=FdPePSmHXhTi5zBD23y0X8HQRrzuMUmfX/o+0Kzp3VakhLSXCMk7oA7skj15MjoXfgslTeDzWtPQ9Y1yyQRCwGD7VFEzHR3sOQeWI7AHdnzfydJvyHpeUtKQSsJP3HiGDsBC0WgAbEL76Zik8qHe3FQHeD/eI0plnCTnxC+9kGc=
+	t=1777995475; cv=none; b=tA9aeBYsHq2jb6A4zJ8upB+TR+7HWThncYFL30jHiABQUoQeEIteio1NHfCK2vDBdJAdvUIZWBQARrOHAc7UM6lmsGJXDhh4grfGTcpWTpCKKxlMi95z/0Ut4xs+WpJIZx3xcYRs+PcTAjvK7Cye+Dg6VWZtSxZgRs9KCB4jCK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777995425; c=relaxed/simple;
-	bh=oheuWaY1jxMSviQLJSPxHGYWp/ROJZOBu1lavLnz/Ok=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=l4rzztW7jgsauyTyTflPU3hImOtbU4C/wYms4AmxJoVNj+Q1XSEja2Oo87+hLJE2Q1gWQNLlMbCmQvQJMOkXxKPQMcF/e9G0y/HFE0X39+aBRNq2ThOBlBHSYBsDOXpKBdPlsiMkuz7Pm/15FDmGLfHEhTAD0MxrviDGq8cP7Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=e2IXY38l; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8ef0ba61d46so611025085a.2
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 08:37:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777995423; x=1778600223; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Xp95Do87GefisQWCOnrXqWboy1FPW36B7zu3IiHqEM=;
-        b=e2IXY38l1qMT2UoEGgaiPfLz6k8kQA7kNpoFxxmSd39tZZnMMKQhuU/mVVDdYqzwoR
-         YxunGIxJ2b0O5utXDp3NDh4ZH5vEH5dNXcB5C12bC5LBErjBJl4J/UGKs3+Rz6LchCC5
-         IyXp2P43NpOyDQo0P4z6VKWl3YXXgIdfSCmUQlZMWR9cHmPorfSL/IzjalnRGrhqlHv/
-         Hlw0vGVw86+hNsvSfX+0Nl/WHvbcDXAYm/aZKKPU/oBCJpBgwKl2/aIxKZdk4BDtsE7A
-         txggG30eBUDF5y7yL+PfzLR0YZwKaFyOfp8UTyu7B6JoXaGDxe8vpuLQ7G0Ei8ZY3V3W
-         qqlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777995423; x=1778600223;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4Xp95Do87GefisQWCOnrXqWboy1FPW36B7zu3IiHqEM=;
-        b=np8L8mz87O2WXtI0uQweCHo+KxppqWfg0bEfS8WZeDlagu87hBxl3tJ1tx+gMUbZmf
-         p+0no15yElxyjVEAv5g3veNfYw1qXMjZyHUp7G2yT3F6SF0OUMJvmLurepdXJ33W+0jH
-         Max1Z5Egl4PQ/OSZmwjfmIWHzW1/lNq9g9uv2wrQCHrwiQy25MfZEJ/N7EWHcQDFhdWu
-         qC91eZ54oyzE4ceNlEnoE5qqaOgGdiIpjuSHxleHmclpCg15LdAYiPCSqcM9D+x9F/k4
-         bW4P1Gl+sSGyEqKi5DXiPiwcfXDZbWk+IVn2QJg2VYRL4Lw+Vodk/i+GcLyABSSW2/xR
-         PJ5w==
-X-Forwarded-Encrypted: i=1; AFNElJ9qNuq2hpqHgTcSCQ1c/WpJeFryLQcRMNKFAugdFu2SR23krCGznJIfi5OxUc+uX3SVkfbB/eA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsFi6VQncsuUK8SR9nCyuTSp6iBugi0VQaS4UyB0j/P4cyV7lv
-	EQztLy4D0tfGeUEDk1bN5nfh7GpoFAQ4erbwNnBvz0fb+fFODkVxvvTipj8O4jfgpXk=
-X-Gm-Gg: AeBDietAgSVx44cAWCAIpVMj2CJtI1KvsBcI4XCvf+t4q/+VC+9pmjf0P/Ibwn06u2y
-	duF8RyzMMqwNwsVvqUjh9xtjub3crEDapujkByW7ThRyLcB5isbL1fv8q8DOplB4co9u8pHsNul
-	pOsotDd9HSIadB4OVAkq9XNnfQcC+BD8Z9ZaxBJqB1gYcJPcFJ5hP0eN/+YEMdNAiQqKPw9ny8S
-	ASNy18i8d8crJKnLFGWQDD9cQeO2+VS9ad2H3QTvn0e2iTpS9IkKBcELw3no4k8nrYTRG3EQJxT
-	+r+xBhPW3sVjeaFdePlbkdOqIY3hebf+Uf2zjArcBKUdZ6wWeIGOXb2z2z2ur1ZHwZYT+LU7tCD
-	cL4cFZnQ8kzwjqoVSfB6s2rBtOiNmSQZsW+nW2oiOp/roRJiGnMFUMuEFxY1riDtoKGbCZ0AUZA
-	dwaRttKRCpmmnCstsusdpt6QZBUtgCzG75UAr2NX+n7ij/XtbdmgEbPys1riIFOpItsp29faU=
-X-Received: by 2002:a05:620a:4591:b0:8e4:ebbb:b162 with SMTP id af79cd13be357-8fd15ada964mr2204638085a.9.1777995422947;
-        Tue, 05 May 2026 08:37:02 -0700 (PDT)
-Received: from [127.0.1.1] ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c91fb3bsm1350515585a.41.2026.05.05.08.37.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 08:37:02 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Jeff Xu <jeffxu@google.com>, 
- Kees Cook <kees@kernel.org>, Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Brendan Jackman <jackmanb@google.com>, Greg Thelen <gthelen@google.com>, 
- stable@vger.kernel.org
-In-Reply-To: <20260505133922.797635-1-pratyush@kernel.org>
-References: <20260505133922.797635-1-pratyush@kernel.org>
-Subject: Re: [PATCH] memfd: deny writeable mappings when implying
- SEAL_WRITE
-Message-Id: <177799542165.635180.17809433268620237886.b4-ty@soleen.com>
-Date: Tue, 05 May 2026 15:37:01 +0000
+	s=arc-20240116; t=1777995475; c=relaxed/simple;
+	bh=HZmLA+Ej807XLHgfevQTbDYX5T8/bO5w2qryqZwTK88=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=cEpBZGHfBL3MAi6ahLsEtTrR9eFiV+N13Q9ndZX//Lyr91d+l4j+z/cw0E0IWkerFiQ2JfEn/N6Whs7xida/K30bMPNMcz6ovsCsAEB2wbQcbAK5TMhmRMLeZybKT9igsWR0AQzuD3GbEL3H3SgXWTT/9ZFFXK10KSjKegBIMhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MUGBWgbz; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 000EDC5D73D;
+	Tue,  5 May 2026 15:38:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0F80B6053C;
+	Tue,  5 May 2026 15:37:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AAF4E11AD022F;
+	Tue,  5 May 2026 17:37:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777995471; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=HZmLA+Ej807XLHgfevQTbDYX5T8/bO5w2qryqZwTK88=;
+	b=MUGBWgbzvubrNlMlIq554ytIMiO1qucps4MH4Mkk9B4b2BeeQhHaJ6e66akXUQgGozfyz5
+	1Wg8RfSAM715trTjptDPGDDhG1p5FEp3Hh6whmNnwOIcKbWaRcg/a0l9Ax9RFUwDJptzut
+	Mm0Dxxx8LaYFQHrgmzCn3XbCkjtQfd4aLWjg1LfpsHYQldMN242ADBh64WAFRV4bPXy2dd
+	fAu82mal1ZTtrHcZTrA2EAFelMWIPtI3RJhaLlyzmDtIvDz1LNIPIMD1hKN8OGg16os2G3
+	V8wNYHLVa7/Up28SJV/H6qVupM9yTfKtG3w+dnei3WXM6IlMRmYLLPY63LEwNQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Rspamd-Queue-Id: 402AB4D04BD
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 05 May 2026 17:37:42 +0200
+Message-Id: <DIAUSFCMDQEJ.37TV8SIXF9OTP@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v4 3/3] drm/bridge: megachips: remove bridge when irq
+ request fails
+Cc: <stable@vger.kernel.org>
+To: "Osama Abdelkader" <osama.abdelkader@gmail.com>, "Peter Senna Tschudin"
+ <peter.senna@gmail.com>, "Ian Ray" <ian.ray@ge.com>, "Martyn Welch"
+ <martyn.welch@collabora.co.uk>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
+ "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
+ <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Archit Taneja"
+ <architt@codeaurora.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20260430195700.80317-1-osama.abdelkader@gmail.com>
+In-Reply-To: <20260430195700.80317-1-osama.abdelkader@gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 6EB7F4D050B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[soleen.com,reject];
-	R_DKIM_ALLOW(-0.20)[soleen.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[soleen.com:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244203-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,ge.com,collabora.co.uk,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,linux.intel.com,suse.de,ffwll.ch,codeaurora.org,lists.freedesktop.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244202-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pasha.tatashin@soleen.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,soleen.com:email,soleen.com:dkim,soleen.com:mid]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:mid,bootlin.com:email,bootlin.com:dkim,bootlin.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
+On Thu Apr 30, 2026 at 9:56 PM CEST, Osama Abdelkader wrote:
+> If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
+> bridge before returning.
+>
+> Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
+> tied to the STDP4028 device while ge_b850v3_register() may complete from
+> either I2C probe; devm would not unwind the bridge if the other client's
+> probe fails.
 
-On Tue, 05 May 2026 15:39:20 +0200, Pratyush Yadav wrote:
-> When SEAL_EXEC is added, SEAL_WRITE is implied to make W^X. But the
-> implied seal is set after the check that makes sure the memfd can not
-> have any writable mappings. This means one can use SEAL_EXEC to apply
-> SEAL_WRITE while having writeable mappings.
-> 
-> This breaks the contract that SEAL_WRITE provides and can be used by an
-> attacker to pass a memfd that appears to be write sealed but can still
-> be modified arbitrarily.
-> 
-> [...]
+I had a hard time in getting what you mean, until I noticed the global
+(ugh) ge_b850v3_lvds_ptr and the two "Only register after both bridges are
+probed" checks. Pretty hacky, but definitely for the sake of the fix you're
+introducing your patch will be OK.
 
-Applied, thanks!
+> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+> Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v=
+3-fw (LVDS-DP++)")
+> Cc: stable@vger.kernel.org
 
-[1/1] memfd: deny writeable mappings when implying SEAL_WRITE
-      commit: 73f496662a9848021e75742a69a3239ea850c3ee
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Best regards,
--- 
-Pasha Tatashin <pasha.tatashin@soleen.com>
-
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
