@@ -1,104 +1,104 @@
-Return-Path: <stable+bounces-244281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCY2LwBv+mnJOwMAu9opvQ
-	(envelope-from <stable+bounces-244281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:28:16 +0200
+	id KAWYJgNv+mnJOwMAu9opvQ
+	(envelope-from <stable+bounces-244282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:28:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081004D4553
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:28:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C1A4D455A
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 00:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 651F8304A08A
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 22:28:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1E84F301D812
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 22:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BA5495502;
-	Tue,  5 May 2026 22:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9694968F8;
+	Tue,  5 May 2026 22:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AYcZMdpC"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WLEKPow7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
+Received: from mail-vs1-f99.google.com (mail-vs1-f99.google.com [209.85.217.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D0C494A1D
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 22:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B63B4921B0
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 22:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778020085; cv=none; b=iWLB5PFRLRWhA/veN8DdDyt2Z54SRWM5MTXK+G/8DH2D9NHXCNK/oZpvrud6UTRnQEzmXrmynyTTYAX2dtZH5vHJXvc0p0j01Da5hS2/UrWDx8PBoPUZnp4mnFgq1l3Myw0PP2VC+8OKTN3u1MT3jxW7oxgGNPx1QPrvtuxi2Jo=
+	t=1778020087; cv=none; b=I4B7D1XqkUVYCr+q8zK77NYX5d2waXA5rNLLrGV6gSSyaVop3Ojbnaq0ZZ+3uunWoUjKH9cfJd7Tc8ocLPk5addrmOaDcw8QwfthGINYMIARdP4bXg2YLup6whWKZssdFHkyQPgygIUrx8iP5fnbHX9HuXAnALItLdsZ9Y94t48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778020085; c=relaxed/simple;
-	bh=yIJMCIe+vxIsL/QxZVL9/bTxhMYCGSvyI+hrHgfPiMw=;
+	s=arc-20240116; t=1778020087; c=relaxed/simple;
+	bh=k8qPDungiWSHYdT+GLvlCuOo7ukY+ifWI3TmB3h7Hvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7snY+ZUszdWAG/iOCC2ogsLizei9zq++PNob0gS/7R6FrO+uK1KOsaKxU905qwx2nzQJDFDp4SqgD3Y1be380dckW2qmTkmVfk/UzjUyYTx/8xXirCezU3vWt54hs6+7qrBtM9y/60gqSu2teeazXrNEO8YISoDvrbckPj1HXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AYcZMdpC; arc=none smtp.client-ip=209.85.214.225
+	 MIME-Version; b=kojPusGKNQUG5JMt0rq3lcGZMEqLqW5erD7+ElVVNr+9Ey4ujf8o2rHb1Uy/apT5OXPN1G0gcozUQH+9RwKu32s5M0htYSfanbprmoETuGB8YIfko5BtKb31+hoUf7PJe1K5wz8dsKJj32Z1E/IQJxx8Vsw96vR/wNGbZX+6r7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WLEKPow7; arc=none smtp.client-ip=209.85.217.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2ba0714574fso16521875ad.2
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:28:03 -0700 (PDT)
+Received: by mail-vs1-f99.google.com with SMTP id ada2fe7eead31-62ddb07fbd2so1199688137.2
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:28:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778020082; x=1778624882;
+        d=1e100.net; s=20251104; t=1778020085; x=1778624885;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eh3U9SlhYUGj63M8IEARCrtNxYnzXaqY5JKgDVp0rlc=;
-        b=pLjskF5Sul0Yirbd+ZQ01VmT1+K4EeB08KslVGpJsXRaIzggSRtKKaqz9P+GyHkcd0
-         K9sKQ+w6l3DfrP9mFlx7tnDwOL82rNvTpttc0+zeGo8E2I3yUV2R/7ZbgjdolPHGyStb
-         XQ/bOTXcHvLQw/O7LjAvB5owlU8SRGR+hVdRE5tJ6iJ2LU3BrAqGs89gaZaey9ioo8IE
-         Q0bH5+vix4Dh8P4+QTS4L8MG+aYQGX5DrDvDQiwe0d3f+SD3at5g1CUdwMEs21JSK7jA
-         qOlWRFU7731XAAWgpyGyeJTj9eMR+fSu2wvB7iprxP2FKV8JFfZCjK0JTzkv4hF8Du4j
-         tCbw==
-X-Forwarded-Encrypted: i=1; AFNElJ9xj4vLLw5rDwEKry8xFqGffXgDtcwoiXJCBKbISN+4zveZGOlZ5ivwjskoRYY4Bkw4rj6KphA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTvOkMzm7ITuFApvhjw8Ewxg2io8STMwO/B74BfQbGDQthXChS
-	UJQW4EmfL9mr5xxrJ1a7ygqcp/3nyLssdqCg/wGu0oHxprwCNnnvgxAuLc4nVU2bD0O+V6QK/QU
-	Yrv2Nl5/OP1xUb/2LBLyACcN8xt0c98iPveJijHEzWNy9sOgjQUN3dOnxpzaopVkUDvzFjXIw3K
-	PsSt1ejr1pvYInp1LZRdL/4ycGhU4C1/IJVuxPyeLctIlRepdhRZNkhTqdtIOoNKiyUBYxbOpX/
-	ySeT1UD
-X-Gm-Gg: AeBDietd+g7uVoLTdsnn/4S8f99ZwjNibPznGdtZiexlzWWWHnW3fi824vsylh4qK25
-	KI8Oj1813sgrFPHEVuBpO9eAa7rGnFYiz/xWvBp/npFlYigaGB+QWIhFNOYOjAxeybIR4dbfLMe
-	nLtlmYoZ3XAiPOmOu4k2Dr7MLt1Bg1bPOydD82i1TysQrpm0gsDAzPk3m4NH5M4gCK6URPHnsDr
-	Lotvx/6irx8JlWTZVdB1Tk4WQ0o9MbAUJa2WPJBPnujCPFcZebKaUtRGkUjrCobXzbZJnxukxa5
-	yssVAPzYv8WmDSwXLpTu66HEDn/Id19JZmsjMhh3al+VDdRdxI/nqmI23K1xwjo9iFI+9ReEMTW
-	fCi+9va6A2Wk2YMT4bEGj5HEDEE4ycGWw/X1bEo9fpZwZuvQTGVooLxoq36qM+qjlAMgNO6pjci
-	+rvb2M3VU0VY3aMKGmFQe7tIGsHvg09LbEe4QkVh1G8oeJ2bTWD7BNNH1Q0PjsO4y2
-X-Received: by 2002:a17:903:b46:b0:2b2:eb9d:1648 with SMTP id d9443c01a7336-2ba79c25ad9mr7311445ad.37.1778020082381;
-        Tue, 05 May 2026 15:28:02 -0700 (PDT)
+        bh=RvTF9O3uwFA3OWdHwZuGL0USnnrisuTr7nTufwNcCJA=;
+        b=SQLXb8adTAFaEBJ/QIHLkQE+jqhce2OkRn3naZN8OpxWG8n0gzOdTfsim3XqvaLTDK
+         agdFi/VuTEqVhX0/3ZcYp8sryWQrSIxJhV9Yg1lSIkl0HH19/3V/Uy/afIgbCKhWD0YC
+         f5bE6+UMPvOIYaHFIoRSawE5U5mYagUbZIdk01vSEuX1YoXLt9kiggXvpZYZfieyqGZB
+         Jt4ScWN/+8Nc4OYtSFKtUmaPRyW2s0aSgDi+q2Q29wC1yTslzug3d8gfI+62AqQts7pd
+         8kFwQYZy0DT/yoqey7G1DTocSiGv9GMpDpXXt2SC/iVZO9epuEDHza3Ofq8upuFCA1Z8
+         eh7w==
+X-Forwarded-Encrypted: i=1; AFNElJ8cGt9NF5wrHmSill784rx32FZiJ2DLyAHdNPcsjLMXmkjM0fvUB1fsbypJ6JrRMAAKyhNZPkI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBWVQCqUv4iXlGhdox6vV1SjnvcNxKlvI5CFh2XLcYGCZYqBp/
+	4mykmH8AU6i2ydo4e0bpY1NX2/AJnhsW6f4azoIAbCTjk0pfXk1SEWNBNh6e8TPsXEAt9UQd5sg
+	OsAGDOc10iPAYOIIPIDbHAqjNpkrrM8vniiq8Uh6qz1To52pISOWGh4yNSG4rpWYvaI2zUvZpdI
+	Fi0ssoAxAafQlNnfNGhoCRdhJRNRhwthKnoGFx96+Odef6BeCKCBqbC05mNppisQDzjlQyGcHAS
+	wNVd9eo
+X-Gm-Gg: AeBDietnNx3spn9ybqJ6y9VAwdl5rx7uqqoP0IAPODjNrcpt9MZJ1dXzGv57UsD9Ick
+	eakaZkuSVUvxpQdzs4sdrzlWPuZagnNj3jGU1Z37XbFPz6mqiTuoetkuiJk6ERKdNima1yTzzql
+	+I8XziVdSB6puQOfs+d7khko0ZTcfL7JggPkxIT16g9BRgq7PAAUXXsTIlDaXdXxDQchkSlR91e
+	tLpyLQmP5u3oMJub/ae1vNS91qMftaUy8ekn16oikC8cVO2jz2yh1PIIA0+nS3OYEH1hcd8fju+
+	63cUz+sNYx8gk3kzgAIZ+xtlPPddm4T5juEKEpAsFkVjjF9d4/JJBDGXAw/mB/bSxG2A+85VxUk
+	EwxxaQ8sr/vULqZ20drMjxUzHnCr9dJekcHJN7QO5Vc+ndd5+rxyVIgsAcX01ekDDXK1Ysh2n7h
+	tA7jxlonaP3k2qRxwPvuGsQOfy/nbOV8ShElgaliiWq/QspZzEGvUmdLbE5JRDvrpK
+X-Received: by 2002:a05:6102:38d3:b0:62f:4387:fcb4 with SMTP id ada2fe7eead31-630f8c4b6d7mr332567137.0.1778020084939;
+        Tue, 05 May 2026 15:28:04 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-21.dlp.protect.broadcom.com. [144.49.247.21])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2ba7ca17f44sm386995ad.51.2026.05.05.15.28.01
+        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-62bfc187dcesm1144534137.10.2026.05.05.15.28.04
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 05 May 2026 15:28:02 -0700 (PDT)
+        Tue, 05 May 2026 15:28:04 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8b49424ad88so138039616d6.1
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:28:01 -0700 (PDT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50ea1a7a5d0so145974291cf.3
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 15:28:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1778020081; x=1778624881; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1778020083; x=1778624883; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eh3U9SlhYUGj63M8IEARCrtNxYnzXaqY5JKgDVp0rlc=;
-        b=AYcZMdpCZmXQ9A7tFzNaSMRH4FkfxZ9ybi24EH3gPJOyznbjgKvYXi0ZD8AKGY3K+U
-         TxbIXs72tI+B+LHwMFM9FPtBdDReS1iWeDGKaVhF0bbwQUuqWQWHzrmxIsNswAG07ST2
-         +++hAIGdwebqGWggZTG4i6B4KYehRyoiuVoI0=
-X-Forwarded-Encrypted: i=1; AFNElJ+oXn/sYf+nhueY4kuib2KkoWA5Blp56sOvTnWS9ohlTEf7up6yYAlYga6fi9N1JgWjrSoO+e0=@vger.kernel.org
-X-Received: by 2002:a05:6214:451b:b0:8ac:800f:10da with SMTP id 6a1803df08f44-8bc422a64abmr12547116d6.4.1778020080939;
-        Tue, 05 May 2026 15:28:00 -0700 (PDT)
-X-Received: by 2002:a05:6214:451b:b0:8ac:800f:10da with SMTP id 6a1803df08f44-8bc422a64abmr12546696d6.4.1778020080483;
-        Tue, 05 May 2026 15:28:00 -0700 (PDT)
+        bh=RvTF9O3uwFA3OWdHwZuGL0USnnrisuTr7nTufwNcCJA=;
+        b=WLEKPow7D5zm3Yvai4ye1BwKFli9ph+yR3YKkCZN7tK2gEW4uMs+sqwpnssWkc0HQ5
+         UVWAoly9e2teUZv1Jxp930AvzL81cKu4j5s1P/xPRZcUzr+kACoioriotaiMCsDUia6W
+         uY/OvWyUbYC+C6LIF3bQMWgbl9+rzdkyM3sGg=
+X-Forwarded-Encrypted: i=1; AFNElJ/5kDFbr0fi32ARsu551NyEGGBLzJJAidXfwom+2wpzs92vT1w1CS5wDc/NRaCC9KyJSONaSr8=@vger.kernel.org
+X-Received: by 2002:a05:622a:5e0f:b0:509:3cd:b22f with SMTP id d75a77b69052e-51461e2c37fmr14585561cf.23.1778020082841;
+        Tue, 05 May 2026 15:28:02 -0700 (PDT)
+X-Received: by 2002:a05:622a:5e0f:b0:509:3cd:b22f with SMTP id d75a77b69052e-51461e2c37fmr14585111cf.23.1778020082236;
+        Tue, 05 May 2026 15:28:02 -0700 (PDT)
 Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b539aa6f5fsm162692886d6.21.2026.05.05.15.27.59
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b539aa6f5fsm162692886d6.21.2026.05.05.15.28.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 15:27:59 -0700 (PDT)
+        Tue, 05 May 2026 15:28:00 -0700 (PDT)
 From: Zack Rusin <zack.rusin@broadcom.com>
 To: dri-devel@lists.freedesktop.org
 Cc: ian.forbes@broadcom.com,
 	maaz.mombasawala@broadcom.com,
 	Zack Rusin <zack.rusin@broadcom.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 11/12] drm/vmwgfx: use check_add_overflow for shader size+offset bound
-Date: Tue,  5 May 2026 18:22:32 -0400
-Message-ID: <20260505222728.519626-12-zack.rusin@broadcom.com>
+Subject: [PATCH 12/12] drm/vmwgfx: validate external BO copy bounds for both stride paths
+Date: Tue,  5 May 2026 18:22:33 -0400
+Message-ID: <20260505222728.519626-13-zack.rusin@broadcom.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260505222728.519626-1-zack.rusin@broadcom.com>
 References: <20260505222728.519626-1-zack.rusin@broadcom.com>
@@ -110,7 +110,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Rspamd-Queue-Id: 081004D4553
+X-Rspamd-Queue-Id: C1C1A4D455A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -119,109 +119,150 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
 	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244281-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244282-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	DKIM_TRACE(0.00)[broadcom.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[zack.rusin@broadcom.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,broadcom.com:dkim,broadcom.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,broadcom.com:email,broadcom.com:dkim,broadcom.com:mid];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
 
-vmw_shader_define() validates the user-supplied shader window against
-its backing buffer with
+vmw_external_bo_copy() trusts caller-supplied offsets, strides, and
+heights and operates on imported dma-buf vmaps:
 
-	(u64)buffer->tbo.base.size < (u64)size + (u64)offset
+  - The equal-stride memcpy() bound was clamped after subtracting the
+    offsets from dst_size and src_size; an offset larger than the BO
+    size wraps the unsigned subtraction to a huge value and the
+    resulting memcpy() runs off the end of the vmap.  dst_stride *
+    height is also a u32 multiplication that can overflow.
+  - The non-equal-stride row-by-row path had no bound at all.  The
+    loop touches bytes through offset + (height - 1) * stride +
+    width_in_bytes, with only a WARN_ON(dst_stride < width_in_bytes),
+    and could likewise step past the end of either mapping.
 
-drm_vmw_shader_create_arg::offset is __u64 in the uapi; when it is
-near U64_MAX the unsigned addition wraps and the resulting tiny value
-passes the check.  The unbounded offset is then stored in
-res->guest_memory_offset and forwarded to host SVGA shader-create
-commands.
+The offsets and strides are derived from STDU/SOU plane state, so a
+configured CRTC submitting a crafted atomic commit on an imported
+framebuffer can reach this path.
 
-Use check_add_overflow() to detect the wrap and compare the resulting
-endpoint against the buffer size.
+Validate the exact row-copy endpoint against each BO's size up front
+using check_mul_overflow() and check_add_overflow().  Use the bulk
+memcpy() path only when width_in_bytes covers the whole stride;
+otherwise copy one row at a time so partial-row updates near the bottom
+of a framebuffer remain valid.  Also reject zero strides and stride <
+width_in_bytes, both of which the row-by-row path cannot represent
+safely.
 
-Fixes: 668b206601c5 ("drm/vmwgfx: Stop using raw ttm_buffer_object's")
+Fixes: 50f119925091 ("drm/vmwgfx: Fix prime with external buffers")
 Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-4.7
 Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_blit.c | 39 ++++++++++++++++++++++------
+ 1 file changed, 31 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-index eca4e3e97eb4..39811cf19db1 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -25,6 +25,8 @@
-  *
-  **************************************************************************/
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c b/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
+index 135b75a3e013..56f965ec99dc 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
+@@ -30,6 +30,7 @@
  
+ #include "vmwgfx_bo.h"
+ #include <linux/highmem.h>
 +#include <linux/overflow.h>
+ 
+ /*
+  * Template that implements find_first_diff() for a generic
+@@ -463,19 +464,42 @@ static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
+ 		container_of(dst->tbo.bdev, struct vmw_private, bdev);
+ 	size_t dst_size = dst->tbo.resource->size;
+ 	size_t src_size = src->tbo.resource->size;
++	size_t dst_end, src_end;
+ 	struct iosys_map dst_map = {0};
+ 	struct iosys_map src_map = {0};
++	bool dst_mapped = false;
++	bool src_mapped = false;
+ 	int ret, i;
+ 	int x_in_bytes;
+ 	u8 *vsrc;
+ 	u8 *vdst;
+ 
++	if (!height || !width_in_bytes)
++		return 0;
 +
- #include <drm/ttm/ttm_placement.h>
- 
- #include "vmwgfx_binding.h"
-@@ -685,7 +687,7 @@ int vmw_shader_destroy_ioctl(struct drm_device *dev, void *data,
- static int vmw_user_shader_alloc(struct vmw_private *dev_priv,
- 				 struct vmw_bo *buffer,
- 				 size_t shader_size,
--				 size_t offset,
-+				 u64 offset,
- 				 SVGA3dShaderType shader_type,
- 				 uint8_t num_input_sig,
- 				 uint8_t num_output_sig,
-@@ -739,7 +741,7 @@ static int vmw_user_shader_alloc(struct vmw_private *dev_priv,
- static struct vmw_resource *vmw_shader_alloc(struct vmw_private *dev_priv,
- 					     struct vmw_bo *buffer,
- 					     size_t shader_size,
--					     size_t offset,
-+					     u64 offset,
- 					     SVGA3dShaderType shader_type)
- {
- 	struct vmw_shader *shader;
-@@ -768,7 +770,7 @@ static struct vmw_resource *vmw_shader_alloc(struct vmw_private *dev_priv,
- 
- static int vmw_shader_define(struct drm_device *dev, struct drm_file *file_priv,
- 			     enum drm_vmw_shader_type shader_type_drm,
--			     u32 buffer_handle, size_t size, size_t offset,
-+			     u32 buffer_handle, size_t size, u64 offset,
- 			     uint8_t num_input_sig, uint8_t num_output_sig,
- 			     uint32_t *shader_handle)
- {
-@@ -779,13 +781,16 @@ static int vmw_shader_define(struct drm_device *dev, struct drm_file *file_priv,
- 	int ret;
- 
- 	if (buffer_handle != SVGA3D_INVALID_ID) {
-+		u64 end;
++	if (!dst_stride || !src_stride)
++		return -EINVAL;
++	if (dst_stride < width_in_bytes || src_stride < width_in_bytes)
++		return -EINVAL;
++	if (check_mul_overflow((size_t)dst_stride, (size_t)height - 1, &dst_end) ||
++	    check_add_overflow(dst_end, (size_t)width_in_bytes, &dst_end) ||
++	    check_add_overflow((size_t)dst_offset, dst_end, &dst_end) ||
++	    dst_end > dst_size ||
++	    check_mul_overflow((size_t)src_stride, (size_t)height - 1, &src_end) ||
++	    check_add_overflow(src_end, (size_t)width_in_bytes, &src_end) ||
++	    check_add_overflow((size_t)src_offset, src_end, &src_end) ||
++	    src_end > src_size) {
++		drm_dbg_driver(&vmw->drm, "Out-of-bounds external BO copy\n");
++		return -EINVAL;
++	}
 +
- 		ret = vmw_user_bo_lookup(file_priv, buffer_handle, &buffer);
- 		if (unlikely(ret != 0)) {
- 			VMW_DEBUG_USER("Couldn't find buffer for shader creation.\n");
- 			return ret;
- 		}
+ 	vsrc = map_external(src, &src_map);
+ 	if (!vsrc) {
+ 		drm_dbg_driver(&vmw->drm, "Wasn't able to map src\n");
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
++	src_mapped = true;
  
--		if ((u64)buffer->tbo.base.size < (u64)size + (u64)offset) {
-+		if (check_add_overflow((u64)size, (u64)offset, &end) ||
-+		    end > buffer->tbo.base.size) {
- 			VMW_DEBUG_USER("Illegal buffer- or shader size.\n");
- 			ret = -EINVAL;
- 			goto out_bad_arg;
+ 	vdst = map_external(dst, &dst_map);
+ 	if (!vdst) {
+@@ -483,16 +507,13 @@ static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
++	dst_mapped = true;
+ 
+ 	vsrc += src_offset;
+ 	vdst += dst_offset;
+-	if (src_stride == dst_stride) {
+-		dst_size -= dst_offset;
+-		src_size -= src_offset;
+-		memcpy(vdst, vsrc,
+-		       min(dst_stride * height, min(dst_size, src_size)));
++	if (src_stride == dst_stride && width_in_bytes == dst_stride) {
++		memcpy(vdst, vsrc, dst_stride * (size_t)height);
+ 	} else {
+-		WARN_ON(dst_stride < width_in_bytes);
+ 		for (i = 0; i < height; ++i) {
+ 			memcpy(vdst, vsrc, width_in_bytes);
+ 			vsrc += src_stride;
+@@ -508,8 +529,10 @@ static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
+ 
+ 	ret = 0;
+ out:
+-	unmap_external(src, &src_map);
+-	unmap_external(dst, &dst_map);
++	if (src_mapped)
++		unmap_external(src, &src_map);
++	if (dst_mapped)
++		unmap_external(dst, &dst_map);
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
