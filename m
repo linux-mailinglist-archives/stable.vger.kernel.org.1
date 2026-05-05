@@ -1,221 +1,253 @@
-Return-Path: <stable+bounces-244193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OPsLw8J+mlsIgMAu9opvQ
-	(envelope-from <stable+bounces-244193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:13:19 +0200
+	id OE95BDgI+mkEIgMAu9opvQ
+	(envelope-from <stable+bounces-244195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:09:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DC94D00B9
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:13:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89A54CFFAF
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80183302F59A
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:05:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7F882301B51F
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2432356C6;
-	Tue,  5 May 2026 15:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D930480DC9;
+	Tue,  5 May 2026 15:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="lQPtOWAG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ooEfWaus"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E378480975
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 15:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09004480974
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 15:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777993509; cv=pass; b=ivyBH/JPL+J2VQ7omhXtQPK5bE+fZSj3yr+6nwTVHUJ/Ec2inXC+A3leUm+Wtw485ipKVsBNfrzjriCZk5o++JYAi6v/i2Uwg/vowIbi1ttM7xiAou/llYNYG61RN5Qs6PAxuB1eTEoAkz6GqlOb/Qf/VMUCGJWqjUjM7iEKrP0=
+	t=1777993612; cv=pass; b=Y+MyzijpfkzZngroQl0Buz5LQV7/njcYiVEKKwOjpq/iEcaRG3SAo28oH1vMZyczEqWZxkOuLP8S8TVVKwIUKo4eHjFqjTMlijCX4AkqkfwFbeGhnd+BgaORNlf0a/3SZHjrevJUj0Cdrb4vJGuR8TTGdBuyGIpomiSkbUhyrF4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777993509; c=relaxed/simple;
-	bh=Edpx5aYTep6geWq3scP45mLCkRPuC1XVKOLbF/4F/BY=;
+	s=arc-20240116; t=1777993612; c=relaxed/simple;
+	bh=UgdKY8d8Awk7EzEPYnWw+mH/FjQ5RVCE8hCcibnZ9lU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cCUNjxbUX2R6zRKtf2iDEuWcjqewINbbo9mu1zqjMTSBTO6arHgzow4ubqrfWqeCzGZezlQdkeR7qk6iN70NMzyphSWppxGch3iQHV6Px5+XwPtWpl9GbhQT0vvM38xqNM327wTc4q6WGNtBHqvYHE6szQ0HMhiZTZw4rQbgIJk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=lQPtOWAG; arc=pass smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7982c3b7da9so49782257b3.1
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 08:05:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777993506; cv=none;
+	 To:Cc:Content-Type; b=gF7OYuzkHcuXheHx7sXWuva7AXhGKXtcCFpR7y6k9BUV0pFTQcJyIFfa79XnGiKr8UDwvtZzE682YO/azevvbny59F2CtDZ2hzA4D36njzOTiYDcWdk0TafI0GUiD7myMvGiRIog26ArwXrtksjuYyH4RmN6/qj1wQGgZvOJ9QE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ooEfWaus; arc=pass smtp.client-ip=74.125.224.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-65c305f381eso4302786d50.3
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 08:06:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777993610; cv=none;
         d=google.com; s=arc-20240605;
-        b=VR6H+B60Cp3x4VOTf/Gx3RgVwa637gFw1hN/cjAurwzSNqsfHXMkBMRXLVXAzGaaLJ
-         qNBzFF9ndJ4ivz4BiOyaIb70FnWfYRgik4ZxuypAsAR4Kn2MdgVF6//NUZD9QxVV4u5a
-         cRD3RfZev7GkwZhXqPjOBwaEgyzE/FvvM7snGOct/GSIE3MMJXeiSQTb/NXDqGVkixIO
-         A8z7H5ffzN/J3idJLl6RRc55FaRH2wFBWzZuKMZkh23giMrD2ZAXDl2cTCR/IbojN3oE
-         dfAuFpqv+Mxa/34TVTjWb8W7l8LI7frNO/0PmaqOsrKSSKbznrkz5eBtC0MmxDDTa0AU
-         PprQ==
+        b=MwtdZeW9L/aX6yOlswPYp8Pw55O0IZ0OKTP70efaq10XUuF78WPuvOeq0/3EUfev5c
+         jqeQP/LUQjKqte3s74diF4voLcjr4ja/8pGO1Qnnw8/XG37+Xq2y8UaK0+wCAUYm1tiV
+         P3RCr8aaLbD6+fPXGrgoUNp+IhbR1GKD+gJOZCCpIHKURDHyIPLW0pAAGwizgYG1puDB
+         tCHkMNre7wn1nuZ8TMdcaEHwUZd9OLA83SsT+yZrCfBZKl4d4aXoj5Lfe+JfRIxa8CiS
+         ZKhvhbgvRsT6luavWEkvr+dpFmj6qZjBpy8/WtXpVcfJ2dU7wOYX2yD1teNoPslbr/Vz
+         oxCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=nxZ89rUvP7Lz3tEU7M6JOWMTYI1Uv/IEguOM4PesleE=;
-        fh=70+JE6sU9657dyh6GbbHvQ7a8yuAOVjQPHfHtDUir0A=;
-        b=dtFvSA1dynwfFKI9Srq5iWcL/wTYLho7WgS8XLEOBcsW9b+F0OOSROLa3nuuiuKnxo
-         0A9zwfumPM4wdN4WMUfKtfNUIZadbfXI2yFG+hUUKh2XwoPHpQOoPkFZSwJSnPa1WC1u
-         m2bjM3LmKrrSaSGW8eIZsyggQAx3f4PU+3u6ReCCWwNdqYC+fHaO52e/caRAamo3rD+m
-         G3cFGqRIZd3U7rX6tfAMhz5IkJwQGybqgr0CSDqPIWhoR080KdMZ9lChVnTkmOcueVwA
-         GWuWL7ZMKHBU3RyN12dPvPx8LMfjM+lAq11rS4bFKUKcUVNLds9Z3vO5fuF5iiHPAloN
-         m4lA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KK+EABlJQnSkksMiTnYsqKc8DTcxDUuzT52kDsQHSVs=;
+        fh=l0fiXfb9eFM6meL1iDGeR/sRgSbKJpPxmqfZjF9lLEI=;
+        b=WgBa4ox0XGK949xALy4AoEp9gxPwiZyd1T/SObz9YsQ3Gqa4yVnW1S/gQfncl6YqKd
+         8YSihCg+KhMmiWNkefeaCDWsq/exkW6B1klH0uAamYYPHCLoDQ89Kt+cNO9Ynj+CeTHE
+         iHg5dGwLUSGyJmtRm9FAAVPAYKZ6F9JQQZuhe9xYsL4Sww5+odzOnk+8yFcMzt5bkgfe
+         lAtgAX1KNXTuWHr/8m25laK8on9G1GizGbHm+z7psA/feDnSaYwc2EuY96lWVnuwSNHR
+         hnxRFZUNa9wYwZe2Egx9hpEER+KW/aZTUIusGNOa47Zrs1ZpGn+RSeBzVAc0FYfQkH86
+         3h1Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1777993506; x=1778598306; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nxZ89rUvP7Lz3tEU7M6JOWMTYI1Uv/IEguOM4PesleE=;
-        b=lQPtOWAGUVRwONFPkRew3tp/ZCt5KJS/RBEoSQlgvLQ9Sns7k+XKZ+5GIiKN52yP2X
-         hdgmNk3DNueMCJU/xQqWGLrb4OI7AQEpDVU0735/Mgcj2hZ02MtalTI2ICpV4osV6Wro
-         XRUsUfCey0odup56NIVvDj5sNSGpHAawbB6p0fep85HVJANvjaiwgB0stLkqQj5aH23r
-         I3JGMPmbQZTZc71J2ZeFbtRC2pTWIt+8uSNX7KyVQqJqQbxoiQmxqD/KheDXE9Z5ILTM
-         uyl4xwauJDp2c6RMH16zJsEZoTgKuc65ccJYGuwW1zJmRK2AtGbOsPnZvEC0cvlKYBue
-         k+uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777993506; x=1778598306;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777993610; x=1778598410; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nxZ89rUvP7Lz3tEU7M6JOWMTYI1Uv/IEguOM4PesleE=;
-        b=POP2+8a2bnMQWWfTz6fmuipqdwCQlzJmGVP4CnO0nje5oQdWTUvCpOYKWhkEb8Pff4
-         zO+pcWNlGuh6XbO9MdewaPBW244n7UzMjqs2j5LRnmovopL0VzCeXjFJL/ZJ5KPEzC7B
-         ERFZdOWOTUKJ7O5mK6yyU9gQOjFwDj/Dxx8ogwS9bjQfdFeRgVS86hjqwxyFgIJnszo5
-         BRNcvDLE353+NFoyyPqPmi53dZF+MKcCrn5gBXbur+snTmxgYEZeeP/3CgV4xFmatt1n
-         XkYs3VL+/FWnack7hEtADZVV18Tnpaw/MsIFkbdcMeEgBPxB0aVZ9OZFGLAm3+7cX542
-         UZtw==
-X-Forwarded-Encrypted: i=1; AFNElJ934AVJNzSEK7jOZ1o6AS7tA94OyqxIztYLNHO37402+irP5Zr3Ze2vw1iSsgZ4jowryBI8le8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxA75/kl0q05O5/+ACWo765xBRusQlXR27F339A4xFGXt+vRAs+
-	puDSElTQrYZj8rqmqjC6t3cVMWwt49G+db+ms+aukTOUEfz1ebn5fUmfleoiAyPe3QcZH4pN2YE
-	2Ci/tuG5mcfxlr+OFL0mqsHUc/NqnKykWv13KdoRrGydB9JCxwQYW
-X-Gm-Gg: AeBDiev0oj2Uj/roTLMX82xD9jqWQUNXU76ZN8J4PTc+Y9cOaQMMGJ3z6FeO6ATEnop
-	Nw7jAxOa++F5EUaschVG0n7QIZjm8NRSHxi9ZpAwIvTtwn/6b5tJkMlDwQCDcEQiGkBGfEs//WL
-	i09/U2Ehz1PIxxadR3jqm2jZSIlZac37XOfueZvVXLBppNOu77d9SJptgDHfValGuuivqSR1lRq
-	NXvYCJJZEzwOoNS9QQPozhzyYIKCOA6KiSSiGBo6tpqDr246W+PbPSHIm2eKh9bMZOOvosWpkv2
-	lGF4b6AMCL2FH6HQvTO6HqFY4hzEpEZGRwzp+Gdj2T7X6K7KHiml01+d+Q==
-X-Received: by 2002:a05:690c:6d84:b0:7bd:d145:3af9 with SMTP id
- 00721157ae682-7bdd1453b57mr17435087b3.47.1777993506337; Tue, 05 May 2026
- 08:05:06 -0700 (PDT)
+        bh=KK+EABlJQnSkksMiTnYsqKc8DTcxDUuzT52kDsQHSVs=;
+        b=ooEfWausCilWZq3ni80VJbO5QWANJ6vonPxQfKk6q6MhcIiFqUf0lwMLgKcSjhMwSq
+         bsXsBOZL1JHqjKgZS3Sf7SVdF4oBd326N15H+zMuDjwCN9iLJaYAstCTsKOzuTjmWEXN
+         7mAi7CUiKPWhK9H2hnxwb9f7UT82b1l1xo8UrkHpJ4XusvHyVg5WIKQRuEdtnEAI3aiw
+         4Rbs9C2+HwRY+9JqekCDr8yj7VbpQWRgTB0mABl+suvDo+2lqFWuX02PpWWsjexK6HTp
+         AgyHAebY1f7sOmtsb9QlUicetRZdF1tV3I9kpJDIUKb/4sfB+wP7e8WWV5XRApbKwB7E
+         RpYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777993610; x=1778598410;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KK+EABlJQnSkksMiTnYsqKc8DTcxDUuzT52kDsQHSVs=;
+        b=jGdy2WPSeoui/qj8sUhKWPrPpOyS3EYTJ1R9gQM4sxyeuWVPB5+ahhmKtB/AE8Nwm9
+         JUyoUMDoB551JVHg42wDqV6HQ2MlVTf5wfICE9+PqM060uAsMS/ABiQRQmmTkjcfWH3l
+         W/EaQ66xg089ufXS1FW1eoEbDMO2zTDpVU4PWmdx+2ckRUbzPgkdkJV4QyCn7yNUKbId
+         z2GCV4Ngz525C9e3apISkO06tItf+6pzNpQ/tSg+9AKh4Hxsl1myZl/xV1LnP1NbNzKf
+         mqktOdkT7ey1Lb8H2m4zFphzB8P811M5xJVhgarf4EtszrS28/a4Tc7vHmv7q0d6kBpR
+         NQpw==
+X-Forwarded-Encrypted: i=1; AFNElJ+pYDjIMcEwyE0K85+PTsem28D7JK/aZUSa4Dy2oHbdNQzFwCoO1WcMyDxQCXPc2zaGfJ1hkcs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQhpM9dyr/KMSXIjJ3GFOYfBtAeeN+aSC4YTYNxSQLNGCnH1b6
+	D7ocfKHCqWxum5HR8ICLFcIFf26RehDBwBLRcNqghn5DV8D/Fi+/ZLLzYnMn7tFFEPG18HfG0lk
+	GJdh5etc0HpvOG8sfIFDTZn6ORGebFDY=
+X-Gm-Gg: AeBDieuI6SvrmmZvE1qHihkdsK7eKaubZUmrxIwc/7P9wQLQfmYHhkixmcVnFUvXaKn
+	9FvcqulNvk0RyuCFfZRfTBXm2UPEzFMcNZGNlA+KPB/tjMYljWMNYMfHp5cMoVbHPSQZRLYlNLD
+	H+hr9MhO54D5YYTNKGsv6nXaBZKQ84iBira4Kx4vZw0WAB+BMvvVF2prqXDNIGFbmoO80cDADTt
+	4IECmaFmel7/81qpXEqWxBBFej93vzM9XaKif7KqAqBP+vu+94Rl2NoDS5/tUaNIgxk7CpHKLu3
+	fu8h+6lWlSYjznHMobZdhVRAfFzunbRP6c8NWiseU35Lgn0Ayei6Cswga/sHQwPo6J3Db7BhUw/
+	T3St587j3OiLPm1g=
+X-Received: by 2002:a53:ac87:0:b0:65c:6d4d:a22c with SMTP id
+ 956f58d0204a3-65c6d4da3c8mr2433242d50.43.1777993609746; Tue, 05 May 2026
+ 08:06:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260502121251.39206-3-thorsten.blum@linux.dev>
- <CAPY8ntDOEjAHFF_HxFoVEmrgQ8okm=8cHQEfm2QUU=MuB77d_A@mail.gmail.com> <afm5rE1i3D-Uk3S7@linux.dev>
-In-Reply-To: <afm5rE1i3D-Uk3S7@linux.dev>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Tue, 5 May 2026 16:04:50 +0100
-X-Gm-Features: AVHnY4JZgHkJgGCzic2hZC9UU4JXCcW0xdjYdX9AKr5gfvwyZOmmOxNQ7b9qX4s
-Message-ID: <CAPY8ntCgeP-0k=b1KCzKb5K4zExGD5g2=VOtjVaiSPWj=2b2kA@mail.gmail.com>
-Subject: Re: [PATCH] drm/vc4: fix NULL dereference in vc4_hvs_unbind
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Maxime Ripard <mripard@kernel.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Eric Anholt <eric@anholt.net>, 
-	stable@vger.kernel.org, Simona Vetter <simona.vetter@ffwll.ch>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20260504-bluetooth-accept-uaf-fix-v1-1-1ca63c0efadd@google.com>
+In-Reply-To: <20260504-bluetooth-accept-uaf-fix-v1-1-1ca63c0efadd@google.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 5 May 2026 11:06:38 -0400
+X-Gm-Features: AVHnY4I2JDyebrVZDyH6RpVPaaCOfJJfQHEg5lVnURoN9r-n09T7ubKx3gMkKxU
+Message-ID: <CABBYNZLzyh7a7sZ+0U4DAq8TB6e6=WdNrfKrxGXMqnYAMT0KnA@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: fix UAF read of ->accept_q in bt_accept_poll()
+To: Jann Horn <jannh@google.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: B3DC94D00B9
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A89A54CFFAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[raspberrypi.com,reject];
-	R_DKIM_ALLOW(-0.20)[raspberrypi.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244193-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,igalia.com,raspberrypi.com,linux.intel.com,suse.de,gmail.com,ffwll.ch,anholt.net,vger.kernel.org,lists.freedesktop.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244195-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.stevenson@raspberrypi.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[raspberrypi.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,linux.dev:email,raspberrypi.com:dkim]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,sashiko.dev:url]
 
-Hi Thorsten
+Hi Jann,
 
-On Tue, 5 May 2026 at 10:34, Thorsten Blum <thorsten.blum@linux.dev> wrote:
+On Mon, May 4, 2026 at 11:11=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
 >
-> Hi Dave,
+> Use lock_sock() to guard against bt_accept_poll() racing with concurrent
+> close(accept()), which can lead to UAF:
 >
-> On Tue, May 05, 2026 at 09:54:53AM +0100, Dave Stevenson wrote:
-> > Hi Thorsten
-> >
-> > On Sat, 2 May 2026 at 13:13, Thorsten Blum <thorsten.blum@linux.dev> wrote:
-> > >
-> > > With 'dtoverlay=vc4-kms-v3d,noaudio' and 'hdmi=off' on Raspberry Pi,
-> >
-> > Mainline doesn't use overlays, so this description isn't valid.
-> >
-> > Which generation of Pi are you using? Whilst they all share the vc4
-> > driver, the functionality associated differs. If you're disabling HDMI
-> > (and HDMI audio), which display outputs are you using?
+> task 1           task 2
+> =3D=3D=3D=3D=3D=3D           =3D=3D=3D=3D=3D=3D
+>                  __x64_sys_poll
+>                    __se_sys_poll
+>                      __do_sys_poll
+>                        do_sys_poll
+>                          do_poll
+>                            do_pollfd
+>                              vfs_poll
+>                                sock_poll
+>                                  bt_sock_poll
+>                                    bt_accept_poll
+>                                      [read ->accept_q next pointer]
+> __x64_sys_accept
+>   __se_sys_accept
+>     __do_sys_accept
+>       __sys_accept4
+>         __sys_accept4_file
+>           do_accept
+>             l2cap_sock_accept
+>               bt_accept_dequeue
+>                 bt_accept_unlink
+>                   [removes new socket from ->accept_q]
+> __x64_sys_close
+>   __se_sys_close
+>     __do_sys_close
+>       fput_close_sync
+>         __fput
+>           sock_close
+>             __sock_release
+>               l2cap_sock_release
+>                 l2cap_sock_kill
+>                   sock_put
+>                     sk_free
+>                       __sk_free
+>                         sk_destruct
+>                           __sk_destruct
+>                             [frees new socket]
+>                                      [UAF read of ->sk_state]
 >
-> It's a Pi 500 currently running headless, which is why I turned audio
-> and HDMI off. I ended up using:
+> This UAF only leads to incorrect reads, it does not corrupt memory; it is=
+ a
+> fairly tight race window; I believe every race attempt requires an
+> incoming bluetooth connection; and the leaked data is limited.
 >
->   dtparam=audio=off
->   #dtoverlay=vc4-kms-v3d
->   hdmi=off
-
-You're still working from our vendor kernel[1] rather than mainline.
-The mainline kernel doesn't support the Pi500 yet, and doesn't use
-overlays.
-The bug is present in both, but descriptions reported to mainline
-should correspond to mainline. Otherwise report it to our vendor
-kernel repo.
-
-There's also no such config.txt parameter as "hdmi=off".
-
-[1] https://github.com/raspberrypi/linux
-
-> This prevents the vc4 and snd modules from loading and works for me.
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+>  net/bluetooth/af_bluetooth.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 >
-> > > unloading the vc4 module calls vc4_hvs_unbind() with
-> > > dev_get_drvdata(master) returning NULL.
-> > >
-> > > Return early when 'drm' is NULL before converting it to 'vc4' and before
-> > > dereferencing 'vc4->hvs', preventing a kernel oops.
-> >
-> > That leaves things allocated and clocks running, so bailing out isn't a fix.
-> > I'll have a look to see why dev_get_drvdata is returning NULL.
+> diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+> index 33d053d63407..d24897167838 100644
+> --- a/net/bluetooth/af_bluetooth.c
+> +++ b/net/bluetooth/af_bluetooth.c
+> @@ -521,13 +521,17 @@ static inline __poll_t bt_accept_poll(struct sock *=
+parent)
+>         struct bt_sock *s, *n;
+>         struct sock *sk;
 >
-> Yes, I realized there are probably other things that need to be fixed.
-> However, the defensive NULL check avoided the kernel oops for me.
+> +       lock_sock(parent);
+>         list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept_q=
+) {
+>                 sk =3D (struct sock *)s;
+>                 if (sk->sk_state =3D=3D BT_CONNECTED ||
+>                     (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags) &=
+&
+> -                    sk->sk_state =3D=3D BT_CONNECT2))
+> +                    sk->sk_state =3D=3D BT_CONNECT2)) {
+> +                       release_sock(parent);
+>                         return EPOLLIN | EPOLLRDNORM;
+> +               }
+>         }
+> +       release_sock(parent);
 
-A quick check says that vc4_drm_unbind gets called first and sets
-drvdata to NULL.
-The devm action then triggers and calls vc4_component_unbind_all,
-which in turn calls vc4_hvs_unbind. The relevant pointer is passed to
-the unbind as "void *data", but not used.
+There is the following comments though:
 
-In vc4_hvs_unbind, changing
-struct drm_device *drm = dev_get_drvdata(master);
-to
-struct drm_device *drm = (struct drm_device *)data;
-fixes it for me.
+https://sashiko.dev/#/patchset/20260504-bluetooth-accept-uaf-fix-v1-1-1ca63=
+c0efadd%40google.com
 
-It looks like vc4_v3d (used on Pi 0-3) has the same issue.
-vc4_crtc and vc4_txp both store drvdata against their own device, not
-against the master. I'll have a bit of a think as to whether that is
-better than using the "data" pointer.
+I'm not really sure if likes for the poll are supposed to be done
+lockless, if they are, we cannot use lock_sock here and will likely
+need to rework accept_q so it doesn't contain deferred sks, as those
+shouldn't be considered ready for acceptance.
 
-AIUI unbinding DRM drivers is an unusual operation anyway.
-If audio is enabled then I can't "rmmod vc4" as the module is in use,
-but I can if audio isn't enabled. I can't immediately see a way around
-that one.
+>         return 0;
+>  }
+>
+> ---
+> base-commit: 6d35786de28116ecf78797a62b84e6bf3c45aa5a
+> change-id: 20260504-bluetooth-accept-uaf-fix-df393cbda114
+>
+> --
+> Jann Horn <jannh@google.com>
+>
 
-  Dave
+
+--=20
+Luiz Augusto von Dentz
 
