@@ -1,169 +1,217 @@
-Return-Path: <stable+bounces-244284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGTkKox6+mlePQMAu9opvQ
-	(envelope-from <stable+bounces-244284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 01:17:32 +0200
+	id yoXoK3WD+mn8PQMAu9opvQ
+	(envelope-from <stable+bounces-244285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 01:55:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EA04D49F3
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 01:17:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E6C4D4D09
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 01:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43553302658A
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 23:17:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBF483048F0F
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 23:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3063314C5;
-	Tue,  5 May 2026 23:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6DF3382E1;
+	Tue,  5 May 2026 23:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="fZB7KleA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dC47WXe7"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09722139C9;
-	Tue,  5 May 2026 23:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778023039; cv=none; b=Ico6T6Wu/i1/IGElBqLTYuIjPCnXkoiM7YiU5dhfOZQP2tfE5bUIujwUDydyf4k0262TT+tjbLjqovvT9wDl07Htfv24EkaeGp7Ni8+8nG/5k98vLv3FrpBenGNcmernHSxxugln+ivOfzPm2vhqFxWp/hWd4mvATvWS58+b7ro=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778023039; c=relaxed/simple;
-	bh=c8M4maA60WNCneZAUPBVL/CCdJLUgPwcYyV/VxFNqZ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lfEiIHLRieJDKWauPZBrLEvPIngf6hiteAmpQpWZPURpWgQTi8zsE6F2q/+wLG7kpZGhywHU3BMxWpy2cmjAX2bC1AorEddd+/NvMiNVxZLY5vB4sYAILVq01JWvYV3U2E/bxKMQDM9OGIeMdtEKefG5FG+BEmhGCp8IzUpUn2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=fZB7KleA; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 378855B2;
-	Wed,  6 May 2026 01:17:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1778023033;
-	bh=c8M4maA60WNCneZAUPBVL/CCdJLUgPwcYyV/VxFNqZ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fZB7KleAbE0ZRbNifz1iPnPMN4zO3FVFoahmaezfmomNKG42PGkqibhPYIADotQ7E
-	 l6i3HhOailRhn6ISJwXYLyxVT8Z4wSBd17wx5aXXBI8X59pv714ceZNtWrPJZNEAXX
-	 M5EsVgrVDoY8EDvozIJikaGBl6rrmirZjihRgwuQ=
-Date: Wed, 6 May 2026 02:17:14 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Jackson Lee <jackson.lee@chipsnmedia.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Keke Li <keke.li@amlogic.com>, Yong Zhi <yong.zhi@intel.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 6/6] media: amlogic-c3: Add validations for ae and awb
- config
-Message-ID: <20260505231714.GF1598374@killaraus.ideasonboard.com>
-References: <20260504-smatch-7-1-v3-0-fda125c30058@chromium.org>
- <20260504-smatch-7-1-v3-6-fda125c30058@chromium.org>
- <afhH8Fq_7bIy3Lv3@zed>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E1B3264C2
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 23:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778025328; cv=pass; b=f43AwFMqBDfrz+pTvAiVHm6h0HCn16FxFOwz/KFaZyKfI2d8W2t+yEaShaTqT6+Gn0FOnDkVCx3hYuXZQ6Dfye3v6at83AX/2oB/cb8/Uwn3/CTdtDCxxsr+FkmTRrbkY0QI+zkFar+e2NrpOaxW0H/LP1vCHBfH6inGmo60eug=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778025328; c=relaxed/simple;
+	bh=p9RTItwZyHq1mhEJKcU/RYptdB4ZGVQwb0UzSfyhVEo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QnQ5cDOQO3kSRMyfUEamUlC5mOKJ9ZDRGlM0O1P6b9YIaOmtsu7RxxtLBmv37xNtBYMGfCOAaE/ui2q1zjQ/4K2O8Ed3KOKUBV0LDEUJli2zmvf1xA5Wzi1dvRzt5oufVdqwwmcVV1EeyMWQsiWflvEh+EQFcIZeNy42gwH/pPc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dC47WXe7; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50e61648f10so181721cf.1
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 16:55:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778025326; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cMVh72otXy1ADwsB9br9f4sWvgub+v7t7EhA1D/qCkm8wzLGGZ3l/bF0vBMu0i+GEp
+         Qzkj3ChM1B1cvmxlW7XwflC26A0IqJeGx2FoD6MOtUdpGyrRSawq8Dd6PxnqAIyEw0Vq
+         AXeLPDMLpPBEhD3ZHmvQLkqpd6O0X/kmq7KKFOTy/XNoGn2TISfZa7sLFwOOacRDczCA
+         +5pIMs4AnUxFAcsFrjQ7A+iSzmvV+rhwkKAfC+kxVaRE5RzRAlwb0FPQp3VidV7ABMGm
+         ZB/FFVz2K1GYtSY/SO63WSSvezDszZIvq6GDP8BbahqzSvVwPsVaNfHhue4nBJeNn8iV
+         vlug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wuhyBcGWDRHeBIJeFOOXO2Zi58tk0CDv7lN3uv+zGa4=;
+        fh=58ht2JmeNyA9dejg0wNVrbiEcZjBZtlzISi/0XCRD0A=;
+        b=G5HxTDsq+MvjuJg/toIfO61/rFqirAQddxMgtT2HX0rfmfv4S6PGFlN8MFakhBjfJo
+         xd5M/3+k7KZgN+s0ZyR8ERgP0+KjwGgoUsHGTsKxh+PclNmladhAkHj9ZO4FB3PxArAP
+         x9MBdExfoV/Y3ZXNDsHu63lIYN14ii1itUxnsozN/cWj3WKGs7JJOSqelDSI/FB+/jE5
+         pnWbpDL7TnRICoPZXK99nT2p0fGX95PGnlZ8srTs2yx92C7mc7bn9aIws58oQknA3Eu5
+         OAVjuPrKYGGh/vcvuAJWojduwO+7lPSCsOBxfrI16p4M5jS6lCVTH92T0TMyDzePOeQs
+         xmHg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778025326; x=1778630126; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wuhyBcGWDRHeBIJeFOOXO2Zi58tk0CDv7lN3uv+zGa4=;
+        b=dC47WXe7sfFq8pexxxVCDK45MNdKCom35/2Wd2pw5owa6zfxAet/zor+NoLzDOtfKl
+         lT0Cd5+5Wfgy3NBsx+fuEoxDM9kaiUEymGuXFnjfPxBfXhHoIFdH7r5gRCJo4Me4pwU1
+         q0PvvVX/nSnqhZHdpybP9pSNaaCO1Ww4u/rlTBaP7TH1Pz0VuyBmUeiIlzlNlicZdNbL
+         R+DWclYHE5hXHQAWDex1VHP3/xRCC+19o44G4LvIs9qyYx6I3VSgMzEZ59U4nl0JpAdS
+         xVgUF10OIFv4iz/92aod9b1AAcsioZeZNqcXCpIoCfiZSzlSFrRx9g53+2fNqlg1F/c0
+         aq2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778025326; x=1778630126;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wuhyBcGWDRHeBIJeFOOXO2Zi58tk0CDv7lN3uv+zGa4=;
+        b=D3wyM3mW7RpCbSJ1Th5L0YGJy0XlYo2JokCaU6Hpj3+iCydS/d8eN3/N97NThrHdAJ
+         DIorweePiKygDGMt1nP6P7bmjX1CNFdHkCMAiG2zUPYPVwJ9Js/6DQvcrUqHt4GVpcmh
+         iALddGV4l9g7phC5MO64xWoKBTdKbfr1M1w+n3ofqEOcE9nKuK/wK0h/s7YrAirukvZm
+         BO1cCzPtCS9z6CVfYgAA6DmDIbTaSEcUBwMNCrwoDTjtyGBdW9zj6Eh4aIh4ZYkXeMBG
+         +kThK4+zc3JwEnLJdyyEHwBJr8HT5QXCkerC/SmoXRpPJJU0crrgD6y5JJ+r4r5iTJWb
+         S61w==
+X-Forwarded-Encrypted: i=1; AFNElJ/yPJdl31GkMOGj2mDNiMLuwWem+uhS0QcC4qx8dic3FS1SB60MrfmwbbIfobiRGy+ecKByfH0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEvTjMigri0vqkfcwdMgeus1MVpzuFNwmsSAwPlArhqPYpkwc/
+	mmKi3JIPd37JI2L0BX6t01e0qw3oUe3u+ZhR1q7jgySs7OnzGxVJ7Yfhka7KYgvnlS/gGcgmL/r
+	xmPJ1EcNElUJ5q+mpHyzxJttC1YGT1o3mm3fIUvqV
+X-Gm-Gg: AeBDiese/MrNzEbbjgYGP2kO4KizWJPk36pZIZ9GMvKBgOYxkpDomK+OA0KeU5Yma5A
+	4llOZayOe4D/hgCeREsJdov73dAckhne5y6R3g+pNOv6IHNputZcfCv3y9LMmh8u6o5XHjxMxPj
+	RmZi9aRZXUGJu8So6JQUZ/7TkdriR6ztZ2FP4I0uNaDne+gzjj3Yb4viCXJ9ufj1GH7rjyv8OUv
+	x6U+W0Q4Ij/LygN1UQoHER0IxJK6gwJP4dn9GEvyzhEMHUrOupskkWlIoojTY8fkjtm0oRYEp0n
+	XyW/ovwxtQSX7GeuMtdVrhXxWvrF8FVxXxmaRvX7MiEB84R+uspeDVJrGwA8j8BZBFl6JTTzAB1
+	uP3GFPjQv8mysdP1GGtoG5q7I6HTaJc/Gz44ELOtIPZw2N7X5kYvB
+X-Received: by 2002:a05:622a:5886:b0:50e:6360:96e with SMTP id
+ d75a77b69052e-5145fc87da2mr6668431cf.0.1778025325921; Tue, 05 May 2026
+ 16:55:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <afhH8Fq_7bIy3Lv3@zed>
-X-Rspamd-Queue-Id: 04EA04D49F3
+References: <20260505133922.797635-1-pratyush@kernel.org>
+In-Reply-To: <20260505133922.797635-1-pratyush@kernel.org>
+From: Jeff Xu <jeffxu@google.com>
+Date: Tue, 5 May 2026 16:54:49 -0700
+X-Gm-Features: AVHnY4JEDWD2VQhA_AgqzBkBpPQ2cvl10s0XbqhfOlUAb7igg2Kifeo9-olJJYY
+Message-ID: <CALmYWFvb1aN4-+e6wWEDrv509ELdTwC1tOzPmbCagoZYuBC=Xg@mail.gmail.com>
+Subject: Re: [PATCH] memfd: deny writeable mappings when implying SEAL_WRITE
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Brendan Jackman <jackmanb@google.com>, Greg Thelen <gthelen@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 18E6C4D4D09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244284-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-244285-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffxu@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,samsung];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[killaraus.ideasonboard.com:mid,ideasonboard.com:dkim,ideasonboard.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On Mon, May 04, 2026 at 09:19:30AM +0200, Jacopo Mondi wrote:
-> On Mon, May 04, 2026 at 06:54:09AM +0000, Ricardo Ribalda wrote:
-> > Avoid invalid memory access if the zones_num is bigger than
-> > zone_weight.
-> >
-> > This patch fixes the following smatch errors:
-> > drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:111 c3_isp_params_awb_wt() error: buffer overflow 'cfg->zone_weight' 768 <= u32max
-> > drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:111 c3_isp_params_awb_wt() error: buffer overflow 'cfg->zone_weight' 768 <= u32max
-> > drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:227 c3_isp_params_ae_wt() error: buffer overflow 'cfg->zone_weight' 255 <= u32max
-> > drivers/media/platform/amlogic/c3/isp/c3-isp-params.c:227 c3_isp_params_ae_wt() error: buffer overflow 'cfg->zone_weight' 255 <= u32max
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: fb2e135208f3 ("media: platform: Add C3 ISP driver")
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> >  drivers/media/platform/amlogic/c3/isp/c3-isp-params.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c b/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
-> > index 6f9ca7a7dd88..aec3eed0e443 100644
-> > --- a/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
-> > +++ b/drivers/media/platform/amlogic/c3/isp/c3-isp-params.c
-> > @@ -104,6 +104,8 @@ static void c3_isp_params_awb_wt(struct c3_isp_device *isp,
-> >  	c3_isp_write(isp, ISP_AWB_BLK_WT_ADDR, 0);
-> >
-> >  	zones_num = cfg->horiz_zones_num * cfg->vert_zones_num;
-> > +	if (zones_num > C3_ISP_AWB_MAX_ZONES)
-> > +		zones_num = C3_ISP_AWB_MAX_ZONES;
-> 
-> Or
->         zones_num = min(cfg->horiz_zones_num * cfg->vert_zones_num,
->                         C3_ISP_AWB_MAX_ZONES);
+Hi Pratyush,
 
-I have a slight preference for that, but both options work for me.
+Thank you for fixing this.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+On Tue, May 5, 2026 at 6:39=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org>=
+ wrote:
+>
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>
+> When SEAL_EXEC is added, SEAL_WRITE is implied to make W^X. But the
+> implied seal is set after the check that makes sure the memfd can not
+> have any writable mappings. This means one can use SEAL_EXEC to apply
+> SEAL_WRITE while having writeable mappings.
+>
+> This breaks the contract that SEAL_WRITE provides and can be used by an
+> attacker to pass a memfd that appears to be write sealed but can still
+> be modified arbitrarily.
+>
+> Fix this by adding the implied seals before the call for
+> mapping_deny_writable() is done.
+>
+> Fixes: c4f75bc8bd6b ("mm/memfd: add write seals when apply SEAL_EXEC to e=
+xecutable memfd")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Acked-by: Jeff Xu <jeffxu@google.com>
 
-> Whatever you prefer:
-> Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> 
-> >
-> >  	/* Need to write 8 weights at once */
-> >  	for (i = 0; i < zones_num / 8; i++) {
-> > @@ -220,6 +222,8 @@ static void c3_isp_params_ae_wt(struct c3_isp_device *isp,
-> >  	c3_isp_write(isp, ISP_AE_BLK_WT_ADDR, 0);
-> >
-> >  	zones_num = cfg->horiz_zones_num * cfg->vert_zones_num;
-> > +	if (zones_num > C3_ISP_AE_MAX_ZONES)
-> > +		zones_num = C3_ISP_AE_MAX_ZONES;
-> >
-> >  	/* Need to write 8 weights at once */
-> >  	for (i = 0; i < zones_num / 8; i++) {
+-Jeff
 
--- 
-Regards,
-
-Laurent Pinchart
+> ---
+>  mm/memfd.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index fb425f4e315f..abe13b291ddc 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -283,6 +283,12 @@ int memfd_add_seals(struct file *file, unsigned int =
+seals)
+>                 goto unlock;
+>         }
+>
+> +       /*
+> +        * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
+> +        */
+> +       if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
+> +               seals |=3D F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_=
+FUTURE_WRITE;
+> +
+>         if ((seals & F_SEAL_WRITE) && !(*file_seals & F_SEAL_WRITE)) {
+>                 error =3D mapping_deny_writable(file->f_mapping);
+>                 if (error)
+> @@ -295,12 +301,6 @@ int memfd_add_seals(struct file *file, unsigned int =
+seals)
+>                 }
+>         }
+>
+> -       /*
+> -        * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
+> -        */
+> -       if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
+> -               seals |=3D F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_=
+FUTURE_WRITE;
+> -
+>         *file_seals |=3D seals;
+>         error =3D 0;
+>
+> --
+> 2.54.0.545.g6539524ca2-goog
+>
 
