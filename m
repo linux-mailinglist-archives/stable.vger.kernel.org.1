@@ -1,213 +1,242 @@
-Return-Path: <stable+bounces-244216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HBQJu4j+mnyKAMAu9opvQ
-	(envelope-from <stable+bounces-244216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:07:58 +0200
+	id 4LGGKGQk+mnyKAMAu9opvQ
+	(envelope-from <stable+bounces-244217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:09:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DBC4D1C9A
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:07:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A8A4D1D0A
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 074703037988
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:05:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D4F5303CEB3
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C6E49251B;
-	Tue,  5 May 2026 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0493148BD3A;
+	Tue,  5 May 2026 17:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IZprpnhB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPYMGG43"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F92C353EF3
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 17:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742E2264614
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 17:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778000719; cv=none; b=BHH/HW2C5lpX3gHY1yJfM0PlNdRpW4c83M4coV6Pw8aLT+no9jjqfpJsqlWz/are4vFvSzeVmRhccotcUEBi3Km5NbTwW7ximqUBTpUmQPrOojL+kBEa/71tDhuerjXZmsDKYekXVVhLGoclUKevGBah+X25fB9dBx+gAHQaZ7Y=
+	t=1778000837; cv=none; b=eCOFjsTSBdUW9BEPOnhuTQg19iVBfFERW9+jzKmQD1accuh9InlGUKcI4/xHaKSiH3frNgdFInbLPO+B1Oz/RTGpcfXgxwCHWCW0rGs0/PsqgZZgvqjV4xNboO3CGM/Ukx6lyjUx9JE0bpcBp8NNBPkxTzmhwV7CuW1b17T5oDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778000719; c=relaxed/simple;
-	bh=LlXGiT8km7O3+s8Me6WlqDhDtU9jqmDQ3ztOup/45zg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DFX9pr8g0d1kCpkE/bKqBeVzno3Xtojm0c13BX3lj60XhTWDS9MUPK/X3N1LUUk6S2A7MEhay60vuRpqsMXYrSgd/tafSRn39U/tnNE+6rOj0lX7+jhOGFYiS2itPYRBSw4Kpfup9vfREweMN7+WqDg0Vc9m77H2mZLjgk+/qZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IZprpnhB; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa860e71eso2770937b3a.0
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 10:05:18 -0700 (PDT)
+	s=arc-20240116; t=1778000837; c=relaxed/simple;
+	bh=vw1Yz1M6ntRpNsMHRphRJy36953fAzli8KY6gviS25I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FPkNuSa+7taKtPbfjbGyEzRP60CGLt1yVTeXAuw+PNfCg1Ls93y1yAZ097YMr+9P06uEk/Uam5nPlv5dw0mMCWK1u+DzQFSWtem+rUK2/heEw/g0pimcC2KsmOulCqL7xGv+ZFPbxHSMbyr7FefKKft92zEFYraRwi7mDQtVzmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPYMGG43; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7de7dc85b74so4959778a34.2
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 10:07:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778000718; x=1778605518; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=m3ZWo/jJEgMHbppCM8fWNjqKfThN79PtinobDbAzSRU=;
-        b=IZprpnhB9X68uMgUxPxRTXuDWc3tdD8mYIGb7kcYbYlOGJNZ7d0CfkvMhFt1IShm3p
-         dGZNfQs9VxrIF1dllB0raZNrzPI4QgmVZTbRP5wwqhn3S6KkFUQR6zobH1QqA1Ta6dqU
-         B6lHVU0e8q3iyzn1OYcX1Um8WVID54YspuNo6l+jiUPrkiir1P9qQFb2NqUQq1c19kVb
-         5cjEyGdu6x4MzrQDs8No7cz2E/gCILM3WnmmI0PhKKb9S+BRrWlSbsDd8Z0UxXbK6Ebw
-         p4EowGc6KpC1EK8lfzMioMAso4BZefAEkNormaQU67h/173fs2FU164LevzYYZKol+59
-         I7nA==
+        d=gmail.com; s=20251104; t=1778000835; x=1778605635; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bgyzmCLBZb8njVeoHc/WQXkO4KGEQm3rkpc/IuvAWz8=;
+        b=NPYMGG43WqGp+YAYON7G4MdEUatsKkFlhmNA20fFY6VSU6EisIV2FQGh6i6xGCbexa
+         UdUMWYF/d5NM2UlXyLcgrwYyoyC+G2utej7MOIKJRmeCGizPKlBOkUz6I9jqhgaeLXyJ
+         e66bCEZaO20xZJMd7Za+FBp9eAwUydLICb8RvaRATxh0EoWrsmI/YZmqeDHSIgyiqpTE
+         ZX5ER35Eg+GgpiA2z2Zd2RJCGC7UajKndFsDPTkyYUM49oWSey6r4w+wPR9Tlns56bAs
+         oUbcbsJYKvdv7d2KhBj7jGgR9q3V77TkPSR7K+8ezE7se6oeClDeVq7zZ5v0pygvYGyv
+         tjzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778000718; x=1778605518;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=m3ZWo/jJEgMHbppCM8fWNjqKfThN79PtinobDbAzSRU=;
-        b=WNkTPKm3AF4a0Pb6PXM/JC7JS3mhSXNsPFKE98RvwP2PDbCOZOWcAJbVMuRusXxUrI
-         MX07HbMt5lMHkNNfJUnvAN6aIpYvzJ+gEYZIAda9nyKSQNJGTV4Eirz7O44ftLEwqQPg
-         wr537sjcCKL1TbQvf91iWkl1ZI11wvRybUfbe3/pg2Y04tyixxSL7lUkdOChdC63Tk2G
-         J5uSuCRBPRh41fqhmL+GPjJfC6q6EIwhQOZrtINWvDtGerXAfUgzTNiMfM+doCI7zS0g
-         6Rf4GZDOMdvKJ50ljj0tOkeKAHhDrpYICNmKZttN74IMlmFDYIH4qCyuOCSXWvLJciu+
-         9AXA==
-X-Forwarded-Encrypted: i=1; AFNElJ8xlM7TEXYRCp7Q/xUYvLzrnlUvxI/b0+NQIylpHh6DbK7vRnKIEWVVJjrTkS3caX0WqUAoPjc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwffKb4g7Nx5FWGLCMxjSkafikVmcHwI/htk60DfnlNd1TGAYWn
-	NyTszGwTjnBHw+1I5W5t0DymDSlSSD0D48+YG9KGKMtUelxqQud7oI48J2O3XIgEXDW6H2puPDu
-	QUAzJbg==
-X-Received: from pfblm11.prod.google.com ([2002:a05:6a00:3c8b:b0:82c:e899:f089])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:368c:b0:82c:e1a3:986f
- with SMTP id d2e1a72fcca58-839247bfb7bmr3652379b3a.43.1778000717292; Tue, 05
- May 2026 10:05:17 -0700 (PDT)
-Date: Tue, 5 May 2026 10:05:15 -0700
-In-Reply-To: <20260504231048.1184273-1-jthoughton@google.com>
+        d=1e100.net; s=20251104; t=1778000835; x=1778605635;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bgyzmCLBZb8njVeoHc/WQXkO4KGEQm3rkpc/IuvAWz8=;
+        b=eSrRS3pyoQi4HGALgjuGVMe8DyjiDup0QyteXfkfwyfeQ92Gpg8btKFr6T2mAZJlPS
+         V7GWJQIJUW5ngdH8pWIcX4e7UCQH9GBQYxBABAEmTXzvsSreiGKU10ow8qQPQ9icAXpW
+         PQGrucB1DntW+MlOWGAVpODdqSX+XZNc9IIV/5vykIFqiPpWDBihICQZ+ZJ0VvOYKn+v
+         q7TYpGATfcWWzcbNUsBFq0QHtumSCpkIZzdtJbdHitRZhgWhsaR+9nODZ6Ti+bdP+/Uw
+         2yYX59tB6aspPG1SGj+Iham9bh+WlU8kjEwWGiAuLAUPDJoR1HGKx8tRN8CrqtXpGZex
+         X+lQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8S3emeOdKruoG3xatOuKR39yun/ZhYaKKdV4CnvtZE9o7imHU8YQlPF5+lfjAWJszy3A4loGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzfb3dgOI4R9pJmqhBwytNhboUWoEbI1fJHlbTPLp4kFxD/9YxP
+	rUW5vuMFUgYVBVfyriwA0zE7tqK78N6ZI86iWKN/QoBGddSTQETQ72NF
+X-Gm-Gg: AeBDieul5eiqo/k92hVX6jFMkH2XxnMu3/gxNRveShC2SDOGWXdiit5p68oi/BqisV5
+	5rmfsnwxUN2X6aFlUEuAaRVPdThKQyY2/BI3SJNKjOqciblxWlgRTYjY307Hmcp2w/qt4/wJz6Y
+	+pl7YG2sdQgXCkPZGtNzlQbQ3H8bZ5VuB0sSUb9RabZrkWKhg83wQzSNL4P6gFEQVe2ZC9c04pb
+	sCH9yP5iOiHfn+NH8V7bjtpXXJTk5ngamN1WgT5SP4HUTv58e+Dyj98Uh8t7NIUAqK3rA8A9REH
+	b0hTFUFGI9X673GIMQVG3cOXDKJzVJUI9kw0tjvxgAwq5ut4XOtddrDF5lG90T2+DP0HEeKcBaC
+	YM+Sa0njHxn4uzAw+rSeKPN5bS2pdl5tzszXyfyTTqcjfBmxzqzbWKIJ4ZXvMmXtqd1e1+2eIO3
+	q1wr7tkmwOctGEAPIW7RMJ4RY/cUa9uC0lD+vF+hxfT5ZfK0IRKjMJyPMoNv4La02RGnraMUDLp
+	LwUUPE9q8taCzbOuqHTH9wUFjCk+lQvBqR3VPs=
+X-Received: by 2002:a05:6830:6686:b0:7dc:d0cc:91b with SMTP id 46e09a7af769-7dee149eb40mr10122943a34.26.1778000835319;
+        Tue, 05 May 2026 10:07:15 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53d6442d0sm151261756d6.46.2026.05.05.10.07.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 10:07:14 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	david+nfc@ixit.cz,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v7] nfc: hci: fix out-of-bounds read in HCP header parsing
+Date: Tue,  5 May 2026 17:07:12 +0000
+Message-Id: <20260505170712.96560-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260504224213.1049426-2-jthoughton@google.com> <20260504231048.1184273-1-jthoughton@google.com>
-Message-ID: <afohshVlK9YcBk-f@google.com>
-Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in kvm_arch_flush_shadow_all()
-From: Sean Christopherson <seanjc@google.com>
-To: James Houghton <jthoughton@google.com>
-Cc: chenhuacai@kernel.org, gshan@redhat.com, jhogan@kernel.org, 
-	joey.gouly@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, maobibo@loongson.cn, 
-	maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com, ricarkol@google.com, 
-	shahuang@redhat.com, stable@vger.kernel.org, suzuki.poulose@arm.com, 
-	yuzenghui@huawei.com, zhaotianrui@loongson.cn
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 38DBC4D1C9A
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F1A8A4D1D0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244216-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,davemloft.net,redhat.com,vger.kernel.org,ixit.cz,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-244217-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.994];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,nfc];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ixit.cz:email]
 
-On Mon, May 04, 2026, James Houghton wrote:
-> On Mon, May 4, 2026 at 3:42=E2=80=AFPM James Houghton <jthoughton@google.=
-com> wrote:
-> >
-> > kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
-> > concurrently in the event that the KVM's `mm` is __mmput() at the
-> > same time that last reference to the KVM is being dropped.
-> >
-> > T1              T2
-> > KVM_CREATE_VM
-> >                 Get VM file from T1
-> > close VM
-> > exit_mm()       close VM
-> >
-> > T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
-> >     with only the KVM srcu read lock held.
-> >
-> > T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
-> >     kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
-> >     again, with only the KVM srcu read lock held.
-> >
-> > This leads to a potential double-free of
-> > kvm->arch.kvm_mmu_free_memory_cache and now with NV
-> > kvm->arch.nested_mmus.
+Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
+packet->header from skb->data at function entry without first checking
+that the buffer holds at least one byte. A malicious NFC peer can send
+a 0-byte HCP frame that passes through the SHDLC layer and reaches
+these functions, causing an out-of-bounds heap read of packet->header.
+The same 0-byte frame, if queued as a non-final fragment, also causes
+the reassembly loop to underflow msg_len to UINT_MAX, triggering
+skb_over_panic() when the reassembled skb is written.
 
-...
+Fix this by adding a pskb_may_pull() check at the entry of each
+function before packet->header is first accessed. The existing
+pskb_may_pull() checks before the reassembled hcp_skb is cast to
+struct hcp_packet remain in place to guard the 2-byte HCP message
+header.
 
-> >  void kvm_uninit_stage2_mmu(struct kvm *kvm)
-> >  {
-> > -       kvm_free_stage2_pgd(&kvm->arch.mmu);
-> > +       lockdep_assert_held_write(&kvm->mmu_lock);
->=20
-> *facepalm*.... this doesn't account for the other callers of
-> kvm_uninit_stage2_mmu(). They will get lockdep warnings.
->=20
-> I've attached a diff to the bottom of this reply that *does* deal with th=
-em.
-> :( Sorry.
+Fixes: 8b8d2e08bf0d ("NFC: HCI support")
+Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+---
+Changes in v7:
+- Add David Heidelberg <david+nfc@ixit.cz> to CC (NFC subsystem maintainer)
 
-...
+Changes in v6:
+- Add pskb_may_pull(skb, 1) at function entry in both functions before
+  packet->header is first accessed, to fix OOB read on 0-byte frames
+  and prevent integer underflow in the fragment reassembly path
+  (Paolo Abeni)
 
-> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > index 883b6c1008fb..977598bff5e6 100644
-> > --- a/arch/arm64/kvm/nested.c
-> > +++ b/arch/arm64/kvm/nested.c
-> > @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
-> >  {
-> >         int i;
-> >
-> > +       guard(write_lock)(&kvm->mmu_lock);
-> > +
-> >         for (i =3D 0; i < kvm->arch.nested_mmus_size; i++) {
-> >                 struct kvm_s2_mmu *mmu =3D &kvm->arch.nested_mmus[i];
-> >
-> >                 if (!WARN_ON(atomic_read(&mmu->refcnt)))
-> > -                       kvm_free_stage2_pgd(mmu);
-> > +                       kvm_free_stage2_pgd_locked(mmu);
-> >         }
-> >         kvfree(kvm->arch.nested_mmus);
-> >         kvm->arch.nested_mmus =3D NULL;
-> > --
-> > 2.54.0.545.g6539524ca2-goog
->=20
-> And here is the diff that should fix this patch. (Sorry!!)
+V6 -> V7: add NFC subsystem maintainer to CC
+V5 -> V6: add entry-point length checks per Paolo Abeni's review
+V4 -> V5: fix whitespace damage
+V3 -> V4: add Fixes tags
+V2 -> V3: drop redundant checks from nfc_hci_msg_rx_work/nci_hci_msg_rx_work;
+          remove incorrect Suggested-by tag
+V1 -> V2: use pskb_may_pull() instead of skb->len check
 
-There are more issues.  kvm->arch.mmu.split_page_cache can be freed by
-kvm_arch_commit_memory_region(), which holds slots_lock and slots_arch_lock=
-,
-but not mmu_lock.
+v6: https://lore.kernel.org/netdev/20260502163116.3409687-1-ashutoshdesai993@gmail.com/
+v5: https://lore.kernel.org/netdev/20260416051522.4154698-1-ashutoshdesai993@gmail.com/
+v4: https://lore.kernel.org/netdev/177614425081.3600288.2536320552978506086@gmail.com/
+v3: https://lore.kernel.org/netdev/20260413024329.3293075-1-ashutoshdesai993@gmail.com/
+v2: https://lore.kernel.org/netdev/20260409150825.2217133-1-ashutoshdesai993@gmail.com/
+v1: https://lore.kernel.org/netdev/20260408223113.2009304-1-ashutoshdesai993@gmail.com/
 
-IMO, the handling of kvm->arch.mmu.split_page_cache should be reworked.  I =
-don't
-entirely get the motivation for aggressively freeing the cache.  The cache =
-will
-only be filled if KVM actually does eager page splitting, so it's not like =
-KVM is
-burning pages for setups that will never use the cache.
+ net/nfc/hci/core.c | 10 ++++++++++
+ net/nfc/nci/hci.c  | 10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
-Maybe I'm underestimating how many pages arm64 needs in the worst case scen=
-ario?
-(I can't follow the math, too many macros).  But if KVM is configuring the =
-cache
-with a capacity that's _so_ high that the "wasted" memory is problematic, t=
-hen we
-probably should we revisit the capacity and algorithm.  E.g. if KVM is spli=
-tting
-from 1GiB =3D> 4KiB in a single pass (I can't tell if KVM does this on arm6=
-4), then
-we could break that into a 1GiB =3D> 2MiB =3D> 4KiB sequence.
+diff --git a/net/nfc/hci/core.c b/net/nfc/hci/core.c
+index 0d33c81a15fe..ba6f0310ffd7 100644
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct nfc_hci_dev *hdev, struct sk_buff *skb)
+ 	struct sk_buff *frag_skb;
+ 	int msg_len;
+ 
++	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)skb->data;
+ 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
+@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct nfc_hci_dev *hdev, struct sk_buff *skb)
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+index 40ae8e5a7ec7..c03e8a0bd3bd 100644
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -439,6 +439,11 @@ void nci_hci_data_received_cb(void *context,
+ 		return;
+ 	}
+ 
++	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)skb->data;
+ 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
+@@ -482,6 +487,11 @@ void nci_hci_data_received_cb(void *context,
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
+-- 
+2.34.1
+
 
