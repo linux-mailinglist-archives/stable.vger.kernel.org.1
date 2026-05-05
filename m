@@ -1,161 +1,127 @@
-Return-Path: <stable+bounces-244191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UESbAnQI+mkEIgMAu9opvQ
-	(envelope-from <stable+bounces-244191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:10:44 +0200
+	id qKvOKMQI+mkEIgMAu9opvQ
+	(envelope-from <stable+bounces-244192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:12:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EECD4CFFDE
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:10:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175A54D004F
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D88C030734A1
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:03:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF88B3067C78
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8AC480DC4;
-	Tue,  5 May 2026 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B1A480DCB;
+	Tue,  5 May 2026 15:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OsHsKd8r"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uE32fe3z";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3kiH1zys"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82E43E868E
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 15:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AE92356C6;
+	Tue,  5 May 2026 15:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777993393; cv=none; b=G3jiNU1Ma7qH0Xa7t43i415VAjfF+BZGh+vEsBk1WYvNii33YelBqlet367s1uWd0Dbh4NcwNFnxC20Ajd//2WEyhXFkrmF6YLxQOKcfZ1dxXhjLs84Bpwg4MSse+gHqQalq9VwLyT76i5IdDL71ZwMGLuZUPA1b7TGkx6Eseoc=
+	t=1777993425; cv=none; b=WlMT+Anz1Ne5/IEafF4BQ+7N52Fh+SAhFAIwVRxMY2c7zBemt83ZUQyt2FtdVKP/N+NGDVaQ2arKIY4UI4h09st7nx45VKUuW9PkS0Hq9Y4hF4dSyiov6c1/dgMB/9ZbdfXaR2Nmq56Sv7nrZJsAVYGGJU/qxZeofG09tlyAVVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777993393; c=relaxed/simple;
-	bh=A9wpaSBbR1ublzL/Sy2zUllnDSEWVh69TzLmMcbXZ9A=;
+	s=arc-20240116; t=1777993425; c=relaxed/simple;
+	bh=EQ9EXE/Ffr+wV6+CRqHxSfRAY/71wYjgxoE+F7UDlrk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nMm6VLOafNfSIUzvzrINjuEXquvpV7avE/Z5oK+tDuK8gU/HjpocURSzHxEIOv/D2TjoGyc9U6/eOqoGLUwI4vY2lEBFYvy5NVjlRxGXdTq0BIcoIYNaptgb5yGXMD12q0hgyAA6f1fGFP0WGDx0XYP7zMxQoThUjCECiYir7Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OsHsKd8r; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b9ea536877so22411425ad.1
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 08:03:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777993391; x=1778598191; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UKYwXEKBkfxrwukpDctwnP55c5ugAMD8+9dw4QCucpc=;
-        b=OsHsKd8rK5oIhfHwRZbAUsyG9x1n8Qa724mT5Cj8TJHExm2iYXMRQaT5D1Z77hDyTI
-         xA4cM1J85Eabfc1x8G8kOucgIS5NLfQLIfFzDZuHZmGvelW+kQzEXIZ/p7RjLRVhWVb6
-         H+GoFgOgt8N/IosJ7YGaivt8IaSVi67n4at9NhoTVeDxF8jLcQFBrm0dI85pTeGD8xw8
-         73jZP3RRLPr2uciV9Yuwyr6g7XVzgEEs8iLJbJRzRNnQ3/gpE1WzT3EClnD3GOt0xpY9
-         e72MJQ1xsCVfrVBPtlB8w+J232SS/XyBASUgjkrQtX7pdbRZFl489eRAQQ4x954YnNvr
-         lsUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777993391; x=1778598191;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UKYwXEKBkfxrwukpDctwnP55c5ugAMD8+9dw4QCucpc=;
-        b=sDOwvE6sYIDY4NWXvLip1MUwNg22iFMp9W0oeT+uUr/0SMPfVUmNXhj7kXjtMmnF4s
-         xNUxget2NkRmsqla+bZplfHCIam/kQCNHqN9Ao/jai+iIQQbNvp/yo3TAs1Yz2EGOqE5
-         7xRlp3hzUZ6QOv3qW8rfitTfWVpFmdHBejPGIwAFcxlPgWsBWp997E4hk1njWAZPK/iZ
-         HMseN/eOrg1v2BQ+XtvWs8du/cu8/GB/S19UAf2XYdTsCOq2xlWlvmPj+hdiPG+Hvwxy
-         toyvSyU2cdzfMmCHnLMnVxTccJ3DNjWjKZfpysFM5WLXheBna0usRGIhW0UqJTaQAjjW
-         FJRg==
-X-Forwarded-Encrypted: i=1; AFNElJ+wl8tLqd2CE+XM3J1RCfNotby+Xpy+XMjBjpQUOZwRpmPnRkh4LiR4kCbPBWS3nP0rwl2rvp0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIq+aTkBhVVG/9cH+8bNxOuA+k3n9cRig1lxA0Esd58a5kT4tB
-	bImimJRtXzLwssSzoorQwZtmhQsNtIc8Ps/I6Zy/MM5691tmPnO0D/FA
-X-Gm-Gg: AeBDiesVv2OVPvVgrKVKU4T3ztLqyaCjXV1qy15NiaSmWXprM/M3XvWsKslz2ZgjeBw
-	aVXHZ+BA+iW3Y038y06O+ZPH0Onv3YqXXafAvStUCAfZImFyf5jQanLiT8I886dd40T/aFRQgDz
-	AIOfkexghBnz1rOXi9KQdPAMeD5p/+fUwOJqVkKFqxA5j57O6qNmXT0h7ZwLvR91OytEuUsHyOH
-	cFntHiPKNAkUsGCUJAMyAnbCtGH5qSCya3Yr3TsYrsLUA7Qwkt3cTJGp8bK6MXtWZRE052XqYmS
-	mSYGjDw+JCAB8MBJlzl71DQTFqxbR/Btu8FrH1ORXrWlMCfcm93wt149UzDpBw5UPnMqRwCSHOQ
-	ftXn76dVbt7diP0BOlLKdwfBbe2iPqpH3DDKPYfEX8YTroU/Q5VtS7La9b9PdaJUoHdfXqrKQYB
-	IikSsaXISzl9sVNqVqbXIa/jZSOjnorsKv7cBkVrpc8jiqzxT+nJhEWcd/O7Kw+5JrsJTMIKa+Z
-	8Y=
-X-Received: by 2002:a17:903:3c47:b0:2ae:47b0:dc80 with SMTP id d9443c01a7336-2ba4d7aadebmr32397605ad.11.1777993389459;
-        Tue, 05 May 2026 08:03:09 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:94ef:a6f3:2c96:2d58])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae366c7sm143554025ad.55.2026.05.05.08.03.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 08:03:08 -0700 (PDT)
-Date: Tue, 5 May 2026 08:03:03 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Nick Dyer <nick@shmanahar.org>, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] Input: atmel_mxt_ts - fix boundary check in
- mxt_prepare_cfg_mem
-Message-ID: <afoFzH1RvBwUajER@google.com>
-References: <20260504185448.4055973-1-dmitry.torokhov@gmail.com>
- <CANiDSCv+h_ry7W1e1mFNLhont-1xigEZj6jL3m=FVgv2UC+KzQ@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MIO+l1J/X2hU36S3eZDUk/YxC27j1NGFqRlYw47vGexeuCgK7U2Z4IsGk8Q5Ycyl6zkzQBy79jVJefbaMBV4+ZxAaajq3sX8yfVV7kLy/Cx4XNagoi//JjfUAmUKNcbSesYem9PIaOPzE779X7CyYm5ueX6NciROlX9g0aHdqlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uE32fe3z; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3kiH1zys; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 5 May 2026 17:03:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1777993423;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9jeObJ50rpgkfNuNh4GvqKDfd9XAxKCOQpO9eF+O9Zc=;
+	b=uE32fe3zS9u8zUQ+VD6DHLGJnQqN25MaOZf6EeWN5O+hfwFht28WkZJjotpt+VN0tR+fx+
+	Aw9AX3IG8iWPtkV9UHiR60ZeAuzq9i0pw148HONcDOPbxQJL6fsNUovq3UDQk+Z1lCFdO8
+	aVFCCWhpCq7iLsq4LjAl9oH7USjvEEA9np057ewJoAdB57YIufBI+2YoyfhhyjiuB6UPrR
+	nYABPBc+kQhKhExXpuyd2icMzDjDTpowaQN7XHFR+p0sfx8ppK8kbb6dbFu1AmMT/e5Pkf
+	MQZFpRxde56OfzdTDF74c7vGLXMUtG8c/WsmiLEzBw2lgjHDqgy9Jt9Nt7U7AQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1777993423;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9jeObJ50rpgkfNuNh4GvqKDfd9XAxKCOQpO9eF+O9Zc=;
+	b=3kiH1zysGnF3cWBWGrygXcD5AFxrZDRJznIst3RYw/o8Q7s6unc6jNgXDt4P0xN4tHXXpT
+	DvzFZ3FLjIdJMhCg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
+	axboe@kernel.dk
+Cc: linux-block@vger.kernel.org, clrkwllms@kernel.org, rostedt@goodmis.org,
+	ming.lei@redhat.com, muchun.song@linux.dev,
+	mkhalfella@purestorage.com, chris.friesen@windriver.com,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-rt-users@vger.kernel.org, stable@vger.kernel.org,
+	ionut_n2001@yahoo.com, sunlightlinux@gmail.com
+Subject: Re: [PATCH v5 0/1] block/blk-mq: use atomic_t for quiesce_depth to
+ avoid lock contention on RT
+Message-ID: <20260505150341.me97WNAn@linutronix.de>
+References: <20260303073744.20585-1-ionut.nechita@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CANiDSCv+h_ry7W1e1mFNLhont-1xigEZj6jL3m=FVgv2UC+KzQ@mail.gmail.com>
-X-Rspamd-Queue-Id: 6EECD4CFFDE
+In-Reply-To: <20260303073744.20585-1-ionut.nechita@windriver.com>
+X-Rspamd-Queue-Id: 175A54D004F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244191-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244192-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,goodmis.org,redhat.com,linux.dev,purestorage.com,windriver.com,lists.linux.dev,yahoo.com,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:dkim,linutronix.de:mid]
 
-Hi Ricardo,
+On 2026-03-03 09:37:43 [+0200], Ionut Nechita (Wind River) wrote:
+> Hi Jens,
 
-On Tue, May 05, 2026 at 11:08:15AM +0200, Ricardo Ribalda wrote:
-> HI Dmitry
+Hi Jens,
+
+> This is v5 of the fix for the RT kernel performance regression caused by
+> commit 6bda857bcbb86 ("block: fix ordering between checking
+> QUEUE_FLAG_QUIESCED request adding").
 > 
-> FWIW this patch looks correct to me...
+> Changes since v4 (Feb 13):
+> - Rebased on top of linux-next (20260302)
+> - No code changes
 
-Thank you for looking this over.
+Anything wrong with this?
 
-> 
-> Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-> 
-> But there are a couple of things that look weird.
-> 
-> 1) The patch line (1503) does not seem to match your tree
-> https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/tree/drivers/input/touchscreen/atmel_mxt_ts.c#n1503
-
-Yeah, I have an unrelated path in my queue that affects line offsets,
-
-> 
-> 2) The sscanf just before this check has two conversions (val and
-> offset), but you only check for ret != 1. Should't it be ret !=2? or I
-> am missing something?
-
-"%n" format specifier does not increment number of successfully parsed
-elements returned by sscanf(). It kind of makes sense although may look
-surprising.
-
-Thanks.
-
--- 
-Dmitry
+Sebastian
 
