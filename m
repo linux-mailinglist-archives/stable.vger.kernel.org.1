@@ -1,98 +1,98 @@
-Return-Path: <stable+bounces-243991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0RgHJfuV+Wlg+AIAu9opvQ
-	(envelope-from <stable+bounces-243991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:02:19 +0200
+	id +EISJqaW+Wl9+AIAu9opvQ
+	(envelope-from <stable+bounces-243994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:05:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C8B4C768D
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:02:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F764C775D
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 09:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DE0EF30260ED
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 07:01:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AEC023010BCC
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 07:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7947A3D522F;
-	Tue,  5 May 2026 07:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02F93D6478;
+	Tue,  5 May 2026 07:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gZrFztV5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SblfkwJW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d9+mw5rO";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AtNiF9Ko"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406B23D1706
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 07:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EAD3D565E
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 07:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777964414; cv=none; b=ArzTP1GX+NwQ7UjTiETa7kx6v2OfwuGlszpYvUJLz68gHf/qU2OxrZdAMViv1loMFohioLn/p7wb/SydvSYOr/INYrE4YYFXTmQNwuyUPkATQ4f5N68VXLoa+XVF/ek6lnDGhIiTt9xHmeQatfuA6pBDfy06/9RCjPFNIxQNaEk=
+	t=1777964467; cv=none; b=NiXGnb5Jrv4gfLKB6c79NkeAXnbAHNVvX2Z35eknPMX6LYesEGpWzB/xDDI9N9ovikHaJOb1EjnWRTNJH5r/ziRq9BUeRcn+sNt60uWFrrr52a5Vr2eGzuxbmxlgNxbChpj0a63ilUBg9natOHiPNGRs+8xnGx9tICwO6R6Jo7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777964414; c=relaxed/simple;
-	bh=4C1O+8Yb28gsJ7ML7nEymKcrBpr/Esj8D8nSpfVwuLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LcDBtIWt5/iJ8oxHXGdHaseRAf73wpgTVGlRPNWxeILmHqipdNDzOVXFdO6keBaiSSy7LU6BMxp3hn6yLBP3gbm6yAMb6hCsl6zUHnYyBk8QE7x7P9YFhw//8DDNmKtuZOEVqw4ejFL6aIY7pRsJp1lrA32SWX8o5POzXUSurwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gZrFztV5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SblfkwJW; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1777964467; c=relaxed/simple;
+	bh=3LvJ5/xV1RQZaGHxF6pNpvvDu+FnGFMU5F1qw0qXnjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DsQUx5XVoGBorhJHUk4Hgw+bTRkxTL1JjmmCBihHceO5F3VbKphX69Y4DGHiUGFFQVt2ke0iDntmralN5C3bx3NIVpUQ8czl0tilTVZJdGMgW15OgdBLc5AzOcukgGiM7NRifaBISdeLxjMmYkhlfbYQhYZkzpvz0Uzbo8OGhS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d9+mw5rO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AtNiF9Ko; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777964402;
+	s=mimecast20190719; t=1777964464;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=x2E3eylXZgkiQ5B17tOE4z6voBdoulQpJBVyOORx3Bk=;
-	b=gZrFztV56/TazIH0SLiUt4w4wHRXL8mbCWLyi14LnQ0w70kuOwwmUQZ9mGUutVOjg5QW3G
-	3etbkZdhVHzBOJAffnTWnTkIh14qRejbp24/prZPUQQNx+bzeqTJm8CAPkc3jlW81sDIVj
-	mpJnqndyUwFJre5hhKSKG397MV23hMc=
+	bh=nmU0xMG7ra+orDcAl7Q5QIsymSvh/y1zuyvrvlpHwIA=;
+	b=d9+mw5rOvvJ6URvKpHJrYyA5zmq9R53rppQ0sGhwK5ENoANMbOAeyTP5XYDO1kJUtNGziB
+	Yal9lV/juEKfhFhT/XyL7WWZE9G0pmNeBJbQTTz4tFG1+IX12OtdK5MgI97Nv8/EFO0fdF
+	Mge6x809fVKHRvgwfOCfEWziN/ywoPg=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-qsZeOyvrOyaJ-iTNTwoQNQ-1; Tue, 05 May 2026 03:00:00 -0400
-X-MC-Unique: qsZeOyvrOyaJ-iTNTwoQNQ-1
-X-Mimecast-MFC-AGG-ID: qsZeOyvrOyaJ-iTNTwoQNQ_1777964400
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44d9ace59efso1507759f8f.1
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 00:00:00 -0700 (PDT)
+ us-mta-193-X-eZvOt6N4uWdNRCWgQ9IA-1; Tue, 05 May 2026 03:01:02 -0400
+X-MC-Unique: X-eZvOt6N4uWdNRCWgQ9IA-1
+X-Mimecast-MFC-AGG-ID: X-eZvOt6N4uWdNRCWgQ9IA_1777964462
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44ffa15dc8cso291671f8f.1
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 00:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777964399; x=1778569199; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1777964461; x=1778569261; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x2E3eylXZgkiQ5B17tOE4z6voBdoulQpJBVyOORx3Bk=;
-        b=SblfkwJWSZNAg6DHpBf/Q5w9WyE8NRnBNqN2ofgWgbLVpPg8XXLCa+IIzUo3HJuUF4
-         gZLjHA3kpfGMy0rbLWYetQ37MCC1r44fvVbvnHk1+olBWktXGeofm7YHwiQ8pVjXf4e2
-         88tMRzSn0ebbhPyYT9lk9J9Mwke23S1+U/xwQPQ8e5RtxRP5an4ym8Eb9UOBCCj9bFho
-         NHtGKmpDI8FpxhwyRS6yidMwJldj0TenSuQYIYn0aTphWarI54aIMqFtbOwsqkw9ZK0R
-         1/hlL+InP6W0p0earCJ2ngRGlCUihFHy5a4LauWRUHyqEU1sGEoYEZ6wowAt5pOoypLV
-         u6+A==
+        bh=nmU0xMG7ra+orDcAl7Q5QIsymSvh/y1zuyvrvlpHwIA=;
+        b=AtNiF9KolNQgaQ8giHNIOWxzmazjZhvMx8S0AR7Gm9IB2vLlHPlBIsZZ9dSd2bidgI
+         B3lU7/sAFJl3ZBV34kPAeswIWKRn2tIsRKdTRy9+WJJ1vhPAnQ8ssrNrcTf9G3T8P2lZ
+         ysClWME/Q/BpnzXjuTNA4+FEiEImxdaHp7Vxe9lXgHo/MvbirTzxW80RMTBS4UossJDw
+         GlV0Vv3gcxhaDZRcC5sEK4YkiEHOs7DLl9/FWN9JwJHD0+RM6oyxk4Y/SOFl+BcLe9sI
+         Dg5HvZHZwtVXvOnrHzyP5hh8ZucS/l7oM6vdB8ApmKE82CxQBTV7SjeSeMLj5//ON39U
+         e4sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777964399; x=1778569199;
+        d=1e100.net; s=20251104; t=1777964461; x=1778569261;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x2E3eylXZgkiQ5B17tOE4z6voBdoulQpJBVyOORx3Bk=;
-        b=H5BWjBq6C24vHXBePfOvRDsGUsMuOTL9KaOC16fMrYR/jYGh72A6upK5qCuz6j+0d8
-         B9tAGQgGOnbiB6fPt023CEdUVbObYlepRks+lZYg1ESnTqHcjEZrzH0VQkVvsJyI3en5
-         2G/9OjvUj+fHmEF2VBSFCcZQzKWvvCnKDbKP5dBPeZvaE3upfxckBCwrL1o6MgWF9IZ1
-         IuHC8ZWdW/GMh9f3Ynh2JgOitWn5rKYurMkgbDPwmnneXckf3bfOZX9P83OkKSwV8GvY
-         O35c7eulZ+0JDejC3cGem+4JWSJsQGZ68SdZrY9WwIDBmRcgI60romnMCOaJDMRs732L
-         hxMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+EQGs0qsVJ5upgmlRzVEG6cWh6o4T16t9M8mm5Bp6Agjy/c8FD9jx2FJgjpCcEILkNTTCrv6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn/Ad0/kq7NpbVrMOGRT2t54WxrL3SKBWfgZE4MCs0tc5mMB+C
-	HzWJwI1wSIinOw27jK9Ed+9kED/QBMDrm0aCGd61G16eIMVdqgxeOH9oJIrB3IZOM9WRxiSHIZY
-	AdcqzNDtuOOJjfVAmBYwOS6WDe30eV+1MHf4w4p8HIR5ruTxj3ZJXbLKcZQ==
-X-Gm-Gg: AeBDievviAU7kM4XrqbScAThNvYIXcbTgHCH8o3Tw1w4oPoNqrIJ5vRX5P9OUz8NLKw
-	XTcnuV0mGvRSxtUAAt7lvUNFgvzO2Xlq8RmHRQs2VkYBmh//ur/XHG5qgf+O1HSY5XLxiKGdg8Y
-	iBqDlJgCPpjo8p121r5JeED5lkikjFvM+7trrs5ktSm/ByM8vocYUlzm7wYLXuZCcp02hCTaFLX
-	cAx7Ndlw0BV4oLsCpMk6WOIhNphdjB8+3Dlj8qYrhujOuEO6dsCZ77CzqjJRt7EYVGmg7kcRnQZ
-	oIYXqG84kb658gZAka4zUu/qmKw1zuTIa6VfLOX1XVPK6fwarbmH6NrbZOHKAwpVb1UBhkH5kpz
-	jM+noBBfMJeVI8VFNzYsANZmRFXkK5n8k/i6/z8Ctr0Dg/KMBMWr1m+VpE7Jn6nKmZyonaSmQWF
-	3WJnaolxfK1law1QHh2MlnqwW9DgAmOSOw1fyb1jw=
-X-Received: by 2002:a05:6000:24c9:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-44bb65dfc18mr19767204f8f.32.1777964398943;
-        Mon, 04 May 2026 23:59:58 -0700 (PDT)
-X-Received: by 2002:a05:6000:24c9:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-44bb65dfc18mr19767108f8f.32.1777964398115;
-        Mon, 04 May 2026 23:59:58 -0700 (PDT)
+        bh=nmU0xMG7ra+orDcAl7Q5QIsymSvh/y1zuyvrvlpHwIA=;
+        b=oAXKc41grrLLdy1k46OJHCfTmQjTlxpbdCe7WF8Ut8s/Lq6W6BRUkYXv5sXeKaTSVx
+         9sumQ1nmzv82bxnZ+BA0wGcztgyV0AdQLWeGAYV+Y/Lb+cfq9aMeSMoG5gPyasi920GN
+         6JWEz9Pkvpr13M18rUXnYb1VSbX4nAPq0UGV4MIwN1tH+rKPzE7NiBuE+KVmwAJa/QBd
+         kdT2qS++2gZWowGbO9pZrW1a2bDkQ8kYTEl/twKxP4czd0SNenkoyXdnnPTkD0bgRP/a
+         gm0sFVH7yx8lShPnIpb3qNZBimOcITwAcBgkwDqmPdII5vXhM9DF8NQfD3gLQ7R4Uw1Z
+         wkPw==
+X-Forwarded-Encrypted: i=1; AFNElJ/n4QG9486/MzVkmDlAhnuG3fnmgJkiB+xfCIDeElGI9HnVBTie382RRviIR1iPYUrr5NbpSLs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt12dP8xDFW6c3hxt3QH/3PF0YIKuenPp4e3QEZi3LvvunmKA2
+	v3S25msTx0FOJX+da3cq3diKDU/hoqd34j8EBGqwSl2u/c5IinYW2tCFFn3+uRcObrhMPznbMNx
+	zsv419GI2O0qeJPg0mQbzkmDEjeaRH9dr9AA2ZlCzcJrxOfdf3HuS+6IhzLiVU57pnA==
+X-Gm-Gg: AeBDievkxd6kRC3n1yL0YE6WPWVCa46erlmm425WkkQA7mnA4BacVGDJzwNkmmzZhGE
+	0pBrwsKeX5+9ZLJ3jUbrSQMUd+UCIgFcbknOFraxgQQf/WOAv9hPC3caFZaZrx1zsZrDW3Q/tk3
+	FlwJjvtm3ne+xEexsB6852OWOUciWBEckwAmaoEB2/paNbbCGimjurVTgcaqpZC/24dLaNkNHLF
+	h1dLLO0WnFRoGE9vs2p6il0UPGV5Wsi83UCPoyO+RrEObriUf5SogWFiFQXpiLihqjXBTbwyWEM
+	kpZAfzjw8XNhjoiKunwy+t7T6oDt8fH7LrixH592tVUHL1+G8hJ1zoJfr6LKvLNW/pzYWXYptaZ
+	1VTBy1v1K0bTqYhJgkus+KDNA8vRjliQEtwpgRNf6n53mZ9SksMB4NP5tLsAYNrMwVzYoyoz3ua
+	czoKjjqDkrfUvaC1QX+G1mUfh2N2Fji8uoUicfI0s=
+X-Received: by 2002:a05:6000:24ca:b0:43d:7508:c9c9 with SMTP id ffacd0b85a97d-45005c81614mr3326417f8f.27.1777964460016;
+        Tue, 05 May 2026 00:01:00 -0700 (PDT)
+X-Received: by 2002:a05:6000:24ca:b0:43d:7508:c9c9 with SMTP id ffacd0b85a97d-45005c81614mr3326348f8f.27.1777964459369;
+        Tue, 05 May 2026 00:00:59 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.106.181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4505238e6e0sm2069200f8f.6.2026.05.04.23.59.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-450524833e1sm2243371f8f.2.2026.05.05.00.00.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 23:59:57 -0700 (PDT)
+        Tue, 05 May 2026 00:00:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -100,9 +100,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Alexander Bulekov <bkov@amazon.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	stable@vger.kernel.org
-Subject: [PATCH 6.12.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
-Date: Tue,  5 May 2026 08:59:56 +0200
-Message-ID: <20260505065956.194882-1-pbonzini@redhat.com>
+Subject: [PATCH 6.6.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
+Date: Tue,  5 May 2026 09:00:57 +0200
+Message-ID: <20260505070057.198705-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -111,7 +111,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 31C8B4C768D
+X-Rspamd-Queue-Id: 34F764C775D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -119,13 +119,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243991-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-243994-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	MIME_TRACE(0.00)[0:+];
@@ -138,9 +138,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[redhat.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amazon.co.uk:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.co.uk:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
 From: Sean Christopherson <seanjc@google.com>
 
@@ -205,7 +205,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 14 insertions(+), 21 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 2c11819bd216..d288c60ae200 100644
+index 0dc804149b0f..774bc26b8235 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
 @@ -182,6 +182,8 @@ struct kmem_cache *mmu_page_header_cache;
@@ -217,7 +217,7 @@ index 2c11819bd216..d288c60ae200 100644
  
  struct kvm_mmu_role_regs {
  	const unsigned long cr0;
-@@ -1187,19 +1189,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
+@@ -1194,19 +1196,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
  		rmap_remove(kvm, sptep);
  }
  
@@ -237,7 +237,7 @@ index 2c11819bd216..d288c60ae200 100644
  /*
   * Write-protect on the specified @sptep, @pt_protect indicates whether
   * spte write-protection is caused by protecting shadow page table.
-@@ -2342,7 +2331,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
+@@ -2350,7 +2339,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
  {
  	union kvm_mmu_page_role role;
  
@@ -247,7 +247,7 @@ index 2c11819bd216..d288c60ae200 100644
  		return ERR_PTR(-EEXIST);
  
  	role = kvm_mmu_child_role(sptep, direct, access);
-@@ -2420,13 +2410,16 @@ static void __link_shadow_page(struct kvm *kvm,
+@@ -2428,13 +2418,16 @@ static void __link_shadow_page(struct kvm *kvm,
  
  	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != PT_WRITABLE_MASK);
  
