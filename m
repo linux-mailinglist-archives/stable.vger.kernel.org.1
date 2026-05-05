@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-244169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uC4aE9v/+WljHAMAu9opvQ
-	(envelope-from <stable+bounces-244169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:34:03 +0200
+	id TZOXIvr/+Wl1HAMAu9opvQ
+	(envelope-from <stable+bounces-244170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:34:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962794CF7E8
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:34:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0707E4CF833
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A857530C6CE6
+	by tor.lore.kernel.org (Postfix) with ESMTP id E204B308DBBF
 	for <lists+stable@lfdr.de>; Tue,  5 May 2026 14:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AC0480958;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269EB480962;
 	Tue,  5 May 2026 14:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWdYCPpl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6GeaPf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA08148034A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFA9480354;
 	Tue,  5 May 2026 14:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777991314; cv=none; b=Ps+0Xo3pHDHpR5bUyLMmFWNq/7OGIWHsm3YGbyAgRJ3u5eMmMvgbB+VadZoW0egyOuXGd6dnPlgfTGR+dTZNJCIumxQAKvKO59CNXDsl1zY3fUqxoOY0pP2iOXS/sn+NFDv8sU6PxkmAZ8kuOe14qjip1CtjCe1e/WJovujKO4s=
+	t=1777991314; cv=none; b=LE6cur4MAa6R3WSfvLh8gVths/Q0LzTiEJ2m4FaKrllp/F3lJ7FyOsxwC/6kknfMDQl9/y7H7TIDxCONWfC9hyoGD+ocAm1sKH+DLEv6+ao1YIbfqvE2NLCX+pSAlUX86+kZpT0P+qF7T+8nRNCIMokidCoIob77W1RCoawjoro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777991314; c=relaxed/simple;
-	bh=K6HCzeH4GdbTOgUpIKqBp7V+qgvqdBS9GyKwFcHGQsk=;
+	bh=3CYu/nGSgQGBuqnz2Dwr8lbzgdlgelmyYppWDzvi27M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzXy1zjR2ZTorONHzvJkn2u+0/JaYUtZdqC+YAn7y+/QF0pyJQae1g+s/Ziz8+eeG7Fq+9lNJSHdpX9PpwcRRjhtJwLD90VOg/g/jimFwWZzUghFdjIf09REVh26S3JQTPCxBedseysoLx9CUVc5qllaX6lS4PAjfGLfQuW+XSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWdYCPpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6E5C2BD01;
+	 MIME-Version; b=aWgh6ZYk6UiL8LHlUO/44tc8LiMkBMouVBVEWPAZobYBuQd85CkGrjd9oBmSE6AeicrUcLigJU+Tqyh0BicJrtJUs6zLcsoPZh1N4LAeRgMmoYQh0xEiBew09sUgN8O2wn7D2xZKUGhwBgMXRxgqV5glQURDq0GNAwjeVtOWTAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6GeaPf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C9EC2BCFC;
 	Tue,  5 May 2026 14:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777991314;
-	bh=K6HCzeH4GdbTOgUpIKqBp7V+qgvqdBS9GyKwFcHGQsk=;
+	bh=3CYu/nGSgQGBuqnz2Dwr8lbzgdlgelmyYppWDzvi27M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWdYCPplYbddW/qIjCLcnF3uNNkU4++X5v/0atzNwPppUG58ZKVhmWawSa0dDm8xE
-	 1BZL3stQ1E0XtD5Q4ZPiNSRU1gk3u8zPMOAJF0ytFGpoNNRYYe13PBw23GTknkGlhs
-	 JZySX+Smm1gQX1slpKSJWVRZD6NSgpV6evsiIk8AJSCsFyAdp/BU+Bzkpb1TMXhHK/
-	 avHTIPSH8roZKFKXSqGytVPS1mWehkU8YEfkISQKHRWpcMQoe74vum68IOwMBmRYJo
-	 oSWFxM/0aQ7g+zoooN1F1mJYeFv3GiyWROoX2qjw929mmPjIrwfLGMes+A9IrJjB97
-	 oY4EINVlA6mOw==
+	b=Y6GeaPf/2D48V/BEH07sJpA+gXuQuG/EwI8R1FF4MpH6+Tz5H3lYJN/rVhyHwbQuN
+	 6cux5ndo+tIbQ+0zfjq6m/8nU7uZ0wEMoc0mlaf5epx/wB9rHXN9xvrdNL1B4UsU5g
+	 uY787lgyhPTYCziEY2TDiJe+VhNpYCdmuVEogJ0S+BZZvfyE4z0IuN+pgvGnUw7X7y
+	 dQ/Km0yEri/1muADWoOVeQWTBAqQmhzvfwzNyDcQKDgcflmiAbLFKgd0sZoFABLrJq
+	 jD357fUkiGff7gS2YuiR17yt0UmxjJPD+ac3QVsHrv097tDi/H3OswwmGaT+CuiZwr
+	 yYXKSeK5eTJIg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wKGlE-00000003Ksw-0UjK;
+	id 1wKGlE-00000003Kt0-0ZGF;
 	Tue, 05 May 2026 16:28:32 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Wolfram Sang <wsa+renesas@sang-engineering.com>
@@ -55,9 +55,9 @@ Cc: Andi Shyti <andi.shyti@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 3/8] i2c: core: fix adapter debugfs creation
-Date: Tue,  5 May 2026 16:25:42 +0200
-Message-ID: <20260505142547.795054-4-johan@kernel.org>
+Subject: [PATCH 5/8] i2c: core: fix adapter registration race
+Date: Tue,  5 May 2026 16:25:44 +0200
+Message-ID: <20260505142547.795054-6-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260505142547.795054-1-johan@kernel.org>
 References: <20260505142547.795054-1-johan@kernel.org>
@@ -68,7 +68,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 962794CF7E8
+X-Rspamd-Queue-Id: 0707E4CF833
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -76,13 +76,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244169-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244170-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
@@ -95,59 +95,58 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sang-engineering.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-Clients can be registered from bus notifier callbacks so the debugfs
-directory needs to be created before registering the adapter as clients
-use that directory as their debugfs parent.
+Adapters can be looked up based on their id using i2c_get_adapter()
+which takes a reference to the embedded struct device.
 
-Move debugfs creation before adapter registration to avoid having
-clients create their debugfs directories in the debugfs root (which is
-also more likely to fail due to name collisions).
+Make sure that the adapter (including its struct device) has been
+initialised before adding it to the IDR to avoid accessing uninitialised
+data which could, for example, lead to NULL-pointer dereferences or
+use-after-free.
 
-Fixes: 73febd775bdb ("i2c: create debugfs entry per adapter")
-Cc: stable@vger.kernel.org	# 6.8
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
+Cc: stable@vger.kernel.org	# 2.6.22
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/i2c/i2c-core-base.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/i2c/i2c-core-base.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 2832e1aa0ca3..6f198d1325a6 100644
+index 31f7d43e4ab5..be909d6bc776 100644
 --- a/drivers/i2c/i2c-core-base.c
 +++ b/drivers/i2c/i2c-core-base.c
-@@ -1575,14 +1575,14 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
- 	pm_suspend_ignore_children(&adap->dev, true);
- 	pm_runtime_enable(&adap->dev);
- 
-+	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
-+
- 	res = device_add(&adap->dev);
- 	if (res) {
- 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
--		goto err_put_adap;
-+		goto err_remove_debugfs;
- 	}
- 
--	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
--
- 	res = i2c_setup_smbus_alert(adap);
+@@ -1587,6 +1587,10 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
  	if (res)
  		goto out_reg;
-@@ -1606,8 +1606,9 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
  
- out_reg:
- 	i2c_deregister_clients(adap);
--	debugfs_remove_recursive(adap->debugfs);
- 	device_del(&adap->dev);
-+err_remove_debugfs:
-+	debugfs_remove_recursive(adap->debugfs);
- err_put_adap:
- 	init_completion(&adap->dev_released);
- 	put_device(&adap->dev);
++	mutex_lock(&core_lock);
++	idr_replace(&i2c_adapter_idr, adap, adap->nr);
++	mutex_unlock(&core_lock);
++
+ 	dev_dbg(&adap->dev, "adapter [%s] registered\n", adap->name);
+ 
+ 	/* create pre-declared device nodes */
+@@ -1633,7 +1637,7 @@ static int __i2c_add_numbered_adapter(struct i2c_adapter *adap)
+ 	int id;
+ 
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adap, adap->nr, adap->nr + 1, GFP_KERNEL);
++	id = idr_alloc(&i2c_adapter_idr, NULL, adap->nr, adap->nr + 1, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
+ 		return id == -ENOSPC ? -EBUSY : id;
+@@ -1667,7 +1671,7 @@ int i2c_add_adapter(struct i2c_adapter *adapter)
+ 	}
+ 
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adapter,
++	id = idr_alloc(&i2c_adapter_idr, NULL,
+ 		       __i2c_first_dynamic_bus_num, 0, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
 -- 
 2.53.0
 
