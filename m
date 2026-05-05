@@ -1,276 +1,327 @@
-Return-Path: <stable+bounces-244220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBO8ItMm+mmHKQMAu9opvQ
-	(envelope-from <stable+bounces-244220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:20:19 +0200
+	id iLgtKOkm+mmHKQMAu9opvQ
+	(envelope-from <stable+bounces-244221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:20:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAF04D1F39
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAFD4D1F4F
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A2E03056609
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:20:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D4E2303E4A2
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02754A2E18;
-	Tue,  5 May 2026 17:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4160648B384;
+	Tue,  5 May 2026 17:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mP6VW3C6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QLffbfO/"
+	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="DxdSm7o0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE9B480947
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 17:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778001606; cv=none; b=H7lciPZ0kx0a856ltOGh+KogrIElbh8wX3NsuWpNY9AB9KegnyYcosK6WhQYKAyyWKRe1NU8FYZ0rYbqTKpTCwTXbZfv1GlLX16+6fhTublAdK1mmwyKTOFtaqpg97RC4GD00PtpVXizrvpuY56tVQ16rjWbY7PhFWb0LRZwCGk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778001606; c=relaxed/simple;
-	bh=Mibi20GbdEpVZ30vfo88+fh/vIUl1z1OmOI9By34Vps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uVJry5414tDqMxG90oFQ9r4ALR3AYxb5P0YYp+BHgiS9HVaTPmE/OUJSFo0c/H3hy8BVAOxNpIQYDxqxJdhXFfJ5FQmirK1kFppRwu+xQJSjFYjNHFhHBEH2FHqD4E3PbAgkOMSSczmNoEfOpfqx5u4SQlOUZisIcTU5Xt1SCLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mP6VW3C6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QLffbfO/; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 645EK0pa912107
-	for <stable@vger.kernel.org>; Tue, 5 May 2026 17:20:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=5+dbc3v3OtmBl3m6PxPaJUCW
-	h3BmROrwWQqLBIPzX2w=; b=mP6VW3C6CQRjZ6exLKI8+tEqoW+5Gt3Eg8GRENBB
-	Uij9G0SWox1ecPB336oLLe3usbjRLn4i+yfMt5aJQcLoelDB3oc3HO4LFnnNMC2y
-	ju3cfbqVNctTk8dy0nRu1YwtFQaTsKr5inlg1mCPQvBA40Jn442XXBJg3NOLIWqp
-	07Z+j72cQINOMX1PMTF5XCgUd/Oh+XEj2KQ9F3Z8HY77kc28Mls8ZcLrh8C5UQ2W
-	KHymiLQtlo4QsDMVuhVc4KwoCt9pTmDfCKTp0nfJB4FTeAMyyzzB0zwQgrmNLctX
-	0Sak6xuzw25EXWpDTny8ozLqiNsb/wnN4Wzi/Gi2zME58Q==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dyj7jgsyb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 05 May 2026 17:20:03 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2b2eba42b8dso51405385ad.0
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 10:20:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778001603; x=1778606403; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5+dbc3v3OtmBl3m6PxPaJUCWh3BmROrwWQqLBIPzX2w=;
-        b=QLffbfO/uZlHBjCCPPUGB0m92m4qgxXKyT31BJuNRLCj+ERpKse5WmjYlLUTjqXfBs
-         2J91Oh/WXCWneGXWGCMedk6a/x0i5fLNlWZmgG2tpO6IU+JL18D4r1lJmoh1VKg0ymnQ
-         Ne1G6TnBwZvHSQTJYXXhlwIXNJ9PpZdHuxRckRQ281jcOiuC42DuOxFJKxwUEZVK92zN
-         9oNKxs8Qr06AXFPjInfR/c7hJB1J8Fqh6gjqghC0BMwoDBSxcLvUjtRKbNfUselswW+m
-         wI5Nj5H2pXPt+ORb7S82nzsRM5aUzgVgSHwiebeCv4IHW7Be6jqixQ0L/zpV0jF7kGkc
-         zeoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778001603; x=1778606403;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5+dbc3v3OtmBl3m6PxPaJUCWh3BmROrwWQqLBIPzX2w=;
-        b=RPZ3MPQwmM6DgYJcI96g/YooVH5qRc4Bu8UNPl1RoAqjbPilpWyeBee9cQ5/err0EF
-         kURJpwkrPdAncvkW9LE1NdU8Wyh3VlJV86OwxY2755asIi4Pgbn4uMtbywyn96Xx5efr
-         eqkVcqSgsfCVOBhCKM96k/B2C4T22DcK8KIvzXdZg6/9zuDQVZfmBrBtPZhbGXvBjR3g
-         vrdxNRQVeYfDEOPs4PLOz1IUb50Lm3rSSI4mueS9Qkk6pI1BzVeYpmfRYADsc5B+NF8g
-         nE/8ZVWytSffzkYFar41XZQSugoRQQG3LH4mbjJYGdg2PGFku2EEqQznM4p+N9O1f9Ra
-         idPg==
-X-Forwarded-Encrypted: i=1; AFNElJ/jt2nu/PHoW4gc++Sk4XKhbdWO6FqzvNDniwUe/UiHkOigAOcZ8xql/YRT7DihZ2Mnc2IY6Vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpCJi1gRyHuYmWEROYgsSFWHs7lOPI+137VyRmD3MkJqEUcsry
-	ifVGbRBKDRJ6Mdrca+pyuV80gAUEDu+DRQIUXYE4iiRnBi0EB3WuGH5jQjVOlpaWIkrwojlJ8BI
-	JPNMLdCj30MtGdGU1kFgsjEcmQZAhHBzS6YQRATUPC5xbqwCgVxrPDksIcBo=
-X-Gm-Gg: AeBDiesI3FC0Xm0n+c6YsSls2M6fFHEw0HFIew21eq4h7hdMl6dN1tyMgOGh0EN9zsK
-	QGcOG6kcefZHyhPSZrIdzZ2n3YIbD+Wpxz4g3bMGE48PGryYPFdJ00WaX9okjMqGCy7/enwz7dD
-	iRQ/Nlo7wwnwfkbt+A6G9JSOz2y291fhZN/caaumuOWjq0GlZ3ukh3D6X07m9pwuDDNk5dsyeKj
-	5WUcNcVyXC7H59aNMWFTi4OyMoL5UyDKskUbIeitckhHjEMedOQW8k4sj+rDqzfs/a7/TICwsdZ
-	t25rpEoZLbiwfwFnoKEUf8Xw76Fz/XOhiGLgezmGsG7Et8DXiuddxhzqHwBn+i17h8rrpCcCskh
-	lpPgoYQtfOB9n4gjgitggUpwjaGGNlLAN3DUn69d2AMr3OmsuHdQjMrIe2OE=
-X-Received: by 2002:a17:903:22c6:b0:2ba:6bd7:8efc with SMTP id d9443c01a7336-2ba6bd79004mr14146915ad.40.1778001602475;
-        Tue, 05 May 2026 10:20:02 -0700 (PDT)
-X-Received: by 2002:a17:903:22c6:b0:2ba:6bd7:8efc with SMTP id d9443c01a7336-2ba6bd79004mr14146395ad.40.1778001601913;
-        Tue, 05 May 2026 10:20:01 -0700 (PDT)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9caa7e791sm145314855ad.7.2026.05.05.10.19.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 10:20:01 -0700 (PDT)
-Date: Tue, 5 May 2026 22:49:54 +0530
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-        Amol Maheshwari <amahesh@qti.qualcomm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thierry Escande <thierry.escande@linaro.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] misc: fastrpc: Fix NULL pointer dereference in
- rpmsg callback
-Message-ID: <20260505171954.uto4a7jmxptlaa5v@hu-mojha-hyd.qualcomm.com>
-References: <20260504171701.18164-1-mukesh.ojha@oss.qualcomm.com>
- <afjprOhBhP15-2lU@baldur>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F51F3E929C;
+	Tue,  5 May 2026 17:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778001636; cv=pass; b=MX2TdAqtLLOzNPuHUwIgPkl85nyBP3uIv5mbsGVd2NTJpE8OLdD23B9jUAYreMw4Qka04Nx3fAztIQL1WjswjdpZqiceMIbQsF/HoAXGx/WtJ3P/lD5asyshW0VTR/d8qAuy10z6hDcpEoXRVQ2UprrBCGowOhDC+wZfb6zxoRI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778001636; c=relaxed/simple;
+	bh=4e4lWMK8bWxQq+EMq2tVBEdPS5zH9FNybcB/TtKS1gk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=eebNQqwX6fEsgcDoO5fUrCZfrv6QEP7j7MjDZEu0Xbu7bnQi6AYBQByjTxrVyd4aJ/rHc8VY2uVCE5RdusEdyaExgj3wD7Gs4XJTlGYubKXFMnY8oJKCRbbk/U6I7dP2O9zmYxKILdt8tyTxcAPLLJgoz4qWlhRVbzu6u8VP0D8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=DxdSm7o0; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
+ARC-Seal: i=1; a=rsa-sha256; t=1778001624; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Qlc++u5lcJuLMHKTI7rrkbMYoVwg/7mxJWkZ/yxH4ckiyb/unLAns8ydxBHuvMg4jZ1qwtakixs1UaTRiGEiPMllZa6XVF8QVVNWaVQuhaQgP13VEKZsHbYPuOT0pA4oww56QjWtmkYi7xMn6furv8k6r20CzDg3q1+tpgPLgXE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1778001624; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=FmjkcII2P5r6Qmn17aMfMDneBiZpDrCCAGtIXnvqg/s=; 
+	b=fTsqzUCjtJYPAu9A6osYJCfeqOfFUGJWE8yGADxQwS9wzYNJ4ybM7hFxH0aSPyTzlsekMxb4u0jbFSw+3mW7stXDt4cAF57ecaWprAY2P3Lwu9XAzj0FhBL2NTHroH1uypVnRW/AsNe2IKgJH8Me1m+njxH4ws+1lKXgqNlqPPk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=rong.moe;
+	spf=pass  smtp.mailfrom=i@rong.moe;
+	dmarc=pass header.from=<i@rong.moe>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778001624;
+	s=zmail2048; d=rong.moe; i=i@rong.moe;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=FmjkcII2P5r6Qmn17aMfMDneBiZpDrCCAGtIXnvqg/s=;
+	b=DxdSm7o0eqmuWhQkMyK8Qb6YHmlKvsFnuBwExpYUW9gy5Rf5VGqEnyanv0TjG1+t
+	aO8JlLpXCcyANJLzfyRigfpO4WeepSI9PLwVEkBvxU3E5kVlCar0wIIHKKXKZaOBnwU
+	hHccZB1+ARyFpuvapIhnvkXTtu4S++HWdiOPwQqsNKRt8nHafGQI2h1lY+nAiT4EFrC
+	xuMGfK/hLoKK+9GiZ9h2rUQeFmkUSt4IrC64fsWG3y7C7SaE1k2GmYrcgd8XKnDFGLo
+	FFgClN5zTkEzGbpzEAToqRvSdPqWrNZXWW0U33+4csTvFT1UdV4F6RbSVUSeALX3AgD
+	gjt6wVPfIQ==
+Received: by mx.zohomail.com with SMTPS id 1778001622755711.0439934026193;
+	Tue, 5 May 2026 10:20:22 -0700 (PDT)
+Date: Wed, 06 May 2026 01:20:15 +0800
+From: Rong Zhang <i@rong.moe>
+To: =?ISO-8859-1?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+CC: "Derek J. Clark" <derekjohn.clark@gmail.com>,
+ Hans de Goede <hansg@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet <corbet@lwn.net>,
+ Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v10_06/16=5D_platform/x86=3A_lenovo-wmi-ot?=
+ =?US-ASCII?Q?her=3A_Limit_adding_attributes_to_supported_devices?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <a824cd39-8e28-96db-df59-599c283ffcdb@linux.intel.com>
+References: <20260412211121.2220556-1-derekjohn.clark@gmail.com> <20260412211121.2220556-7-derekjohn.clark@gmail.com> <1ce1d6f6-9196-c8a1-913d-4bdec2b1af80@linux.intel.com> <AA4D5F92-E158-48D1-85FC-CAA72A4EDD8A@gmail.com> <6d1aa0f0bbbd82fd0633619ec4905419db15592e.camel@rong.moe> <a824cd39-8e28-96db-df59-599c283ffcdb@linux.intel.com>
+Message-ID: <13A5927F-E79C-4F09-B7D9-92A1C777E5AC@rong.moe>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afjprOhBhP15-2lU@baldur>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDE2NyBTYWx0ZWRfX3GL09tXhoVRC
- ygUdbrEpX4l17d1X29raXuQLJiJBiMkKmXTkO7KqARQgYg5/Fd4eJlPL2JLflHxMqudO48tG3Cq
- I/o/Sfj3cM46OuTEVtDkJRZ3AqmXZgxxhFLwHLRJIgEtDJDR6p8NLW0yWEU91jXoInKzDXTsgw0
- zY1Ge/UpD/PuAmG4I5MW8MstsLiAqOcZIfW0oGD7+VDzKpLHD2lj1mlyu9Dr14HZEDO5v9axBdO
- EoXxARpbjybuqvXGoLR7v0COtWAoEbzlKeYvN1hLoytXz5ES6OCpgjXOdx94d3Rha0U8lpaKlSz
- NkKATOGNJosirBikKJbN1smkv2+jHXSI/ZIGjiqj68ijrn+i6qXs7XclS2/VN3zxSrnplHzjU85
- FyjMXmqVXzgOURwwUsaoL2eJX5+GPIkuVC2EqJ0PS4pBC/N0DKSGntazXgWCHx7qinDOvanYjqZ
- mJahldD3sU0FR78+JOA==
-X-Proofpoint-GUID: hCLxMsKnlcB-NUxCnjKSv3m88GyJSoa4
-X-Authority-Analysis: v=2.4 cv=FpA1OWrq c=1 sm=1 tr=0 ts=69fa26c3 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=_ffyFokNbbV7GOtJ6hsA:9 a=CjuIK1q_8ugA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-ORIG-GUID: hCLxMsKnlcB-NUxCnjKSv3m88GyJSoa4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
- impostorscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050167
-X-Rspamd-Queue-Id: DAAF04D1F39
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 0EAFD4D1F4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [0.55 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	SUBJ_EXCESS_QP(1.20)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[rong.moe,none];
+	R_DKIM_ALLOW(-0.20)[rong.moe:s=zmail2048];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hu-mojha-hyd.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim,qualcomm.com:email];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244220-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mukesh.ojha@oss.qualcomm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244221-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,squebb.ca,gmx.de,lwn.net,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[i@rong.moe,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[rong.moe:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[squebb.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,rong.moe:email,rong.moe:dkim,rong.moe:mid]
 
-On Mon, May 04, 2026 at 01:53:37PM -0500, Bjorn Andersson wrote:
-> On Mon, May 04, 2026 at 10:47:00PM +0530, Mukesh Ojha wrote:
-> > A NULL pointer dereference was observed on Hawi at boot when the DSP
-> > sends a glink message before fastrpc_rpmsg_probe() has completed
-> > initialization:
-> > 
-> >   Unable to handle kernel NULL pointer dereference at virtual address 0000000000000178
-> >   pc : _raw_spin_lock_irqsave+0x34/0x8c
-> >   lr : fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-> >   ...
-> >   Call trace:
-> >    _raw_spin_lock_irqsave+0x34/0x8c (P)
-> >    fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-> >    qcom_glink_native_rx+0x538/0x6a4
-> >    qcom_glink_smem_intr+0x14/0x24 [qcom_glink_smem]
-> > 
-> > The faulting address 0x178 corresponds to the lock variable inside
-> > struct fastrpc_channel_ctx, confirming that cctx is NULL when
-> > fastrpc_rpmsg_callback() attempts to take the spinlock.
-> > 
-> > There are two issues here. First, dev_set_drvdata() is called before
-> > spin_lock_init() and idr_init(), leaving a window where the callback
-> > can retrieve a valid cctx pointer but operate on an uninitialized
-> > spinlock. Second, the rpmsg channel becomes live as soon as the driver
-> > is bound, so fastrpc_rpmsg_callback() can fire before dev_set_drvdata()
-> > is called at all, resulting in dev_get_drvdata() returning NULL.
-> > 
-> > Fix both issues by moving all cctx initialization ahead of
-> > dev_set_drvdata() so the structure is fully initialized before it
-> > becomes visible to the callback, and add a NULL check in
-> > fastrpc_rpmsg_callback() as a guard against any remaining window.
-> > 
-> > Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> 
-> The fix looks good to me.
-> 
-> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-> 
-> 
-> But I can't help wonder, what's in that message? Should we make sure to
-> handle it, longer term?
+Hi Ilpo,
+
+=E4=BA=8E 2026=E5=B9=B45=E6=9C=885=E6=97=A5 GMT+08:00 18:25:34=EF=BC=8C"Il=
+po J=C3=A4rvinen" <ilpo=2Ejarvinen@linux=2Eintel=2Ecom> =E5=86=99=E9=81=93=
+=EF=BC=9A
+>On Fri, 1 May 2026, Rong Zhang wrote:
+>> On Thu, 2026-04-30 at 07:56 -0700, Derek J=2E Clark wrote:
+>> > On April 30, 2026 7:01:55 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo=2Ejarvin=
+en@linux=2Eintel=2Ecom> wrote:
+>> > > On Sun, 12 Apr 2026, Derek J=2E Clark wrote:
+>> > >=20
+>> > > > Adds lwmi_is_attr_01_supported, and only creates the attribute su=
+bfolder
+>> > > > if the attribute is supported by the hardware=2E Due to some poor=
+ly
+>> > > > implemented BIOS this is a multi-step sequence of events=2E This =
+is
+>> > > > because:
+>> > > > - Some BIOS support getting the capability data from custom mode =
+(0xff),
+>> > > >   while others only support it in no-mode (0x00)=2E
+>> > > > - Some BIOS support get/set for the current value from custom mod=
+e (0xff),
+>> > > >   while others only support it in no-mode (0x00)=2E
+>> > > > - Some BIOS report capability data for a method that is not fully
+>> > > >   implemented=2E
+>> > > > - Some BIOS have methods fully implemented, but no complimentary
+>> > > >   capability data=2E
+>> > > >=20
+>> > > > To ensure we only expose fully implemented methods with correspon=
+ding
+>> > > > capability data, we check each outcome before reporting that an
+>> > > > attribute can be supported=2E
+>> > > >=20
+>> > > > Checking for lwmi_is_attr_01_supported during remove is not done =
+to
+>> > > > ensure that we don't attempt to call cd01 or send WMI events if o=
+ne of
+>> > > > the interfaces being removed was the cause of the driver unloadin=
+g=2E
+>> > > >=20
+>> > > > Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Dri=
+ver")
+>> > > > Reported-by: Kurt Borja <kuurtb@gmail=2Ecom>
+>> > > > Closes: https://lore=2Ekernel=2Eorg/platform-driver-x86/DG60P3SHX=
+R8H=2E3NSEHMZ6J7XRC@gmail=2Ecom/
+>> > > > Cc: stable@vger=2Ekernel=2Eorg
+>> > > > Reviewed-by: Rong Zhang <i@rong=2Emoe>
+>> > > > Tested-by: Rong Zhang <i@rong=2Emoe>
+>> > > > Reviewed-by: Mark Pearson <mpearson-lenovo@squebb=2Eca>
+>> > > > Signed-off-by: Derek J=2E Clark <derekjohn=2Eclark@gmail=2Ecom>
+>> > > > ---
+>> > > > v7:
+>> > > >   - Move earlier in the series=2E This required dropping the use =
+of
+>> > > >     lwmi_attr_id as it will be added later=2E
+>> > > >   - Add missing switch between cd_mode_id and cv_mode_id in
+>> > > >     current_value_store=2E
+>> > > > v6:
+>> > > >   - Zero initialize args in lwmi_is_attr_01_supported=2E
+>> > > >   - Fix formatting=2E
+>> > > > v5:
+>> > > >   - Move cv/cd_mode_id refrences from path 3/4=2E
+>> > > >   - Add missing import for ARRAY_SIZE=2E
+>> > > >   - Make lwmi_is_attr_01_supported return bool instead of u32=2E
+>> > > >   - Various formatting fixes=2E
+>> > > > v4:
+>> > > >   - Use for loop instead of backtrace gotos for checking if an at=
+tribute
+>> > > >     is supported=2E
+>> > > >   - Add include for dev_printk=2E
+>> > > >   - Wrap dev_dbg in lwmi_is_attr_01_supported earlier=2E
+>> > > >   - Don't use symmetric cleanup of attributes in error states=2E
+>> > > > ---
+>> > > >  drivers/platform/x86/lenovo/wmi-gamezone=2Eh |   1 +
+>> > > >  drivers/platform/x86/lenovo/wmi-other=2Ec    | 114 +++++++++++++=
++++++---
+>> > > >  2 files changed, 98 insertions(+), 17 deletions(-)
+>> > > >=20
+>> > > > diff --git a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh b/drive=
+rs/platform/x86/lenovo/wmi-gamezone=2Eh
+>> > > > index 6b163a5eeb95=2E=2Eddb919cf6c36 100644
+>> > > > --- a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>> > > > +++ b/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>> > > > @@ -10,6 +10,7 @@ enum gamezone_events_type {
+>> > > >  };
+>> > > > =20
+>> > > >  enum thermal_mode {
+>> > > > +	LWMI_GZ_THERMAL_MODE_NONE =3D	   0x00,
+>> > > >  	LWMI_GZ_THERMAL_MODE_QUIET =3D	   0x01,
+>> > > >  	LWMI_GZ_THERMAL_MODE_BALANCED =3D	   0x02,
+>> > > >  	LWMI_GZ_THERMAL_MODE_PERFORMANCE =3D 0x03,
+>> > > > diff --git a/drivers/platform/x86/lenovo/wmi-other=2Ec b/drivers/=
+platform/x86/lenovo/wmi-other=2Ec
+>> > > > index 50a03f5fd6ab=2E=2E29d062a1c6dc 100644
+>> > > > --- a/drivers/platform/x86/lenovo/wmi-other=2Ec
+>> > > > +++ b/drivers/platform/x86/lenovo/wmi-other=2Ec
+>> > > > @@ -550,6 +550,8 @@ struct tunable_attr_01 {
+>> > > >  	u8 feature_id;
+>> > > >  	u8 device_id;
+>> > > >  	u8 type_id;
+>> > > > +	u8 cd_mode_id; /* mode arg for searching capdata */
+>> > > > +	u8 cv_mode_id; /* mode arg for set/get current_value */
+>> > > >  };
+>> > > > =20
+>> > > >  static struct tunable_attr_01 ppt_pl1_spl =3D {
+>> > > > @@ -775,7 +777,6 @@ static ssize_t attr_current_value_store(struc=
+t kobject *kobj,
+>> > > >  	struct wmi_method_args_32 args =3D {};
+>> > > >  	struct capdata01 capdata;
+>> > > >  	enum thermal_mode mode;
+>> > > > -	u32 attribute_id;
+>> > > >  	u32 value;
+>> > > >  	int ret;
+>> > > > =20
+>> > > > @@ -786,13 +787,12 @@ static ssize_t attr_current_value_store(str=
+uct kobject *kobj,
+>> > > >  	if (mode !=3D LWMI_GZ_THERMAL_MODE_CUSTOM)
+>> > > >  		return -EBUSY;
+>> > > > =20
+>> > > > -	attribute_id =3D
+>> > > > -		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+>> > > > -		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> > > > -		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+>> > > > -		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> > > > +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr-=
+>device_id) |
+>> > > > +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_i=
+d) |
+>> > > > +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cd_mode_i=
+d) |
+>> > > > +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> > > > =20
+>> > > > -	ret =3D lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capd=
+ata);
+>> > > > +	ret =3D lwmi_cd01_get_data(priv->cd01_list, args=2Earg0, &capda=
+ta);
+>> > > >  	if (ret)
+>> > > >  		return ret;
+>> > > > =20
+>> > > > @@ -803,7 +803,10 @@ static ssize_t attr_current_value_store(stru=
+ct kobject *kobj,
+>> > > >  	if (value < capdata=2Emin_value || value > capdata=2Emax_value)
+>> > > >  		return -EINVAL;
+>> > > > =20
+>> > > > -	args=2Earg0 =3D attribute_id;
+>> > > > +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr-=
+>device_id) |
+>> > > > +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_i=
+d) |
+>> > > > +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cv_mode_i=
+d) |
+>> > > > +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> > >=20
+>> > > It's already repeated a few times and you're adding more in this pa=
+tch=2E
+>> > >=20
+>> > > We should have a helper function for this encoding as it seems to=
+=20
+>> > > repeat=2E That is, something that takes tunable_attr and mode as in=
+put
+>> > > (the conversion of existing entries should be in own patch preceedi=
+ng=20
+>> > > this fix patch)=2E
+>> > >=20
+>> >=20
+>> > Hi Ilpo,
+>> >=20
+>> > A function for that is added in patch 10, though it is slightly modif=
+ied from that to be more flexible is tunable_attr isn't used (such as with =
+the fan test attributes)
+>> >=20
+>> > Originally I had that patch preceding any additions, but after=20
+>> > discussing with Rong we felt like it would be easier for stable=20
+>> > backports if all the fixes were upfront=2E I can certainly move it ba=
+ck=20
+>> > if  you still prefer=2E=20
+>>
+>> Moving it back is OK for me, too=2E
+>>
+>> I think exposing non-fully-functioning fw-attrs on stable/LTS kernels
+>> should be acceptable as long as reading/writing these attributes doesn'=
+t
+>> break anything, which is exactly the case now (i=2Ee=2E, without this
+>> patch)=2E
 >
+>How would refactoring the code into a helper result in changing stable=20
+>interface?
+>
+>Or did you perhaps move to talk about something entirely else (and I=20
+>ended up losing the context)?
 
+I meant the *current* LTS/stable state is acceptable for me as reading/wri=
+ting these attributes doesn't break anything=2E Moving it back would be OK =
+for me even if it made this patch unable to be backported (though unlikely,=
+ since moving it back makes the patch clearer as you've said)=2E In other w=
+ords, it doesn't matter for me whether the patch is backported or not=2E
 
-4.662080] fastrpc_rpmsg_callback rsp->ctx: abcddcab ctx: ca
+Some context: I didn't ask Derek to add Fixes: tag to this patch or move i=
+t=2E I asked him to rearrange other patches to make them backportable=2E
 
-It looks bogus to me, as no ctx id allocated from your HLOS.
+Sorry for causing misunderstandings=2E
 
--Mukesh
+Thanks,
+Rong
 
-
-> Regards,
-> Bjorn
-> 
-> > ---
-> > Changes in v2: https://lore.kernel.org/lkml/20260417200146.184425-1-mukesh.ojha@oss.qualcomm.com/
-> >  - Added stable mailing list and fixes tag.
-> > 
-> >  drivers/misc/fastrpc.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-> > index 1080f9acf70a..a1a54453bb7e 100644
-> > --- a/drivers/misc/fastrpc.c
-> > +++ b/drivers/misc/fastrpc.c
-> > @@ -2431,7 +2431,6 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
-> >  
-> >  	kref_init(&data->refcount);
-> >  
-> > -	dev_set_drvdata(&rpdev->dev, data);
-> >  	rdev->dma_mask = &data->dma_mask;
-> >  	dma_set_mask_and_coherent(rdev, DMA_BIT_MASK(32));
-> >  	INIT_LIST_HEAD(&data->users);
-> > @@ -2440,6 +2439,7 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
-> >  	idr_init(&data->ctx_idr);
-> >  	data->domain_id = domain_id;
-> >  	data->rpdev = rpdev;
-> > +	dev_set_drvdata(&rpdev->dev, data);
-> >  
-> >  	err = of_platform_populate(rdev->of_node, NULL, NULL, rdev);
-> >  	if (err)
-> > @@ -2513,6 +2513,9 @@ static int fastrpc_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
-> >  	if (len < sizeof(*rsp))
-> >  		return -EINVAL;
-> >  
-> > +	if (!cctx)
-> > +		return -ENODEV;
-> > +
-> >  	ctxid = ((rsp->ctx & FASTRPC_CTXID_MASK) >> 4);
-> >  
-> >  	spin_lock_irqsave(&cctx->lock, flags);
-> > -- 
-> > 2.53.0
-> > 
-> > 
-
--- 
--Mukesh Ojha
+>
+>> Thanks a lot for your hard work in this series,
+>
+>
 
