@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-244237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFajFcku+mlXKgMAu9opvQ
-	(envelope-from <stable+bounces-244237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:54:17 +0200
+	id YG4TI9Eu+mnIKgMAu9opvQ
+	(envelope-from <stable+bounces-244238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:54:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBB04D25A8
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:54:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2217E4D25B7
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 475CD302AE34
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:53:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 079EF3058E06
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F028848BD43;
-	Tue,  5 May 2026 17:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265E448C8D6;
+	Tue,  5 May 2026 17:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dN0Dkf2U"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HPxPnauu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441693BFE41;
-	Tue,  5 May 2026 17:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33383C140F;
+	Tue,  5 May 2026 17:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778003633; cv=none; b=kW5/5MUQ7Gmzm2/xOLgEuJm7PD8gYSlA2bzSabdd1FaMw6nF/zsv7c6w8lXF0Kj1CJVlpZiHdIzP7rZo5dVOKilz+X1o3oCVfsY9Ob73oYfgqxAIGewTpllZUF7MnuZUKnFDxbc8zB3DbuaNByt3fGbIm6qWzjwhF01/O7OMFLA=
+	t=1778003633; cv=none; b=EOPY397BDTzZ70ib7Emv08vtcr8hn6iGUhpu/MJDfJxYVUxF2qID8elxR9JcWVANGls8hfo7+9hD3moxoPxCXA1kPpZkBZLumaUP2nQiuum7KkNDxN0zLB4tcuWwDiSRs3Y13Zaj5b5NMiSr4Ee6R53znJJRVnLKRWRFD7iY8yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778003633; c=relaxed/simple;
-	bh=/ZwYAFOgpr580SLonx52kNZvN6n6G6iXNHavjQmQkvU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nyqowLiTuVw9NQfAnT5zVcojV1PhbLRpO/D+L4e2e7yYvX8Oc+Z61zdgeDfU2e45duT+2WyF+0Z/LbrpFlSOpC+Mmj4jbKdxGM7CHkaJVn8RW2cHZaTlm7iJsDlJLS4GZpc8oKlvS7Hp/11wLw6XqhRnsxAawXLyhjIx3Fh2dCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dN0Dkf2U; arc=none smtp.client-ip=185.246.84.56
+	bh=d7l8rMF/C3s/JG8I/gsuys9MS5oeVq+HHK5mTKkji48=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Lm37SNTdUsbN7XQojFGcVjGVt3wLQQG3SYVrbMKaMNSNvfNuIEFx/BRbwJjXDzb1jlgREgcd48OXk6p5ie/JngN9/wATYobqzzE2S+GSM0BWLNfXpHcFM8mXCmvK2hMzk4fJiWkWSyxA4l1EY1ljIU+v1zl/W2B+/dOB/Ckk6pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HPxPnauu; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8D4611A3527;
-	Tue,  5 May 2026 17:53:49 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A8428C5CD40;
+	Tue,  5 May 2026 17:54:37 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 509D26053C;
-	Tue,  5 May 2026 17:53:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C879C11AD03AB;
-	Tue,  5 May 2026 19:53:42 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B6ADC6053C;
+	Tue,  5 May 2026 17:53:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9EEAB11AD040F;
+	Tue,  5 May 2026 19:53:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778003628; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=XV1OdeCX9xDnn/rhTj26ZmuHnNt77lFZvDkYyzRHd3g=;
-	b=dN0Dkf2Ub0lj5w5RGwysDpZEXkIO2Y222K9mtylG0WyBhdwUa1N6/Iyebxt+rMVcWqpfHS
-	pM2B+HKCqaL4Tws5IPGiv9KZ02xTgUrY2esZifgnQNdHjYmKJoTa9m4taN/FfEFv/zdH12
-	01mkx8vb7sg7JUVHr6MImDoaFdonvdkptyMus4mGgkBuf1oHXPZzAHUqJDclEuTx5eptxj
-	fg+KiBVEq+0rAGUOQnTqkh+LpzCxXWPq3ytE3gHhRW+wL6+t54JLUaoj1pwW8ovP7/VAsA
-	xG8rqOczd7nIyCFTRmrPPhezCZwdizdKKG/gcVzH9XUBQ7dUQ1gxLtQicEar6A==
+	t=1778003629; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dxldTbtOSAyaheeA24Yh7elO+quNlogPqqRD2eUj6Dg=;
+	b=HPxPnauuBFBE2L9olxdPuklSRsDxrywpYhKd5ByuOCMQexQo/ZtFcf4rpv2hUsE/Dd/zyp
+	VL6/g5Ovw6ru9f8QAymtmLc2dL9J0aTmc/EucEMt20HTjFYe3u2MXIjJrt3cAzrpXlpKaN
+	ZWU0c1i9yLdnTYYoSc+HqX+0CwaUSzdjBNAA13FRh9qQhGZDAzDLZU54lxN1DzKzdzO5m0
+	ivaHGdpddvw8mOxwFIElG3Dpi/FEcAOKvKLdF/PatLQXJtWgDhjIJtP/8ptaFQSHuQmJ4u
+	26tJtfttOckOqoe311tjvmyU1O4zj0+VU+PvwtoPYUPwt+R6OhO/WE0Hrag6pQ==
 From: Paul Louvel <paul.louvel@bootlin.com>
-Subject: [PATCH v2 00/12] crypto: talitos - fix several issues in the
- Freescale talitos crypto driver
-Date: Tue, 05 May 2026 19:53:01 +0200
-Message-Id: <20260505-bootlin_test-7-1-rc1_sec_bugfix-v2-0-5818064bd190@bootlin.com>
+Date: Tue, 05 May 2026 19:53:02 +0200
+Subject: [PATCH v2 01/12] crypto: talitos - use dma_sync_single_for_cpu()
+ before reading descriptor header
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,11 +63,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OTQ6CMBCFr2K6dkwHoQ2uvIchRKYD1Cg1bSEaw
- t0t6AFcfi/vbxaBveUgTrtZeJ5ssG5IkO13gvrr0DFYk1hkMlOykDk0zsW7HerIIYIGBE9YB6a
- 6GbvWvgCPqEo2UhtDIrU8PSd5W7hUXw5jc2OKa+3q6G2Izr+3CxOuvv/XJgQJVGpSOZZatcX5l
- ziQe4hqWZYPU3io3+IAAAA=
-X-Change-ID: 20260504-bootlin_test-7-1-rc1_sec_bugfix-13169ed07ddc
+Message-Id: <20260505-bootlin_test-7-1-rc1_sec_bugfix-v2-1-5818064bd190@bootlin.com>
+References: <20260505-bootlin_test-7-1-rc1_sec_bugfix-v2-0-5818064bd190@bootlin.com>
+In-Reply-To: <20260505-bootlin_test-7-1-rc1_sec_bugfix-v2-0-5818064bd190@bootlin.com>
 To: Herbert Xu <herbert@gondor.apana.org.au>, 
  "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
  David Howells <dhowells@redhat.com>, 
@@ -77,26 +76,26 @@ Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
  Herve Codina <herve.codina@bootlin.com>, 
  Paul Louvel <paul.louvel@bootlin.com>, stable@vger.kernel.org
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778003630; l=3004;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778003630; l=2033;
  i=paul.louvel@bootlin.com; s=20260313; h=from:subject:message-id;
- bh=/ZwYAFOgpr580SLonx52kNZvN6n6G6iXNHavjQmQkvU=;
- b=bM46caqSWwBzKkM9YbUmVsSlN4EcHTQMCLGYpJ1XZBcbKfqnFNoO5QDFBSd+wkdHNUAzV6xQQ
- u1HoyQrFyPXDeaZLYb/s8qnNnBv5VKyJsTm8UuH1e5FyZg2o8v12Ugz
+ bh=d7l8rMF/C3s/JG8I/gsuys9MS5oeVq+HHK5mTKkji48=;
+ b=z+vo3HqZrvGx5O0cPhVMj2jvHx6+5eZVJJ84tzraSuGzKlVgfEYwAwndK6S7abyBc5f9JKXZS
+ oOTXXRR1b4UAH+JzbymHjIfifcybmRLLpPiloJLIFuEJoYHI1FllNeb
 X-Developer-Key: i=paul.louvel@bootlin.com; a=ed25519;
  pk=eLW50NT18UAvUT5cAcYf88zNbBCZDLFXuptpyLVhVIU=
 X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: DFBB04D25A8
+X-Rspamd-Queue-Id: 2217E4D25B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244237-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244238-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -109,73 +108,73 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[paul.louvel@bootlin.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-This series fixes several issues in the Freescale talitos crypto driver.
+In order to know if a descriptor has been processed by the device,
+the driver polls the FIFO to see if DESC_HDR_DONE is set on a descriptor
+header to confirm completion.
+The current code does not make sure that the CPU gets up to date data
+before reading the descriptor.
 
-Patch 1 fixes a missing dma_sync_single_for_cpu() before reading a
-descriptor header.
+Fix this by calling dma_sync_single_for_cpu() before reading memory
+written by the device.
 
-Patches 2-5 add support for chaining an arbitrary number of descriptors
-in the driver for the SEC1 hardware.
-
-Patches 6-9 rework the SEC1 hash implementation to build descriptor
-chains instead of submitting one descriptor at a time via a workqueue.
-
-Patch 10 fixes the same ahash request size limitation on SEC2 (64k - 1
-bytes), by splitting ahash_done() into SEC1 and SEC2 paths so that SEC2
-iterates through descriptors sequentially.
-
-Patch 11 fixes an off-by-one in the submit_count initialisation that
-wastes one FIFO slot.
-
-Tested on an MPC885 SoC (SEC1 Lite), and on an MPC8321EMP SoC (SEC2)
-with CRYPTO_SELFTESTS_FULL=y.
-For the SEC1 Lite, some tests are failing due to a timeout waiting for
-request completion. These failed tests existed prior to this series.
-On SEC2, there is no failed tests.
-
+Cc: stable@vger.kernel.org
+Fixes: 58cdbc6d2263 ("crypto: talitos - fix hash on SEC1.")
 Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
 ---
-Changes in v2:
-- Split the first patch into smaller, logically separated patches for
-  easier review.
-- Added more context on testing on the cover letter.
-- Introduce a fix to correctly read hardware descriptor header. This fix
-  was motivated by a remark of Sashiko on the v1:
-  https://sashiko.dev/#/patchset/20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5%40bootlin.com
-- Separate SEC2 64k-1 ahash limitation fix into its own patch.
-- Link to v1: https://patch.msgid.link/20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5@bootlin.com
+ drivers/crypto/talitos.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
----
-Paul Louvel (12):
-      crypto: talitos - use dma_sync_single_for_cpu() before reading descriptor header
-      crypto: talitos - add chaining of arbitrary number of descriptor for the SEC1
-      crypto: talitos - move dma unmapping code in flush_channel() into a standalone dma_unmap_request() function
-      crypto: talitos - move dma mapping code in talitos_submit() into a standalone dma_map_request() function
-      crypto: talitos - move code in current_desc_hdr() into a standalone function
-      crypto: talitos/hash - prepare SEC1 descriptor chaining, remove additional descriptor
-      crypto: talitos/hash - use descriptor chaining for SEC1 instead of workqueue
-      crypto: talitos/hash - drop workqueue mechanism for SEC1
-      crypto: talitos/hash - rename first_desc/last_desc to first_request/last_request
-      crypto: talitos/hash - remove useless wrapper
-      crypto: talitos/hash - fix SEC2 64k - 1 ahash request limitation
-      crypto: talitos - fix invalid submit_count initial value
+diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
+index bc61d0fe3514..303640e64717 100644
+--- a/drivers/crypto/talitos.c
++++ b/drivers/crypto/talitos.c
+@@ -322,15 +322,25 @@ static int talitos_submit(struct device *dev, int ch, struct talitos_desc *desc,
+ 	return -EINPROGRESS;
+ }
+ 
+-static __be32 get_request_hdr(struct talitos_request *request, bool is_sec1)
++static __be32 get_request_hdr(struct device *dev, struct talitos_request *request, bool is_sec1)
+ {
+ 	struct talitos_edesc *edesc;
++	dma_addr_t dma_desc;
++
++	if (!is_sec1) {
++		dma_sync_single_for_cpu(dev, request->dma_desc,
++					TALITOS_DESC_SIZE, DMA_BIDIRECTIONAL);
+ 
+-	if (!is_sec1)
+ 		return request->desc->hdr;
++	}
+ 
+ 	if (!request->desc->next_desc)
+-		return request->desc->hdr1;
++		dma_desc = request->dma_desc;
++	else
++		dma_desc = be32_to_cpu(request->desc->next_desc);
++
++	dma_sync_single_for_cpu(dev, dma_desc, TALITOS_DESC_SIZE,
++				DMA_BIDIRECTIONAL);
+ 
+ 	edesc = container_of(request->desc, struct talitos_edesc, desc);
+ 
+@@ -358,7 +368,7 @@ static void flush_channel(struct device *dev, int ch, int error, int reset_ch)
+ 
+ 		/* descriptors with their done bits set don't get the error */
+ 		rmb();
+-		hdr = get_request_hdr(request, is_sec1);
++		hdr = get_request_hdr(dev, request, is_sec1);
+ 
+ 		if ((hdr & DESC_HDR_DONE) == DESC_HDR_DONE)
+ 			status = 0;
 
- drivers/crypto/talitos.c | 578 ++++++++++++++++++++++++-----------------------
- drivers/crypto/talitos.h |  14 ++
- 2 files changed, 315 insertions(+), 277 deletions(-)
----
-base-commit: db8b9f227833e729faf44a512aa1e88a625b5ad8
-change-id: 20260504-bootlin_test-7-1-rc1_sec_bugfix-13169ed07ddc
-
-Best regards,
---  
-Paul Louvel <paul.louvel@bootlin.com>
+-- 
+2.53.0
 
 
