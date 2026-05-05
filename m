@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-244149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGFmJxnu+WlqFQMAu9opvQ
-	(envelope-from <stable+bounces-244149-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:18:17 +0200
+	id cLjECAXu+WlqFQMAu9opvQ
+	(envelope-from <stable+bounces-244150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:17:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9B34CE521
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:18:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900094CE50A
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:17:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 309DB301B73A
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 13:14:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D9BF308B782
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 13:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD8C47D95A;
-	Tue,  5 May 2026 13:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FE747DD60;
+	Tue,  5 May 2026 13:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ldYT3nXZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q0Yf3+hw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646C247B42F
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 13:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A5347CC9B
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 13:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777986840; cv=none; b=FWy2bQ3jLtAp4AQJtUz3foXMVo3pwVst8CmVtWc5ZpVb6R1weo2+LftJRxhWRSlB9ZSF4Tny1X9IoIoN6KgPZhi4IX/rDFafc/HSKcuZmr2Qg2EBkXu76Jl80Uyt+SVMLA3P6olppziVE3KbqvqBZEfRImqX8vWtYKmPOptYLVM=
+	t=1777986842; cv=none; b=JXnMEk0WRh/eqrVrXEaJaAQH2XIkJjn8VXYeen5b0KsRh3LwqaDCLoCLVa2ezG/kZJeFg2d8xT6pVCHaSRi61BPYSmxirtrswATxNVWawcG7zMO2B9Uq1O1nNhFubWgybgpT+8Yqda+eIMj8hpFO5bRIngPFQC22r14QwMmVBv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777986840; c=relaxed/simple;
-	bh=PCWsEmI/WUR42uueqaiei2Cmh0aP35hqHHvduAG7Yz0=;
+	s=arc-20240116; t=1777986842; c=relaxed/simple;
+	bh=EiurrGkcahcx7sI65l5a7ioyNgZJtrM8vsswXoseAMM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LtLTDen048EQDlqCnCMiDdSAVuafaSZ/YPew22ngMr8z9xfyd5SqhZNtly6kbopzI+sPJ3aY8EHX1OeW99BmASFVtWFAi4PvTxVKWfB+CIZEalCEspjXotjOiiXv/7+AdK+cmluz+10zECH/L9zu0FQtPXJg9LsB8gX4tHSkH5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ldYT3nXZ; arc=none smtp.client-ip=209.85.128.43
+	 In-Reply-To:To:Cc; b=K6TAeYW0DajlGKA9Wacbz0lglnFzSgFIw8Bnw7ntVXjJ7heN4f+1rhuatLzziAYLcfkBJyY3TFGOanXuWfnteWjWnC64aL3/vRRk/Yx6hvDUK8gs1CTyZ5EgIzkmwUPC/PmVO9mYE/sODrM48tZPViB0m9dM/9CffxOSYP3d6JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q0Yf3+hw; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48374014a77so62231355e9.3
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 06:13:56 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891c00e7aeso44323235e9.2
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 06:13:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1777986835; x=1778591635; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XbpOUBhAHisNgJxpl8N8vXVEUriSOoMRSDM7NHjdJoU=;
-        b=ldYT3nXZK26hstoHaQTnGll9VN+sMEgmaw7fzna9+7XVwjrK9Yhw7oSunsJqAYQbN8
-         cL0P1u36dSfEjvhNu8FnCIeckQnVJJjtGU450Ctl9JSJsxnjBv92ihxcUlB88GFMnMhf
-         p7E/zO8jz1PtZWWy26inyoU1NOeUGeulxln2Nq9VWfls3Fvflv43g93sODanqiinCWmN
-         DkNRdGX4ymV3mYVeB0Nl90PnDentQvWseroyaWOZ+fjbHexH55p9UuTntavgT9RLjz/I
-         ROk4fetj7Jwue18VStiDPswYl5tMuJAH/g497KkWclRSSwMOkl8GoPUwC17LMbwH30/S
-         iQcg==
+        bh=q59EG8r8mRnPm4MFGBHxIdCjMVDqVdWUq04J9T41SAY=;
+        b=q0Yf3+hwWa6y0jOO57CFZ2Mz7J9hOJmUHQR6qoz+3LhofbrEaO4f9GiVxghIXrscGq
+         fd7HU2P68kzb/g5gM9jKrpC6qEoM4oSDT7yTE+70PGn+2HpOKfn38IOqC4/qZXn0eGZa
+         BdV5io+z6hpvT5QtDdamVjC3ZDDxwiAy7yGw1rBJe/RWbJ717Upk11HJvBIkxz5IMAF5
+         mTMdYrFsRpM044K7tMszeeNV7oh84dCROlfaT4W4R7EI75vBk6R1Qlv7ntASjm8Atlpp
+         urC+EIXLSuq3lsCjKn5lqyvrwRZiY8jcPYVDGwyHw9NvGoPWOGDeHZhdqipMBzZd90Bj
+         8Xcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1777986835; x=1778591635;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=XbpOUBhAHisNgJxpl8N8vXVEUriSOoMRSDM7NHjdJoU=;
-        b=HbXizyBaN86VpPs+UwJWBZc3LhBZKLZje8bWEcdQ2Q2vKzTqj7j0vboEoTPc9FKkvs
-         CfvvmS7x58evmRAu5OscSsQ+JlT8lKoQn3IzXGIrEwftxa+PRDQiniRzoQd++dkxEDi7
-         2c75D3DKOFli792fIG2xPvg8EwJtT66AqnQpHPkFoS1g608VrsmkwrPEGW2pZttE3wmi
-         6vpaN+E7XnJAcVRTXTwE3Hve5YH1RlmgIuTu40BsrfPV4y0kDl1G9GrNGox0tduAV+Pz
-         BcnSbDNre2ryhYmIcMNDuEzWhtXeN3SknpP2PsSrdCB6Jy+ZMRH6k7vrTxEpE9i7OspL
-         lJmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8QqZjWkOXnZH/X6zAhk6OWxIfsaXVhSbpv24KMkNGhm5qVsx1EJI32/xbf7K/hOM7r/yyInM0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV7wUNRw69DFAMr7v4u6a3+dvEMM5P8imMNMsWnF5G7ZFU1EeW
-	h5TiXAOPdBLx9s1ngQ008S9TubmC9XBdaQAaQTyStryb/0qYg3gCrbiSqa6pXWcIue8=
-X-Gm-Gg: AeBDietwpky2k5vUz6byoPTywv9xXhXLXILw+hI76DFfaCoAWj/EzoBtqJPqNh8OU03
-	l8PJcanZXWBLeSkCUBdZUe7Dgy8/4JQAPmGQ/PJj+w4Vn8uPwbj2ZskF3kqmSAqm67SYGyY26tg
-	aCL95I0z8bz0jU2OI3pEalwXUMJgncwoPMVyYcpHxxyjijxbjW+/zS4gHq88dzYiYpjUeqOn5Zp
-	Lpe7JWQlNnFRQWPUnEQJlaTITBNm52n6OEfBoE1tedfbFFt/q4MvPriCOu1X2EVGO0jFjgfnLjJ
-	C/s1KDYNlUL+GPxhj+pmDwqjZ08/ayjzxnjZZaJKJXH3yFkp0XOaZTFaGzygEWfkYQrJg3fwf+g
-	sDCQLdVTH7H3VhT7H5Xz+HrUkXA4YmwzXgtEmfDX1ptxOZ32fh2P04ltVMuO1R00i9gpNBn3XH2
-	Xjc+Gx33OwrnkMq5pOKw9Eqfl3wAUHmGY/P1mnjSNyF7nCRezfRH21+e8UQsli9//Ci0dWA4RTU
-	M6uaItpURbYrJ4+WQ==
-X-Received: by 2002:a05:600c:828a:b0:489:5022:39a4 with SMTP id 5b1f17b1804b1-48a98638119mr230594515e9.9.1777986834642;
-        Tue, 05 May 2026 06:13:54 -0700 (PDT)
+        bh=q59EG8r8mRnPm4MFGBHxIdCjMVDqVdWUq04J9T41SAY=;
+        b=ej7XX/OGa7pxRVEs8oGgXBYawce1fzG1dNrAzkWuYLRrj8NWiHq6BIEBpW0kYX+TdC
+         TWJmAyZJVDKJAFXeuZFuFqAviLwlLs9JvLULs1v6XLx+z6G5pNF+yU3Op6vi2JCeUAyU
+         ar8YsDGf8yhImKUbllazEvtYX2oFL4wxsnVQi2BcRjuaVJahP+J0hZCNQnn8U00MDmdM
+         uc01EJZ2+SML8CbySd2/ZjURB5lSYqM3byxrF0V8gJkIGgRby7Q2m9/42WjV5XnEtVxa
+         8Gt9XgCu2yMYUGBUMKt9HeMhxeYpZ9+B2ulic3k1hXmL7nYam1lSuXA3V6d/U0ihvRII
+         ZqeA==
+X-Forwarded-Encrypted: i=1; AFNElJ8vcHwa2AEhR3aFiMIgwinqfBuUFiQObj7n1URQZiOHYCs1Y0fJ/9m81+h993pmURsSHb68L34=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM/BJRA4veYqaUG+IIBRg80koOdwxSnPbznTIEmZvL0icjBpaP
+	6qCIK0QQpxpQuAbwL7mIevM7rN7pIVUTsbfpEXQ3v0KonKOm/Zoi12lmbeZCYwcSFk0=
+X-Gm-Gg: AeBDietQVM1bZweCAiTTi4fuAcDiNKuLWK9+oRj7FrnVxQRU4Kgde0x+H+Yz5k4vxeB
+	KinGlJ02o/3DUYopeZB9JQIJPwyuo34tuZTsbfcXwSP+kBa6XiGYdK9skhhIMjjTIhAmhUd7SdM
+	H1HKRYtka4DZyDec92CnRzc+sn1mRTqDlFqiNVBAHeYe0WR4pPpFdhHFTPk1Y68Gf1sMKQC5Bn2
+	7E3aqfSFiqv6fHImGGqVz4QZS0pdXo44LtKgVdD87rcOee8iEC5dCA1YFOcs0nYqXH8ypkUatRC
+	FLjDGck3sxXf1nD9snf6EhuLw6Mkr80pF5EBy24KQqq3MLRi57MRvc6YORQNM/3wy7aR0wndhbE
+	I0/W/EzylNhZZE23zQobmU4e+LCSKjsrzSF5f3dHBeO3Sxz7KqV9/ePxFA8FqRO7CY0tfog8OGi
+	B3r9HTl4+J4+T+XExSpfemP2bTuRD0XPw3Y+v3oHGP/unbpnkYNI/Lfg7pNpFJsozl0amvDX6O4
+	MSX7cdasWBENEtr+Q==
+X-Received: by 2002:a05:600c:859a:b0:48a:8b02:ae91 with SMTP id 5b1f17b1804b1-48d188d4786mr36585875e9.11.1777986835218;
+        Tue, 05 May 2026 06:13:55 -0700 (PDT)
 Received: from ta2.c.googlers.com (17.83.155.104.bc.googleusercontent.com. [104.155.83.17])
         by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb72a17sm366599525e9.6.2026.05.05.06.13.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 05 May 2026 06:13:54 -0700 (PDT)
 From: Tudor Ambarus <tudor.ambarus@linaro.org>
-Date: Tue, 05 May 2026 13:13:03 +0000
-Subject: [PATCH v5 6/7] firmware: samsung: acpm: Fix missing LKMM barriers
- in sequence allocator
+Date: Tue, 05 May 2026 13:13:04 +0000
+Subject: [PATCH v5 7/7] firmware: samsung: acpm: Fix infinite loop on
+ sequence number exhaustion
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,7 +89,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260505-acpm-fixes-sashiko-reports-v5-6-43b5ee7f1674@linaro.org>
+Message-Id: <20260505-acpm-fixes-sashiko-reports-v5-7-43b5ee7f1674@linaro.org>
 References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
 In-Reply-To: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
 To: Krzysztof Kozlowski <krzk@kernel.org>, 
@@ -99,21 +99,21 @@ Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
  andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com, 
  Tudor Ambarus <tudor.ambarus@linaro.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777986831; l=3932;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777986831; l=4772;
  i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
- bh=PCWsEmI/WUR42uueqaiei2Cmh0aP35hqHHvduAG7Yz0=;
- b=6xEALCsBvLgFLhQqxJE6EKeqjKKLMRa/BgZwjSGhuyo/8qCLag5h9khWX13dP5jGqQFFSnkGf
- zLyzE9iH3B9AXvc8+kToq57C7FccRBTmsZom4GoFmepT6jQmeA5ZBD1
+ bh=EiurrGkcahcx7sI65l5a7ioyNgZJtrM8vsswXoseAMM=;
+ b=sGgiYQ0Fj7h0fIetimStE6LYB8Eka6DrbBPLMswMbcYUjNNUFgRR3HOJv91qVm6vem/Uz2Haf
+ s2y+X1fAmfYAg6+Az1ciaJJlGHJlRB+5Ax/53p9VNTk8SnnbcnIuAmF
 X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
  pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
-X-Rspamd-Queue-Id: DD9B34CE521
+X-Rspamd-Queue-Id: 900094CE50A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
 	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -122,9 +122,9 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244149-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244150-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
@@ -134,99 +134,128 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,linaro.org:dkim,linaro.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linaro.org:dkim,linaro.org:mid,sashiko.dev:url]
 
-Sashiko identified memory ordering races in [1].
+Sashiko identified a possible infinite loop [1].
 
-The ACPM driver uses a globally shared 'bitmap_seqnum' to track
-available sequence numbers. Even though threads now strictly free their
-own sequence numbers, the allocation and freeing of these bits across
-concurrent threads are effectively lockless operations and require
-explicit LKMM memory barriers.
+ACPM IPC sequence numbers are tracked via a 64-bit bitmap. Previously,
+acpm_prepare_xfer() used a do...while loop to search for a free
+sequence number.
 
-Previously, the driver used plain bitwise operators (test_bit, set_bit,
-clear_bit), which lack ordering guarantees. This creates two race
-conditions on weakly ordered architectures like ARM64:
+If all 63 available sequence numbers are leaked due to transient
+hardware timeouts or mailbox failures, the bitmap becomes full.
+The next call to acpm_prepare_xfer() would enter an infinite loop.
 
-1. Polling Release Violation: The polling thread copies its payload and
-   calls clear_bit(). Without a release barrier, the CPU can reorder
-   the memory operations, making the cleared bit globally visible
-   before the payload reads have fully completed.
-2. TX Acquire Violation: The TX thread loops on test_bit(), calls
-   set_bit(), and then wipes the payload buffer via memset(). Without
-   an acquire barrier, the CPU can speculatively execute the memset()
-   before the bit is safely and formally claimed.
+Fix this by utilizing the kernel's optimized bitmap search functions
+(find_next_zero_bit / find_first_zero_bit). If the pool is completely
+exhausted, log the failure and return -EBUSY to allow the kernel to
+fail gracefully instead of hanging.
 
-If these reorderings overlap, a new TX thread can claim the sequence
-number and overwrite the buffer while the original polling thread is
-still actively reading from it.
+Furthermore, drop the allocation loop entirely. Because
+acpm_prepare_xfer() is strictly called under the 'tx_lock' mutex,
+sequence number allocations are perfectly serialized. If
+find_next_zero_bit() locates a free bit, a single
+test_and_set_bit_lock() is mathematically guaranteed to succeed.
 
-Fix this by upgrading the bitwise operators. Wrap the TX allocation in
-test_and_set_bit_lock() to establish formal LKMM Acquire semantics, and
-pair it with clear_bit_unlock() in the polling path to enforce Release
-semantics.
+To enforce this locking invariant, wrap the allocation in a
+WARN_ON_ONCE. If the atomic set fails, it indicates the driver's
+mutex serialization is fundamentally broken. The warning generates a
+stack trace for debugging, while returning -EIO immediately aborts the
+transfer to prevent silent payload corruption.
 
 Cc: stable@vger.kernel.org
 Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
-Closes: https://sashiko.dev/#/patchset/20260423-acpm-fixes-sashiko-reports-v1-0-2217b790925e%40linaro.org [1]
+Closes: https://sashiko.dev/#/patchset/20260420-acpm-tmu-v3-0-3dc8e93f0b26%40linaro.org [1]
 Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 ---
- drivers/firmware/samsung/exynos-acpm.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/firmware/samsung/exynos-acpm.c | 45 +++++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/firmware/samsung/exynos-acpm.c b/drivers/firmware/samsung/exynos-acpm.c
-index 2dea9b7bfe91..fd2e46e9f7e9 100644
+index fd2e46e9f7e9..a2cac913b2bd 100644
 --- a/drivers/firmware/samsung/exynos-acpm.c
 +++ b/drivers/firmware/samsung/exynos-acpm.c
-@@ -8,7 +8,7 @@
- #include <asm/barrier.h>
- #include <linux/bitfield.h>
- #include <linux/bitmap.h>
--#include <linux/bits.h>
-+#include <linux/bitops.h>
- #include <linux/cleanup.h>
+@@ -13,6 +13,7 @@
  #include <linux/container_of.h>
  #include <linux/delay.h>
-@@ -344,7 +344,7 @@ static int acpm_dequeue_by_polling(struct acpm_chan *achan,
- 				acpm_get_saved_rx(achan, xfer, seqnum);
- 
- 			/* Relinquish ownership of the sequence slot */
--			clear_bit(seqnum - 1, achan->bitmap_seqnum);
-+			clear_bit_unlock(seqnum - 1, achan->bitmap_seqnum);
- 			return 0;
- 		}
- 
-@@ -401,11 +401,18 @@ static void acpm_prepare_xfer(struct acpm_chan *achan,
+ #include <linux/device.h>
++#include <linux/find.h>
+ #include <linux/firmware/samsung/exynos-acpm-protocol.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+@@ -394,34 +395,48 @@ static int acpm_wait_for_queue_slots(struct acpm_chan *achan, u32 next_tx_front)
+  * TX queue.
+  * @achan:	ACPM channel info.
+  * @xfer:	reference to the transfer being prepared.
++ *
++ * Return: 0 on success, -errno otherwise.
+  */
+-static void acpm_prepare_xfer(struct acpm_chan *achan,
+-			      const struct acpm_xfer *xfer)
++static int acpm_prepare_xfer(struct acpm_chan *achan,
++			     const struct acpm_xfer *xfer)
+ {
  	struct acpm_rx_data *rx_data;
  	u32 *txd = (u32 *)xfer->txd;
++	unsigned long size = ACPM_SEQNUM_MAX - 1;
++	unsigned long bit = achan->seqnum;
++
++	bit = find_next_zero_bit(achan->bitmap_seqnum, size, bit);
++	if (bit >= size) {
++		bit = find_first_zero_bit(achan->bitmap_seqnum, size);
++		if (bit >= size) {
++			dev_err_ratelimited(achan->acpm->dev,
++					    "ACPM sequence number pool exhausted\n");
++			return -EBUSY;
++		}
++	}
  
--	/* Prevent chan->seqnum from being re-used */
-+	/*
-+	 * Prevent chan->seqnum from being re-used.
-+	 * test_and_set_bit_lock() provides formal LKMM Acquire semantics.
-+	 * It pairs with the RX thread's clear_bit_unlock() to ensure the CPU
-+	 * does not speculatively execute the rx_data buffer wipe (memset)
-+	 * before the sequence number is safely claimed.
-+	 */
- 	do {
- 		if (++achan->seqnum == ACPM_SEQNUM_MAX)
- 			achan->seqnum = 1;
--	} while (test_bit(achan->seqnum - 1, achan->bitmap_seqnum));
-+		/* Flag the index based on seqnum. (seqnum: 1~63, bitmap: 0~62) */
-+	} while (test_and_set_bit_lock(achan->seqnum - 1, achan->bitmap_seqnum));
+ 	/*
+-	 * Prevent chan->seqnum from being re-used.
+-	 * test_and_set_bit_lock() provides formal LKMM Acquire semantics.
+-	 * It pairs with the RX thread's clear_bit_unlock() to ensure the CPU
+-	 * does not speculatively execute the rx_data buffer wipe (memset)
+-	 * before the sequence number is safely claimed.
++	 * Execute the atomic set to formally claim the bit and establish
++	 * LKMM Acquire semantics against the RX thread's clear_bit_unlock().
++	 * A loop is unnecessary because allocations are strictly serialized
++	 * by tx_lock.
+ 	 */
+-	do {
+-		if (++achan->seqnum == ACPM_SEQNUM_MAX)
+-			achan->seqnum = 1;
+-		/* Flag the index based on seqnum. (seqnum: 1~63, bitmap: 0~62) */
+-	} while (test_and_set_bit_lock(achan->seqnum - 1, achan->bitmap_seqnum));
++	if (WARN_ON_ONCE(test_and_set_bit_lock(bit, achan->bitmap_seqnum)))
++		return -EIO;
  
++	/* Flag the index based on seqnum. (seqnum: 1~63, bitmap: 0~62) */
++	achan->seqnum = bit + 1;
  	txd[0] |= FIELD_PREP(ACPM_PROTOCOL_SEQNUM, achan->seqnum);
  
-@@ -415,9 +422,6 @@ static void acpm_prepare_xfer(struct acpm_chan *achan,
+ 	/* Clear data for upcoming responses */
+-	rx_data = &achan->rx_data[achan->seqnum - 1];
++	rx_data = &achan->rx_data[bit];
+ 	rx_data->completed = false;
  	memset(rx_data->cmd, 0, sizeof(*rx_data->cmd) * rx_data->n_cmd);
  	/* zero means no response expected */
  	rx_data->rxcnt = xfer->rxcnt;
--
--	/* Flag the index based on seqnum. (seqnum: 1~63, bitmap: 0~62) */
--	set_bit(achan->seqnum - 1, achan->bitmap_seqnum);
++
++	return 0;
  }
  
  /**
+@@ -481,7 +496,9 @@ int acpm_do_xfer(struct acpm_handle *handle, const struct acpm_xfer *xfer)
+ 		if (ret)
+ 			return ret;
+ 
+-		acpm_prepare_xfer(achan, xfer);
++		ret = acpm_prepare_xfer(achan, xfer);
++		if (ret)
++			return ret;
+ 
+ 		/* Write TX command. */
+ 		__iowrite32_copy(achan->tx.base + achan->mlen * tx_front,
 
 -- 
 2.54.0.545.g6539524ca2-goog
