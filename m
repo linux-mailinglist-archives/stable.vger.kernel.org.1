@@ -1,170 +1,159 @@
-Return-Path: <stable+bounces-244070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JEeI2DA+WmjDAMAu9opvQ
-	(envelope-from <stable+bounces-244070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:03:12 +0200
+	id KK/JJ1bA+WlADAMAu9opvQ
+	(envelope-from <stable+bounces-244071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:03:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1414CA5D6
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:03:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4270F4CA5C5
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81DE230D436B
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 09:57:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C2F46301437A
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 10:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C839320CD9;
-	Tue,  5 May 2026 09:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C57932ED24;
+	Tue,  5 May 2026 10:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJ60BEox"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBDEzFL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1C140DFA7;
-	Tue,  5 May 2026 09:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EC13321BF
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 10:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777975025; cv=none; b=Q50quF/sOruMiCrBRMk3MNLGoxccLTqr9tR4EB0YBdt5TC9rHtS1KK+DjDIrlSnkZ/TTGkc3gK6LBnrldJoAFybKd3SFMiOMD2HGMVihdwq2LyuK1S2PD2SMX1OVdAEwr1uLGzCte2+jtizb+eVV+wdAc1NCSZa2xzY7jSwpVlE=
+	t=1777975375; cv=none; b=J6cT97S+PTgXDwzwiFUgjRJ7eOcJIaLX/f7Lrdmg1KSa8o/nUgaJEDLlvD7P1GB/lN2VhTmV+oI1SstjDr85bzBOtqp+KX2cN7/TMjdnpi5LS4EWf65hBnfb71yMl5IwguHzw6WFV7kF4IYrvLgBLXnKuNE9weV2S/mV1A2i6k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777975025; c=relaxed/simple;
-	bh=XeyT3VU+VHVGz8Q9A/bDrZidm3ayTO/eXhuKW9a4wVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rp4rDSR+REjBdrTgFuCjxYX5hf+swSf9fwkwUJd8Bw/jNcu14Gg5KozmL2DKQF8VDHDiglwiT0DCxpg3qECe3k7zfTw3hSUb6ftmv7lNFHuji2Onnbhyenl/HbsjsyxsEyGXnhs3RYCR6OayiajbvN+hWCSzMEmXib20BeCqwmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJ60BEox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9F4C2BCB4;
-	Tue,  5 May 2026 09:57:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777975024;
-	bh=XeyT3VU+VHVGz8Q9A/bDrZidm3ayTO/eXhuKW9a4wVo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EJ60BEoxi7LY1sqZ6UdaoupMxy5JucBb1uIdEx05oQWOrHgsgMV35RlAcjI2CDEgG
-	 ExBE5oxTinf51E6WJVn3ZpZB2YSiThQj6hQPs/Pz02gOtGOz6Ew6mSN8c9akTL+mKh
-	 FB7SG2LuAjYgIzZ6RmxgpDXEaoPT7yrA57mihxPg=
-Date: Tue, 5 May 2026 11:57:02 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH 6.12] block: fix memory leak in in bio_map_user_iov()
-Message-ID: <2026050551-rice-cider-db2e@gregkh>
-References: <20260505094529.406783-1-dmantipov@yandex.ru>
+	s=arc-20240116; t=1777975375; c=relaxed/simple;
+	bh=+yqT1MwNh9umfWYDcU3XfKsy3xlPJST8E649FEiVySo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lKE425pTmEWeHC2lF8flOlJWOUa5B+zIDgRQxkxgrWWsE3JeQ6j2ztMfK4HAM72U3XKPuXM7nLXRlZNyHV1VSBCJ8TDo4xCoql0L9a4LHEDJsTGkkIkebm75Isdzml5cCVmob47bOW3jIA1F1e77wm+Q+jUxkNddmEzh0wsNyis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBDEzFL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB49C2BCB4;
+	Tue,  5 May 2026 10:02:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777975374;
+	bh=+yqT1MwNh9umfWYDcU3XfKsy3xlPJST8E649FEiVySo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SBDEzFL2vCNtFQNAu30rW5TDZ8+8vxoIMIYKzs5PxStu4czph6DCWR6neZ7SdiKe3
+	 3nQxUvmzihFSiv2KXg5ZsrZhjhfrty3os9QscNIpqbghzrdIgfEjB2erhJ0JHiXaMK
+	 SHcsIig9ZVC2bLUUZUKV2k+wWMSh8BAw9ALEH1jtRmWDWmcizq/9NZyxUgrcns8X2V
+	 W8IZQ0gqCvFPBJyCeL5HY29jTqz469X+m4mFrj3Rz7o491hijCFe4ZCH2csnGXAmjP
+	 5MSt5e/lBhi79/yDpTQpmKHdiZip2pRXaD2ytJomDSRwpjxgb4zjMgqsSKJTyw+/Jx
+	 prGhYSbtp2JZQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Avri Altman <avri.altman@sandisk.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0.y 1/3] mmc: core: Adjust MDT beyond 2025
+Date: Tue,  5 May 2026 06:02:48 -0400
+Message-ID: <20260505100250.522459-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050303-jingle-ambitious-5f11@gregkh>
+References: <2026050303-jingle-ambitious-5f11@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260505094529.406783-1-dmantipov@yandex.ru>
-X-Rspamd-Queue-Id: EE1414CA5D6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4270F4CA5C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244071-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[yandex.ru];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244070-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxtesting.org:url]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,sandisk.com:email,rock-chips.com:email]
 
-On Tue, May 05, 2026 at 12:45:29PM +0300, Dmitry Antipov wrote:
-> Local fuzzing has observed the following issue with 6.12.82 (and
-> then reproduced with 6.12.85 as well):
-> 
-> BUG: memory leak
-> unreferenced object 0xffff88810c568000 (size 2048):
->   comm "syz.2.17", pid 1369, jiffies 4294894662
->   hex dump (first 32 bytes):
->     a8 62 6f 15 80 88 ff ff 00 00 00 00 00 00 00 00  .bo.............
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace (crc 43ffe8f):
->     kmemleak_alloc_recursive include/linux/kmemleak.h:42 [inline]
->     slab_post_alloc_hook mm/slub.c:4152 [inline]
->     slab_alloc_node mm/slub.c:4197 [inline]
->     __do_kmalloc_node mm/slub.c:4331 [inline]
->     __kmalloc_node_noprof+0x428/0x510 mm/slub.c:4338
->     __kvmalloc_node_noprof+0xb5/0x240 mm/util.c:658
->     kvmalloc_array_node_noprof include/linux/slab.h:1040 [inline]
->     want_pages_array lib/iov_iter.c:992 [inline]
->     iov_iter_extract_user_pages lib/iov_iter.c:1818 [inline]
->     iov_iter_extract_pages+0x51b/0x14d0 lib/iov_iter.c:1884
->     bio_map_user_iov+0x325/0xa50 block/blk-map.c:304
->     blk_rq_map_user_iov+0x248/0x790 block/blk-map.c:646
->     blk_rq_map_user+0x123/0x190 block/blk-map.c:673
->     scsi_bsg_sg_io_fn+0x8d4/0xb00 drivers/scsi/scsi_bsg.c:53
->     bsg_sg_io+0x1b7/0x2b0 block/bsg.c:67
->     bsg_ioctl+0x3a4/0x5b0 block/bsg.c:151
->     vfs_ioctl fs/ioctl.c:51 [inline]
->     __do_sys_ioctl fs/ioctl.c:907 [inline]
->     __se_sys_ioctl fs/ioctl.c:893 [inline]
->     __x64_sys_ioctl+0x194/0x220 fs/ioctl.c:893
->     do_syscall_x64 arch/x86/entry/common.c:47 [inline]
->     do_syscall_64+0x90/0x170 arch/x86/entry/common.c:78
->     entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> Since 'iov_iter_extract_user_pages()' may reallocate (that is,
-> replace an initial stack-allocated array with the one allocated via
-> 'kvmalloc_array()'), this array must be freed, if actually replaced,
-> when handling error returned from 'iov_iter_extract_pages()'.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
-> (not sure about Fixes: due to a lot of renames and moves in this area)
-> ---
->  block/blk-map.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/block/blk-map.c b/block/blk-map.c
-> index b5fd1d857461..8523646054f0 100644
-> --- a/block/blk-map.c
-> +++ b/block/blk-map.c
-> @@ -305,6 +305,8 @@ static int bio_map_user_iov(struct request *rq, struct iov_iter *iter,
->  					       nr_vecs, extraction_flags, &offs);
->  		if (unlikely(bytes <= 0)) {
->  			ret = bytes ? bytes : -EFAULT;
-> +			if (pages != stack_pages)
-> +				kvfree(pages);
->  			goto out_unmap;
->  		}
->  
-> -- 
-> 2.54.0
-> 
+From: Avri Altman <avri.altman@sandisk.com>
 
-<formletter>
+[ Upstream commit 3e487a634bc019166e452ea276f7522710eda9f4 ]
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+JEDEC JESD84-B51B which was released in September 2025, increases the
+manufacturing year limit for eMMC devices. The eMMC manufacturing year
+is stored in a 4-bit field in the CID register. Originally, it covered
+1997–2012. Later, with EXT_CSD_REV=8, it was extended up to 2025. Now,
+with EXT_CSD_REV=9, the range is rolled over by another 16 years, up to
+2038.
 
-</formletter>
+The mapping is as follows:
+cid[8..11] | rev ≤ 4 | 8 ≥ rev > 4 | rev > 8
+---------------------------------------------
+0          | 1997    | 2013        | 2029
+1          | 1998    | 2014        | 2030
+2          | 1999    | 2015        | 2031
+3          | 2000    | 2016        | 2032
+4          | 2001    | 2017        | 2033
+5          | 2002    | 2018        | 2034
+6          | 2003    | 2019        | 2035
+7          | 2004    | 2020        | 2036
+8          | 2005    | 2021        | 2037
+9          | 2006    | 2022        | 2038
+10         | 2007    | 2023        |
+11         | 2008    | 2024        |
+12         | 2009    | 2025        |
+13         | 2010    |             | 2026
+14         | 2011    |             | 2027
+15         | 2012    |             | 2028
+
+Signed-off-by: Avri Altman <avri.altman@sandisk.com>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: d6bf2e64dec8 ("mmc: core: Optimize time for secure erase/trim for some Kingston eMMCs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/core/mmc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+index 7c86efb1044a3..f744dd5018428 100644
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -671,7 +671,14 @@ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
+ 		card->ext_csd.enhanced_rpmb_supported =
+ 					(card->ext_csd.rel_param &
+ 					 EXT_CSD_WR_REL_PARAM_EN_RPMB_REL_WR);
++
++		if (card->ext_csd.rev >= 9) {
++			/* Adjust production date as per JEDEC JESD84-B51B September 2025 */
++			if (card->cid.year < 2023)
++				card->cid.year += 16;
++		}
+ 	}
++
+ out:
+ 	return err;
+ }
+-- 
+2.53.0
+
 
