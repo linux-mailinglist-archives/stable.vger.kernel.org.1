@@ -1,52 +1,70 @@
-Return-Path: <stable+bounces-244006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CA5uNZuj+Wk6+gIAu9opvQ
-	(envelope-from <stable+bounces-244006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 10:00:27 +0200
+	id qLO8D9mj+WnR+QIAu9opvQ
+	(envelope-from <stable+bounces-244007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 10:01:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290344C8632
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 10:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D20A4C8651
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 10:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3379C302000A
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 08:00:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5AEF301227D
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 08:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630133C5DC5;
-	Tue,  5 May 2026 07:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A3754654;
+	Tue,  5 May 2026 08:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="SWIjxXx0"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="jK37OGvh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B090D3E866D;
-	Tue,  5 May 2026 07:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342183E6DD9
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 08:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777967999; cv=none; b=O3eGPcbY2Bgqbxo5pMJKALe35Lm0iBTNBQi9SJ42fCj5aREOC8kFDh1RYn7tN9xvDyfjViiwlScoOnQHwfHO2i97Urg90/EBnqJ5C3S1lCXZGrQJnzC2ZQ15sqe99u69t4rBdVHA7Y1AmPBPXb6vBcYW27kMuAu4D4og8iSAa+k=
+	t=1777968006; cv=none; b=EbjWuodHEM5HrZBNFYDrXAA01Q9rOmfz4yb1yjxcv+chXBONZWwjVc63K7keMc1AYIvmOks7Y4JbR/XAJPfd9krYo5AXq4AKsnbJomOrsce+dbp4E8B6t/eEnYel634Emm8DE7C0k0qHEi5urcvYz0jzNjb4WuUPvkjZzdpqVnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777967999; c=relaxed/simple;
-	bh=Dg3kC2xZDHMgwWHCpdC/QnZKHbL5rvpcL2jcxIAHtrU=;
+	s=arc-20240116; t=1777968006; c=relaxed/simple;
+	bh=Ko+Tudot+u+TGt906YzlNZFIa69RYgI0llqG4BoDYp0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CUpB3QdZRFlbXiCA8XT6l4DJaikn5e1ntIO0A7TE6NJtVZll4bGAiAcsKt0ayIvZT9NHnfCAED1hPSEU12b3gC3HSnruMmaoCxZHBwE3T2A1E90TpvhYpqha0Gwn/TMPuJ8Tn2tX81ZUJQYepKxSKfeXsx+u29AX/u892e+4uQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=SWIjxXx0; arc=none smtp.client-ip=155.212.184.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C87681006E6;
-	Tue,  5 May 2026 10:59:41 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
-	t=1777967992; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=4OdOBoWJ4ACSfIixekPE8cVTYjRFt/rkbnFpQqOJuxQ=;
-	b=SWIjxXx0kmTtkUzX9UBhUNI5cN9FyEAftPaPrNR/30tp+WsbGwZgV71cqRlQAf51OLdPmp
-	q60eV1oLadf8IoHlPpyCb2CK4aCD6PrLntsjy3RenGzIYlIRb8be27Rl8IVFWHVPUPHcjU
-	0Xy0/Bqir9Kkunwgn56F+dJpqAtvlx21M/xun1nJFLThBJ5fXZfGrZfeYkUeuD95SOC15y
-	gR0grlgTEktZZnM3rYnQX1z1UIYN9OAFX8CWtDEJGuFtowYWEHyQwNZfjloGGgkVWf+Pes
-	9VH6NsdGuhgnMq/hY9kGSiULY7ihuaM632DbiwtmLWt6iu7lyJ+l0mhOaM8/Zw==
-Message-ID: <57b0cc2a-6d62-405c-bfa5-68d1c46dbad9@rulkc.org>
-Date: Tue, 5 May 2026 10:59:16 +0300
+	 In-Reply-To:Content-Type; b=s57EO3baBaNSku+iv37AoFIte2+LLxpRfYbxUOXHCkPYMmoHWWDwBQDtBJ261nkREVwb/VHr+BWYX8bfwTrkVKBrIj3hcq7pKzrUQoeDspbzwvhAyUwNKsSTiTNIUhHKNYm4P9QYPnNQOYiEzMPo78jLnSGXr1E/4NoYY2yCZi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=jK37OGvh; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6002b.ext.cloudfilter.net ([10.0.30.203])
+	by cmsmtp with ESMTPS
+	id KA47wGv1TshqQKAhBwJSVd; Tue, 05 May 2026 07:59:57 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id KAhAwEfjNbONDKAhBw4yst; Tue, 05 May 2026 07:59:57 +0000
+X-Authority-Analysis: v=2.4 cv=XdKJzJ55 c=1 sm=1 tr=0 ts=69f9a37d
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=RYUwYdCyT875PMlSm3aEDxE870qgCLG+bj1PVaqAJGc=; b=jK37OGvhzKjo6lEbNmhnX8hvHx
+	1ssYSs1GBhBPTmQbXnrjmHTMb0ytUoFdcUN4hS7gOwsWY9bjLAJlX3nqs9Ltx5cc4Bl5MlzcTnSo2
+	AzqnXQfkxJBacX+ANJUS6Y95FLHp3/OnojiaXb1vLM9cSrkkpYua5C8uE1cs8HPzKmFJ7WyPLkyB0
+	LShMXZ/Ed33tEuE0p+jjuWzlkoD1Eeo/IzDAJ725hmXeYgQSre6OCMIqxSSZDjk41nez53xUdSLPw
+	mvYuUiPGYO6sYoTIfHvdj9OQ3EyjeMZAnZ6dr83/mCY2PHtockGQ3zZcT9B6r6Weydc1qG7CurO3E
+	6l1vVZAQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:51796 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.99.2)
+	(envelope-from <re@w6rz.net>)
+	id 1wKAhA-00000002FW4-13eE;
+	Tue, 05 May 2026 01:59:56 -0600
+Message-ID: <ad154e2d-8671-4c91-93fd-d8f42c9a4c99@w6rz.net>
+Date: Tue, 5 May 2026 00:59:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,75 +72,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mtd: rawnand: fix condition in 'nand_select_target()'
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>, Vignesh Raghavendra
- <vigneshr@ti.com>, Frieder Schrempf <frieder.schrempf@kontron.de>,
- Boris Brezillon <bbrezillon@kernel.org>, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org, rulkc@linuxtesting.org, oxffffaa@gmail.com,
- stable@vger.kernel.org
-References: <20260504221012.1310605-1-avkrasnov@rulkc.org>
- <87mryeqoqs.fsf@bootlin.com>
-Content-Language: ru
-From: Arseniy Krasnov <avkrasnov@rulkc.org>
-In-Reply-To: <87mryeqoqs.fsf@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 290344C8632
+Subject: Re: [PATCH 7.0 000/307] 7.0.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260504135142.814938198@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260504135142.814938198@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1wKAhA-00000002FW4-13eE
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:51796
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJAHz+tKHRKT80WOI8v80BL2ODfI97rKVTxn5Z7mlcTq5xMkvFO7yWNF6pS6BbXntzeRZW2Zro0aeSio/d1QmDle4/+1ahdZfM+SJRgg5uxbaXmAm7Ns
+ uSz16kmhdAou0lrfwEtMItK/Wy2KFc9tp7F4kHiY5XrUDoMTQFv0fHyO4wPfqRKzpelqLsZ2w5lGtQ==
+X-Rspamd-Queue-Id: 8D20A4C8651
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rulkc.org,reject];
-	R_DKIM_ALLOW(-0.20)[rulkc.org:s=dkim];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244006-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[nod.at,ti.com,kontron.de,kernel.org,lists.infradead.org,vger.kernel.org,linuxtesting.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244007-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rulkc.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[avkrasnov@rulkc.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	NEURAL_HAM(-0.00)[-0.814];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,w6rz.net:mid,w6rz.net:email]
 
-
-05.05.2026 10:50, Miquel Raynal wrote:
-> Hi,
+On 5/4/26 06:48, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.0.4 release.
+> There are 307 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On 05/05/2026 at 01:10:12 +03, Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
+> Responses should be made by Wed, 06 May 2026 13:50:49 +0000.
+> Anything received after that time might be too late.
 >
-> Two important typos in the commit log :-)
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
 >
->> 'cs' here must in range [0:nanddev_ntargets).
->                 be                           [
-
-
-Hi, sorry, You mean?
-
-
-'cs' here must be in range [0:nanddev_ntargets]. 
-
-
-Thanks
-
-
+> thanks,
 >
-> Thanks,
-> Miquèl
+> greg k-h
+
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+
+Tested-by: Ron Economos <re@w6rz.net>
+
 
