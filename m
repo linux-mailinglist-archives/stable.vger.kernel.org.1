@@ -1,253 +1,237 @@
-Return-Path: <stable+bounces-244213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNxqCHQY+mlYJQMAu9opvQ
-	(envelope-from <stable+bounces-244213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 18:19:00 +0200
+	id WFKHIyoZ+mmWJQMAu9opvQ
+	(envelope-from <stable+bounces-244214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 18:22:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6D34D11E1
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 18:18:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F8B4D12D3
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 18:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7BA6330A0564
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 16:11:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 782F13006005
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 16:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944E648B373;
-	Tue,  5 May 2026 16:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DC748A2CC;
+	Tue,  5 May 2026 16:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nFqmNkwz"
+	dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b="FZn1cz7S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2298481257
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 16:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D533806AC
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 16:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777997498; cv=none; b=YISGgT9BGhV8WeVR7QKkQfl8SnwnK61YpngBDwOp5NaKw3JFNjTQu57OIE6Pa+euhQ9fAfik0RhzsaQHfOf1WqPvjQnIJndLcWpmV7QS/LLOLhcMKOqIG9/3rxKcrX1g3FHlUyLYHCa2elzkxmiyeg5N7jqhmNeGwFgBfGo8VG8=
+	t=1777998116; cv=none; b=dW0EdnUOLXQdd95dJSbRvTqIB1BJDFvStfWL/20xEBFIEOwYlcDP2PMRERpMQkvMUlKGD4XXOB3b7Pdo5IA2I7B7k9joawxp8gLyqkcHgGF/xVNtZ99e/YEHB7NK199hiJvwdM0Pem/9/GOBAKgTgq6xbKmf8ymbsnCvTNovrYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777997498; c=relaxed/simple;
-	bh=Qflkkm/CQAQrIoUGNyccI6IVq5NOizMVdJ4CG/Wx3YI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=SNto3yZzV7WexDCqsdHHWFbpJcHgMaum6wAp0c0M+OpYuNR5jKKnZtU37ghGRspqisSbzkQ8H+qGcO9G9OlsH8xLsc5r7edU4mQD+F6in0T64K2Bz8JZSeHEZAG6i7DGKAXyvBeRo9Cdc0VoHfuMe9fZpsdqkMsKf2pvjj7yX4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nFqmNkwz; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79885f4a8ffso53486707b3.3
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 09:11:36 -0700 (PDT)
+	s=arc-20240116; t=1777998116; c=relaxed/simple;
+	bh=MhVhqytDBsoXqrV7yikqRH2U/UkDGacf8smarcWqBEc=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Im5IcAqp8u0OgJ4dLuS1B9Ve6CfaPgbvUyJev8EbmJR4TcvQ0yebBUaD25PuqsdVR/dtQh0PV2vZvAl0CJWpxwl1aOTC+oRiEbimXDqWbPrScnrJbGaQdQ3U4N2Mk9ieQ/Q53YtNUmIU4sQh+sZHrw1FbvaoLqCJNsQ69Y2VLwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedts.com; spf=pass smtp.mailfrom=embeddedts.com; dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b=FZn1cz7S; arc=none smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedts.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedts.com
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2bdd40d3c61so6954975eec.1
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 09:21:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777997496; x=1778602296; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ezuVIzME6POM2AEJaoHAJrjUF5+Hch9VDQkjGxLVMvA=;
-        b=nFqmNkwzyJGHGJMN0u13YKGAnWCkpc6of3aZSqvHJFiiOVJYEdlf4vdqAozIMt6koD
-         6g1tfLJGofgyFszjAuiaDyRZxF44PYuL2ds9uh0LZiDXS+iUiRox8+1JKynGKhZSPQX/
-         0mPCjm2oOUbZAHQBCDnROzTEgSBcwa68mdeMUoGHiAONM0yjiNtWl8hh5N6efdhFO5o7
-         SMRAR/Ev78hVSuhf9KuBpZhOEPRmsF4ac0kH8c84A+xHYfkqDOtxnUFXAo6qJjeIdLZS
-         OXfXrNOYXk1WWZXer3xUuCBgRPaaoF07yFfZMn0s5e7tW4TEMMuDWSOcg5FFdIGdfQa8
-         wmNA==
+        d=embeddedts.com; s=google; t=1777998113; x=1778602913; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AV/YmfGA78g8SATWPQgqplca6ENgzk/z9se3dsK0CGU=;
+        b=FZn1cz7SvlGEETLWUcGy+QBY1LRaOujalecHshojAwoL2v5m+RKUrBUWRX1ZAMa0vo
+         yk1lHtLNEmEVw8RjVuct+co/TuMyAkkzDKl12AH6wQSto+kUHuzk6XuBCp4oPFmOZsIt
+         EO19/kJ1LT6dzPC9OZmcfZVL8W5ks3Hv5Khmg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777997496; x=1778602296;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ezuVIzME6POM2AEJaoHAJrjUF5+Hch9VDQkjGxLVMvA=;
-        b=rT6lmBrv9R8FiRT7SetFHCmRXZrfNTGT8fFwsMH1jADYSTrgk5tkqH+oJKKxwdd0tY
-         BqKMmd8gigEI8m7yrWtqTK0dO6D9AmWViA/sUc+e3/TmCn+YEHzir2ohlDJDZXqrXlQ1
-         sFwHynazN87HbgIm1v7JGg9CkiCjiw9O4qsicGxIqg8vzsJ321XVB/w/8yFFxA29/4em
-         i4wMn8mdaSaqc5RS0dDOENTODGgB9vpaxNAry13vL4i4vgZttV9rw/8RQvZiRB+vWAkZ
-         a8fIytL/FKMxlCNEI0gxd8JTX6o4wbSDyd9jebe35b8lrk6Zra6gquTJ8TgmA132ATPM
-         jVrA==
-X-Forwarded-Encrypted: i=1; AFNElJ8FSvGF4R8vw24MW7JI+BpHwTHUz4wED9NWHQR6Iynj8QXkZETrilr4zA0GxKhgU4edHRbdj18=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy10wVjxIXwBfqRHLjJtjwL9niH7TlinRYxDgA8VJE73AdAEyN6
-	rOrcBUrNibAPlIYGJImxy5m/eHxzvPi5xhvb1sk9Uy8mEKDcusRxTTmP
-X-Gm-Gg: AeBDievIoh7GhxnhhHJTlm/fBK/8HUm5JQyQ8SkBNZdoztBn2+5J7U0zDMLfRCrAUzr
-	ZbV3m0zE2TWKhIC+N5VTaKLyQz90Fx6jX/tX3FTlGFJYGyCE1I2ofQzUu8EKkJdKXn9SQKuSGuw
-	Bpinuxlaxt75u9AUfX8WcIQ/NYkGQ7VrtCCrPzmRo7xuAKnWGQ4WcXtPqOuupPdFslyJfu+GSsl
-	Zi8Dd8XN5o0i1ha7Yb7ltI46v669oxBGeTj72qggvQEMUGif50wv1vvMY+6GqhzJfDRAZwAgAfz
-	JMXZA+DqR91jV3uUQRJudCP0ucEz6ZLOlvjea8Q26htcZJ5M2oog6E/nxS8QCzS2F3LAzmk4lg0
-	oby1ZulX+xVpvgJNz6lOvLhb/AQgowcQyHCHqjpyBvjFE5nOlWxYLqvciXRfHK+Uif1SnVlo54C
-	7r6yNZUQwbzR4LLcQKAI0t4T2o4M5d1zleEM5Bqf+QYN4ro4opbZ8q04CqdzTDN9gezjR5nQLDx
-	ddOZEo1oB3uJUM=
-X-Received: by 2002:a05:690c:110:b0:7bd:7b2e:f079 with SMTP id 00721157ae682-7bd7b2ef1e7mr132263037b3.44.1777997495762;
-        Tue, 05 May 2026 09:11:35 -0700 (PDT)
-Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd66888cc7sm65629577b3.44.2026.05.05.09.11.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 09:11:35 -0700 (PDT)
-Date: Tue, 05 May 2026 12:11:34 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Maoyi Xie <maoyixie.tju@gmail.com>, 
- "David S . Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Eric Dumazet <edumazet@google.com>, 
- David Ahern <dsahern@kernel.org>, 
- Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>, 
- Willem de Bruijn <willemb@google.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.2b6abb6aae1d8@gmail.com>
-In-Reply-To: <20260505072015.1672730-2-maoyi.xie@ntu.edu.sg>
-References: <20260505072015.1672730-1-maoyi.xie@ntu.edu.sg>
- <20260505072015.1672730-2-maoyi.xie@ntu.edu.sg>
-Subject: Re: [PATCH net v7 1/2] ipv6: flowlabel: take ip6_fl_lock across
- mem_check and fl_intern
+        d=1e100.net; s=20251104; t=1777998113; x=1778602913;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AV/YmfGA78g8SATWPQgqplca6ENgzk/z9se3dsK0CGU=;
+        b=NIBs892wfYr6kVCJ+gd5A1PPAVsJh//oaz2l+fSy0YDKBWLk/eY+y7OtYRpeDurs2V
+         ciNazg8K0I64mXe7AyjPFF2rCVpT0HWoPBNDPlojnSX0eYHuU6EVjWD1o6U+fjnS9xHW
+         qkFMPLqV2GfcBFe1OOcEbTmbeTCxNsoHzD+u4ArqT3DJ86d9FWdkiH3HEgPLxGTFdrR2
+         WY+qtEkD3LQNfwKJGa7mglVvtKRh9hZDDJCKt2GG2nYoiCPGU9WhSrolRkoG6Uh4N5x9
+         zpkuDjNCAFXo8wF5BTdr5xbIWCc0XDmtphWXmb54gyhlBKIp7/GTbMdm8jCc5NS4nDDU
+         avGA==
+X-Forwarded-Encrypted: i=1; AFNElJ+Cvl+rgr12FZHuxWNgPFhgBsjB1twlNjm26Z6TIkyf7Tzp9mLEh3eMq7ZmzgqoiKag3bVisH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDrO24XSeyEg282DbbJMMkndlHG77fqammn+OdP3p6szizHwrH
+	1F/Q9sTcObMdX8bQOMCMxrrdAkwYSIj3fx6pANhZua4GvdhI+8n7nBFsNUveqJSCQQY=
+X-Gm-Gg: AeBDiev7KeLwU8aVeFBUcGdGVL0g/tkhIeuXi1ETWwcwkw+yxoTbgbh36dU4Z8SGUCo
+	Jv1AqPEh7Kb/fucKeLxkIGWXBAsgN26zK30zkpIoKHLIB7jKIZph4+u5uXfoRb1jTxmwkpkxV8J
+	27paq8tS6KVrzlF3R3LNmYiLuXYSB+6O6jA7UP/g9LY3LuKqdyxQxA0yfLG4n25LKMq2d64ERtF
+	gckmAZ9+1whX0P+giEd/1cUrn+I2c+0pxq4Zx/to5hl+ml/rn5Wai5Uzm4SeGjEH0InjQ6Fevgl
+	x627O1kmk5EH9MQT7aDGY1DWdWlTegaWgfg7Vg3biGpsc+jT5zQZnSQ/rxJ+intZ2ETkuwLwjbX
+	giJkLOohJ0P490OLi/fTK30ndrUrJl9U8h0GPS6TioSU2lT7fZjrH1qFbv2nkIBapKnNbLaTpVf
+	yTNL7ntE0IxGF5x8+tNhXmd4UXbMoj6Q15449onl/dUzlsSuATen5RcTB11Pa9f8WMZREsSM5f3
+	mdlnsJjEA6qCCGU55L8xI40rdWrnID8r1qfoCmSk7lL4hGWmsSbbXykRTmpmsdMaSmonWbOsrM1
+	/c7Ju1eNCZp4/sw=
+X-Received: by 2002:a05:7301:3d06:b0:2c1:7793:7bbb with SMTP id 5a478bee46e88-2f409cb094fmr1796691eec.27.1777998113220;
+        Tue, 05 May 2026 09:21:53 -0700 (PDT)
+Received: from [10.10.10.191] ([184.3.231.126])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3b29b2casm21012701eec.14.2026.05.05.09.21.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2026 09:21:52 -0700 (PDT)
+From: Kris Bahnsen <kris@embeddedts.com>
+X-Google-Original-From: Kris Bahnsen <kris@embeddedTS.com>
+Message-ID: <c49600c3-a78d-4d74-82bd-7f95328388a5@embeddedTS.com>
+Date: Tue, 5 May 2026 09:21:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] Input: ads7846 - don't use scratch for tx_buf when
+ clearing register
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Marek Vasut <marex@denx.de>, stable@vger.kernel.org,
+ Mark Featherston <mark@embeddedts.com>, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260430173739.3843425-1-kris@embeddedTS.com>
+ <aflcL6y_ugHV5p8s@google.com>
+Content-Language: en-US
+In-Reply-To: <aflcL6y_ugHV5p8s@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8A6D34D11E1
+X-Rspamd-Queue-Id: 91F8B4D12D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[embeddedts.com,none];
+	R_DKIM_ALLOW(-0.20)[embeddedts.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244213-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,google.com,ms2.inr.ac.ru,gmail.com,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com,davemloft.net];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-244214-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ntu.edu.sg:email]
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[embeddedts.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kris@embeddedts.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Maoyi Xie wrote:
-> mem_check() in net/ipv6/ip6_flowlabel.c reads fl_size without
-> holding ip6_fl_lock. fl_intern() takes the lock immediately
-> afterwards. The two checks therefore race against concurrent
-> fl_intern, ip6_fl_gc and ip6_fl_purge writers, which makes the
-> mem_check budget check approximate.
+Dmitry,
+
+On 5/4/26 8:01 PM, Dmitry Torokhov wrote:
+> Hi Kris,
 > 
-> Move spin_lock_bh(&ip6_fl_lock) and the matching unlock from
-> fl_intern() into its only caller ipv6_flowlabel_get(). The
-> mem_check() call now runs under the same critical section as the
-> fl_intern() insert, so the budget check is exact.
+> On Thu, Apr 30, 2026 at 05:37:38PM +0000, Kris Bahnsen wrote:
+>> The workaround for XPT2046 clears the command register, giving the
+>> touchscreen controller a NOP. The change incorrectly re-uses the
+>> req->scratch variable which is used as rx_buf for xfer[5], so by
+>> the time xfer[6] occurs, the contents of req->scratch may not be
+>> 0. It was found that the touchscreen controller can end up in
+>> a completely unresponsive state due to it being given a command
+>> the driver does not expect.
+>>
+>> Instead, rely on the spi_transfer behavior of tx_buf being NULL to
+>> transmit all 0 bits and use the scratch variable for the rx_buf for
+>> both the 1 byte command to and 2 byte response from the controller.
+>>
+>> This change was tested on real TSC2046 and ADS7843 controllers,
+>> but not the XPT2046 the workaround was originally created for.
+>> Confirming that the original modification to clear the command
+>> register does not impact either real controller.
+>>
+>> Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
+>> Cc: stable@vger.kernel.org
+>> Co-developed-by: Mark Featherston <mark@embeddedTS.com>
+>> Signed-off-by: Mark Featherston <mark@embeddedTS.com>
+>> Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
+>> ---
+>>
+>> V1 -> V2: Don't use rx_buf when clearing command reg
+>> V2 -> V3: Modify original 2 xfer command to eliminate dev_err()
+>>           output on xfer with len and NULL buffers
+>>
+>>  drivers/input/touchscreen/ads7846.c | 3 +--
+>>  1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+>> index 4b39f7212d35c..488bcc8393293 100644
+>> --- a/drivers/input/touchscreen/ads7846.c
+>> +++ b/drivers/input/touchscreen/ads7846.c
+>> @@ -403,8 +403,7 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
+>>  	spi_message_add_tail(&req->xfer[5], &req->msg);
+>>  
+>>  	/* clear the command register */
+>> -	req->scratch = 0;
+>> -	req->xfer[6].tx_buf = &req->scratch;
+>> +	req->xfer[6].rx_buf = &req->scratch;
 > 
-> With all writers and the read of fl_size under ip6_fl_lock,
-> convert fl_size from atomic_t to plain int. The four sites that
-> update or read fl_size are fl_intern (insert path), ip6_fl_gc
-> (garbage collector, the !sched check and the per-entry decrement),
-> ip6_fl_purge (per-netns purge), and mem_check (budget check), and
-> all four now run under ip6_fl_lock.
+> Sashiko (I believe correctly) pointed out that by doing this "scratch"
+> is now write only and this may cause DMA from the device stomp on
+> message status and other unrelated data that shares the same cacheline
+> with scracth. While it was already a problem before now it is even more
+> likely.
 > 
-> This is a prerequisite for adding a per-netns budget alongside
-> fl_size. The follow-up patch adds netns_ipv6::flowlabel_count and
-> folds it into mem_check().
+> Since scratch is now write-only I believe moving it below "sample"
+> forces it into separate cacheline and fixes this problem. Could you
+> please try making this change?
+
+Apologies, I'm not quite certain I understand what you mean by
+"moving it below sample." Do you mean relocating the xfer[6] block
+immediately below the xfer[3] block like so? If yes, I can get this
+tested and a v4 patch together. If not, can you please clarify?
+
+
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index 4b39f7212d35..6d57865ff505 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -390,6 +390,11 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
+        req->xfer[3].len = 2;
+        spi_message_add_tail(&req->xfer[3], &req->msg);
+ 
++       /* clear the command register */
++       req->xfer[6].rx_buf = &req->scratch;
++       req->xfer[6].len = 1;
++       spi_message_add_tail(&req->xfer[6], &req->msg);
++
+        /* REVISIT:  take a few more samples, and compare ... */
+ 
+        /* converter in low power mode & enable PENIRQ */
+@@ -402,12 +407,6 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
+        req->xfer[5].len = 2;
+        spi_message_add_tail(&req->xfer[5], &req->msg);
+ 
+-       /* clear the command register */
+-       req->scratch = 0;
+-       req->xfer[6].tx_buf = &req->scratch;
+-       req->xfer[6].len = 1;
+-       spi_message_add_tail(&req->xfer[6], &req->msg);
+-
+        req->xfer[7].rx_buf = &req->scratch;
+        req->xfer[7].len = 2;
+        CS_CHANGE(req->xfer[7]);
+
+> 
+> Thanks.
 > 
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+-- 
+Kris Bahnsen
+Software Engineer
+embeddedTS
 
-> Suggested-by: Willem de Bruijn <willemb@google.com>
-> Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-
-Please update either your git config name or Signed-off-by to make
-sure that the two are the same. Not sure whether that requires a
-respin.
-
-With those asides
-
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-
-Thanks for fixing this along with your main fix.
-
-> ---
->  net/ipv6/ip6_flowlabel.c | 33 ++++++++++++++++++++-------------
->  1 file changed, 20 insertions(+), 13 deletions(-)
-> 
-> diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
-> index c92f98c6f..43b5e9ce9 100644
-> --- a/net/ipv6/ip6_flowlabel.c
-> +++ b/net/ipv6/ip6_flowlabel.c
-> @@ -40,7 +40,7 @@
->  #define FL_HASH_MASK	255
->  #define FL_HASH(l)	(ntohl(l)&FL_HASH_MASK)
->  
-> -static atomic_t fl_size = ATOMIC_INIT(0);
-> +static int fl_size;
->  static struct ip6_flowlabel __rcu *fl_ht[FL_HASH_MASK+1];
->  
->  static void ip6_fl_gc(struct timer_list *unused);
-> @@ -163,7 +163,7 @@ static void ip6_fl_gc(struct timer_list *unused)
->  				if (time_after_eq(now, ttd)) {
->  					*flp = fl->next;
->  					fl_free(fl);
-> -					atomic_dec(&fl_size);
-> +					fl_size--;
->  					continue;
->  				}
->  				if (!sched || time_before(ttd, sched))
-> @@ -172,7 +172,7 @@ static void ip6_fl_gc(struct timer_list *unused)
->  			flp = &fl->next;
->  		}
->  	}
-> -	if (!sched && atomic_read(&fl_size))
-> +	if (!sched && fl_size)
->  		sched = now + FL_MAX_LINGER;
->  	if (sched) {
->  		mod_timer(&ip6_fl_gc_timer, sched);
-> @@ -196,7 +196,7 @@ static void __net_exit ip6_fl_purge(struct net *net)
->  			    atomic_read(&fl->users) == 0) {
->  				*flp = fl->next;
->  				fl_free(fl);
-> -				atomic_dec(&fl_size);
-> +				fl_size--;
->  				continue;
->  			}
->  			flp = &fl->next;
-> @@ -205,6 +205,7 @@ static void __net_exit ip6_fl_purge(struct net *net)
->  	spin_unlock_bh(&ip6_fl_lock);
->  }
->  
-> +/* Caller must hold ip6_fl_lock. */
-
-nit: lockdep_assert_held as used below is preferable over comments
-
-
-> @@ -464,10 +459,14 @@ fl_create(struct net *net, struct sock *sk, struct in6_flowlabel_req *freq,
->  
->  static int mem_check(struct sock *sk)
->  {
-> -	int room = FL_MAX_SIZE - atomic_read(&fl_size);
-> +	int room;
->  	struct ipv6_fl_socklist *sfl;
->  	int count = 0;
->  
-> +	lockdep_assert_held(&ip6_fl_lock);
-> +
-> +	room = FL_MAX_SIZE - fl_size;
-> +
->  	if (room > FL_MAX_SIZE - FL_MAX_PER_SOCK)
->  		return 0;
->  
 
