@@ -1,331 +1,233 @@
-Return-Path: <stable+bounces-244256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6M8wHCA9+mmjLAMAu9opvQ
-	(envelope-from <stable+bounces-244256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:55:28 +0200
+	id UCmmNVc7+mlZLAMAu9opvQ
+	(envelope-from <stable+bounces-244257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:47:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0397D4D2EED
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE274D2DAA
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 20:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEDA8301DE13
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 18:44:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE5AF3054F4A
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 18:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2108948C8C7;
-	Tue,  5 May 2026 18:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BAD4963B8;
+	Tue,  5 May 2026 18:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aOa2rukh"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="i5f2hbyJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172AD3C1994;
-	Tue,  5 May 2026 18:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180D34A341F
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 18:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778006672; cv=none; b=Ao4hPJ44B3kbe6V47aKf8PnZicFM7z/cOjxyq2MvzpyIiyRsKg8E61jU2WZUUm4utDfS8CHlNwi2lCj83/cEX9s/NPv1V0HAzjcJouTuUU2aCvGVNYIz05Y9qmtPnjd7HxM+WqhjpPLf5Vk+YPGNfumzWsR090mZsN2ATy12BvA=
+	t=1778006721; cv=none; b=l4GwbkFctERACyh1q1spkKOzDK+qHYWvnF7fbBHcuBabVO7IkKOwvBuiZ4Rw/NHrlu28os8/zRWa3Aosri19XvmnR1Yn04atyW9XN/kQT0ITkpMOq64qBGl92EyKR3r75Aa4rTEtWfZvqedtcRf8yJAbo1yD6I3AfGCi7o78Ryc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778006672; c=relaxed/simple;
-	bh=bE8EaOPx1BslFLqjpBRG+8unZQD3NdWhANLQSxl3ulc=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=bJX/TnCPxAtCgLOmu7d2FKr9lGLmwp2wz0MIagJb/tBjh29s15sUHKFJiHOdJdCu/Xp2CnJYflRCBPl4Ja0dONXgtUl+fyUg6kDXolwjNFwHA7sEML6icVGNmZI9tb0rNeHJ+YC3g2ZnGrbeXPxkATIzCMFi54auxZtq93Ge7VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aOa2rukh; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778006671; x=1809542671;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=bE8EaOPx1BslFLqjpBRG+8unZQD3NdWhANLQSxl3ulc=;
-  b=aOa2rukh46Ejpq4+SMeNI07DCmSJgVH/YR6/v9MkbBA8WA9QldNhkPcv
-   EHuq14uPNliVJVGxwXwK4wn9IR8/dvXjeqs0Cpz188Ny0syxvKAEF46ER
-   iF+AuezdbPowZzOUHo9HVZbi2JEFk6eyzlBtRo6vRKSQHH83BfIcur7cS
-   xBF77I07qKPsrwOqWRpSwzV5nVQP+drMDc6voRBO//HA1KeyZOIUv3nbH
-   xZmIMwVgHxi5t9DXcU0qDvcDOqZqJ0tyBMZqiq9qBsWZE3DEJW3jtPtys
-   cNCAgwI5oLRGngwLKkex277k0RYQd5B7ip1c3KW7LhFJKKL9IwMGwZnqX
-   w==;
-X-CSE-ConnectionGUID: jNnW/8jbTrWGcSZq1uzhZg==
-X-CSE-MsgGUID: EUJxaMIoSrWfs6CIJX3kMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78881828"
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="78881828"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 11:44:31 -0700
-X-CSE-ConnectionGUID: o8XEAfl2Tye0rFrN8rwDqQ==
-X-CSE-MsgGUID: kBArA1LjQhGNQD1t7Yg+oQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="274029707"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.85])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 11:44:26 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 5 May 2026 21:44:23 +0300 (EEST)
-To: "Derek J. Clark" <derekjohn.clark@gmail.com>
-cc: Hans de Goede <hansg@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet <corbet@lwn.net>, 
-    Rong Zhang <i@rong.moe>, Kurt Borja <kuurtb@gmail.com>, 
-    platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v10 06/16] platform/x86: lenovo-wmi-other: Limit adding
- attributes to supported devices
-In-Reply-To: <6ABDB1EF-324B-48EB-A5F2-18E13DD9F5B8@gmail.com>
-Message-ID: <d76ead74-30d7-650f-051e-bfec871a4d14@linux.intel.com>
-References: <20260412211121.2220556-1-derekjohn.clark@gmail.com> <20260412211121.2220556-7-derekjohn.clark@gmail.com> <1ce1d6f6-9196-c8a1-913d-4bdec2b1af80@linux.intel.com> <AA4D5F92-E158-48D1-85FC-CAA72A4EDD8A@gmail.com> <3032887f-bfa2-6968-7a8e-db141e5ef649@linux.intel.com>
- <6ABDB1EF-324B-48EB-A5F2-18E13DD9F5B8@gmail.com>
+	s=arc-20240116; t=1778006721; c=relaxed/simple;
+	bh=iV+FqaZYkVuau7UWTy+Lf/bB2fwRC9oLeAYPXQzrm6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VEeMm4EFV65C1w/kJuqPfjv/BoLCbMvsqfR5g3VsLkK4lT4pAWKxY8lJmGTGMI2Nz9zyK1gds5xcZE9749ohBVegpAHPznIHTu33C58bECCb3q3TXwIG7ASbYE0rLMS6QkHObyADpb4uWsJLJuzv6GD7x6P3+D/HJgrHc2pEeD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=i5f2hbyJ; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Content-Type:MIME-Version:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=NkdjHjbL3u13LXUCbwCMIAA14HpmA0Llm99NgW5sonE=; b=i5f2hbyJlUWvKZhSy0KlG8tsGn
+	8ANEcNstJ9RlBgc5mbZjmaT3McHmLBVnI8Kmrr+Jq2LF7ypIug6N3juf614j7I/Oe/Fv+4i4HxgJY
+	3+IFGX0uWtyXY4LQfSG8GTqVc5fu5nguBaAduU5mP44yA3KBQ0VWycgPWXqHf+J+pGmQqlC46+Rwf
+	PF7BEYm9LwriDRKIZDxrnCMou7aZs3zBeUKjAy0hO/2C+P5Uuwx1x4KwTPgCuvM/0eInnQk8tSiYl
+	wulAN7Hceh1s2TijpjooJH+SFp4jIOWuByv3dlBMkvb/ndgo02MOs7mi7Beo92MktPQSXzGYVgxVD
+	uK0TUgsA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <benh@debian.org>)
+	id 1wKKld-0030ka-2H;
+	Tue, 05 May 2026 18:45:14 +0000
+Date: Tue, 5 May 2026 20:45:12 +0200
+From: Ben Hutchings <benh@debian.org>
+To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: 1130365@bugs.debian.org, Paul Menzel <pmenzel@molgen.mpg.de>,
+	stable@vger.kernel.org, linux-parport@lists.infradead.org
+Subject: [PATCH] parport: Fix race between port and client registration
+Message-ID: <afo6uBv68GDevbMD@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1012852407-1778006663=:993"
-X-Rspamd-Queue-Id: 0397D4D2EED
-X-Rspamd-Action: add header
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oFaP8Rm7b43qwgz2"
+Content-Disposition: inline
+X-Debian-User: benh
+X-Rspamd-Queue-Id: 3AE274D2DAA
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [9.84 / 15.00];
-	URIBL_BLACK(7.50)[rong.moe:email];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	CTYPE_MIXED_BOGUS(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-244257-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244256-lists,stable=lfdr.de];
-	R_DKIM_ALLOW(0.00)[intel.com:s=Intel];
-	FREEMAIL_TO(0.00)[gmail.com];
-	GREYLIST(0.00)[pass,body];
-	MIME_TRACE(0.00)[0:+,1:+];
-	FREEMAIL_CC(0.00)[kernel.org,squebb.ca,gmx.de,lwn.net,rong.moe,gmail.com,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.308];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[debian.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,linux.intel.com:mid,squebb.ca:email]
-X-Spam: Yes
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323328-1012852407-1778006663=:993
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+--oFaP8Rm7b43qwgz2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 5 May 2026, Derek J. Clark wrote:
+The parport subsystem registers port devices before they are fully
+initialised, resulting in a race condition where client drivers such
+as lp can attach to ports that are not completely initialised or even
+being torn down.
 
-> On May 5, 2026 2:48:08 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo.jarvinen@linux.=
-intel.com> wrote:
-> >On Thu, 30 Apr 2026, Derek J. Clark wrote:
-> >> On April 30, 2026 7:01:55 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo.jarvinen@=
-linux.intel.com> wrote:
-> >> >On Sun, 12 Apr 2026, Derek J. Clark wrote:
-> >> >
-> >> >> Adds lwmi_is_attr_01_supported, and only creates the attribute subf=
-older
-> >> >> if the attribute is supported by the hardware. Due to some poorly
-> >> >> implemented BIOS this is a multi-step sequence of events. This is
-> >> >> because:
-> >> >> - Some BIOS support getting the capability data from custom mode (0=
-xff),
-> >> >>   while others only support it in no-mode (0x00).
-> >> >> - Some BIOS support get/set for the current value from custom mode =
-(0xff),
-> >> >>   while others only support it in no-mode (0x00).
-> >> >> - Some BIOS report capability data for a method that is not fully
-> >> >>   implemented.
-> >> >> - Some BIOS have methods fully implemented, but no complimentary
-> >> >>   capability data.
-> >> >>=20
-> >> >> To ensure we only expose fully implemented methods with correspondi=
-ng
-> >> >> capability data, we check each outcome before reporting that an
-> >> >> attribute can be supported.
-> >> >>=20
-> >> >> Checking for lwmi_is_attr_01_supported during remove is not done to
-> >> >> ensure that we don't attempt to call cd01 or send WMI events if one=
- of
-> >> >> the interfaces being removed was the cause of the driver unloading.
-> >> >>=20
-> >> >> Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Drive=
-r")
-> >> >> Reported-by: Kurt Borja <kuurtb@gmail.com>
-> >> >> Closes: https://lore.kernel.org/platform-driver-x86/DG60P3SHXR8H.3N=
-SEHMZ6J7XRC@gmail.com/
-> >> >> Cc: stable@vger.kernel.org
-> >> >> Reviewed-by: Rong Zhang <i@rong.moe>
-> >> >> Tested-by: Rong Zhang <i@rong.moe>
-> >> >> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> >> >> Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-> >> >> ---
-> >> >> v7:
-> >> >>   - Move earlier in the series. This required dropping the use of
-> >> >>     lwmi_attr_id as it will be added later.
-> >> >>   - Add missing switch between cd_mode_id and cv_mode_id in
-> >> >>     current_value_store.
-> >> >> v6:
-> >> >>   - Zero initialize args in lwmi_is_attr_01_supported.
-> >> >>   - Fix formatting.
-> >> >> v5:
-> >> >>   - Move cv/cd_mode_id refrences from path 3/4.
-> >> >>   - Add missing import for ARRAY_SIZE.
-> >> >>   - Make lwmi_is_attr_01_supported return bool instead of u32.
-> >> >>   - Various formatting fixes.
-> >> >> v4:
-> >> >>   - Use for loop instead of backtrace gotos for checking if an attr=
-ibute
-> >> >>     is supported.
-> >> >>   - Add include for dev_printk.
-> >> >>   - Wrap dev_dbg in lwmi_is_attr_01_supported earlier.
-> >> >>   - Don't use symmetric cleanup of attributes in error states.
-> >> >> ---
-> >> >>  drivers/platform/x86/lenovo/wmi-gamezone.h |   1 +
-> >> >>  drivers/platform/x86/lenovo/wmi-other.c    | 114 +++++++++++++++++=
-+---
-> >> >>  2 files changed, 98 insertions(+), 17 deletions(-)
-> >> >>=20
-> >> >> diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.h b/drivers/p=
-latform/x86/lenovo/wmi-gamezone.h
-> >> >> index 6b163a5eeb95..ddb919cf6c36 100644
-> >> >> --- a/drivers/platform/x86/lenovo/wmi-gamezone.h
-> >> >> +++ b/drivers/platform/x86/lenovo/wmi-gamezone.h
-> >> >> @@ -10,6 +10,7 @@ enum gamezone_events_type {
-> >> >>  };
-> >> >> =20
-> >> >>  enum thermal_mode {
-> >> >> +=09LWMI_GZ_THERMAL_MODE_NONE =3D=09   0x00,
-> >> >>  =09LWMI_GZ_THERMAL_MODE_QUIET =3D=09   0x01,
-> >> >>  =09LWMI_GZ_THERMAL_MODE_BALANCED =3D=09   0x02,
-> >> >>  =09LWMI_GZ_THERMAL_MODE_PERFORMANCE =3D 0x03,
-> >> >> diff --git a/drivers/platform/x86/lenovo/wmi-other.c b/drivers/plat=
-form/x86/lenovo/wmi-other.c
-> >> >> index 50a03f5fd6ab..29d062a1c6dc 100644
-> >> >> --- a/drivers/platform/x86/lenovo/wmi-other.c
-> >> >> +++ b/drivers/platform/x86/lenovo/wmi-other.c
-> >> >> @@ -550,6 +550,8 @@ struct tunable_attr_01 {
-> >> >>  =09u8 feature_id;
-> >> >>  =09u8 device_id;
-> >> >>  =09u8 type_id;
-> >> >> +=09u8 cd_mode_id; /* mode arg for searching capdata */
-> >> >> +=09u8 cv_mode_id; /* mode arg for set/get current_value */
-> >> >>  };
-> >> >> =20
-> >> >>  static struct tunable_attr_01 ppt_pl1_spl =3D {
-> >> >> @@ -775,7 +777,6 @@ static ssize_t attr_current_value_store(struct =
-kobject *kobj,
-> >> >>  =09struct wmi_method_args_32 args =3D {};
-> >> >>  =09struct capdata01 capdata;
-> >> >>  =09enum thermal_mode mode;
-> >> >> -=09u32 attribute_id;
-> >> >>  =09u32 value;
-> >> >>  =09int ret;
-> >> >> =20
-> >> >> @@ -786,13 +787,12 @@ static ssize_t attr_current_value_store(struc=
-t kobject *kobj,
-> >> >>  =09if (mode !=3D LWMI_GZ_THERMAL_MODE_CUSTOM)
-> >> >>  =09=09return -EBUSY;
-> >> >> =20
-> >> >> -=09attribute_id =3D
-> >> >> -=09=09FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
-> >> >> -=09=09FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id)=
- |
-> >> >> -=09=09FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
-> >> >> -=09=09FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
-> >> >> +=09args.arg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->d=
-evice_id) |
-> >> >> +=09=09    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature=
-_id) |
-> >> >> +=09=09    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cd_mode=
-_id) |
-> >> >> +=09=09    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id=
-);
-> >> >> =20
-> >> >> -=09ret =3D lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capd=
-ata);
-> >> >> +=09ret =3D lwmi_cd01_get_data(priv->cd01_list, args.arg0, &capdata=
-);
-> >> >>  =09if (ret)
-> >> >>  =09=09return ret;
-> >> >> =20
-> >> >> @@ -803,7 +803,10 @@ static ssize_t attr_current_value_store(struct=
- kobject *kobj,
-> >> >>  =09if (value < capdata.min_value || value > capdata.max_value)
-> >> >>  =09=09return -EINVAL;
-> >> >> =20
-> >> >> -=09args.arg0 =3D attribute_id;
-> >> >> +=09args.arg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->d=
-evice_id) |
-> >> >> +=09=09    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature=
-_id) |
-> >> >> +=09=09    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cv_mode=
-_id) |
-> >> >> +=09=09    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id=
-);
-> >> >
-> >> >It's already repeated a few times and you're adding more in this patc=
-h.
-> >> >
-> >> >We should have a helper function for this encoding as it seems to=20
-> >> >repeat. That is, something that takes tunable_attr and mode as input
-> >> >(the conversion of existing entries should be in own patch preceeding=
+When the port and client drivers are built as modules and loaded
+around the same time during boot, this occasionally results in a
+crash.  I was able to make this happen reliably in a VM with a
+PC-style parallel port by patching parport_pc to fail probing:
+
+> --- a/drivers/parport/parport_pc.c
+> +++ b/drivers/parport/parport_pc.c
+> @@ -2069,7 +2069,7 @@ static struct parport *__parport_pc_probe_port(unsi=
+gned long int base,
+>  	if (!p)
+>  		goto out3;
+>
+> -	base_res =3D request_region(base, 3, p->name);
+> +	base_res =3D NULL;
+>  	if (!base_res)
+>  		goto out4;
+>
+
+and then running:
+
+    while true; do
+        modprobe lp & modprobe parport_pc
+	wait
+	rmmod lp parport_pc
+    done
+
+for a few seconds.
+
+In the long term I think port registration should be changed to put
+the call to device_add() inside parport_announce_port(), but since the
+latter currently cannot fail this will require changing all port
+drivers.
+
+For now, add a flag to indicate whether a port has been "announced"
+and only try to attach client drivers to ports when the flag is set.
+
+Fixes: 6fa45a226897 ("parport: add device-model to parport subsystem")
+Closes: https://bugs.debian.org/1130365
+Closes: https://lore.kernel.org/all/6ba903ad-9897-42bb-8c2d-337385cc3746@mo=
+lgen.mpg.de/
+Cc: stable@vger.kernel.org
+Signed-off-by: Ben Hutchings <benh@debian.org>
+---
+ drivers/parport/share.c | 11 +++++++++--
+ include/linux/parport.h |  1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/parport/share.c b/drivers/parport/share.c
+index ba5292828703..eb0977ca1605 100644
+--- a/drivers/parport/share.c
++++ b/drivers/parport/share.c
+@@ -214,10 +214,14 @@ static void get_lowlevel_driver(void)
+ static int port_check(struct device *dev, void *dev_drv)
+ {
+ 	struct parport_driver *drv =3D dev_drv;
++	struct parport *port;
 =20
-> >> >this fix patch).
-> >> >
-> >>=20
-> >> Hi Ilpo,
-> >>=20
-> >> A function for that is added in patch 10, though it is slightly modifi=
-ed=20
-> >> from that to be more flexible is tunable_attr isn't used (such as with=
+ 	/* only send ports, do not send other devices connected to bus */
+-	if (is_parport(dev))
+-		drv->match_port(to_parport_dev(dev));
++	if (is_parport(dev)) {
++		port =3D to_parport_dev(dev);
++		if (test_bit(PARPORT_ANNOUNCED, &port->devflags))
++			drv->match_port(port);
++	}
+ 	return 0;
+ }
 =20
-> >> the fan test attributes)
-> >
-> >It still leaves some boilerplate having to deref all those tunable_attr=
+@@ -532,6 +536,7 @@ void parport_announce_port(struct parport *port)
+ 		if (slave)
+ 			attach_driver_chain(slave);
+ 	}
++	set_bit(PARPORT_ANNOUNCED, &port->devflags);
+ 	mutex_unlock(&registration_lock);
+ }
+ EXPORT_SYMBOL(parport_announce_port);
+@@ -561,6 +566,8 @@ void parport_remove_port(struct parport *port)
 =20
-> >fields so perhaps it would be better to do nested helpers, one taking=20
-> >tunable_attr and that calls the more flexible helper. IMO that would be=
+ 	mutex_lock(&registration_lock);
 =20
-> >the best approach here.
-> >
->=20
-> That's simple enough. I assume that can be added to that same patch=20
-> instead of an additional one?
++	clear_bit(PARPORT_ANNOUNCED, &port->devflags);
++
+ 	/* Spread the word. */
+ 	detach_driver_chain(port);
+=20
+diff --git a/include/linux/parport.h b/include/linux/parport.h
+index 464c2ad28039..f64cb0676e3b 100644
+--- a/include/linux/parport.h
++++ b/include/linux/parport.h
+@@ -240,6 +240,7 @@ struct parport {
+=20
+ 	unsigned long devflags;
+ #define PARPORT_DEVPROC_REGISTERED	0
++#define PARPORT_ANNOUNCED		1
+ 	struct pardevice *proc_device;	/* Currently register proc device */
+=20
+ 	struct list_head full_list;
 
-Yes, adding both of them in the same patch is fine. Otherwise you'd just=20
-be changing the same spots again.
+--oFaP8Rm7b43qwgz2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> >> Originally I had that patch preceding any additions, but after=20
-> >> discussing with Rong we felt like it would be easier for stable=20
-> >> backports if all the fixes were upfront. I can certainly move it back=
-=20
-> >> if you still prefer.
-> >
-> >I see. This patch would be cleaner though if we have the helper already =
-in=20
-> >place but I'm not insisting if you two prefer the current order of the=
-=20
-> >patches.
-> >
->=20
+-----BEGIN PGP SIGNATURE-----
 
---=20
- i.
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmn6OrMACgkQ57/I7JWG
+EQniyg/8DI/t3+V54LsZso7KV7VFI2qO5/U9uutYBkJYOMhj5wpB+kR/71ohenmk
+EjhgWRpR3GIbJIN0s05byQ/OC4x8h32erkE1KUx0exOYu8KT908R1u0fBgHqCBvv
+FV7dEwI+K3UxGO5vXy/9A6XrunutzCDX4q0sFi4KmZQEYKDjnT4JPzxu2JGaBu8r
+/kKrBpbf2LeN82p+gD+gPrn2oYNxlCnQQcR00TiUQPI/JxjLWXPLqtWKF9tHjGRh
+aPCCqb8Is+lsnDciVrqZPJiZ/EU+bKOmZdyK2G1SNXkrljbmOFbHAisLLu3dKHe2
+WuyCJxCosscX5S9+0bsrb93MASHJl6DuvD0aiqNXYe+BnKSHy7FvomqvG/ip+txQ
+4rEc0chyTFchuNgtHNVPsury3fQPsKI6t+T36uk5GXscyuG5etwwKn+beFokRUgm
+WFwkhzRPyaSHBrAsu/0Uo63ROyMssVYpxd+cMpe+GS9f4jgZ2rbp2X8CHokJy5mV
+jMtiKzTUvAbkfKEog5U8qH/1SImtzJaGlIbfZwvKjyLnntlBGk8Keg70isj5wR2G
+Dy6xutqLb5GteAXzc1jCawn/DJnxFfexzF1aiU0i0nRWPf2j6LV5j5LL3lZVTL1k
+TQn1ZK96QyYb0pz0njlSEr84AyWUZcbg7mCMqi64/5rwcSf1Bts=
+=0DIu
+-----END PGP SIGNATURE-----
 
---8323328-1012852407-1778006663=:993--
+--oFaP8Rm7b43qwgz2--
 
