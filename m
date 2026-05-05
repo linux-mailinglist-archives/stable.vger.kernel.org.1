@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-244147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIo6HsPt+WkLFQMAu9opvQ
-	(envelope-from <stable+bounces-244147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:16:51 +0200
+	id aBISKKnt+WkLFQMAu9opvQ
+	(envelope-from <stable+bounces-244146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:16:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE1B4CE478
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 204154CE462
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 15:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39F323058089
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 13:14:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E5A7302F72F
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 13:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2977147AF65;
-	Tue,  5 May 2026 13:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6818C478E59;
+	Tue,  5 May 2026 13:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GLSZ7wAE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XXkWU+aW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C104647887C
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 13:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473FC478E5B
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 13:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777986837; cv=none; b=iTnsi2iqZF4Ek+KaH3jzkzQDsM88oLs8u7Rw5DCPJdaDf5YSkdfHovxWUKhIOFSZ94AvoKCSBQkdtKGLEwOPXFBIMUHoZhnoC5p5eg1VSpoDG1J7rIaGJQR9sGlOGf+vbhkAn1LLe1+NzDaiO1Nzvm9DZvxS+nJ11g3jTceYRGc=
+	t=1777986837; cv=none; b=f+7xLbJ1xN76lG4QRuLfVaD9pp/NTNi1WuE67sKslHKs17PQaFF+F7Xu+ONL+E2fob7Uj0oDzyE3iRfPYBbrNH+FUW/eWgF31ZZ0PSnWnOR4O+VZuJ9ctEETr89BSKuwUvyVvvSgLcz+iUlSHlSQ62QzSzfB5GCNCpn9VGOklS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777986837; c=relaxed/simple;
-	bh=TrETAIBRtr5BpleipM5VXU32aMTdlU394IStlNmAoNo=;
+	bh=wZGIg1WvrcZuYhDQpreZS8xozMJIsonW/o4iqtdaJ6c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eO+2N4bWxUWa1QzsLS3lo9l5Ej2JAmNBEYswKuOpBcQAy4NoMKHx47YM6tljXklX2GOsZQ22iTuxkxMowtncXGqiAVwufxvDO4VkCMHjycP/cuq3jxZ2ziL31TnHVLwXWqx0PYYUc2iwq98c12iZkgO2qlwR36v2lcbeQW//JlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GLSZ7wAE; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:To:Cc; b=oiAwf1NbbSIkOhyNWrg7INJaFvD44FzzKDEnSo6XLTSV50Ak7aoTBuju955AB1miBpJQRxr8hyBHLxqfnrvNcRUCfwTeHqpAyLn65KgmYSIiT0oix8ISjUxt+llFkHCot5XwH9DJhjYbzmuDYmbPcW+DUocUJHULKA1Qq5g3X8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XXkWU+aW; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso40033085e9.0
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 06:13:54 -0700 (PDT)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so50751525e9.0
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 06:13:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777986833; x=1778591633; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1777986834; x=1778591634; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+Mo2IeU/AaXoLyUW0cqRpgQJYVfBlAhtHpp2oMUPg6A=;
-        b=GLSZ7wAEqzrE4C2LGFZSEGbYaGUjUlpYYk/a22kkXpsYhLEOSbFpfyE5q/YtiHwm7y
-         OjwGWaaaEJnZAvAhzdJ8JL4XMe8YrJNmNmrKSoFjGI3eKU7wYcIBliSnHIJa5l+Ca9GM
-         kKuJMPM8MmvlOnap9QDolXSAu4j3XFVfEr5G+xUhX+Gk1cR48PZArpBEiJ63GvS4LqXF
-         6L7dSleodrJES07ejvwnJYbWLT40clQez2WpJn0K7ZqDu+13xYbRTRlIfm94Ggb4UNmJ
-         1WOmvdJ+p1KjafsB7n2/qB879i5tRnMHI8vRsKD5wDPdMCsF1uxY3hB+jEX//dBThR+l
-         hlLQ==
+        bh=4AFkvwk1yHFeeDLYag5Oi8EMMsCVOXTu0Co6nMK2/h4=;
+        b=XXkWU+aW+daHNNqDIsHjJ3uyxbDzWRwtswENztA6dDymG4WzW+n/ZifxLiG+3t7Qh+
+         rIOVZoexAMo2HhZNouA5f8Nn3F+d1gnPzgn3qbEAXkbY4ilKIVjoyWWE32SxVcTualRT
+         oRPxQlLKyutDpHkLb8fQBTvG1WDdZi1wyDvBsfwPTNra2XrWK+dilMqBUOU77nZM4XEn
+         acBBvoLuIl7uPLkjCnLYX3cy4wEtWHl5xfFr1oWShWsCtXQ4aYStAHI7EPxc6EeFurnA
+         0A8PjfiAkyhNRJeIsBfzmhjiGr6bV1dVv9cZkHJ4FDw72bB78gKAUzmCGg2duAvMoYb+
+         yY2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777986833; x=1778591633;
+        d=1e100.net; s=20251104; t=1777986834; x=1778591634;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=+Mo2IeU/AaXoLyUW0cqRpgQJYVfBlAhtHpp2oMUPg6A=;
-        b=HKplW8DCwC6wy2gQbF3q1XoyMCxbL+ksij0IaFp8TwHZvHvgsmRyFshx+td+kZqE/G
-         jqSIjfs2kfB3J7Eesr9BxUiZE8CzT2khMnWmkA01hatYC+qbFcYdxA/3Ns1qTLZeBlC4
-         Iff0Nyb7vtBH4XsxtrWT54SOfk040UpDaq80jEPJiOlJ8IBmorn/44j/1wcnQtVHfMdF
-         F5k6b+Bw668I0HriMFJbAdR7DyAtodOoBsNzyZhdwwitBaBJxnxyxrsMVhJDdCBaICe3
-         cydckDlp+V6G/K91exSTVhFhNfFD61MOOUT+kcHWO5DYj8nbeZFKZacMtLzw4q/p5aQy
-         fKwg==
-X-Forwarded-Encrypted: i=1; AFNElJ/fk2N1uHpu30RqvAWxQvyntPrdhe0K98dRSLnXqguOkCguQk332ZE9QQF62o5mWijIonSIzMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz07jFtvC2mMW0xdmEEyZvVD5iSm2Q9gLnO94MkfYCiqAhm52y4
-	1gtnOjJoQz3Gf1kuiF3217F4IH5YfFE5I5gH2XwmG8211cCc2MB/dGa6n8HciHA5JoE=
-X-Gm-Gg: AeBDiet7n4PaQ3oLKITPQtboTcqGQjGGU+RcAHUCZcTh18T2TmkWX9pHfjNp6ox0UsX
-	XIUnIz1t1e1XCJUsg8I7TrKCWY/ffaO89YgDVy91paE2+sHZ0+xW34GUOyTqhOgeCovULWQjDRO
-	f53s+ARKq5NXnH0lHnztD2QNmYAgG+4Ws77U/LsUFcvjlBvUW6rjUAKyeQBLFNE6XSxK8BAcIdu
-	cEyC5L4SqpzEnc2E6vRemyV6rdM0HPlSmicv0vlbMuMZINzkq15u13boh1DestROy/21nayqoa8
-	SUtSkLLMwJzLZwgEwmhqg4iDL+q0n/EqkMZT4uiOdsswWlzAPfMgsC5cIL8ahgGbVaaPYl4r7/D
-	yVcNTjLceL8hBbCXYhztXqiCr5QR4cKw6blZ7TozctCCcHN7ZgKbYy/HCffUAhEyQOc/SjKjdYM
-	JWhLfNDQqqbSeQZgol84gHCKjjajmx3PJpxyNyeu8QSoicgznriFzQ7WZelERar3hl6QH4flWUS
-	uwbSv3AztBbhgL1AegdjsZCTfyP
-X-Received: by 2002:a05:600c:c0c2:b0:48a:76a3:2b9b with SMTP id 5b1f17b1804b1-48a9865ea56mr172953595e9.17.1777986832975;
-        Tue, 05 May 2026 06:13:52 -0700 (PDT)
+        bh=4AFkvwk1yHFeeDLYag5Oi8EMMsCVOXTu0Co6nMK2/h4=;
+        b=qCHAOLLEuIZxdGsoAo9ZjfOO5+ylX41AfcvO6HADqt+gOv8aUOl8MDrPgx0RpHh/f3
+         67vvZYl6H16ypF6OLMw9AEuTvnLqxbxEkwzcmbWx4JzBYpeN41iV3R2eUuzqHeOXtn/B
+         2W5D8WlprdPxqYTvXoVNu/ueyWU5yZy3HoOCGPYj9qyJ9PIhl7eQISgKuePWdUEcqSAU
+         iwYhwfFr0NkWOJanFuZ1EZmkUSMPXArqwbHeSIX5HVCrKF/ZmuDmuGYJ0FeKPo5yHWCS
+         koTQBMADJmaBq/jZ+9JirvTJfXmkeqm8hb4HZ6uRAdLn984yN78S8QSxBnyyYtzIWbkO
+         2JTA==
+X-Forwarded-Encrypted: i=1; AFNElJ+smIOF9sKyumSg+tc3lgPgxx95xPKkpA+wwMVXIYnF85TWC7Lb4yBgkHkUi9j+r6mmTVeO08Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypjwRcWjlkNG1MOpdKQKVpGCWarBy/U1/pcFStoTfY4P0fEpEd
+	7avyKEYEs3DdKKlRJpQxZE9n9LOWUTcvrH4m4pdOs6HMn/Z21yEWU0jzXzxBn4rLRUg=
+X-Gm-Gg: AeBDievDp4S7bNZ1wolATWzr5AkN8KhTScSFBqksGMC0iuBiwysx2U/DwoVxWuSayG6
+	KpFz8RwS5c4cOw7Rub1P0nzsRNyWPIKCaWWPMOD7WpLuoWIktHjC8br/NrHSBuDlY+oGyhPEr20
+	OiKUsmjKLivDlchpMHsKWGJ0jy2b9TIM3yvzcgWZE1Awp/9ycrjqOXjLoaCbaYxR/n0FoH7PxQM
+	mw0NidVzq9E4ylwVpFIwuDdKJeNC+Tlpwn6G2zOvUzY+Hdi8ZDdMT/Ei9CzknYciggZd+5zvtdq
+	Yy181XvYNJQtcpmsJj1I/BSbwxwsNoZph1Bsj9FDUao0uvfj6XlAQwOr3R4cwFybD6rnANnfh3V
+	MqvLwL/NTpWFbey+cmMGDl+IlbCWbC4pp/UA5rr5lcFgd+AnzgZNPenvaA3PqzG8aZFPB0C0Gld
+	npJxw56AAte09XGB3r5p3S0Ww1Nhk0XLRdxHriLJE3La2PYdcYBh3Yw7hKQh76bzEK5zQyudFdb
+	svozjBzZjq+oHmfTBrPSeP7efWU
+X-Received: by 2002:a05:600c:5296:b0:488:8bdd:cfcc with SMTP id 5b1f17b1804b1-48d17fe008emr47062135e9.0.1777986833570;
+        Tue, 05 May 2026 06:13:53 -0700 (PDT)
 Received: from ta2.c.googlers.com (17.83.155.104.bc.googleusercontent.com. [104.155.83.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb72a17sm366599525e9.6.2026.05.05.06.13.52
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb72a17sm366599525e9.6.2026.05.05.06.13.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 06:13:52 -0700 (PDT)
+        Tue, 05 May 2026 06:13:53 -0700 (PDT)
 From: Tudor Ambarus <tudor.ambarus@linaro.org>
-Date: Tue, 05 May 2026 13:13:00 +0000
-Subject: [PATCH v5 3/7] firmware: samsung: acpm: Fix dummy stubs to return
- ERR_PTR
+Date: Tue, 05 May 2026 13:13:01 +0000
+Subject: [PATCH v5 4/7] firmware: samsung: acpm: Add memory barrier before
+ advancing RX pointer
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,7 +89,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260505-acpm-fixes-sashiko-reports-v5-3-43b5ee7f1674@linaro.org>
+Message-Id: <20260505-acpm-fixes-sashiko-reports-v5-4-43b5ee7f1674@linaro.org>
 References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
 In-Reply-To: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
 To: Krzysztof Kozlowski <krzk@kernel.org>, 
@@ -99,14 +99,14 @@ Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
  andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com, 
  Tudor Ambarus <tudor.ambarus@linaro.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777986831; l=1843;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777986831; l=2113;
  i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
- bh=TrETAIBRtr5BpleipM5VXU32aMTdlU394IStlNmAoNo=;
- b=okAA+Mks+tiZ1s4Jc4QBMMHkSt6NGOv/LwbI22GhCddZCxVtABSB/BDAqOsUu9MonRPBBkxDN
- jHgz8DkXtR2AxY0TqFa7j6ljCUuvR6o7fs+Un23tC7Mas+3rVYEJtuK
+ bh=wZGIg1WvrcZuYhDQpreZS8xozMJIsonW/o4iqtdaJ6c=;
+ b=vzW22Fo9gyaBKn9uKemzB9qhAaJduQL/9Ushx5qlHjwMWCJOJHUz+8hJn8xmalmTzQus8kfYn
+ MCGqMwi9nOYByz3EpsQutQNfFuol5X6gMNNK0rl0Glzn7AHBpqYO299
 X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
  pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
-X-Rspamd-Queue-Id: CEE1B4CE478
+X-Rspamd-Queue-Id: 204154CE462
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -122,7 +122,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244147-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244146-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -134,51 +134,59 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linaro.org:dkim,linaro.org:mid,sashiko.dev:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,sashiko.dev:url]
 
-Sashiko identified a potential NULL pointer dereference [1].
+Sashiko identified a silent data corruption in [1].
 
-The dummy stub implementation for devm_acpm_get_by_node() returns NULL
-when CONFIG_EXYNOS_ACPM_PROTOCOL is disabled.
+In acpm_get_rx(), the driver reads the response payload from SRAM using
+__ioread32_copy() and subsequently updates the hardware RX rear pointer
+via writel().
 
-However, the active implementation of this function returns an ERR_PTR
-on failure, and the consumer driver checks the return value using
-IS_ERR(). Because IS_ERR(NULL) evaluates to false, returning NULL from
-the stub tricks consumer drivers into treating the NULL return as a
-valid handle. Subsequent attempts to access handle->ops result in a
-fatal NULL pointer dereference.
+On weakly ordered architectures like ARM64, writel() provides a write
+memory barrier (wmb()), which strictly orders prior writes against
+subsequent writes. However, it does not order prior reads against
+subsequent writes. Consequently, the CPU is permitted to reorder the
+writel() store to become globally visible before the payload reads
+have completed.
 
-Fix this by returning ERR_PTR(-ENODEV) in the disabled configuration
-to correctly propagate the disabled state and match the API contract.
+If this reordering occurs, the firmware may observe the updated rear
+pointer, assume the queue slot is available, and overwrite the SRAM
+payload while the kernel is still actively reading from it, leading
+to silent data corruption.
+
+Fix this by inserting a full memory barrier (mb()) before the writel()
+to guarantee that all payload reads have completed before the hardware
+queue pointer is advanced.
 
 Cc: stable@vger.kernel.org
-Fixes: 6837c006d4e7 ("firmware: exynos-acpm: add empty method to allow compile test")
-Closes: https://sashiko.dev/#/patchset/20260420-acpm-tmu-v3-0-3dc8e93f0b26%40linaro.org [1]
+Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
+Closes: https://sashiko.dev/#/patchset/20260429-acpm-fixes-sashiko-reports-v3-0-47cf74ab09ad%40linaro.org
 Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 ---
- include/linux/firmware/samsung/exynos-acpm-protocol.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firmware/samsung/exynos-acpm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/firmware/samsung/exynos-acpm-protocol.h b/include/linux/firmware/samsung/exynos-acpm-protocol.h
-index 13f17dc4443b..d4db2796a6fb 100644
---- a/include/linux/firmware/samsung/exynos-acpm-protocol.h
-+++ b/include/linux/firmware/samsung/exynos-acpm-protocol.h
-@@ -8,6 +8,7 @@
- #ifndef __EXYNOS_ACPM_PROTOCOL_H
- #define __EXYNOS_ACPM_PROTOCOL_H
+diff --git a/drivers/firmware/samsung/exynos-acpm.c b/drivers/firmware/samsung/exynos-acpm.c
+index 9766425a44ab..a9449bc33bd0 100644
+--- a/drivers/firmware/samsung/exynos-acpm.c
++++ b/drivers/firmware/samsung/exynos-acpm.c
+@@ -5,6 +5,7 @@
+  * Copyright 2024 Linaro Ltd.
+  */
  
-+#include <linux/err.h>
- #include <linux/types.h>
++#include <asm/barrier.h>
+ #include <linux/bitfield.h>
+ #include <linux/bitmap.h>
+ #include <linux/bits.h>
+@@ -278,6 +279,9 @@ static int acpm_get_rx(struct acpm_chan *achan, const struct acpm_xfer *xfer)
+ 		i = (i + 1) % achan->qlen;
+ 	} while (i != rx_front);
  
- struct acpm_handle;
-@@ -57,7 +58,7 @@ struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
- static inline struct acpm_handle *devm_acpm_get_by_node(struct device *dev,
- 							struct device_node *np)
- {
--	return NULL;
-+	return ERR_PTR(-ENODEV);
- }
- #endif
++	/* Ensure all payload reads complete before advancing the rear pointer */
++	mb();
++
+ 	/* We saved all responses, mark RX empty. */
+ 	writel(rx_front, achan->rx.rear);
  
 
 -- 
