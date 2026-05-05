@@ -1,95 +1,67 @@
-Return-Path: <stable+bounces-244165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJInEQH++WkqFwMAu9opvQ
-	(envelope-from <stable+bounces-244165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:26:09 +0200
+	id wEiPCOr/+WkqFwMAu9opvQ
+	(envelope-from <stable+bounces-244166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:34:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EA34CF5C6
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:26:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1B04CF80C
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 16:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC4EE301E740
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 14:25:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75734308660E
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 14:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761B1480DC6;
-	Tue,  5 May 2026 14:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD5048035F;
+	Tue,  5 May 2026 14:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QrfgPQcw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X027wd3Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81EA48096F
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 14:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E6848032A;
+	Tue,  5 May 2026 14:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777991124; cv=none; b=JH1w3xnY62/BgI/vNty9YpeXgGCAJ3QrqwygBFzazuWFZgsZT2qbSNU2f6QZ0qEyimy2ye9ZSEf5QbcUyh9n5+kReCWPptb7hHXuin90lRBrMxq6UXRT8JjA6L9Kv33Gsv2yuE9y3t06Qqf0FE/AuciI9YaVpyf0/B3MEaP8i58=
+	t=1777991314; cv=none; b=faeIl1k9o56D/5J1s3x1udws6SDF8C1Q9E72jD5sYvc+5msanzjo51ukTv1Xr5svSiHcGfvBgwtZbYCcXwfIzLTraiVpd5orIvus4afugfVJHgDciCVT5jpHE1UuKmyo9IzlqjG75Kus8J3HXx1EW6EZB3oxMYT1N8MKB52mV4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777991124; c=relaxed/simple;
-	bh=79Mr++4ywq5EgtUZ9PejVwzSpLuYUxCPpfWZYzB0SmE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=auNDFMzJ+9qN4yzb7pXwF+mdg5fX06oKCZeW+MBvzeLvP91IIFfwB9bZdsT8Z71KHNmBiBVyHOE3BDRsxjAJlUuoG+aAJe06nF1bzJWljbD17UaMzLvXDBFdCdvCUJAC2U99YTna9d3b1p/MGOT3+m6QekDUwgI6TlhEfnHFYak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QrfgPQcw; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-67cac5ece75so3048241a12.2
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 07:25:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777991121; x=1778595921; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pzlkHf4YEky1pO/hXCEL+6vJR7HxhQpNLg8+R2TR7cU=;
-        b=QrfgPQcwHXvngsxz2H/Dk3lY09K9lWDc9EE8xVtirSNxHGi7MG7sJEHe+3f0lMJ2xr
-         6vliTYMvL3ACFLoo8bkfg+ehAZP2Ya55gGky5GqNyWG4sdJ8Bwo/FMjfDBtcyQ83lLc/
-         Oa8VftE6sVqiwUcGHlgyPy2LdteQikGceS5GWVW7I6vtccL9YCQf/9SA/N67cYjgN3Pk
-         ncer8Bxbfk2N3ShJ/xWUBXehLCMjmcpFypmK2ruOEdobpg+M0U6EcgQr0MYhosXVj8jY
-         1JqLqjBs9mlGpwAfFOdBK4WPUAAJnet/GzItUQg2njQ7GxRnMQU0Ab+I6ku3nOWoJHAr
-         m8SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777991121; x=1778595921;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pzlkHf4YEky1pO/hXCEL+6vJR7HxhQpNLg8+R2TR7cU=;
-        b=sRDRHAjcyvw3ooAPDvTe1Nbwr4mYK7SQ5woR+XZJuNi5p6v5/WE5tkG7WZulw8CWwq
-         gQ2eU3NI0dRa5oKWBiP2w7u57NX0lT3OmrmZSHpmRMq5jmH5udelCO0CwdinzeDLadWd
-         HlxkGVw894+eAYTC03GgBUuryY/AcNzcApC9crww9WuVZXMD2L1OpivMDnn1jp/8qVzx
-         NK2DJ0t1zV9Xvjw2d/AYJAF7+5bBxVIdNZBF0+z1nwPamcODTjxxWTgxWxfOO9mnY7Nb
-         diq0brlIonR6m3tVfO/pY4Oghc4ZACg0lqFIsPk0MSS+8FENt/E/jqByNZa+aLeF0zeg
-         KcUw==
-X-Forwarded-Encrypted: i=1; AFNElJ9F4th37W2jnWM1LWVFRCmEgsMZmJLLCcNBbEiXyZct5xnzqQYm/qJn+c34PU0Xt2RMpr8SJd0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6LYT5WKq5TAA17Of55dAYhT3TYka04AD11kDQ80LoIUK2Uu+V
-	PhT5PvsffCYNKsvbY3N110+h5Oc+Im8rOBuB3OpSIPNju5q9Mm7/goIN
-X-Gm-Gg: AeBDievoMdqVWJ0IYMBrX6nXLJSgCOWIZxSAR6EL/LT45X5KV7B3PK9MSfdovIe6rgj
-	hXcqpCEhqIXQdvmxKJ5NkJwhEtAq98+g/VpHmbyOx4NtPKVSFIAK8DerrV7eZ/+RtQokTBeYBPc
-	9lfWBllKLYZ7WuR2g0kgsiYGQZK29R82lRlwQpCjgD5ypMIbFZTJnX/kRFumg8p7/w6xOrMLeNT
-	PPBPl78aVXXVi8B5RhTdnlPsbZC9t8+Gl2D8zxGAW+yJ84HFxy9p77k2RtEEdZEkMeDjFIawpds
-	AXm0PmLSRLtT1h70XbvZRt3hyIZJsdD5I97dhgy02owzrbfl1nLuSpH1OccRSaj+pwckPi9/R98
-	ReQ6qEvbpzoo6/WfG2LyCspFnIobqkd8FNjq78sNkTwHv5P3esN7oFkuigebVwYwc/ZvWMmCSoK
-	R+U/YwS60X48jj7BxgHVMdCp//LyyvgaGR
-X-Received: by 2002:a17:906:eeca:b0:ba5:dfa6:1e8e with SMTP id a640c23a62f3a-bc40f438b2fmr185301166b.5.1777991120735;
-        Tue, 05 May 2026 07:25:20 -0700 (PDT)
-Received: from avt74j0.. ([2a02:8109:8617:d700:a1d:902c:85c8:d272])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bbe6a64d990sm511134366b.22.2026.05.05.07.25.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 07:25:20 -0700 (PDT)
-From: Martin Hecht <mhecht73@gmail.com>
-To: 
-Cc: sakari.ailus@linux.intel.com,
-	martin.hecht@avnet.eu,
-	michael.roeder@avnet.eu,
+	s=arc-20240116; t=1777991314; c=relaxed/simple;
+	bh=RcSelwJi6o5XPQYFAlXWzdU/YR262F/UXpfNjyr1RgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TDmV5TGYPkhmE/FPcX7BF46WmmQajDi5uIbpohdo9zfdAqKKdvcvNSZFJyErL//QXDUg3/uXDjPd07y5PZ88gTb2dwp2nxvNI6sWArOLm9UAJJLIT4d++WaGCLDdwsZ24qCrYdAfwK1SOMbPkYW1ZzZm3028xpO97C84AM8VFMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X027wd3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65220C2BCF6;
+	Tue,  5 May 2026 14:28:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777991314;
+	bh=RcSelwJi6o5XPQYFAlXWzdU/YR262F/UXpfNjyr1RgE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=X027wd3Z3lGQRqvxJxidrx3NgvUesuXO4AxqXVRiOTPHXS9kTA9B7q39deT2WflXI
+	 1+0wSCrfCN6cqYhCQ95TL+1oH31J5jjsdyKn7LR6TsqB8yspBPlZeWVz6bqv8mbY+W
+	 qs2n7TyWh1P8KbQGLj7cEn4CnJJjAO0tK1guwvqFYWACOJKE7lQFNEOhewANjU9ddR
+	 S8T6PReiIpefMOS2Yu9DXF5GbUw6cLiErWWgYoW9NJD6ttbN+gDJSZzeUuaawGFIha
+	 GdlB/Tud5oo5mNzD8K5FLtWtscMFXYgOhSSSPMgAueJDn52MYhYqVqHwGqV67/xxbP
+	 IqS+q+N2AN+sg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wKGlE-00000003Kss-0PKb;
+	Tue, 05 May 2026 16:28:32 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Martin Hecht <mhecht73@gmail.com>,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] media: i2c: alvium: Fix controls for WB/AWB
-Date: Tue,  5 May 2026 16:25:10 +0200
-Message-ID: <20260505142513.1551721-1-mhecht73@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Phil Reid <preid@electromag.com.au>
+Subject: [PATCH 1/8] i2c: core: fix hang on adapter registration failure
+Date: Tue,  5 May 2026 16:25:40 +0200
+Message-ID: <20260505142547.795054-2-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260505142547.795054-1-johan@kernel.org>
+References: <20260505142547.795054-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,104 +69,138 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 16EA34CF5C6
+X-Rspamd-Queue-Id: CD1B04CF80C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,avnet.eu,vger.kernel.org,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-244165-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhecht73@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244166-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,electromag.com.au:email]
 
-With that patch the controls for red-balance and blue-balance were created
-only if the particular camera supports that. Otherwise the pointers on
-the control variable are initialized with NULL to prevent side effects for
-clustering with AWB control.
+Clients may be registered from bus notifier callbacks when the adapter
+is registered. On a subsequent error during registration, the adapter
+references taken by such clients prevent the wait for the references to
+be released from ever completing.
 
-Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
-Signed-off-by: Martin Hecht <mhecht73@gmail.com>
+Fix this by refactoring client deregistration and deregistering also on
+late adapter registration failures.
+
+Fixes: f8756c67b3de ("i2c: core: call of_i2c_setup_smbus_alert in i2c_register_adapter")
+Cc: stable@vger.kernel.org	# 4.15
+Cc: Phil Reid <preid@electromag.com.au>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/media/i2c/alvium-csi2.c | 37 ++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ drivers/i2c/i2c-core-base.c | 49 ++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
-index b62b45a4f2fc..4c6934e9e177 100644
---- a/drivers/media/i2c/alvium-csi2.c
-+++ b/drivers/media/i2c/alvium-csi2.c
-@@ -2108,26 +2108,33 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
- 						  0, 0, &alvium->link_freq);
- 	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 9c46147e3506..7cec3f276e13 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -63,6 +63,7 @@
+ static DEFINE_MUTEX(core_lock);
+ static DEFINE_IDR(i2c_adapter_idr);
  
-+	if (alvium->avail_ft.whiteb) {
-+		ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
-+							V4L2_CID_BLUE_BALANCE,
-+							alvium->min_bbalance,
-+							alvium->max_bbalance,
-+							alvium->inc_bbalance,
-+							alvium->dft_bbalance);
-+		ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
-+						       V4L2_CID_RED_BALANCE,
-+						       alvium->min_rbalance,
-+						       alvium->max_rbalance,
-+						       alvium->inc_rbalance,
-+						       alvium->dft_rbalance);
-+	} else {
-+		/* set to NULL for v4l2_ctrl_auto_cluster if not existing */
-+		ctrls->blue_balance	= NULL;
-+		ctrls->red_balance = NULL;
-+	}
-+
- 	/* Auto/manual white balance */
- 	if (alvium->avail_ft.auto_whiteb) {
- 		ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops,
- 						   V4L2_CID_AUTO_WHITE_BALANCE,
- 						   0, 1, 1, 1);
--		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
++static void i2c_deregister_clients(struct i2c_adapter *adap);
+ static int i2c_detect(struct i2c_adapter *adapter, struct i2c_driver *driver);
+ 
+ static DEFINE_STATIC_KEY_FALSE(i2c_trace_msg_key);
+@@ -1605,6 +1606,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	return 0;
+ 
+ out_reg:
++	i2c_deregister_clients(adap);
+ 	debugfs_remove_recursive(adap->debugfs);
+ 	init_completion(&adap->dev_released);
+ 	device_unregister(&adap->dev);
+@@ -1744,29 +1746,10 @@ static int __process_removed_adapter(struct device_driver *d, void *data)
+ 	return 0;
+ }
+ 
+-/**
+- * i2c_del_adapter - unregister I2C adapter
+- * @adap: the adapter being unregistered
+- * Context: can sleep
+- *
+- * This unregisters an I2C adapter which was previously registered
+- * by @i2c_add_adapter or @i2c_add_numbered_adapter.
+- */
+-void i2c_del_adapter(struct i2c_adapter *adap)
++static void i2c_deregister_clients(struct i2c_adapter *adap)
+ {
+-	struct i2c_adapter *found;
+ 	struct i2c_client *client, *next;
+ 
+-	/* First make sure that this adapter was ever added */
+-	mutex_lock(&core_lock);
+-	found = idr_find(&i2c_adapter_idr, adap->nr);
+-	mutex_unlock(&core_lock);
+-	if (found != adap) {
+-		pr_debug("attempting to delete unregistered adapter [%s]\n", adap->name);
+-		return;
 -	}
 -
--	ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
--						V4L2_CID_BLUE_BALANCE,
--						alvium->min_bbalance,
--						alvium->max_bbalance,
--						alvium->inc_bbalance,
--						alvium->dft_bbalance);
--	ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
--					       V4L2_CID_RED_BALANCE,
--					       alvium->min_rbalance,
--					       alvium->max_rbalance,
--					       alvium->inc_rbalance,
--					       alvium->dft_rbalance);
+-	i2c_acpi_remove_space_handler(adap);
+ 	/* Tell drivers about this removal */
+ 	mutex_lock(&core_lock);
+ 	bus_for_each_drv(&i2c_bus_type, NULL, adap,
+@@ -1792,6 +1775,32 @@ void i2c_del_adapter(struct i2c_adapter *adap)
+ 	 * them up properly, so we give them a chance to do that first. */
+ 	device_for_each_child(&adap->dev, NULL, __unregister_client);
+ 	device_for_each_child(&adap->dev, NULL, __unregister_dummy);
++}
 +
-+		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, true);
++/**
++ * i2c_del_adapter - unregister I2C adapter
++ * @adap: the adapter being unregistered
++ * Context: can sleep
++ *
++ * This unregisters an I2C adapter which was previously registered
++ * by @i2c_add_adapter or @i2c_add_numbered_adapter.
++ */
++void i2c_del_adapter(struct i2c_adapter *adap)
++{
++	struct i2c_adapter *found;
++
++	/* First make sure that this adapter was ever added */
++	mutex_lock(&core_lock);
++	found = idr_find(&i2c_adapter_idr, adap->nr);
++	mutex_unlock(&core_lock);
++	if (found != adap) {
++		pr_debug("attempting to delete unregistered adapter [%s]\n", adap->name);
++		return;
 +	}
++
++	i2c_acpi_remove_space_handler(adap);
++
++	i2c_deregister_clients(adap);
  
- 	/* Auto/manual exposure */
- 	if (alvium->avail_ft.auto_exp) {
+ 	/* device name is gone after device_unregister */
+ 	dev_dbg(&adap->dev, "adapter [%s] unregistered\n", adap->name);
 -- 
-2.43.0
+2.53.0
 
 
