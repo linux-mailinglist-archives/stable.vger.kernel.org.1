@@ -1,199 +1,135 @@
-Return-Path: <stable+bounces-244121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKZHJyfd+WkwEwMAu9opvQ
-	(envelope-from <stable+bounces-244121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:05:59 +0200
+	id yO5hN73d+WlPEwMAu9opvQ
+	(envelope-from <stable+bounces-244122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:08:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1BF4CD30F
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:05:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5704CD3B0
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 14:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 844B3300F79F
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 12:05:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D3A703004078
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 12:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F354A40F8CE;
-	Tue,  5 May 2026 12:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B741B41B366;
+	Tue,  5 May 2026 12:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geC38nXa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nT6oL5tj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44A239A7FD;
-	Tue,  5 May 2026 12:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793F3359A91;
+	Tue,  5 May 2026 12:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777982755; cv=none; b=cSQe+IIO7ged2peeU04gJGAyl/xTOTknnjshE1Nb9dQg4HTTkfCXgHuSneUPfSI7HDQa9cb4fihY3vrje56MOaIAZ1qAE0UXhgpCvkCsEGJSqKuSYbORuIILJX6WNgr3q9V3dgy8HPocuFvoiDcQpP88FhO/fbnrAd2WAi8I4/c=
+	t=1777982902; cv=none; b=kw5Z3HTloDzAjjann8IoKOq4V80qwQgcg2OW5vjiNDhEz46/4htytaTiO5yOuoqH6wOIsBM2d4whpNySzZofXyuAktvz4eYxTco1XEOAcEL+tb9TGu+7amvnG3sWFAMEht4D2azHlvgRqQuKR+ArOQvgjYnf8lCeHujlLaC4GDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777982755; c=relaxed/simple;
-	bh=tFcPGTWeki9Taijwy4G4ifPpnSu4/IV8i4QfyCO1ngc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SXHvgd1fPssFkwJm0ON76rzWbea8Co0bEHYeXyhlJRAWLmBG1HLemjo/+Vh2DSKIT7dzniNqd8PUHlJE53OEA7iwDlyoMuew0c7FjmpAr6Yj2sTLKqI9VYFDD2R3E6XZ8szsJkWjMzK8I/EAZ5Cg5TMTQkViQIw6Vpgi6wNr7So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geC38nXa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA4FC2BCB4;
-	Tue,  5 May 2026 12:05:53 +0000 (UTC)
+	s=arc-20240116; t=1777982902; c=relaxed/simple;
+	bh=hJpbio2BGay5/lozyLXXheiKHnWdisBgdjDFk7WvqT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KivZGeKJ95iGEuZczomSm58a1egPBS8Rt6451gaOR8ldc3XiSmp9WONktaoVeAAg2xnTnxSqH4TTH/mPwGqHBFWyHRHkSg7+Bj6PCIVgAzexZMiLq6teqe75wrR3nzFrC+bsSkZha69wsl3rC25pFly/fHFp7ZQ0iw6s+TFiJb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nT6oL5tj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE460C2BCB4;
+	Tue,  5 May 2026 12:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777982755;
-	bh=tFcPGTWeki9Taijwy4G4ifPpnSu4/IV8i4QfyCO1ngc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=geC38nXa6csEkTLKYAawWN8RrwJl41tXmaj1xWMjq0ujUUBcAwhKtyHeyPlvxZXDl
-	 1TDps2n6W762c0Tu+mn7bo9T2i2nMufXDVVT5dWnWpku9PpKG4zGZEHA43Numyv9dd
-	 +XUd/iZlXAAtw0ZAe1Tn2SKrlQ+CCXTgLvZ9FlGI3iQrVjoqV6NtiN5f4bZvZ7R5Qd
-	 NfWaHGGjRe3k5hX4I1s3nELijKuUL2QCuZE6pc0DCiJ7jo/AMLODHyLt7v/d8fHWON
-	 XiVLiUc0dBQabY1qQOUMoPcuQ9AI19AwBbJqlqTRQC/Xh+2oZso2y4HJM9AqP8G6HJ
-	 ZU+ZnBBXRTVMg==
-Message-ID: <79449571-d8c6-4fa7-8d53-5b358b73d34f@kernel.org>
-Date: Tue, 5 May 2026 14:05:51 +0200
+	s=k20201202; t=1777982902;
+	bh=hJpbio2BGay5/lozyLXXheiKHnWdisBgdjDFk7WvqT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nT6oL5tjEZAUij3NqNxthSVzuf8X45gLm0bLaJ9OY0WJYF+ioBcxvJVNb2AkfYKVV
+	 MkvXKga6U/blRI+pRgNBJUNvSaE9pubaRuzo3f2ympZlzcrX51WE5ny+BdOtZV307u
+	 QcuPPoFII5VPM0DQUrPIjpeoy7qn5rvQjPceKH8MaFL2AfEOSk3dLm5dzwLVZWK1dV
+	 wPachB219/sY/dnpki2JU2GPGPp2KSkMLMalNFP6JsGNKYhvr7D/2bhM5yMUGFfmP7
+	 8hi85Rs0Xff2PDeOuawmmTUBB7kP69NKkE0ckVq6Y/qxybXnDCwM55T7e3sl0aKpVH
+	 uB49D4cZAqYCg==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id CC6AD1AC5871; Tue, 05 May 2026 13:08:18 +0100 (BST)
+Date: Tue, 5 May 2026 21:08:18 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/275] 6.18.27-rc1 review
+Message-ID: <afndstwca9pMPhnX@sirena.co.uk>
+References: <20260504135142.929052779@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] media: tuner: check return value of I2C transfers in
- set_type()
-To: Wenyuan Li <2063309626@qq.com>, Andy Walls <awalls@md.metrocast.net>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- gszhai@bjtu.edu.cn, 25125332@bjtu.edu.cn, 25125283@bjtu.edu.cn,
- 23120469@bjtu.edu.cn, stable@vger.kernel.org
-References: <tencent_46889E152DE22B7E8A0CBB3311C556F92E09@qq.com>
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Content-Language: en-US
-In-Reply-To: <tencent_46889E152DE22B7E8A0CBB3311C556F92E09@qq.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1C1BF4CD30F
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sbFfvD3S7eKZshjt"
+Content-Disposition: inline
+In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
+X-Cookie: Alex Haley was adopted!
+X-Rspamd-Queue-Id: DE5704CD3B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244121-lists,stable=lfdr.de,cisco];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[qq.com,md.metrocast.net,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244122-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hverkuil@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qq.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sirena.co.uk:mid]
 
-On 3/29/26 12:51, Wenyuan Li wrote:
-> In set_type(), several I2C transfers are performed to initialize
-> specific tuners (e.g. FMD1216ME, FMD1216MEX, TD1316), but the return
-> value of i2c_master_send() is not checked.
-> 
-> If an I2C transfer fails, the initialization sequence may be
-> incomplete, potentially leaving the tuner in an inconsistent state
-> without any error being reported.
-> 
-> Check the return value of i2c_master_send() and propagate failures
-> to the attach_failed path. A small helper is introduced to reduce
-> duplication and provide consistent error reporting.
-> 
-> This ensures that I2C communication errors during tuner
-> initialization are properly detected and handled.
-> 
-> Fixes: 93df3413f1b4 ("[PATCH] v4l: 655: added support for the philips td1316 tuner")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wenyuan Li <2063309626@qq.com>
-> 
-> ---
-> v5:
-> - Reword commit message to better explain rationale
-> - Clarify error handling approach
-> - No functional changes
-> 
-> v4:
-> - Added Cc: stable@vger.kernel.org
-> - Updated Fixes tag
-> ---
->  drivers/media/v4l2-core/tuner-core.c | 22 +++++++++++++++++++---
->  1 file changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/media/v4l2-core/tuner-core.c b/drivers/media/v4l2-core/tuner-core.c
-> index 004ec4d7beea..01f28436a1f8 100644
-> --- a/drivers/media/v4l2-core/tuner-core.c
-> +++ b/drivers/media/v4l2-core/tuner-core.c
-> @@ -280,6 +280,19 @@ static const struct analog_demod_ops tuner_analog_ops = {
->   * Functions to select between radio and TV and tuner probe/remove functions
->   */
->  
-> +static int tuner_i2c_send(struct i2c_client *c, u8 *buf, int len)
-> +{
-> +	int ret = i2c_master_send(c, buf, len);
-> +
-> +	if (ret != len) {
-> +		int err = ret < 0 ? ret : -EIO;
-> +
-> +		dev_err(&c->dev, "I2C send failed: %pe\n", ERR_PTR(err));
-> +		return err;
-> +	}
-> +	return 0;
-> +}
-> +
 
-I think this is overkill, and I also like to keep changes to this old code
-to a minimum.
+--sbFfvD3S7eKZshjt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->  /**
->   * set_type - Sets the tuner type for a given device
->   *
-> @@ -351,11 +364,13 @@ static void set_type(struct i2c_client *c, unsigned int type,
->  		buffer[1] = 0xdc;
->  		buffer[2] = 0x9c;
->  		buffer[3] = 0x60;
-> -		i2c_master_send(c, buffer, 4);
-> +		if (tuner_i2c_send(c, buffer, 4))
-> +			goto attach_failed;
+On Mon, May 04, 2026 at 03:49:00PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.27 release.
+> There are 275 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Just keep it simple:
+Tested-by: Mark Brown <broonie@kernel.org>
 
-		if (i2c_master_send(c, buffer, 4) != 4)
-			goto attach_failed;
+--sbFfvD3S7eKZshjt
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Ditto below.
+-----BEGIN PGP SIGNATURE-----
 
->  		mdelay(1);
->  		buffer[2] = 0x86;
->  		buffer[3] = 0x54;
-> -		i2c_master_send(c, buffer, 4);
-> +		if (tuner_i2c_send(c, buffer, 4))
-> +			goto attach_failed;
->  		if (!dvb_attach(simple_tuner_attach, &t->fe,
->  				t->i2c->adapter, t->i2c->addr, t->type))
->  			goto attach_failed;
-> @@ -365,7 +380,8 @@ static void set_type(struct i2c_client *c, unsigned int type,
->  		buffer[1] = 0xdc;
->  		buffer[2] = 0x86;
->  		buffer[3] = 0xa4;
-> -		i2c_master_send(c, buffer, 4);
-> +		if (tuner_i2c_send(c, buffer, 4))
-> +			goto attach_failed;
->  		if (!dvb_attach(simple_tuner_attach, &t->fe,
->  				t->i2c->adapter, t->i2c->addr, t->type))
->  			goto attach_failed;
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn53bEACgkQJNaLcl1U
+h9CjPwgAgnOTfoo0H4+xsuOEF77U14jmnfah+FHnDacv7y1VXbLIgj8HJlgso+xE
+t/Qypdn2sWjhQ4dHNq+5h0liimZ200CjAma6JiAjnaZpGuJdOpz4vIXNLE12i4z3
+GIIlDwyfGtXx49drmGIO74riUUifNHkmrnhV+nO8AzPGrC+4a8MiET6VZj685Vi1
+EGDpnms8//cVp2NrZI61NYniyEuEpyDiuIydJVj7aBYSjWy+Z/zymWd6M88bMfln
+Y6aEOytK1p7vstlbR8urkCRiH3Y//+B+zxZM1WT/+WYVOjZ9QApD5Ka7aqZiQk53
+3ofUnAmo7s1fvBlXEFxqwY4NULDIHw==
+=BMBj
+-----END PGP SIGNATURE-----
 
-Regards,
-
-	Hans
+--sbFfvD3S7eKZshjt--
 
