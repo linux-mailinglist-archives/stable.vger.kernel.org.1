@@ -1,204 +1,199 @@
-Return-Path: <stable+bounces-243955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHIsLxZo+Wmt8QIAu9opvQ
-	(envelope-from <stable+bounces-243955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 05:46:30 +0200
+	id cLKaJI11+Wk48wIAu9opvQ
+	(envelope-from <stable+bounces-243956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 06:43:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F86D4C644D
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 05:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F07F44C68C5
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 06:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0532301DCFD
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 03:46:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3BFD3042254
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 04:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D292C3AA4F9;
-	Tue,  5 May 2026 03:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEBB3BD635;
+	Tue,  5 May 2026 04:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YbJEY5HX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J88MGhRS"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011053.outbound.protection.outlook.com [52.101.57.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199AD35A927;
-	Tue,  5 May 2026 03:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777952785; cv=fail; b=qXxZ3Ub7Vl+JVYH+GQnUwcLWrZR82eifUP9+JUSVlN1+xPtEVTi4KIPynd24gNpx+isYEydOMDViYDHImJ0WeA7dxyaHXekjV7yBFMQdeYoxJvqgp78gRKPp7S/9TJY0ASgBw6I8t8n4jmoZ77NUZTiJL8AuetkV4e4nTAcymNM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777952785; c=relaxed/simple;
-	bh=tPx2rMA8Ee8+EnM7nyz7CNCoOg+24MXRKb/O5vHP5uA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6oKLQ0FMiKTKOef5kvcA1jFoMaXE9bcA9i4KRQGI8vSOK2Um08yN1SWVdfTp61GANnbhZ/oRgOmTl5E2SXtibJWo1nV1gtSUerxclw8HAI+IZeqAt77KkneIr3RZF4x0xkbYAI9NeUFh9mpognjwa5rYxMKlEtDqVMqEZkTnZg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YbJEY5HX; arc=fail smtp.client-ip=52.101.57.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B8mDYn9EjlgFMLrNPR+PErtUOy7DsmYAD2mHoZeJ+YqsFZbxOQyK7YRa8dhIgxjXEafBwykdc7r7g8I3Rwb8M/E1X4LZCCOt5mxVGQicc2cHX2QxUofC9U6DjgIamKb6UEqoDzwMsixU3lIrOfa0wb8M/Q4qizwwKxTV7HZoIY3EEQTkm47QF8VbT9XHcQ/h0hkslPYylRatYp7NSH8+MgLNpMjvOLE2B1pyiHL08FeKaOp5bgR8DKA5PdXM4HH7REmjK2e3s9w/dP/JDpP06krF9hBvQcN4M6U1kK0H/RZHLInaAvPTo8D+Ha2SND8KGciyfrjsAqvUZVrFUgB4aA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0Z2W+bv6xizSKgE3AnpNHd9GLn2c6KqOnvH4HyWunFA=;
- b=XmYq1L9IuAFxgQSgD47SxVC4qduS4209kXY6aauv6JcnoR3wvMVFlc0SuBafanDpPgwG8Nb1lwQ8i7M8Pr7p0KZegk/Iy75gm/vOu8e31zSnxcfAQnqVx5ug2JEviAUqFfmV/lTrxQmFGb8eQgSHXU6HXRpW0IBEbElsfRm2GmeIb/fSp1qJOI+zD8M1uFNUx51qb2aS86EfYkIOgeUpK/Q6pz2qgc7PP9gFN51H83CbEowcwitTixaLte7xdG/1C5MH9F48+rs9ilsv9Jo1p9RYgb2i+OXd8tCAhBsou2B3M92R0H4aYxSyPV+N4TLugH0w0d9nVRpv0SZD+JyYZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0Z2W+bv6xizSKgE3AnpNHd9GLn2c6KqOnvH4HyWunFA=;
- b=YbJEY5HXLvhxbfMIWgz/iZbVV0BGUmlJn455luCQGBS1Ry4Cm+zTlpu/Xd9ayr5UbZ2UKYvjfFT9ha8UUfAsexoXZIdO1yy66+BdkwUhfivoPo8oWUg7P6WFFX8dcDHWADaXlk/MEhXA6uKDE5pqnwIroT+6xDo2NbwPTE9gtd8SZFviD7fbQuFaQsY/5t1nshHQEmgeHX2RWL/z4QLxq68iXXod8E096eOUvbEN3f0B4tBSmq/IejG/Vh0Rjz7DYNp06ihlCmnbQIlkdpA5uO2X6F2fZTrlaeETWEj/Bd+NsZB7X0SRcgNQkizJ/fxR6m7FYY3zNOc94+SuCxt1ww==
-Received: from BY3PR05CA0028.namprd05.prod.outlook.com (2603:10b6:a03:254::33)
- by CY8PR12MB7314.namprd12.prod.outlook.com (2603:10b6:930:52::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
- 2026 03:46:17 +0000
-Received: from SJ1PEPF0000231F.namprd03.prod.outlook.com
- (2603:10b6:a03:254:cafe::e2) by BY3PR05CA0028.outlook.office365.com
- (2603:10b6:a03:254::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.14 via Frontend Transport; Tue,
- 5 May 2026 03:46:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF0000231F.mail.protection.outlook.com (10.167.242.235) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.9 via Frontend Transport; Tue, 5 May 2026 03:46:17 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 4 May
- 2026 20:46:02 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 4 May
- 2026 20:46:01 -0700
-Received: from nvidia.com (10.127.8.14) by mail.nvidia.com (10.129.68.6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Mon, 4 May 2026 20:45:53 -0700
-Date: Mon, 4 May 2026 20:45:44 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Kai Aizen <kai.aizen.dev@gmail.com>
-CC: <jgg@nvidia.com>, <kevin.tian@intel.com>, <will@kernel.org>,
-	<robin.murphy@arm.com>, <joro@8bytes.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] iommufd: Use sizeof(*hdr) instead of sizeof(hdr) in
- veventq read
-Message-ID: <afln6NzEyTHpcKQj@nvidia.com>
-References: <20260430175630.67078-1-kai.aizen.dev@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6572F3B8D40
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 04:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777956032; cv=none; b=JjTjIV4rYPbCo924eYR7rKKzFyEMH5gZCLU25to7Vjrj1EKy02hWQ+0z+E7016sGcu2MgLg9H5o44ATFi6s1srmp8EMPESP5q9umV+Y+SrdX4pb7qWw3or+Ln5+hT6tMzppTrfbdDmzKCs+zKJHZoK6KckhpqrG3tI15Jv1GTD4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777956032; c=relaxed/simple;
+	bh=xg+AzQSH02m2ChqkHlHOL0nslwkp1ELZhv5oYpTQd1Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FY3xZA33hSckT8HhwztwlyGSWMJ5RFNHQxJAt1z632uf1/RWml8MLSsVyQ/v8MJGlaokYW5epw1hLUFnsjmGy3wgd2tM2N/TrWMvHXP8ALmp+lqgufVfTSRBvUQjbDjHJ+UY1uY7AUgE+PfYmLIHAqOL0J9QB3XUh9ULrCrgCvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J88MGhRS; arc=none smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1305908ae11so928793c88.1
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 21:40:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777956030; x=1778560830; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wD6lG8b++LnD58VJ+TTawp1hDBka3Nn4267cv0Dov5Q=;
+        b=J88MGhRSVu7EfWsDysKSWe7mlteHUGl+db2GB7cMG1wd/mYAVJ3uvx57Tkwmg/r3Mi
+         AG4i1l3VLP224iJ0Tj8XbKEHYTei7WQvp7/lnIrpVATe6xLJePFTOniUUJu4Lqfjym3o
+         erHZy7ohu24hiOLL2iGK8Zkt1nKyUO2Xwxmh8O1ZhlDaAwfihJGVZZjJHECTNqYZs+87
+         eQ4bpMZPGbH94Va3M+g1w5cDVxDwo1DVzY8gk9WC1LZ2FlYr4UM8D27Q5oBViSkayHkp
+         hLnN4wKRxY+s7ddlbXDjc3Yr54/GSDhCCZCGzB+CNTRRFz8NTv/nD0MX/cwQbYC9F2X/
+         BSeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777956030; x=1778560830;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wD6lG8b++LnD58VJ+TTawp1hDBka3Nn4267cv0Dov5Q=;
+        b=bKmITRKlyyulEMKgAw/GliZfsDVLiyjw84hgvvAcKZ7/cgEYa5MQ3MlKed6xZOyGM+
+         l/Y9lP0RcJsKgmhh2GkM49bbMRQa7S9es/8/Put42yMpVmWgrDXG+DVsvXYXsrwUehYA
+         d2MWOkaJvGb8eHC1sm0U5nfhRpp6cnRR2Hvw7B14dXCBP2IjwJygeUUdOArqMyM9Ida2
+         9hB050PEdDTGw4Ilxq2NFmgVzHfeKr8h0e+GsW59VPqziplu3HDNS+TEkJbY8qIs1qPp
+         H95Zz7lMXeJS3bjZhLyepIpcw7GTngB8wdXBEgAoKtIYRZrAICYP62qgf6P4m2nUi4iO
+         5jbw==
+X-Forwarded-Encrypted: i=1; AFNElJ8+Wz+VxHAtRc6mkkhwWfLeTMHjAr/449IkBhm0c8kc2CsXa6BCLdMQon1/mHsCsngWEncLnqU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDV7NK9EmUTnTZ0wEouQJw0jlXfE4lzrD9CT7quWUGC13+eshB
+	MUsEkEhi3RVftQRZT19PpgBPHKoQy6cgah3LIhIA2nMdjHcXeXarmgwucJqCkaQD
+X-Gm-Gg: AeBDiet0gMJBsbbrad4+LCtZzdJsYDYJ7WjmhNm0Ctdy1A8Y5yt45xUiPWITODGls/g
+	FVhKm+DDAlf0/xPbwgUsVDJVU/AdrP9CCJKnh+3Am0dQBf938p7IVoqUUQzH6gU5Z0pJ+az3w71
+	XSAzM8ZsV/uwEM2Ct6RFn9jQ/8jPsECWwLM+sJXEdqp3MJaedy5keJ4t8i7aRgZknWymkd88MD4
+	hPnNHKZx0+bazZ+ZvLhAgesZB/IGPUFlieMExRCzRd7n5WmkbMYOVx+vo+U8qjIN1LhYHntbdUr
+	WaL2oVyhOM9QAfOBM+LF92VQsiOPcxEwINdwcuTowE7M9uuKUuXYXIYE5Du0QevY6HhPKuzRFbA
+	liFy3UGdvDmK2svRD2OpddP6EIogAGPqqxDrxUS6lY0tBIByNlWXPTwJHwRM/PX58WZLtFWIoUh
+	HUyeP6seGLj/6slYKFrQ9FGjA6PZZfGPuU8Xy7P+5lY78FumrRiljzeatddCsqUhJyQAQ9iMXTj
+	N5ex4Q+dJkb
+X-Received: by 2002:a05:7022:4392:b0:11b:f056:a19b with SMTP id a92af1059eb24-130b1752467mr1065462c88.18.1777956029887;
+        Mon, 04 May 2026 21:40:29 -0700 (PDT)
+Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3b29b2casm18920019eec.14.2026.05.04.21.40.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 21:40:29 -0700 (PDT)
+From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Tue, 05 May 2026 01:40:21 -0300
+Subject: [PATCH] ALSA: virtio: Add missing 384 kHz PCM rate mapping
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260430175630.67078-1-kai.aizen.dev@gmail.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231F:EE_|CY8PR12MB7314:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4334fcd-fd04-433f-f5de-08deaa58dcdb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	odxMfIu22Wwqcnckl/VNMkx4zC76bk8RaAEgM0jY8b66BvQqt81TxLv9eJkM5LdSKAP2iaF5rw6zJrPoPY28UYxB2q2bYBEtXtJDfHuK3/CUf1jUAZJOqbEOy55s8AgGQNniP4YFWvHyrhe2/FwKKkYEMbjWrDtOrE7YDe6VyJCUkIfC/5ZvwWY3rZWzu/ygO6yZOmQzhkhLcWByLkf7T6jw51kGJmb3KGTkyjPm8pZcaOF73oKJg1vk5iyIVM6F31XSA6j/I3ZA4xbuGeNR6piYoMuXAyabNY9cw/nZ0dov6BxHaKFt1tYFyqahDafmoneeIAEQXQShKNkPYdPtumRpxVlLCz9vLOOs8jeo06FEmI/Ku2vAdbekiDwfi0BdqhkG7lxSfFRwUx+kedbjss9IBlRJMmG5smjbwV+n2WqKCEpZsOZb6cEnDF31vvBDcNfSUg/x2UMJdcgnIkZ5Kd83ebNXp6bri16Nee4SU+waCaJpX3lYORHGEH/5Iapbx1KCfKeT+W+QVVzQi043ML0y7qT0UrkMjHVDrcJQy8wJB8eDh40HU/GTv/ayjTQ98R4zqgBsmP40FODPhEZVC+RG2sK8X/X+ZCYSNbgz23guUrxHKBzDI3GZ7BhIKpPkdjBwEv6ME9J5iA8O8TTyeGI6PZmf1Wlbb3hRV50VOxSrCJJL60ZL/tUVot25ilUQhYum4rrgUp2lFOeH6FptbojwMTQCfAuFd44yf9f4Wto=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	LVCZ2WcRYwEpkJJ5v9IVUD19WOLWwv1KDvLOo51XioDJWynoW1xAFTL7hAkZ24R9xcyOQTaA7hcKYtKsGyYWawWtu6eSP3BZgP71JSn0fmAAB/OBAGA7RGEk7lO5IwpfVoTBNLJddWmMq3XSEyvWwBY98LWvuZaw/bwc+spCL/HhgvbNgtCuaWUZhTCw32pMrYGhBvGYrJODWB9AiEDhU0HHP0+KKza64EhGXMijoGPEvQbY74ChzQZtosr8bGzr7TWRJJJYweIUhTfqoaAN0Dy4J44BaQ3l1xZxinN/h2P/4iMQ+evPKmLD9B1y/ie50RdzT5FjdrzRMG+VgL+Wy33ZHf2qRv0uy7z/zf472RDMLS5xGd9hTDM+xl/NjYaXWeKghTE3Mw6zrnAQGxT3VP44LI+F/dTiVVjCZhDSwZr5uCPQcwqbuFnxk+MoJFJz
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 03:46:17.2147
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4334fcd-fd04-433f-f5de-08deaa58dcdb
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7314
-X-Rspamd-Queue-Id: 1F86D4C644D
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260505-alsa-virtio-384k-rate-v1-1-ca092185bb03@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CQAxA0auQrm2ChTDoVQyLih2oGjDtSEwId
+ 3eU5Vv8v4KLqTicixVMFnWdp4zjoYB+5GkQ1Fs2UElNWRMhP51xUUs6Y9XWDzROgoGqKKcQKHI
+ DuX2ZRP38v5dut7+vd+nTbwbb9gWphXDBeQAAAA==
+X-Change-ID: 20260422-alsa-virtio-384k-rate-723fe9772fa6
+To: Takashi Iwai <tiwai@suse.com>, 
+ Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jaroslav Kysela <perex@perex.cz>
+Cc: virtualization@lists.linux.dev, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2351;
+ i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
+ bh=xg+AzQSH02m2ChqkHlHOL0nslwkp1ELZhv5oYpTQd1Y=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJk/S3aFnYviPKy76r+C6bLPDEvun9saHRe3+O5Dt1K7P
+ MbT7xu3d5SyMIhxMciKKbKsTlpkuafrwdX6uBUeMHNYmUCGMHBxCsBEFFwZGS5E8Yk32zOpbn3G
+ +2Ujh8qBGSlftlWk3KkUXpelIPmvMI2R4defJeFKDCLdGtuZPu+qEvm5deurfXqcrccFJHzfPL3
+ /hQEA
+X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
+ fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
+X-Rspamd-Queue-Id: F07F44C68C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-243955-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:mid,nvidia.com:email,Nvidia.com:dkim];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicolinc@nvidia.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-243956-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Thu, Apr 30, 2026 at 08:56:30PM +0300, Kai Aizen wrote:
-> The bound-check in iommufd_veventq_fops_read() for the normal vEVENT
-> path uses sizeof(hdr) where the surrounding code uses sizeof(*hdr):
-> 
-> 	if (!vevent_for_lost_events_header(cur) &&
-> 	    sizeof(hdr) + cur->data_len > count - done) {
-> 
-> hdr is declared as struct iommufd_vevent_header *, so sizeof(hdr)
-> evaluates to the size of the pointer.  Surrounding code uses
-> sizeof(*hdr) consistently:
-> 
-> 	if (done >= count || sizeof(*hdr) > count - done) {
-> 	...
-> 	if (copy_to_user(buf + done, hdr, sizeof(*hdr))) {
-> 	...
-> 	done += sizeof(*hdr);
-> 
-> struct iommufd_vevent_header is currently 8 bytes (two __u32 fields,
-> flags and sequence), so on 64-bit (sizeof(void *) == 8) the two
-> expressions happen to be equal and the check works as intended.
-> 
-> On 32-bit (sizeof(void *) == 4) the check under-counts the header by
-> 4 bytes: a vEVENT whose data_len causes 8 + cur->data_len to exceed
-> count - done while 4 + cur->data_len does not will pass the check,
-> then the loop will copy_to_user 8 bytes of header followed by data_len
-> bytes of payload, writing past the user-supplied buffer.
-> 
-> It is also a latent bug for any future expansion of struct
-> iommufd_vevent_header beyond sizeof(void *) on 64-bit; the check
-> should not depend on the type happening to match the host pointer
-> width.
-> 
-> Use sizeof(*hdr) to match the rest of the function and the actual
-> amount that will be copied.
-> 
-> Fixes: e36ba5ab808e ("iommufd: Add IOMMUFD_OBJ_VEVENTQ and IOMMUFD_CMD_VEVENTQ_ALLOC")
-> Cc: stable@vger.kernel.org
-> Reported-by: Kai Aizen <kai.aizen.dev@gmail.com>
-> Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
+The VirtIO sound UAPI defines VIRTIO_SND_PCM_RATE_384000, and ALSA
+has SNDRV_PCM_RATE_384000. However, virtio-snd's rate conversion
+tables stop at 192 kHz.
 
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+A device advertising only 384 kHz is rejected as having no supported
+PCM frame rates. A device advertising 384 kHz together with lower rates
+does not expose 384 kHz through the ALSA hardware constraints. The
+selected ALSA rate also needs a reverse mapping for SET_PARAMS.
+
+Add the missing 384 kHz entries to both conversion tables.
+
+Fixes: 29b96bf50ba9 ("ALSA: virtio: build PCM devices and substream hardware descriptors")
+Fixes: da76e9f3e43a ("ALSA: virtio: PCM substream operators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+---
+ sound/virtio/virtio_pcm.c     | 3 ++-
+ sound/virtio/virtio_pcm_ops.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
+index eb9cc8131905..be3893de40a5 100644
+--- a/sound/virtio/virtio_pcm.c
++++ b/sound/virtio/virtio_pcm.c
+@@ -77,7 +77,8 @@ static const struct virtsnd_v2a_rate g_v2a_rate_map[] = {
+ 	[VIRTIO_SND_PCM_RATE_88200] = { SNDRV_PCM_RATE_88200, 88200 },
+ 	[VIRTIO_SND_PCM_RATE_96000] = { SNDRV_PCM_RATE_96000, 96000 },
+ 	[VIRTIO_SND_PCM_RATE_176400] = { SNDRV_PCM_RATE_176400, 176400 },
+-	[VIRTIO_SND_PCM_RATE_192000] = { SNDRV_PCM_RATE_192000, 192000 }
++	[VIRTIO_SND_PCM_RATE_192000] = { SNDRV_PCM_RATE_192000, 192000 },
++	[VIRTIO_SND_PCM_RATE_384000] = { SNDRV_PCM_RATE_384000, 384000 }
+ };
+ 
+ /**
+diff --git a/sound/virtio/virtio_pcm_ops.c b/sound/virtio/virtio_pcm_ops.c
+index 6297a9c61e70..1105e7ff3523 100644
+--- a/sound/virtio/virtio_pcm_ops.c
++++ b/sound/virtio/virtio_pcm_ops.c
+@@ -90,7 +90,8 @@ static const struct virtsnd_a2v_rate g_a2v_rate_map[] = {
+ 	{ 88200, VIRTIO_SND_PCM_RATE_88200 },
+ 	{ 96000, VIRTIO_SND_PCM_RATE_96000 },
+ 	{ 176400, VIRTIO_SND_PCM_RATE_176400 },
+-	{ 192000, VIRTIO_SND_PCM_RATE_192000 }
++	{ 192000, VIRTIO_SND_PCM_RATE_192000 },
++	{ 384000, VIRTIO_SND_PCM_RATE_384000 }
+ };
+ 
+ static int virtsnd_pcm_sync_stop(struct snd_pcm_substream *substream);
+
+---
+base-commit: fac9a31701803e4e41fdb7b5c71582c65cf47176
+change-id: 20260422-alsa-virtio-384k-rate-723fe9772fa6
+
+Best regards,
+--  
+Cássio Gabriel <cassiogabrielcontato@gmail.com>
+
 
