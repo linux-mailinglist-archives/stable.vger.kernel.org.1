@@ -1,151 +1,188 @@
-Return-Path: <stable+bounces-244079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAtpBDzK+WmFEAMAu9opvQ
-	(envelope-from <stable+bounces-244079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:16 +0200
+	id gGfQM0rK+WmFEAMAu9opvQ
+	(envelope-from <stable+bounces-244081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7544CBB96
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4752A4CBBAD
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 12:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5AD4312787A
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 10:24:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9B693090EA8
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 10:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5954418D4;
-	Tue,  5 May 2026 10:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAD83E7152;
+	Tue,  5 May 2026 10:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xkv85H2g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHd7t60h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22B0441030
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 10:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146DB441044
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 10:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777976262; cv=none; b=rKJccnu2OQMNK8j5mdWT9cEa0mw7AWgpXB9aXO7o9moX5dehRHCdRVavDEDP8/MT+GLEXecudGEULGMCVJNE7Sj253jbW/Mh3pMMXjUNQVUtwM6x/oPSBQdc30qdCZtuIIgKV8p3toJGXBKQdYdmHIguwEHztdgi7s2g1YBW/xQ=
+	t=1777976265; cv=none; b=E2jSC9e1Old5oNAgHrksBjMk/dkqyseQWpWkAB2cc/Ch7QUI4oUuOGmYeNilSsBIQiYZRPFItWBgUmkxYczslxYS5DGHxNxBD7OzhIfbPBcqGUdBBx8fcuwwcEhVds9A6llgWHVtg0t3e52agyEeqxpxJei7hIhDoh1EX8xhZOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777976262; c=relaxed/simple;
-	bh=0G3jKIOwzoW4z7ls4qjGpJpEjTAoncaHosqx3QtyM6A=;
+	s=arc-20240116; t=1777976265; c=relaxed/simple;
+	bh=LN0w4doIU962zs+vEibFmYqoKNVztwjLgnNOjtYEzKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd/jpbPUSg8r36HrG+w148i4xQ1WtMGA0G3t9p2G3rdOLI8NF5z0t4+FhSZEav4z2KIfEGW19QOtxAzYRrV+KesCjFfwlVcxHf99ay9AVIYOh36jvgTW6sZo34Gt+j2PYc046zRluJNd7/hw1eJ5RRTanF73py6IhgYMPPv7ZOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xkv85H2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E0DC2BCC9;
-	Tue,  5 May 2026 10:17:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=np43/Yveop2lK8zJ3/ZjJlnj2TJNQ3TfY0TrBmUbeAbYIVyAZFlZQSicEIVmM6sOAPCwkRHCdtuWLAJOFNYCwWrPpFiz6OT4asqujCE5by5ZPeoL3tQrqixaR2xOP62tbt+8N1jDl+oq6a9WMx8FH72JPGEKLtPdPHRlgh3RUpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHd7t60h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A18C2BCB4;
+	Tue,  5 May 2026 10:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777976262;
-	bh=0G3jKIOwzoW4z7ls4qjGpJpEjTAoncaHosqx3QtyM6A=;
+	s=k20201202; t=1777976264;
+	bh=LN0w4doIU962zs+vEibFmYqoKNVztwjLgnNOjtYEzKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xkv85H2gjzD2ZX9wMplb86OMsBwmv2ZS53SHkLNrmx6IqkPGDl6MoMj4lPebAtDZ6
-	 QKJq/zoOFsrUrSx5+VHqzt2qyUo0eTwuJ7uvVIy8d8bjD4ctj3QfkknCg3eKv3H6BS
-	 ZBXWPCEsgQhORLSDLIqrVSR7T0ahM2sAom2JstH4hDDmDbIaLKlc4mQm2C+zvQlYoo
-	 k0C8ZW+Ue97u39IPmweuZ/7aEfYL53cayi1eZ4FkLkuqfG0wpW5zmzMdrD9Vep/kxa
-	 aTc9Ei7PyUcFCzp2BpFLk0x4IIXL5eAaOe9hA1IJPEReoD39YdVk+499C4VwYKnM2S
-	 Wd+/+PTfvknYw==
+	b=QHd7t60hqTaduf3A2SKmpdEiEjsyFkjifDPFD5vFuMUw+RcNFqwQBYGtAo7jOja3f
+	 FQwllo4i9FOYyAYNbJlPE/rbTWukaXFbqj8d6FOAjbJMEBXX1aO8D0CoVFC3iRVEli
+	 fvQtmo2pW129mYKDPdzUb4zZ0gkYMV6H4MZWGdB1aZYJC/D2ayVUiZIodjbpI3Qm3I
+	 sIfbwi5NBDJpnnDlcGMnVgK7i49UTgkSPQb8zpgFVTFGYXpX2ZkPO1MoSkZ++0sy0T
+	 dCqflWQiHiWqH714xm5DhncdaqGl15XK5O8yt9AXvJeHkNKOdsFlOOmMi9zWlySnZf
+	 H8TwaDH+0NwHw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
 	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y 1/2] crypto: qat - fix indentation of macros in qat_hal.c
-Date: Tue,  5 May 2026 06:17:37 -0400
-Message-ID: <20260505101738.582879-1-sashal@kernel.org>
+Subject: [PATCH 7.0.y 2/2] crypto: qat - fix firmware loading failure for GEN6 devices
+Date: Tue,  5 May 2026 06:17:38 -0400
+Message-ID: <20260505101738.582879-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050339-tumble-sponge-5d2f@gregkh>
+In-Reply-To: <20260505101738.582879-1-sashal@kernel.org>
 References: <2026050339-tumble-sponge-5d2f@gregkh>
+ <20260505101738.582879-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7C7544CBB96
+X-Rspamd-Queue-Id: 4752A4CBBAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244079-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244081-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
 
 From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
 
-[ Upstream commit 4963b39e3a3feed07fbf4d5cc2b5df8498888285 ]
+[ Upstream commit e7dcb722bb75bb3f3992f580a8728a794732fd7a ]
 
-The macros in qat_hal.c were using a mixture of tabs and spaces.
-Update all macro indentation to use tabs consistently, matching the
-predominant style.
+QAT GEN6 hardware requires a minimum 3 us delay during the acceleration
+engine reset sequence to ensure the hardware fully settles.
+Without this delay, the firmware load may fail intermittently.
 
-This does not introduce any functional change.
+Add a delay after placing the AE into reset and before clearing the reset,
+matching the hardware requirements and ensuring stable firmware loading.
+Earlier generations remain unaffected.
 
+Fixes: 17fd7514ae68 ("crypto: qat - add qat_6xxx driver")
 Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+Cc: stable@vger.kernel.org
 Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: e7dcb722bb75 ("crypto: qat - fix firmware loading failure for GEN6 devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_hal.c | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/crypto/intel/qat/qat_common/adf_accel_engine.c     | 7 +++++++
+ .../crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h | 1 +
+ drivers/crypto/intel/qat/qat_common/qat_hal.c              | 5 ++++-
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c b/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
+index f9f1018a28236..09d4f547e082c 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: (BSD-3-Clause OR GPL-2.0-only)
+ /* Copyright(c) 2014 - 2020 Intel Corporation */
++#include <linux/delay.h>
+ #include <linux/firmware.h>
+ #include <linux/pci.h>
+ #include "adf_cfg.h"
+@@ -162,8 +163,14 @@ int adf_ae_stop(struct adf_accel_dev *accel_dev)
+ static int adf_ae_reset(struct adf_accel_dev *accel_dev, int ae)
+ {
+ 	struct adf_fw_loader_data *loader_data = accel_dev->fw_loader;
++	unsigned long reset_delay;
+ 
+ 	qat_hal_reset(loader_data->fw_loader);
++
++	reset_delay = loader_data->fw_loader->chip_info->reset_delay_us;
++	if (reset_delay)
++		fsleep(reset_delay);
++
+ 	if (qat_hal_clr_reset(loader_data->fw_loader))
+ 		return -EFAULT;
+ 
+diff --git a/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h b/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
+index 6887930c7995e..e74cafa95f1cc 100644
+--- a/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
++++ b/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
+@@ -27,6 +27,7 @@ struct icp_qat_fw_loader_chip_info {
+ 	int mmp_sram_size;
+ 	bool nn;
+ 	bool lm2lm3;
++	u16 reset_delay_us;
+ 	u32 lm_size;
+ 	u32 icp_rst_csr;
+ 	u32 icp_rst_mask;
 diff --git a/drivers/crypto/intel/qat/qat_common/qat_hal.c b/drivers/crypto/intel/qat/qat_common/qat_hal.c
-index 7a6ba6f22e3e8..0f5a2690690a1 100644
+index 0f5a2690690a1..1c3d1311f1c7a 100644
 --- a/drivers/crypto/intel/qat/qat_common/qat_hal.c
 +++ b/drivers/crypto/intel/qat/qat_common/qat_hal.c
-@@ -9,17 +9,17 @@
- #include "icp_qat_hal.h"
- #include "icp_qat_uclo.h"
- 
--#define BAD_REGADDR	       0xffff
--#define MAX_RETRY_TIMES	   10000
--#define INIT_CTX_ARB_VALUE	0x0
--#define INIT_CTX_ENABLE_VALUE     0x0
--#define INIT_PC_VALUE	     0x0
--#define INIT_WAKEUP_EVENTS_VALUE  0x1
--#define INIT_SIG_EVENTS_VALUE     0x1
--#define INIT_CCENABLE_VALUE       0x2000
--#define RST_CSR_QAT_LSB	   20
--#define RST_CSR_AE_LSB		  0
--#define MC_TIMESTAMP_ENABLE       (0x1 << 7)
-+#define BAD_REGADDR			0xffff
-+#define MAX_RETRY_TIMES			10000
-+#define INIT_CTX_ARB_VALUE		0x0
-+#define INIT_CTX_ENABLE_VALUE		0x0
-+#define INIT_PC_VALUE			0x0
-+#define INIT_WAKEUP_EVENTS_VALUE	0x1
-+#define INIT_SIG_EVENTS_VALUE		0x1
-+#define INIT_CCENABLE_VALUE		0x2000
-+#define RST_CSR_QAT_LSB			20
-+#define RST_CSR_AE_LSB			0
-+#define MC_TIMESTAMP_ENABLE		(0x1 << 7)
+@@ -20,6 +20,7 @@
+ #define RST_CSR_QAT_LSB			20
+ #define RST_CSR_AE_LSB			0
+ #define MC_TIMESTAMP_ENABLE		(0x1 << 7)
++#define MIN_RESET_DELAY_US		3
  
  #define IGNORE_W1C_MASK ((~(1 << CE_BREAKPOINT_BITPOS)) & \
  	(~(1 << CE_CNTL_STORE_PARITY_ERROR_BITPOS)) & \
+@@ -713,8 +714,10 @@ static int qat_hal_chip_init(struct icp_qat_fw_loader_handle *handle,
+ 		handle->chip_info->wakeup_event_val = 0x80000000;
+ 		handle->chip_info->fw_auth = true;
+ 		handle->chip_info->css_3k = true;
+-		if (handle->pci_dev->device == PCI_DEVICE_ID_INTEL_QAT_6XXX)
++		if (handle->pci_dev->device == PCI_DEVICE_ID_INTEL_QAT_6XXX) {
+ 			handle->chip_info->dual_sign = true;
++			handle->chip_info->reset_delay_us = MIN_RESET_DELAY_US;
++		}
+ 		handle->chip_info->tgroup_share_ustore = true;
+ 		handle->chip_info->fcu_ctl_csr = FCU_CONTROL_4XXX;
+ 		handle->chip_info->fcu_sts_csr = FCU_STATUS_4XXX;
 -- 
 2.53.0
 
