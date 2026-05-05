@@ -1,360 +1,277 @@
-Return-Path: <stable+bounces-243988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-243989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBOnGu+K+Wnh9gIAu9opvQ
-	(envelope-from <stable+bounces-243988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 08:15:11 +0200
+	id dBJvMdWU+Wkh+AIAu9opvQ
+	(envelope-from <stable+bounces-243989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 08:57:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114424C7227
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 08:15:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C194C75FB
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 08:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF9D5300C0E8
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 06:15:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5471301C3F3
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 06:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3293C4572;
-	Tue,  5 May 2026 06:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567673CF02B;
+	Tue,  5 May 2026 06:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nFpgkg90"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y2fFKEOS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bc6geNmL"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7133C2772;
-	Tue,  5 May 2026 06:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9473257824
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 06:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777961707; cv=none; b=UMUrmj3x9SaDqoWw56g3faYOpPk5IGT836f1xqw11AF2FPGHJpy4wJw0a4PdiQQFDjlIsY0u6nUxRL19x3jbzeD5RCTqPVu4d+2awuPzMbmGpLvQsHDqQ87PhWE2hiNz7M0g6kep/nNos6Tu1jCiWn/I3mLKRjC7WLp+6rQdQ7g=
+	t=1777964243; cv=none; b=rQKGXbg7PPuExbL0ZeYaX2IfquFiLfeTXQA5PmhCHA7vk/HpPQB7QZI0iLZ9G3a2MNkgNstbI8xXFD4r6weE4GByWajPX/jcpV3my5W68u4iLztGW2Rs210F28WOECLwpcisICXAYDl7P5Wo4TCwQ7WXmnQxhq8B83dRrlQUlao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777961707; c=relaxed/simple;
-	bh=JOBAa583I92fECVEkpsMBv5CAgOo2gN38BAuWI7VTHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k2S6BXSkM6/mKmlyVcFi9QxTiXdVeIRH0fgea3RnUJngqT5wEG0QKNN5YX8y0jlF3bgmpDO5tAt2GhiXQyYBIKRLtBLYn3UCs47C66MBgcM3nn5EXbeVMSE3sKY/qjsWPmXlZrCQ3KhDUaJ75HRrkLoML6J+tmwGuyRFZhQjDo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=nFpgkg90; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id E4FF520B7168; Mon,  4 May 2026 23:15:03 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E4FF520B7168
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777961703;
-	bh=Rg/vTHZ48oDSwf1CgArzawiTrhhYZXFwJUU/65rQNnI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nFpgkg90SywOWU/k8YZKvfZN4Gm9u9c6mu4Ltqt6JrKJdrkx/uS2tI0S7Q6dYAGpU
-	 K8oOLk7233ZEXWI/QbVS9iq80jCF2XkCtFgK1TbA+ScJN8EBT5pSXUC4tMV94QP9Ha
-	 gkBec4YXU2qkwcarZQ/dssop0swO0pogStqlVPak=
-Date: Mon, 4 May 2026 23:15:03 -0700
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
+	s=arc-20240116; t=1777964243; c=relaxed/simple;
+	bh=PjL095tSFIg8q7WA/4EM2scDZC3+SKVeiuJZVPPDZiM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nCcI6TW5n8PjkorXfUkqxQjYzOF0rljVW7k4PBenE5j1KfZV0Fifh+PjQCFUyjgmU9QbvGMpBP1YqOCwFa8KTj/0p1IrWZHIS/J/whBXGApmzZ7nr4SGUpnk5vz6nq0pXBBdKkS6QDjBDvwvUgdIfIn2T7S+d1CIejHxkvU/LAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y2fFKEOS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bc6geNmL; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777964240;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OkvB2g9TIRVT/EYnBf5Sqf4mqtiJXj4gtABaXOHNaLI=;
+	b=Y2fFKEOSlUh5h/alvPvR2qF6EEojr7fqqOyzhd8fp8xq1RCKf8cnRnM0lOVyHAjNRYk6T/
+	7f7Ir2CKTjymYN+g/fQX2xoB7N2Sd+oawDwiA5Nt7JocInqM/QaHCFhu5ePX5mZcv3Ia3Y
+	icLOnLN5F3jskN510bmomkDAGR+O43I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-183-ebZpv2IuOLykj36XTrPxiQ-1; Tue, 05 May 2026 02:57:19 -0400
+X-MC-Unique: ebZpv2IuOLykj36XTrPxiQ-1
+X-Mimecast-MFC-AGG-ID: ebZpv2IuOLykj36XTrPxiQ_1777964238
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43d7730e9e3so3014972f8f.2
+        for <stable@vger.kernel.org>; Mon, 04 May 2026 23:57:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777964238; x=1778569038; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OkvB2g9TIRVT/EYnBf5Sqf4mqtiJXj4gtABaXOHNaLI=;
+        b=bc6geNmLwjV9s5ZP9lribt3sbcPwQ0yp39XfqO7yZSe0Iv0LFG3AQmhtW60DD2fQQs
+         bHzFrfnRWasf8ka3DoEgM3fI1ODwybDPHq9XKhseN40k8cKh+cywn7XjofqqVu+8vJWl
+         BKRc4qcttBAnSg0vZf0NzMgGBn2rHBQLRlJCDUw7EhHHYAIjx2MJyxndzaZ/LY6Jc6rv
+         gtHMFpWTcX2GA5hUdJjhg5WBXJXZ+fSJpKSAUVs++e+aqH46yx2mqNQiFGZsrxwWNFQe
+         1W3zWr09MSjkJrL1Ah/iycViEbefaXhyNUmy8B9UTKBwOhxWNsRsq0DW+zSpvmYk+kUE
+         Q+7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777964238; x=1778569038;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OkvB2g9TIRVT/EYnBf5Sqf4mqtiJXj4gtABaXOHNaLI=;
+        b=SQH46kOkjNZPWy64Jx9Dof5r+IAbXV255oqMo2Fe22RRnzmMpTyQ4o0qOX9JmD+O9I
+         V9Ie4CFdKmKcn99Zi8nTlVtqb1wMJ+WldcY1IjIw5heyD2jj0UqQXYw0zdv7GD+KyLqa
+         To/OQ20XvwSuBkcTdLbVL4djipDDU8b8GIhZLQDedakjH8MlXWUabrPfoN/4PxCSbkmw
+         WUfLAOyXgs7FwuDhU0Zkmn7Db17mtQPRD1LDJiWdUDpiQZI/nwEQhyovDRNVwGnRsQ5s
+         yFJVpTEkoHxOJ3epcheWLlIkO7ejiU5ydwGlJ5jWsprqM30fTVX5JIJwjfMb0xMrKqfT
+         lJyw==
+X-Forwarded-Encrypted: i=1; AFNElJ836pWiIuc6uBR9uCLM5WME1sLrANcDIqCswTvELfJVjhWVXiU6LNWO6V2nva1yS+f+qt3vTUo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykwPciGQ+eIimB/LMtV/I5aR/AfJi3xP0Y06TbzdOe5+yy+sYb
+	e+wwV1wYw6HbV0ESzzHRgn5TeVDeTyOJ2wImXSXKnksrTIh5TIixCWeAH3JZCLF9L5nAdULZuid
+	+FImRUno3TPzda699cyeVrjZUCvlvnSONcRkJlmlpVwuPWo0iQZB8vzGCxg==
+X-Gm-Gg: AeBDietnU7B6wMaHzmwobk3ceUH7kxDOxpj7dsdQqB1GN8z3en7P7dGlFA51+/G++h9
+	HCo+vvlOOxPyaSL5IH+y/RcNYDprhGN0gy8Ylm+86vILe3XtkU55AlCT5HZkXCMj6TA22O+IWqT
+	7XFxS8f2478y7HWhdG1KyuJmjhxQzqeFicMy1il/gf2ONFtvSdmz90lEpnWRpVX9nYtyvTgGqHM
+	ooeA3LKMqON3ULMHP0RLt2rgRwjtgzo9RhpR/SKniIIV6UsTPdi6myxRddLwr3Gfqr2M0vJLBxd
+	x8pEevRznej1nQeRkR8M8SqJROHXrSwfKX8BEDhTJHu2oFjLrNSM6QzSmQ2E/NnQ7ackMrjt/Jh
+	gq5YmGGqmg/Y+0ZaO/Hn69o2X3nOpr/Yt+CKV42r5eFy9BnLHahAPssK47bYcRv0xXEbQnFHRhy
+	CJt3VuJ34eJYToMIBOG5B5MDr2siKv2giRYNL+J/Y=
+X-Received: by 2002:a05:6000:3110:b0:44d:4898:7ed9 with SMTP id ffacd0b85a97d-45005c805fbmr3177320f8f.23.1777964238173;
+        Mon, 04 May 2026 23:57:18 -0700 (PDT)
+X-Received: by 2002:a05:6000:3110:b0:44d:4898:7ed9 with SMTP id ffacd0b85a97d-45005c805fbmr3177268f8f.23.1777964237757;
+        Mon, 04 May 2026 23:57:17 -0700 (PDT)
+Received: from [192.168.10.48] ([176.206.106.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45054b03e04sm2375596f8f.21.2026.05.04.23.57.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 23:57:17 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: mana: Optimize irq affinity for low vcpu
- configs
-Message-ID: <afmK531eRcPCecKm@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260429090640.1790104-1-shradhagupta@linux.microsoft.com>
- <afTTPLClWwIMWTOh@yury>
- <afYMN6vbiX7Rzss+@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <afYxOPL4DNjXM7tL@yury>
+Subject: [PATCH 7.0.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
+Date: Tue,  5 May 2026 08:57:15 +0200
+Message-ID: <20260505065715.186759-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afYxOPL4DNjXM7tL@yury>
-X-Rspamd-Queue-Id: 114424C7227
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 17C194C75FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-243988-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-243989-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.co.uk:email,msgid.link:url]
 
-On Sat, May 02, 2026 at 01:15:36PM -0400, Yury Norov wrote:
-> On Sat, May 02, 2026 at 07:37:43AM -0700, Shradha Gupta wrote:
-> > On Fri, May 01, 2026 at 12:22:20PM -0400, Yury Norov wrote:
-> > > On Wed, Apr 29, 2026 at 02:06:37AM -0700, Shradha Gupta wrote:
-> > > > In mana driver, the number of IRQs allocated is capped by the
-> > > > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-> > > > than the vcpu count, we want to utilize all the vCPUs, irrespective of
-> > > > their NUMA/core bindings.
-> > > > 
-> > > > This is important, especially in the envs where number of vCPUs are so
-> > > > few that the softIRQ handling overhead on two IRQs on the same vCPU is
-> > > > much more than their overheads if they were spread across sibling vCPUs.
-> > > > 
-> > > > This behaviour is more evident with dynamic IRQ allocation. Since MANA
-> > > > IRQs are assigned at a later stage compared to static allocation, other
-> > > > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-> > > > weights become imbalanced, causing multiple MANA IRQs to land on the
-> > > > same vCPU, while some vCPUs have none.
-> > > > 
-> > > > In such cases when many parallel TCP connections are tested, the
-> > > > throughput drops significantly.
-> > > > 
-> > > > Test envs:
-> > > > =======================================================
-> > > > Case 1: without this patch
-> > > > =======================================================
-> > > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > > > 
-> > > > 	TYPE		effective vCPU aff
-> > > > =======================================================
-> > > > IRQ0:	HWC		0
-> > > > IRQ1:	mana_q1		0
-> > > > IRQ2:	mana_q2		2
-> > > > IRQ3:	mana_q3		0
-> > > > IRQ4:	mana_q4		3
-> > > > 
-> > > > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > > > vCPU		0	1	2	3
-> > > > =======================================================
-> > > > pass 1:		38.85	0.03	24.89	24.65
-> > > > pass 2:		39.15	0.03	24.57	25.28
-> > > > pass 3:		40.36	0.03	23.20	23.17
-> > > > 
-> > > > =======================================================
-> > > > Case 2: with this patch
-> > > > =======================================================
-> > > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > > > 
-> > > >         TYPE            effective vCPU aff
-> > > > =======================================================
-> > > > IRQ0:   HWC             0
-> > > > IRQ1:   mana_q1         0
-> > > > IRQ2:   mana_q2         1
-> > > > IRQ3:   mana_q3         2
-> > > > IRQ4:   mana_q4         3
-> > > > 
-> > > > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > > > vCPU            0       1       2       3
-> > > > =======================================================
-> > > > pass 1:         15.42	15.85	14.99	14.51
-> > > > pass 2:         15.53	15.94	15.81	15.93
-> > > > pass 3:         16.41	16.35	16.40	16.36
-> > > > 
-> > > > =======================================================
-> > > > Throughput Impact(in Gbps, same env)
-> > > > =======================================================
-> > > > TCP conn	with patch	w/o patch
-> > > > 20480		15.65		7.73
-> > > > 10240		15.63		8.93
-> > > > 8192		15.64		9.69
-> > > > 6144		15.64		13.16
-> > > > 4096		15.69		15.75
-> > > > 2048		15.69		15.83
-> > > > 1024		15.71		15.28
-> > > > 
-> > > > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-> > > > Cc: stable@vger.kernel.org
-> > > > Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > > > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > > > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> > > > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> > > > ---
-> > > > Changes in v2
-> > > >  * Removed the unused skip_first_cpu variable
-> > > >  * fixed exit condition in irq_setup_linear() with len == 0
-> > > >  * changed return type of irq_setup_linear() as it will always be 0
-> > > >  * removed the unnecessary rcu_read_lock() in irq_setup_linear()
-> > > >  * added appropriate comments to indicate expected behaviour when
-> > > >    IRQs are more than or equal to num_online_cpus()
-> > > > ---
-> > > >  .../net/ethernet/microsoft/mana/gdma_main.c   | 47 ++++++++++++++++---
-> > > >  1 file changed, 40 insertions(+), 7 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > > index 098fbda0d128..d740d1dc43da 100644
-> > > > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > > @@ -167,6 +167,8 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
-> > > >  	} else {
-> > > >  		/* If dynamic allocation is enabled we have already allocated
-> > > >  		 * hwc msi
-> > > > +		 * Also, we make sure in this case the following is always true
-> > > > +		 * (num_msix_usable - 1 HWC) <= num_online_cpus()
-> > > >  		 */
-> > > >  		gc->num_msix_usable = min(resp.max_msix, num_online_cpus() + 1);
-> > > >  	}
-> > > > @@ -1672,11 +1674,24 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
-> > > >  	return 0;
-> > > >  }
-> > > >  
-> > > > +/* should be called with cpus_read_lock() held */
-> > > > +static void irq_setup_linear(unsigned int *irqs, unsigned int len)
-> > > > +{
-> > > > +	int cpu;
-> > > > +
-> > > > +	for_each_online_cpu(cpu) {
-> > > > +		if (len == 0)
-> > > > +			break;
-> > > > +
-> > > > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-> > > > +		len--;
-> > > > +	}
-> > > > +}
-> > > > +
-> > > >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> > > >  {
-> > > >  	struct gdma_context *gc = pci_get_drvdata(pdev);
-> > > >  	struct gdma_irq_context *gic;
-> > > > -	bool skip_first_cpu = false;
-> > > >  	int *irqs, irq, err, i;
-> > > >  
-> > > >  	irqs = kmalloc_objs(int, nvec);
-> > > 
-> > > So what about WARN_ON() and nvec adjustment before kmalloc?
-> > Hey Yury,
-> > 
-> > I am still a bit unsure about the WARN_ON() before kmalloc, as after
-> > that also, in the same function till we take the cpus_read_lock() the
-> > num_online_cpus() can change(or reduce). That's why I introduced the
-> > dev_dbg() to capture hot-remove edge case.
-> 
-> OK.
->  
-> > Do you still think it adds more value?
-> 
-> It's your driver, so you know better. I just wonder because you said
-> it's good to add WARN_ON(), and then didn't do that.
-> 
-> > > 
-> > > > @@ -1722,13 +1737,31 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> > > >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
-> > > >  	 */
-> > > >  	cpus_read_lock();
-> > > > -	if (gc->num_msix_usable <= num_online_cpus())
-> > > > -		skip_first_cpu = true;
-> > > > +	if (gc->num_msix_usable <= num_online_cpus()) {
-> > > > +		err = irq_setup(irqs, nvec, gc->numa_node, true);
-> > > > +		if (err) {
-> > > > +			cpus_read_unlock();
-> > > > +			goto free_irq;
-> > > 
-> > > One thing puzzles me: if you skip first CPU with this 'true', and the
-> > > gc->num_msix_usable == num_online_cpus(), it's one more than you can
-> > > distribute. What do I miss?
-> > > 
-> > 
-> > Let me explain this case a bit better then,
-> > 
-> > - num_msix_usable = HWC IRQ + Queue IRQ
-> > - nvec in this functions is only Queue IRQ (HWC already setup)
-> > 
-> > When num_online_cpus == num_msix_usable:
-> > - nvec = num_online_cpus - 1
-> > - first CPU is already assigned to HWC IRQ, so skip it
-> > - Queue IRQs fit in the remaining CPUs
-> > 
-> > please let me know if I did not get your question right
-> 
-> Can you put that in a comment?
+From: Sean Christopherson <seanjc@google.com>
 
-Sure I will. thanks
+commit 0cb2af2ea66ad8ff195c156ea690f11216285bdf upstream.
 
-> 
-> > > > +		}
-> > > > +	} else {
-> > > > +		/*
-> > > > +		 * When num_msix_usable are more than num_online_cpus, we try to
-> > > > +		 * make sure we are using all vcpus. In such a case NUMA or
-> > > > +		 * CPU core affinity does not matter.
-> > > 
-> > > If it doesn't matter, why don't you assign each IRQ to all CPUs then?
-> > > In theory, the system would have most of flexibility to balance them.
-> > > 
-> > 
-> > Okay, let me fix the comment and elaborate on this. It doesn't matter
-> > because in such a case we want to anyway exhaust and distribute the
-> > Queue IRQs to all vCPUs.
-> > We don't want to rely on the system's balancer in this case as it could
-> > be skewed by other devices' IRQ weights
-> 
-> I don't understand this. If I want to reserve some CPUs to solely
-> handle IRQs from my high-priority hardware, then I configure my system
-> accordingly. For example, assign all non-networking IRQs on CPU0, and
-> all networking IRQs to all CPUs.
-> 
-> In your case, you distribute IRQs evenly, which means you've no
-> preferred CPUs. So, assuming the system is only running your IRQ
-> driver, it's at max is as good as all-CPU distribution. In case of
-> heavy loading some particular CPU, your scheme could cause
-> corresponding IRQs to starve.
-> 
-> I recall, when we was working on irq_setup(), the original idea was to
-> distribute IRQs one-to-one, but than I suggested the 
-> 
->         irq_set_affinity_and_hint(*irqs++, topology_sibling_cpumask(cpu));
-> 
-> and after experiments, you agreed on that.
-> 
-> Can you please run your throughput test for my suggested distribution
-> too? Would be also nice to see how each distribution works when some
-> CPUs are under stress.
-> 
-> Thanks,
-> Yury
+The shadow MMU computes GFNs for direct shadow pages using sp->gfn plus
+the SPTE index. This assumption breaks for shadow paging if the guest
+page tables are modified between VM entries (similar to commit
+aad885e77496, "KVM: x86/mmu: Drop/zap existing present SPTE even
+when creating an MMIO SPTE", 2026-03-27).  The flow is as follows:
 
-The design of irq_setup() works exactly how we want it for our IRQs for
-almost all of our usecases, so we want to keep that as is. The only
-scenarios where this is an issue in terms of significant throughput drop
-is when we are working with low vCPU VMs (vCPU <= 4 with high TCP
-connection counts) and where there are additional NVMe devices attached
-to the VM.
+- a PDE is installed for a 2MB mapping, and a page in that area is
+  accessed.  KVM creates a kvm_mmu_page consisting of 512 4KB pages;
+  the kvm_mmu_page is marked by FNAME(fetch) as direct-mapped because
+  the guest's mapping is a huge page (and thus contiguous).
 
-The current patch about utilizing all the vCPUs helps in that case and
-doesn't cause any regression for other cases.
+- the PDE mapping is changed from outside the guest.
 
-This linear path is only taken when num_msix_usable > num_online_cpus(),
-which is limited to low-vCPU VMs. Larger VMs continue using irq_setup()
-as before.
+- the guest accesses another page in the same 2MB area.  KVM installs
+  a new leaf SPTE and rmap entry; the SPTE uses the "correct" GFN
+  (i.e. based on the new mapping, as changed in the previous step) but
+  that GFN is outside of the [sp->gfn, sp->gfn + 511] range; therefore
+  the rmap entry cannot be found and removed when the kvm_mmu_page
+  is zapped.
 
-We can definately get our throughput run results on other suggestions
-you have. And about that, I just needed a bit more clarity on what to
-test against. Are you suggesting, with irq_setup() intact and in use, we
-configure the non-mana IRQs to say CPU0 and capture the numbers?
+- the memslot that covers the first 2MB mapping is deleted, and the
+  kvm_mmu_page for the now-invalid GPA is zapped.  However, rmap_remove()
+  only looks at the [sp->gfn, sp->gfn + 511] range established in step 1,
+  and fails to find the rmap entry that was recorded by step 3.
 
-Thanks,
-Shradha.
+- any operation that causes an rmap walk for the same page accessed
+  by step 3 then walks a stale rmap and dereferences a freed kvm_mmu_page.
+  This includes dirty logging or MMU notifier invalidations (e.g., from
+  MADV_DONTNEED).
+
+The underlying issue is that KVM's walking of shadow PTEs assumes that
+if a SPTE is present when KVM wants to install a non-leaf SPTE, then the
+existing kvm_mmu_page must be for the correct gfn.  Because the only way
+for the gfn to be wrong is if KVM messed up and failed to zap a SPTE...
+which shouldn't happen, but *actually* only happens in response to a
+guest write.
+
+That bug dates back literally forever, as even the first version of KVM
+assumes that the GFN matches and walks into the "wrong" shadow page.
+However, that was only an imprecision until 2032a93d66fa ("KVM: MMU:
+Don't allocate gfns page for direct mmu pages") came along.
+
+Fix it by checking for a target gfn mismatch and zapping the existing
+SPTE.  That way the old SP and rmap entries are gone, KVM installs
+the rmap in the right location, and everyone is happy.
+
+Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
+Fixes: 6aa8b732ca01 ("kvm: userspace interface")
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Reported-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://patch.msgid.link/20260503201029.106481-1-pbonzini@redhat.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 35 ++++++++++++++---------------------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index dd06453d5b72..729240bc00a2 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -182,6 +182,8 @@ static struct kmem_cache *pte_list_desc_cache;
+ struct kmem_cache *mmu_page_header_cache;
+ 
+ static void mmu_spte_set(u64 *sptep, u64 spte);
++static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
++			    u64 *spte, struct list_head *invalid_list);
+ 
+ struct kvm_mmu_role_regs {
+ 	const unsigned long cr0;
+@@ -1287,19 +1289,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
+ 		rmap_remove(kvm, sptep);
+ }
+ 
+-static void drop_large_spte(struct kvm *kvm, u64 *sptep, bool flush)
+-{
+-	struct kvm_mmu_page *sp;
+-
+-	sp = sptep_to_sp(sptep);
+-	WARN_ON_ONCE(sp->role.level == PG_LEVEL_4K);
+-
+-	drop_spte(kvm, sptep);
+-
+-	if (flush)
+-		kvm_flush_remote_tlbs_sptep(kvm, sptep);
+-}
+-
+ /*
+  * Write-protect on the specified @sptep, @pt_protect indicates whether
+  * spte write-protection is caused by protecting shadow page table.
+@@ -2466,7 +2455,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
+ {
+ 	union kvm_mmu_page_role role;
+ 
+-	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep))
++	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
++	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
+ 		return ERR_PTR(-EEXIST);
+ 
+ 	role = kvm_mmu_child_role(sptep, direct, access);
+@@ -2544,13 +2534,16 @@ static void __link_shadow_page(struct kvm *kvm,
+ 
+ 	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != PT_WRITABLE_MASK);
+ 
+-	/*
+-	 * If an SPTE is present already, it must be a leaf and therefore
+-	 * a large one.  Drop it, and flush the TLB if needed, before
+-	 * installing sp.
+-	 */
+-	if (is_shadow_present_pte(*sptep))
+-		drop_large_spte(kvm, sptep, flush);
++	if (is_shadow_present_pte(*sptep)) {
++		struct kvm_mmu_page *parent_sp;
++		LIST_HEAD(invalid_list);
++
++		parent_sp = sptep_to_sp(sptep);
++		WARN_ON_ONCE(parent_sp->role.level == PG_LEVEL_4K);
++
++		mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list);
++		kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, true);
++	}
+ 
+ 	spte = make_nonleaf_spte(sp->spt, sp_ad_disabled(sp));
+ 
+-- 
+2.54.0
+
 
