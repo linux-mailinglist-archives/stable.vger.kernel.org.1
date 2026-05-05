@@ -1,243 +1,369 @@
-Return-Path: <stable+bounces-244231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHY9OCss+mlXKgMAu9opvQ
-	(envelope-from <stable+bounces-244231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:43:07 +0200
+	id MDkOKVos+mlXKgMAu9opvQ
+	(envelope-from <stable+bounces-244232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:43:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437954D23EF
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:43:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5D04D2414
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00E5F30ED8D7
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:38:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF084302975A
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A6F3C1981;
-	Tue,  5 May 2026 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7417F4A2E32;
+	Tue,  5 May 2026 17:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e7cPScKU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UB+ynK3Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A444A33FA
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 17:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26848C411
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 17:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778002714; cv=none; b=MXxdZ5FwAJhR9kuCPrxnZBfMRB3hJhSUS6d1Ne0de5Tj4MNgtuS7xCHbBxfzACNV8nZAlBCHRXtkYh0PU6RUgrWqjcLzsaIVnSc0JCgBEzkmxsyUKYaplL27xlz/d+4LoFNgm1PrwrQMaCvAoQazCgBDFjm+LLsaJaeh/DIzfwI=
+	t=1778002723; cv=none; b=okpefy8S+tX9cOE0IA2a5vgz7a1omj7SSZtW9XHc4r6eAbpAlqq2DtltPA4DhTOh1ruzS6Kz1h1lO+E7NlbFOpmGwJTNFjk7H+T+W7s27kphkUB+0Y6Mhe6G4mV/kdL/MHxoI6talqy/wnHC1mlBthPnJlspjl9jOawfamoDGYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778002714; c=relaxed/simple;
-	bh=RdfwN/LYtP4aF0CJvFVTs0hMjHmoDcKmx6pMoxp/CbY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBuHKIxQzw/DHC6vBQBbwHb+yLXXhn6TS4O2pJGbZpuuaHm23ZMXnVdnhmbVzoc+0D7PJVBUGRkqOfrjhPb1r0M0IjXVERXgMF9Lm18ld40Ux4xMfNyzkEWmLMVc6646FKDlCoQe05CdqA55kdeaALmCH9lkOT2FuzVmvWNLs1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e7cPScKU; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1778002723; c=relaxed/simple;
+	bh=ONTttrMUZew0Aooh9F2p0Z1LmJuLUtxo/9VZeZR61qc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=WDXIMzJoG7KhqdvfaCG4qQUtyrVXzm+J68t7KI279f0g5HmtzrWoJI9RsqG4iaWa3PxO95akPBE5G4djrSsuLSF64QrrYySazcsmShQXmcSFGY+VvRC1jKl4u9BUa7gKSwwWb67oUT5ghH7gYfZNU8k1TnePfsN56bpj+EBLudo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UB+ynK3Z; arc=none smtp.client-ip=74.125.82.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48909558b3aso60446185e9.0
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 10:38:30 -0700 (PDT)
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2f33ae12f97so3169827eec.1
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 10:38:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778002709; x=1778607509; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NpaDj1OSOuFZ6NR+/4KPE7w1qddaBejMbo1xZezZe4=;
-        b=e7cPScKUBkIjLsM/wnRIfvWYqs44pZOOxqUuvbRA65u9KFl+rGl1w8meZd26yLs7yu
-         Di63XnZ/qzQOAnFk+zydP4NHTk+sB5vuXPjm6yk71E0qX5wJvnuIAg4ZBZIfQN9UnUI/
-         e+JDIOF47qUpPxWTEcOc5jURbcS8ZD+3JqjrReRWSivswH4nfoTmEb4jt2pQFmibfPq6
-         c6DLgapoFsGv1PB/oBEueW9GkUKHJH+35DCiaoFYklkSUVMyye3Zo+qGD3iVvYButeOO
-         pqpB2bwPzvObH/mV2oYk5hrp3kgDdoaAlmZIDNqb5HnlR+WbXePP8EyWyTTdNYTOpSyO
-         6EfQ==
+        d=gmail.com; s=20251104; t=1778002721; x=1778607521; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MYlavuQ8ld+CKANDl2X+Fta2TfR9wiu5gpK6ggQh6gk=;
+        b=UB+ynK3ZZ863FJrwxB8WvHZ3LZNxZztPfzqbHD8pAczcwfgUaReQYkhN87dwOoDivg
+         DpP+1Jcchd4KcbbESdfqIoSm8pwce+yTZgqWIKkCKxT9rQEwRTqp/Pp9alULN2rlXhWk
+         aIQNsl9qT1u8hF1kInxbf0y3dHPvDlhc0lX4f0+BPqdBiJTIK49nv2RFB87u0PP5LRTk
+         N22wrXcuYcEuLRjJZ2Bu8r1Dun3t8pmpJZDenE15Y60gma/rGo2YrM4a+cf5y4nctynp
+         GissNS0Tbu/iEKbh462Zo4aAVsNA5Pf8aqB1p3U9T5S1DgriLwgcVH6mDRK23XqKL/OI
+         DryA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778002709; x=1778607509;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2NpaDj1OSOuFZ6NR+/4KPE7w1qddaBejMbo1xZezZe4=;
-        b=ogEoGWqVDISNo2NP7dZlR6JfsMP3HLFmCKLepgTcL4Bu7ttVRxSRuNr4ZFBL5GsKXH
-         98g/yHDua89MlGB7meRIHMYII3SmrD8PRuAr0eXyqpHezBTXpK7DiX85j0Z5dVoYMMuI
-         yL2fpuYXcTkpUiO+seRJ7h9b++mc87vq/MfXXusUc/Vzqj9Krmx6iKGOQ+iqoCjA40t0
-         FRI4QIpaAhB+X9vvNsuThpkPoZ+gGYLQeHrFH4t2pGQ7OBj5kMDZ5deP8tmuM5xz8bix
-         9rR+hjUbYAzLJJ1gbtnbJVZJmqwpL1juK2lkK4ltg6Gk97co5gdaG+CyVumjgRqgC9/9
-         9o4w==
-X-Forwarded-Encrypted: i=1; AFNElJ+R5XbrrwtP+lMWBQPXisX+Bu/cHBOos2auLnLfMNpN2tfE7vgwdnaamBOBrFoqGp0EQ7WVE6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEI3qjP/JfV2W9q0gYJVxsXV0IiILmKzqTkJUzQ/GsvtStCLzX
-	3gjb9Q8sN22lDFyBTVay3F5XiS1gWPAm/6qqg8nfCw56OB37enLB2Ivl
-X-Gm-Gg: AeBDietSyC+9x1xvCY531RLBiwiAHnnj34qIGM2IZfVkpAdAC5sPcGpPMr0ENMe3azj
-	60ST3Wims1pPlhwx3pFwMbkDpe/0YXEYALPBuN8gAypbS4bfNsbwJOx8v9UJrCyi+y9OWtN6jYO
-	IcO1jckL9Vl/R6qbGP+R7BX73FXT6bydKS66l5/CbG/C0LXmQZdVCyTagE9SpkDbO8bgWPEwxC4
-	xWNiwggq+UfaSTz70wRvJ6lT9quyzC5/lhU41k0RYH+dfDmaWJb5mYVb5t/NWXg0TGCbhD3mjxP
-	iLKsRkbI2tQbKmXDpZwSNATOhe7uB9e+eXvq0rf7fSwv+uTZrKO3i0JYA4STsavWUFi+iCkL5Fs
-	LnQ513H632DBA0CbRB5OIYA4gcVo3Hx86tcqyToC8eBnShf90FUwsvjbLXQZ7IbBlznJ7Xskc7T
-	YPNMyXfF6tOQHP46D7zhEiGXDqpQnCVnMShwDW1DhTIs0i4xm52DT22850P7pFap2lDIM/C0iFv
-	MmvuacdUyfWDU9WsXG+rtNHadQS8eLFJG0+RmhPtpYk/eSIT6L2PnLuX9KauG/8QOP+rIbkEQoJ
-	e0xlfQ==
-X-Received: by 2002:a05:600c:8585:b0:487:2439:b7be with SMTP id 5b1f17b1804b1-48e51e0b5c1mr3428345e9.6.1778002708617;
-        Tue, 05 May 2026 10:38:28 -0700 (PDT)
-Received: from ahossu.localdomain ([82.78.232.184])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82301ad1sm655473875e9.9.2026.05.05.10.38.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 10:38:28 -0700 (PDT)
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	error27@gmail.com,
-	luka.gejak@linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v4 3/3] staging: rtl8723bs: fix OOB reads in rtw_get_wps_ie() and rtw_cfg80211_set_wpa_ie()
-Date: Tue,  5 May 2026 19:38:18 +0200
-Message-ID: <20260505173818.3674164-4-hossu.alexandru@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260505173818.3674164-1-hossu.alexandru@gmail.com>
-References: <2026050436-italics-clumsy-e83c@gregkh>
- <20260505173818.3674164-1-hossu.alexandru@gmail.com>
+        d=1e100.net; s=20251104; t=1778002721; x=1778607521;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MYlavuQ8ld+CKANDl2X+Fta2TfR9wiu5gpK6ggQh6gk=;
+        b=kQzH6JI41Q5vARX6XCd8uptKc7kbOoWcjHoGr2l+2THznGCTR2lVr0fnkB3HS0nTBg
+         +O8SxOMi/CClXp3EKnGKl6e6JXadmF9t3uCd0j8ApSBiRD4YK4nIg+AEYI1w7iCRPjfM
+         5X36bUbpMtUdcVWQ0M2L/uU2ZyKc3lM43QujWlWHeWMHEayBt6fYrFyYn9mVSVhlZSNE
+         1sIMNV+zHzdyA13cJVjz1QXX/7r4HNqcDo7tGhXl656dJmWA5wykPvrr6GoRliPxGcos
+         Vrcrb5YwP/F1gZU0Regva0nq3BK5WAJ+2dROhiMD07pgdGSK/poo6NbFYaYIrc7vk/cD
+         xbCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+3NGnR54WZw7yFsmT6VGoV3lPo18LcFmi5mr/T8jVKHXBJRxhOWIdqCFydYgUhb/igLhRaVLE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJxL8vMwgY/6sqEp7G2QqnU+7/mq6V85WA18mnGdclCKuuv0od
+	u5WNjxslESPFbMNcAvCGpAEENbQ1PkRJll93fHPht5TWBa2uR8H1rZGL
+X-Gm-Gg: AeBDieskmEV/l4UA5DEQ2z7jNyLKSXHxUZurGxo/hyUnY/FxF2tGmXqKabBNauPt4ed
+	uY1/+jxmtR2hnvfBU5NsbP4jT0qFOiI/oM1gSwK5tFv4ID1L2y8YHBjOM/yQAeYk/f4r11+jOv5
+	dxe0jNwcS5tNdoKvvjBAoYQKoNcbowVvwMmxTFIiAGybmJH5+TdUEqvk7zIUCnfFcx3gWUqcHxz
+	4F4gZC1HJ5SEkqUN5yt4KXhQFETqmXfIyWkhnQu4lNjJZBOtRTJijS2LU0po7rWqxMSxWAqZdK/
+	aVTz4FsJNbHHAkWMnXZLSjPO1xiMJFhLr9DL7WHLS2Uu28jZfHVfgB0Y5kQzY1a/7DMg5L4dbK0
+	CjSHYxW8It1PUb+5pj3xKs3/x78XZtGxBt8g1oRxV5UzI+No1FnpfXa2q8rO12osqJUZamEGxoQ
+	BqFned6ButWpmtP0i9MZrB0MEuPSblBoShmp3eKlY0WoKjKeoFj71DYT6EzFGV/SFGj0PmKVA/k
+	htKhDItphM4n/uS2KpYzA4Jr5WkGx2hRWS/KoW8IBI=
+X-Received: by 2002:a05:7300:6402:b0:2f2:6dde:df67 with SMTP id 5a478bee46e88-2f54ad76437mr98693eec.22.1778002720678;
+        Tue, 05 May 2026 10:38:40 -0700 (PDT)
+Received: from ehlo.thunderbird.net (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee38e71cedsm25566870eec.9.2026.05.05.10.38.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2026 10:38:40 -0700 (PDT)
+Date: Tue, 05 May 2026 10:38:39 -0700
+From: "Derek J. Clark" <derekjohn.clark@gmail.com>
+To: Rong Zhang <i@rong.moe>,
+ =?ISO-8859-1?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+CC: Hans de Goede <hansg@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet <corbet@lwn.net>,
+ Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v10_06/16=5D_platform/x86=3A_lenovo-wmi-ot?=
+ =?US-ASCII?Q?her=3A_Limit_adding_attributes_to_supported_devices?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <13A5927F-E79C-4F09-B7D9-92A1C777E5AC@rong.moe>
+References: <20260412211121.2220556-1-derekjohn.clark@gmail.com> <20260412211121.2220556-7-derekjohn.clark@gmail.com> <1ce1d6f6-9196-c8a1-913d-4bdec2b1af80@linux.intel.com> <AA4D5F92-E158-48D1-85FC-CAA72A4EDD8A@gmail.com> <6d1aa0f0bbbd82fd0633619ec4905419db15592e.camel@rong.moe> <a824cd39-8e28-96db-df59-599c283ffcdb@linux.intel.com> <13A5927F-E79C-4F09-B7D9-92A1C777E5AC@rong.moe>
+Message-ID: <8BB653FC-30AA-4BB5-9E74-AFCD507F33D2@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 437954D23EF
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: EF5D04D2414
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.95 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244231-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,linux.dev];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
+	XM_UA_NO_VERSION(0.01)[];
+	URIBL_MULTI_FAIL(0.00)[intel.com:server fail,squebb.ca:server fail,rong.moe:server fail,sea.lore.kernel.org:server fail];
+	FREEMAIL_CC(0.00)[kernel.org,squebb.ca,gmx.de,lwn.net,gmail.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244232-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.998];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[derekjohnclark@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,rong.moe:email,squebb.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Three out-of-bounds read or write paths:
+On May 5, 2026 10:20:15 AM PDT, Rong Zhang <i@rong=2Emoe> wrote:
+>Hi Ilpo,
+>
+>=E4=BA=8E 2026=E5=B9=B45=E6=9C=885=E6=97=A5 GMT+08:00 18:25:34=EF=BC=8C"I=
+lpo J=C3=A4rvinen" <ilpo=2Ejarvinen@linux=2Eintel=2Ecom> =E5=86=99=E9=81=93=
+=EF=BC=9A
+>>On Fri, 1 May 2026, Rong Zhang wrote:
+>>> On Thu, 2026-04-30 at 07:56 -0700, Derek J=2E Clark wrote:
+>>> > On April 30, 2026 7:01:55 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo=2Ejarvi=
+nen@linux=2Eintel=2Ecom> wrote:
+>>> > > On Sun, 12 Apr 2026, Derek J=2E Clark wrote:
+>>> > >=20
+>>> > > > Adds lwmi_is_attr_01_supported, and only creates the attribute s=
+ubfolder
+>>> > > > if the attribute is supported by the hardware=2E Due to some poo=
+rly
+>>> > > > implemented BIOS this is a multi-step sequence of events=2E This=
+ is
+>>> > > > because:
+>>> > > > - Some BIOS support getting the capability data from custom mode=
+ (0xff),
+>>> > > >   while others only support it in no-mode (0x00)=2E
+>>> > > > - Some BIOS support get/set for the current value from custom mo=
+de (0xff),
+>>> > > >   while others only support it in no-mode (0x00)=2E
+>>> > > > - Some BIOS report capability data for a method that is not full=
+y
+>>> > > >   implemented=2E
+>>> > > > - Some BIOS have methods fully implemented, but no complimentary
+>>> > > >   capability data=2E
+>>> > > >=20
+>>> > > > To ensure we only expose fully implemented methods with correspo=
+nding
+>>> > > > capability data, we check each outcome before reporting that an
+>>> > > > attribute can be supported=2E
+>>> > > >=20
+>>> > > > Checking for lwmi_is_attr_01_supported during remove is not done=
+ to
+>>> > > > ensure that we don't attempt to call cd01 or send WMI events if =
+one of
+>>> > > > the interfaces being removed was the cause of the driver unloadi=
+ng=2E
+>>> > > >=20
+>>> > > > Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Dr=
+iver")
+>>> > > > Reported-by: Kurt Borja <kuurtb@gmail=2Ecom>
+>>> > > > Closes: https://lore=2Ekernel=2Eorg/platform-driver-x86/DG60P3SH=
+XR8H=2E3NSEHMZ6J7XRC@gmail=2Ecom/
+>>> > > > Cc: stable@vger=2Ekernel=2Eorg
+>>> > > > Reviewed-by: Rong Zhang <i@rong=2Emoe>
+>>> > > > Tested-by: Rong Zhang <i@rong=2Emoe>
+>>> > > > Reviewed-by: Mark Pearson <mpearson-lenovo@squebb=2Eca>
+>>> > > > Signed-off-by: Derek J=2E Clark <derekjohn=2Eclark@gmail=2Ecom>
+>>> > > > ---
+>>> > > > v7:
+>>> > > >   - Move earlier in the series=2E This required dropping the use=
+ of
+>>> > > >     lwmi_attr_id as it will be added later=2E
+>>> > > >   - Add missing switch between cd_mode_id and cv_mode_id in
+>>> > > >     current_value_store=2E
+>>> > > > v6:
+>>> > > >   - Zero initialize args in lwmi_is_attr_01_supported=2E
+>>> > > >   - Fix formatting=2E
+>>> > > > v5:
+>>> > > >   - Move cv/cd_mode_id refrences from path 3/4=2E
+>>> > > >   - Add missing import for ARRAY_SIZE=2E
+>>> > > >   - Make lwmi_is_attr_01_supported return bool instead of u32=2E
+>>> > > >   - Various formatting fixes=2E
+>>> > > > v4:
+>>> > > >   - Use for loop instead of backtrace gotos for checking if an a=
+ttribute
+>>> > > >     is supported=2E
+>>> > > >   - Add include for dev_printk=2E
+>>> > > >   - Wrap dev_dbg in lwmi_is_attr_01_supported earlier=2E
+>>> > > >   - Don't use symmetric cleanup of attributes in error states=2E
+>>> > > > ---
+>>> > > >  drivers/platform/x86/lenovo/wmi-gamezone=2Eh |   1 +
+>>> > > >  drivers/platform/x86/lenovo/wmi-other=2Ec    | 114 ++++++++++++=
+++++++---
+>>> > > >  2 files changed, 98 insertions(+), 17 deletions(-)
+>>> > > >=20
+>>> > > > diff --git a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh b/driv=
+ers/platform/x86/lenovo/wmi-gamezone=2Eh
+>>> > > > index 6b163a5eeb95=2E=2Eddb919cf6c36 100644
+>>> > > > --- a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>>> > > > +++ b/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>>> > > > @@ -10,6 +10,7 @@ enum gamezone_events_type {
+>>> > > >  };
+>>> > > > =20
+>>> > > >  enum thermal_mode {
+>>> > > > +	LWMI_GZ_THERMAL_MODE_NONE =3D	   0x00,
+>>> > > >  	LWMI_GZ_THERMAL_MODE_QUIET =3D	   0x01,
+>>> > > >  	LWMI_GZ_THERMAL_MODE_BALANCED =3D	   0x02,
+>>> > > >  	LWMI_GZ_THERMAL_MODE_PERFORMANCE =3D 0x03,
+>>> > > > diff --git a/drivers/platform/x86/lenovo/wmi-other=2Ec b/drivers=
+/platform/x86/lenovo/wmi-other=2Ec
+>>> > > > index 50a03f5fd6ab=2E=2E29d062a1c6dc 100644
+>>> > > > --- a/drivers/platform/x86/lenovo/wmi-other=2Ec
+>>> > > > +++ b/drivers/platform/x86/lenovo/wmi-other=2Ec
+>>> > > > @@ -550,6 +550,8 @@ struct tunable_attr_01 {
+>>> > > >  	u8 feature_id;
+>>> > > >  	u8 device_id;
+>>> > > >  	u8 type_id;
+>>> > > > +	u8 cd_mode_id; /* mode arg for searching capdata */
+>>> > > > +	u8 cv_mode_id; /* mode arg for set/get current_value */
+>>> > > >  };
+>>> > > > =20
+>>> > > >  static struct tunable_attr_01 ppt_pl1_spl =3D {
+>>> > > > @@ -775,7 +777,6 @@ static ssize_t attr_current_value_store(stru=
+ct kobject *kobj,
+>>> > > >  	struct wmi_method_args_32 args =3D {};
+>>> > > >  	struct capdata01 capdata;
+>>> > > >  	enum thermal_mode mode;
+>>> > > > -	u32 attribute_id;
+>>> > > >  	u32 value;
+>>> > > >  	int ret;
+>>> > > > =20
+>>> > > > @@ -786,13 +787,12 @@ static ssize_t attr_current_value_store(st=
+ruct kobject *kobj,
+>>> > > >  	if (mode !=3D LWMI_GZ_THERMAL_MODE_CUSTOM)
+>>> > > >  		return -EBUSY;
+>>> > > > =20
+>>> > > > -	attribute_id =3D
+>>> > > > -		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+>>> > > > -		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) =
+|
+>>> > > > -		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+>>> > > > -		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>>> > > > +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr=
+->device_id) |
+>>> > > > +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_=
+id) |
+>>> > > > +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cd_mode_=
+id) |
+>>> > > > +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id)=
+;
+>>> > > > =20
+>>> > > > -	ret =3D lwmi_cd01_get_data(priv->cd01_list, attribute_id, &cap=
+data);
+>>> > > > +	ret =3D lwmi_cd01_get_data(priv->cd01_list, args=2Earg0, &capd=
+ata);
+>>> > > >  	if (ret)
+>>> > > >  		return ret;
+>>> > > > =20
+>>> > > > @@ -803,7 +803,10 @@ static ssize_t attr_current_value_store(str=
+uct kobject *kobj,
+>>> > > >  	if (value < capdata=2Emin_value || value > capdata=2Emax_value=
+)
+>>> > > >  		return -EINVAL;
+>>> > > > =20
+>>> > > > -	args=2Earg0 =3D attribute_id;
+>>> > > > +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr=
+->device_id) |
+>>> > > > +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_=
+id) |
+>>> > > > +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cv_mode_=
+id) |
+>>> > > > +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id)=
+;
+>>> > >=20
+>>> > > It's already repeated a few times and you're adding more in this p=
+atch=2E
+>>> > >=20
+>>> > > We should have a helper function for this encoding as it seems to=
+=20
+>>> > > repeat=2E That is, something that takes tunable_attr and mode as i=
+nput
+>>> > > (the conversion of existing entries should be in own patch preceed=
+ing=20
+>>> > > this fix patch)=2E
+>>> > >=20
+>>> >=20
+>>> > Hi Ilpo,
+>>> >=20
+>>> > A function for that is added in patch 10, though it is slightly modi=
+fied from that to be more flexible is tunable_attr isn't used (such as with=
+ the fan test attributes)
+>>> >=20
+>>> > Originally I had that patch preceding any additions, but after=20
+>>> > discussing with Rong we felt like it would be easier for stable=20
+>>> > backports if all the fixes were upfront=2E I can certainly move it b=
+ack=20
+>>> > if  you still prefer=2E=20
+>>>
+>>> Moving it back is OK for me, too=2E
+>>>
+>>> I think exposing non-fully-functioning fw-attrs on stable/LTS kernels
+>>> should be acceptable as long as reading/writing these attributes doesn=
+'t
+>>> break anything, which is exactly the case now (i=2Ee=2E, without this
+>>> patch)=2E
+>>
+>>How would refactoring the code into a helper result in changing stable=
+=20
+>>interface?
+>>
+>>Or did you perhaps move to talk about something entirely else (and I=20
+>>ended up losing the context)?
+>
+>I meant the *current* LTS/stable state is acceptable for me as reading/wr=
+iting these attributes doesn't break anything=2E Moving it back would be OK=
+ for me even if it made this patch unable to be backported (though unlikely=
+, since moving it back makes the patch clearer as you've said)=2E In other =
+words, it doesn't matter for me whether the patch is backported or not=2E
+>
+>Some context: I didn't ask Derek to add Fixes: tag to this patch or move =
+it=2E I asked him to rearrange other patches to make them backportable=2E
+>
+>Sorry for causing misunderstandings=2E
+>
+>Thanks,
+>Rong
+>
 
-1. rtw_get_wps_ie() reads the IE length byte without a header bounds
-   check.
+I preferred it earlier myself since the rest of the series was cleaner tha=
+t way=2E I'll move it again as that's fairly simple=2E IMO stable should be=
+ able to take it as part of the fixes it affects since there are no functio=
+nal changes and it will be a prerequisite for some much needed fixes on sta=
+ble, but I suppose that's ultimately up to them=2E
 
-   The loop only guards on cnt < in_len, so when the buffer ends with
-   a single element_id byte and no length byte, in_ie[cnt + 1] is read
-   one byte past the end of the buffer.  Add a check that at least
-   two header bytes remain (cnt + 2 <= in_len) before reading
-   in_ie[cnt + 1].
+I'll submit in a couple of days as I'm currently waiting on some feedback =
+from Lenovo regarding some clarification of the charge limiting features af=
+ter getting some unexpected results in a test=2E
 
-2. rtw_get_wps_ie() does not verify the declared IE payload fits within
-   in_len.
-
-   After reading the length byte, the loop does not verify that
-   in_ie[cnt + 1] + 2 bytes are available starting at cnt.  A crafted
-   length value can cause the subsequent memcmp and memcpy to read past
-   the end of the buffer.  Add a check that the full IE (header plus
-   payload) fits within in_len.
-
-3. rtw_get_wps_ie() reads 4 bytes from the IE payload via memcmp
-   without checking that pIE->length >= 4.
-
-   For WLAN_EID_VENDOR_SPECIFIC, the code calls
-   memcmp(&in_ie[cnt + 2], wps_oui, 4) without first verifying that
-   the IE payload is at least 4 bytes long.  Add an in_ie[cnt + 1] >= 4
-   guard before the comparison.
-
-4. rtw_cfg80211_set_wpa_ie() can overflow the 256-byte supplicant_ie
-   buffer.
-
-   supplicant_ie is a 256-byte array in struct security_priv.  The WPA
-   and WPA2 IE copy paths use memcpy(..., wpa_ielen + 2) where
-   wpa_ielen is the raw IE length field (u8, 0-255).  When a local
-   user supplies a connect request via nl80211 with a crafted WPA IE
-   of length 255, wpa_ielen + 2 equals 257, overflowing the 256-byte
-   buffer.  Add explicit bounds checks for both paths before memcpy.
-
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
----
-Changes in v4:
-  - Add two IE bounds checks in rtw_get_wps_ie(): break if fewer than two
-    header bytes remain, and break if the declared payload extends past
-    in_len; add in_ie[cnt + 1] >= 4 guard before the 4-byte WPS OUI memcmp
-    (sashiko review of v3).
-
-Changes in v3:
-  - No code changes from v2.
-
-Changes in v2:
-  - Add explicit size checks in rtw_cfg80211_set_wpa_ie() before memcpy
-    to prevent the 256-byte supplicant_ie buffer overflow.
-
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c    | 9 ++++++++-
- drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c | 8 ++++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-index 72b7f731dd47..d6d5f3a8db4c 100644
---- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -661,7 +661,14 @@ u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
- 	while (cnt < in_len) {
- 		eid = in_ie[cnt];
- 
--		if ((eid == WLAN_EID_VENDOR_SPECIFIC) && (!memcmp(&in_ie[cnt + 2], wps_oui, 4))) {
-+		if (cnt + 2 > in_len)
-+			break;
-+
-+		if (in_ie[cnt + 1] + 2 > in_len - cnt)
-+			break;
-+
-+		if ((eid == WLAN_EID_VENDOR_SPECIFIC) && (in_ie[cnt + 1] >= 4) &&
-+		    (!memcmp(&in_ie[cnt + 2], wps_oui, 4))) {
- 			wpsie_ptr = &in_ie[cnt];
- 
- 			if (wps_ie)
-diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-index fd3bae31b0ed..e7ba5ccfa03c 100644
---- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-+++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-@@ -1445,6 +1445,10 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
- 
- 	pwpa = rtw_get_wpa_ie(buf, &wpa_ielen, ielen);
- 	if (pwpa && wpa_ielen > 0) {
-+		if (wpa_ielen + 2 > sizeof(padapter->securitypriv.supplicant_ie)) {
-+			ret = -EINVAL;
-+			goto exit;
-+		}
- 		if (rtw_parse_wpa_ie(pwpa, wpa_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
- 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
- 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPAPSK;
-@@ -1454,6 +1458,10 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
- 
- 	pwpa2 = rtw_get_wpa2_ie(buf, &wpa2_ielen, ielen);
- 	if (pwpa2 && wpa2_ielen > 0) {
-+		if (wpa2_ielen + 2 > sizeof(padapter->securitypriv.supplicant_ie)) {
-+			ret = -EINVAL;
-+			goto exit;
-+		}
- 		if (rtw_parse_wpa2_ie(pwpa2, wpa2_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
- 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
- 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPA2PSK;
--- 
-2.53.0
+Thanks,
+Derek
+>>
+>>> Thanks a lot for your hard work in this series,
+>>
+>>
 
 
