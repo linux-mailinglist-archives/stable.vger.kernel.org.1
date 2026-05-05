@@ -1,179 +1,153 @@
-Return-Path: <stable+bounces-244026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIuQHBu1+WnUAwMAu9opvQ
-	(envelope-from <stable+bounces-244026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:15:07 +0200
+	id CIX0Cjy3+WmNBAMAu9opvQ
+	(envelope-from <stable+bounces-244027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:24:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21DE4C9650
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:15:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7014C98FD
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C766303649C
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 09:14:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAE9F3090A22
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 09:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECC630E82C;
-	Tue,  5 May 2026 09:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDCB30E834;
+	Tue,  5 May 2026 09:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a9mQicBP"
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="nO44IJFL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C530730F816
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 09:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBB4309F1D;
+	Tue,  5 May 2026 09:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777972495; cv=none; b=kZLMzHtHIH3aXISP9UwzNM0NxNriemdeaPIofgNXybprh2UCyquoog5iQlqpwQLj9TO/2rk2ukrx+q8llzDn8DAFAC083cP0GyklgssgSbWTLhhRKWZvUtPoXFY9k1HmJKAg9dquj5CnJHMmhGqT4g1YHerHjmOcOirZkh/uNOo=
+	t=1777972765; cv=none; b=JARL8b4o00Z3eUjyjDmIzN71hAv60jo7O/keG0+XExq2qS3Mn8fpH8lLW+gtwKGk5fMSiJv3bVzVjd4b7nnRWI6DrSyjtF6pZwdjwup5F6KDGVUW+QZOpbCGbC5++PsRRJOh90Wl5SXUPhsHLaGFkdyiBUtur+0mM/yfOai8iww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777972495; c=relaxed/simple;
-	bh=21bhpduPBAzP/8bbIcPKvaU7pSC8NYtoArYXu1/phn0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jMGz7s/2EelRvOOl3me5Nq72in2Zc6l8/SWe894QiLCRzxyTwP/ROhpUYtY1GkroPjw1LfjFCjwf0MQhf+b05jr0qnHwep+6xsJ48WcORF58gY+NKTpAI4i84g8JJ/M5QFebI7iuo/tmCFinleDDwZ+7XTTU3uIpoJ5A68TCOQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a9mQicBP; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso36238505e9.1
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 02:14:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777972492; x=1778577292; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1MJ5jvSmy3GosoYN4CBc5oeGoIhzHzzIKBuMNkH0u8Q=;
-        b=a9mQicBPMAScg61mtgHczRkrfBpppDxn0875T5gwUUe9fKDI/5dKUMtStHVBjux1fP
-         bXda+1zqlHFL/tDCxI0mlxdEG9tuuqSbC91wmG9Io1qcF1JoY0vZpgq+5Gslsde5zVPC
-         uu4PBNuMoeTjswgPPVVdxG3LyyohPObOYL4OiDY2QX9j5zZ9B4Ihaf9xmDBqhXNdPeph
-         /yINJM9z7AQCtVafKZ7y61qBCsJX5XqnpM1YXSpmxZkm0Xl3g+3rMcSd5qXYFHLVlwCV
-         PzByXd0x+9Fnnq1rR3wXf7CMqrFbeA+r76wCuaWqKaF2jBYr8FEZGTLMtnPrPSc2WyHy
-         Cf4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777972492; x=1778577292;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1MJ5jvSmy3GosoYN4CBc5oeGoIhzHzzIKBuMNkH0u8Q=;
-        b=oZM9AIUvC/KyT/NiTCN16z+oJwl+1gGIhraTvykBZWVV2stRVtVtk12c89g8EFdBsV
-         PwUEhDPiGnYr76V+Yh9YOmK8SHooqo018fTRKQNQsj5b3Faw5VjwoPq6+SgeuZEe9aDA
-         jSJPraLDRLb/TCgNhEeQmE9ymk+CSZqEuHo9NRv7gSoq8VB4m+o0bDeQUh6tOmC0Kv3R
-         an+pw1oDlzGamwpOBZP8uLN4BNiso6TmcvR40eLKeKRgHsMK6h36Ujq9Q1vwB/5HxWQA
-         f6mOvkD9LzSQcxzhTnkJ9oeU4nRE9CP93+b3uCQF1KJdX0gZbAkL3noEyrUzhH/zlI6f
-         c0ug==
-X-Forwarded-Encrypted: i=1; AFNElJ//S65Eu0b5EK5vSjECi+shKgGVLhdWXlFj+YDS9V4wwlrW2BZQOvFma3ZK1daaGPk3lsXSqzY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxns0N8YkhG4crAZR38rRn3GZpHa3ZJrGajsbNGRjFNZvnGjVlJ
-	X3xAGju1WSqi+AKy9+2gGPua7RpE7ODLXiW5L9rVUlMP2Uowt9A6H0tyVxLTVil7lT0=
-X-Gm-Gg: AeBDiesj1CrGiu0W2ev6HmhGwtm+MzozZf8tNZirNjXYvvF/e5915ZnOaYWU0zdi+f3
-	wPIBCiWYX4svjcl+Ryg7TfEGjsCYfJBSDqrYbnIC1wnluI81ZIG3VoAdX1O0v0TShVwVWjKcAju
-	9BmTfUVFs97ka+VbEYlw3qk9s+z+mxaiEZJS/o9FnBJ7BYugYdeTfCNVZFrWH1Q4/tKU3QoShCp
-	zK6/nDFCwE2Sljla6ih9UGfFZ/HakE/2HGyDqRCkBLI17vpNUMZtXjqvnwO0+vTjKkrQO33SoDV
-	Gb33eoK2wMhzSD/2Qh6itbd4yzQwV3k7aBPVpkd6udex2K11Xi5Zu39jHvbG2l16FgGZe003CUw
-	SIqxMd2wOIDxdbKrYVaXUVJHDrlJILOIif0sdy8LJ0NUrNJdut5iCh0qYmQ89i3PsVaMalJhgv7
-	IVolBG6vOFJE2C1AZFXwknf8dmglQrfF7ShjvIBLyzO5k=
-X-Received: by 2002:a05:600c:4f48:b0:487:59c:2bb8 with SMTP id 5b1f17b1804b1-48a988ccc94mr241921645e9.27.1777972492118;
-        Tue, 05 May 2026 02:14:52 -0700 (PDT)
-Received: from [10.11.12.108] ([79.115.63.228])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48d17708195sm19352525e9.3.2026.05.05.02.14.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 02:14:51 -0700 (PDT)
-Message-ID: <cc973c62-4e33-4055-8059-dfc454447d0e@linaro.org>
-Date: Tue, 5 May 2026 12:14:48 +0300
+	s=arc-20240116; t=1777972765; c=relaxed/simple;
+	bh=Sa1cZpOj2vBVDkew0f+0GqoneqbSh2eHUpErybrPNVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k74Vg9A+110Z61hjWpT07Raw2csYb6e0QgLdY9l40CKuPpRldNwNq0mvbY/MTSBLDGjOTkZYnKrXePz2+cWhbxhMQLuhliboomgY7qydcQQu8F9L6qT89qyZcvnpr8UbL6ctsU34XtMKEuiB0MIs/B8DcTcTYR8EyuzwNsYdx+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=nO44IJFL; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 32E6F600B5;
+	Tue,  5 May 2026 11:19:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1777972761;
+	bh=/jvsMDAng95ZDXouFnr0lTKBoKIcHWdA0+U30YrDN0A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nO44IJFLaNffpH/icrQrgPj74VxOP1bbmvcMCae7UClnGEkGSWi9gZ4GxQMJo0NUA
+	 mKAQXnYMuTBspoN3b0PQgJxjAKIa/lsyosa4RQa9a6jxvN8OpM65ZIT7Z7DX7PDSeZ
+	 3bLlykSBup06TzgXRTiMavS589KX/CCwQoy1rhrJE74UdA20iUVrlz/8skaWeny0u+
+	 LyG/VgDqC6oI+6faWZ4h8rcgku5p6Pjj8qI5854JwemLKDvx7bJt9TDS9tFBKF3L0m
+	 mTANgiJJ/i3VkDhbSkPkgnUv3hpcvMwSUdCA4DB9LEOrh3N++yZwDs4Z8Ksdi/uLEg
+	 LtRFTH9oVvspg==
+Date: Tue, 5 May 2026 11:19:18 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Pratham Gupta <pratham36gupta@gmail.com>
+Cc: netfilter-devel@vger.kernel.org, fw@strlen.de, phil@nwl.cc,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] netfilter: ctnetlink: use nf_ct_exp_net() in
+ expectation dump
+Message-ID: <afm2FhEytJzShYhk@chamomile>
+References: <20260505051157.3895177-1-pratham36gupta@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/7] firmware: samsung: acpm: Fix cross-thread RX
- length corruption
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org,
- andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com,
- stable@vger.kernel.org
-References: <20260504-acpm-fixes-sashiko-reports-v4-0-529246be6b2b@linaro.org>
- <20260504-acpm-fixes-sashiko-reports-v4-1-529246be6b2b@linaro.org>
- <8e5ad1bc-e404-4247-8a38-aa2a51df24bb@kernel.org>
-Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <8e5ad1bc-e404-4247-8a38-aa2a51df24bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E21DE4C9650
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260505051157.3895177-1-pratham36gupta@gmail.com>
+X-Rspamd-Queue-Id: BF7014C98FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[netfilter.org:s=2025];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[netfilter.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244026-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244027-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pablo@netfilter.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[netfilter.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,linaro.org:dkim,linaro.org:mid,sashiko.dev:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
 
+Hi,
 
+This is nf-next material.
 
-On 5/4/26 9:36 PM, Krzysztof Kozlowski wrote:
-> On 04/05/2026 12:15, Tudor Ambarus wrote:
->> Sashiko identified a cross-thread RX length corruption bug when
->> reviewing the thermal addition to ACPM [1].
->>
->> When multiple threads concurrently send IPC requests, the ACPM polling
->> mechanism can encounter responses belonging to other threads. To drain
->> the queue, the driver saves these concurrent responses into an internal
->> cache (`rx_data->cmd`) to be retrieved later by the owning thread.
->>
->> Previously, the driver incorrectly used `xfer->rxcnt` (the expected
->> receive length of the *current* polling thread) when copying data for
->> *other* threads into this cache. If the threads expected responses of
->> different lengths, this resulted in buffer underflows (leading to reads
->> of uninitialized memory) or potential buffer overflows.
->>
->> Fix this by replacing the boolean `response` flag in
->> `struct acpm_rx_data` with `rxcnt`, caching the exact expected receive
->> length for each specific transaction during transfer preparation. Use
->> this cached length when saving concurrent responses.
->>
->> Consequently, ensure that `xfer->rxcnt` is explicitly zeroed in driver
->> helpers (e.g., `acpm_dvfs_set_xfer`) for fire-and-forget messages to
->> prevent uninitialized stack garbage from being interpreted as a massive
->> expected receive length.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
->> Closes: https://sashiko.dev/#/patchset/20260420-acpm-tmu-v3-0-3dc8e93f0b26%40linaro.org [1]
->> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+On Mon, May 04, 2026 at 10:11:57PM -0700, Pratham Gupta wrote:
+> Commit 02a3231b6d82 ("netfilter: nf_conntrack_expect: store netns and zone in expectation")
+> introduced exp->net so RCU-only expectation paths no longer need to
+> dereference exp->master for netns lookups.
 > 
-> I think parallel credits for Titouan Ameline would be suitable here.
+> Commit 3db5647984de ("netfilter: nf_conntrack_expect: skip expectations in other netns via proc")
+> updated the proc path accordingly, but ctnetlink_exp_dump_table() still
+> compares against nf_ct_net(exp->master).
 
-I agree.
+There was no check in the /proc path.
 
-> If there is going to be new version, please also add:
+> Use nf_ct_exp_net(exp) here as well so the netlink dump path matches
+> the rest of the March 2026 expectation netns/RCU cleanup.
 
-There's going to be a new version, will add. I have to admit I'm
-impressed by sashiko's review skills.
+yes, this is a leftover, but it is safe to access 
 
-Cheers,
-ta
+> Fixes: 02a3231b6d82 ("netfilter: nf_conntrack_expect: store netns and zone in expectation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pratham Gupta <pratham36gupta@gmail.com>
+> ---
+> Tested expectation create/dump/delete on the host and in fresh Ubuntu 24.04
+> Docker userspace. Concurrent namespace churn/dump testing did not reproduce
+> a cross-netns leak.
+
+What cross-netns leak are you refering? This is simply using the
+conntrack netns instead of exp->netns which was added in 02a3231b6d82.
+
+This is nf-next material.
+
+>  net/netfilter/nf_conntrack_netlink.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+> index eda5fe4a75c8..8ae3f6acc2d2 100644
+> --- a/net/netfilter/nf_conntrack_netlink.c
+> +++ b/net/netfilter/nf_conntrack_netlink.c
+> @@ -3158,7 +3158,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+>  			if (l3proto && exp->tuple.src.l3num != l3proto)
+>  				continue;
+>  
+> -			if (!net_eq(nf_ct_net(exp->master), net))
+> +			if (!net_eq(nf_ct_exp_net(exp), net))
+>  				continue;
+>  
+>  			if (cb->args[1]) {
+> -- 
+> 2.43.0
+> 
 
