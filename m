@@ -1,211 +1,210 @@
-Return-Path: <stable+bounces-244024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBs2APS1+WmNBAMAu9opvQ
-	(envelope-from <stable+bounces-244024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:18:44 +0200
+	id 0Hj6Kp60+WnCAwMAu9opvQ
+	(envelope-from <stable+bounces-244025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:13:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579244C973B
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:18:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A134C9535
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 11:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F07C330970E7
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 09:10:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4542304339D
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 09:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A611331200;
-	Tue,  5 May 2026 09:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4529D3C0636;
+	Tue,  5 May 2026 09:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ljU9dw3Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q3d1IWtK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA3140DFA7;
-	Tue,  5 May 2026 09:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A6E3D16EC
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 09:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777972233; cv=none; b=P40X1MbtX+n0Nn12unTNRYF4odLSp1uSnBfWXszVaUn9FEU54clHrupTUVmiTx3KljftLGyTJ5gkoDC1zQcpRPkPXjVRvqHoqJNPusUeZ6WbFjDXO97sdnrr6N0vpJ6v61NBmwjdDQK2avrEAVzgpBXlyfDkG4aeMj10FVnhBAg=
+	t=1777972367; cv=none; b=ALDKBjyJPwkwzBgGpoMy6hijy6JDlP3x8Yh+g2499YtZpuoXVteHaNOjDjcFZ562ZDoceLUPBtp7Hxqwq3ZEttgy6HuDXLBiOS+JTcOsVew8flgoBEoM+Aue0OSPxOnLXYs6wiHnU97KgRzjv7kUAiacsCjkTg0fceaVWYre0XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777972233; c=relaxed/simple;
-	bh=04Phd2EodbMsYP2y3NGQJMWEWMCcX3OY0kqti3A4TWw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ix+rW3EI0QYJREmMeHnGfUWBAviJiwCBYFn7BIrYcw7qpTOXya5JJI4T+MCKRKX59MtVCtO/QE5G6+a0rxU/iu5UbVyqDryz54d3JFt1Lw0exe+TKnxhlDKVOGBS3ZgmsYb6lq3F9bm5AJFpCqspPNOdHH22tmVvREu4flL/46I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ljU9dw3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C07DC2BCB4;
-	Tue,  5 May 2026 09:10:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777972232;
-	bh=04Phd2EodbMsYP2y3NGQJMWEWMCcX3OY0kqti3A4TWw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ljU9dw3Yx3q5KEtadg9x0EposMwhmTBg5Zirrb03BwA+vdCB1CEhZNa0HPl/bsy9d
-	 5rMFPb2XIimLsESBPx+KFSBYkBeOV0LnjU6OKfpAgLTefqL+osHn4Z+C49+Csv+a/7
-	 Q6sCCPM3KwvKSYiKgtFBBBXmSpjyBf1B659xFvpSuAr451crgNJTbyqg+gfLzg5M33
-	 6umcRxypX6h56XjRWOR42N34/oyf8IEKZmj2zqcDDkZs/BnRPqh0KAQ58I6/u3PChc
-	 3BWm9YZxGD11a28tO/hE5r9aWCBjxWNzTqJLEbbPBaodo/5ABBkZEBvgO8Wrx2NjNc
-	 kbGEWDSgxDyBg==
-Message-ID: <2bdd7732-e20d-4d67-8f3e-2b9a9a791edf@kernel.org>
-Date: Tue, 5 May 2026 11:10:29 +0200
+	s=arc-20240116; t=1777972367; c=relaxed/simple;
+	bh=ES7r8hh3t5MoXyYNPDh7ECZ6Siwy/fIWOIkEuMhHPCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IyHP3OKOz/FoJIVZGUXUmCQGWUgNSQQTUPSb3lKYRhPAjOGY6PSWjiPbclksqZnmy5y3IDXQMahyeT0bWBt14dUpwdUaCQjivin9BVIeNhjJQKCOgslcVE6Okcg/Ptp2fwG/wcQuYD3+uF9LHUTg4aFigeV+zdM9V5qQobdAAXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q3d1IWtK; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-362e50b4641so2848924a91.0
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 02:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777972365; x=1778577165; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pT76M5XvZ7WL+LrVhY8ppYSbulf6Va7vbJcXm5Lk6Nk=;
+        b=Q3d1IWtKluXqj1dN54mD2dGENSi9g4TxvPOdhafiTf8TxohzYaovTcFoTW/jis9rH7
+         OigBxn9QgGwLJx/TJiSTkSajt6rHRrzXa7h6n08Sc4mJqLV69GBal4wFe4LOIxuCBzeW
+         /ImWlUgB8ta/uwnvlLWeqzZl9a7co8g4aCRh0azK1EcNnjxSoZBE3xatq8UxPC86UBPc
+         uvFF9kyOIMT3jgc58QsFUO/9WUv6U+GZUDGNEPgtOSsCNVz/GxkJrdrVB738pm/YDt6c
+         zppVIIPWvVxoKYLOTAAQ/6GYuuxuBxnBjRMPiKDM3bP2XVzEyevKRmGNcMRmy42IvF5R
+         Rhqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777972365; x=1778577165;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pT76M5XvZ7WL+LrVhY8ppYSbulf6Va7vbJcXm5Lk6Nk=;
+        b=Mib41Qre9qMJsFzUJA2TzgDTZ9KkjyV1qPhpTxdFhmDm/yG3JAubAmez/f+9sa13uQ
+         uPw1WnAXwx8ae0n7EPJIO0yJqwd6R+6DJocEUoDIuHytgueICgclU+unBwlSXHbA41UN
+         wD1LNfEwkmtrZZ5DSR8PJgTrwa7hJYxBv4cR18FcZSjBleTcwRszQrWlwn8lqvF98wEI
+         PHx/9zc0VkzO1Y/b3II9Dju5OUiSuhqmTRkbplmiW80/TL2gjorYiR/XSvrgzRV21z4c
+         EANAuEL1rN2IKfj0AkAdr3fijmIms7Sw0U5bjlLydrx0XH8Wr56xw1ZUlQQJD/PjgX/v
+         /s+g==
+X-Forwarded-Encrypted: i=1; AFNElJ8KG4CqJLgSIRJGzgahcVqdtZjtZr1c/X/I71QrcxGfbupVpkTbQDK7o6BeNEYXI5G8syN/2yI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0DRbt+ulAdgEVl/67DVi6G5t2E1vzyUUnyKfTXD6+r9SJDyJR
+	0oa+eQhJQBgIjh2+iwkwBW3BzmMrc1M1dE9vbbgiKOsxEEdU+rtgFXMB
+X-Gm-Gg: AeBDiesOJV1DgOr14rcmq+pYCqgbFvqApjbC0SWeAxsaSTpQlK29Qx/spO+88DsCJAc
+	YWgzYP8qf0vy3bRVEQlr4ojKVeBqCnNF0PiUnBbt3Zm9SQ+BGtaVDPcgkzr5rOcklaiqkUP2rik
+	7ruppCK9EZ50K/xtCHH0ntaHBDyCNqwTBcAEkwseKRto0+JWmutaZ5pKxlQHxM/RZTQYcrqZBtv
+	tvnpMXKwNn5/bsR7xDd7EW1Tbnwe6guOLd8Gp65Z68NQhPJjN9gu0SK/I3RfsB5V2BdCMVVjvG6
+	p9hQ6PbQGDlxWHcvy3dKUbOdPxBvFA474vCAOziwOFVRvlukPC61PmYva8SsieWkatu4WrlHyJD
+	EfeR6FuBk6RNY3QGUZQ2Ghv6zPXQUdq2+9UxggxiCCa53jpaRscVgAsW4JAoDT/fsuUioDrv4ZY
+	po1kNJAUbGhgcaHRtuMglS52JBTuzR9UxNRF0OPrs23w==
+X-Received: by 2002:a17:90b:3901:b0:361:45df:102 with SMTP id 98e67ed59e1d1-3650ce714a8mr12247878a91.17.1777972364997;
+        Tue, 05 May 2026 02:12:44 -0700 (PDT)
+Received: from lgs.. ([223.80.110.53])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf2ac19sm21648683a91.3.2026.05.05.02.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 02:12:44 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Tianfei zhang <tianfei.zhang@intel.com>,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] firmware_loader: fix device reference leak in firmware_upload_register()
+Date: Tue,  5 May 2026 17:12:31 +0800
+Message-ID: <20260505091231.607089-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0 073/307] ipmi:ssif: Clean up kthread on errors
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Li Xiao <252270051@hdu.edu.cn>,
- Corey Minyard <corey@minyard.net>
-References: <20260504135142.814938198@linuxfoundation.org>
- <20260504135145.562837603@linuxfoundation.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
- rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
- rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
- i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
- wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
- ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
- cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
- 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
- w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
- YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
- IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
- BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
- eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
- 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
- XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
- l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
- UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
- gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
- oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
- o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
- Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
- wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
- t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
- YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
- DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
- f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
- 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
- 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
- /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
- 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
- 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
- 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
- wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
- 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
- jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
- wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
- wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
- W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
- f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
- DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
- S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20260504135145.562837603@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 579244C973B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 23A134C9535
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244024-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244025-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On 04. 05. 26, 15:49, Greg Kroah-Hartman wrote:
-> 7.0-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Corey Minyard <corey@minyard.net>
-> 
-> commit 75c486cb1bcaa1a3ec3a6438498176a3a4998ae4 upstream.
-> 
-> If an error occurs after the ssif kthread is created, but before the
-> main IPMI code starts the ssif interface, the ssif kthread will not
-> be stopped.
-> 
-> So make sure the kthread is stopped on an error condition if it is
-> running.
-> 
-> Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-> Reported-by: Li Xiao <<252270051@hdu.edu.cn>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Li Xiao <252270051@hdu.edu.cn>
-> Signed-off-by: Corey Minyard <corey@minyard.net>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->   drivers/char/ipmi/ipmi_ssif.c |   13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> --- a/drivers/char/ipmi/ipmi_ssif.c
-> +++ b/drivers/char/ipmi/ipmi_ssif.c
-> @@ -1268,8 +1268,10 @@ static void shutdown_ssif(void *send_inf
->   	ssif_info->stopping = true;
->   	timer_delete_sync(&ssif_info->watch_timer);
->   	timer_delete_sync(&ssif_info->retry_timer);
-> -	if (ssif_info->thread)
-> +	if (ssif_info->thread) {
->   		kthread_stop(ssif_info->thread);
-> +		ssif_info->thread = NULL;
-> +	}
->   }
->   
->   static void ssif_remove(struct i2c_client *client)
-> @@ -1916,6 +1918,15 @@ static int ssif_probe(struct i2c_client
->   
->    out:
->   	if (rv) {
-> +		/*
-> +		 * If ipmi_register_smi() starts the interface, it will
-> +		 * call shutdown and that will free the thread and set
-> +		 * it to NULL.  Otherwise it must be freed here.
-> +		 */
-> +		if (ssif_info->thread) {
+firmware_upload_register()
+  -> fw_create_instance()
+     -> device_initialize()
 
-This 'if' reportedly needs:
-commit a8aebe93a4938c0ca1941eeaae821738f869be3d
-Author: Corey Minyard <corey@minyard.net>
-Date:   Tue Apr 21 06:50:22 2026 -0500
+After fw_create_instance() succeeds, the lifetime of the embedded struct
+device is expected to be managed through the device core reference
+counting, since fw_create_instance() has already called
+device_initialize().
 
-     ipmi:ssif: NULL thread on error
+In firmware_upload_register(), if alloc_lookup_fw_priv() fails after
+fw_create_instance() succeeds, the code reaches free_fw_sysfs and frees
+fw_sysfs directly instead of releasing the device reference with
+put_device(). This may leave the reference count of the embedded struct
+device unbalanced, resulting in a refcount leak.
 
-> +			kthread_stop(ssif_info->thread);
-> +			ssif_info->thread = NULL;
-> +		}
->   		if (addr_info)
->   			addr_info->client = NULL;
->   
-> 
-> 
-> 
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review. Fix this by using put_device(fw_dev) in the
+failure path and letting fw_dev_release() handle the final cleanup,
+instead of freeing the instance directly from the error path.
 
+Fixes: 97730bbb242c ("firmware_loader: Add firmware-upload support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v3:
+  - Move fw_sysfs->fw_upload_priv assignment after fw_sysfs->fw_priv is
+    initialized, so the alloc_lookup_fw_priv() failure path does not enter
+    fw_upload_free() with an uninitialized fw_sysfs->fw_priv.
+  - On alloc_lookup_fw_priv() failure, call put_device(fw_dev) and then
+    free fw_upload_priv and fw_upload explicitly.
+
+v2:
+  - Remove the free_fw_sysfs label.
+  - Call put_device(fw_dev) directly in the alloc_lookup_fw_priv() failure
+    path and jump to exit_module_put.
+
+ drivers/base/firmware_loader/sysfs_upload.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/base/firmware_loader/sysfs_upload.c b/drivers/base/firmware_loader/sysfs_upload.c
+index f59a7856934c..efc33294212f 100644
+--- a/drivers/base/firmware_loader/sysfs_upload.c
++++ b/drivers/base/firmware_loader/sysfs_upload.c
+@@ -343,7 +343,6 @@ firmware_upload_register(struct module *module, struct device *parent,
+ 		goto free_fw_upload_priv;
+ 	}
+ 	fw_upload->priv = fw_sysfs;
+-	fw_sysfs->fw_upload_priv = fw_upload_priv;
+ 	fw_dev = &fw_sysfs->dev;
+ 
+ 	ret = alloc_lookup_fw_priv(name, &fw_cache, &fw_priv,  NULL, 0, 0,
+@@ -351,10 +350,12 @@ firmware_upload_register(struct module *module, struct device *parent,
+ 	if (ret != 0) {
+ 		if (ret > 0)
+ 			ret = -EINVAL;
+-		goto free_fw_sysfs;
++		put_device(fw_dev);
++		goto free_fw_upload_priv;
+ 	}
+ 	fw_priv->is_paged_buf = true;
+ 	fw_sysfs->fw_priv = fw_priv;
++	fw_sysfs->fw_upload_priv = fw_upload_priv;
+ 
+ 	ret = device_add(fw_dev);
+ 	if (ret) {
+@@ -365,9 +366,6 @@ firmware_upload_register(struct module *module, struct device *parent,
+ 
+ 	return fw_upload;
+ 
+-free_fw_sysfs:
+-	kfree(fw_sysfs);
+-
+ free_fw_upload_priv:
+ 	kfree(fw_upload_priv);
+ 
 -- 
-js
-suse labs
+2.43.0
 
 
