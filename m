@@ -1,180 +1,326 @@
-Return-Path: <stable+bounces-244233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cO3iGZwr+mlXKgMAu9opvQ
-	(envelope-from <stable+bounces-244233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:40:44 +0200
+	id 4HVCNfsr+mlXKgMAu9opvQ
+	(envelope-from <stable+bounces-244234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:42:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469714D233D
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:40:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19474D23A9
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 19:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 39F7330314D6
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:40:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C9AD930008B9
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 17:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6624A3402;
-	Tue,  5 May 2026 17:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19884A2E32;
+	Tue,  5 May 2026 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Wxbazo8G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sTLW5FCq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECCE4A33EE
-	for <stable@vger.kernel.org>; Tue,  5 May 2026 17:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778002784; cv=pass; b=oKC/jv0gx+3GeFSXku019MP+5s6emf3Q7VjEzmNtgQLWHKt3haumai9KxpTCDdHf1MYpB61YIYqoVT26Rq2pwcKny9RVmGjD6UWIHFUGOK9bp8LGrAwXdKbZsgPs4+L5EhBSiKGS4mJ54J3nC4S7Ll01CrSiE5Fe6s9AKGN/7ZI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778002784; c=relaxed/simple;
-	bh=ndjRAJm3WzNlqQxhRRMI7QmuE7dHkDlI2JoUdx6DXIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=izZ4hpJHQtdQNhIs1ieU3QKBNRizA59XesScB+1QS+QEqfvcB2X5EPUl9MK+Dh1yfMtYKUOgZvS1kEKbllp9D8IURjOEQCc4yQ29nuIrzhK0UeNiJQArCldKPa6T/r7t0bI03a4JTrgXt/WIY/ZTu0NqRc0uR3DN+exHpfOQ+TE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Wxbazo8G; arc=pass smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-36535998b71so89258a91.0
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 10:39:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778002782; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MVeZ7UJlqkIEN+C5N99XesERar/3bMzYWUBerxwJdGZ8OX1p9MLfEVtOcQ+fH7pP6z
-         izcM4tYhwxwIew2G2YsNV/gULBXeOjAba2OctlPMjukUXO+5DYWQheZaT4Afn94ONSCN
-         zfiAcoxJcEV2wz7nHTvSrbOy6I5JvbSQIJkjQt+YMM10nuY6gqGpIBprMQnfr+UQAHMQ
-         VsvaqWGKtl2RhV+0RqJFZJ4tUfA1EsunmP9HETxmx50XtyOTe/ZnBLLEGLHygzDmrkLw
-         OjPnbOkgcw848YwRqjHHaTbHwADwIAONwFozdsgWDG1O/eVnLSrNd5G9il6poucVnhpf
-         E9hQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AIMU3lf9kc8EsYHBmuDo0jAnXxQba7uzrH34U2ph1no=;
-        fh=VT2kRd5NrPQo8kkq6GcrLNTKatXQBcx62fe2ot8J+3M=;
-        b=OH6Tyhc6k4BYsB4flF4OYXlsBzblF9i20Yvg+XS8+7eNy/muJDhqbuGDLb9KGzql7P
-         y8hDxY0Wh6Y81QaPN5+73adwiiNUA2EjSYbAgulG99MRzwnvvUuVfx24q9yjdyU3ZSY+
-         S4zwCnhk4YIBljemGx+7VwVLLLAXRO9WBtXYAzBiO/1+E/F9nOd+2U20wxG2xLx5GGn0
-         6CZLpli4F95e7UE7+N/1wLtS8weHTcMi3hWJ/GwfDtsnN0h+zGHa8iz1Ens+VPd+LFDR
-         WmOs1kTJSU2moNE6/1ggstU/l4xGD2hzVPq4IVAkWaLntzuqFALBR0nF/uWjA5GHGd0R
-         NKbw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C312492507
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 17:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778002849; cv=none; b=MlT147ciizsz2udndAxNzf27WQBZMxXeYCWOH+YPSahxbS/XCU8yFhEhkFLUeBN+fkjvcf0BfbC/k7cplGPqU6aczvjBTIXXYQw+jNPw+bP9nzH/5UwKBmHT2jEFoT09Fqxtfry+WfdjFcMyP9rgL9jlVYoAoiqIFs5YLgNawRk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778002849; c=relaxed/simple;
+	bh=/Wk0G6OMx58JB4J28VjOe9IKhJZt/KpmPk/ZuiImfiw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=lYUrrUdp4LvBQT+EgNJ3EjYckchtI8CHvOXFryRqk5bDkyplzadHs5LdVQV3rcux2cEfqAymBzlNpnh0giRXSfwEsSF2++xLOkWqYN3neZSf0CTi5JtdB45A51be19sOnQdlpk6j+UZJqNVf5bxeG0grELTXlTUBaXkGifdO13Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sTLW5FCq; arc=none smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2ef38cf04f0so5578308eec.1
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 10:40:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1778002782; x=1778607582; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AIMU3lf9kc8EsYHBmuDo0jAnXxQba7uzrH34U2ph1no=;
-        b=Wxbazo8GIWv0qn/K+6yAh97qO4Bh1ts47Gu9nNx8raMw35tsLzNzh8dJS2oDH6DjSH
-         Pv1FNNZSWyxWhN1f6VyAC2dj7jvrMXo5WFTGDsWt0ZYoO9j3rx6KS+xhq0b7b2BfHuxI
-         Hiey3xDi00Ooe1FiG5EwHGNBvFlWz5TzAaURw=
+        d=gmail.com; s=20251104; t=1778002847; x=1778607647; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yhXVt+AnL0NfCyigv8QAWVK+PRj4tez0zQo7Ju/B5eA=;
+        b=sTLW5FCqXp0+/11Q68AoJ1OphWr41fotHWQtWW2DGEBA9nvT7ONTHBmE3qt0wQ8j0m
+         uX8TOo1pSo+hiCEnB7fh4LXAorHWjNJ0+p1wsTbHXzhgTF3rhU27rHy/77oTEN4rIiiN
+         rvdoMHbTYKU5j0QAxSiPwlt8+Tu0sch9gQm4l4WHREkkqFyYYTJz0gGnEOk16CPjhACW
+         bkJPNov2yK3AP52de3swyrETGduQ/r4lrAmXaP8n9ZrkjOgtFUgQwf5ThoqmFrlTsRbJ
+         9Hl/ZivWaT+RPttcxczEMj+aqT+T+vXf70a+h2k79NB7+yxInZbQs0pEX4qeR281h3RL
+         arnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778002782; x=1778607582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AIMU3lf9kc8EsYHBmuDo0jAnXxQba7uzrH34U2ph1no=;
-        b=s6mn/wIPQIxCwk2sDzraGFDQ1oY/f7fIVyHWFty11VfO5wiJBWCE/ZqpdKg4VVH0V7
-         oAH3YNeWqqtc2rTH4O+CJWr8e9swOnXquLCLCOGUBNvlDAKjLRQ5baPGWhrINJz5wAvr
-         OyUPt9CSrJW7J5+FEkpg7YKNKR1olG6n2M/T+QLq89Zr0mVrkrjTJaa6fuwmNdOFLpbX
-         d32e2w15x05vCVj4X+vzKOrBPg+hIGWd6/0iamUPD8KJLmhaWTyOTvyNqvTBXN71Hp7t
-         kzqNE+vsQenrQDACSIcgEEBTNkyXwkZVht9cFhUe5Fu2QIXZOTQzGkorVkGNp+ZkDzYu
-         Ut7g==
-X-Forwarded-Encrypted: i=1; AFNElJ8IX5cxJpEOG3W0GFhtFsSHgNRyCvPEUI99RfvyrbmvKCk8l6UPAS+Qp5LvmwWCnuoAddxS28Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKVfECuKf9Y6Js8mfWEfavkkCREDzJUFwIlII/1CjJTiTUtwOo
-	c340BxW0VhRsBH3jGG30wTl3477C3dQj6sD4gxotIBRu/hbaslD7430EvDjf2N5wxRD6VZJnaIS
-	bRC904ZiQpGGQ3+aI3eJRKmLMatU9CljdBqE23156
-X-Gm-Gg: AeBDiev9+ru0dzuvgspFSH+VaBnYkXQMcYAOwpSqtFASKSQSVUx0licOvHngIZdC7J4
-	Fn6LCJIrIIgdfy0MkNnjkCoY7Wjp7B3+1vtghKd/D3SdDDIHujQcUUg2sf1c2R8p61qGGmdKgNQ
-	6l0LsCrDxXjCjmKD0u0rznNPF2PZYCHCOJbAiFj6sWXcW8gAlxOYO1sjR8zJ4OQC0kQC1NTRxIy
-	+TfEUe/ASwHrYDH2oPI5t7Fc4QmqCsbMIHsn9IND+aX8sr0zPN7f6ChuP3O5RkKhzywnQc54lqV
-	Bq0niTw7DRNgKl9419Sm4daX+2JqX8sQ9j/lxPff0yVCcBWnFBeKfZVxaT0=
-X-Received: by 2002:a17:90b:3e89:b0:35a:10b6:1208 with SMTP id
- 98e67ed59e1d1-365728811fcmr3768761a91.14.1778002782151; Tue, 05 May 2026
- 10:39:42 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778002847; x=1778607647;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yhXVt+AnL0NfCyigv8QAWVK+PRj4tez0zQo7Ju/B5eA=;
+        b=pgWpaEV6SHWUIIh67OYW/j6tCQMtdWASUdxmkrn2e/+PX7zCt49sFFiptOFGjoOJ4p
+         oIzCm2EyvPscpPFuCwhq9FAVL0QTeIztS8smdcTuRsk0YLlNxP7EPH5SUnvf5jGa6Rwi
+         7VOOpeYCzLA6CaDLBJBCgPG02fYPjS7ZdHzNVbyxVuHV1oh/Lwn0wwjK+NCFom4CQ4aF
+         vnTIsNbM6mgoOKqMOIp4/fP46cO+gddD8jZaua2x8dVoI5UeXy56eQym4e9WIPME4LxP
+         CCKRLGZM7LHvtII5mKhdR+Cojo/nilaccmNZcA6PWBgghP5ITotaFib+pF8wSeiSWn5d
+         JByw==
+X-Forwarded-Encrypted: i=1; AFNElJ/xyRvLfdkKUR52a/QYIlL7cwupKwgaNwwBvWKsaeZdq2K8Dl/IZBdD/8NB1svacevjsT15pWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygvlBABvmxumFyg7GliS7WQ1lptjHMp/YaVDf0lWJnI/s2tXHH
+	VpoOE6NCW4VsB9WGPjtiY4/LlmKn8Mz7KtcxAMEs8OAhvqZ1sI2hP8Ke
+X-Gm-Gg: AeBDietuQu21iQuV85N5QG0jsYCZoTRwyeQoEYT9LNfQ31XYXZphIHe5hEwls89VakA
+	irmUYi1CONyO74sL5JogdpbBeifKT7Jz2K8ZsUE+c4gIz6gq0w+3a0dd5haIphjAdWBEoFVsH6I
+	QEg9JjtzYsui058UiVkiRoZ9AgHhARJaTWeY/8gGAi7PkFec5J5G5sE343lzGruyC0W4YbQ6Djx
+	4YHhw4nbhuGf9fivt6FZ6TzWZrDlDLADLFWCV6AysWv4uVBdGeTztLPi8HlXhm0xQXpqa4/Isr1
+	JA08ZoopDWpYzzSir82j0OpvGzFf5Q7FqQRW97GP/qGzKK1A6W+ak/nTGAkaEsN9VlCb4iFfcRP
+	uVfGt2y0ueyNnXXRui9+SBMzFJU6l+Ubqit+s9soMztc+SPbVcm33W4HHCptE1+OYHhCDSBo5T7
+	K4ddAjLh4ib9PAZS4W9K+WLG8+AaoKyTKe0P2ty1FS2gLTxLvVTE0B5cUt7FPdAe4uWXn/TcW/Q
+	5VEi3hDBXHTBuhuxqSrD0xTXMLFvyD3
+X-Received: by 2002:a05:7300:7255:b0:2d4:aa5a:391c with SMTP id 5a478bee46e88-2f54869a41bmr127551eec.12.1778002846955;
+        Tue, 05 May 2026 10:40:46 -0700 (PDT)
+Received: from ehlo.thunderbird.net (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3bb60811sm20995714eec.24.2026.05.05.10.40.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2026 10:40:46 -0700 (PDT)
+Date: Tue, 05 May 2026 10:40:46 -0700
+From: "Derek J. Clark" <derekjohn.clark@gmail.com>
+To: =?ISO-8859-1?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+CC: Hans de Goede <hansg@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet <corbet@lwn.net>,
+ Rong Zhang <i@rong.moe>, Kurt Borja <kuurtb@gmail.com>,
+ platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v10_06/16=5D_platform/x86=3A_lenovo-wmi-ot?=
+ =?US-ASCII?Q?her=3A_Limit_adding_attributes_to_supported_devices?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <3032887f-bfa2-6968-7a8e-db141e5ef649@linux.intel.com>
+References: <20260412211121.2220556-1-derekjohn.clark@gmail.com> <20260412211121.2220556-7-derekjohn.clark@gmail.com> <1ce1d6f6-9196-c8a1-913d-4bdec2b1af80@linux.intel.com> <AA4D5F92-E158-48D1-85FC-CAA72A4EDD8A@gmail.com> <3032887f-bfa2-6968-7a8e-db141e5ef649@linux.intel.com>
+Message-ID: <6ABDB1EF-324B-48EB-A5F2-18E13DD9F5B8@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260505053403.3335740-1-tzungbi@kernel.org>
-In-Reply-To: <20260505053403.3335740-1-tzungbi@kernel.org>
-From: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
-Date: Tue, 5 May 2026 10:39:30 -0700
-X-Gm-Features: AVHnY4L5fAq0tv1FZEX3wyukvmRw8Qh8kutB15RbJtcaQeRmgpHJfLeGTjyl_8A
-Message-ID: <CANFp7mX51VHCvcEhKnydWOTpa2havzCwVAvAESo2L2k8EP+7oQ@mail.gmail.com>
-Subject: Re: [PATCH] platform/chrome: cros_ec_typec: Init mutex in Thunderbolt registration
-To: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Benson Leung <bleung@chromium.org>, Jameson Thies <jthies@google.com>, 
-	Andrei Kuchynski <akuchynski@chromium.org>, chrome-platform@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 469714D233D
+X-Rspamd-Queue-Id: D19474D23A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+X-Spamd-Result: default: False [-0.95 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244233-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,squebb.ca,gmx.de,lwn.net,rong.moe,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244234-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abhishekpandit@chromium.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[derekjohnclark@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,squebb.ca:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
 
-On Mon, May 4, 2026 at 10:34=E2=80=AFPM Tzung-Bi Shih <tzungbi@kernel.org> =
-wrote:
->
-> cros_typec_register_thunderbolt() missed initializing the `adata->lock`
-> mutex.  This leads to a NULL dereference when the mutex is later
-> acquired (e.g. in cros_typec_altmode_work()).
->
-> Initialize the mutex in cros_typec_register_thunderbolt() to fix the
-> issue.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 3b00be26b16a ("platform/chrome: cros_ec_typec: Thunderbolt support=
+On May 5, 2026 2:48:08 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo=2Ejarvinen@linux=
+=2Eintel=2Ecom> wrote:
+>On Thu, 30 Apr 2026, Derek J=2E Clark wrote:
+>> On April 30, 2026 7:01:55 AM PDT, "Ilpo J=C3=A4rvinen" <ilpo=2Ejarvinen=
+@linux=2Eintel=2Ecom> wrote:
+>> >On Sun, 12 Apr 2026, Derek J=2E Clark wrote:
+>> >
+>> >> Adds lwmi_is_attr_01_supported, and only creates the attribute subfo=
+lder
+>> >> if the attribute is supported by the hardware=2E Due to some poorly
+>> >> implemented BIOS this is a multi-step sequence of events=2E This is
+>> >> because:
+>> >> - Some BIOS support getting the capability data from custom mode (0x=
+ff),
+>> >>   while others only support it in no-mode (0x00)=2E
+>> >> - Some BIOS support get/set for the current value from custom mode (=
+0xff),
+>> >>   while others only support it in no-mode (0x00)=2E
+>> >> - Some BIOS report capability data for a method that is not fully
+>> >>   implemented=2E
+>> >> - Some BIOS have methods fully implemented, but no complimentary
+>> >>   capability data=2E
+>> >>=20
+>> >> To ensure we only expose fully implemented methods with correspondin=
+g
+>> >> capability data, we check each outcome before reporting that an
+>> >> attribute can be supported=2E
+>> >>=20
+>> >> Checking for lwmi_is_attr_01_supported during remove is not done to
+>> >> ensure that we don't attempt to call cd01 or send WMI events if one =
+of
+>> >> the interfaces being removed was the cause of the driver unloading=
+=2E
+>> >>=20
+>> >> Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver=
 ")
-> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> ---
->  drivers/platform/chrome/cros_typec_altmode.c | 1 +
->  1 file changed, 1 insertion(+)
+>> >> Reported-by: Kurt Borja <kuurtb@gmail=2Ecom>
+>> >> Closes: https://lore=2Ekernel=2Eorg/platform-driver-x86/DG60P3SHXR8H=
+=2E3NSEHMZ6J7XRC@gmail=2Ecom/
+>> >> Cc: stable@vger=2Ekernel=2Eorg
+>> >> Reviewed-by: Rong Zhang <i@rong=2Emoe>
+>> >> Tested-by: Rong Zhang <i@rong=2Emoe>
+>> >> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb=2Eca>
+>> >> Signed-off-by: Derek J=2E Clark <derekjohn=2Eclark@gmail=2Ecom>
+>> >> ---
+>> >> v7:
+>> >>   - Move earlier in the series=2E This required dropping the use of
+>> >>     lwmi_attr_id as it will be added later=2E
+>> >>   - Add missing switch between cd_mode_id and cv_mode_id in
+>> >>     current_value_store=2E
+>> >> v6:
+>> >>   - Zero initialize args in lwmi_is_attr_01_supported=2E
+>> >>   - Fix formatting=2E
+>> >> v5:
+>> >>   - Move cv/cd_mode_id refrences from path 3/4=2E
+>> >>   - Add missing import for ARRAY_SIZE=2E
+>> >>   - Make lwmi_is_attr_01_supported return bool instead of u32=2E
+>> >>   - Various formatting fixes=2E
+>> >> v4:
+>> >>   - Use for loop instead of backtrace gotos for checking if an attri=
+bute
+>> >>     is supported=2E
+>> >>   - Add include for dev_printk=2E
+>> >>   - Wrap dev_dbg in lwmi_is_attr_01_supported earlier=2E
+>> >>   - Don't use symmetric cleanup of attributes in error states=2E
+>> >> ---
+>> >>  drivers/platform/x86/lenovo/wmi-gamezone=2Eh |   1 +
+>> >>  drivers/platform/x86/lenovo/wmi-other=2Ec    | 114 ++++++++++++++++=
+++---
+>> >>  2 files changed, 98 insertions(+), 17 deletions(-)
+>> >>=20
+>> >> diff --git a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh b/drivers/=
+platform/x86/lenovo/wmi-gamezone=2Eh
+>> >> index 6b163a5eeb95=2E=2Eddb919cf6c36 100644
+>> >> --- a/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>> >> +++ b/drivers/platform/x86/lenovo/wmi-gamezone=2Eh
+>> >> @@ -10,6 +10,7 @@ enum gamezone_events_type {
+>> >>  };
+>> >> =20
+>> >>  enum thermal_mode {
+>> >> +	LWMI_GZ_THERMAL_MODE_NONE =3D	   0x00,
+>> >>  	LWMI_GZ_THERMAL_MODE_QUIET =3D	   0x01,
+>> >>  	LWMI_GZ_THERMAL_MODE_BALANCED =3D	   0x02,
+>> >>  	LWMI_GZ_THERMAL_MODE_PERFORMANCE =3D 0x03,
+>> >> diff --git a/drivers/platform/x86/lenovo/wmi-other=2Ec b/drivers/pla=
+tform/x86/lenovo/wmi-other=2Ec
+>> >> index 50a03f5fd6ab=2E=2E29d062a1c6dc 100644
+>> >> --- a/drivers/platform/x86/lenovo/wmi-other=2Ec
+>> >> +++ b/drivers/platform/x86/lenovo/wmi-other=2Ec
+>> >> @@ -550,6 +550,8 @@ struct tunable_attr_01 {
+>> >>  	u8 feature_id;
+>> >>  	u8 device_id;
+>> >>  	u8 type_id;
+>> >> +	u8 cd_mode_id; /* mode arg for searching capdata */
+>> >> +	u8 cv_mode_id; /* mode arg for set/get current_value */
+>> >>  };
+>> >> =20
+>> >>  static struct tunable_attr_01 ppt_pl1_spl =3D {
+>> >> @@ -775,7 +777,6 @@ static ssize_t attr_current_value_store(struct k=
+object *kobj,
+>> >>  	struct wmi_method_args_32 args =3D {};
+>> >>  	struct capdata01 capdata;
+>> >>  	enum thermal_mode mode;
+>> >> -	u32 attribute_id;
+>> >>  	u32 value;
+>> >>  	int ret;
+>> >> =20
+>> >> @@ -786,13 +787,12 @@ static ssize_t attr_current_value_store(struct=
+ kobject *kobj,
+>> >>  	if (mode !=3D LWMI_GZ_THERMAL_MODE_CUSTOM)
+>> >>  		return -EBUSY;
+>> >> =20
+>> >> -	attribute_id =3D
+>> >> -		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+>> >> -		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+>> >> -		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+>> >> -		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> >> +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->de=
+vice_id) |
+>> >> +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) =
+|
+>> >> +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cd_mode_id) =
+|
+>> >> +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> >> =20
+>> >> -	ret =3D lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capdata=
+);
+>> >> +	ret =3D lwmi_cd01_get_data(priv->cd01_list, args=2Earg0, &capdata)=
+;
+>> >>  	if (ret)
+>> >>  		return ret;
+>> >> =20
+>> >> @@ -803,7 +803,10 @@ static ssize_t attr_current_value_store(struct =
+kobject *kobj,
+>> >>  	if (value < capdata=2Emin_value || value > capdata=2Emax_value)
+>> >>  		return -EINVAL;
+>> >> =20
+>> >> -	args=2Earg0 =3D attribute_id;
+>> >> +	args=2Earg0 =3D FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->de=
+vice_id) |
+>> >> +		    FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) =
+|
+>> >> +		    FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, tunable_attr->cv_mode_id) =
+|
+>> >> +		    FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+>> >
+>> >It's already repeated a few times and you're adding more in this patch=
+=2E
+>> >
+>> >We should have a helper function for this encoding as it seems to=20
+>> >repeat=2E That is, something that takes tunable_attr and mode as input
+>> >(the conversion of existing entries should be in own patch preceeding=
+=20
+>> >this fix patch)=2E
+>> >
+>>=20
+>> Hi Ilpo,
+>>=20
+>> A function for that is added in patch 10, though it is slightly modifie=
+d=20
+>> from that to be more flexible is tunable_attr isn't used (such as with=
+=20
+>> the fan test attributes)
 >
-> diff --git a/drivers/platform/chrome/cros_typec_altmode.c b/drivers/platf=
-orm/chrome/cros_typec_altmode.c
-> index 557340b53af0..66c546bf89b5 100644
-> --- a/drivers/platform/chrome/cros_typec_altmode.c
-> +++ b/drivers/platform/chrome/cros_typec_altmode.c
-> @@ -359,6 +359,7 @@ cros_typec_register_thunderbolt(struct cros_typec_por=
-t *port,
->         }
->
->         INIT_WORK(&adata->work, cros_typec_altmode_work);
-> +       mutex_init(&adata->lock);
->         adata->alt =3D alt;
->         adata->port =3D port;
->         adata->ap_mode_entry =3D true;
-> --
-> 2.54.0.545.g6539524ca2-goog
+>It still leaves some boilerplate having to deref all those tunable_attr=
+=20
+>fields so perhaps it would be better to do nested helpers, one taking=20
+>tunable_attr and that calls the more flexible helper=2E IMO that would be=
+=20
+>the best approach here=2E
 >
 
-Thanks for the fix.
+That's simple enough=2E I assume that can be added to that same patch inst=
+ead of an additional one?
 
-Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+- Derek
+
+>> Originally I had that patch preceding any additions, but after=20
+>> discussing with Rong we felt like it would be easier for stable=20
+>> backports if all the fixes were upfront=2E I can certainly move it back=
+=20
+>> if you still prefer=2E
+>
+>I see=2E This patch would be cleaner though if we have the helper already=
+ in=20
+>place but I'm not insisting if you two prefer the current order of the=20
+>patches=2E
+>
+
 
