@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-244197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIvJGkcL+mlsIgMAu9opvQ
-	(envelope-from <stable+bounces-244197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:22:47 +0200
+	id ECSACg8M+mlsIgMAu9opvQ
+	(envelope-from <stable+bounces-244198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:26:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3454D0207
-	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:22:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60FB4D02CF
+	for <lists+stable@lfdr.de>; Tue, 05 May 2026 17:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6E5F9300D4E1
-	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:22:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 540CD308A87B
+	for <lists+stable@lfdr.de>; Tue,  5 May 2026 15:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6FB48165B;
-	Tue,  5 May 2026 15:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224BA481FB4;
+	Tue,  5 May 2026 15:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b="MhduX7DC"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WczCGkuC"
 X-Original-To: stable@vger.kernel.org
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D0843C06A;
-	Tue,  5 May 2026 15:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777994560; cv=pass; b=lY3zgrMyS3yI1IwVut33A+4T8YSd4VYFsCbTbqK9EWU7sEju+Uv5kHZtsVRt2hkLO71TYnBOspCs+fbhrmOlxZMo7Ay3y6o1UwSotOnwp8htSzZfxH58H+B3FX9JDcnDL26AN0/AEQOIm/y8YfZCoa3POiNcIGsczR2opO3DD90=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777994560; c=relaxed/simple;
-	bh=bpIQk+s+SCOVh6fSqSKOtm/dIveCVcKpnoIoaIWHHx0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA4E481AA1
+	for <stable@vger.kernel.org>; Tue,  5 May 2026 15:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777994667; cv=none; b=fSAlcMsfmF/Y+ongeb/aD27SppPQWZbz3awfqZij+SXxwB4jqJjx5akIRxDjuoytG1dEY/Z9B/6IdlLEAb0N45CetO4dpiKY/NXwtylFHGDzrVb9rbWk27MXapCFlojRW3VgUEWqqTm3kJjQ7024nvAm/xM134YbYLN3kqLGvgk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777994667; c=relaxed/simple;
+	bh=TYLJCUs11De+IxnARIgVbv0RY+n0qr9eToShT4iy/W0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lj6XL5JVdy4IqQVMnPK3ALA+m85L7L0/aWS06qICrwu0l+4ORtkqLB6h0X/DZOoCwrr4OyHZe4JT1jYQFwcrupX7Y/S3y88VXXPNkZD0RR9C41AA6ATmvMwUwT/ABZ3RR1JGiJwxC2j63YadVxAPobp4wpmx0vPdVrg9xrhKYY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b=MhduX7DC; arc=pass smtp.client-ip=103.117.158.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
-ARC-Seal: i=1; a=rsa-sha256; t=1777994541; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=RC+2+SVs+OzrTqBQDwUA6y/tPL1GI0ar0YkpqhWTlQf8GEfbTMt4eYQJ0FpOzMUittwNUH4BpeL97eKvcsuYxhUdHLObEFdDa5KYupmBOLjFYRhHNWo5k3pjccj12uk8y/i3Oz5EmSsuMs/kQH/K9ecBju6nBTcoDeGjLxkD0/U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1777994541; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=l7WdRzPLSsYlkSgl4QoN1jtwDNE49Fj78Tl83z4Bz5c=; 
-	b=WqL1zyJA5UZ8Urmh5De0CnRBnj5Zutzy17R3nVlrIxyQPUE60MosQXON5ryHWo5BCabDP5s4BkNQXz/6QKkqXiHtJkmCBMkFW1BgtC9lpFrAJpue79Rk4bakRNhiWknqpqpHbIIQgCnum0Gn5AOpxF8fHOGdWOBXU2jfH7msm20=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777994541;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=l7WdRzPLSsYlkSgl4QoN1jtwDNE49Fj78Tl83z4Bz5c=;
-	b=MhduX7DCzOfUt2/wjuXiTp5J4j9w5m5qSa+1OKBw0jieCNBRy5WgxHKeJrZS6JpQ
-	PCzlPoeJGVu7ig4yOqBqUSCQJ+EjvMf9+BP4siE4i/TcuhsK+EjmkKGm2M9Spd+Y6vF
-	YvRUPxf2Xd8cty0vlw5Xd4osRKsIO6mDY5m9IVZ0=
-Received: by mx.zoho.in with SMTPS id 1777994540387707.7762062356265;
-	Tue, 5 May 2026 20:52:20 +0530 (IST)
-Message-ID: <e6ca711b-e134-426b-8df0-94323ac0f806@zohomail.in>
-Date: Tue, 5 May 2026 20:52:18 +0530
+	 In-Reply-To:Content-Type; b=ImBFyki5iqKCt1P0HvdDW+naPLIn2DSgh3Z6jcuXEHuXmnWZMLuwWE8gqeTiy4es8ImMQ2uF17+5nsLyzEuvxwkocnTfyDvYB3L7TDPcJfWiTUabb1VdtAIQFUldUJ/bNSx1zQLLoj2Qlp4HaO97UIGTQXMOCxkzs5II2XB/7bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WczCGkuC; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 5C8CDC5D73D;
+	Tue,  5 May 2026 15:25:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6DC746053C;
+	Tue,  5 May 2026 15:24:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5BA5A11AD02D2;
+	Tue,  5 May 2026 17:24:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777994662; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=O/ciYmWMR3lYydMKF5D/rPiOnaz1y6FpcPAyfKnu/BA=;
+	b=WczCGkuCy+Lr/nF9CAOPe6GeQgO5iKst4gdF7DDgz26d97sBc/ZcM5lGIMy1yBzL5irBd8
+	cQ1EvVrdKZq/scqZy7hVlFHZommT8mn84/NRDSOxjJnCqecOb6AaDX/Tz+y7OArbFJjajZ
+	5x8hECe5zbchkJdUZELqPJG94ZhfOm5XLqXx7UKDfZtIaifM4FJc8WjiaqOeflD8qEMJmE
+	Hr9L8IH7vT768b98A7rTKe80aE0ISsY1VSafwGzZ0ytENbUKzpvHwt7mNy6INH0U66pwAZ
+	cVqTE/SYnEn5TLnlpN0x+SBu2RoHrFjV/Gi4v67whQMMjiwm3yH4jaWxyrzarw==
+Message-ID: <60f67268-de8a-4e83-9038-c9fa55d1a25b@bootlin.com>
+Date: Tue, 5 May 2026 17:24:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,128 +60,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: video: force native backlight on HP OMEN 16 (8A44)
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in>
+Subject: Re: [PATCH 0/4] crypto: talitos - fix several issues in the Freescale
+ talitos crypto driver
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ David Howells <dhowells@redhat.com>,
+ Kim Phillips <kim.phillips@freescale.com>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Christophe Leroy <chleroy@kernel.org>, stable@vger.kernel.org
+References: <20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5@bootlin.com>
 Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in>
+From: Paul Louvel <paul.louvel@bootlin.com>
+In-Reply-To: <20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 6D3454D0207
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: D60FB4D02CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[zohomail.in,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[zohomail.in:s=zoho];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244197-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	TAGGED_FROM(0.00)[bounces-244198-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shivamkalra98@zohomail.in,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[zohomail.in:+];
+	FROM_NEQ_ENVFROM(0.00)[paul.louvel@bootlin.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,zohomail.in:email,zohomail.in:dkim,zohomail.in:mid]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:mid,bootlin.com:email,bootlin.com:dkim,bootlin.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On 26/04/26 19:38, Shivam Kalra via B4 Relay wrote:
-> From: Shivam Kalra <shivamkalra98@zohomail.in>
-> 
-> The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
-> GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
-> (RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
-> 
-> When Nouveau loads without GSP firmware, the ACPI video backlight
-> device (acpi_video0) gets registered alongside the native AMD
-> backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
-> the software brightness value but fail to change the physical panel
-> brightness.
-> 
-> Force native backlight to prevent acpi_video0 from registering.
-> Confirmed that booting with acpi_backlight=native resolves the issue.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+Upon reviewing Sashiko’s feedback this morning, some interesting reviews has 
+been made.
+Please disregard the current series and wait for a v2.
+
+Thanks,
+Paul.
+
+On 5/4/26 5:38 PM, Paul Louvel wrote:
+> This series fixes several issues in the Freescale talitos crypto driver.
+>
+> The first patch replaces the software workqueue approach introduced by
+> commit 655ef638a2bc ("crypto: talitos - fix SEC1 32k ahash request
+> limitation") to handle large requests. Depending on the SEC hardware
+> version, replace this approach by using facilities provided by the
+> hardware itself:
+>
+> - On SEC1, descriptors can be chained with the Next Descriptor field.
+>
+> - On SEC2, the per-channel fetch FIFO is used to submit multiple
+>    descriptors.
+>
+> This removes the workqueue-based splitting entirely and fix the (64k -
+> 1) byte ahash request limit on SEC2.
+>
+> Patches 2-3 are cleanups that follow the first patch: a field rename for
+> clarity and folding a trivial wrapper function.
+>
+> Patch 4 fixes an off-by-one in the submit_count initialisation that
+> wastes one FIFO slot.
+>
+> Tested on an MPC885 SoC (SEC1 Lite), and on an MPC8321EMP SoC (SEC2).
+>
+> Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
 > ---
-> This patch adds a DMI quirk to force native backlight control on the
-> HP OMEN 16 Gaming Laptop (board name 8A44), which has a mux-less
-> hybrid GPU configuration with AMD Rembrandt (680M iGPU) and NVIDIA
-> GA104 (RTX 3070 Ti).
-> On this laptop the internal eDP panel is wired to the AMD iGPU. The
-> amdgpu driver registers amdgpu_bl2 as the native backlight device.
-> When the Nouveau driver is loaded without GSP firmware (as is the
-> case on v6.17 where GSP is not the default for Ampere GPUs), writes
-> to amdgpu_bl2 fail silently — the brightness sysfs value updates
-> but the physical panel brightness does not change.
-> Testing:
-> - Tested on HP OMEN 16 with AMD Ryzen 9 6900HX + NVIDIA RTX 3070 Ti.
-> - On v6.17, without this quirk, brightness control is broken.
-> - On v6.17, booting with acpi_backlight=native restores correct
->    brightness control. This patch applies that workaround
->    automatically via DMI match.
-> - On v6.18+, the issue does not reproduce because commit
->    e0ed674acbac ("drm/nouveau: Remove DRM_NOUVEAU_GSP_DEFAULT
->    config") made GSP firmware the default for Ampere, which avoids
->    the ACPI conflict entirely.
-> I have only tested this on v6.17 and v7.0. I am leaving it to the
-> stable/LTS maintainers to determine whether this quirk should be
-> backported, as I have not verified the stability of the GSP firmware
-> path on intermediate releases.
-> 
-> Thanks,
-> Shivam Kalra
+> Paul Louvel (4):
+>        crypto: talitos - use hardware facilities for large ahash requests
+>        crypto: talitos - rename first_desc/last_desc to first_request/last_request
+>        crypto: talitos - remove useless wrapper
+>        crypto: talitos - fix invalid submit_count initial value
+>
+>   drivers/crypto/talitos.c | 583 +++++++++++++++++++++++++----------------------
+>   drivers/crypto/talitos.h |  14 ++
+>   2 files changed, 322 insertions(+), 275 deletions(-)
 > ---
->   drivers/acpi/video_detect.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 0a3c8232d15d..458efa4fe9d4 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -916,6 +916,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->   		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
->   		},
->   	},
-> +	{
-> +	 .callback = video_detect_force_native,
-> +	 /* HP OMEN Gaming Laptop 16-n0xxx */
-> +	 .matches = {
-> +		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-> +		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
-> +		},
-> +	},
->   
->   	/*
->   	 * x86 android tablets which directly control the backlight through
-> 
-> ---
-> base-commit: 27d128c1cff64c3b8012cc56dd5a1391bb4f1821
-> change-id: 20260425-omen-16-backlight-fix-73fb8bc4a2b9
-> 
+> base-commit: db8b9f227833e729faf44a512aa1e88a625b5ad8
+> change-id: 20260504-bootlin_test-7-1-rc1_sec_bugfix-13169ed07ddc
+>
 > Best regards,
 > --
-> Shivam Kalra <shivamkalra98@zohomail.in>
-> 
-> 
-Hey,
+> Paul Louvel <paul.louvel@bootlin.com>
+>
+>
+-- 
+Paul Louvel, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-A gentle thread bump. If you have any suggestions let me know.
-
-Shivam
 
