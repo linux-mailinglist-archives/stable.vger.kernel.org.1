@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-244379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLMxDZc2+2n2XwMAu9opvQ
-	(envelope-from <stable+bounces-244379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:39:51 +0200
+	id iA6YDSM4+2nUXwMAu9opvQ
+	(envelope-from <stable+bounces-244380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:46:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C64DA549
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84BAC4DA716
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2B39307A03A
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:35:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B96FD30115A4
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133D044CAEC;
-	Wed,  6 May 2026 12:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1183244CF45;
+	Wed,  6 May 2026 12:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="cSZKOwRa"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GeLo/yo3"
 X-Original-To: stable@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B23449EC3;
-	Wed,  6 May 2026 12:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8538144CF54;
+	Wed,  6 May 2026 12:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778070945; cv=none; b=XDVh9F3dGrBjXa1z36BMEXtrq35gV1xKWSay1tzIX674Gfdz3eqh34qL7HD5VSf6lYs/4pO8+eMSWjkvJ2UPSm7hpbH+pt911hLnzwaSQZOxGqmGuUsl3U8ubdUg8ODrs41Dinsi3F0OsdqfdWo99nYoA8LQpkY3jHhFQBWb6aE=
+	t=1778071273; cv=none; b=p30Ts1PKYCjldANfMnGEIrNqV4PmEWGwN+EVvKtL6eC42fWkv5YxNMuUBqTpLqZLLPT579GKArFzKLblP6V2I8sFDufjBrBv6E7gGI2TbJGdunJJaBvzXsg/mcp6C1h+KEreX5B6gDqewf1SWv4mPo5TgyPrDS8lJRV+fkFR6Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778070945; c=relaxed/simple;
-	bh=nbw46mxLLQX1LlFnsr2gxQX1L3Mtv1grDLT66heuhpQ=;
+	s=arc-20240116; t=1778071273; c=relaxed/simple;
+	bh=/4qS0BCUqnUnIcX+Zc+8rx4aZz63MpUdpO+lQvtF0Ek=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rwIEBO0izdCMTmrZPTseqwsWLo1wDKWB5/1e2KiwFUMlTuw+tEfMPASf5C0QuIp+gyLmAMOpNeucj4vmxtHBekwur93rBwx4ogQ/1DxkNOo+gCvp6qaC5YoaQAGrt891LKKhg47VbvYh4TuCCE6YUoNI7o1biPaDADz/u93r3lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=cSZKOwRa; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=cShB2UqS0tVC7tq9j49gWjgb4O52eZuQr1DfzOlMA5g6J7KeVWzj+hqWdA6BtJuJG1yEL+frHTtrrtFW+hIiZfQoEVd5JihC5lCDRk6Y+xMNLbxgJpRQrwG+lHM0xYun7UnUm1KTRFU3Ceo7Avvg3ZPM+EfYMl4XTavbyt8YTwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GeLo/yo3; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A77FF63D;
-	Wed,  6 May 2026 14:35:39 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4965463D;
+	Wed,  6 May 2026 14:41:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1778070939;
-	bh=nbw46mxLLQX1LlFnsr2gxQX1L3Mtv1grDLT66heuhpQ=;
+	s=mail; t=1778071267;
+	bh=/4qS0BCUqnUnIcX+Zc+8rx4aZz63MpUdpO+lQvtF0Ek=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cSZKOwRat5PndRjUnnfnEKJEvP9O19dowtGuzE5GMrN34ox9azsLXJYNV/FhaF/ZU
-	 WYrRj2P4GZDbmVjLb+QcGoSX9fSZ939fZ94KGLY5jpnk02BVs8H7eTmY3FVWVD51YL
-	 TggPQITr2mL9ELrDSzic3LMV4mMHn2cm10mUYioA=
-Date: Wed, 6 May 2026 15:35:41 +0300
+	b=GeLo/yo3QjcqXJGrQ7VPAVJ05lU97o1Q6RzYZ+aFuik9ya4cG8e7L7Fcb0LuT2IcV
+	 zLelYH2L7ryuBTxslH6ztkeSl+MiKOlhDh1RoAjYblIAyz0phRMGq9rXhfuPYkj7Ip
+	 v/Tip/5I+5UHTSN/gkg/1+LNq93yfHO6YqEtvqk4=
+Date: Wed, 6 May 2026 15:41:09 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: Xiaolei Wang <xiaolei.wang@windriver.com>
 Cc: mchehab@kernel.org, Frank.li@nxp.com, s.hauer@pengutronix.de,
@@ -53,11 +53,11 @@ Cc: mchehab@kernel.org, Frank.li@nxp.com, s.hauer@pengutronix.de,
 	linux-media@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] media: imx8-isi: add missing
- v4l2_subdev_cleanup() in crossbar and pipe
-Message-ID: <20260506123541.GO1598374@killaraus.ideasonboard.com>
+Subject: Re: [PATCH v2 3/4] media: imx8-isi: fix isi->pipes memory leak in
+ probe and remove
+Message-ID: <20260506124109.GP1598374@killaraus.ideasonboard.com>
 References: <20260506031210.2769998-1-xiaolei.wang@windriver.com>
- <20260506031210.2769998-3-xiaolei.wang@windriver.com>
+ <20260506031210.2769998-4-xiaolei.wang@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,8 +66,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260506031210.2769998-3-xiaolei.wang@windriver.com>
-X-Rspamd-Queue-Id: 8C0C64DA549
+In-Reply-To: <20260506031210.2769998-4-xiaolei.wang@windriver.com>
+X-Rspamd-Queue-Id: 84BAC4DA716
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[kernel.org,nxp.com,pengutronix.de,gmail.com,jmondi.org,phytec.de,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-244379-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244380-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -97,69 +97,46 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email,nxp.com:email,killaraus.ideasonboard.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email,killaraus.ideasonboard.com:mid,ideasonboard.com:dkim]
 
 Hello Xiaolei,
 
 Thank you for the patch.
 
-On Wed, May 06, 2026 at 11:12:08AM +0800, Xiaolei Wang wrote:
-> Both mxc_isi_crossbar_init() and mxc_isi_pipe_init() call
-> v4l2_subdev_init_finalize() which allocates the subdev active state,
-> but neither mxc_isi_crossbar_cleanup() nor mxc_isi_pipe_cleanup()
-> calls v4l2_subdev_cleanup() to free it.
+On Wed, May 06, 2026 at 11:12:09AM +0800, Xiaolei Wang wrote:
+> mxc_isi_probe() allocates isi->pipes with kzalloc_objs() but never
+> frees it on any probe failure path or in mxc_isi_remove(), leaking
+> the allocation on every failed probe and every normal unbind.
 > 
-> This causes a memory leak on every rmmod, reported by kmemleak:
-> 
->   unreferenced object 0xffff0000d06fc800 (size 192):
->     comm "(udev-worker)", pid 254, jiffies 4294913455
->     backtrace (crc 36eeae58):
->       kmemleak_alloc+0x34/0x40
->       __kvmalloc_node_noprof+0x5f8/0x7d8
->       __v4l2_subdev_state_alloc+0x1fc/0x30c
->       __v4l2_subdev_init_finalize+0x178/0x368
-> 
-> Add the missing v4l2_subdev_cleanup() calls before media_entity_cleanup()
-> in both crossbar and pipe cleanup paths.
-> 
+> Fix this by switching from kzalloc_objs() to devm_kcalloc(), which
+> ties the allocation lifetime to the device and eliminates the need
+> for explicit kfree() in all error paths and in mxc_isi_remove().
+
+There's ongoing work to add a devm_kzalloc_objs(), to I'd rather not
+revert to kcalloc. If you want to fix this leak now without waiting for
+devm_kzalloc_objs(), I would prefer adding kfree() in error paths and in
+mxc_isi_remove().
+
 > Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
 > Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 1 +
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c     | 1 +
->  2 files changed, 2 insertions(+)
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> index 605a45124103..c580c831972e 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> @@ -491,6 +491,7 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index 2d639b789910..2b76fb9c18f6 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -485,7 +485,8 @@ static int mxc_isi_probe(struct platform_device *pdev)
 >  
->  void mxc_isi_crossbar_cleanup(struct mxc_isi_crossbar *xbar)
->  {
-> +	v4l2_subdev_cleanup(&xbar->sd);
->  	media_entity_cleanup(&xbar->sd.entity);
->  	kfree(xbar->pads);
->  	kfree(xbar->inputs);
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> index a41c51dd9ce0..cb50af2270f6 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> @@ -819,6 +819,7 @@ void mxc_isi_pipe_cleanup(struct mxc_isi_pipe *pipe)
->  {
->  	struct v4l2_subdev *sd = &pipe->sd;
+>  	isi->pdata = of_device_get_match_data(dev);
 >  
-> +	v4l2_subdev_cleanup(sd);
-
-v4l2_subdev_cleanup() should also be called in some of the error paths
-of mxc_isi_pipe_init(). This can be done in a separate patch, so
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
->  	media_entity_cleanup(&sd->entity);
->  	mutex_destroy(&pipe->lock);
->  }
+> -	isi->pipes = kzalloc_objs(isi->pipes[0], isi->pdata->num_channels);
+> +	isi->pipes = devm_kcalloc(dev, isi->pdata->num_channels,
+> +				  sizeof(*isi->pipes), GFP_KERNEL);
+>  	if (!isi->pipes)
+>  		return -ENOMEM;
+>  
 
 -- 
 Regards,
