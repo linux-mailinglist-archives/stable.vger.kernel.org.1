@@ -1,213 +1,478 @@
-Return-Path: <stable+bounces-244410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAZNM/5Q+2mSZQMAu9opvQ
-	(envelope-from <stable+bounces-244410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:32:30 +0200
+	id iNC/D1tP+2mSZQMAu9opvQ
+	(envelope-from <stable+bounces-244411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:25:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8440A4DC3E2
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:32:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6054DC1C7
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 98B1D3098E49
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 14:23:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF72D301D7FB
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 14:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7491D466B75;
-	Wed,  6 May 2026 14:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9130447DD65;
+	Wed,  6 May 2026 14:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EvZoWQjX"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE539393DF5;
-	Wed,  6 May 2026 14:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD85393DF5;
+	Wed,  6 May 2026 14:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778077390; cv=none; b=WnoMH583X1k+dhJN/xBhfrwksmfZm0R1R55Bk09R6i63L3HYs45qlh7xDDOei8ZV1hKx03hYEfSnAXLdIPd96Twm6W2/EGCALtlA9DKZy4csiHMIo/TEuWssPumcG473QTe4hwl9V2AwBs9fi4/85ZOAoYYqUzYTngyZ5MolCwc=
+	t=1778077419; cv=none; b=kP95XNsYKPmbksIg9JNEewi8GbwODRMOsbjr9zr012XT9z00s1v8MVE/8PVU51Z8M9dW4UrDWtxn4qGtOgF6EgIFWG3FUNyZ8IH8pJbZXHI++dObGQRGluGHYG9vBIMN+JlYXZULlYxvsRq3veqDPr6OWgHS7qyQxGP87cYAssE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778077390; c=relaxed/simple;
-	bh=YhT+L9gfUolQQ/67uHtY8wxjDfQEf4qc6b1yQM1L3Pw=;
+	s=arc-20240116; t=1778077419; c=relaxed/simple;
+	bh=9gmabF7R9tkIoTGwekZ8pVOkM+XwcMSGYTXqxVNLWvc=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GnlWP9c50RZ6qgxX6G0FUmIagB/VQXk/8kSpWd5kD5sZvFGZAcRJbuKc+AKxGuuxZFffZQvewQ5V0UYBajKkJlugIcM/WZLB0XpS9j2fDQVUy4wVPBB+naDpwyEyz/xB81TV3bBffn0TKKeNh6/KDjE76bNCN9oU9MNLBbxwI7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.100.82])
-	by APP-05 (Coremail) with SMTP id zQCowAAHmQy7TvtptBGODw--.6857S2;
-	Wed, 06 May 2026 22:22:52 +0800 (CST)
-Message-ID: <2415c7a9e33912ac4b87176b07f6cf4db21fa57c.camel@iscas.ac.cn>
-Subject: Re: [PATCH 2/2] PCI: Add quirk to disable PCIe port services on
- Sophgo SG2042
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>
-Cc: Han Gao <gaohan@iscas.ac.cn>, Bjorn Helgaas <bhelgaas@google.com>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?=	 <u.kleine-koenig@baylibre.com>, Jonathan
- Cameron <jonathan.cameron@huawei.com>,  Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
- <ilpo.jarvinen@linux.intel.com>, Kees Cook <kees@kernel.org>, Chen Wang	
- <unicorn_wang@outlook.com>, linux-pci@vger.kernel.org,
- sophgo@lists.linux.dev, 	linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, Han Gao	 <rabenda.cn@gmail.com>, Inochi
- Amaoto <inochiama@gmail.com>, Vivian Wang	 <wangruikang@iscas.ac.cn>, Yao
- Zi <me@ziyao.cc>, stable@vger.kernel.org
-Date: Wed, 06 May 2026 22:22:51 +0800
-In-Reply-To: <2se24qgfmwumdpdjdcszz7l3m5rbucnp22hbidvhz6xc3p6j4i@fkb4u4hg6ha2>
-References: <20260331175658.1015829-1-gaohan@iscas.ac.cn>
-	 <20260331175658.1015829-3-gaohan@iscas.ac.cn>
-	 <q6wmn67lzk5c2pgmgkoezcvy3xj3yqecg675gx7xyrw3amjwpi@5pjla6j3krbv>
-	 <0f42afefd9322779af5463b696c55b08d2296ea8.camel@iscas.ac.cn>
-	 <afZUxYhkCQ0wG0Uu@wunner.de>
-	 <68d4a49bf1df785ae906fbc2dd16e64b667ca5f0.camel@iscas.ac.cn>
-	 <afcMtlBJYeuxSqZr@wunner.de>
-	 <2se24qgfmwumdpdjdcszz7l3m5rbucnp22hbidvhz6xc3p6j4i@fkb4u4hg6ha2>
+	 Content-Type:MIME-Version; b=JaeqB2tve/4WhvjlIcVlnEHDPHBazWf6Nej21iobwZkdBtikHU0imPyEG2SqTAS+Myl9dH/Fz5PUMWByCudG5KRBqBRIAfdFDWoJbh2xveLxjLu9X5ADDO5HO9MNPA13HAcNgdahN8lraIsJux7OswOZ0XYI4YsTBpGV5eWGajc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EvZoWQjX; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778077417; x=1809613417;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=9gmabF7R9tkIoTGwekZ8pVOkM+XwcMSGYTXqxVNLWvc=;
+  b=EvZoWQjXZDMcLnRFmvumr0uSxzVf6ab0v9FC7wa5P87LHWl9wWYWha7K
+   Gcb/Qrfsqclw6cSx+p+4az+CjXiCTOE6Rlgcm0ThuLyrIMWhc1EVMqoT2
+   f1iXvso1fAlR1dfND7+7gSyw7CTGsmK2VRzGRlWOGzwm9M6hMtDmaV7Hq
+   o1SB4uQkAoLYNeKaXY5JL6321nWKdiHF88wFV4iIz+Xv6SDZVjD2kVZYZ
+   HOntkau4PPadNH76xsR6/NUXMZEYIInfv7kax73GnYuWxes9DyqNMlTOd
+   iBOOvnC0b9L5pfscjV7QGnP4DaT4ubANZRvJM16eQN275cCImqnlqh8FA
+   Q==;
+X-CSE-ConnectionGUID: GPiXSkdERA+pD0drJs9L/g==
+X-CSE-MsgGUID: yy7rfT86Trqvsz8pdQwksQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="90389586"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="90389586"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 07:23:36 -0700
+X-CSE-ConnectionGUID: Ms2zYrP9Qa6EWCXJJtRb8w==
+X-CSE-MsgGUID: sB0Y5d9CQ4aKaU66u+LaXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="266512272"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.244.213]) ([10.245.244.213])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 07:23:33 -0700
+Message-ID: <47256c5547c75296af32ca87161188588cacf727.camel@linux.intel.com>
+Subject: Re: [PATCH v5 2/2] drm/ttm/pool: back up at native page order
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
+ 	dri-devel@lists.freedesktop.org
+Cc: Christian Koenig <christian.koenig@amd.com>, Huang Rui
+ <ray.huang@amd.com>,  Matthew Auld <matthew.auld@intel.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard	
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+	 <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 06 May 2026 16:23:29 +0200
+In-Reply-To: <20260505200443.3300962-3-matthew.brost@intel.com>
+References: <20260505200443.3300962-1-matthew.brost@intel.com>
+	 <20260505200443.3300962-3-matthew.brost@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:zQCowAAHmQy7TvtptBGODw--.6857S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAry8urW3WF15KrykKr4fAFb_yoW5uF4kpF
-	W7Kay8tFs8JF4Iy3ZrKw10qFyayF4DJw15C3s5GrWjvrs8WryrZryxtFyDZasrCr1xAw1a
-	vrZYq348u3yDXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvqb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
-	1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x07b4oGdUUUUU=
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
-X-Rspamd-Queue-Id: 8440A4DC3E2
+X-Rspamd-Queue-Id: AC6054DC1C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244410-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[iscas.ac.cn,google.com,baylibre.com,huawei.com,linux.intel.com,kernel.org,outlook.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,gmail.com,ziyao.cc];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[amd.com,intel.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244411-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.972];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,farlepet.github.io:url,iscas.ac.cn:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-=E5=9C=A8 2026-05-06=E4=B8=89=E7=9A=84 19:09 +0530=EF=BC=8CManivannan Sadha=
-sivam=E5=86=99=E9=81=93=EF=BC=9A
-> On Sun, May 03, 2026 at 10:52:06AM +0200, Lukas Wunner wrote:
-> > On Sun, May 03, 2026 at 03:10:58PM +0800, Icenowy Zheng wrote:
-> > > It's used in multiple products, but only one of them (EVBv1,
-> > > which is
-> > > just an early EVB available for a few people including me) lacks
-> > > an
-> > > onboard switch, because SG2042 is short on on-chip peripherals.
-> > > All
-> > > other devices (including two mainlined ones, EVBv2 and Milk-V
-> > > Pioneer,
-> > > and unmainlined dual socket rack servers; Milk-V Pioneer should
-> > > be the
-> > > most popular device because it was on shelf) have an onboard
-> > > switch to
-> > > mitigate the lack of on-chip peripherals in SG2042.
-> >=20
-> > Who knows, maybe someone will design a product which doesn't attach
-> > a PCIe switch to the SoC, maybe the lack of peripherals isn't a
-> > problem for them.
-> >=20
-> > It seems reasonable to accommodate such non-switch use cases as
-> > well,
-> > so I think you definitely do not want to quirk all products using
-> > that
-> > SoC but only those that need it, regardless whether it's the
-> > majority.
-> >=20
-> > > > My point is, you want to constrain this to a specific product,
-> > > > not to
-> > > > the SoC.=C2=A0 Can you maybe solve this by not specifying interrupt=
-s
-> > > > in
-> > > > the devicetree for the PCIe switch?
-> > >=20
-> > > The PCIe switches are not described in the device tree at all,
-> > > because
-> > > they're all just discoverable; can we describe them in the DT and
-> > > redirect their interrupts to void?
-> >=20
-> > Yes, somebody did a writeup how to represent switches and endpoints
-> > in the devicetree:
-> >=20
-> > https://farlepet.github.io/linux/2024/02/20/using-linux-device-tree-wit=
-h-pcie-devices.html
-> >=20
+Hi, Matt
+
+On Tue, 2026-05-05 at 13:04 -0700, Matthew Brost wrote:
+> ttm_pool_split_for_swap() splits high-order pool pages into order-0
+> pages during backup so each 4K page can be released to the system as
+> soon as it has been written to shmem. While this minimizes the
+> allocator's working set during reclaim, it actively fragments memory:
+> every TTM-backed compound page that the shrinker touches is shattered
+> into order-0 pages, even when the rest of the system would prefer
+> that
+> the high-order block stay intact. Under sustained kswapd pressure
+> this
+> is enough to drive other parts of MM into recovery loops from which
+> they cannot easily escape, because the memory TTM just freed is no
+> longer contiguous.
 >=20
-> I wouldn't recommend going this far... We do have some switches
-> described in DT,
-> but they have some resource requirements like regulator, i2c...
+> Stop unconditionally splitting on the backup path and back up each
+> compound at its native order in ttm_pool_backup():
 >=20
-> > And then I would try providing an empty "interrupts" property for
-> > those switch ports for which you want to avoid port services being
-> > instantiated.
-> >=20
+> =C2=A0 - For each non-handle slot, read the order from the head page and
+> =C2=A0=C2=A0=C2=A0 back up all 1<<order subpages to consecutive shmem ind=
+ices,
+> =C2=A0=C2=A0=C2=A0 writing the resulting handles into tt->pages[] as we g=
+o.
+> =C2=A0 - On success, the compound is freed once at its native order. No
+> =C2=A0=C2=A0=C2=A0 split_page(), no per-4K refcount juggling, no fragment=
+ation
+> =C2=A0=C2=A0=C2=A0 introduced from this path.
+> =C2=A0 - Slots that already hold a backup handle from a previous partial
+> =C2=A0=C2=A0=C2=A0 attempt are skipped. A compound that would extend past=
+ a
+> =C2=A0=C2=A0=C2=A0 fault-injection-truncated num_pages is skipped rather =
+than split.
 >=20
-> There is no 'interrupts' property in DT binding for PCI bridge nodes.
-> There is
-> 'interrupt-map', but that's used for mapping INTx with platform
-> interrupt
-> controller.
+> A per-subpage backup failure cannot be made fully atomic: backing up
+> a
+> subpage allocates a shmem folio before the source page can be
+> released,
+> so under true OOM any subpage in a compound (not just the first) may
+> fail to be backed up with the rest of the source compound still live
+> and contiguous. To make forward progress in that case, fall back to
+> splitting the source compound and backing up its remaining subpages
+> individually:
 >=20
-> Moreover, DT should just describe the hardware topology/resource, not
-> platform constraints.
+> =C2=A0 - On the first per-subpage failure for a compound (and only if
+> =C2=A0=C2=A0=C2=A0 order > 0), call ttm_pool_split_for_swap() to split th=
+e source
+> =C2=A0=C2=A0=C2=A0 compound, release the subpages whose contents already =
+live in
+> =C2=A0=C2=A0=C2=A0 shmem (their handles in tt->pages stay valid), and ret=
+ry the
+> =C2=A0=C2=A0=C2=A0 failing subpage at order 0.
+> =C2=A0 - Subsequent successful subpage backups in the now-split compound
+> =C2=A0=C2=A0=C2=A0 free their source page individually as soon as the han=
+dle is
+> =C2=A0=C2=A0=C2=A0 written.
+> =C2=A0 - A second failure after splitting terminates the loop with partia=
+l
+> =C2=A0=C2=A0=C2=A0 progress; the remaining order-0 subpages stay in tt->p=
+ages as
+> =C2=A0=C2=A0=C2=A0 plain page pointers and are cleaned up by the normal
+> =C2=A0=C2=A0=C2=A0 ttm_pool_drop_backed_up() / ttm_pool_free_range() path=
+s.
 >=20
-> I'd recommend introducing a new cmdline param to the portdrv driver
-> to disable
-> using MSIs for services. But the platform limitation would hit one
-
-Currently `pcie_ports=3Dcompat` command line parameter is used to
-workaround the current situation, and this patch is designed to
-integrate such workaround into the kernel.
-
-> way or the
-> other if one of the endpoints consume all MSIs...
-
-I think one EP claiming multiple MSI (not MSI-X) is an extended
-capability of the MSI controller controlled by MSI_FLAG_MULTI_PCI_MSI
-flag, which isn't supported for the SG2042 MSI controller driver.
-
-In fact the SG2042 MSI controller isn't originally designed for PCIe
-MSIs -- one bit in its doorbell register corresponds to one interrupt.
-It's why there's only 16 MSIs available (only one doorbell register is
-available and the PCI MSI restricts to 16-bit message data), and also
-why multiple PCI MSI isn't supported (multiple PCI MSIs must have
-consecutive data values, which isn't possible in such case).
-
-Thanks,
-Icenowy
-
+> This restores the original split-on-OOM fallback behavior while
+> keeping the common, non-OOM case fragmentation-free. It also
+> preserves the "partial backup is allowed" contract: shrunken is
+> incremented per backed-up subpage so the caller still sees forward
+> progress when a compound only partially succeeds.
 >=20
-> - Mani
+> The restore-side leftover-page branch in ttm_pool_restore_commit() is
+> left as-is for now: that path can still split a previously-retained
+> compound, but in practice it is unreachable under realistic workloads
+> (per profiling we have not been able to trigger it), so it is not
+> worth complicating the restore state machine to avoid the split
+> there.
+> If it ever becomes a problem in practice it can be addressed
+> independently.
+>=20
+> ttm_pool_split_for_swap() itself is retained both for the OOM
+> fallback above and for the restore path's remaining caller. The
+> DMA-mapped pre-backup unmap loop, the purge path, ttm_pool_free_*,
+> and ttm_pool_unmap_and_free() already operate at native order and
+> are unchanged.
+>=20
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Huang Rui <ray.huang@amd.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Fixes: b63d715b8090 ("drm/ttm/pool, drm/ttm/tt: Provide a helper to
+> shrink pages")
+> Suggested-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Assisted-by: Claude:claude-opus-4.6
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>=20
+> ---
+>=20
+> A follow-up should attempt writeback to shmem at folio order as well,
+> but the API for doing so is unclear and may be incomplete.
+>=20
+> This patch is related to the pending series [1] and significantly
+> reduces the likelihood of Xe entering a kswapd loop under
+> fragmentation.
+> The kswapd =E2=86=92 shrinker =E2=86=92 Xe shrinker =E2=86=92 TTM backup =
+path is still
+> exercised; however, with this change the backup path no longer
+> worsens
+> fragmentation, which previously amplified reclaim pressure and
+> reinforced the kswapd loop.
+>=20
+> Nonetheless, the pathological case that [1] aims to address still
+> exists
+> and requires a proper solution. Even with this patch, a kswapd loop
+> due
+> to severe fragmentation can still be triggered, although it is now
+> substantially harder to reproduce.
+>=20
+> v2:
+> =C2=A0- Split pages and free immediately if backup fails are higher order
+> =C2=A0=C2=A0 (Thomas)
+> v3:
+> =C2=A0- Skip handles in purge path (sashiko)
+> v5:
+> =C2=A0- Refactor into ttm_pool_backup_folio (Thomas)
+>=20
+> [1] https://patchwork.freedesktop.org/series/165330/
+> ---
+> =C2=A0drivers/gpu/drm/ttm/ttm_pool.c | 110 ++++++++++++++++++++++++++++--=
+-
+> --
+> =C2=A01 file changed, 94 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/ttm/ttm_pool.c
+> b/drivers/gpu/drm/ttm/ttm_pool.c
+> index d380a3c7fe40..78efc8524133 100644
+> --- a/drivers/gpu/drm/ttm/ttm_pool.c
+> +++ b/drivers/gpu/drm/ttm/ttm_pool.c
+> @@ -1019,6 +1019,70 @@ void ttm_pool_drop_backed_up(struct ttm_tt
+> *tt)
+> =C2=A0	ttm_pool_free_range(NULL, tt, ttm_cached, start_page, tt-
+> >num_pages);
+> =C2=A0}
+> =C2=A0
+> +static int ttm_pool_backup_folio(struct ttm_pool *pool, struct
+> ttm_tt *tt,
+> +				 struct file *backup, struct folio
+> *folio,
+> +				 unsigned int order, bool writeback,
+> +				 pgoff_t idx, gfp_t page_gfp, gfp_t
+> alloc_gfp)
 
+I don't really understand why we can't end up with a
+ttm_backup_backup_folio(), which I believe is the proper layering,
+already at this point? Please see a suggestion at=20
+
+https://gitlab.freedesktop.org/thomash/xe-vibe/-/commits/ttm_swapout?ref_ty=
+pe=3Dheads
+
+Here the splitting logic is kept in the ttm_pool, but ttm_backup
+supports handing large folios to it.
+
+Although the cumulative diffstat becomes larger, the end code becomes
+smaller and IMO easier to read, and we don't need to introduce code
+that we immediately have to refactor.
+
+But I'm starting to question the general approach: Even if the
+*shrinker* can recover from a total kernel memory reserve depletion, it
+can't really be considered a reasonable practice, since if we
+frequently deplete the reserves, *other* important allocations in the
+system like GFP_ATOMIC, PF_MEMALLOC may spuriously start to fail and
+people will have a hard time finding out why.
+
+So I actually don't think we can be avoiding the splitting without
+direct insertion. FWIW, up until recently when shmem started supporting
+huge page swapping, other GPU drivers basically also split pages at
+swapout.
+
+Another idea for improving on the compaction loop, perhaps worth trying
+is this change, shamelessly stolen from i915:
+
+https://gitlab.freedesktop.org/thomash/xe-vibe/-/commits/shrinker_batch?ref=
+_type=3Dheads
+
+/Thomas
+
+
+> +{
+> +	struct page *page =3D folio_page(folio, 0);
+> +	int shrunken =3D 0, npages =3D 1UL << order, ret =3D 0, i;
+> +	bool folio_has_been_split =3D false;
+> +
+> +	for (i =3D 0; i < npages; ++i) {
+> +		s64 shandle;
+> +
+> +try_again_after_split:
+> +		if (IS_ENABLED(CONFIG_FAULT_INJECTION) &&
+> +		=C2=A0=C2=A0=C2=A0 should_fail(&backup_fault_inject, 1))
+> +			shandle =3D -ENOMEM;
+> +		else
+> +			shandle =3D ttm_backup_backup_page(backup,
+> page + i,
+> +							 writeback,
+> idx + i,
+> +							 page_gfp,
+> alloc_gfp);
+> +
+> +		if (shandle < 0 && !folio_has_been_split && order) {
+> +			pgoff_t j;
+> +
+> +			/*
+> +			 * True OOM: could not allocate a shmem
+> folio
+> +			 * for the next subpage. Fall back to
+> splitting
+> +			 * the source compound and backing up
+> subpages
+> +			 * individually. Release the already-backed-
+> up
+> +			 * subpages whose contents now live in
+> shmem;
+> +			 * any further failure terminates the loop
+> with
+> +			 * partial progress (handled by the caller).
+> +			 */
+> +			folio_has_been_split =3D true;
+> +			ttm_pool_split_for_swap(pool, page);
+> +
+> +			for (j =3D 0; j < i; ++j) {
+> +				__free_pages_gpu_account(page + j,
+> 0, false);
+> +				shrunken++;
+> +			}
+> +
+> +			goto try_again_after_split;
+> +		} else if (shandle < 0) {
+> +			ret =3D shandle;
+> +			goto out;
+> +		} else if (folio_has_been_split) {
+> +			__free_pages_gpu_account(page + i, 0,
+> false);
+> +			shrunken++;
+> +		}
+> +
+> +		tt->pages[idx + i] =3D
+> ttm_backup_handle_to_page_ptr(shandle);
+> +	}
+> +
+> +	if (!folio_has_been_split) {
+> +		/* Compound fully backed up; free at native order.
+> */
+> +		page->private =3D 0;
+> +		__free_pages_gpu_account(page, order, false);
+> +		shrunken +=3D npages;
+> +	}
+> +
+> +out:
+> +	return shrunken ? shrunken : ret;
+> +}
+> +
+> =C2=A0/**
+> =C2=A0 * ttm_pool_backup() - Back up or purge a struct ttm_tt
+> =C2=A0 * @pool: The pool used when allocating the struct ttm_tt.
+> @@ -1045,12 +1109,11 @@ long ttm_pool_backup(struct ttm_pool *pool,
+> struct ttm_tt *tt,
+> =C2=A0{
+> =C2=A0	struct file *backup =3D tt->backup;
+> =C2=A0	struct page *page;
+> -	unsigned long handle;
+> =C2=A0	gfp_t alloc_gfp;
+> =C2=A0	gfp_t gfp;
+> =C2=A0	int ret =3D 0;
+> =C2=A0	pgoff_t shrunken =3D 0;
+> -	pgoff_t i, num_pages;
+> +	pgoff_t i, num_pages, npages;
+> =C2=A0
+> =C2=A0	if (WARN_ON(ttm_tt_is_backed_up(tt)))
+> =C2=A0		return -EINVAL;
+> @@ -1070,7 +1133,8 @@ long ttm_pool_backup(struct ttm_pool *pool,
+> struct ttm_tt *tt,
+> =C2=A0			unsigned int order;
+> =C2=A0
+> =C2=A0			page =3D tt->pages[i];
+> -			if (unlikely(!page)) {
+> +			if (unlikely(!page ||
+> +				=C2=A0=C2=A0=C2=A0=C2=A0
+> ttm_backup_page_ptr_is_handle(page))) {
+> =C2=A0				num_pages =3D 1;
+> =C2=A0				continue;
+> =C2=A0			}
+> @@ -1106,26 +1170,40 @@ long ttm_pool_backup(struct ttm_pool *pool,
+> struct ttm_tt *tt,
+> =C2=A0	if (IS_ENABLED(CONFIG_FAULT_INJECTION) &&
+> should_fail(&backup_fault_inject, 1))
+> =C2=A0		num_pages =3D DIV_ROUND_UP(num_pages, 2);
+> =C2=A0
+> -	for (i =3D 0; i < num_pages; ++i) {
+> -		s64 shandle;
+> +	for (i =3D 0; i < num_pages; i +=3D npages) {
+> +		unsigned int order;
+> =C2=A0
+> +		npages =3D 1;
+> =C2=A0		page =3D tt->pages[i];
+> =C2=A0		if (unlikely(!page))
+> =C2=A0			continue;
+> =C2=A0
+> -		ttm_pool_split_for_swap(pool, page);
+> +		/* Already-handled entry from a previous attempt. */
+> +		if (unlikely(ttm_backup_page_ptr_is_handle(page)))
+> +			continue;
+> =C2=A0
+> -		shandle =3D ttm_backup_backup_page(backup, page,
+> flags->writeback, i,
+> -						 gfp, alloc_gfp);
+> -		if (shandle < 0) {
+> -			/* We allow partially shrunken tts */
+> -			ret =3D shandle;
+> +		order =3D ttm_pool_page_order(pool, page);
+> +		npages =3D 1UL << order;
+> +
+> +		/*
+> +		 * Back up the compound atomically at its native
+> order. If
+> +		 * fault injection truncated num_pages mid-compound,
+> skip
+> +		 * the partial tail rather than splitting.
+> +		 */
+> +		if (unlikely(i + npages > num_pages))
+> +			break;
+> +
+> +		ret =3D ttm_pool_backup_folio(pool, tt, backup,
+> page_folio(page),
+> +					=C2=A0=C2=A0=C2=A0 order, flags->writeback,
+> i, gfp,
+> +					=C2=A0=C2=A0=C2=A0 alloc_gfp);
+> +		if (unlikely(ret < 0))
+> +			break;
+> +
+> +		shrunken +=3D ret;
+> +
+> +		/* partial backup */
+> +		if (unlikely(ret !=3D npages))
+> =C2=A0			break;
+> -		}
+> -		handle =3D shandle;
+> -		tt->pages[i] =3D
+> ttm_backup_handle_to_page_ptr(handle);
+> -		__free_pages_gpu_account(page, 0, false);
+> -		shrunken++;
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	return shrunken ? shrunken : ret;
 
