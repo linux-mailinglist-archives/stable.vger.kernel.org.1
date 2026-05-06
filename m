@@ -1,185 +1,168 @@
-Return-Path: <stable+bounces-244378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4I+dM0U1+2nfXgMAu9opvQ
-	(envelope-from <stable+bounces-244378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:34:13 +0200
+	id aLMxDZc2+2n2XwMAu9opvQ
+	(envelope-from <stable+bounces-244379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:39:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BB64DA3FC
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:34:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C64DA549
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D861C3024194
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:34:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2B39307A03A
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF1E44CAFC;
-	Wed,  6 May 2026 12:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133D044CAEC;
+	Wed,  6 May 2026 12:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.it header.i=@amazon.it header.b="RjiRr9pf"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="cSZKOwRa"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56068329E44;
-	Wed,  6 May 2026 12:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B23449EC3;
+	Wed,  6 May 2026 12:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778070848; cv=none; b=pXakcvbegyx9dQ18ROoBfTHHtzU++VOjicC/jdiHtqYA5DwZ6m9F+LL571Jm/WUTqiEX5bdPmHpE/ToAOb+aksQ4nf69ZgxZmBDiuEaeRfA7c9nOuHxkPsl8Q9kcLNvrE+40fiemPp6Ke9jorw8cXUrNBqh5NsKbDSSC1NcHFTw=
+	t=1778070945; cv=none; b=XDVh9F3dGrBjXa1z36BMEXtrq35gV1xKWSay1tzIX674Gfdz3eqh34qL7HD5VSf6lYs/4pO8+eMSWjkvJ2UPSm7hpbH+pt911hLnzwaSQZOxGqmGuUsl3U8ubdUg8ODrs41Dinsi3F0OsdqfdWo99nYoA8LQpkY3jHhFQBWb6aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778070848; c=relaxed/simple;
-	bh=h/5kufV2plp3HwPkO+4lStch1YgUSQRacJ+gaSCrLxU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RU7jKOMuJl6L1O245crlS9qQ2eUt6Z9dQo3FjERtKLQore8Y2+uRZQ0Ldy7eac+Lu8QCQ/diS0F0K0jpW4VgSUvN/yvKX+MwiGT+lIb1lE+VPQBRCQv5IzvgwAAw1JMoJ5UJVcFLZLEgXotq4mtXQVweNhfid7+I8hzUkIlBWkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.it; spf=pass smtp.mailfrom=amazon.it; dkim=pass (2048-bit key) header.d=amazon.it header.i=@amazon.it header.b=RjiRr9pf; arc=none smtp.client-ip=52.35.192.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.it
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1778070847; x=1809606847;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=h/5kufV2plp3HwPkO+4lStch1YgUSQRacJ+gaSCrLxU=;
-  b=RjiRr9pfdYRbH0ojdV+ZvlnbAmVDlmhD6lVZQ4y0mreQpDjrX/Z5x24p
-   GHrZzkW7wNWVJFC+xmlCwcqnCLnJr8U6UBR0YMGoAaJXpzx90wGidgZ1X
-   97OuKklta32A43LAVLtqtPtq9xGmIg3uUQ1a2cP3fk9U0W/csBI5639al
-   gPZVllQWga51DWU4QXI7Tknb3P5AAoYNm4oMYQdayNuATG+rSOy57vuCW
-   KhuezhGMSMM1beA4I03PfBzmFJIft8P+Quvc44uGjFIuxGnbjZNC8iSHW
-   C2heKaE41FQkegiRxJTVToZdu5JyAWslnwBPRdBVXg6HtxiQM/YCQ0lb5
-   w==;
-X-CSE-ConnectionGUID: ddMf54vISQuDF+tIVZgPrg==
-X-CSE-MsgGUID: E6X8bLUXT82YBcfM5C04vA==
-X-IronPort-AV: E=Sophos;i="6.23,219,1770595200"; 
-   d="scan'208";a="18769960"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 12:33:55 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:22494]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.20.153:2525] with esmtp (Farcaster)
- id a1329851-5807-47c2-84ec-22c078ca4c8e; Wed, 6 May 2026 12:33:55 +0000 (UTC)
-X-Farcaster-Flow-ID: a1329851-5807-47c2-84ec-22c078ca4c8e
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 6 May 2026 12:33:54 +0000
-Received: from dev-dsk-dipiets-2b-fa1865ee.us-west-2.amazon.com
- (172.22.139.101) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Wed, 6 May 2026
- 12:33:54 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <willy@infradead.org>
-CC: <abuehaze@amazon.com>, <akpm@linux-foundation.org>, <alisaidi@amazon.com>,
-	<blakgeof@amazon.com>, <brauner@kernel.org>, <dipietro.salvatore@gmail.com>,
-	<dipiets@amazon.it>, <djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <ritesh.list@gmail.com>,
-	<stable@vger.kernel.org>, <vbabka@suse.com>
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-Date: Wed, 6 May 2026 12:33:18 +0000
-Message-ID: <20260506123326.17293-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <afc3xFgKogxF5Lbq@casper.infradead.org>
-References: <afc3xFgKogxF5Lbq@casper.infradead.org>
+	s=arc-20240116; t=1778070945; c=relaxed/simple;
+	bh=nbw46mxLLQX1LlFnsr2gxQX1L3Mtv1grDLT66heuhpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rwIEBO0izdCMTmrZPTseqwsWLo1wDKWB5/1e2KiwFUMlTuw+tEfMPASf5C0QuIp+gyLmAMOpNeucj4vmxtHBekwur93rBwx4ogQ/1DxkNOo+gCvp6qaC5YoaQAGrt891LKKhg47VbvYh4TuCCE6YUoNI7o1biPaDADz/u93r3lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=cSZKOwRa; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A77FF63D;
+	Wed,  6 May 2026 14:35:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1778070939;
+	bh=nbw46mxLLQX1LlFnsr2gxQX1L3Mtv1grDLT66heuhpQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cSZKOwRat5PndRjUnnfnEKJEvP9O19dowtGuzE5GMrN34ox9azsLXJYNV/FhaF/ZU
+	 WYrRj2P4GZDbmVjLb+QcGoSX9fSZ939fZ94KGLY5jpnk02BVs8H7eTmY3FVWVD51YL
+	 TggPQITr2mL9ELrDSzic3LMV4mMHn2cm10mUYioA=
+Date: Wed, 6 May 2026 15:35:41 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Xiaolei Wang <xiaolei.wang@windriver.com>
+Cc: mchehab@kernel.org, Frank.li@nxp.com, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com,
+	jacopo@jmondi.org, guoniu.zhou@nxp.com, s.riedmueller@phytec.de,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] media: imx8-isi: add missing
+ v4l2_subdev_cleanup() in crossbar and pipe
+Message-ID: <20260506123541.GO1598374@killaraus.ideasonboard.com>
+References: <20260506031210.2769998-1-xiaolei.wang@windriver.com>
+ <20260506031210.2769998-3-xiaolei.wang@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-Rspamd-Queue-Id: 50BB64DA3FC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260506031210.2769998-3-xiaolei.wang@windriver.com>
+X-Rspamd-Queue-Id: 8C0C64DA549
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.44 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.it,quarantine];
-	R_DKIM_ALLOW(-0.20)[amazon.it:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amazon.com,linux-foundation.org,kernel.org,gmail.com,amazon.it,vger.kernel.org,kvack.org,suse.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,nxp.com,pengutronix.de,gmail.com,jmondi.org,phytec.de,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-244379-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244378-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amazon.it:dkim,amazon.it:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dipiets@amazon.it,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amazon.it:+];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.995];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email,nxp.com:email,killaraus.ideasonboard.com:mid]
 
-Ck9uIDUvMDMvMjYgMDU6NTIsIFJpdGVzaCBIYXJqYW5pIHdyb3RlOgo+IEFsc28gYXMgcGVyIHRo
-ZSBkb2N1bWVudGF0aW9uIFsxXSwgaHVnZV9wYWdlcz10cnkgb3B0aW9uIGlzIHRoZSBkZWZhdWx0
-Cj4gc2V0dGluZy4gU28gSSBhbSBhc3N1bWluZyBpbiBwcm9kdWN0aW9uIHdlIGF0IGxlYXN0IHdv
-bid0IHN1ZmZlciBmcm9tCj4gdGhpcyBtZW1vcnkgZnJhZ21lbnRhdGlvbiwgY29ycmVjdD8KClll
-cywgaHVnZV9wYWdlcz10cnkgaXMgdGhlIGRlZmF1bHQgb3B0aW9uLCBidXQgd2l0aG91dCBwcmUt
-YWxsb2NhdGluZyB0aGUKZW50aXJlIHNoYXJlZF9idWZmZXIgc2l6ZSBpbiBtZW1vcnkgdmlhICJ2
-bS5ucl9odWdlcGFnZXMiIOKAlCB3aGljaCBpcyBub3QKZG9uZSBhdXRvbWF0aWNhbGx5IOKAlCBo
-dWdlIHBhZ2VzIHdpbGwgbm90IGJlIHVzZWQgYW5kIHRoZSBzeXN0ZW0gZmFsbHMgaW50bwp0aGUg
-aHVnZV9wYWdlcz1vZmYgY2F0ZWdvcnkuIEV2ZW4gd2l0aCBhIHBhcnRpYWwgcHJlLWFsbG9jYXRp
-b24sIFBvc3RncmVTUUwKd2lsbCBub3QgYmUgYWJsZSB0byB1c2UgaHVnZXBhZ2VzLgoKCk9uIDUv
-MDMvMjYgMTE6NTUsIE1hdHRoZXcgV2lsY294IHdyb3RlOgo+IG9yIHdlIG5lZWQgbW9yZSB1bmRl
-cnN0YW5kYWJsZSBHRlAgZmxhZ3MuICBPciB0aGUgcGFnZSBhbGxvY2F0b3IgY291bGQKPiB1c2Ug
-dGhlIF9fR0ZQX05PUkVUUlkgZmxhZyB0byBzYXkgIm9oIHdlbGwsIHRoaXMgYWxsb2NhdGlvbiBo
-YXMgYSBmYWxsYmFjaywKPiBJJ2xsIGtpY2sga2NvbXBhY3RkIHRvIHRyeSB0byBjb21wYWN0IHNv
-bWUgbW9yZSBtZW1vcnksIGJ1dCBJJ2xsIGZhaWwKPiB0aGUgYWxsb2NhdGlvbiIuCgpXZSBhbHNv
-IHRlc3RlZCBraWNraW5nIG9mZiBrY29tcGFjdGQgaW4gdGhlIGJhY2tncm91bmQgd2hlbiBfX0dG
-UF9OT1JFVFJZIGlzCnBhc3NlZCwgcmV0dXJuaW5nICJub3BhZ2UiIHRvIGF2b2lkIGJsb2NraW5n
-IHRoZSBmb2xpbyBhbGxvY2F0aW9uIHJlcXVlc3QuIApIZXJlIGlzIHRoZSBwYXRjaCB0ZXN0ZWQg
-YXMgdGhlIG90aGVyIHdpdGggUFJFRU1QVF9OT05FIHBhdGNoIFsxXToKCgpkaWZmIC0tZ2l0IGEv
-bW0vcGFnZV9hbGxvYy5jIGIvbW0vcGFnZV9hbGxvYy5jCmluZGV4IDY1ZTIwNTExMTU1My4uZDRm
-MzIyOTEwOTkyIDEwMDY0NAotLS0gYS9tbS9wYWdlX2FsbG9jLmMKKysrIGIvbW0vcGFnZV9hbGxv
-Yy5jCkBAIC00ODE4LDYgKzQ4MTgsMjYgQEAgX19hbGxvY19wYWdlc19zbG93cGF0aChnZnBfdCBn
-ZnBfbWFzaywgdW5zaWduZWQgaW50IG9yZGVyLAogCWlmIChjdXJyZW50LT5mbGFncyAmIFBGX01F
-TUFMTE9DKQogCQlnb3RvIG5vcGFnZTsKIAorCS8qCisJICogQ29zdGx5IGFsbG9jYXRpb25zIHdp
-dGggX19HRlBfTk9SRVRSWSBhcmUgb3Bwb3J0dW5pc3RpYyAtIERvbid0CisJICogc3RhbGwgb24g
-ZGlyZWN0IGNvbXBhY3Rpb24gb3IgcmVjbGFpbTsgaW5zdGVhZCwga2ljaworCSAqIGtjb21wYWN0
-ZCBvbiB0aGUgcHJlZmVycmVkIG5vZGUgc28gbGFyZ2UgcGFnZXMgbWF5IGJlY29tZQorCSAqIGF2
-YWlsYWJsZSBmb3IgZnV0dXJlIGFsbG9jYXRpb25zIGFuZCBsZXQgdGhlIGNhbGxlciBmYWxsIGJh
-Y2sgbm93LgorCSAqCisJICogRGlyZWN0IGNvbXBhY3Rpb24gaXMgd2F5IHRvbyBjb3N0bHkgZm9y
-IGhvdCBhbGxvY2F0aW9uIHBhdGhzIG9uCisJICogbGFyZ2Ugc3lzdGVtczogZWFjaCBhdHRlbXB0
-IGNhbGxzIGRyYWluX2FsbF9wYWdlcygpIHdoaWNoIElQSXMKKwkgKiBldmVyeSBDUFUuICBPbmx5
-IHdha2Uga2NvbXBhY3RkIG9uIHRoZSBsb2NhbCBub2RlIHRvIGF2b2lkCisJICogY3Jvc3MtTlVN
-QSBpbnRlcmZlcmVuY2Ugd2l0aCB1bnJlbGF0ZWQgd29ya2xvYWRzLgorCSAqLworCWlmIChjb3N0
-bHlfb3JkZXIgJiYgKGdmcF9tYXNrICYgX19HRlBfTk9SRVRSWSkpIHsKKwkJc3RydWN0IHpvbmUg
-KnByZWZlcnJlZF96b25lID0gYWMtPnByZWZlcnJlZF96b25lcmVmLT56b25lOworCisJCWlmIChw
-cmVmZXJyZWRfem9uZSkKKwkJCXdha2V1cF9rY29tcGFjdGQocHJlZmVycmVkX3pvbmUtPnpvbmVf
-cGdkYXQsIG9yZGVyLAorCQkJCQkgYWMtPmhpZ2hlc3Rfem9uZWlkeCk7CisJCWdvdG8gbm9wYWdl
-OworCX0KKwogCS8qIFRyeSBkaXJlY3QgcmVjbGFpbSBhbmQgdGhlbiBhbGxvY2F0aW5nICovCiAJ
-aWYgKCFjb21wYWN0X2ZpcnN0KSB7CiAJCXBhZ2UgPSBfX2FsbG9jX3BhZ2VzX2RpcmVjdF9yZWNs
-YWltKGdmcF9tYXNrLCBvcmRlciwgYWxsb2NfZmxhZ3MsCgoKCkhlcmUgYXJlIHRoZSByZXN1bHRz
-IHdlIGNvbGxlY3RlZCAoa2NvbXBhY3RkIGJhY2tncm91bmQpOgoKfCBQYXRjaCAgICAgICAgICAg
-ICAgICB8ICAgIFJ1biAxICAgfCAgICBSdW4gMiAgIHwgICAgUnVuIDMgICB8ICAgQXZlcmFnZSAg
-IHwgJSB2cyBCYXNlbGluZSB8CnwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tfC0tLS0tLS0tLS0tOnwt
-LS0tLS0tLS0tLTp8LS0tLS0tLS0tLS06fC0tLS0tLS0tLS0tLTp8Oi0tLS0tLS0tLS0tLS06fAp8
-IEJhc2VsaW5lICAgICAgICAgICAgIHwgMTA3LDA2NC42MSB8ICA5NywwNDMuODYgfCAxMDEsODMw
-Ljc4IHwgMTAxLDk3OS43NSAgfCAgICAgICDigJQgICAgICAgfAp8IFByb3Bvc2VkIHBhdGNoICAg
-ICAgIHwgMTQ2LDAxMi4yMyB8IDEzNiwzOTIuMzYgfCAxNDEsMTc4LjAwIHwgMTQxLDE5NC4yMCAg
-fCAgICArMzguNDUlICAgIHwKfCBSaXRlc2gncyBzdWdnZXN0aW9uICB8IDE0Nyw0ODEuNTAgfCAx
-MzMsMDY5LjAzIHwgMTM3LDA1MS4zMCB8IDEzOSwyMDAuNjEgIHwgICAgKzM2LjUwJSAgICB8Cnwg
-TWF0dGhldydzIHN1Z2dlc3Rpb24gfCAxNDUsNjUzLjkxIHwgMTQ0LDE2OS4yNCB8IDE0MSw3Njgu
-MzEgfCAxNDMsODYzLjgyICB8ICAgICs0MS4wNyUgICAgfAp8IGtjb21wYWN0ZCBiYWNrZ3JvdW5k
-IHwgMTQ2LDc2MC43NSB8IDEyOCwwOTQuOTIgfCAxMjcsOTc5Ljc0IHwgMTM0LDI3OC40NyAgfCAg
-ICArMzEuNjclICAgIHwKCiAgClsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0
-MDMxOTE5NDIuMjE0MTAtMS1kaXBpZXRzQGFtYXpvbi5pdC9ULyNtOGJhZWVhZjQ4YWE3YWU1MzQy
-YzhjMmRiOGY0ZTFjMjdlMDNjMTM2OAoKCgoKCkFNQVpPTiBERVZFTE9QTUVOVCBDRU5URVIgSVRB
-TFkgU1JMLCB2aWFsZSBNb250ZSBHcmFwcGEgMy81LCAyMDEyNCBNaWxhbm8sIEl0YWxpYSwgUmVn
-aXN0cm8gZGVsbGUgSW1wcmVzZSBkaSBNaWxhbm8gTW9uemEgQnJpYW56YSBMb2RpIFJFQSBuLiAy
-NTA0ODU5LCBDYXBpdGFsZSBTb2NpYWxlOiAxMC4wMDAgRVVSIGkudi4sIENvZC4gRmlzYy4gZSBQ
-LklWQSAxMDEwMDA1MDk2MSwgU29jaWV0YSBjb24gU29jaW8gVW5pY28KCgo=
+Hello Xiaolei,
 
+Thank you for the patch.
+
+On Wed, May 06, 2026 at 11:12:08AM +0800, Xiaolei Wang wrote:
+> Both mxc_isi_crossbar_init() and mxc_isi_pipe_init() call
+> v4l2_subdev_init_finalize() which allocates the subdev active state,
+> but neither mxc_isi_crossbar_cleanup() nor mxc_isi_pipe_cleanup()
+> calls v4l2_subdev_cleanup() to free it.
+> 
+> This causes a memory leak on every rmmod, reported by kmemleak:
+> 
+>   unreferenced object 0xffff0000d06fc800 (size 192):
+>     comm "(udev-worker)", pid 254, jiffies 4294913455
+>     backtrace (crc 36eeae58):
+>       kmemleak_alloc+0x34/0x40
+>       __kvmalloc_node_noprof+0x5f8/0x7d8
+>       __v4l2_subdev_state_alloc+0x1fc/0x30c
+>       __v4l2_subdev_init_finalize+0x178/0x368
+> 
+> Add the missing v4l2_subdev_cleanup() calls before media_entity_cleanup()
+> in both crossbar and pipe cleanup paths.
+> 
+> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 1 +
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c     | 1 +
+>  2 files changed, 2 insertions(+)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+> index 605a45124103..c580c831972e 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+> @@ -491,6 +491,7 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
+>  
+>  void mxc_isi_crossbar_cleanup(struct mxc_isi_crossbar *xbar)
+>  {
+> +	v4l2_subdev_cleanup(&xbar->sd);
+>  	media_entity_cleanup(&xbar->sd.entity);
+>  	kfree(xbar->pads);
+>  	kfree(xbar->inputs);
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> index a41c51dd9ce0..cb50af2270f6 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> @@ -819,6 +819,7 @@ void mxc_isi_pipe_cleanup(struct mxc_isi_pipe *pipe)
+>  {
+>  	struct v4l2_subdev *sd = &pipe->sd;
+>  
+> +	v4l2_subdev_cleanup(sd);
+
+v4l2_subdev_cleanup() should also be called in some of the error paths
+of mxc_isi_pipe_init(). This can be done in a separate patch, so
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+>  	media_entity_cleanup(&sd->entity);
+>  	mutex_destroy(&pipe->lock);
+>  }
+
+-- 
+Regards,
+
+Laurent Pinchart
 
