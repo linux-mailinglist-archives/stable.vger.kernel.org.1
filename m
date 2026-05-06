@@ -1,177 +1,173 @@
-Return-Path: <stable+bounces-244435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sK4/B+11+2kpbgMAu9opvQ
-	(envelope-from <stable+bounces-244435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 19:10:05 +0200
+	id kDjOE158+2n0bgMAu9opvQ
+	(envelope-from <stable+bounces-244436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 19:37:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E9C4DE98E
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 19:10:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FB34DEEA2
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 19:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23605302D97D
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 17:08:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B2D583020EE3
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 17:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71304A3405;
-	Wed,  6 May 2026 17:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A734B8DE9;
+	Wed,  6 May 2026 17:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JgeHaMlh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ld5Moh8m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2204BC005
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 17:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778087281; cv=pass; b=lakQ4iR8D4NwaGOK/5DfdYB9qp+ThCXkUj8DAGNnOZW6UHvcTmMBitRlwSbpidDLIRztKjk6Wywi+P7YTR+aELbr0SZaFdhiPiPTbobMuAiAbFgx6TJCHQZ1bbH5HVtigH1VRD4Z2GqDXNVMXhUvJ5ttQJ5j/AVHbhd5w5mPxJE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778087281; c=relaxed/simple;
-	bh=iJM1KHmjIZ05feWWOBSzK5MzppaF6eNDe2/g69UBMwg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ua6Hc/F044polYhFSKQ7GuMJhfs62XxtiU5MqWSuu68mDCjfQKFIMPuRxVEiTYRMoD/whcpfighfr7/fklSSuBR2Ykbe/UX/5LfkJRfmd/aOe1QzSaEdkqcRdXg/Rtx9c3Y/tL0QJmyhCjcms6zyCDxHK9gIc2xAmfV2Xu2PvwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JgeHaMlh; arc=pass smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-1309f4ee973so3490534c88.1
-        for <stable@vger.kernel.org>; Wed, 06 May 2026 10:07:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778087259; cv=none;
-        d=google.com; s=arc-20240605;
-        b=W7rzFBJdGXLoGWWxpGbowLYN+1lmgrV37Y8sPEfJ+MaX6YG/mLUrvogJ1kfwU7xhFJ
-         /nzQaxTFaE19/MgtCBRjAs9vZyXAH7vNlzoSCsLFjclGEb629A0TEfFg+hMGZgmEySN7
-         pEGHx5nMH2tLRyzWWA6lGsWn/xraq2Ai1HOblmTm3ivAR9l6JgnAsmwZM79Q7UUZbUKH
-         OcHGrihQSLHRlJoeCmeHzqjX9qrgVvj4z247E7ZKyKCR+Vyp+yyAAXtOXMbl+rrCvkSv
-         bM54BWu0ZR6fnWzHacE9b/InH50IlAW9LweLYZuQS9hki5oEe4WghKCG7BrBvZos/7kY
-         uNVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q/v9MQFgIlffWIKDfvYVkIbMIOBfG0NkHQjEHrpEJtA=;
-        fh=VYA6bVvNIfPxGtjB37wnygP7uNgAHsilL76wZq1YZkQ=;
-        b=BQjSe5Rwqb3xqFCa6ewU2P4Edp9q15KeXOBzcxVsUA2MNXFj6s/L6a3erp52PTtAe8
-         hIaDA5GqSGXOybtvk2nrWd/i2puRceQa6qR2cdnMJP7Rx9KOY9QbxTuJGbT6y9zn8dRS
-         tMUvUsxZqO3MdqTxT9GLPmXsILTsZqGH9sBBpicuNO0+057G9ucsCaQDOutKzPsrkBfw
-         0mAm5SoXMI14MSk/FUcVxhdEakDy2ADyNxnokBIJCxSTn5PCR/EMKOKCfFtnGv5xE4Lk
-         jWddzCl3WIK5HjaXGNtfQdynJbwvBN7Jco/gDhbt7UBNC1zgPeAq4QXCvEwPauYFtghU
-         mz/A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778087259; x=1778692059; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q/v9MQFgIlffWIKDfvYVkIbMIOBfG0NkHQjEHrpEJtA=;
-        b=JgeHaMlhpxcfihV2bxQVluPHWaJhlHv/K+I05cO6JicjQXzmZXPzRHqW5EdRXnnC+t
-         kIznZjod8kcAZ2XtlWWmNgp9Mf+mRh8blLtSUUFF778/SVEsdECxCFbgN2nFWCPeaMMP
-         QvHwZMC3LtBa0AssumkYr9W/Ntp62zXO4mBGup+RMAflm8X1C7KmkeqrX+2ITQbciEVO
-         eGNegO8jSxNnWCAdLC99/FO+jd5tApgnSdqHC1GG3EtBqDIFq2x8IXO30ImQ4z4oNx++
-         745lHODgSRdqgQENxCCJUZu02CstJYspKqlVfJ1o2y9ykx35QxbgCcntA3P78L545Shm
-         Byrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778087259; x=1778692059;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q/v9MQFgIlffWIKDfvYVkIbMIOBfG0NkHQjEHrpEJtA=;
-        b=iwJHo7VzCwF09p/ESJmZS3R4lKeIqYoPLo4MesANS/xUGpIEnGivHQag8uGlE8N2TK
-         YSZUBYA5PSZ3sDAX7+BwgCEvxarNBIp8hHBf98X8Q6d/y9F/PJFGYTezTAQ+SPCmu7SX
-         iK1YypUIm3sk9av9Zsvj8Rle5T+PAUsHfNLCjeLb6YLbanrbs7OjcUVMfrVggvkeeolB
-         UKHGeGPX5awE3F7rNI4R9cRsEujV94GQqBUsjfw3CAGlFXSf+SBei5f82gC1uBiEZlWc
-         1nRh1gdLEawKWIZtMQEyzM5I0bWGVUS4P/F1x3kndrcoPvXoVsELqGko3gamVC1xNaB8
-         d48w==
-X-Forwarded-Encrypted: i=1; AFNElJ9L6lxaUaxMPpll8/mRs/yKmAHkdkhDfORrUlT3Wd+cNxgK37HRMGu0vu89SpqfL6s2yOwKrrE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZa/FwcvDAXTr286BVIgGKFTnjJVQAd47GiElPa0/iCOkEg2+Q
-	Rerc30Gf07bp1+NWYGxKr2cEfkPL1eljCrTjH/4OP7C4M+dlLFSj6fkPVvklEUdhJIx1jaVnjYj
-	kTfkb3DB+MJ3zOADTykn+cT2vUVyjNVc=
-X-Gm-Gg: AeBDieuPlmZ93IdG0BOsL3LIXzRzdhmS6lNCJvyzum5PrYcctrkL8mfyXU32C7cLyA8
-	tNvdZs9hz2qqDYNp+7zAvBnGjVX5ehaTX0NWAUR5H3oa2eff1eZ8pwp9EjlgTlJMsyUrjdh8FeJ
-	Z2s4O7Yu4LOcAztgPkf6+BfgXzZ9tQay0alkUTAPjp+k9m34Iw7xDVNZ3MbxOec3MHhn7ERdxrj
-	NR7N0dgZmaLrhQ2Hy9/ATXiKQfcfDLFEpb4sjClc7z/cCwZt+X8Orv+WE35s8+2ajqu5llwKNhk
-	er8j//KDZVlErg0R7Fy6HdfgMhQQYPSk1GitKTt+q80P9JHAUsonAShx/hmIkgslR/2cvInuvdH
-	BC5kOA4JjANB4XIPK5nQzfwifznyI+Mka6PswgiGp55fJdg91
-X-Received: by 2002:a05:7022:1e10:b0:12a:b932:81d3 with SMTP id
- a92af1059eb24-1318e7f7469mr2001823c88.26.1778087259155; Wed, 06 May 2026
- 10:07:39 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D17F2EC0B0;
+	Wed,  6 May 2026 17:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778089051; cv=none; b=mehsjgu4eng82xAmxmRhVjmu1LbVIUGzJOTBRy3LOANEgc8UlDwnlGkntgQb3eBYcilDSWumplATdI5BWBrgPXtDn/Pd8+kARJgffeCJKn1eDaw6aXUn4cO1jvLZ3pmDlHuaeZXLJpolk8wkrzdmHjGXrCwslwJ3r46K8Hd4K68=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778089051; c=relaxed/simple;
+	bh=wUv3lEGFOS+GyZObViG6EwLvvQMGqe3rbjxJQpJ6WSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AoGkQqtUOWk8LWV2ns0mgzpT0CZz3Wuf9tY9SQsDaV+XbGB63oiJkewyxaD0aX/bbhWn2J1hmISUTnNiesI289ZAdN/0LIO8GKrAfJftsdLwGNp+EkYzez9L/F7wqjlCjO3eo6pYZWObBTV1cgQ1GgaFxQL98hVQxqpXRdF/9wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ld5Moh8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37A6C2BCB0;
+	Wed,  6 May 2026 17:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778089051;
+	bh=wUv3lEGFOS+GyZObViG6EwLvvQMGqe3rbjxJQpJ6WSY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ld5Moh8m6+k/b5J8bNoYZnCdT9w2ToE36j59k5GWO2uhylGBsPK9qglxHZ5F64IsX
+	 y+Q2xCHpc/Fx4fh/1bCXquk2tK6rM3NsE53n4teL8qLesKCc/fOzwCoKPSMknEpPhf
+	 DHBVzKh9ERSqeDKSnR3Kado211Ejq1WfqSDSNBi6M3JRl54iwrpISVTgUUPoCKnS6+
+	 UPAsz7oeOPAg6vQN1pJhngiyQkpoGNmTDWh+drK3eK4R/oI2FzHIKE4tSHz1izGW++
+	 oZUyJLWgC+K62hjpuwunSljnFRNnO5KttHHVtffIji2lHPGndaCauI+srSW/dBBuD2
+	 ZZa8m2k+cmsnw==
+Date: Wed, 6 May 2026 18:37:22 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David CARLIER <devnexen@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: gyro: itg3200: fix i2c read into the wrong stack
+ location
+Message-ID: <20260506183722.681a80e0@jic23-huawei>
+In-Reply-To: <CA+XhMqy=_dwpTz9c+kZ9tNJz-dHDRuPyc6TsoXWKODKgxqBJ0A@mail.gmail.com>
+References: <20260505133748.51355-1-devnexen@gmail.com>
+	<afriNDbCrUsXwV2a@ashevche-desk.local>
+	<CA+XhMqy=_dwpTz9c+kZ9tNJz-dHDRuPyc6TsoXWKODKgxqBJ0A@mail.gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260506141040.1368918-1-s-vadapalli@ti.com>
-In-Reply-To: <20260506141040.1368918-1-s-vadapalli@ti.com>
-From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 6 May 2026 12:07:12 -0500
-X-Gm-Features: AVHnY4JssmbmMVgWYy_rr3kP7VA-rHrBRjYoeKWuuDrMj3pK-MCy7FEMX0YQL8c
-Message-ID: <CAOCHtYjJRmr5LhRePqaOomjVHb=o+B8-3+6BN89Xx9erwRdcng@mail.gmail.com>
-Subject: Re: [PATCH v2 00/13] TI: K3 DTS: fix USB Clocking for Compliance
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: nm@ti.com, vigneshr@ti.com, kristo@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, josua@solid-run.com, 
-	w.egorov@phytec.de, matthias.schiffer@ew.tq-group.com, d.haller@phytec.de, 
-	francesco.dolcini@toradex.com, joao.goncalves@toradex.com, 
-	emanuele.ghidoli@toradex.com, ernest.vanhoecke@toradex.com, rogerq@kernel.org, 
-	eballetb@redhat.com, afd@ti.com, u-kumar1@ti.com, stable@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, luis.parga@ti.com, srk@ti.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 75E9C4DE98E
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C1FB34DEEA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244435-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-244436-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robertcnelson@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,dt];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,ti.com:email]
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
 
-On Wed, May 6, 2026 at 9:08=E2=80=AFAM Siddharth Vadapalli <s-vadapalli@ti.=
-com> wrote:
->
-> Hello,
->
-> This series enables Internal Spread Spectrum Clocking (SSC) for USB
-> SuperSpeed configuration. This is mandated by the USB Specification
-> section 6.5.3 Normative Spread Spectrum Clocking (SSC).
->
-> Series has been posted as individual patches for respective boards since
-> the Fixes tag is different for each board and needs to be backported via
-> stable.
+On Wed, 6 May 2026 08:08:24 +0100
+David CARLIER <devnexen@gmail.com> wrote:
 
-While yes, that's true for stable branches.  Since these are so
-similar, wouldn't it be best to push them to the board soc family
-headers?
+> On Wed, 6 May 2026 at 07:40, Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> >
+> > On Tue, May 05, 2026 at 02:37:48PM +0100, David Carlier wrote:  
+> > > itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
+> > > fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
+> > > parameter (a pointer), `&buf' is the address of the local pointer
+> > > slot on the stack of itg3200_read_all_channels(), not the address
+> > > of the caller's scan buffer. The (char *) cast hides the type
+> > > mismatch.
+> > >
+> > > i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
+> > > = 8 bytes into the parameter's stack slot, which is discarded when
+> > > the function returns. The caller's scan buffer in
+> > > itg3200_trigger_handler() is never written to, so
+> > > iio_push_to_buffers_with_timestamp() pushes uninitialised stack
+> > > contents to userspace via /dev/iio:deviceX every scan -- both a
+> > > functional bug (no actual gyroscope or temperature data is
+> > > delivered through the triggered buffer) and an information leak.
+> > >
+> > > The non-buffered read_raw() path is unaffected: it goes through
+> > > itg3200_read_reg_s16() which uses `&out' on a local s16 value,
+> > > where that is correct.
+> > >
+> > > Drop the spurious `&' so the i2c read writes into the caller's
+> > > buffer.  
+> >
+> > Very good catch! I'm puzzled if that code was ever tested. Do you have an HW
+> > and that's how you enter to this bug?
+> >
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko
+> >
+> >  
+> 
+> Thanks! No HW on my side -- found by inspection. I had recently looked
+>   at a similar `(char *)&buf' / `(char *)buf' mix-up in another
+> driver,
+>   so I went grepping for the same shape and itg3200 stood out. For
+>   contrast, drivers/iio/humidity/hdc3020.c::hdc3020_read_bytes() has
+> the
+>   same signature (u8 *buf parameter) and assigns `.buf = buf'
+> correctly.
+> 
+>   Compile-tested only; the analysis in the changelog is what I'm
+> relying
+>   on.
+> 
+> Cheers !
 
-(Either way, I'll be backporting these for Beagle. ;) )
+I was assuming the fixes tag was wrong and this was a result of
+rework, but you are correct it goes all they way back!
+Huh.  I guess last minute driver changes that didn't quite get
+tested and clearly not a heavily used device!  13 years of
+not working.
 
-Regards,
+We could drop the driver, but it's possible it is in use
+just not with buffered support (which is a separate CONFIG option)
+Also drops don't get backported so we'd be leaving it broken and
+stale.  So let's fix it now and consider a drop later.
 
---=20
-Robert Nelson
-https://rcn-ee.com/
+Applied to the fixes-togreg branch of iio.git
+
+Thanks,
+Jonathan
+
+
 
