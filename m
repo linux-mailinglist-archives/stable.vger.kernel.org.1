@@ -1,171 +1,171 @@
-Return-Path: <stable+bounces-244363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPaGMxcb+2mtWgMAu9opvQ
-	(envelope-from <stable+bounces-244363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 12:42:31 +0200
+	id uEClJeUh+2lvWwMAu9opvQ
+	(envelope-from <stable+bounces-244364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 13:11:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420E64D96B7
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 12:42:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0130A4D99DE
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 13:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7A75300A7E4
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 10:42:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 154BE3015703
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 11:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4123FFAD8;
-	Wed,  6 May 2026 10:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A817421A14;
+	Wed,  6 May 2026 11:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rexbytes.com header.i=@rexbytes.com header.b="jCnImI8D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="El/nTNhc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE00368275
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 10:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD904218A3;
+	Wed,  6 May 2026 11:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778064148; cv=none; b=uXS/FYUGmf/aPqu2WZI6m7R9lgTUJ2uYF4LtMapoLzKALdie8vBDzbiNanaAFICMcq4zWXj6m0qkGQL3shQ4A+7oKB6frEqVFKTcqJS0+zaqqs6UY2zr8aEvrcyB5w03L9hIfu49zuTg3WWd1D1nI79aF2bZrpdc0bJbqtaTHk8=
+	t=1778065887; cv=none; b=c9zdBHDIOG+JR5coKvmyssxvmExXfEr0PANV8OuisCTytG95l5AApoxH9b72Nfh0XtgNuWP8KY7N/wOb/ewcxF4eDY35A4njud4jqb3PGJHmTQY8xq+PqGNCLjigwsFh33LREr78UU+bQPJK9v8Ibr0AHsUwq6DChgZBaV28TUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778064148; c=relaxed/simple;
-	bh=KT3RztIZzygqyt2MqwyzEPofAWPYcv55sw/QXmU1OgE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wl40rAOu2e4btRc0N/oIHF30i9LeYIicwOwD3oxPLauRUMjGNSq2wRVOrSqHEYMtx07ZpIMXONID8/Uv9g3/np1ODhchuaD/KM3Ec1GLbVHmvsNbew9HQLohTq4TsnMRk/AahVVQg18eZiycJfyfxpdMNEMrNjnSl+VlaWEBI+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexbytes.com; spf=pass smtp.mailfrom=clientuser.net; dkim=pass (2048-bit key) header.d=rexbytes.com header.i=@rexbytes.com header.b=jCnImI8D; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexbytes.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=clientuser.net
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6763cc8775cso1347360a12.0
-        for <stable@vger.kernel.org>; Wed, 06 May 2026 03:42:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rexbytes.com; s=google; t=1778064146; x=1778668946; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jias4nxgB3eyNmqda1jfxvOxgCX6OydtclPwJD7WctA=;
-        b=jCnImI8DseuecP/By/pPx0jzEaxHqhkEK+jL1OgrnoFBsCGlFHcVEgUqp107rLgorM
-         zF1GBRcmP/H/Urv7dBzkcS8S2bDAS2rvDAN/R8CA8zIV1gPu9oeNCZ6ouazxo7nRyOrU
-         PqUhaoOWJipV8awore9KvEtRtCXC6gM8m1a8420qLa8jPvhnvDTQA7dwM0oAqgnixGnw
-         /GyP4LsIiYIB/FvbPQmfntclvrx8h/o7Q2UGaW0G8hCbA9vxw+By3gyoSkqk1ouBFvDQ
-         oVjLGiGV238lQsQ6fsarJ566CZHeTfjVcMgB5KyM0xDE0MqBvQvZDiYJSiSQtj8MppNw
-         zXZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778064146; x=1778668946;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jias4nxgB3eyNmqda1jfxvOxgCX6OydtclPwJD7WctA=;
-        b=c0b4V1yKPqns1gLvAh8yo7dA+M1uigCt/uQWkrHqPkGHWI9jB3WRtjYGhRutZU2XOH
-         5orba65YRR/3lr0c9lUOefZF5Q/8SAIds1JVymuN0wlaOuQOUZzuTVLIKOlCPsX003pn
-         qwOIM5TwTG35lfh5/qHAk3JTZ3EXjbch+nobpyZQKK56QcqvofU9SScf+3vnoiL8LZOB
-         JKGmyv+iDCNqUPLOn5bvt+fjhzRpoGODthYpp60CTKiWj6Oib1VSAHOMNgON4gEVqE/T
-         aYg+KOb6x/4EDSIvm5t8y8TOt6/ygtjQcl9fiePnycVsakbipCOU3jLv3wYetlikkW68
-         8gVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9hwrAm9lTukFf03s2bkqRzKUSxW5UF3FeSwmh3Xr2/mUqYTMXRPVV5Z3wha591yXdmWKKNjCs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMv24PVFmr+FTWnK1wCcjDozTQhYbpeXIYlAByHb+ahBQ57AVL
-	QvMGoacwoUJEi8WIquzyKusHn6imGgBz7qKGyXNNWKWAANHkqSrU5/BHsSu7MYyP+HA=
-X-Gm-Gg: AeBDietRWnp3+idPHjgajkbL2bfnmgnXAPt+oAgSkx7lZdIKew7LYDpXxQAIb1dE12N
-	xtHhQjOu1eWX++p35XdPaIID9sP6yOaYN7ThXQhExNXXEjnQno7eNy5kaqvjtJKwHoe7DSl8Sds
-	fkjz11h7r8xDqhxBwz7AFdlmT4L8piKrPW/OC+6Km4u91ZVuBUBxKaKtepv/MLzLWDW3vbB++ep
-	nZa7oZJ/XiayLFStSXUYQjReuWzK/PeTJfE+QzSjerv5SHRSqvWr3sMIELYiKeAomY4jRhyOloj
-	u3FqvNNVythZxtRtQXVXD4Py3CYqUJWcpStEQsh7f/DbPzTAhwbaDRbxDNn0y0VPNDBxwQbwx5x
-	Qvn6MyGx22b9eBKYaRRS2Jy7zcExWg18YvTRCpUWVGYUi4tQfI79k8JRe/X0ZLc/smA1B5H/mu2
-	TAKFPKnzun4ga4kVJo3+Gao/Vnq8mngMyXgssY3BL64P3LbIdowc8YEvR0513Xd2X0JGBw1bk1T
-	qOFtTtylrOnIGLcxaA954ZkyVCw
-X-Received: by 2002:a17:907:c80c:b0:bc1:1808:7fe1 with SMTP id a640c23a62f3a-bc54c457536mr143692766b.21.1778064145139;
-        Wed, 06 May 2026 03:42:25 -0700 (PDT)
-Received: from localhost.localdomain (83-87-100-220.cable.dynamic.v4.ziggo.nl. [83.87.100.220])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bc55e6ec72bsm70210666b.35.2026.05.06.03.42.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 03:42:24 -0700 (PDT)
-From: Rex Bytes <goodboy@rexbytes.com>
-To: Igor Russkikh <irusskikh@marvell.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: atlantic: preserve PCI wake-from-D3 on shutdown when WOL enabled
-Date: Wed,  6 May 2026 12:42:11 +0200
-Message-ID: <20260506104211.2442-1-goodboy@rexbytes.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1778065887; c=relaxed/simple;
+	bh=27iFTjAp0VNw9LU70tpXYwdoaFu1QP5I1+xF0lWR8I8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e6GY4kTfAnae26BtFWOhzXEih69JYPMpLDmLcTaxTSDi+ErB24PLEsld1mhFB2InWO5o1/qXDpknh8OnmydrQsJ2+VHshOn4RWtbn9g6Zyo8YBCnvHuja2N+VvrvZjSddZY1doRmgd646m34QZj9s1q1elnk3bZmqY9iMQlz9E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=El/nTNhc; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778065884; x=1809601884;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=27iFTjAp0VNw9LU70tpXYwdoaFu1QP5I1+xF0lWR8I8=;
+  b=El/nTNhc5gtB4/0rjJPOexVAAsEaaj+uNTb143aduYApq7+mOE1DQmN5
+   Tt5gb87XuStWAaa/93m+n+93Rj7gggZn7VNMO1hOM0NT3F7t5dOKeJuB0
+   l5uXM5SjcKabeqRHSlN9Lz8RXr+cvWjckpcvFFVptaO73L1NOxlv76/hA
+   DMNn7EVPzv5ErjORBEXUlwDBsNFGhOASv0RyHf1y0ZCNhEt03TKEA19WF
+   sMtIXg7IXK+JMT1/U4E13Rv57FOmQ0vn7LdMmYRdnvuJI+SiaxkdJGH1q
+   h2EYjToovZ/yJ3X+WyfwaeYLnx63iOyxBNvvNHPgbTLwM7HdAACw1F5rK
+   A==;
+X-CSE-ConnectionGUID: TKGqqeT9TEiaKZ2vjRB65A==
+X-CSE-MsgGUID: 5ZPhuSUoQQCYbQXSWSSjHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="101665611"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="101665611"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 04:11:24 -0700
+X-CSE-ConnectionGUID: Li5uFLNCTKWdVVBkumt1cQ==
+X-CSE-MsgGUID: p9884cOPRGCwBgIpF6jkyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="236215257"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.191])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 04:11:22 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id D4C1C11F70F;
+	Wed, 06 May 2026 14:11:22 +0300 (EEST)
+Date: Wed, 6 May 2026 14:11:22 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Martin Hecht <mhecht73@gmail.com>
+Cc: martin.hecht@avnet.eu, michael.roeder@avnet.eu, stable@vger.kernel.org,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] media: i2c: alvium: Fix controls for WB/AWB
+Message-ID: <afsh2tmV5AFlMCML@kekkonen.localdomain>
+References: <20260505142513.1551721-1-mhecht73@gmail.com>
+ <afsJz1vVdd3o-pe9@kekkonen.localdomain>
+ <37aa90a3-7909-4605-a0be-1545db1fadb0@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 420E64D96B7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <37aa90a3-7909-4605-a0be-1545db1fadb0@gmail.com>
+X-Rspamd-Queue-Id: 0130A4D99DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[rexbytes.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[rexbytes.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244363-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[rexbytes.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[goodboy@rexbytes.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[avnet.eu,vger.kernel.org,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-244364-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,kekkonen.localdomain:mid]
 
-The shutdown handler aq_pci_shutdown() unconditionally calls
-pci_wake_from_d3(pdev, false), clearing the PCI PME_En bit even when
-wake-on-LAN has been configured. While aq_nic_shutdown() correctly
-programs the NIC firmware via aq_nic_set_power() to listen for magic
-packets, the PCI subsystem will not propagate the resulting PME wake
-event from D3, so the system never wakes after poweroff.
+Hi Martin,
 
-WOL from suspend (S3) is unaffected because aq_suspend_common() does
-not touch pci_wake_from_d3() and relies on the PM core's wake
-configuration via device_may_wakeup().
+On Wed, May 06, 2026 at 12:16:13PM +0200, Martin Hecht wrote:
+> Hi Sakari,
+> 
+> thank you for the comments.
+> 
+> On 5/6/26 11:28, Sakari Ailus wrote:
+> > Hi Martin,
+> > 
+> > Thanks for the patch.
+> > 
+> > On Tue, May 05, 2026 at 04:25:10PM +0200, Martin Hecht wrote:
+> > > With that patch the controls for red-balance and blue-balance were created
+> > > only if the particular camera supports that. Otherwise the pointers on
+> > > the control variable are initialized with NULL to prevent side effects for
+> > > clustering with AWB control.
+> > > 
+> > > Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
+> > > Signed-off-by: Martin Hecht <mhecht73@gmail.com>
+> > > ---
+> > >   drivers/media/i2c/alvium-csi2.c | 37 ++++++++++++++++++++-------------
+> > >   1 file changed, 22 insertions(+), 15 deletions(-)
+> > > 
+> > > diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
+> > > index b62b45a4f2fc..4c6934e9e177 100644
+> > > --- a/drivers/media/i2c/alvium-csi2.c
+> > > +++ b/drivers/media/i2c/alvium-csi2.c
+> > > @@ -2108,26 +2108,33 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+> > >   						  0, 0, &alvium->link_freq);
+> > >   	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+> > 
+> > This is a problem. Can you move setting the flags after checking the
+> > handler's error status? The functions adding controls may fail and this is
+> > simply a missing error check.
+> > 
+> > Can you submit a fix, with a Fixes: tag and this patch should be rebased on
+> > the fix, please?
+> 
+> I'm preparing a separate fix for that issue. It's the same situation also
+> for some other controls like pixel_rate and link_frequency but not only. Can
+> I combine that into one patch for fix only that in alvium_ctrl_init?
 
-This affects all atlantic-supported NICs (AQC107/108/111/112/113);
-users have reported that WOL works if the atlantic driver is never
-loaded, but breaks once it has run its shutdown path.
+Please do.
 
-Pass the configured WOL state to pci_wake_from_d3() instead of a
-literal false, so the PCI PME_En bit is preserved when the user has
-armed WOL via ethtool.
-
-Fixes: 90869ddfefeb ("net: aquantia: Implement pci shutdown callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rex Bytes <goodboy@rexbytes.com>
----
- drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
-index baa5f8cc31f2..775cbbc1aa42 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
-@@ -374,7 +374,7 @@ static void aq_pci_shutdown(struct pci_dev *pdev)
- 	pci_disable_device(pdev);
- 
- 	if (system_state == SYSTEM_POWER_OFF) {
--		pci_wake_from_d3(pdev, false);
-+		pci_wake_from_d3(pdev, self->aq_hw->aq_nic_cfg->wol);
- 		pci_set_power_state(pdev, PCI_D3hot);
- 	}
- }
 -- 
-2.43.0
+Regards,
 
+Sakari Ailus
 
