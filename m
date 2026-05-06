@@ -1,136 +1,170 @@
-Return-Path: <stable+bounces-244376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDHXHL8z+2nfXgMAu9opvQ
-	(envelope-from <stable+bounces-244376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:27:43 +0200
+	id yEynG8A1+2nfXgMAu9opvQ
+	(envelope-from <stable+bounces-244377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:36:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142674DA2DC
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:27:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4BC4DA463
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC6523015D0A
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:27:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0413530107C0
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D006E4418DA;
-	Wed,  6 May 2026 12:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB30244CAEC;
+	Wed,  6 May 2026 12:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r1FTydVA"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Vv96Wrda"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91320270540;
-	Wed,  6 May 2026 12:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B16D44BCA5;
+	Wed,  6 May 2026 12:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778070454; cv=none; b=TwmPz1EXjov77na56cgbz/AXW1uyFMottBxLJXvo13iDhEEJqeVEhhXvTHci8cPByDtXf07vdiwwJc4T9Y9OLlkT++rR1d48+OEYeWku5PmOWSSab6yDSNb3Uv3jjVBuSrK47LwepmgJrihRIgZ2t0KXReWeJEVzncrd9nMZBq4=
+	t=1778070716; cv=none; b=f6RaxDNBKHtaj+R1S/qbScuwlvdk2foPHiWx7KdXwc6CAk7SrHgCb3q0HT1V0XRskfrrIZuJeQGsu0NteH8uv9Hqk0JQu0GbKcmP0X1kTGdWwjspr2Cjamz7PfUhBTvtF8/zDXaNzeebipTFKJc33/JoqF9gLzDt+ClceL9XBrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778070454; c=relaxed/simple;
-	bh=tKWJWblkI9qX1sppogZuqjBQOVIpnFXXs9qstseDqig=;
+	s=arc-20240116; t=1778070716; c=relaxed/simple;
+	bh=KZrtDt/6j/qhsaVg4cuWkGmW5irl6jJerSBpBcqY1fc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mqa0/bnAhrKHa0URVXgeVbB9qHuOlK0U7Mf2ylmrnZDyFco272DdvK9tlYWq2BbK+XfElA0H/fM/Qsi+gCp5xWWuYk4Ibt5b3B/Z4rFLGCI9OZPIiOkHOxY20W9DwiJCwRqrSqKZVho1yNA0B1DO1v034+lVx0w6311yjU+OW8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r1FTydVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D559C2BCB8;
-	Wed,  6 May 2026 12:27:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778070454;
-	bh=tKWJWblkI9qX1sppogZuqjBQOVIpnFXXs9qstseDqig=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=CArWGKI2CDnFSzy1kIT1CRWb54/XV6TfFl6cT4jCRqJRuY5bywZVn4UeDdiCwrXhOy2utAdh4Bnll8D0De56lUkHr2Z19fmhOOBcfNh6Ev0hv0bjmVStNu2ktOQHFGQWgDHNneVNVrXdhExZ+RPaL8DRSCJXW5YZG7n4WxPI910=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Vv96Wrda; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1F0D763D;
+	Wed,  6 May 2026 14:31:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1778070710;
+	bh=KZrtDt/6j/qhsaVg4cuWkGmW5irl6jJerSBpBcqY1fc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r1FTydVAbOcOOmW2KKhG+vrmFTJvME9MKUip9b+zXaPv8QTFuaUYQrb6JC6yi5ooJ
-	 KQWTZKkP6FxXn31T5pI4KMogBMSKvreDTBzeCo44EZpNT3upIUqNCFDFssovZnDnr9
-	 wsqpM8FLT77zQgczcGce9UOVpnVgIW310s77yBEDZoQZok7gZOIvK5d2FpCk9zhbE7
-	 nv0aloBHmWLbTjJqoQkvcwQCeCN2iM6qGXSPebJv37d+Zc3YJ69aqYDm8irRzRmnUS
-	 0UWOLac3peOBNRFI6V64jDrXlcIpHg2BA/6SK7XT8lP99h05FBWE+obZ/3HveZpRRr
-	 /dyHtUKcUae2g==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wKbLf-00000000mJA-2yAn;
-	Wed, 06 May 2026 14:27:31 +0200
-Date: Wed, 6 May 2026 14:27:31 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5/8] i2c: core: fix adapter registration race
-Message-ID: <afszs9k8cgo87JzB@hovoldconsulting.com>
-References: <20260505142547.795054-1-johan@kernel.org>
- <20260505142547.795054-6-johan@kernel.org>
+	b=Vv96Wrda6sp2mnhCJRY1/Mxfk52pN5rDgKQyP7MGJZ/3cjoDkvwhYTjpg0A/pjHAQ
+	 znSUflykD0W1adFenMpb8ZSiY1FA98sy9xyIvb2L81DO31Fs95SHSX0WS76VPzhVkn
+	 oYGvQqRfZj2D+QD3BSp3MXzr+TqlglZIJAy9dpsI=
+Date: Wed, 6 May 2026 15:31:52 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Xiaolei Wang <xiaolei.wang@windriver.com>
+Cc: mchehab@kernel.org, Frank.li@nxp.com, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com,
+	jacopo@jmondi.org, guoniu.zhou@nxp.com, s.riedmueller@phytec.de,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] media: imx8-isi: fix use-after-free on remove
+Message-ID: <20260506123152.GN1598374@killaraus.ideasonboard.com>
+References: <20260506031210.2769998-1-xiaolei.wang@windriver.com>
+ <20260506031210.2769998-2-xiaolei.wang@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260505142547.795054-6-johan@kernel.org>
-X-Rspamd-Queue-Id: 142674DA2DC
+In-Reply-To: <20260506031210.2769998-2-xiaolei.wang@windriver.com>
+X-Rspamd-Queue-Id: CD4BC4DA463
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244376-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,nxp.com,pengutronix.de,gmail.com,jmondi.org,phytec.de,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-244377-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ideasonboard.com:dkim,ideasonboard.com:email]
 
-On Tue, May 05, 2026 at 04:25:44PM +0200, Johan Hovold wrote:
-> Adapters can be looked up based on their id using i2c_get_adapter()
-> which takes a reference to the embedded struct device.
+Hello Xiaolei,
+
+Thank you for the patch.
+
+On Wed, May 06, 2026 at 11:12:07AM +0800, Xiaolei Wang wrote:
+> KASAN reports a slab-use-after-free in __media_entity_remove_link()
+> during rmmod of imx8_isi:
 > 
-> Make sure that the adapter (including its struct device) has been
-> initialised before adding it to the IDR to avoid accessing uninitialised
-> data which could, for example, lead to NULL-pointer dereferences or
-> use-after-free.
+>   BUG: KASAN: slab-use-after-free in __media_entity_remove_link+0x608/0x650
+>   Read of size 2 at addr ffff0000d47cb02a by task rmmod/724
 > 
-> Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
-> Cc: stable@vger.kernel.org	# 2.6.22
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+>   Call trace:
+>    __media_entity_remove_link+0x608/0x650
+>    __media_entity_remove_links+0x78/0x144
+>    __media_device_unregister_entity+0x150/0x280
+>    media_device_unregister_entity+0x48/0x68
+>    v4l2_device_unregister_subdev+0x158/0x300
+>    v4l2_async_unbind_subdev_one+0x22c/0x358
+>    v4l2_async_nf_unbind_all_subdevs+0xfc/0x1c0
+>    v4l2_async_nf_unregister+0x5c/0x14c
+>    mxc_isi_remove+0x124/0x2a0 [imx8_isi]
+> 
+>   Allocated by task 249:
+>    __kmalloc_noprof+0x27c/0x690
+>    mxc_isi_crossbar_init+0x22c/0x560 [imx8_isi]
+> 
+>   Freed by task 724:
+>    kfree+0x1e4/0x5b0
+>    mxc_isi_crossbar_cleanup+0x34/0x80 [imx8_isi]
+>    mxc_isi_remove+0x11c/0x2a0 [imx8_isi]
+> 
+> The problem is that mxc_isi_remove() calls mxc_isi_crossbar_cleanup()
+> before mxc_isi_v4l2_cleanup(). The crossbar cleanup frees the media
+> entity pads, but the subsequent v4l2 cleanup still tries to remove
+> media links that reference those pads.
+> 
+> Fix this by calling mxc_isi_v4l2_cleanup() before
+> mxc_isi_crossbar_cleanup() to ensure all media entities are properly
+> unregistered while the pads are still valid.
+> 
+> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > ---
->  drivers/i2c/i2c-core-base.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> index 31f7d43e4ab5..be909d6bc776 100644
-> --- a/drivers/i2c/i2c-core-base.c
-> +++ b/drivers/i2c/i2c-core-base.c
-> @@ -1587,6 +1587,10 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
->  	if (res)
->  		goto out_reg;
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index 4bf8570e1b9e..2d639b789910 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -556,8 +556,8 @@ static void mxc_isi_remove(struct platform_device *pdev)
+>  		mxc_isi_pipe_cleanup(pipe);
+>  	}
 >  
-> +	mutex_lock(&core_lock);
-> +	idr_replace(&i2c_adapter_idr, adap, adap->nr);
-> +	mutex_unlock(&core_lock);
-
-Sashiko points out that this needs to go before registering the adapter
-(for now) as i2c-dev registers the chardev from a bus notifier callback.
-
-> +
->  	dev_dbg(&adap->dev, "adapter [%s] registered\n", adap->name);
+> -	mxc_isi_crossbar_cleanup(&isi->crossbar);
+>  	mxc_isi_v4l2_cleanup(isi);
+> +	mxc_isi_crossbar_cleanup(&isi->crossbar);
+>  }
 >  
->  	/* create pre-declared device nodes */
+>  static const struct of_device_id mxc_isi_of_match[] = {
 
-Johan
+-- 
+Regards,
+
+Laurent Pinchart
 
