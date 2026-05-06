@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-244319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOTlDRbg+mmGTgMAu9opvQ
-	(envelope-from <stable+bounces-244319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:30:46 +0200
+	id OGw6JjDg+mmGTgMAu9opvQ
+	(envelope-from <stable+bounces-244320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:31:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639A24D69AC
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C504D69BB
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11C5F30179E3
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:30:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A46E930179D9
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958B42E8897;
-	Wed,  6 May 2026 06:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12DF302756;
+	Wed,  6 May 2026 06:31:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BB31643B
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 06:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2635319E97B
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 06:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778049042; cv=none; b=oLHcuq9DLfRTKe1gtnTpoPqeQHTHNk+NIUn1+vM9Hf0dQUSmX2V68RUxopPZt2r3NBPoMGXyNXSU2fce4nWHNUpw3baUL1LpJ+wGytrInqu59ROVDaoa5z0Hly4hnI/v7bM1V6cndldahQeyLZB65Vgk53NF2r7AqvHMITZGDD8=
+	t=1778049069; cv=none; b=DVGE8WpyaMxmWRo3Au7suquQFSqYZxK5H2AEsIJ6M5h03izecZoUWSeZ2/ogH7DopDmpWcCUyWB1DHtSGdg3EKsUmlrsDsrx7X8LEM97Mc7Xri8YEhlWIWJK0u4A3ovhU6dQkd6JTYDWhWrYINf5hW9duRO1X8Oi7spjo6FWtFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778049042; c=relaxed/simple;
-	bh=Hy/37V2fEzOr9hZsqC11s8LyXMGngGvd7ZYCy2FInEY=;
+	s=arc-20240116; t=1778049069; c=relaxed/simple;
+	bh=6zVJUEvbUaRhzUNEM9sbcPUQC6JO46thF3fLM0Scx50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DScGRNBO0JhbihQKRxbRA6g8aQV3olvSRaIc1xdoibTDdiInSsdc3UcSylm7gSlQ3J+vsn45F1k59gZ+3nRwIMX637JUT3hmvzq/Al5O7C9pEVEO46nMpq7YXVRgcQlXi0cE1bdWOoFZDpWlavoK17lexqV08yWb0G3KEihBsFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
+	 MIME-Version; b=VAN0DxJ/mi+eeYOb3+qukvqPTb4GFcuowQrQ+1H5+nVP0Iznxn7n0EE7igDAVDvsaXesPZQiZyrUoGGluAa/vS4ahERI5dFC/dnGUM6lmMOTcvMmwQcXLHxJEjYtx3dXohhRX9HEF5HIteDi41X7VCqFL4WWyWpirug6r3/u/u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz4t1778048977t2ea64436
-X-QQ-Originating-IP: Esr914d9uJskgbtcbQraKMUWA5PUeC+8kpJY+aOFDOs=
+X-QQ-mid: esmtpsz11t1778049009t8ac73aed
+X-QQ-Originating-IP: cCtPN0ZL1aIrap5QDwH58zNFz43Jt3vGreWcraLNJIE=
 Received: from w-MS-7E16.trustnetic.com ( [60.186.244.4])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 06 May 2026 14:29:31 +0800 (CST)
+	id ; Wed, 06 May 2026 14:30:03 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3223381873921712130
+X-BIZMAIL-ID: 7816696291691624219
 EX-QQ-RecipientCnt: 4
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: stable@vger.kernel.org
 Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12.y] net: txgbe: fix RTNL assertion warning when remove module
-Date: Wed,  6 May 2026 14:29:26 +0800
-Message-ID: <3C8522BDA3D054D8+20260506062926.658721-1-jiawenwu@trustnetic.com>
+Subject: [PATCH 6.6.y] net: txgbe: fix RTNL assertion warning when remove module
+Date: Wed,  6 May 2026 14:30:00 +0800
+Message-ID: <FAAC012B43535C92+20260506063000.658745-1-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026050104-careless-extended-8765@gregkh>
-References: <2026050104-careless-extended-8765@gregkh>
+In-Reply-To: <2026050105-ascent-escalate-2044@gregkh>
+References: <2026050105-ascent-escalate-2044@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,26 +60,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MxdW4jxL6NvXMxg6XoRLmltW8wVWZdSUSWrCYM+cNk2Yn+sIGrN6azgr
-	+wXE9ubkA4EBJMvW9QNulzPBZ8jQXSzfXS7P9ZCDLaJk7qTKx7rLpR5Ns88pHC7MO0BsPsr
-	wravfZubT77DhJBwDexQ98zAJKy6537o0RyUisNGz6+q7j594DrDnwk8CYLkUThAXvCb0aD
-	sPxlQvNuEP6V6RwYiEn6TkDnubatZl0klEMZ7aIyq3s2C53oANcysRKDwZLPT6bUnr6dCzp
-	Pfd4ZuQROwJJdzSYEKKbYnD4dzG/NY/oegxOZWrOOIEq8G0yQ6UsBd6JHxgCoJTodjcCWz6
-	x9XANndMLuA0Wg9aGbnzKoI4r+mxDJRnMSb2RLFYdePwYEXlpy4e7SNPExQCwRA+oD6cK9k
-	ZPi1JRk/NO+R1UnCw8jOs36rLAclEmsbhpHh/gKpRPvg21XfK/7B5vLw9jCnkXHgNyf5ViP
-	NAgE8zGNA8QtFGA9jt/tPX8cDQMq1OO2PKr8o5hthinBz0ZepPYqUKA0HuLa81Bg2jkdAOt
-	1A5HezhsZnnU3Hv3Na04GtvH5z9nCx+93JOcQx9ycFVWDzQhcYhvsxnBR5PxSsPWXNhHYzg
-	BU1W6VGSkJ3Pun1fu9x6+h2y6cy1UZTzBUAxPIw1sk0dVdVrF1La8Nf60r67oIDXXnlvA0B
-	Bjhdlxfkq4VehDkmUZZatxr9k1kAgO6c+9yUdprWep/eg2TeceVftNIYFxjTLDbKTqgEaVQ
-	jgtP4gcQiZnx1Ub7/KkgsCVUJQ8BZvixbZ3BHYUl3F4+6UkHNDL29OlJhdUjIPvo9Q2+Z3w
-	sY6//QdDba1x7Wf9dBXU8eASQ6uhrtddDRCioGHfmhVR5ZPKpmgZ/XKMfJOMCndk+G/P+J7
-	C0tQrwa2jpzDxsOpbfCnmuMUVwkd23YIJWgRMoNULRg1ghl84WsgD3x9jhWSJId/iMaSrzh
-	+havqAISg4acj+CnbBkG+FgiErqy/g21fSrZ2hffy1daO8AE7GRocEE4mexZypgw6MNfaIy
-	KjE5XC576ai7Eb6C2X5tYUY6xRUniB19s09D/O/UnafE/1Awab
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MSFJXbmR8y2eDw42JHt2NB/LrOCOvtOGYvBrMho9Hs2IR5ZElB0VuqJ9
+	WC3SwpNMDvF5X7U178r9gMutUW4Goa10+zdTKyw1QPb0j/jza2gbQXr2uw/D/cOkNsVymCP
+	Sv6I33oNKjXLKjRcUr8fxphGx4mhRgKxQdkmA68t6jaZWCtUmn9sAdG+9YdEEri1jvdzIjI
+	mgwzsarLz31BEQjuKYiYvLdXh5331iQ7WFPHxmFL95jgTudAhDm4mONFi2qL+NI5z//3Psl
+	hPLmbNFLpHFMj0PC1ImHISK+75lPfjum99f3Xe8r55Btx+PEGXWIY5pa8cvAakH20qXlBXW
+	Fmt7vvBGHuiLgIN1kfZw5X5/fAJVWDscnKCUjyhfloCjHop3mwQm+sLJ2hd7/TGcQw7hxYc
+	LjKX3yuZWu4Nxz84fow33JzKvgNMOTh2SasHO+oRo5N4qflTZh2/IZVkDlU6k3lj2V9DI1R
+	0ATMtVPh2p9LHCFMLydV6C/ZgXfIBvG77RtVDB8zK6M6bdaRTGE+CFHyJ5yEU8lrClIEmn6
+	2Y4ZelDUtZUUtaiRd4StMFWBfNDl0QY5tLctvIz4zvcLP5UK6h0VFZc9rcYvubE7egpbSFv
+	/NooCIShEp97z5c1fqNaJWH1Gjq81FUkKmX8oLDSAh+9+aRmK1gnNbASqfIP2xzerLuVHES
+	8GP9HhOW+qvtBivrhDunD7MvWfJbKmtz5soWvcliLVH2J78HWq2jcziOOMlQ/0c67IzNJh5
+	XqCURxnM0r7oEByYiAMlKk5nElRopmQIMmjiG4YY4Y2LUE7GJ6+cVycaY2RdKPqLoNTKqP3
+	vK3mou2vqVXb6pm6TYSIJLmLXQbd3ZMwR9TVJnj2qadMY4PyPeTYU/LmJR7icDy4iJB/dSM
+	775fxnCKua8CqC6Epu2UeQFuy03u3pwWMFOjfzMNi/wl+ywEbcddsvkzi6YYHS8kysjPLz1
+	cpCHBUdE57oM8z1ox3pQ68MrlSSd94CE2gbuvWRubnrLOnXhQjAfLysuNYXtK2Y3fi1ohAV
+	EYAJhkYdjA061+VpxPxqaKzx6ZQlaw69Jv3oyPpt1EkANJtEe4XZDenoIzXnGdYqVCnwqjl
+	Z6ah397fdf1JExif991HHil3I3/d1QV5gWdcwHwsWLS9VPz0X/U05PCj3FOrfz1Rw==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 639A24D69AC
+X-Rspamd-Queue-Id: 08C504D69BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
@@ -87,11 +88,11 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244319-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244320-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[trustnetic.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
@@ -107,7 +108,7 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.966];
 	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,armlinux.org.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
 For the copper NIC with external PHY, the driver called
 phylink_connect_phy() during probe and phylink_disconnect_phy() during
@@ -186,17 +187,17 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index f26946198a2f..9726622a96bf 100644
+index 4159c84035fd..2494a3a171fd 100644
 --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
 +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -622,7 +622,9 @@ int txgbe_init_phy(struct txgbe *txgbe)
+@@ -820,7 +820,9 @@ int txgbe_init_phy(struct txgbe *txgbe)
  void txgbe_remove_phy(struct txgbe *txgbe)
  {
  	if (txgbe->wx->media_type == sp_media_copper) {
 +		rtnl_lock();
- 		phylink_disconnect_phy(txgbe->wx->phylink);
+ 		phylink_disconnect_phy(txgbe->phylink);
 +		rtnl_unlock();
- 		phylink_destroy(txgbe->wx->phylink);
+ 		phylink_destroy(txgbe->phylink);
  		return;
  	}
 -- 
