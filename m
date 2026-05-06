@@ -1,238 +1,205 @@
-Return-Path: <stable+bounces-244353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFAFJJoJ+2mbVQMAu9opvQ
-	(envelope-from <stable+bounces-244353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:27:54 +0200
+	id QKdNINcJ+2mbVQMAu9opvQ
+	(envelope-from <stable+bounces-244354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:28:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95654D89A4
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99744D89CF
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D8E673016798
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 09:27:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C99D3016D04
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 09:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D123E1201;
-	Wed,  6 May 2026 09:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20453E3C53;
+	Wed,  6 May 2026 09:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WtmvjlbW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m15586.qiye.163.com (mail-m15586.qiye.163.com [101.71.155.86])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F103DDDC6;
-	Wed,  6 May 2026 09:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5BD3E1D01;
+	Wed,  6 May 2026 09:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778059671; cv=none; b=Uqdy+lBv1Q65UwcU6U/YRUawsyyNMb3efCE7px9qJ3r8iI0SlQ7IXZpWwtPYQgJ64xWfntNvcLlL2jyGk7Z0WRtZYdIPE0/ZYromROkmTnwrqq9WLDPs7U0723gfZRdm+2HEs+LWfsUoL0FAZXiJ7shO2weQCaeaAGE4q6zl9YQ=
+	t=1778059732; cv=none; b=ko9Zm//mhel3PtvYzDf4sLmzlY1lE1zhxCBdfduIUX0JO/8bQtR1r2fq9DquQuKQe0VD9iq9WDbn3X4BqsMWms95RkZhSM2D5oOz4+qqBiUD9LiXbUDzVQH+WbMds4Zn5YtxR005oWWIGgDwI+tzjZmwSj57xK+rs1KZYEfdOwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778059671; c=relaxed/simple;
-	bh=pa2Zj33wc/yFZ3u9m/LMro0SdsCGyWznuk2wVVF4lUY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rs8zuSgU6zip3r43Rd6impIk46doUq4Efjp/woYaTYDWOH3qzWRkUn8Zprcp9NDnYpE3VbHBunBDnI7IGHwpAhRCRKK6mDDFOE0C7mfu5YJQv+50Wh7BUnfb4+pNPk+V8zWAkUmAWxFBuVCXup9dKIyH8/ppVWUu/Uls3+lxQus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=autochips.com; spf=pass smtp.mailfrom=autochips.com; arc=none smtp.client-ip=101.71.155.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=autochips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=autochips.com
-Received: from [172.25.88.78] (unknown [223.244.89.246])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3d4ff1d4f;
-	Wed, 6 May 2026 17:27:34 +0800 (GMT+08:00)
-Message-ID: <4cbc0a7f-19e6-4ce5-b36e-079e4cb22086@autochips.com>
-Date: Wed, 6 May 2026 17:27:33 +0800
+	s=arc-20240116; t=1778059732; c=relaxed/simple;
+	bh=3+UlTT82AzvhXCFAo6WB995cswC53PK4mXAxRgDRYEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aiC41MNAKDdk6IE3NZCoyQvPrNU7/DKuZ6eWJ3JHP7PYqcuaD3V945ekuadDfoaK9V2K8RbqsOXbGPX0yDRz75UPrL3BEAEMK86vOSs/VJkjBj9AFUDMiXM+UeKJic53II8fIagZYH2ZHl3la5jw9IVIEtR4p5Vvac5f4zos4X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WtmvjlbW; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778059730; x=1809595730;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3+UlTT82AzvhXCFAo6WB995cswC53PK4mXAxRgDRYEw=;
+  b=WtmvjlbWNMIMStV8dvDH4NDzm9Gl8wBrH3g4ZHiGNxy7e+CkLH9Dry71
+   l0bEPeSjlVDPMVi+nCOQvWhrj6d/wcd+UqRGh1gqONx2LumeV4RuBvDJN
+   1Yj3mP46Wo/liDMviPBSNe83wPvwnvcykA8pSpz3RoPYcVnQTsvgwCN+y
+   OZ1UjfqyyuskA+auJQQMECNPsaIgB9z6gW0OZz/AcPmaJY8neyMiybXby
+   XedSKhAAa4O2mSPrYqbjdhVgOF+R4DfhGMSIS3lsAMg8rA9lTe5mgnp7m
+   Eyfg5baQjNExyUUgjnPQXwd2vdqWym5ArGsd/ibMS2ubvrpPwTh+8L1JU
+   A==;
+X-CSE-ConnectionGUID: 6gxyOwsZTp2x0QFxJitasg==
+X-CSE-MsgGUID: gXpQSGVqQ46dDsRte0V+aA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="90441872"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="90441872"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 02:28:49 -0700
+X-CSE-ConnectionGUID: aXwuU5mjQVieQp35TlF+Aw==
+X-CSE-MsgGUID: M/1YFarlQemtZXpIsp4cIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="236190502"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.191])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 02:28:47 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 4CDD911F70F;
+	Wed, 06 May 2026 12:28:47 +0300 (EEST)
+Date: Wed, 6 May 2026 12:28:47 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Martin Hecht <mhecht73@gmail.com>
+Cc: martin.hecht@avnet.eu, michael.roeder@avnet.eu, stable@vger.kernel.org,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] media: i2c: alvium: Fix controls for WB/AWB
+Message-ID: <afsJz1vVdd3o-pe9@kekkonen.localdomain>
+References: <20260505142513.1551721-1-mhecht73@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: cdns3: gadget: fix request skipping after clearing
- halt
-To: Pawel Laszczak <pawell@cadence.com>,
- "Peter Chen (CIX)" <peter.chen@kernel.org>
-Cc: "rogerq@kernel.org" <rogerq@kernel.org>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260423160601.2949010-1-yongchao.wu@autochips.com>
- <ae66WphA+lO6t3rE@nchen-desktop>
- <PH7PR07MB9538E83DB108635EAE7B21E3DD362@PH7PR07MB9538.namprd07.prod.outlook.com>
- <ae/qXIT19Z2zWsDs@nchen-desktop>
- <e963d293-63cd-4124-9a53-8fc16e44ec72@autochips.com>
- <PH7PR07MB95388984DB7A5265770CEE58DD372@PH7PR07MB9538.namprd07.prod.outlook.com>
- <49e3cff9-9ace-4eed-aa2c-7f83825c44ee@autochips.com>
- <PH7PR07MB95384829A877906E69145C76DD312@PH7PR07MB9538.namprd07.prod.outlook.com>
-Content-Language: en-US
-From: Yongchao Wu <yongchao.wu@autochips.com>
-In-Reply-To: <PH7PR07MB95384829A877906E69145C76DD312@PH7PR07MB9538.namprd07.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9dfc9d357703ackunm073b0d1459e418
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCShhOVk9KTR1DTUsdHhgaT1YVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSU9PVUNCVUlPTVlXWRYaDxIVHRRZQVlPS0hVSk
-	tJT09PSFVKS0tVSkJLS1kG
-X-Rspamd-Queue-Id: E95654D89A4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260505142513.1551721-1-mhecht73@gmail.com>
+X-Rspamd-Queue-Id: B99744D89CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[autochips.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244353-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[avnet.eu,vger.kernel.org,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-244354-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yongchao.wu@autochips.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-On 5/4/2026 5:15 PM, Pawel Laszczak wrote:
->>>
->>>>
->>>> On 26-04-27 09:01:47, Pawel Laszczak wrote:
->>>>>>
->>>>>>
->>>>>> On 26-04-24 00:06:01, Yongchao Wu wrote:
->>>>>>> According to the cdns3 datasheet, the EPRST (Endpoint Reset)
->>>>>>> command causes the DMA engine to reposition its internal pointer
->>>>>>> to the next Transfer Descriptor (TD) if it was already processing one.
->>>>>>>
->>>>>>> This issue is consistently observed during the ADB identification
->>>>>>> process on macOS hosts, where the host issues a Clear_Halt. Although
->>>>>>> commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before
->> reset
->>>>>>> reset endpoint") attempted to avoid DMA advance by toggling the
->>>>>>> cycle bit, trace logs show that on certain hosts like macOS, the
->>>>>>> DMA pointer
->>>>>>> (EP_TRADDR) still shifts after EPRST:
->>>>>>>
->>>>>>>    cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
->>>>>>>    cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <- Should be
->> f9c04000
->>>>>>>    cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
->>>>>>>
->>>>>>> As shown above, the DMA pointer jumped to index 3 (offset 0x30),
->>>>>>> causing the controller to skip the initial TRBs of the request.
->>>>>>> This leads to data misalignment and ADB protocol hangs on macOS.
->>>>>>
->>>>>> Pawel, Is it a hardware issue? The cycle bit has already been
->>>>>> toggled before the endpoint has been reset, why the DMA pointer still
->> advances?
->>>>>
->>>>> Yongchao, could you confirm if the TD consists of three TRBs?
->>>> In our case, each TD consists of 4 TRBs.
->>>> The DMA pointer appears to advance within the same TD after EPRST.
->>>>
->>>> Each 16KB request is split into 4 TRBs (4KB each):
->>>> - TRB0 - TRB2: CHAIN
->>>> - TRB3: IOC (last TRB of the TD)
->>>>
->>>> After enqueue, the initial EP_TRADDR points to the first TRB:
->>>>    EP_TRADDR = 0xf9c04000 (TRB0)
->>>>
->>>> After Clear_Halt (EPRST), it becomes:
->>>>    EP_TRADDR = 0xf9c04030 (TRB3)
->>>>
->>>> Since each TRB is 12 bytes, the offset 0x30 corresponds to 4 TRBs.
->>>> This indicates that after EPRST, the DMA pointer skipped the entire
->>>> current Request and jumped directly to the start of the next Request
->>>> at 0xf9c04030
->>>>
->>>> Below is the relevant trace (trimmed):
->>>>
->>>> // enqueue request (16KB -> 4 TRBs)
->>>> cdns3_prepare_trb: dma buf: 0xf7abc000, size: 4096, ctrl: 0x00200415
->>>> cdns3_prepare_trb: dma buf: 0xf7abd000, size: 4096, ctrl: 0x00000415
->>>> cdns3_prepare_trb: dma buf: 0xf7abe000, size: 4096, ctrl: 0x00000415
->>>> cdns3_prepare_trb: dma buf: 0xf7abf000, size: 4096, ctrl: 0x00000425
->>>>
->>>> cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04000
->>>>
->>>> // Clear_Halt
->>>> cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
->>>> cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030
->>>>
->>>
->>> Can you confirm whether the host had already sent some data for this
->>> TD prior to the endpoint reset operation?
->>>
->>
->> I confirm that the host sent no data prior to or during the EPRST operation.
-> 
-> According to the specification, the controller may fetch TRB descriptors after
-> the endpoint has been initialized.
-> In complex Transfer Descriptors (TDs) consisting of several TRBs with the CH=1
-> bit set, the controller may fetch additional TRBs because it treats them as a
-> single logical entity.
-> 
-> I have not been able to determine exactly how many TRBs can be prefetched
-> in such a situation. 
-> 
-> According to the description of the EPRST bit:
-> After endpoint reset the software is responsible for it to re-set the Endpoint
-> TRADDR.
-> 
-> This fix looks correct to me, 
-> 
-> Can you confirm which version of controller do you have in usb_cap6 register?
-> 
-> Pawel
+Hi Martin,
 
-Thanks for the clarification.
+Thanks for the patch.
 
-I confirm that the version read from the usb_cap6 register is 0002450d.
-
-Best regards,
-Yongchao Wu
-
->>
->> TotalPhase Trace:
->> 0,HS,2700,0:06.078.671,2.057.666 ms,0 B,,13,00,Set
->> Configuration,Configuration=1
->> 0,HS,2710,0:06.080.811,1.125.266 ms,,,,,[10 SOF],[Frames: 1243.7 - 1245.0]
->> 0,HS,2711,0:06.080.955,992.550 us,2 B,,13,00,Get String Descriptor,Index=5
->> Length=2
->> 0,HS,2733,0:06.082.061,125.083 us,,,,,[2 SOF],[Frames: 1245.1 - 1245.2]
->> 0,HS,2734,0:06.082.119,104.566 us,28 B,,13,00,Get String Descriptor,Index=5
->> Length=28
->> 0,HS,2756,0:06.082.311,355.935.283 ms,,,,,[2848 SOF],[Frames: 1245.3 -
->> 1601.2]
->> 0,HS,2757,0:06.438.196,105.033 us,4 B,,13,00,Get String Descriptor,Index=0
->> Length=256
->> 0,HS,2778,0:06.438.371,875.233 us,,,,,[8 SOF],[Frames: 1601.3 - 1602.2] //1.
->> Host issues Clear_Halt
->> 0,HS,2779,0:06.439.278,51.433 us,0 B,,13,00,Clear Endpoint Feature,Halt
->> Endpoint 01 OUT
->> 0,HS,2789,0:06.439.371,500.150 us,,,,,[5 SOF],[Frames: 1602.3 - 1602.7]
->> 0,HS,2790,0:06.439.874,51.416 us,0 B,,13,00,Clear Endpoint Feature,Halt
->> Endpoint 01 IN
->> 0,HS,2800,0:06.439.996,250.116 us,,,,,[3 SOF],[Frames: 1603.0 - 1603.2] //2.
->> First OUT transaction happens
->> 0,HS,2801,0:06.440.350,1.066 us,24 B,,13,01,OUT txn,43 4E 58 4E 01 00 00 01
->> 00 00 10 00..
->> 0,HS,2805,0:06.440.371,66 ns,,,,,[1 SOF],[Frame: 1603.3]
->> 0,HS,2806,0:06.440.453,4.283 us,218 B,,13,01,OUT txn,68 6F 73 74 3A 3A 66 65
->> 61 74 75 72..
->>
->>> Pawel
->>>
->>>> Best regards,
->>>> Yongchao
-
+On Tue, May 05, 2026 at 04:25:10PM +0200, Martin Hecht wrote:
+> With that patch the controls for red-balance and blue-balance were created
+> only if the particular camera supports that. Otherwise the pointers on
+> the control variable are initialized with NULL to prevent side effects for
+> clustering with AWB control.
 > 
+> Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
+> Signed-off-by: Martin Hecht <mhecht73@gmail.com>
+> ---
+>  drivers/media/i2c/alvium-csi2.c | 37 ++++++++++++++++++++-------------
+>  1 file changed, 22 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
+> index b62b45a4f2fc..4c6934e9e177 100644
+> --- a/drivers/media/i2c/alvium-csi2.c
+> +++ b/drivers/media/i2c/alvium-csi2.c
+> @@ -2108,26 +2108,33 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+>  						  0, 0, &alvium->link_freq);
+>  	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
 
+This is a problem. Can you move setting the flags after checking the
+handler's error status? The functions adding controls may fail and this is
+simply a missing error check.
+
+Can you submit a fix, with a Fixes: tag and this patch should be rebased on
+the fix, please?
+
+>  
+> +	if (alvium->avail_ft.whiteb) {
+> +		ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
+> +							V4L2_CID_BLUE_BALANCE,
+> +							alvium->min_bbalance,
+> +							alvium->max_bbalance,
+> +							alvium->inc_bbalance,
+> +							alvium->dft_bbalance);
+> +		ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
+> +						       V4L2_CID_RED_BALANCE,
+> +						       alvium->min_rbalance,
+> +						       alvium->max_rbalance,
+> +						       alvium->inc_rbalance,
+> +						       alvium->dft_rbalance);
+> +	} else {
+> +		/* set to NULL for v4l2_ctrl_auto_cluster if not existing */
+> +		ctrls->blue_balance	= NULL;
+> +		ctrls->red_balance = NULL;
+
+Aren't the two NULL already before this?
+
+> +	}
+> +
+>  	/* Auto/manual white balance */
+>  	if (alvium->avail_ft.auto_whiteb) {
+>  		ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops,
+>  						   V4L2_CID_AUTO_WHITE_BALANCE,
+>  						   0, 1, 1, 1);
+> -		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
+> -	}
+> -
+> -	ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
+> -						V4L2_CID_BLUE_BALANCE,
+> -						alvium->min_bbalance,
+> -						alvium->max_bbalance,
+> -						alvium->inc_bbalance,
+> -						alvium->dft_bbalance);
+> -	ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
+> -					       V4L2_CID_RED_BALANCE,
+> -					       alvium->min_rbalance,
+> -					       alvium->max_rbalance,
+> -					       alvium->inc_rbalance,
+> -					       alvium->dft_rbalance);
+> +
+> +		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, true);
+> +	}
+>  
+>  	/* Auto/manual exposure */
+>  	if (alvium->avail_ft.auto_exp) {
+
+-- 
+Kind regards,
+
+Sakari Ailus
 
