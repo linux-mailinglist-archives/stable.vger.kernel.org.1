@@ -1,184 +1,267 @@
-Return-Path: <stable+bounces-244298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4B8bMNul+mm7QwMAu9opvQ
-	(envelope-from <stable+bounces-244298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 04:22:19 +0200
+	id SFZDAOKn+mlURAMAu9opvQ
+	(envelope-from <stable+bounces-244300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 04:30:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D6F4D5A05
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 04:22:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995184D5AC4
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 04:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FF9130238CD
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 02:21:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BE403026310
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 02:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0385B279DCA;
-	Wed,  6 May 2026 02:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="h8Gj8uGB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA2E29E117;
+	Wed,  6 May 2026 02:30:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897A5248F72
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 02:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF81F217648;
+	Wed,  6 May 2026 02:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778034073; cv=none; b=dN+ifBj2x2eI0gh6lB2Kzx7+YUFRmyP0JWoB2qYbPtKqMnBSOvm/PbW0nB35szcAY+FiyJ/vfkJWslKTOyT1Q+jHbMTccoUy1tkm/XzfCg2UFzP8ZQgxSDK+NyAohQJUWOe/66wcvGQ/UMoQau8ZGDpGryABGT5Rt6sncsEDv9g=
+	t=1778034647; cv=none; b=ICTH92OR+ZzBqa74zOy2itNulJREAd3MPDxCHE3+gMVLS/XNxYO6EbSmd3I/JW/Q8yEbEexSxU0sFcHGJ0k3VPiqg4RF/ghEUI29iFykBRzcnPrhbR8Puct+Ueoyr81iaUsmiFEf7o1x7mX25AcfrQgB6za+5ZJYW8jm/2oqoWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778034073; c=relaxed/simple;
-	bh=Qub8W5DOuGrPZBNbmzaxGwvAExMQ3iX7VoPqndSPXk4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmtR4Cn0aylpJr2BrK0VTKTezQUvtnXDFRTnp24SLwxqyDjy2LH6Nv7s5OfnT6PLTr9T2uoVZn+z0oSyW+lyHS+j22os+T/6Yf0a/RR0PbjlHaiQBgp/9Mxwp3bEjrgHC2lUoufwLxMo2uaFDY5ln2izrgYFNcpR2Fn4mXhb2Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=h8Gj8uGB; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7d4c12ff3d5so5750544a34.2
-        for <stable@vger.kernel.org>; Tue, 05 May 2026 19:21:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1778034071; x=1778638871; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PJQM2X8ovb1SBk8hlI549WELVH79VMa9uCDGa279uNs=;
-        b=h8Gj8uGB0WBDlXgXh04LPvDIEh10nybz0AS4Mi8my3DyJ0ppwG/lxIFZwmxoVfAT3h
-         RE99sfehbg6QJ2PK/ImQ2Z+tpzzQ9BrNmhnopyNry/+0RNmdlE1n8X6zcZHpDM0kFlD3
-         qq3+qtF+YZBHKjdvm7Cvq085fRAyjemjk+k/YNy5KTTgvhElOkbaNuVWtz29BJKBxFwG
-         hzNOiUfXJgwpP/OTsJXWP1WUShKKYBmuk1fjpyVoXSa1EyOIg8RLOpGLCCeOoE1N28Ad
-         NYWlannBCDo+Tfg1BvKisO3W1KjJeod2i3/FBYSgCkA0hxvCKxKrj04c9VkvVhagoxCD
-         pQ4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778034071; x=1778638871;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PJQM2X8ovb1SBk8hlI549WELVH79VMa9uCDGa279uNs=;
-        b=OrfjKpeD/CEqJxMaT8Et58UUhH3CuSrezZaUtRt07NpLnkfKFykDkNCXQ6BETZUSZW
-         gVgwnesVHmJnylICE3fuDQJYil4hHb5dx4wZqAH/2IZtEQE7F4L+VDo50MNS7EN4L+FY
-         /pTH9KTcb0SGhKonXrDBzEfvQ1HaIAsRDwhSOGW0nq1fkYf2nSkTLbnzVMG2QcgHGsXr
-         SbtEzPW8X4JOjhp9sZ4z4HXC44ZaYhSUDsofPns9HizYL92Zml9CPQWaxISRFD944T9n
-         RFlbYIbiFUQPH7ctLQcZIorTPvzWflqgUDUaYbQ5hA8dhWdAJ41mHYXt0RBPFKKASw7+
-         utiQ==
-X-Gm-Message-State: AOJu0Yy+ms3OhVrInnCkOU92imt7r0GlSkPlNdN7OkY936haJdwomipg
-	jh5m1FdCP9Li1BKp2aQ9cR5Z2jRq1PCsgApKGMTlFe3uYvwrrbqixYRXhR6vVc4PyXBhPXwM0P3
-	cin80
-X-Gm-Gg: AeBDiesOGQE7Vj/Q6TP99KeV8YseB/dWhjsPlmpqK20B2Nv+2XFOe1eekkdD4tnu2Qi
-	6gswyqUZIVHeK+PYRFfm6fKuAoBgVDwNhVujDtkK/dwe5ocUZ19bFeLbOsxsC3TpuOO0Rfp0i3m
-	BHncP5XRyKX0u23eojr9qVe+Sa7Dk8ZN+43g6m8ralKzDW00AIiNioYI1wmShE63WIU0N9ANYWr
-	5b6+JgFb6a+btgl68ZdrWKWBWaOp74Qxcisyd05bpi970LHC+KiwaNWdgxjieXqq9fc+myPDKjg
-	H6niWP2Bqz+7GY6od4AboB57/iEzsZWvLugZt7M7PLK12NfK+w8Opa6/fLZ1cRAhYgh/cFsDu8r
-	zBAMiTVyHjeoa94RRfYgLowenj2sXESEFwjqj6Zgc5wt8qcOVNmAr8wXa/kKEXe728uoKGBpdX8
-	+DNG8GZ3ELxYIABNtOutbwskJodbV2szel4SenzeqkKmraj1VfSJkU1PgtBWEMduPiTJyIqdf8M
-	QmNXz/0VyCN4w==
-X-Received: by 2002:a05:6830:3696:b0:7d7:fbe5:e9b3 with SMTP id 46e09a7af769-7e1deec4f0emr877853a34.3.1778034071590;
-        Tue, 05 May 2026 19:21:11 -0700 (PDT)
-Received: from localhost ([2001:470:b8f6:1b:4a29:1d2:a1fb:6ae])
-        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7decac2633bsm11011112a34.16.2026.05.05.19.21.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 19:21:10 -0700 (PDT)
-From: Corey Minyard <corey@minyard.net>
-To: stable@vger.kernel.org
-Cc: Corey Minyard <corey@minyard.net>,
-	Li Xiao <252270051@hdu.edu.cn>
-Subject: [PATCH 5.10.y] ipmi:ssif: Clean up kthread on errors
-Date: Tue,  5 May 2026 21:20:48 -0500
-Message-ID: <20260506022107.1469501-1-corey@minyard.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026050148-irregular-kite-7f24@gregkh>
-References: <2026050148-irregular-kite-7f24@gregkh>
+	s=arc-20240116; t=1778034647; c=relaxed/simple;
+	bh=S4/VXvdku8KrRO7E02/awFvdGYjK7r5TqE4xFnD51jM=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=DoeHSlb/YZO1FMo4UTdwu4WF3Y5rV7ut8QX++rBKnLSO18xNfm2Zykmr7IMHeb+Gxi+p2uONTEe4iv3SR6QbEpmMPl3tvXl/Scw/5LAOan7LGIU90NpRskA3HZYrgcpOc62UiggjtR/sehWxIbq9S6YLU/ky/r4rCRTPqHwwpVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Dx8erLp_ppMvoGAA--.22639S3;
+	Wed, 06 May 2026 10:30:35 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxB8G1p_ppz2Z7AA--.24349S3;
+	Wed, 06 May 2026 10:30:15 +0800 (CST)
+Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in
+ kvm_arch_flush_shadow_all()
+To: James Houghton <jthoughton@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, Sean Christopherson <seanjc@google.com>,
+ Gavin Shan <gshan@redhat.com>, Shaoqin Huang <shahuang@redhat.com>,
+ Ricardo Koller <ricarkol@google.com>, Tianrui Zhao
+ <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ James Hogan <jhogan@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260504224213.1049426-1-jthoughton@google.com>
+ <20260504224213.1049426-2-jthoughton@google.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <25838e74-01dd-d085-395b-676266dc9a9a@loongson.cn>
+Date: Wed, 6 May 2026 10:27:19 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260504224213.1049426-2-jthoughton@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 25D6F4D5A05
+X-CM-TRANSID:qMiowJDxB8G1p_ppz2Z7AA--.24349S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWryxWry7uF4rWrWDXFy7Jwc_yoWrKFW7pF
+	WDCa4DGr45Gr1Y9343Jw1DZw1F9ws5KF1fGFy5XayrtFyYv3s8K3WvyF1xAFW5JrZ7WFZa
+	vF15Krn8A3yvywbCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j0mhrUUU
+	UU=
+X-Rspamd-Queue-Id: 995184D5AC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244298-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[minyard.net:email,minyard.net:dkim,minyard.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244300-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[loongson.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-If an error occurs after the ssif kthread is created, but before the
-main IPMI code starts the ssif interface, the ssif kthread will not
-be stopped.
 
-So make sure the kthread is stopped on an error condition if it is
-running.
 
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-Reported-by: Li Xiao <<252270051@hdu.edu.cn>
-Cc: stable@vger.kernel.org
-Reviewed-by: Li Xiao <252270051@hdu.edu.cn>
-[Adjusted for stopping flag and complete operation still being present.]
-Signed-off-by: Corey Minyard <corey@minyard.net>
-(cherry picked from commit 75c486cb1bcaa1a3ec3a6438498176a3a4998ae4)
----
-Version 2 of this patch, not taking a patch and then doing the fix
-for it later, but just doing the patch.  The fix for setting the
-thread to NULL on an ERR_PTR() error return is already in the main
-kernel and should be coming to stable.
+On 2026/5/5 上午6:42, James Houghton wrote:
+> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
+> concurrently in the event that the KVM's `mm` is __mmput() at the
+> same time that last reference to the KVM is being dropped.
+> 
+> T1              T2
+> KVM_CREATE_VM
+>                  Get VM file from T1
+> close VM
+> exit_mm()       close VM
+> 
+> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>      with only the KVM srcu read lock held.
+> 
+> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
+>      kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>      again, with only the KVM srcu read lock held.
+By looking through the code, kvm_arch_destroy_vm() will free PGD page 
+only, page table walking is executing in deleting memslot or exit_mm().
 
- drivers/char/ipmi/ipmi_ssif.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+With normal code, life cycle of VM is something like this:
+   KVM_CREATE_VM
+     Create_VCPUs
+     Create memslots
+     Destroy_VCPUs
+     Destroy memslots
+   close VM
+   exit_mm()
 
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index 430302d2da6e..b884bfae7fa6 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1292,6 +1292,7 @@ static void shutdown_ssif(void *send_info)
- 	if (ssif_info->thread) {
- 		complete(&ssif_info->wake_thread);
- 		kthread_stop(ssif_info->thread);
-+		ssif_info->thread = NULL;
- 	}
- }
- 
-@@ -1922,6 +1923,17 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 
-  out:
- 	if (rv) {
-+		/*
-+		 * If ipmi_register_smi() starts the interface, it will
-+		 * call shutdown and that will free the thread and set
-+		 * it to NULL.  Otherwise it must be freed here.
-+		 */
-+		if (ssif_info->thread) {
-+			ssif_info->stopping = true;
-+			complete(&ssif_info->wake_thread);
-+			kthread_stop(ssif_info->thread);
-+			ssif_info->thread = NULL;
-+		}
- 		if (addr_info)
- 			addr_info->client = NULL;
- 
--- 
-2.43.0
+And there is kvm_get_kvm()/kvm_put_kvm() function call with 
+creating/destroy vCPUs, however no such operations with memslot 
+operation. Is it possible that VM is destroyed without removing 
+memslots, such as the following operation.
+   KVM_CREATE_VM
+     Create memslots
+   close VM
+   exit_mm()
+
+Regards
+Bibo Mao
+
+> 
+> This leads to a potential double-free of
+> kvm->arch.kvm_mmu_free_memory_cache and now with NV
+> kvm->arch.nested_mmus.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e7bf7a490c68 ("KVM: arm64: Split huge pages when dirty logging is enabled")
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+>   arch/arm64/include/asm/kvm_mmu.h |  1 +
+>   arch/arm64/kvm/mmu.c             | 23 +++++++++++++++++++----
+>   arch/arm64/kvm/nested.c          |  4 +++-
+>   3 files changed, 23 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
+> index 01e9c72d6aa7..30d5c24fcebb 100644
+> --- a/arch/arm64/include/asm/kvm_mmu.h
+> +++ b/arch/arm64/include/asm/kvm_mmu.h
+> @@ -178,6 +178,7 @@ void stage2_unmap_vm(struct kvm *kvm);
+>   int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long type);
+>   void kvm_uninit_stage2_mmu(struct kvm *kvm);
+>   void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
+> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
+>   int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
+>   			  phys_addr_t pa, unsigned long size, bool writable);
+>   
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index d089c107d9b7..4bab407d43bb 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1021,7 +1021,9 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   
+>   void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>   {
+> -	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +	lockdep_assert_held_write(&kvm->mmu_lock);
+> +
+> +	kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
+>   	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>   }
+>   
+> @@ -1095,12 +1097,14 @@ void stage2_unmap_vm(struct kvm *kvm)
+>   	srcu_read_unlock(&kvm->srcu, idx);
+>   }
+>   
+> -void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+> +static void __kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu, bool locked)
+>   {
+>   	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   	struct kvm_pgtable *pgt = NULL;
+>   
+> -	write_lock(&kvm->mmu_lock);
+> +	if (!locked)
+> +		write_lock(&kvm->mmu_lock);
+> +
+>   	pgt = mmu->pgt;
+>   	if (pgt) {
+>   		mmu->pgd_phys = 0;
+> @@ -1111,7 +1115,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>   	if (kvm_is_nested_s2_mmu(kvm, mmu))
+>   		kvm_init_nested_s2_mmu(mmu);
+>   
+> -	write_unlock(&kvm->mmu_lock);
+> +	if (!locked)
+> +		write_unlock(&kvm->mmu_lock);
+>   
+>   	if (pgt) {
+>   		kvm_stage2_destroy(pgt);
+> @@ -1119,6 +1124,16 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>   	}
+>   }
+>   
+> +void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+> +{
+> +	__kvm_free_stage2_pgd(mmu, false);
+> +}
+> +
+> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu)
+> +{
+> +	__kvm_free_stage2_pgd(mmu, true);
+> +}
+> +
+>   static void hyp_mc_free_fn(void *addr, void *mc)
+>   {
+>   	struct kvm_hyp_memcache *memcache = mc;
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 883b6c1008fb..977598bff5e6 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
+>   {
+>   	int i;
+>   
+> +	guard(write_lock)(&kvm->mmu_lock);
+> +
+>   	for (i = 0; i < kvm->arch.nested_mmus_size; i++) {
+>   		struct kvm_s2_mmu *mmu = &kvm->arch.nested_mmus[i];
+>   
+>   		if (!WARN_ON(atomic_read(&mmu->refcnt)))
+> -			kvm_free_stage2_pgd(mmu);
+> +			kvm_free_stage2_pgd_locked(mmu);
+>   	}
+>   	kvfree(kvm->arch.nested_mmus);
+>   	kvm->arch.nested_mmus = NULL;
+> 
 
 
