@@ -1,233 +1,285 @@
-Return-Path: <stable+bounces-244447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244448-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJnXOqOk+2mvegMAu9opvQ
-	(envelope-from <stable+bounces-244447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 22:29:23 +0200
+	id yPqoFrCk+2mvegMAu9opvQ
+	(envelope-from <stable+bounces-244448-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 22:29:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDE44E0301
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 22:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FB24E0309
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 22:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A0AC3008A6D
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 20:29:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 284243016923
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 20:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681E037E2F9;
-	Wed,  6 May 2026 20:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F191737FF54;
+	Wed,  6 May 2026 20:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pht1O9V7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EgK+uJa3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0990137D138
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 20:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778099338; cv=none; b=JO7d4o2GvomhboMlDNrkgf6H0gltom7kRdVwTvqYy0J1yeWi0eYDE2BqX3O+pgvHsNW0KdreFYHwbfmVS8eHhVcmS7RU+korrio5NczSY8oVH/sdfyhHz7p2gMUAQEvL7KlX2BbSrduUFVRckiHfaBXmuHq0H+niDyBPkW+Pe0g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778099338; c=relaxed/simple;
-	bh=m1qbv6mF9RhZ6Or0RiOGiZvRAZrGbFxjgat4eiSIBh8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pivSl2hbQlfLyZhCEzTrUeHhBWBbCHz8MJQPvJPTL1xcav/WBXoPaTTEtLToDrZ7nBDGdd2OxVOFVytJwnAHesSMqtxnkwKjc4HGYTymVY3s6IiyuD2keCHiEqpx+MaitnVixM8EM7mbyGz2X7URK9EwAyx6WfFVEp9CzTQvjYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kpberry.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Pht1O9V7; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kpberry.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c80b103360cso34456a12.3
-        for <stable@vger.kernel.org>; Wed, 06 May 2026 13:28:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778099335; x=1778704135; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3V7RUnZHB/rTyjhH2xTvr24MsEKS6M+dSewO19ouvl8=;
-        b=Pht1O9V7UnBwTfIFph1+/WK9JQpPeCMlzYk8cxTWyz+/v/IO2NFSP04oIPQ4dZmLP5
-         Elr8ANzyNTMLtucQHWe1ZmUp1ZG+BwG5mUBUZ0QIXLAfRMeElhn3AADZcJLi3wWlB13O
-         BkJ0U1H7vpVZdmBrCqcsgSxw+bC4LmpOCZLNX50PpazFKMDczdBCQ92kp+3aTKkCszoD
-         0KATsdLzTE80UIPR99WUUEx/FYVDAocMK/PW7LT2oHfa8L/UrYg6TwzrsHNf5D2cP7IS
-         Xy6KayIkvu8Ksb6bY2u7k/GnVUT42EQxa2wubK7/xZOZByMftV0hNtcZOs0aD81NC+yS
-         c5wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778099335; x=1778704135;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3V7RUnZHB/rTyjhH2xTvr24MsEKS6M+dSewO19ouvl8=;
-        b=J/V5lKYZ3hHjkpQnm2UoNwSUwId0fn4LJPrjO837VztrFDhe1f/t8oVemXbBW6ZLe9
-         cO+HpPM/EbzXKmvP/CBqaxM2YZ9O6JZ+2TXZaxm29eg/J55I9drNG28w6NUWh80Do6NO
-         w3zr1gKj9NufiN59QwQQk0QczooATo80Zhy90/nMJTKSjn5pK4eazTiT9/VgBwn6RqOd
-         k9XxC8Sm3TrABbStnCr4p7anGJWMNCuAv6AV6KvxrMCrVwJXZ5EfgkPkb4w1pHG/A01I
-         TTNVoXFUSC5Lk23/caHIOpP0J491hu7FTrLU6zYHw9Z554n/WObqTTvLU9XX4eshgi/N
-         ZYWg==
-X-Forwarded-Encrypted: i=1; AFNElJ+7yoB0fnf4KDIAcdmnXy8onqP+6dnlyIA7rymMAmOkabYhtW6GoJpFams+pyWarzmh0dziis4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMZY7OCFHyh1s/qd/lfqo9TvnSdQIMQlaaHmiVrUY4+paV2cI7
-	jzyP6NnvI8G+RW/1e0te1xu7+tvV9hJ2ma3o7STMQOoG3JibdcSm1UzV4ea0DXBQ8g0l/Ju8Pri
-	FvwOQ+GpKDg==
-X-Received: from pfblg1.prod.google.com ([2002:a05:6a00:7081:b0:835:4079:c7be])
- (user=kpberry job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6d8b:b0:3a2:d68d:9e7e
- with SMTP id adf61e73a8af0-3aa5ab846dcmr5190871637.41.1778099334692; Wed, 06
- May 2026 13:28:54 -0700 (PDT)
-Date: Wed,  6 May 2026 20:28:42 +0000
-In-Reply-To: <20260506202842.1788682-1-kpberry@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A658437F727;
+	Wed,  6 May 2026 20:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778099348; cv=fail; b=X00CndN++s56gVQUmmdwdcPI/vSGRBsPC66YeFXvCrySMJWUmHLiTZ9l76I6yS+VrTmT0lwmHQ2nahaM3UTdnDJsBydq4daadDAW1m+A+HpDOjK0g/16GgYFEqB8UllnYrYx8HLC91tFyQ4dWfuhYbUkg7pIqFvVHdAIWKYwg9Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778099348; c=relaxed/simple;
+	bh=SevNimjACyZ1/dsu9YTCzw9lfOgEIpLlCOpHwtc+c0g=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HcfOGZrWzNdbYE0YyvfhmiPmCdGt1NQy7zAA3yswOhGuQ6+1pAS8sJw/lsXuRFaO5oAT0qhqmVUdgFSjIK2zD7rM7Dsk+zgeJyOzF0AddKUEaD0QB5taulwHu+m+fTjIGYNIgxkjvP6Ng5njpDdSWz8l+D+aa8RuzQTjIL5X/gY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EgK+uJa3; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778099346; x=1809635346;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=SevNimjACyZ1/dsu9YTCzw9lfOgEIpLlCOpHwtc+c0g=;
+  b=EgK+uJa3DsFY6T9oW10TKZVoNePB/SR1Ot7Sta+wT/SKSFk72Rt9cu7P
+   yeVYhJ9wHz//mJwfOTF+aXV3/Tb4ljQlOpP6fqyvCyxuxxZgLMsg+7moa
+   uhEJi6SUgmQYRRJNbn0hBqsSmYJPW8Fnid4AAsWIHIPye/uFv73CIz6XW
+   k5K0uAoDNOHQWEwZr3PSyHH971XiUwAiPPFvAN5yfNrRIh0xdSpZaGmgZ
+   bEcOoUjrZJ3tkNqtyTGmWJ/8uNaEz0C1u5/BGQ67/eTFCnlgf3aKAMPR8
+   iyITJRg/lTRMJV2uvBWrSvKd/0EAvcCNKmU32NQo0D/AjRajJdnrIdEO1
+   Q==;
+X-CSE-ConnectionGUID: dJO05w0YSM60I8wUyDQDBg==
+X-CSE-MsgGUID: HH7uue0nRwKybyGixSbmPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="89740784"
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
+   d="scan'208";a="89740784"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 13:29:05 -0700
+X-CSE-ConnectionGUID: rsjT+KmhRIWZBtdD+HqKRA==
+X-CSE-MsgGUID: 4NJeZOoWRmu/osL4vpvSUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
+   d="scan'208";a="240577787"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 13:29:05 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 6 May 2026 13:29:04 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 6 May 2026 13:29:04 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.37) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 6 May 2026 13:29:03 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QHSChagz3eNohH4Fyhy6aolETPuivtYXtuzG7RQOC7wsqTeRm4uHamwG165b4T11ULe1pumBnAzvZrZHES2P0e5S0jPOMyPpO5fjWmLTo0QuM14f0O/29//RZpbVl3FZCMVlN7yzFMilNVYOUdPoRspKUBdZxwhxgDenT81WrjrBsAmymxDcKZ+qTgPUcYxORyihHeJqtmd7ykpGMGR6sT59H1CDBuCKCrMU3pBOLYR3EhWf1KugFrhlcXAshIo59wPfArpKh5N0VYuI6fpHuhaceUVduaCHcw1VxqElOSRRNbb/NiCgRlPBtmeZz6HpbOphdKVnj8R/GeS+bcuO9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iwdf6y1OcUkjGOVTanzxUFGaYLl++wOhcj37NWYNr80=;
+ b=EYYXo34Wq5n56Sbqt2unoQnt6jqRH2Uec71Kt0eawiYPZduHprYynyv7tdTbQnAgfrndOl2Rwjm2OeZB49KSUF+y8nTgaMwyyDDFWFMDOpYqUl2CBbSsMnaRsmz/6u1cyA7H6k09BcE2wwSdSAe2RFSDPAQHOUavgZ0TPYHlNo1+I1/eD86xV907yj5t8p9o5H/87oIS3Ln7OfqXtXtBWd8S0CJfJiiTg5UyYcgSYri1fKv9JLO17RmnZ623PEhfo3jd1E0yawrZ4o3PwqkftItYWA0ieXe2n9ocja7ZCQtIXTbvhy8ZyGC9BlRUhFp5QGZhMWnH76+7+GcZPknHfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SN7PR11MB7592.namprd11.prod.outlook.com (2603:10b6:806:343::16)
+ by DS4PPF691668CDD.namprd11.prod.outlook.com (2603:10b6:f:fc02::2a) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
+ 2026 20:28:54 +0000
+Received: from SN7PR11MB7592.namprd11.prod.outlook.com
+ ([fe80::3e09:8700:df72:37b6]) by SN7PR11MB7592.namprd11.prod.outlook.com
+ ([fe80::3e09:8700:df72:37b6%6]) with mapi id 15.20.9891.008; Wed, 6 May 2026
+ 20:28:54 +0000
+Message-ID: <c2ac2c41-46a8-4cca-99b0-3e423114c91b@intel.com>
+Date: Wed, 6 May 2026 13:28:51 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 02/13] i40e: Cleanup PTP pins on probe failure
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Arkadiusz Kubalewski
+	<arkadiusz.kubalewski@intel.com>, Maciej Fijalkowski
+	<maciej.fijalkowski@intel.com>, Michal Kubiak <michal.kubiak@intel.com>,
+	Joshua Hay <joshua.a.hay@intel.com>, Madhu Chittim <madhu.chittim@intel.com>,
+	Willem de Bruijn <willemb@google.com>, Dave Ertman
+	<david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>, Grzegorz Nitka
+	<grzegorz.nitka@intel.com>
+CC: <netdev@vger.kernel.org>, <stable@vger.kernel.org>, Matt Vollrath
+	<tactii@gmail.com>, Kohei Enju <kohei@enjuk.jp>, Paul Menzel
+	<pmenzel@molgen.mpg.de>, Sunitha Mekala <sunithax.d.mekala@intel.com>
+References: <20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com>
+ <20260504-jk-iwl-net-2026-05-04-v1-2-a222a88bd962@intel.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <20260504-jk-iwl-net-2026-05-04-v1-2-a222a88bd962@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0355.namprd04.prod.outlook.com
+ (2603:10b6:303:8a::30) To SN7PR11MB7592.namprd11.prod.outlook.com
+ (2603:10b6:806:343::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAPpSM+TbMOPL93CkWtrYjYW+T+Q+iWuo+ZhfutYNFOuOCBU5fQ@mail.gmail.com>
- <20260506202842.1788682-1-kpberry@google.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260506202842.1788682-2-kpberry@google.com>
-Subject: [PATCH] net: bonding: fix use-after-free in bond_xmit_broadcast()
-From: Kevin Berry <kpberry@google.com>
-To: xmei5@asu.edu
-Cc: bestswngs@gmail.com, chenglongtang@google.com, joneslee@google.com, 
-	kpberry@google.com, pabeni@redhat.com, rnj@google.com, stable@vger.kernel.org, 
-	Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4FDE44E0301
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7592:EE_|DS4PPF691668CDD:EE_
+X-MS-Office365-Filtering-Correlation-Id: fbfc245c-4e56-4497-d74a-08deabae17c2
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016|921020|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: JYD4OeuPkcmnDxSRSOC95fMdpxKWfKiJqIiKzXZZLE0cLd/+B+Dxcarc6eNDiiiXnaA/2cbr4o+v/pd7y8zZ9aZSaV9g1A1SkBahxU72GFQ3z1ZWSzjtqaKRCVuV/IWXPIQZ2JnFWtXg77rWRFs/QvdE8CUJEEsM0tuWU8WgNRMbfWEW5+MZy/6hZ5O05RXo580C8iLH66aY+X3F4DQmwaBAAfN/VgdLrfLw1afy1RGhOjIVW7JEueRoxhC82QArGYioGR472uFhgzXLfv5cw2LBk0+NBPNqVtvgTcacdeY5E/W+Dqv3NzX1CXOC922Ix8t9vf0KmzbpyBHon5m9n8qlmD+zoaQsxsS3SjzmNyVfm9W/ktAm9k44+P2YfXfjr4MQg1qxcGkPY8XuzbYK8ahDcqVIB+f1Go69fINfkgfd8VU2c2E2D7LeCFK8w/xHGuqVrZcOWiUGd6+RovKlEGofC/CXu/vaMSF5w4vN3SWzumRHfSolHTgPxb9kKm0hztif7we3HglxbMffe60r/PMTyxcrjv4WUSMHqiBE3hlRgD1qZye0+kyaC/1kcS2swAt+77zZHl2akSTKkapJGefJBCDPBHQ/S1fkXKplUEs5E1w11vCS8F0EjCWCt3Ban/TEoJC+YypMahNsGXtQveVze8vX0GBQ/XGbfwen1j3xQznH4yOLBRaGzNpJtUiXzS0fArV1HKk9N/tRujIQ6xYMNWCg2yQlF4zEWixiQoY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7592.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(921020)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SFhrTW9FTmE1bTBBL3pBYk5sSTN2MW4vWGRXd2RTajVqaHpwUVgwelNmcmdt?=
+ =?utf-8?B?Wm5lNVVudzlJcUZCTW5HSDhoeldjRFp6aXRhb3RWSVhnOGg2TVM2WE1wUDRL?=
+ =?utf-8?B?U2YzMVBoRC8zdm9EY1gzMHZ1YWpGeklNUHduM0tVYjFsTzZKaUQ4Z0RYNHBw?=
+ =?utf-8?B?dlZXRFJPWmltaUhqcEJlaUhPNEhUeWJYSFdNRk11bFZGc1dBSlV0NFRIY2VS?=
+ =?utf-8?B?ckFMM0JMQlIrNS9jWWZUbjBmZlVZRTdCNGRQR29LRjdIcXpZekRHVUpwQTJl?=
+ =?utf-8?B?RVhNVjJrWlhXdnkyZjFJKzdrVXlLYUxCd0JvTlRPM0RGN1JmRXBpT2c0OE1J?=
+ =?utf-8?B?TG9iOFFsSHNrL2k2QzM3S09PVmdodU51RXlMWEhnd0dlcUpMb3NBUnA0ZzNj?=
+ =?utf-8?B?VjU3amxQcStYM09peFowNDZXNU9BUjg1UUJuZ3pYZ05uNEZyNjRoSWFnL3pM?=
+ =?utf-8?B?US9qZXZaejVOaEtORU4vMWdOQmRmTlBVY0lTbFZCbFI2amdaVXpndDhKUmxP?=
+ =?utf-8?B?MENXTkdISkh0NXlWU25OaTZHMXF0MEVjWGQ0VjBEU0d6VUFOQUZadlNNSjhB?=
+ =?utf-8?B?MHNJcW5zR21kNWtpNnUzT0tHL1BKamdMWFJVMnB6SW5NOERPcCtyVnZ4dlR6?=
+ =?utf-8?B?ZmJPUTc0cFgzb0JmWUJZMTA5T2NYelJFRDZFNzdHVXJsWm9UQXo2dUk4NEFq?=
+ =?utf-8?B?eUhWY2ZWSWRyTjVhbisvNmplKzA1YXNva2wyUnVwVW5ZL1FjVjNjUm9qQlJG?=
+ =?utf-8?B?TVFZYlJkbXQ0Q0xnQktvZGJrM2JLbnpsanlEb0tGZXoxaHFUTEptVzZIVC9z?=
+ =?utf-8?B?ZTdCakJnaW1Denl1U3UrVDJVN0lMRmp4Sm9YZ2ZYVE8xQnhMR1RtbCtuaUZ2?=
+ =?utf-8?B?Y2k2OTJhbnAyY1FYNFVoSUpTZndzSjU0dk5zTXFZbk0wekJLZTMzZDliZnBW?=
+ =?utf-8?B?NmVJc0FpdUVoYzZaczJxazhLSERzRTN1Y0p1VHMwNEpZb01Jb1pkWGZVeDFu?=
+ =?utf-8?B?RjNGQkxNQUIxZGFPQW04VmRhK1QxMTd4UXJLbnVoWmdiMWpoZ3AxVnBsTUdW?=
+ =?utf-8?B?cEpLQ28zVzFGamlSMExKeWRHaGFFSFFkNWhaS2ZZOEV1aExyY1ZnT0JmYUFp?=
+ =?utf-8?B?Q0MrQVUzSVFiSjdDdGlRRkNKK0EzOHVaTGhRTjZnSUNPTkdNV3dDaThGRHdG?=
+ =?utf-8?B?cm9WNXdtdDROMGZyMjZkK0tNT1hlcUhiUTJEZ05WbHlacVRhaWlFcmRiYVox?=
+ =?utf-8?B?UExNWStucGtHanRicGQ2dXdhOFJGNjBIdEpjMWtua0pXUjZZblJFTHVKMWI0?=
+ =?utf-8?B?S1BSTTFLbG5LcjhlWnIyNm41dDYwbHh4NDk4ckxqUEZ5Q2xnVENvdy9EcnJG?=
+ =?utf-8?B?bzZnNVE2ay90TFlERXkzTU9PYkExcStqS2U5bTJxZ2RlNXhJMDhSdGNyc0NY?=
+ =?utf-8?B?TDgzZlhBSjg1YXRZR2o2SlRMMUl3ZGNycFVpZlROYnorcFB0Z3BOd2I5dnNr?=
+ =?utf-8?B?K2Rqd2ovQ0dHcktibEtsNzc0NmtqMWZHSmpjWGpqNDUyZTJWWmIzODNXNkcx?=
+ =?utf-8?B?d2VzbzQxd2ZPMFB5SUJRK2ZCZXpLVDFWOEhBdXZ0VjMxWUNBbldtcHdacHUx?=
+ =?utf-8?B?T3ZLTm4vV0F0UVBoRWpQME9qZHhsNVV5cWJ0cjJkaEZXK0F1RHVZRkVheUpR?=
+ =?utf-8?B?YXNMVXRWZ3FVa1VVMXd5YkpDQkpyd2htVnl0RDJMNDlSTmZnNmVXbGozR2x2?=
+ =?utf-8?B?VURYOVUvUWx2NXJaZlRZeHpSbEdDOHhXdVNYYWdMWS82Y25uSmE2UmJUNDFO?=
+ =?utf-8?B?UFpHWERUTFBLVDB3YjJiNHVMT251cnVDSGRxU0kzNW1KV21HM2xCdjJyeVdR?=
+ =?utf-8?B?RHlzUVRpY01pUU5iWThlOUl4amZWcUFLWlpQRWcxemZtLzRML2dKR2N1cDdT?=
+ =?utf-8?B?RkEvNXlyVXVTS3BqK3pKSVhSa3VCTXNOZmVmeFhKR2NldktpTEQvbzhMRWtL?=
+ =?utf-8?B?OGdNQ0ZuZG1DSGZKTzRxWVFrc0RiZSt0QWhtNnZPT05zRllmNHJ2WlAvRXRP?=
+ =?utf-8?B?bDU5WHNwUWEzVnM2YkgyU3dXbHBnQ2g4eVZHVUhxdTV6c01DN0VjL29LRzBI?=
+ =?utf-8?B?UWFtQzhqakFYaTVNclFRVktCeXdxOWFkZDJFdm9EV1N0U0VOaTI2OUN5M2t0?=
+ =?utf-8?B?OE5qM2R5MytsaHBzYlVCb2N4VnVTUElXZHZQYi9GTjg5ZERuZ2haMUFMbnZk?=
+ =?utf-8?B?bUQ5b2RlRlBqbnJKajdUcjNqYUI0Tk81UVpiazdFamh1VnY3RTJYVUFuNXVQ?=
+ =?utf-8?B?YTZGY1BqcEZvQVMwbFhDVnd5bVc0aksvYzc3S1UzY3dac0lidE9tVGxVRWZW?=
+ =?utf-8?Q?LpF97sAvZj0bIZdM=3D?=
+X-Exchange-RoutingPolicyChecked: LHJCuVmO3nJLJsxO93s2zbGA9ojXFhZ2yqREpmVE3CdoyFZU+wlOwrWtVG1IouhawlJvFzW/k2QOkF0fa8igl5kkPYgssRbpCv1Pc7SmGrVYg8oErfZRosE2XWhdjvOQ4H64UNJBX0YqpplVqU44Hk8q34mBgh19a+w78WhKSCJ/P0ryQsPL3jfMWnubtZPtOGHlDSympVzbc7SaziqJt6+N31OraqWdGAJg+JIQdgggEXnP/6tSF5tVsLQ3AISTZz1GFp5yL9OoJoAuAhWKLhDMG2fc2RlNZ1/RreSTnN5VApTgMcLTWUTtX0D1OYVqb7pO+ZYNJ/uYYV20PfqVhQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbfc245c-4e56-4497-d74a-08deabae17c2
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7592.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 20:28:54.6450
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DbD6MJr/tESAPjEzUf/bNjP5Q3duK4RWUJOa4L2hJBj4EHkuMVkOr7FHoS+uIWdGq5yryRhwowH39fqtX3YyPAPpH3eI0wv0ousZSrk+9a8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF691668CDD
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: B4FB24E0309
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.84 / 15.00];
-	SEM_URIBL(3.50)[asu.edu:email];
-	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,redhat.com,vger.kernel.org,kernel.org,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-244447-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,meta];
-	R_DKIM_ALLOW(0.00)[google.com:s=20251104];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[23];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[google.com,reject];
+	TAGGED_FROM(0.00)[bounces-244448-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,enjuk.jp,molgen.mpg.de,intel.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,intel.com:email,intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mpg.de:email];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kpberry@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.354];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_COUNT_SEVEN(0.00)[10]
 
-From: Xiang Mei <xmei5@asu.edu>
+On 5/4/2026 10:14 PM, Jacob Keller wrote:
+> From: Matt Vollrath <tactii@gmail.com>
+> 
+> PTP pin structs are allocated early in probe, but never cleaned up.
+> 
+> Fix this by calling i40e_ptp_free_pins in the error path.
+> 
+> To support this, i40e_ptp_free_pins is added to the header and
+> pin_config is correctly nullified after being freed.
+> 
+> This has been an issue since i40e_ptp_alloc_pins was introduced.
+> 
+> Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
+> Reported-by: Kohei Enju <kohei@enjuk.jp>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Matt Vollrath <tactii@gmail.com>
+> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Kohei Enju <kohei@enjuk.jp>
+> Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+> ---
+>  drivers/net/ethernet/intel/i40e/i40e.h      | 1 +
+>  drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
+>  drivers/net/ethernet/intel/i40e/i40e_ptp.c  | 3 ++-
+>  3 files changed, 4 insertions(+), 1 deletion(-)
+> 
+Sashiko points out some issues which are related but pre-existing this fix:
 
-commit 2884bf72fb8f03409e423397319205de48adca16 upstream.
+> This isn't a bug in this patch, but looking at i40e_probe(), the return
+> value of i40e_ptp_alloc_pins() is ignored earlier in the probe sequence.
+> If the memory allocation fails, pf->ptp_pins remains NULL, but the probe
+> routine continues successfully.
+> Later, if a user attempts to configure the PTP pins via the PTP clock ioctl
+> (such as PTP_EXTTS_REQUEST), i40e_ptp_enable_pin() unconditionally dereferences
+> the pointer:
+> drivers/net/ethernet/intel/i40e/i40e_ptp.c:i40e_ptp_enable_pin() {
+>     ...
+> 	pins.sdp3_2 = pf->ptp_pins->sdp3_2;
+>     ...
+> }
+> Could this lead to a NULL pointer dereference panic triggered by userspace?
 
-bond_xmit_broadcast() reuses the original skb for the last slave
-(determined by bond_is_last_slave()) and clones it for others.
-Concurrent slave enslave/release can mutate the slave list during
-RCU-protected iteration, changing which slave is "last" mid-loop.
-This causes the original skb to be double-consumed (double-freed).
 
-Replace the racy bond_is_last_slave() check with a simple index
-comparison (i + 1 == slaves_count) against the pre-snapshot slave
-count taken via READ_ONCE() before the loop.  This preserves the
-zero-copy optimization for the last slave while making the "last"
-determination stable against concurrent list mutations.
+Probably we just need to add an error handling of the pin allocation
+since failure to allocate memory is likely to hit a lot of other places
+as well. This is also a pre-existing issue.
 
-The UAF can trigger the following crash:
+> This isn't a bug in this patch, but while looking at PTP cleanup, it appears
+> the pf->ptp_extts0_work work item is never canceled during device removal.
+> In i40e_remove(), i40e_ptp_stop() masks the PTP event interrupts, but it
+> doesn't call cancel_work_sync(&pf->ptp_extts0_work) to flush any already-queued
+> work.
+> i40e_remove() later cancels service_task but completely omits ptp_extts0_work.
+> If an interrupt triggers and schedules the work immediately before the teardown
+> path masks the interrupt, will the work item execute after the pf structure is
+> completely freed, resulting in a use-after-free?
 
-==================================================================
-BUG: KASAN: slab-use-after-free in skb_clone
-Read of size 8 at addr ffff888100ef8d40 by task exploit/147
-
-CPU: 1 UID: 0 PID: 147 Comm: exploit Not tainted 7.0.0-rc3+ #4 PREEMPTLAZY
-Call Trace:
- <TASK>
- dump_stack_lvl (lib/dump_stack.c:123)
- print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
- kasan_report (mm/kasan/report.c:597)
- skb_clone (include/linux/skbuff.h:1724 include/linux/skbuff.h:1792 include/linux/skbuff.h:3396 net/core/skbuff.c:2108)
- bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5334)
- bond_start_xmit (drivers/net/bonding/bond_main.c:5567 drivers/net/bonding/bond_main.c:5593)
- dev_hard_start_xmit (include/linux/netdevice.h:5325 include/linux/netdevice.h:5334 net/core/dev.c:3871 net/core/dev.c:3887)
- __dev_queue_xmit (include/linux/netdevice.h:3601 net/core/dev.c:4838)
- ip6_finish_output2 (include/net/neighbour.h:540 include/net/neighbour.h:554 net/ipv6/ip6_output.c:136)
- ip6_finish_output (net/ipv6/ip6_output.c:208 net/ipv6/ip6_output.c:219)
- ip6_output (net/ipv6/ip6_output.c:250)
- ip6_send_skb (net/ipv6/ip6_output.c:1985)
- udp_v6_send_skb (net/ipv6/udp.c:1442)
- udpv6_sendmsg (net/ipv6/udp.c:1733)
- __sys_sendto (net/socket.c:730 net/socket.c:742 net/socket.c:2206)
- __x64_sys_sendto (net/socket.c:2209)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
- </TASK>
-
-Allocated by task 147:
-
-Freed by task 147:
-
-The buggy address belongs to the object at ffff888100ef8c80
- which belongs to the cache skbuff_head_cache of size 224
-The buggy address is located 192 bytes inside of
- freed 224-byte region [ffff888100ef8c80, ffff888100ef8d60)
-
-Memory state around the buggy address:
- ffff888100ef8c00: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
- ffff888100ef8c80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888100ef8d00: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-                                                    ^
- ffff888100ef8d80: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
- ffff888100ef8e00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-Fixes: 4e5bd03ae346 ("net: bonding: fix bond_xmit_broadcast return value error bug")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260326075553.3960562-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Kevin Berry <kpberry@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/net/bonding/bond_main.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 114ebaa284da..6484ba1ab14c 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -5280,18 +5280,22 @@ static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
- 				       struct net_device *bond_dev)
- {
- 	struct bonding *bond = netdev_priv(bond_dev);
--	struct slave *slave = NULL;
--	struct list_head *iter;
-+	struct bond_up_slave *slaves;
- 	bool xmit_suc = false;
- 	bool skb_used = false;
-+	int slaves_count, i;
- 
--	bond_for_each_slave_rcu(bond, slave, iter) {
-+	slaves = rcu_dereference(bond->all_slaves);
-+
-+	slaves_count = slaves ? READ_ONCE(slaves->count) : 0;
-+	for (i = 0; i < slaves_count; i++) {
-+		struct slave *slave = slaves->arr[i];
- 		struct sk_buff *skb2;
- 
- 		if (!(bond_slave_is_up(slave) && slave->link == BOND_LINK_UP))
- 			continue;
- 
--		if (bond_is_last_slave(bond, slave)) {
-+		if (i + 1 == slaves_count) {
- 			skb2 = skb;
- 			skb_used = true;
- 		} else {
-
-base-commit: 258cf62a6dfde3c6a39d120a56a298f2ed6a8901
--- 
-2.54.0.563.g4f69b47b94-goog
+This is also a pre-existing issue in the PTP teardown that was reported
+on patch 1/13 as well: we need to cancel the extts0_work item.
 
 
