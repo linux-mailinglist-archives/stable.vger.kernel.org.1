@@ -1,275 +1,205 @@
-Return-Path: <stable+bounces-244318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IK+BDlna+mnYTQMAu9opvQ
-	(envelope-from <stable+bounces-244318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:06:17 +0200
+	id UOTlDRbg+mmGTgMAu9opvQ
+	(envelope-from <stable+bounces-244319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:30:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841E84D6725
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:06:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639A24D69AC
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3502B301C5B8
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:05:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11C5F30179E3
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3987A301493;
-	Wed,  6 May 2026 06:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vm2+iB21"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958B42E8897;
+	Wed,  6 May 2026 06:30:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010021.outbound.protection.outlook.com [52.101.61.21])
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C03A1F94F
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 06:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778047552; cv=fail; b=dTaZaPHYNqfMnkzG5PdQRIeM0qrGER3NEafZ8Wtz2of7jWHyJQqh/2h0ZYmdo129QUY+jx5SWlj/MdJIESP2wCxY5LYb40qu68It/Ssq+TsHM3Sb+UxfzGUPstLwzf1xH53/jAp63SBQapMcSb7mYhsNufpE1SZ3uBj/POc0YPE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778047552; c=relaxed/simple;
-	bh=g7BOEdbVd3QgXeYD6L5AdZCJEYnVyk4EhvgnbJi+gD8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BpWfbm5Y9mDIdb/4oDUzFoXER39szZdIypSkCVbKpi6k8Zr92nvrZYvpaLSQpzpqYOlkMbtKyquSsZ8kFP9nF0+pOpzYKPnC+h8Yi93MibFxzSinlxJGaVmoNTGeMb6f1LJzXcipaNMTUFoN/4/GwMTjDbH5EmOjZq781LmQZaA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vm2+iB21; arc=fail smtp.client-ip=52.101.61.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=St7uBf5RyptkLzXrfdEzJDNiOQbTrU1q5rpSsC9P3uetlmPypDwsDh3DGv1xY9FFJjb/tgNV7iZxguQfRj+TckFSD9mX7giBahWNEx1PnzzmXBC3Cac0FThxaI0G+KudzdhsOdUkPOhEMjqE+qmkYBHEFF2ZUY6y9ceYLzElwQ1HVGXh6b4W3M1RwYVs03xDTcHDd4ptapKOHDkJHmuxB/v+e2YDU+CIOfF/hm1zuix2SmabGKBSKE5s5AqaU6g9VcomhMOAu7RcMjDBqOx7rcKoNbtPpR0eA8doLAA5pS9e5lVWQeL8KiojN3skurbw80sHor1IgT4TTN8zpekwkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g7BOEdbVd3QgXeYD6L5AdZCJEYnVyk4EhvgnbJi+gD8=;
- b=g6TNTM5MmK1R8BcrOeSK1yvZlan6HlMhIi0DHHMKm10oyZPTNz7VeFyVG9YuSc9JwxohqFFSiYZ3oIsuROGY+8fJeWE8BfQGwI0b6u2nGSMIPMOFdna0AXyo7Rgiod2xNiuDlYhHdRPlD9CnN3GyPYSR9wUg2XaZakZAPHuPU6sSNSW25G1ijcf85P3UpebjPyIneWTmvM+/5kqUOEH96oYVS8qlvPz4QDzkfHzZuoOayZOmZwkLgMOIGcsEdRoJVeTDOzKYQw38EWHcK9ieCG0UA0AB7U3bp5yfzvnz8g1tE9cxf5ZwYkaQqmDW8skfmjUYTqHAu0OZhOJnvKMKyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g7BOEdbVd3QgXeYD6L5AdZCJEYnVyk4EhvgnbJi+gD8=;
- b=vm2+iB21zOedWuyTpJcAubKX+WFp+vmHZefa/X2M4a2I/N4Q+cKL8W2ejsWBzxWpHNMxVacm+WKUWDnm2Way05DvR5K5lgBtv1p8gaTMSdw1GJUon6bzFEtRXSHqA1dGwqvaHPlh8v+FIbH5l4LeGwt1g7x4b5EfM/eoPNesVsQ=
-Received: from DM6PR12MB2972.namprd12.prod.outlook.com (2603:10b6:5:39::31) by
- SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.15; Wed, 6 May 2026 06:05:46 +0000
-Received: from DM6PR12MB2972.namprd12.prod.outlook.com
- ([fe80::574d:7c2d:4d0a:855e]) by DM6PR12MB2972.namprd12.prod.outlook.com
- ([fe80::574d:7c2d:4d0a:855e%6]) with mapi id 15.20.9870.023; Wed, 6 May 2026
- 06:05:45 +0000
-From: "Wang, Yang(Kevin)" <KevinYang.Wang@amd.com>
-To: Jiri Slaby <jirislaby@kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: "patches@lists.linux.dev" <patches@lists.linux.dev>, "Deucher, Alexander"
-	<Alexander.Deucher@amd.com>, Sasha Levin <sashal@kernel.org>
-Subject: RE: [PATCH 6.19 001/311] drm/amd/pm: disable OD_FAN_CURVE if temp or
- pwm range invalid for smu v13
-Thread-Topic: [PATCH 6.19 001/311] drm/amd/pm: disable OD_FAN_CURVE if temp or
- pwm range invalid for smu v13
-Thread-Index: AQHcx4iJ60YYxhc8aU67J9j+tzpfr7X9i9IAgAMgWdA=
-Date: Wed, 6 May 2026 06:05:45 +0000
-Message-ID:
- <DM6PR12MB29729EB48AEBCD70C7EF4170823F2@DM6PR12MB2972.namprd12.prod.outlook.com>
-References: <20260408175939.393281918@linuxfoundation.org>
- <20260408175939.452810365@linuxfoundation.org>
- <a196b98a-a4f7-4e97-9005-d8a9f5e4814b@kernel.org>
-In-Reply-To: <a196b98a-a4f7-4e97-9005-d8a9f5e4814b@kernel.org>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Enabled=True;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SetDate=2026-05-06T06:00:19.0000000Z;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Name=AMD
- General
- v26;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_ContentBits=3;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Method=Standard
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR12MB2972:EE_|SA1PR12MB5614:EE_
-x-ms-office365-filtering-correlation-id: ca56b48d-427a-4896-5759-08deab358352
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|13003099007|38070700021|22082099003|56012099003|18002099003;
-x-microsoft-antispam-message-info:
- oF8jShoUQ9N5fotEgNFkzD1DpuOTfK39cW4gydDlJCid0MljDT++gnRkqBxT2T9EdKXw0bI9aR5ohMBPB7xtd+1zqsge4+Hk1J4d2tCVvl26/UuvOlydUZAtSm2t191rntM9JIB/acdF21h4kjkKz6yh8D5o0fwoPTVI6U7KeAUjcx0KAECyFrdbqGeKFjsdzCwk4quGyVu290IdUQpsBPECP+MrRhdpZKvoUWHE6TmCWMZPtAS6Zx/h/yF0Urci9t8xVp/eTx+RxttE9LKsmyCdELNKPM1/PDP9dMj9sANnYmFxbrLw69j/ZsJEkrvXQPWd7mVbP94wPVVbCzp5Zdxl88RNFoPtEO+7a3PVb01XU0phoVT6cTzhVhdart/HPxdH+sVU1TEat+1VTv/WcZEtOSnWncjrssjixMEY5tVMd7LeABMHyVIwJ6J5RYE5eCHPGp+UvyJCL8Iob+Tmo1QmxI67XkAiem/ZQoD6hh8dnQegCsV0BBcW0Y2fc183Vfzx83W5IBZX+i5ikOczBbCnZxdIb6ikn9YsYpM9kPDnk4Lk0ZGBkHnOUfE7WsZ32QomXcXobh3vbMNwtCDiL5zBKcGAmjQWEKkqSeELvfHKJXbSXn79xmMLIauzX9EfvdjUhrdAJZFKUXX96bjqWomrRb/35vY1C3cuOHN16b4RU30YpbpSjIFMRyHSKdGcn7A2zcfoK7/0pqNeVSWpxg==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2972.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(13003099007)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?VFh0Y0N4TEVxTEluQlBOYndvQVBWSUV0NU5zaUJCL3FXVFdqK3dNSWNyVGlr?=
- =?utf-8?B?c0Vzb1k2L0pvNmVFaVkzRHhjUFNZYmxCbWJVcUVxZzdzS0QzdjkrSUVxdXo4?=
- =?utf-8?B?SGhEeDRHdVN5QzR0OER1UnNzMzVuV1ZBUTlBWEcrWDVpTTVabHVpdW5ROWZZ?=
- =?utf-8?B?ME5aMTlydGEyMTNMajBqZzBCRWIvU1RhbTZnbXBVdFFJMFprQnk4aW5NNGp3?=
- =?utf-8?B?Y05kYUpaSHhRWG1nVklScDlPRmRtMDVESWV4MitpYXJhWGVaMDF3a0pKRitt?=
- =?utf-8?B?ZklmaE0wdzFvUkpwczJ1LzFIZVl1UXkwbzVRTDlLTmNTVEtyai9xUit6OVRL?=
- =?utf-8?B?MUFwMVpFRE1uUWc0YUkySXNwR1RHWjY1SkhMb1h4L0s1dFNiZjNUYmtDY1FI?=
- =?utf-8?B?RWVzQ2ZXbzBMRC9tUlAxeE9pZTFReFpzNHhoZ1YzQ3IybFYxWlhZS3A3UGdD?=
- =?utf-8?B?WnF0eTVzYS9HZFd2Z3doczZ4SDRZdE1hYnphQlc3QWtrNnhZOEJ2VFNlUWx0?=
- =?utf-8?B?SU94dkdpRmhWZ3l2bmExVjVoOFJWWmNBVjl5c0t2OHp4NmZhdzBia2t0Wjdj?=
- =?utf-8?B?bUYwNktIS2dPdFVwS1pMTFB5L2xRZlY1WFE2bUFHN01lV0RwYWkweDJyWGpX?=
- =?utf-8?B?Vm9ZVGE2eUR6MEZseWRpdkc0WFZYVzZ2a3ovQjhhL0ZSckFkcjhNMURydFR5?=
- =?utf-8?B?T084VXhXRGdrSFJLTU8wdTN4cUxPRzZLa2tyVlNJekxYeGZ2ZWJ1SllPYWxK?=
- =?utf-8?B?dkdqNHMvVUt2VkNYSmpURkVaM0hQY1lVaTgxK1ZXMmd5QUYwUDM0b01oV3NX?=
- =?utf-8?B?TUpOZlZjQXR3Zk5xdFIvMWNSNDhEYmV0UFd3dUFHRVBqL0ZDaGZ1S0k5Z25B?=
- =?utf-8?B?UWo2L2orRTdJekZuWWM4d0psTytjKy9VNzdhcnZDSWhmbThCallvSElkcndm?=
- =?utf-8?B?c2E4M3VKM0xGM29GNjlNQzVsZHFqbTdKOERhdE5TSHNhT3NTS3Z1Yjkvb2Zt?=
- =?utf-8?B?elVUM1d3TXJZYllTY3A1Tkt0Y3N4WDdkZzJuSlJzdEVvRGFCVXRzVE5oSWtP?=
- =?utf-8?B?eFU1TnhkTnJDSW9ISUFDOWZWbkJiei9QdW1nY2FPV2NPNmEwaVN1eFZrblE5?=
- =?utf-8?B?UUFqVmRyN0lDbjV1OFJBdy9maCt1SURhalRyVUhpK2I3WVJ2VzFYM0N3ckFT?=
- =?utf-8?B?OHF1aUpPVjhGS1FpV25wbmR1OHI0TWNXNk1LS1ZwZmVodmZHUEZLMTVuVkho?=
- =?utf-8?B?U0tlMVpadW1paWFSWTZjNXFpcWRBb0lHcmVJazBQNFJLTUFOZVY3NU0yaFVV?=
- =?utf-8?B?RFIvN0ZpWHFZZGV4a3VjMTJOTUFhN3hWS0R4amFhQUlUV1E0SWVPd2xhQUxv?=
- =?utf-8?B?L0lEYnBQYWQ4QnJFOXozMFh1SC9oRU9EQyszRmJCaGhtVDlLbFIrOWVFekFQ?=
- =?utf-8?B?N3lLZEZlVFVVeXVFaUVzeHA1U2hvUEorRmRLMVdRZXVocW1HTThpWEVRWVBS?=
- =?utf-8?B?cU15NkFXdHlyUzFjM29rTUE4SWdwLzIxaFk0WWJHR3hQRTRPcWRmSGt2M3JR?=
- =?utf-8?B?cy9nNmJTVU82NDh5SkxQM1l3T2xRcVEwL2ducVp1cmR6NVM0N2ozQnpRajFJ?=
- =?utf-8?B?Z1g1aW85a0JQVytzMG5TNTROV1hrTkVYM1gvY0FvL1E0eTJwZnRsYURleDJB?=
- =?utf-8?B?R3hYQ3ZzcFdTc3ZpNlA4dy9Wa0h3N2NDZjVQei9XdlVHR0dtODk4cDVtMmJk?=
- =?utf-8?B?TjhWM1VvNXFZQjRqaWtSelBrRnF3UlYzWTJCVUVkNHY1MXBDZWVNWndwd09X?=
- =?utf-8?B?cmtWWEdCOUpmMVVWc2NjS2tYbmdhWDgzNmorRHdpUzR3SjFBN0V4V0lSMWZ3?=
- =?utf-8?B?Y3NpV1ZRVzJycVlNZEYySVh4RWFiSm5TN1RRQTJQT2RCZE0rZ3h4elVPeWgz?=
- =?utf-8?B?RFEvbFB5TTNVZzJyM3AyTGhqWHV6a1pmNkpDWHNaT1FCZ0xwNmZFMjQyMTQy?=
- =?utf-8?B?TzVWZ2dHZDVJU282RG41OEVVQTE0a0U0czRMOTRxWkE0aUxKcnVQemJEcG5P?=
- =?utf-8?B?OGlMbm9jMTFFbTJWYThzZjhQcHVodzc3ZGtxS2lRTEkzWldUVExENXd3c2tC?=
- =?utf-8?B?QTNjVVE5d0Jyb0FseUhXKzFpVjBoWnYxeUlFb1lnejBzRnlQN1NSbGhwRld5?=
- =?utf-8?B?SG5ZRC9xMzRzOW4yMENiUmliQnlLYUU2NDVjUVBlNUIxVm5SMU1GaXljM1oz?=
- =?utf-8?Q?ca40Il3nvztD4G9PTruA/BaifrSg7h1zYrlRUNrtYs=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BB31643B
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 06:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778049042; cv=none; b=oLHcuq9DLfRTKe1gtnTpoPqeQHTHNk+NIUn1+vM9Hf0dQUSmX2V68RUxopPZt2r3NBPoMGXyNXSU2fce4nWHNUpw3baUL1LpJ+wGytrInqu59ROVDaoa5z0Hly4hnI/v7bM1V6cndldahQeyLZB65Vgk53NF2r7AqvHMITZGDD8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778049042; c=relaxed/simple;
+	bh=Hy/37V2fEzOr9hZsqC11s8LyXMGngGvd7ZYCy2FInEY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DScGRNBO0JhbihQKRxbRA6g8aQV3olvSRaIc1xdoibTDdiInSsdc3UcSylm7gSlQ3J+vsn45F1k59gZ+3nRwIMX637JUT3hmvzq/Al5O7C9pEVEO46nMpq7YXVRgcQlXi0cE1bdWOoFZDpWlavoK17lexqV08yWb0G3KEihBsFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpgz4t1778048977t2ea64436
+X-QQ-Originating-IP: Esr914d9uJskgbtcbQraKMUWA5PUeC+8kpJY+aOFDOs=
+Received: from w-MS-7E16.trustnetic.com ( [60.186.244.4])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 06 May 2026 14:29:31 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 3223381873921712130
+EX-QQ-RecipientCnt: 4
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: stable@vger.kernel.org
+Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12.y] net: txgbe: fix RTNL assertion warning when remove module
+Date: Wed,  6 May 2026 14:29:26 +0800
+Message-ID: <3C8522BDA3D054D8+20260506062926.658721-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026050104-careless-extended-8765@gregkh>
+References: <2026050104-careless-extended-8765@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2972.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca56b48d-427a-4896-5759-08deab358352
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 May 2026 06:05:45.7933
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0swMlU4tUsc3FPOt2ofZmggiBtw+kB19fEnHQ+akJoo7ISeunOkXg/cx3mdjD1C/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5614
-X-Rspamd-Queue-Id: 841E84D6725
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MxdW4jxL6NvXMxg6XoRLmltW8wVWZdSUSWrCYM+cNk2Yn+sIGrN6azgr
+	+wXE9ubkA4EBJMvW9QNulzPBZ8jQXSzfXS7P9ZCDLaJk7qTKx7rLpR5Ns88pHC7MO0BsPsr
+	wravfZubT77DhJBwDexQ98zAJKy6537o0RyUisNGz6+q7j594DrDnwk8CYLkUThAXvCb0aD
+	sPxlQvNuEP6V6RwYiEn6TkDnubatZl0klEMZ7aIyq3s2C53oANcysRKDwZLPT6bUnr6dCzp
+	Pfd4ZuQROwJJdzSYEKKbYnD4dzG/NY/oegxOZWrOOIEq8G0yQ6UsBd6JHxgCoJTodjcCWz6
+	x9XANndMLuA0Wg9aGbnzKoI4r+mxDJRnMSb2RLFYdePwYEXlpy4e7SNPExQCwRA+oD6cK9k
+	ZPi1JRk/NO+R1UnCw8jOs36rLAclEmsbhpHh/gKpRPvg21XfK/7B5vLw9jCnkXHgNyf5ViP
+	NAgE8zGNA8QtFGA9jt/tPX8cDQMq1OO2PKr8o5hthinBz0ZepPYqUKA0HuLa81Bg2jkdAOt
+	1A5HezhsZnnU3Hv3Na04GtvH5z9nCx+93JOcQx9ycFVWDzQhcYhvsxnBR5PxSsPWXNhHYzg
+	BU1W6VGSkJ3Pun1fu9x6+h2y6cy1UZTzBUAxPIw1sk0dVdVrF1La8Nf60r67oIDXXnlvA0B
+	Bjhdlxfkq4VehDkmUZZatxr9k1kAgO6c+9yUdprWep/eg2TeceVftNIYFxjTLDbKTqgEaVQ
+	jgtP4gcQiZnx1Ub7/KkgsCVUJQ8BZvixbZ3BHYUl3F4+6UkHNDL29OlJhdUjIPvo9Q2+Z3w
+	sY6//QdDba1x7Wf9dBXU8eASQ6uhrtddDRCioGHfmhVR5ZPKpmgZ/XKMfJOMCndk+G/P+J7
+	C0tQrwa2jpzDxsOpbfCnmuMUVwkd23YIJWgRMoNULRg1ghl84WsgD3x9jhWSJId/iMaSrzh
+	+havqAISg4acj+CnbBkG+FgiErqy/g21fSrZ2hffy1daO8AE7GRocEE4mexZypgw6MNfaIy
+	KjE5XC576ai7Eb6C2X5tYUY6xRUniB19s09D/O/UnafE/1Awab
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 639A24D69AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-244319-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[trustnetic.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244318-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[KevinYang.Wang@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.966];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,armlinux.org.uk:email]
 
-QU1EIEdlbmVyYWwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKaXJp
-IFNsYWJ5IDxqaXJpc2xhYnlAa2VybmVsLm9yZz4NCj4gU2VudDogTW9uZGF5LCBNYXkgNCwgMjAy
-NiAxNDoxNg0KPiBUbzogR3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9u
-Lm9yZz47IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IHBhdGNoZXNAbGlzdHMubGludXgu
-ZGV2OyBXYW5nLCBZYW5nKEtldmluKSA8S2V2aW5ZYW5nLldhbmdAYW1kLmNvbT47DQo+IERldWNo
-ZXIsIEFsZXhhbmRlciA8QWxleGFuZGVyLkRldWNoZXJAYW1kLmNvbT47IFNhc2hhIExldmluDQo+
-IDxzYXNoYWxAa2VybmVsLm9yZz4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCA2LjE5IDAwMS8zMTFd
-IGRybS9hbWQvcG06IGRpc2FibGUgT0RfRkFOX0NVUlZFIGlmIHRlbXANCj4gb3IgcHdtIHJhbmdl
-IGludmFsaWQgZm9yIHNtdSB2MTMNCj4NCj4gT24gMDguIDA0LiAyNiwgMjA6MDAsIEdyZWcgS3Jv
-YWgtSGFydG1hbiB3cm90ZToNCj4gPiA2LjE5LXN0YWJsZSByZXZpZXcgcGF0Y2guICBJZiBhbnlv
-bmUgaGFzIGFueSBvYmplY3Rpb25zLCBwbGVhc2UgbGV0IG1lIGtub3cuDQo+ID4NCj4gPiAtLS0t
-LS0tLS0tLS0tLS0tLS0NCj4gPg0KPiA+IEZyb206IFlhbmcgV2FuZyA8a2V2aW55YW5nLndhbmdA
-YW1kLmNvbT4NCj4gPg0KPiA+IFsgVXBzdHJlYW0gY29tbWl0IDNlNmRkMjhhMTEwODNlODNlMTFh
-Mjg0ZDk5ZmNjOWViNzQ4YzMyMWMgXQ0KPg0KPiBUaGlzIGFwcGVhcnMgdG8gYnJlYWsgNi4xOS4x
-MiB3cnQgZmFuIHNwZWVkIG9uIFJhZGVvbiBQcm8gVzc3MDA6DQo+IGh0dHBzOi8vYnVnemlsbGEu
-c3VzZS5jb20vc2hvd19idWcuY2dpP2lkPTEyNjM4NTQNCj4NCj4gNy4wIGlzIGJyb2tlbiB0aGUg
-c2FtZSB3YXkuDQo+DQo+IFRoZXkgc2F5Og0KPiA+IEFzIG1lbnRpb25lZCBpbiB0aGUgc3VtbWFy
-eSwgbGFjdCBmYWlscyB0byBjb250cm9sIHRoZSBmYW4gc3BlZWQgb24gbXkNCj4gPiBBTUQgUmFk
-ZW9uIFBSTyBXNzcwMCBncmFwaGljIGNhcmQuIEl0IHdvcmtlZCBwZXJmZWN0bHkgdW50aWwga2Vy
-bmVsDQo+ID4gNi4xOS4xMSBidXQgZmFpbGVkIGFmdGVyIHVwZ3JhZGluZyB0byBrZXJuZWwgNi4x
-OS4xMiBhbmQgYWxzbyBmYWlscw0KPiA+IHdpdGggYWN0dWFsIGtlcm5lbCA3LjAuMi4NCj4gPg0K
-PiA+IEkgYXNzdW1lIHRoZSBwcm9ibGVtIGlzIHJlbGF0ZWQgdG8gdGhlIGZvbGxvd2luZyBrZXJu
-ZWwgY29tbWl0IHRvDQo+ID4ga2VybmVsIDYuMTkuMTI6DQo+ID4NCj4gPiBjb21taXQgOWI5NjI2
-NmEyZDQ2OWNhNjU3NmZkMGEwNzFhNDhlNzFhOTQzNjY4Ng0KPiA+IEF1dGhvcjogWWFuZyBXYW5n
-IDxrZXZpbnlhbmcud2FuZ0BhbWQuY29tPg0KPiA+IERhdGU6ICAgV2VkIEFwciAxIDEyOjE2OjM3
-IDIwMjYgLTA0MDANCj4gPg0KPiA+IFNpbmNlIGtlcm5lbCA2LjE5LjEyIHRoZSAiZ3B1X29kIi1G
-b2xkZXIgdW5kZXINCj4gPg0KPiA+IC9zeXMvY2xhc3MvZHJtL2NhcmQxL2RldmljZS8NCj4gPg0K
-PiA+IGRvZXMgbm8gbG9uZ2VyIGV4aXN0LCBzbyBsYWN0ZCBmYWlscyB0byByZWFkL3dyaXRlIGRh
-dGEgd2l0aGluIHRoYXQNCj4gPiBmb2xkZXIgYW5kIGJleW9uZC4NCj4gPg0KPiA+IE15IHByb2Js
-ZW0gaXMgdGhhdCB0aGUgJ3NlbnNvcnMnIHV0aWxpdHkgcmVwb3J0cyBoaWdoIG1lbW9yeQ0KPiA+
-IHRlbXBlcmF0dXJlcyBvbiBteSBXNzcwMC4gRXZlbiB3aGVuIGlkbGUgdGhlIG1lbW9yeSBzdGF5
-cyBhYm92ZSA3NcKwQw0KPiA+IGFuZCBhbmQgcmlzZXMgdXAgdG8gMTAywrBDIHdoZW4gd2F0Y2hp
-bmcgYW4gQVYxLWVuY29kZWQgbW92aWUuDQo+ID4NCj4gPiBUaGUgZmFuIGlzIG5vdyBjb250cm9s
-bGVkIHNvbGVseSBieSB0aGUgUmFkZW9uIGZpcm13YXJlLiBUaGUgZmFuIHJ1bnMNCj4gPiBhdCB+
-NjAwIHJwbSAoMzAlKSBhbmQgZG9lcyBub3Qgc3BlZWQgdXAgd2hlbiB0aGUgbWVtb3J5IHRlbXBl
-cmF0dXJlDQo+ID4gYXBwcm9hY2hlcyB0aGUgY3JpdGljYWwgdmFsdWUgb2YgMTA1wrBDLg0KPiA+
-DQo+ID4gVGhlIGN1cnJlbnQgc2l0dWF0aW9uLCB3aXRoIHRlbXBlcmF0dXJlcyBydW5uaW5nIHZl
-cnkgaGlnaCwgaXMgbGlrZWx5DQo+ID4gdG8gaGF2ZSBhIG5lZ2F0aXZlIGltcGFjdCBvbiB0aGUg
-Z3JhcGhpY3MgY2FyZCdzIGxpZmVzcGFuLg0KPiA+DQo+ID4gIyBzZW5zb3JzIGFtZGdwdS1wY2kt
-ZTMwMA0KPiA+IGFtZGdwdS1wY2ktZTMwMA0KPiA+IEFkYXB0ZXI6IFBDSSBhZGFwdGVyDQo+ID4g
-dmRkZ2Z4OiAgICAgIDE3OS4wMCBtVg0KPiA+IGZhbjE6ICAgICAgICAgNTk2IFJQTSAgKG1pbiA9
-ICAgIDAgUlBNLCBtYXggPSA1MzAwIFJQTSkNCj4gPiBlZGdlOiAgICAgICAgICs2My4wwrBDICAo
-Y3JpdCA9ICsxMDAuMMKwQywgaHlzdCA9IC0yNzMuMcKwQykNCj4gPiAgICAgICAgICAgICAgICAg
-ICAgICAgIChlbWVyZyA9ICsxMDUuMMKwQykNCj4gPiBqdW5jdGlvbjogICAgICs3MC4wwrBDICAo
-Y3JpdCA9ICsxMDUuMMKwQywgaHlzdCA9IC0yNzMuMcKwQykNCj4gPiAgICAgICAgICAgICAgICAg
-ICAgICAgIChlbWVyZyA9ICsxMTAuMMKwQykNCj4gPiBtZW06ICAgICAgICAgICs4NC4wwrBDICAo
-Y3JpdCA9ICsxMDUuMMKwQywgaHlzdCA9IC0yNzMuMcKwQykgIDw9PT0gaWRsZSspDQo+ID4gICAg
-ICAgICAgICAgICAgICAgICAgICAoZW1lcmcgPSArMTEwLjDCsEMpDQo+ID4gUFBUOiAgICAgICAg
-ICA0OS4wMCBXICAoY2FwID0gMTUwLjAwIFcpDQo+ID4gcHdtMTogICAgICAgICAgICAgMzglDQo+
-ID4gc2NsazogICAgICAgICAgMTUgTUh6DQo+ID4gbWNsazogICAgICAgICA3NzIgTUh6DQo+ID4N
-Cj4gPiArKSBpIG5vdGljZWQgdGhhdCBlLmcuIHRoZSBmaXJlZm94IGJyb3dzZXIgaGFzIGEgbmVn
-YXRpdmUgaW1wYWN0IG9uDQo+ID4gK3RoZQ0KPiA+IG1sY2sgdmFsdWUgYW5kIHRoZSB0aGVyZWZv
-cmUgdGhlIG1lbSB0ZW1wZXJhdHVyZS4NCj4gPg0KPiA+IFRoZSBwb3NzaWJpbGl0eSB0byBzZXQg
-dGhlIGZhbiBtaW4gdG8gOTAwLTEwMDAgcnBtIHdpdGggbGFjdCBoYXMNCj4gPiBoZWxwZWQgdG8g
-a2VlcCB0aGUgdGVtcGVyYXR1cmVzIGJlbG93IDY1wrBDIHdoZW4gaWRsZSBhbmQgYmVsb3cgODXC
-sEMNCj4gPiB3aGVuIHBsYXlpbmcgYW4gQVYxLWVuY29kZWQgbW92aWUuDQo+DQo+DQo+IEFueSBp
-ZGVhcz8NCg0KVGhlcmUgaXMgYSBrbm93biBpc3N1ZSBoZXJlOg0KaHR0cHM6Ly9naXRodWIuY29t
-L1JPQ20vYW1kZ3B1L2lzc3Vlcy8yMDgNCg0KVGhlIGFtZGdwdSBLTUQgd2lsbCBkaXNhYmxlIHRo
-ZSBncHVfb2QgZmVhdHVyZSBpZiB0aGUgdGVtcGVyYXR1cmUgcmFuZ2Ugb3IgUFdNIHJhbmdlIGlz
-IGludmFsaWQuIC5lLmcuIG1pbi9tYXggPT0gMCwNCkl0IG1heSBjYXVzZSB0aGUgU01VIEZXIHRv
-IGNvbmZpZ3VyZSBwYXJhbWV0ZXJzIGluY29ycmVjdGx5Lg0KDQpQbGVhc2UgY2hlY2sgd2hhdCB0
-aGUgT0RfUkFOR0Ugc2hvd3Mgb24geW91ciBjYXJkIHdoZW4gdXNpbmcgdGhlIG9sZGVyIGtlcm5l
-bC4NCg0KQmVzdCBSZWdhcmRzLA0KS2V2aW4NCg0KPiA+IE9EX1JBTkdFOg0KPiA+IEZBTl9DVVJW
-RShob3RzcG90IHRlbXApOiAwQyAwQw0KPiA+IEZBTl9DVVJWRShmYW4gc3BlZWQpOiAwJSAwJQ0K
-DQo+DQo+DQo+ID4gRm9yY2libHkgZGlzYWJsZSB0aGUgT0RfRkFOX0NVUlZFIGZlYXR1cmUgd2hl
-biB0ZW1wZXJhdHVyZSBvciBQV00NCj4gPiByYW5nZSBpcyBpbnZhbGlkLCBvdGhlcndpc2UgUE1G
-VyB3aWxsIHJlamVjdCB0aGlzIGNvbmZpZ3VyYXRpb24gb24gc211DQo+ID4gdjEzLjAueA0KPiA+
-DQo+ID4gZXhhbXBsZToNCj4gPiAkIHN1ZG8gY2F0IC9zeXMvYnVzL3BjaS9kZXZpY2VzLzxCREY+
-L2dwdV9vZC9mYW5fY3RybC9mYW5fY3VydmUNCj4gPg0KPiA+IE9EX0ZBTl9DVVJWRToNCj4gPiAw
-OiAwQyAwJQ0KPiA+IDE6IDBDIDAlDQo+ID4gMjogMEMgMCUNCj4gPiAzOiAwQyAwJQ0KPiA+IDQ6
-IDBDIDAlDQo+ID4gT0RfUkFOR0U6DQo+ID4gRkFOX0NVUlZFKGhvdHNwb3QgdGVtcCk6IDBDIDBD
-DQo+ID4gRkFOX0NVUlZFKGZhbiBzcGVlZCk6IDAlIDAlDQo+ID4NCj4gPiAkIGVjaG8gIjAgNTAg
-NDAiIHwgc3VkbyB0ZWUgZmFuX2N1cnZlDQo+ID4NCj4gPiBrZXJuZWwgbG9nOg0KPiA+IFsgIDc1
-Ni40NDI1MjddIGFtZGdwdSAwMDAwOjAzOjAwLjA6IGFtZGdwdTogRmFuIGN1cnZlIHRlbXAgc2V0
-dGluZyg1MCkgbXVzdA0KPiBiZSB3aXRoaW4gWzAsIDBdIQ0KPiA+IFsgIDc3Ny4zNDU4MDBdIGFt
-ZGdwdSAwMDAwOjAzOjAwLjA6IGFtZGdwdTogRmFuIGN1cnZlIHRlbXAgc2V0dGluZyg1MCkgbXVz
-dA0KPiBiZSB3aXRoaW4gWzAsIDBdIQ0KPiA+DQo+ID4gQ2xvc2VzOiBodHRwczovL2dpdGh1Yi5j
-b20vUk9DbS9hbWRncHUvaXNzdWVzLzIwOA0KPiA+IFNpZ25lZC1vZmYtYnk6IFlhbmcgV2FuZyA8
-a2V2aW55YW5nLndhbmdAYW1kLmNvbT4NCj4gPiBBY2tlZC1ieTogQWxleCBEZXVjaGVyIDxhbGV4
-YW5kZXIuZGV1Y2hlckBhbWQuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEFsZXggRGV1Y2hlciA8
-YWxleGFuZGVyLmRldWNoZXJAYW1kLmNvbT4gKGNoZXJyeSBwaWNrZWQNCj4gPiBmcm9tIGNvbW1p
-dCA0NzA4OTE2MDZjNWE5N2IxZDBkOTM3ZTBhYTY3YTNiZWQ5ZmNiMDU2KQ0KPiA+IENjOiBzdGFi
-bGVAdmdlci5rZXJuZWwub3JnDQo+ID4gWyBhZGFwdGVkIGZvcndhcmQgZGVjbGFyYXRpb24gcGxh
-Y2VtZW50IHRvIGV4aXN0aW5nIEZFQVRVUkVfTUFTSyBtYWNybw0KPiA+IF0NCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBTYXNoYSBMZXZpbiA8c2FzaGFsQGtlcm5lbC5vcmc+DQo+ID4gU2lnbmVkLW9mZi1i
-eTogR3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4NCj4NCj4g
-dGhhbmtzLA0KPiAtLQ0KPiBqcw0KPiBzdXNlIGxhYnMNCg0K
+For the copper NIC with external PHY, the driver called
+phylink_connect_phy() during probe and phylink_disconnect_phy() during
+remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
+upon module remove.
+
+To fix this, add rtnl_lock() and rtnl_unlock() around the
+phylink_disconnect_phy() in remove function.
+
+ ------------[ cut here ]------------
+ RTNL: assertion failed at drivers/net/phy/phylink.c (2351)
+ WARNING: drivers/net/phy/phylink.c:2351 at
+phylink_disconnect_phy+0xd8/0xf0 [phylink], CPU#0: rmmod/4464
+ Modules linked in: ...
+ CPU: 0 UID: 0 PID: 4464 Comm: rmmod Kdump: loaded Not tainted 7.0.0-rc4+
+ Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING
+PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
+ RIP: 0010:phylink_disconnect_phy+0xe4/0xf0 [phylink]
+ Code: 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 f6 31 ff e9 3a 38 8f e7
+48 8d 3d 48 87 e2 ff ba 2f 09 00 00 48 c7 c6 c1 22 24 c0 <67> 48 0f b9 3a
+e9 34 ff ff ff 66 90 90 90 90 90 90 90 90 90 90 90
+ RSP: 0018:ffffce7288363ac0 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffff89654b2a1a00 RCX: 0000000000000000
+ RDX: 000000000000092f RSI: ffffffffc02422c1 RDI: ffffffffc0239020
+ RBP: ffffce7288363ae8 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000000 R12: ffff8964c4022000
+ R13: ffff89654fce3028 R14: ffff89654ebb4000 R15: ffffffffc0226348
+ FS:  0000795e80d93780(0000) GS:ffff896c52857000(0000)
+knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00005b528b592000 CR3: 0000000170d0f000 CR4: 0000000000f50ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  txgbe_remove_phy+0xbb/0xd0 [txgbe]
+  txgbe_remove+0x4c/0xb0 [txgbe]
+  pci_device_remove+0x41/0xb0
+  device_remove+0x43/0x80
+  device_release_driver_internal+0x206/0x270
+  driver_detach+0x4a/0xa0
+  bus_remove_driver+0x83/0x120
+  driver_unregister+0x2f/0x60
+  pci_unregister_driver+0x40/0x90
+  txgbe_driver_exit+0x10/0x850 [txgbe]
+  __do_sys_delete_module.isra.0+0x1c3/0x2f0
+  __x64_sys_delete_module+0x12/0x20
+  x64_sys_call+0x20c3/0x2390
+  do_syscall_64+0x11c/0x1500
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_syscall_64+0x15a/0x1500
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_fault+0x312/0x580
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? __handle_mm_fault+0x9d5/0x1040
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? count_memcg_events+0x101/0x1d0
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? handle_mm_fault+0x1e8/0x2f0
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_user_addr_fault+0x2f8/0x820
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? irqentry_exit+0xb2/0x600
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? exc_page_fault+0x92/0x1c0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/8B47A5872884147D+20260407094041.4646-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit e159f05e12cc1111a3103b99375ddf0dfd0e7d63)
+---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index f26946198a2f..9726622a96bf 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -622,7 +622,9 @@ int txgbe_init_phy(struct txgbe *txgbe)
+ void txgbe_remove_phy(struct txgbe *txgbe)
+ {
+ 	if (txgbe->wx->media_type == sp_media_copper) {
++		rtnl_lock();
+ 		phylink_disconnect_phy(txgbe->wx->phylink);
++		rtnl_unlock();
+ 		phylink_destroy(txgbe->wx->phylink);
+ 		return;
+ 	}
+-- 
+2.51.0
+
 
