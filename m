@@ -1,151 +1,182 @@
-Return-Path: <stable+bounces-244348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2I33BgoA+2kbVQMAu9opvQ
-	(envelope-from <stable+bounces-244348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:47:06 +0200
+	id 4KZVLXEF+2mbVQMAu9opvQ
+	(envelope-from <stable+bounces-244349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:10:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CEB4D811C
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:47:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428464D85FF
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 292763086F5C
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 08:42:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99CCC300AC15
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 09:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9B63E3C7D;
-	Wed,  6 May 2026 08:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B040B3DEAC3;
+	Wed,  6 May 2026 09:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sPmDfedE"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDEC3E6389;
-	Wed,  6 May 2026 08:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778056968; cv=none; b=NDd9DCMxuAe9gzSs+Pb3DVM9hQVN1EmrKR8LB/pZkAe9kV9GiXoDWVn5X7MUp7rRlQ1ci7qSGdGueKe+3C9Xvujg1g0Xhyk2g9BQ8f6rakVoJcnO0puIojxVJYTlLYpGtuZHq9rXLVV7ToKxzKnwwqgrz0oHEtwNoW3bi6fKyxw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778056968; c=relaxed/simple;
-	bh=ANNB9BNalevyG/KghIpaTA2Slh7RAYHVpIyYVX6boh4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z4Cp/yWOIESuJ7bRyvUGMVivvYbYz9ZnSywK6gMpeoUMZGdKcT4WaqoZ4OKX6jJVfkh9za/kLwjLW0lqr5c7BpZP1RyDz79TdDxjZwHkHh8nLtUOb7ZyiPrI2Ucz6K/YRIbOryLNRGFgyFMjHtgXBNHd+7TRF3p9P+e/zaq5cQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-05 (Coremail) with SMTP id zQCowABn9Qjn_vppWvGIDw--.2900S6;
-	Wed, 06 May 2026 16:42:22 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: tiffany.lin@mediatek.com,
-	andrew-ct.chen@mediatek.com,
-	yunfei.dong@mediatek.com,
-	mchehab@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	hverkuil+cisco@kernel.org,
-	laurent.pinchart@ideasonboard.com,
-	p.zabel@pengutronix.de,
-	benjamin.gaignard@collabora.com,
-	nicolas@ndufresne.ca
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH 4/4] media: mediatek: vcodec: free working buf in vdec_vp9_slice_setup_single()
-Date: Wed,  6 May 2026 16:42:03 +0800
-Message-Id: <20260506084203.202882-5-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260506084203.202882-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20260506084203.202882-1-lihaoxiang@isrc.iscas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF3F322B8B
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 09:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778058600; cv=pass; b=gYZmaP3zk8l199n8MC79/Vc55bWkU+YH12WEhyS6lo1woqCaBkarI4MrtiSEwd+7w/SK9TJzsr6IBvhel8HIoS7hYswtLjodwRte6cXB2cfVRwSg+1FifIc3Pqn2UKJktvfMPS1GH7X90QuBYr+Qy3QbVrf7vRgyySKutSinxTM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778058600; c=relaxed/simple;
+	bh=36tAG94Ia8jgi8QJHIfMyYsmOTCZP7DubPze3fZ1KyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fAU5X3UgGJVcY6FrDkUE00aSG/BYt6tL0erpyPQ4nmOY1dZvAuX7rN0Gnmq4EPFI8R0L+Z+Fgf86bzKrU/UmRPqkFNNXmy3IoJc3qL6ZFkavcWUIcn9phZuNweaDYdtInQ7zorvt7Ipx66yQaW9gLhwf9aFpaFcF/Tn3lYr7Iqw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sPmDfedE; arc=pass smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64937edbc9eso5217215d50.2
+        for <stable@vger.kernel.org>; Wed, 06 May 2026 02:09:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778058598; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DOsS2iIL9umGYpw1Rqkpw1HWoV3YSBBicNHd+ZsMI2PMmu0qkiLRyLQfpbZm7ANrUa
+         wkEhVu7uhQxn440digwGcV/uXosB5Cw7gPuUH119gSnhoOovGhKlMhGfOr71EpUAN7WX
+         IYX2CAKwB2AaVDfRXj/Dua5C57nkDtkb9xvyI7kXcbFYkyA3/xwx7P1GmWw/9HlMRMl4
+         vCKvwqOImEfOrlxlcCFY3Ou5kJAh4GuvDr61LtmnLRDZMUCwnMA7RWJkd4DnyKbxGu60
+         fqi+t+YImSZGQXWeiKOr4yHojIR+yS1K/Luzc04WL1fKrFZDwoEIZaIeU2mTohqA6UC7
+         Iy8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=sE63xfK9tF0qLxfLTzfosY8+mfJCa4vX8lI44vR4HdI=;
+        fh=ipOquNs9dA/57v7OsQzW7tS0pquzzV+KB1AVLGC7apY=;
+        b=geCYq3Ubuet7Q9R6IrHZn5PbtXjXkkkLEOCbLGy/qcJTQLXpZRqXr/yNSUEba/XTsi
+         6IWkDcTFxCKaFtrRjIXtU5isbLFe4uh/l1XoAppw6BFKNYTLcrtZxS7kaf1h911TWLOn
+         Q+ODTpwfsnZQGZ/El2BNoNqeKlvHUvzxRbTxkvppZiCHe6693Xd1EahCrnUliBMHrwun
+         WWdJ7xSUHyw3nIkEoYx6nGVO3ywjQhEy+bb0gK6f524qoTH0PliMAJ0Sqtj+4Kz+zESK
+         ClMUgFul+GqNIxZECYo4f0zRZVYOuyYzxkbDzvNlbelbPENusA2xrE+OaHZ3l0JQ08VP
+         52cQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778058598; x=1778663398; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=sE63xfK9tF0qLxfLTzfosY8+mfJCa4vX8lI44vR4HdI=;
+        b=sPmDfedE5vVWP+lcZhlbbLVqkV5fwXYR8jvxuNv/7pzrXBC5UtXLjbNsSQklUl5jJE
+         LqXDfUJaX1W1MiJ6in/UtkGSoxa7dLm645jba/VIjE0t8If7X3JTubE4/RTuSJXOhLEd
+         nByr2pRHiazFgc+yXd0mWFn0KQ/T1Hv1+Wt7fcyEPv+q5bsf3BDfPK91NN/p1RlkMQl/
+         uVXCXIgxQBu/zOOhnpYXbQkdbpNUcR/Fq69BKG+RDu5QWlye7dWBKFKJAKZ4EBflfvDE
+         lgx53bQfTuW8eli4Cnhbhm0PndOupc6DhTXnzBzPS/+WrVWkcX7lTdo8kqgOtFBucxZm
+         SP6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778058598; x=1778663398;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sE63xfK9tF0qLxfLTzfosY8+mfJCa4vX8lI44vR4HdI=;
+        b=kbxIcy27XVNzZGGbzLVAsTsrCCLSp9mijb6EHPQTOA9L9Ei/fj49MJK+PelOGOpQCK
+         EH5TpO9li1tQdgQfqvR43TRNMHS5DK46FutLwLfMBCnWOlm+yJApSkskh6RbmC8Jn7om
+         h+xiN65D86WgDUK0D2+1wWSL8LkO8HS6SCjPdvxpI/d4/KoeSa5AYu/nCZqSZN20aRwj
+         3JLFixQuH7V/Oek6+AcffxIYdU6ob9OxEF9vjSColskDM4s1WpdviNhmr8hmAGShxnY9
+         7OzeqHp0/i+N+U5NH3PlTwC3uf4qLqHLHaAWhgBDW11Al4OZ3ZtH4TgIePWDs7ubpP0D
+         lTrQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8+osDWPmCGDyfHmm0oHs4gXaa8045INAZ0KOt9jNFhX+KaL46cY1Zttxlx0VI0vttBIu+7c8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLALp+U+of1fWj//Zi0txyV1AZhLPLnPN0P0pUDWZU7tDTiH2u
+	J0C1TYT95NCT9VZC7ybezf/xM+H+6YU6B59jwpv7kWqsC3OtOzLMbkCtV8lJB1WGI7nClvEs8a2
+	6OH0r517uyn6BdhecfwDJAGSulwu2LQw=
+X-Gm-Gg: AeBDieuUkCxaDYIShdN8X+YL4KgyCTjN5/IM/9+2rWHwvzGQmK+iK9nAgbI4WHRwhVO
+	UZGa6YiZ9c2vJI5IkOjjcYWQy95AAPtX+dm/u91LE/WdBohT+oA/Ji1W41rrGoCswSrn5BX5Ebb
+	G+Ul2bSDrfs9ga0kZA0X3YtwnFhM/tt3Mmnq2K9sqXPr5NrHbzCrg9cTlR+vMNKrD+P255EwTD9
+	U6gL8Ff9NwxOdhcAxAQq+dNRxhfQ/oJIWbXjbTgh6VrzYiu9w8ZS1Orh4zH5WfGzYX59S2VXG7a
+	QBs/uCE3MnfHIy8TRp1T2Qnx0rb/4A==
+X-Received: by 2002:a05:690e:1447:b0:651:bed1:19ef with SMTP id
+ 956f58d0204a3-65c79a4a569mr3077966d50.62.1778058598028; Wed, 06 May 2026
+ 02:09:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABn9Qjn_vppWvGIDw--.2900S6
-X-Coremail-Antispam: 1UD129KBjvdXoWrKw1kGFWrtw47JF18Wr4DArb_yoWktFX_C3
-	s7WF13ZrnFy3ZxKr4jkF4S9ryIgFZ3WF4rtF9aqF9xX34DGF15XFsFvFy3Gr47Ja9Fvry3
-	Jwn8Xr1rGFy2kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbvxFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
-	IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
-	F7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr
-	1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1U
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
-	IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
-	IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVF
-	xhVjvjDU0xZFpf9x0pRQJ5wUUUUU=
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCQ4TE2n6y7fMjgAAsq
-X-Rspamd-Queue-Id: 95CEB4D811C
+References: <20260505082145.603262-1-lgs201920130244@gmail.com> <afrn-zcfiRpJzIcO@raspi>
+In-Reply-To: <afrn-zcfiRpJzIcO@raspi>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Wed, 6 May 2026 17:09:47 +0800
+X-Gm-Features: AVHnY4Jk9YyDPydkL71fov0bFSSu9j0Lq1UdfKpQsP_hQX1hR4bNL4d9pygNLng
+Message-ID: <CANUHTR8OD=uNMC3aVDc2oNeUwAWcsPsCRda+9RckpaUOhwHSqw@mail.gmail.com>
+Subject: Re: [PATCH v4] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with
+ device_node cleanup
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 428464D85FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-244348-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[mediatek.com,kernel.org,gmail.com,collabora.com,ideasonboard.com,pengutronix.de,ndufresne.ca];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244349-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,nxp.com,pengutronix.de,bootlin.com,lists.freedesktop.org,lists.linux.dev,lists.infradead.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.981];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,iscas.ac.cn:email]
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-Add an error path label in vdec_vp9_slice_setup_single()
-and call vdec_vp9_slice_free_working_buffer() to free
-working buffer.
+Hi Liu,
 
-Fixes: b0f407c19648 ("media: mediatek: vcodec: add vp9 decoder driver for mt8186")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
----
- .../mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c        | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Thanks for the review.
 
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
-index 673b17d0dd8d..1dd0f7fd642f 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
-@@ -1806,10 +1806,12 @@ static int vdec_vp9_slice_setup_single(struct vdec_vp9_slice_instance *instance,
- 
- 	ret = vdec_vp9_slice_setup_tile_buffer(instance, vsi, bs);
- 	if (ret)
--		goto err;
-+		goto alloc_err;
- 
- 	return 0;
- 
-+alloc_err:
-+	vdec_vp9_slice_free_working_buffer(instance);
- err:
- 	return ret;
- }
--- 
-2.25.1
+On Wed, 6 May 2026 at 15:03, Liu Ying <victor.liu@nxp.com> wrote:
+>
+> Can you provide a minimal fix for stable tree by not using the cleanup
+> action?  You can add the cleanup action with follow-up patch(es).
+>
 
+Yes, I agree. I will make the stable fix minimal by not changing the
+helper function pattern. In v5, I will only avoid using the cleanup
+action for the endpoint node in imx8qxp_pxl2dpi_find_next_bridge() and
+release it explicitly with of_node_put() after
+of_graph_get_remote_port_parent().
+
+> Why do you need to initialize ep to NULL?
+>
+
+The NULL initialization was only needed because v4 changed the helper
+to use an output argument together with a cleanup variable. With the
+minimal fix, ep will be a normal pointer, so the NULL initialization
+is not needed.
+
+I will send a v5.
+
+Best regards,
+Guangshuo
 
