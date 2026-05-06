@@ -1,205 +1,166 @@
-Return-Path: <stable+bounces-244354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKdNINcJ+2mbVQMAu9opvQ
-	(envelope-from <stable+bounces-244354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:28:55 +0200
+	id WBdBGKwL+2mbVQMAu9opvQ
+	(envelope-from <stable+bounces-244355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:36:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99744D89CF
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:28:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8186C4D8B4E
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C99D3016D04
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 09:28:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 131733054304
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 09:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20453E3C53;
-	Wed,  6 May 2026 09:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB073E559E;
+	Wed,  6 May 2026 09:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WtmvjlbW"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="Iu5v3UIw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5BD3E1D01;
-	Wed,  6 May 2026 09:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0811530AD0C;
+	Wed,  6 May 2026 09:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778059732; cv=none; b=ko9Zm//mhel3PtvYzDf4sLmzlY1lE1zhxCBdfduIUX0JO/8bQtR1r2fq9DquQuKQe0VD9iq9WDbn3X4BqsMWms95RkZhSM2D5oOz4+qqBiUD9LiXbUDzVQH+WbMds4Zn5YtxR005oWWIGgDwI+tzjZmwSj57xK+rs1KZYEfdOwM=
+	t=1778060068; cv=none; b=gCzW++2WHKl4trnEe/gj7a9ciJKSmfX+r7KnRoBjoxsI4Vpr7yzUwaAJ2mY0V77bv+lRXaa2k0d/mNGiWVpYZDSnODc0ZXeqfSZlpExM3xV0qv4/k6Y3FyNloDNvghkp2AaO0nohLeF48yE/BikmSB0mDHjlKMk/LYWLHz2BJEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778059732; c=relaxed/simple;
-	bh=3+UlTT82AzvhXCFAo6WB995cswC53PK4mXAxRgDRYEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aiC41MNAKDdk6IE3NZCoyQvPrNU7/DKuZ6eWJ3JHP7PYqcuaD3V945ekuadDfoaK9V2K8RbqsOXbGPX0yDRz75UPrL3BEAEMK86vOSs/VJkjBj9AFUDMiXM+UeKJic53II8fIagZYH2ZHl3la5jw9IVIEtR4p5Vvac5f4zos4X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WtmvjlbW; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778059730; x=1809595730;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3+UlTT82AzvhXCFAo6WB995cswC53PK4mXAxRgDRYEw=;
-  b=WtmvjlbWNMIMStV8dvDH4NDzm9Gl8wBrH3g4ZHiGNxy7e+CkLH9Dry71
-   l0bEPeSjlVDPMVi+nCOQvWhrj6d/wcd+UqRGh1gqONx2LumeV4RuBvDJN
-   1Yj3mP46Wo/liDMviPBSNe83wPvwnvcykA8pSpz3RoPYcVnQTsvgwCN+y
-   OZ1UjfqyyuskA+auJQQMECNPsaIgB9z6gW0OZz/AcPmaJY8neyMiybXby
-   XedSKhAAa4O2mSPrYqbjdhVgOF+R4DfhGMSIS3lsAMg8rA9lTe5mgnp7m
-   Eyfg5baQjNExyUUgjnPQXwd2vdqWym5ArGsd/ibMS2ubvrpPwTh+8L1JU
-   A==;
-X-CSE-ConnectionGUID: 6gxyOwsZTp2x0QFxJitasg==
-X-CSE-MsgGUID: gXpQSGVqQ46dDsRte0V+aA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="90441872"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
-   d="scan'208";a="90441872"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 02:28:49 -0700
-X-CSE-ConnectionGUID: aXwuU5mjQVieQp35TlF+Aw==
-X-CSE-MsgGUID: M/1YFarlQemtZXpIsp4cIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
-   d="scan'208";a="236190502"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.191])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 02:28:47 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 4CDD911F70F;
-	Wed, 06 May 2026 12:28:47 +0300 (EEST)
-Date: Wed, 6 May 2026 12:28:47 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Martin Hecht <mhecht73@gmail.com>
-Cc: martin.hecht@avnet.eu, michael.roeder@avnet.eu, stable@vger.kernel.org,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] media: i2c: alvium: Fix controls for WB/AWB
-Message-ID: <afsJz1vVdd3o-pe9@kekkonen.localdomain>
-References: <20260505142513.1551721-1-mhecht73@gmail.com>
+	s=arc-20240116; t=1778060068; c=relaxed/simple;
+	bh=2SbNXowNHpvWPIiCfe401PTzplou7NoVrJmAVIt+aLw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AShyAuCx7ejrxbGBvxpA8keHW92UrrPGGx6E2aiSNC95Um3LVje+tba2pfR4q8jv6E47uamINJSiYaN6LZLN+vljjGS2PrNU0/h9p9LkxGkGoXqXPK//brybG24+3+ismvLPvFwVOkIsOdU/uE4zPgcjYW9cUjaJiGvHPIiNGsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Iu5v3UIw; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778060028;
+	bh=J6oht+sP+4WEJo5bT3rgLuTOd0k0qN1hF4d444/Uq0M=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=Iu5v3UIwJj2djy39Jo2xusG+OkuEizNvrTJKcm5u4VftHOpQauGifCdtagFPoaGPE
+	 a5Xu2iQsxv876ad3X05Hvw5T8FuEsLorcfvRLk5/zyuiRk4dGlbAc2+bybWlPaiXqS
+	 98Xd1w66Vp0IpWqD5QRfjbAf/BIqU8f8vWjpjaLg=
+X-QQ-mid: zesmtpip4t1778060010t49f08edb
+X-QQ-Originating-IP: axCIc/X3jw/VG1gBCJ6Fy/52PHOb782UTf1Pg4xqLek=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 06 May 2026 17:33:28 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 18334382572935874406
+EX-QQ-RecipientCnt: 7
+From: Wentao Guan <guanwentao@uniontech.com>
+To: oneukum@suse.com
+Cc: carvsdriver@gmail.com,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Guan <guanwentao@uniontech.com>,
+	stable@vger.kernel.org
+Subject: [PATCH RFC] USB: cdc-acm: Fix bit overlap and move quirk definitions to header
+Date: Wed,  6 May 2026 17:32:13 +0800
+Message-Id: <20260506093213.1473262-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260505142513.1551721-1-mhecht73@gmail.com>
-X-Rspamd-Queue-Id: B99744D89CF
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: OIjQjTDPb0/fr08D/+2dJw6Ttq2NhP3fIi3FNxcW9mi8Xs8kaHrar6ma
+	VtslOPDMYHh7qKzUAeRBP2zYhZoh/jCgUwfDihOh6Xya5nG0wTzTtlML6jxme1y97FOgBNR
+	v5d2ON0MYz15FRb5WaZ3+6Ug8dVCT42t1UZ/7fkGULizEmayll3FduIxk+C5p1tDQuSaRQe
+	kUhWLcwbsO6YwAG38aJhMaayt/j7oQs3RsBS7gieoWCtkggSk8nVni1yUJo+9E3A9dQIkoT
+	wzVEnzf2G+JHoDvMR8FF2ZUvFv56utHXk0puiChb+6BYIDjzJi3fZ1ZO02NFUPMfVvwVGTP
+	MhDxCOphWNBApfaDbQ7Mzzrgtni5u4XndG1YzPERDfq9AHKdMtpSKb/vFKbYj6vHeFzlbO/
+	5r9ik8dhddY8rCJ2AwFGHsa8SNE2FiQ8Q54sTId7rTMxUcT8XDeXBNnUrHeeu25u/isg2Z0
+	G1J5dtcF+I5UeLIXNjQMyE/ZWY2s3TWW1ykb/zOXWhAUd4BgLE2VmwUCgk+TVqkAluhNQRF
+	xo/6CB4v/4ikrS1DRtquGulgXlkc5wwIKn7esvkyT9SDodFYfXA0cqi2+VLvjDDACwjU3up
+	kAuHPdysoCmjfCMLzhUGegWrlCTPSzXx3sEZDTdgELov3IPWSgMx/DdQPlLMNGWnVWqTpH8
+	yITJVP75Tg99gLDEnN7xDyNTPFaDfssNXOjXsi9Dj3u2NXCND2PPifQCxvilt7BZiNvXnjc
+	bHa4FyJgv1h8HqF08W2WC7fpkOUhFwEOELPO6rYT88nsrmvwoQNJngMQQbpPds69G0vPxMo
+	f6gJMfVOBYtInavaTrBDcAmv2Ehb4y+9howxyDyi+OBJhX2ngU8WFulDc0AO1wYSbp6QdkP
+	BluVW81tScp7dJEXOzbAEUtllj9g6zsduUjnaoOX96zaeJhRdyb6wXloXhbb4FfJfjHsn2u
+	wAvjzefcP1c4Y3r5gCO9ZDNusc4shU7T1dqhTRYpK+tFt3XSjywLpQuhHTpTb+VM0Z6Dt5k
+	PaOidmUgkK1E8cNGYiiXnshkKsp9A=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 8186C4D8B4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[avnet.eu,vger.kernel.org,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-244354-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	HAS_ORG_HEADER(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,linuxfoundation.org,vger.kernel.org,uniontech.com];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244355-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uniontech.com:email,uniontech.com:dkim,uniontech.com:mid]
 
-Hi Martin,
+The VENDOR_CLASS_DATA_IFACE and ALWAYS_POLL_CTRL quirk flags added in
+commit f58752ebcb35 ("USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10
+INGENIC touchscreen") were placed inside the acm_ctrl_msg() function
+rather than in the header with the other quirk flags.  Then, their
+values (BIT(9) and BIT(10)) collided with NO_UNION_12 which is already
+BIT(9).
 
-Thanks for the patch.
+Move the definitions to drivers/usb/class/cdc-acm.h where they belong
+and shift them to BIT(10) and BIT(11) to avoid the overlap.
 
-On Tue, May 05, 2026 at 04:25:10PM +0200, Martin Hecht wrote:
-> With that patch the controls for red-balance and blue-balance were created
-> only if the particular camera supports that. Otherwise the pointers on
-> the control variable are initialized with NULL to prevent side effects for
-> clustering with AWB control.
-> 
-> Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
-> Signed-off-by: Martin Hecht <mhecht73@gmail.com>
-> ---
->  drivers/media/i2c/alvium-csi2.c | 37 ++++++++++++++++++++-------------
->  1 file changed, 22 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
-> index b62b45a4f2fc..4c6934e9e177 100644
-> --- a/drivers/media/i2c/alvium-csi2.c
-> +++ b/drivers/media/i2c/alvium-csi2.c
-> @@ -2108,26 +2108,33 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
->  						  0, 0, &alvium->link_freq);
->  	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+Fixes: f58752ebcb35 ("USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10 INGENIC touchscreen")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+---
+ drivers/usb/class/cdc-acm.c | 2 --
+ drivers/usb/class/cdc-acm.h | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-This is a problem. Can you move setting the flags after checking the
-handler's error status? The functions adding controls may fail and this is
-simply a missing error check.
-
-Can you submit a fix, with a Fixes: tag and this patch should be rebased on
-the fix, please?
-
->  
-> +	if (alvium->avail_ft.whiteb) {
-> +		ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
-> +							V4L2_CID_BLUE_BALANCE,
-> +							alvium->min_bbalance,
-> +							alvium->max_bbalance,
-> +							alvium->inc_bbalance,
-> +							alvium->dft_bbalance);
-> +		ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
-> +						       V4L2_CID_RED_BALANCE,
-> +						       alvium->min_rbalance,
-> +						       alvium->max_rbalance,
-> +						       alvium->inc_rbalance,
-> +						       alvium->dft_rbalance);
-> +	} else {
-> +		/* set to NULL for v4l2_ctrl_auto_cluster if not existing */
-> +		ctrls->blue_balance	= NULL;
-> +		ctrls->red_balance = NULL;
-
-Aren't the two NULL already before this?
-
-> +	}
-> +
->  	/* Auto/manual white balance */
->  	if (alvium->avail_ft.auto_whiteb) {
->  		ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops,
->  						   V4L2_CID_AUTO_WHITE_BALANCE,
->  						   0, 1, 1, 1);
-> -		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
-> -	}
-> -
-> -	ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
-> -						V4L2_CID_BLUE_BALANCE,
-> -						alvium->min_bbalance,
-> -						alvium->max_bbalance,
-> -						alvium->inc_bbalance,
-> -						alvium->dft_bbalance);
-> -	ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
-> -					       V4L2_CID_RED_BALANCE,
-> -					       alvium->min_rbalance,
-> -					       alvium->max_rbalance,
-> -					       alvium->inc_rbalance,
-> -					       alvium->dft_rbalance);
-> +
-> +		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, true);
-> +	}
->  
->  	/* Auto/manual exposure */
->  	if (alvium->avail_ft.auto_exp) {
-
+diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+index c024011dc336a..d64751c42c2bc 100644
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -114,8 +114,6 @@ static int acm_ctrl_msg(struct acm *acm, int request, int value,
+ 	int retval;
+ 
+ 	retval = usb_autopm_get_interface(acm->control);
+-#define VENDOR_CLASS_DATA_IFACE		BIT(9)  /* data interface uses vendor-specific class */
+-#define ALWAYS_POLL_CTRL		BIT(10) /* keep ctrl URB active even without an open TTY */
+ 	if (retval)
+ 		return retval;
+ 
+diff --git a/drivers/usb/class/cdc-acm.h b/drivers/usb/class/cdc-acm.h
+index 25fd5329a8781..01f448a783c03 100644
+--- a/drivers/usb/class/cdc-acm.h
++++ b/drivers/usb/class/cdc-acm.h
+@@ -115,3 +115,5 @@ struct acm {
+ #define DISABLE_ECHO			BIT(7)
+ #define MISSING_CAP_BRK			BIT(8)
+ #define NO_UNION_12			BIT(9)
++#define VENDOR_CLASS_DATA_IFACE		BIT(10)  /* data interface uses vendor-specific class */
++#define ALWAYS_POLL_CTRL		BIT(11) /* keep ctrl URB active even without an open TTY */
 -- 
-Kind regards,
+2.30.2
 
-Sakari Ailus
 
