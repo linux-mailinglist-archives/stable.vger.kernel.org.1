@@ -1,206 +1,378 @@
-Return-Path: <stable+bounces-244415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ON3YDJxP+2mSZQMAu9opvQ
-	(envelope-from <stable+bounces-244415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:26:36 +0200
+	id 8MOyAhFQ+2lFZQMAu9opvQ
+	(envelope-from <stable+bounces-244416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:28:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E304F4DC221
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:26:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA464DC2D2
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 16:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8BBC2301F356
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 14:25:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72BB4303350B
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 14:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA88393DF5;
-	Wed,  6 May 2026 14:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0228B3F7AB1;
+	Wed,  6 May 2026 14:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nj7uqnBk"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="DOa5zTQl"
 X-Original-To: stable@vger.kernel.org
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013029.outbound.protection.outlook.com [52.101.83.29])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011063.outbound.protection.outlook.com [40.107.208.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFAC47DD75;
-	Wed,  6 May 2026 14:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE68480950;
+	Wed,  6 May 2026 14:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778077554; cv=fail; b=FNoxskzQpqmT+trX+Wb/viuScmP66n8TI5ActNV2luD897k9XNYKdYEHAAcesyOvrFy3Y2Xni8g4aolLbeP9V4GA+39ZHLbuQkg/TvSyWqQ8WIDJ8FaHzVn0eLDNmpabRVpbEfJgBbYBndYxyn7KU1mt6GK1gbVPw5iDcERfEO8=
+	t=1778077623; cv=fail; b=cr/N6/hUyKtN4ux/m7AfG94RKWaBEgnwvZrXGQMR2CqSCqoVdCV6jUaPA//VLzv7X791DCkMmhjNlF2MYAdH8/nMKUhAbDnEFgkuxqVcfu1PL+Y2MyaAjLl1/XZk27GdSy1SUohXuPgxbtxDlaFYGl8iRurSGabU6C30FtJ8k0o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778077554; c=relaxed/simple;
-	bh=yHk0so0uWcVHUC2W0TUQcyUIUbTijwywPnEiG4htpJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Z7YeMuj3LypPsWCPv2TM6zhR9B9L5L1MHLp3WW/41rlKFqHwVXK2AzyTUG1zAReh4J+93miiypWTJ5scwAbIpRH9f4of15eDQWtGz4XNMfEP9Vvvf8i3qNS+xUp1mo1WXGyKbT6C813wLAv/5Bz5IwxJcppcO8MDhzVGsvqWfls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nj7uqnBk; arc=fail smtp.client-ip=52.101.83.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1778077623; c=relaxed/simple;
+	bh=c7Nn5u3vTMTj83ESkyQxm9N5gwkc5lRY4cU+B6yLzX8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZlhsdmU0+/l2H4u9adv3Z/Eq1z2Fpf05/0MFv/1Fc7sdQCOVOPQ/ElGN3QfXY4gGcI4hcVLR+5yQEXti4JovZre9m7thQoGwfhc4vIpaBi10GGaRBKdTbr4CmP17+/jJ6ttyRW7z3u6QX9hD0hfIX82cW9GDH323ccvfakwLFv4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=DOa5zTQl; arc=fail smtp.client-ip=40.107.208.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oMtIjPbnr0DsuxW8QcbXqpZsEmHUyRrYiDT522Y370j6UzOx7cZMBmfAhW4gZnITQ/iwqzz+0SUEbKPFRrjPSZUevLZiLf8ly7bjPNy3rdqFwwfGuKrRDXakywDJ5UnDNcs3/eiZi7rHMup0V2/hjMzKzf1PfqKs88ew57ZDzQLnIMRvT3yCU4LdIFVc8TNWOGyH5P0kwy4S8zQHH4HfrojkpOPn/7K4LqQvSu2lXl5OIWwKYb/7XqM+ruZ0FMPPnEaK4amr6FNMgoXS5bbnpbIbUBo/vNoMl12XpEecS+qSAK4mEN4tQhBbqm8/bFAlEakDEmnqkedMZELjxKpVhg==
+ b=PscSrwiccbOue7ku+Yv5LjdAwJ3BOkcFYAkaFNOCBSnZGXqYtGygTorNeOQaYSPPqSUvyfmI3mULm+SmVrZ4fWdTaeCD0ZG5pma44o1dEYUDTRd0siZ8J9vIAyv4zUHr0DMS7ebDWYaD9UpXNCFVBwPsGEGVmWbQc12rN6jYm0LMCqJHy9DpnTY2ihQHNIZu4V3KJDU/DHC7HVi9nYMoZzhm42MhXgOldmsXe5dJIM9SpO+r4ydeaZgBVx1mbR4ytqarnYAMDepTXu8jrNATrbjipIw15Z2BQ+A1R+3Ye1ObaOCzhuFldm8JRX49rhfFWVB9UPDeckWzmpOEaTmLHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GIu47DBO/nzlAsA7zcloIiEcrMey/XY0iX122acTz0o=;
- b=G9ql83sMQl7mxPcaX99RbeOp4ozplcA3WZ8bQ9pJfKS/v6orfeAmx/Z5e4CAitOtulv9Fe2Z/HUkuLB9OGUo5S8MvyLfx5UfVcj9jkQ5cyBcaNA7JzIT3N4Eyu8nJlNSed/FCtyQwSffcZe64BbSOmeSrQVZ8w87AhqBh4l2Nss/0GYMaPBIB0w3FRNMTmGKMvVmHA5wWYykY1E6h++VyJik27f799ta8YGdV4j4TUe9/r6VwRfXLQRLCwITn/cWMDhctwMol0QHRveuUWfe7ZaDL0EWgwGeYXf2jG7/JTqaXO0SnBDKy3KPPhhF81KUpfkVLw+GEcxj+QMexuNzsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=zQhYy9gPESy8bRx5UoJO0Yv9s4OIXZWK4rcQn4S1Hn8=;
+ b=PTwJTj0/vsZkJt9c+KBRty75WE2Iadh+Z05R4QQT0R1buERcS+ZbD1xvkjA/FgjdUHoUXykt6Lzp/53bx7IMtgyFUAL99dl2Ym20IsBxh7La4Y8T4gwJkh7QA/hfG9EFxtWkui+7tpR7y3j/KPWgTQOWIQiYFz1XztWcp/4A58aGIwanxVXJJ4JwTaLKE0GslSz28AUzAi1R+xS5lOFmTGGeaH+PVNmoGVpzgxOQCLwi47A26jSkDQtlW9DcurrS/1Al2B8rX/HTiHcR9f358H0bQRL8XIX51TO02TaDk22ddgQp+j17hksRpMMOmP7lHsjcQnDIkm5KQs/BaUe/ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.195) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GIu47DBO/nzlAsA7zcloIiEcrMey/XY0iX122acTz0o=;
- b=nj7uqnBkgnJQ+izxMtHj27N/BpBpEEK2XWUiszLR/4kIjGo22+CxgYLzKSP25u8Sgo5Huh6Hx6XYKl2Q7PjUrhdEelXFlQWSdnc5W/5NuDFfFuzfy1yY8W/FV9pkKw/mC37C8vcj++MIU2BE6EONRTzwOcTVaIcxHytmNUpHVih+HFkyT5qp0uufwccaYdBHEgWx56JftjizJFm1sPBnRCAkVty/OJqQejbRR05Wx5N4um0Vo47gN5NldoHjwmop7LCXUHyGK5if92uFtmvkzXcR3yyrTqIzn3Jq4FoBNuAtefyeyjIuk/PC7Pz4sWau6Zm+J6xsb/KuCnTnfiGhhw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AM8PR04MB8049.eurprd04.prod.outlook.com (2603:10a6:20b:24c::14) with
+ bh=zQhYy9gPESy8bRx5UoJO0Yv9s4OIXZWK4rcQn4S1Hn8=;
+ b=DOa5zTQlp+4+JknAmbQHVlyKiyGg4b5RjLfH7+hvfD3Ety5BKYm0BaGDrlOklEZrK87r17jiCXA34+oq3mWtijacq/uyXDCNtug0YcqExPvLhon0iWtmYWrRIGYzwZGfOHzrRcZkpjhQpWPbu8f9JjE1IQNOJLHJ8B1vPLt2FD0=
+Received: from MN2PR06CA0024.namprd06.prod.outlook.com (2603:10b6:208:23d::29)
+ by SA1PR10MB5758.namprd10.prod.outlook.com (2603:10b6:806:235::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Wed, 6 May
- 2026 14:25:49 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9870.023; Wed, 6 May 2026
- 14:25:49 +0000
-Date: Wed, 6 May 2026 10:25:42 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Xiaolei Wang <xiaolei.wang@windriver.com>
-Cc: laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	aisheng.dong@nxp.com, jacopo@jmondi.org, guoniu.zhou@nxp.com,
-	s.riedmueller@phytec.de, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] media: imx8-isi: clean up already-initialized
- pipes on probe failure
-Message-ID: <aftPZtqFrhhcMPCr@lizhi-Precision-Tower-5810>
-References: <20260506031210.2769998-1-xiaolei.wang@windriver.com>
- <20260506031210.2769998-5-xiaolei.wang@windriver.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506031210.2769998-5-xiaolei.wang@windriver.com>
-X-ClientProxiedBy: SA0PR11CA0117.namprd11.prod.outlook.com
- (2603:10b6:806:d1::32) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
+ 2026 14:26:55 +0000
+Received: from BL6PEPF0001AB72.namprd02.prod.outlook.com
+ (2603:10b6:208:23d:cafe::d1) by MN2PR06CA0024.outlook.office365.com
+ (2603:10b6:208:23d::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.15 via Frontend Transport; Wed,
+ 6 May 2026 14:26:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ BL6PEPF0001AB72.mail.protection.outlook.com (10.167.242.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Wed, 6 May 2026 14:26:53 +0000
+Received: from DFLE213.ent.ti.com (10.64.6.71) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 6 May
+ 2026 09:26:31 -0500
+Received: from DFLE202.ent.ti.com (10.64.6.60) by DFLE213.ent.ti.com
+ (10.64.6.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 6 May
+ 2026 09:26:30 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE202.ent.ti.com
+ (10.64.6.60) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 6 May 2026 09:26:30 -0500
+Received: from [172.24.233.55] (uda0490799.dhcp.ti.com [172.24.233.55] (may be forged))
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 646EQQXx1545089;
+	Wed, 6 May 2026 09:26:26 -0500
+Message-ID: <bb80889e-0b25-4ea0-b895-83c2b1683272@ti.com>
+Date: Wed, 6 May 2026 19:56:25 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] pmdomain: ti_sci: re-sync TIFS with genpd on resume
+To: Vitor Soares <ivitro@gmail.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>, "Santosh
+ Shilimkar" <ssantosh@kernel.org>, Ulf Hansson <ulfh@kernel.org>
+CC: Vitor Soares <vitor.soares@toradex.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Tomi Valkeinen
+	<tomi.valkeinen@ideasonboard.com>, Kevin Hilman <khilman@baylibre.com>,
+	<vishalm@ti.com>, <d-gole@ti.com>, Devarsh Thakkar <devarsht@ti.com>,
+	<stable@vger.kernel.org>, Kendall Willis <k-willis@ti.com>
+References: <20260427074808.3244226-2-ivitro@gmail.com>
+ <1fb0739e-b84f-42f1-9c96-88b5cc5866a8@ti.com>
+ <c0fe43a2339c802e9ce5900092cd530a2ba17a6b.camel@gmail.com>
+ <17cbaadb-5aa7-40f4-848c-ba8e88fbd333@ti.com>
+ <0cad7e5e41b9e2c6ec545050dd0d3c6b3e085d2c.camel@gmail.com>
+Content-Language: en-US
+From: Sebin Francis <sebin.francis@ti.com>
+In-Reply-To: <0cad7e5e41b9e2c6ec545050dd0d3c6b3e085d2c.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM8PR04MB8049:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9adc09c1-43f3-47f4-63b6-08deab7b5e97
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB72:EE_|SA1PR10MB5758:EE_
+X-MS-Office365-Filtering-Correlation-Id: f25a0df7-6f1e-4aea-8249-08deab7b8506
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|52116014|7416014|38350700014|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|36860700016|376014|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
- wTW0z0ohsJ/E0vWll2lzTWPahuEabQEgPmL5R0ElnYRfXLSbq3yF/sE5f8NrEOlntRD5IyF5M1uxE28Nz0iXZYj5VrleiqTzqQ577MuwL+RWfmk0DuhQ4KXHQ6zu0G0iBgzhy4sERs074kakbyS5v7oOxQRf8ESlulK2EtYAKNic/HS+1KqiPD86D2HvHt3eBwQLtd1HS4mEH39Mw5v6NASU/DD0r/7qQ0a3Owe7tB8bveN0qsQn8GHjtR0+/mnJOh93cabX7w+UvJ6g39XlkJhe67hfB9DGtsOMexaKJl61ylQoTOEAqv6vkykLE1AJUZTWAQFQLjGG2WPvC9DSTw88beRGndMQhsJJq4B+JOU7fnlMBM/8iCzBAC1FMrbbVFyoed+vXL0Re+f2wOCvLSgMJk6dCcsz4d5vGUH/RC6DLiTARX9zK6TK86LFJoZlU/sJVB09zZKGfdaqMt2hl0y7jaqbmFAiDsd8/AAFBA56yGbZJqSFEoiT88TQ01opFSbNukopk1O8IVatny/zBR9Kvhlltw8fb9tuk8294KlA9sfQs8dESGeI4a7dg9Urdrf+v9GGhMB262cTtvXP/IIp09IBFomhJeHBNZxU6jDWpHYJW140tIErjNs0wAUQptmrREwpem55m6FOLyx/cTkRHjEQudjLACXLIKovi8Rq5oATJ3Lbwh/KZOevqNba9O+Rlk8MRzrepVFFQkEQD4KVwsLDhG5n4CUshnuVqxoYOZhq5mEaHX6tUafh6Vh/
+	T6wVrj59qFODCFq7q9DCFEI9z3wwTu/AxEaS2uH11ZKohPDHWooqKK2W50ljiLPSKj9rlE3mZxOaRjNdTYb/6YQOkIm/G17Vpl9kOYqXCoY3yHni+TJ6NrtWwoTb5yiCqsbDiQWckvecBDvjaL19Y0u8/nVOCLXQz1ZEUj92jo8NVsLjOXlTWGgusqSYcztM+eWUWjUnL2WUjpYxd2w1z7/VCVGK8y7gpn4iolPxCiLDzeUR2JKMsyY2sfYJe2y17mJPk/zSMSoWCfLxM36BVj+MJf+Raf8x5/TUe3uGyr/gbDWEPZLSaPxQ0KUG1rZGdJEFsFIvo66PzmehHz70/FXsOYYCEiIAvHC4/tS49YX5aH6pwSwLynKcwxMyc+OKaE1Xi9gYx4vX1tJcZnfQ+/tjPiXnIkp1Pn+QJbgUDnYgvWBl68+mx7osk3+H7GB0ISta07U8xuyAnwjkDu4PpqiVBAvLBLfce4DQGbICd7/ULVsnYg1YjK/On3H8Vo4s1quFRD+kgCbN5LxNTm3mo3uIA3/DUU3F6otUAnyQ0s7O42sERaOxdvFHwEXtzhKCpXOtXOJraQj4KPVSxp7EWz5+ec+B+ccckY27WvXeAE/OW+250riS2/716C2Et8BUk4+DIKXC61rQzx6ysKnAfX6dQWKjUbSqJx0x/nDyqRFGjp1D2lQl0wXoYhRRy1YS72EdebyjYdt85Uufvx5qFage1wAADGr5mmEJTo8vwUQ=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(52116014)(7416014)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(36860700016)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?Z45ZP1tA+jkXbnr7A+i+rDKEOJBNGvsBdXtics7PURuumaSXLPKRnNmaotws?=
- =?us-ascii?Q?hUJ11A9fKSb/KG/K+P7Q/Um6mrqDz7Pc5Z2l0CkE4iunjO49DS4+JnrOQeu7?=
- =?us-ascii?Q?N4BeYSNB4GfeHvSKKuOkFDarIdEr7J/4wAC6sCu65U8NrSs5JtT/MOIEAg+P?=
- =?us-ascii?Q?F/D3Gt84+ioyw1CiYQ+gGNS+m9uvqlUyTSrRV96+v4sstCQ/kJrEjxceIhXi?=
- =?us-ascii?Q?JwzhGZ55iLoMEaX3e00w52VLSmiZBD2EZ6Kw8+jm+2Bkx8TFH7gpdRq35vjM?=
- =?us-ascii?Q?ZlKIw+bKi7B0zVC7bgyDZONfzdIpuMzg0RCk/ckw4SpLNfsagV4+8SpxOdPC?=
- =?us-ascii?Q?n9Yax9DkQaZnq/yBcGZLu/CwmO2UZsPJ3dPPDO33IbCp98NI1/PqcrU+EvyT?=
- =?us-ascii?Q?bJURqi6/SKOXQdEDUkvUsHzm9kp9lyO07Y2IHNoig0yNnbHcoGdoOlwGssVb?=
- =?us-ascii?Q?g2HZ8ZH5bFZoZYuz23vomHd3Hme+Nnmme96foxUJA4WTnLDv3wPjErzBMNON?=
- =?us-ascii?Q?ZglP8IgaiY1EM0AQyIZNAKOYFTyPbMkLpV8oWEjsDgK+Ay7RxSge6zQLEoZW?=
- =?us-ascii?Q?29NIhtA84xnhEeZHvADkWlMLSmMW11/fnhGtcNJnHHIEqrVSrwrXJSqr8EeJ?=
- =?us-ascii?Q?5P0eR20rkBzq1GBjTlvuIPM9W0cuct3oR8jKqtelUxFzr5u6vZKqcHdJDx/8?=
- =?us-ascii?Q?2VwdHZO+TuBry8QDQf+tRP5SQAntTWoLdTaUEb+pyCyZ0zaf1LlQ8FZxGDTF?=
- =?us-ascii?Q?XbMfWnTHLvzyO4axf6uvCGxf953SPO+hoqrGXeUVx1VRP7qoUYhmrJsSLAmR?=
- =?us-ascii?Q?gOco12pzM3uOm2FoG4evgn68xztuU2pO8obaXFAbToX9a1th9OYvkrMLBNE9?=
- =?us-ascii?Q?hd7BX9/49bEmnHw4RqXS4sG/JmNVSBkidyQWVpanSyDOYtVKX3yuVsn8wDmU?=
- =?us-ascii?Q?/p8UyoH7rQ0pdqf4acBMCvQuZ2DMGEFCgwSyY0wK+FVFOBbHWmWAHS6ABSkm?=
- =?us-ascii?Q?2TlRbSVk6tDpU2a2dstgNB7xCVCuKwgC7SlXG55bgZZxNUYNh2FezyI+nSmA?=
- =?us-ascii?Q?1nrtE/a8M5ftMomyuAWj+aqZncyyWt1kbDKpL+fnblthO2wwN1Z3VI5fOhaM?=
- =?us-ascii?Q?oqZX1DlneVLlqFTbOnHLznkCCywx6Ur6tWbV13ZRTbxgbRM4+SAEix7YmBqb?=
- =?us-ascii?Q?Uyi8/O6NdHOMpfPNJW2GWmiJbh5Tfzx+cEHcYWT5wpIlqJ0hvl5sOmJcO91Z?=
- =?us-ascii?Q?LRfUySX+BWnigoohBv382Bxc4tSC/EcEUmIKq0JQtHP++okO84+YxkjZunLi?=
- =?us-ascii?Q?cxF9Ci1yQ8GkLUqI+4xZyYpokCFXzvIqCpIw1azHQKydZ+KYIaIfLU7LynO7?=
- =?us-ascii?Q?s/CNsGcC5S03MAl2+m9DIILZVT3lKPFmhUglvBOY0UGrQmcTa0by8OqwJSOX?=
- =?us-ascii?Q?EqI495MKlO5/ObmP/3iWe0abmXURc2LM+7OGKLpRebi3uG9/mH31Fy570ElS?=
- =?us-ascii?Q?c/BARxOuKNfxC33UyKdOdjMkwKqbVTATnf66iql14Jk0rsEXwv26xmK7wZtW?=
- =?us-ascii?Q?G2ljMAQkKF+f7x2uvIklS59iftw94hlbT34rs3ep3jKkp6vcq6cmKwU1eolW?=
- =?us-ascii?Q?ZDrMhz3qXW0+H/e5vrxVdIQGK7lzAkGVTruDiCcZ5THwsXBnr1/krfbjQ8Bc?=
- =?us-ascii?Q?u4W8VeX7bQHs+um7DbvhK6OgTOqf2H3SqllBF/MRBGhJuRuc?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9adc09c1-43f3-47f4-63b6-08deab7b5e97
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 14:25:49.4494
+	zIX8nEAloS3EIg3OgOd5Ed5dWHVWSbo3NUyvAbQ3yBbojcn5cKajn6ldbdl4VwHTihXpLK3GVEji8kMvmgN9BE5GmLDCH8a8d0WFTZGjdRfIhEkhJ5W9SpOMRc8wOxUNeRzUF+ZssWwx43oVATTH34VLnAJR5hwJqA07+EP93p1m3hge6GoofQdR7Rgw89PLOyaIyGnqyKKLttJ/oJEGPCUXzPsGHvgYn5D4Yy2JdJ04Ndb/0r5KVoo1FqPSCxfhHVD4t3PfHJ92LjKqs5PIZgeTX4tNkXN9cImfnBLmXtZLsYIxTK09uNs9ribLPi7KYFCwKaYHea6RQj1V497Mh/NvTJiYS4MDsV7Q1bcwrLK6xroo31og2yuzaEGNZWWNVShcb0Y1Nci5uqrGSGTHr4XXxa7dsu9OojqWjbBl6A5fdaIE3WK/IVwWpF3/FXcM
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 14:26:53.3074
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CDE80GTVqqod63K4hbJ6p98CiLBsC2Zzz4g9P6sfrzOqK6X6ZGY4mQiHFGJz7w3YqXz3sUKafGRktIUcVP98Ww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8049
-X-Rspamd-Queue-Id: E304F4DC221
+X-MS-Exchange-CrossTenant-Network-Message-Id: f25a0df7-6f1e-4aea-8249-08deab7b8506
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB72.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5758
+X-Rspamd-Queue-Id: 9FA464DC2D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244415-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-244416-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,ti.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[ideasonboard.com,kernel.org,pengutronix.de,gmail.com,nxp.com,jmondi.org,phytec.de,vger.kernel.org,lists.linux.dev,lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ti.com:dkim,ti.com:mid];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[nxp.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sebin.francis@ti.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ti.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
 
-On Wed, May 06, 2026 at 11:12:10AM +0800, Xiaolei Wang wrote:
-> When mxc_isi_pipe_init() fails partway through the channel loop or
-> when mxc_isi_v4l2_init() fails, the already initialized pipes are
-> not cleaned up.
->
-> Fix this by calling mxc_isi_pipe_cleanup() for each already-initialized
-> pipe in the err_xbar error path.
->
-> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-> ---
+Hi Vitor
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On 04/05/26 11:56, Vitor Soares wrote:
+> Hello Sebin
+> 
+> On Thu, 2026-04-30 at 16:17 +0530, Sebin Francis wrote:
+>> Hi Vitor,
+>>
+>> On 29/04/26 21:56, Vitor Soares wrote:
+>>> Hi Vignesh
+>>>
+>>> Thank you for the review.
+>>>
+>>> On Wed, 2026-04-29 at 10:03 +0530, Vignesh Raghavendra wrote:
+>>>> Hi Vitor
+>>>>
+>>>> On 27/04/26 13:18, Vitor Soares wrote:
+>>>>> From: Vitor Soares <vitor.soares@toradex.com>
+>>>>>
+>>>>> When a device in a TI SCI power domain is on the wakeup path of a
+>>>>> wakeup-capable child, the suspend path skips genpd_sync_power_off().
+>>>>> No put_device is sent to TIFS and the domain's genpd status remains
+>>>>> ON.
+>>>>
+>>>> Correction of terminologies: TIFS is Root of trust component and is not
+>>>> usually involved in power management, that would be DM (Device Manager)
+>>>>
+>>>
+>>> Thank you for the clarification. I will address this on v2. Also, I was
+>>> thinking
+>>> to replace put_device/get_device with ti_sci_pd_power_off/ti_sci_pd_power_on
+>>> if
+>>> that makes more clear the content.
+>>>
+>>>> But to be really sure who is doing what, Could you provide an example
+>>>> and the platform on which you see the issue / external abort?
+>>>>
+>>>
+>>> This was reproduced on our Toradex Verdin AM62P WB and the driver for our
+>>> Wi-Fi
+>>> module on the SDIO bus calls device_init_wakeup() during the initialization.
+>>>
+>>> After enter in suspend, it show the following error resume path:
+>>>
+>>>
+>>> [   41.759341] Internal error: synchronous external abort: 0000000096000010
+>>> [#1]
+>>> SMP
+>>> [   41.843286] CPU: 0 UID: 0 PID: 933 Comm: rtcwake Tainted: G   M       O
+>>> 6.18.21-dirty #3 PREEMPT
+>>> [   41.852762] Tainted: [M]=MACHINE_CHECK, [O]=OOT_MODULE
+>>> [   41.857891] Hardware name: Toradex Verdin AM62P WB on Verdin Development
+>>> Board (DT)
+>>> [   41.865537] pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=-
+>>> -)
+>>> [   41.872492] pc : regmap_mmio_read32le+0x8/0x20
+>>> [   41.876941] lr : regmap_mmio_read+0x44/0x70
+>>> [   41.881120] sp : ffff800081fdb8e0
+>>> [   41.884428] x29: ffff800081fdb8e0 x28: 0000000000000000 x27:
+>>> ffffa95bb64aa9c8
+>>> [   41.891563] x26: 0000000000000000 x25: 0000000000000000 x24:
+>>> 0000000000000000
+>>> [   41.898697] x23: 0000000080000000 x22: ffff000002df5c00 x21:
+>>> ffff800081fdb9b4
+>>> [   41.905831] x20: 0000000000000100 x19: ffff000001286400 x18:
+>>> 0000000000000000
+>>> [   41.912965] x17: 2d69696d67722f79 x16: 687020726f662067 x15:
+>>> ffff00007fb74f40
+>>> [   41.920100] x14: 00000000000002ea x13: 000000000000031f x12:
+>>> 0000000000000000
+>>> [   41.927234] x11: 00000000000000c0 x10: 00000000000009e0 x9 :
+>>> ffff800081fdb7a0
+>>> [   41.934368] x8 : ffff00007fb6ce00 x7 : 0000000000000000 x6 :
+>>> 0000000000000000
+>>> [   41.941502] x5 : ffffa95bb57948d8 x4 : 0000000000000100 x3 :
+>>> 0000000000000100
+>>> [   41.948636] x2 : ffffa95bb5795034 x1 : 0000000000000100 x0 :
+>>> ffff80008025d100
+>>> [   41.955770] Call trace:
+>>> [   41.958211]  regmap_mmio_read32le+0x8/0x20 (P)
+>>> [   41.962655]  _regmap_bus_reg_read+0x70/0xb0
+>>> [   41.966839]  _regmap_read+0x64/0xdc
+>>> [   41.970327]  _regmap_update_bits+0xf4/0x140
+>>> [   41.974509]  regmap_update_bits_base+0x64/0x98
+>>> [   41.978952]  sdhci_am654_runtime_resume+0x138/0x208
+>>> [   41.983830]  pm_generic_runtime_resume+0x2c/0x44
+>>> [   41.988445]  __genpd_runtime_resume+0x30/0x7c
+>>> [   41.992804]  genpd_runtime_resume+0xdc/0x2e8
+>>> [   41.997073]  pm_runtime_force_resume+0x68/0xf4
+>>> [   42.001517]  dpm_run_callback+0x8c/0x14c
+>>> [   42.005439]  device_resume+0x11c/0x34c
+>>> [   42.009188]  dpm_resume+0x178/0x1f0
+>>> [   42.012673]  dpm_resume_end+0x18/0x34
+>>> [   42.016332]  suspend_devices_and_enter+0x4a4/0x668
+>>> [   42.021123]  pm_suspend+0x170/0x2dc
+>>> [   42.024610]  state_store+0x80/0x104
+>>> [   42.028096]  kobj_attr_store+0x18/0x2c
+>>> [   42.031845]  sysfs_kf_write+0x7c/0x94
+>>> [   42.035508]  kernfs_fop_write_iter+0x130/0x1fc
+>>> [   42.039949]  vfs_write+0x200/0x370
+>>> [   42.043351]  ksys_write+0x6c/0x100
+>>> [   42.046752]  __arm64_sys_write+0x1c/0x28
+>>> [   42.050673]  invoke_syscall.constprop.0+0x50/0xe4
+>>> [   42.055378]  do_el0_svc+0x40/0xc4
+>>> [   42.058691]  el0_svc+0x40/0x15c
+>>> [   42.061834]  el0t_64_sync_handler+0xa0/0xe4
+>>> [   42.066015]  el0t_64_sync+0x198/0x19c
+>>> [   42.069680] Code: aa0603e0 d65f03c0 f9400000 8b214000 (b9400000)
+>>>
+>>>>
+>>>>>
+>>>>> TIFS powers off the hardware during deep sleep regardless, since it
+>>>>> was never informed to keep the domain active. On resume, because the
+>>>>> domain's genpd status is ON, no get_device is issued. The driver
+>>>>> then accesses registers of a powered-off domain, causing a
+>>>>> synchronous external abort (AXI bus error, ESR 0x96000010).
+>>>>
+>>>> Hmm, if something is wakeup source, I would expect even TIFS/DM not to
+>>>> turn if off, else module wakeup wouldn't work.
+>>>>
+>>>
+>>> I tested UART as a wakeup source and I couldn't reproduce this issue. My
+>>> understanding is that UART has its own TI SCI domain and device_may_wakeup()
+>>> is
+>>> true directly on that domain device, so the set_device_constraint fires
+>>> correctly and DM keeps it powered.
+>>>
+>>> Here is my tracking of the issue:
+>>>
+>>> Wi-Fi driver registers as wakeup source:
+>>> device_init_wakeup(mmc0:0001)
+>>>
+>>> During suspend/resume.
+>>> dpm_suspend()
+>>> ->genpd_suspend_dev(fa20000.mmc)
+>>>      ->ti_sci_pd_suspend(fa20000.mmc)
+>>>         ->ti_sci_pd_set_wkup_constraint(fa20000.mmc)
+>>>           device_may_wakeup(fa20000.mmc)  = false
+>>>           set_device_constraint never sent to DM
+>>>
+>>>
+>>> dpm_suspend_noirq()
+>>> ->genpd_finish_suspend(fa20000.mmc)
+>>>     ->device_awake_path(fa20000.mmc) = true
+>>>     ->GENPD_FLAG_ACTIVE_WAKEUP = true
+>>>       genpd status = GENPD_STATE_ON
+>>>       skip power_off (ti_sci_pd_power_off)
+>>>
+>>> On deep sleep entry, DM powers off fa20000.mmc independently.
+>>> It received no set_device_constraint nor ti_sci_pd_power_off.
+>>
+>> In AM62P fa20000.mmc is part of main domain. During deepsleep the entire
+>> main domain is turned off by the DM, that is why you see the failures.
+>>
+>> In-order to debug this we need to check why pd off and pd on call is not
+>> getting called for fa20000.mmc during suspend and resume.
+> 
+> This is an expected behavior from genpd. On suspend, ti_sci_pd_power_off is not
+> called because genpd_finish_suspend() takes an early return when both
+> device_awake_path() and GENPD_FLAG_ACTIVE_WAKEUP are true.
+>                                                                 
+> On resume, ti_sci_pd_power_on is not called because genpd sees the domain status
+> as GENPD_STATE_ON (it was never cleared) and skips the power-on entirely.
+>
+>>
+>>>
+>>> I attempted to fix this by calling set_device_constraint when
+>>> device_wakeup_path() is true but it prevented the system from entering deep
+>>> sleep entirely.
+>>
+>> In AM62P the DM manager selects the low power mode to enter based on the
+>> constrains set. The mode selection logic will ensure that if a
+>> constraint is set on the device, it will select a low power mode in
+>> which the device is kept on or can wake the system up. the MMC is part
+>> of main domain and there is no low power mode in which the MMC can stay
+>> alive or generate a wake up interrupt. so when a constraint is set of
+>> MMC, we cannot enter any low power mode. that why you see a failure.
+>>
+> 
+> This is consistent with what we observed. I am open to suggestions if there is a
+> better way to handle this.
 
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> index 2b76fb9c18f6..8533a979d60a 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> @@ -539,6 +539,8 @@ static int mxc_isi_probe(struct platform_device *pdev)
->  	return 0;
->
->  err_xbar:
-> +	while (i--)
-> +		mxc_isi_pipe_cleanup(&isi->pipes[i]);
->  	mxc_isi_crossbar_cleanup(&isi->crossbar);
->
->  	return ret;
-> --
-> 2.43.0
->
+We looked into this issue and found the root-cause. What we have 
+identified is that, there was bug in our ti_sci driver. In ti_sci driver 
+we were not handling the devices in which the child device can act as a 
+wake up source, we only handled the cases in which the device can act as 
+a wake up source. Kendall is working on fix for this. soon she will post 
+the fix.
+
+With the fix, if you suspend it will fail because the wake up is enabled 
+for the WiFi, as a constraint will be sent to the DM firmware and DM 
+will NACK the suspend because it cannot suspend with WiFi acting as a 
+wake up source. But you can disable the wake up of WiFi from the sysfs 
+entry and try suspend then suspend and resume will work.
+
+Thankyou very much for digging deep into this issue and proposing a 
+solution.
+
+Thanks
+Sebin
+
+> 
+> Thanks,
+> Vitor Soares
+> 
 
