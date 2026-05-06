@@ -1,144 +1,192 @@
-Return-Path: <stable+bounces-244315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOgsEqDN+mmtSwMAu9opvQ
-	(envelope-from <stable+bounces-244315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 07:12:00 +0200
+	id 4GmHHCDO+mnMSwMAu9opvQ
+	(envelope-from <stable+bounces-244316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 07:14:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99DA34D63F1
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 07:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A83C94D6409
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 07:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27801301A91C
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 05:11:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E074301A915
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 05:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737FF2DE709;
-	Wed,  6 May 2026 05:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1782ED154;
+	Wed,  6 May 2026 05:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="BAPrhnrO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hruDdlSH"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B563282F03;
-	Wed,  6 May 2026 05:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E952D9792
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 05:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778044315; cv=none; b=Lno3jasgStbGWn+AMBpPrwi+FACOvzugb81KX/yo6ApgEiwnJshfluyuA50+aJA8NKlIT1MP9HXqi6ql+wm+zX7QS553TCLDOPSnf7YnDHWr1AWoCK1C6HRfEjnCoHrsHupvIxnohaa6nfdu1NCa5Rwkk6YPaRZw+F7hYPY7J5Q=
+	t=1778044443; cv=none; b=P6ACy68i8KdOKLOHMGJGFr9WKUd6cNOsjGp3oI7rAycVkdl3RadkIZiHu7iyyevtIzobuPqFICMP/A8++s7x8p9tKKXpEi2ID45P/LTsx34aRQzESTrQkyqRYLw4O33QuUP/UqTq84N/ud7p4HHmSiyI8cD2t+y0QHxiNj9FrUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778044315; c=relaxed/simple;
-	bh=YRlHKj4bTPlIKFkhJqLYD2+yDzzIt1X5PxSxX1g3tiY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JsBmjpkvla/TIJP4o+oOtovFwdDZV+YfoK1cH3GK7qqfZ8QFF9aIzNT0A1DBjNo4+MMzlDpmsrec/tF9mT+sqVQux9LxYWODBC42fitnnkyr1QGY3yNygOlNONIUvm4p0dEMpEo3/Y+4tsBNZfzD+QOhOIAsMsSpsG5PLbn09uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=BAPrhnrO; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778044308; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Yjv1YwoUlV3YcbGhSBZo4j1p+egaq8G4dSfMBztXKz4=;
-	b=BAPrhnrOwoZ5HEj0xpQQ1ywHimaNhmpbndqTLCEWBAcjgSQMTmT89xZ34bVrxfEcFYTFvconNPUIj+OCXCDKWgoZMcqSNhb2iGPf9P6w3DRsJiIyUSJfKBEoL+2Ay9GgEHbyhFiQ4LSw4r6jtDnd7IMtikF//8yz/Tc1jZOWXbM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X2L9Eve_1778044305;
-Received: from 30.221.149.158(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X2L9Eve_1778044305 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 06 May 2026 13:11:46 +0800
-Message-ID: <1a5c8084-c244-455b-b999-f110fc9e4749@linux.alibaba.com>
-Date: Wed, 6 May 2026 13:11:44 +0800
+	s=arc-20240116; t=1778044443; c=relaxed/simple;
+	bh=3mPDjpz9UoYLq//zME7f0LLK/FYBp27tbNuZ0h5zQJs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NkDlHCW3jUmQKy2CM7xHncH891prqWUmdQUjy1vxCH7NVgDvyP31fitOJuiJR3s3Xu4RuRsQ622arL7VNEZ+wCmFOQx8/ZBz5EJyfgOwlmmHlVJwJ1dufWXmjB58vcRU2t/nXHDpXpF6bv2K5sb/bEjx5n5xO7a1Vc8NaTSqr8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hruDdlSH; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2f3c623322bso3602841eec.0
+        for <stable@vger.kernel.org>; Tue, 05 May 2026 22:14:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778044441; x=1778649241; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ne6d3NPP/xf4CWREwfa7zTxmf8SmALy0wsZD1GHfx/w=;
+        b=hruDdlSHHK/zBbWb8HtnaCSF5yAXUC3YmU7AckgiyHTkCOxCnmkn2PyrFQ9QBYivgw
+         zi1zbk6YvxPLBk6gAdW3N6L0eOAhracP+6Yn0ySETPKmeDIo1ZWq+yaiDdtEzJLisQcT
+         ijdPMpdUiyh+JtQHiQndtKZFslyd5ey9K34oy5PyKk7NwsEWTb41WHcBLjUJaVPasdGm
+         Sl6kV4z4ht4qCPrJlPtml2tXpB0fiVNZ2kYBi0IUBab2hhFIs/qE03RWR1MUTgcAPxRa
+         izgb5xzBGnz88M7ZHCIGSgYxrcnB2v8GJhv5kHBWgGzLoIVBNqrpyNKZtxCSWz5NZi/a
+         tH/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778044441; x=1778649241;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ne6d3NPP/xf4CWREwfa7zTxmf8SmALy0wsZD1GHfx/w=;
+        b=JFD5GAK2SjiLs7/h20PSsGa+HaZWH/Rph02l2o5A8OXscKDdGZOKUY1v0KlnO9jygC
+         PiThl4FeiXdeY3k0WECRYH3gtHBP1FA2f1dzXZEGH/Hr60zr2PkjKzrGC3aT6xug6QJA
+         O+fSD44xhdSwjUr23KMeQG0vC2yFekyU6qTUM8JmYZ72weFq/UzV9uPCyV2BcIpxhVbX
+         HKgtCLeXcZ7/a6c5NifDPScjyPUXNO2qff1sOKQ5bFzHFg1xkbR9+wL0xJ/mEZkuNauU
+         3Cnvt/CKafSxz4wz9NBCJ4l3QORCXZ5imSyTHs2RhwdVa/QEvt6EoHfWra+hjQCS91HM
+         TPJw==
+X-Forwarded-Encrypted: i=1; AFNElJ+Se5DIF+MJhcg6zuwnvpgvhtbMomZiLwrPjVlTB7DtW4LP3yvQK84osuMjmH5/411wfgLgIWU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5RH2T9n7WQANe5Dav0PaTosT6RP0XeUhOpCV0BoJsFNCdSaAF
+	yJVV92Nxg4ccsEojVTFnWIw00Ea/CNRM4yXUMhFiAAm8DhFCGZpiCNInpeSvXxTy
+X-Gm-Gg: AeBDievrt7auND6UJBsgDeA8WB/nnKGgQC5Al17dAFKfTgm27pykqm0HyyWIadWJojO
+	I9dABVz3CZHoFY5P9gFrJlKZguhAhR7WcEVVWTa6awDoM4ii29C/No4+AvLy5JLQi6ywyAf0sGh
+	uB5te6EyaGfrLdm+FPi1UkndOpdF3BfQLRUoTsymc0iXqnV5GtcqKQjnO/fChEEoTR2GfnGKKae
+	BoQ4t4clvjxA/KunVpP+TVCQQPzfQou5vxgCm7ydfdLp+bi9aDO/dggDcthHEIP1cA6W6YPBVlR
+	xxrd2/UuOqQGOoMp6lxVKpeuGzku4HydHcbxoVZP84MMkaKJ13GdJ5Xo19Sgfin/+BN8YOaLW4L
+	Qpu3dHBdRSqWo9zqYPeKwLdskANpxuFQ8nHTBF3taAWLP9O8hA3PfOV5OloLIva8r8P+RE+/QfZ
+	h1NKtvia7rnrIu1sjaac+Gvs9DZMyh5qb0rja9rkGqoNLW3zvt8fLflBDDxYseFJArHAOiDPy8n
+	1FkHPgr+ku7wSpz9zSz6dA=
+X-Received: by 2002:a05:7300:ec11:b0:2e5:5bf4:8869 with SMTP id 5a478bee46e88-2f54c87cd18mr1071089eec.21.1778044441041;
+        Tue, 05 May 2026 22:14:01 -0700 (PDT)
+Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f56fd8fa8csm1701041eec.21.2026.05.05.22.13.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 22:14:00 -0700 (PDT)
+From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Wed, 06 May 2026 02:13:45 -0300
+Subject: [PATCH net] tipc: avoid sending zero-length stream messages
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix __vm_normal_page() to handle missing support for
- pmd_special()/pud_special()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>,
- Hugh Dickins <hughd@google.com>, Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Bibo Mao <maobibo@loongson.cn>, stable@vger.kernel.org
-References: <20260430-pmd_special-v1-1-dbcbcfd72c20@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260430-pmd_special-v1-1-dbcbcfd72c20@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 99DA34D63F1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260506-tipc-zero-length-stream-stall-v1-1-5d75f202227b@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vche3aTUkSjr2I8lGWENbWQthoD4
+ d2tepr8c/hWSoiKROdqpYiXJp1CiXpXkYwuDGDtS5M19mBa03LWWXhBnNgjDHnklCPco4zznq0
+ 0x33dw8qpoWLMETd9//wLBWS6/s/07O6Q/JVp2z7BsX93hgAAAA==
+X-Change-ID: 20260505-tipc-zero-length-stream-stall-2c3741de2c93
+To: Jon Maloy <jmaloy@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Ying Xue <ying.xue@windriver.com>, 
+ Parthasarathy Bhuvaragan <parthasarathy.bhuvaragan@ericsson.com>
+Cc: Jon Paul Maloy <jon.maloy@ericsson.com>, netdev@vger.kernel.org, 
+ tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ syzbot+aa7d098bd6fa788fae8e@syzkaller.appspotmail.com, 
+ =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1829;
+ i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
+ bh=3mPDjpz9UoYLq//zME7f0LLK/FYBp27tbNuZ0h5zQJs=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJm/zolsfyX8tXyhaf4/2exTZgqV4edNkotv/wkqaytYe
+ Mq/5k5JRykLgxgXg6yYIsvqpEWWe7oeXK2PW+EBM4eVCWQIAxenAEzklTQjw9RT2lZRq45cOtos
+ WXo1zHf3z9ub/y48vXSK3KWZJYs/LJzB8D8wLT1C+7bQ2qvlEgITgnesffT0hvbaBe6KbQHBYX7
+ mz7kA
+X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
+ fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
+X-Rspamd-Queue-Id: A83C94D6409
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-9.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-244316-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244315-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[ericsson.com,vger.kernel.org,lists.sourceforge.net,syzkaller.appspotmail.com,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,aa7d098bd6fa788fae8e];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linux.dev:email,loongson.cn:email,linux.alibaba.com:dkim,linux.alibaba.com:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
 
+TIPC stream send currently enters the transmit loop even when the
+user payload length is zero. This can build and transmit a
+header-only connection message.
 
+For local TIPC sockets, such messages are delivered synchronously
+through the loopback receive path. When this happens while socket
+backlog processing is being flushed, reply transmission can re-enter
+TIPC receive processing repeatedly and trigger an RCU stall.
 
-On 4/30/26 7:31 PM, David Hildenbrand (Arm) wrote:
-> On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
-> "WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
-> VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed
-> by "BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s
-> when reclaim gets to call shrink_huge_zero_folio_scan().
-> 
-> It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd:
-> and indeed, whereas pte_special() and pte_mkspecial() are subject to a
-> dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
-> are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled
-> on any 32-bit architecture.
-> 
-> While the problem was exposed through commit d80a9cb1a64a ("mm/huge_memory:
-> add and use normal_or_softleaf_folio_pmd()"), it was an oversight in commit
-> af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
-> and would result in other problems:
-> * huge zero folio accounted in smaps, pagemap (PAGE_IS_FILE) and
->    numamaps as file-backed THP
-> * folio_walk_start() returning the folio even without FW_ZEROPAGE set.
->    Callers seem to tolerate that, though.
-> 
-> ... and triggering the VM_WARN_ON_ONE(), although never reported so far.
-> 
-> To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() to consider
-> whether pmd_special/pud_special is actually implemented.
-> 
-> Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
-> Reported-by: Hugh Dickins <hughd@google.com>
-> Closes: https://lore.kernel.org/r/74a75b59-2e13-3985-ee99-d5521f39df2a@google.com
-> Reported-by: Bibo Mao <maobibo@loongson.cn>
-> Closes: https://lore.kernel.org/r/20260430041121.2839350-1-maobibo@loongson.cn
-> Debugged-by: Hugh Dickins <hughd@google.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Tested-by: Bibo Mao <maobibo@loongson.cn>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+Make zero-length sends on connected SOCK_STREAM TIPC sockets a no-op
+after the existing connection/congestion wait has succeeded. Leave
+implicit connection setup and SOCK_SEQPACKET behavior unchanged.
 
-LGTM. Feel free to add:
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Fixes: 365ad353c256 ("tipc: reduce risk of user starvation during link congestion")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+aa7d098bd6fa788fae8e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000cedbc405ae81531f@google.com/
+Closes: https://syzkaller.appspot.com/bug?extid=aa7d098bd6fa788fae8e
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+---
+ net/tipc/socket.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index 9329919fb07f..3c7838713d74 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -1585,6 +1585,8 @@ static int __tipc_sendstream(struct socket *sock, struct msghdr *m, size_t dlen)
+ 					 tipc_sk_connected(sk)));
+ 		if (unlikely(rc))
+ 			break;
++		if (unlikely(!dlen && sk->sk_type == SOCK_STREAM))
++			break;
+ 		send = min_t(size_t, dlen - sent, TIPC_MAX_USER_MSG_SIZE);
+ 		blocks = tsk->snd_backlog;
+ 		if (tsk->oneway++ >= tsk->nagle_start && maxnagle &&
+
+---
+base-commit: 95084f1883a760e0d4290698346759d58e2b944a
+change-id: 20260505-tipc-zero-length-stream-stall-2c3741de2c93
+
+Best regards,
+--  
+Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
 
