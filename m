@@ -1,175 +1,145 @@
-Return-Path: <stable+bounces-244338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJZRJQv3+mmlUwMAu9opvQ
-	(envelope-from <stable+bounces-244338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:08:43 +0200
+	id iC81J/X7+mnjUwMAu9opvQ
+	(envelope-from <stable+bounces-244342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:29:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7944D7A43
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:08:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D654D7DFE
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF7323025AD4
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 08:08:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 666343090F73
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 08:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A413E0258;
-	Wed,  6 May 2026 08:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA9B3E3C4E;
+	Wed,  6 May 2026 08:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fwJ+FicX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NZD28I9f";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fwJ+FicX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NZD28I9f"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZiwPI7t6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403623E1233
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 08:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7E93E3166;
+	Wed,  6 May 2026 08:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778054910; cv=none; b=c6I4pCpP6OAT69s1B/3D7WqXgPG1XJLHBjbEoJF8qXNUPMbFp0VRad9vb9aezXk3ue7omBPsnjAUBYcQGefn+h5Re+GmkU6wehh8zIWhUNTwRUnjReSKCiZxUsSjebOFeMBOfL9EJaqz96oofkwN5cYhFv4u93T3rgcKpKZu4co=
+	t=1778055872; cv=none; b=KyU8/OMVm59TfhiNsSA+2wHGuJtjQNR82j2pOKg+YibrglpqKsseyJ6y1utiCXXUzPCK+gf3r1ZIBWYilna0eSQI2DGOG67n4mN4/AsZLarWvJ8zlI7ds8LtKhpItMA4TUqtq8hVvnZLXn0VsqCKxk3n7O10mK/cLHfSn1TFkFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778054910; c=relaxed/simple;
-	bh=gEyl16hqhesixVMeiTp2nVanfUrdm9vp/WQiRvupmhQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rt6msc+4zxtsUlWVaaCQiYDunKq/ap7n6waGwyp+UsCssf4BfTn33NZTW68SMQbXXtxizW4lUPRZG3NXY2Y8PNsquLZ0mJz5YJvXbZfOiLiw1VW2BN6X8jGFw5WkaXjEMFUKw0dvNipsCi1/iIFFFUYSWjrOEYTSCiirDDMtVhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fwJ+FicX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NZD28I9f; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fwJ+FicX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NZD28I9f; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7F20D6B560;
-	Wed,  6 May 2026 08:08:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778054907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BtqtT4XAXixsAQa9Vr7kmaosTNtgESlEmzfhfzCcoEI=;
-	b=fwJ+FicXV2y6Aq5ZNlAA1Qp9ykBrDEWRG/RU7FSXIX2VkrVFXXrl8YSXftPFsEnZM/9BWC
-	9t7pRdckRPexFnnnayyt4sMJ4NEr1pzYD1vfYPbvpWyyxy4kvxWQU/l3pDjDYOe++hIAu7
-	tYXpz5BQ9ZoPBrPZnEYcnISDUtSTazQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778054907;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BtqtT4XAXixsAQa9Vr7kmaosTNtgESlEmzfhfzCcoEI=;
-	b=NZD28I9firy0+8QOFSC9+FUapdCTQV/U+vosenRnJfG6CC/Rd5Zy03XMUqu7FLM7RrqYSu
-	xMLapiDRIrRZh/Aw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fwJ+FicX;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NZD28I9f
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778054907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BtqtT4XAXixsAQa9Vr7kmaosTNtgESlEmzfhfzCcoEI=;
-	b=fwJ+FicXV2y6Aq5ZNlAA1Qp9ykBrDEWRG/RU7FSXIX2VkrVFXXrl8YSXftPFsEnZM/9BWC
-	9t7pRdckRPexFnnnayyt4sMJ4NEr1pzYD1vfYPbvpWyyxy4kvxWQU/l3pDjDYOe++hIAu7
-	tYXpz5BQ9ZoPBrPZnEYcnISDUtSTazQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778054907;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BtqtT4XAXixsAQa9Vr7kmaosTNtgESlEmzfhfzCcoEI=;
-	b=NZD28I9firy0+8QOFSC9+FUapdCTQV/U+vosenRnJfG6CC/Rd5Zy03XMUqu7FLM7RrqYSu
-	xMLapiDRIrRZh/Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4E7CE593A3;
-	Wed,  6 May 2026 08:08:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uUbvEfv2+mmbLQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 06 May 2026 08:08:27 +0000
-Date: Wed, 06 May 2026 10:08:26 +0200
-Message-ID: <873405t0xx.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: =?ISO-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: core: Serialize deferred fasync state checks
-In-Reply-To: <20260506-alsa-core-fasync-on-lock-v1-1-ea48c77d6ca4@gmail.com>
-References: <20260506-alsa-core-fasync-on-lock-v1-1-ea48c77d6ca4@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1778055872; c=relaxed/simple;
+	bh=BBuRcbYSha1EQU7vIMWC0glgbxxjv4UsO/uSUMLisIQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=omtdcosRUTxd93oDV+5XxGsivOStOWi8NBY15CNgpj7llquJLXtElt377kRWcnBIdopfYjiuaJh1bDFUUsvwCTsKF5AdqQdgmSb/Ad2IHMcOrgtjmHE2lbjdjtBTqnaBnRKzJn8vPyzchKM2atTLhT9yQBeP+8Y2oRKrTyFM400=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZiwPI7t6; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6468NIK101857213, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1778055798; bh=BBuRcbYSha1EQU7vIMWC0glgbxxjv4UsO/uSUMLisIQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=ZiwPI7t6WL+6c1z+0gYihIH5atl8+L27Z/uE056orAEH9OLo+suabwewLb60D8Z2+
+	 fL/W9JGTjUlljaranIC08zxQQawfrmJKk0gtdJbodh+C1sTch/tQxLP7WWZQN4V4nu
+	 H//iSLRG2L+KA2/5jtNusJhOBR5STfw2emQITIttEWWEb8ZW5A/vob+edvttcRNMcX
+	 aXdxP55DRN+tMEWbh+uRnG4Yj3ts9MSCMDYF/AHwWWG/medFBGkf9cgnzlDXUFYU9i
+	 kazdTUzAUeedyyKr1+PekeHwNoit94ANGGVeRaOBI6AxWpP8T4hNCKSj1ocV3yIOMw
+	 TwWhfui5slkkA==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 6468NIK101857213
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 May 2026 16:23:18 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Wed, 6 May 2026 16:23:18 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 6 May 2026 16:23:18 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
+ 15.02.2562.017; Wed, 6 May 2026 16:23:18 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Luka Gejak <luka.gejak@linux.dev>,
+        Bitterblue Smith
+	<rtl8821cerfe2@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+CC: Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Brian Norris
+	<briannorris@chromium.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw88: increase TX report timeout to fix race
+ condition
+Thread-Topic: [PATCH] wifi: rtw88: increase TX report timeout to fix race
+ condition
+Thread-Index: AQHc2Xvnc+E0zgdQQUaGpSfkl/+czbX5B74AgAAWc4CAAAutAIAAAVGAgAeEJlA=
+Date: Wed, 6 May 2026 08:23:17 +0000
+Message-ID: <6fec8d91bf174dc99babbdf6d71767e5@realtek.com>
+References: <20260501150402.227788-1-luka.gejak@linux.dev>
+ <72f6fffd-bd77-437f-a9d9-6a542a8b365b@gmail.com>
+ <6CD170FE-CAED-4B91-AEED-A1AFB98FFE8A@linux.dev>
+ <bc0a9969-b386-42d1-ada2-99ac39e394f3@gmail.com>
+ <39E7B292-F03C-4307-B0BE-62DEC191FED8@linux.dev>
+In-Reply-To: <39E7B292-F03C-4307-B0BE-62DEC191FED8@linux.dev>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 3A7944D7A43
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 06D654D7DFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.06 / 15.00];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
+	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-244342-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244338-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:dkim,suse.de:mid]
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-On Wed, 06 May 2026 05:34:47 +0200,
-Cássio Gabriel wrote:
-> 
-> snd_fasync_helper() updates fasync->on under snd_fasync_lock, and
-> snd_fasync_work_fn() now also evaluates fasync->on under the same
-> lock. snd_kill_fasync() still tests the flag before taking the lock,
-> leaving an unsynchronized read against FASYNC enable/disable updates.
-> 
-> Move the enabled-state check into the locked section.
-> 
-> Also clear fasync->on under snd_fasync_lock in snd_fasync_free()
-> before unlinking the pending entry. Together with the locked sender-side
-> check, this publishes teardown before flushing the deferred work and
-> prevents a racing sender from requeueing the entry after free has
-> started.
-> 
-> Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
-> Fixes: 8146cd333d23 ("ALSA: core: Fix potential data race at fasync handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-
-Thanks, applied now.
-
-
-Takashi
+PiA+PiBJIGFsc28gcmVhbGl6ZSBub3cgdGhhdCBnbG9iYWxseSBjaGFuZ2luZyBSVFdfVFhfUFJP
+QkVfVElNRU9VVCB0bw0KPiA+PiAyNTAwbXMgaXMgdG9vIGhlYXZ5LWhhbmRlZC4gU2luY2UgdGhp
+cyBpbXBhY3RzIGFsbCBydHc4OCBjaGlwcywNCj4gPj4gaW5jbHVkaW5nIFBDSWUgdmFyaWFudHMg
+d2hlcmUgNTAwbXMgbWlnaHQgYmUgZXhhY3RseSB3aGF0IGlzIG5lZWRlZCB0bw0KPiA+PiBjYXRj
+aCBhIHJlYWwgZmlybXdhcmUgbG9ja3VwLCB0aGUgYmxhc3QgcmFkaXVzIGlzIHRvbyBsYXJnZS4g
+SG93IHdvdWxkDQo+ID4+IHlvdSBwcmVmZXIgSSBoYW5kbGUgdGhpcyBmb3IgdGhlIHYyIHBhdGNo
+PyBJIGNhbiBlaXRoZXIgaW1wbGVtZW50IGENCj4gPj4gbW9yZSBjb25zZXJ2YXRpdmUgZ2xvYmFs
+IGJ1bXAsIG9yIG1ha2UgdGhlIHRpbWVvdXQgZHluYW1pYyBiYXNlZCBvbg0KPiA+PiB0aGUgSENJ
+IGludGVyZmFjZSBzbyBVU0IgZGV2aWNlcyBnZXQgYSBsb25nZXIgdGltZW91dCB0byBhY2NvbW1v
+ZGF0ZQ0KPiA+PiB0aGUgYnVzIGxhdGVuY3kgZHVyaW5nIHNjYW5zLg0KDQpJJ2QgbGltaXQgdGhp
+cyBjaGFuZ2UgdG8gVVNCIGRldmljZXMsIGV2ZW4gbGltaXQgdG8gUlRMODcyM0RVIHlvdSB0ZXN0
+ZWQuIA0KQXMgUlRMODgyMkNVIHN1cHBvcnRzIGh3X3NjYW4sIHRoZSBzeW1wdG9tIG1pZ2h0IGJl
+IGRpZmZlcmVudC4gDQoNClBpbmctS2UNCg0K
 
