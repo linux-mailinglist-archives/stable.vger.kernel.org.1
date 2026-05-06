@@ -1,145 +1,230 @@
-Return-Path: <stable+bounces-244342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC81J/X7+mnjUwMAu9opvQ
-	(envelope-from <stable+bounces-244342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:29:41 +0200
+	id +Cg/O7v6+mnjUwMAu9opvQ
+	(envelope-from <stable+bounces-244339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:24:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D654D7DFE
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:29:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651214D7CED
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 666343090F73
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 08:24:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 575CD3038D23
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 08:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA9B3E3C4E;
-	Wed,  6 May 2026 08:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355D33E3170;
+	Wed,  6 May 2026 08:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZiwPI7t6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BeXQoQP2"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7E93E3166;
-	Wed,  6 May 2026 08:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C853385B6
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 08:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778055872; cv=none; b=KyU8/OMVm59TfhiNsSA+2wHGuJtjQNR82j2pOKg+YibrglpqKsseyJ6y1utiCXXUzPCK+gf3r1ZIBWYilna0eSQI2DGOG67n4mN4/AsZLarWvJ8zlI7ds8LtKhpItMA4TUqtq8hVvnZLXn0VsqCKxk3n7O10mK/cLHfSn1TFkFc=
+	t=1778055864; cv=none; b=K5ULaLlJgjAIOsnCAAwhq1lLD1KD927J1Sg7FBma3Y6Ms/MkL4GJ/IQVuyA/o82qzp4gHAXj16MI+8FIQKSeRoCm2cXdDy6EhnvXjrrLYY2Mz3fvSRpUr63XLDqppAW2SDxi0btgrNTzCrHFCext2Pt5cw3CFutap2kiHXdbadA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778055872; c=relaxed/simple;
-	bh=BBuRcbYSha1EQU7vIMWC0glgbxxjv4UsO/uSUMLisIQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=omtdcosRUTxd93oDV+5XxGsivOStOWi8NBY15CNgpj7llquJLXtElt377kRWcnBIdopfYjiuaJh1bDFUUsvwCTsKF5AdqQdgmSb/Ad2IHMcOrgtjmHE2lbjdjtBTqnaBnRKzJn8vPyzchKM2atTLhT9yQBeP+8Y2oRKrTyFM400=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZiwPI7t6; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6468NIK101857213, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1778055798; bh=BBuRcbYSha1EQU7vIMWC0glgbxxjv4UsO/uSUMLisIQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZiwPI7t6WL+6c1z+0gYihIH5atl8+L27Z/uE056orAEH9OLo+suabwewLb60D8Z2+
-	 fL/W9JGTjUlljaranIC08zxQQawfrmJKk0gtdJbodh+C1sTch/tQxLP7WWZQN4V4nu
-	 H//iSLRG2L+KA2/5jtNusJhOBR5STfw2emQITIttEWWEb8ZW5A/vob+edvttcRNMcX
-	 aXdxP55DRN+tMEWbh+uRnG4Yj3ts9MSCMDYF/AHwWWG/medFBGkf9cgnzlDXUFYU9i
-	 kazdTUzAUeedyyKr1+PekeHwNoit94ANGGVeRaOBI6AxWpP8T4hNCKSj1ocV3yIOMw
-	 TwWhfui5slkkA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 6468NIK101857213
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 6 May 2026 16:23:18 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 6 May 2026 16:23:18 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 6 May 2026 16:23:18 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
- 15.02.2562.017; Wed, 6 May 2026 16:23:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Luka Gejak <luka.gejak@linux.dev>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC: Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Brian Norris
-	<briannorris@chromium.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtw88: increase TX report timeout to fix race
- condition
-Thread-Topic: [PATCH] wifi: rtw88: increase TX report timeout to fix race
- condition
-Thread-Index: AQHc2Xvnc+E0zgdQQUaGpSfkl/+czbX5B74AgAAWc4CAAAutAIAAAVGAgAeEJlA=
-Date: Wed, 6 May 2026 08:23:17 +0000
-Message-ID: <6fec8d91bf174dc99babbdf6d71767e5@realtek.com>
-References: <20260501150402.227788-1-luka.gejak@linux.dev>
- <72f6fffd-bd77-437f-a9d9-6a542a8b365b@gmail.com>
- <6CD170FE-CAED-4B91-AEED-A1AFB98FFE8A@linux.dev>
- <bc0a9969-b386-42d1-ada2-99ac39e394f3@gmail.com>
- <39E7B292-F03C-4307-B0BE-62DEC191FED8@linux.dev>
-In-Reply-To: <39E7B292-F03C-4307-B0BE-62DEC191FED8@linux.dev>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1778055864; c=relaxed/simple;
+	bh=FjT3tRekuKDQHAOGCXnDobwmU46yO/8SbxGfk0IJiv8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oAKEMnpHdzcJuoX9RW3MWeqUK/U/91Wte7FKIKoWFKasyWczSNmimAtyvgV510/f+lcGMIFRrOTDKJw9mJrGTFGii6l2WS40JewDtSducE0ZdakniYA1xujZIlma2gnGntEGn40FciZvOd7bbbQbSWiy5l6Dz4/DxeOu0gYado0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BeXQoQP2; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3650a4eb605so3054775a91.0
+        for <stable@vger.kernel.org>; Wed, 06 May 2026 01:24:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778055862; x=1778660662; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4+NLYhJbCV0yu/jhkzCiRqjYSwyB+jChRB9RgBBhFmY=;
+        b=BeXQoQP2vifKulrLafOT8HIk4L/bJLZoPXDejSPzUtfseqyltiBlkfn/Ax0IBxgIE9
+         vHQ7pQnSpYHpFraBYjEEEGu1Ok2jICi6FPZKevibrJB8SKzBKV3zT1z8Z4V/uUj0mjgv
+         pzbI2bUir9gbOpIOD0E3OeY3gDbc2WAugoIx5pYcAOp3fZgt+8pEp2Jzyq+D/U5oSNNp
+         p5EIH7VxQR0yI0G/Tj9/z8USwLK3FcqOG5TP+E8Q8HRNXTFCIwsaexKkhlCcgGnHinf/
+         2FHCUh4BcUUEcZiGmEYwVuH/oKEVeT8uZHyxtp6jh+MCbswJZlcwvcksdQ5JsLcMFfQR
+         MNIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778055862; x=1778660662;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4+NLYhJbCV0yu/jhkzCiRqjYSwyB+jChRB9RgBBhFmY=;
+        b=EE1gug9EAK0tpDWigPc2rGRqDRuLTkPn7m2XeHzQlxIs+SoePN1KVOI3v8NRWHuJUG
+         2WEGwvM0OpX0RTT8PVQnBw9KRLjZoHC9pHyw9GGAMVFdDKsPAEF/Af/jUyR/TdOU+IbM
+         XCGCTyRocdljjKKABrHGjeHMa22RHQVO2UE8fJpiGtjB/mXaYElzaE/aLkW0k7LfDGdI
+         WBoB5Edb7Y1vTct8bxI9CgqrNsPllUEJm25xXpPSITRVYcqeoE2STFa/Yueek5b868Qu
+         iZmwQE5QQjTsa4vWjo0pMByLHHOqSDPpuESW+XcFr/rmBkCKcbw0KdZRXeBz0KZOYL8H
+         uvVA==
+X-Forwarded-Encrypted: i=1; AFNElJ8EJoIqd389av7QpO8BqXaAcPqQGzSUXd+kWypPL4LXpWmruZOhskn9HkZqHacSE+9CkL/B/qE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEueI3Bd/LjPQWLaqWKXyyK/oO7Tk+5ypo9R0QnEPHO8SZirRb
+	MUN6cE9VCgQmMsVopH3Y9VTuoBNUP9N/9ftnJdd1KlLSr1/F3Poz4eQ3
+X-Gm-Gg: AeBDiesaHeGNYBKZriIAzWraLuIzZlArsWjJeNz+Iq8np7BFynA7Am6lhohFMq+o+5Z
+	ZR76qXmma2c8lDWpmfrzOF0YgrvEKkgYdMftuNI2RDwF3oZTfAlhjOIezDReumVmtVW4K1RMn+v
+	AHqXjIxh+MP+k1vVJAxS1NHJQGnn/C1g6OxHikXCA6JvUH9RpVKuy7AoSYj9D9XzSAnXzuUaaQk
+	cuBnlFAsnFtUCHjAQ29xhZsFFPJ9zBMWTLhtWdOoIzJvmb043oUnjaHRXRxYBZK+a9bRFOw7LrC
+	eqfXmqC+eh58lLDudHcIs9PGKOzAqN5UNBuMto6pcAQ4owstvduPMcB8Sz+qDzMv9E600FBKMUJ
+	ktlgFicpxYxwOw7gSM65lYVyeuj8Kt/1c+IkB22KLRogTkVb1sg8BAPx38w6/QTY+dYM4lELvzY
+	itNf38A7UVlf+JOfiK14OlhDxyXKcCuLHYP6vBwgMpwDZrDMv/EOX+DV5+QDo=
+X-Received: by 2002:a17:90b:1c84:b0:35f:b7f5:9b3 with SMTP id 98e67ed59e1d1-365ab8ba745mr2366825a91.3.1778055861651;
+        Wed, 06 May 2026 01:24:21 -0700 (PDT)
+Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-365b12a1eddsm1000293a91.6.2026.05.06.01.24.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 01:24:21 -0700 (PDT)
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+	Willem de Bruijn <willemb@google.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Subject: [PATCH net v8 0/2] ipv6: flowlabel: per-netns budget for unprivileged callers
+Date: Wed,  6 May 2026 16:24:14 +0800
+Message-Id: <20260506082416.2259567-1-maoyixie.tju@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 06D654D7DFE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 651214D7CED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244342-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,google.com,ms2.inr.ac.ru,gmail.com,vger.kernel.org,ntu.edu.sg];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244339-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ntu.edu.sg:email]
 
-PiA+PiBJIGFsc28gcmVhbGl6ZSBub3cgdGhhdCBnbG9iYWxseSBjaGFuZ2luZyBSVFdfVFhfUFJP
-QkVfVElNRU9VVCB0bw0KPiA+PiAyNTAwbXMgaXMgdG9vIGhlYXZ5LWhhbmRlZC4gU2luY2UgdGhp
-cyBpbXBhY3RzIGFsbCBydHc4OCBjaGlwcywNCj4gPj4gaW5jbHVkaW5nIFBDSWUgdmFyaWFudHMg
-d2hlcmUgNTAwbXMgbWlnaHQgYmUgZXhhY3RseSB3aGF0IGlzIG5lZWRlZCB0bw0KPiA+PiBjYXRj
-aCBhIHJlYWwgZmlybXdhcmUgbG9ja3VwLCB0aGUgYmxhc3QgcmFkaXVzIGlzIHRvbyBsYXJnZS4g
-SG93IHdvdWxkDQo+ID4+IHlvdSBwcmVmZXIgSSBoYW5kbGUgdGhpcyBmb3IgdGhlIHYyIHBhdGNo
-PyBJIGNhbiBlaXRoZXIgaW1wbGVtZW50IGENCj4gPj4gbW9yZSBjb25zZXJ2YXRpdmUgZ2xvYmFs
-IGJ1bXAsIG9yIG1ha2UgdGhlIHRpbWVvdXQgZHluYW1pYyBiYXNlZCBvbg0KPiA+PiB0aGUgSENJ
-IGludGVyZmFjZSBzbyBVU0IgZGV2aWNlcyBnZXQgYSBsb25nZXIgdGltZW91dCB0byBhY2NvbW1v
-ZGF0ZQ0KPiA+PiB0aGUgYnVzIGxhdGVuY3kgZHVyaW5nIHNjYW5zLg0KDQpJJ2QgbGltaXQgdGhp
-cyBjaGFuZ2UgdG8gVVNCIGRldmljZXMsIGV2ZW4gbGltaXQgdG8gUlRMODcyM0RVIHlvdSB0ZXN0
-ZWQuIA0KQXMgUlRMODgyMkNVIHN1cHBvcnRzIGh3X3NjYW4sIHRoZSBzeW1wdG9tIG1pZ2h0IGJl
-IGRpZmZlcmVudC4gDQoNClBpbmctS2UNCg0K
+From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+
+This series fixes the cross-tenant DoS in net/ipv6/ip6_flowlabel.c.
+v1 through v6 were single-patch postings, each in its own thread.
+v6 review pointed out that the existing fl_size read in
+mem_check() and the corresponding write in fl_intern() are not in
+the same critical section. v7 split the work into 2 patches.
+
+Patch 1/2 is a prerequisite. It moves spin_lock_bh(&ip6_fl_lock)
+and the matching unlock from fl_intern() into its only caller
+ipv6_flowlabel_get(), so the mem_check() call runs under the same
+critical section as the fl_intern() insert. With all writers and
+the read of fl_size under the lock, fl_size is converted from
+atomic_t to plain int. This is independent of the per-netns
+budget. It also makes 2/2 backportable without conflicts.
+
+Patch 2/2 is the v6 patch, rebased on 1/2.
+
+  - flowlabel_count is plain int rather than atomic_t, since the
+    previous patch put all writers and readers under ip6_fl_lock.
+  - In ip6_fl_gc(), fl_free() is now placed below the fl_size
+    and flowlabel_count decrements, removing the v6 cache of
+    fl->fl_net.
+  - In ip6_fl_purge(), fl_free() stays in its original position.
+    The function argument net is used for flowlabel_count.
+  - mem_check() uses spaces around the / operator on all four
+    expressions, addressing the checkpatch note in v6 review.
+
+Numeric budget (preserved from v6):
+
+  pre-patch:
+    global non-CAP_NET_ADMIN budget = FL_MAX_SIZE - FL_MAX_SIZE/4
+                                    = 4096 - 1024 = 3072
+    per-actor reach                 = 3072
+
+  post-patch:
+    FL_MAX_SIZE doubled to 8192
+    global non-CAP_NET_ADMIN budget = 8192 - 2048 = 6144
+    per-netns ceiling               = 6144 / 2 = 3072
+    per-actor reach                 = 3072 (preserved)
+
+CAP_NET_ADMIN against init_user_ns still bypasses both caps.
+
+Reproducer (KASAN VM, 4 cores, qemu): unprivileged netns A holds
+3072 flowlabels via 100 procs. Fresh unprivileged netns B then
+allocates 32 flowlabels (the FL_MAX_PER_SOCK ceiling for one
+socket), the same as a clean baseline. Without the per-netns
+ceiling, netns A could push fl_size past FL_MAX_SIZE - FL_MAX_SIZE
+/ 4 and netns B would see allocations denied.
+
+v8:
+  - 1/2: replaced the "Caller must hold ip6_fl_lock" comment in
+    fl_intern() with lockdep_assert_held(&ip6_fl_lock), matching
+    the runtime check already used in mem_check(), per Willem's
+    review.
+  - 1/2: added Fixes: 1da177e4c3f4 trailer to match 2/2, per
+    Willem's review.
+  - Carried forward Reviewed-by: Willem de Bruijn on both
+    patches.
+  - No code change beyond the lockdep_assert_held swap.
+v7:
+  - 2-patch series: 1/2 (lock prep) and 2/2 (v6 rebased on 1/2).
+  - 2/2: flowlabel_count int, fl_free() reorder removed in
+    ip6_fl_purge(), checkpatch / spacing in mem_check() fixed.
+v6: rebased onto current net (resolves the conflict on
+    include/net/netns/ipv6.h that v5 hit). fl_free() restored
+    to its pre-series position, with fl->fl_net cached locally
+    in ip6_fl_gc().
+v5: replaced the per-netns ceiling FL_MAX_SIZE/8 with the
+    computed unpriv_user_limit = (FL_MAX_SIZE - FL_MAX_SIZE/4)/2,
+    which evaluates to 3072.
+v4: addressed Willem's v3 review on netdev. Dropped the
+    flowlabel_has_excl cacheline argument in favour of "fills
+    the existing 4-byte hole after ipmr_seq".
+v3: addressed Willem's review on the private security@ thread.
+    Merged FL_MAX_SIZE doubling, dropped test data, moved
+    flowlabel_count near ipmr_seq, inlined fl->fl_net in
+    ip6_fl_gc().
+v2: per-netns counter + cap, sent to security@ as a 2-patch
+    series.
+v1: fix-shape sketch in original disclosure.
+
+Maoyi Xie (2):
+  ipv6: flowlabel: take ip6_fl_lock across mem_check and fl_intern
+  ipv6: flowlabel: enforce per-netns limit for unprivileged callers
+
+ include/net/netns/ipv6.h |  1 +
+ net/ipv6/ip6_flowlabel.c | 46 +++++++++++++++++++++++++++-------------
+ 2 files changed, 32 insertions(+), 15 deletions(-)
+
+
+base-commit: ebb639024ebd47a13a511cce6ae630c15e4b3126
+-- 
+2.34.1
+
 
