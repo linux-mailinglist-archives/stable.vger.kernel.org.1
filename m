@@ -1,175 +1,212 @@
-Return-Path: <stable+bounces-244351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOCRLuMG+2mbVQMAu9opvQ
-	(envelope-from <stable+bounces-244351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:16:19 +0200
+	id WGr5OcsI+2mbVQMAu9opvQ
+	(envelope-from <stable+bounces-244352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:24:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC124D8744
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:16:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2D64D8900
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 11:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0CA34300DD62
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 09:16:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEF213004C64
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 09:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F9839B971;
-	Wed,  6 May 2026 09:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04003DCDBE;
+	Wed,  6 May 2026 09:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODNh/plo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L0SznP2p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E162D1907;
-	Wed,  6 May 2026 09:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC153939A4
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 09:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778058973; cv=none; b=dEn6sNO2N2z7FuM+DnT8YXYROZl01c8w0KdtC1lPJrQir04WQfoXfA0KpIXB6ns4ADZoIOEYLlzUMEpcUh9MhQtizSwdsNGF/7Tz1G+K0jhFOI8/SkRNi3b03ZcXOefhOS4ktOzGjcrUzUkW4n+jlInvvVJ6gyePhC0wi/3+Mgs=
+	t=1778059431; cv=none; b=Xm9Ey0fF+2cdFf55iyuqTrT6fh+jZuV2caSkI9moFuN8t52g+o2vH5fdcHSSothZdoofA4jJMqEDnF8ct1iLNVAMxfkgd/rUzpF9cA7fOdvfXdjmdo5YMoQELHABzwpkd/NU0b/9hGjZXcH1qlO5mSY64++vJaBQaf+Cy21iSe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778058973; c=relaxed/simple;
-	bh=1kYG0k2tEVtubWrZEIB0wmkkpyz8/sB/Ms4TujhtBms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Od47OfNcEOSbfDXj6S3X3FFHn6/jgxSjKfDu2waOBcBTd7VGRv70a6Yz9vliEWiOxRU1Lp09rJTEjWmvmifCltWdGhCRFLJuTRSjjEWBRMhVvH0b2/8OhPAT2hS29f4xK79ERBe+f5u79aUBxfbQMcs5NnRil1k/CKsjUAtkofk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODNh/plo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C31C2BCB8;
-	Wed,  6 May 2026 09:16:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778058972;
-	bh=1kYG0k2tEVtubWrZEIB0wmkkpyz8/sB/Ms4TujhtBms=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ODNh/plooM7UycNr844RLfOUm4vHHusx1hm5rm4AUkC6eJPcnunHvk/oYolPGPgUy
-	 GOMQ7hZKjVwa7/+hCQpFJEdyTVtgPoXdQ7KlU+KUtrfVwZa/qAltkSRBpFgZ2ADB4y
-	 s2VflufvWVXD9/rV5Seoh0IDCoCvjHLFnRyQ2kkoEfIGYI8/yE5GhZbWa7CZ7jiPha
-	 FVIyhNSMz90vdixi2FrlM7gxP1ui0UXK240uOhqoTWMCoh1ySdL9vB9R41qk6AFkdK
-	 KsUbHQCKyYP7d/nKwe9WDG2OX5XRWcfrwHNG6jfoVOzCIXAAaDaBX5NPzUlumDI90L
-	 fg5P606Bw1d9g==
-Date: Wed, 6 May 2026 10:16:06 +0100
-From: Lee Jones <lee@kernel.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>,
-	Filipe =?iso-8859-1?Q?La=EDns?= <lains@riseup.net>,
-	Bastien Nocera <hadess@hadess.net>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Viresh Kumar <vireshk@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Icenowy Zheng <uwu@icenowy.me>, linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org, greybus-dev@lists.linaro.org,
-	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org,
+	s=arc-20240116; t=1778059431; c=relaxed/simple;
+	bh=/JlcOXBa4uakAjtW7+ZH++g1+Oe2RazEmev44gZjRLY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V2BFVzy69jAjIQE08SSbL6UteQPwp9FAkM00UJ+jkfK1bN5FKpm7yFQalRYWXjO1zCID6AdiaD0XqmG4W+Gr11G4MDuFhfLadMwhLIpzRxkVTrgY/UYaeQ+TvWWSjvviQJKSXwjI6zLn44ghBtS6QRsiz+p7h5DjZ7+LaXCjIR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L0SznP2p; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so4829467a91.0
+        for <stable@vger.kernel.org>; Wed, 06 May 2026 02:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778059429; x=1778664229; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=//nou2Qb1FnpkEvM0SdcsiAXuxlLxSwwu1Tjy8/lIKE=;
+        b=L0SznP2pyf+XQqe9WoF4IPyxSvjsYVAVXqo6lPUWxsmSDcz11nuzYqTNk+I/9fHI3x
+         0feOF0WXGPFGI9uZVZnSa6l9/fm0yzd05p7C4a4eJq0sSZtBHVOdE24/yPYiP0WU3Amz
+         4s5U14sDESIrwZ+5oshZgioV64nGGvi84vaPn/+3D+Xj1H7nnyxJRkImOY/EHv/5+UBa
+         eZHLMzkdwkGHLbTN1ELSm2cIQHV36/hfQ6LT+lbQzPx1zxGsBTCgo5s4u8GCzVVhVpO2
+         50Gf2MZwQpuR2TZBH0omrz3s9okCFs4Bce+po1ZprfxHuqSTzg1hsT9Rc98fII3eVahM
+         fwcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778059429; x=1778664229;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=//nou2Qb1FnpkEvM0SdcsiAXuxlLxSwwu1Tjy8/lIKE=;
+        b=KQRyLnXler0uS6sjIW/ea/UnUyIoHF43JKhz8wNXhu0J3baHexlnWLuzdFJdwIuTD9
+         8a8YnTDwKcPs54CXWCvv8mF4suH6HAZFTqFckgWZJsDU+o37xqiFbA6ZHLDj0Z5B85kO
+         DY/CdRBHFtHMZkU2HesMUKmZsh9ymSIfFQDZMm1UhTZ8JsXKyva7nWkyVZNtUAeD0npA
+         JLIEe5B00SIde0JzgcxWW2PzYuoqDf1HSPMKsw3UubX4xjOVQj2oaQZp/s4427KBRd2c
+         y+0BO2NUJFpFHeVRuRqQK9gs6tADhihQbvnLqkQJyZTRW+MTLroImyfwJHIhaO6ypPuZ
+         98NQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/BhwSJCXJcuRVHh1lohyUoB1HIgyPvnrctQTVQw4bgtroeX2nblmkEZO7WbJ+2ZTAR5Xo0h9M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyEWdVe+pd+uWI7gjHUC2BPOtZeYKGH9zVxR4o0XM7TBUxdbx4
+	Y/O4bPuyClu6TkVs7OhN/Yq5ipMWHqUkUDVJWPSolDfUVsDVEkTcKSSe
+X-Gm-Gg: AeBDieuscPuVpoNPCiEobwZndm/uRuutgPgsXv2TcsCDrsPcpKT7RyXxhkSKhC8M/lV
+	m2Q6p7O2ZapGCIvMBY0xQxw33pRsLwRrdZFBdGIosDKM6NNlQvXbu1wJFa9dla/BGgg6O6Q9Qyn
+	qoCahXWN9jzrsPSXPL7p+TDDxGioTYVBRjom/sHvqbhQ/w74tqQEDEdmv2hnS6PTqNNw78tPfwE
+	cF9IODnXKYfZ+MOWmxPY+CLWiQqPX/KAKkG0TAPEP/mA68jqzY4StgVyMyjRM+Q/AQfud6WpgZ7
+	3+sjti2q2aV8dpwm7N4Pp7p5gTPEqEpdcNRuLWQFjHUsmRBjkWdstfHRSIJBBa97n9lWB4DGDne
+	PC2a2v4qgwgzSb1H2RS8FS20fFjRiT4Ba3piWidaCMp1DOPPAEp6IfvyS1k/kqOts/BEsbA1OUJ
+	ytRAUXkwNsjUC9kz5yGu/DNHdcwhBkRrlRnw==
+X-Received: by 2002:a17:90b:1c84:b0:35d:a3b4:2ef6 with SMTP id 98e67ed59e1d1-365ac47f086mr2457412a91.21.1778059429387;
+        Wed, 06 May 2026 02:23:49 -0700 (PDT)
+Received: from lgs.. ([118.193.33.13])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-365b06adc51sm716818a91.4.2026.05.06.02.23.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 02:23:48 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Liu Ying <victor.liu@nxp.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] HID: Proper fix for OOM in hid-core
-Message-ID: <20260506091606.GB305027@google.com>
-References: <20260504-wip-fix-core-v3-0-ce1f11f4968f@kernel.org>
+Subject: [PATCH v5] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with device_node cleanup
+Date: Wed,  6 May 2026 17:23:24 +0800
+Message-ID: <20260506092324.635014-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504-wip-fix-core-v3-0-ce1f11f4968f@kernel.org>
-X-Rspamd-Queue-Id: 2BC124D8744
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3C2D64D8900
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-244352-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244351-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[nxp.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,pengutronix.de,bootlin.com,lists.freedesktop.org,lists.linux.dev,lists.infradead.org,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Mon, 04 May 2026, Benjamin Tissoires wrote:
+imx8qxp_pxl2dpi_get_available_ep_from_port() returns ERR_PTR()
+on errors. imx8qxp_pxl2dpi_find_next_bridge() stores its return
+value in a __free(device_node) variable before checking IS_ERR().
+When the function returns on the error path, the cleanup action calls
+of_node_put() on the ERR_PTR() value.
 
-> Commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
-> bogus memset()") enforced the provided data to be at least the size of
-> the declared buffer in the report descriptor to prevent a buffer
-> overflow.
-> 
-> We only had corner cases of malicious devices exposing the OOM because
-> in most cases, the buffer provided by the transport layer needs to be
-> allocated at probe time and is large enough to handle all the possible
-> reports.
-> 
-> However, the patch from above, which enforces the spec a little bit more
-> introduced both regressions for devices not following the spec (not
-> necesserally malicious), but also a stream of errors for those devices.
-> 
-> Let's revert to the old behavior by giving more information to HID core
-> to be able to decide whether it can or not memset the rest of the buffer
-> to 0 and continue the processing.
-> 
-> Note that the first commit makes an API change, but the callers are
-> relatively limited, so it should be fine on its own. The second patch
-> can't really make the same kind of API change because we have too many
-> callers in various subsystems. We can switch them one by one to the safe
-> approach when needed.
-> 
-> The last 2 patches are small cleanups I initially put together with the
-> 2 first patches, but they can be applied on their own and don't need to
-> be pulled in stable like the first 2.
-> 
-> Cheers,
-> Benjamin
-> 
-> Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-> ---
-> Changes in v3:
-> - fixed ghib -> ghid in greybus
-> - fixed i386 size_t debug size reported by kernel-bot
-> - Link to v2: https://lore.kernel.org/r/20260416-wip-fix-core-v2-0-be92570e5627@kernel.org
-> 
-> Changes in v2:
-> - added a small blurb explaining the difference between the safe and the
->   non safe version of hid_safe_input_report
-> - Link to v1: https://lore.kernel.org/r/20260415-wip-fix-core-v1-0-ed3c4c823175@kernel.org
-> 
-> ---
-> Benjamin Tissoires (4):
->       HID: pass the buffer size to hid_report_raw_event
->       HID: core: introduce hid_safe_input_report()
->       HID: multitouch: use __free(kfree) to clean up temporary buffers
->       HID: wacom: use __free(kfree) to clean up temporary buffers
-> 
->  drivers/hid/bpf/hid_bpf_dispatch.c |  6 ++--
->  drivers/hid/hid-core.c             | 67 ++++++++++++++++++++++++++++++--------
->  drivers/hid/hid-gfrm.c             |  4 +--
->  drivers/hid/hid-logitech-hidpp.c   |  2 +-
->  drivers/hid/hid-multitouch.c       | 18 ++++------
->  drivers/hid/hid-primax.c           |  2 +-
->  drivers/hid/hid-vivaldi-common.c   |  2 +-
->  drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++--
->  drivers/hid/usbhid/hid-core.c      | 11 ++++---
->  drivers/hid/wacom_sys.c            | 46 +++++++++-----------------
->  drivers/staging/greybus/hid.c      |  2 +-
->  include/linux/hid.h                |  6 ++--
->  include/linux/hid_bpf.h            | 14 +++++---
->  13 files changed, 109 insertions(+), 78 deletions(-)
+Do not store the endpoint node in a cleanup variable before checking
+whether it is an error pointer. Use a regular device_node pointer for
+the endpoint node, check it with IS_ERR() first, and release it
+explicitly with of_node_put() after getting the remote port parent.
 
-What's the plan for this set Benjamin? -rcs or -next?
+This keeps the fix minimal and avoids changing
+imx8qxp_pxl2dpi_get_available_ep_from_port().
 
+Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v5:
+  - Make the fix minimal for stable by avoiding __free(device_node)
+    for the endpoint node in imx8qxp_pxl2dpi_find_next_bridge().
+  - Keep imx8qxp_pxl2dpi_get_available_ep_from_port() unchanged.
+  - Do not change imx8qxp_pxl2dpi_set_pixel_link_sel().
+  - Drop Frank's Reviewed-by tag due to the implementation change.
+
+v4:
+  - Drop the sentence mentioning the custom static analysis tool.
+  - Add Frank's Reviewed-by tag.
+  - No functional code changes.
+
+v3:
+  - Do not change DEFINE_FREE(device_node, ...).
+  - Fix the driver pattern by making
+    imx8qxp_pxl2dpi_get_available_ep_from_port() return an int and
+    pass the endpoint via an output argument.
+  - Update both callers so __free(device_node) never holds ERR_PTR().
+
+v2:
+  - Fix DEFINE_FREE(device_node, ...) directly.
+
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+index 441fd32dc91c..f64f57a33c62 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+@@ -264,12 +264,13 @@ imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
+ 
+ static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
+ {
+-	struct device_node *ep __free(device_node) =
++	struct device_node *ep =
+ 		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
+ 	if (IS_ERR(ep))
+ 		return PTR_ERR(ep);
+ 
+ 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
++	of_node_put(ep);
+ 	if (!remote || !of_device_is_available(remote)) {
+ 		DRM_DEV_ERROR(p2d->dev, "no available remote\n");
+ 		return -ENODEV;
 -- 
-Lee Jones
+2.43.0
+
 
