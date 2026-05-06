@@ -1,206 +1,150 @@
-Return-Path: <stable+bounces-244320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGw6JjDg+mmGTgMAu9opvQ
-	(envelope-from <stable+bounces-244320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:31:12 +0200
+	id 6B/EJEbi+mmGTgMAu9opvQ
+	(envelope-from <stable+bounces-244321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:40:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C504D69BB
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:31:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9414D6AE4
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A46E930179D9
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:31:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 70256301FF2F
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12DF302756;
-	Wed,  6 May 2026 06:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE4D30DEAC;
+	Wed,  6 May 2026 06:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EnI7BX6Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2635319E97B
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 06:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1E0285050;
+	Wed,  6 May 2026 06:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778049069; cv=none; b=DVGE8WpyaMxmWRo3Au7suquQFSqYZxK5H2AEsIJ6M5h03izecZoUWSeZ2/ogH7DopDmpWcCUyWB1DHtSGdg3EKsUmlrsDsrx7X8LEM97Mc7Xri8YEhlWIWJK0u4A3ovhU6dQkd6JTYDWhWrYINf5hW9duRO1X8Oi7spjo6FWtFo=
+	t=1778049603; cv=none; b=qSQ4jMMqhsXQTVaJ9nHUW2NpeR2Ne4yvzMcaHWltYBfAigB/qCH0nX1rk3Si3E4vmflxkvot5eDM847CR1ITW2IlxVdfxqfpcMDjdPWLxDgVte6et+8LMr3tX+O1FmlHYqqGKh2T/mjHhVkBwb/wr30mCjJR3DDqxcUogAakEKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778049069; c=relaxed/simple;
-	bh=6zVJUEvbUaRhzUNEM9sbcPUQC6JO46thF3fLM0Scx50=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAN0DxJ/mi+eeYOb3+qukvqPTb4GFcuowQrQ+1H5+nVP0Iznxn7n0EE7igDAVDvsaXesPZQiZyrUoGGluAa/vS4ahERI5dFC/dnGUM6lmMOTcvMmwQcXLHxJEjYtx3dXohhRX9HEF5HIteDi41X7VCqFL4WWyWpirug6r3/u/u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz11t1778049009t8ac73aed
-X-QQ-Originating-IP: cCtPN0ZL1aIrap5QDwH58zNFz43Jt3vGreWcraLNJIE=
-Received: from w-MS-7E16.trustnetic.com ( [60.186.244.4])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 06 May 2026 14:30:03 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7816696291691624219
-EX-QQ-RecipientCnt: 4
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: stable@vger.kernel.org
-Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6.y] net: txgbe: fix RTNL assertion warning when remove module
-Date: Wed,  6 May 2026 14:30:00 +0800
-Message-ID: <FAAC012B43535C92+20260506063000.658745-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026050105-ascent-escalate-2044@gregkh>
-References: <2026050105-ascent-escalate-2044@gregkh>
+	s=arc-20240116; t=1778049603; c=relaxed/simple;
+	bh=zHScjr4MohVdJcrE9EJdmAsFsus5ZDZ61tsq7lH3tao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rXHBD2LuaI7Gi8YEBAZMaNfrNkLc2by9BUQ+4Bav6a3Y2X9rey47s1asP9ZelJvgU/n3fs72tCfHCAPln9To0ADs7tMQ6p/BpORaEz0k4y9TvQQsGH1FUH1wDSG7GRrvk2XnpmY+ruoeQ+d13LuGgfQIGf11pdxrgdYQcwxr2Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EnI7BX6Z; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778049601; x=1809585601;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zHScjr4MohVdJcrE9EJdmAsFsus5ZDZ61tsq7lH3tao=;
+  b=EnI7BX6Zj+DNSKOUuQU9KSK3UASdjLeKD19jTXij3iikHCZESJ3Xqib5
+   mSl8tSJLiQADrtmDrj1RnmmV1xlN6ia4opRvoz7jIYJHhR5Pj5I31oOsG
+   ALXAZ2tzFbX41two+gpT/doga7rextlAgjjmj4kPl+itJ8+Pq3X6YiIab
+   gtLJwkk9i+bAp/nmpMDfM2ILpINbFLtbxx1W3mNuYDGhBFrHGaWWrJZn1
+   /04Ic5Wu4IjZ5jRPCpod7whIlM4gIDZ4i43lpaCF82U1bkU/KMel5JlAa
+   4C6TNiuefNIjqjgv8qX47YCRhWYUcYFOjBGFJzoTnpXKRFooUirfqs+YA
+   g==;
+X-CSE-ConnectionGUID: 3X3ejXoHRWSd/Pg1EAfgHg==
+X-CSE-MsgGUID: KoAWyrl3TOeMH/DlS+NLHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="79054557"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="79054557"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 23:40:00 -0700
+X-CSE-ConnectionGUID: vzu3dzF6Tc6YR3JUCrSX0w==
+X-CSE-MsgGUID: d1o+PxvCSG+/ocNYftjaSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
+   d="scan'208";a="232948113"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.183])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 23:39:54 -0700
+Date: Wed, 6 May 2026 09:39:48 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: gyro: itg3200: fix i2c read into the wrong stack
+ location
+Message-ID: <afriNDbCrUsXwV2a@ashevche-desk.local>
+References: <20260505133748.51355-1-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MSFJXbmR8y2eDw42JHt2NB/LrOCOvtOGYvBrMho9Hs2IR5ZElB0VuqJ9
-	WC3SwpNMDvF5X7U178r9gMutUW4Goa10+zdTKyw1QPb0j/jza2gbQXr2uw/D/cOkNsVymCP
-	Sv6I33oNKjXLKjRcUr8fxphGx4mhRgKxQdkmA68t6jaZWCtUmn9sAdG+9YdEEri1jvdzIjI
-	mgwzsarLz31BEQjuKYiYvLdXh5331iQ7WFPHxmFL95jgTudAhDm4mONFi2qL+NI5z//3Psl
-	hPLmbNFLpHFMj0PC1ImHISK+75lPfjum99f3Xe8r55Btx+PEGXWIY5pa8cvAakH20qXlBXW
-	Fmt7vvBGHuiLgIN1kfZw5X5/fAJVWDscnKCUjyhfloCjHop3mwQm+sLJ2hd7/TGcQw7hxYc
-	LjKX3yuZWu4Nxz84fow33JzKvgNMOTh2SasHO+oRo5N4qflTZh2/IZVkDlU6k3lj2V9DI1R
-	0ATMtVPh2p9LHCFMLydV6C/ZgXfIBvG77RtVDB8zK6M6bdaRTGE+CFHyJ5yEU8lrClIEmn6
-	2Y4ZelDUtZUUtaiRd4StMFWBfNDl0QY5tLctvIz4zvcLP5UK6h0VFZc9rcYvubE7egpbSFv
-	/NooCIShEp97z5c1fqNaJWH1Gjq81FUkKmX8oLDSAh+9+aRmK1gnNbASqfIP2xzerLuVHES
-	8GP9HhOW+qvtBivrhDunD7MvWfJbKmtz5soWvcliLVH2J78HWq2jcziOOMlQ/0c67IzNJh5
-	XqCURxnM0r7oEByYiAMlKk5nElRopmQIMmjiG4YY4Y2LUE7GJ6+cVycaY2RdKPqLoNTKqP3
-	vK3mou2vqVXb6pm6TYSIJLmLXQbd3ZMwR9TVJnj2qadMY4PyPeTYU/LmJR7icDy4iJB/dSM
-	775fxnCKua8CqC6Epu2UeQFuy03u3pwWMFOjfzMNi/wl+ywEbcddsvkzi6YYHS8kysjPLz1
-	cpCHBUdE57oM8z1ox3pQ68MrlSSd94CE2gbuvWRubnrLOnXhQjAfLysuNYXtK2Y3fi1ohAV
-	EYAJhkYdjA061+VpxPxqaKzx6ZQlaw69Jv3oyPpt1EkANJtEe4XZDenoIzXnGdYqVCnwqjl
-	Z6ah397fdf1JExif991HHil3I3/d1QV5gWdcwHwsWLS9VPz0X/U05PCj3FOrfz1Rw==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 08C504D69BB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260505133748.51355-1-devnexen@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: 3A9414D6AE4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244320-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[trustnetic.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244321-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.966];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ashevche-desk.local:mid]
 
-For the copper NIC with external PHY, the driver called
-phylink_connect_phy() during probe and phylink_disconnect_phy() during
-remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
-upon module remove.
+On Tue, May 05, 2026 at 02:37:48PM +0100, David Carlier wrote:
+> itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
+> fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
+> parameter (a pointer), `&buf' is the address of the local pointer
+> slot on the stack of itg3200_read_all_channels(), not the address
+> of the caller's scan buffer. The (char *) cast hides the type
+> mismatch.
+> 
+> i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
+> = 8 bytes into the parameter's stack slot, which is discarded when
+> the function returns. The caller's scan buffer in
+> itg3200_trigger_handler() is never written to, so
+> iio_push_to_buffers_with_timestamp() pushes uninitialised stack
+> contents to userspace via /dev/iio:deviceX every scan -- both a
+> functional bug (no actual gyroscope or temperature data is
+> delivered through the triggered buffer) and an information leak.
+> 
+> The non-buffered read_raw() path is unaffected: it goes through
+> itg3200_read_reg_s16() which uses `&out' on a local s16 value,
+> where that is correct.
+> 
+> Drop the spurious `&' so the i2c read writes into the caller's
+> buffer.
 
-To fix this, add rtnl_lock() and rtnl_unlock() around the
-phylink_disconnect_phy() in remove function.
+Very good catch! I'm puzzled if that code was ever tested. Do you have an HW
+and that's how you enter to this bug?
 
- ------------[ cut here ]------------
- RTNL: assertion failed at drivers/net/phy/phylink.c (2351)
- WARNING: drivers/net/phy/phylink.c:2351 at
-phylink_disconnect_phy+0xd8/0xf0 [phylink], CPU#0: rmmod/4464
- Modules linked in: ...
- CPU: 0 UID: 0 PID: 4464 Comm: rmmod Kdump: loaded Not tainted 7.0.0-rc4+
- Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING
-PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
- RIP: 0010:phylink_disconnect_phy+0xe4/0xf0 [phylink]
- Code: 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 f6 31 ff e9 3a 38 8f e7
-48 8d 3d 48 87 e2 ff ba 2f 09 00 00 48 c7 c6 c1 22 24 c0 <67> 48 0f b9 3a
-e9 34 ff ff ff 66 90 90 90 90 90 90 90 90 90 90 90
- RSP: 0018:ffffce7288363ac0 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff89654b2a1a00 RCX: 0000000000000000
- RDX: 000000000000092f RSI: ffffffffc02422c1 RDI: ffffffffc0239020
- RBP: ffffce7288363ae8 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000000 R12: ffff8964c4022000
- R13: ffff89654fce3028 R14: ffff89654ebb4000 R15: ffffffffc0226348
- FS:  0000795e80d93780(0000) GS:ffff896c52857000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00005b528b592000 CR3: 0000000170d0f000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  txgbe_remove_phy+0xbb/0xd0 [txgbe]
-  txgbe_remove+0x4c/0xb0 [txgbe]
-  pci_device_remove+0x41/0xb0
-  device_remove+0x43/0x80
-  device_release_driver_internal+0x206/0x270
-  driver_detach+0x4a/0xa0
-  bus_remove_driver+0x83/0x120
-  driver_unregister+0x2f/0x60
-  pci_unregister_driver+0x40/0x90
-  txgbe_driver_exit+0x10/0x850 [txgbe]
-  __do_sys_delete_module.isra.0+0x1c3/0x2f0
-  __x64_sys_delete_module+0x12/0x20
-  x64_sys_call+0x20c3/0x2390
-  do_syscall_64+0x11c/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_syscall_64+0x15a/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_fault+0x312/0x580
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __handle_mm_fault+0x9d5/0x1040
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? count_memcg_events+0x101/0x1d0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? handle_mm_fault+0x1e8/0x2f0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_user_addr_fault+0x2f8/0x820
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? irqentry_exit+0xb2/0x600
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? exc_page_fault+0x92/0x1c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/8B47A5872884147D+20260407094041.4646-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit e159f05e12cc1111a3103b99375ddf0dfd0e7d63)
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 4159c84035fd..2494a3a171fd 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -820,7 +820,9 @@ int txgbe_init_phy(struct txgbe *txgbe)
- void txgbe_remove_phy(struct txgbe *txgbe)
- {
- 	if (txgbe->wx->media_type == sp_media_copper) {
-+		rtnl_lock();
- 		phylink_disconnect_phy(txgbe->phylink);
-+		rtnl_unlock();
- 		phylink_destroy(txgbe->phylink);
- 		return;
- 	}
 -- 
-2.51.0
+With Best Regards,
+Andy Shevchenko
+
 
 
