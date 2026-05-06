@@ -1,155 +1,270 @@
-Return-Path: <stable+bounces-244373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHmzBbIt+2npXAMAu9opvQ
-	(envelope-from <stable+bounces-244373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:01:54 +0200
+	id gPV4G4wu+2k4XQMAu9opvQ
+	(envelope-from <stable+bounces-244374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:05:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C6F4D9F06
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D771D4D9F64
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 14:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B00F301907D
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:00:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DAB43011598
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 12:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F187343E4B0;
-	Wed,  6 May 2026 12:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC74043E487;
+	Wed,  6 May 2026 12:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="umrRFSUs"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SJoy8kS6"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281F543DA31;
-	Wed,  6 May 2026 12:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778068846; cv=none; b=evjdUfrEZJvyY5RohKMetM5XEwL1r74ez1doqov9oIknhFfwzFXVPSHPFZ96GNA9GOoXYcvw6xoHMqkvx3vGiZo0pdZn8UsHx24Xi3vy28G/2mH8RSp1w2ibQRgNqGiSCSrjEgf02SQk+zX8/W/Wzj7kH+tlT58ftLJ3H++lJNk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778068846; c=relaxed/simple;
-	bh=6jt9rqVjDw8+U9+bWoSE6lGs9K7U1O4LWJ1RxwZ2qBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sJqbxBJQDZ3jxi3EHy0vTKCxxROoJFreYneNTDlnMpChoGImYK5PjW2baxQUDy/zlloO1g71VTmv3YLlBfnRa+WvDYHVI/cLNmCZeY4qSFZr05rdvzQafiCyxkTi4DpHnf7WcatERxKbFrnUQSumGsLn9C5onOUWMfl1JET6olY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=umrRFSUs; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=PrD9nIfCondzVS8dnGq0XJ558JQOwkmWdaEIgtjAFEA=; b=umrRFSUsjcuCpTZdSQk2odTaq7
-	zSBZZX2lQZItYCEvrISEfnyMikiZEmqhK8KL7uiNf7ZN1zCtZuFYDwkw6jGEG2tx6SOkW9Bzpuh/L
-	KSFbupma37aFWDYl5j5lfqV7E9Jel0ze6pHVY7Isee27GI9JrHStaeHcZ0lGloc3lPL6nYKgkY9F0
-	gHt1Ch1yZMilMSCHZCpRNZ0Bzh5R3ZzY3vHAGb2aUcSK0wyqZ4sbxwLLeHP4TjqxCc6TiCjXEpHRB
-	L31vXa4eu9tgr1a0CYsHBWvu8pgu6otkRkrj1tmE9HJGk2mioynCuyvhhGtkQOndJKv4hHYLxkAP2
-	ul3+z9og==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <carnil@debian.org>)
-	id 1wKavZ-003ZcQ-2E;
-	Wed, 06 May 2026 12:00:34 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 6F753BE2EE7; Wed, 06 May 2026 14:00:32 +0200 (CEST)
-Date: Wed, 6 May 2026 14:00:32 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Jiayuan Chen <jiayuan.chen@shopee.com>, 1135514@bugs.debian.org
-Cc: Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>,
-	regressions@lists.linux.dev, stable@vger.kernel.org,
-	podorski <podorski@gmail.com>, Brad Barnett <debian-bugs5@l8r.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Subject: Re: Bug#1135514: [6.1.y regresssion] 9a95ec9144ee ("xfrm: fix
- ip_rt_bug race in icmp_route_lookup reverse path") causes log spam on ping
- to unreachable host
-Message-ID: <afstYFbDuJ-zQOtw@eldamar.lan>
-Mail-Followup-To: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	1135514@bugs.debian.org, Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>, regressions@lists.linux.dev,
-	stable@vger.kernel.org, podorski <podorski@gmail.com>,
-	Brad Barnett <debian-bugs5@l8r.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-References: <177771348699.1898023.16904466444228860838@eldamar.lan>
- <177768508393.32886.13183514325428485879.reportbug@pjp3.podorski.net>
- <CAL3Ev5070_=K9F9+03GrE2+4tgr=j_CO19=m4ZPTd17YSwmokQ@mail.gmail.com>
- <afsMUZa99G_gsve1@eldamar.lan>
- <177768508393.32886.13183514325428485879.reportbug@pjp3.podorski.net>
- <CAL3Ev50kzBn41s2twKjKAv=98sPHwPVCp5nmgmA8XGJA3FdVmg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5921401A35
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 12:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778069124; cv=pass; b=EwIK7xbYQdaGAk4UGrDaI1Jnmmrjlb/n47ZOwkKYDtk/jQooyTplUBZVyhg02ul5qcTbPHk7pmQw1eK09P3zBkYQ4ti8V+maZthQ0W0PYrY9GGHjR8Gf360hBWpiXF6S0xT+/EUVwzG1mf0WmOELzskVL9nmHrj9Zr/zPp00YFs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778069124; c=relaxed/simple;
+	bh=2zMx+FaWfwnhe6lXrswOUXzCVpQRjKQ7ump7lWG1tV0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uIBMKnDMqP6f1Ajy5bljeiJHiMDEpV2qIb++swLzJTMaBNQulHcoOHBDm3gJvh2jGMqk4wo/D6qg1AgdRX2iXOysQ77mPWCOUH+p+UMlyBTTmRmVr5H17mqbNV5nuCWW5szzL6Wckkyt5rqjLwNankuJmb58UFxuNPtTliwD0zw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SJoy8kS6; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-67c1eea6b4dso8247a12.1
+        for <stable@vger.kernel.org>; Wed, 06 May 2026 05:05:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778069121; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UjnMZSuDv2tV5Ryr+8DEDsO9ChlY+L40lHk2wjKY0PX43sNJgBRfacm0SPbIvKrzic
+         IR/DmeU7pYDOGYSYIdRFjQxspZWZC/FpGEhoPPffohPQWMFPYVjPeFjbZGYvRzmjmxZp
+         rGXTYmSTd0L3PaIExI87B9BBJ8EozQn8cdP1LkGRkdCCl164imtAq2Gj7nPP3BQLticW
+         /sjvbCZnb+wZvhLcnaunUvg56ANV98AmqDHbbNx5UV70CA9YJYp9jsA/nyaPJQWwMuMg
+         wrCbPMalW0o1N1S1zjF4h4bEAi9y8iO9VTsOehdHFJCPs0amhTT4iIGFx2MCxaY5WNZv
+         akuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7SkiCwpoGGSR+VOguP46PNj7/26BOC/RtwhpETWAfik=;
+        fh=hmDUnYhh5pYyl+KwDeYPT7VIzKrQrvG/drHipufe3Vw=;
+        b=Ub8SJTw+p41uI52pHZEeUcpx1QAe9X57wQKquCRFWkgoXvedd4SWWQNaUKbu+hDg2R
+         nS754lnmjFUZUN8g0pITB00FSVrYmGG07lOWcFXdrRErv/9XkB60ITm9hUtm5CuHz+2v
+         bpP0U775SXVi7uKMl4eEue1MBjjvbpOQ2F3YricANEBvf9+gEAPk6MM+56d2SCjtC1ij
+         NwNQ3hZ5gsE6w/T2/gO5bBtajRt4lQ4f2vsfFzV7jM/+4/4pblDwgXhRLyumM2aH1Qdj
+         gcULPCdCd0QQcj8N2I31cwoM2jXo7zhblOFMY81pibC6ZbQhh0uqZCPMb5LZjwRl3Ggt
+         5yiw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778069121; x=1778673921; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7SkiCwpoGGSR+VOguP46PNj7/26BOC/RtwhpETWAfik=;
+        b=SJoy8kS6T6BdmZLP8VhA9T5JeIwqr+R/w1dpbCKU9jv9p39bY0IWC1ex4Secnng9hI
+         38RqbpwDr87OdQjcRw+le4i4lfAv+z6oOSCy26qOL+IGHTvv8oPASD4k5+8svd/iXIxc
+         j9YuBreomd9hxDMhGY2BrEzjsI9HhAAsruj5FVHn+u3UlteL2xGgBpeMmLW5bnX9LQ/x
+         wk0rsSxfOcy+7Ng71iMVsHz+XjnZn8Io26Z/KPLwoZbEv6s3rzmbZ+Vbm+2s4al8y0DU
+         qpqlQ4n0VumMedLWTnC9NisjqOby5ECqlQM+RajnkU2mNmdwczAeIxvlg6TxfEdAg25x
+         oAHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778069121; x=1778673921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7SkiCwpoGGSR+VOguP46PNj7/26BOC/RtwhpETWAfik=;
+        b=qQxtiQ6qnCbXD9N43Gts8JrCxCAbrKs76ZCROFizXk8eG5JqXQrnu01ofNtQpPQo3i
+         KqTdOncw3A9eFPKxDYL3mntk6hX8Q06W2nQVvd519VGA+oaFhGvNQV5fw2EydHGMnnyL
+         QCElfldi+Sd81YN7Lno5p0cD5zjEMDR+qoNs3RGt1bCPFmcZiJ0BGY/tLrwrl8vriLCa
+         aqbnUz07LR5JZTtVupgB5hh45r9oxvioxbKcu9XXQGrHkKhW0YRXIHwIgrC+XcJ0ZGVl
+         z23LO+HF302M1I3AVEODkr19cDkRLdLs6X7Hle1B6Ly5FOQs5nWNeutTmWyZbPf6alfy
+         +16w==
+X-Forwarded-Encrypted: i=1; AFNElJ9l9T1nmZLtDa+q+H6P8XDNHFg37sZAANnSsjf27ZGKc3W8PbLO84BqiSvWiSiMmwCEze4bsiE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweWfy3qhra/raDdlyKYr/zAXizjJankpsBzrq0cwgknStxe35u
+	4ap0wa/nlCpSxqGyE3kSlz56VU3vjy6kjWTUV64lnmVNEaGXlRKzWAGd8EUMyeaT+2RZ5KRZjxT
+	ELFrl7lTvV4T9b5Fk2Yg7OiaN6JhMApr3LJH0XnX7
+X-Gm-Gg: AeBDieslhG/k0skIUMutVcuE+iIUcbnbSEDzdaYWtD/ZU0e/meeUpK4yea3wgTMIhNn
+	+uigsRq/vot+f424cO/E6rLV6m5RR1iFuu4zWE5BKzFFvEBecewg7VdgcoVH1O7/BPdpihNr2Ob
+	XoL+ffmtbwo6TeAvPjM7aAFgP/+2m6rFHbYhHCr0hNy44JA2j4k7J39pPzegug4200TUFAP9A2v
+	VsL+vTMWLKFWAyPzi4viIYU5FViG3cv/eZzEmamaub7jylKdTk4Hbn62C4yYBQWOrzn6QRuqhoT
+	Hga77JBfi8xEE6vRrm3I73cVBM8WxT0ZHWo1SPK0al5BsCfopFqmUq0tpl4=
+X-Received: by 2002:aa7:c903:0:b0:670:d5f0:2595 with SMTP id
+ 4fb4d7f45d1cf-67d63d9276amr44273a12.11.1778069120699; Wed, 06 May 2026
+ 05:05:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL3Ev50kzBn41s2twKjKAv=98sPHwPVCp5nmgmA8XGJA3FdVmg@mail.gmail.com>
-X-Debian-User: carnil
-X-Rspamd-Queue-Id: 68C6F4D9F06
+References: <20260504-bluetooth-accept-uaf-fix-v1-1-1ca63c0efadd@google.com> <CABBYNZLzyh7a7sZ+0U4DAq8TB6e6=WdNrfKrxGXMqnYAMT0KnA@mail.gmail.com>
+In-Reply-To: <CABBYNZLzyh7a7sZ+0U4DAq8TB6e6=WdNrfKrxGXMqnYAMT0KnA@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 6 May 2026 14:04:43 +0200
+X-Gm-Features: AVHnY4K5YkADVGWfu3nzBfhgYwm-1qpAh1RKBgX_mKXaVR2EX0ROB4TwY8iXUu4
+Message-ID: <CAG48ez3HWBb0X1q-owvK40OC5ecx=A7CWTAGBoWSppJYSKYLRQ@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: fix UAF read of ->accept_q in bt_accept_poll()
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D771D4D9F64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244373-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[redhat.com,kernel.org,lists.linux.dev,vger.kernel.org,gmail.com,l8r.net,davemloft.net,google.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244374-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[debian.org:+];
-	MISSING_XM_UA(0.00)[];
+	SEM_URIBL_UNKNOWN_FAIL(0.00)[sashiko.dev:server fail];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[sashiko.dev:server fail];
+	NEURAL_HAM(-0.00)[-1.000];
+	RBL_SEM_FAIL(0.00)[172.234.253.10:server fail];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-Hi Jiayuan,
-
-On Wed, May 06, 2026 at 05:47:52PM +0800, Jiayuan Chen wrote:
-> On Wed, May 6, 2026 at 5:39 PM Salvatore Bonaccorso <carnil@debian.org> wrote:
+On Tue, May 5, 2026 at 5:06=E2=80=AFPM Luiz Augusto von Dentz
+<luiz.dentz@gmail.com> wrote:
+> On Mon, May 4, 2026 at 11:11=E2=80=AFAM Jann Horn <jannh@google.com> wrot=
+e:
 > >
-> > Hi Jiayuan,
+> > Use lock_sock() to guard against bt_accept_poll() racing with concurren=
+t
+> > close(accept()), which can lead to UAF:
 > >
-> > On Wed, May 06, 2026 at 09:04:24AM +0800, Jiayuan Chen wrote:
-> > > I think it because we failed to backport  this patch before:
-> > > https://lore.kernel.org/stable/20250207161555-b1a8749027831a1a@stable.kernel.org/T/#m0c880c1f04f7211aea9b7f6b4de0b64aa1726417
+> > task 1           task 2
+> > =3D=3D=3D=3D=3D=3D           =3D=3D=3D=3D=3D=3D
+> >                  __x64_sys_poll
+> >                    __se_sys_poll
+> >                      __do_sys_poll
+> >                        do_sys_poll
+> >                          do_poll
+> >                            do_pollfd
+> >                              vfs_poll
+> >                                sock_poll
+> >                                  bt_sock_poll
+> >                                    bt_accept_poll
+> >                                      [read ->accept_q next pointer]
+> > __x64_sys_accept
+> >   __se_sys_accept
+> >     __do_sys_accept
+> >       __sys_accept4
+> >         __sys_accept4_file
+> >           do_accept
+> >             l2cap_sock_accept
+> >               bt_accept_dequeue
+> >                 bt_accept_unlink
+> >                   [removes new socket from ->accept_q]
+> > __x64_sys_close
+> >   __se_sys_close
+> >     __do_sys_close
+> >       fput_close_sync
+> >         __fput
+> >           sock_close
+> >             __sock_release
+> >               l2cap_sock_release
+> >                 l2cap_sock_kill
+> >                   sock_put
+> >                     sk_free
+> >                       __sk_free
+> >                         sk_destruct
+> >                           __sk_destruct
+> >                             [frees new socket]
+> >                                      [UAF read of ->sk_state]
 > >
-> > Which won't apply cleanly, I assume this was the reason it got not
-> > backported to 6.1.y. Do you have a backport of that, or should the
-> > original commit introducing the issue be reverted from 6.1.y?
+> > This UAF only leads to incorrect reads, it does not corrupt memory; it =
+is a
+> > fairly tight race window; I believe every race attempt requires an
+> > incoming bluetooth connection; and the leaked data is limited.
 > >
-> > Regards,
-> > Salvtore
-> 
-> I tried to backport this patch to stable. Hope these patches apply successfully.
-> 
-> https://lore.kernel.org/stable/20260506012057.285743-1-jiayuan.chen@linux.dev/T/#u
-> https://lore.kernel.org/stable/20260506012115.286204-1-jiayuan.chen@linux.dev/T/#u
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > ---
+> >  net/bluetooth/af_bluetooth.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.=
+c
+> > index 33d053d63407..d24897167838 100644
+> > --- a/net/bluetooth/af_bluetooth.c
+> > +++ b/net/bluetooth/af_bluetooth.c
+> > @@ -521,13 +521,17 @@ static inline __poll_t bt_accept_poll(struct sock=
+ *parent)
+> >         struct bt_sock *s, *n;
+> >         struct sock *sk;
+> >
+> > +       lock_sock(parent);
+> >         list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept=
+_q) {
+> >                 sk =3D (struct sock *)s;
+> >                 if (sk->sk_state =3D=3D BT_CONNECTED ||
+> >                     (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags)=
+ &&
+> > -                    sk->sk_state =3D=3D BT_CONNECT2))
+> > +                    sk->sk_state =3D=3D BT_CONNECT2)) {
+> > +                       release_sock(parent);
+> >                         return EPOLLIN | EPOLLRDNORM;
+> > +               }
+> >         }
+> > +       release_sock(parent);
+>
+> There is the following comments though:
+>
+> https://sashiko.dev/#/patchset/20260504-bluetooth-accept-uaf-fix-v1-1-1ca=
+63c0efadd%40google.com
 
-I tried the patch on top of 6.1.170 and this resolves the issue. I
-added the Tested-by to your patch submission.
+Regarding the LLM output on whether lock_sock(parent) is enough: The
+locking I'm adding here is the same as what bt_accept_dequeue() uses
+for protection; if event handling can also remove accept_q elements
+without holding appropriate locks, I think that is a separate (and
+bigger) bug.
 
-Thank you.
+I see I've just been CC'ed on
+<https://lore.kernel.org/all/20260506114338.2873496-1-n05ec@lzu.edu.cn/>,
+which seems to be a broader fix; if you want to go with that patch,
+this one is superfluous.
 
-Regards,
-Salvatore
+> I'm not really sure if likes for the poll are supposed to be done
+> lockless, if they are, we cannot use lock_sock here and will likely
+> need to rework accept_q so it doesn't contain deferred sks, as those
+> shouldn't be considered ready for acceptance.
+
+I don't see why that would be a problem;
+Documentation/filesystems/vfs.rst says nothing about wanting lockless
+operation, and if you look around at other poll handlers, you'll see
+several ->poll() handlers that take sleeping locks:
+
+ - dma_buf_poll() calls dma_resv_lock(), which locks a W/W mutex
+ - vb2_fop_poll() sometimes calls mutex_lock_interruptible()
+ - virtio_rpmsg_poll() calls mutex_lock()
+
+My understanding is that is is preferable, but not required, for
+->poll() handlers to be fast if they're used by high-performance
+userspace code, since event loops might hit ->poll() handlers fairly
+often (especially if userspace uses an API like poll() or select(); I
+think with epoll you only get one or two ->poll() callbacks once the
+file descriptor actually becomes ready); I think this probably isn't
+really an issue for bluetooth listening sockets.
 
