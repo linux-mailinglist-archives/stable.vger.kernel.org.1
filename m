@@ -1,190 +1,132 @@
-Return-Path: <stable+bounces-244324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GA91J3rj+mmGTgMAu9opvQ
-	(envelope-from <stable+bounces-244324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:45:14 +0200
+	id kJnZC0zj+mmGTgMAu9opvQ
+	(envelope-from <stable+bounces-244323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:44:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092CC4D6BDF
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:45:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6B64D6BC0
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 08:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54AC43020001
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:44:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 82AD0304AA91
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 06:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B587321445;
-	Wed,  6 May 2026 06:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F192F323417;
+	Wed,  6 May 2026 06:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MdOBsOAL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXoF9oww"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C92E30C618
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 06:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD7231F9B5;
+	Wed,  6 May 2026 06:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778049877; cv=none; b=szVtZ1Z0spCPdxBOqTGYkwFcqf5DeAD7jZHCocsEyd5E3f4ub7wXbq9PI3sTMxjc7jbRAwlyXBMpO/a8TIC6o+6Ynb8l75bqA2/NXxSliwOG7l874h/1MhWj9ELkTem2ekgJ3l5vcOStOHWt/bXbex9d5ifVFMjwZ1osjNj2WhQ=
+	t=1778049859; cv=none; b=ICEPN8ClDPACCdORxRGYdc8675bTD0GQRNsiuaZGlfUe8wLKLzHgAEGVLjxDkwA2wCWLlGkFM2kOFVIWoy0a1iZQpbQeTfDrkw+2d9D6rh83UHkyDo9k2SQbPZWA8doUBDa/wQNfJI0KOpNOFLEIZm1GVAOc3o3pP5f8th2ShHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778049877; c=relaxed/simple;
-	bh=P+iQb3WPooPIOs7qxqG724zJ8z824Ny1eBQ+sznHu0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PU6zhxIxDBOwBzqCPF/iwH5laZngJDYHiUIPzCzjPWLQa6p1XExfbVqWq5A9pSBwqLzwGufTvElIdKmhToEFbrCaIye0q0il2qUJ+P6Hbjs6+0qTH6YwZCGMX+iwiczRFK6VpKVbKl7SSvxgjg2V45ITv27E6eOvzJ0Ms+Y/nFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MdOBsOAL; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778049873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YobrMK/r7WoVIInNcaVGQqTpTOopgQj0jh1RODU/uTQ=;
-	b=MdOBsOAL+GAtywilMETLa/4ACLjlh343P7/nnEStEFIW7kiAtgfZLxuSHUnLzAxQklIC32
-	R/gpTBjERz1ecW4T2VlYl2LI0aCu3NlSkHah+KcVi3foJ55Oe6uqp4InLK8T/Ev7y1xTqo
-	EceNUXZYhEIL10rbUQy8LcptG5RT6TE=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@kernel.org>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Please backport d6c19b31a3c1 ("flow_dissector: do not dissect PPPoE PFC frames") to v6.1+
-Date: Wed,  6 May 2026 14:44:08 +0800
-Message-ID: <20260506064410.295564-1-qingfang.deng@linux.dev>
+	s=arc-20240116; t=1778049859; c=relaxed/simple;
+	bh=uJ+0Y5CUIX/Tppv23mh4BVCIU+d4MEc4VXwpDVnamdU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IsX96Zg6ZxZ/Ad9mV8liXZBc6PRR5v21YsJdjjLhDgcQvVe1UyYaoo61UJDaNZqJtrnHVh3jn9ts4lySNSTsUmZOFW+NrvTAeNSnwnTSI54io9dCyAKyvHTsbS9Mztsrhm8InLSEiPKUVxXzDKWzjd5vK2+oN850wBNgegCQHDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXoF9oww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3465C2BCB8;
+	Wed,  6 May 2026 06:44:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778049859;
+	bh=uJ+0Y5CUIX/Tppv23mh4BVCIU+d4MEc4VXwpDVnamdU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oXoF9owwOGkNeZdBqzLoupDGuDk66DB88WvvjVfL5H+W/G0xUxxa59KXXuq0jE/MS
+	 DFa9QhPd3enm3AkokzWk5id5A0pBGS8nECGdJEAQz/blPGbDC7AT7AHI364/mn5BGH
+	 Y1KEw0LdlKkgPtScnkhc5vlS+gWJfKpgFfIVFqbsNZsjBUxLAePcX4bofoPLkQK2ha
+	 +h8mZcT7+ebERNtBuHmdlhK6DrkGpn3k2KUlGiBLyeCg4u46aE6EGBQHC1MAWEo/qV
+	 braf0GK8mB7usYlTfVLXIgsQNACPiSdXvI7wntAC+eG0E31BnoOouj9SyMkhfqVWdN
+	 ST6nZP4JG+T8w==
+Date: Wed, 6 May 2026 08:44:16 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
+	Bryan O'Donoghue <bod@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil@kernel.org>, Stefan Schmidt <stefan.schmidt@linaro.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, iommu@lists.linux.dev, 
+	stable@vger.kernel.org, Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Subject: Re: [PATCH v4 00/13] media: iris: Add support for glymur platform
+Message-ID: <20260506-rugged-beluga-of-gallantry-a2e41e@quoll>
+References: <20260505-glymur-v4-0-17571dbd1caa@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 092CC4D6BDF
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260505-glymur-v4-0-17571dbd1caa@oss.qualcomm.com>
+X-Rspamd-Queue-Id: 9F6B64D6BC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244323-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244324-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qingfang.deng@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,linux.dev,kernel.org,linaro.org,gmail.com,8bytes.org,arm.com,vger.kernel.org,lists.linux.dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,dt];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-This commit fixes a security issue where an unauthenticated attacker in
-an adjacent network could send crafted packets to slow down or crash the
-kernel on certain architectures.
+On Tue, May 05, 2026 at 12:29:21PM +0530, Vishnu Reddy wrote:
+> Glymur is a new generation video codec that supports dual hardware cores
+> along with additional power domains and clocks.
+> 
+> This series adds platform specific support in the iris driver to handle
+> the extra cores, power domains, and clock requirements introduced by
+> glymur. Add support for firmware loading through context bank firmware
+> device.
+> 
+> Dependencies and merge strategy:
+> 
+> Patch[1]: It's a generic fix, media maintainer can pick this independently.
+> 
+> Patch[2-3]: DT binding, DT maintainer can pick this independently.
 
----
-From d6c19b31a3c1d519fabdcf0aa239e6b6109b9473 Mon Sep 17 00:00:00 2001
-From: Qingfang Deng <qingfang.deng@linux.dev>
-Date: Wed, 15 Apr 2026 10:24:50 +0800
-Subject: [PATCH] flow_dissector: do not dissect PPPoE PFC frames
+No, this goes with media, please follow submitting patches.
 
-RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
-RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
-PFC for PPPoE sessions, and the flow dissector driver has assumed an
-uncompressed frame until the blamed commit.
+> 
+> Patch[4]: Iris VPU bus, media maintainer can pick this independently.
 
-During the review process of that commit [1], support for PFC is
-suggested. However, having a compressed (1-byte) protocol field means
-the subsequent PPP payload is shifted by one byte, causing 4-byte
-misalignment for the network header and an unaligned access exception
-on some architectures.
+Then do not put it inside other media patches. Just like I said on
+teams chat - focus how this is perceived by recipients.
 
-The exception can be reproduced by sending a PPPoE PFC frame to an
-ethernet interface of a MIPS board, with RPS enabled, even if no PPPoE
-session is active on that interface:
+Best regards,
+Krzysztof
 
-$ 0   : 00000000 80c40000 00000000 85144817
-$ 4   : 00000008 00000100 80a75758 81dc9bb8
-$ 8   : 00000010 8087ae2c 0000003d 00000000
-$12   : 000000e0 00000039 00000000 00000000
-$16   : 85043240 80a75758 81dc9bb8 00006488
-$20   : 0000002f 00000007 85144810 80a70000
-$24   : 81d1bda0 00000000
-$28   : 81dc8000 81dc9aa8 00000000 805ead08
-Hi    : 00009d51
-Lo    : 2163358a
-epc   : 805e91f0 __skb_flow_dissect+0x1b0/0x1b50
-ra    : 805ead08 __skb_get_hash_net+0x74/0x12c
-Status: 11000403        KERNEL EXL IE
-Cause : 40800010 (ExcCode 04)
-BadVA : 85144817
-PrId  : 0001992f (MIPS 1004Kc)
-Call Trace:
-[<805e91f0>] __skb_flow_dissect+0x1b0/0x1b50
-[<805ead08>] __skb_get_hash_net+0x74/0x12c
-[<805ef330>] get_rps_cpu+0x1b8/0x3fc
-[<805fca70>] netif_receive_skb_list_internal+0x324/0x364
-[<805fd120>] napi_complete_done+0x68/0x2a4
-[<8058de5c>] mtk_napi_rx+0x228/0xfec
-[<805fd398>] __napi_poll+0x3c/0x1c4
-[<805fd754>] napi_threaded_poll_loop+0x234/0x29c
-[<805fd848>] napi_threaded_poll+0x8c/0xb0
-[<80053544>] kthread+0x104/0x12c
-[<80002bd8>] ret_from_kernel_thread+0x14/0x1c
-
-Code: 02d51821  1060045b  00000000 <8c640000> 3084000f  2c820005  144001a2  00042080  8e220000
-
-To reduce the attack surface and maintain performance, do not process
-PPPoE PFC frames.
-
-[1] https://lore.kernel.org/r/20220630231016.GA392@debian.home
-Fixes: 46126db9c861 ("flow_dissector: Add PPPoE dissectors")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Link: https://patch.msgid.link/20260415022456.141758-1-qingfang.deng@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- net/core/flow_dissector.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
-
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 1b61bb25ba0e..2a98f5fa74eb 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1374,16 +1374,13 @@ bool __skb_flow_dissect(const struct net *net,
- 			break;
- 		}
- 
--		/* least significant bit of the most significant octet
--		 * indicates if protocol field was compressed
-+		/* PFC (compressed 1-byte protocol) frames are not processed.
-+		 * A compressed protocol field has the least significant bit of
-+		 * the most significant octet set, which will fail the following
-+		 * ppp_proto_is_valid(), returning FLOW_DISSECT_RET_OUT_BAD.
- 		 */
- 		ppp_proto = ntohs(hdr->proto);
--		if (ppp_proto & 0x0100) {
--			ppp_proto = ppp_proto >> 8;
--			nhoff += PPPOE_SES_HLEN - 1;
--		} else {
--			nhoff += PPPOE_SES_HLEN;
--		}
-+		nhoff += PPPOE_SES_HLEN;
- 
- 		if (ppp_proto == PPP_IP) {
- 			proto = htons(ETH_P_IP);
----
-Regards,
-Qingfang
 
