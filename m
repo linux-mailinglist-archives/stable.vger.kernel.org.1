@@ -1,143 +1,141 @@
-Return-Path: <stable+bounces-244343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPaKCWT8+mnjUwMAu9opvQ
-	(envelope-from <stable+bounces-244343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:31:32 +0200
+	id ICPwMKP8+mnjUwMAu9opvQ
+	(envelope-from <stable+bounces-244344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:32:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D214D7E6B
-	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:31:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C844D7EA1
+	for <lists+stable@lfdr.de>; Wed, 06 May 2026 10:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6BAD83030F53
-	for <lists+stable@lfdr.de>; Wed,  6 May 2026 08:29:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B024B306D96B
+	for <lists+stable@lfdr.de>; Wed,  6 May 2026 08:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355183E51D6;
-	Wed,  6 May 2026 08:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285C83E3D8B;
+	Wed,  6 May 2026 08:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lJv4/28i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fg4KUl6U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4F23E51C5
-	for <stable@vger.kernel.org>; Wed,  6 May 2026 08:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBDF3E3C63
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 08:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778056167; cv=none; b=A7V5p4S/r8h7Sbl5TIx+Lj77Q+QlNlknFZ7PlA0SaMFUaRb/ytEJga2b94guoH4VqHyACIGBsMG1nJv84w79LQNQ16f3ntpibf+Pz35055RcPhJhfndMF7erha86RWLyI/Cu2YJT21tof/IJQbhW2TI7nCUlY/+AVtoc+9x6te8=
+	t=1778056208; cv=none; b=UBGhAWTp+S4ZVqKCrj9qQfboQKr3c8599ysbND+b4nh9gLunzGECRFp9eqSi3nNVgSHIh2j1O/TsPZUf9KzeWZyHuAsHQkT4hkrBYnngYv5f5rWZodvOsXJBEGQxkDoNq7N9l3C1C2eWHCShaRJiIpnR1louZ/8R0sRYRmQ3TBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778056167; c=relaxed/simple;
-	bh=KNjDpuu2hwLIB0IxXf/2OHG10BiZJ+z4qaTrgnV6E6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dva6NxCbdXruZAEzlxyKw4v42YPIXQBaQkRuYjPXlS+7Ua6MwY71mZhaRlMjYFMyO5UrKkd0UPbJPkOmSCgb6rx+iDlxdQzkbve8kb3YKwVthqoYXluefTosDVikTwLA6rYWRngjwmf+xpIW3fEhcKeiK4mFCAhan2l+B0afe4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lJv4/28i; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so57955425e9.2
-        for <stable@vger.kernel.org>; Wed, 06 May 2026 01:29:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1778056164; x=1778660964; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KNjDpuu2hwLIB0IxXf/2OHG10BiZJ+z4qaTrgnV6E6Q=;
-        b=lJv4/28iUAmR6XxtA83Vk4dtDk4H7X6xPtswT7GtfKb6jVwsqklUGK2RYGO1DeyKXx
-         U5rt05nn+YsQnqq9rj3DmRfruC9YYuHVrTgwugjj/GONJNcPSRkSU/YosBB7V4y265bp
-         W5gaXGDe/NTSHeKp/r51YR36ifoiK8piRD/ikUUrx9sRhAFav+qWf7/rql3xs4gukLpd
-         BGE1PzRkgrl5NYQdyIeCyYW2X/tac0nWPxJ9xhztctkYx3AIyUuwuIySJs3pjuCO1fBO
-         Fi4i2cSpD7FRwKdQkAu8Au3TL5CWDP1TcTs/Vrjf8ayg9d+4cPQWxgrRSkYFKthPw3Il
-         Z+CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778056164; x=1778660964;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KNjDpuu2hwLIB0IxXf/2OHG10BiZJ+z4qaTrgnV6E6Q=;
-        b=iAiLHZCt+8RxeH/I6bxXSp7sxd3Ej9+6gyTb05XzFMfWGalJQU/PaPtXRpoQy7ePkL
-         PXCCx6vbnTc7jCRwVIvHLaSNXCFK2fEO4SoFXq6XbZsWKa0ylEr10Vd3wHIahUBbDx1K
-         6j3YFS9/zGZ+VwdvqEdw7IlQRIWLIlPDkVpab5fC/tqDKrECQYMoq4H0RLDjqUpU47UE
-         tzYzX5jC0hhsR7NHPwvmIld7DOcKipqPrDDndXFrGebxuSOnfRhh1llGqQxte6Su3/Fl
-         UT3d4cQvkuwMEyWtS3sY/lqdjVGBcIgBlhep279BfIcJv6CFbL422kVnE+6zX6z0xkSB
-         dHrw==
-X-Forwarded-Encrypted: i=1; AFNElJ+1ryLdfWhCkTuOAWMulcMRWgMNo7GHVdYA+QzTgSlIJ8fkCv6KlvGGb1jmzjUlks1o5IlKv0g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLmBk1y6gaAbTReWyABS5kqGgKh67i4+fScW4wLSrq0BXjcU2/
-	xBMyYOgXSmr/KXV69KDnV/Nehx8PEWZXcpoZUWsrIbxyXGBHdNfBxfUNQ49lQyfwRmU=
-X-Gm-Gg: AeBDievFsU1hTZAfaG3WENzmKnP8+0QKLoh4Sf/CspyUnJz5Pz6Qsns8f9B5xEcHf0r
-	ueBDwrsZqC88maSn0qfqXZVfe+dvAih8cx+SpVmIiLsBhVijLkdyFuvU9Yzej9Be/pp5M95RJlB
-	l5l7n5NhR3g/mnMwv2hyt0Ejc6bSy+5xeKL4DMbf0rxoZ3+I6QqdBkGIJe4NDes4E4Bra2Pbwk3
-	Egh/IFzCf46/ZBpUJ+hEFI+HIoyEKoj5KqYZDgG82Droov135vI5wFMYe8R1DHpvh9zQhI+UqmD
-	lqUBTIIahXZBM2RvinkGKkqeEMqqmBZgdVL6EqRPdhHxjD+JvUoPQ2BdbkIn3pXiurwguysGuOM
-	gMcPCUFDLOy7ddsv7m+vGGDD+gPfto5RuxTrjQGhEitMANurJHkR65+nZDtWXRSCi1HdQsYLq2j
-	nPTbNxgIsosdNbRRPMKNDqgVmG63d9Y9wVy7pFVIzt3QM=
-X-Received: by 2002:a05:600c:354b:b0:486:f634:ef1 with SMTP id 5b1f17b1804b1-48e51f32a7amr41967685e9.17.1778056163955;
-        Wed, 06 May 2026 01:29:23 -0700 (PDT)
-Received: from [10.11.12.108] ([79.115.63.228])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45054b02abbsm10276212f8f.18.2026.05.06.01.29.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 May 2026 01:29:23 -0700 (PDT)
-Message-ID: <8dd42c4d-2cf4-4118-b2ba-99670cfc94ed@linaro.org>
-Date: Wed, 6 May 2026 11:29:19 +0300
+	s=arc-20240116; t=1778056208; c=relaxed/simple;
+	bh=9jsCfJ77aRZ+EQUR5mk8tkC1C2blxzYZk6FFbWtFFN4=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EyA3UQLtEPHbyCw3MYO/1KYVHHsNGVQy71a5oTfPadaLSGOmeKmIIk65u8dGNoCFcHaUquT7ebqSafG550w6DBpNSOhZ5OrPTO55Ziljd4rpc/dHngtr7KvERjdsOhm9KesuHk6htYq6xRI11JFoNhWQhFCJ40iHIfyTMsxPBbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fg4KUl6U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E479C2BCC4
+	for <stable@vger.kernel.org>; Wed,  6 May 2026 08:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778056208;
+	bh=9jsCfJ77aRZ+EQUR5mk8tkC1C2blxzYZk6FFbWtFFN4=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=Fg4KUl6UPGygVcAGAEON8467PR7zMdd30ytZEGGvC2OE7ESv6SJ0PPk8DUorJ/AyJ
+	 3BotXOrB06ohe68bo3ruAcdm5d3y1UU9Ika4vvxDX8UAHGeiFxYPZG5qOTsNp9POw7
+	 PytzCQUUyrSkVCKJRu2FRcEUqrOvNNuNEf07tpiWQ+RGvfCEy+g2A9AgVA/hFqLS48
+	 tUpVwbQvicdG3DINjzyp9TXuDyvzYoAdD5mTzUjetpqHfNHgIXI4iTpQTuh8eZj6ss
+	 MbqI4q2lh2duD9Id4ik1W9JE44SDuHgWyI6qROTQ7fUqAsPHCNQsBdrIKNOo+fQMA5
+	 IsyUTk5U/owSA==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-393800586aeso7147721fa.1
+        for <stable@vger.kernel.org>; Wed, 06 May 2026 01:30:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/UPgjzpb/hvLIvP+XBQ43H7zA7HcdtdRdrJ7qqQpeGBiOJ8vQYdYoi+CnAMouf8wIL1clAXQk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyE7uB15WDCSq1w4u3kru7HgyfoFojoiGbr9lBIPiq1PGw+X8hS
+	oB9mRpAFngQIhfH743Rc/kfKWNLIXPEP3LdTZmwsluBiVlnq8R87rD56ymt95xiOZ7M2sVkwTaB
+	dLz9sBK8drwy8xigoDMbz5olk9BOMbI/nWpzH6NWBkw==
+X-Received: by 2002:a2e:ad13:0:b0:391:1570:b6a6 with SMTP id
+ 38308e7fff4ca-393c515dc32mr8708051fa.12.1778056207163; Wed, 06 May 2026
+ 01:30:07 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 6 May 2026 01:30:05 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 6 May 2026 01:30:05 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260506-serial-dma-stale-tx-buf-v1-1-e3ccb360d719@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/7] firmware: samsung: acpm: Various fixes for sashiko
- bug reports
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org,
- andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com,
- stable@vger.kernel.org, Titouan Ameline <titouan.ameline@gmail.com>
-References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
-Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 46D214D7E6B
+References: <20260506-serial-dma-stale-tx-buf-v1-1-e3ccb360d719@oss.qualcomm.com>
+Date: Wed, 6 May 2026 01:30:05 -0700
+X-Gmail-Original-Message-ID: <CAMRc=MfYowRSM3Ng4nPUwwcnPJJO_b5Bnff1bQ0+=nTymjSU5Q@mail.gmail.com>
+X-Gm-Features: AVHnY4IxiCU56DY3SHuvlTt4PbWJmBIT3psLIm54c1U5-W8OVA5Eo5IvT83J1Nk
+Message-ID: <CAMRc=MfYowRSM3Ng4nPUwwcnPJJO_b5Bnff1bQ0+=nTymjSU5Q@mail.gmail.com>
+Subject: Re: [PATCH v1] serial: qcom_geni: fix kfifo underflow when flush
+ precedes DMA completion IRQ
+To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-serial@vger.kernel.org, stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 86C844D7EA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,linaro.org,google.com,android.com,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	TAGGED_FROM(0.00)[bounces-244343-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244344-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:dkim,linaro.org:mid]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-Hi Krzysztof!
+On Wed, 6 May 2026 06:45:21 +0200, Viken Dadhaniya
+<viken.dadhaniya@oss.qualcomm.com> said:
+> When uart_flush_buffer() runs before the DMA completion IRQ is delivered,
+> the following race can occur (all steps serialized by uart_port_lock):
+>
+>   1. DMA starts: tx_remaining = N, kfifo contains N bytes
+>   2. DMA completes in hardware; IRQ is pending but not yet delivered
+>   3. uart_flush_buffer() acquires the port lock and calls kfifo_reset(),
+>      making kfifo_len() = 0 while tx_remaining remains N
+>   4. uart_flush_buffer() releases the port lock
+>   5. DMA IRQ fires; handle_tx_dma() acquires the port lock and calls
+>      uart_xmit_advance(uport, tx_remaining) on an empty kfifo
+>
+> uart_xmit_advance() increments kfifo->out by tx_remaining. Since
+> kfifo_reset() already set both in and out to 0, out wraps past in,
+> causing kfifo_len() to return UART_XMIT_SIZE - tx_remaining. The next
+> start_tx_dma() call then submits a DMA transfer of stale buffer data.
+>
+> Fix this by snapshotting kfifo_len() at the start of handle_tx_dma()
+> and skipping uart_xmit_advance() when fifo_len < tx_remaining, which
+> indicates the kfifo was reset by a preceding flush.
+>
+> Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+> ---
 
-I checked Sashiko's review feedback on the set, and in my opinion the
-set is ready to be queued. I'm going to send the cleanup and the
-ACPM TMU helper driver patches now.
+Make sense, thanks.
 
-Thanks!
-ta
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
