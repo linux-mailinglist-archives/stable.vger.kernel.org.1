@@ -1,191 +1,310 @@
-Return-Path: <stable+bounces-244489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDhkHCUK/GnvKAAAu9opvQ
-	(envelope-from <stable+bounces-244489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 05:42:29 +0200
+	id lGFBAfYN/Gl1KgAAu9opvQ
+	(envelope-from <stable+bounces-244490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 05:58:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91694E2B38
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 05:42:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50154E2BCB
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 05:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7470303A263
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 03:41:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D423C300BBAE
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 03:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C222E62B5;
-	Thu,  7 May 2026 03:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AEC30FF1E;
+	Thu,  7 May 2026 03:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ckc78MDN"
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="q/yeivUQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B34F2EA73D
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 03:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778125271; cv=none; b=m5kOOdH6Ie6CqRdBxvnAqh2nctdHjwsmk83N6e4WsB6XVrw9AWwXS1yhSLcxhXfMKq8jsS63kDQRv0eU1T8PIjU0ChOVCnT3Um/JRBdeOM/dA6kGKbkqKw22R3n9NbVBg2pr155lsx5pa7KYHymVa+vrgq7/BpuhB99lTxgyGEA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778125271; c=relaxed/simple;
-	bh=5ZxZyVybouA1Mduqbo3hKVa/J06PZ5yuIW+r71ae+mc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NSBqbwJj4X9Koy2x2H3FiH1j/G39SzNe7xpKp/zHmJWtKar3ru4RZ192dSzBMBXFBGSoLqBTMNm67OKVWMU66UOVBn4ryGYVA6SeFvQ8SQ+PB/bp3JDvU5ozZsgeMdJVSI+VnP/v2AvLbbQc+LbYpRkYQ77jBLoY/7PAdSmv+z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ckc78MDN; arc=none smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-130c653cce4so1169127c88.1
-        for <stable@vger.kernel.org>; Wed, 06 May 2026 20:41:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778125267; x=1778730067; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nleLAQUlrvdfXv9QhDg66/S/1PB+xB3gu8412xW8j5s=;
-        b=Ckc78MDNLJRna3a8udTpjqtPB7GgSb1Lfr1P23wEVvk41m7O4hLedsnRb2qsi86Yiu
-         qAvh/24esl/egLk4+HMw2W76QZDiYVc9qTAS4lwIqutjYvkOudK/xM8ub5DDI892rQ0E
-         hQD6x2xgbCiiwUTrBU4vk9WHY5UvzbyWn4p0cN3Gt4VxqV6zg2nk3qyY5EWROXfvyhv0
-         E3C604/vyZPVWxoAsKb9aFk8FJwd8mqGAOIsxS/2DsAtO0hKxXlVmzZdUdygb9SvVbz/
-         AhGQRhTvM9Gc8h0iM2Fue3g2l3+Wz+j7+wGAP3PlWbFpT/s1LjrKzEOkLn9cKQLAG3Q5
-         7rDA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CEE2F3C18
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 03:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.125.188.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778126321; cv=pass; b=p/U62eXMSE2qWziibVZphj0fdqvCAUb9Zk32/kbR8wL9cgnJFdkVWqJUkxfWUhkINUTp6d7v26eEXnlfphkfGPtu+YXnbVHCUuQHwxuR+eJaz6oVx0VDGRRodFDYtQIfGyClANKJJRaByrtY2/naSlYwUt276wlsnqIL57IKVE4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778126321; c=relaxed/simple;
+	bh=PkqqHhTDU2kKSizigUNNuogrZzCsb4MyJcq4kMxGR5w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ikyprmfPp7lW5Fr7GVgHN8qq1OBcZBityrTVEY9vlu0cNWRsBfEslkESZ78N6smZvAHloQixX+HnTA9C7HAzYCKUWeslQ0S5NqD3IOe6O6YLZ9nLNCOg0wFxcFMP2j+lk9XWOPOOIG4Bi3io3WNSYMSH1/YKgrEDHKammHYOjHM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=q/yeivUQ; arc=pass smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com [74.125.224.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 6C20E3FBF8
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 03:58:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1778126315;
+	bh=ZlR7nQSAJNYWzlQHXwtepHIUtax32vskaI3RhwhSkmk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=q/yeivUQVLdYHkh7sabBUd9LX3WwiNmNWLcEUCWFIXGpjqoyYL5zDLJLE4qFCwKDx
+	 ovd+oRt2rvJxea9qEFxtG5ABhKJVWQYPnS9BHjiNcBUJkwng0Ebrtw3uUyzLpRgOEZ
+	 LFzIdRpfKAdqkLqw5vlYLWcAT5xg4aR5VKaY4auusKSTjLiUUwKkBT5xjKg3BP8FUj
+	 OHL0XXCzHbWUPdXVf057zF37O8Xa06xvjinRzLbr4mF1soy0sRQO1Hr+C7jiNOwnTP
+	 rigqtWh98KIoarpRh8KB4rGB9Xc6l5DIQFlI0/xgWS3ICg/TrtJW0LhvRdN136qLGr
+	 GCfNSz96IJXwaxjLHKL1fa4DEAeFQNVTejCH53KJAG/JDmsB1uWb22rzyRVXPYbVeU
+	 UG1jzOXMbum80xEy50wf2xXPkAHHZgYkd+3ufmBwZVZmCC5+eaHJ5k9RCSMxksXSn/
+	 3zFrhJi033dsOg3Xqe25IPH16vGuXle4xb3RFL/FxS+GjTnPQKM0381xOrg4zHCnJC
+	 6wwBXqm6F3qtAOw4OX1B45sjvLy5BLAfoBhsKWeMpNjgwHYcNqAhTLxV+veL5qCNUz
+	 y5KXhh0sz6WFHc776Fts5NWweOksqYhqX4NX8jZFBOl1dU7jLb8yBhEktOHb+nk3iY
+	 5968S26c52Eob3XeVvoSLgh8=
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-65c396d3940so111437d50.3
+        for <stable@vger.kernel.org>; Wed, 06 May 2026 20:58:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778126314; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Nv0ZWKBncRTlBFTUR1iDRy2NTWZ8LBt7KFo80Zynkvk8MphvJ2xFTy9cqLzGpCoDb0
+         0ypynFQxcraSKHKcPQq2K3ENnx3huxEZS5WxwnDRf/2nCIi/MIiHvAYJByKJ9UUWTCFb
+         6ZYMKo4db6ov3wlPnpLFWvI5swYWZsrJ55TZw9QUMPNf5xGbSIKIWfWphCvQN8rwspxY
+         M+P7rmJaCmHvdMNd6I5Lbvxh/xTyN/mZXLVCYLU2O5Mv6bBGv9d6XaL3I3mOS6hI34XL
+         i9CkTEEDCsxBhW3FflXORWBq05UanhpemND8dV6/l2bK+pMQzGmvcFgIKT2ejv3P6NAc
+         Qqmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version;
+        bh=ZlR7nQSAJNYWzlQHXwtepHIUtax32vskaI3RhwhSkmk=;
+        fh=43DEoGqvOIi39drQrXvXtMLwn/RXo5GwloKGIpw8y7Q=;
+        b=g19YAvKqXwxhUPMn3qIW+K4OafbOfFfZcfFzDuIXGR5P6ERTNZdhvzec+kJISB256N
+         8ko6GErHH1u6bI/AMw9xq54VI3eCznUJ2nlj6BafpmoOO3OkXxDCbvSAbqioSVkiQbd4
+         +aUEovENY65Usl4qWwzaBoJZq5RxIWLAoqNbBfMU+g9/xx6T6HgXcPpDJhZrLR7T121m
+         Ko9criJdXvrhvR/pWx+3fBtMFvjKpp6Oqb8LlUQ+clAb9DQuYK6UqSejEy55R14Fd9+x
+         ZKlA+Vcn4/MWm270jA3Knae2PsSebm3FO9tm3JMRWOPqizTMCGRpgVN+40PvO6ZhnEAr
+         l3Zg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778125267; x=1778730067;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=nleLAQUlrvdfXv9QhDg66/S/1PB+xB3gu8412xW8j5s=;
-        b=SrMxA1InEEAE21cqg/qHMivyp6SxOwXq/ZmpevDHmcqWHpU/NOCF8OYE591bZlDm9M
-         Lqsnzj+OQzBRyU/JnK/Hmw97SDvkFqiQe0IjyWO7y0spuELVWSbysj/awhYnmnIy+up2
-         EEWxNLowBIqKR+ByAIYDL75mQSs8sJuB7FzCclhTj9y9G5ZCGRnyvy706QuL65wv+xUR
-         7AoUjQgrd8xBwI6J08f3ZIbyzw96F28rZJCkAnJz1d3B7GYM/EeV5/4+UE+uKAjqCy01
-         ZIBYE7xBCf1I7asA9Wc+8SZjtCkDD9kbkCqEQ+pb74ixpVs9ymcrrUQDbY4CcGHho95D
-         +9cg==
-X-Forwarded-Encrypted: i=1; AFNElJ+JPcDRFS16BEeJdwPYdFD+465pXT4ozklyDAFdgLsUHCVDFKNJHaAWNfeq/36/uK1XHZOLg0U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyV55qvfCUCv42aLhxSxdeL3PeEGp3bv0aO4oVXYJ4j8EH+cRCm
-	XnuUGBbB4vrQqi6r5MyOtz6CXf4nPP4XStnNWl2V685LEeNfmOkZNFqH
-X-Gm-Gg: AeBDiesNZvragEUJJ5vdCOk0h3RwZrgx68i0UWIo4cGacH96lSICEuqhOCTXiwmqtPs
-	75942iAnoE1T93+j4J4/+AZnBeJWfSI9r9N4VrYCLwSfZc8WSDimDCdw3Lehc0MEX1ODFNXIV3t
-	+OYFglJ6n4XldqpM0R5aFX5CqrPYwe34eKZGrqFze8QteDwRu76ih6v8LxBkZUSaJL26QFbZRG0
-	5uOn864NRBMvUEeqMcDBjCP960uqa9/xvDr5l+W5tG43X8E5WZ0w7rbufRuBq0MKQybJOxQLNn4
-	3Dk5ONmxZeNIkmITIDdNvfj/Z9B2+ybVy/PtIlHu0WEr/eu1/WxMUHTxEfrmdCGLgpgV73OnrSd
-	xZRy60ZqtXA1ROldxtvfNkQBfYcXxTE1lA171Ndt021i5HdnHqBg5jpWz4iDWH14MMX1k56eivU
-	//MZovfivXVT5lfo7K5PMREafyYylKnH9lGgduiJyzxf+D3hG0X5FcgRYWqdGRGKQOx4wVyilHl
-	vh/eQT4tPlA
-X-Received: by 2002:a05:7022:61a:b0:12d:de3f:d847 with SMTP id a92af1059eb24-1319cf558acmr3091983c88.42.1778125266546;
-        Wed, 06 May 2026 20:41:06 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f570384e46sm6882677eec.26.2026.05.06.20.41.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 20:41:06 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Thu, 07 May 2026 00:40:52 -0300
-Subject: [PATCH 2/2] ALSA: usb-audio: Bound MIDI 2.0 endpoint descriptor
- scans
+        d=1e100.net; s=20251104; t=1778126314; x=1778731114;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZlR7nQSAJNYWzlQHXwtepHIUtax32vskaI3RhwhSkmk=;
+        b=P89Buyro+koPeuFX6bPeRy75Y8tEwAt3sVPWhXcGzXoHmmxoYiRv0xcCnDlSfskIec
+         KUlKEWjTtI3yUjM/D8Z1tVKgkXgoxm8sN6utjl3Z+J2wP8tQw2PTgCnYnY6avgpinrCe
+         uNmJj0TBh089gFXrI12IZE8e9FIsY9BOtnV4jC3erD3IgP8m5G20WtriFwIhv+oYmkVc
+         ZgRorhj5ZZ8E7g30qNlRDBYmvGtKMYzD/dg7dlOnke2QGwe3+PQaER/5gbg9dfjL3x/O
+         R+z4y3c9ypldUzU5nERWLtAKrLddDIjjttckoy5WgkwggwIuNBj+hVnNSdatQuqykWkI
+         O8lw==
+X-Forwarded-Encrypted: i=1; AFNElJ8LAGFrYWTRQeBsRkD/B/uH1xVAx7/S9ginNvgvStF6ia5dfo/P4SZmduKZuOGL2Z82CljlEC4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgzMFZveRCJx28T0QH3vgUUaqQGJ4h7WmlAyxnk6VrgQ+L7W36
+	+2jDd8R13m8TYkTJwOps4qPQ7c2BQlI8QmKU7GQyCypIrnc8iHO6DYEapM0IOw0eIM9OLNFkuDP
+	paWwoFTI4MTPMq43P+kLih34c1D0h6hLLbCzZMlO3uacX30xhIRg9T6YwCGR0vMsrorkYCumvSc
+	XPVba/lPnj17KkcZN0CvE81HXRc0stgsK6bgzPUBCz5ogcXp6q
+X-Gm-Gg: AeBDietDFk0gN09m7o3f62D60iKMIBVOnyIVUpQ1I3kCdseqSClBNw32+lvI1HaMQXl
+	EMMtk1MgQRIVEL6X7OcruK3NlBFspZqJYU2eay8WO9wHz50bxaR++nPTQKTus5PwKoA9z15P9My
+	jZUVMJr7o54z2gaQQtVxMjSOdGTFFmV+EjrKNMvKikWdJ/pRdhYtK73PSI3EsTsceAEqOTbBJj4
+	fPiOd4fq1sEXgEoZg==
+X-Received: by 2002:a05:690e:4295:20b0:651:bc3b:75c7 with SMTP id 956f58d0204a3-65c7988e8f1mr5453989d50.11.1778126314071;
+        Wed, 06 May 2026 20:58:34 -0700 (PDT)
+X-Received: by 2002:a05:690e:4295:20b0:651:bc3b:75c7 with SMTP id
+ 956f58d0204a3-65c7988e8f1mr5453975d50.11.1778126313609; Wed, 06 May 2026
+ 20:58:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260507-usb-midi-endpoint-scan-bounds-v1-2-329d7348160e@gmail.com>
-References: <20260507-usb-midi-endpoint-scan-bounds-v1-0-329d7348160e@gmail.com>
-In-Reply-To: <20260507-usb-midi-endpoint-scan-bounds-v1-0-329d7348160e@gmail.com>
-To: Takashi Iwai <tiwai@suse.com>, Andreas Steinmetz <ast@domdv.de>, 
- Clemens Ladisch <clemens@ladisch.de>, Jaroslav Kysela <perex@perex.cz>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1495;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=5ZxZyVybouA1Mduqbo3hKVa/J06PZ5yuIW+r71ae+mc=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJl/OE9d/lZ7Veedv5TJ87eHvH3Tz4mtsXwY3DxPYZ1t0
- MkgpcPtHaUsDGJcDLJiiiyrkxZZ7ul6cLU+boUHzBxWJpAhDFycAjAR22CG/+7Kj/U3ygWn/ZAJ
- CX+5+8S12x8sVnKpyqh4yd+YtWfexA0M/xQ41nlzGR9nTzx+5uTzNSmii1p2tjfIGUxf/XBb/I/
- vPlwA
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Rspamd-Queue-Id: D91694E2B38
+References: <20260505004846.193441-1-decui@microsoft.com> <SN6PR02MB4157A5A68BDBC87995FCE85FD43F2@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SA1PR21MB69217F13193ADBD59430FB52BF3C2@SA1PR21MB6921.namprd21.prod.outlook.com>
+In-Reply-To: <SA1PR21MB69217F13193ADBD59430FB52BF3C2@SA1PR21MB6921.namprd21.prod.outlook.com>
+From: Matthew Ruffell <matthew.ruffell@canonical.com>
+Date: Thu, 7 May 2026 15:58:21 +1200
+X-Gm-Features: AVHnY4Lmno6AI9zMEcVbyQ9Bwv19XV5Ur5KJJsyVMwqC4jNwWBpl96SPBpb4Fy0
+Message-ID: <CAKAwkKtUo5XX_Qh4hSYcbxTWkZP=+i0hZQaPHX78G20MFdz2Lg@mail.gmail.com>
+Subject: Re: [PATCH v2] Drivers: hv: vmbus: Improve the logic of reserving
+ fb_mmio on Gen2 VMs
+To: Dexuan Cui <DECUI@microsoft.com>
+Cc: Michael Kelley <mhklinux@outlook.com>, KY Srinivasan <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>, 
+	Long Li <longli@microsoft.com>, 
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"johansen@templeofstupid.com" <johansen@templeofstupid.com>, 
+	"hargar@linux.microsoft.com" <hargar@linux.microsoft.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: C50154E2BCB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[canonical.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[canonical.com:s=20251003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[outlook.com,microsoft.com,kernel.org,vger.kernel.org,templeofstupid.com,linux.microsoft.com];
+	TAGGED_FROM(0.00)[bounces-244490-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-244489-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[canonical.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[matthew.ruffell@canonical.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,canonical.com:email,canonical.com:dkim,templeofstupid.com:email,outlook.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The USB MIDI 2.0 endpoint parser has the same descriptor walking
-pattern as the legacy MIDI parser. It validates bLength against
-bNumGrpTrmBlock before reading baAssoGrpTrmBlkID[], but not against the
-remaining bytes in the endpoint-extra scan.
+Hi Dexuan,
 
-A malformed device can therefore make later baAssoGrpTrmBlkID[] reads
-consume bytes past the walked descriptor.
+Thanks for making the amendments, and thank you Michael for all your reviews.
 
-Reject zero-length and overlong descriptors while walking endpoint
-extras.
+Since you posted the diff to the V3, I went and tested the V3 patch.
 
-Fixes: ff49d1df79ae ("ALSA: usb-audio: USB MIDI 2.0 UMP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
----
- sound/usb/midi2.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+I have tested this patch on Azure with:
+- Standard_D4ads_v5
+- Standard_D4ads_v6
 
-diff --git a/sound/usb/midi2.c b/sound/usb/midi2.c
-index 2785600d2312..04aeb9052f13 100644
---- a/sound/usb/midi2.c
-+++ b/sound/usb/midi2.c
-@@ -496,15 +496,17 @@ static void *find_usb_ms_endpoint_descriptor(struct usb_host_endpoint *hostep,
- 	while (extralen > 3) {
- 		struct usb_ms_endpoint_descriptor *ms_ep =
- 			(struct usb_ms_endpoint_descriptor *)extra;
-+		int length = ms_ep->bLength;
- 
--		if (ms_ep->bLength > 3 &&
-+		if (!length || length > extralen)
-+			break;
-+
-+		if (length > 3 &&
- 		    ms_ep->bDescriptorType == USB_DT_CS_ENDPOINT &&
- 		    ms_ep->bDescriptorSubtype == subtype)
- 			return ms_ep;
--		if (!extra[0])
--			break;
--		extralen -= extra[0];
--		extra += extra[0];
-+		extralen -= length;
-+		extra += length;
- 	}
- 	return NULL;
- }
+with the following images:
+"Ubuntu Server 22.04 LTS - x64 Gen2"
+"Ubuntu Server 24.04 LTS - x64 Gen2"
 
--- 
-2.54.0
+with the following kernels:
+- 7.1-rc2 at 5862221fddede6bb15566ab3c1f23a3c353da5e1
+- 7.1-rc2 at 5862221fddede6bb15566ab3c1f23a3c353da5e1 + the V3 patch
 
+Without this patch, I could reproduce the issue on 22.04 + v6 based instance
+types.
+
+I can confirm that with this patch, v6 instance types can correctly kdump and
+create a vmcore correctly and restart correctly without running into
+MMIO issues.
+
+I can confirm that with this patch, v5 instance types continue to operate the
+same as they did previously.
+
+Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
+
+Thanks,
+Matthew
+
+On Thu, 7 May 2026 at 13:11, Dexuan Cui <DECUI@microsoft.com> wrote:
+>
+> > From: Michael Kelley <mhklinux@outlook.com>
+> > Sent: Wednesday, May 6, 2026 8:14 AM
+> > > ...
+> > > +                           /*
+> > > +                            * If the kdump kernel's lfb_base is 0,
+> >
+> > Nit:  The case of lfb_base is 0 applies to kexec and kdump kernels, and also to
+> > CVMs.
+>
+> Thanks for catching this! I'm going to post this v3 later today.
+>
+> --- v2-0001-Drivers-hv-vmbus-Improve-the-logic-of-reserving-fb_m.patch  2026-05-04 17:48:23.486911073 -0700
+> +++ v3-0001-Drivers-hv-vmbus-Improve-the-logic-of-reserving-fb_m.patch  2026-05-06 18:03:42.922469286 -0700
+> @@ -1,15 +1,15 @@
+>  From 5d817788d65febdc0451e8a88277778794fe87b2 Mon Sep 17 00:00:00 2001
+>  From: Dexuan Cui <decui@microsoft.com>
+>  Date: Thu, 16 Apr 2026 04:30:21 +0000
+> -Subject: [PATCH v2] Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on
+> +Subject: [PATCH v3] Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on
+>   Gen2 VMs
+>
+>  If vmbus_reserve_fb() in the kdump/kexec kernel fails to properly reserve
+>  the framebuffer MMIO range (which is below 4GB) due to a Gen2 VM's
+>  screen.lfb_base being zero [1], there is an MMIO conflict between the
+>  drivers hyperv-drm and pci-hyperv: when the driver pci-hyperv's
+> -hv_pci_allocate_bridge_windows() calls vmbus_allocate_mmio() to get a
+> -32-bit MMIO range, it may get an MMIO range that overlaps with the
+> +hv_allocate_config_window() calls vmbus_allocate_mmio() to get an
+> +MMIO range, typically it gets a 32-bit MMIO range that overlaps with the
+>  framebuffer MMIO range, and later hv_pci_enter_d0() fails with an
+>  error message "PCI Pass-through VSP failed D0 Entry with status" since
+>  the host thinks that PCI devices must not use MMIO space that the
+> @@ -31,7 +31,7 @@
+>  Azure. I checked with the Hyper-V team and they said the statement should
+>  continue to be true for Gen2 VMs). In the first kernel, screen.lfb_base
+>  is not 0; if the user specifies a very high resolution, it's not enough
+> -to only reserve 8MB: in this case, reserve half of the space below 4GB,
+> +to only reserve 8MB: let's always reserve half of the space below 4GB,
+>  but cap the reservation to 128MB, which is the required framebuffer size
+>  of the highest resolution 7680*4320 supported by Hyper-V.
+>
+> @@ -42,7 +42,7 @@
+>  Note: vmbus_reserve_fb() now also reserves an MMIO range at the beginning
+>  of the low MMIO range on CVMs, which have no framebuffers (the
+>  'screen.lfb_base' in vmbus_reserve_fb() is 0 for CVMs), just in case the
+> -host might treat the beginning of the low MMIO range specially [4]. BTW,
+> +host might treat the beginning of the low MMIO range specially [3]. BTW,
+>  the OpenHCL kernel is not affected by the change, because that kernel
+>  boots with DeviceTree rather than ACPI (so vmbus_reserve_fb() won't run
+>  there), and there is no framebuffer device for that kernel.
+> @@ -55,18 +55,20 @@
+>  and the required framebuffer size exceeds 64MB (AFAIK, in practice, this
+>  isn't a typical configuration by users), the hyperv-drm driver may need to
+>  allocate an MMIO range above 4GB and change the framebuffer MMIO location
+> -to the allocated MMIO range -- in this case, there can still be issues [3]
+> +to the allocated MMIO range -- in this case, there can still be issues [4]
+>  which can't be easily fixed: any possible affected Gen1 users would have
+>  to use a resolution whose framebuffer size is <= 64MB, or switch to Gen2
+>  VMs.
+>
+>  [1] https://lore.kernel.org/all/SA1PR21MB692176C1BC53BFC9EAE5CF8EBF51A@SA1PR21MB6921.namprd21.prod.outlook.com/
+>  [2] https://lore.kernel.org/all/SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com/
+> -[3] https://lore.kernel.org/all/SA1PR21MB69213486F821CA5A2C793C81BF342@SA1PR21MB6921.namprd21.prod.outlook.com/
+> -[4] https://lore.kernel.org/all/SN6PR02MB415726B17D5A6027CD1717E8D4342@SN6PR02MB4157.namprd02.prod.outlook.com/
+> +[3] https://lore.kernel.org/all/SN6PR02MB415726B17D5A6027CD1717E8D4342@SN6PR02MB4157.namprd02.prod.outlook.com/
+> +[4] https://lore.kernel.org/all/SA1PR21MB69213486F821CA5A2C793C81BF342@SA1PR21MB6921.namprd21.prod.outlook.com/
+>
+>  Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+>  CC: stable@vger.kernel.org
+> +Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> +Tested-by: Krister Johansen <kjlx@templeofstupid.com>
+>  Signed-off-by: Dexuan Cui <decui@microsoft.com>
+>  ---
+>
+> @@ -104,6 +106,18 @@
+>  Hi Hardik, I'm not adding your Reviewed-by since the patch changed.
+>  Please review the v2.
+>
+> +
+> +Changes since v2:
+> +    Fixed the commit message:
+> +        hv_pci_allocate_bridge_windows() -> hv_allocate_config_window()
+> +
+> +    Changed the "kdump" in the comment to "kdump/kexec or CVM" [Michael Kelley]
+> +
+> +    Fixed the order of the "[3]" and "[4]" in the commit message.
+> +
+> +    Added Krister's Tested-by.
+> +    Added Michael's Reviewed-by.
+> +
+>   drivers/hv/vmbus_drv.c | 29 ++++++++++++++++++++++++++---
+>   1 file changed, 26 insertions(+), 3 deletions(-)
+>
+> @@ -141,8 +155,8 @@
+>  +                              pr_warn("Unexpected low mmio base %pa\n", &low_mmio_base);
+>  +                      } else {
+>  +                              /*
+> -+                               * If the kdump kernel's lfb_base is 0,
+> -+                               * fall back to the low mmio base.
+> ++                               * If the kdump/kexec or CVM kernel's lfb_base
+> ++                               * is 0, fall back to the low mmio base.
+>  +                               */
+>  +                              if (!start)
+>  +                                      start = low_mmio_base;
+>
+>
+> > Modulo my nit about the comment,
+> >
+> > Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+>
+> Thanks a lot!
 
