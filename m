@@ -1,149 +1,155 @@
-Return-Path: <stable+bounces-244535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244536-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLZPDuBS/GlOOAAAu9opvQ
-	(envelope-from <stable+bounces-244535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 10:52:48 +0200
+	id +OoxMWpa/GndOQAAu9opvQ
+	(envelope-from <stable+bounces-244536-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 11:24:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D824E5281
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 10:52:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375FA4E5D12
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 11:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1DD8D300748B
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 08:52:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4ECF309EA49
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 09:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C994D39C645;
-	Thu,  7 May 2026 08:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47D33B9D8C;
+	Thu,  7 May 2026 09:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyfjQvl0"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="tw6yBIv3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9057340A6A;
-	Thu,  7 May 2026 08:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70F637BE66;
+	Thu,  7 May 2026 09:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778143958; cv=none; b=g6ioqgGlE0Lm5FRCYddTzbu6cgETLyqs3ntsp0d26+REkFvfxl3X7AeJHxQ/F7mJkEzLpodMHvuSnFD9VGGm9rECMVtfoOVRwpr/ulwuo9n0lom9TwuYMehwKbYRHv3PyALIK5Gr6EhrJl1Ptas4G30L+IzLAZ389T+zwfBT30k=
+	t=1778144547; cv=none; b=NToldcNrs2n8rv1wZthYOT7TUDcPRt/hUEXnACZj9G2CyST+a17/BdXlYlIkhAGTGLfESG8ie36cFuRCWPzDD28bwOxe86HYLbmDCoCdIWIIFNuCtnI9GdaieIuVSwvGxFGRL/jJFjxDBsFmjiQZBp6zej3zTWQdqdi4F1dqY+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778143958; c=relaxed/simple;
-	bh=e2KUBzxwA3gtOemcz+CllnnM9kBcLQ+NeToRBmvqxJw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E5SsBd0SPwnWj5Ipe2Y0OkrGZM9v4rd0O4F29GX94cd7wZ+V48ZCqYo08g+vv8gdvNfQp3fs1bL9zEUUCyP7b7GTGAKjTBrCmZVPC4yiHEZ5y39Ry+iv6Gi7L5h6ji6zDG/Z61d6okps5xaqW9StSeWJildFPfuGqCCfqHN0GY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyfjQvl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D18C2BCB2;
-	Thu,  7 May 2026 08:52:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778143958;
-	bh=e2KUBzxwA3gtOemcz+CllnnM9kBcLQ+NeToRBmvqxJw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DyfjQvl0OFDtLsJMtcOX4gRAOKpz3gYKE1lcWfQuti3f0wwiRd+58C4XXmi4yKJYY
-	 8xySrStcmoAWhSiITh0Nc8J8JHW+KK98c5c+1rbZHLu3TpLwjIwvuPDXRThNBg8lbU
-	 tKo75ABwT0P8No3ghKUFJ8WzyTUhwc2uSX1W76n2krgEfyLpvCdupG1G9Nmg6Q9EX4
-	 F7PYiM8qW+lzXIVlsN6WIjICPsbxmvbICo6Lakhzoz/WP0USd6MsWdx/1YSVmOOwdZ
-	 C8Dz67PhQ4UGsG6jGyI9xtGSMVCHi2lo3sLlpHYKDv8Wc/1pZl5r7sgdfrUb9cNx2n
-	 o/Sfi306SjVEw==
-Date: Thu, 7 May 2026 14:22:25 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Inochi Amaoto <inochiama@gmail.com>
-Cc: Lukas Wunner <lukas@wunner.de>, 
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>, Han Gao <gaohan@iscas.ac.cn>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Kees Cook <kees@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, linux-pci@vger.kernel.org, 
-	sophgo@lists.linux.dev, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	Han Gao <rabenda.cn@gmail.com>, Vivian Wang <wangruikang@iscas.ac.cn>, Yao Zi <me@ziyao.cc>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] PCI: Add quirk to disable PCIe port services on
- Sophgo SG2042
-Message-ID: <wy4voivjmaekmevp6upwo2roooskfd7kughnxir7opzv3px4jx@h42kmtsjsoex>
-References: <20260331175658.1015829-1-gaohan@iscas.ac.cn>
- <20260331175658.1015829-3-gaohan@iscas.ac.cn>
- <q6wmn67lzk5c2pgmgkoezcvy3xj3yqecg675gx7xyrw3amjwpi@5pjla6j3krbv>
- <0f42afefd9322779af5463b696c55b08d2296ea8.camel@iscas.ac.cn>
- <afZUxYhkCQ0wG0Uu@wunner.de>
- <68d4a49bf1df785ae906fbc2dd16e64b667ca5f0.camel@iscas.ac.cn>
- <afcMtlBJYeuxSqZr@wunner.de>
- <afveQQI-CsQ2L1-N@inochi.infowork>
+	s=arc-20240116; t=1778144547; c=relaxed/simple;
+	bh=mHbfeNpi8n7SK7jlBtSsz1V/k39W5l3V0arwOXf+BTg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=POpCFKGzh9FPtXkaiG1aNYT5Ia3PsjV52LTn7+ICaiMOpI/HzwWDqUzmlgSTSaYKi8ZP37YPkr9CULZfBHcnVoQ+6WJDXXLT44DrWePDB34MpDFRNWgH3xeSCsZqjluJLEpbs/vhmYrQBfEf8SkdXvS+d5tEoW7z2aZOQUvyF7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=tw6yBIv3; arc=none smtp.client-ip=120.232.169.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=tw6yBIv34hr8l5iiKXp3m8LLmxfhX33wX2pTnB77QO1AjamrvkQQ4CujAvv73/Fg+BnZ7dOZfx3tQ
+	 QEkxa17q0PGJw3zeJpjSp2cmakN+v1q7JX/gSiYzD/HtAJVeOkiS9l3XUerFEr7JeqRY0NwCWugUuF
+	 anCRO1I8dNpJM0vU=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-26-12031 (RichMail) with SMTP id 2eff69fc5412ab4-00ac0;
+	Thu, 07 May 2026 16:57:59 +0800 (CST)
+X-RM-TRANSID:2eff69fc5412ab4-00ac0
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	imv4bel@gmail.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linkinjeon@kernel.org,
+	senozhatsky@chromium.org,
+	sfrench@samba.org,
+	hyc.lee@gmail.com,
+	linux-cifs@vger.kernel.org,
+	stfrench@microsoft.com
+Subject: [PATCH 5.15.y] ksmbd: do not expire session on binding failure
+Date: Thu,  7 May 2026 16:57:58 +0800
+Message-Id: <20260507085758.3514265-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <afveQQI-CsQ2L1-N@inochi.infowork>
-X-Rspamd-Queue-Id: D3D824E5281
+X-Rspamd-Queue-Id: 375FA4E5D12
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [2.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244535-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[139.com];
+	TAGGED_FROM(0.00)[bounces-244536-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,chromium.org,samba.org,gmail.com,microsoft.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[wunner.de,iscas.ac.cn,google.com,baylibre.com,huawei.com,linux.intel.com,kernel.org,outlook.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,gmail.com,ziyao.cc];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[139.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_SPAM(0.00)[0.191];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,139.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 08:41:23AM +0800, Inochi Amaoto wrote:
-> On Sun, May 03, 2026 at 10:52:06AM +0200, Lukas Wunner wrote:
-> > On Sun, May 03, 2026 at 03:10:58PM +0800, Icenowy Zheng wrote:
-> > > It's used in multiple products, but only one of them (EVBv1, which is
-> > > just an early EVB available for a few people including me) lacks an
-> > > onboard switch, because SG2042 is short on on-chip peripherals. All
-> > > other devices (including two mainlined ones, EVBv2 and Milk-V Pioneer,
-> > > and unmainlined dual socket rack servers; Milk-V Pioneer should be the
-> > > most popular device because it was on shelf) have an onboard switch to
-> > > mitigate the lack of on-chip peripherals in SG2042.
-> > 
-> > Who knows, maybe someone will design a product which doesn't attach
-> > a PCIe switch to the SoC, maybe the lack of peripherals isn't a
-> > problem for them.
-> > 
-> > It seems reasonable to accommodate such non-switch use cases as well,
-> > so I think you definitely do not want to quirk all products using that
-> > SoC but only those that need it, regardless whether it's the majority.
-> > 
-> 
-> I think it is possible to quirk all the SG2042 products, because the
-> typical usage already shows MSI shortage (And this is why SG2044 has
-> 512 MSIs). Although it may left some MSIs in the test case, MSI shortage
-> is a common issue in a real scenario. And the Sophgo already maintains
-> a whitelist to limit the MSI usage of most devices in their vendor
-> kernel. So I think it is fine to quirk all the products that use SG2042.
-> 
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-I'm not too sure about quirk. We usually add quirks to workaround the hardware
-issues. But what you are seeing is a platform limitation, which is a common
-scenario. So adding a cmdline param would help other platforms as well (without
-any more code changes).
+[ Upstream commit 9bbb19d21ded7d78645506f20d8c44895e3d0fb9 ]
 
-- Mani
+When a multichannel session binding request fails (e.g. wrong password),
+the error path unconditionally sets sess->state = SMB2_SESSION_EXPIRED.
+However, during binding, sess points to the target session looked up via
+ksmbd_session_lookup_slowpath() -- which belongs to another connection's
+user. This allows a remote attacker to invalidate any active session by
+simply sending a binding request with a wrong password (DoS).
 
+Fix this by skipping session expiration when the failed request was
+a binding attempt, since the session does not belong to the current
+connection. The reference taken by ksmbd_session_lookup_slowpath() is
+still correctly released via ksmbd_user_session_put().
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ fs/ksmbd/smb2pdu.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 978a103e72bb..fb0dc06b2aff 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1938,8 +1938,14 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 			if (sess->user && sess->user->flags & KSMBD_USER_FLAG_DELAY_SESSION)
+ 				try_delay = true;
+ 
+-			sess->last_active = jiffies;
+-			sess->state = SMB2_SESSION_EXPIRED;
++			/*
++			 * For binding requests, session belongs to another
++			 * connection. Do not expire it.
++			 */
++			if (!(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
++				sess->last_active = jiffies;
++				sess->state = SMB2_SESSION_EXPIRED;
++			}
+ 			ksmbd_user_session_put(sess);
+ 			work->sess = NULL;
+ 			if (try_delay) {
 -- 
-மணிவண்ணன் சதாசிவம்
+2.34.1
+
+
 
