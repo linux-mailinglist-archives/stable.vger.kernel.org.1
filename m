@@ -1,203 +1,142 @@
-Return-Path: <stable+bounces-244520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABH4LYU9/GnfNQAAu9opvQ
-	(envelope-from <stable+bounces-244520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:21:41 +0200
+	id kDH8D2w+/GnfNQAAu9opvQ
+	(envelope-from <stable+bounces-244521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:25:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5252F4E3FD4
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:21:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010794E404F
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C086301CFBE
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 07:21:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A4D2302292A
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 07:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96CB34B669;
-	Thu,  7 May 2026 07:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B2358391;
+	Thu,  7 May 2026 07:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="QxAPkw0h";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MQ29OrEB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gAsTnxA7"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC38D30EF7B;
-	Thu,  7 May 2026 07:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CE5348463;
+	Thu,  7 May 2026 07:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778138470; cv=none; b=ibKOIzmGJNy+m4XKPjNurDOBmm8gXPyoJET42O+Tzat6S5yyUUzXLknSorx+rB7Fp1kwiLh+BRUsCYGq8sOnfqoZ+Lz/3jym/4PsU70zmHTA7Yi0CaeVCkUxMxV58LPiVYXIMoQMSbtEPXMgbNnVu7gik1WH7QFPdzXk+q7JS7Q=
+	t=1778138726; cv=none; b=PNMpvNqDyhszNmCdK+dIlkXWhszyC2Nv14ai56WWmTiZIljHzI1oBU1fYldVh1HhUL3bHchlZ/j8Vx1BO0baQgxFRYisXd3u3rjpYp2TcyqPYTniFIpDfwXeigT1gTNKqYxpa2KMy1ZJSzDqt4T9DjYV0ACDyzHPS84IWQni/rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778138470; c=relaxed/simple;
-	bh=j/HLbSe/M7OJEyVnieMqLBCTMPLCxU7JiJj98F/nu4g=;
+	s=arc-20240116; t=1778138726; c=relaxed/simple;
+	bh=pL59kLZ0TSRXYpk6p6E3c7Sc5FErfiqpx3+I4G0LGnI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iAjLLimT2xEtesrD24gRUb4fBgKg8QeUyEyDx8whLENIQfcUIQ7YJj9sIW7gIyGDdc4zZ3iulOL/0OPojBw31JJQ/TayaqOfRDZ+tRVYSDYflsznnx6XDv0+WAlsdxcN6k7lxy4OMwXsaBKr8lxW+8bhYN+GaQ+mAlExILU8s6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=QxAPkw0h; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MQ29OrEB; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 3DDFC140010E;
-	Thu,  7 May 2026 03:21:07 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 07 May 2026 03:21:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1778138467; x=1778224867; bh=SoBxBKXCi0
-	56PB68P6GNZ6Iahdos94p14LAJP/9ievM=; b=QxAPkw0h++mYhy2+YLFrtZgCut
-	Nkaz40jnNPtG8pA90ihyoa3ZTSzGvZFbvml34nscuNKaH//uZqQeyEQ0txYEpYin
-	VItjRfrmyii+VomWSRZmOP/gpAQto+5vd9uSpSlqMyd806McVfWJaMGesYK92a52
-	XDmGqu7nuImoDUQ4vmltuUB36v+VKtbHL34bQWijKenaPr4NmWjvJwcvyb5bepIB
-	CyEBzB3P2LRi14/tVBt7/HF25am4yfSUgO8NfHVAj2CcVGUKvZ5FniIscW0OG8qf
-	vamdhsvMC3bbnPof3SFanuBStcV3O2tHSeq3yl+dPzxAjI/fG3ij7eZ+N20w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778138467; x=1778224867; bh=SoBxBKXCi056PB68P6GNZ6Iahdos94p14LA
-	JP/9ievM=; b=MQ29OrEBgigekbfNIYslatl8MwXhczGGbmEojXkSfHHQJIZn2yh
-	plSXNVf5zZRddzdxKcIniZK5mumXY8halJYPJXReb3xrfsmFMEul6vkFcpdMdSRK
-	nqdBzkrKbLj/Pl1qojAcKjLpT/rNRZP2x7d2VX/CsYauAKgCIUHX/MCHifvDNon7
-	N3qbMv/LJsMQSMNPVZl5l4egLqUGeAorBN9mgjp0LcZF9A6jgs8gtUw25JpPT/H4
-	F5HwIUoTAfYrG53fhRfKEe8hlYSfFQ08tGYdPrKFyA3tFokEQWVoQwstQbHVm/4r
-	jJGkG3wNVGEj0weP9Cx4KzTvui9x11RornQ==
-X-ME-Sender: <xms:YT38aYOx-6lMdDmB6ewMZYuQzT80opuM7cj6K7L--i0_xDHAZMXK8g>
-    <xme:YT38aVfm1yW1OYTQjneztoVtbybtwW_uQSqqCWjx5DJfh1jY2b7k7RP9UlHfvBVR3
-    QVKj3-DPs1XY3iZQRcBybGIJDegKKTKAV-3N2dmLZ0OpUAjHr7bIwKi>
-X-ME-Received: <xmr:YT38adRH_Xgr6LJeV6nFRur-PW_MOxqvNVUmJ5JApBBOcb9zCL71FH0DefmjZVF9krNemUcW3W8OzZcJWIaueMdGZVCqI0wf_7A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdeikeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomheplfgrnhhnvgcu
-    ifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpefgud
-    euffelfeekgeeukedtheekjeettdfftddujefhvdehtefgiefgledtueefjeenucffohhm
-    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhnsggprhgtphhtthhopedu
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquh
-    hsrdhnvghtpdhrtghpthhtohepshhvvghnsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehnvggrlhesghhomhhprgdruggvvhdprhgtphhtthhopeifihhmsehlihhnuhigqdifrg
-    httghhughoghdrohhrghdprhgtphhtthhopegrshgrhhhisehlihhsthhsrdhlihhnuhig
-    rdguvghvpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrd
-    hinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqfigrthgthhguohhg
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
-    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:YT38aTdZei8qYOWwTp0-HeyiPPmMTq-TbnNsvgZp5kfwloXsoBWrJw>
-    <xmx:YT38aWtJ4Y2_B0ZbeVvIAkUjNJ9Kq3kno4yua8Ni1VSg9xXWKNlGDQ>
-    <xmx:YT38afJXTOfU07DAbpsPh7oecQZqN4D9dm8hF91aQX0j7Bovq2ciKA>
-    <xmx:YT38aaYrFMkjru0GQPFCS4xKZfK_VYpMavrm4b2h79AWDRya-0zM3g>
-    <xmx:Yz38aejUONk53dOFNZO8hBLUkZ4EOx-4CLPexYMT7_SHFpfurOHo8lcm>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 7 May 2026 03:21:05 -0400 (EDT)
-Date: Thu, 7 May 2026 09:21:03 +0200
-From: Janne Grunau <j@jannau.net>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Sven Peter <sven@kernel.org>, Neal Gompa <neal@gompa.dev>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>, asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH] watchdog: apple: Add "apple,t8103-wdt" compatible
-Message-ID: <20260507072103.GA514139@robin.jannau.net>
-References: <20251231-watchdog-apple-t8103-base-compat-v1-1-1702a02e0c45@jannau.net>
- <68e8bd60-85b1-4b4a-8a82-f47640ad0ad9@roeck-us.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UjhEckd6fLlXik9DRsM81Coq+iIbbEgj0qFQSnCDcZVg+m/5aZbuHRPrCV4BQJf+fwjTUcJ1uoG5V/eIMZKuL3P24roiLXSEXkMAK1eSBrcuOl8P8B5UEQj7yST+EO9gDvcTEOL5Y6cJfB5NqzcH9fFkdqr9PhmUWYzkQs3fL5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gAsTnxA7; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778138720; x=1809674720;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pL59kLZ0TSRXYpk6p6E3c7Sc5FErfiqpx3+I4G0LGnI=;
+  b=gAsTnxA7bK/6EYCfwmGs+P0+qP3k6j32niGEZE7glrfGrKiwos3TKl9D
+   u3jL0YZL3M5Hhx/lo44S/cxq5ITEeGUVGqKQTUFj4AIFZ9u03K0hAgvun
+   X74FAs0QnWe7nTdxPMduz+5tj4RxKxgNbeoIEKugxYicRtYLfF37+VDkG
+   SAoSAaKnBbLy/Qu1Tg8JK0BYLsDa9UiraagTC7f8SL8uOrhifxtTJlKpG
+   RVXv0Z0ruwtoAiMOjIMER7j3jg7QSI25ieE4tSo4EKin8nfh+ZU1A3LDL
+   7xg9ZoegXQTD3MUCOuh3KM+bBLEYpF1FsVpnIuqZg1ZGX4QjU3sQ2D1zN
+   w==;
+X-CSE-ConnectionGUID: XnvElsFARyWHAFjT9Jin4g==
+X-CSE-MsgGUID: UFO4kQigTRusgKMc2RSAIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="82925999"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="82925999"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:25:19 -0700
+X-CSE-ConnectionGUID: Ob8Pgo+sSH6yhS8/poQHgg==
+X-CSE-MsgGUID: M4OUYidHTWKCr8w03KSK/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="229995422"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.99])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:25:16 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 8949711F8DF;
+	Thu, 07 May 2026 10:25:14 +0300 (EEST)
+Date: Thu, 7 May 2026 10:25:14 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>, driver-core@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	brgl@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] device property: set fwnode->secondary to NULL in
+ fwnode_init()
+Message-ID: <afw-Wtz-yOWqLUl1@kekkonen.localdomain>
+References: <20260506115701.23035-1-bartosz.golaszewski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <68e8bd60-85b1-4b4a-8a82-f47640ad0ad9@roeck-us.net>
-X-Rspamd-Queue-Id: 5252F4E3FD4
+In-Reply-To: <20260506115701.23035-1-bartosz.golaszewski@oss.qualcomm.com>
+X-Rspamd-Queue-Id: 010794E404F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[jannau.net:s=fm1,messagingengine.com:s=fm3];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244520-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[jannau.net];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,linux.intel.com,gmail.com,lists.linux.dev,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244521-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[jannau.net:+,messagingengine.com:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[j@jannau.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,dt];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gompa.dev:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,intel.com:email,intel.com:dkim]
 X-Rspamd-Action: no action
 
-On Wed, Dec 31, 2025 at 06:28:17AM -0800, Guenter Roeck wrote:
-> On Wed, Dec 31, 2025 at 01:07:21PM +0100, Janne Grunau wrote:
-> > After discussion with the devicetree maintainers we agreed to not extend
-> > lists with the generic compatible "apple,wdt" anymore [1]. Use
-> > "apple,t8103-wdt" as base compatible as it is the SoC the driver and
-> > bindings were written for.
-> > 
-> > [1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
-> > 
-> I don't understand the rationake from the reference. This patch will need
-> an Ack from a DT maintainer.
+On Wed, May 06, 2026 at 01:57:00PM +0200, Bartosz Golaszewski wrote:
+> If a firmware node is allocated on the stack (for instance: temporary
+> software node whose life-time we control) or on the heap - but using a
+> non-zeroing allocation function - and initialized using fwnode_init(),
+> its secondary pointer will contain uninitalized memory which likely will
+> be neither NULL nor IS_ERR() and so may end up being dereferenced (for
+> example: in dev_to_swnode()). Set fwnode->secondary to NULL on
+> initialization.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 01bb86b380a3 ("driver core: Add fwnode_init()")
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Sorry for the late reply, I forgot about this. The corresponding change
-to the dt-bindings in commit 5410df1a5a4b ("dt-bindings: watchdog:
-apple,wdt: Add t6020-wdt compatible") was acked by Rob and is merged.
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Cc-ing DT maintainers, patch still applies unchanged.
-
-Janne
-
-> > Fixes: 4ed224aeaf66 ("watchdog: Add Apple SoC watchdog driver")
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > Signed-off-by: Janne Grunau <j@jannau.net>
-> > ---
-> > This is split off from the v1 series adding Apple M2 Pro/Max/Ultra
-> > device trees in [2].
-> > 
-> > 2: https://lore.kernel.org/r/20250828-dt-apple-t6020-v1-0-507ba4c4b98e@jannau.net
-> > ---
-> >  drivers/watchdog/apple_wdt.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/watchdog/apple_wdt.c b/drivers/watchdog/apple_wdt.c
-> > index 66a158f67a712bbed394d660071e02140e66c2e5..6b9b0f9b05cedfd7fc5d0d79ba19ab356dc2a080 100644
-> > --- a/drivers/watchdog/apple_wdt.c
-> > +++ b/drivers/watchdog/apple_wdt.c
-> > @@ -218,6 +218,7 @@ static int apple_wdt_suspend(struct device *dev)
-> >  static DEFINE_SIMPLE_DEV_PM_OPS(apple_wdt_pm_ops, apple_wdt_suspend, apple_wdt_resume);
-> >  
-> >  static const struct of_device_id apple_wdt_of_match[] = {
-> > +	{ .compatible = "apple,t8103-wdt" },
-> >  	{ .compatible = "apple,wdt" },
-> >  	{},
-> >  };
-> > 
-> > ---
-> > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> > change-id: 20251231-watchdog-apple-t8103-base-compat-8a623e9831b6
-> > 
-> > Best regards,
-> > -- 
-> > Janne Grunau <j@jannau.net>
-> > 
+-- 
+Sakari Ailus
 
