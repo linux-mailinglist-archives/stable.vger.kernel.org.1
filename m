@@ -1,271 +1,128 @@
-Return-Path: <stable+bounces-244634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAmLD4Hv/GlKVgAAu9opvQ
-	(envelope-from <stable+bounces-244634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 22:01:05 +0200
+	id iMBuFjP5/GmxVwAAu9opvQ
+	(envelope-from <stable+bounces-244635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 22:42:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7344EE33B
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 22:01:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6974EECD5
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 22:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEBE23034E39
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 20:00:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E22A30C40BB
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 20:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D582EACF2;
-	Thu,  7 May 2026 20:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204242F8EB0;
+	Thu,  7 May 2026 20:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJsyLmL9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QSBBQvkq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8E5175A85;
-	Thu,  7 May 2026 20:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C52B33986D;
+	Thu,  7 May 2026 20:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778184057; cv=none; b=S+ya/SPuUBN4PrIVQXaDduHptLGTSjfJJIKSrvbwBGrTOFxxKGPTIWTQfH8F2LwwlmG9tGfijGbrmfYKkkyHAYWf5w9Z2rap/cG5cZmRTSKQWVJbQN79wDjVPW6mw97ux6qx5iz2qevzt1VoiYnQU93QQLRM71VlSVZTR+DZlpY=
+	t=1778186082; cv=none; b=UVlmPsSppgTLc6doQgZSGvqJgrUufpvzUfd4C1eiX1XcD/xSQ2JVFDIdXarfNWK6tVqA3PsGYaKc9Y76fiScGphJiFNtMvFy4arNdCQEMyC82WvxtWiyx0uYqShlXTwC4LmikMEx7TdhkTIrwIZ8ssfC4ln/mnKsTq4UeJ0UnBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778184057; c=relaxed/simple;
-	bh=2qNsDmDgw6c8QSIadJe4FyI4GCBLCzF1MIx5RJRIrZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dbiqpt8aTrLXDIoaqlUfiN4WttRk56VgNTS92WWZwwnoa2UFmcNy5ExPdTtMl6qcvKBPvM/9x2ik4aCv5w/Q+IGKl3BpPXrfbe2mZHj4SavHwz+tcGm3QG5EXH0mdVaRTkvD9vqYzXW8nvSTtz0Tr+9sIipYTDmSwj2xqRB5lA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJsyLmL9; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778184055; x=1809720055;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2qNsDmDgw6c8QSIadJe4FyI4GCBLCzF1MIx5RJRIrZY=;
-  b=GJsyLmL9Re0SARK04Ug+WyJPHi/VuYNz1MJPmSf28USsVAldSU64lzQU
-   0FJ8YyVl5X5ma2sgpp/jNCSzaSzW8xuOqv7+BBoTLvQEx7MiVyC2iX7ao
-   /bMrEuLWjPAaLCre/yp6pq1LacMAwcsUuhZdNtkhWh1CpBY8Ek7Gh5d+q
-   +pPzzs1jYV0WyyXToNQds/sD9noyRuT7HxFwIixpI6Zj8JwpvYQ7jKYYG
-   dd2SLkQgqiOv9rwLId4FAa3RL0+sSx/vyn/AR+xhW/TnJkPznebK1F0nS
-   Ef+jzOjnYRgIRDEfvKNAMHW2riDX3OruUy08W0pbhVoFtBTuEE4sEAOAb
-   A==;
-X-CSE-ConnectionGUID: ih7FDrFGSO+s4DCKZf80hA==
-X-CSE-MsgGUID: vcB+4rjyQqSIo55Dt1vLrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="78998137"
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="78998137"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 13:00:55 -0700
-X-CSE-ConnectionGUID: V7P3ZoYnSX6pFoznmIjjRA==
-X-CSE-MsgGUID: vA0SJt3/QR+KePyfQiGgxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="240550375"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.213])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 13:00:52 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 750FB11F8DF;
-	Thu, 07 May 2026 23:00:48 +0300 (EEST)
-Date: Thu, 7 May 2026 23:00:48 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Martin Hecht <mhecht73@gmail.com>
-Cc: martin.hecht@avnet.eu, michael.roeder@avnet.eu, stable@vger.kernel.org,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] media: i2c: alvium: fix critical pointer access in
- alvium_ctrl_init
-Message-ID: <afzvcAFPYJ_oMB9T@kekkonen.localdomain>
-References: <20260507163443.39794-1-mhecht73@gmail.com>
+	s=arc-20240116; t=1778186082; c=relaxed/simple;
+	bh=Q6Xv6s9UGQO6AaRS97xP2sD0WzJn4cf3Kcpobh903cc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l+QwS/9XHKWh9fA36IkOne/5jyOXHCW+DA2s8v+wxEfLOXASa9l5R1+UH0xL8DoUnUXx0BHfEqnPWsqN9neo6F/la0Oju34qFh66KDs7eh4oWVJJTuVLeUfQPq5EQdFOHk4f+fkuM5Wofp6gCUUI+rnF4K1v49USk0wYs2DFDhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QSBBQvkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB640C4AF15;
+	Thu,  7 May 2026 20:34:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778186081;
+	bh=Q6Xv6s9UGQO6AaRS97xP2sD0WzJn4cf3Kcpobh903cc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QSBBQvkqgt2Sko1IRUklWRTj3icJJKVH+FFP+BUK9nLrB/a6gecItsP+9asg0np+d
+	 rTrmc+2YOEhQB6uNAZ+0CxpuFsKL8DUSkxpIEuEjgLS0McaJKVbEMNQJ5XxAF92czy
+	 DXHxphygQhcsrERXmkZkTlMA3cFASwpTtoh7y+sOMoDsb1QW98CUA2TKMlnIxsB4hu
+	 lMxvbzH1kooVw67JyzmLSVPwx3PzdgU5T3sZNAGzgsQsGzR17BKniOzYOQeSQ34R/J
+	 j5sy9KGMh1E436U5NL8vaIrl1bv2HSDVXOh+L/tzjLEJG6v9D55cMqfhRXAbnuWA8X
+	 9K9b18PtoT+UA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Sibi Sankar <sibi.sankar@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v3] arm64: dts: qcom: hamoa: Fix OPP tables for all DisplayPort controllers
+Date: Thu,  7 May 2026 15:34:12 -0500
+Message-ID: <177818606001.73000.15388180971655464091.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323-hamoa-fix-dp3-opp-table-v3-1-a823776bd1b0@oss.qualcomm.com>
+References: <20260323-hamoa-fix-dp3-opp-table-v3-1-a823776bd1b0@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260507163443.39794-1-mhecht73@gmail.com>
-X-Rspamd-Queue-Id: 7A7344EE33B
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0A6974EECD5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[avnet.eu,vger.kernel.org,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-244634-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244635-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-Hi Martin,
 
-On Thu, May 07, 2026 at 06:34:30PM +0200, Martin Hecht wrote:
-> The current implementation of alvium_ctrl_init creates several controls
-> in function alvium_ctrl_init and uses the returned pointer without
-> check. That can cause write access over NULL-pointer for several
-> controls.
-
-No reason to have so short lines in the middle of a paragraph. But...
-
-> The reworked code checks the pointers before adding flags and also it
-> creates controls for V4L2_CID_BLUE_BALANCE and V4L2_CID_RED_BALANCE only
-> if supported by the particular camera model.
-
-can you put this into a separate patch? It's a different issue, albeit both
-patches are dealing with controls.
-
+On Mon, 23 Mar 2026 12:01:12 +0200, Abel Vesa wrote:
+> According to internal documentation, the corners specific for each rate
+> from the DP link clock are:
+>  - LOWSVS_D1 -> 19.2 MHz
+>  - LOWSVS    -> 270 MHz
+>  - SVS       -> 540 MHz (594 MHz in case of DP3)
+>  - SVS_L1    -> 594 MHz
+>  - NOM       -> 810 MHz
+>  - NOM_L1    -> 810 MHz
+>  - TURBO     -> 810 MHz
 > 
-> Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Martin Hecht <mhecht73@gmail.com>
-> ---
->  drivers/media/i2c/alvium-csi2.c | 72 +++++++++++++++++++--------------
->  1 file changed, 42 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
-> index b62b45a4f2fc..947b32950efa 100644
-> --- a/drivers/media/i2c/alvium-csi2.c
-> +++ b/drivers/media/i2c/alvium-csi2.c
-> @@ -2100,34 +2100,41 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
->  					      V4L2_CID_PIXEL_RATE, 0,
->  					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ, 1,
->  					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ);
-> -	ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-> +	if (ctrls->pixel_rate)
-> +		ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+> [...]
 
-There are many controls that need flags and your next patch was going to
-set the flags after checking the error. I'd therefore do that here, too.
+Applied, thanks!
 
-The PIXEL_RATE controls's READ_ONLY flag is set by the framework, the
-driver doesn't need to set it anymore. I'd just remove the line setting the
-flag above.
+[1/1] arm64: dts: qcom: hamoa: Fix OPP tables for all DisplayPort controllers
+      commit: c17e220946675232d383620ed9cff6685735ec48
 
->  
->  	/* Link freq is fixed */
->  	ctrls->link_freq = v4l2_ctrl_new_int_menu(hdl, ops,
->  						  V4L2_CID_LINK_FREQ,
->  						  0, 0, &alvium->link_freq);
-> -	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-> -
-> -	/* Auto/manual white balance */
-> +	if (ctrls->link_freq)
-> +		ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-> +
-> +	/* manual white balance */
-> +	if (alvium->avail_ft.whiteb) {
-> +		ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
-> +							V4L2_CID_BLUE_BALANCE,
-> +							alvium->min_bbalance,
-> +							alvium->max_bbalance,
-> +							alvium->inc_bbalance,
-> +							alvium->dft_bbalance);
-> +
-> +		ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
-> +						       V4L2_CID_RED_BALANCE,
-> +						       alvium->min_rbalance,
-> +						       alvium->max_rbalance,
-> +						       alvium->inc_rbalance,
-> +						       alvium->dft_rbalance);
-> +	}
-> +
-> +	/* Auto white balance */
->  	if (alvium->avail_ft.auto_whiteb) {
->  		ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops,
->  						   V4L2_CID_AUTO_WHITE_BALANCE,
->  						   0, 1, 1, 1);
-> -		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
-> -	}
-> -
-> -	ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
-> -						V4L2_CID_BLUE_BALANCE,
-> -						alvium->min_bbalance,
-> -						alvium->max_bbalance,
-> -						alvium->inc_bbalance,
-> -						alvium->dft_bbalance);
-> -	ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
-> -					       V4L2_CID_RED_BALANCE,
-> -					       alvium->min_rbalance,
-> -					       alvium->max_rbalance,
-> -					       alvium->inc_rbalance,
-> -					       alvium->dft_rbalance);
-> +		if (ctrls->auto_wb)
-> +			v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
-> +	}
->  
->  	/* Auto/manual exposure */
->  	if (alvium->avail_ft.auto_exp) {
-> @@ -2136,7 +2143,9 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
->  					       V4L2_CID_EXPOSURE_AUTO,
->  					       V4L2_EXPOSURE_MANUAL, 0,
->  					       V4L2_EXPOSURE_AUTO);
-> -		v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp, 1, true);
-> +		if (ctrls->auto_exp)
-> +			v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp,
-> +					       V4L2_EXPOSURE_MANUAL, true);
->  	}
->  
->  	ctrls->exposure = v4l2_ctrl_new_std(hdl, ops,
-> @@ -2145,15 +2154,8 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
->  					    alvium->max_exp,
->  					    alvium->inc_exp,
->  					    alvium->dft_exp);
-> -	ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
-> -
-> -	/* Auto/manual gain */
-> -	if (alvium->avail_ft.auto_gain) {
-> -		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
-> -						     V4L2_CID_AUTOGAIN,
-> -						     0, 1, 1, 1);
-> -		v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
-> -	}
-> +	if (ctrls->exposure)
-> +		ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
->  
->  	if (alvium->avail_ft.gain) {
->  		ctrls->gain = v4l2_ctrl_new_std(hdl, ops,
-> @@ -2162,7 +2164,17 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
->  						alvium->max_gain,
->  						alvium->inc_gain,
->  						alvium->dft_gain);
-> -		ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
-> +		if (ctrls->gain)
-> +			ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
-> +	}
-> +
-> +	/* Auto/manual gain */
-> +	if (alvium->avail_ft.auto_gain) {
-> +		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
-> +						     V4L2_CID_AUTOGAIN,
-> +						     0, 1, 1, 1);
-> +		if (ctrls->auto_gain)
-> +			v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
->  	}
->  
->  	if (alvium->avail_ft.sat)
-
+Best regards,
 -- 
-Kind regards,
-
-Sakari Ailus
+Bjorn Andersson <andersson@kernel.org>
 
