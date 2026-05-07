@@ -1,207 +1,202 @@
-Return-Path: <stable+bounces-244591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GzUHtam/GmwSQAAu9opvQ
-	(envelope-from <stable+bounces-244591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:51:02 +0200
+	id 0PaTDmyo/GkNSgAAu9opvQ
+	(envelope-from <stable+bounces-244592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:57:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CEE4EA8EF
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:51:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D84D14EAB0B
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B83B30BF28F
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 14:44:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03FEF3113720
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 14:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A7F43D4F2;
-	Thu,  7 May 2026 14:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8683C6A43;
+	Thu,  7 May 2026 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="APliv8x5"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L4PFkqMi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813C943901A;
-	Thu,  7 May 2026 14:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156823FA5CD
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 14:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778164948; cv=none; b=XcOCT1H5Z9qB/uB1xn7ih81OLTdlQxZrkrtRBSj6BkUa21o2YtI+GgYydP9sBvx7Yw9TCTtbRGg14khHjLUyYO197zizCEQWIwHEU9L3qkr1qoHgEbqCVkS2tSB4e81IBjg0Vb875QfN1AwwRPUVELKm5AlGeh09z23jwppGDig=
+	t=1778165265; cv=none; b=mlMmZdaHRyZT31oBnypGJHBWuS/JqTMR5xgZ0e3UVflg8I2sbDjPnwJJq0SYkUFXa73JKSyzUtrdCq6mlapSkCAZjVV9M+9c1pkvMWy5vDuQ5i0GoetqhEAQkmoqpQD3mHTKYVcOZrMrmiqt5kLb/+ViBTgH2mS2r8bVCbIij1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778164948; c=relaxed/simple;
-	bh=h69OuocOka0lEOTpvPZEVhUi/eh/0IH/isa5KRgbLeI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YUjb1E7egJqh9daWbSuh5s2O8KHwr2IV24NPzvtUE5ELUv0iPuhVivD7LV58G0RmVSXWvHLJl70O60oK9vG40ryhVM2aIIpouKmBKCWK3thwIdle2LwobPIhok4/l0dSXVH/DcdKOqmOz0q5W3RncP4k+uG9J27ksxKSHVeJtRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=APliv8x5; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 2CAF54E42C32;
-	Thu,  7 May 2026 14:42:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 021AB60495;
-	Thu,  7 May 2026 14:42:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 82105108194F0;
-	Thu,  7 May 2026 16:42:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778164943; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=mQBLgnhCwiV4EhzA5f7CQH8UsRD9gPGq4MrWHe/TNzk=;
-	b=APliv8x5fqkKbkLpr6WhDKfwELIg/L843L1Tt+LZ4WntWmPzy0RuHxkk7jU84pEy91npIH
-	syJ6kE/5VJRIQZ2vKA0ouH7urB8EJ4iG2oXu1t0BM9193rUm0KP6rMV8RSzXaslAMn9kuK
-	4+NlRVNdcf75Z0xUdPgJK/iQg+PzJN5Af2pjp2H493oyGuK0RvKMe0qWaPl1MGzAIl4Q40
-	/dTtrMc/dpXj/JiWPDEjnr8my6ITGQ83ZIsKXI/hXlKUayww+03Ikfg0LmUAd1fa1xCsX/
-	R6YFlk45YCg9QwXAb4DLk+rQownWZ8ts9jnjHxLK+nPeWQu1g0Jnhar1FgpQJA==
-From: Paul Louvel <paul.louvel@bootlin.com>
-Date: Thu, 07 May 2026 16:41:57 +0200
-Subject: [PATCH v3 11/11] crypto: talitos/hash - fix SEC2 64k - 1 ahash
- request limitation
+	s=arc-20240116; t=1778165265; c=relaxed/simple;
+	bh=xquPI6QPP/hbFDTiZH9dc4zpjGQDSZQDeuwR2/3lSaA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fIuBnQ5mjy4fouDfSdmllgBQGprFLOA/xB83LyGOqTSPcx175RHcL4FNAqKJmWO4sU5W62pPPFlQ9O8mWG5Ng4OQSTfbmLBqs2inqgnKvo3A46fHo2shmBYxi2Px0tLhproiXmZIsH1QTuvJz5iOfHJ4j7j/CnJvjvLlgqYfv+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L4PFkqMi; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2d83e7461so17665795ad.3
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 07:47:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778165259; x=1778770059; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6MuSudfTdnilh+hmaWDc0E6+rXSvYD2Cazrxvm5Ba1I=;
+        b=L4PFkqMiFeFDxJM2Ft9gRcNhf+nU4U7Ydur/hxvX/59wBm+OSifOZkLpO3451Za+5W
+         zFGnIKRkAJY8w5JjYKjv2Y4Td2G2UMFjNInAqnfkszHrixXE6gtmSRCufTJZxhjgVXQM
+         0+bUkXYaPwY/gX6Vy3BKJB27YjiIofrZ9jTbrxMhqJ5vuZV/1g/QGwGiWzz2mPqO1pgS
+         J3zAxh8g/d6ayUMiReLMJE6ULvaRepiSq5wSDQz20hQG3OuOCGS6Le51751s4Yz4Dk/O
+         DdGOpmv6Ps2dfQF0oNXbbpTAMABg0hjGs4i4eluj0Z4IWwMtikQSwSQg+L6qXi+CloIe
+         Xoyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778165259; x=1778770059;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6MuSudfTdnilh+hmaWDc0E6+rXSvYD2Cazrxvm5Ba1I=;
+        b=RfJ1QzRnUWBoaoaDObfftNKbf/eAMpCBgheBxy1dWA2MsgQ120reLz5eeFIlUAqWPO
+         e9OZGk4oaaePBUnqHGI98g1AYbc6T0GNox/fyjspB0VCGENZfH0IKuvuUfWn2quICgS0
+         HxcDd8TJHFzUYo5EDkFJ6onjdjKZCsTL3Jo3Iv17K/fo27MgO7kZDsPrpvMC48eZW2Ip
+         CSv+v9mL22gjDBEpMbGI0cP0ozjZd+70o6DA5U34u1F3fEjhKwfJR7EWCAUgVTivqGlD
+         hKR2ju6S5v1tUXNrrHGrfjzKDtB5S/lq1vWCSuMo9wkgJX4oSsCCLEfI8TTznhJ12WwT
+         1rNg==
+X-Forwarded-Encrypted: i=1; AFNElJ9umSbz/lkBqYCiaElwTBR1pn6ipg7P1J/qDYqK0cgbQHqNBWKvT/GIhaq9xzQzV5GpJ924tzQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwUglTqJAdsrZUj1muVDw31NSEm3m7oUxpf5UyqL95BWdLEQsC
+	fqMZLGuim1RedgMYmxMaNRh9IkQKJ+JJ6MBMBH74J6xSU4y2ESbZOXBK0KWEDoYtTOYK8s89gnP
+	dc0UPB4aeXPL788Qc44cRZmJ2eA==
+X-Received: from plbkf16.prod.google.com ([2002:a17:903:5d0:b0:2ba:792a:18a7])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:1ae5:b0:2b4:59d4:9a with SMTP id d9443c01a7336-2ba78b4a778mr93766055ad.2.1778165258795;
+ Thu, 07 May 2026 07:47:38 -0700 (PDT)
+Date: Thu,  7 May 2026 14:47:32 +0000
+In-Reply-To: <20260507-large-wren-of-protection-93bb75@sudeepholla>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-bootlin_test-7-1-rc1_sec_bugfix-v3-11-c98d7589b942@bootlin.com>
-References: <20260507-bootlin_test-7-1-rc1_sec_bugfix-v3-0-c98d7589b942@bootlin.com>
-In-Reply-To: <20260507-bootlin_test-7-1-rc1_sec_bugfix-v3-0-c98d7589b942@bootlin.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>, 
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
- David Howells <dhowells@redhat.com>, 
- Kim Phillips <kim.phillips@freescale.com>, 
- Christophe Leroy <chleroy@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Herve Codina <herve.codina@bootlin.com>, 
- Paul Louvel <paul.louvel@bootlin.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778164923; l=3206;
- i=paul.louvel@bootlin.com; s=20260313; h=from:subject:message-id;
- bh=h69OuocOka0lEOTpvPZEVhUi/eh/0IH/isa5KRgbLeI=;
- b=734tPEih8sT/JGATidG+dSYYbcroS8aRJTkRuYEqAw4loRz9BVp1dhw9MENVdq9x5mqWWTHqe
- ew+DI03md/OCz765mpuuXY+LUk9fNcUeXSA0jFePBRB3PUSHYVQdE/9
-X-Developer-Key: i=paul.louvel@bootlin.com; a=ed25519;
- pk=eLW50NT18UAvUT5cAcYf88zNbBCZDLFXuptpyLVhVIU=
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: D2CEE4EA8EF
+Mime-Version: 1.0
+References: <20260507-large-wren-of-protection-93bb75@sudeepholla>
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260507144737.3343314-1-joonwonkang@google.com>
+Subject: Re: [PATCH v4] mailbox: Make mbox_send_message() return error code
+ when tx fails
+From: Joonwon Kang <joonwonkang@google.com>
+To: sudeep.holla@arm.com
+Cc: akpm@linux-foundation.org, jassisinghbrar@gmail.com, 
+	joonwonkang@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D84D14EAB0B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244591-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-244592-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,google.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[paul.louvel@bootlin.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,bootlin.com:mid,bootlin.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The problem described in commit 655ef638a2bc ("crypto: talitos - fix
-SEC1 32k ahash request limitation") also apply for the SEC2 hardware,
-but with a limitation of 64k - 1 bytes.
+Hi Sudeep, I appreciate your review! And I apologize that I missed some
+important context about this patch.
 
-Split ahash_done() into SEC1 and SEC2 paths: SEC1 continues to free the
-whole descriptor list at once, while SEC2 now iterates through
-descriptors one by one, submitting the next only after the previous
-completes, which is required since SEC2 cannot chain descriptors in
-hardware.
+> On Tue, Apr 21, 2026 at 10:46:52AM +0000, Joonwon Kang wrote:
+> > When the mailbox controller failed transmitting message, the error code
+> > was only passed to the client's tx done handler and not to
+> > mbox_send_message() in blocking mode. For this reason, the function cou=
+ld
+> > return a false success. This commit resolves the issue by introducing t=
+he
+> > tx status and checking it before mbox_send_message() returns.
+> >
+> `tx_complete` and `tx_status` are per-channel, not per-message. Although
+> `mbox_send_message()` can queue multiple messages, all blocking callers w=
+ait
+> on the same completion, so a completion is not associated with the thread=
+ or
+> message that triggered it.
+>=20
+> This creates two issues:
+>=20
+> 1. Concurrent blocking senders can consume each other=E2=80=99s completio=
+ns. When
+>    message A completes, `tx_tick()` may submit message B, then set
+>    `chan->tx_status` and complete the shared completion. Any waiter may w=
+ake,
+>    including B=E2=80=99s sender, which can return while B is still in fli=
+ght. It
+>    happens even w/o this change but with possibly wrong return value afte=
+r
+>    this change.
+>=20
+> 2. `tx_status` can be stale or overwritten. Since it is a single channel =
+field
+>    written just before `complete()`, a second(possibly fast) `tx_tick()` =
+can
+>    update it before the first awakened sender reads it. Because `msg_subm=
+it()`
+>    happens before status publication, the next message can complete befor=
+e the
+>    previous status is observed if the controller re-enters `tx_tick()` fo=
+r the
+>    same channel.
+>=20
+> We need to see if there are other issue that needs fixing before you can
+> propagate the tx error code. Let me know if I am missing something.
 
-Cc: stable@vger.kernel.org
-Fixes: c662b043cdca ("crypto: af_alg/hash: Support MSG_SPLICE_PAGES")
-Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
----
- drivers/crypto/talitos.c | 47 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 39 insertions(+), 8 deletions(-)
+Yes, the current mbox_send_message() in blocking mode does not support
+multi-threads. I have tried adding the multi-threads support [1] since the
+first patchset and adding this patch on top of it [2], but the author was
+not convinced about the necessity of the multi-threads support and instead
+preferred that clients, instead of the mailbox APIs, serialize the multiple
+threads' access to the channel [3].
 
-diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
-index b4283b6c18ef..4b53b13f96d9 100644
---- a/drivers/crypto/talitos.c
-+++ b/drivers/crypto/talitos.c
-@@ -1820,16 +1820,46 @@ static void ahash_done(struct device *dev,
- 	struct talitos_edesc *edesc =
- 		 container_of(desc, struct talitos_edesc, desc);
- 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
-+	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
-+	bool is_sec1 = has_ftr_sec1(dev_get_drvdata(dev));
-+	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
-+	struct talitos_edesc *next;
- 
--	if (!req_ctx->last_request && req_ctx->to_hash_later) {
--		/* Position any partial block for next update/final/finup */
--		req_ctx->buf_idx = (req_ctx->buf_idx + 1) & 1;
--		req_ctx->nbuf = req_ctx->to_hash_later;
--	}
-+	if (is_sec1) {
-+		if (!req_ctx->last_request && req_ctx->to_hash_later) {
-+			/* Position any partial block for next update/final/finup */
-+			req_ctx->buf_idx = (req_ctx->buf_idx + 1) & 1;
-+			req_ctx->nbuf = req_ctx->to_hash_later;
-+		}
-+
-+		free_edesc_list_from(areq, edesc);
-+		ahash_request_complete(areq, err);
-+	} else {
-+		next = edesc->next_desc;
- 
--	free_edesc_list_from(areq, edesc);
-+		common_nonsnoop_hash_unmap(dev, edesc, areq);
-+		kfree(edesc);
- 
--	ahash_request_complete(areq, err);
-+		if (err)
-+			goto out;
-+
-+		if (next) {
-+			err = talitos_submit(dev, ctx->ch, &next->desc,
-+					     ahash_done, areq);
-+			if (err != -EINPROGRESS)
-+				goto out;
-+			return;
-+		}
-+out:
-+		if (!req_ctx->last_request && req_ctx->to_hash_later) {
-+			/* Position any partial block for next update/final/finup */
-+			req_ctx->buf_idx = (req_ctx->buf_idx + 1) & 1;
-+			req_ctx->nbuf = req_ctx->to_hash_later;
-+		}
-+		if (err && next)
-+			free_edesc_list_from(areq, next);
-+		ahash_request_complete(areq, err);
-+	}
- }
- 
- /*
-@@ -1940,7 +1970,8 @@ ahash_process_req_prepare(struct ahash_request *areq, unsigned int nbytes,
- 	struct talitos_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(areq));
- 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
- 	struct talitos_edesc *first = NULL, *prev_edesc = NULL, *edesc;
--	size_t desc_max = is_sec1 ? TALITOS1_MAX_DATA_LEN : SIZE_MAX;
-+	size_t desc_max = is_sec1 ? TALITOS1_MAX_DATA_LEN :
-+				    TALITOS2_MAX_DATA_LEN;
- 	struct scatterlist tmp[2];
- 	size_t to_hash_this_desc;
- 	struct scatterlist *src;
+For this reason, I went with the author's preference [4] and clarified that
+multi-threads is not supported in the API doc [5] so that clients can be
+clearly aware of it and serialize its threads' access to the channel.
 
--- 
-2.54.0
+So, this patch is based on the assumption that such multi-threads
+protection is given by the clients already, i.e. mbox_send_message() in
+blocking mode is called on the same channel only when the previous call has
+returned.
 
+What is your opinion on this? Should we support multi-threads in the mailbo=
+x
+APIs [1]? or should we go with the current decision [5]? I personally have
+been thinking the former is the way to go.
+
+[1] https://lore.kernel.org/all/20260402170641.2082547-1-joonwonkang@google=
+.com
+[2] https://lore.kernel.org/all/20260402170641.2082547-3-joonwonkang@google=
+.com/
+[3] https://lore.kernel.org/all/CABb+yY0uDQh-3cadPQONV=3DNJKjMtc4mJekgjmHYV=
+aHnfHXvGZQ@mail.gmail.com/
+[4] https://lore.kernel.org/all/20260404124428.3077670-1-joonwonkang@google=
+.com/
+[5] https://lore.kernel.org/all/20260421104652.211276-1-joonwonkang@google.=
+com/
+
+Thanks,
+Joonwon Kang
 
