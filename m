@@ -1,280 +1,181 @@
-Return-Path: <stable+bounces-244508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPulK3so/GmXMAAAu9opvQ
-	(envelope-from <stable+bounces-244508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 07:51:55 +0200
+	id IDZQHS0p/GmXMAAAu9opvQ
+	(envelope-from <stable+bounces-244509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 07:54:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A114E33BC
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 07:51:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98B94E343D
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 07:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD3C13024976
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 05:51:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 858EA302D940
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 05:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1721B330B3B;
-	Thu,  7 May 2026 05:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5936933032B;
+	Thu,  7 May 2026 05:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IV2xAIQX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YGBd3wGr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75149277C9E
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 05:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F58330B3B
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 05:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778133103; cv=none; b=KzLQ3VC+u5Le8RFHlmIbAgwVrs7X+i+0LAXVWKFPvP6zj72mLdwZv8ORzhaNkZ3yb4qpCLbZeuhSUGKatgxJOHqSGvqTVPN3Sm1q4kGAYwoCxBVpNvDpYhETxAloHCT41eL7kP2sEmWL+kapc46prsFb3F11Ti0q5EyvniM7XfA=
+	t=1778133253; cv=none; b=NADB8o4OqEkHOSPGSxsbJVULmupU8AJxcWLOGqmMU8dmwYCXN9OLEcrW0tJXft22ut8+/Z4EUZOUoBoCYdk8R9PDqcaOhsErK2DsbiiKUI7R/64CvSSFL9PU7i95BM9lmvBkL9T4GpBD/E8LAuWbx98dQRKSWDovDdRfYLA2X0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778133103; c=relaxed/simple;
-	bh=jspcJ+XGVtmcJoLA2b6dVBoyp7lmH5gwX62B+Q0P7Ig=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TB/E1+17XJ55/t4Y2ykcM/7mmK16bKPja82YvldLFARhHSf/fSA56Sn9BRnJxxz2z+LK04XZLXVlWBFkNIWVzoGwBdz8TKlbyGB1OQOEMn4RkZIGxK4lrzqdCgnHzjbOzI5X8IE50WQz1S/DrDMqYiCIx/15l888qEbUD65wPuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IV2xAIQX; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c81ed67fcbcso242147a12.3
-        for <stable@vger.kernel.org>; Wed, 06 May 2026 22:51:41 -0700 (PDT)
+	s=arc-20240116; t=1778133253; c=relaxed/simple;
+	bh=QIt16dLFJWrTMrck4Yfo8+89cEeYAYgdvo7mbGDGtTc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rSA5VrFHTIPc8SYdOZ81bN30hu1+AwiPT1lnkBO60ruABWnZjNiPFRNV8+MqrlqKYfvHsHG8QkuCWPFkVTf64z4JJ9+anqxPx6lx2VU19A7rq7iGBX8ytz2/nEdqjxRdJ1qyZjf9eFoLGf6gTyYsMqz+pbwtDrl79DjiFpCXGVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YGBd3wGr; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-837dfccd950so188076b3a.0
+        for <stable@vger.kernel.org>; Wed, 06 May 2026 22:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778133101; x=1778737901; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MYuyuGpque6//gGJu9ipQm1QDza51zuHMLqXnZVgYuA=;
-        b=IV2xAIQXEwbVcrLP69/o8tKAYXAXrlsLiNkjmDlX0Q+PRAJhCYvFv2i8kOGneA7H+J
-         Kh4BdujkBEXd9DDFSIxQ3rLAnE9qYkOUN+AkO6EwQoh+v2J8gRpJL8PvbxtNX0tlfGW4
-         Bch0DpJ81U4A99MM07xN6g3s9K59RoL42g/WobM7GCB049nIhUN1c2OSdhnVBjTHHCxA
-         xc66EF9VkFeF2ztjbIB7EuCuMFf2q0RpsdvUaMnx1TzBFqy2o00rtHkI5RKwSUp0b96i
-         jpWIq7jGb6T3Mne77JX7gOjdln6gHf8bWZNMPub0hewvKNnA918+7S4uU/dVPmikIZaJ
-         McMw==
+        d=gmail.com; s=20251104; t=1778133251; x=1778738051; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uh9bbazrPITkf0mpglMFr/dzIoLu0nt2Rlj2ZEQ+nU0=;
+        b=YGBd3wGrhklAy1wRXywWqT2yyTrvmbGwnsHm9H6tZlAuLXRzXTf/fO8dF1pbEX2Fxt
+         M0NDxOFxJq3OnAmwmUrXCZWZI/DSb5/A8emehK9lifPOIV6Yir8TOz/7XwSRHTGf0LMQ
+         ueZcAAWBl1hxXVzUfM31CEbWjLC7Nu0rObJVRjsOVwedrFzI9fQctWvK8EsbqD6Cc7+C
+         MQGNPzdpuwpI1vkyAwUKdfQjhyh37mYjWUo8GVbBk3NHDLSxLzaV0tc+eZbgX5HQgc46
+         pqlJ71C1NmrRictw/EH3yZLStIC5rMvvibNzWFywQ81pj+7auHrmK0XS+fui3asdMulA
+         eluQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778133101; x=1778737901;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MYuyuGpque6//gGJu9ipQm1QDza51zuHMLqXnZVgYuA=;
-        b=OntfVmaSb7XZV6PdmlTllk3aSXaSaJpanHj3ohb7G1fLbngp/kLMRgi1hhJepWm8+q
-         ofM4BSD14iqa5IgzWmY+c/vtKoDCHv5dzoiVSGNHGVqQYnq11E7vLbMtZKjPVio/4hRq
-         eajE5ZFjXBg8z8fQeGSrwUc1Qh78lQpHYU4qUbzPOD6a+fUjim4IRqGLiq62N1Jv1yO5
-         4eYOG0EAqeYt+ks3HlCsboUPYPc+60PxEs/w6n2HTRxjSDUQZpbnlr/UyQykBx3x0PlR
-         m0Yhta35Q6Mh79HwSaJ1m5B8yNy4Qob8Hf1PkSyUeZz0+FUvpUtB1PuKW8KrIQcNyeN6
-         iryA==
-X-Gm-Message-State: AOJu0Yy5xsfCOqX/8a9bFtEB5lYkYN8X1WZmn4xD6NYBkcLa+haXcQD+
-	YgoCG3uOGak4Gvhk5Ayhg7Ot8RBxGRiae0rZkTXIsSNSNeEp6bKZwec+/sKxyAKf7ModvRxvEfm
-	xgAmzc246mY2o9p9dkQXV5NXKOIquzJl8eu7c9tIoIScmcQEFtHIFWtQ35XzwSIk4qEaP6UKp91
-	tgSSFY9cEDkdAE02tmoaS/+rYSisrDBpTV99sFQf2RFk43KTjsknyI0k9E7U/bl3Q=
-X-Received: from pgbbj25.prod.google.com ([2002:a05:6a02:199:b0:c7b:b2bd:6cb])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:94c7:b0:39c:14b3:6234 with SMTP id adf61e73a8af0-3aa5a86e53dmr6933824637.15.1778133100373;
- Wed, 06 May 2026 22:51:40 -0700 (PDT)
-Date: Thu,  7 May 2026 05:51:17 +0000
+        d=1e100.net; s=20251104; t=1778133251; x=1778738051;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uh9bbazrPITkf0mpglMFr/dzIoLu0nt2Rlj2ZEQ+nU0=;
+        b=JNlGYe0/Z0Na2Btb4URYTJHXX5MnuXANciegFZECJeqBdKTUy+q07iJ6pciy7Gc86K
+         DREcW4RlJ0MxRh5d6AZxuiI/Z94dfgumfia61UsBU6Qubcm0k3+srvPLt6wrWLFSl8tE
+         hUEr/0eYgN4Ehtu72iG7l+HnyF/qFCULf7C/Af3jhDbR8xCYCFsT1vdJ63YKiNiTIc34
+         EYHZxB0zqq5ub7JAgu24w5ibtAt7VIZRrVUqZcMEAkpRUfOW0eNCver+cJPnEkwWpdlF
+         kGN8nAF3DGXWD0BFPHLFTzAm8couwwn5J061ReinJXqVaxE7ZSOhzZigaGdnd0EP/sIS
+         IJlA==
+X-Gm-Message-State: AOJu0YxnKtj7/4DsmLSuY84PvHUne5/oNjyYrrzNpUkJyuF4JmfDbnG2
+	C6z0hrO20OEwIyn5Q5N8TUcUMrpAIeRmvSrIepbDZhRXOX+JjJxpvu93h85ETgY=
+X-Gm-Gg: AeBDiev1X8HF5WNurn/jPQfietfpADivAlnR72hEMd3Izd9qtt4QTvhXPsrid6/UcVn
+	kI2uidUyGQnZtJ1pVp0qUz7aAU7lM8mrItSTsrv3NSGUxkaYlU4TVTtu3Wri8dj+LKwv1pwxzjl
+	7irDnNxymeQ5hKf91ilI2vxoGS4m2IRshhbecn5egkh8oYhr+YXhofQP+CupyR8UvhACef/24TY
+	KOw5UBKJDaNDF5CTL7NMUc/y59xRP1GWNxHqYSPBWlZ+E+Rv48Z4mZ60ISUEIo9ZBLwo5clWFLH
+	b66CpIjJTubFXM8UmrkAtDfKez7yHNM5D/H9FQpRZ8qQIZzfl80W6KFqy8D5GMXi2stRBQxlXYe
+	xVlSreMtrR+Y4L6fnPTHId9snpM4zv4nwArIUU/KBoTdjqhEjaTyXOJP3Q96wuhz2tmG/rfqudn
+	5dXyicMxSVWz0F0vlzZXsldjgQsLEmcBAwu8IQccvK4Hud8dDewscRW77/n4xA1pM7LHynPOMvH
+	IMAjDhOG4w91T0=
+X-Received: by 2002:a05:6a00:b483:b0:837:6bb9:acd5 with SMTP id d2e1a72fcca58-83a5825898bmr6322050b3a.0.1778133251101;
+        Wed, 06 May 2026 22:54:11 -0700 (PDT)
+Received: from coe.tail83f5bd.ts.net ([202.177.225.148])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbf67fsm7577641b3a.47.2026.05.06.22.54.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 22:54:10 -0700 (PDT)
+From: Ramesh Adhikari <adhikari.resume@gmail.com>
+To: intel-xe@lists.freedesktop.org,
+	matthew.brost@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com
+Cc: stable@vger.kernel.org,
+	Ramesh Adhikari <adhikari.resume@gmail.com>
+Subject: [PATCH v2] drm/xe: Add bounds check for num_binds to prevent memory exhaustion
+Date: Thu,  7 May 2026 11:23:51 +0530
+Message-ID: <20260507055352.61017-1-adhikari.resume@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260507055117.2466957-1-joonwonkang@google.com>
-Subject: [PATCH 6.12.y] mailbox: Fix NULL message support in mbox_send_message()
-From: Joonwon Kang <joonwonkang@google.com>
-To: stable@vger.kernel.org, jassisinghbrar@gmail.com
-Cc: thierry.reding@gmail.com, jonathanh@nvidia.com, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	joonwonkang@google.com, Douglas Anderson <dianders@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 52A114E33BC
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C98B94E343D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244508-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org,google.com,chromium.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244509-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Jassi Brar <jassisinghbrar@gmail.com>
+The xe_vm_bind_ioctl function accepts user-controlled num_binds without
+bounds checking, allowing arbitrarily large memory allocations. This
+follows the same vulnerability pattern that was fixed for num_syncs in
+commit 8e461304009d ("drm/xe: Limit num_syncs to prevent huge allocations").
 
-commit c58e9456e30c ("mailbox: Fix NULL message support in mbox_send_message()") upstream.
+Add DRM_XE_MAX_BINDS (2048) limit and validate num_binds before allocation.
 
-The active_req field serves double duty as both the "is a TX in
-flight" flag (NULL means idle) and the storage for the in-flight
-message pointer. When a client sends NULL via mbox_send_message(),
-active_req is set to NULL, which the framework misinterprets as
-"no active request". This breaks the TX state machine by:
+v2: Increased limit from 1024 to 2048 based on Mesa source analysis:
+    - Mesa's maximum usage: 960 binds (conformance test dEQP-VK)
+    - Confirmed by Intel Mesa developer in commit ba6bbdc
+    - 2048 provides 2.13x safety margin while limiting allocation to 64KB
+    - Prevents unbounded allocation (attacker could send 268M binds = 18.8GB)
 
- - tx_tick() short-circuits on (!mssg), skipping the tx_done
-   callback and the tx_complete completion
- - txdone_hrtimer() skips the channel entirely since active_req
-   is NULL, so poll-based TX-done detection never fires.
+Cc: stable@vger.kernel.org
 
-Fix this by introducing a MBOX_NO_MSG sentinel value that means
-"no active request," freeing NULL to be valid message data. The
-sentinel is defined in the subsystem-internal mailbox.h so that
-controller drivers within drivers/mailbox/ can reference it, but
-it is not exposed to clients outside the subsystem.
-
-Fifteen in-tree callers send NULL (doorbell-style IPCs on Qualcomm,
-Tegra, TI, Xilinx, i.MX, SCMI, and PCC platforms). All were
-audited for regression:
-
- - Most already work around the bug via knows_txdone=true with a
-   manual mbox_client_txdone() call, making the framework's
-   tracking irrelevant. These are unaffected.
-
- - Poll-based callers (Xilinx zynqmp/r5) are strictly better off:
-   the poll timer now correctly detects NULL-active channels
-   instead of silently skipping them.
-
- - irq-qcom-mpm.c was a pre-existing bug -- the only Qualcomm
-   caller that omitted the knows_txdone + mbox_client_txdone()
-   pattern. Fixed in a companion commit ("irqchip/qcom-mpm: Fix
-   missing mailbox TX done acknowledgment").
-
- - No caller sets both a tx_done callback and sends NULL, nor
-   combines tx_block=true with NULL sends, so the newly reachable
-   callback/completion paths are never exercised.
-
-Also update tegra-hsp's flush callback, which directly inspects
-active_req to wait for the channel to drain: the old "!= NULL"
-check becomes "!= MBOX_NO_MSG", otherwise flush spins until
-timeout since the sentinel is non-NULL.
-
-The only tradeoff is that 'MBOX_NO_MSG' can not be used as a message
-by clients.
-
-Reported-by: Joonwon Kang <joonwonkang@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+Signed-off-by: Ramesh <adhikari.resume@gmail.com>
 ---
- drivers/mailbox/mailbox.c          | 15 ++++++++-------
- drivers/mailbox/tegra-hsp.c        |  2 +-
- include/linux/mailbox_controller.h |  3 +++
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c | 5 +++++
+ include/uapi/drm/xe_drm.h  | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index d3d26a2c9895..aee552a2fbc7 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -60,7 +60,7 @@ static void msg_submit(struct mbox_chan *chan)
- 
- 	spin_lock_irqsave(&chan->lock, flags);
- 
--	if (!chan->msg_count || chan->active_req)
-+	if (!chan->msg_count || chan->active_req != MBOX_NO_MSG)
- 		goto exit;
- 
- 	count = chan->msg_count;
-@@ -98,13 +98,13 @@ static void tx_tick(struct mbox_chan *chan, int r)
- 
- 	spin_lock_irqsave(&chan->lock, flags);
- 	mssg = chan->active_req;
--	chan->active_req = NULL;
-+	chan->active_req = MBOX_NO_MSG;
- 	spin_unlock_irqrestore(&chan->lock, flags);
- 
- 	/* Submit next message */
- 	msg_submit(chan);
- 
--	if (!mssg)
-+	if (mssg == MBOX_NO_MSG)
- 		return;
- 
- 	/* Notify the client */
-@@ -126,7 +126,7 @@ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
- 	for (i = 0; i < mbox->num_chans; i++) {
- 		struct mbox_chan *chan = &mbox->chans[i];
- 
--		if (chan->active_req && chan->cl) {
-+		if (chan->active_req != MBOX_NO_MSG && chan->cl) {
- 			txdone = chan->mbox->ops->last_tx_done(chan);
- 			if (txdone)
- 				tx_tick(chan, 0);
-@@ -258,7 +258,7 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
- {
- 	int t;
- 
--	if (!chan || !chan->cl)
-+	if (!chan || !chan->cl || mssg == MBOX_NO_MSG)
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index a717a2b8dea..1ff66874f43 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -3841,6 +3841,11 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
  		return -EINVAL;
  
- 	t = add_to_rbuf(chan, mssg);
-@@ -332,7 +332,7 @@ static int __mbox_bind_client(struct mbox_chan *chan, struct mbox_client *cl)
- 	spin_lock_irqsave(&chan->lock, flags);
- 	chan->msg_free = 0;
- 	chan->msg_count = 0;
--	chan->active_req = NULL;
-+	chan->active_req = MBOX_NO_MSG;
- 	chan->cl = cl;
- 	init_completion(&chan->tx_complete);
- 
-@@ -485,7 +485,7 @@ void mbox_free_channel(struct mbox_chan *chan)
- 	/* The queued TX requests are simply aborted, no callbacks are made */
- 	spin_lock_irqsave(&chan->lock, flags);
- 	chan->cl = NULL;
--	chan->active_req = NULL;
-+	chan->active_req = MBOX_NO_MSG;
- 	if (chan->txdone_method == TXDONE_BY_ACK)
- 		chan->txdone_method = TXDONE_BY_POLL;
- 
-@@ -545,6 +545,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
- 
- 		chan->cl = NULL;
- 		chan->mbox = mbox;
-+		chan->active_req = MBOX_NO_MSG;
- 		chan->txdone_method = txdone;
- 		spin_lock_init(&chan->lock);
- 	}
-diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
-index 19ef56cbcfd3..7a422d563948 100644
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -487,7 +487,7 @@ static int tegra_hsp_mailbox_flush(struct mbox_chan *chan,
- 			mbox_chan_txdone(chan, 0);
- 
- 			/* Wait until channel is empty */
--			if (chan->active_req != NULL)
-+			if (chan->active_req != MBOX_NO_MSG)
- 				continue;
- 
- 			return 0;
-diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
-index 6fee33cb52f5..fa5020262dda 100644
---- a/include/linux/mailbox_controller.h
-+++ b/include/linux/mailbox_controller.h
-@@ -11,6 +11,9 @@
- 
- struct mbox_chan;
- 
-+/* Sentinel value distinguishing "no active request" from "NULL message data" */
-+#define MBOX_NO_MSG	((void *)-1)
+ 	err = vm_bind_ioctl_check_args(xe, vm, args, &bind_ops);
 +
- /**
-  * struct mbox_chan_ops - methods to control mailbox channels
-  * @send_data:	The API asks the MBOX controller driver, in atomic
++	if (XE_IOCTL_DBG(xe, args->num_binds > DRM_XE_MAX_BINDS)) {
++		err = -EINVAL;
++		goto put_vm;
++	}
+ 	if (err)
+ 		goto put_vm;
+ 
+diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
+index ae2fda23ce7..e666b73c81d 100644
+--- a/include/uapi/drm/xe_drm.h
++++ b/include/uapi/drm/xe_drm.h
+@@ -1606,6 +1606,7 @@ struct drm_xe_exec {
+ 	__u32 exec_queue_id;
+ 
+ #define DRM_XE_MAX_SYNCS 1024
++#define DRM_XE_MAX_BINDS 2048
+ 	/** @num_syncs: Amount of struct drm_xe_sync in array. */
+ 	__u32 num_syncs;
+ 
 -- 
-2.54.0.545.g6539524ca2-goog
+2.43.0
 
 
