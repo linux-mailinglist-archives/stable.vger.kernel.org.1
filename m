@@ -1,186 +1,203 @@
-Return-Path: <stable+bounces-244478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGgeCjnu+2m0IgAAu9opvQ
-	(envelope-from <stable+bounces-244478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:43:21 +0200
+	id QAeLKOPu+2npIgAAu9opvQ
+	(envelope-from <stable+bounces-244479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:46:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893C24E20DE
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:43:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC754E2126
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35ABD301EC54
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 01:43:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB38E301F166
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 01:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBFE27057D;
-	Thu,  7 May 2026 01:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C693C239E7F;
+	Thu,  7 May 2026 01:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPpq/30u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944AE204F8B;
-	Thu,  7 May 2026 01:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DA12C859;
+	Thu,  7 May 2026 01:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778118197; cv=none; b=mg2BbZjAQRwCIhcCc6HpM6KPWhO2A217yZn0R5N2NDQtGwDZfh3oNbaZcyip4tmeCsvVv5dK8do49K+tyy386jVB8eay3uE7oRyD7lAaThKAz3r+8KYPROSBwsI+FiLn5q8OvLbfKUFbENUQoAq0hreZkRlJyaKozLi0QqU00HU=
+	t=1778118365; cv=none; b=ISc3W9Zn8T1yDZGcec9Es1AHo6Qb/tXhPPvnHZnGOLxx2unbYm/6nHpUsuhAGK3AjZH8pwBJ4inkclnhdblljv9n/YtU/W2iwmvslyX3N8ZvK4+KTo4j3Mu8BxYQLxNnVEqaatl4dBkuK9eX9UttW2fONzQcE1Mk8NSRVWaOOwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778118197; c=relaxed/simple;
-	bh=wfkzn5vEOdAO4CItueKY05cY1KoUngcW2ziIYm3VPMY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=RLNSmp2Nh1l0MQkKigGHxg8QWnei6PzW2LjVakV0grH2uDsLg4kiaHy22LT/sfjY7LGhIFUorKayY445do69QSubocATAq/a/dfRiPAMWmFoVZ69lIvPdXm69lj4g+XG1ddvfl532g0pXTUgbVaFm+k2Oln31Y97guWvYR3EqO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Bx0eow7vtpG1UHAA--.24062S3;
-	Thu, 07 May 2026 09:43:12 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxacEo7vtpjfx7AA--.25500S3;
-	Thu, 07 May 2026 09:43:05 +0800 (CST)
-Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in
- kvm_arch_flush_shadow_all()
-To: Sean Christopherson <seanjc@google.com>
-Cc: James Houghton <jthoughton@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Gavin Shan <gshan@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Ricardo Koller <ricarkol@google.com>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- James Hogan <jhogan@kernel.org>, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260504224213.1049426-1-jthoughton@google.com>
- <20260504224213.1049426-2-jthoughton@google.com>
- <25838e74-01dd-d085-395b-676266dc9a9a@loongson.cn>
- <aftIbW9G4RfoTuXh@google.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <833b7f62-5e9f-26e7-f60d-2ac1dd24c031@loongson.cn>
-Date: Thu, 7 May 2026 09:40:10 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1778118365; c=relaxed/simple;
+	bh=SqzLSvkIU3gi/PO8FHJqLB6TXM33GjmfxL89pw1w7cU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=EV8xEs4I4Sm7hVw6TXJFnEPSBk7JUd47/xf4TfNMnlxXpxKaZnJ92FXU6jLeXAzIlduMhFKMeyBZSkb3piietCXQy1Vq5nAQT2DWa4h8Atg7mTN8jNyV/ZedL/6awE5Rqa6Wqgjpp06Kr+BJV1f6b7AJdPe029wscB6md7bRHfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPpq/30u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC16CC2BCB0;
+	Thu,  7 May 2026 01:46:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778118365;
+	bh=SqzLSvkIU3gi/PO8FHJqLB6TXM33GjmfxL89pw1w7cU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qPpq/30ub8OnpZ6t9nU1XKd5OEgcXka8AoNbsyd7CIF/wCoIpl+E6IAlERzvza0yy
+	 2JI+BeKQ07iGHjGrTw21ggAsi4OoXn9XZRYeQUdJ3Ri1pVUoPmEDVlslamyXXSa1ys
+	 /HcrZxbiyVVljOc7zbG0A2B1K6N/lr9pxQbEMP/lBKgoIoVMCoJ1zMkAcqdNzBMVsM
+	 Gx6TY8cNvR1E6WZ4mqDdprtAIyHMWrgAqL8Pt1KW0tQtKhBTJLCBWXhNcHAIC0Kqck
+	 9V6ITPp0sSA6QBLZfsy7Y6P0DKVa6eBsMePrpApvETjxfQtNa6fqg1IE2m7/jfnEiU
+	 VYetI6gI9TMQw==
+Date: Thu, 7 May 2026 10:46:02 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Cc: <naveen@kernel.org>, <davem@davemloft.net>, <arnd@arndb.de>,
+ <mark.rutland@arm.com>, <catalin.marinas@arm.com>,
+ <linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+ <linux-arch@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [v2 PATCH] kprobes: skip non-symbol addresses in
+ kprobe_add_ksym_blacklist()
+Message-Id: <20260507104602.b5dc0e1d6369b22e65b61d1c@kernel.org>
+In-Reply-To: <20260506012706.2785785-1-jianpeng.chang.cn@windriver.com>
+References: <20260506012706.2785785-1-jianpeng.chang.cn@windriver.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <aftIbW9G4RfoTuXh@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxacEo7vtpjfx7AA--.25500S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZr1rJF1DJFWxtw1UKw43twc_yoW5GFyxpF
-	WUC3WqgrWDA340kw4kZ3WkWw1FyaykGr4UJw1Ygry5urs8Gwn3KF4SyFy0kFZ7ZrZ7GFWq
-	qF45tr95Zas8ZrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
-	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2-VyUUUUU
-X-Rspamd-Queue-Id: 893C24E20DE
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1AC754E2126
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-244479-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244478-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[loongson.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[windriver.com:email]
 X-Rspamd-Action: no action
 
+On Wed, 6 May 2026 09:27:06 +0800
+Jianpeng Chang <jianpeng.chang.cn@windriver.com> wrote:
+
+> When kprobe_add_area_blacklist() iterates through a section like
+> .kprobes.text, the start address may not correspond to a named symbol.
+> On ARM64 with CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS=y (introduced by
+> commit baaf553d3bc3 ("arm64: Implement
+> HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")), the compiler flag
+> -fpatchable-function-entry=4,2 inserts 2 NOPs before each function entry
+> point for ftrace call_ops. These pre-function NOPs sit at the section base
+> address, before the first named function symbol. The compiler emits a $x
+> mapping symbol at offset 0x00 to mark the start of code, but
+> find_kallsyms_symbol() ignores mapping symbols.
+> 
+> Without CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS (e.g. defconfig), no
+> pre-function NOPs are inserted, the first function starts at offset
+> 0x00, and the bug does not trigger.
+> 
+> This only affects modules that have a .kprobes.text section (i.e. those
+> using the __kprobes annotation). Modules using NOKPROBE_SYMBOL() instead
+> (like kretprobe_example.ko) blacklist exact function addresses via the
+> _kprobe_blacklist section and are not affected.
+> 
+> For kprobe_example.ko on ARM64 with -fpatchable-function-entry=4,2,
+> the .kprobes.text section layout is:
+> 
+>   offset 0x00: $x + 2 NOPs    (mapping symbol + ftrace preamble)
+>   offset 0x08: handler_post   (64 bytes)
+>   offset 0x50: handler_pre    (68 bytes)
+> 
+> kprobe_add_area_blacklist() starts iterating from the section base
+> address (offset 0x00), which only has the $x mapping symbol.
+> kprobe_add_ksym_blacklist() then calls kallsyms_lookup_size_offset()
+> for this address, which goes through:
+> 
+>   kallsyms_lookup_size_offset()
+>     -> module_address_lookup()
+>       -> find_kallsyms_symbol()
+> 
+> find_kallsyms_symbol() scans all module symbols to find the closest
+> preceding symbol.
+> 
+> Since no named text symbol exists at offset 0x00,
+> find_kallsyms_symbol() picks __UNIQUE_ID_vermagic (a .modinfo symbol
+> whose address is in the temporary image) as the "best" match. The
+> computed "size" = next_text_symbol - modinfo_symbol spans across
+> these two unrelated memory regions, creating a blacklist entry with
+> a bogus range of tens of terabytes.
+> 
+> Whether this causes a visible failure depends on address randomization,
+> here is what happens on Raspberry Pi 4/5:
+> 
+>   - On RPi5, the bogus size was ~35 TB. start + size stayed within
+>     64-bit range, so the blacklist entry covered the entire kernel
+>     text. register_kprobe() in the module's own init function failed
+>     with -EINVAL.
+> 
+>   - On RPi4, the bogus size was ~75 TB. start + size overflowed
+>     64 bits and wrapped to a small address near zero. The range
+>     check (addr >= start && addr < end) then failed because end
+>     wrapped around, so the bogus entry was accidentally harmless
+>     and kprobes worked by luck.
+> 
+> The same bug exists on both machines, but randomization determines whether
+> the integer overflow masks it or not.
+> 
+> Fix this by adding notrace to the __kprobes macro. Functions in
+> .kprobes.text are kprobe infrastructure handlers that should never be
+> traced by ftrace. With notrace, the compiler stops inserting them and the
+> non-symbol gap at the section start disappears entirely.
+> 
+
+Thanks, this looks good to me!
+
+> Fixes: baaf553d3bc3 ("arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")
+> Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+> ---
+> v2: 
+>   - use notrace instead of skipping the nops
+> v1: https://lore.kernel.org/all/20260427073545.3656835-1-jianpeng.chang.cn@windriver.com/
+> 
+>  include/asm-generic/kprobes.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/asm-generic/kprobes.h b/include/asm-generic/kprobes.h
+> index 060eab094e5a..5290a2b2e15a 100644
+> --- a/include/asm-generic/kprobes.h
+> +++ b/include/asm-generic/kprobes.h
+> @@ -14,7 +14,7 @@ static unsigned long __used					\
+>  	_kbl_addr_##fname = (unsigned long)fname;
+>  # define NOKPROBE_SYMBOL(fname)	__NOKPROBE_SYMBOL(fname)
+>  /* Use this to forbid a kprobes attach on very low level functions */
+> -# define __kprobes	__section(".kprobes.text")
+> +# define __kprobes	notrace __section(".kprobes.text")
+>  # define nokprobe_inline	__always_inline
+>  #else
+>  # define NOKPROBE_SYMBOL(fname)
+> -- 
+> 2.54.0
+> 
 
 
-On 2026/5/6 下午9:55, Sean Christopherson wrote:
-> On Wed, May 06, 2026, Bibo Mao wrote:
->> On 2026/5/5 上午6:42, James Houghton wrote:
->>> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
->>> concurrently in the event that the KVM's `mm` is __mmput() at the
->>> same time that last reference to the KVM is being dropped.
->>>
->>> T1              T2
->>> KVM_CREATE_VM
->>>                   Get VM file from T1
->>> close VM
->>> exit_mm()       close VM
->>>
->>> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->>>       with only the KVM srcu read lock held.
->>>
->>> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
->>>       kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->>>       again, with only the KVM srcu read lock held.
->> By looking through the code, kvm_arch_destroy_vm() will free PGD page only,
->> page table walking is executing in deleting memslot or exit_mm().
->>
->> With normal code, life cycle of VM is something like this:
-> 
-> Not necessarily.  Abruptly closing the VM, as described below, is also "normal"
-> (though likely uncommon).
-> 
->>    KVM_CREATE_VM
->>      Create_VCPUs
->>      Create memslots
->>      Destroy_VCPUs
-> 
-> This is incorrect.  KVM doesn't provide any way for userspace to destroy vCPUs.
-> Userspace can fully release every vCPU fd, but the vCPU object within KVM stays
-> alive (and indirectly reachable) until the VM is destroyed.
-yes, that is so. For users, there is vCPU fd release interface. As for 
-vCPU object release, it is kind of internal implementation in KVM.
-> 
->>      Destroy memslots
->>    close VM
->>    exit_mm()
-> 
-> Note, exit_mm() may or may not be called.  E.g. there are VMMs that will destroy
-> a VM and start a new one (perhaps even the same conceptual virtual machine) in
-> the same process / mm_struct / address space.
-> 
->> And there is kvm_get_kvm()/kvm_put_kvm() function call with creating/destroy
->> vCPUs, however no such operations with memslot operation. Is it possible
->> that VM is destroyed without removing memslots, such as the following
->> operation.
->>    KVM_CREATE_VM
->>      Create memslots
->>    close VM
->>    exit_mm()
-> 
-> Yep.  KVM cannot make any assumptions when it comes to userspace-initiated
-> operations.  Even a VMM that super strictly follows the first approach may exit
-> abruptly, without destroying memslots, e.g. if it's OOM-killed.
-oh, I see. If so, the implementation about kvm_arch_destroy_vm() on 
-Loongarch is problematic, it needs consider this kind of abnormal VM 
-destroy, take page table walk and free page tables. I had thought that 
-memslots create/destroy should call kvm_get_kvm()/kvm_put_kvm() :(
-
-Regards
-Bibo Mao
-
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
