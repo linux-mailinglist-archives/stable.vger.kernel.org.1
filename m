@@ -1,162 +1,157 @@
-Return-Path: <stable+bounces-244552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFaGAGNp/Gn0PgAAu9opvQ
-	(envelope-from <stable+bounces-244552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:28:51 +0200
+	id SABKHShs/GmMPwAAu9opvQ
+	(envelope-from <stable+bounces-244553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:40:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC094E6C95
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:28:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CE74E6EB6
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE8C13009B3F
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 10:28:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A70430095DE
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 10:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F063E8C54;
-	Thu,  7 May 2026 10:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFEB3E92AF;
+	Thu,  7 May 2026 10:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDHUyITi"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="E0TodAKX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640AE3E868F
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 10:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A393E928C
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 10:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778149726; cv=none; b=YWx8x7wuKTUpsDpSBmL63BhSAefhqmN28fOPzlqWV/aNQ6hrCGfqxK6NR9iz9FopaIytdBz5JFqWtv8QeVSG2AgW2PPvi4bnQfJMiqy5JD6Xmoh4l7UKBddGqbuvvprBVhNcfn6v47V8Aiad5/AveDhGHveFMrUIN34DZvOsbZk=
+	t=1778150311; cv=none; b=hj2Ksa4Nx7sBdRxgkddBtB/IBzq/miAs/kX7HavnOQGtz3br+c9WOzTybHbHw0qBsYnH8ugougKD0gnSZEse7hT4NqBU6j2d7AfKbCdPBh8G4MO3X2HA/1W5MNs3OWrREmHQyGiCL7Qg3/IuHW7vIrtttErYnqoVBxxLSs4+DoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778149726; c=relaxed/simple;
-	bh=JBG0yy3pAcb8cVsFnZatQnhZSv9Co0jaKCRJXqyWFtM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t7Gm/KrysMZGCpwmRVFTjKiRJKSzppPVAIZ+YTZiSZ53bv5Aklx5Ujhi2W95T/dFfDJautwM8JzMa4VZZ4oORKH1Azq4ek1pZ4ol8OKUSXzJct0+eRHBLpdFw608hksYdJDRZ8xfnKqRv/0UpSzESDKpgNzoL1iGUlBeS5jYwD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDHUyITi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8512FC2BCB2;
-	Thu,  7 May 2026 10:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778149725;
-	bh=JBG0yy3pAcb8cVsFnZatQnhZSv9Co0jaKCRJXqyWFtM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=tDHUyITixfGRJC68Hg8EA37KAwsM6sCfpkoDGpf7dOpEWGKJ+d7ANbSQvR9SHGZhq
-	 DVXDxWhaol6AjKomgrOLLvDQx1AmUQ6qIrUCzv3qmfPgT1pW6sagdgaKcTJOIOLva8
-	 ZkmfWjXJScsLCh/beOwrEp1MnuoM8Af8V+mGX2wM=
-Subject: FAILED: patch "[PATCH] tracepoint: balance regfunc() on func_add() failure in" failed to apply to 6.12-stable tree
-To: devnexen@gmail.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,rostedt@goodmis.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 07 May 2026 12:28:43 +0200
-Message-ID: <2026050743-olive-survey-8b8f@gregkh>
+	s=arc-20240116; t=1778150311; c=relaxed/simple;
+	bh=SfE7ty4TkXsSlVVH9Ai/KCBLN6KBzP06jcDej2glciQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gm+nnRX3Mx/1FtNOt+dJLAFrm22vEqB2qrgNxsm5P9M+6q1IWXVVwEeMiKo8kvHsp5Nmfys6Fj0zTV0ygzpOX3IA650bC+v8S/4tp4jR2NE28IIM5wkw1IRdAiNLMTXUG2SbObpYB8XLY6hgG025pEkPgYdyRow5GkzO4EbNxtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=E0TodAKX; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <6511ab18-250b-436a-a11c-f50e78334666@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778150297;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HpI1/WK04V2Kme2O38dmAV6glQ7zCtBfEYYnw24SZEM=;
+	b=E0TodAKX7voo0lLIQQ5c3GOsjc9FCrxnNwkm4KY8FjJ43plUOYvfxvj2lEP8zc3CvIfN+4
+	VB6FbEqBS4SvvmWX6sae+4C1w5L1p7bU0ygA9GbWnduKWwxXxJKM8I6l/dou6c3KBhLBjN
+	Ww7MxcBepwt1HUUf97ssUpA0K0vV+Do=
+Date: Thu, 7 May 2026 11:38:05 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5DC094E6C95
+Subject: Re: [PATCH net] net: ena: PHC: Check return code before setting
+ timestamp output
+To: Arthur Kiyanovski <akiyano@amazon.com>, David Miller
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ netdev@vger.kernel.org
+Cc: Richard Cochran <richardcochran@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Miroslav Lichvar <mlichvar@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Wen Gu <guwen@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ David Woodhouse <dwmw@amazon.com>, Yonatan Sarna <ysarna@amazon.com>,
+ Zorik Machulsky <zorik@amazon.com>, Alexander Matushevsky
+ <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>,
+ Matt Wilson <msw@amazon.com>, Anthony Liguori <aliguori@amazon.com>,
+ Nafea Bshara <nafea@amazon.com>, Evgeny Schmeilin <evgenys@amazon.com>,
+ Netanel Belgazal <netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>,
+ Benjamin Herrenschmidt <benh@amazon.com>, Noam Dagan <ndagan@amazon.com>,
+ David Arinzon <darinzon@amazon.com>, Evgeny Ostrovsky <evostrov@amazon.com>,
+ Ofir Tabachnik <ofirt@amazon.com>, Amit Bernstein <amitbern@amazon.com>,
+ stable@vger.kernel.org
+References: <20260507003518.22554-1-akiyano@amazon.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260507003518.22554-1-akiyano@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 75CE74E6EB6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244552-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-244553-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,efficios.com,kernel.org,goodmis.org];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,redhat.com,infradead.org,linutronix.de,lunn.ch,linux.alibaba.com,amazon.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[31];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,efficios.com:email,linuxfoundation.org:dkim,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vadim.fedorenko@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+On 07/05/2026 01:35, Arthur Kiyanovski wrote:
+> ena_phc_gettimex64() is setting the output parameter regardless
+> of whether ena_com_phc_get_timestamp() succeeded or failed.
+> 
+> When ena_com_phc_get_timestamp() returns an error, the timestamp
+> parameter may contain uninitialized stack memory (e.g., when PHC is
+> disabled or in blocked state) or invalid hardware values. Passing
+> these to userspace via the PTP ioctl is both a security issue
+> (information leak) and a correctness bug.
+> 
+> Fix by checking the return code after releasing the lock and only
+> setting the output timestamp on success.
+> 
+> Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+> ---
+>   drivers/net/ethernet/amazon/ena/ena_phc.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/amazon/ena/ena_phc.c b/drivers/net/ethernet/amazon/ena/ena_phc.c
+> index 7867e893fd15..c2a3ff1ef645 100644
+> --- a/drivers/net/ethernet/amazon/ena/ena_phc.c
+> +++ b/drivers/net/ethernet/amazon/ena/ena_phc.c
+> @@ -46,9 +46,12 @@ static int ena_phc_gettimex64(struct ptp_clock_info *clock_info,
+>   
+>   	spin_unlock_irqrestore(&phc_info->lock, flags);
+>   
+> +	if (rc)
+> +		return rc;
+> +
+>   	*ts = ns_to_timespec64(timestamp_nsec);
+>   
+> -	return rc;
+> +	return 0;
+>   }
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x fad217e16fded7f3c09f8637b0f6a224d58b5f2e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050743-olive-survey-8b8f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From fad217e16fded7f3c09f8637b0f6a224d58b5f2e Mon Sep 17 00:00:00 2001
-From: David Carlier <devnexen@gmail.com>
-Date: Mon, 13 Apr 2026 20:06:01 +0100
-Subject: [PATCH] tracepoint: balance regfunc() on func_add() failure in
- tracepoint_add_func()
-
-When a tracepoint goes through the 0 -> 1 transition, tracepoint_add_func()
-invokes the subsystem's ext->regfunc() before attempting to install the
-new probe via func_add(). If func_add() then fails (for example, when
-allocate_probes() cannot allocate a new probe array under memory pressure
-and returns -ENOMEM), the function returns the error without calling the
-matching ext->unregfunc(), leaving the side effects of regfunc() behind
-with no installed probe to justify them.
-
-For syscall tracepoints this is particularly unpleasant: syscall_regfunc()
-bumps sys_tracepoint_refcount and sets SYSCALL_TRACEPOINT on every task.
-After a leaked failure, the refcount is stuck at a non-zero value with no
-consumer, and every task continues paying the syscall trace entry/exit
-overhead until reboot. Other subsystems providing regfunc()/unregfunc()
-pairs exhibit similarly scoped persistent state.
-
-Mirror the existing 1 -> 0 cleanup and call ext->unregfunc() in the
-func_add() error path, gated on the same condition used there so the
-unwind is symmetric with the registration.
-
-Fixes: 8cf868affdc4 ("tracing: Have the reg function allow to fail")
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260413190601.21993-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/tracepoint.c b/kernel/tracepoint.c
-index 91905aa19294..dffef52a807b 100644
---- a/kernel/tracepoint.c
-+++ b/kernel/tracepoint.c
-@@ -300,6 +300,8 @@ static int tracepoint_add_func(struct tracepoint *tp,
- 			lockdep_is_held(&tracepoints_mutex));
- 	old = func_add(&tp_funcs, func, prio);
- 	if (IS_ERR(old)) {
-+		if (tp->ext && tp->ext->unregfunc && !static_key_enabled(&tp->key))
-+			tp->ext->unregfunc();
- 		WARN_ON_ONCE(warn && PTR_ERR(old) != -ENOMEM);
- 		return PTR_ERR(old);
- 	}
-
+Just an observation while reviewing - the idea of taking 2 spinlocks
+while reading timestamp doesn't look great and can potentially be
+CPU-expensive. Please, consider refactoring into RCU-style...
 
