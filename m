@@ -1,157 +1,168 @@
-Return-Path: <stable+bounces-244553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SABKHShs/GmMPwAAu9opvQ
-	(envelope-from <stable+bounces-244553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:40:40 +0200
+	id 6GlSLtRs/GmMPwAAu9opvQ
+	(envelope-from <stable+bounces-244554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:43:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CE74E6EB6
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:40:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7744E6F72
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3A70430095DE
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 10:38:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 175A13034A05
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 10:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFEB3E92AF;
-	Thu,  7 May 2026 10:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFBF3D16EF;
+	Thu,  7 May 2026 10:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="E0TodAKX"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="IzIP4+kv"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A393E928C
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 10:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFFC3E6DFA;
+	Thu,  7 May 2026 10:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778150311; cv=none; b=hj2Ksa4Nx7sBdRxgkddBtB/IBzq/miAs/kX7HavnOQGtz3br+c9WOzTybHbHw0qBsYnH8ugougKD0gnSZEse7hT4NqBU6j2d7AfKbCdPBh8G4MO3X2HA/1W5MNs3OWrREmHQyGiCL7Qg3/IuHW7vIrtttErYnqoVBxxLSs4+DoQ=
+	t=1778150526; cv=none; b=Fn8C6N9o2lRI76BdZQg/ldnlO5yR5nBtEa7EnYL2sFAm8uLJFpgseusqmkGtI3rGkKCKzWkfmuqnxuhvUgft8fcPB1UV8DNC4bHnXQjQI5qdn6d8SRDM0qlItmdzETgYRyB/hJOx2bWfCq36N+dUsYNln0s16FtVJAwD5cZGsdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778150311; c=relaxed/simple;
-	bh=SfE7ty4TkXsSlVVH9Ai/KCBLN6KBzP06jcDej2glciQ=;
+	s=arc-20240116; t=1778150526; c=relaxed/simple;
+	bh=LUMEAJ3VR0Zf6O2vnqS6y0SiY8nPZA1ghjHwZEQlhU0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gm+nnRX3Mx/1FtNOt+dJLAFrm22vEqB2qrgNxsm5P9M+6q1IWXVVwEeMiKo8kvHsp5Nmfys6Fj0zTV0ygzpOX3IA650bC+v8S/4tp4jR2NE28IIM5wkw1IRdAiNLMTXUG2SbObpYB8XLY6hgG025pEkPgYdyRow5GkzO4EbNxtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=E0TodAKX; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <6511ab18-250b-436a-a11c-f50e78334666@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778150297;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HpI1/WK04V2Kme2O38dmAV6glQ7zCtBfEYYnw24SZEM=;
-	b=E0TodAKX7voo0lLIQQ5c3GOsjc9FCrxnNwkm4KY8FjJ43plUOYvfxvj2lEP8zc3CvIfN+4
-	VB6FbEqBS4SvvmWX6sae+4C1w5L1p7bU0ygA9GbWnduKWwxXxJKM8I6l/dou6c3KBhLBjN
-	Ww7MxcBepwt1HUUf97ssUpA0K0vV+Do=
-Date: Thu, 7 May 2026 11:38:05 +0100
+	 In-Reply-To:Content-Type; b=jGyPPZwBsIaPE7A6fGvXEbIKc4dEaX0rWdyNjuwNwWIo9E6itZNqeJx5kY4I+E/4gGfWFK5WD8ebeFgCIL8GFjDFZ8p7J3iSUuJ2//B/GXWjStQ0cnBC8O+HQJilPu0GM3n8NJBSIOEaL0PHaJpDV3sPnF+2PmrfZq/3hiXqgr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=IzIP4+kv; arc=none smtp.client-ip=199.89.1.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4gB82G6xCjz1XM6J6;
+	Thu,  7 May 2026 10:41:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1778150509; x=1780742510; bh=xWpn++S5e4f4RtwpISkvTC6M
+	f7JtyR3gfj0F5b4gwio=; b=IzIP4+kv6qkYBVYTuaKJKfVmR7pTzkm+EraCN0ba
+	aO98+al1SVhHx1keqwCDetjXxfCMKVRVh0NLMZnRo0steSmVHz2+rvYhyt397bX6
+	oj2+If4MhUmZ+tBv8jJmY+H5buvkqFR29q7sReBBUExsQ/4zxatjKZ/KHfNctq+h
+	rWWuTXuQ0mXOCzzOWbVQDwSEuMbvNO7uDZfAJUh9HnE72nmgNNsAHO98p6neXbMw
+	qiF9qCFGyNXrIlZFLskKFsfdkA9m3gC6BxxNM2Bk/oyJ4TXRpgSCyATYotIhCPAb
+	yBLcZ0u+4/QKkrrJ1FOJznBCSVwKWOpQViorANdId1tmvA==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id wHuYM0-9RYZ6; Thu,  7 May 2026 10:41:49 +0000 (UTC)
+Received: from [10.231.136.254] (46-253-189-47.dynamic.monzoon.net [46.253.189.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4gB81x5GcBz1XM5jn;
+	Thu,  7 May 2026 10:41:41 +0000 (UTC)
+Message-ID: <c189c126-163a-41a7-b872-96568b33c1a8@acm.org>
+Date: Thu, 7 May 2026 12:41:39 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] net: ena: PHC: Check return code before setting
- timestamp output
-To: Arthur Kiyanovski <akiyano@amazon.com>, David Miller
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org
-Cc: Richard Cochran <richardcochran@gmail.com>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
- Miroslav Lichvar <mlichvar@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Wen Gu <guwen@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- David Woodhouse <dwmw@amazon.com>, Yonatan Sarna <ysarna@amazon.com>,
- Zorik Machulsky <zorik@amazon.com>, Alexander Matushevsky
- <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>,
- Matt Wilson <msw@amazon.com>, Anthony Liguori <aliguori@amazon.com>,
- Nafea Bshara <nafea@amazon.com>, Evgeny Schmeilin <evgenys@amazon.com>,
- Netanel Belgazal <netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>,
- Benjamin Herrenschmidt <benh@amazon.com>, Noam Dagan <ndagan@amazon.com>,
- David Arinzon <darinzon@amazon.com>, Evgeny Ostrovsky <evostrov@amazon.com>,
- Ofir Tabachnik <ofirt@amazon.com>, Amit Bernstein <amitbern@amazon.com>,
- stable@vger.kernel.org
-References: <20260507003518.22554-1-akiyano@amazon.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/1] block/blk-mq: use atomic_t for quiesce_depth to
+ avoid lock contention on RT
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
+ axboe@kernel.dk, linux-block@vger.kernel.org, clrkwllms@kernel.org,
+ rostedt@goodmis.org, ming.lei@redhat.com, muchun.song@linux.dev,
+ mkhalfella@purestorage.com, chris.friesen@windriver.com,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ linux-rt-users@vger.kernel.org, stable@vger.kernel.org,
+ ionut_n2001@yahoo.com, sunlightlinux@gmail.com
+References: <cover.1778048987.git.ionut.nechita@windriver.com>
+ <406f424c0a718bf492d40c206983e355e600945a.1778048987.git.ionut.nechita@windriver.com>
+ <50187fa5-03a9-4ca3-bcaf-a36ed75bda2c@acm.org>
+ <20260506074758.8zEg1ZBh@linutronix.de>
+ <713ba2ae-e322-4e56-b0b8-89766f7f65c1@acm.org>
+ <20260507074502.cFMtH9BB@linutronix.de>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260507003518.22554-1-akiyano@amazon.com>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20260507074502.cFMtH9BB@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 75CE74E6EB6
+X-Rspamd-Queue-Id: 7C7744E6F72
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
+	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244553-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,redhat.com,infradead.org,linutronix.de,lunn.ch,linux.alibaba.com,amazon.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[windriver.com,kernel.dk,vger.kernel.org,kernel.org,goodmis.org,redhat.com,linux.dev,purestorage.com,lists.linux.dev,yahoo.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-244554-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[acm.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vadim.fedorenko@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:mid,acm.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On 07/05/2026 01:35, Arthur Kiyanovski wrote:
-> ena_phc_gettimex64() is setting the output parameter regardless
-> of whether ena_com_phc_get_timestamp() succeeded or failed.
+On 5/7/26 9:45 AM, Sebastian Andrzej Siewior wrote:
+> On 2026-05-06 11:43:32 [+0200], Bart Van Assche wrote:
+>> On 5/6/26 9:47 AM, Sebastian Andrzej Siewior wrote:
+>>> On 2026-05-06 09:14:33 [+0200], Bart Van Assche wrote:
+>>>> If the atomic_inc() in blk_mq_quiesce_queue_nowait() is protected by
+>>>> hctx->queue->queue_lock then the above code doesn't have to be modified.
+>>>
+>>> But wouldn't the atomic_inc + barrier avoid the need to have the lock?
+>>> Isn't this a normal pattern? If the lock is kept, we could use
+>>> non-atomic ops here then. But this avoids having the lock.
+>>
+>> I strongly prefer a spinlock + non-atomic variables rather than using an
+>> atomic variable and barriers because algorithms that use a spinlock are
+>> easier to verify.
 > 
-> When ena_com_phc_get_timestamp() returns an error, the timestamp
-> parameter may contain uninitialized stack memory (e.g., when PHC is
-> disabled or in blocked state) or invalid hardware values. Passing
-> these to userspace via the PTP ioctl is both a security issue
-> (information leak) and a correctness bug.
-> 
-> Fix by checking the return code after releasing the lock and only
-> setting the output timestamp on success.
-> 
-> Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-> ---
->   drivers/net/ethernet/amazon/ena/ena_phc.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_phc.c b/drivers/net/ethernet/amazon/ena/ena_phc.c
-> index 7867e893fd15..c2a3ff1ef645 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_phc.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_phc.c
-> @@ -46,9 +46,12 @@ static int ena_phc_gettimex64(struct ptp_clock_info *clock_info,
->   
->   	spin_unlock_irqrestore(&phc_info->lock, flags);
->   
-> +	if (rc)
-> +		return rc;
-> +
->   	*ts = ns_to_timespec64(timestamp_nsec);
->   
-> -	return rc;
-> +	return 0;
->   }
+> Hmmm. If we keep the lock, then there is no need for the atomic and we
+> keep int counter. Then we are where we are right now with the lock
+> synchronizing everything.
+> Isn't this also improving the performance for the !RT case or is it
+> simply not that visible here?
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Agreed that not obtaining the queue_lock from blk_mq_run_hw_queue() is 
+an interesting improvement. But I'm not sure the new 
+smp_mb__after_atomic() and smp_rmb() calls are needed. Block layer calls
+of blk_mq_quiesce_queue_nowait() are followed by a 
+blk_mq_wait_quiesce_done() call. The latter calls either 
+synchronize_srcu() or synchronize_rcu(). Either is sufficient to 
+guarantee global visibility of the change of the queue state to "quiesced".
 
-Just an observation while reviewing - the idea of taking 2 spinlocks
-while reading timestamp doesn't look great and can potentially be
-CPU-expensive. Please, consider refactoring into RCU-style...
+This patch removes a spin_lock() call from
+blk_mq_quiesce_queue_nowait(). That spin_lock() call guarantees that
+other CPUs will observe the "quiesced" state after the store operations
+that precede the blk_mq_quiesce_queue_nowait() call. I don't think that
+any block layer code depends on this but I noticed that this change has
+not been mentioned in the patch description. A similar comment applies
+to the blk_mq_unquiesce_queue() changes: the ordering guarantees
+provided by the removed spin_lock() call have not been preserved. There
+is probably code in the block layer that depends on the "unquiesced"
+state only being observed after prior stores performed by the same CPU
+core.
+
+Thanks,
+
+Bart.
 
