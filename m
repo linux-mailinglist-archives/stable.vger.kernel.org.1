@@ -1,168 +1,182 @@
-Return-Path: <stable+bounces-244554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GlSLtRs/GmMPwAAu9opvQ
-	(envelope-from <stable+bounces-244554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:43:32 +0200
+	id 8FTfCExx/GmkQAAAu9opvQ
+	(envelope-from <stable+bounces-244555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 13:02:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7744E6F72
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:43:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A10F4E72BC
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 13:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 175A13034A05
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 10:42:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C67E03041227
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 11:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFBF3D16EF;
-	Thu,  7 May 2026 10:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5DB3F6614;
+	Thu,  7 May 2026 10:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="IzIP4+kv"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cJCkODeY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="O8B4j+GU";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cJCkODeY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="O8B4j+GU"
 X-Original-To: stable@vger.kernel.org
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFFC3E6DFA;
-	Thu,  7 May 2026 10:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E677E3EF64C
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 10:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778150526; cv=none; b=Fn8C6N9o2lRI76BdZQg/ldnlO5yR5nBtEa7EnYL2sFAm8uLJFpgseusqmkGtI3rGkKCKzWkfmuqnxuhvUgft8fcPB1UV8DNC4bHnXQjQI5qdn6d8SRDM0qlItmdzETgYRyB/hJOx2bWfCq36N+dUsYNln0s16FtVJAwD5cZGsdI=
+	t=1778151534; cv=none; b=HtzX9ZG1FQqefrcaQHvSh3r1l8tPywiHwJRO3T2m6SVkFp8ljPIQWDsWiZmewA3QQ1397Yq7YX7KRnP7K1PkQLugpt4ap58cHlYkUSwz94Jx35/uknQKfeh/gB3n659lcAp6HY6bMB/fU4sb3wjuJC+59It/S73aiYhw+6qmiXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778150526; c=relaxed/simple;
-	bh=LUMEAJ3VR0Zf6O2vnqS6y0SiY8nPZA1ghjHwZEQlhU0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jGyPPZwBsIaPE7A6fGvXEbIKc4dEaX0rWdyNjuwNwWIo9E6itZNqeJx5kY4I+E/4gGfWFK5WD8ebeFgCIL8GFjDFZ8p7J3iSUuJ2//B/GXWjStQ0cnBC8O+HQJilPu0GM3n8NJBSIOEaL0PHaJpDV3sPnF+2PmrfZq/3hiXqgr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=IzIP4+kv; arc=none smtp.client-ip=199.89.1.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4gB82G6xCjz1XM6J6;
-	Thu,  7 May 2026 10:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1778150509; x=1780742510; bh=xWpn++S5e4f4RtwpISkvTC6M
-	f7JtyR3gfj0F5b4gwio=; b=IzIP4+kv6qkYBVYTuaKJKfVmR7pTzkm+EraCN0ba
-	aO98+al1SVhHx1keqwCDetjXxfCMKVRVh0NLMZnRo0steSmVHz2+rvYhyt397bX6
-	oj2+If4MhUmZ+tBv8jJmY+H5buvkqFR29q7sReBBUExsQ/4zxatjKZ/KHfNctq+h
-	rWWuTXuQ0mXOCzzOWbVQDwSEuMbvNO7uDZfAJUh9HnE72nmgNNsAHO98p6neXbMw
-	qiF9qCFGyNXrIlZFLskKFsfdkA9m3gC6BxxNM2Bk/oyJ4TXRpgSCyATYotIhCPAb
-	yBLcZ0u+4/QKkrrJ1FOJznBCSVwKWOpQViorANdId1tmvA==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id wHuYM0-9RYZ6; Thu,  7 May 2026 10:41:49 +0000 (UTC)
-Received: from [10.231.136.254] (46-253-189-47.dynamic.monzoon.net [46.253.189.47])
+	s=arc-20240116; t=1778151534; c=relaxed/simple;
+	bh=94GIgPLVNbC3YpkEVnY5qCFadYOOCK1fuM+W3U1HOC0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UDwAxb7g8G3WtjZuMbEWs5S60p4RfvoDAvyzvdTd3dJpuH7uF20V8E5sG9YsE7iLA438UOL0ON0pmStUy7Xye5vKg2WZ1plwrq77bF4Lx6YTf+dK28RSLk0UkvIuNYtJnsTRlBSb4ewIaFZVXaeG+Bt94huKx+UUqZ8xx8PK5vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cJCkODeY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=O8B4j+GU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cJCkODeY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=O8B4j+GU; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4gB81x5GcBz1XM5jn;
-	Thu,  7 May 2026 10:41:41 +0000 (UTC)
-Message-ID: <c189c126-163a-41a7-b872-96568b33c1a8@acm.org>
-Date: Thu, 7 May 2026 12:41:39 +0200
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C42515CF56;
+	Thu,  7 May 2026 10:58:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778151518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=isgrf4sX1UHWOdSDWyIsiTPPD7AvnFI5MzA7mzOGjKI=;
+	b=cJCkODeYyZEwqQ/8Hm1snzoUiVaQb1xBNuBdO9KOvR9c1x4MxqXS2/lQHYF0gR3gV7QLT3
+	XQ4LzP0W1XwH1LMpacEBpIEoPCddCJCjT9+0lTXzaSaE92AmaxirHoCG/WE7AlJOWTlJ9A
+	9JOg90txRKYXJOvbkdNansjY4lItFg4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778151518;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=isgrf4sX1UHWOdSDWyIsiTPPD7AvnFI5MzA7mzOGjKI=;
+	b=O8B4j+GU0UMn+jjKKVzzEpCdtvlqbZzIntJaoeTXG1r7tShuDSAXDq77HM660o0sEQ9S/8
+	JCLCO9XXphppBmDg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cJCkODeY;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=O8B4j+GU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778151518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=isgrf4sX1UHWOdSDWyIsiTPPD7AvnFI5MzA7mzOGjKI=;
+	b=cJCkODeYyZEwqQ/8Hm1snzoUiVaQb1xBNuBdO9KOvR9c1x4MxqXS2/lQHYF0gR3gV7QLT3
+	XQ4LzP0W1XwH1LMpacEBpIEoPCddCJCjT9+0lTXzaSaE92AmaxirHoCG/WE7AlJOWTlJ9A
+	9JOg90txRKYXJOvbkdNansjY4lItFg4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778151518;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=isgrf4sX1UHWOdSDWyIsiTPPD7AvnFI5MzA7mzOGjKI=;
+	b=O8B4j+GU0UMn+jjKKVzzEpCdtvlqbZzIntJaoeTXG1r7tShuDSAXDq77HM660o0sEQ9S/8
+	JCLCO9XXphppBmDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8ABD2593A7;
+	Thu,  7 May 2026 10:58:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id X6JuIF5w/GlWXgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 07 May 2026 10:58:38 +0000
+Date: Thu, 07 May 2026 12:58:38 +0200
+Message-ID: <874ikjqye9.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: =?ISO-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.com>,
+	Andreas Steinmetz <ast@domdv.de>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] ALSA: usb-audio: Fix endpoint-extra bounds checks in USB MIDI parsers
+In-Reply-To: <20260507-usb-midi-endpoint-scan-bounds-v1-0-329d7348160e@gmail.com>
+References: <20260507-usb-midi-endpoint-scan-bounds-v1-0-329d7348160e@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/1] block/blk-mq: use atomic_t for quiesce_depth to
- avoid lock contention on RT
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
- axboe@kernel.dk, linux-block@vger.kernel.org, clrkwllms@kernel.org,
- rostedt@goodmis.org, ming.lei@redhat.com, muchun.song@linux.dev,
- mkhalfella@purestorage.com, chris.friesen@windriver.com,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- linux-rt-users@vger.kernel.org, stable@vger.kernel.org,
- ionut_n2001@yahoo.com, sunlightlinux@gmail.com
-References: <cover.1778048987.git.ionut.nechita@windriver.com>
- <406f424c0a718bf492d40c206983e355e600945a.1778048987.git.ionut.nechita@windriver.com>
- <50187fa5-03a9-4ca3-bcaf-a36ed75bda2c@acm.org>
- <20260506074758.8zEg1ZBh@linutronix.de>
- <713ba2ae-e322-4e56-b0b8-89766f7f65c1@acm.org>
- <20260507074502.cFMtH9BB@linutronix.de>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20260507074502.cFMtH9BB@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7C7744E6F72
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Rspamd-Queue-Id: 1A10F4E72BC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
-	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[windriver.com,kernel.dk,vger.kernel.org,kernel.org,goodmis.org,redhat.com,linux.dev,purestorage.com,lists.linux.dev,yahoo.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-244554-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[acm.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-244555-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:mid,acm.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:mid,suse.de:dkim]
 X-Rspamd-Action: no action
 
-On 5/7/26 9:45 AM, Sebastian Andrzej Siewior wrote:
-> On 2026-05-06 11:43:32 [+0200], Bart Van Assche wrote:
->> On 5/6/26 9:47 AM, Sebastian Andrzej Siewior wrote:
->>> On 2026-05-06 09:14:33 [+0200], Bart Van Assche wrote:
->>>> If the atomic_inc() in blk_mq_quiesce_queue_nowait() is protected by
->>>> hctx->queue->queue_lock then the above code doesn't have to be modified.
->>>
->>> But wouldn't the atomic_inc + barrier avoid the need to have the lock?
->>> Isn't this a normal pattern? If the lock is kept, we could use
->>> non-atomic ops here then. But this avoids having the lock.
->>
->> I strongly prefer a spinlock + non-atomic variables rather than using an
->> atomic variable and barriers because algorithms that use a spinlock are
->> easier to verify.
+On Thu, 07 May 2026 05:40:50 +0200,
+Cássio Gabriel wrote:
 > 
-> Hmmm. If we keep the lock, then there is no need for the atomic and we
-> keep int counter. Then we are where we are right now with the lock
-> synchronizing everything.
-> Isn't this also improving the performance for the !RT case or is it
-> simply not that visible here?
+> Both the legacy USB MIDI and USB MIDI 2.0 endpoint descriptor
+> walkers can return a class-specific endpoint descriptor without
+> first checking that bLength fits in the remaining endpoint-extra
+> scan.
+> 
+> The later parsers validate the internal flexible-array sizes
+> before reading baAssocJackID[] or baAssoGrpTrmBlkID[], but they
+> still trust the descriptor returned by the walker. A malformed
+> device can therefore make the parser consume bytes past
+> the walked descriptor span.
+> 
+> - Patch 1 bounds the legacy MIDI endpoint descriptor walk.
+> - Patch 2 applies the same fix to the MIDI 2.0 endpoint descriptor walk.
+> 
+> No behavior changes for valid devices; malformed endpoint-extra descriptors
+> are now rejected during parsing instead.
+> 
+> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+> ---
+> Cássio Gabriel (2):
+>       ALSA: usb-audio: Bound MIDI endpoint descriptor scans
+>       ALSA: usb-audio: Bound MIDI 2.0 endpoint descriptor scans
 
-Agreed that not obtaining the queue_lock from blk_mq_run_hw_queue() is 
-an interesting improvement. But I'm not sure the new 
-smp_mb__after_atomic() and smp_rmb() calls are needed. Block layer calls
-of blk_mq_quiesce_queue_nowait() are followed by a 
-blk_mq_wait_quiesce_done() call. The latter calls either 
-synchronize_srcu() or synchronize_rcu(). Either is sufficient to 
-guarantee global visibility of the change of the queue state to "quiesced".
+Applied both to for-linus branch now.  Thanks.
 
-This patch removes a spin_lock() call from
-blk_mq_quiesce_queue_nowait(). That spin_lock() call guarantees that
-other CPUs will observe the "quiesced" state after the store operations
-that precede the blk_mq_quiesce_queue_nowait() call. I don't think that
-any block layer code depends on this but I noticed that this change has
-not been mentioned in the patch description. A similar comment applies
-to the blk_mq_unquiesce_queue() changes: the ordering guarantees
-provided by the removed spin_lock() call have not been preserved. There
-is probably code in the block layer that depends on the "unquiesced"
-state only being observed after prior stores performed by the same CPU
-core.
 
-Thanks,
-
-Bart.
+Takashi
 
