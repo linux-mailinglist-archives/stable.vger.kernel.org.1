@@ -1,251 +1,276 @@
-Return-Path: <stable+bounces-244561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDA1AemA/GkcQwAAu9opvQ
-	(envelope-from <stable+bounces-244561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 14:09:13 +0200
+	id iDqPMAuE/GmOQwAAu9opvQ
+	(envelope-from <stable+bounces-244562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 14:22:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254C54E8007
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 14:09:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087CA4E8235
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 14:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2AA07300B8D1
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 12:09:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB57A3007AE8
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 12:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5789E3B6C11;
-	Thu,  7 May 2026 12:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572263AE706;
+	Thu,  7 May 2026 12:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="BloGmMIO";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="pJNxvqTu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eqZEozzV"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06BD3932F7;
-	Thu,  7 May 2026 12:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778155745; cv=fail; b=ZQGkDaeFNNYzIrFdawdWJf3baTO2SVNIAZveo9isuBi5yTmpEn6m3uwQUbgr7El6bVgCnnaE6u8V8kd8B3+4S4GyM4Mk/TUVvolOgsA22hW4x7nofzAV4KQvN/VsSfBD6I/7a7CvEjHme9cR8y9amWUduwfkcHRShuTkNTlQuaU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778155745; c=relaxed/simple;
-	bh=I1BIEtitiCcYKaVjfTzgtYDeHTlSB8ipwpr+xZsY314=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=C1ly9/xU+T/maf54ViniMKcqPCfM1gnO5DCjqJjg7vjkF8b8GuJXEWMwKCShj5qF3QrFX3d5tZjdhhbxc79olQ1oFuaMKNURH4uwM9pFGmZljIbfuGedJEJsoIRmQ674Hv3eN61GZfNBQS/JT/AhzIH7U9/zCm8lxudSqhUDWOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=BloGmMIO; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=pJNxvqTu; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 646MfQPM3946914;
-	Thu, 7 May 2026 12:04:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=DhSjrN1ZjZuIRnGhWkYX+Voy8s3jOhF/fPNc2DhWmiQ=; b=
-	BloGmMIO+ldtjtD6GnsebWBR6peIQ6oTeMuat4TK8rWL0BNTQY2ZGBl0mYW2pQah
-	Dda5T5h7pma8mvxARIfFmNNx6DM7H8ttNDjJA5TMbwNwEp4Kq/UtDeNm7M3Ue0bB
-	8UT0ufF9tjS7gjXgddySCf+WsYoatWhTC8W9A/eBN5rM3ysqlG4cwYqqb/NCv8GN
-	0slpFTjnTajsDOqDkqFw+oibgRMNtqo2+Amjh9Y6CdDEA6w8Ucq8h3jU1YDPMUxO
-	PwDj1C6ogdwNUOEUXcu41lkhXH94bupBC+lkxvj64ElECVj3DKooQpTiKvP/N4kC
-	mWTP463oIutMQLg3csnk/Q==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dw9eq0qk1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 07 May 2026 12:04:18 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 647BuC7o026519;
-	Thu, 7 May 2026 12:04:18 GMT
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010037.outbound.protection.outlook.com [52.101.56.37])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dx578encm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 07 May 2026 12:04:18 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lWFHlg0/+FVKNSrNlBgN6zCiwL8rhMVEY5se53jPsQKoOWQ82pztYcdQO8uXJyRZYEoVdqRhuL01XMF3NmYfZXS/IYQPJy5Rjb/s+fznB4y/10gPoiFxAVSHUg9ixOUtXYiSLBholvdjiBTngiB+xgF90xXGkN94ElPOld4j9djTw/ftWwXG2gR4trRyH5/AegFwKwiNf18G4tPyFSXBoqx1DBI7WP3h8/L+Yzw8f0PvE6w0wYcg2yeEOiPGBKEMxx5eIu9Cz0Lt1LcqTUJv7JHriUfsZlkzgv1xMDputrmeehOjwoJEy1uXKPwT7Lde1BIOSWMPZfqaFCnf50PiJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DhSjrN1ZjZuIRnGhWkYX+Voy8s3jOhF/fPNc2DhWmiQ=;
- b=g1HFp3oHZ2ZUpafjZ6upyCqbtuxx674g73vKwaYPU2mINIVtmE06Gxdij1aNlCvFatKRSWwXviGp/JCK7Dw3Ywv1EWk2vZBfynToZEPcdqanXci65vYz4qfWw7rcyi0LO+mM/OApMjDaTj5ShCqJ2AR2qyOB8OWVtDoESFnlVyQAzWVESPzOsicji++iQ6w6i3Tv3TZLr4KkwuIeRr1APVVBwbvf3CMNvykszQOxIh4eYQkVcsfXyewoxIdolqgVmb91nHxMX52D6z4WXk71/Z9gYX9wGIsdNpaBaXhI9iwDPRqr92McWwLMheZjImk5vdP+JC+45EbsHJ60x7NFRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DhSjrN1ZjZuIRnGhWkYX+Voy8s3jOhF/fPNc2DhWmiQ=;
- b=pJNxvqTusyvD9qA2h1fxUJjskdySxVHFsghMzIFbwvMaZCiRtfSxpoalWI5xK5ua6RsfNYS0qTZZXVYjz5Mf+GUL2Qw4t4cn5MLh8+zTcR2Di5o65hqB0cCh79tNv2GmgvqRRY1/tZNyqRzmtyZgNTZ3f61HVn8BasyLtoPgT5o=
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
- by SN7PR10MB7075.namprd10.prod.outlook.com (2603:10b6:806:34f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Thu, 7 May
- 2026 12:04:14 +0000
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a%7]) with mapi id 15.20.9891.017; Thu, 7 May 2026
- 12:04:14 +0000
-Message-ID: <323213dd-1111-4c45-8e56-3d94c2eb00af@oracle.com>
-Date: Thu, 7 May 2026 17:34:03 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/215] 6.12.86-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-        conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-        achill@achill.org, sr@sladewatkins.com
-References: <20260504135130.169210693@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0116.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a8::18) To DS3PR10MB997700.namprd10.prod.outlook.com
- (2603:10b6:8:347::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7368391E78
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 12:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778156548; cv=none; b=WmXPgUaAMWGrQWG9K3Ti1/jRkiIpvK1Iw42axco5ksZ5MvxwplYWlD6UPLFu0v5R+q5gHNCf37aRpXMoZHkbC/odcLuX3BeiAt6sKxF+NJP/wH+1PV6cTxorZ7XGuy25Xa6FVkMkmdIRDD8kNqli9sPMzzM4Eh/7tJ+ADUCXoQI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778156548; c=relaxed/simple;
+	bh=wj/T+DjDc0bDFFMxMNbIil9/nzvahQqGtDwyv2zUMao=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Uxm5dgNKb3EjkWdeMm68NU1vgnEwTLlnPHa4dt+8l1utz8CDt1C6b6+Vqwfpxg/69/PYZI+xNyCSKEFOHxIJ/wdWZM50raadjtmV7pDdSz8/WJh8EXopIO5/b6HdUZvGs2m2Hxn+Ipf8eSFJC99nO0tF/QIUy9xsGQHr1k/BvEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eqZEozzV; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778156547; x=1809692547;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=wj/T+DjDc0bDFFMxMNbIil9/nzvahQqGtDwyv2zUMao=;
+  b=eqZEozzVEYx4ujqwEunNbAeuAxVLhCBwKTGnuJ52i+NvuAihS0Kl5eAa
+   aMIwhXpRyiNc0Evtov5ahBFGjvb1NGRjrm560OMPOJFyrVm6W35pfF5Uf
+   ROJj1GPGQuHMT2Kndy7MDcZSqhbYZM5SUmWlS7HeH0IfUebieXRdqOyRB
+   Rl2L5r+6OwfbLtihDSCj4TuuQOh/uOnUNVXaEBU8PHwqiKJz+QzwaMVtG
+   MhCcJny9yimlt65ZKY7sr4nOMr6OlvITcD29531WDML9ES5qWenjsc5X/
+   Rw3mGABvGjJ2rWvTonWxUrIPIfFeQdc4DubaPHMPXLqIGE3bxdMET+nsP
+   g==;
+X-CSE-ConnectionGUID: +5p0kHCNSdOFSUnU2+2b6w==
+X-CSE-MsgGUID: 0I140OSxQJ24gmfYhD6ttw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="104561503"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="104561503"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 05:22:26 -0700
+X-CSE-ConnectionGUID: Udo+t9AwTrmcARpAUnb0IA==
+X-CSE-MsgGUID: 98h12M0eR16P1C4cxE8B4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="233372087"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO [10.245.245.94]) ([10.245.245.94])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 05:22:25 -0700
+Message-ID: <c434737c3613a2dff0e2442e89c7ec58640efed4.camel@linux.intel.com>
+Subject: Re: [PATCH v2 2/2] drm/xe/dma-buf: fix UAF with retry loop
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Auld <matthew.auld@intel.com>, intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>, stable@vger.kernel.org
+Date: Thu, 07 May 2026 14:22:22 +0200
+In-Reply-To: <20260507115519.115309-4-matthew.auld@intel.com>
+References: <20260507115519.115309-3-matthew.auld@intel.com>
+	 <20260507115519.115309-4-matthew.auld@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|SN7PR10MB7075:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9c2c238-6c9d-4320-395c-08deac30c194
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	6TziNxLAEpe5kGi2VXmfPZ8sd2s8nPQu7A+ij+FFsuPWeGZD2Bf6vOO4p2tE3g80iNEMT0FWj4SMVAz1h1mHX1UzrMZdkcPOAX+6jzbO17/fmhiTaOtnP+jF26z7btMhfoxa6I1S3acP3c6t62en2s1LAg1okysxv8hfkKBbRZhLkkpgR8vCermiWkkKxLM37uh+fXkCHwJrreUzI+M6LbwxVznSyh/Vzx7CrOROoG0P+ocRzW6UY0NIQxL3rPY9ykWzZTnNO+K24nusaFKYSe/4lc9rZ5t4LlmHwGhUwnT97C3CCBXOFdz7cLQ/tUPxL1BVMOCftyftjUxPWfg/l5GjD9rSMJ675iJSWcpi0jACnu3Czzi0MAnHgmlVB8PJUq5N07PoJSOsbzdv0zUfIKYgKgB8RfJNToJT3CBGclNZ6meV/sjwfmEM/Pb9NVfEqA6Oa1ng/4Q/hgMhgfqX5HIGEmTZQwn4DR1yjZHAjoGEIuOJMA8UmacxBhThQCERwX8scoWjWuGGLjlpPxznB6jeUbU8Kw817XDqUkJQFMPltdxJ66PH6US4hvysJljNeXtiau9swzsjc/j89SSTT0sG7DFfuFLwcC35hM5VGgEg1hBDhOpbqSsfx45Jfe+xxQwEsU9BuM7utHFZq8Zeic/wbh+DhYhA9MpjG6F9PThO6tcUbYLKOqzfikd7SvvZ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M00wb3VISy85ck8rcG5IeHNEUnhWL3ZmSmRzNkRJTHEvdnd2dVc2MHdZRnFr?=
- =?utf-8?B?TUcxWEZHdlhqZlNFcUtmQzBwUXNXNUZoMHZwcWZxRmk0ZWV5RHF5RkhnMm9K?=
- =?utf-8?B?eWl4Mm9DdEFEL0NOeHl3OXA2NnFkV1FmZlZ1YTBRY0V2TUxoYTFFSCtLOWFG?=
- =?utf-8?B?cldIOVFraU53ZDJlMjl3Qnp2aUd2WEdyTEZFdlRuU3N3YU5udVJMZ3c2cTB1?=
- =?utf-8?B?T1JINWI4WHIvQyt0Q2Y4aUMvZFAyUm12aTJDeEhLdXBYTGhhb0xKNktoZ3Jr?=
- =?utf-8?B?US9nZ0FvS1VxeE1kUngwclZwWDdxYjNRMjBRU3pTUW5WYUg0ZmNnbWZlM3pt?=
- =?utf-8?B?a1piTnFUV0ExSE51WkY5UmxKZ1FXcEZqNkd4anBqekJTdDVBVE1TRkZIbnF0?=
- =?utf-8?B?dVd0WE5oREZPU1FESmFWTXo2OTJvREIvS3pPcFVXTXhVOGdQVkN1d002WlFm?=
- =?utf-8?B?OHZRUkQ0bnJJOEQyZFVIcXhlTkJEa0thUGtFQjhsWDdFcjV1ZmVpY2NTY1Vi?=
- =?utf-8?B?VHBVK0tOaUFNNWxUUFF3ZE9QNHB5aXl6MkY3UXU3eUlCd2Y2NjVVdDU4UFJC?=
- =?utf-8?B?SktKR2hUcjZGYlNtZmYvL1BvZWNQelJTZ1pQK3RTNEpJMlpDQjNuWS9sSEJz?=
- =?utf-8?B?b0toeWpOQUIwSmJVK1FSTkxDOFZobnBtZnZxRk42S0xyMmpoblorOW9Hbi9K?=
- =?utf-8?B?KzBiQWhOVEdBeXo3eEFVdXozZ0NJSi9vS3ViZHdmaEJ5ODU5akJ3UTkrMWZF?=
- =?utf-8?B?QnlQZDB3Z0FtNmxIdC8vRlJralJYZEYwUjFFbUFLelpyWER1WEN2V1ExSnBI?=
- =?utf-8?B?NXNEYW9QdVhDRWZMeVRPWkgxdnI4ZE5NQk1jSERabG1FU0V4RE1keitDRTBB?=
- =?utf-8?B?ZVJ1OFBCWEQ5cUJ5SXlYNkwra09DNG9aUlpNME9lUFVPQTVES0FiYVVKaWx2?=
- =?utf-8?B?dExxYm0zc2NybUN1eE90T3RnNWJJaHdCaWh2NGI1UlNyd2VpalA4Z0JVdXdK?=
- =?utf-8?B?VTRUQk1ER09FeWNKVTBKejNUdnBpOXVVdEtGTXNpUFVSa3ZZVzZnZUZyZzlM?=
- =?utf-8?B?WmxXWE9jNkU2R1dtMlVHZkUvS3VPOEEzSmhxb2pQMWVBS05iK251cDdaY0RC?=
- =?utf-8?B?dk1PeEhGYUMrdXJEaXRrS1NwMHY0MklYV2xKbjRKWE1wMjlKa1VXMm14RlJ0?=
- =?utf-8?B?enVBNFpEcFRQWncxUVlUNDBNYjNFeCtFK05aTU9yQmp6c0tmdTZRRXZRQ1U0?=
- =?utf-8?B?NHBCZmVDVkRaWjk3c3V2RUpEQmhjbjBNektPY1NTYnF2MFNzeDRpTEJJZVB3?=
- =?utf-8?B?Ky9pckFvYUxnZFQ5WmY0aWJqc3ZMRkVPSmNxQkxzRlh2RGNqQnhpWkZJOHo3?=
- =?utf-8?B?eXk5NHRZamVxMEZPYkltcVBCekVQY0VML2VSL2NkVzlQZWFydllHV2FPRTBz?=
- =?utf-8?B?Ym9yK05hbmxBNUVXa1NhVVBGL3pGNTlXaEc1M1FGTTFHcmxkSFlYVURxT213?=
- =?utf-8?B?N1BtU3JmYnVMUlJ3ait1b1BIUmc3Y1hmVU1SQzZYSGJKekhnM2dvTUczWGRG?=
- =?utf-8?B?WHlDUjhJV3ZTTVUyQ056MzJMM0t5WVdGVGY4TnM5VXkxaFNKMkhmZXZZVEFI?=
- =?utf-8?B?REsybThJRFNwbHRwaEFZUHNJSzFXL3BIYlNDM0tJenUraldTNTBJdGV2eEZz?=
- =?utf-8?B?UGxOVlhVRW5mYlpTTjJtZ1JSS01VaFJEYytjam1oMEhibUc2UDVpUUlmWTdB?=
- =?utf-8?B?aXVVRTBkK3l2bnJPQUwrZWU0WWJIWUdHck1yYmlCQ3FFZVdqc3hzQ2NrakRW?=
- =?utf-8?B?WGEzcERTMy9qR0NqY2ZxWGtvU2xnaXN3My9oK2NKdGhBODRHNFkvSVpiT2V3?=
- =?utf-8?B?OXBGV3I1Wi9nUDZSNG1FK0dXNGVNdldKalBVcTZvZytEMEwxQVR4M0c3SXZo?=
- =?utf-8?B?S0xUQ1NzWEdwbnJyT1cydnlWTUdGVFdSTnZLY3EzMW9HRm4xQ0lORlhGV281?=
- =?utf-8?B?Zk9QQkZTT05UTGVKQnlFL1d5eitFVVVHeGxodjRvQ0JMODdkVnBHODVrQ29V?=
- =?utf-8?B?Ujh5SEpSYWU1ZFh1cWJWTkJNbFFZajhFTkNZSzFpcEQxZnRzSFcwLzcvVStY?=
- =?utf-8?B?eFZpV3J5T1dpTWdvUnhLdnp3VktlV2JyM0hKb1VMY3k2TXJCbjJHU1Q5SzZR?=
- =?utf-8?B?bE02bStYS2U2OEVsM1FFeGc2ZzU1VjYxaU1ZczJZMHNUUVVnbUVHYTJpVEdN?=
- =?utf-8?B?d2ZmNDFZTDFBU2gvR0JQSmprcGM1MEl4VkxtVjE1YTFheUREUHZrdjJvcFJl?=
- =?utf-8?B?NXBTdXVxNDhUQklZM05RSnlXZ1hJMDBKMkF0Z3RBYlplMVcvWHU4ZHJYL2dC?=
- =?utf-8?Q?RRlu4GYFDlGP1bvR6VcqVHvJBsiZaiHrI5FCe?=
-X-Exchange-RoutingPolicyChecked:
-	ZiyrtWlhLsRPlwZq9EGmEKxUV0VSW4bLIj0yatQAR55U11M8m0ORm8Lk8GzdIrNn0Ei6V9G72eAXEHMkhfogZfwexvMi1w45Fg9H4AX7X0J6FniFXz1PtyQ7+pIMvA/HNWEw3FqJQn7gkRg3BCtVpTO8f3On+6lcsjaoEVtDDjCCazPGfGQ0AzFv9/wcZ9ujPEKJ2zZzD+cAyBmIJU372eqmN611Gp8r3MZzRIAImulnaOjFi4BvPlXV3J+sI36WdMl/d5bpPOMCmo017JQvb6RSQR+dlasPZXAgzF6sW9PofQjCPNx7DLAIcKnYB9B0oQYiJZ1844WK84TKGlJiQw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	mu+eVNZjtpR+VZZrzFH2E1IUaGGDwojwEsF4SCrrhjsgobkekHKnbVLi02iftTx/ydKQkEOeKsrD/hapGHHfMt81fAQDV1nd2xnxcbq04kYsbJHwNjQulK4mqvGDZxwxLs5ujDrCyT2Tr1aDy3+0Oli7K8oQx61a/Y5RdQ2beK3nRdK7gv0gHHchLhVCPuT60P1KjuEMXPNQkbaLq+sUY0XzO14dUa6rn3lsunxwU/9PgMpJezKi36pKy2WsrtOv0SW3xQUYmyzC3RKn9+jCqCbRmM0U8Nay0n2NVRnNJ7xMu7yUwwafuCQQsefO3n0PszaXV2d8jqky98X7jyWj5wSfDuuplJxLbYv6vqCQl4Tv7JnTw5OZ/Z21Najil20iaErDJw3YCn9nPdFsJkpGzlMNTUMfjl3PPruGsWomzFyFNJjjsP6IpFuRd+x7o4D2reY9jGv1hUrpxKGBDDmx32jaCwfUBCmGQt/nTWC7n+D0CmmOHySh35XXsQA5SbeO160WXWTdHVckWX3QGbeWd96HQjYchi7cEvfzLM6P4Ps0eL4Nrs8iTor8VNSC0nG+/pxqZr1n5XU9uh72AE5BLSaAuEIw8RJ8c1/xMlMjFV0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9c2c238-6c9d-4320-395c-08deac30c194
-X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 12:04:14.1567
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6nySe5Wyz3Yx89AsA6Y5Fv41A2ccw+wv/AcrNUdLHJTQjpBTow/neOCWPejnOMB4h7fdEUox2Ve1cTPxAMTdjdxjCD9HpWDBiAwo+BZPMIuV/BU+7lyAKqm9lu+Q5dqt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB7075
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-06_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
- spamscore=0 malwarescore=0 lowpriorityscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2604200000 definitions=main-2605070119
-X-Proofpoint-ORIG-GUID: 6I_A41poJ3LW8KF6imrAIk8tQblwDWJw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDEyMCBTYWx0ZWRfX8rzb7/OuEO2G
- tFP1oFg40vW2t7E2jBKIgXnwLKKzNTUuogwTNNUfZuR+GCXfczNE0Rxil9Zmp6Pj5b3uNsp11Fn
- e/5YUDkSb8JdmJM5lSBsBXHl4vn966KmmAGVagt4AdTNKLzVUDPL6N0ERA///zRxxzb2t6U/1zq
- CdnTFmq5iOBI+QNuYdHeX+mny4dJ5I3lyYrtTxSddYC+JSoiL1uOfIiDEiW+awrToECnyjfFafB
- uRcOoHWUPv0XBk/HWiZIDyHN9dmA2xjfh6cqKuzZ2EXMN+bb6w6WERukwwCr+cLcRG6jf7ofDfT
- SpqZyQkadkmCcYtJNy8qRr7dM7RolhypahZrL0n3mcWGUOrPqQA1as0D/nJcBMRcm5tYSWJ+nt8
- 9H24w6FPqfhnnW/meQma3dLSrlni/ycgfXTSQevI2BWj0Psq2YSsaOKQ4Yhj7q7U4j5d3jn90/A
- BTmvo8zQa+VZm9+R+iw==
-X-Authority-Analysis: v=2.4 cv=YKKvDxGx c=1 sm=1 tr=0 ts=69fc7fc2 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=EIcjfB9IiI4px24ztqRk:22 a=yPCof4ZbAAAA:8
- a=NAwWG0e-j77qbkYhR88A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 6I_A41poJ3LW8KF6imrAIk8tQblwDWJw
-X-Rspamd-Queue-Id: 254C54E8007
+X-Rspamd-Queue-Id: 087CA4E8235
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244561-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-244562-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,oracle.com:mid,oracle.com:dkim,oracle.onmicrosoft.com:dkim];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.intel.com:mid]
 X-Rspamd-Action: no action
 
-Hi Greg,
+On Thu, 2026-05-07 at 12:55 +0100, Matthew Auld wrote:
+> Retry doesn't work here, since bo will be freed on error, leading to
+> UAF. However, now that we do the alloc & init before the attach, we
+> can
+> now combine this as one unit and have the init do the alloc for us.
+> This
+> should make the retry safe.
+>=20
+> Reported by Sashiko.
+>=20
+> Closes:
+> https://sashiko.dev/#/patchset/20260506184332.86743-2-matthew.auld%40inte=
+l.com
+> Fixes: eb289a5f6cc6 ("drm/xe: Convert xe_dma_buf.c for exhaustive
+> eviction")
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.18+
 
-On 04/05/26 19:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.86 release.
-> There are 215 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+lgtm.
+Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
 
-No problems seen on x86_64 and aarch64 with our testing.
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-Thanks,
-Harshit
+> ---
+> =C2=A0drivers/gpu/drm/xe/xe_dma_buf.c | 42 +++++++++---------------------=
+-
+> --
+> =C2=A01 file changed, 11 insertions(+), 31 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c
+> b/drivers/gpu/drm/xe/xe_dma_buf.c
+> index 2332db502c8b..a54ec278a915 100644
+> --- a/drivers/gpu/drm/xe/xe_dma_buf.c
+> +++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+> @@ -258,16 +258,8 @@ struct dma_buf *xe_gem_prime_export(struct
+> drm_gem_object *obj, int flags)
+> =C2=A0	return ERR_PTR(ret);
+> =C2=A0}
+> =C2=A0
+> -/*
+> - * Takes ownership of @storage: on success it is transferred to the
+> returned
+> - * drm_gem_object; on failure it is freed before returning the
+> error.
+> - * This matches the contract of xe_bo_init_locked() which frees
+> @storage on
+> - * its error paths, so callers need not (and must not) free @storage
+> after
+> - * this call.
+> - */
+> =C2=A0static struct drm_gem_object *
+> -xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
+> -		=C2=A0=C2=A0=C2=A0 struct dma_buf *dma_buf)
+> +xe_dma_buf_create_obj(struct drm_device *dev, struct dma_buf
+> *dma_buf)
+> =C2=A0{
+> =C2=A0	struct dma_resv *resv =3D dma_buf->resv;
+> =C2=A0	struct xe_device *xe =3D to_xe_device(dev);
+> @@ -278,10 +270,8 @@ xe_dma_buf_init_obj(struct drm_device *dev,
+> struct xe_bo *storage,
+> =C2=A0	int ret =3D 0;
+> =C2=A0
+> =C2=A0	dummy_obj =3D drm_gpuvm_resv_object_alloc(&xe->drm);
+> -	if (!dummy_obj) {
+> -		xe_bo_free(storage);
+> +	if (!dummy_obj)
+> =C2=A0		return ERR_PTR(-ENOMEM);
+> -	}
+> =C2=A0
+> =C2=A0	dummy_obj->resv =3D resv;
+> =C2=A0	xe_validation_guard(&ctx, &xe->val, &exec, (struct
+> xe_val_flags) {}, ret) {
+> @@ -290,8 +280,7 @@ xe_dma_buf_init_obj(struct drm_device *dev,
+> struct xe_bo *storage,
+> =C2=A0		if (ret)
+> =C2=A0			break;
+> =C2=A0
+> -		/* xe_bo_init_locked() frees storage on error */
+> -		bo =3D xe_bo_init_locked(xe, storage, NULL, resv,
+> NULL, dma_buf->size,
+> +		bo =3D xe_bo_init_locked(xe, NULL, NULL, resv, NULL,
+> dma_buf->size,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0, /* Will require 1way or
+> 2way for vm_bind */
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ttm_bo_type_sg,
+> XE_BO_FLAG_SYSTEM, &exec);
+> =C2=A0		drm_exec_retry_on_contention(&exec);
+> @@ -342,7 +331,6 @@ struct drm_gem_object *xe_gem_prime_import(struct
+> drm_device *dev,
+> =C2=A0	const struct dma_buf_attach_ops *attach_ops;
+> =C2=A0	struct dma_buf_attachment *attach;
+> =C2=A0	struct drm_gem_object *obj;
+> -	struct xe_bo *bo;
+> =C2=A0
+> =C2=A0	if (dma_buf->ops =3D=3D &xe_dmabuf_ops) {
+> =C2=A0		obj =3D dma_buf->priv;
+> @@ -357,22 +345,14 @@ struct drm_gem_object
+> *xe_gem_prime_import(struct drm_device *dev,
+> =C2=A0		}
+> =C2=A0	}
+> =C2=A0
+> -	bo =3D xe_bo_alloc();
+> -	if (IS_ERR(bo))
+> -		return ERR_CAST(bo);
+> -
+> =C2=A0	/*
+> -	 * xe_dma_buf_init_obj() takes ownership of the raw bo, so
+> do not touch
+> -	 * on fail, since it will already take care of cleanup. On
+> success we
+> -	 * still need to drop the ref, if something later fails.
+> -	 *
+> -	 * In addition this needs to happen before the attach, since
+> -	 * it will create a new attachment for this, and add it to
+> the list of
+> -	 * attachments, at which point it is globally visible, and
+> at any point
+> -	 * the export side can call into on invalidate_mappings
+> callback, which
+> -	 * require a working object.
+> +	 * This needs to happen before the attach, since it will
+> create a new
+> +	 * attachment for this, and add it to the list of
+> attachments, at which
+> +	 * point it is globally visible, and at any point the export
+> side can
+> +	 * call into on invalidate_mappings callback, which require
+> a working
+> +	 * object.
+> =C2=A0	 */
+> -	obj =3D xe_dma_buf_init_obj(dev, bo, dma_buf);
+> +	obj =3D xe_dma_buf_create_obj(dev, dma_buf);
+
+Cant you just use xe_bo_create_novm() here?
+
+
+> =C2=A0	if (IS_ERR(obj))
+> =C2=A0		return obj;
+> =C2=A0
+> @@ -382,7 +362,7 @@ struct drm_gem_object *xe_gem_prime_import(struct
+> drm_device *dev,
+> =C2=A0		attach_ops =3D test->attach_ops;
+> =C2=A0#endif
+> =C2=A0
+> -	attach =3D dma_buf_dynamic_attach(dma_buf, dev->dev,
+> attach_ops, &bo->ttm.base);
+> +	attach =3D dma_buf_dynamic_attach(dma_buf, dev->dev,
+> attach_ops, obj);
+> =C2=A0	if (IS_ERR(attach)) {
+> =C2=A0		obj =3D ERR_CAST(attach);
+> =C2=A0		goto out_err;
+> @@ -393,7 +373,7 @@ struct drm_gem_object *xe_gem_prime_import(struct
+> drm_device *dev,
+> =C2=A0	return obj;
+> =C2=A0
+> =C2=A0out_err:
+> -	xe_bo_put(bo);
+> +	xe_bo_put(gem_to_xe_bo(obj));
+> =C2=A0
+> =C2=A0	return obj;
+> =C2=A0}
 
