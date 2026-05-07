@@ -1,202 +1,215 @@
-Return-Path: <stable+bounces-244607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uH/eOWnD/GnSTAAAu9opvQ
-	(envelope-from <stable+bounces-244607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:52:57 +0200
+	id EBUYO53F/Gk8TgAAu9opvQ
+	(envelope-from <stable+bounces-244608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:02:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9684F4EC7D3
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:52:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1791C4EC9C0
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4B3A83049E67
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:50:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 73B413040C2E
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86C93E6DED;
-	Thu,  7 May 2026 16:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBED631F983;
+	Thu,  7 May 2026 16:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b="qafyK8Cv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZ8vnqbX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f99.google.com (mail-dl1-f99.google.com [74.125.82.99])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AED2D23BC
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495C42F532F
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778172600; cv=none; b=PIM5cP4ZgOncQsKWc4rKtjqTIjanM/pJpXlSU+5meWEtN4fuGA8ygPMZPNCnL6om0kO/gPThRol7mQcsw1rthOIh5cnI9yZd0Et8Iydt/DJV/l1FKEtCOvED4wosqxhHFNX27hUmZh/ovqZ089wPaOOaDVENLZe4IjtOrU7grV0=
+	t=1778172744; cv=none; b=K+6kt1XYEqh/YzQCweX0TfrrsmCnihFmCV3JY/0Bb43Ib0xDv6j0qPz8YOSn/Fy6bx+3SoIzyavBoI3B891S2zUFVcfCDjvHfNE3i3YR5U9R5fkGNMWrM2x+0hAQzqeV3d2D+SselYRXAEu9rkH9WnNH34buOXA6dFIcCtUGHhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778172600; c=relaxed/simple;
-	bh=g+o8Gax6yXxVJ9Ymvpwj7De47snR6AbkdQJOz9rOYXw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UED5xADcm2Ve3qJlh5b3viVlZUh3DQOQ/YWIrtZ6bizF5P80X8NdrBHKDxxm0qbkjbrIR6w7wecFncRicylws7O2IJbJXRD5aavebFyRLGwowWXP729xij98CXyKUyIgHZkCQU2xzHMfKqfQvJ0/FiB/b0s5e2e3Q3oLiGxfkGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedTS.com; spf=pass smtp.mailfrom=embeddedts.com; dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b=qafyK8Cv; arc=none smtp.client-ip=74.125.82.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedTS.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedts.com
-Received: by mail-dl1-f99.google.com with SMTP id a92af1059eb24-12c88e5f4aeso722247c88.0
-        for <stable@vger.kernel.org>; Thu, 07 May 2026 09:49:59 -0700 (PDT)
+	s=arc-20240116; t=1778172744; c=relaxed/simple;
+	bh=QhvtuPuYuRikxrXlvfGt1GYpisVF2O1XfkkjalC53Gw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SchTgqI29oJ+TjKB0/jxOKGWXVaMjMgQ7d+slW0/oJ/pwjSlNzgH6CHig0o9TRsOAAz84QcqiaOGnCIHFbT44n8PeId0O7LLUE8AYaN7Do3AjW/q59LusNBLknkgWfOFKJHsd9ZlFh2u1i6HxYU97wgoJkGySZankaZxmbLIzH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZ8vnqbX; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so679161a91.0
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 09:52:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=embeddedts.com; s=google; t=1778172598; x=1778777398; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vqcAML0ZZ43DsvITP1E2cCodXpE6DI+947s+bAV6M6c=;
-        b=qafyK8CvTdEgqBnkFua3jfjtE4gqMWnJD20A3y/53xiSB2VCLFidb0Fwlrxt9OvCz9
-         10x90hxiTV2NcaQ6QXenz6s+W2+M14dR8ZFv/S6G1v0d/h/BnFiQOZQDUH/oX7sHVwIb
-         0u1M49DrLmsQNHt8HljYV6AYvtB+a9VEwfb0g=
+        d=gmail.com; s=20251104; t=1778172742; x=1778777542; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gHS86kLfvSZEt6u0DRNxMP3AK+yT0cLfftthW3UK2M0=;
+        b=IZ8vnqbX0ySDjCyZnYCi2oTYizpZSy/rVnU90FHeNnXCe/lG4H5VguUR5szRgmVgnn
+         hOI55m1zbS7oJMLKoKeD5HQRxElDZgU3TPDjDfdZTgKIWV8d5Ryuj/8k+5YxhxyV5rZi
+         kPLSokG9f3YNwpKfrrldIUtgixlmT/8s0FScal0JniyqyrkWd8iTp0I5Z0hd1vZo5txc
+         JhP1XByDbBoH3tzyjwpBv+nQW66tIzxjWZ/cMekvkuwQ2saiOdYAWF126Ko3Vv39Kk40
+         Gf+ygIXEWk7xdvXlGUPQb9QV972j5vx+b/3DWMPVafy1RM3YIWYaEn9d4ms9O44jEfed
+         lERw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778172598; x=1778777398;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1778172742; x=1778777542;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vqcAML0ZZ43DsvITP1E2cCodXpE6DI+947s+bAV6M6c=;
-        b=AThgWJq3WmiwD0itVrMou+rSSitvBBgyBR+0iRVLtm9D7f4zEZxK+08zivvJGPiAQW
-         fMM03gWlEgtw1/WryQdA0d0/6KKaYGKfK6AqMy3TGEogrZK6jkRMJQbZLI5jwYHrQQLk
-         uL42MFjgmxooE7b/OozybJpUw1fsbw+sUc5PbwIeQj3R0iNEIgHhPjqn+yEBsw19JtCF
-         0McrPspNFV/VpEVC4bRUPeUBQZjfkoEO5d9NOvpQKd6BgEF8nICiNdiXSBGRXLsmBSED
-         tSP3j+Qdtio5sWnQD/ME8LbKsfUqMO5Ptdb10ERWORz9/pZDkDgcvsULAIRbm4nEnCSa
-         GUow==
-X-Forwarded-Encrypted: i=1; AFNElJ8RaZBczDGUg8nu2/ZcPrfJnXYpD0fGjgZC+WdIgClpzm3eQPyxdQunW1DyiK/FVdyBolcuaRU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz32NiiojfszAmmFH1VrJRbPbffexWF4vuGMlpXkWJzhxRRnfSe
-	3qghsPyVGarvtU97HaQEQud4rTIa/qiNEeXFYFyIT3/feQucch/sDKKW9vy7XoML9dB1QNfMc+v
-	4BRmxwt0AUsNYDrAjcAaO2pwMfqpoLTfkfQ8l
-X-Gm-Gg: AeBDieucFzL//KISptnO7h9xPbzzNoO21ZQV0LaZoXPtceY/+3KOYnZGc/f7rz0JVd6
-	c9qJocW0Xfce3/kT0XnRZIv6Nb4tN/wX7aI1ztl4MMuXcug1CEj/2EyxR26QDSynhJM3RrmbAd7
-	YNNA3V8n8adcjHmrpYeONFMxgK8WtidMeDtcCo3TzzhKLeu+r0D/7m0f2T0bBsdh94ZaQD6OkCV
-	wIDtIatxL7gOMnfcMN9w1I28fjliH+q5fR6AiP7BBnzAGmvUHv6S41iyCsuRdb2fVyB8dXvMsl2
-	MiFBn2hSf7n0E4eQLxphRd+ThHqANQ4+ngdJhoSPhu0Fufp8fklxQ9rdBVEZloXYn6TeiHe/JZm
-	gySt85ORUYe2j0Vjqcpj9dwfsH3E83Fyel3panmvYTxyjIjPa
-X-Received: by 2002:a05:7022:986:b0:12c:6ec9:3f1 with SMTP id a92af1059eb24-1323b0b726emr1668516c88.21.1778172598081;
-        Thu, 07 May 2026 09:49:58 -0700 (PDT)
-Received: from tornado.. (wsip-70-191-90-18.ph.ph.cox.net. [70.191.90.18])
-        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-131f99a5a9dsm498874c88.4.2026.05.07.09.49.57
+        bh=gHS86kLfvSZEt6u0DRNxMP3AK+yT0cLfftthW3UK2M0=;
+        b=Pn3jR03mWvQ55TQypBLGyzrNXUXSmO37uz3E6tojbjrjgmVmlzukjAm+/8SzMWoPAp
+         BMgtFHVpivHxnSUsCSiKkkojzzoqIzBubDqr7UMVYJaA34AWWXj7MXVJGOxVDV+knSs1
+         /vlZrQ4d4aJzo+Qa0c44ZE7l0WB4y40bcPV0zw4IcJ/htudi6SQVPGt4PjCvBt+8k0l7
+         RYVD389vkvGqTXhXHIY0Na0E3oazi72ijQLfb7p3fG/zOAvBqPX1sxBchL6ErO4l719Z
+         ZJQk1vs7k8b84vcqVT7s0jeyKDLfMVB/i93sZokHaq5KkQYpFzqBEhu0culGJyODtt7/
+         v8Xg==
+X-Forwarded-Encrypted: i=1; AFNElJ9UFh3Tamd+Acfz1Y6r1uQy8MTgOaJa2bk1FqbWU5rgvmngxb+IrOauBuLC2Lim1MOD9Pc12i0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0GcUZLegpfjt6kRxsu0d1CXLfiqphqwuqWpBr01tBI+NMTpot
+	nFJP0eSxNLUSCNge7hhHXe61cQ5vuPDqL6c5yfXZaAkFjX0UO/xTuZt7
+X-Gm-Gg: AeBDieu1On4tZ6HaY8gTw/ADHYq+wvdDzNA5QFy2dtSYQVKfPYk/UZIfFbfNvL7IdaD
+	Qu8XM5F5ryaoCGL1i4DmzxJH02Qf0go+MbRk/3/sD+E7BPtPmku3iSzp5IqYdsMp8rNX1jZPyUp
+	I0k+nGxjtUYQA0Q9OyCQQhIcSx1UYbtrMnhC8YXygnl6GChdQYVahR2NkhG8dm7wMuDjK+6WhV1
+	6oalCTt+1hGUoJz7sP/mCiXS4IT7oelEukmRu1+f7b1AVDppFCzFr0p2LPDQYjGBn15wNq/S+GF
+	nc6l7tB0m7BrviuCW95AEsLkTxNIRf1O6ERnpoSeRWqmS3Tc9hiFesfCW6JLaoattJ62FE6PJWI
+	LxPdmR9N96McBV8F0M0ZkBY2BF2A6euDD3k2eZarPuMOz9kiFX0zW5bvR6olxLSLg0uQbe5yspS
+	6qcUVkR/GX1refTPG5rD7USOE7bghqFsbSgT8Xo0kghoRspo00cQ==
+X-Received: by 2002:a17:90b:3ecd:b0:366:3517:1a98 with SMTP id 98e67ed59e1d1-36635171b07mr1354381a91.0.1778172742408;
+        Thu, 07 May 2026 09:52:22 -0700 (PDT)
+Received: from localhost ([49.207.150.30])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-365b4bd67b1sm9638608a91.1.2026.05.07.09.52.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 09:49:58 -0700 (PDT)
-X-Relaying-Domain: embeddedts.com
-From: Kris Bahnsen <kris@embeddedTS.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Marek Vasut <marex@denx.de>
-Cc: Kris Bahnsen <kris@embeddedTS.com>,
-	stable@vger.kernel.org,
-	Mark Featherston <mark@embeddedTS.com>,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4] Input: ads7846 - don't use scratch for tx_buf when clearing register
-Date: Thu,  7 May 2026 16:49:43 +0000
-Message-Id: <20260507164943.760009-1-kris@embeddedTS.com>
-X-Mailer: git-send-email 2.34.1
+        Thu, 07 May 2026 09:52:21 -0700 (PDT)
+From: Piyush Sachdeva <s.piyush1024@gmail.com>
+X-Google-Original-From: Piyush Sachdeva <psachdeva@microsoft.com>
+Subject: [PATCH v3 0/2] smb: client: Spec-compliance fixes for Kerberos key
+ derivation
+Date: Thu, 07 May 2026 22:22:12 +0530
+Message-Id: <20260507-kerbmi-v3-0-397ebbb53eff@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9684F4EC7D3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zWNQQ6CMBBFr0JmbU0zFQOuvIdhYYepjAZKWiQa0
+ rtbUJcvef/9BSIH4QinYoHAs0TxQwazK4C663BjJW1mQI1HfcBaPTjYXlRLuioNtVg7giyPgZ2
+ 8ttCl+XJ82jvTtK5Xo5M4+fDenmZcvV/U6H90RqWVtnXlGMv8Vp57oeCjd9OefA9NSukDAbn91
+ LIAAAA=
+X-Change-ID: 20260429-kerbmi-dc0853cd29fc
+To: Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org, 
+ Shyam Prasad N <sprasad@microsoft.com>, 
+ Bharath SM <bharathsm@microsoft.com>, Paulo Alcantara <pc@manguebit.org>, 
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, Tom Talpey <tom@talpey.com>
+Cc: samba-technical@lists.samba.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, vaibsharma@microsoft.com
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3196;
+ i=psachdeva@microsoft.com; h=from:subject:message-id;
+ bh=QhvtuPuYuRikxrXlvfGt1GYpisVF2O1XfkkjalC53Gw=;
+ b=owGbwMvMwCV29FJ3ncRHDT/G02pJDJl/Djt29ets/C4cHbakV6Ptv5ByCLPywWLreA9z4eML9
+ KJebz7dMZGFQYyLwVJMkWXDiTuyvPG7JOd9emIEM4eVCWSItEgDAxCwMPDlJuaVGukY6ZlqG+oZ
+ GukY6BgzcHEKwFRrTGJkmL5nbW9+q87HpdH5Gr17C1T+v/k2eTlbEKfbJwt7td2rtzEynKn8cSI
+ rwac1bWFr6Oy59+Q9pi9UZUgVfyW3hnt6NIc6IwA=
+X-Developer-Key: i=psachdeva@microsoft.com; a=openpgp;
+ fpr=80350F71F916134953C3EB979E19C6F9839C3CFC
+X-Rspamd-Queue-Id: 1791C4EC9C0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[embeddedts.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[embeddedts.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,denx.de];
+	TAGGED_FROM(0.00)[bounces-244608-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244607-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[embeddedts.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kris@embeddedTS.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[samba.org,vger.kernel.org,microsoft.com,manguebit.org,gmail.com,talpey.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[spiyush1024@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com]
 X-Rspamd-Action: no action
 
-The workaround for XPT2046 clears the command register, giving the
-touchscreen controller a NOP. The change incorrectly re-uses the
-req->scratch variable which is used as rx_buf for xfer[5], so by
-the time xfer[6] occurs, the contents of req->scratch may not be
-0. It was found that the touchscreen controller can end up in
-a completely unresponsive state due to it being given a command
-the driver does not expect.
+This series fixes two MS-SMB2 section 3.2.5.3 spec violations in the
+Kerberos session key handling path of fs/smb/client.
 
-Instead, rely on the spi_transfer behavior of tx_buf being NULL to
-transmit all 0 bits and use the scratch variable for the rx_buf for
-both the 1 byte command to and 2 byte response from the controller.
+Patch 1/2 (resend of v1 with a small cleanup folded in) fixes the
+AES-256 mount failure with sec=krb5: encryption and decryption key
+derivation must use Session.FullSessionKey (the full Kerberos session
+key, typically 32 bytes for the aes256-cts-hmac-sha1-96 enctype)
+instead of Session.SessionKey (the first 16 bytes).
 
-Also relocates the scratch member of struct ser_req to force it
-into a different cache line to prevent any potential issues of
-DMA stepping on unrelated data in other struct members due to
-sharing the same cache line.
+Patch 2/2 closes the related corner case in the same section of the
+spec: when the GSS protocol returns a session key shorter than 16
+bytes, the buffer must be right-padded with zero bytes. The current
+code copies the GSS key verbatim, which causes generate_key() to read
+past the end of the allocated buffer and derive keys that do not match
+the server. The trigger is deprecated short-key Kerberos enctypes
+(e.g. single-DES, 8-byte session key); modern KDCs disable these by
+default, so this is a latent issue rather than a reachable one, but it
+is still a kernel slab over-read and a literal spec violation.
 
-This change was tested on real TSC2046 and ADS7843 controllers,
-but not the XPT2046 the workaround was originally created for.
-Confirming that the original modification to clear the command
-register does not impact either real controller.
+Verified against Azure Files (AES-256-GCM + Kerberos aes256-cts) which
+previously failed to mount with EAGAIN; the dmesg "Session Key" trace
+under CONFIG_CIFS_DEBUG_DUMP_KEYS now shows the full 32-byte session
+key being used for encryption/decryption KDF input.
 
-Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
-Cc: stable@vger.kernel.org
-Co-developed-by: Mark Featherston <mark@embeddedTS.com>
-Signed-off-by: Mark Featherston <mark@embeddedTS.com>
-Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
+Link: https://lore.kernel.org/linux-cifs/20260409161538.3618-1-s.piyush1024@gmail.com/
+
+Changes since v2:
+  - Patch 1/2: cast ses->auth_key.len to int when used as field width
+    for "%*ph" in the CONFIG_CIFS_DEBUG_DUMP_KEYS dump, fixing a
+    -Wformat warning. Reported by Sashiko.
+
+Changes since v1:
+  - Patch 1/2: initialize full_key_size at declaration to silence
+    -Wmaybe-uninitialized on some toolchains, and drop the now-
+    redundant else branch (self-review).
+  - Patch 1/2: tighten the FullSessionKey condition to also require
+    Connection.Dialect == "3.1.1", matching MS-SMB2 3.2.5.3.1 verbatim.
+  - New patch 2/2: zero-pad short GSS session keys per MS-SMB2 3.2.5.3,
+    eliminating a latent slab over-read in generate_key().
+
+Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
+Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
 ---
+To: Steve French <sfrench@samba.org>
+To: Paulo Alcantara <pc@manguebit.org>
+To: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+To: Shyam Prasad N <sprasad@microsoft.com>
+To: Tom Talpey <tom@talpey.com>
+To: Bharath SM <bharathsm@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: linux-kernel@vger.kernel.org
+Cc: vaibsharma@microsoft.com
 
-V1 -> V2: Don't use rx_buf when clearing command reg
-V2 -> V3: Modify original 2 xfer command to eliminate dev_err()
-          output on xfer with len and NULL buffers
-V3 -> V4: Move scratch to end of ser_req to force it to a new
-          cache line.
+---
+Piyush Sachdeva (2):
+      smb: client: Use FullSessionKey for AES-256 encryption key derivation
+      smb: client: Zero-pad short GSS session keys per MS-SMB2
 
-V4 Note:  Change to moving scratch was tested against an SPI
-          controller without DMA. We do not currently have a
-          platform using this controller on an SPI bus supporting
-          DMA.
+ fs/smb/client/ioctl.c         |  2 +-
+ fs/smb/client/smb2pdu.c       | 23 ++++++++++++++++++-----
+ fs/smb/client/smb2transport.c | 35 ++++++++++++++++++++++++++---------
+ 3 files changed, 45 insertions(+), 15 deletions(-)
+---
+base-commit: 0cbc300257d9b399491909806777f504ec687c1d
+change-id: 20260429-kerbmi-dc0853cd29fc
 
- drivers/input/touchscreen/ads7846.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-index 4b39f7212d35..1ae1ae42582a 100644
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -325,7 +325,6 @@ struct ser_req {
- 	u8			ref_on;
- 	u8			command;
- 	u8			ref_off;
--	u16			scratch;
- 	struct spi_message	msg;
- 	struct spi_transfer	xfer[8];
- 	/*
-@@ -333,6 +332,7 @@ struct ser_req {
- 	 * transfer buffers to live in their own cache lines.
- 	 */
- 	__be16 sample ____cacheline_aligned;
-+	u16			scratch;
- };
- 
- struct ads7845_ser_req {
-@@ -403,8 +403,7 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
- 	spi_message_add_tail(&req->xfer[5], &req->msg);
- 
- 	/* clear the command register */
--	req->scratch = 0;
--	req->xfer[6].tx_buf = &req->scratch;
-+	req->xfer[6].rx_buf = &req->scratch;
- 	req->xfer[6].len = 1;
- 	spi_message_add_tail(&req->xfer[6], &req->msg);
- 
-
-base-commit: dd6c438c3e64a5ff0b5d7e78f7f9be547803ef1b
--- 
-2.34.1
+Best regards,
+--  
+Piyush Sachdeva <s.piyush1024@gmail.com>
 
 
