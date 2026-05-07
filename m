@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-244517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qP6aHU86/GmUMwAAu9opvQ
-	(envelope-from <stable+bounces-244517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:07:59 +0200
+	id qFo4JGk6/GmUMwAAu9opvQ
+	(envelope-from <stable+bounces-244518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:08:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5B34E3DD7
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:07:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144394E3DF4
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7EC123004D80
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 07:07:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BEA030134A7
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 07:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51806331A41;
-	Thu,  7 May 2026 07:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7060434A794;
+	Thu,  7 May 2026 07:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="SZy4nju/"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="grJDMG22"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0B02E4257;
-	Thu,  7 May 2026 07:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48339257855;
+	Thu,  7 May 2026 07:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778137673; cv=none; b=uygC8jvsirSkYlutWr4UbFKuuhWfTT2l6bBKtsOQFxVj411RS7y0XyOqKHHrOHhRGxmhWdt+xgNqFqd1gpgGsHjZAxMSY6+q7N6yy57KoVHTrj8EKI/H4crPqEVKONaPaUxo4+x5+DyMSIkI0hzRnYStH6+VFeMGGjJNVG0atjs=
+	t=1778137686; cv=none; b=NsPrroRopRmu8D1Sjwx9GvXhFz5p0H6p+/4Al3e8Swc/Fm7LDv0ncr7bceqmtW6c48M0eKDQs3aBoGDtfNt+pPMf0H/1xo/rErHR7juQu73MIz0gtdHkOpZcc9omko8/NjtQTc16um5/t9tIwuRMcgebaJ7KzBkQuDEU8Ni/ngk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778137673; c=relaxed/simple;
-	bh=8FRViC4v3BKLTLc14G0IuejVbnMlw8IZ8RLH1merI0Y=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=k2PgMzxwFRu0ugP3YZqwYz2VKY8pMOYzI8w3iEzw9Car8xJ/hIn842sd0cfyJ7m5UvkJRcmaVj+K6MV0y+GD9ygpbC387saGX4eZUK9bX9/KSjLWgwvXhvSiTy4wEgY9sZDonsUZEozEKlh8Se//J4wgjPwmqmwdAOshExJ9IiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=SZy4nju/; arc=none smtp.client-ip=162.62.57.137
+	s=arc-20240116; t=1778137686; c=relaxed/simple;
+	bh=WsYLyzrzblEslodFIMgSCQ+msNQ83hodnOZNDiXCBzc=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=diQ7wcqGPdeoBM81IjVkOBb2dqaGORQJevNO1NLiDChg83zs9UQ+4+4WEngy9+q97IOnaf59acgMHsdby8EnMuXiAl9hYSRDUffczM8OxCjuSBP80/DGODt7fnT3J04UZNQPPOlcbj5UjiBL6I5pgA2M90W217O/XUJwquYXosI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=grJDMG22; arc=none smtp.client-ip=162.62.57.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1778137659; bh=iskF8EoVx1eo+u9A/G98mixKei1oUBNv8bPdbjEb1eU=;
+	t=1778137673; bh=jhfMdr7ZuzPK+ksWRv7O9E7u4d/Szfr8t5hOhPrLLPQ=;
 	h=From:To:Cc:Subject:Date;
-	b=SZy4nju/XnCEOmlq2doq5xuLpH53fUDiLkZ2dMy9CSSuxK2d3/smoMY9h7CXShL8c
-	 lCbUdhmoYnAiTslQW53mDXy6Ezr5ZFE4+S2itqW29Z9/WCAhXgKkqnqAB5SecfMD07
-	 HJQfdaCB61DvtBTrzEyyJPLwUE49hQP6xZxegxxg=
+	b=grJDMG22MtvdhF1WBJIa2REolhCbgBuU3lBHKdq0/8c7y9Hg5DcePjVKznICgg1NS
+	 wVqiI8S7M4fDPgb06Znxd/9eWsA06Nk6vcCnghW2jViQr+LaB1df7l96yT6BQp5Q6u
+	 hhz1BmswYb+Pzbzpd49gntxE8N7OAJ0cGaju0SIs=
 Received: from NTT-kernel-dev ([60.247.85.88])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 1E23C653; Thu, 07 May 2026 15:07:34 +0800
-X-QQ-mid: xmsmtpt1778137654tvpn0zexu
-Message-ID: <tencent_CCDB1B23FED831830856396BB4DF59D1B106@qq.com>
-X-QQ-XMAILINFO: M0vdiI0AC4YkCeFnOQd/Eo9/iodKPHs5oU6o8zGDpT0HZp0yiCh3ASQlSn5snD
-	 UirnXplLp0LTqU40FyFDOzZAtsponI6rBi3vETFJLH1NoA/iWm5Z5r5A/TleDF6sgd79kmUoGbPs
-	 je+3pC7onu1BU5CmTMtNW+ki3do0R1k9OpJds+DJqJkmusGyzNuQ8CxSN+CBhx97DuZIJzdnXf5T
-	 9ly/M1ejh8b63lLZL2luTItVsJzSOthOAWe/EM+SYlfkxWVwE9yoyPxfIE9fskYAmErkIf45IATV
-	 8tL0Al9f2UFe/njQyc+Wwa0fWlxocUoCwws/sNEKq1iL6yJp2KpHMTOVkYDjfIxM3MrYL+D9e1Jl
-	 p9wZWJ27gZTvGjZPOYn1NXC+1wFeymM1+mJ7okODyf5Dr17uuLT/hHHLsExgvD9ySS2p6vSyPq8s
-	 4q4TJugTQdxPy5paLe31B7neE3Yl3ZJBmTPacPfN1BgTjTVqK3fnaPMZ/VasKIugwgQwJ0BwITZG
-	 2NIFG7ooBRQ5f35l6p7qqbOXgmuAvLpLWxu/bVeTkWAq3VxNsO8tafo3It8SrSSF20EQxMfUjCuF
-	 UpnJ3hMrz2mH9mOmTYQeJfBd6sVg09gVQPkBbZRRFDLAFmPpQgVt14c3NUqkpAWhWEaGxqwq0+RX
-	 RYcWtyuoyl04mkBv/fPe0MW54eh7nAojRxBfLTOB3WQbnmnj69q9adkx+hbIKbiy2A4ssPpMmAP8
-	 nbTNpIjUyxZ4dKvLM0m6NPdgnV5gOoXJ2cdOAS17yvyX5JvDK7yvT65iB4PIlDSOpniwO47QfLUQ
-	 qxXF3+bNZXTeqThNGs63LTRNbbSAub9NlOj+nmN7U36gU3juL8AhKM3C2cDiM3jGswzMZxBLrRtS
-	 6gBsDg9MYWG+6Qq8gHJBttSMog78M/9m/XUD08Js4aKxQ9GsmxgdY+w4bFrHES1XtosHhAKxpi4Y
-	 MYr0bPhc4Ps/KmXG1kgQeLsi1MFW1qkBDaLDavSzFy6GyTkr65iNKrWRWvsWA/td/zp5tOaGR7jI
-	 iGfwHyc+iPB+7MroIjrZjPnAYyYRwmrHlfFNbwYg==
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id 1F10E06F; Thu, 07 May 2026 15:07:49 +0800
+X-QQ-mid: xmsmtpt1778137669txqd1xqw3
+Message-ID: <tencent_7AE3B3373BFCA4633D11AD72CF6897B3EB07@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3JuoJxuK2QvNBHzvgoB2/ycHaXZXV2LHoggvdBcWnfw8r2vTByxaT
+	 u+J1DSdyyTyTlM69lYD+epVJHWfpyWLIKJVGkMNYjURg6UmtQ6tdyrQtXA00ktMhWUWSExihz7c7
+	 kiLXms1uRWDYPi1Nq0y920MxCy6qE1gy283ORkru/mNySzuEnPRSYBQsrCySCVvRQmEwxrfc02sC
+	 vlsAeCLP3kWophnvQ7LaGEIp299Xd+rMPbYNpsTXNBCvU/2pOI3735/2d4kVqu85UnsGxR9t0KZ/
+	 ycPljMQUmRAFdpxIO8QYZ0NvGmMIMHYYFwa8bo2yfkEwYLz9NRyRWP6JuX2WKFJWT3n1Og6AOPR1
+	 vDWjZBvU02Ipfr5DDiKwP3ti0eVBjiYzMmwqU97m8XULFf3bJHNv5i3pAiv5+UfTM41aCbD9K9fJ
+	 LMPUbrF2GCLLA3IblmYJ6h9r8zKH+drOurzLu8X4rwB4Y+/d2q11vf2tWaqkXtF31kuo9ktlImgt
+	 xyL6Oatnmh6qU5q/tEG5gj54B4lHKgpbHRb3CFJXmzQeTcq7Cj868LmAUk1i9S64MLcigAhsAwKR
+	 KEBSUg1rTePGjo4YOPeirH4xquPMw6URZnc96HdcKHRUXNsirRDqTA6Qe0rwDjeaghWMqI+bFuBA
+	 ZnTIow+2krhPToHpdn0yJTSOLnar9Qlbw0Px/7gEw9Qoeh6ndSbvADcEIl7qVrX7osme7kU6Y447
+	 omS/AjOoe2yqZEefPndIB/ezyU5RmUTCYdUE80P3S3A1WkJ2wFkHXLFylgCI+xg+tzFCSMaHWu0g
+	 ZmQrUwHhGlHj1d5mX2P8Iq7Z9qoTkJTg424uaotirMyzRGSIbABZpDE5L9OLSyJaJ1/G6IMCQ/rK
+	 +OsGwiaPGpl+1sxnrzSmmbTFyjVn+Jc1sw583tcpMMOkZfjEY4qT5V5DAiEINoRjpHPnHAsepzHC
+	 74aqs3tdHrefmpPL1J7JgjbovlrIg4Yz7XQneqjN5O4IXT4V1TVD7ppwhsvA3dkRXN+wGjXK+Wij
+	 Ll6TfY8KlGFQO16gNsbkCSjtDOLUkyCzBDpokxoy1yaRcfAAsCXQdYuVPO2mujFVlRXpa2dYv95F
+	 Q20PZ8RVahp75BVjxZHNrKJL98yQ==
 X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 From: Fang Wang <32840572@qq.com>
 To: gregkh@linuxfoundation.org,
@@ -85,9 +86,9 @@ Cc: patches@lists.linux.dev,
 	Roman.Li@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.6.y] drm/amd/display: Do not skip unrelated mode changes in DSC validation
-Date: Thu,  7 May 2026 15:07:29 +0800
-X-OQ-MSGID: <20260507070729.2299428-1-32840572@qq.com>
+Subject: [PATCH 6.1.y] drm/amd/display: Do not skip unrelated mode changes in DSC validation
+Date: Thu,  7 May 2026 15:07:49 +0800
+X-OQ-MSGID: <20260507070749.2299524-1-32840572@qq.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -96,14 +97,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE5B34E3DD7
+X-Rspamd-Queue-Id: 144394E3DF4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -112,10 +113,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[24];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244517-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244518-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[32840572@qq.com,stable@vger.kernel.org];
@@ -126,7 +127,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	NEURAL_HAM(-0.00)[-0.997];
 	FREEMAIL_FROM(0.00)[qq.com];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:email,qq.com:mid,qq.com:dkim,amd.com:email,pp3345.net:email,gitlab.freedesktop.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,qq.com:email,qq.com:mid,qq.com:dkim,pp3345.net:email,amd.com:email]
 X-Rspamd-Action: no action
 
 From: Yussuf Khalil <dev@pp3345.net>
@@ -198,12 +199,12 @@ Signed-off-by: Fang Wang <32840572@qq.com>
  3 files changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f51c3921cbc2..12f75b2ad664 100644
+index 7eff2b94ab66..bb5e3a6086f2 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10152,6 +10152,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
- 	}
+@@ -9908,6 +9908,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
  
+ #if defined(CONFIG_DRM_AMD_DC_DCN)
  	if (dc_resource_is_dsc_encoding_supported(dc)) {
 +		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
 +			dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
@@ -214,10 +215,10 @@ index f51c3921cbc2..12f75b2ad664 100644
  			if (drm_atomic_crtc_needs_modeset(new_crtc_state)) {
  				ret = add_affected_mst_dsc_crtcs(state, crtc);
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index 88606b805330..8d4f2cadb915 100644
+index df18b4df1f2c..12385b6f8443 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -737,6 +737,7 @@ struct dm_crtc_state {
+@@ -698,6 +698,7 @@ struct dm_crtc_state {
  
  	bool freesync_vrr_info_changed;
  
@@ -226,10 +227,10 @@ index 88606b805330..8d4f2cadb915 100644
  	bool vrr_supported;
  	struct mod_freesync_config freesync_config;
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 2698e5c74ddf..ab6924d3046b 100644
+index 495491decec1..94c83a707acc 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1587,8 +1587,11 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+@@ -1564,8 +1564,11 @@ int pre_validate_dsc(struct drm_atomic_state *state,
  		} else {
  			int ind = find_crtc_index_in_state_by_stream(state, stream);
  
