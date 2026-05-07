@@ -1,155 +1,167 @@
-Return-Path: <stable+bounces-244648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id xpyPDmoW/WlIXgAAu9opvQ
-	(envelope-from <stable+bounces-244648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 00:47:06 +0200
+	id OAb/CFsi/WmGYAAAu9opvQ
+	(envelope-from <stable+bounces-244649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 01:38:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5F14EFE34
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 00:47:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AA54F0293
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 01:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1822B3015A6A
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 22:47:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7743C303C7FA
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 23:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9872F2F8EBC;
-	Thu,  7 May 2026 22:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C171C37104A;
+	Thu,  7 May 2026 23:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="LisTNqiy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OcGDhBBK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97B22F8E9F
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 22:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504A9340281
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 23:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778194020; cv=none; b=T+fgZ5taubD512tbB5Velz6evF4PWBdZwKajscPuYOdNlo8XhIyZwgUFDcOSVb2/4q7C2lM6sMQcWtLieIrSH8hdzarwkH/VR9lx9oSqebZ7zF5Aww+aAIwu/w7AuqgcTUW8cYDtQypRz6EpRbQCR+l2L47tV0UfCq/aBkWFvcs=
+	t=1778197076; cv=none; b=BElCEvz4W7iL7Vqd4HFt5B97ODn+ZBm2qPAb0vWa1CF9Bbkd0Cp7ooCGCC17rwUZ7ye+oDfSkhnlNkXgdZJ+0sE73oN4QGMPMnUE3482EJrj777REijfn/0NsPNXloXa4MSEQMHKVbWoRJ/NcSOWtmvJ/v0oUmx0JbtsLRap5Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778194020; c=relaxed/simple;
-	bh=cpcPTjjL0ESeQFPwTRJDxYElHlN+DxG+yqPzFRlnCd8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=kTLsDn4ws4aAM7fZnMUq+xBWXuDjaof8At/netPkHDK3egHNA1G8mNpSp/DNnCcOw6n+AM6sNhYgv/RqeJhstjlrxK0BPoVKdFpld+moVsNOKAFqZ/LOl1XVaeCF4HxGzmew7LdWkBXyBroEx3r+GN6nEv8M4sQp167rGsOwzmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=LisTNqiy; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dcd89701acso1304921a34.1
-        for <stable@vger.kernel.org>; Thu, 07 May 2026 15:46:58 -0700 (PDT)
+	s=arc-20240116; t=1778197076; c=relaxed/simple;
+	bh=dymaywSsJ8bL9nKxldKN+amZarY0Rc3i6Hw2CU/N3Rc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nWQ/yYq2lVIVR1H6KMLv2WDLuW5One7l28rt4NDtqx9fF5zFLFBLcTtPpdaVxy1Ar3oO0t4nGyZC+7ltXYlo51zezmj1srW2a23Be4bVdPFP5v8IduFXjvYO0JcFXyov0RSPjAjko7cpd+juedSo0dShJizKG4nAlXr2p1vcIAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OcGDhBBK; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-40eed9b9737so63213fac.3
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 16:37:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1778194017; x=1778798817; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kiQ3P2gC1LTtnG/iehLF6LhZJqZTTIucvfOy611uss4=;
-        b=LisTNqiya44q6P3Oqc6+F/2jXUBbYcszC3RDSnqyDgME8s3ejhn/MZowYVgxD4uoYJ
-         04I528RrXssS11CxOW9eaUFGwxUFmZcm4+DHEqV+sv8GbjHf4DYP4kduksuK05hPphqQ
-         ScmeJjO4H7/WPvGjjQ4KlWnegDUkfHbpiYua5cOv90vTCDs/kcEcGwN4A9MOeX7WhYFS
-         Va5waV8xTQfTDx9o9RuM3gCsrrLmyVYQsU6OFX2darrzgkr6o9/OsBFDg4GjIZvCU6l2
-         gH8xCrWt76YzDYVSapy7rso9VHMbXprJHi9GW8E+rHgvR2zCZ/o58oIGzoU+jb1S9wNu
-         BlXA==
+        d=gmail.com; s=20251104; t=1778197074; x=1778801874; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=evwJ3WUGDeN11ruEycjl7by7AWSkCxsRcEiQqBCjgN4=;
+        b=OcGDhBBKvvC8JXYhHlIolDtuF3pQwUJKAMYyIaBVZHx6WM0yorg+lKAbZ/CiWReDFf
+         g93WwYjgxX83uCKiV0PbgXnkskPnatfr0TKfgylOSC5AtIEfnGu4JhNUnza1d9ljtxwy
+         nO1CDNp3/wpxVlEljP50kSTiHkIlTpWpa6Ws//CiZlqB3MPNoCGnIFYBlnWW0M/fDeql
+         VzSIOi2f/yy2R1uwpjyYcMSqwrFhsV7SDC7tUx/2Nnph9PLsXLuDpf3SrFhiDMQA0BCq
+         ALtG6BqTAjObumtLqb4tJWDn/WWgJkC8toBOKyg32Nt8BC2l2UlYWwXiZZVsV7PFy3tE
+         B5lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778194017; x=1778798817;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kiQ3P2gC1LTtnG/iehLF6LhZJqZTTIucvfOy611uss4=;
-        b=r01Yt1Vc8+NMz31MSDvlFv10RB7MTSSdPXtZGz0AyyHtL3k5KpfaqFqcBBnRTRQRrQ
-         lNIsNudik9u99hVFMFAfGWXXgoy8goTzdoY8tiYQpd5R2YYcs8wdL+DqLT4QbyrrZ1PH
-         RLObB8ZEvREPK1rOh3IVFkbD5QgvTyYHTs0hlEx9C8ZG0bhrtiPtLv17D4w2o6plyToL
-         QmFvKQ6oyDHS72AQY7kKw2W9oa15kZeqxF89YNuKLTjRKCttKJOJt3ckOPOBTnjHMs6v
-         mRQViOtYIiBbJCIyWCp5qbnk+LXgB/hJ8zFOYc9Euuv+ykrhVbt8gXzkpLh+fQcg40QG
-         oU1Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+nDnUzwQDFXFq37LBdQDI/7BUp+XFRSMtda0vQky5ISWNhnn7SpnSa3ZpXIM70HSMVQy9vwkU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8ODm4V84VtfA8FlmYjtpVfu9USi7zrQ5uEC6BFXfU4XcnEnKP
-	xlisnUqPXUywEXslv2G4n2AeY77FRo6IBsiPLiInznVPj7HEN9sUXblF4cFROsTEfuJkVOyN/5k
-	kNTtnLQkQ8Q==
-X-Gm-Gg: AeBDieuhKfZpXwEoGLYJvmA5Lmxeke4B5R4IY2WnTedbxVUE0ub81XI1k2hvxUhPLIl
-	0WoHgqV8+TykXA6s7Rf8RKfBxByRJioM83ass1Zf2nxqPDV8jiz5LceIcITnwytHPvN4vQz2fNt
-	IOGJH8kJt7KRMR6kxHkvkv2yKwNC8rR/RBhWGpFD3mb37oSAcRutcDvmAgvlYX6mMYiKTOOUma6
-	u0xUXH13YxR7bvv6/uxu5VbYQ+EUsYH/BqwTB9euIsvBSBsM+GOPnchbOhkjHQaPGlrSlFAa2rH
-	pEoQvaIEPouUMs6ro/Wu/XqMPQd6+fTB8HIJ0NZOhawKs4VeKDDSqF22Syu3vubEHWkSodGznrK
-	y92rkJr/7PGqFh2lxx9eFSqI7oL7uka3qNu0VARJNL11AXUInPU6TP3WqrNDF7yXz4bdHBsFoqJ
-	Z0/pg93iQwQEQzfPZpSIH3mQaAHX5Y7aiA8iyHlEYNXawbFh2zreFTS+wUMK4IWGYpbj3hCmSBt
-	hcE/HbTiaayTlaocIbO
-X-Received: by 2002:a05:6830:4992:b0:7dc:e45a:adda with SMTP id 46e09a7af769-7e1df0bae0bmr6007868a34.19.1778194017680;
-        Thu, 07 May 2026 15:46:57 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e367d9d788sm6924a34.24.2026.05.07.15.46.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 15:46:57 -0700 (PDT)
-Message-ID: <12c809f5-1326-4cd3-9d4d-2bfb011b23e4@kernel.dk>
-Date: Thu, 7 May 2026 16:46:56 -0600
+        d=1e100.net; s=20251104; t=1778197074; x=1778801874;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=evwJ3WUGDeN11ruEycjl7by7AWSkCxsRcEiQqBCjgN4=;
+        b=l0ZNimWe5xdRbmlFPsbjGOK0sVIIkr7M+i3rMpeDOJrfmrnoD8+lyMTv0STsHmTh1M
+         8yvBef9kucRl1dgI49cENla3g+tq2l19qgF1qzEY+0gY8jrk/zRg566PFuUbWEIg4xDo
+         QI9KCkpIuR9aqKBz0TpXh2CVcmf6qqg8CrzwguwH5Y8PI/Er8es3dvO13Cf2fNrH85BV
+         KZU1DhIL24ycuRrwvxFq//MchJcxMh+wyxnWHQOvVQl7SKPvSq5Qnl3VSpsFTECOBjBO
+         QfIMGGg6GCfU4li8+xdvXhZRoepGKJrr7t+Di/zmms93+exBcdzW3/rbu/f4/jj2O2QH
+         D9Lg==
+X-Forwarded-Encrypted: i=1; AFNElJ8t30zdnmhhxNjEKfmgdPUQ5oOVMKte3OCvSY6a+HQbFs79VrqDXs1W5ljTlnQCs0A5EDgRXYw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsOtqTHG3fsc48fzDKkTH1hayQGzbJ0f/9iSsxQb87YGROhyAe
+	54JSwwXpJlT3CxQCxoIm7LDli32n532T02eQIGyJ8gqZA04aRtOTIuNRYDiI7ckgsYs=
+X-Gm-Gg: AeBDietL0/LhAlmmCC7hqNRYv/2Ga2guS6Cm6VBSHg3bAiA8UyiEEkw8BDc4swCTQFq
+	oIU2WRvEhpFQGgtk2kMSr/RBX4zBbMUt+aqaVZ2B1UcUtuyY4yHSRxNEHystoZQ8VKXbEaKOaCK
+	76vQ+OIQD6BtuJyYRs9OWsTlHVY4zDCMAFrM40cSzEM7SwjxZpsvvWaxJI71K/dkZMrIkgheZCu
+	KMCcBAIslWxGENvPMcs8sDxgorxCwvA1BZtgPWbuPfINYRK/4nL07ZId5BnWuNcdAZVS+d6Lf5S
+	gmckC4Nq0JUq9xM4balUlaILE86XYtGyfZG/G99OtO0vo75weShFgSF6S9RVjPDIj5Vl8P6QfET
+	jm7AoCexgpwZfvlskcbG0+fakm1rpQaXjSUNTIewM1pvXNrriPiCR/sZ/mL4CYTPTusl693Vd62
+	2RKFxykjUxxYRddyu77CdFV4IaMifcHVnnb4JoOSFdfd+dOe6sd0P+ni85AZS/ZDcCTRl5KY20/
+	qVKvHA0uO4vkqg+b8uqn/2lmBNxTp3mEeQ=
+X-Received: by 2002:a05:6830:d1a:b0:7dc:d390:4999 with SMTP id 46e09a7af769-7e1df0d2f3bmr4084450a34.6.1778197074200;
+        Thu, 07 May 2026 16:37:54 -0700 (PDT)
+Received: from localhost ([136.49.184.116])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e367d8fd96sm78980a34.19.2026.05.07.16.37.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 16:37:53 -0700 (PDT)
+From: Aaron Esau <aaron1esau@gmail.com>
+To: linux-crypto@vger.kernel.org
+Cc: herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aaron Esau <aaron1esau@gmail.com>
+Subject: [PATCH] crypto: acomp - fix dst-folio branch setting src instead of dst in acomp_virt_to_sg
+Date: Thu,  7 May 2026 18:37:48 -0500
+Message-ID: <20260507233748.327004-1-aaron1esau@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0.y,6.18.y 0/2] Backport io_uring commit to affected
-From: Jens Axboe <axboe@kernel.dk>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- stable@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>
-References: <20260507124253.97596-1-harshit.m.mogalapalli@oracle.com>
- <5fed66f0-ea72-4f36-bf50-2d7c39c4fdeb@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <5fed66f0-ea72-4f36-bf50-2d7c39c4fdeb@kernel.dk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9A5F14EFE34
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A4AA54F0293
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244648-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[oracle.com,vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[kernel.dk];
+	FREEMAIL_CC(0.00)[gondor.apana.org.au,davemloft.net,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-244649-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[aaron1esau@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20251104.gappssmtp.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On 5/7/26 4:41 PM, Jens Axboe wrote:
-> On 5/7/26 6:42 AM, Harshit Mogalapalli wrote:
->> Hi Jens and stable maintainers,
->>
->> The intent of this series is to backport commit: 770594e78c39
->> ("io_uring/zcrx: warn on freelist violations") to 6.18.y and 7.0.y.
->>
->> This above commit likely is fixing commit: 34a3e60821ab ("io_uring/zcrx:
->> implement zerocopy receive pp memory provider") in 6.18.y and 7.0.y.
->>
->> Pulled in a prerequisite to cleanly apply the fix. Only build tested.
-> 
-> I don't think these are actually required, but at the same time it does
-> not hurt to add them. I'll leave that to Pavel to decide.
-> 
-> In any case, thanks for doing the backports!
+In acomp_virt_to_sg(), the dst_isfolio branch calls
+acomp_request_set_src_sg() instead of acomp_request_set_dst_sg(). This
+overwrites req->src with the destination folio SG and leaves req->dst
+holding a raw struct folio pointer (via the src/dst union). The
+algorithm then reads from the wrong buffer and dereferences the stale
+folio pointer as a scatterlist.
 
-Adding Pavel, I had assumed he was already on the email, as he's the
-maintainer for that file.
+The bug is reachable from UBIFS decompression on systems with a hardware
+compression accelerator (HiSilicon ZIP, Intel IAA, Intel QAT), where
+crypto_alloc_acomp() selects the hardware driver over scompress.
+Software scompress backends are unaffected because they set
+CRYPTO_ALG_REQ_CHAIN and bypass acomp_virt_to_sg() entirely.
 
+Fixes: 8a6771cda3f4 ("crypto: acomp - Add support for folios")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Esau <aaron1esau@gmail.com>
+---
+ crypto/acompress.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/crypto/acompress.c b/crypto/acompress.c
+index f7a3fbe54..5a8b0cf3a 100644
+--- a/crypto/acompress.c
++++ b/crypto/acompress.c
+@@ -237,7 +237,7 @@ static void acomp_virt_to_sg(struct acomp_req *req)
+ 		sg_init_table(&state->dsg, 1);
+ 		sg_set_page(&state->dsg, folio_page(folio, off / PAGE_SIZE),
+ 			    dlen, off % PAGE_SIZE);
+-		acomp_request_set_src_sg(req, &state->dsg, dlen);
++		acomp_request_set_dst_sg(req, &state->dsg, dlen);
+ 	}
+ }
+ 
 -- 
-Jens Axboe
+2.53.0
 
 
