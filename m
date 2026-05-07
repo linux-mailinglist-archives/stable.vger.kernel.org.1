@@ -1,315 +1,249 @@
-Return-Path: <stable+bounces-244516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QO9yAwg3/GmUMwAAu9opvQ
-	(envelope-from <stable+bounces-244516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 08:54:00 +0200
+	id qP6aHU86/GmUMwAAu9opvQ
+	(envelope-from <stable+bounces-244517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:07:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A65C4E3BF2
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 08:53:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5B34E3DD7
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 09:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F6AA3025717
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 06:51:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7EC123004D80
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 07:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF0E342539;
-	Thu,  7 May 2026 06:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51806331A41;
+	Thu,  7 May 2026 07:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OmGus5Z3"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="SZy4nju/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C41342517
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 06:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778136668; cv=fail; b=VYPw3ZrN8+ErnkHSyAzmp2ipn/wX9iY2eZRyVECf9cQHIGMWwXijLO9iGo3r8nkV2pwyAvVm8koahwk9/tQGkV3aO+/T5hQmp+6iLFlpU8+WbTIYsb1DqaTomGKnNS04f/yrannD2kaA9Ga3kwA1nJEF0hBMmKg/1qnRZ2sGmss=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778136668; c=relaxed/simple;
-	bh=zmyT/HNjtxFn7qups7yi4/isxscuozmhg0uHaow2BRk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rcScBi6YhnP1YNOtoQ5aHQ5inNXYXNht3iYwmWgiDYA/2L4MiSMt1jQ2HWThzsQSy0vM7diz3fVbln8fq8vu2qeVbtB4/JZ1H5YQvpqzuVTUEZ43NULtk1Be582nQyITx4stX7V5qRlA7CsbEHyxrlPCw4PzQIuQrZKhO8gasDI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OmGus5Z3; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778136665; x=1809672665;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=zmyT/HNjtxFn7qups7yi4/isxscuozmhg0uHaow2BRk=;
-  b=OmGus5Z386YCc3E2on4N3Js+zdCHMI+3KmXr95wNvatxFdHbmOqiZkkc
-   B6lnH6gACDsBMGVe4WfbhlZ2Bazw1c4IpqaWuZt6S8c+52sBLlWuvumbL
-   BEglN2RYV+49Widznskt8jdHuEMHpAj+2yA9ufG1KePsSsgkO4TMKrjWc
-   8qF+Y+Cye8MA+JXWUu8Pf9EWF3bG2MrF4hPOa8PIzuANIGZ2lq2k1Rwcl
-   7v/f15Z6JVKlzB50sdeDMhrOmjKZ0s6P5q7W6ZSwe8E6VFm0WZ5e50bhK
-   NLxRoD8QD3LsN3A7jeyRe5eeUAV6GM/Ft9/Ew8pSBqML/ZIdwGJkG638K
-   Q==;
-X-CSE-ConnectionGUID: xyCW2zHtQ5SZotlL1b9Rgg==
-X-CSE-MsgGUID: cHttu6VFTH+hkiVAZDpfYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="78229593"
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="78229593"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 23:51:03 -0700
-X-CSE-ConnectionGUID: SXlM1Lu+S0yWVpor26TWGQ==
-X-CSE-MsgGUID: Ep4LU3S1SaqSIVKcWarhVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="259809563"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 23:51:03 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 6 May 2026 23:51:03 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 6 May 2026 23:51:03 -0700
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.27) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 6 May 2026 23:51:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LCzhDDh0u3PC/33DawtE/KCeKesMITNRO/96WH52M5z5xinHdJ2Wsc2nZtRSP+WAERNe/bAbghkuVwWM0bxWPjhDZgPhM3MhWRpUMDQsN44jIZ+HY1J8CVxJIq252izc+xY8+IHvK1mXMP45zIvf0Layh5ILXJOxK2IiN3z0eLDqj9THIiWN/Da0BCm+KzhZdlP4XtBapVNP5d0qp91fQQHztyupzgk7qIw48zs+hL2H6YWE4VmwFa6Yjz1RStJkQdSJUpmF4HgpYgby5eONMfJQckM0h4vmqTJFxjRr5PB/+EaNvICU13KHrTjf2XsVfE2rvkkXQi1FB1TVTJYyfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lQGtZ7PVTfBgOynmmmajyWV+ElOiGfUYjpsmrBlfA1A=;
- b=gvnemGYwQkiPAAWGuPppMYhtriVg/w2F9YNwEgFVz/1dY7RzFf5GNTeexpnhvftXbC6hDZJS1FIKn/Nlyy4b8sVqOoQ7a4HE9qQ/aBZkZakR2NxYnmPqxvMh8MWASSbTdfDvehiLPupTlzhlSO+FcwfSWOcbN2kLs2yV/+h8vAUSuu1lwpaQA5LitsVKhV1TfzKjjk+D+eEX6291r5TGbOvdn2qRR/tavZXQN/RrjFvDKCWsrbj80EJHN3RRXG9vxfujyIY8EPN2ckstue8FJ4BF4uqyiqKmTSYESJ6xFO3Um/3fWD01GL1ZQ0bPGRMx1cF32ewg7+Nton1ywlBxAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL3PR11MB6508.namprd11.prod.outlook.com (2603:10b6:208:38f::5)
- by PH7PR11MB6953.namprd11.prod.outlook.com (2603:10b6:510:204::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Thu, 7 May
- 2026 06:50:55 +0000
-Received: from BL3PR11MB6508.namprd11.prod.outlook.com
- ([fe80::53c9:f6c2:ffa5:3cb5]) by BL3PR11MB6508.namprd11.prod.outlook.com
- ([fe80::53c9:f6c2:ffa5:3cb5%7]) with mapi id 15.20.9891.008; Thu, 7 May 2026
- 06:50:55 +0000
-Date: Wed, 6 May 2026 23:50:51 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-CC: Ramesh Adhikari <adhikari.resume@gmail.com>,
-	<intel-xe@lists.freedesktop.org>, <rodrigo.vivi@intel.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/xe: Add bounds check for num_binds to prevent memory
- exhaustion
-Message-ID: <afw2SxbMLX10RXZ8@gsse-cloud1.jf.intel.com>
-References: <20260506180636.23771-1-adhikari.resume@gmail.com>
- <afuWYH88a4UaABXs@gsse-cloud1.jf.intel.com>
- <7977ff722a61b0e235e3c8007d474ffb2e7b9506.camel@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7977ff722a61b0e235e3c8007d474ffb2e7b9506.camel@linux.intel.com>
-X-ClientProxiedBy: BYAPR07CA0057.namprd07.prod.outlook.com
- (2603:10b6:a03:60::34) To BL3PR11MB6508.namprd11.prod.outlook.com
- (2603:10b6:208:38f::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0B02E4257;
+	Thu,  7 May 2026 07:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778137673; cv=none; b=uygC8jvsirSkYlutWr4UbFKuuhWfTT2l6bBKtsOQFxVj411RS7y0XyOqKHHrOHhRGxmhWdt+xgNqFqd1gpgGsHjZAxMSY6+q7N6yy57KoVHTrj8EKI/H4crPqEVKONaPaUxo4+x5+DyMSIkI0hzRnYStH6+VFeMGGjJNVG0atjs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778137673; c=relaxed/simple;
+	bh=8FRViC4v3BKLTLc14G0IuejVbnMlw8IZ8RLH1merI0Y=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=k2PgMzxwFRu0ugP3YZqwYz2VKY8pMOYzI8w3iEzw9Car8xJ/hIn842sd0cfyJ7m5UvkJRcmaVj+K6MV0y+GD9ygpbC387saGX4eZUK9bX9/KSjLWgwvXhvSiTy4wEgY9sZDonsUZEozEKlh8Se//J4wgjPwmqmwdAOshExJ9IiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=SZy4nju/; arc=none smtp.client-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1778137659; bh=iskF8EoVx1eo+u9A/G98mixKei1oUBNv8bPdbjEb1eU=;
+	h=From:To:Cc:Subject:Date;
+	b=SZy4nju/XnCEOmlq2doq5xuLpH53fUDiLkZ2dMy9CSSuxK2d3/smoMY9h7CXShL8c
+	 lCbUdhmoYnAiTslQW53mDXy6Ezr5ZFE4+S2itqW29Z9/WCAhXgKkqnqAB5SecfMD07
+	 HJQfdaCB61DvtBTrzEyyJPLwUE49hQP6xZxegxxg=
+Received: from NTT-kernel-dev ([60.247.85.88])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id 1E23C653; Thu, 07 May 2026 15:07:34 +0800
+X-QQ-mid: xmsmtpt1778137654tvpn0zexu
+Message-ID: <tencent_CCDB1B23FED831830856396BB4DF59D1B106@qq.com>
+X-QQ-XMAILINFO: M0vdiI0AC4YkCeFnOQd/Eo9/iodKPHs5oU6o8zGDpT0HZp0yiCh3ASQlSn5snD
+	 UirnXplLp0LTqU40FyFDOzZAtsponI6rBi3vETFJLH1NoA/iWm5Z5r5A/TleDF6sgd79kmUoGbPs
+	 je+3pC7onu1BU5CmTMtNW+ki3do0R1k9OpJds+DJqJkmusGyzNuQ8CxSN+CBhx97DuZIJzdnXf5T
+	 9ly/M1ejh8b63lLZL2luTItVsJzSOthOAWe/EM+SYlfkxWVwE9yoyPxfIE9fskYAmErkIf45IATV
+	 8tL0Al9f2UFe/njQyc+Wwa0fWlxocUoCwws/sNEKq1iL6yJp2KpHMTOVkYDjfIxM3MrYL+D9e1Jl
+	 p9wZWJ27gZTvGjZPOYn1NXC+1wFeymM1+mJ7okODyf5Dr17uuLT/hHHLsExgvD9ySS2p6vSyPq8s
+	 4q4TJugTQdxPy5paLe31B7neE3Yl3ZJBmTPacPfN1BgTjTVqK3fnaPMZ/VasKIugwgQwJ0BwITZG
+	 2NIFG7ooBRQ5f35l6p7qqbOXgmuAvLpLWxu/bVeTkWAq3VxNsO8tafo3It8SrSSF20EQxMfUjCuF
+	 UpnJ3hMrz2mH9mOmTYQeJfBd6sVg09gVQPkBbZRRFDLAFmPpQgVt14c3NUqkpAWhWEaGxqwq0+RX
+	 RYcWtyuoyl04mkBv/fPe0MW54eh7nAojRxBfLTOB3WQbnmnj69q9adkx+hbIKbiy2A4ssPpMmAP8
+	 nbTNpIjUyxZ4dKvLM0m6NPdgnV5gOoXJ2cdOAS17yvyX5JvDK7yvT65iB4PIlDSOpniwO47QfLUQ
+	 qxXF3+bNZXTeqThNGs63LTRNbbSAub9NlOj+nmN7U36gU3juL8AhKM3C2cDiM3jGswzMZxBLrRtS
+	 6gBsDg9MYWG+6Qq8gHJBttSMog78M/9m/XUD08Js4aKxQ9GsmxgdY+w4bFrHES1XtosHhAKxpi4Y
+	 MYr0bPhc4Ps/KmXG1kgQeLsi1MFW1qkBDaLDavSzFy6GyTkr65iNKrWRWvsWA/td/zp5tOaGR7jI
+	 iGfwHyc+iPB+7MroIjrZjPnAYyYRwmrHlfFNbwYg==
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Fang Wang <32840572@qq.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	dev@pp3345.net
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	ray.wu@amd.com,
+	Wayne.Lin@amd.com,
+	sashal@kernel.org,
+	mario.limonciello@amd.com,
+	aurabindo.pillai@amd.com,
+	timur.kristof@gmail.com,
+	jdhillon@amd.com,
+	hersenwu@amd.com,
+	Roman.Li@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.6.y] drm/amd/display: Do not skip unrelated mode changes in DSC validation
+Date: Thu,  7 May 2026 15:07:29 +0800
+X-OQ-MSGID: <20260507070729.2299428-1-32840572@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6508:EE_|PH7PR11MB6953:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e96d6f3-2756-4069-9d67-08deac04fc7a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|22082099003|18002099003|3023799003;
-X-Microsoft-Antispam-Message-Info: Ghk5Hdj7iZgd8FBpLNbKwq2MGqAA1u1hKcTOf9Ah5SQLB0jJ1dPl6lALLYjYr5iQHUFzxHC0iVqmnfTBNSY/5C2fYWvDCnQbbEr0UalgB8Z6V5bb8nSyHA07XKZzrsg/f+6W/Fj56QDvLAVt/etkvJoofYuVNwVX2gRFS6k0UPW9ZK+LC257EPezRf/Ust+9oAb8NKqNPeZX1CGMf9NVBWq3hwNaB/PtiONM5HgvT51d0kkvdbeCNs8y+n4IJLhKyZR5klDgntZ48HRfKLjrx3VT6UKyouz9TA/Bvc0QD5GxWIfzI4ybxbOs3lKukk+H+M8iu1gbySLde3Zk/7KEJHqBEvupFGfm3bkQdDD8xAzxKuBDRvlgbsh08N7V06kHezkGl7Kjc0QLUukkouEHaYUeFZfaJwkvLklpktrPH1vz7jQxg/6xXSSLlLNHsIYakrfM/kI2fCvUP+LyXD261Pb7r9DCv+7c+CjOhVkSm5FbLX1Hi2rpWy3CARsSbDdOc8vHyiPZocRfvPwFdsJKkNqP1rFJdAYGGHrDyI7Y54c7gFs5FWXwSMQg++qYX+TP5Hkho/qubox/3bCr4x0qU6/QdKDlw2eSJMpoyiW2wkztYh4dXS6MTeyCUqmfAWOj0khTTwQE2dPiVIAVKXzz4ISbwRCF/WSoD+nTk4RM3zx5XfCYbpmorsPIPmTvrkWr
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(22082099003)(18002099003)(3023799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?QD0ZjsKvnU5u/gB8smpfCBoTFrPdF87YtR++b5jQOKwWtYK/dhagbcnuSP?=
- =?iso-8859-1?Q?2uQLcwVVJ3lA+N31dqV4PEYVC4Rt1btkaU/Nlg2X/fDDPaTShMVYPRzo6L?=
- =?iso-8859-1?Q?PzdhOZPLTagAjumWOg6E6iPPtK9YlpwwMh1xQMiJShsWTqfI5vvnPPvfRf?=
- =?iso-8859-1?Q?5aqTyRvXpdSk2kXR1FOv2/ORqBFqi435nXJju1WG9wWepE6qT6DhEaEJxE?=
- =?iso-8859-1?Q?g8b+1Fv25yeerixp06o1k/Lubbq/ffseXMN2HCRobhbl9c8D6ixqkQkMw0?=
- =?iso-8859-1?Q?m1krXn87i/HxbrAH5b9JoNIjVwp5iWaRToDmw3r/05wYbur84wsDIhpBeq?=
- =?iso-8859-1?Q?b3JSPt+VFv4EZnt6Kq0FBL/yFnRYHTQ9j8GnFzES+I+YrYCRRuttFIiMMJ?=
- =?iso-8859-1?Q?oVcVSPr9OKtA7Jg5WN5sZWJkJEWIMAhRU2y4rQrZaMeB8oX3ahildc0V55?=
- =?iso-8859-1?Q?scFj36X4H0/uRXS6lhL0OqzxyNAfJfYloV+AG1JOiaDpNMX0m0S5c1Jf80?=
- =?iso-8859-1?Q?ObafVhIOysRnqUbvdfbKfN7cKfzBeiyVINMWbx8OnuT/szjYKl0+Ur0s05?=
- =?iso-8859-1?Q?zJRW46ZvNZ+JO9IviL/Z+HVwqs4B+WXIdqOuXVpD8GLO8lSexTI7omzVE1?=
- =?iso-8859-1?Q?SkZ4Rppytzvx9Qi+nK50MLCmLips3v8fsCdM2DuHeRRPCSrLyUH285sy96?=
- =?iso-8859-1?Q?VGvzQ4nAV5dkrjX7CvN+U9AnAP/4EUPrWvWNToXvPiDzmCLuouA/6/UwwG?=
- =?iso-8859-1?Q?BFcQzGrbOU5x7oHS+ZIlahokJ5bZlVgy4grk8mJPVzs1h6EbRsQHg/USWP?=
- =?iso-8859-1?Q?vvQn3dOW51ZEXpI5vYwMUPbL6diD6WTZooo17yjW0fcRUV4+jRLBoP/A31?=
- =?iso-8859-1?Q?/NF0uJUUZeAKcI00013xG7ODZH0Hi+IvV+E5QOcaMapYhVraKolNpDgAWG?=
- =?iso-8859-1?Q?6/EVs7LgclMPpKzh+C6jdUgOur1a36FKeU8zDOpgEZ0C692w87s9shTvcS?=
- =?iso-8859-1?Q?X4Qx/NudginS/ubIvpsVX3VpUz5PrTw/35bqaGRwLTr6tMv3OEebRBRxxm?=
- =?iso-8859-1?Q?gZheCf/TXbRRLZCBkT/J0FMB8zKCYDO0QXGSX5HrA2tA5fVWtgtFFWvKvJ?=
- =?iso-8859-1?Q?JeOlJJcpb6jpWvp4bhDDSplGGsDrWEQ9k2il3X1e3HOKw6z2V6q8R8a3zB?=
- =?iso-8859-1?Q?titk6YH4F9oAgTc1hxV8aztxThpukcvScFJQGZnN2rv/hd++e8nBt+pYrB?=
- =?iso-8859-1?Q?CKHRvSUF1W1KTAw7ik8SYjrjK52TpivbFLRI2u6b9wnlPuyKzF/f2VcgxY?=
- =?iso-8859-1?Q?vFnMJgTOp+2Qy52UyFYhN2TEoBfZkq4dhBLM0Q/+9R5rxMBkzoZNCfkm3J?=
- =?iso-8859-1?Q?6LgfogjUQedlanXhWbKR94M/GYTGNeyWSwYn6GZiahMXukm1+g7PR3Jjjv?=
- =?iso-8859-1?Q?kH0ZauGj5umEzBfFV/QKDG5QoHumYlIxb+b4Z4mbDPPxxmgi6DShAzHa2E?=
- =?iso-8859-1?Q?lv9dxkth4Umr5ThCGH3AHdnVizP8Etx/qj8cBTeARuk85u3aU+wIU7idz0?=
- =?iso-8859-1?Q?O8nkLTkUSaivBd/aIlK6VW4rAXsTl+1IUkp3GQ1OPjacS7u/rkzuFbc7gO?=
- =?iso-8859-1?Q?h3SJMu+C7dAHTnav3VPF2/+6pvE5uiE4a3c/r4X4dSzpQUtLicfjA6eOcF?=
- =?iso-8859-1?Q?eHojVJJfK++DdL0yGj9Gtl+WbTsEo+UU04bHMjguVHEZ7AXIz0jd/440b8?=
- =?iso-8859-1?Q?Ly+Dq3nv3xGz0/4JkDiIZ7Qk7B8zcJJkSFUOf1q4PedSbCLmG11xxMfQns?=
- =?iso-8859-1?Q?E8rL3ynJSQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: TdaZ8hwUPUXYT11QzPY6dGT88FN1j2lr2rlFR+904EO6vwqEQCK+tebtgaVrCDjWA6Kq4h4av646hK66YUSNUijfJhIly6KmkvP9OKNkNZLfiAkclO3VOrTBSkwxoBmHPSoH2q+vKy6WwIwdoyaHkAfdZSee9LMbUOHyKt/cQNOuUt8hwUZfLAbOYh8Cs7xHpcxUtaJJEYwR4Oj/08Z1/N+8IZezy16Co/W6+DItjZIg8/D1H2CRpY8WRlqxpI6DNNviawGARr0vClyr7GZE1iHuodJwAAR4KixKJc4eOonNgtY9/XiHgFCL6m4IKDpO3osKEOpSrKYb2zRKUNfDYQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e96d6f3-2756-4069-9d67-08deac04fc7a
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6508.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 06:50:55.0858
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5ecq+wUsuChxDqND3Ax34cWd+huMELRDM1WG+2GvRMdGZg8F9m0BNo0XgMXjbqHpm8trkKe9JO12pniUzL/WHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6953
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 5A65C4E3BF2
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EE5B34E3DD7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244516-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org,intel.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244517-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[32840572@qq.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[qq.com:+];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	FREEMAIL_FROM(0.00)[qq.com];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:email,qq.com:mid,qq.com:dkim,amd.com:email,pp3345.net:email,gitlab.freedesktop.org:url]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 08:31:40AM +0200, Thomas Hellström wrote:
-> On Wed, 2026-05-06 at 12:28 -0700, Matthew Brost wrote:
-> > On Wed, May 06, 2026 at 11:36:36PM +0530, Ramesh Adhikari wrote:
-> > > The xe_vm_bind_ioctl function accepts user-controlled num_binds
-> > > without
-> > > 
-> > > bounds checking, allowing arbitrarily large memory allocations.
-> > > This
-> > > 
-> > > follows the same vulnerability pattern that was fixed for num_syncs
-> > > in
-> > > 
-> > > commit 8e461304009d ("drm/xe: Limit num_syncs to prevent huge
-> > > allocations").
-> > > 
-> > 
-> > The difference here is we issues kvmalloc (2G) vs kmalloc (4M) in the
-> > sync case. So still possible a user triggers kvmalloc over 2G...
-> > 
-> > > Add DRM_XE_MAX_BINDS (1024) limit and validate num_binds before
-> > > allocation,
-> > > 
-> > > matching the num_syncs fix pattern.
-> > > 
-> > > Similar unbounded allocations exist for num_mem_ranges and OA
-> > > n_regs,
-> > > 
-> > > which should be addressed in follow-up patches.
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > 
-> > > Signed-off-by: Ramesh <adhikari.resume@gmail.com>
-> > > ---
-> > >  drivers/gpu/drm/xe/xe_vm.c | 5 +++++
-> > >  include/uapi/drm/xe_drm.h  | 1 +
-> > >  2 files changed, 6 insertions(+)
-> > > 
-> > > diff --git a/drivers/gpu/drm/xe/xe_vm.c
-> > > b/drivers/gpu/drm/xe/xe_vm.c
-> > > index a717a2b8dea..1ff66874f43 100644
-> > > --- a/drivers/gpu/drm/xe/xe_vm.c
-> > > +++ b/drivers/gpu/drm/xe/xe_vm.c
-> > > @@ -3841,6 +3841,11 @@ int xe_vm_bind_ioctl(struct drm_device *dev,
-> > > void *data, struct drm_file *file)
-> > >  		return -EINVAL;
-> > >  
-> > >  	err = vm_bind_ioctl_check_args(xe, vm, args, &bind_ops);
-> > > +
-> > > +	if (XE_IOCTL_DBG(xe, args->num_binds > DRM_XE_MAX_BINDS))
-> > > {
-> > > +		err = -EINVAL;kvmalloc
-> > > +		goto put_vm;
-> > > +	}
-> > 
-> > We had something like this early Xe, IIRC, the max was 512 but we
-> > found
-> > for Vk / Mesa they will a huge number in an array of binds. So 1k
-> > likely
-> > isn't enough and this patch would be considered uAPI regression, so
-> > this
-> > as is a no go. Maybe we can figure out some reasonable upper bound
-> > (64k,
-> > 128k), idk.
-> 
-> IIRC we debated this back and forth. The challenging argument was that
-> if we consume all memory we'd get an error back, which is sort of true
-> but then we should've really made sure that all memory allocated was
-> also accounted against the cgroup, with __GFP_ACCOUNT. We only did that
-> for one large allocation.
-> 
-> But I think we made sure to avoid future regressions (functional, not
-> performance) by requiring UMD to handle -ENOBUFS, meaning "split the
-> array bind and retry". So whatever limit we come up with we should not
-> return -EINVAL but -ENOBUFS. 
+From: Yussuf Khalil <dev@pp3345.net>
 
-Yes, we can currently hit -ENOBUFS on large array of binds when we run
-out space for instructions in batch buffers programming the bind and
-Mesa gracefully handles this breaking down an array into individual
-binds.
+[ Upstream commit aed3d041ab061ec8a64f50a3edda0f4db7280025 ]
 
-Matt 
+Starting with commit 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in
+atomic check"), amdgpu resets the CRTC state mode_changed flag to false when
+recomputing the DSC configuration results in no timing change for a particular
+stream.
 
-> 
-> Thanks,
-> Thomas
-> 
-> 
-> 
-> > 
-> > Matt
-> > 
-> > >  	if (err)
-> > >  		goto put_vm;
-> > >  
-> > > diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
-> > > index ae2fda23ce7..804ccb23b11 100644
-> > > --- a/include/uapi/drm/xe_drm.h
-> > > +++ b/include/uapi/drm/xe_drm.h
-> > > @@ -1606,6 +1606,7 @@ struct drm_xe_exec {
-> > >  	__u32 exec_queue_id;
-> > >  
-> > >  #define DRM_XE_MAX_SYNCS 1024
-> > > +#define DRM_XE_MAX_BINDS 1024
-> > >  	/** @num_syncs: Amount of struct drm_xe_sync in array. */
-> > >  	__u32 num_syncs;
-> > >  
-> > > -- 
-> > > 2.43.0
-> > > 
+However, this is incorrect in scenarios where a change in MST/DSC configuration
+happens in the same KMS commit as another (unrelated) mode change. For example,
+the integrated panel of a laptop may be configured differently (e.g., HDR
+enabled/disabled) depending on whether external screens are attached. In this
+case, plugging in external DP-MST screens may result in the mode_changed flag
+being dropped incorrectly for the integrated panel if its DSC configuration
+did not change during precomputation in pre_validate_dsc().
+
+At this point, however, dm_update_crtc_state() has already created new streams
+for CRTCs with DSC-independent mode changes. In turn,
+amdgpu_dm_commit_streams() will never release the old stream, resulting in a
+memory leak. amdgpu_dm_atomic_commit_tail() will never acquire a reference to
+the new stream either, which manifests as a use-after-free when the stream gets
+disabled later on:
+
+BUG: KASAN: use-after-free in dc_stream_release+0x25/0x90 [amdgpu]
+Write of size 4 at addr ffff88813d836524 by task kworker/9:9/29977
+
+Workqueue: events drm_mode_rmfb_work_fn
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6e/0xa0
+ print_address_description.constprop.0+0x88/0x320
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ print_report+0xfc/0x1ff
+ ? srso_alias_return_thunk+0x5/0xfbef5
+ ? __virt_addr_valid+0x225/0x4e0
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ kasan_report+0xe1/0x180
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ kasan_check_range+0x125/0x200
+ dc_stream_release+0x25/0x90 [amdgpu]
+ dc_state_destruct+0x14d/0x5c0 [amdgpu]
+ dc_state_release.part.0+0x4e/0x130 [amdgpu]
+ dm_atomic_destroy_state+0x3f/0x70 [amdgpu]
+ drm_atomic_state_default_clear+0x8ee/0xf30
+ ? drm_mode_object_put.part.0+0xb1/0x130
+ __drm_atomic_state_free+0x15c/0x2d0
+ atomic_remove_fb+0x67e/0x980
+
+Since there is no reliable way of figuring out whether a CRTC has unrelated
+mode changes pending at the time of DSC validation, remember the value of the
+mode_changed flag from before the point where a CRTC was marked as potentially
+affected by a change in DSC configuration. Reset the mode_changed flag to this
+earlier value instead in pre_validate_dsc().
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5004
+Fixes: 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in atomic check")
+Signed-off-by: Yussuf Khalil <dev@pp3345.net>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit cc7c7121ae082b7b82891baa7280f1ff2608f22b)
+Signed-off-by: Fang Wang <32840572@qq.com>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c          | 5 +++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h          | 1 +
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c    | 7 +++++--
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index f51c3921cbc2..12f75b2ad664 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10152,6 +10152,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
+ 	}
+ 
+ 	if (dc_resource_is_dsc_encoding_supported(dc)) {
++		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
++			dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
++			dm_new_crtc_state->mode_changed_independent_from_dsc = new_crtc_state->mode_changed;
++		}
++
+ 		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
+ 			if (drm_atomic_crtc_needs_modeset(new_crtc_state)) {
+ 				ret = add_affected_mst_dsc_crtcs(state, crtc);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 88606b805330..8d4f2cadb915 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -737,6 +737,7 @@ struct dm_crtc_state {
+ 
+ 	bool freesync_vrr_info_changed;
+ 
++	bool mode_changed_independent_from_dsc;
+ 	bool dsc_force_changed;
+ 	bool vrr_supported;
+ 	struct mod_freesync_config freesync_config;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 2698e5c74ddf..ab6924d3046b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1587,8 +1587,11 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+ 		} else {
+ 			int ind = find_crtc_index_in_state_by_stream(state, stream);
+ 
+-			if (ind >= 0)
+-				state->crtcs[ind].new_state->mode_changed = 0;
++			if (ind >= 0) {
++				struct dm_crtc_state *dm_new_crtc_state = to_dm_crtc_state(state->crtcs[ind].new_state);
++
++				dm_new_crtc_state->base.mode_changed = dm_new_crtc_state->mode_changed_independent_from_dsc;
++			}
+ 		}
+ 	}
+ clean_exit:
+-- 
+2.34.1
+
 
