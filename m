@@ -1,299 +1,249 @@
-Return-Path: <stable+bounces-244575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OObOA5ih/Gn2SAAAu9opvQ
-	(envelope-from <stable+bounces-244575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:28:40 +0200
+	id uHK8BOmi/Gn2SAAAu9opvQ
+	(envelope-from <stable+bounces-244576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:34:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC90F4EA2C0
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:28:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 810BE4EA43B
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D19A13012D71
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 14:28:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCFC330707F5
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 14:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5A736A008;
-	Thu,  7 May 2026 14:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E8D3F7898;
+	Thu,  7 May 2026 14:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lyX3TdcS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WZAYt23c"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1693F3EDAAD
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 14:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778164114; cv=fail; b=uF6b/9hw+0aAsm/p5EJdWZlq9aWNZW38GUuFaSfIVY9g53QVO9TlnwmG7/1X7WYYuTifk6/6WNoatrcbIY/WHs1DevrSew69QnWtd9oU2bt+fwbOmyw8IFtlWa/fARshlcSaX6q9Jjfj+OH8qi6OiSqDyM3JaZQAAXmI1XjPQHc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778164114; c=relaxed/simple;
-	bh=eHBPUVytVQU4RWs49eUUH4BHgHKcLgUFRuG8PC+SOAU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=o31tfl4im4BuliC7ZUFFqGkWtwI4+UYjCMwUS1nKs02PBFKCCAriIHQsXh9HO1ADu2T/Ih7fT2Ja6r54TFIPFLmmIhc+L4OUG2nkYeJAYA8SwyhXvaYyatvEjHMUBSNdQ6hUY7WopBr3e4jYAv8cmpZu7vskEGE76fwPAGexmnc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lyX3TdcS; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778164113; x=1809700113;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=eHBPUVytVQU4RWs49eUUH4BHgHKcLgUFRuG8PC+SOAU=;
-  b=lyX3TdcS/KPJhoiKcTORPSs1jCv7YXC9YruTCVD7gUD683Pu1CU3cXtx
-   giBRRubezAOWfgvUmFmfvDn7JVo/Gm+LK4KW7yUXo5whbiFehpO3Y/JIZ
-   31Wg5PppFS3ML64//H6CbnhurjKEp+i39eEZQaH0UQ6qYk0aZfy6C8hu9
-   p1xIQuiZA98Zq9y2ECSk29NwMTYlBxXDT5aRLg4rUsy8b2RUv2Sq0h41q
-   EsLHkN+cLlCMyn0vWVEPssqf+pHrOIGMSpfA1fH3jnG7kGgJyuQ9J7aOV
-   vjOJGWOBt8jlsWvX7lxtsTtq2jnnhYLuQYNVBcjua2UYgMXIXpdvoZGmV
-   Q==;
-X-CSE-ConnectionGUID: WDWJBqnLR8i0oBT8pEvkhQ==
-X-CSE-MsgGUID: 8wokzuxgRIWxKDX3TfcrJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="81684844"
-X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="81684844"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 07:28:32 -0700
-X-CSE-ConnectionGUID: vAKk/4eaQF2Q7L1m5xUAxQ==
-X-CSE-MsgGUID: A+agSAKlSiKm07V0nQOlZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="236739030"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 07:28:32 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 7 May 2026 07:28:31 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 7 May 2026 07:28:31 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.56) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 7 May 2026 07:28:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PRUa6T9/QuoW8b/dI/s/DQyOGaSt6DfAN5wThPjEfx/vatZWx8/LhHagNNNdQjxBci809g8NOlvf37jOp1cS0Y2uJ5PmD8IxDsqVG3M5wv2sFi4KOJn2mKTxZxVrvifCle5y4nzn/PFqUdFsa3MmlE5ibC12Sd1ROkMSnRcElltnhh2Uzq2FfEhINECAOwSShPuMdGfRQ5TK406jFI97j87Bcc6x1Q4cpGytbQlYA61fIMRo4OkwRLCAhAoUtLQo3UUfFfv0LCuEYEo3nsO5DtwpyAEuUhX9WG40zywWGoO7afM3NWyF9kDfrW77xlrQccAmz/ZTZgD/yauEgcG8+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jKkIypq3TlKPdRJCAJuLrFtLLR/G6mRLh8AK7TPMR3E=;
- b=S0x/r6lk0OSrX/HhtiThYxEJdOAwTofzXLCDcH8lCSwKiKf653s3e+QGZvyS7BcUGJJEvogz/DHmJ0EejpU+geFmdZP2NaqrJSOpbgerCZ/v+KMpS9/mKkZO0KhLkSGzeAGOAS+w3mqEAgODP+g1ERq3BDPFfQiVSkZBXhorTSHVRkR2PAZpmYPv7zEI96ofTaVxjRVSF2aKLFp7isNH0Kz+KZGN3+rCveGns/CLxzkEYye0/FxhF6+I6EzaWZP3VflDiaveXeqeR6OTa5GqrlBlWMhNjE4098IjiIJ1wONEYtAQrhTpdDAbVJZ63O6jJu2P39A83AaXU8mjHhIkNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by MW4PR11MB5936.namprd11.prod.outlook.com (2603:10b6:303:16b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 14:28:28 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%7]) with mapi id 15.20.9891.017; Thu, 7 May 2026
- 14:28:28 +0000
-Date: Thu, 7 May 2026 07:28:26 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-CC: Ramesh Adhikari <adhikari.resume@gmail.com>,
-	<intel-xe@lists.freedesktop.org>, <rodrigo.vivi@intel.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH v2] drm/xe: Add bounds check for num_binds to prevent
- memory exhaustion
-Message-ID: <afyhiigGVX3skCfF@gsse-cloud1.jf.intel.com>
-References: <20260507055352.61017-1-adhikari.resume@gmail.com>
- <8bad8080780f3a1c2c45cc1385322edf09284414.camel@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8bad8080780f3a1c2c45cc1385322edf09284414.camel@linux.intel.com>
-X-ClientProxiedBy: SJ0PR05CA0065.namprd05.prod.outlook.com
- (2603:10b6:a03:332::10) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE973ED5D9
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 14:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778164123; cv=none; b=ixzl5Ief9xD3GAYJoP+inIFsuZZvpQIBFFut3C9Mw5E57zZ46rXQXw8oN+YLyty6w0eWWnIcZ/utgORQYK0S/DS6B2ZQLpp2r7mGYyl1GYDvOskcscQJ7WHC9pZf9rYxOcnmC106BC2/amLi92AFZDVmcEHT5PMhebM1A+rfra8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778164123; c=relaxed/simple;
+	bh=PCbwbQNt4FGuy1Mx/UEcWlVmDbt9jGbh+cLIMf+sZ+o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QiRsKFG9fC1piHy9gJayst/QA1qCazQ9YCSMegYqvnsGwVmRSlNfdSnBniY0YMkaDLPwtEDoCxOI146WpnCX+uBGRrddO5NbSUZeyn7snNbB2YpUMEi2pCL13vrQ19HfVi2hK7v76IX1N6ddlCeNyuuR+5q2s5zLt1LrW+4wBbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WZAYt23c; arc=none smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12c19d23b19so1683397c88.0
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 07:28:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778164122; x=1778768922; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m52C9FnSjkJyGIM2Iz6ci+a0fVJqmhLXSC8+wk7x+s0=;
+        b=WZAYt23c09uQluW0pEeorWwjbt46T0T1/VnA/6zpoXOGRFwJYL7Kuaq8OueoNrhFwo
+         J3M+67Kc53GZQyuj/ODocfIe8VbpdhE4i6swpU+f2o4oEeK8e4ltSXdpcw++2vdkvZI7
+         nHBusH6AUXVgrRS53PE0XVBbXPmIVKXMGRVusCg1AhyCex+/kI1nYadhnUxZT3YDCSzj
+         NAQ8SAZdUDWVgeq9TQWgjvXDxIRmonvroAIVrsECx6VbLai4Xnd68i7EHpsGLThlD3CG
+         NK+i5htGe/By8YKIfc8cPUsBYXmjdlfpmIDJ0asA145ZS3kTVJJy+rBDb9RXi6Zeydv+
+         iRMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778164122; x=1778768922;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m52C9FnSjkJyGIM2Iz6ci+a0fVJqmhLXSC8+wk7x+s0=;
+        b=Qe0yfNf34XJjcPdg/jzjckwMiCHTHPwcXE2fxbLuQNEp/l7Vj7/JvtqG21JgB4mrVL
+         WU48L/zeyYnUfAFUuXA3gKdKo/vNdCeH3bTnzDNzMWsS1Vsyy7h9itBOvvvQLfkRN3SU
+         OjDkKc4d4sOZS7JnsPmEPznB5S8MuYP09jT1i6C4B6Z+Wy0paFYWrCjcE/iDegYDSNRg
+         3tH5LXL80oeQiBIe7CaepL3xow9O2xKW2Pr41XwKKUU2rv0EHn8QiAWvNaMKH+bKrnym
+         Ap13kMzxyybQC4nQMqHuh4L68wOAUWRbrvuP/qXsT4JKMSyKV2oZbVXgHt/BrUxiCXHA
+         tOnA==
+X-Forwarded-Encrypted: i=1; AFNElJ/7qu4iGsKWH5TFKi0DLaVCxQ7FNxqclqmnMuJSNPOrgsMOXOIP1UWdtjpg0sY7PUXVNGvxcJs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpS2TQ3vV3XYyPv9kbg89UxArE/aP0yDVO6Xyv/aaYh+zYo4jQ
+	pbztQeKgnt5CRGhI5ua9jCe/jb5TckpEGSNnXXNXFyLRxYSUZC69EWEE
+X-Gm-Gg: AeBDievo97R/QI1knucT4U0top/IYZYj6cOz+13bDmD2zd4uvlGlTBQ38ed8s6ZanP5
+	h+WwXAWdXZk8ldwf9rp3cw38pwaYhKfaMmlwCTyrhR5lwzKueMLHBkcup9/r21fetyzJdJDUl1R
+	Fr0Qg+1iHwCcXF9qyguMxw8+l6xCA1PDJSrlHNlZLWh1FzIiCdTDtA8DLNqcsug1s70QWp1l3Dj
+	S9fXro1MeUAVREFACvJzRhBBx+YaH+II8Mcuvsp7xVTr4loU3RVpSbVD4/asCdB/Hb+5LYQ/TiW
+	RsYFaJdOSXSMcp5UTRcZD+OYyx/Meg6NJ1eoFhrF4iYeInxH37oR+gX5cBHPoHFB1ygHfUFvShN
+	EyXqN2BFHFM1T0Qd3+hzVPAoZPbGGgyDQBeQoybVAwKSUBdBJdOlYR5tbwSyc1e9TPicz5CT+/Q
+	mSiI0lJIwhPw4YgTO8kHQcMt5XgkRqAr9w7EOlscai7xj7KIexilzW2q4EUZHU3+adOgQ8wCxog
+	vF5cEsdJ2yC
+X-Received: by 2002:a05:7022:6899:b0:132:5e72:43d3 with SMTP id a92af1059eb24-1325e724784mr399692c88.29.1778164121302;
+        Thu, 07 May 2026 07:28:41 -0700 (PDT)
+Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f570384e46sm8829554eec.26.2026.05.07.07.28.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 07:28:40 -0700 (PDT)
+From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Thu, 07 May 2026 11:28:30 -0300
+Subject: [PATCH] ALSA: virtio: Validate control metadata from the device
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|MW4PR11MB5936:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea19994b-b408-49c7-73b5-08deac44e7f5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info: PhJIoUVj2vKXzqbgrIw/7fyI2/4lOj/yfjW7g1cTgYY3MSFMHierbQHXeIadw5+MWmOebAsJCDSVbiDw/zL46glYD/PHcIrE05IXT+PdbJoZWyICBkQDCN/Q31JVs7V16BZk0rSB0nRAzLMJrcdhdGU0+F2rDa+7VIYwOSZ+1c+uq3ah5PxjGztHuGnxKrsMFMgE75GwJ5/oEc1fH2IxkAjfBomrjNTcUP91VEOJ/fv3TNE/isSGcM1pvcxirU9wvcRFAU+s1naypVUfePzVL7z7YIvAWKti1y8JVontNmkRzZ4Bo3wqB/UQc8ZKaWWExJ528qK5xSTd6rd6YY15WpZlZuhbRulPdDaAtoHplbi4riDSBZYyRN5RIpDGMgJNffsGvCmtlOlwXlU39wIm0PLVwvAHalo0zS9HBLPDFbYeVPp/BkV6pJxDK4Nur6pkiuZ3zx8bEBMbsmLfaA9ulwByNwmOunf8WEoLKliGcLPgyhpEBMFhy18Ux+Zd8HfJNWAGUI7lD1k5J0V54t9Zm6O6eiZ9dN5MaE2iLSDU4axc1ckj+raHEiaU9nmBBL8XSmUpHAxIl+6bZnPlDHcynvv4omYxHiLDmAQfaJQiH9wyWUOcmhfVEmZ80OdPL7E1cmDxltuiYpnqwynTVxx7jgZDPDgfCwTP5U9o1dIma16wyz5H5edpDC8F0vxlX3Tu
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?GcbVStC6b/Bt0oHU+66m1KZKWLKoEId4uLM/BMuGqMg3KUY2JkIUJpYHm/?=
- =?iso-8859-1?Q?gGO5eJpsUo37uGJ+ZjFITmgkkYdryU52gPE1glvF5HQZQMFADVEllNeLWH?=
- =?iso-8859-1?Q?/nqgpUyhdy+2rRsc7fYcehr0TgnvD4KSylQ5472mRLf8QUV40XGE2VWJS5?=
- =?iso-8859-1?Q?JOlwPcI46QB3M6sGRvJRXLgKqrZyibgVGVZXcz5TK/+4UciHePbbMhaY8P?=
- =?iso-8859-1?Q?U8HkW3VZH63aBV0qVC295t6NDuQeZU9FKGvwnIU7XXDyYHoRl/yr49/M8F?=
- =?iso-8859-1?Q?Z4sceust2m+ymxlbPKlr7upAUTpp3n8lMrY3++Fsfd+Faw9PvEsRO5n78K?=
- =?iso-8859-1?Q?495tvfHhLaSYI2PL4faMkdkBVUIW0m0qS2y+3jlQnXc+6RXfykd0Q0FlMN?=
- =?iso-8859-1?Q?JaE4iSZ9f/NLCKd8KdL5Kp2K5I78Za7xt6KVIxtmqJwVGne+Hv1zixHrCa?=
- =?iso-8859-1?Q?MhY+aOoyi/4TZqkFR6hRt7csS4xeRdofBnsVk2yLIssXylqzZgdzC9hNMX?=
- =?iso-8859-1?Q?xjtH6UczH7GDRA1/TteaUBDIbRLvDTdPsAAkk7S4bCCIec3/NnpN/iGQiL?=
- =?iso-8859-1?Q?A4GbgQzMAfDBfT/HLQlN4sgo/BXZhVaUxgC9pnimWE2w8KxsNIEMRwde3f?=
- =?iso-8859-1?Q?6oIEc3U6bVfw88L6OYAOjbx1zHq16nVKAKEBjhHvq+sqZ8sjk8IU+w6fHz?=
- =?iso-8859-1?Q?EC04v7WX8p7WaJHpWR2sxgHzfuMoL4CTvEvIRk9fWN2Xr0H7fbpyfOevdc?=
- =?iso-8859-1?Q?HF+hnxq7Oj/jDMy5gxLGPTWisPBNSWPbVc649bxqwwf0uvkC6mj2l4d1k9?=
- =?iso-8859-1?Q?jpU6MOvR7n4FfHKUI1fRYvxo4P89uoZFLVlVpmlG1f4irmzEljE7dG/4nu?=
- =?iso-8859-1?Q?0yoTkR4y/JQLIIMe5z4trPs6GtAynxIESUWEYS8sXcq6I/pLj1UzIPWURZ?=
- =?iso-8859-1?Q?Knjz8nbUFJVOUGVVoj2ezSR0awS5CB82fUMGql3SnlEVKlj63zMgQRz/ut?=
- =?iso-8859-1?Q?cnfOLT5EozX+1mEqvD+P6jxHmDWhL5e0vNsJiZwTYHdHpRJIz0GGQt+1KT?=
- =?iso-8859-1?Q?YWz+Fb9lbdGGSnhUkYcHyeYN3ME01aF2nOGiNUED5UR1n9w1Vkcfrj6bK9?=
- =?iso-8859-1?Q?TRfvq8vejOz+nDeCgqAaZNKtWfY1O2LRRc+BzD3Jc9KEEYV4176PVAtOt1?=
- =?iso-8859-1?Q?JWmJn8B7ynxZ9PyeODnyKO2Lk6X4NtBisFg4oYZ82GrdAfDT3jTp/LdP5A?=
- =?iso-8859-1?Q?hk9k77RJEO8ZOJO8AIdvrX072E8yzba/z/VIbJ39rAndlUt7/tz2BfvY1b?=
- =?iso-8859-1?Q?vVEZbplwC6yJiHJlCbg/NznP4ybHFyYhTmmBNdf2PtKwHXPavzIzeZy/Gt?=
- =?iso-8859-1?Q?lNZ+KO7TN81+xmSyAWn/JLB/LMtX5epxKLpUBjAHQpbCfgl3QdylY7aoZ8?=
- =?iso-8859-1?Q?XQnNx4dNeGAL2C/LquKqjC/cbGwuDw0TFhuJksRecAQT6q7I0PD/tuUAX9?=
- =?iso-8859-1?Q?q3C92QAZWgmq0p6d/kIa1EHriOuPf9AZnCAWP6L4LzEkkn5rAkkuhzYEJR?=
- =?iso-8859-1?Q?xnZK4EQq7loSOV0SXc8B9rGT0BiobZX2iUPWvbIVYohJbbmmp6X2N9F3Z4?=
- =?iso-8859-1?Q?hSO2QRVhtdGN1vzz/7VTwqpQ/lflKvO/i9bmRVNT5HjP9kdswa1B9u/M7C?=
- =?iso-8859-1?Q?5qNZ5Ql9a/MwnqqIsgKqaiKylascpFcvGnkb1l9ydhEoZEssFwnL+vSdb8?=
- =?iso-8859-1?Q?M1QHhOvMv6ynGuLoKxMdRDvyDHqY30dgGuoKUb/TMlYD+9QUbUItEzk3Oh?=
- =?iso-8859-1?Q?Fymw0TxelzKLinFi+bYXO+eSL6gRfds=3D?=
-X-Exchange-RoutingPolicyChecked: gJYnhwHZlaCkOHzW6g+y9c+cD4loWNp1PjeforDBRiI/N0ntAUv/fQWYS0Ey6GEPsNk49F4baNwypDkQ2UodVq2Vbkb9JeJ31QPEUTYZ3Gm2xwMUDAQ762eyrS0SyElY6ccueo6ZgpexDQGMMgZ0KD+W9uFZyiiUSCYlMN4DU13/79c0sLuQj593+tXIClgAjvLlyGqxvpKeU+nZaD0rcL/1NLa2ekVnV4k7yU+il9s7Grj9Zgs3npGDg+KDB+NJQZO10RKMZs09CNVteJiRzq4iRtOwc7wsQbmtuQ3rGc7mq/+35wmNImpriabID078mLci+P1R6avGgMofsja55g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea19994b-b408-49c7-73b5-08deac44e7f5
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 14:28:28.4071
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1BqfxSYTYpSIQdMQaYJaz9UlvdP2rYwEUozLv78VbG1Hcr1eHfb0yuAaWFKDCWYtmjxs5ahUainI3UOVGPnotA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5936
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: BC90F4EA2C0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260507-alsa-virtio-validate-kctl-info-v1-1-7404fb12ec37@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQ7CIBBA0as0s3aSiqULr2JcDDDVUQKGocSk6
+ d1FXb7N/xsoF2GF87BB4SYqOXUcDwP4O6Ubo4RuMKOZx8lMSFEJm5QqGRtFCVQZn75GlLRkNM7
+ xydlgw2yhR16FF3n/Bpfr37q6B/v6rcK+fwDp1AvdggAAAA==
+X-Change-ID: 20260424-alsa-virtio-validate-kctl-info-2bbe3b5d5d65
+To: Takashi Iwai <tiwai@suse.com>, 
+ Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Aiswarya Cyriac <aiswarya.cyriac@opensynergy.com>, 
+ Jaroslav Kysela <perex@perex.cz>
+Cc: virtualization@lists.linux.dev, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3816;
+ i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
+ bh=PCbwbQNt4FGuy1Mx/UEcWlVmDbt9jGbh+cLIMf+sZ+o=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJl/Fk7cXbMuuOnqBrbkK5Ix27yez6pyilfSjmraorb7I
+ N/70/t8O0pZGMS4GGTFFFlWJy2y3NP14Gp93AoPmDmsTCBDGLg4BWAiS7oYGc6kRSboX3+SH/6F
+ oS2pb88fnj+h641Oul1etjx0/azE2MeMDEun6J4L0D14TXz53ZuvshrnLWZaalcjymqbkbdmRnp
+ wGgsA
+X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
+ fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
+X-Rspamd-Queue-Id: 810BE4EA43B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244575-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org,intel.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-244576-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 08:47:07AM +0200, Thomas Hellström wrote:
-> On Thu, 2026-05-07 at 11:23 +0530, Ramesh Adhikari wrote:
-> > The xe_vm_bind_ioctl function accepts user-controlled num_binds
-> > without
-> > bounds checking, allowing arbitrarily large memory allocations. This
-> > follows the same vulnerability pattern that was fixed for num_syncs
-> > in
-> > commit 8e461304009d ("drm/xe: Limit num_syncs to prevent huge
-> > allocations").
-> > 
-> > Add DRM_XE_MAX_BINDS (2048) limit and validate num_binds before
-> > allocation.
-> > 
-> > v2: Increased limit from 1024 to 2048 based on Mesa source analysis:
-> >     - Mesa's maximum usage: 960 binds (conformance test dEQP-VK)
-> >     - Confirmed by Intel Mesa developer in commit ba6bbdc
-> 
-> Please use the standard way of referring to commits.
-> 
-> This is the maximum usage in the conformance suite. That commit does
-> not mention maximum usage for applications in the wild, for which we
-> can't have any regressions. 
-> 
+virtio-snd control handling trusts the device-provided control type and
+value count returned by the device.
 
-I still think 1k, 2k to artifically too low. The Vk interface for array
-of binds doesn't have a limit nor do sync interface either. In case of
-sync I believe we found a typical max usage of of something like 10 but
-set artifical limit to 1k just be paranoid. I'd up the limit beyond 1k
-or 2k to prevent seemly valid use cases from forcing a split fallback in
-user space. Even if each individual bind maps to 4k internal (usually
-this just a handfull of bytes for the PTE writes) - 2k binds would 8M of
-temporary memory. Ofc we can increase this future but I really don't see
-the downside of starting with something larger now.
+That metadata is then used directly to index g_v2a_type_map[] in
+virtsnd_kctl_info(), and to size loops and memcpy() operations in
+virtsnd_kctl_get() and virtsnd_kctl_put() against fixed-size
+virtio_snd_ctl_value and snd_ctl_elem_value arrays.
 
-Matt
+A buggy or malicious device can therefore trigger out-of-bounds access by
+advertising an invalid control type or an oversized value count.
 
-> 
-> >     - 2048 provides 2.13x safety margin while limiting allocation to
-> > 64KB
-> >     - Prevents unbounded allocation (attacker could send 268M binds =
-> > 18.8GB)
-> 
-> Referring to my previous email, it actually looks like most if not all
-> allocations in this path use __GFP_ACCOUNT | __GFP_RETRY_MAYFAIL |
-> __GFP_NOWARN, Did you actually verify that a malicious bind
-> significantly can exceed the cgroup limits?
-> 
-> 
-> > 
-> > Cc: stable@vger.kernel.org
-> > 
-> > Signed-off-by: Ramesh <adhikari.resume@gmail.com>
-> > ---
-> >  drivers/gpu/drm/xe/xe_vm.c | 5 +++++
-> >  include/uapi/drm/xe_drm.h  | 1 +
-> >  2 files changed, 6 insertions(+)
-> > 
-> > diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-> > index a717a2b8dea..1ff66874f43 100644
-> > --- a/drivers/gpu/drm/xe/xe_vm.c
-> > +++ b/drivers/gpu/drm/xe/xe_vm.c
-> > @@ -3841,6 +3841,11 @@ int xe_vm_bind_ioctl(struct drm_device *dev,
-> > void *data, struct drm_file *file)
-> >  		return -EINVAL;
-> >  
-> >  	err = vm_bind_ioctl_check_args(xe, vm, args, &bind_ops);
-> > +
-> > +	if (XE_IOCTL_DBG(xe, args->num_binds > DRM_XE_MAX_BINDS)) {
-> > +		err = -EINVAL;
-> 
-> If we end up concluding that this is indeed needed, we should return 
-> -ENOBUFS here to trigger a graceful retry.
-> 
-> Thanks,
-> Thomas
-> 
-> 
-> > +		goto put_vm;
-> > +	}
-> >  	if (err)
-> >  		goto put_vm;
-> >  
-> > diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
-> > index ae2fda23ce7..e666b73c81d 100644
-> > --- a/include/uapi/drm/xe_drm.h
-> > +++ b/include/uapi/drm/xe_drm.h
-> > @@ -1606,6 +1606,7 @@ struct drm_xe_exec {
-> >  	__u32 exec_queue_id;
-> >  
-> >  #define DRM_XE_MAX_SYNCS 1024
-> > +#define DRM_XE_MAX_BINDS 2048
-> >  	/** @num_syncs: Amount of struct drm_xe_sync in array. */
-> >  	__u32 num_syncs;
-> >  
+Validate control type and count once in virtsnd_kctl_parse_cfg(), before
+querying enumerated items or exposing the control to ALSA.
+
+Fixes: d6568e3de42d ("ALSA: virtio: add support for audio controls")
+Cc: stable@vger.kernel.org
+Signed-off-by: CÃ¡ssio Gabriel <cassiogabrielcontato@gmail.com>
+---
+ sound/virtio/virtio_kctl.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/sound/virtio/virtio_kctl.c b/sound/virtio/virtio_kctl.c
+index ffb903d56297..45f7b6a5b308 100644
+--- a/sound/virtio/virtio_kctl.c
++++ b/sound/virtio/virtio_kctl.c
+@@ -18,6 +18,21 @@ static const snd_ctl_elem_type_t g_v2a_type_map[] = {
+ 	[VIRTIO_SND_CTL_TYPE_IEC958] = SNDRV_CTL_ELEM_TYPE_IEC958
+ };
+ 
++/* Map for converting VirtIO types to maximum value counts. */
++static const unsigned int g_v2a_count_map[] = {
++	[VIRTIO_SND_CTL_TYPE_BOOLEAN] =
++		ARRAY_SIZE(((struct virtio_snd_ctl_value *)0)->value.integer),
++	[VIRTIO_SND_CTL_TYPE_INTEGER] =
++		ARRAY_SIZE(((struct virtio_snd_ctl_value *)0)->value.integer),
++	[VIRTIO_SND_CTL_TYPE_INTEGER64] =
++		ARRAY_SIZE(((struct virtio_snd_ctl_value *)0)->value.integer64),
++	[VIRTIO_SND_CTL_TYPE_ENUMERATED] =
++		ARRAY_SIZE(((struct virtio_snd_ctl_value *)0)->value.enumerated),
++	[VIRTIO_SND_CTL_TYPE_BYTES] =
++		ARRAY_SIZE(((struct virtio_snd_ctl_value *)0)->value.bytes),
++	[VIRTIO_SND_CTL_TYPE_IEC958] = 1
++};
++
+ /* Map for converting VirtIO access rights to ALSA access rights. */
+ static const unsigned int g_v2a_access_map[] = {
+ 	[VIRTIO_SND_CTL_ACCESS_READ] = SNDRV_CTL_ELEM_ACCESS_READ,
+@@ -36,6 +51,37 @@ static const unsigned int g_v2a_mask_map[] = {
+ 	[VIRTIO_SND_CTL_EVT_MASK_TLV] = SNDRV_CTL_EVENT_MASK_TLV
+ };
+ 
++static int virtsnd_kctl_validate_info(struct virtio_snd *snd, u32 cid,
++				      struct virtio_snd_ctl_info *kinfo)
++{
++	struct virtio_device *vdev = snd->vdev;
++	unsigned int type = le32_to_cpu(kinfo->type);
++	unsigned int count = le32_to_cpu(kinfo->count);
++
++	if (type >= ARRAY_SIZE(g_v2a_type_map)) {
++		dev_err(&vdev->dev, "control #%u: unknown type %u\n",
++			cid, type);
++		return -EINVAL;
++	}
++
++	if (count > g_v2a_count_map[type] ||
++	    (type == VIRTIO_SND_CTL_TYPE_IEC958 && count != 1)) {
++		dev_err(&vdev->dev, "control #%u: invalid count %u for type %u\n",
++			cid, count, type);
++		return -EINVAL;
++	}
++
++	if (type == VIRTIO_SND_CTL_TYPE_ENUMERATED &&
++	    !le32_to_cpu(kinfo->value.enumerated.items)) {
++		dev_err(&vdev->dev,
++			"control #%u: no items for enumerated control\n",
++			cid);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ /**
+  * virtsnd_kctl_info() - Returns information about the control.
+  * @kcontrol: ALSA control element.
+@@ -385,6 +431,10 @@ int virtsnd_kctl_parse_cfg(struct virtio_snd *snd)
+ 		struct virtio_snd_ctl_info *kinfo = &snd->kctl_infos[i];
+ 		unsigned int type = le32_to_cpu(kinfo->type);
+ 
++		rc = virtsnd_kctl_validate_info(snd, i, kinfo);
++		if (rc)
++			return rc;
++
+ 		if (type == VIRTIO_SND_CTL_TYPE_ENUMERATED) {
+ 			rc = virtsnd_kctl_get_enum_items(snd, i);
+ 			if (rc)
+
+---
+base-commit: 5bddc5123566e6431fff826fe76a8e378ae9db78
+change-id: 20260424-alsa-virtio-validate-kctl-info-2bbe3b5d5d65
+
+Best regards,
+--  
+CÃ¡ssio Gabriel <cassiogabrielcontato@gmail.com>
+
 
