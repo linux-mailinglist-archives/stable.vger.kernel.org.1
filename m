@@ -1,247 +1,203 @@
-Return-Path: <stable+bounces-244613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDVGJCzO/GlhTwAAu9opvQ
-	(envelope-from <stable+bounces-244613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:38:52 +0200
+	id sGoaFh3P/GlhTwAAu9opvQ
+	(envelope-from <stable+bounces-244614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:42:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8987D4ECF57
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:38:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3174ED011
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1EB8130086A3
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 17:38:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6911E30948B5
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 17:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B533AD513;
-	Thu,  7 May 2026 17:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E336477987;
+	Thu,  7 May 2026 17:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b="JVS74hpq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="afpZuCKm"
 X-Original-To: stable@vger.kernel.org
-Received: from os-cillation.de (mx.os-c.de [213.165.83.196])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088EF29ACD7
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 17:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.165.83.196
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778175524; cv=none; b=TFAU580ZMXpcbhvNtalqy6o8LbMgG06wNWPh8/aso//CxslJYMxFRsAiy+cybJjrcN/lTTPM2d1+J5w9r5SXFQaQtTXIwniLusDDCSEj1J03pGbfk3MFO5tfKi0P8fckMOt35/9/vgOMnhiZBxu+5M/xvRArF/HKB0EZT56Oi14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778175524; c=relaxed/simple;
-	bh=KYVFHjMnaBPyqijv/LvOV3x/TaMdsiBl+/0WIQLhfMI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qGUTSZeaMZTwkFvJDGYB7rye+o1QS0lQF/+uFYKwP3wzigSrd1qh4ORHWDPnMtIJGonFKzJwQsAswdNYyiZ0c5PNrAquYlsmTqqNfrFdb5c4VEyIaq9q42snAnP+dLlPjF5eGsd2a44XM4i1RFoAa7F9bV0vBZSfTTS7AwnbAwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de; spf=pass smtp.mailfrom=os-cillation.de; dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b=JVS74hpq; arc=none smtp.client-ip=213.165.83.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os-cillation.de
-Received: from core2024.osc.gmbh (ip-094-079-177-042.um30.pools.vodafone-ip.de [94.79.177.42])
-	by os-cillation.de (Postfix) with ESMTPSA id EE3BBC0530;
-	Thu,  7 May 2026 19:31:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=os-cillation.de;
-	s=202409; t=1778175104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/v7+nSJwhnhXC9plonrtaC/99X8RMF+zEyFn1SGmyVM=;
-	b=JVS74hpqq5GLG/E4WOH9Raqz46r7nhOFy0k7bzPYHej7EZ1Fv3smubkp3sjRz8AA1tdMkK
-	UIdfWTZshVDV9RItSXnk6osgo8l/k7hqHvE2EZ4RvPA6VjncVw1tuqTx3qMkgTSKFKGCuJ
-	tRhsX9jNktZUiBK774i/QEA8vJ9Y7bNujRIEbjaXiBGek9bAYKqdK30YrIRXiHwAI/7ta3
-	S46Lf6ABeZzAcwJK7x6km8n919tp8SQ9gFRASv8MA/Dz5DJGUCFZ7m8CXs9WEQjIPRuF12
-	ZKVtzgyN5tMp3xajUfdfMdRHJasUqwE8WaZRvOa4XmPZU6BjqevlXf7Iq7fzyA==
-Authentication-Results: os-cillation.de;
-	auth=pass smtp.auth=os-c@schweissgut.net smtp.mailfrom=hd@os-cillation.de
-Received: from [192.168.3.45] (hd2022.osc.gmbh [192.168.3.45])
-	by core2024.osc.gmbh (Postfix) with ESMTPSA id 9A74F200596;
-	Thu,  7 May 2026 19:31:43 +0200 (CEST)
-Message-ID: <de0ac6cc-453c-46a6-8c6c-9be33720e516@os-cillation.de>
-Date: Thu, 7 May 2026 19:31:43 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D8A477989
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 17:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778175588; cv=pass; b=Gvbpg+0U1i7+0J3bUGU0pa2rjVmA5RZ0QSKz9ErT/m5RwSj/2xTaPO+FPzlpMVEJjCHjJiUwsAvd6B2vzcxcLvQUp83sR7/gLc4IFRVN09AsPEcr1AlxRA3iMIQgnMKlLx0amTJktLMDbmqOzpLE5sgaqjeF4u7TOMP+Hra4QDs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778175588; c=relaxed/simple;
+	bh=ohsR/fIMQJjHroY/YB5ZaOasovAVfheXp/CsvW/39HQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fkMYh4grt+zikyfLB5oqVutXt5iKvVGVAh3JsfKvzzyW6X+wHQVLvkAEPYxskfrGs90CQQRlQoWIeG9YrW7HBctSLS0S/SbvkSxObuLQWekcMPwDnyteRQoUx9XdTfrFrSZZvcOwj5cWVQarJDadGLK0bBuJ2uLjiJGk+gsdnbQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=afpZuCKm; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2adff872068so6408735ad.1
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 10:39:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778175586; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bZxZskXXJZQam8uZbobSS1zzqNGEiejNdJGxDKMxNBrvn5HcwhSubZG0gtNRWMiW5X
+         dz5SDqVJy6OnI0yo6SaTX7kX7WUhsS1/ZqUcR3wBOFBrc251TG8xwjAJG/DD6xp183K+
+         5FlYSjGQAlM8sCNe7SEJlZl9f+bKTu/P6MaSS/ig3Go/bjHz1xe+iO6O7JnE04HOw8or
+         ATZ4CyvC6LtKOyslo4j6xGBcIbNmZqij6uzlJ+guU8dYNU/LYx7VJ4bzzSZnf1FFUOcf
+         MRt1Vfi+y84p6QgVYcA62sO5qJI/UJHyAgFsq4XNelrnJRQu5FEpUFpI0qieFJ6MfEmO
+         6P2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=f8+wFt4NqJIqcJNAHfqYFfrJjs6Ue3R50oWtEk7OHbw=;
+        fh=FWIv0R2fBvs3cJeGjGVFCunWiNua8tksKYsLAZNZ0oQ=;
+        b=gsPCA95Aoujvm72dc44iw1/j8hZsmyAMX0R6/9PzrE15TkVclnr7WHZl4wseBwwr/P
+         PPX3wqs/KJ8XWFGnwMgkW4bjoLnYTsa8j89xFSPeYFFirmjRowITmwCaHT2P0cI1e2Fm
+         14958V02s7fZRFTs0fbgld0TzSRIP8kpfo+z1QSvbB1qNYg4jItqAjL+jlRoUZYKXfdZ
+         bHA1wiXSe7kt8Ihzncv0VJaK1d5c9QCfov8vk3xF6qpvygp5W1GgFPfj3IYLz3DYXCPN
+         gmcsGhymUSKDgSFo+2eTzwJho5pp+AssdbReDX0dOazZ0tQ7mwNQZ3XWVEc1wMD75WKz
+         WRRw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778175586; x=1778780386; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f8+wFt4NqJIqcJNAHfqYFfrJjs6Ue3R50oWtEk7OHbw=;
+        b=afpZuCKmsJg/s9mcyZEn+/7RkeP39TDKb22mXcvnFeRLuc+gdYmwWLz/ZbCW4Xt70Y
+         KDQmlMX5rI4yQiS/oCjM2FoX/mZHFaPIU4iN5JkQjSpCQ1KCjSVXMzIral274hcD3Bcr
+         tS9G11xMfhW0YbdUPX+bt83QpA40i7/0p/55qKH4Cxb0O65PHUKQwPiESpOk8/yce27R
+         xywfMIqT5cd/zNo6UPHQ4/av9sxJOm7qwav4TBMvfXB089rYCDn0QFnYWRIV7IejH2Y9
+         RErwix/RSUfefst/nkg5YG77g/ozBqXVxSiWGLQ4mhOA0m/5RYdLarGK4yt9/5j9cing
+         MG3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778175586; x=1778780386;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f8+wFt4NqJIqcJNAHfqYFfrJjs6Ue3R50oWtEk7OHbw=;
+        b=kSgGcBgjZ3aj3d2A5GDZ+Odr8H+paOPU1ufWtCCnygVkXhQCUbkbGDVmRuVCNxSOup
+         zdEvM/z7mZwt/sdS82EXxBf2TNHLH30KgHK0vAF25sk9f2ntmWijpDpDfUEm0TYfeZ3Q
+         CsnDezD7V/Jqq26iVDf/Kj8PlXTuzUQwj4f7x6SLZOXYhRScljrJcTzpvx36Bnjp4Wmu
+         MaLRIp3DTABaNhoRXG/rTxhOQwWO2GBCmRLovidxIiGlW1WzpfczciRnJ0VD/FYi3SBO
+         r0jZlLSayb56H7VSZ8ALBPXGL3ezXMN7VUAtvR7Q+Ljp49t2iqHM0DRQGot7Om+EeKEg
+         xGGA==
+X-Forwarded-Encrypted: i=1; AFNElJ+LAbqhNFqOKjABqjDOHfhiwNhMBitl82WCZ3Ka9qtg/OZSB8AOz30Fy/LHxn+H7wc5ZI+dtKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUEDmJvADff5rg3J3xPUBpLncmAt5/HgRwJ37Au2M25debPOWI
+	RrnCYvm6gbk85o1d013hVJhIhcmZBUNoM9S5NugsZns22athdWTfSTyrSpMuJRC8Q1vI8IL1jjU
+	BkZ40haUYc4yjW6Xxqk7njNyF26hSaU4=
+X-Gm-Gg: AeBDievX046FkLdVfzZWF2VXFseOygMwDI/HNJY2vDZGx3WaLHO2dEQCqI6Hiz0opmU
+	SpjvLsBb9P85Z8NlT6ZSCKEmrHAfcY7xSFv4SEPzD/xrrXZMn8Z8EsOJeDyXuOwqHhemrV18gUG
+	vapgNBMT9mhb9gX45C5oS0Vv1Z2wGfSd4ndrzkSR8VXiVoxz6eM8DtaGRlXz2OHiz+7FvBhELD7
+	sbV/QkRBZfbVMpGrHUpTWOewF3t/0OWS00a9pPMPIHsIUwQ3EMC77gS7TVF0Ri/3BAuGigdgUYY
+	rdHBd1o=
+X-Received: by 2002:a17:903:390f:b0:2b0:5ae9:ee4 with SMTP id
+ d9443c01a7336-2ba79285966mr87114295ad.5.1778175585662; Thu, 07 May 2026
+ 10:39:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] mtd: spi-nor: sst: Fix write enable before
- AAI sequence" failed to apply to 6.6-stable tree
-To: gregkh@linuxfoundation.org, sanjaikumar.vs@dicortech.com,
- pratyush@kernel.org
-Cc: stable@vger.kernel.org
-References: <2026050405-manly-surplus-9d27@gregkh>
-Content-Language: en-US
-From: Hendrik Donner <hd@os-cillation.de>
-Autocrypt: addr=hd@os-cillation.de; keydata=
- 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 li+2
-In-Reply-To: <2026050405-manly-surplus-9d27@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8987D4ECF57
+References: <20260429000623.3356606-1-avagin@google.com> <7c2681ee-a53c-402c-8947-e7a74f8720c8@intel.com>
+ <CAEWA0a5zwHKP51V90A3J960e3o3pdVkSUMYwRJaxiD-fkP-JcQ@mail.gmail.com>
+ <02a4adb3-8829-4681-b170-e3a2f44bf11c@intel.com> <CAEWA0a5=S+C2pdViHPWykvG0Dj4hbuKFVhSnEzpPWoyOh4oAnQ@mail.gmail.com>
+ <c4fab3dc-1627-4775-986e-6b3ea52e7c36@intel.com> <CAEWA0a6nhZ1nXCLeiCdnKi5SjUHiP9w0jO5wuTwVoPO_JYd9hg@mail.gmail.com>
+ <562f5687-3648-4912-b230-233d0c23bd70@intel.com>
+In-Reply-To: <562f5687-3648-4912-b230-233d0c23bd70@intel.com>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Thu, 7 May 2026 10:39:33 -0700
+X-Gm-Features: AVHnY4JmoJoUt9M68Dh1jAiHFBnha452Qs68dTp5pqC0x3BIE8IC9Ne_TuzXnGE
+Message-ID: <CANaxB-xrHqh9zcTf3Xp+M_JX5+TVuC6e31nHMfvN1amN6GoxVA@mail.gmail.com>
+Subject: Re: [PATCH] Revert "x86/fpu: Refine and simplify the magic number
+ check during signal return"
+To: "Chang S. Bae" <chang.seok.bae@intel.com>, Ingo Molnar <mingo@redhat.com>
+Cc: Andrei Vagin <avagin@google.com>, Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	criu@lists.linux.dev, x86@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: CA3174ED011
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[os-cillation.de,reject];
-	R_DKIM_ALLOW(-0.20)[os-cillation.de:s=202409];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244613-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[os-cillation.de:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244614-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hd@os-cillation.de,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,dicortech.com:email,gregkh:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[avagin@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,intel.com:email]
 X-Rspamd-Action: no action
 
-Hello,
+On Sat, May 2, 2026 at 12:23=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.=
+com> wrote:
+>
+> On 5/1/2026 2:42 PM, Andrei Vagin wrote:
+> >
+> > My point is that the reverted change broke a significant, real-life use
+> > case that the hardware was explicitly designed to support.
+> >
+> > It is the responsibility of C/R tooling to ensure the migration target
+> > is compatible with the source. Enforcing a magic check based on a fixed
+> > offset does not provide additional security. The kernel must be prepare=
+d
+> > to handle "trash" data in the userspace xsave area and manage any
+> > exceptions triggered by the xrstor instruction.
+>
+> It looks like this behavior has been in place since c37b5efea43f ("x86,
+> xsave: save/restore the extended state context in sigframe"). With the
+> sanity check, userspace can modify the sw_fx->xfeature_size and the
+> sw_fx->xfeatures (independently).
 
-On 5/4/26 10:38, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.6-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x a0f64241d3566a49c0a9b33ba7ae458ae22003a9
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050405-manly-surplus-9d27@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
->  From a0f64241d3566a49c0a9b33ba7ae458ae22003a9 Mon Sep 17 00:00:00 2001
-> From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-> Date: Wed, 11 Mar 2026 10:30:56 +0000
-> Subject: [PATCH] mtd: spi-nor: sst: Fix write enable before AAI sequence
-> 
-> When writing to SST flash starting at an odd address, a single byte is
-> first programmed using the byte program (BP) command. After this
-> operation completes, the flash hardware automatically clears the Write
-> Enable Latch (WEL) bit.
-> 
-> If an AAI (Auto Address Increment) word program sequence follows, it
-> requires WEL to be set. Without re-enabling writes, the AAI sequence
-> fails.
-> 
-> Add spi_nor_write_enable() after the odd-address byte program when more
-> data needs to be written. Use a local boolean for clarity.
-> 
-> Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-> Tested-by: Hendrik Donner <hd@os-cillation.de>
-> Reviewed-by: Hendrik Donner <hd@os-cillation.de>
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> 
-> diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
-> index 175211fe6a5e..db02c14ba16f 100644
-> --- a/drivers/mtd/spi-nor/sst.c
-> +++ b/drivers/mtd/spi-nor/sst.c
-> @@ -203,6 +203,8 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->   
->   	/* Start write from odd address. */
->   	if (to % 2) {
-> +		bool needs_write_enable = (len > 1);
-> +
->   		/* write one byte. */
->   		ret = sst_nor_write_data(nor, to, 1, buf);
->   		if (ret < 0)
-> @@ -210,6 +212,17 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->   
->   		to++;
->   		actual++;
-> +
-> +		/*
-> +		 * Byte program clears the write enable latch. If more
-> +		 * data needs to be written using the AAI sequence,
-> +		 * re-enable writes.
-> +		 */
-> +		if (needs_write_enable) {
-> +			ret = spi_nor_write_enable(nor);
-> +			if (ret)
-> +				goto out;
-> +		}
->   	}
->   
->   	/* Write out most of the data here. */
-> 
+I will take a look at this. Thanks.
 
-it doesn't apply because of changes made in
-18bcb4aa54eab75dce41e5c176a1c2bff94f0f79.
+>
+>
+> But, it seems there is no consistency check between the two. For
+> example, the size only could be set to an arbitrary value within the
+> valid range, without matching xfeatures.
+>
+> If userspace sets an inconsistent size vs. xfeatures, maybe zeroing out
+> the garbage could be an option which I expect still compatible with the
+> portability model.
+>
+> It's still not entirely clear to me whether your claimed portability was
+> considered in the original sigframe design. If so, this should be
+> documented more clearly (e.g., in headers and/or Documentation), along
+> with relevant selftests. I=E2=80=99d to follow up on that.
 
-That commit was never backported and is not in any stable tree older
-than 6.12.y. So it needs to be applied first to 5.10.y, 5.15.y, 6.1.y
-and 6.6.y. It's a refactor commit that should not change behaviour at all.
+I will address this in a separate series.
 
-If that's not possible for some reason the conflict resolution looks
-easy enough. I have something i can send out for review if needed.
+>
+>
+> That said, yes, this area ultimately falls under the rule of not
+> breaking userspace. So,
+>
+>    Acked-by: Chang S. Bae chang.seok.bae@intel.com
 
-Regards,
-Hendrik
+Thank you, Chang. Ingo, could you take this patch?
+
+ps Sorry for the previous html reply with the same content.
+
+Thanks,
+Andrei
 
