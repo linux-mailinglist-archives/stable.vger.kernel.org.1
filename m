@@ -1,244 +1,215 @@
-Return-Path: <stable+bounces-244558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cG+KLC18/Gl0QgAAu9opvQ
-	(envelope-from <stable+bounces-244558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 13:49:01 +0200
+	id YJrcI8B9/GnXQgAAu9opvQ
+	(envelope-from <stable+bounces-244559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 13:55:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6EE4E7B8F
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 13:49:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074274E7D25
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 13:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55BD3301876B
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 11:47:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2972E300C919
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 11:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D733D812C;
-	Thu,  7 May 2026 11:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C789390995;
+	Thu,  7 May 2026 11:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijihpFcH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EgOgNHH9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F953ACA43;
-	Thu,  7 May 2026 11:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C59630F535
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 11:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778154471; cv=none; b=bB7I4dTZNKTOLazt8No1H2IgqPclTZakiYWK1PrMdTFt9lWAAmW1RRi66meyt0yOr6TA7fzI/sZzrRm2JEJx7Yc5EvOWTnP7NxGTZdkXLMs+7pM8M25jzKP1plVBwWHnGORdMbwZ8gPE1rJ9VbaZlTEWEFFr4qdo9u3544H37OM=
+	t=1778154937; cv=none; b=lss5eX+fhecREvzz1WfaZ905CfEdkTvjx8kL8CVKIOOnlbsN5STz6ErzrV1fEApty0V4a7UNd83l06ZDfZgMqaZ3emfm7xzeVAoHZyPjXQRm3oxO993p5KhgHspVbfkVYUY50tY607E0VQsiv9RqRyBVw3HJDYqhFxmdLp8tCX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778154471; c=relaxed/simple;
-	bh=hOh+VaLLck43nAplkfF92iG+/ppyrDVDliM63RnV7OY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uCD+y+Nl6/pa6oG4Q6VtWnf8BojPc4ZBv8rf2B0auRfieTSY/1e26hUEOIZ6O6PluDLT0HqsSuekzzlRzZJd0Q8DVTunwYRJAXtB7jigNvAjjs6i0MvPLYMfbAm2EmQHOFSsAh8qy0tWfe+PPUf3ZPY88KzlKs3OJ1Lcdc+9JFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijihpFcH; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778154937; c=relaxed/simple;
+	bh=uOZzP+hnc2KkpXmUBEYDiNlvJmdc3wTyTq/s/nSWBdI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jUfKplAZVv6hy6olQyQ6mxw+JWXAVj/zSWVFAOSXQgq/bwUE1/uWVAvEAp976Tn2pWcwNRYzuPTxN+vrsj6HigSaC9JRi0Qwi0k6rWgjJ5SSqKnhpVdDbSWFA+mla+oIUpWQmNnWfAlwmA1tHrpOO5Hv7iHZTMWzlsD+0ec3NgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EgOgNHH9; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778154470; x=1809690470;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=hOh+VaLLck43nAplkfF92iG+/ppyrDVDliM63RnV7OY=;
-  b=ijihpFcH1q4q83uBoszUQgqQK2FqE9W0M+6pday1FBAFX9/YBRrCp/aU
-   L1u1C6WJunEUmllD4YGdS/e2N3Jw561flzoLPtxohKeTZgefmQ5K5DiHH
-   VkSEuLwPqDEFl2iAnC1dkDScRPmpogSoy59We/zY1Hf8gDBYPmivxNSGu
-   EAhS9/GZLVgVuC5+wDGzepCfT7LgCxaUI7A5MNeJIp2393IhMhAH/AeeM
-   jNBh5rwF4y5tQ3u1b0wV30d/i7069t9J/o3Pe6w7yjLTxXJF7ShjgidBd
-   L8r0U6rvVIImdqW4hUHpUDa4uicLRNwWdsenTFQ6fqikhIhT3L9q3ZAlT
-   Q==;
-X-CSE-ConnectionGUID: VeFPtGnPTYiIHODQo1uj4A==
-X-CSE-MsgGUID: JvGSnzwoRv6EkZmjjkhgyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="101777097"
+  t=1778154936; x=1809690936;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uOZzP+hnc2KkpXmUBEYDiNlvJmdc3wTyTq/s/nSWBdI=;
+  b=EgOgNHH9x5SdLl85hzGwizUzGAbb3m2IVxWJQm7Z4h/9894P9wqGByT5
+   D5E4c7fnjgr7E3t3YeZqQP7rsf836sLla92ubTjc733MQ6meOC/R+/RsZ
+   8zqNU9jJMHClyyveHWWsC7MYW8qIjmvn1VegPjoa54jq7XR1o5z9OHNim
+   FWsN+T+/CQJA1avWebfiu4/TO2Ejg1R6jIvJxfD19m4e4+ZTvBYVlYme7
+   RzwipHrjWPdgx6Ou97d2C0DdVxhWI+rAT6ROtz/ro2+VJ2J4jhKjfI7E3
+   naE7lbk+8oWcOm+1PSCMFahAp9XPnjvqh14bF8cC/F3lc+dHsgV86Tlh4
+   A==;
+X-CSE-ConnectionGUID: PXEPiMpdSnSZHvkElRm0kQ==
+X-CSE-MsgGUID: 6TG9MAu2SJuGKoNlP82z3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="81672376"
 X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="101777097"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:47:49 -0700
-X-CSE-ConnectionGUID: tYFjJU1JQcuWUN7kr3tsmA==
-X-CSE-MsgGUID: BkOZ65goQ9q8cJxW3piOLQ==
+   d="scan'208";a="81672376"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:55:35 -0700
+X-CSE-ConnectionGUID: VTo835LLSkK2masNB5HJAQ==
+X-CSE-MsgGUID: 21d7cxqFQrWsq8IrsjWt9A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="236355898"
-Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.246.20.168]) ([10.246.20.168])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:47:45 -0700
-Message-ID: <56e52628-d029-4919-95dd-aa6da13f3b08@linux.intel.com>
-Date: Thu, 7 May 2026 13:47:38 +0200
+   d="scan'208";a="230055022"
+Received: from amilburn-desk.amilburn-desk (HELO mwauld-desk.intel.com) ([10.245.245.139])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:55:33 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] drm/xe/dma-buf: handle empty bo and UAF races
+Date: Thu,  7 May 2026 12:55:20 +0100
+Message-ID: <20260507115519.115309-3-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 09/13] ice: fix setting RSS VSI hash for E830
-To: Jacob Keller <jacob.e.keller@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Joshua Hay <joshua.a.hay@intel.com>, Madhu Chittim
- <madhu.chittim@intel.com>, Willem de Bruijn <willemb@google.com>,
- Dave Ertman <david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>,
- Grzegorz Nitka <grzegorz.nitka@intel.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-References: <20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com>
- <20260504-jk-iwl-net-2026-05-04-v1-9-a222a88bd962@intel.com>
- <068a5266-4721-4496-b027-3b32da3e02ea@intel.com>
-Content-Language: en-US
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
-In-Reply-To: <068a5266-4721-4496-b027-3b32da3e02ea@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1F6EE4E7B8F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 074274E7D25
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244558-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244559-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marcin.szycik@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,linux.intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
 X-Rspamd-Action: no action
 
+There look to be some nasty races here when triggering the
+invalidate_mappings hook:
 
+1) We do xe_bo_alloc() followed by the attach, before the actual full bo
+   init step in xe_dma_buf_init_obj(). However the bo is visible on the
+   attachments list after the attach.  This is bad since exporter driver,
+   say amdgpu, can at any time call back into our invalidate_mappings hook,
+   with an empty/bogus bo, leading to potential bugs/crashes.
 
-On 06.05.2026 23:06, Jacob Keller wrote:
-> On 5/4/2026 10:14 PM, Jacob Keller wrote:
->> From: Marcin Szycik <marcin.szycik@linux.intel.com>
->>
->> ice_set_rss_hfunc() performs a VSI update, in which it sets hashing
->> function, leaving other VSI options unchanged. However, ::q_opt_flags is
->> mistakenly set to the value of another field, instead of its original
->> value, probably due to a typo. What happens next is hardware-dependent:
->>
->> On E810, only the first bit is meaningful (see
->> ICE_AQ_VSI_Q_OPT_PE_FLTR_EN) and can potentially end up in a different
->> state than before VSI update.
->>
->> On E830, some of the remaining bits are not reserved. Setting them
->> to some unrelated values can cause the firmware to reject the update
->> because of invalid settings, or worse - succeed.
->>
->> Reproducer:
->>   sudo ethtool -X $PF1 equal 8
->>
->> Output in dmesg:
->>   Failed to configure RSS hash for VSI 6, error -5
->>
->> Fixes: 352e9bf23813 ("ice: enable symmetric-xor RSS for Toeplitz hash function")
->> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
->> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
->> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
->> ---
->>  drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
->> index 1d1947a7fe11..c52c465280f7 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_main.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
->> @@ -8046,7 +8046,7 @@ int ice_set_rss_hfunc(struct ice_vsi *vsi, u8 hfunc)
->>  	ctx->info.q_opt_rss |=
->>  		FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_HASH_M, hfunc);
->>  	ctx->info.q_opt_tc = vsi->info.q_opt_tc;
->> -	ctx->info.q_opt_flags = vsi->info.q_opt_rss;
->> +	ctx->info.q_opt_flags = vsi->info.q_opt_flags;
->>  
->>  	err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
->>  	if (err) {
->>
-> 
-> Sashiko complains about ice_set_rss_hfunc() but it is unrelated to this fix:
-> 
->> While looking at this function, I noticed a pre-existing issue regarding the
->> hardware cache. Does calling ice_update_vsi() with a local context leave the
->> global hw->vsi_ctx[vsi->idx] out of sync?
->> If ice_update_vsi() succeeds, vsi->info.q_opt_rss is updated, but
->> hw->vsi_ctx[vsi->idx]->info.q_opt_rss is not.
->> When an unrelated feature such as RDMA filtering is subsequently toggled via
->> ice_cfg_rdma_fltr(), could it retrieve this stale cached context via
->> ice_get_vsi_ctx() and copy the stale q_opt_rss value back into its command
->> buffer?
+2) Similar to 1) but here we get a UAF, when the invalidate_mappings
+   hook is triggered. For example, we get as far as xe_bo_init_locked()
+   but this fails in some way. But here the bo will be freed on error, but
+   we still have it attached from dma-buf pov, so if the
+   invalidate_mappings is now triggered then the bo we access is gone and
+   we trigger UAF and more bugs/crashes.
 
-Yes.
+To fix this, move the attach step until after we actually have a fully
+set up buffer object. Note that the bo is not published to userspace
+until later, so not sure what the comment "Don't publish the bo
+until we have a valid attachment", is referring to.
 
->> Could this cause the firmware to silently revert the RSS hash function to its
->> previous configuration during the next ice_update_vsi() call?
+We have at least two different customers reporting hitting a NULL ptr
+deref in evict_flags when importing something from amdgpu, followed by
+triggering the evict flow. Hit rate is also pretty low, which would
+hint at some kind of race, so something like 1) or 2) might explain
+this.
 
-No, because the context object passed to ice_update_vsi() only sets
-ctx->info.valid_sections for the sections it wants to update, so unrelated
-values are not updated in HW.
+v2:
+  - Shuffle the order of the ops slightly (no functional change)
+  - Improve the comment to better explain the ordering (Matt B)
 
-Looking at other ice_update_vsi() calls, most of the times the context object is
-being allocated, not taken from cache. It's not immediately clear to me what
-purpose does hw->vsi_ctx[] serve - it only appears to be used in
-ice_cfg_rdma_fltr() (correct me if I'm wrong), where options from the cached
-context are being read to fill the unchanged fields in the updated section.
-This seems to be the equivalent of keeping track of context values in vsi->info,
-which is what almost all ice_update_vsi() callers do.
-If I had to guess, I'd say hw->vsi_ctx[] could probably be removed and vsi->info
-used instead, but maybe I'm missing something.
+Assisted-by: Gemini:gemini-3 #debug
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7903
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/4055
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Acked-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/xe/xe_dma_buf.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-TLDR I think this is just old, inconsistent code that could be improved, but it
-needs some investigation. Until we don't have a clear signal that there's a bug,
-I wouldn't touch it.
-
->> There also appears to be a pre-existing issue with state desynchronization
->> when handling failures. After ice_update_vsi() succeeds, vsi->rss_hfunc
->> is updated, but ice_set_rss_hfunc() then calls ice_set_rss_cfg_symm() at the
->> end of the function:
->> ice_set_rss_hfunc() {
->>         ...
->>         err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
->>         if (err) {
->>                 ...
->>         } else {
->>                 vsi->info.q_opt_rss = ctx->info.q_opt_rss;
->>                 vsi->rss_hfunc = hfunc;
->>                 ...
->>         }
->>         ...
->>         return ice_set_rss_cfg_symm(hw, vsi, symm);
->> }
->> If ice_set_rss_cfg_symm() fails, the error is returned but vsi->rss_hfunc
->> remains updated. If the user retries the command, the early check:
->> if (hfunc == vsi->rss_hfunc)
->>         return 0;
->> evaluates to true and returns success immediately.
->> Could this skip the ice_set_rss_cfg_symm() retry entirely, leaving the
->> hardware's flow director rules in a non-symmetric state permanently while
->> falsely reporting success?
-
-This looks valid.
-
-Thanks,
-Marcin
-
-> Someone from the ice team should look into this and determine whether or
-> not its valid.
+diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
+index b9828da15897..2332db502c8b 100644
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -357,15 +357,25 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
+ 		}
+ 	}
+ 
+-	/*
+-	 * Don't publish the bo until we have a valid attachment, and a
+-	 * valid attachment needs the bo address. So pre-create a bo before
+-	 * creating the attachment and publish.
+-	 */
+ 	bo = xe_bo_alloc();
+ 	if (IS_ERR(bo))
+ 		return ERR_CAST(bo);
+ 
++	/*
++	 * xe_dma_buf_init_obj() takes ownership of the raw bo, so do not touch
++	 * on fail, since it will already take care of cleanup. On success we
++	 * still need to drop the ref, if something later fails.
++	 *
++	 * In addition this needs to happen before the attach, since
++	 * it will create a new attachment for this, and add it to the list of
++	 * attachments, at which point it is globally visible, and at any point
++	 * the export side can call into on invalidate_mappings callback, which
++	 * require a working object.
++	 */
++	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
++	if (IS_ERR(obj))
++		return obj;
++
+ 	attach_ops = &xe_dma_buf_attach_ops;
+ #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
+ 	if (test)
+@@ -378,21 +388,12 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
+ 		goto out_err;
+ 	}
+ 
+-	/*
+-	 * xe_dma_buf_init_obj() takes ownership of bo on both success
+-	 * and failure, so we must not touch bo after this call.
+-	 */
+-	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
+-	if (IS_ERR(obj)) {
+-		dma_buf_detach(dma_buf, attach);
+-		return obj;
+-	}
+ 	get_dma_buf(dma_buf);
+ 	obj->import_attach = attach;
+ 	return obj;
+ 
+ out_err:
+-	xe_bo_free(bo);
++	xe_bo_put(bo);
+ 
+ 	return obj;
+ }
+-- 
+2.53.0
 
 
