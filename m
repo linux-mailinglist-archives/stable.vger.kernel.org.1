@@ -1,223 +1,253 @@
-Return-Path: <stable+bounces-244610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBH6Nf3D/GnSTAAAu9opvQ
-	(envelope-from <stable+bounces-244610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:55:25 +0200
+	id ELL7NyjF/Gk8TgAAu9opvQ
+	(envelope-from <stable+bounces-244611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:00:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B7F4EC875
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:55:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771BF4EC958
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 19:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C2B13042416
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:52:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8BC23043523
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7CE453497;
-	Thu,  7 May 2026 16:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D21B2C21C5;
+	Thu,  7 May 2026 16:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hLOKaJ2P"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mLZ+/sT4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED60945107A
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1AE31F983;
+	Thu,  7 May 2026 16:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778172751; cv=none; b=iAdGdXl19C62TJq9rou5/Qb44ZTfTSUUvy3DNnuyy2526pFAc3WyPehDr3CkuwfMSvydHwf8Qqei0p4AhO0L4tgapujN+mvvOPEbZZGJ7cT2arQ/5pGvPgSEm/7f0Ai1uL0VXgZQn8DaGTI+gBeBU0QxwFj/uArpb4pAInP/M4M=
+	t=1778173167; cv=none; b=cnHD7Hk7eciFRnhAAX9S+GA4q51p04FmnEZicPlEGQD/vEkuR1X703OSVKGsgpw9//SX5nBBiuVPikHOfu1xinf9awvcjuJL+ttO/CZrAGx46nbCzyii2H9hBg7NVMG07SFxFXd8WPHSbgMAgZSR1VVoRYEeOHr1nSqhLWFH9/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778172751; c=relaxed/simple;
-	bh=aHoBqTbdr56DO71Zlzzaandq5SHQ8sCJYyYln2KmSW0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kBza/eFvWzCHmzRas/uuNOsTqyCR6JMBM/515hwuTfVu6BtZ3PVvVGKu6I2b6jPmmZ+HMRrFw+uicL2GNrttrpNZ0KlTSS7vfP60oVdeIvpCgw3VFRyID21vMSGQpFDMUjfPvOgkT4AHdSx8UFQRIZ+HjK7Ff33JGEtntqyCyas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hLOKaJ2P; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b9ea536877so8108745ad.1
-        for <stable@vger.kernel.org>; Thu, 07 May 2026 09:52:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778172749; x=1778777549; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yv2fHWPI4GY7ycdmc2I4lTP92YQsllQ8O6sfU4iOItg=;
-        b=hLOKaJ2PpTO1yTKqpMknJRZzPhXHNq7xaXp8V5BnrxFTCvd0QcDK0DZAgm9VzK5bTT
-         Bux/AzMC2D7MJSLwhzTFDYnZc/PcFfAPrt8RjuB79Xlff9UFigczDKCeflfeCkGTz2G7
-         HABg0Kz931SdXv4whao41c0gDBwe/KKq6Y93up4S8hhGD6St0cVinpDlhAcwwesiCqFs
-         Z31FaqJ6koWowukjj/sUlfYD1qGPef56yjJbpvWTC/ZDLJf7Or6GBkk1inCS5dXXNvHH
-         TEnPVgXz9V6ixzjwa7SYJTbCt+ZIiVAH4LzRzP2VOMF76lXLsF0xCUxlnpIInpu0Rg1C
-         y0zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778172749; x=1778777549;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yv2fHWPI4GY7ycdmc2I4lTP92YQsllQ8O6sfU4iOItg=;
-        b=JZ6rmgTxIexmb2NTqElKlORN2ULJ3ydjJk8BmL1YSbtx+YAOjjpkEW/x0ohG2HGfJV
-         hyHKSZGUrKMMaBG83Y7FVUfQUNwsiBIp9g8P1UP1ubOEWs7D6uBw0e/NhGGUTmAyZDCQ
-         kxYzuzN35uTyx6QIpjkZfOYp7JKIrs9IfS/NUNzmdzBpo3A4YhZZRwqDOgI5vuQOSNBh
-         ks3VvOfyMDcIv12Q4oB+TK8TTKFV/66GMZIpvOzSjSgE0a8gd4YV3byM4rmZSQtm8k3C
-         DuCwHJm5Mlcl2CdbLFmGkfWpdVjXBqboQDv7JONJZHK/v3artoU0V+PTu86N0csP6EJh
-         zkPA==
-X-Forwarded-Encrypted: i=1; AFNElJ9dmZs5qkywZKYghaGOVbfGpCO5N7RxoNFzaeuPGKHy5351LrxVaG6KOWUaU9FW/GlUJJ4SStw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX4ZMcWEv/ve+SCbzkuA5/fTolZRA0dBw6Y6iXb7+/bvUX3BKw
-	7BK0c6ZBJf5tnyxWmggC5tGBpYDAHHOy0hPqfmwuDJ2lzGjPCwt0jm9M
-X-Gm-Gg: Acq92OEgfvAMEUNYnM7MGseaUkNwxQScppD2YUmdcMi0EU7gKa6zMZmC+jFrh5JWgGY
-	ul5MjOiIPnGmaW187xR02lhB4U8kOvMpF9cj7t4sqe+7u2RCvmzCpJz1FsvoDWLAZxVQmZrrYAC
-	oN4KLEFNKhcP9ATpN4tj7RTbdhyRDF/HVvJZOMM9xG/cxviP5SDqD1pXKyhbc/+J2PfJiuMyh3l
-	E5FdWUgV2J/ogOlU+/TFyGyFunidLuoSK9zorw4ugt3a3V1sLb2Qmau0wgyLB5a2ifYx01w4tKI
-	6C6B3pm94aeWBRHBmytDZQPhjNRqtu/Z5G/vIThS4mw5kcl656NaxFrFHalxHe+JWTgVOJwkUMY
-	H694EjfC2/ElrjT2yCAG1CbINQbkav368tRrwvNwKwxYsmvulNyw3Vd+QOdtcLGncQQi+FNpu+1
-	8rPIxSDCHNJP5uuKaJEu34xhdg2y1HibVE7d4FjBw=
-X-Received: by 2002:a17:903:4b03:b0:2ba:21c2:d6cb with SMTP id d9443c01a7336-2babd4bdb6dmr31502595ad.16.1778172749225;
-        Thu, 07 May 2026 09:52:29 -0700 (PDT)
-Received: from localhost ([49.207.150.30])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bae783dc50sm2551575ad.43.2026.05.07.09.52.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 09:52:28 -0700 (PDT)
-From: Piyush Sachdeva <s.piyush1024@gmail.com>
-X-Google-Original-From: Piyush Sachdeva <psachdeva@microsoft.com>
-Date: Thu, 07 May 2026 22:22:14 +0530
-Subject: [PATCH v3 2/2] smb: client: Zero-pad short GSS session keys per
- MS-SMB2
+	s=arc-20240116; t=1778173167; c=relaxed/simple;
+	bh=pazXxEd7A1cd1sWGeu/YHbddxLF5r07GBKYjKOW2Pzc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Pippnx6hyCVA2bzwIVT1egb35y5UJB5caFDhuqbXZgeGpJlJz6BsTKC+nhBEurlLhcHpEZGTGN9jScY0FllAmUXmKJbyAzjPx+5HivEx7FEGhVfdSQ9EPqDoTvqcX0gbmOc2wilEAM1jDGqWZUpjt0vPHb9BswmmeNV2HL7/gr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mLZ+/sT4; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778173163; x=1809709163;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=pazXxEd7A1cd1sWGeu/YHbddxLF5r07GBKYjKOW2Pzc=;
+  b=mLZ+/sT4r6BRCyRVo8iiS89p4A832B5LkLnGF/VNpITpd45T8YBJavrr
+   imw5kTRI94dRoujppDiM1R5bSsy6/rAmIwR+ITF76F7vIr6eHoMOl18/e
+   Vhd2r+eXBpO+0qiieBtOZR2GsVQJLU/MaevK6aqo1ClWyYyDaWI2n9o6/
+   SX7w3Q0oNY37WcxgGWDYzrBF2moWrXx2zngg5ASNh0JB0z52iCFqRJDLL
+   /ZSnw/OuG7IL7ZjE/vAZ85SYGRTTuNv/wzjDqgmsYeIufbzMHKMuUrYCs
+   vZFF9xqVhq5k8Dl4196h+uorJaN7DuyA6sKz9gFFoASoobDYCMEryQYtO
+   Q==;
+X-CSE-ConnectionGUID: c8rJnQjfR9ux+o3jqGUflw==
+X-CSE-MsgGUID: N6aEvWlET5ywoTap9Jpaww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="82975389"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="82975389"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 09:59:18 -0700
+X-CSE-ConnectionGUID: A/1g4vxpRaeXQt2eYX0VBw==
+X-CSE-MsgGUID: 1zqVMEuqTBCtM0Sus+wYDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="259952125"
+Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.246.20.168]) ([10.246.20.168])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 09:59:14 -0700
+Message-ID: <3abb7d8f-82eb-46e8-8243-fc6f596ab84c@linux.intel.com>
+Date: Thu, 7 May 2026 18:59:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 09/13] ice: fix setting RSS VSI hash for E830
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+To: Jacob Keller <jacob.e.keller@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+ Joshua Hay <joshua.a.hay@intel.com>, Madhu Chittim
+ <madhu.chittim@intel.com>, Willem de Bruijn <willemb@google.com>,
+ Dave Ertman <david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>,
+ Grzegorz Nitka <grzegorz.nitka@intel.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+References: <20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com>
+ <20260504-jk-iwl-net-2026-05-04-v1-9-a222a88bd962@intel.com>
+ <068a5266-4721-4496-b027-3b32da3e02ea@intel.com>
+ <56e52628-d029-4919-95dd-aa6da13f3b08@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <56e52628-d029-4919-95dd-aa6da13f3b08@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-kerbmi-v3-2-397ebbb53eff@microsoft.com>
-References: <20260507-kerbmi-v3-0-397ebbb53eff@microsoft.com>
-In-Reply-To: <20260507-kerbmi-v3-0-397ebbb53eff@microsoft.com>
-To: Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org, 
- Shyam Prasad N <sprasad@microsoft.com>, 
- Bharath SM <bharathsm@microsoft.com>, Paulo Alcantara <pc@manguebit.org>, 
- Ronnie Sahlberg <ronniesahlberg@gmail.com>, Tom Talpey <tom@talpey.com>
-Cc: samba-technical@lists.samba.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, vaibsharma@microsoft.com
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3414;
- i=psachdeva@microsoft.com; h=from:subject:message-id;
- bh=aHoBqTbdr56DO71Zlzzaandq5SHQ8sCJYyYln2KmSW0=;
- b=owGbwMvMwCV29FJ3ncRHDT/G02pJDJl/Djv5n01fPnF6wi83E+7DM3gmtQm4HoiepBY1uZTl8
- JPUFofrHRNZGMS4GCzFFFk2nLgjyxu/S3LepydGMHNYmUCGSIs0MAABCwNfbmJeqZGOkZ6ptqGe
- oZGOgY4xAxenAEz1rmhGhl3Z+fqduVN3PKrUWPizViSXMyR50q3G2+V9rS87JQqKuRkZDv53CLH
- Zq7rpwDS+S/4HPjx+HeCpof6Laa5EUNHBg5X5TAA=
-X-Developer-Key: i=psachdeva@microsoft.com; a=openpgp;
- fpr=80350F71F916134953C3EB979E19C6F9839C3CFC
-X-Rspamd-Queue-Id: B6B7F4EC875
+X-Rspamd-Queue-Id: 771BF4EC958
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244610-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[samba.org,vger.kernel.org,microsoft.com,manguebit.org,gmail.com,talpey.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244611-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[spiyush1024@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[marcin.szycik@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-Per MS-SMB2 section 3.2.5.3, Session.SessionKey is the first 16 bytes
-of the GSS cryptographic key, right-padded with zero bytes if the key
-is shorter than 16 bytes.
 
-SMB2_auth_kerberos() copies the GSS session key from the cifs.upcall
-response using kmemdup(msg->data, msg->sesskey_len, ...) and stores
-the GSS-reported length verbatim in ses->auth_key.len. generate_key()
-reads SMB2_NTLMV2_SESSKEY_SIZE bytes from this buffer when feeding the
-HMAC-SHA256 KDF for signing key derivation. If a GSS mechanism returns
-a session key shorter than 16 bytes (e.g. a deprecated single-DES
-Kerberos enctype with an 8-byte session key), the KDF call performs an
-out-of-bounds slab read and derives keys that do not match the server,
-which pads per the spec.
 
-Modern KDCs disable short-key enctypes by default, so this is latent
-rather than reachable in production, but it is still a kernel heap
-over-read.
+On 07.05.2026 13:47, Marcin Szycik wrote:
+> 
+> 
+> On 06.05.2026 23:06, Jacob Keller wrote:
+>> On 5/4/2026 10:14 PM, Jacob Keller wrote:
+>>> From: Marcin Szycik <marcin.szycik@linux.intel.com>
+>>>
+>>> ice_set_rss_hfunc() performs a VSI update, in which it sets hashing
+>>> function, leaving other VSI options unchanged. However, ::q_opt_flags is
+>>> mistakenly set to the value of another field, instead of its original
+>>> value, probably due to a typo. What happens next is hardware-dependent:
+>>>
+>>> On E810, only the first bit is meaningful (see
+>>> ICE_AQ_VSI_Q_OPT_PE_FLTR_EN) and can potentially end up in a different
+>>> state than before VSI update.
+>>>
+>>> On E830, some of the remaining bits are not reserved. Setting them
+>>> to some unrelated values can cause the firmware to reject the update
+>>> because of invalid settings, or worse - succeed.
+>>>
+>>> Reproducer:
+>>>   sudo ethtool -X $PF1 equal 8
+>>>
+>>> Output in dmesg:
+>>>   Failed to configure RSS hash for VSI 6, error -5
+>>>
+>>> Fixes: 352e9bf23813 ("ice: enable symmetric-xor RSS for Toeplitz hash function")
+>>> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+>>> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+>>> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+>>> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+>>> ---
+>>>  drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+>>> index 1d1947a7fe11..c52c465280f7 100644
+>>> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+>>> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+>>> @@ -8046,7 +8046,7 @@ int ice_set_rss_hfunc(struct ice_vsi *vsi, u8 hfunc)
+>>>  	ctx->info.q_opt_rss |=
+>>>  		FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_HASH_M, hfunc);
+>>>  	ctx->info.q_opt_tc = vsi->info.q_opt_tc;
+>>> -	ctx->info.q_opt_flags = vsi->info.q_opt_rss;
+>>> +	ctx->info.q_opt_flags = vsi->info.q_opt_flags;
+>>>  
+>>>  	err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
+>>>  	if (err) {
+>>>
+>>
+>> Sashiko complains about ice_set_rss_hfunc() but it is unrelated to this fix:
+>>
+>>> While looking at this function, I noticed a pre-existing issue regarding the
+>>> hardware cache. Does calling ice_update_vsi() with a local context leave the
+>>> global hw->vsi_ctx[vsi->idx] out of sync?
+>>> If ice_update_vsi() succeeds, vsi->info.q_opt_rss is updated, but
+>>> hw->vsi_ctx[vsi->idx]->info.q_opt_rss is not.
+>>> When an unrelated feature such as RDMA filtering is subsequently toggled via
+>>> ice_cfg_rdma_fltr(), could it retrieve this stale cached context via
+>>> ice_get_vsi_ctx() and copy the stale q_opt_rss value back into its command
+>>> buffer?
+> 
+> Yes.
+> 
+>>> Could this cause the firmware to silently revert the RSS hash function to its
+>>> previous configuration during the next ice_update_vsi() call?
+> 
+> No, because the context object passed to ice_update_vsi() only sets
+> ctx->info.valid_sections for the sections it wants to update, so unrelated
+> values are not updated in HW.
+> 
+> Looking at other ice_update_vsi() calls, most of the times the context object is
+> being allocated, not taken from cache. It's not immediately clear to me what
+> purpose does hw->vsi_ctx[] serve - it only appears to be used in
+> ice_cfg_rdma_fltr() (correct me if I'm wrong), where options from the cached
+> context are being read to fill the unchanged fields in the updated section.
+> This seems to be the equivalent of keeping track of context values in vsi->info,
+> which is what almost all ice_update_vsi() callers do.
+> If I had to guess, I'd say hw->vsi_ctx[] could probably be removed and vsi->info
+> used instead, but maybe I'm missing something.
+> 
+> TLDR I think this is just old, inconsistent code that could be improved, but it
+> needs some investigation. Until we don't have a clear signal that there's a bug,
+> I wouldn't touch it.
+> 
+>>> There also appears to be a pre-existing issue with state desynchronization
+>>> when handling failures. After ice_update_vsi() succeeds, vsi->rss_hfunc
+>>> is updated, but ice_set_rss_hfunc() then calls ice_set_rss_cfg_symm() at the
+>>> end of the function:
+>>> ice_set_rss_hfunc() {
+>>>         ...
+>>>         err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
+>>>         if (err) {
+>>>                 ...
+>>>         } else {
+>>>                 vsi->info.q_opt_rss = ctx->info.q_opt_rss;
+>>>                 vsi->rss_hfunc = hfunc;
+>>>                 ...
+>>>         }
+>>>         ...
+>>>         return ice_set_rss_cfg_symm(hw, vsi, symm);
+>>> }
+>>> If ice_set_rss_cfg_symm() fails, the error is returned but vsi->rss_hfunc
+>>> remains updated. If the user retries the command, the early check:
+>>> if (hfunc == vsi->rss_hfunc)
+>>>         return 0;
+>>> evaluates to true and returns success immediately.
+>>> Could this skip the ice_set_rss_cfg_symm() retry entirely, leaving the
+>>> hardware's flow director rules in a non-symmetric state permanently while
+>>> falsely reporting success?
+> 
+> This looks valid.
 
-Allocate auth_key.response with kzalloc() at a length of
-max(msg->sesskey_len, SMB2_NTLMV2_SESSKEY_SIZE), copy the GSS key in,
-and rely on kzalloc()'s zero initialization for the spec-mandated
-padding. Set ses->auth_key.len to the padded length. Larger GSS keys
-(e.g. the 32-byte aes256-cts-hmac-sha1-96 session key) continue to be
-stored at their natural length, preserving the FullSessionKey path.
+On second thought, if we decide to rollback changes to VSI on ice_set_rss_cfg_symm()
+fail, we must call ice_update_vsi(), which then can also fail, still leaving us with
+hfunc programmed and symmetry not set. I'm not sure if it's worth adding rollback
+that can fail and still leave us with the original problem. User would just see 2 errors
+instead of 1.
+> Thanks,
+> Marcin
+> 
+>> Someone from the ice team should look into this and determine whether or
+>> not its valid.
 
-Emit a cifs_dbg(VFS, ...) message when a short key is encountered to
-surface deprecated-enctype usage.
-
-NTLMv2 and NTLMSSP code paths produce a 16-byte session key by
-construction and are unaffected.
-
-Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
-Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
----
- fs/smb/client/smb2pdu.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index cb61051f9af3..995fcdd30681 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -1713,17 +1713,30 @@ SMB2_auth_kerberos(struct SMB2_sess_data *sess_data)
- 	is_binding = (ses->ses_status == SES_GOOD);
- 	spin_unlock(&ses->ses_lock);
- 
-+	/*
-+	 * Per MS-SMB2 3.2.5.3, Session.SessionKey is the first 16 bytes of the
-+	 * GSS cryptographic key, right-padded with zero bytes if shorter.
-+	 * Allocate at least SMB2_NTLMV2_SESSKEY_SIZE bytes (zeroed) so the KDF
-+	 * input buffer is always valid for HMAC-SHA256 even with deprecated
-+	 * Kerberos enctypes that return a short session key.
-+	 */
-+	if (unlikely(msg->sesskey_len < SMB2_NTLMV2_SESSKEY_SIZE))
-+		cifs_dbg(VFS,
-+			 "short GSS session key (%u bytes); zero-padding per MS-SMB2 3.2.5.3\n",
-+			 msg->sesskey_len);
-+
- 	kfree_sensitive(ses->auth_key.response);
--	ses->auth_key.response = kmemdup(msg->data,
--					 msg->sesskey_len,
--					 GFP_KERNEL);
-+	ses->auth_key.len = max_t(unsigned int, msg->sesskey_len,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
-+	ses->auth_key.response = kzalloc(ses->auth_key.len, GFP_KERNEL);
- 	if (!ses->auth_key.response) {
- 		cifs_dbg(VFS, "%s: can't allocate (%u bytes) memory\n",
--			 __func__, msg->sesskey_len);
-+			 __func__, ses->auth_key.len);
-+		ses->auth_key.len = 0;
- 		rc = -ENOMEM;
- 		goto out_put_spnego_key;
- 	}
--	ses->auth_key.len = msg->sesskey_len;
-+	memcpy(ses->auth_key.response, msg->data, msg->sesskey_len);
- 
- 	sess_data->iov[1].iov_base = msg->data + msg->sesskey_len;
- 	sess_data->iov[1].iov_len = msg->secblob_len;
-
--- 
-2.53.0
 
 
