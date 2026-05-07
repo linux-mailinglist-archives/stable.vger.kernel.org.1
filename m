@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-244632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNYUMLDm/GmGVAAAu9opvQ
-	(envelope-from <stable+bounces-244632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 21:23:28 +0200
+	id qMwIFMPm/GmGVAAAu9opvQ
+	(envelope-from <stable+bounces-244633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 21:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B4B4EDF8C
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 21:23:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BF84EDFB9
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 21:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1429730600B7
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 19:22:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 62DCE3066A80
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 19:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1099747F2FD;
-	Thu,  7 May 2026 19:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A36247DF8E;
+	Thu,  7 May 2026 19:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="J3N8fDoR"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="d4zs7JUC"
 X-Original-To: stable@vger.kernel.org
 Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011013.outbound.protection.outlook.com [40.107.208.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F07C481673;
-	Thu,  7 May 2026 19:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A217548095D;
+	Thu,  7 May 2026 19:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778181747; cv=fail; b=gRaqqIYl+W8UtCC4XtyeqCm3EfT5GAtifzOZAyEGF+wFKmDWDKcvabsBEpeZoYfN2WnuW2hQFVpha+8yv11ODVZr7UQO09o9P4o4+KOXJupy3yAJfMESg9EosE4mcybd1benb0vYRHen/TQGKwzo6d3YwKaXx3UbxBKhdpcZTnk=
+	t=1778181750; cv=fail; b=ehS614cutJl469XwygvRDjc64LPPj8jkhiDi8XSuu5UDUGLN5rcFdfh8UXc+4DMFeojZU+gwl+wJD20oU/jd+zRu4XRCzsPOlSORtsgEqUzUic0yJF9eHBUNnlcSwFlxyI2ATzBvsErFG6MaWCS2+kd4N0L9GIdVR7YsAE09NT4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778181747; c=relaxed/simple;
-	bh=MDxJfxf4fG+N6a1Z+1YhER2NXBHeOUH7eJ5HWt71dEY=;
+	s=arc-20240116; t=1778181750; c=relaxed/simple;
+	bh=WT6XdtABcM6qpeW1fmJnt9m48jTOU9/WezB+CdIW23s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=d8os9/2+xDp5VHh4RKf0sQlV84IYKUEVb4CER9jT5Nr67W0l4HAaAagvKBAVtSY4rt4W7YMqJsoCCFX+JJJicq6wtzvD54GrssMq23vu0rbrWz6T8NHdue03DGVojqtsjJmaOCQX8DYecbOQqwyIK/kCrMKXht4FTsoJdc6bL8Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=J3N8fDoR; arc=fail smtp.client-ip=40.107.208.13
+	 Content-Type:MIME-Version; b=G/0vrZCkRHPvw7lw/mie+lUOUE8wLhzPW+iH6Zx5P3o5cbgx+EPyrZggO+w/Ap4ONczfLbakSX8PN2UdR7b6TBHMKcy8dE+k99laUscEmqtmHio7xqm07ZJpn6IIyPUJObsKrN/8Cyt6NE5m7OQwMQDg8lmSAi6sgRg+EydgbGo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=d4zs7JUC; arc=fail smtp.client-ip=40.107.208.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Kf5pnCzBg/S9TdHcW4P3YDw+Xmobd/9TYkiTnOdh6ZRnx89VIsTh1UhWsmo5PBB4kQqyEQtUOYGQUWhlaG3IbDXWYwbCs9aDEkjcP3gcwwAr0R074y0LieIvOFYzX24BekkuOfakKXWAVW3KmfdPW0WizDO0DqUp8/IPzKflqizFqkbU9x/f82oilFMjcdn8MeMqawEh6LS0m5G33uH9w9affuqGfb/mSdffyj98hDOAEIyYq7LVa5hmZJ41SYs1kPuF0NWAgdBtEJxb9UkhA+F4SrHlKWinkjZFeJd9CQh0T95W/uDFdy4grD6p8InkEEp9KMh9YGEG8nIkyCl8jw==
+ b=t0ETvnyMba8d39AZtyrjW9rt8o3qsE3+vY8VapP8rhrGJ787a6i8Wi8kCJlyV2g1AMIzhiJa+6/lB2lkuuCCQCqhVBO1htVRkBCS5PWjW+mxSbIVnhH1xeeMpBrilzY105NMYAQCoHpHsHQtOnMcysB4YvVW/2sirXyP/WTdHnaOkiVfITwrabVvlLctuXyBp8aB1NFiqJrZC9uQUj+/yzExa1ymPTzjUhDZS2tnvBNIpTWecqxnp4ZocQzlhtEGd+VeQ5DXvJZE0hlSrFMlP49qAEJIOjre+aD7AOgvca123GOWljpFTnxllqIb6TIcve7UHYE+Wcg0pSLRgiOcNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aqD7VuA8ZZUSXNRH9OlTUJF80pu84KcvouIJd+DTCCE=;
- b=PQ0hQU+1nPjRYY1zqEn85b1ws10CVIG1BuJNhTA0eKEbf7Cr6FV4hZI6M3yC9hWfqhHugH5h4jcCxMkSbFxho2xqKpjH5+ftB0ShzvoaKNPWEEUVn5zie64c2+cwkeUkGl5O0hsj6GmQQX7BvLsTToFhnTwxBVXDHPWe+6PhLhEBgL0G9hrEW1xgYpi6baw5S3QZXHHeC6yTuic/tHNKH+F6l66Ekrr/OA9MupTYWaA6CeQMSvjedMNot37yx5BbyHb8mPHsOzYIK2IWGNZiNL+4PMe0zrMCZEarZ36xA7ZFguRmvCK3UAcabz/AQdvIGh7htY8L1/jnrzNeH86xNQ==
+ bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
+ b=XSpry5U5JKFoRhn5Gj8Rti1cTMD/N31FqiDf7efIvUnlFBerZhCimhqVzQKrhtYpjn6tVwXay2I0XUGnW2GTf+WwwNNUQJUrRXa8zJNP8H5JOacHZHGurzrx2sZQHP8DRnBBI5SRTHh0EsXJEqUFmL9ZFqvFBl6/P5XJjdQT+7eVU3/QPIJO4fsWddXZneuPwlz5de0AhgrzlKIOSHjFEJJKj4vHS36L2dha6g7ITkFsIfAwoxy+tfLY4qqRaUN4nCAeVz8rn6FVv3aRTgBycS+6DmdPNc754Q51qdhumJXi2MRKRri69SBYi6Yx8eOGU9u6SpXgUML57M+KEa7e1w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aqD7VuA8ZZUSXNRH9OlTUJF80pu84KcvouIJd+DTCCE=;
- b=J3N8fDoRkxk82bgz1JBj89yiSFzZ21sD7RiPKtYGvN5+b2tO/QMyFNTypycNZzcuJ8aDFe+Q2IJExi9ZK+J62EsEe6/0wQLUegTio7JG4fq9qM3qLi7G3TBI7+Rxp4ZrIM6jmKgdjlLA3wu/8KCxkhG+4sAEZvnbrBNCrtwZMegB0ubHlleWF522xP1Emk6Vrz+JVdn4Vxdl3CYygVGxx7TTfM1yxi3seAbocd54uuDGwsWhJzryYKd42ZIseFBywRT6+K2Xi16KvPk49UOA8Jiwopf6paz8Hs+ORtqHAo0Pdm4WZ5nrRNDXAt9jMB4RAGnvIVGdXFBjLZMjF0nIOA==
+ bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
+ b=d4zs7JUCu/x/+TYSOkpZVOD+rBjBi171yqSxQUge7w1U/lK5qV/YZ84Ns26X1WUjhrJRx0knDY37LBJd5/ewYVQpIT8/X0S68cPOa2c2Dshxli0OG0s4z/esoGa56GztCbxYfDcx+T4XxGIHLb1DmtLGfFQUzgCYWHzoHs0E8tZWKdya/3LnP/DKEch6g/cNL39PlMvCWaToVh8C6PO++RSVmWl29lzZYKHmZ38cOsp/98N3qxeNkXl0jiJS9biBoM09+9BJhtW65WzHyssw1XGC7TCIskp6yV2t12KlHM4V00WWBO4IzgR6vmPZvkGRlDrKgZaEcL4EWfv/EpoIlQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
@@ -68,9 +68,9 @@ Cc: Alex Williamson <alex.williamson@nvidia.com>,
 	rananta@google.com,
 	yishaih@nvidia.com,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] vfio/pci: Fix racy bitfields and tighten struct layout
-Date: Thu,  7 May 2026 13:22:01 -0600
-Message-ID: <20260507192206.1350046-2-alex.williamson@nvidia.com>
+Subject: [PATCH 2/2] vfio/mlx5: Fix racy bitfields and tighten struct layout
+Date: Thu,  7 May 2026 13:22:02 -0600
+Message-ID: <20260507192206.1350046-3-alex.williamson@nvidia.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260507192206.1350046-1-alex.williamson@nvidia.com>
 References: <20260507192206.1350046-1-alex.williamson@nvidia.com>
@@ -87,76 +87,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|SJ0PR12MB6758:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a7cec18-0ed9-4c35-6ba4-08deac6df3b5
+X-MS-Office365-Filtering-Correlation-Id: b9446913-7d44-45f3-b36f-08deac6df445
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	E1VBostbLTy/ER+VaLoBV5dr6iS3pa84TlqipyXuqP3aviN+W3jOcPSMN994bfYtZNuH50c1FSkhSSdvbX1dDy6DtBAjGO7ycM+z7X4ou9dWQjOqgrHIrvJaUrU4NFNRM3l/6IKx3uygaksSUHPrI0smp6eAIyu7EJcorXj3XunYdc8FL+cw1vJ9NQEBdt6sqHyNWgoMo9k7J+QlgXGYY2M7KlR67qsOC49MuW+fScMMYnYzpOLsptxa7lHecR/aDmhhj9UTJOkfgYENjMyOZwdSaNMKOvB1/vwO5gJrBBLG+JHyWsPmWCv4M/sHlQJSXkG2RquUzwvZfgx5RvbpaSQzdpwP/hMA1y+LiRx0dy0aeZa3dnLwrEjBF3QG+L3FWnRfUWO7QxjU5rcZyCa+uw2vmcb92BSz8OgdV5aY77quBfY3Ze+XVKb8ShEvnma4bsNz18PXUHxYkkeb3eVxk7npbkR2/owibZxOPlgGHJzAWThXTAds33f8gN7mTPw0jBvgxLa1PSWUgjYRwkZCwiSW7gjdHwCNMlSakVCSyAjU/QXc/GEa6sJ6b8h+gdBwELjtQVq0tMEWF30lvrbaK8iax4C2jKXy66+N9yUwhLpez+ZK01rJ4E95e9/aAzVuaYoidH19ETlJRRNGLt7ZTgEkhxGelBgQGTEMHNO6Ztydm1sVOkI6F1tBiaPOXoYC
+	r+oD8qKplXBqcL+2kHerV2pCQcrJaEwvoDbQPl/O2a1LuiPFcauod+SRJtCOZRLGRmoK0j1J+IDefLD9wCGKxlPINFFz9vagqhXD+/FDQNh5hzlavwSLhIsyswIksoufJg/uI9zxkVFukfFoZtTuBhPew+LHHSo0G2WP7HVcF4RZ7q+BpCCVdw+Ox9MX1PLP/PyvS6eiccYlw+R3sDEKFZ0UDSxpp8BfgZs26XgLktEpKOCHNwhBc0TRVFj0fo915Ul8BjfEwG5xxS42bl986Y74c/86PMRocGfdEaHR0ahoQrGdruq1UlWLZBLzSW7JjFcYKbjDA+li2AgZ8ennTGyUWrt3lauxX8Zs9HV7WabJNMrTd33njKyxGMXKcruFatcnR6ZHN1C6b/JRIQSs9qZReOT1jzOc0Iy6zgqijEdjI8SKw0dIGrMkjWAozODetTp0bsNt7YGCMfS65FMY1dAk3nnlWLNxrzNOxheWvTECud5jg2djHv1chZezlGY33TAaUdR8x/7kiJidjQtx4MCkgPTgYtq6942LOGqHJX/EXTexN1CAYqonrMkUGZYDdewvReF/aXlDfqs+xnQ/rPvo5xD6YaMGa7oxzozWLWkOv4C4uOt+NOfoELDtz0DzSXbNgV76FqDfis3P5a+cREJ0O1Vvx2EGJpGTIhnA9f4yJDCeR7l1unQUhRBjls4A
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dPBSeI5nOijZfGGNbcQFnDqNAqj0iF8RaaJ001r+xz0T86F/XdFchp9IHA3F?=
- =?us-ascii?Q?UnV/TfOoxdck7NMKNLe3lLPOejUSO4C7qjsCuPVVxAfJn8ofUglQ6MZyR8XD?=
- =?us-ascii?Q?GCGZb+5FAzaTtWyj508qrnnnaawcMC4BlkIuNrIrU+2N+BWhxs1ldlKQs//w?=
- =?us-ascii?Q?JLUA1rClVr4TrRdYPmTx4hf9inezBK+gLWaAE+KguvXIt0sotTmTSW3VEMiA?=
- =?us-ascii?Q?mESYXlauhtBdOS0GQHP2dJxlcb5XWYsXkyO19ojEmg3ub4PMGQrxWAioQ0+N?=
- =?us-ascii?Q?m+9tAKXf/1V2BrlNBKnX4i/9fi+Uk2lLdFBAgMv3LutXYklahkDyIs/4vU9E?=
- =?us-ascii?Q?pNc5N+9HsvHpnr7KJpwb1bL7edfSeAzTmIaROkBg6iE3koXJzpd2eEtKCCNZ?=
- =?us-ascii?Q?DrqfCruk5Mb+1PBKiJYgOp2l3CG30t5mk/iQb0udwhauI9rf9orMKCTCJaC6?=
- =?us-ascii?Q?3Y9nJr/xqMjOk/IXsyzBgkuQnttJjDe9tVsYLWrw9BgakRW/8FrocmTFcihb?=
- =?us-ascii?Q?6vlGp4WGU9QApzb531rxlFTzDiGgl07nAzgttylLdQ16MPNQ3s7kI2SFDrSa?=
- =?us-ascii?Q?50d7mKZVfQkY41i6cxNpGDpMPNG5IaLCb5FP5gpK05NKTh0UfTxiB6RDCZMH?=
- =?us-ascii?Q?8ZIyluNmyx2m7RlKV/uSH6867nZtXUG9zGgUvkeH+pJ+zsGZ/v3hgO27B1iJ?=
- =?us-ascii?Q?OYh51QL99GNJyWGWqUMNMNGI6jLj5k+O+KopZtq/HDGt/6NqK0trb7iZ7E0h?=
- =?us-ascii?Q?dHrgjOvqT7D/Cr5O4FTfNxmEYSiYmiJuKZlFA29nyndMrcs5piV0ZningFun?=
- =?us-ascii?Q?LNg206mlwwxpKLOAo/pNlIIW9NHHW2vtiR0DkoEZjYE+3S+RIhZr+St17yu5?=
- =?us-ascii?Q?f7O4y111l/rCP7+4yDhDVky7o5chvmaHMbX59YNbw8/RHWjITYLAkO63Li2O?=
- =?us-ascii?Q?TyZHP9kvbeKGsub0kOsZMuTvAbBqfCenRu2hPoo3/Gybn1siuu9KFUkPDTpQ?=
- =?us-ascii?Q?QqM7XhxNfFOtB3lcE49LR6w8ehx670rchIZ3cOuMaGuosJdZqPSZwLPO1hpb?=
- =?us-ascii?Q?zE22+obhC4ZHASjAZQmDvyIVwajoKANqezzyQk7gquG4UCY1AxY/MXMfr6PD?=
- =?us-ascii?Q?ISn0/iELc7fHmfhUajREFryYCa4fGYCuXKAoRes71vMz+0xMuatM/J2yTQtW?=
- =?us-ascii?Q?NlpuyzkrEfiday4rROkl2gOuxSVmANZ172ktvzdP8IZUU8Dxnxd7qA/I91S8?=
- =?us-ascii?Q?1dS1tlsB07JbisAjPPRsJcMsGgHUHB/UW/0R3lBCZ450Qcrn/8LMuKrFCd6d?=
- =?us-ascii?Q?ns/81DETpTAkIXIlgVyffTsQJnxWHdD7CetENHf2Df4FDAqeXW9RE5a4N8Lw?=
- =?us-ascii?Q?6vrqIubRzKv6D9Gb/KzGHOIKFPMmcFTVzhQwgJyQlHzCpxsoCxAKvYHb62VB?=
- =?us-ascii?Q?KVUGqJVLptA/dLJcqy6jiQEnoVxWMjVIsODQAegDL5D6xCHO7YQXkvo6tRGC?=
- =?us-ascii?Q?1YoezCDP0fy0NyAEJNjyXz40ZgKP5/g/EAi7/AtHyYhqvycx5dEW4WF0ushe?=
- =?us-ascii?Q?JvdGeyBrLCO7vLdkFlVDcJITFg9r3NDQ2QJoR4vM6qMAvXV69GxAskcrgU1d?=
- =?us-ascii?Q?JxNXLU0wbRhy1zz3q4HDsIy8PwoJS/epvZcRJMjIFpBzbwOGVtsB4wxsIXIR?=
- =?us-ascii?Q?CE9D12Xjpa6jtE/4THn88B4Fr/pDkJxMIgsOzTwOyi48c7rzmqhtfNlrnu6G?=
- =?us-ascii?Q?1+IE+uuLNA=3D=3D?=
+	=?us-ascii?Q?p0zofnUSXz6+YbPCIfsbsQLKHN/KRqO1qkLIoJu+f+TDIns+yuX8cscvv4Pg?=
+ =?us-ascii?Q?iUys2Y/ZaDAIdMxWFFvgwBHUvkJ6S9Jb5MdRJuYZWqrAMS5ONg9kFJ3tsBXa?=
+ =?us-ascii?Q?fVTesBevnWszl8+Saq0EZL3j9u6d22OhfavNW+nbs40FlKGUS18ROBxBaXDx?=
+ =?us-ascii?Q?PjRJIoMIYIcPdzphnyKeGzwzrNvAz5LvSPIUCfS0JijAvGputa36gwtjQqUW?=
+ =?us-ascii?Q?iijyIbSQYwqhREIXgKti7ahAsUtaPi5wu25Gxvvv0VKzwMLE2YRMlIbPl5oD?=
+ =?us-ascii?Q?xq05lM+SJzv7cQV+nW0COp0Vcbm3bLr7HyJWJEKMS6fzoK0Z8fpy47PXPikA?=
+ =?us-ascii?Q?3grJchHidb+UEZ5e75qsXOgI3XNII25litKeT7aAezIiL3IYogOVi1vjz/Dm?=
+ =?us-ascii?Q?ygCkw1K40zTFDTlllwQp+UbEEJVDP6RzoJlVEryhB+DEMPEAMQjZ26jTTkix?=
+ =?us-ascii?Q?stQEawgnVTwCraCCKOQeSM1uXbO6lfygIiP0x7SvfznzU5PYv4o5zjuCoK5e?=
+ =?us-ascii?Q?X3B6PaeIjeJ64mK7/Rn3kaQ8VRJR7H2AO8RZUUxx/C61vRGauKc2eQTTv5Uu?=
+ =?us-ascii?Q?SIrH5ukKoynlTkhs59/F9jXOoATeOWPjfoMX1TWMHcFkrfEkGGVfvmRrIZtP?=
+ =?us-ascii?Q?B0RZLZPcdZ9tWajFeTkRoVWUtHYwBT17QPueLI8S3fPHkJoTbY2mxD1C6Ecl?=
+ =?us-ascii?Q?rW1ymSXGXLvyH5A4bN6M0J5pZLCgGs8YGGVURvSx452VVMHocBJuwwhr3L58?=
+ =?us-ascii?Q?XGkNb2FVppPIDWJX7008Glk2fA77MgGZUOm31z9bZqUW4zu7S2Adx088EqOP?=
+ =?us-ascii?Q?dicEN3ZsyLaVsTMDQJ77Pw50O0IQVDGoiAeAi3voyPaSBXkqfG1D65XL+Zz6?=
+ =?us-ascii?Q?NTXZxXienDUkujBOkmDgPuLNX7Ypy5fraE3lTNxYxvdrKdRZbjE9j1MrrD28?=
+ =?us-ascii?Q?ED+8piuO9znCiY4hpRppqsXBN4LZHmN/+aqqwGnrT6e/GEXh+uIYFPjzNb9Q?=
+ =?us-ascii?Q?k5F5bM2AMD+Yiqz9AbjCa8jCp7UW95MPO6hJf+nxA2NbBJ3oJ5puQcxFnwfi?=
+ =?us-ascii?Q?FuSXpr8ZDxmM45opsWS1VyamVdcI1YENJ2h+xu8pSpHzOQzA50hLDSXtivsZ?=
+ =?us-ascii?Q?tfbIiqxmVimMdJYidbHtldaxbDdh4UiKvsQW+ikad3S6dSru0Bz2vkkn0+h4?=
+ =?us-ascii?Q?S/BVnzpcnDSai39M+3GiGU+7akE0l0E/c6sohwNMyaz0o2nnyEJo00um9yV2?=
+ =?us-ascii?Q?AWzzsjo4oB/62DOh/jVQxkml9gFTBVyU11TMb0hdZ3mqTbikoclldxpo4wSd?=
+ =?us-ascii?Q?qUyaIeuk1OPmYRSLG2fhUkXK+Ke3EDDV8AKYxhbEzwUok8iW9QnGIt7PEYzz?=
+ =?us-ascii?Q?SiokGHSjekFG/JQKOKZcM4xuwaqwtMn4w24VQ5Z4075ADgLqbNnHNZDsoAEv?=
+ =?us-ascii?Q?zW0dzM3VMzjrBd7qaRhIdsaCtzzdDN+vaOMPQYS1+MeLDh/KrpWp2SoQzXHt?=
+ =?us-ascii?Q?CQVvygN9DPLi45dyW5CG9WpLRz8iHoTa7ohzRBdjRr3Wo3ii/V8m3B7WJw5N?=
+ =?us-ascii?Q?iE3wl6wSsBJF7TTjzJfQ7ikXrN8RNSR8vTMhEX3+2aj1FM3BBOscCVpJMm6T?=
+ =?us-ascii?Q?lP2MLAWBht5MQoXuKOMKR5fgQjWYmPxxg2M+xHGDWfyPc3zR6WPKQc2ux/wb?=
+ =?us-ascii?Q?5qPpPYigFeHfuYQGTCPXg8sv8AmyIB2ri0RJpCsj51f3CbkwytP8Odx8JEub?=
+ =?us-ascii?Q?uvcFa0qQMg=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a7cec18-0ed9-4c35-6ba4-08deac6df3b5
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9446913-7d44-45f3-b36f-08deac6df445
 X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 19:22:17.5434
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 19:22:18.4254
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ck1HNwwRuARh6vnUVaUbFStfsLyL06xOMOp5GakG9guRb9vKsXGVpfweNkplxLyFzBMVislLGuGG8yu2yEJNow==
+X-MS-Exchange-CrossTenant-UserPrincipalName: f0BlojcbxyTRhrxMx8Uq2fDTcVfblm3rA4i1bdXK+0A2b10W7TxgJWNOY/94YG1l+d/zD2kFgsxnU2AlagWn8Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6758
-X-Rspamd-Queue-Id: 85B4B4EDF8C
+X-Rspamd-Queue-Id: D2BF84EDFB9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244632-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244633-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[alex.williamson@nvidia.com,stable@vger.kernel.org];
@@ -166,65 +166,67 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,Nvidia.com:dkim,nvidia.com:email,nvidia.com:mid]
 X-Rspamd-Action: no action
 
 Bitfield operations are not atomic, they use a read-modify-write
 pattern, therefore we should be careful not to pack bitfields that
 can be concurrently updated into the same storage unit.
 
-The split fields (virq_disabled, bardirty, pm_intx_masked,
-pm_runtime_engaged, sriov_pwr_active) are mutated post-init from
-contexts that don't serialize against the other writers in the same
-storage unit, so a bitfield RMW could drop an adjacent field's
-update.  The remaining bitfields are touched only during probe or
-close where no concurrent writer exists, so they stay packed.
+The split fields (is_err and object_changed in mlx5_vhca_page_tracker,
+deferred_reset in mlx5vf_pci_core_device) are mutated from contexts
+that don't serialize against the other writers in the same storage
+unit, so a bitfield RMW could drop an adjacent field's update.  The
+remaining bitfields are either probe-only or share a single writer
+context, so they stay packed.
 
-While reordering, place virq_disabled and bardirty earlier to fill
-an existing alignment hole.
+The page tracker's status field is also relocated to fill the
+alignment hole the split exposes.
 
-Fixes: 9cd0f6d5cbb6 ("vfio/pci: Use bitfield for struct vfio_pci_core_device flags")
+Fixes: f886473071d6 ("vfio/mlx5: Add support for tracker object change event")
+Fixes: 61a2f1460fd0 ("vfio/mlx5: Manage the VF attach/detach callback from the PF")
 Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 ---
- include/linux/vfio_pci_core.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/vfio/pci/mlx5/cmd.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 9a39a13a6576..8bb3fa0e41dd 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -101,6 +101,8 @@ struct vfio_pci_core_device {
- 	const struct vfio_pci_device_ops *pci_ops;
- 	void __iomem		*barmap[PCI_STD_NUM_BARS];
- 	bool			bar_mmap_supported[PCI_STD_NUM_BARS];
-+	bool			virq_disabled;
-+	bool			bardirty;
- 	u8			*pci_config_map;
- 	u8			*vconfig;
- 	struct perm_bits	*msi_perm;
-@@ -117,17 +119,15 @@ struct vfio_pci_core_device {
- 	u32			rbar[7];
- 	bool			has_dyn_msix:1;
- 	bool			pci_2_3:1;
--	bool			virq_disabled:1;
- 	bool			reset_works:1;
- 	bool			extended_caps:1;
--	bool			bardirty:1;
- 	bool			has_vga:1;
- 	bool			needs_reset:1;
- 	bool			nointx:1;
- 	bool			needs_pm_restore:1;
--	bool			pm_intx_masked:1;
--	bool			pm_runtime_engaged:1;
--	bool			sriov_pwr_active:1;
-+	bool			pm_intx_masked;
-+	bool			pm_runtime_engaged;
-+	bool			sriov_pwr_active;
- 	struct pci_saved_state	*pci_saved_state;
- 	struct pci_saved_state	*pm_save;
- 	int			ioeventfds_nr;
+diff --git a/drivers/vfio/pci/mlx5/cmd.h b/drivers/vfio/pci/mlx5/cmd.h
+index deed0f132f39..b782139eb8be 100644
+--- a/drivers/vfio/pci/mlx5/cmd.h
++++ b/drivers/vfio/pci/mlx5/cmd.h
+@@ -158,14 +158,14 @@ struct mlx5_vhca_qp {
+ struct mlx5_vhca_page_tracker {
+ 	u32 id;
+ 	u32 pdn;
+-	u8 is_err:1;
+-	u8 object_changed:1;
++	u8 is_err;
++	u8 object_changed;
++	int status;
+ 	struct mlx5_uars_page *uar;
+ 	struct mlx5_vhca_cq cq;
+ 	struct mlx5_vhca_qp *host_qp;
+ 	struct mlx5_vhca_qp *fw_qp;
+ 	struct mlx5_nb nb;
+-	int status;
+ };
+ 
+ struct mlx5vf_pci_core_device {
+@@ -173,11 +173,11 @@ struct mlx5vf_pci_core_device {
+ 	int vf_id;
+ 	u16 vhca_id;
+ 	u8 migrate_cap:1;
+-	u8 deferred_reset:1;
+ 	u8 mdev_detach:1;
+ 	u8 log_active:1;
+ 	u8 chunk_mode:1;
+ 	u8 mig_state_cap:1;
++	u8 deferred_reset;
+ 	struct completion tracker_comp;
+ 	/* protect migration state */
+ 	struct mutex state_mutex;
 -- 
 2.51.0
 
