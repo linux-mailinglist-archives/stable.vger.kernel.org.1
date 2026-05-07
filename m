@@ -1,188 +1,263 @@
-Return-Path: <stable+bounces-244602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKKtKIO+/GnSTAAAu9opvQ
-	(envelope-from <stable+bounces-244602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:32:03 +0200
+	id ULbVCpC//GnSTAAAu9opvQ
+	(envelope-from <stable+bounces-244603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:36:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592574EC446
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:32:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959694EC505
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B281E300382F
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:32:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 905113050920
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF90E3C6608;
-	Thu,  7 May 2026 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C20844D01F;
+	Thu,  7 May 2026 16:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZVbHTPAV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLmlj65e"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AF335B633
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6777F3FAE18
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778171520; cv=none; b=slN2yXWxuG0VCGG2o1NxSs3TI0tVlnevveRU7Ho7mByn9sbrxP/eknyew97XmZXHWXQ3zxPwe7TLEGyM3PlbWRHHwuKzT84cTduD9k6dHFmKRbRnOVwEXh7W54ecS6Dh3EY8l6+AragHmEa8UHrdMNuMyk61omOhfv07Ght9mTk=
+	t=1778171696; cv=none; b=dYu2ramBjrtMclqJ3F9Cl6f1/pNYuzgFzasyr1EeSj6LKqE3ZzS/5kHKWTMhTeSyAy69nvvvNLXIQu+0q02dlK6X9Wo0zWYOnLTf+NrwRjLkD8KJ22Kz6VgSDCPj7h+MjnvOWLzjPh5Q8qlhw/KGC1phdKYjhodER95hSxU77hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778171520; c=relaxed/simple;
-	bh=pXaSTwr6SF5+9EYapof1jJc5b5kisnmHUKIU9Ei24MI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=dGHBmS+wD5vmBxHOyxeFTS2sjhTXd3nw/+l/Fdh/IT3miM3O3JzkEQ3eC/5XOA0hzeJ7KT52SXNm6Gg1SW86JixnrmEJ6GaozfGf2AvoGQxLqhl9ZOOn247iX35ch2vJ15ROgXXdAPdJWLgzqDm0aopZ/yygjxmfQ+uY132cnzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZVbHTPAV; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 07 May 2026 18:31:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778171506;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ENtXVSGTxn1voqd0nkqw8w327Dc3JzFVnzwPTKRp1rY=;
-	b=ZVbHTPAVui49HJehuFLz41RN5WTw0FQfGRP7oPtbVoRdR96XcsjBfVS5WCgtk7aPvMHwW3
-	fQZIVzDQz4NYss0OSOTD8owsRzNzj6HqmDP0fPOZCAhwiH08I+VtYMjMlUGa3/1P+Ag4no
-	J/YI3dq8qu2P8L/MsiYy9BEtV4tjbiM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Luka Gejak <luka.gejak@linux.dev>
-To: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
-CC: Sascha Hauer <s.hauer@pengutronix.de>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_2/2=5D_wifi=3A_rtw88=3A_usb=3A_?=
- =?US-ASCII?Q?fix_memory_leaks_on_USB_write_failures?=
-In-Reply-To: <20260507162827.69168-1-luka.gejak@linux.dev>
-References: <20260507162827.69168-1-luka.gejak@linux.dev>
-Message-ID: <DBEAB6DF-B4E4-4C4A-A570-0CC0392B0406@linux.dev>
+	s=arc-20240116; t=1778171696; c=relaxed/simple;
+	bh=67jMIhxSZ6IpyO4o5D89+eoatcvd8leasbTpm1BcyGI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ud/2+/NBJFtAFzN4hIBMKonsqxZiJtDLlkZL/SBo00hny6saEHbGb9D6SGAU44gHsbjvSjdNXJP3VCns9Hu9NqlJJVZ/zOVNPyUvUGlalYWm04TakVl2PAWrV/sny/0ND7lWaNo82xD+9aydD14z2uXOZdVNLDBwDjQhuqG6vL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLmlj65e; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b8f97c626aaso187794966b.2
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 09:34:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778171691; x=1778776491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gG5C6gXZ/LiIqxaLiBv5dvLMMivS9UIn2zta7LN39yI=;
+        b=CLmlj65ewinVQn5Sg45tMrPfXYD+5JiXKJuvYgKSk7rag090lkITNnWveSfUK/1Moi
+         3R6jvEalAQtptfJ/apDs0ywpPB5diEg6xim+XqZ0XCY1iv0uOizS+d8++QFa+amLFtRp
+         ZUcvSORoT6Qd0lYUHcdQl0rrwOAvy5qgiw3SKYakAuwAavRFq49NCk59Ub+tWBaGC46K
+         cMOhK1GchPUlgDB7QYeKJHCTsNbdSCnYJ8rd+XLECK/aKXU2hqk69HFPWpmfW6e6ZYvJ
+         RaozdZe0myr1gIWVR3C9VHPRPcZPUG1T6TlX2jV4wdi2YPXiqocgHdIkozDbz/8JcRvs
+         gUcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778171691; x=1778776491;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gG5C6gXZ/LiIqxaLiBv5dvLMMivS9UIn2zta7LN39yI=;
+        b=SD39TXgilTy4FL8dTgof0QMbi2yxZzYcUACSF4Mc11CqdKN424LwVqzOwSO4Sh2pkb
+         9bL9EmKBapzcOARshhRrAhG9Cp7pYS/3F6F/kPn9u7qWcdPltrxz4CSI2LtTpW5IEM3+
+         lEW7yZW/oZGlqJLkhVjm63vu+IueH53XMK8dROlNiwuN6bxkU5yQ+zxALgBN1hwauy0W
+         FBhjoVbaN2aUMGqZY/zTAtyRDEiM9rivq2tULl8ewDDmFOfCpSffZctQZ7JuNvUgoMwe
+         mqHHPQrx1ljUil56qRmTHgcSv3EbnZcbpqXF/vKxZbvCoShkhvQ2Et+G5VvWG8bdpzBJ
+         LOOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/IJ+PMhR+nBkUQ6JSr3Hbr8xujG+3BgQKJNIYeonh1ReF6oSNSkekH9LpCZ8f+mWIRbVqRBtc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDP1h1MQUIbVrd6z9r8H8YHNi4kBguS216BWYKVprxn7UHHlks
+	5Kmf02UYWMFzMjWR2kbtzmKuFOtZcZCRyIna3e3lmKSDOH+EW2ldky+h
+X-Gm-Gg: AeBDieuIPavOd2goEPcDpRhfQA3lKJIFu6XpiKn/g21Y34WKWjAd+Ih0Y07TQfR8jBH
+	jMIBxUQU/ZzbEzIo5DKfbayrCkkEqRZit3O7//iUzIreQveRjcZa37XNkeCDxRjFz/VrHv3qn5K
+	GyIO4FkNACihqXTZ6BECCQk4uRsAgRxc0fQXGqGby5uJ8OuRpzoTPJKiTwdRs8Gej7f7fRirjqO
+	9Yj/c3WuS5loe6UO0Mqte6lqNtJ/lBfm+2LMZMpBrHJlz1zvZDBPKkP9w3K5nSujtp0QDN+GXpD
+	g9IcGrnE5IF6f3UusgHifIrgjizeq+KuYDWfAMLkWOVvl75A9XcI7XJevVGXQ/NFMN82DdAHk+G
+	hfHXmDeazuOjBMVkurG907hYJ/t3ogaATl8aISSFfO3DmOe03K9Py+USWnRgRIpbQT3QS/e6hjG
+	DF7UdyM7fDhK7/XkNnuX7UmbSB7gYvfJtN3A==
+X-Received: by 2002:a17:907:3f24:b0:bc6:2bd3:8176 with SMTP id a640c23a62f3a-bc62bd388e2mr413967366b.35.1778171691229;
+        Thu, 07 May 2026 09:34:51 -0700 (PDT)
+Received: from avt74j0.. ([2a02:8109:8617:d700:d9bb:cdec:69e5:2f8e])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67eb34dd33fsm8765a12.31.2026.05.07.09.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 09:34:50 -0700 (PDT)
+From: Martin Hecht <mhecht73@gmail.com>
+To: 
+Cc: sakari.ailus@linux.intel.com,
+	martin.hecht@avnet.eu,
+	michael.roeder@avnet.eu,
+	stable@vger.kernel.org,
+	Martin Hecht <mhecht73@gmail.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] media: i2c: alvium: fix critical pointer access in alvium_ctrl_init
+Date: Thu,  7 May 2026 18:34:30 +0200
+Message-ID: <20260507163443.39794-1-mhecht73@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 592574EC446
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 959694EC505
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244602-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,avnet.eu,vger.kernel.org,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244603-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mhecht73@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On May 7, 2026 6:28:27 PM GMT+02:00, luka=2Egejak@linux=2Edev wrote:
->From: Luka Gejak <luka=2Egejak@linux=2Edev>
->
->When rtw_usb_write_port() fails to submit a USB Request Block (URB)
->(e=2Eg=2E, due to device disconnect or ENOMEM), the completion callback i=
-s
->never executed=2E
->
->Currently, the driver ignores the return value of rtw_usb_write_port()
->in rtw_usb_write_data() and rtw_usb_tx_agg_skb()=2E Because these
->functions rely on the completion callback to free the socket buffers
->(skbs) and the transaction control block (txcb), a submission failure
->results in:
->1=2E A memory leak of the allocated skb in rtw_usb_write_data()=2E
->2=2E A memory leak of the txcb structure and all aggregated skbs in
->   rtw_usb_tx_agg_skb()=2E
->
->Fix this by checking the return value of rtw_usb_write_port()=2E If it
->fails, explicitly free the skb in rtw_usb_write_data(), and properly
->purge the tx_ack_queue and free the txcb in rtw_usb_tx_agg_skb()=2E
->
->The issue was discovered in practice during device disconnect/reconnect
->scenarios and memory pressure conditions=2E Tested by verifying normal TX
->operation continues after the fix without regressions=2E
->
->Fixes: 87caeef032fc ("wifi: rtw88: Add rtw8723du chipset support")
->Cc: stable@vger=2Ekernel=2Eorg
->Tested-by: Luka Gejak <luka=2Egejak@linux=2Edev>
->Signed-off-by: Luka Gejak <luka=2Egejak@linux=2Edev>
->---
->Changes in v2:
-> - Use ret =3D rtw_usb_write_port(=2E=2E=2E); style, and check by next li=
-ne (in
->   rtw_usb_tx_agg_skb)
-> - Remove unnecessary comment
-> - Use ieee80211_purge_tx_queue() instead of skb_queue_purge()
-> - Add testing details to commit message
->
-> drivers/net/wireless/realtek/rtw88/usb=2Ec | 13 +++++++++++--
-> 1 file changed, 11 insertions(+), 2 deletions(-)
->
->diff --git a/drivers/net/wireless/realtek/rtw88/usb=2Ec b/drivers/net/wir=
-eless/realtek/rtw88/usb=2Ec
->index 718940ebba31=2E=2E1bb922cc2928 100644
->--- a/drivers/net/wireless/realtek/rtw88/usb=2Ec
->+++ b/drivers/net/wireless/realtek/rtw88/usb=2Ec
->@@ -399,6 +399,7 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb=
-, struct sk_buff_head *list
-> 	int agg_num =3D 0;
-> 	unsigned int align_next =3D 0;
-> 	u8 qsel;
->+	int ret;
->=20
-> 	if (skb_queue_empty(list))
-> 		return false;
->@@ -456,7 +457,13 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwus=
-b, struct sk_buff_head *list
-> 	tx_desc =3D (struct rtw_tx_desc *)skb_head->data;
-> 	qsel =3D le32_get_bits(tx_desc->w1, RTW_TX_DESC_W1_QSEL);
->=20
->-	rtw_usb_write_port(rtwdev, qsel, skb_head, rtw_usb_write_port_tx_comple=
-te, txcb);
->+	ret =3D rtw_usb_write_port(rtwdev, qsel, skb_head,
->+			         rtw_usb_write_port_tx_complete, txcb);
->+	if (ret) {
->+		ieee80211_purge_tx_queue(rtwdev->hw, &txcb->tx_ack_queue);
->+		kfree(txcb);
->+		return false;
->+	}
->=20
-> 	return true;
-> }
->@@ -518,8 +525,10 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev=
-,
->=20
-> 	ret =3D rtw_usb_write_port(rtwdev, qsel, skb,
-> 				 rtw_usb_write_port_complete, skb);
->-	if (unlikely(ret))
->+	if (unlikely(ret)) {
-> 		rtw_err(rtwdev, "failed to do USB write, ret=3D%d\n", ret);
->+		dev_kfree_skb_any(skb);
->+	}
->=20
-> 	return ret;
-> }
+The current implementation of alvium_ctrl_init creates several controls
+in function alvium_ctrl_init and uses the returned pointer without
+check. That can cause write access over NULL-pointer for several
+controls.
+The reworked code checks the pointers before adding flags and also it
+creates controls for V4L2_CID_BLUE_BALANCE and V4L2_CID_RED_BALANCE only
+if supported by the particular camera model.
 
-I accidentally sent this as part of the patch series but it is clearly
-not=2E Resending as a standalone patch=2E Sorry for the noise=2E
-Best regards,
-Luka Gejak
+Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Hecht <mhecht73@gmail.com>
+---
+ drivers/media/i2c/alvium-csi2.c | 72 +++++++++++++++++++--------------
+ 1 file changed, 42 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
+index b62b45a4f2fc..947b32950efa 100644
+--- a/drivers/media/i2c/alvium-csi2.c
++++ b/drivers/media/i2c/alvium-csi2.c
+@@ -2100,34 +2100,41 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+ 					      V4L2_CID_PIXEL_RATE, 0,
+ 					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ, 1,
+ 					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ);
+-	ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
++	if (ctrls->pixel_rate)
++		ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+ 
+ 	/* Link freq is fixed */
+ 	ctrls->link_freq = v4l2_ctrl_new_int_menu(hdl, ops,
+ 						  V4L2_CID_LINK_FREQ,
+ 						  0, 0, &alvium->link_freq);
+-	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+-
+-	/* Auto/manual white balance */
++	if (ctrls->link_freq)
++		ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
++
++	/* manual white balance */
++	if (alvium->avail_ft.whiteb) {
++		ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
++							V4L2_CID_BLUE_BALANCE,
++							alvium->min_bbalance,
++							alvium->max_bbalance,
++							alvium->inc_bbalance,
++							alvium->dft_bbalance);
++
++		ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
++						       V4L2_CID_RED_BALANCE,
++						       alvium->min_rbalance,
++						       alvium->max_rbalance,
++						       alvium->inc_rbalance,
++						       alvium->dft_rbalance);
++	}
++
++	/* Auto white balance */
+ 	if (alvium->avail_ft.auto_whiteb) {
+ 		ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops,
+ 						   V4L2_CID_AUTO_WHITE_BALANCE,
+ 						   0, 1, 1, 1);
+-		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
+-	}
+-
+-	ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
+-						V4L2_CID_BLUE_BALANCE,
+-						alvium->min_bbalance,
+-						alvium->max_bbalance,
+-						alvium->inc_bbalance,
+-						alvium->dft_bbalance);
+-	ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
+-					       V4L2_CID_RED_BALANCE,
+-					       alvium->min_rbalance,
+-					       alvium->max_rbalance,
+-					       alvium->inc_rbalance,
+-					       alvium->dft_rbalance);
++		if (ctrls->auto_wb)
++			v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
++	}
+ 
+ 	/* Auto/manual exposure */
+ 	if (alvium->avail_ft.auto_exp) {
+@@ -2136,7 +2143,9 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+ 					       V4L2_CID_EXPOSURE_AUTO,
+ 					       V4L2_EXPOSURE_MANUAL, 0,
+ 					       V4L2_EXPOSURE_AUTO);
+-		v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp, 1, true);
++		if (ctrls->auto_exp)
++			v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp,
++					       V4L2_EXPOSURE_MANUAL, true);
+ 	}
+ 
+ 	ctrls->exposure = v4l2_ctrl_new_std(hdl, ops,
+@@ -2145,15 +2154,8 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+ 					    alvium->max_exp,
+ 					    alvium->inc_exp,
+ 					    alvium->dft_exp);
+-	ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
+-
+-	/* Auto/manual gain */
+-	if (alvium->avail_ft.auto_gain) {
+-		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
+-						     V4L2_CID_AUTOGAIN,
+-						     0, 1, 1, 1);
+-		v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
+-	}
++	if (ctrls->exposure)
++		ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
+ 
+ 	if (alvium->avail_ft.gain) {
+ 		ctrls->gain = v4l2_ctrl_new_std(hdl, ops,
+@@ -2162,7 +2164,17 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+ 						alvium->max_gain,
+ 						alvium->inc_gain,
+ 						alvium->dft_gain);
+-		ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
++		if (ctrls->gain)
++			ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
++	}
++
++	/* Auto/manual gain */
++	if (alvium->avail_ft.auto_gain) {
++		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
++						     V4L2_CID_AUTOGAIN,
++						     0, 1, 1, 1);
++		if (ctrls->auto_gain)
++			v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
+ 	}
+ 
+ 	if (alvium->avail_ft.sat)
+-- 
+2.43.0
+
 
