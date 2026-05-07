@@ -1,95 +1,61 @@
-Return-Path: <stable+bounces-244603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULbVCpC//GnSTAAAu9opvQ
-	(envelope-from <stable+bounces-244603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:36:32 +0200
+	id GJh4O7W//GnSTAAAu9opvQ
+	(envelope-from <stable+bounces-244604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:37:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959694EC505
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:36:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8014EC52C
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 905113050920
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:34:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3A63B3004DD7
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C20844D01F;
-	Thu,  7 May 2026 16:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053D13EE1F6;
+	Thu,  7 May 2026 16:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLmlj65e"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="v06fNJxb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6777F3FAE18
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467FF3B7B8E
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778171696; cv=none; b=dYu2ramBjrtMclqJ3F9Cl6f1/pNYuzgFzasyr1EeSj6LKqE3ZzS/5kHKWTMhTeSyAy69nvvvNLXIQu+0q02dlK6X9Wo0zWYOnLTf+NrwRjLkD8KJ22Kz6VgSDCPj7h+MjnvOWLzjPh5Q8qlhw/KGC1phdKYjhodER95hSxU77hU=
+	t=1778171825; cv=none; b=j6VD1gd+VTQ1XwYyklH5z42V/iT2tzCTLabokGZvookzARUuD41cSrrUqsJppWLhKyVP1dMcXYmMrBwgPAgLm3g1UfMcJ7ourzmdrGkWyGl4Qrtq2WVYWtR604TV0VLeFFSgve9ZikTRiskcxhE9C+/yaBTOPuCGfIjqtCoQ/8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778171696; c=relaxed/simple;
-	bh=67jMIhxSZ6IpyO4o5D89+eoatcvd8leasbTpm1BcyGI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ud/2+/NBJFtAFzN4hIBMKonsqxZiJtDLlkZL/SBo00hny6saEHbGb9D6SGAU44gHsbjvSjdNXJP3VCns9Hu9NqlJJVZ/zOVNPyUvUGlalYWm04TakVl2PAWrV/sny/0ND7lWaNo82xD+9aydD14z2uXOZdVNLDBwDjQhuqG6vL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLmlj65e; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b8f97c626aaso187794966b.2
-        for <stable@vger.kernel.org>; Thu, 07 May 2026 09:34:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778171691; x=1778776491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gG5C6gXZ/LiIqxaLiBv5dvLMMivS9UIn2zta7LN39yI=;
-        b=CLmlj65ewinVQn5Sg45tMrPfXYD+5JiXKJuvYgKSk7rag090lkITNnWveSfUK/1Moi
-         3R6jvEalAQtptfJ/apDs0ywpPB5diEg6xim+XqZ0XCY1iv0uOizS+d8++QFa+amLFtRp
-         ZUcvSORoT6Qd0lYUHcdQl0rrwOAvy5qgiw3SKYakAuwAavRFq49NCk59Ub+tWBaGC46K
-         cMOhK1GchPUlgDB7QYeKJHCTsNbdSCnYJ8rd+XLECK/aKXU2hqk69HFPWpmfW6e6ZYvJ
-         RaozdZe0myr1gIWVR3C9VHPRPcZPUG1T6TlX2jV4wdi2YPXiqocgHdIkozDbz/8JcRvs
-         gUcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778171691; x=1778776491;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gG5C6gXZ/LiIqxaLiBv5dvLMMivS9UIn2zta7LN39yI=;
-        b=SD39TXgilTy4FL8dTgof0QMbi2yxZzYcUACSF4Mc11CqdKN424LwVqzOwSO4Sh2pkb
-         9bL9EmKBapzcOARshhRrAhG9Cp7pYS/3F6F/kPn9u7qWcdPltrxz4CSI2LtTpW5IEM3+
-         lEW7yZW/oZGlqJLkhVjm63vu+IueH53XMK8dROlNiwuN6bxkU5yQ+zxALgBN1hwauy0W
-         FBhjoVbaN2aUMGqZY/zTAtyRDEiM9rivq2tULl8ewDDmFOfCpSffZctQZ7JuNvUgoMwe
-         mqHHPQrx1ljUil56qRmTHgcSv3EbnZcbpqXF/vKxZbvCoShkhvQ2Et+G5VvWG8bdpzBJ
-         LOOQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/IJ+PMhR+nBkUQ6JSr3Hbr8xujG+3BgQKJNIYeonh1ReF6oSNSkekH9LpCZ8f+mWIRbVqRBtc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDP1h1MQUIbVrd6z9r8H8YHNi4kBguS216BWYKVprxn7UHHlks
-	5Kmf02UYWMFzMjWR2kbtzmKuFOtZcZCRyIna3e3lmKSDOH+EW2ldky+h
-X-Gm-Gg: AeBDieuIPavOd2goEPcDpRhfQA3lKJIFu6XpiKn/g21Y34WKWjAd+Ih0Y07TQfR8jBH
-	jMIBxUQU/ZzbEzIo5DKfbayrCkkEqRZit3O7//iUzIreQveRjcZa37XNkeCDxRjFz/VrHv3qn5K
-	GyIO4FkNACihqXTZ6BECCQk4uRsAgRxc0fQXGqGby5uJ8OuRpzoTPJKiTwdRs8Gej7f7fRirjqO
-	9Yj/c3WuS5loe6UO0Mqte6lqNtJ/lBfm+2LMZMpBrHJlz1zvZDBPKkP9w3K5nSujtp0QDN+GXpD
-	g9IcGrnE5IF6f3UusgHifIrgjizeq+KuYDWfAMLkWOVvl75A9XcI7XJevVGXQ/NFMN82DdAHk+G
-	hfHXmDeazuOjBMVkurG907hYJ/t3ogaATl8aISSFfO3DmOe03K9Py+USWnRgRIpbQT3QS/e6hjG
-	DF7UdyM7fDhK7/XkNnuX7UmbSB7gYvfJtN3A==
-X-Received: by 2002:a17:907:3f24:b0:bc6:2bd3:8176 with SMTP id a640c23a62f3a-bc62bd388e2mr413967366b.35.1778171691229;
-        Thu, 07 May 2026 09:34:51 -0700 (PDT)
-Received: from avt74j0.. ([2a02:8109:8617:d700:d9bb:cdec:69e5:2f8e])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67eb34dd33fsm8765a12.31.2026.05.07.09.34.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 09:34:50 -0700 (PDT)
-From: Martin Hecht <mhecht73@gmail.com>
-To: 
-Cc: sakari.ailus@linux.intel.com,
-	martin.hecht@avnet.eu,
-	michael.roeder@avnet.eu,
-	stable@vger.kernel.org,
-	Martin Hecht <mhecht73@gmail.com>,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] media: i2c: alvium: fix critical pointer access in alvium_ctrl_init
-Date: Thu,  7 May 2026 18:34:30 +0200
-Message-ID: <20260507163443.39794-1-mhecht73@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1778171825; c=relaxed/simple;
+	bh=Xr1PRu2BgzSpDj3RS03CjWCgwoqsxe1LZ73FJODdbs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m75GfhzGv6wgVeBVChCBu8X/T2oGg11WWrnA1HlT7WYYrh+BggyCVxuA9CvnB87V9vZW9IQ9KS79FeYJGxDk1b2gZxL5Q3389MmDYqsaVGoFmMnotOoSPbjBMqmswZqR6GufWtu1UwTDmIkL4Ee6BcI968mCUK1Y1WgKRoqeflA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=v06fNJxb; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778171812;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gb9ChjzShQDBgeDOk51gMnRUsvuczWK282t+xBJEbjk=;
+	b=v06fNJxb3m4XU99i8GK/K+ZKB2iJVtUYDSv1y0ZJN9pbohrKQiXmizlEGPKDDxbcko5cys
+	Dzi35RzR9P6OZF2Gz8Krsgf9dYyZiXWkEI9YkRaTa9OwmA2TU2GuQlDjFpNzC2FKT62uRr
+	86jSQD+DVcb9jVkjnhPm5aDWIwy0cNI=
+From: luka.gejak@linux.dev
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Stanislaw Gruszka <sgruszka@redhat.com>,
+	Yan-Hsuan Chuang <yhchuang@realtek.com>,
+	Brian Norris <briannorris@chromium.org>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Luka Gejak <luka.gejak@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] wifi: rtw88: increase TX report timeout to fix race condition
+Date: Thu,  7 May 2026 18:36:21 +0200
+Message-ID: <20260507163621.73295-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,167 +63,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 959694EC505
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: DA8014EC52C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,avnet.eu,vger.kernel.org,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244604-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244603-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhecht73@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	FROM_NO_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org]
 X-Rspamd-Action: no action
 
-The current implementation of alvium_ctrl_init creates several controls
-in function alvium_ctrl_init and uses the returned pointer without
-check. That can cause write access over NULL-pointer for several
-controls.
-The reworked code checks the pointers before adding flags and also it
-creates controls for V4L2_CID_BLUE_BALANCE and V4L2_CID_RED_BALANCE only
-if supported by the particular camera model.
+From: Luka Gejak <luka.gejak@linux.dev>
 
-Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
+The driver expects the firmware to report TX status within 500ms.
+However, a timeout can be triggered when the hardware performs
+background scans while under TX load. During these scans, the firmware
+stays off-channel for periods exceeding 500ms, delaying the delivery of
+TX reports back to the driver.
+
+When this occurs, the purge timer fires prematurely and drops the
+tracking skbs from the queue. This results in the host stack
+interpreting the missing status as packet loss, leading to TCP window
+collapse. In testing with iperf3, this causes throughput to drop from
+~90 Mbps to near-zero for approximately 2 seconds until the connection
+recovers.
+
+Increase RTW_TX_PROBE_TIMEOUT to 2500ms for RTL8723DU. This duration is
+sufficient to accommodate off-channel dwell time during full background
+scans, ensuring the purge timer only trips during genuine firmware
+lockups and preventing unnecessary TCP retransmission cycles.
+
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Hecht <mhecht73@gmail.com>
+Tested-by: Luka Gejak <luka.gejak@linux.dev>
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 ---
- drivers/media/i2c/alvium-csi2.c | 72 +++++++++++++++++++--------------
- 1 file changed, 42 insertions(+), 30 deletions(-)
+Changes in v2:
+ -Isolated the change to RTL8723DU as requested by Ping-Ke
 
-diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
-index b62b45a4f2fc..947b32950efa 100644
---- a/drivers/media/i2c/alvium-csi2.c
-+++ b/drivers/media/i2c/alvium-csi2.c
-@@ -2100,34 +2100,41 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
- 					      V4L2_CID_PIXEL_RATE, 0,
- 					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ, 1,
- 					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ);
--	ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-+	if (ctrls->pixel_rate)
-+		ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+ drivers/net/wireless/realtek/rtw88/tx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 3106edb84fb4..7fab83c3f6b5 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -196,6 +196,7 @@ void rtw_tx_report_purge_timer(struct timer_list *t)
+ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ {
+ 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
++	unsigned long timeout;
+ 	unsigned long flags;
+ 	u8 *drv_data;
  
- 	/* Link freq is fixed */
- 	ctrls->link_freq = v4l2_ctrl_new_int_menu(hdl, ops,
- 						  V4L2_CID_LINK_FREQ,
- 						  0, 0, &alvium->link_freq);
--	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
--
--	/* Auto/manual white balance */
-+	if (ctrls->link_freq)
-+		ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+@@ -207,7 +208,13 @@ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ 	__skb_queue_tail(&tx_report->queue, skb);
+ 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ 
+-	mod_timer(&tx_report->purge_timer, jiffies + RTW_TX_PROBE_TIMEOUT);
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8723D &&
++	    rtwdev->hci.type == RTW_HCI_TYPE_USB)
++		timeout = msecs_to_jiffies(2500);
++	else
++		timeout = RTW_TX_PROBE_TIMEOUT;
 +
-+	/* manual white balance */
-+	if (alvium->avail_ft.whiteb) {
-+		ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
-+							V4L2_CID_BLUE_BALANCE,
-+							alvium->min_bbalance,
-+							alvium->max_bbalance,
-+							alvium->inc_bbalance,
-+							alvium->dft_bbalance);
-+
-+		ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
-+						       V4L2_CID_RED_BALANCE,
-+						       alvium->min_rbalance,
-+						       alvium->max_rbalance,
-+						       alvium->inc_rbalance,
-+						       alvium->dft_rbalance);
-+	}
-+
-+	/* Auto white balance */
- 	if (alvium->avail_ft.auto_whiteb) {
- 		ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops,
- 						   V4L2_CID_AUTO_WHITE_BALANCE,
- 						   0, 1, 1, 1);
--		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
--	}
--
--	ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
--						V4L2_CID_BLUE_BALANCE,
--						alvium->min_bbalance,
--						alvium->max_bbalance,
--						alvium->inc_bbalance,
--						alvium->dft_bbalance);
--	ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
--					       V4L2_CID_RED_BALANCE,
--					       alvium->min_rbalance,
--					       alvium->max_rbalance,
--					       alvium->inc_rbalance,
--					       alvium->dft_rbalance);
-+		if (ctrls->auto_wb)
-+			v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
-+	}
++	mod_timer(&tx_report->purge_timer, jiffies + timeout);
+ }
+ EXPORT_SYMBOL(rtw_tx_report_enqueue);
  
- 	/* Auto/manual exposure */
- 	if (alvium->avail_ft.auto_exp) {
-@@ -2136,7 +2143,9 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
- 					       V4L2_CID_EXPOSURE_AUTO,
- 					       V4L2_EXPOSURE_MANUAL, 0,
- 					       V4L2_EXPOSURE_AUTO);
--		v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp, 1, true);
-+		if (ctrls->auto_exp)
-+			v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp,
-+					       V4L2_EXPOSURE_MANUAL, true);
- 	}
- 
- 	ctrls->exposure = v4l2_ctrl_new_std(hdl, ops,
-@@ -2145,15 +2154,8 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
- 					    alvium->max_exp,
- 					    alvium->inc_exp,
- 					    alvium->dft_exp);
--	ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
--
--	/* Auto/manual gain */
--	if (alvium->avail_ft.auto_gain) {
--		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
--						     V4L2_CID_AUTOGAIN,
--						     0, 1, 1, 1);
--		v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
--	}
-+	if (ctrls->exposure)
-+		ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
- 
- 	if (alvium->avail_ft.gain) {
- 		ctrls->gain = v4l2_ctrl_new_std(hdl, ops,
-@@ -2162,7 +2164,17 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
- 						alvium->max_gain,
- 						alvium->inc_gain,
- 						alvium->dft_gain);
--		ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
-+		if (ctrls->gain)
-+			ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
-+	}
-+
-+	/* Auto/manual gain */
-+	if (alvium->avail_ft.auto_gain) {
-+		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
-+						     V4L2_CID_AUTOGAIN,
-+						     0, 1, 1, 1);
-+		if (ctrls->auto_gain)
-+			v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
- 	}
- 
- 	if (alvium->avail_ft.sat)
 -- 
-2.43.0
+2.54.0
 
 
