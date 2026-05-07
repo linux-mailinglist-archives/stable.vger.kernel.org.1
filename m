@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-244544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CYZ1N1Jo/GnzPgAAu9opvQ
-	(envelope-from <stable+bounces-244544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:24:18 +0200
+	id gDBfNp5o/GnzPgAAu9opvQ
+	(envelope-from <stable+bounces-244545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:25:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845BC4E6B78
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:24:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D564E6C1D
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 12:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7079C300E00E
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 10:24:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 675DA301A41D
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 10:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE303E8681;
-	Thu,  7 May 2026 10:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D0B3E8C64;
+	Thu,  7 May 2026 10:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Loxs/puL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoclwsLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B362C3E867F
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 10:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B440E3E9283
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 10:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778149455; cv=none; b=i2w9Xouw3Kl2q4jg1LrG5HeVLabdih1gRuN8HEB3Me9WkuQDw/4MptuoVwpAEjYVeQndZBqyYsBHuA62tchdVheppD1RKKl/ITnoGjSXGfZfIxa/4iY5LYz921Zxzq3fAgcH1kZcT2CRepY/G12ORTeJaIB7qx4ZnO8Cu44wCLs=
+	t=1778149523; cv=none; b=bDTyRdTPiUVgiXeEw0f3blQzZfEuaJCAqYeZMQxQkL7qTvlxTpyD6EQSM4dvk8gqjtCa6PN7oph/SNcvTCQajTM0kgw5MJ3bT42YKsgpgEk84oKNnu27t4wEYnTlyIk5mJhZHVqAspipwXZzNpiaD4yVcw1YnhvTHiDEU21v3d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778149455; c=relaxed/simple;
-	bh=qLTF1WB3xmzh7bEUEyRQRD/zX51a7lEIoU+qYAB/deE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZfsBHVO5PaeCUYv8wneUXL+WHGrz18jN8dso2Jb6prbR+o8GweJgJXeuF7kSJ5nMqiwJlogo134VBlUtJP3WL/1H9rvp+HsreqXkWGEcQLgmouw0rZU7qjHjJB2h+iwu8aoWH1QAj4qBjCfywYcRSoKD8yP9mEygyqbqN03ShgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Loxs/puL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B00C2BCB2;
-	Thu,  7 May 2026 10:24:14 +0000 (UTC)
+	s=arc-20240116; t=1778149523; c=relaxed/simple;
+	bh=PUxI1d6cbmwIvYQ/ppZ0JRzJTQ7yqhHeZofHm70hE4Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uAzlhpOcjzztun3qUR6Cqz9YU+AVCuJrw0vi5eIFdwdzhap61WhT7H6slyAtSjQDDieA0zZVU6bI8dbHFB/5msoRfL5Tt/yYiOOgTkwkQOmu0hyw1MvtI69wRHV50tM8oRKsNxJpPX3/s+qxBAhtN7t4+4OCEN/42dVtl5eC0Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoclwsLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B60C2BCB2;
+	Thu,  7 May 2026 10:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778149455;
-	bh=qLTF1WB3xmzh7bEUEyRQRD/zX51a7lEIoU+qYAB/deE=;
+	s=korg; t=1778149523;
+	bh=PUxI1d6cbmwIvYQ/ppZ0JRzJTQ7yqhHeZofHm70hE4Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Loxs/puLnna2k9W2Gepez4Pxz9h6DtrhamFwreQHVnFaS23IbJAbPOu5+1QUbWtE+
-	 Q1wDn/M51I2GNlI0qr1Qw5xZeYUSSrb6V8sOplAh3jYNZZG1G/q0MP+6aIGmP2WdkV
-	 PK4oXlo2I+Xkbr35rnwbLi10dn+XquI3Mz4hA3UY=
-Subject: FAILED: patch "[PATCH] wifi: mt76: mt7925: fix incorrect TLV length in CLC command" failed to apply to 6.12-stable tree
-To: quan.zhou@mediatek.com,nbd@nbd.name,sean.wang@mediatek.com
+	b=EoclwsLoSfYqdgYM9+355WuL7TiCY8/SmSHe2ZNEKu1Ttmoe17pKNTtdUREuAn2g2
+	 cxRG+AhpaGWJTCbKZR6O5lQBQeeOA2E+bnesyxrGfraTsFxkJec0W6nghot4ZVNTGX
+	 OR5ISvhgHh7KjHqYoY5S2yvnUEwGsioNqmCW15M8=
+Subject: FAILED: patch "[PATCH] ksmbd: rewrite stop_sessions() with restartable iteration" failed to apply to 6.6-stable tree
+To: charsyam@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 07 May 2026 12:24:13 +0200
-Message-ID: <2026050712-unicorn-patrol-23a0@gregkh>
+Date: Thu, 07 May 2026 12:25:20 +0200
+Message-ID: <2026050720-idealist-crayon-e443@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,23 +54,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 845BC4E6B78
+X-Rspamd-Queue-Id: 58D564E6C1D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244544-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244545-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -80,26 +81,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,mediatek.com:email,nbd.name:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 62e037aa8cf5a69b7ea63336705a35c897b9db2b
+git cherry-pick -x c444139cb747bf6de1922b39900fdf02281490f4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050712-unicorn-patrol-23a0@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050720-idealist-crayon-e443@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,48 +112,191 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 62e037aa8cf5a69b7ea63336705a35c897b9db2b Mon Sep 17 00:00:00 2001
-From: Quan Zhou <quan.zhou@mediatek.com>
-Date: Wed, 25 Feb 2026 17:47:22 +0800
-Subject: [PATCH] wifi: mt76: mt7925: fix incorrect TLV length in CLC command
+From c444139cb747bf6de1922b39900fdf02281490f4 Mon Sep 17 00:00:00 2001
+From: DaeMyung Kang <charsyam@gmail.com>
+Date: Sat, 25 Apr 2026 18:38:28 +0900
+Subject: [PATCH] ksmbd: rewrite stop_sessions() with restartable iteration
 
-The previous implementation of __mt7925_mcu_set_clc() set the TLV length
-field (.len) incorrectly during CLC command construction. The length was
-initialized as sizeof(req) - 4, regardless of the actual segment length.
-This could cause the WiFi firmware to misinterpret the command payload,
-resulting in command execution errors.
+stop_sessions() walks conn_list with hash_for_each() and, for every
+entry, drops conn_list_lock across the transport ->shutdown() call
+before re-acquiring the read lock to continue the loop.  The hash
+walk relies on cross-iteration state (the current bucket and the
+hlist position), which is not preserved across unlock/relock: if
+another thread performs a list mutation during the unlocked window,
+the ongoing iteration becomes unreliable and can re-visit
+connections that have already been handled or skip connections that
+have not.  The outer `if (!hash_empty(conn_list)) goto again;` retry
+masks the symptom in the common case but does not address the
+unsafe iteration itself.
 
-This patch moves the TLV length assignment to after the segment is
-selected, and sets .len to sizeof(req) + seg->len - 4, matching the
-actual command content. This ensures the firmware receives the
-correct TLV length and parses the command properly.
+Reframe the loop so it never relies on iterator state across
+unlock/relock.  Under conn_list_lock held for read, pick the first
+connection whose ->shutdown() has not yet been issued by this path,
+pin it by taking an extra reference, record that fact on the
+connection and mark it EXITING while still inside the locked walk,
+then drop the lock.  Then call ->shutdown() outside the lock, drop
+the pin (freeing the connection if the handler already released its
+reference), and restart from the top.
 
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Use a new per-connection flag, conn->stop_called, as the "shutdown
+issued from stop_sessions()" marker rather than reusing the status
+state.  ksmbd_conn_set_exiting() is also invoked by
+ksmbd_sessions_deregister() on sibling channels of a multichannel
+session without issuing a transport shutdown, so treating
+KSMBD_SESS_EXITING as "already handled here" would skip connections
+that still need shutdown() to wake their handler out of recv(),
+leaving the outer retry waiting indefinitely for the hash to drain.
+stop_sessions() is serialised by init_lock in
+ksmbd_conn_transport_destroy(), so writing stop_called under the
+read lock has no other writer.
+
+Set EXITING inside the locked walk so the selection, the stop_called
+marker, and the status transition all happen together, and guard
+against regressing a connection that has already advanced to
+KSMBD_SESS_RELEASING on its own (for example, if the handler exited
+its receive loop for an unrelated reason between teardown steps).
+
+When the pin drop is the last put, release the transport and pair
+ida_destroy(&target->async_ida) with the ida_init() done in
+ksmbd_conn_alloc(), so stop_sessions() retiring a connection on its
+own does not leak the xarray backing of the embedded async_ida.
+
+The outer retry with msleep() is kept to wait for handler threads to
+reach ksmbd_conn_free() and drain the hash.
+
+Observed with an instrumented build that logs one line per visit and
+widens the unlocked window before ->shutdown() by 200 ms, under
+five concurrent cifs mounts (nosharesock, one connection each):
+
+  * Current code: the same connection address is revisited many
+    times during a single stop_sessions() call and ->shutdown() is
+    invoked well beyond the number of live connections before the
+    hash finally drains.
+
+  * Rewritten code: each live connection produces exactly one
+    ->shutdown() call; the function returns as soon as the hash is
+    empty.
+
+Functional teardown via `ksmbd.control --shutdown` with the same
+five mounts completes cleanly on the rewritten path.
+
+Performance is observably unchanged.  Tearing down N concurrent
+nosharesock cifs connections with `ksmbd.control --shutdown` +
+`rmmod ksmbd` takes essentially the same wall time before and after
+the rewrite:
+
+    N        before        after
+    10       4.93s         5.34s
+    30       7.34s         7.03s
+    50       7.31s         7.01s     (3-run avg: 7.04s vs 7.25s)
+   100       6.98s         6.78s
+   200       6.77s         6.89s
+
+and the number of ->shutdown() calls equals the number of live
+connections on both paths when the race is not widened.  The
+teardown is dominated by the msleep(100)-based outer retry waiting
+for handler threads to run ksmbd_conn_free(), not by the iteration
+itself; the restartable loop's worst-case O(N^2) visit cost is in
+the microseconds even at N=200 and sits far below the msleep(100)
+granularity.
+
+Applied alone on top of ksmbd-for-next-next, this patch does not
+introduce a new leak site.  Under the same reproducer (10x
+concurrent-holders + ss -K + ksmbd.control --shutdown + rmmod), the
+tree still shows the pre-existing per-connection transport leak
+count that arises when the last refcount drop lands in one of
+ksmbd_conn_r_count_dec(), __free_opinfo() or session_fd_check() -
+all of which end with a bare kfree() today.  kmemleak backtraces
+for the unreferenced objects point into the TCP accept path
+(sk_clone -> inet_csk_clone_lock, sock_alloc_inode) and none
+involve stop_sessions().  Plugging those bare-kfree sites is the
+responsibility of the follow-up patch.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Acked-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/f56ae0e705774dfa8aab3b99e5bbdc92cd93523e.1772011204.git.quan.zhou@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 1379bf6a26b5..abcdd0e0b3b5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3380,7 +3380,6 @@ __mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 		u8 rsvd[64];
- 	} __packed req = {
- 		.tag = cpu_to_le16(0x3),
--		.len = cpu_to_le16(sizeof(req) - 4),
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index fbbc0529743f..c5aac4946cbe 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -540,24 +540,54 @@ int ksmbd_conn_transport_init(void)
  
- 		.idx = idx,
- 		.env = env_cap,
-@@ -3409,6 +3408,7 @@ __mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 		memcpy(req.type, rule->type, 2);
+ static void stop_sessions(void)
+ {
+-	struct ksmbd_conn *conn;
++	struct ksmbd_conn *conn, *target;
+ 	struct ksmbd_transport *t;
++	bool any;
+ 	int bkt;
  
- 		req.size = cpu_to_le16(seg->len);
-+		req.len = cpu_to_le16(sizeof(req) + seg->len - 4);
- 		dev->phy.clc_chan_conf = clc->ver == 1 ? 0xff : rule->flag;
- 		skb = __mt76_mcu_msg_alloc(&dev->mt76, &req,
- 					   le16_to_cpu(req.size) + sizeof(req),
++	/*
++	 * Serialised via init_lock; no concurrent stop_sessions() can
++	 * touch conn->stop_called, so writing it under the read lock is
++	 * safe.
++	 */
+ again:
++	target = NULL;
++	any = false;
+ 	down_read(&conn_list_lock);
+ 	hash_for_each(conn_list, bkt, conn, hlist) {
+-		t = conn->transport;
+-		ksmbd_conn_set_exiting(conn);
+-		if (t->ops->shutdown) {
+-			up_read(&conn_list_lock);
+-			t->ops->shutdown(t);
+-			down_read(&conn_list_lock);
+-		}
++		any = true;
++		if (conn->stop_called)
++			continue;
++		atomic_inc(&conn->refcnt);
++		conn->stop_called = true;
++		/*
++		 * Mark the connection EXITING while still holding the
++		 * read lock so the selection and the status transition
++		 * happen together.  Do not regress a connection that has
++		 * already advanced to RELEASING on its own (e.g. the
++		 * handler exited its receive loop for an unrelated
++		 * reason).
++		 */
++		if (READ_ONCE(conn->status) != KSMBD_SESS_RELEASING)
++			ksmbd_conn_set_exiting(conn);
++		target = conn;
++		break;
+ 	}
+ 	up_read(&conn_list_lock);
+ 
+-	if (!hash_empty(conn_list)) {
++	if (target) {
++		t = target->transport;
++		if (t->ops->shutdown)
++			t->ops->shutdown(t);
++		if (atomic_dec_and_test(&target->refcnt)) {
++			ida_destroy(&target->async_ida);
++			t->ops->free_transport(t);
++			kfree(target);
++		}
++		goto again;
++	}
++
++	if (any) {
+ 		msleep(100);
+ 		goto again;
+ 	}
+diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
+index ae21a1bd4c70..de2d46941c93 100644
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -49,6 +49,7 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
++	bool				stop_called;
+ 	union {
+ 		__be32			inet_addr;
+ #if IS_ENABLED(CONFIG_IPV6)
 
 
