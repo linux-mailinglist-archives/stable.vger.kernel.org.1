@@ -1,191 +1,202 @@
-Return-Path: <stable+bounces-244606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NFVCO/A/GnSTAAAu9opvQ
-	(envelope-from <stable+bounces-244606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:42:23 +0200
+	id uH/eOWnD/GnSTAAAu9opvQ
+	(envelope-from <stable+bounces-244607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:52:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783BE4EC5E5
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:42:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9684F4EC7D3
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 18:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01B043015E34
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:42:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B3A83049E67
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 16:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14354402B90;
-	Thu,  7 May 2026 16:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86C93E6DED;
+	Thu,  7 May 2026 16:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SYo6HLmc"
+	dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b="qafyK8Cv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-dl1-f99.google.com (mail-dl1-f99.google.com [74.125.82.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B98A250BF2
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AED2D23BC
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 16:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778172139; cv=none; b=joTAWuFPtKjxVGOzHvjLa8ubV6JmqfG4IVA6ygSYhJOSLBciqjEAbCEkFcJw9VFcScj01pfcDyocxUqmfrQXNhXlck/SzreMPnBIHk82WKTWUfIaCrO/O6NVt0lVj4bu1Bk4kVy3L8hFe+a4hsoC0EBeTFtjCxE5oKjhNN+0LcU=
+	t=1778172600; cv=none; b=PIM5cP4ZgOncQsKWc4rKtjqTIjanM/pJpXlSU+5meWEtN4fuGA8ygPMZPNCnL6om0kO/gPThRol7mQcsw1rthOIh5cnI9yZd0Et8Iydt/DJV/l1FKEtCOvED4wosqxhHFNX27hUmZh/ovqZ089wPaOOaDVENLZe4IjtOrU7grV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778172139; c=relaxed/simple;
-	bh=u3ror31K/SolR44VKWPc2Q+Mua5QNfnvH8pM9AFqtMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Winw0YWnj8Z7FP4VLm2wLB97ZwIDZ9BE7ZQ/98vJXE+P4Km0vSK2Y+tlTJZcAHgZvBE+4g4BP+11jWmfAszDZPXr5MFxZMWwXElwCP5cz3IvlqVQGY9cFtAGrA103+dXVJnVWSrxSK1AJaca8r48rdoKTi5SXxMkY4XXZxiXQI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SYo6HLmc; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-449d6c68ed8so894552f8f.0
-        for <stable@vger.kernel.org>; Thu, 07 May 2026 09:42:18 -0700 (PDT)
+	s=arc-20240116; t=1778172600; c=relaxed/simple;
+	bh=g+o8Gax6yXxVJ9Ymvpwj7De47snR6AbkdQJOz9rOYXw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UED5xADcm2Ve3qJlh5b3viVlZUh3DQOQ/YWIrtZ6bizF5P80X8NdrBHKDxxm0qbkjbrIR6w7wecFncRicylws7O2IJbJXRD5aavebFyRLGwowWXP729xij98CXyKUyIgHZkCQU2xzHMfKqfQvJ0/FiB/b0s5e2e3Q3oLiGxfkGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedTS.com; spf=pass smtp.mailfrom=embeddedts.com; dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b=qafyK8Cv; arc=none smtp.client-ip=74.125.82.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedTS.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedts.com
+Received: by mail-dl1-f99.google.com with SMTP id a92af1059eb24-12c88e5f4aeso722247c88.0
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 09:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778172137; x=1778776937; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DkH5pLwd4aVz/xgL9vdbm3vW9Cqx7RecqkkEDJ2Qoyw=;
-        b=SYo6HLmcA/7cUnwilfUm6/CtbKmXwozCBUWp2IaNRmX/NhSO0flDRhIVU40qmuDRXA
-         G6ax/sog78LNnmRqkSbUZ6fF6njKMC09dcMDFDgzOtjGJ9ZTP/m5OMEFlx9J8l7WWaOt
-         T7n1p1pfneAeSea3eYFItA9dSEoAZ98J/s2uI3wOzT2E3NQALy+C7ddDl8gJQoK1NUPb
-         l7KLUce7yWSiR/5LFiHRvfWefJt000+ijd8+2+9RBlekbob3rClAhbwcnNpKKZLj/5er
-         09IZaNNBTPDCmpfhglVhYoyX2ojRKjuMeFS/FtJr3yLRT4jZwO/ICnaqtx5uyP5oA8mu
-         ELlA==
+        d=embeddedts.com; s=google; t=1778172598; x=1778777398; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vqcAML0ZZ43DsvITP1E2cCodXpE6DI+947s+bAV6M6c=;
+        b=qafyK8CvTdEgqBnkFua3jfjtE4gqMWnJD20A3y/53xiSB2VCLFidb0Fwlrxt9OvCz9
+         10x90hxiTV2NcaQ6QXenz6s+W2+M14dR8ZFv/S6G1v0d/h/BnFiQOZQDUH/oX7sHVwIb
+         0u1M49DrLmsQNHt8HljYV6AYvtB+a9VEwfb0g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778172137; x=1778776937;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DkH5pLwd4aVz/xgL9vdbm3vW9Cqx7RecqkkEDJ2Qoyw=;
-        b=DBa+R5N6LD7dDDuK6ol7YlErs+982/xUjcJJDiypzqxK4KTxGNMX+pBX4G6CJdXeU5
-         //tfujBSDfYET8G3DphIELl2SwNQEepHccU14JRoi1aS8bDU8gpSmba997YjbK3lz4gb
-         o6PRgdGD8GMpctoyxEo0l4UzuUavoRacgfBl/k+z3YExRhEject2FYbthmgOpJ6F75WA
-         tpCdsy89NnQoWefG6Gq3vhrOd2uHHjVYNBwRDSpw8M2wcUzFLhEf/ak5Teh2A1f/6zXC
-         ehDe/gOkU15uzWH3pZG3+yHUSEKQU57T1IVd/OTol898Y1/ZO6dzCmD137/h4RU2fPwE
-         KX3Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9SAGlKkIr3ExuX8miEjISZ2djDGRvzZ8qn57JzAmQlAU/4PWe9Be13ASs2gyjAiW2dSW1Ohvg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyK/2RYM3mhiun/pepoj2bSE5mH6eUz99oNZIl04zURyN0m/Ly9
-	EUSnfXn1vLI1mNhh0Sx2FWpADK5sZq+sNHEGWB4iV9JqQwA6+D2XIecq
-X-Gm-Gg: AeBDievH0KzEN7VLpwtQ5Pnp9IFR6BZAcfyqkig8RmkxczMVTabor19ZGc52M/jRC6d
-	LpybHmpljtAZr42HZ24xBjTy0aIT0inKJa3YZGwiltfPYNG3t3E46s7/sP4WOKFhqKLGUiRayCM
-	ij9koHwzy4z+Guk2sbfmYSzptzmS7In0Ec806tAwyWn7sto+b+i9FOMSYwfjkICwqnqUiajLEct
-	humLW0cPiHjjVjJ7CHgrmzya8Hm01RcwldAb56Vc+FdFskWCXlj1qpYxI45+wd0y+6a/GLJ7Xkq
-	xAp1eNVGL6ZeqdcHcVsYl845w+kLue0iohyKeVqXylk9Ft1hErnQdIwE0A64H3TMYjB8/ZmfpvK
-	gtxCLU/W3r0xClqTQumiTfHOtaUhadJUY8cECv2IOQEVthPw7jscAJqH46sHMTNyDfLgKl1ijFK
-	q3NeaMlnmyLRQYvj6Rev6l8Ht+r6DP5r0ylw709Y/WuAUbCQT+qtqZsd9clWLEsdNtiv1Or0Ou
-X-Received: by 2002:a5d:5f48:0:b0:43b:498f:dceb with SMTP id ffacd0b85a97d-4515b056b4dmr14242651f8f.9.1778172136625;
-        Thu, 07 May 2026 09:42:16 -0700 (PDT)
-Received: from ?IPV6:2a02:8109:8617:d700:d9bb:cdec:69e5:2f8e? ([2a02:8109:8617:d700:d9bb:cdec:69e5:2f8e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45412820340sm309996f8f.2.2026.05.07.09.42.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 09:42:16 -0700 (PDT)
-Message-ID: <7a353450-770a-4820-ad23-8066b736d87e@gmail.com>
-Date: Thu, 7 May 2026 18:42:15 +0200
+        d=1e100.net; s=20251104; t=1778172598; x=1778777398;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vqcAML0ZZ43DsvITP1E2cCodXpE6DI+947s+bAV6M6c=;
+        b=AThgWJq3WmiwD0itVrMou+rSSitvBBgyBR+0iRVLtm9D7f4zEZxK+08zivvJGPiAQW
+         fMM03gWlEgtw1/WryQdA0d0/6KKaYGKfK6AqMy3TGEogrZK6jkRMJQbZLI5jwYHrQQLk
+         uL42MFjgmxooE7b/OozybJpUw1fsbw+sUc5PbwIeQj3R0iNEIgHhPjqn+yEBsw19JtCF
+         0McrPspNFV/VpEVC4bRUPeUBQZjfkoEO5d9NOvpQKd6BgEF8nICiNdiXSBGRXLsmBSED
+         tSP3j+Qdtio5sWnQD/ME8LbKsfUqMO5Ptdb10ERWORz9/pZDkDgcvsULAIRbm4nEnCSa
+         GUow==
+X-Forwarded-Encrypted: i=1; AFNElJ8RaZBczDGUg8nu2/ZcPrfJnXYpD0fGjgZC+WdIgClpzm3eQPyxdQunW1DyiK/FVdyBolcuaRU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz32NiiojfszAmmFH1VrJRbPbffexWF4vuGMlpXkWJzhxRRnfSe
+	3qghsPyVGarvtU97HaQEQud4rTIa/qiNEeXFYFyIT3/feQucch/sDKKW9vy7XoML9dB1QNfMc+v
+	4BRmxwt0AUsNYDrAjcAaO2pwMfqpoLTfkfQ8l
+X-Gm-Gg: AeBDieucFzL//KISptnO7h9xPbzzNoO21ZQV0LaZoXPtceY/+3KOYnZGc/f7rz0JVd6
+	c9qJocW0Xfce3/kT0XnRZIv6Nb4tN/wX7aI1ztl4MMuXcug1CEj/2EyxR26QDSynhJM3RrmbAd7
+	YNNA3V8n8adcjHmrpYeONFMxgK8WtidMeDtcCo3TzzhKLeu+r0D/7m0f2T0bBsdh94ZaQD6OkCV
+	wIDtIatxL7gOMnfcMN9w1I28fjliH+q5fR6AiP7BBnzAGmvUHv6S41iyCsuRdb2fVyB8dXvMsl2
+	MiFBn2hSf7n0E4eQLxphRd+ThHqANQ4+ngdJhoSPhu0Fufp8fklxQ9rdBVEZloXYn6TeiHe/JZm
+	gySt85ORUYe2j0Vjqcpj9dwfsH3E83Fyel3panmvYTxyjIjPa
+X-Received: by 2002:a05:7022:986:b0:12c:6ec9:3f1 with SMTP id a92af1059eb24-1323b0b726emr1668516c88.21.1778172598081;
+        Thu, 07 May 2026 09:49:58 -0700 (PDT)
+Received: from tornado.. (wsip-70-191-90-18.ph.ph.cox.net. [70.191.90.18])
+        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-131f99a5a9dsm498874c88.4.2026.05.07.09.49.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 09:49:58 -0700 (PDT)
+X-Relaying-Domain: embeddedts.com
+From: Kris Bahnsen <kris@embeddedTS.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Marek Vasut <marex@denx.de>
+Cc: Kris Bahnsen <kris@embeddedTS.com>,
+	stable@vger.kernel.org,
+	Mark Featherston <mark@embeddedTS.com>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] Input: ads7846 - don't use scratch for tx_buf when clearing register
+Date: Thu,  7 May 2026 16:49:43 +0000
+Message-Id: <20260507164943.760009-1-kris@embeddedTS.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] media: i2c: alvium: Fix controls for WB/AWB
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: martin.hecht@avnet.eu, michael.roeder@avnet.eu, stable@vger.kernel.org,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260505142513.1551721-1-mhecht73@gmail.com>
- <afsJz1vVdd3o-pe9@kekkonen.localdomain>
- <37aa90a3-7909-4605-a0be-1545db1fadb0@gmail.com>
- <afsh2tmV5AFlMCML@kekkonen.localdomain>
-Content-Language: en-US
-From: Martin Hecht <mhecht73@gmail.com>
-In-Reply-To: <afsh2tmV5AFlMCML@kekkonen.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 783BE4EC5E5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9684F4EC7D3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[embeddedts.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[embeddedts.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_CC(0.00)[avnet.eu,vger.kernel.org,gmail.com,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244606-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,denx.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244607-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[embeddedts.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhecht73@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[kris@embeddedTS.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-Hi,
+The workaround for XPT2046 clears the command register, giving the
+touchscreen controller a NOP. The change incorrectly re-uses the
+req->scratch variable which is used as rx_buf for xfer[5], so by
+the time xfer[6] occurs, the contents of req->scratch may not be
+0. It was found that the touchscreen controller can end up in
+a completely unresponsive state due to it being given a command
+the driver does not expect.
 
-that patch has been superseded by patch 
-20260507163443.39794-1-mhecht73@gmail.com what addresses more critical 
-issues.
+Instead, rely on the spi_transfer behavior of tx_buf being NULL to
+transmit all 0 bits and use the scratch variable for the rx_buf for
+both the 1 byte command to and 2 byte response from the controller.
 
-Martin
+Also relocates the scratch member of struct ser_req to force it
+into a different cache line to prevent any potential issues of
+DMA stepping on unrelated data in other struct members due to
+sharing the same cache line.
 
-On 5/6/26 13:11, Sakari Ailus wrote:
-> Hi Martin,
-> 
-> On Wed, May 06, 2026 at 12:16:13PM +0200, Martin Hecht wrote:
->> Hi Sakari,
->>
->> thank you for the comments.
->>
->> On 5/6/26 11:28, Sakari Ailus wrote:
->>> Hi Martin,
->>>
->>> Thanks for the patch.
->>>
->>> On Tue, May 05, 2026 at 04:25:10PM +0200, Martin Hecht wrote:
->>>> With that patch the controls for red-balance and blue-balance were created
->>>> only if the particular camera supports that. Otherwise the pointers on
->>>> the control variable are initialized with NULL to prevent side effects for
->>>> clustering with AWB control.
->>>>
->>>> Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
->>>> Signed-off-by: Martin Hecht <mhecht73@gmail.com>
->>>> ---
->>>>    drivers/media/i2c/alvium-csi2.c | 37 ++++++++++++++++++++-------------
->>>>    1 file changed, 22 insertions(+), 15 deletions(-)
->>>>
->>>> diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
->>>> index b62b45a4f2fc..4c6934e9e177 100644
->>>> --- a/drivers/media/i2c/alvium-csi2.c
->>>> +++ b/drivers/media/i2c/alvium-csi2.c
->>>> @@ -2108,26 +2108,33 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
->>>>    						  0, 0, &alvium->link_freq);
->>>>    	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
->>>
->>> This is a problem. Can you move setting the flags after checking the
->>> handler's error status? The functions adding controls may fail and this is
->>> simply a missing error check.
->>>
->>> Can you submit a fix, with a Fixes: tag and this patch should be rebased on
->>> the fix, please?
->>
->> I'm preparing a separate fix for that issue. It's the same situation also
->> for some other controls like pixel_rate and link_frequency but not only. Can
->> I combine that into one patch for fix only that in alvium_ctrl_init?
-> 
-> Please do.
-> 
+This change was tested on real TSC2046 and ADS7843 controllers,
+but not the XPT2046 the workaround was originally created for.
+Confirming that the original modification to clear the command
+register does not impact either real controller.
+
+Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
+Cc: stable@vger.kernel.org
+Co-developed-by: Mark Featherston <mark@embeddedTS.com>
+Signed-off-by: Mark Featherston <mark@embeddedTS.com>
+Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
+---
+
+V1 -> V2: Don't use rx_buf when clearing command reg
+V2 -> V3: Modify original 2 xfer command to eliminate dev_err()
+          output on xfer with len and NULL buffers
+V3 -> V4: Move scratch to end of ser_req to force it to a new
+          cache line.
+
+V4 Note:  Change to moving scratch was tested against an SPI
+          controller without DMA. We do not currently have a
+          platform using this controller on an SPI bus supporting
+          DMA.
+
+ drivers/input/touchscreen/ads7846.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index 4b39f7212d35..1ae1ae42582a 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -325,7 +325,6 @@ struct ser_req {
+ 	u8			ref_on;
+ 	u8			command;
+ 	u8			ref_off;
+-	u16			scratch;
+ 	struct spi_message	msg;
+ 	struct spi_transfer	xfer[8];
+ 	/*
+@@ -333,6 +332,7 @@ struct ser_req {
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+ 	__be16 sample ____cacheline_aligned;
++	u16			scratch;
+ };
+ 
+ struct ads7845_ser_req {
+@@ -403,8 +403,7 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
+ 	spi_message_add_tail(&req->xfer[5], &req->msg);
+ 
+ 	/* clear the command register */
+-	req->scratch = 0;
+-	req->xfer[6].tx_buf = &req->scratch;
++	req->xfer[6].rx_buf = &req->scratch;
+ 	req->xfer[6].len = 1;
+ 	spi_message_add_tail(&req->xfer[6], &req->msg);
+ 
+
+base-commit: dd6c438c3e64a5ff0b5d7e78f7f9be547803ef1b
+-- 
+2.34.1
 
 
