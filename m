@@ -1,200 +1,237 @@
-Return-Path: <stable+bounces-244593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PBqOgqq/GlESgAAu9opvQ
-	(envelope-from <stable+bounces-244593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 17:04:42 +0200
+	id sPI4Kb2z/GnlSgAAu9opvQ
+	(envelope-from <stable+bounces-244595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 17:46:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988714EAC3B
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 17:04:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 080AA4EB4E1
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 17:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 09ADB303C9B6
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 14:58:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A1067301AEF6
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 15:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4B73EF0C6;
-	Thu,  7 May 2026 14:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361BA43D504;
+	Thu,  7 May 2026 15:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHqhm76i"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="S+txlguO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012020.outbound.protection.outlook.com [52.101.43.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C5015ECCC
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 14:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778165927; cv=none; b=n4YLuakaaQ66IFE8BLaQnKN6pitjqRLaeIf5f4114cW1Xpjk5Jci/ZNTTT+i8x4BNkhHA7dwFXlzVSDjQ+XmGTIzYy/7owr0EgihWlF15MV6TEujB4h2t79Xu/L4SfeQhzr72Oz91zuy8EMnj7osswQIbady8LsqSToywSR0jt0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778165927; c=relaxed/simple;
-	bh=HwVeK7wdjqVBnN2DX0iTXWkMreQW3YRImQr8URxX4bA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dR867Dtgesg2p7CXiejQe+S/zmahnloPoI7mVWJtnpuBnlEjnMBS8nbaY+iyn1V68Y6Tyj4ID6uRQzweGIsJ3dkT9fy+DrnIVyepGCBYfQvOwPaPpBaIxSxq2kmY2XAymf9CrGsKK3C0jYhVMIgnlnKjAlDIT2HqPIkfEK4n0n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHqhm76i; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b941cd869cso5754765ad.1
-        for <stable@vger.kernel.org>; Thu, 07 May 2026 07:58:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778165925; x=1778770725; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2A39dF+p7aFgXp967/D764wgb7uWfzZBjZMIRm9YyxU=;
-        b=KHqhm76iyDO2xzfNQ9B0wuhP+tRsaZ95ExE97FLvcgds7jSSKBGt8YMAe6iB0a+XyF
-         fhlezY8RToa4jDgGE45oKZpmxhQCfQY8CDNNKL0Nk6wRDdHjIQDQm6ZQEDNMHk1gnoE1
-         +5sbvHwnx83BzVJnMe1rMXFYUor2NkB3AhDM/ZetbQqv0WJnwDifzlhfGgpsw3ArrqXK
-         T+8fLyRXpY/FDIU3sO06mHDTSTECEGmVNDRKNpjEqsBGWP3IA8340kGfdi6VQCztzKP1
-         7Yux3NFCaOfb9yRuf/sviq3hoqYzVLjdRrIstKgX+bADPZy7jI0WzUJPDnlGwkED6c8+
-         8Tcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778165925; x=1778770725;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2A39dF+p7aFgXp967/D764wgb7uWfzZBjZMIRm9YyxU=;
-        b=d9gNk2fVuat+p9/4/O9usiCLT1VkUXVqsQpthfHjvkUYc3o0MuOUf+FDasjJ9hjS3W
-         oANyh8MA2JpaN8lqhv7x9nInRdz1vbfkJXCOQateCay1JfazsEFbJkQulaeziTn4zFR9
-         1AWissU2CwkrF6OcKYlP4xwoZjsKDeKQwXhGDp3NfMkmWpv8D3edldXRliBun8RxsOaP
-         A4lYYBtl7v+QsBL1GzvWfOViNkdeKo0wUKAmwMJwEPle154pIG6QQ977pJSelHot0afI
-         F/n9GumYA7/SRN4AKM/VU0Z22S5qxE9ORtjMSxBM6VXx3Z9c/Efy3Oh9buq13bNPvQ8l
-         Vtqg==
-X-Forwarded-Encrypted: i=1; AFNElJ+0B4N+g7TPdntWYTr95b4rkvdumjnz2OJ1iJAxfHo3tzfTl+esrvEfzZY6BZ9hehLpkxK2Dy0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzrTOQq2u7g3lhLXlWCutoMwR1ZTIcC92434FEtVA8SOgFDEK5
-	sv1k43YxG4Q5t0dgfTgzfXt/Zx2WPgly/9xPXy9LcwwbUVMairykFN0=
-X-Gm-Gg: AeBDieuOCzWTT7rTI1DRpMWqkJq8bzCdqB042eXsfA6KsG6yWIn+FqKECAs3vXxo0p8
-	1NmTPFqPH0GsOhQ6kghgSBvRfMkdPCn1uLfZWIl9lZpeM77XATqqEDi5G9ORdBe2UdfdXyuTJhU
-	9zhV79VyDiaDW/MO3iMfs7KiHR7eqsWfykWr0+NSwl5uQ0J5kJHnxlH1SZfNETrVNz9m5B0RamD
-	4f0QIK1IC0B7lko+aEbpHQrRokoRHX9fTXTYxg/1YRvV7u0rzz2t0WXj1AhFf2AdFFRDoh2V93M
-	UPUYwUwCDJFP7zp0KQ/9eMk8YxFRIWqt0F7NP3nEKVadvbOe5RCrOeNeca9ToDY8iKfoDnzevGg
-	sHuFn3NG1KnHaBCCvcPQTrIrnH1Eo9+yswUzAQ+/9cBanWOZ/OwUYdVPVD25tgjYRHjN3R0Dzfj
-	8T1lPLW2RZs4oUlNYyqvij3Q+dLd+OnyjTNDw8NIx52XE6AoZskou9AcjsARUw9yvemGBTsNkzV
-	btDMTFELP/B
-X-Received: by 2002:a17:903:38cd:b0:2ba:be5f:cab3 with SMTP id d9443c01a7336-2babe5fccc8mr31855355ad.3.1778165925281;
-        Thu, 07 May 2026 07:58:45 -0700 (PDT)
-Received: from coe.tail83f5bd.ts.net ([137.59.92.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bae752d027sm3775ad.4.2026.05.07.07.58.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 07:58:44 -0700 (PDT)
-From: Ramesh Adhikari <adhikari.resume@gmail.com>
-To: intel-xe@lists.freedesktop.org
-Cc: matthew.brost@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	stable@vger.kernel.org,
-	Ramesh Adhikari <adhikari.resume@gmail.com>
-Subject: [PATCH v3] drm/xe: Add bounds check for num_binds to prevent memory exhaustion
-Date: Thu,  7 May 2026 20:28:07 +0530
-Message-ID: <20260507145807.140317-1-adhikari.resume@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCA6256C84;
+	Thu,  7 May 2026 15:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778168712; cv=fail; b=eQvofZ7KXNmfWn3XOqnmhmnpVM4h0dPn+zdQlUR52nwdry3TeUmMIG0H9axfOtoFAPgCpBqWbkdXNLhMZrO8W87AbnsQnJRGsQRi7viH3KDSafHfq7msgUeCkH5ry4zC4j7+4N0s7AE5lBXBjBgjhtCeNz0ByN2Tg5Tl6SO/HZI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778168712; c=relaxed/simple;
+	bh=iqGRLzjgeKHuS8x9DS/vda7BAZMVzaQCCr98gGK5m7E=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IqQytimw6cizC7vKIarLmH57FgR7No+59qwbfjbXiHN6OBmV+/+WBtS4796QyzapB28M4F18I6WyBm8JBlgdjxQjcEIF78zvuKhWqyeb4/NbaK4AvPqKzLJ1o8T3AAohg0RKgcW6fbplpZp8wpbMf5Z1dthtfIZDaZuCzsclyZ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=S+txlguO; arc=fail smtp.client-ip=52.101.43.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fEFMXKoBh7KI9JqnUKOfMDGvBKo5BPwRMFj3Txq0CBWF3VOXzoVuk3g/5cvWyswF+dOKgZNBcahHO2Z5QHDMPFStd4zWdMzV/Tu1Q+fAUGJPkjmEjq/lO8flFw3ITCu84VOYhY9+yT9NmsdPEW4j3UPItrVGOXd1nTAPDe7f/rgAg574HQ0VVFlvMWFX4Hqr1AU+J8ytidlJKOkAVyCv3f9MNnRuP5UwhuxHvOxfOujur9nx811WT+Giuk6TUBXBaqrhBLDYRqHepGXVqQY/wz7ZFsbqlHrvebtBGg60+ClkaqW+ni95j89WCkAizdUT8zjO38A3Ce+NQoNNUhlE8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xTEBCtCLTc81Gf7zQ2uzXU3CB9wfnDVnv7yBQIHWrSU=;
+ b=CTweHJGT3K5Z8SUqJVWoL+CNNxB56QEbwsTNc69dXldUDHYjYPTUUiuy6Gq7DYhm5RmGeqs3cT9aGvP8l8YDQejly4FVcfXZUusUucoABfTsdCvsquyszdNtGb2IbAt39FW4eV7pD5iH7s0uyynZY6vrump55MPhQ1R7PsoEMfPDFqhdSlzM5B09B/8tOILM5LIwnl9mUjG2uzKsWCRy6qGubAaVJc13yTUhCqYrhqIV0e1duQpbuRKS4LmlXabHIx6/LdkWBdu2WVlAicwYIAjvfYYt0WdxtXasV6sTiTuAt72MrheRkhc4SLN2Y3axQ8G0j5+BY0HF6/ZrmlcO5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xTEBCtCLTc81Gf7zQ2uzXU3CB9wfnDVnv7yBQIHWrSU=;
+ b=S+txlguOe0U2JB4qXzFiYrZtSPcLHrCqWazMTQT1rU9Und8sOV15qjOfpXG0VZ/X/vU9rxiuFW0t3w3DvmzU8CkLvdDfmLrFwrXLPxIj/6FgGh66Gq/zIx+S01rkAkvpTYV8LtySYbJkgBhG5JIIyMQgCSYefSho6kVZd4LV1bM=
+Received: from BLAPR05CA0008.namprd05.prod.outlook.com (2603:10b6:208:36e::11)
+ by CH0PR10MB4876.namprd10.prod.outlook.com (2603:10b6:610:c9::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 15:45:05 +0000
+Received: from BN3PEPF0000B371.namprd21.prod.outlook.com
+ (2603:10b6:208:36e:cafe::65) by BLAPR05CA0008.outlook.office365.com
+ (2603:10b6:208:36e::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9913.7 via Frontend Transport; Thu, 7
+ May 2026 15:45:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ BN3PEPF0000B371.mail.protection.outlook.com (10.167.243.168) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.1 via Frontend Transport; Thu, 7 May 2026 15:45:03 +0000
+Received: from DFLE207.ent.ti.com (10.64.6.65) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 7 May
+ 2026 10:44:55 -0500
+Received: from DFLE200.ent.ti.com (10.64.6.58) by DFLE207.ent.ti.com
+ (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 7 May
+ 2026 10:44:55 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE200.ent.ti.com
+ (10.64.6.58) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
+ Transport; Thu, 7 May 2026 10:44:55 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 647Fit1m3630653;
+	Thu, 7 May 2026 10:44:55 -0500
+Date: Thu, 7 May 2026 10:44:54 -0500
+From: Nishanth Menon <nm@ti.com>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+CC: Wadim Egorov <w.egorov@phytec.de>, <vigneshr@ti.com>, <kristo@kernel.org>,
+	<robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+	<josua@solid-run.com>, <matthias.schiffer@ew.tq-group.com>,
+	<d.haller@phytec.de>, <francesco.dolcini@toradex.com>,
+	<joao.goncalves@toradex.com>, <emanuele.ghidoli@toradex.com>,
+	<ernest.vanhoecke@toradex.com>, <rogerq@kernel.org>, <eballetb@redhat.com>,
+	<robertcnelson@gmail.com>, <afd@ti.com>, <u-kumar1@ti.com>,
+	<stable@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<luis.parga@ti.com>, <srk@ti.com>
+Subject: Re: [PATCH v2 02/13] arm64: dts: ti: k3-am642-phyboard-electra-rdk:
+ fix USB clocking for compliance
+Message-ID: <20260507154454.puxr5sjtx4j3k2sb@pasted>
+References: <20260506141040.1368918-1-s-vadapalli@ti.com>
+ <20260506141040.1368918-3-s-vadapalli@ti.com>
+ <d0eb7931-bcbc-4ca6-8ab5-4c12d134545a@phytec.de>
+ <0043574e-6721-445b-ad01-54446dd72395@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 988714EAC3B
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <0043574e-6721-445b-ad01-54446dd72395@ti.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B371:EE_|CH0PR10MB4876:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4191c654-3381-4a3b-7cd2-08deac4f9aef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|7416014|376014|82310400026|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	45kWMaa2iF0fscWF4ao2OPklXQavXbEtVYRW2diR+jvIebs8Goj+4xqLxofJNp0tu2uzcGzgPGEooKjnbq17KkqCIcSr7KSg5pibhy2rratb+LQIwZpz92LZIO2gQ3y279VPfeMx642A4U7isCpVw0hhIQ1R9qKrv3Peq+AUhfGD+LWi4hLSWQHkGaGPDT2wi733julInNK47xsehnoyARsbr9Guy2h6WhE/sUuuJjdfQkY7E83n3TBaYHjRBhFxzEMJ1WlZRf/1E2rs0asSpHuAPHnN2PodYa+Sz6n12Cf9xmccnv+ded/2VOGqZrupOFkbbe0bj00Wm3cmRKSrqlVeHk8IhN+OtjL3HSJOG64Zfun+YFhVdOIRzTgrx/oFYHvBLfVqps7LNov90vbZZSRef2LjqX7Amw3efy5KOIORuAv33PDtelVCO/JK52K8MtyakpCvWBzqeRqrB7NWEaB3o4eJqTnLn4HLIKRIyP2GoGjUigdqUr7xk9nPzmdrNYsH5o5g2X1ixS9bkcEYESo+GcVuJgaOMwOYzQ1UJYqXKXGzJY84JI1IExuin/afa2xMqu0v5aPg6mmB1S2VY9w8nztd84eaIPSI9Kmvj+C6w6IEzl+hX+Ptg86Wakt34cWXnLKhjZQTyijf7yv9yRUDtzyfd6zt84bIMmJ0uDCc6SoV/KCQYsPl8STkzTr3A8qUkKa4YPMvCeFfNmOyXibQXbnj6V5iIzJ73k+Hm2U=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(376014)(82310400026)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	0PTyXWALxxAklS08MDPQQKvg/9DNbik09WQ+ccRt34MgumqYyWf6dygPQ1wLeYxH5FsaKQTDSXbIJB2Efw81T3dYKJ22WnFq2jRi1wUiFJtfpIF6FDAfEjvhp6xxka1PoGJkz6vuKwY3n6mT19ajhOaHv+YMWijuABbHxOwu7yTJzL5db8xgzjMCpxzcIrw6lDUFmwslwvXLSDDq1d3ti+NVeI8PohfG1MW+iv+bp+zsPscWIAM+i7GKiYsdnHAeP4s4hwWD3chQ2neRopUfvSVNsgJiLYuL3g1DRNcAEZQ9h+oUuXvxfs8THmYZzJfOy1NIRsPIl8o3mnj3J+B8Gxf6Z60XgPs1szlOrtYOO8qcPZlqAiyp8nDvdirbEkoWR/hh9AMGLdAPb5jAqHxlqew6EiPa+aOFTuqpx1Sh/ioaUMB4aen3o/MLQatCB0t4
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 15:45:03.3763
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4191c654-3381-4a3b-7cd2-08deac4f9aef
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B371.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4876
+X-Rspamd-Queue-Id: 080AA4EB4E1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [1.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,linux.intel.com,vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-244595-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[25];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244593-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:url,ti.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	DKIM_TRACE(0.00)[ti.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nm@ti.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[phytec.de,ti.com,kernel.org,solid-run.com,ew.tq-group.com,toradex.com,redhat.com,gmail.com,vger.kernel.org,lists.infradead.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,dt];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-The xe_vm_bind_ioctl function accepts user-controlled num_binds without
-any bounds checking. I noticed this follows the same pattern that was
-fixed for num_syncs in commit 8e461304009d.
+On 14:15-20260507, Siddharth Vadapalli wrote:
+[...]
 
-While the main allocations (bind_ops, bos, ops arrays) use __GFP_ACCOUNT,
-I found that vm_bind_ioctl_ops_create makes additional allocations in a
-loop that don't:
+> > > diff --git a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts
+> > > index 793538f94942..a85d7d08bd1b 100644
+> > > --- a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts
+> > > +++ b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts
+> > > @@ -439,12 +439,21 @@ &sdhci1 {
+> > >   	status = "okay";
+> > >   };
+> > > +&serdes_wiz0 {
+> > > +	ti,core-clk-sel = <1>;  /* Select internal reference clock */
 
-  - drm_gpuva_ops (16 bytes) at drm_gpuvm.c:2949
-  - xe_vma_op (144 bytes) at xe_vm.c:1318
+Doesn't the binding give the info?
+> > > +	ti,ssc-enable; /* Enable SSC */
 
-Both use kzalloc_obj() which defaults to GFP_KERNEL without __GFP_ACCOUNT.
+That comment is what the property says
 
-I traced through what happens with a large num_binds value. For 268M binds,
-the loop at line 3971 runs 268M times, allocating 160 bytes per iteration.
-That's about 43 GB allocated without cgroup accounting before the code even
-hits the main allocation at line 4009 (which will fail because it exceeds
-the 4MB kmalloc limit). So even though the big allocation fails, the damage
-from the loop allocations already happened.
+> > > +	ti,ssc-type = <1>; /* 1 for Downspread */
 
-I'm adding a limit of 2048 binds, checked before any allocations happen.
-I found that Mesa uses at most 960 binds in conformance tests (from commit
-ba6bbdc291), so 2048 gives about 2x headroom. At 2048 binds, we're only
-allocating 320KB in the loop, which seems reasonable.
+If it is that critical should we have a include header or if the binding
+describes this, that should suffice, no?
 
-I'm using -ENOBUFS instead of -EINVAL so Mesa can retry with smaller
-batches if needed, as Thomas suggested.
+> > > +	ti,ssc-frequency-hz = <33000>; /* 33 KHz */
 
-A note on my methodology: I don't have Xe hardware, so this is based on
-reading through the code and tracing the allocation paths. I verified the
-struct sizes and followed the call chains manually. If I got something
-wrong or missed something, please let me know - this is my first kernel
-patch and I'm still learning.
+33000 Hz is 33Khz.
 
-v3: Changed to -ENOBUFS, moved the check earlier, added more details
-    about the allocations I found
+> > > +	ti,ssc-depth-per-mil = <5>; /* 0.5% depth */
 
-v2: Bumped limit from 1024 to 2048 after looking at Mesa usage
+Binding should describe this?
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ramesh Adhikari <adhikari.resume@gmail.com>
----
- drivers/gpu/drm/xe/xe_vm.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+> > 
+> > I don't think the comments are very helpful. The property names already give a meaning.
+> 
+> The comments have been added for three reasons:
+> 1. The meaning of the following properties isn't obvious:
+> 	ti,core-clk-sel = <1>
+> 	ti,ssc-type = <1>
+> 2. For ease of 'grepping'. Grepping for '33 KHz' for example based on the
+> USB 3.2 Specification's modulation rate will not show '33000' in the
+> results.
+> 3. Completeness / Consistency. Since some of the less obvious properties
+> have been described via comments, the remaining have also been commented on,
+> although it is obvious what it means (ti,ssc-enable for example).
+> 
+> Unless you have a strong objection to removing the comments, I would prefer
+> retaining them. Please let me know.
 
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 1ff66874f43..1ab020cbdc1 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -3840,12 +3840,14 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
- 	if (XE_IOCTL_DBG(xe, !vm))
- 		return -EINVAL;
- 
--	err = vm_bind_ioctl_check_args(xe, vm, args, &bind_ops);
--
-+	/* Prevent unbounded allocations in vm_bind_ioctl_ops_create loop */
- 	if (XE_IOCTL_DBG(xe, args->num_binds > DRM_XE_MAX_BINDS)) {
--		err = -EINVAL;
-+		err = -ENOBUFS;
- 		goto put_vm;
- 	}
-+
-+	err = vm_bind_ioctl_check_args(xe, vm, args, &bind_ops);
-+
- 	if (err)
- 		goto put_vm;
- 
+Just keep the necessary documentation - something that we cannot
+determine by bindings.. If we have to document in ever single dts, it
+might mean, you need a header to make it explicit? IRQ_TYPE_ kind of
+macro? IMHO (I leave it to subsystem maintainers), I feel these are
+better documented in the bindings. Also are these properties expected
+to be exactly same on all evms of a given SoC (wondering it they belong
+to SoC.dtsi instead)?
+
 -- 
-2.43.0
-
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+https://ti.com/opensource
 
