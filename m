@@ -1,233 +1,271 @@
-Return-Path: <stable+bounces-244633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMwIFMPm/GmGVAAAu9opvQ
-	(envelope-from <stable+bounces-244633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 21:23:47 +0200
+	id oAmLD4Hv/GlKVgAAu9opvQ
+	(envelope-from <stable+bounces-244634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 22:01:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BF84EDFB9
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 21:23:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7344EE33B
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 22:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62DCE3066A80
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 19:22:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEBE23034E39
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 20:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A36247DF8E;
-	Thu,  7 May 2026 19:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D582EACF2;
+	Thu,  7 May 2026 20:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="d4zs7JUC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJsyLmL9"
 X-Original-To: stable@vger.kernel.org
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011013.outbound.protection.outlook.com [40.107.208.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A217548095D;
-	Thu,  7 May 2026 19:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778181750; cv=fail; b=ehS614cutJl469XwygvRDjc64LPPj8jkhiDi8XSuu5UDUGLN5rcFdfh8UXc+4DMFeojZU+gwl+wJD20oU/jd+zRu4XRCzsPOlSORtsgEqUzUic0yJF9eHBUNnlcSwFlxyI2ATzBvsErFG6MaWCS2+kd4N0L9GIdVR7YsAE09NT4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778181750; c=relaxed/simple;
-	bh=WT6XdtABcM6qpeW1fmJnt9m48jTOU9/WezB+CdIW23s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G/0vrZCkRHPvw7lw/mie+lUOUE8wLhzPW+iH6Zx5P3o5cbgx+EPyrZggO+w/Ap4ONczfLbakSX8PN2UdR7b6TBHMKcy8dE+k99laUscEmqtmHio7xqm07ZJpn6IIyPUJObsKrN/8Cyt6NE5m7OQwMQDg8lmSAi6sgRg+EydgbGo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=d4zs7JUC; arc=fail smtp.client-ip=40.107.208.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t0ETvnyMba8d39AZtyrjW9rt8o3qsE3+vY8VapP8rhrGJ787a6i8Wi8kCJlyV2g1AMIzhiJa+6/lB2lkuuCCQCqhVBO1htVRkBCS5PWjW+mxSbIVnhH1xeeMpBrilzY105NMYAQCoHpHsHQtOnMcysB4YvVW/2sirXyP/WTdHnaOkiVfITwrabVvlLctuXyBp8aB1NFiqJrZC9uQUj+/yzExa1ymPTzjUhDZS2tnvBNIpTWecqxnp4ZocQzlhtEGd+VeQ5DXvJZE0hlSrFMlP49qAEJIOjre+aD7AOgvca123GOWljpFTnxllqIb6TIcve7UHYE+Wcg0pSLRgiOcNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
- b=XSpry5U5JKFoRhn5Gj8Rti1cTMD/N31FqiDf7efIvUnlFBerZhCimhqVzQKrhtYpjn6tVwXay2I0XUGnW2GTf+WwwNNUQJUrRXa8zJNP8H5JOacHZHGurzrx2sZQHP8DRnBBI5SRTHh0EsXJEqUFmL9ZFqvFBl6/P5XJjdQT+7eVU3/QPIJO4fsWddXZneuPwlz5de0AhgrzlKIOSHjFEJJKj4vHS36L2dha6g7ITkFsIfAwoxy+tfLY4qqRaUN4nCAeVz8rn6FVv3aRTgBycS+6DmdPNc754Q51qdhumJXi2MRKRri69SBYi6Yx8eOGU9u6SpXgUML57M+KEa7e1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
- b=d4zs7JUCu/x/+TYSOkpZVOD+rBjBi171yqSxQUge7w1U/lK5qV/YZ84Ns26X1WUjhrJRx0knDY37LBJd5/ewYVQpIT8/X0S68cPOa2c2Dshxli0OG0s4z/esoGa56GztCbxYfDcx+T4XxGIHLb1DmtLGfFQUzgCYWHzoHs0E8tZWKdya/3LnP/DKEch6g/cNL39PlMvCWaToVh8C6PO++RSVmWl29lzZYKHmZ38cOsp/98N3qxeNkXl0jiJS9biBoM09+9BJhtW65WzHyssw1XGC7TCIskp6yV2t12KlHM4V00WWBO4IzgR6vmPZvkGRlDrKgZaEcL4EWfv/EpoIlQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
- by SJ0PR12MB6758.namprd12.prod.outlook.com (2603:10b6:a03:44a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.18; Thu, 7 May
- 2026 19:22:19 +0000
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15%4]) with mapi id 15.20.9891.008; Thu, 7 May 2026
- 19:22:19 +0000
-From: Alex Williamson <alex.williamson@nvidia.com>
-To: alex@shazbot.org
-Cc: Alex Williamson <alex.williamson@nvidia.com>,
-	kvm@vger.kernel.org,
-	jgg@ziepe.ca,
-	rananta@google.com,
-	yishaih@nvidia.com,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] vfio/mlx5: Fix racy bitfields and tighten struct layout
-Date: Thu,  7 May 2026 13:22:02 -0600
-Message-ID: <20260507192206.1350046-3-alex.williamson@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260507192206.1350046-1-alex.williamson@nvidia.com>
-References: <20260507192206.1350046-1-alex.williamson@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SA9P223CA0003.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:806:26::8) To LV3PR12MB9411.namprd12.prod.outlook.com
- (2603:10b6:408:215::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8E5175A85;
+	Thu,  7 May 2026 20:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778184057; cv=none; b=S+ya/SPuUBN4PrIVQXaDduHptLGTSjfJJIKSrvbwBGrTOFxxKGPTIWTQfH8F2LwwlmG9tGfijGbrmfYKkkyHAYWf5w9Z2rap/cG5cZmRTSKQWVJbQN79wDjVPW6mw97ux6qx5iz2qevzt1VoiYnQU93QQLRM71VlSVZTR+DZlpY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778184057; c=relaxed/simple;
+	bh=2qNsDmDgw6c8QSIadJe4FyI4GCBLCzF1MIx5RJRIrZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dbiqpt8aTrLXDIoaqlUfiN4WttRk56VgNTS92WWZwwnoa2UFmcNy5ExPdTtMl6qcvKBPvM/9x2ik4aCv5w/Q+IGKl3BpPXrfbe2mZHj4SavHwz+tcGm3QG5EXH0mdVaRTkvD9vqYzXW8nvSTtz0Tr+9sIipYTDmSwj2xqRB5lA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJsyLmL9; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778184055; x=1809720055;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2qNsDmDgw6c8QSIadJe4FyI4GCBLCzF1MIx5RJRIrZY=;
+  b=GJsyLmL9Re0SARK04Ug+WyJPHi/VuYNz1MJPmSf28USsVAldSU64lzQU
+   0FJ8YyVl5X5ma2sgpp/jNCSzaSzW8xuOqv7+BBoTLvQEx7MiVyC2iX7ao
+   /bMrEuLWjPAaLCre/yp6pq1LacMAwcsUuhZdNtkhWh1CpBY8Ek7Gh5d+q
+   +pPzzs1jYV0WyyXToNQds/sD9noyRuT7HxFwIixpI6Zj8JwpvYQ7jKYYG
+   dd2SLkQgqiOv9rwLId4FAa3RL0+sSx/vyn/AR+xhW/TnJkPznebK1F0nS
+   Ef+jzOjnYRgIRDEfvKNAMHW2riDX3OruUy08W0pbhVoFtBTuEE4sEAOAb
+   A==;
+X-CSE-ConnectionGUID: ih7FDrFGSO+s4DCKZf80hA==
+X-CSE-MsgGUID: vcB+4rjyQqSIo55Dt1vLrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="78998137"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
+   d="scan'208";a="78998137"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 13:00:55 -0700
+X-CSE-ConnectionGUID: V7P3ZoYnSX6pFoznmIjjRA==
+X-CSE-MsgGUID: vA0SJt3/QR+KePyfQiGgxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
+   d="scan'208";a="240550375"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.213])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 13:00:52 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 750FB11F8DF;
+	Thu, 07 May 2026 23:00:48 +0300 (EEST)
+Date: Thu, 7 May 2026 23:00:48 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Martin Hecht <mhecht73@gmail.com>
+Cc: martin.hecht@avnet.eu, michael.roeder@avnet.eu, stable@vger.kernel.org,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] media: i2c: alvium: fix critical pointer access in
+ alvium_ctrl_init
+Message-ID: <afzvcAFPYJ_oMB9T@kekkonen.localdomain>
+References: <20260507163443.39794-1-mhecht73@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|SJ0PR12MB6758:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9446913-7d44-45f3-b36f-08deac6df445
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	r+oD8qKplXBqcL+2kHerV2pCQcrJaEwvoDbQPl/O2a1LuiPFcauod+SRJtCOZRLGRmoK0j1J+IDefLD9wCGKxlPINFFz9vagqhXD+/FDQNh5hzlavwSLhIsyswIksoufJg/uI9zxkVFukfFoZtTuBhPew+LHHSo0G2WP7HVcF4RZ7q+BpCCVdw+Ox9MX1PLP/PyvS6eiccYlw+R3sDEKFZ0UDSxpp8BfgZs26XgLktEpKOCHNwhBc0TRVFj0fo915Ul8BjfEwG5xxS42bl986Y74c/86PMRocGfdEaHR0ahoQrGdruq1UlWLZBLzSW7JjFcYKbjDA+li2AgZ8ennTGyUWrt3lauxX8Zs9HV7WabJNMrTd33njKyxGMXKcruFatcnR6ZHN1C6b/JRIQSs9qZReOT1jzOc0Iy6zgqijEdjI8SKw0dIGrMkjWAozODetTp0bsNt7YGCMfS65FMY1dAk3nnlWLNxrzNOxheWvTECud5jg2djHv1chZezlGY33TAaUdR8x/7kiJidjQtx4MCkgPTgYtq6942LOGqHJX/EXTexN1CAYqonrMkUGZYDdewvReF/aXlDfqs+xnQ/rPvo5xD6YaMGa7oxzozWLWkOv4C4uOt+NOfoELDtz0DzSXbNgV76FqDfis3P5a+cREJ0O1Vvx2EGJpGTIhnA9f4yJDCeR7l1unQUhRBjls4A
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?p0zofnUSXz6+YbPCIfsbsQLKHN/KRqO1qkLIoJu+f+TDIns+yuX8cscvv4Pg?=
- =?us-ascii?Q?iUys2Y/ZaDAIdMxWFFvgwBHUvkJ6S9Jb5MdRJuYZWqrAMS5ONg9kFJ3tsBXa?=
- =?us-ascii?Q?fVTesBevnWszl8+Saq0EZL3j9u6d22OhfavNW+nbs40FlKGUS18ROBxBaXDx?=
- =?us-ascii?Q?PjRJIoMIYIcPdzphnyKeGzwzrNvAz5LvSPIUCfS0JijAvGputa36gwtjQqUW?=
- =?us-ascii?Q?iijyIbSQYwqhREIXgKti7ahAsUtaPi5wu25Gxvvv0VKzwMLE2YRMlIbPl5oD?=
- =?us-ascii?Q?xq05lM+SJzv7cQV+nW0COp0Vcbm3bLr7HyJWJEKMS6fzoK0Z8fpy47PXPikA?=
- =?us-ascii?Q?3grJchHidb+UEZ5e75qsXOgI3XNII25litKeT7aAezIiL3IYogOVi1vjz/Dm?=
- =?us-ascii?Q?ygCkw1K40zTFDTlllwQp+UbEEJVDP6RzoJlVEryhB+DEMPEAMQjZ26jTTkix?=
- =?us-ascii?Q?stQEawgnVTwCraCCKOQeSM1uXbO6lfygIiP0x7SvfznzU5PYv4o5zjuCoK5e?=
- =?us-ascii?Q?X3B6PaeIjeJ64mK7/Rn3kaQ8VRJR7H2AO8RZUUxx/C61vRGauKc2eQTTv5Uu?=
- =?us-ascii?Q?SIrH5ukKoynlTkhs59/F9jXOoATeOWPjfoMX1TWMHcFkrfEkGGVfvmRrIZtP?=
- =?us-ascii?Q?B0RZLZPcdZ9tWajFeTkRoVWUtHYwBT17QPueLI8S3fPHkJoTbY2mxD1C6Ecl?=
- =?us-ascii?Q?rW1ymSXGXLvyH5A4bN6M0J5pZLCgGs8YGGVURvSx452VVMHocBJuwwhr3L58?=
- =?us-ascii?Q?XGkNb2FVppPIDWJX7008Glk2fA77MgGZUOm31z9bZqUW4zu7S2Adx088EqOP?=
- =?us-ascii?Q?dicEN3ZsyLaVsTMDQJ77Pw50O0IQVDGoiAeAi3voyPaSBXkqfG1D65XL+Zz6?=
- =?us-ascii?Q?NTXZxXienDUkujBOkmDgPuLNX7Ypy5fraE3lTNxYxvdrKdRZbjE9j1MrrD28?=
- =?us-ascii?Q?ED+8piuO9znCiY4hpRppqsXBN4LZHmN/+aqqwGnrT6e/GEXh+uIYFPjzNb9Q?=
- =?us-ascii?Q?k5F5bM2AMD+Yiqz9AbjCa8jCp7UW95MPO6hJf+nxA2NbBJ3oJ5puQcxFnwfi?=
- =?us-ascii?Q?FuSXpr8ZDxmM45opsWS1VyamVdcI1YENJ2h+xu8pSpHzOQzA50hLDSXtivsZ?=
- =?us-ascii?Q?tfbIiqxmVimMdJYidbHtldaxbDdh4UiKvsQW+ikad3S6dSru0Bz2vkkn0+h4?=
- =?us-ascii?Q?S/BVnzpcnDSai39M+3GiGU+7akE0l0E/c6sohwNMyaz0o2nnyEJo00um9yV2?=
- =?us-ascii?Q?AWzzsjo4oB/62DOh/jVQxkml9gFTBVyU11TMb0hdZ3mqTbikoclldxpo4wSd?=
- =?us-ascii?Q?qUyaIeuk1OPmYRSLG2fhUkXK+Ke3EDDV8AKYxhbEzwUok8iW9QnGIt7PEYzz?=
- =?us-ascii?Q?SiokGHSjekFG/JQKOKZcM4xuwaqwtMn4w24VQ5Z4075ADgLqbNnHNZDsoAEv?=
- =?us-ascii?Q?zW0dzM3VMzjrBd7qaRhIdsaCtzzdDN+vaOMPQYS1+MeLDh/KrpWp2SoQzXHt?=
- =?us-ascii?Q?CQVvygN9DPLi45dyW5CG9WpLRz8iHoTa7ohzRBdjRr3Wo3ii/V8m3B7WJw5N?=
- =?us-ascii?Q?iE3wl6wSsBJF7TTjzJfQ7ikXrN8RNSR8vTMhEX3+2aj1FM3BBOscCVpJMm6T?=
- =?us-ascii?Q?lP2MLAWBht5MQoXuKOMKR5fgQjWYmPxxg2M+xHGDWfyPc3zR6WPKQc2ux/wb?=
- =?us-ascii?Q?5qPpPYigFeHfuYQGTCPXg8sv8AmyIB2ri0RJpCsj51f3CbkwytP8Odx8JEub?=
- =?us-ascii?Q?uvcFa0qQMg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9446913-7d44-45f3-b36f-08deac6df445
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 19:22:18.4254
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f0BlojcbxyTRhrxMx8Uq2fDTcVfblm3rA4i1bdXK+0A2b10W7TxgJWNOY/94YG1l+d/zD2kFgsxnU2AlagWn8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6758
-X-Rspamd-Queue-Id: D2BF84EDFB9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260507163443.39794-1-mhecht73@gmail.com>
+X-Rspamd-Queue-Id: 7A7344EE33B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244633-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex.williamson@nvidia.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[avnet.eu,vger.kernel.org,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-244634-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,Nvidia.com:dkim,nvidia.com:email,nvidia.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-Bitfield operations are not atomic, they use a read-modify-write
-pattern, therefore we should be careful not to pack bitfields that
-can be concurrently updated into the same storage unit.
+Hi Martin,
 
-The split fields (is_err and object_changed in mlx5_vhca_page_tracker,
-deferred_reset in mlx5vf_pci_core_device) are mutated from contexts
-that don't serialize against the other writers in the same storage
-unit, so a bitfield RMW could drop an adjacent field's update.  The
-remaining bitfields are either probe-only or share a single writer
-context, so they stay packed.
+On Thu, May 07, 2026 at 06:34:30PM +0200, Martin Hecht wrote:
+> The current implementation of alvium_ctrl_init creates several controls
+> in function alvium_ctrl_init and uses the returned pointer without
+> check. That can cause write access over NULL-pointer for several
+> controls.
 
-The page tracker's status field is also relocated to fill the
-alignment hole the split exposes.
+No reason to have so short lines in the middle of a paragraph. But...
 
-Fixes: f886473071d6 ("vfio/mlx5: Add support for tracker object change event")
-Fixes: 61a2f1460fd0 ("vfio/mlx5: Manage the VF attach/detach callback from the PF")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
----
- drivers/vfio/pci/mlx5/cmd.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> The reworked code checks the pointers before adding flags and also it
+> creates controls for V4L2_CID_BLUE_BALANCE and V4L2_CID_RED_BALANCE only
+> if supported by the particular camera model.
 
-diff --git a/drivers/vfio/pci/mlx5/cmd.h b/drivers/vfio/pci/mlx5/cmd.h
-index deed0f132f39..b782139eb8be 100644
---- a/drivers/vfio/pci/mlx5/cmd.h
-+++ b/drivers/vfio/pci/mlx5/cmd.h
-@@ -158,14 +158,14 @@ struct mlx5_vhca_qp {
- struct mlx5_vhca_page_tracker {
- 	u32 id;
- 	u32 pdn;
--	u8 is_err:1;
--	u8 object_changed:1;
-+	u8 is_err;
-+	u8 object_changed;
-+	int status;
- 	struct mlx5_uars_page *uar;
- 	struct mlx5_vhca_cq cq;
- 	struct mlx5_vhca_qp *host_qp;
- 	struct mlx5_vhca_qp *fw_qp;
- 	struct mlx5_nb nb;
--	int status;
- };
- 
- struct mlx5vf_pci_core_device {
-@@ -173,11 +173,11 @@ struct mlx5vf_pci_core_device {
- 	int vf_id;
- 	u16 vhca_id;
- 	u8 migrate_cap:1;
--	u8 deferred_reset:1;
- 	u8 mdev_detach:1;
- 	u8 log_active:1;
- 	u8 chunk_mode:1;
- 	u8 mig_state_cap:1;
-+	u8 deferred_reset;
- 	struct completion tracker_comp;
- 	/* protect migration state */
- 	struct mutex state_mutex;
+can you put this into a separate patch? It's a different issue, albeit both
+patches are dealing with controls.
+
+> 
+> Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Martin Hecht <mhecht73@gmail.com>
+> ---
+>  drivers/media/i2c/alvium-csi2.c | 72 +++++++++++++++++++--------------
+>  1 file changed, 42 insertions(+), 30 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
+> index b62b45a4f2fc..947b32950efa 100644
+> --- a/drivers/media/i2c/alvium-csi2.c
+> +++ b/drivers/media/i2c/alvium-csi2.c
+> @@ -2100,34 +2100,41 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+>  					      V4L2_CID_PIXEL_RATE, 0,
+>  					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ, 1,
+>  					      ALVIUM_DEFAULT_PIXEL_RATE_MHZ);
+> -	ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+> +	if (ctrls->pixel_rate)
+> +		ctrls->pixel_rate->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+
+There are many controls that need flags and your next patch was going to
+set the flags after checking the error. I'd therefore do that here, too.
+
+The PIXEL_RATE controls's READ_ONLY flag is set by the framework, the
+driver doesn't need to set it anymore. I'd just remove the line setting the
+flag above.
+
+>  
+>  	/* Link freq is fixed */
+>  	ctrls->link_freq = v4l2_ctrl_new_int_menu(hdl, ops,
+>  						  V4L2_CID_LINK_FREQ,
+>  						  0, 0, &alvium->link_freq);
+> -	ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+> -
+> -	/* Auto/manual white balance */
+> +	if (ctrls->link_freq)
+> +		ctrls->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+> +
+> +	/* manual white balance */
+> +	if (alvium->avail_ft.whiteb) {
+> +		ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
+> +							V4L2_CID_BLUE_BALANCE,
+> +							alvium->min_bbalance,
+> +							alvium->max_bbalance,
+> +							alvium->inc_bbalance,
+> +							alvium->dft_bbalance);
+> +
+> +		ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
+> +						       V4L2_CID_RED_BALANCE,
+> +						       alvium->min_rbalance,
+> +						       alvium->max_rbalance,
+> +						       alvium->inc_rbalance,
+> +						       alvium->dft_rbalance);
+> +	}
+> +
+> +	/* Auto white balance */
+>  	if (alvium->avail_ft.auto_whiteb) {
+>  		ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops,
+>  						   V4L2_CID_AUTO_WHITE_BALANCE,
+>  						   0, 1, 1, 1);
+> -		v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
+> -	}
+> -
+> -	ctrls->blue_balance = v4l2_ctrl_new_std(hdl, ops,
+> -						V4L2_CID_BLUE_BALANCE,
+> -						alvium->min_bbalance,
+> -						alvium->max_bbalance,
+> -						alvium->inc_bbalance,
+> -						alvium->dft_bbalance);
+> -	ctrls->red_balance = v4l2_ctrl_new_std(hdl, ops,
+> -					       V4L2_CID_RED_BALANCE,
+> -					       alvium->min_rbalance,
+> -					       alvium->max_rbalance,
+> -					       alvium->inc_rbalance,
+> -					       alvium->dft_rbalance);
+> +		if (ctrls->auto_wb)
+> +			v4l2_ctrl_auto_cluster(3, &ctrls->auto_wb, 0, false);
+> +	}
+>  
+>  	/* Auto/manual exposure */
+>  	if (alvium->avail_ft.auto_exp) {
+> @@ -2136,7 +2143,9 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+>  					       V4L2_CID_EXPOSURE_AUTO,
+>  					       V4L2_EXPOSURE_MANUAL, 0,
+>  					       V4L2_EXPOSURE_AUTO);
+> -		v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp, 1, true);
+> +		if (ctrls->auto_exp)
+> +			v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp,
+> +					       V4L2_EXPOSURE_MANUAL, true);
+>  	}
+>  
+>  	ctrls->exposure = v4l2_ctrl_new_std(hdl, ops,
+> @@ -2145,15 +2154,8 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+>  					    alvium->max_exp,
+>  					    alvium->inc_exp,
+>  					    alvium->dft_exp);
+> -	ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
+> -
+> -	/* Auto/manual gain */
+> -	if (alvium->avail_ft.auto_gain) {
+> -		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
+> -						     V4L2_CID_AUTOGAIN,
+> -						     0, 1, 1, 1);
+> -		v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
+> -	}
+> +	if (ctrls->exposure)
+> +		ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
+>  
+>  	if (alvium->avail_ft.gain) {
+>  		ctrls->gain = v4l2_ctrl_new_std(hdl, ops,
+> @@ -2162,7 +2164,17 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+>  						alvium->max_gain,
+>  						alvium->inc_gain,
+>  						alvium->dft_gain);
+> -		ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
+> +		if (ctrls->gain)
+> +			ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
+> +	}
+> +
+> +	/* Auto/manual gain */
+> +	if (alvium->avail_ft.auto_gain) {
+> +		ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops,
+> +						     V4L2_CID_AUTOGAIN,
+> +						     0, 1, 1, 1);
+> +		if (ctrls->auto_gain)
+> +			v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
+>  	}
+>  
+>  	if (alvium->avail_ft.sat)
+
 -- 
-2.51.0
+Kind regards,
 
+Sakari Ailus
 
