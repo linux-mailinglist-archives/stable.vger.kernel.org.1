@@ -1,203 +1,132 @@
-Return-Path: <stable+bounces-244479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAeLKOPu+2npIgAAu9opvQ
-	(envelope-from <stable+bounces-244479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:46:11 +0200
+	id KI6oIxzv+2npIgAAu9opvQ
+	(envelope-from <stable+bounces-244480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:47:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC754E2126
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:46:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E631E4E2144
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 03:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB38E301F166
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 01:46:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57A083015724
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 01:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C693C239E7F;
-	Thu,  7 May 2026 01:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64582274B4A;
+	Thu,  7 May 2026 01:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPpq/30u"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="e/t0Bw0e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DA12C859;
-	Thu,  7 May 2026 01:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE7E194C98
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 01:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778118365; cv=none; b=ISc3W9Zn8T1yDZGcec9Es1AHo6Qb/tXhPPvnHZnGOLxx2unbYm/6nHpUsuhAGK3AjZH8pwBJ4inkclnhdblljv9n/YtU/W2iwmvslyX3N8ZvK4+KTo4j3Mu8BxYQLxNnVEqaatl4dBkuK9eX9UttW2fONzQcE1Mk8NSRVWaOOwg=
+	t=1778118422; cv=none; b=TRCvK908zOu1haRSqKL6EQbKdJQectObfpnp2GLiTEuf9RTlU0JrwMgS/Y+I5Ux9DRdMoM/aEFYXSRP6/VvlA+0LpzCob0Cf+4PAWBTABHOJgwfc+QUfS23fMte/WcZQOhOiN7U66mFMQ2OB9Xw6jtHidBQwyqySy7kmlZ3J7Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778118365; c=relaxed/simple;
-	bh=SqzLSvkIU3gi/PO8FHJqLB6TXM33GjmfxL89pw1w7cU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=EV8xEs4I4Sm7hVw6TXJFnEPSBk7JUd47/xf4TfNMnlxXpxKaZnJ92FXU6jLeXAzIlduMhFKMeyBZSkb3piietCXQy1Vq5nAQT2DWa4h8Atg7mTN8jNyV/ZedL/6awE5Rqa6Wqgjpp06Kr+BJV1f6b7AJdPe029wscB6md7bRHfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPpq/30u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC16CC2BCB0;
-	Thu,  7 May 2026 01:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778118365;
-	bh=SqzLSvkIU3gi/PO8FHJqLB6TXM33GjmfxL89pw1w7cU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qPpq/30ub8OnpZ6t9nU1XKd5OEgcXka8AoNbsyd7CIF/wCoIpl+E6IAlERzvza0yy
-	 2JI+BeKQ07iGHjGrTw21ggAsi4OoXn9XZRYeQUdJ3Ri1pVUoPmEDVlslamyXXSa1ys
-	 /HcrZxbiyVVljOc7zbG0A2B1K6N/lr9pxQbEMP/lBKgoIoVMCoJ1zMkAcqdNzBMVsM
-	 Gx6TY8cNvR1E6WZ4mqDdprtAIyHMWrgAqL8Pt1KW0tQtKhBTJLCBWXhNcHAIC0Kqck
-	 9V6ITPp0sSA6QBLZfsy7Y6P0DKVa6eBsMePrpApvETjxfQtNa6fqg1IE2m7/jfnEiU
-	 VYetI6gI9TMQw==
-Date: Thu, 7 May 2026 10:46:02 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Cc: <naveen@kernel.org>, <davem@davemloft.net>, <arnd@arndb.de>,
- <mark.rutland@arm.com>, <catalin.marinas@arm.com>,
- <linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
- <linux-arch@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [v2 PATCH] kprobes: skip non-symbol addresses in
- kprobe_add_ksym_blacklist()
-Message-Id: <20260507104602.b5dc0e1d6369b22e65b61d1c@kernel.org>
-In-Reply-To: <20260506012706.2785785-1-jianpeng.chang.cn@windriver.com>
-References: <20260506012706.2785785-1-jianpeng.chang.cn@windriver.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1778118422; c=relaxed/simple;
+	bh=ptahMHxAwcMzgJUkdJAwL9Np/nYEs8gByqgKb70ZGU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JnXrlzYRtje8KPYERlGt7x8LgWU6bzqe6STUCLUZ0ifv+wxw4d8rmskHrFRyTlNemUi/YGvVzgBNH1M8C7YL4cSkgq4QxZapFjBuqqVsT5ITSXqPKLuoRjVgBpsPWX7xft9DXr4qxG0uDezkpVGvuxCoiF1EN6Umr1NFGFaPfyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=e/t0Bw0e; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+Message-ID: <35b45fd0-fffb-455b-b19d-5c29cc955563@packett.cool>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1778118408;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2lk0xUHftJD0rJZhHZIYmoYd2dWXW26635MabL0+A0s=;
+	b=e/t0Bw0eH/FG81UNZB8PXX5CTv8G5YfwI473WJ6VQD5RryLVhi1MV/jgZAWcoWxlvxF8G7
+	jTnsQzrJqpZwoMpyUabou0hxvPpdvwwXinacY0Eqgv/KGVsvG459eUmpjGgrcpsJpbbxqb
+	UynFV0PS4+j+bHPupsbc2OQX8Whlaixhr9Ba8FfhA+8lS1rOJ45tqjJnHhvDEKH87dtc8w
+	ID3vI7O5T29NVDel+rmtmVeIYbtjMmJmDVVwM0uczjeeYiNH7yVguVW7hNSm8PPUjqlt1p
+	nqZbtFz/AVb6go4LZDV2aUwyV9TUqI3jCDw+/VaPqOq7di2UcNzbMG8lMomlVw==
+Date: Wed, 6 May 2026 22:46:33 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Subject: Re: [PATCH v2 1/6] ASoC: qcom: qdsp6: q6afe: fix clk vote response
+ type mismatch
+To: Mark Brown <broonie@kernel.org>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ Bhushan Shah <bhushan.shah@machinesoul.in>,
+ Luca Weiss <luca.weiss@fairphone.com>, Antoine Bernard <zalnir@proton.me>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260506204142.659778-1-val@packett.cool>
+ <20260506204142.659778-2-val@packett.cool> <afvWsfgIz9Q-_cjH@sirena.co.uk>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+In-Reply-To: <afvWsfgIz9Q-_cjH@sirena.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1AC754E2126
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: E631E4E2144
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[packett.cool,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[packett.cool:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244479-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244480-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,perex.cz,suse.com,oss.qualcomm.com,machinesoul.in,fairphone.com,proton.me,lists.sr.ht,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[val@packett.cool,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[packett.cool:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[windriver.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,packett.cool:mid,packett.cool:dkim]
 X-Rspamd-Action: no action
 
-On Wed, 6 May 2026 09:27:06 +0800
-Jianpeng Chang <jianpeng.chang.cn@windriver.com> wrote:
 
-> When kprobe_add_area_blacklist() iterates through a section like
-> .kprobes.text, the start address may not correspond to a named symbol.
-> On ARM64 with CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS=y (introduced by
-> commit baaf553d3bc3 ("arm64: Implement
-> HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")), the compiler flag
-> -fpatchable-function-entry=4,2 inserts 2 NOPs before each function entry
-> point for ftrace call_ops. These pre-function NOPs sit at the section base
-> address, before the first named function symbol. The compiler emits a $x
-> mapping symbol at offset 0x00 to mark the start of code, but
-> find_kallsyms_symbol() ignores mapping symbols.
-> 
-> Without CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS (e.g. defconfig), no
-> pre-function NOPs are inserted, the first function starts at offset
-> 0x00, and the bug does not trigger.
-> 
-> This only affects modules that have a .kprobes.text section (i.e. those
-> using the __kprobes annotation). Modules using NOKPROBE_SYMBOL() instead
-> (like kretprobe_example.ko) blacklist exact function addresses via the
-> _kprobe_blacklist section and are not affected.
-> 
-> For kprobe_example.ko on ARM64 with -fpatchable-function-entry=4,2,
-> the .kprobes.text section layout is:
-> 
->   offset 0x00: $x + 2 NOPs    (mapping symbol + ftrace preamble)
->   offset 0x08: handler_post   (64 bytes)
->   offset 0x50: handler_pre    (68 bytes)
-> 
-> kprobe_add_area_blacklist() starts iterating from the section base
-> address (offset 0x00), which only has the $x mapping symbol.
-> kprobe_add_ksym_blacklist() then calls kallsyms_lookup_size_offset()
-> for this address, which goes through:
-> 
->   kallsyms_lookup_size_offset()
->     -> module_address_lookup()
->       -> find_kallsyms_symbol()
-> 
-> find_kallsyms_symbol() scans all module symbols to find the closest
-> preceding symbol.
-> 
-> Since no named text symbol exists at offset 0x00,
-> find_kallsyms_symbol() picks __UNIQUE_ID_vermagic (a .modinfo symbol
-> whose address is in the temporary image) as the "best" match. The
-> computed "size" = next_text_symbol - modinfo_symbol spans across
-> these two unrelated memory regions, creating a blacklist entry with
-> a bogus range of tens of terabytes.
-> 
-> Whether this causes a visible failure depends on address randomization,
-> here is what happens on Raspberry Pi 4/5:
-> 
->   - On RPi5, the bogus size was ~35 TB. start + size stayed within
->     64-bit range, so the blacklist entry covered the entire kernel
->     text. register_kprobe() in the module's own init function failed
->     with -EINVAL.
-> 
->   - On RPi4, the bogus size was ~75 TB. start + size overflowed
->     64 bits and wrapped to a small address near zero. The range
->     check (addr >= start && addr < end) then failed because end
->     wrapped around, so the bogus entry was accidentally harmless
->     and kprobes worked by luck.
-> 
-> The same bug exists on both machines, but randomization determines whether
-> the integer overflow masks it or not.
-> 
-> Fix this by adding notrace to the __kprobes macro. Functions in
-> .kprobes.text are kprobe infrastructure handlers that should never be
-> traced by ftrace. With notrace, the compiler stops inserting them and the
-> non-symbol gap at the section start disappears entirely.
-> 
+On 5/6/26 9:02 PM, Mark Brown wrote:
+> On Wed, May 06, 2026 at 05:33:02PM -0300, Val Packett wrote:
+>> The response sent by the firmware when requesting a clock vote (opcode
+>> AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST) does not actually have
+>> the same opcode + status payload as APR_BASIC_RSP_RESULT. Rather, it
+>> returns one single u32 which is the client_handle that must be used in
+>> future unvote requests for the same clock.
+> Please send cover letters for your serieses, it helps tooling.  Please
+> also supply inter version changelogs.
 
-Thanks, this looks good to me!
+ummm:
 
-> Fixes: baaf553d3bc3 ("arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")
-> Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-> ---
-> v2: 
->   - use notrace instead of skipping the nops
-> v1: https://lore.kernel.org/all/20260427073545.3656835-1-jianpeng.chang.cn@windriver.com/
-> 
->  include/asm-generic/kprobes.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/asm-generic/kprobes.h b/include/asm-generic/kprobes.h
-> index 060eab094e5a..5290a2b2e15a 100644
-> --- a/include/asm-generic/kprobes.h
-> +++ b/include/asm-generic/kprobes.h
-> @@ -14,7 +14,7 @@ static unsigned long __used					\
->  	_kbl_addr_##fname = (unsigned long)fname;
->  # define NOKPROBE_SYMBOL(fname)	__NOKPROBE_SYMBOL(fname)
->  /* Use this to forbid a kprobes attach on very low level functions */
-> -# define __kprobes	__section(".kprobes.text")
-> +# define __kprobes	notrace __section(".kprobes.text")
->  # define nokprobe_inline	__always_inline
->  #else
->  # define NOKPROBE_SYMBOL(fname)
-> -- 
-> 2.54.0
-> 
+https://lore.kernel.org/all/20260506204142.659778-1-val@packett.cool/
 
+I even Cc'd all(?) the lists, as usual.. Oh, sorry- not stable@ I guess.
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+I didn't even realize the Cc from the sign-off section would actually 
+immediately be used by git send-email, I thought it would only get sent 
+to stable when merged.
+
+~val
+
 
