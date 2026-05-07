@@ -1,146 +1,189 @@
-Return-Path: <stable+bounces-244539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMwxNeld/Gm7OwAAu9opvQ
-	(envelope-from <stable+bounces-244539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 11:39:53 +0200
+	id GELEDrFc/GndOQAAu9opvQ
+	(envelope-from <stable+bounces-244540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 11:34:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536FE4E61B3
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 11:39:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B504E6079
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 11:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 93FA43019809
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 09:33:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA8ED30117F2
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 09:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91F13C5535;
-	Thu,  7 May 2026 09:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712603C4547;
+	Thu,  7 May 2026 09:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Jlzrk4L8"
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b="UJ4ENShi"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31171374E5B;
-	Thu,  7 May 2026 09:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF773B5842
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 09:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778146419; cv=none; b=XTEiUJ5XbGezTuWEPBYyWkbqrlimAEkrfE9TY5Dcx1mS6wogu0h3co3TZYP5yJzvQ5bILCh9a0RUM433RrwYd7srdOnYbffa/Ip8QjLG5Rlgp3Gqiy3a6JgWo3i/QRPeoVlHvIUdpt2ISdK8JBOFQLwxDfSeBRviUNZa+2KaInI=
+	t=1778146460; cv=none; b=gYZUX6RARZ0wcSOp+MnQ3081o3ufU7ZgEhuCYSLxZNByFclhOUzQfneyAps/XEyK4KCRwBgDiuEU2H8NtSoVcEZhbjd9cLS5Bd0gfVz3M2XEN8dvfNaZJdzOu+2+vKZtntMA0/gp2sRUI3zFHd1TxXjl/dpGuMzEQZ6ICxdt54E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778146419; c=relaxed/simple;
-	bh=HjBz0daVSvJTIK4vf+BEyI0kV/wZEHBouGtWdcwr/9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pgIuKBvLufIpFh5iDwyP3vWFBrevQuTC67y1cwVzdE1LVI8+04S41Lvmy+AYB0wSc2equ9H4aM1BIzqAWWEzf9vyjrnWbkDKQscjbP5/2FWdGo8AKtbZ9kDRMISDxslBijitTUPuUpa4m0XXLg1QANSFEFnecB8KvIguZnqVNWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Jlzrk4L8; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=vB
-	EYfloUkqbYP4kc/VlHpKeVw3Une5Q83h2xY7DNHvg=; b=Jlzrk4L87R9qHOoDu6
-	fNHS2nB9XzNRDvpWYatcBiAetTLXVjtqM8kmpuqAXgx79YI1XXHrXT1m5FQOhoaE
-	KFPH59vrAdb204n8Up07eOtYfYDsDTiEnmsrCYcop3zPp9EqjmtrUtsXa+1iAJel
-	+FgevNBREEZET29CpEvsfyRw0=
-Received: from China-163-team (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCnyulIXPxpURmcDw--.9190S2;
-	Thu, 07 May 2026 17:33:11 +0800 (CST)
-From: Wenshan Lan <jetlan9@163.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Felix Gu <ustc.gu@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.1.y] spi: meson-spicc: Fix double-put in remove path
-Date: Thu,  7 May 2026 17:32:46 +0800
-Message-ID: <20260507093246.25388-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1778146460; c=relaxed/simple;
+	bh=SiL0I7BTqDmOrEYB/RwFyieTxl0aty4XtD8WXRHHt7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tWMVn8OiapLuvY0v/Owz1a/lgxn2fYfuUS+jOuZwZPvHIKKVPA9E7sv30sSpSe4rC0GiLofqTagIJDTb1Xw46E0JDGzSWitvrBrQNFrg9nmIq2RFSCeBq+/qbcJrxhkpYfQBTGnvvv3/lUjcvVZ4JXMmdMlp0WIraZ/Li0rwjVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=UJ4ENShi; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=readmodwrite.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-44c350a5b87so384746f8f.3
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 02:34:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1778146457; x=1778751257; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0RDPZxyyoA+nLVJX1tOhu7GRz/OpeQnLIvnlbEm9kx4=;
+        b=UJ4ENShiWepzea3FlvSbyVzkrxv06OS9rK195BomMZJaYNxNPMVdIPKql8eg8tyMYM
+         kfb0+VCzq+YZqC1FbDpCc5nwHABPrK4p9Sjc4oiaxEn6ehyovW11UxYlU9hBZdiqrQAu
+         JXNy2bbCM9b2Q89RDFEL+pz9Hp5r0zOU3HF+qHFgSH4o4Qy7S/cS8Nv1pwDkVdPqaR7q
+         RVoLoJph4XG9HBvebMI19zuhTawA0WQ7YdMtnAzBsL2xLTyFfQflSRB/D7nG8SF+c8R9
+         XEvNCGk1qCFdv4aT3H+zGN90jsUZb9v2UfxKMBd5pOD1tt68SpAUmdDG88po5IsRpsbp
+         susA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778146457; x=1778751257;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0RDPZxyyoA+nLVJX1tOhu7GRz/OpeQnLIvnlbEm9kx4=;
+        b=YlFJnfwGNukrRzj9TL8oP0MJiNNCVELBJg1Nx9OgotpmUj1KnPFnYvadu/tHmKrFru
+         qZc3chEtYN0G/dtugTu/36lQCZwrJBMgFcw3HiYsDqADtnqZmIMfuGQWv4heZ7g8pcPQ
+         9pF70qZD0nVPOSIYHeNpNITCOmiH2Esz8JVdUWCxXA9oHANYi6duziRprlpD+3viI72A
+         ocd+cEhe3SykhblOFcvhZ+Zr2ThY0rwwaLKVDlOs9+zll6LVig3wyXOxHMnK/U55L4sk
+         8pLWq/Wh9JzfUm8KOCeWj3Z2Wb7Ch2RbMZZMt5pxstWUur6Qo+/I7t2awrzyhldC8wuP
+         tLvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8a8tODhQ0MjNjOVIxnu5ST+1ArBIbcH1ZGgIF7UDDrR94xp2xZiFTuxfwuVG52pbHThsKOYAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1tJmjvKuhOnhLKcUhLMIoqnsRy9z0R7VavxQa814pYKBdql0/
+	tnYPaHAb7e0+xQHyOCw1nYZQZ3UKvqaVPyisnWLDIs1uEn4vY/+/GJNXgNlMgrYEsIQ=
+X-Gm-Gg: AeBDievjxf9cshlrP92B31KA3DHMvajccr/ToPtc5LVZYI/5j+ZXyULkxsZPMM0r8qa
+	8nNGYv19W36EFxZ6Fv3oX5cSDZvnsp0Umjs0H/idmBkDcIUQQCf/0Vr6bIXP0rkqSvSovLDPCJp
+	CSLbeSpbZHl0lyPuPCZfdtN2vtLLnHHe39Rinx3Br3ikm9GOoKpJUBqj0qGcxBYwjwg1tPszK75
+	TXDqdSXcu2AgF9YGHIqcGRKY1ZTfScf9UI4N78yuCrT11RpK8qEZxleZF0PnA8f4EQZAUhK+gZB
+	N2h4rHjM0gLZxiU1jI6sjq/GIZThzmJ06Th3/QSZZgC8KZ6/JqupJfimSBMv70bd2WnYPc6sou0
+	eCvTIFt9ACiQCxnPTPvsQr60Xc0l1wyL5fMh6v8gKpzJs5wqWl/OJAoUmauzalN/1zWDvAo7MFT
+	T8PUWSNhmsf/Jownm5jO/j
+X-Received: by 2002:a05:6000:2c0c:b0:43d:7e11:1b72 with SMTP id ffacd0b85a97d-4515a6c32dfmr11386364f8f.9.1778146456983;
+        Thu, 07 May 2026 02:34:16 -0700 (PDT)
+Received: from localhost ([2a09:bac6:37a8:294b::41d:50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4505238e7c0sm17157280f8f.3.2026.05.07.02.34.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 02:34:16 -0700 (PDT)
+Date: Thu, 7 May 2026 10:34:15 +0100
+From: Matt Fleming <matt@readmodwrite.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, kernel-team@cloudflare.com, 
+	Matt Fleming <mfleming@cloudflare.com>, stable@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Eric Joyner <eric.joyner@intel.com>, Paul Greenwalt <paul.greenwalt@intel.com>, 
+	Alice Michael <alice.michael@intel.com>, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [Intel-wired-lan] [PATCH net v2] ice: Fix missing 1's complement
+ negation in GCS raw checksum
+Message-ID: <afxbZjldi1OC3HmS@matt-Precision-5490>
+References: <20260501095717.1032151-1-matt@readmodwrite.com>
+ <531aec13-c33f-4e77-ab48-de8861f9b6c6@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCnyulIXPxpURmcDw--.9190S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr45Xr1DWF4furyUArWUJwb_yoW8Wry3pF
-	4xGr45urZ7JrnYkF1UGw43uFW5Ka47JFyDX3y3Kanxuwn3XFy5tr9FqFWfZr1YvF48Cay0
-	vry5Ja1rKa1rZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEWrW7UUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC6xnGj2n8XFlQCwAA3w
-X-Rspamd-Queue-Id: 536FE4E61B3
+In-Reply-To: <531aec13-c33f-4e77-ab48-de8861f9b6c6@intel.com>
+X-Rspamd-Queue-Id: C9B504E6079
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[readmodwrite-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-244539-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[readmodwrite.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244540-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[readmodwrite-com.20251104.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,readmodwrite-com.20251104.gappssmtp.com:dkim]
 X-Rspamd-Action: no action
 
-From: Felix Gu <ustc.gu@gmail.com>
+On Mon, May 04, 2026 at 05:10:23PM -0700, Jacob Keller wrote:
+> 
+> Hi,
+> 
+> Based on your patch description, I assume that you've tested this on
+> real hardware.
+> 
+> I dug a little through some of our internal changes history and sawe
+> that it looks like the hardware has a register setting in its
+> GL_RDPU_CNTRL register which determines whether the checksum value
+> reported is inverted or not. In E830 hardware, it is supposed to be off
+> (i.e. the checksum value reported already matches the expected setting.
+> 
+> Perhaps your device somehow got the GL_RDPU_CNTRL register set to the
+> wrong mode and that results in the swap being necessary. Hmm.
+> 
+> I'll ask the team to see if they can confirm this behavior.
 
-[ Upstream commit 63542bb402b7013171c9f621c28b609eda4dbf1f ]
+Hi Jake,
 
-meson_spicc_probe() registers the controller with
-devm_spi_register_controller(), so teardown already drops the
-controller reference via devm cleanup.
+Thanks for digging into this.
 
-Calling spi_controller_put() again in meson_spicc_remove()
-causes a double-put.
+I read GL_RDPU_CNTRL on our affected E830 and the value is the same on
+both ports of the NIC:
 
-Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ In v6.1, commit 68bf3288c7eb ("spi: meson-spicc: switch to use modern name")
-has not been applied, so the driver still uses the legacy spicc->master field
-and spi_master_put() API. The line to remove is spi_master_put(spicc->master)
-rather than spi_controller_put(spicc->host) as in the upstream patch.
-They are functionally identical. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- drivers/spi/spi-meson-spicc.c | 2 --
- 1 file changed, 2 deletions(-)
+  0000:c1:00.0: GL_RDPU_CNTRL = 0x0020a275
+  0000:c1:00.1: GL_RDPU_CNTRL = 0x0020a275
 
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index 1b4195c54ee2..04cf8489dd56 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -883,8 +883,6 @@ static int meson_spicc_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(spicc->core);
- 	clk_disable_unprepare(spicc->pclk);
- 
--	spi_master_put(spicc->master);
--
- 	return 0;
- }
- 
--- 
-2.43.0
+Decoding bit 22 (E830_GL_RDPU_CNTRL_CHECKSUM_COMPLETE_INV) gives 0,
+i.e. the hardware is supposedly in "not inverted" mode, which matches
+the default you described.
 
+However, looking at the data on the wire I see:
+
+  - netdev_rx_csum_fault fires ~65 000 times/sec on this host.
+  - bpftrace at fexit:ice_process_skb_fields shows skb->csum =
+    swab16(raw_csum) directly (no negation), e.g. raw_csum=0xfb4f
+    -> skb->csum=0x4ffb.
+  - At fentry:__skb_checksum_complete the upper 16 bits of skb->csum
+    are 0xFFFF on every TCP/UDP packet -- the signature of nf_ip_checksum
+    adding the pseudo-header to a value that was the un-negated raw_csum.
+  - fold2(skb->csum_at_fentry + skb_checksum(skb,0,len,0)) ≈ 0xFFFF
+    for every packet, which means the two values are ones-complement
+    complements of each other, i.e. the driver stored S where the
+    stack expects ~S.
+
+Negating the checksum makes the failures go away.
+
+Thanks,
+Matt
 
