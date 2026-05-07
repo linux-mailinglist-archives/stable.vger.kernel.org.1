@@ -1,187 +1,242 @@
-Return-Path: <stable+bounces-244574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iL0YGmue/Gn3RwAAu9opvQ
-	(envelope-from <stable+bounces-244574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:15:07 +0200
+	id AG94HY2j/Gn2SAAAu9opvQ
+	(envelope-from <stable+bounces-244577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:37:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46C04E9EE6
-	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:15:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDAF4EA4DD
+	for <lists+stable@lfdr.de>; Thu, 07 May 2026 16:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD9323022568
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 14:14:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FC5F303E2CC
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 14:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D634237BE60;
-	Thu,  7 May 2026 14:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB5D3FBEDE;
+	Thu,  7 May 2026 14:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pciDZxNw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qiMsEF8L"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C301C3F9F41;
-	Thu,  7 May 2026 14:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564803F7883
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 14:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778163292; cv=none; b=aCPKS8iN00e6aO5sfXt827fchuFwhQPo07RvHh7ZJK14c3nHkzmwPIROU0t6wAJIFGCxVkCgkQ71WcAnEtbBvJkJxj42GEvQzfhzrcleNackOiqNr+lbgwUlaeqASpt/6IZDkYm7J9PWmC0p8aPBGU6Rb6BVOvaLdHxjQazFDww=
+	t=1778164401; cv=none; b=sQ1ZMaSHihSDihF1zxxZUplzN1JQR7iH2PSERl4Ni4BhBIpYMbezi2q1UpvEQ7Z6+2W2V7jsYYBdX8i5GAusUlVFMHThDepp31nSt6OzzlMxQmqMstHd/HBEkiNBvFAOqPnpg14eeFCr1UnSaH2p3J3HaCwNkFOHfhjDTIVUuGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778163292; c=relaxed/simple;
-	bh=d0wCw1VrxUtXRcCk4E3PnmCvbq6aFgQfYidgwCoyE/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kTtPYKZuUcs2OnnBA0ACN3LYvLfK9IuUFRkLtuw5O/rjCrqgJQhs/9QJubfrlnDunY442IZP8kYmZPyjHlS6LCW/25h1YODQadZSbJGZ/gKfrZu4/j99i0GdRiA2zthp6D27/jQZooWjV0KIyjutDLQZxhIV8sQ+e1ZnvFdq/qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pciDZxNw; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tJlUIOe0/241qA24knswlPqJNMDU3HVIERWmx8tHuHs=; b=pciDZxNwKYhEH2yjt4q85BW2Ot
-	JW0KHfN486pmE7VGRUkz87jt2d5+xjMUITZ1Rc5/LT8+JL4AHSRttkvCoqLoGaG2zwSmyhDTQ8WnG
-	GIwy21RDdYNbxEGaR5PT/RxRrJzTNvRUDMPLyKbkjl1Pg449E3JJWja7IqxjO+wcIxBweNOwJR1W4
-	BGs/TtL+6tXXuUDlPZ2KK/CW+TaDTs+UwwTLxIsl9+2sWiKyjIw5rzbNJDdAK1Jc3iCypw+l7PVeu
-	SPK5ymH1x2VM6wBl0M3b/RYRlwiu3iLUZMtfJyjjARvPaGZS1CPTAn6Ll4SZ3u8ToN/OOK8tlVCxv
-	hEBXjfKQ==;
-Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKzUs-00000003jZd-1Ut5;
-	Thu, 07 May 2026 14:14:39 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 1BC4F300882; Thu, 07 May 2026 16:14:37 +0200 (CEST)
-Date: Thu, 7 May 2026 16:14:37 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Tejun Heo <tj@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Kyle McMartin <jkkm@meta.com>, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1778164401; c=relaxed/simple;
+	bh=/n+7llmepQAvJ5J8m7gmaT9JZWY/jvh+7hnDojvXqTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iL29zI+MalwKRmMoH1OzB3IuASatCYOzuECZFg6ikpa4gOd8PRGqfsYYdAHBS74ae9pWdz/X8ulCIeP7Nzy30Zh9COra9mcfrfvW1FFEA1CHLlBi54c7kXlJ5YgP+sgL2pwGnwo0B41SmdzeVPTIkrr58HiC5aCwEzL+t00o3FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qiMsEF8L; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-902deb2412fso96762885a.3
+        for <stable@vger.kernel.org>; Thu, 07 May 2026 07:33:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778164398; x=1778769198; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5kzcSdsCpo5Y3mn41POdySZcZFAGaT53MIAxz0TRGE0=;
+        b=qiMsEF8L1E88iiuA5BvbiIgz8FiS+bFiAP4TF+bxCN5utzEYD0M4/OpGHvpMsOBo8u
+         OEspr1NQCQoVplh+6Uw3fcKghu/ULNj1DOtozo+9PCHS2UQLdWexGIuVRUr5d7LrYGal
+         a/mCmXVfsyUKkrX9w3jSFZeqHwWWzVfDwkAU8kJarTboXO7xiAwus5W0XbFAFZiD9vaC
+         JykfBYLaV7fSg1EyG4LKkh9KjXl1Zw21ClOeOTBeywStGjjerJLQwi/J16xnxdvghj2M
+         vr7AXA5JQ178AqePauHy9qFLiQm09boHMTdvQ+/cJn/byeCkCwD5RJ752SgEqIw6vd3m
+         /ViA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778164398; x=1778769198;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5kzcSdsCpo5Y3mn41POdySZcZFAGaT53MIAxz0TRGE0=;
+        b=WMzebsAEFzD7fZ1at3ob0Epopo8HizOqFX2CD2X3M36bcAKe+FW5NPDhTQqbqZDjWH
+         Td3zsap5vXdISSTZ6lBoGUz6Vsiwu/fI61t0LH5QayJK9rAg/l2LjO+/ZMc1olhl8g01
+         CJRk528WHa4V3sGvLn2skguHPKyKYU6cD9tdLDwhLakEjsggBc7sy2MCbeEaf+ThAYRl
+         yNctBz96Fovg/sC2qgG7Hfa06NVvF7IlWUN27DXwBq1x7xug6KQkUp7monWgUQ4ZAwip
+         GnS+1KTJNKfN0pAvXFdYuKw+kqXDy2iV+mncTuy2QoDzGho1e7Y3mp1J8o/xFifnKHJH
+         J10A==
+X-Forwarded-Encrypted: i=1; AFNElJ/DCIV9G7SmiObFJYxwZZE0wRu2qdnTvxIkLthhQOdEoSW2D2yFXDVcFfliU+vkgA+PZSNWspw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjrXIq6jRjwrvqetKa54mNc9cm9Z4z1daWcq8CauanChtFzGQf
+	Mf6yLMPcK5Wf2H/1tUmfo7QlJVTw8Swvqg3JWPq+tRSoX1QZGltJbCF7
+X-Gm-Gg: AeBDievWk9l4NwQ4QkE/405JMp3zFKEcEXKxmDEVTalStar5c5B4gDZNiLjbYZOvA+2
+	SDwyM/gKUy7dRvfi0BKdy2P9lDJ29jfUy1XWqx6L1bNUR5MhUp97prcZ8XpHRs8YILUv05cgxkG
+	CR0U3qYy4Gx8E4a3Xw8e59nXXU4Z6MHDCiOBWXzryzfVhJtl92sUzebZCS8lznbcO1kQZ8F0lHX
+	plcVxBEqujUHafij7kOM5a2Xcr7o4suL3cVyZsEghIejSnAnZ7LB4MHF9bSntED04ySY4fd9nDc
+	hQPqn77Qkg3LRAFWwGoEweGml1hva48mrVege85wilDYvKiphiak1BXcWJf7UHuRg2ae9zCgi6k
+	SQ1bQZVU+xNBDQivOyeYV90O43uPuuW7gQB6GH9SSy7H05gJeXuu8C4TREYtg7Ad+x6qgzJmEnP
+	d+kISd1/LNjVUIa2yyPwAJ9EnGZR3wFKD+C6DRyt3h1LJUszMGJNm1FAfS5MYEMHMvZDpBRzs0z
+	BnEVN4QJiwoAF2bNTsN9io++Q==
+X-Received: by 2002:a05:622a:59ce:b0:50f:bd51:f1d2 with SMTP id d75a77b69052e-514621d1bfdmr103573311cf.50.1778164397873;
+        Thu, 07 May 2026 07:33:17 -0700 (PDT)
+Received: from jeremy.kali (srv1619992.hstgr.cloud. [2a02:4780:75:55a3::1])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51040b80a4dsm175420501cf.24.2026.05.07.07.33.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 07:33:17 -0700 (PDT)
+From: "Jeremy Erazo (Devel Group)" <mendozayt13@gmail.com>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Jeremy Erazo (Devel Group)" <mendozayt13@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH sched/core] sched/rt: Fix RT_PUSH_IPI soft lockup loop
-Message-ID: <20260507141437.GJ3102624@noisy.programming.kicks-ass.net>
-References: <20260506235716.2530720-1-tj@kernel.org>
+Subject: [PATCH] scsi: target: iscsi: validate ECDB AHS length
+Date: Thu,  7 May 2026 14:25:59 +0000
+Message-ID: <20260507142559.2373177-1-mendozayt13@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506235716.2530720-1-tj@kernel.org>
-X-Rspamd-Queue-Id: C46C04E9EE6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CEDAF4EA4DD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=desiato.20200630];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244574-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244577-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mendozayt13@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,noisy.programming.kicks-ass.net:mid]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Wed, May 06, 2026 at 01:57:16PM -1000, Tejun Heo wrote:
-> push_rt_task() picks the highest pushable RT task next_task. If it
-> outranks rq->donor, the existing path calls resched_curr() and
-> returns 0, trusting local schedule() to pick next_task soon.
-> 
-> The RT_PUSH_IPI relay caller (rto_push_irq_work_func()) cannot rely
-> on that. When this CPU has a steady supply of softirq work (e.g.,
-> incoming packets), the next push IPI arrives before schedule() can
-> run. Other CPUs keep seeing this CPU as overloaded and keep sending
-> IPIs, this CPU keeps taking the same bail, and the loop repeats
-> until soft lockup.
-> 
-> Seen in production on hosts with sustained NET_RX softirq load:
-> the loop ran millions of iterations before tripping the soft-lockup
-> watchdog.
-> 
-> Skip the prio bail when called via the IPI relay (pull=true) so
-> push_rt_task() migrates next_task to another CPU. Verified with a
-> synthetic reproducer.
-> 
-> Fixes: b6366f048e0c ("sched/rt: Use IPI to trigger RT task push migration instead of pulling")
-> Cc: Kyle McMartin <jkkm@meta.com>
-> Cc: stable@vger.kernel.org # v5.10+
-> Signed-off-by: Tejun Heo <tj@kernel.org>
-> ---
-> This looks minimal to me, but happy for suggestions. Thanks.
-> 
->  kernel/sched/rt.c |    8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> --- a/kernel/sched/rt.c
-> +++ b/kernel/sched/rt.c
-> @@ -1968,8 +1968,14 @@ retry:
->  	 * It's possible that the next_task slipped in of
->  	 * higher priority than current. If that's the case
->  	 * just reschedule current.
-> +	 *
-> +	 * This doesn't work for the IPI relay caller (pull). When this CPU
-> +	 * has a steady supply of softirq work (e.g., incoming packets), the
-> +	 * next push IPI arrives before schedule() can run. Other CPUs keep
-> +	 * seeing it as overloaded and keep sending IPIs, this CPU keeps
-> +	 * taking the same bail, and the loop repeats until soft lockup.
->  	 */
-> -	if (unlikely(next_task->prio < rq->donor->prio)) {
-> +	if (unlikely(next_task->prio < rq->donor->prio) && !pull) {
->  		resched_curr(rq);
->  		return 0;
->  	}
+iscsit_setup_scsi_cmd() processes the Extended-CDB Additional Header
+Segment (AHS) of a SCSI Command PDU without bounding AHSLength,
+despite the long-standing "FIXME; Add checks for AdditionalHeaderSegment"
+comment a few lines above in the same function.
 
-IIRC Steve has a test for this stuff. If this breaks things, an
-alternative is keeping a counter/limit on attempts or something.
+A SCSI Command PDU sent after iSCSI Login with hlength=1,
+ahstype=ISCSI_AHSTYPE_CDB and ahslength=0 reaches:
 
+    cdb = kmalloc(0 + 15, GFP_KERNEL);             /* 15-byte alloc  */
+    memcpy(cdb, hdr->cdb, ISCSI_CDB_SIZE);         /* 16 -> 15       */
+    memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb,
+           be16_to_cpu(ecdb_ahdr->ahslength) - 1); /* (size_t)-1     */
 
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1339,6 +1339,8 @@ struct rq {
- 	unsigned int		nr_pinned;
- 	unsigned int		push_busy;
- 	struct cpu_stop_work	push_work;
-+	unsigned int		rt_switches;
-+	unsigned int		rt_push_resched;
+On CONFIG_FORTIFY_SOURCE=y kernels the first memcpy is rejected by
+__fortify_panic() because the declared destination size is 15:
+
+    memcpy: detected buffer overflow: 16 byte write of buffer size 15
+    kernel BUG at lib/string_helpers.c:1044!
+    Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+    RIP: 0010:__fortify_panic+0xd/0xf
+    Call Trace:
+     iscsit_setup_scsi_cmd.cold+0x8c/0x224
+     iscsit_get_rx_pdu+0x9ec/0x1740
+     iscsi_target_rx_thread+0xf7/0x1f0
+     kthread+0x1b4/0x200
+    Kernel panic - not syncing: Fatal exception
+
+On kernels without CONFIG_FORTIFY_SOURCE the first memcpy fits in the
+kmalloc-16 slab object and execution reaches the second memcpy whose
+size argument has wrapped to (size_t)-1.
+
+Reproduced on Linux 7.0 with a malformed Command PDU sent after a
+completed iSCSI Login.  The trigger is reachable post-Login by any
+initiator that successfully logged in (anonymous on demo-mode targets,
+authenticated on CHAP-protected targets).  No claim of RCE, LPE or
+controlled write is made.
+
+Validate, before any dereference and any allocation:
+
+  - the AHS area received from the socket holds at least the 4-byte
+    iscsi_ecdb_ahdr header,
+  - AHSLength is at least 1 (RFC 7143 §10.2.2.3 minimum for the ECDB
+    AHS, which carries one reserved byte),
+  - the declared AHSLength does not exceed the AHS bytes that were
+    actually received.
+
+Reported-by: Jeremy Erazo (trexnegr0) <mendozayt13@gmail.com>
+Signed-off-by: Jeremy Erazo (Devel Group) <mendozayt13@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/target/iscsi/iscsi_target.c | 33 +++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index e80449f6c..de291eb6f 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -1100,6 +1100,16 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
+ 	cdb = hdr->cdb;
  
- #ifdef CONFIG_SCHED_CORE
- 	/* per rq */
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2941,6 +2941,13 @@ static int push_dl_task(struct rq *rq)
- 	if (dl_task(rq->donor) &&
- 	    dl_time_before(next_task->dl.deadline, rq->donor->dl.deadline) &&
- 	    rq->curr->nr_cpus_allowed > 1) {
-+		if (rq->rt_switches != rq->nr_switches) {
-+			rq->rt_switches = rq->nr_switches;
-+			rq->rt_push_resched = 0;
-+		}
-+		if (test_tsk_need_resched(rq->curr) && ++rq->rt_push_resched > 16)
-+			return 1;
+ 	if (hdr->hlength) {
++		u16 ahslen;
++		unsigned int ahs_area_bytes = hdr->hlength * 4;
 +
- 		resched_curr(rq);
- 		return 0;
++		/* The AHS area must hold at least the iscsi_ecdb_ahdr
++		 * header before any of its fields may be dereferenced.
++		 */
++		if (ahs_area_bytes < sizeof(struct iscsi_ecdb_ahdr))
++			return iscsit_add_reject_cmd(cmd,
++				ISCSI_REASON_PROTOCOL_ERROR, buf);
++
+ 		ecdb_ahdr = (struct iscsi_ecdb_ahdr *) (hdr + 1);
+ 		if (ecdb_ahdr->ahstype != ISCSI_AHSTYPE_CDB) {
+ 			pr_err("Additional Header Segment type %d not supported!\n",
+@@ -1108,14 +1118,29 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
+ 				ISCSI_REASON_CMD_NOT_SUPPORTED, buf);
+ 		}
+ 
+-		cdb = kmalloc(be16_to_cpu(ecdb_ahdr->ahslength) + 15,
+-			      GFP_KERNEL);
++		/* Per RFC 7143 §10.2.2.3 AHSLength counts the bytes of
++		 * the AHS that follow the AHSType/AHSLength fields; for
++		 * the ECDB AHS it includes one reserved byte, so the
++		 * smallest legal value is 1.  Rejecting 0 prevents the
++		 * "ahslen - 1" memcpy size below from underflowing to
++		 * (size_t)-1, and ensures the kmalloc(ahslen + 15) below
++		 * is at least ISCSI_CDB_SIZE (16) so the first memcpy
++		 * does not overflow.  Also reject any AHSLength larger
++		 * than the AHS bytes that actually reached us.
++		 */
++		ahslen = be16_to_cpu(ecdb_ahdr->ahslength);
++		if (ahslen < 1 ||
++		    ahslen - 1 > ahs_area_bytes -
++				 offsetof(struct iscsi_ecdb_ahdr, ecdb))
++			return iscsit_add_reject_cmd(cmd,
++				ISCSI_REASON_PROTOCOL_ERROR, buf);
++
++		cdb = kmalloc(ahslen + 15, GFP_KERNEL);
+ 		if (cdb == NULL)
+ 			return iscsit_add_reject_cmd(cmd,
+ 				ISCSI_REASON_BOOKMARK_NO_RESOURCES, buf);
+ 		memcpy(cdb, hdr->cdb, ISCSI_CDB_SIZE);
+-		memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb,
+-		       be16_to_cpu(ecdb_ahdr->ahslength) - 1);
++		memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb, ahslen - 1);
  	}
+ 
+ 	data_direction = (hdr->flags & ISCSI_FLAG_CMD_WRITE) ? DMA_TO_DEVICE :
+
+base-commit: a293ec25d59dd96309058c70df5a4dd0f889a1e4
+-- 
+2.53.0
+
 
