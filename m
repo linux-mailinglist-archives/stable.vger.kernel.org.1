@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-244650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHPGFPUl/Wn6YAAAu9opvQ
-	(envelope-from <stable+bounces-244650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 01:53:25 +0200
+	id IPnfHxsm/Wn6YAAAu9opvQ
+	(envelope-from <stable+bounces-244651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 01:54:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CD54F064B
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 01:53:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40C64F0655
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 01:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 483A93024950
-	for <lists+stable@lfdr.de>; Thu,  7 May 2026 23:53:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48C08302D527
+	for <lists+stable@lfdr.de>; Thu,  7 May 2026 23:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1173469E7;
-	Thu,  7 May 2026 23:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD653340281;
+	Thu,  7 May 2026 23:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KhwfBVAH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UB9dB7Se"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB09C340281
-	for <stable@vger.kernel.org>; Thu,  7 May 2026 23:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0C93469E7
+	for <stable@vger.kernel.org>; Thu,  7 May 2026 23:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778198001; cv=none; b=YRczrANQsk6Xd2Tg2/lh5xiPFkEuSrMxS6FqLrMwfepcE80ltGjn5Ein792MRHnrvqSWAADAdndmekHv8vbb1QzZVgfyjphT6poigkTvNMdz5BLcNd+Yw28IuSukxUCvl3NC4ZcLzqWgXl8MjJ/2l3PkeM9Gh7rAZhD1pFrmRps=
+	t=1778198040; cv=none; b=aoNzJDIpWcqVAkabhgdv4cVF5UVpO3N9N6axzsJBplJbBBt7LhkpnEv+n/GfD04faCG79MNSg9YZvj3AtrYD8FvcHdB9q6UXh55Uh/NHASbsfIHuGvV4melbMjabDPGZ8e9rtWW3ewgtTqbI2F2Aa7/E4LFXcVELOnUelw+MzNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778198001; c=relaxed/simple;
-	bh=MEo2dj+A4pl5lRqAIJJLHaNCPfKIIjPg4QLVvYZzn2o=;
+	s=arc-20240116; t=1778198040; c=relaxed/simple;
+	bh=YgUUBCT9tbhy2QZ45XowXTPYVZ8ZYA7uOiuEsQNGW+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XlaaaRmrhjeceOQHASJfSBVT+OFcCnPFFkV14ugqqsF0XeSma1MuAnq+K4Dt61IrJn9kE6IdUfBc9TVg///FyRhv6i05UrOKXzO1b/E6nkBcYOeNL0ee8gnppo7Azul4F6VIDRkv/tvR5omcqCXoj0NCGqsrWPwtAL82NCznw5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KhwfBVAH; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=AtMetxiL0A3xPe2UIXQDLODx6TK2NbcBySMbvHRW+rOdtkWeFzfCPclMlb6s0AbuS5hvGhxr5G1jdAvzxP6JHFK2P0bVLTt537HSVf64n7ruunSmK4ibLUJFI7o6uiRmRHIN/0s/lPG3TD5S6HEPF3H/Eg9LpSxilIRapOD1PuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UB9dB7Se; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778198000; x=1809734000;
+  t=1778198039; x=1809734039;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MEo2dj+A4pl5lRqAIJJLHaNCPfKIIjPg4QLVvYZzn2o=;
-  b=KhwfBVAHf48W2cJJuU69aLfXwAFZFJfE7YegG/XqLcITe2sKww1RkUtf
-   VYuQMHKNgViCVtza6WQw0WAynIqpZfMh8pqdHzwxFn3c9dlP+Va5ds1k+
-   Xl7r2cQiaQHmlDlLBJyVE4C5LvpW+Vi3w1ZN0AGYp9IqPN7XgiQcm49h4
-   SDyuGhMrfuw8K5QkQv7JK3PaRzU1rlsoy27OUcl4ehgzuIwerGrWwrhqK
-   MAokEu/YEUMcba1cSB/LEiopbu8jA2yHbeDaxVNApSYadiNVFZulRurJx
-   sDBrRE2gMPy96p5/rvKs4uxRCk5/kPmWyuPvaZTDWkgvzf8zRkwIYdqd8
-   Q==;
-X-CSE-ConnectionGUID: xFBawjgcS/+b/BdWJDlTyQ==
-X-CSE-MsgGUID: MxJweXbWQxmFxdeWvYNTMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="90624137"
+  bh=YgUUBCT9tbhy2QZ45XowXTPYVZ8ZYA7uOiuEsQNGW+M=;
+  b=UB9dB7SehOhn2Wpj/b0bQKSEQDnTsX8JTWzFEc2rhzMUQiE6KapElGek
+   K7M7HcdZksdApy3VKMJY7Vkak1vSxl6KJqS0JOeOGp8R2FhgNTTXH21Hn
+   MD/gbObbsHo4Z+V0l5rVbljhxVaqhVUyK+SeZSErjWIwIDGj8OQ9h6VrD
+   5yjukQRLDeHxk4NgA30II5Cm6HkT7+QZA2CLye4UiFyFa4/5LgTWIbb/5
+   zOKe0NXY4HCHCK6yobqGYvtk75691gytmQwh9aWOAJzWTHVLEmbXaavZi
+   /W2M9uiuwYVCswkVi9vmH/YtHaeexMQ5ECEuktZ3/cNowAKtQf6dkPTvL
+   w==;
+X-CSE-ConnectionGUID: 2fQxjRNlS6OYLIXaA/ny+A==
+X-CSE-MsgGUID: Aem5AwKtR8m5rth/+vhHYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="83033188"
 X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="90624137"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 16:53:20 -0700
-X-CSE-ConnectionGUID: IxbOtZtsT4+BVG7uXPYeUQ==
-X-CSE-MsgGUID: EqDgTdcGRKmrKFCwz6au0g==
+   d="scan'208";a="83033188"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 16:53:58 -0700
+X-CSE-ConnectionGUID: o8F+hLFdQNCyWwbNWDkwyw==
+X-CSE-MsgGUID: ERi4ZGgHQiSdHmr/QEhW+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="260054015"
+   d="scan'208";a="240599698"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 16:53:19 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 16:53:58 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: stable@vger.kernel.org
 Cc: rick.p.edgecombe@intel.com,
 	dave.hansen@intel.com,
 	tglx@kernel.org,
 	torvalds@linux-foundation.org
-Subject: [PATCH 6.6.y] x86/shstk: Prevent deadlock during shstk sigreturn
-Date: Thu,  7 May 2026 16:53:09 -0700
-Message-ID: <20260507235309.1394749-1-rick.p.edgecombe@intel.com>
+Subject: [PATCH 6.12.y] x86/shstk: Prevent deadlock during shstk sigreturn
+Date: Thu,  7 May 2026 16:53:48 -0700
+Message-ID: <20260507235348.1394848-1-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026050437-throat-unrivaled-2769@gregkh>
-References: <2026050437-throat-unrivaled-2769@gregkh>
+In-Reply-To: <2026050436-breeches-reformat-d041@gregkh>
+References: <2026050436-breeches-reformat-d041@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,19 +80,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A6CD54F064B
+X-Rspamd-Queue-Id: D40C64F0655
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244650-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244651-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
@@ -106,7 +106,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
@@ -135,14 +135,14 @@ issues like this cannot escape detection for so long.
 
 [Due to missing per-vma MM sequence counter, use a simpler GUP based
 solution for the backport]
-Cc: <stable@vger.kernel.org> # Depends on https://lore.kernel.org/all/20260504205924.536382-1-rick.p.edgecombe@intel.com/
+Cc: <stable@vger.kernel.org> # Depends on https://lore.kernel.org/all/20260504205856.536296-1-rick.p.edgecombe@intel.com/
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
  arch/x86/kernel/shstk.c | 46 ++++++++++++++++++++++++++---------------
  1 file changed, 29 insertions(+), 17 deletions(-)
 
 diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index d259d7d5b962f..ba93c4e6a2319 100644
+index 0dc983b33b003..373a44a5c478f 100644
 --- a/arch/x86/kernel/shstk.c
 +++ b/arch/x86/kernel/shstk.c
 @@ -18,6 +18,7 @@
