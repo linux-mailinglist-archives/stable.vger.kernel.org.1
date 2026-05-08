@@ -1,163 +1,198 @@
-Return-Path: <stable+bounces-244801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHhkDPIZ/mmQmwAAu9opvQ
-	(envelope-from <stable+bounces-244801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:14:26 +0200
+	id ELZuAgYZ/mmQmwAAu9opvQ
+	(envelope-from <stable+bounces-244800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:10:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835434F9D4A
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:14:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 668954F9CB7
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF80D30477D1
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 17:09:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5674930948BE
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 17:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFEC3FF8B1;
-	Fri,  8 May 2026 17:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0603D47B8;
+	Fri,  8 May 2026 17:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lankhorst.se header.i=@lankhorst.se header.b="miuG7geX"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QKltmZB4"
 X-Original-To: stable@vger.kernel.org
-Received: from lankhorst.se (unknown [141.105.120.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F011DE8AD
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 17:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF36282F38
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 17:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778260182; cv=none; b=lQEtGBas+9ySGZur0w08qvPURl5DzGzfS56L5Cp1XOR6T9AMLfMj6YI3kT/D26p7Jui9ooM7wl/RlaTXk+VPjky5wHI12MMy5htUcXi8vRBlkuz5rwXZh2sK1wtwZW0hqx+J+N1imdISjNlKcnOJQMZpk5oinV9wyqyKtMULZMQ=
+	t=1778259945; cv=none; b=O8q8f5uHd/mAnSMrbOJknZtf1uybD3GiwazNrAr1rKa2xCGbz9ApI9mLbhU7tibNYOLJQnu27HP6OcSVitAVX8HvdtdueA4MwkN8D9Y3Vh6BRv4teBx+4KBsL+bcL6NyLSiaOyBtuX0yoJAlq+K6K1D6z9Q0XcRp32lfxVlSN04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778260182; c=relaxed/simple;
-	bh=g7sFg48r5Dm+Qo/8mMdFgMdzbwgpDyCQ/p6NpvKjuO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nhzH1OWJjHCNJFPpzNHPt3SwvbTx2lvFhMcCCUxLQ18nz4q9NczLHx78Jf0WZrV2X27rE5KTqbCnm+EyaMyKa2v0gZ8zTuoGFbGxfyi8vY/rrcf37wfWrrJ226/AGtkuFiT18ItWe1hKtssJFLkSJQBp+OnInUAAed2dg2QB/zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; dkim=pass (2048-bit key) header.d=lankhorst.se header.i=@lankhorst.se header.b=miuG7geX; arc=none smtp.client-ip=141.105.120.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
-	s=default; t=1778259792;
-	bh=g7sFg48r5Dm+Qo/8mMdFgMdzbwgpDyCQ/p6NpvKjuO8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=miuG7geX4V6aqu09394g21y6aer2ii5J64k2rHShJV8jxg/42yvdAD+jr8x1BExwg
-	 PmLL9b/4p/cj6ohFV2NhFfHbyKkXEuIwEFeFsOo3TxcQv424om/vILos5m59ZGvfHQ
-	 /yOrmhjgjr0Pskt7f0HccWUa1Lis4ijC1oiBt410jI5yfdIEEcccL4FT/e+hzPOX9O
-	 2bvHcx2+FCcRCyGs9J3p5iBtXsdGk2cZkEUCaL3svIVO63DCZ1kasqQmCeMk5vX+gy
-	 sTWk2FNsVbcecTdbihl5sTP32OhZ1LoYQCZsVwLnkQ6gHvNFVtzStkIqvvTsR0TemU
-	 IKi5yt+iqOA2A==
-Message-ID: <433c0bbd-6c47-4011-8551-d1cfd0b4e17c@lankhorst.se>
-Date: Fri, 8 May 2026 19:03:11 +0200
+	s=arc-20240116; t=1778259945; c=relaxed/simple;
+	bh=6Tewy3ljxwpLp3F9Q8zxqQ9KL39V9J4C1tVXUmmozw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mnqFi3okBq4Le0ffv3auDEo0mYZ+niCbvf+ieW2OalqK4XU/CQyqbAkkDBwP6buo45hwV8ZkyXUA2ElPwNpprBjQaFQrvd09x3QrFxZ2I9ybQMFhfV92z3voN4Wa/nBFTuHwbKTHTts5V9BXAlZuoHiox9p2L/fjaxR9AWHuP6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QKltmZB4; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 648FtXo23634645
+	for <stable@vger.kernel.org>; Fri, 8 May 2026 17:05:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=tcCsskAYYNCBJaMrgGJiZyzM0uTVZCz4JgB5GKEnC
+	WQ=; b=QKltmZB43hBbUhxi5tZsF8nMgj52XlppT+RukiBJk0kh5SNzFXavOoh74
+	uDSWvsZZhKyPSuaNmcS2TfzAVX1mQA1wdpbHXgfEFRNWoHUb7CTOUQsnrm15MiuC
+	bfQsU2xNc1Y+sUc8O6JxauSmVcklw+ZvNLXO333WS1Q9wumfwD1SP4f0b3miUjcf
+	Zi9u48A8JkMCjAzIkZcfnak7jtoAY9+AulVJdzfq+WUx6NR43Rc3nJwmezirRhgz
+	tXWYMuiCvbKiO7Ep+lcWRjkYqAbyBmmlr7/LTwHNhbHrVK6DtiW6fHkhcAeLqWQc
+	h3jCPI+6HZFGKxsBlVCJg8RaUtUMA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w6uev3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 08 May 2026 17:05:42 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 648GsX9U017708
+	for <stable@vger.kernel.org>; Fri, 8 May 2026 17:05:42 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3hh2h8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 08 May 2026 17:05:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 648H5bbZ51970360
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 May 2026 17:05:37 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EC6B020043;
+	Fri,  8 May 2026 17:05:36 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD99C20040;
+	Fri,  8 May 2026 17:05:36 +0000 (GMT)
+Received: from t83lp71.lnxne.boe (unknown [9.87.84.240])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 May 2026 17:05:36 +0000 (GMT)
+From: Nagamani PV <nagamani@linux.ibm.com>
+To: wintera@linux.ibm.com, aswin@linux.ibm.com, sidraya@linux.ibm.com,
+        hidayath@linux.ibm.com, pasic@linux.ibm.com, mjambigi@linux.ibm.com,
+        dk@linux.ibm.com, twinkler@linux.ibm.com, jaka@linux.ibm.com,
+        wenjia@linux.ibm.com, gbayer@linux.ibm.com,
+        linux390-list@tuxmaker.boeblingen.de.ibm.com
+Cc: Nagamani PV <nagamani@linux.ibm.com>, stable@vger.kernel.org,
+        syzbotz+89435e7383b82238dd91@linux.ibm.com
+Subject: [PATCH net-next V2] net/iucv: fix UAF in afiucv_netdev_event()
+Date: Fri,  8 May 2026 19:05:34 +0200
+Message-ID: <20260508170534.2208812-1-nagamani@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/ttm: Convert -EAGAIN from dmem_cgroup_try_charge to
- -ENOSPC
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Friedrich Vock <friedrich.vock@gmx.de>, Tejun Heo <tj@kernel.org>,
- Maxime Ripard <mripard@kernel.org>,
- Christian Koenig <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20260508160920.230339-1-thomas.hellstrom@linux.intel.com>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <20260508160920.230339-1-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 835434F9D4A
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69fe17e7 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=2L6bTA5ms6rrk1lURLYA:9
+X-Proofpoint-ORIG-GUID: CDxbwSiDIwL0iItnFBCVRzaDxvcO5JeC
+X-Proofpoint-GUID: CDxbwSiDIwL0iItnFBCVRzaDxvcO5JeC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDE2NiBTYWx0ZWRfX+JXJp4wjkQp2
+ zhEIy4ilSI3/Rf1FS75ZN9PdHkXdrsLoGA2s3M1wMtRydQmvtixzNxl41sdTl2V3CMnLR6IM5WQ
+ yj6JibEq1bi1segWsJ2z30xtBeBhi6y0mZglJ6GPc21p4IcpxCJi9CCj2kJBpETpyTlIaOWZnZ8
+ RI75kiQ/cCsfdENCogWZ4vTXbmaQy9xjW1tMYKpYW04eTjZGqiBOJKXtIwTqqfzOwl/8pjA9D0T
+ dtzbEP+dJXyRgGQODzM9eCLp4eEmRg5VuOVIkeJAfzKawYpLNUgkrBEXxUEuxFzjP65L2V+C2YK
+ 1pWhig3TazoPJP0m6rXYK+kI/W435Ibf4NvexzqZe5Sx2aPtl6g0lGGCTaUd0lv9b2+b0SRj4U1
+ 648XM94SpS/vVWhYf4ymIcKx6709kq06arWHosn0ikH70V6IfrhPNq+z9/3XMmrQGULzKensd+G
+ gW/4uPyFJD9careV5gA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080166
+X-Rspamd-Queue-Id: 668954F9CB7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[lankhorst.se,none];
-	R_DKIM_ALLOW(-0.20)[lankhorst.se:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmx.de,kernel.org,amd.com,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-244801-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[lankhorst.se:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dev@lankhorst.se,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-244800-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email,intel.com:email,gmx.de:email,amd.com:email,lankhrost.se:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nagamani@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TAGGED_RCPT(0.00)[stable,89435e7383b82238dd91];
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Action: no action
 
-Hey,
+afiucv_netdev_event() traverses iucv_sk_list without holding
+iucv_sk_list.lock.
 
-Den 2026-05-08 kl. 18:09, skrev Thomas Hellström:
-> dmem_cgroup_try_charge() returns -EAGAIN when the cgroup limit is
-> hit and the charge fails. TTM has no concept of -EAGAIN from resource
-> allocation; -ENOSPC is the canonical error meaning "no space, try
-> eviction". Convert at the source in ttm_resource_alloc() so no caller
-> needs to handle an unexpected error code, and clean up the now-redundant
-> -EAGAIN check in ttm_bo_alloc_resource().
-> 
-> Without this, -EAGAIN escaping ttm_resource_alloc() during an eviction
-> walk causes the walk to terminate early instead of continuing to the
-> next candidate.
-> 
-> Cc: Friedrich Vock <friedrich.vock@gmx.de>
-> Cc: Maarten Lankhorst <dev@lankhorst.se>
-> Cc: Tejun Heo <tj@kernel.org>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.14+
-> Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
-> Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> ---
->  drivers/gpu/drm/ttm/ttm_bo.c       | 2 +-
->  drivers/gpu/drm/ttm/ttm_resource.c | 5 ++++-
->  2 files changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
-> index d85f0a37ac35..cee3828df655 100644
-> --- a/drivers/gpu/drm/ttm/ttm_bo.c
-> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
-> @@ -739,7 +739,7 @@ static int ttm_bo_alloc_resource(struct ttm_buffer_object *bo,
->  		may_evict = (force_space && place->mem_type != TTM_PL_SYSTEM);
->  		ret = ttm_resource_alloc(bo, place, res, force_space ? &limit_pool : NULL);
->  		if (ret) {
-> -			if (ret != -ENOSPC && ret != -EAGAIN) {
-> +			if (ret != -ENOSPC) {
->  				dmem_cgroup_pool_state_put(limit_pool);
->  				return ret;
->  			}
-> diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
-> index 9f36631d48b6..b0efffe5a526 100644
-> --- a/drivers/gpu/drm/ttm/ttm_resource.c
-> +++ b/drivers/gpu/drm/ttm/ttm_resource.c
-> @@ -385,8 +385,11 @@ int ttm_resource_alloc(struct ttm_buffer_object *bo,
->  
->  	if (man->cg) {
->  		ret = dmem_cgroup_try_charge(man->cg, bo->base.size, &pool, ret_limit_pool);
-> -		if (ret)
-> +		if (ret) {
-> +			if (ret == -EAGAIN)
-> +				ret = -ENOSPC;
->  			return ret;
-> +		}
->  	}
->  
->  	ret = man->func->alloc(man, bo, place, res_ptr);
+A concurrent socket teardown can unlink and free the socket via
+iucv_sock_kill() while the notifier path is still iterating over
+the list, leading to a possible use-after-free when dereferencing
+the socket.
 
-Yeah looks reasonable with the conversion to callbacks.
+Protect the traversal using the existing read-side lock, matching
+the locking pattern already used by other iucv_sk_list traversal
+paths in af_iucv.c.
 
-Reviewed-by: Maarten Lankhorst <dev@lankhrost.se>
+Use read_lock()/read_unlock() to remain consistent with existing
+softirq/tasklet-side readers in the same file.
+
+Fixes: 9fbd87d41392 ("af_iucv: handle netdev events")
+Cc: stable@vger.kernel.org
+Reported-by: syzbotz+89435e7383b82238dd91@linux.ibm.com
+Closes: https://lnxgwne1.boeblingen.de.ibm.com/linux-ci/syzbot/dashboard/bug?extid=89435e7383b82238dd91
+Suggested-by: Hidayath Khan <hidayath@linux.ibm.com>
+Signed-off-by: Nagamani PV <nagamani@linux.ibm.com>
+
+---
+v2:
+- Target net-next (missed in v1 subject)
+---
+ net/iucv/af_iucv.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 72dfccd4e3d5..e8a0b55fc55d 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -2188,6 +2188,7 @@ static int afiucv_netdev_event(struct notifier_block *this,
+ 	switch (event) {
+ 	case NETDEV_REBOOT:
+ 	case NETDEV_GOING_DOWN:
++		read_lock(&iucv_sk_list.lock);
+ 		sk_for_each(sk, &iucv_sk_list.head) {
+ 			iucv = iucv_sk(sk);
+ 			if ((iucv->hs_dev == event_dev) &&
+@@ -2198,6 +2199,7 @@ static int afiucv_netdev_event(struct notifier_block *this,
+ 				sk->sk_state_change(sk);
+ 			}
+ 		}
++		read_unlock(&iucv_sk_list.lock);
+ 		break;
+ 	case NETDEV_DOWN:
+ 	case NETDEV_UNREGISTER:
+-- 
+2.53.0
+
 
