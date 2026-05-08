@@ -1,123 +1,146 @@
-Return-Path: <stable+bounces-244656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0D+XCCtM/WmUaAAAu9opvQ
-	(envelope-from <stable+bounces-244656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 04:36:27 +0200
+	id yBRoLlVM/WmUaAAAu9opvQ
+	(envelope-from <stable+bounces-244657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 04:37:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFB24F0DCA
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 04:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB2C4F0DE0
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 04:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F1F53049950
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 02:31:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC069302B762
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 02:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E376827FB25;
-	Fri,  8 May 2026 02:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C21526B973;
+	Fri,  8 May 2026 02:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="Az8bmT74"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ROqM9PqC"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF512032D;
-	Fri,  8 May 2026 02:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E6C2441A6;
+	Fri,  8 May 2026 02:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778207472; cv=none; b=esJ5FeS9DP9Q4+7RH1w9kH3GHtjRbrqwM++tqFEPvc4lI5ZjzcwA32iljutUVdQo5EN/aL7+Haijg+d2PgUxo3bxwwOBE2/utOqPqlKMbhOtjUJ/5oo26cYa5osHm8CyK2Nzq8xGJNjoRfKPjk3hXuus8xdh4r8yvSSPw7EgW54=
+	t=1778207633; cv=none; b=Ju4s9b/RGzQCHY3topzwALsyt23Pk0mWHxEMM695NR7FkZeYEyl60khys3VIGcUspN1WjfQEZYAPvgIXZU7MSaWCCsao/SWwUiXjVsxZPM9ICUPKMeCy4VdfO2QT0JgCUQteWRCGOd3m6j06TMcyzWkOXJMZMtqY3foF0pvSfp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778207472; c=relaxed/simple;
-	bh=4hgc11Uo0aPk7n0C5XErVyPdWPcUwDSebmYa2bg/tVE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f64LNsbacyzPs+gqL/1iwC+1Gw+1xQc+uDzMKAnw5ZTdSxNaAqZMcYhsSptxkZ5EP33LRbKB5UhM6USpaefvPB6P1pSKdIu9f5IeRQdvW/5JKK6qyFfxDn66NHhDtR/cY56QvaqlXWA+5ZFmBSpS8sXh2EnRykZ8dSngP1htioU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=Az8bmT74; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=rthU2BrXN03UHdxhSxsYA9rYzJBvBiU6k8p51/eN+i8=; 
-	b=Az8bmT74krH/5JB+xCcCvjma53YNzn9JFRfxQRDTxsucevEB3iIIqFncqZlu/AtEe1znsuFQQ84
-	GVRQ4PF+M1u4taU/DQr9OdZ2eKaOzw7DLvOfGpwsrN8cWhnek/J96lWCDQoV9oveN95EZIlBhuA5T
-	3pZDbDMVdYA9hdZtN8dnOZa+xXh36/Rbh5BcomARHTV+ze5E/6Y7eyr01QBwyy6uelU1kZAZ3DuFu
-	ax9Nxowo68TrjzHDiJ+wy2d2IK9CsmNw2EanNwLn5m98AQWGS309MmaXqqQ2l2T+4ktJ7Z+muKVGp
-	Y3vFebzgZE5v670k+PBiDSKK3Xqm4LjQAuKg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wLAzR-00CH9L-2D;
-	Fri, 08 May 2026 10:30:58 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 08 May 2026 10:30:57 +0800
-Date: Fri, 8 May 2026 10:30:57 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Aaron Esau <aaron1esau@gmail.com>
-Cc: linux-crypto@vger.kernel.org, davem@davemloft.net,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] crypto: acomp - fix dst-folio branch setting src instead
- of dst in acomp_virt_to_sg
-Message-ID: <af1K4d8cxGOvlJxY@gondor.apana.org.au>
-References: <20260507233748.327004-1-aaron1esau@gmail.com>
+	s=arc-20240116; t=1778207633; c=relaxed/simple;
+	bh=8NKQLZyxLYJhm4hbC4TfIcKmlDPEwzaEFkeoWOvMZVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n2EV1lIE5Fo9H56uXZF//6dRy2r5pZpZIkLHoyhu3qJvXclLpwZ/ZC9n17N3tNdjr5ynD2BD2Hdzs6GI+3jVTaAth8PDRULV2R1PDBPC25MnbuJ5TsgiGunoLtAMRc7aKRx/edr4B98mE/LNK2VxUrng29WgPIFxdKWVWqikJ74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ROqM9PqC; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=up
+	iyFN9xB0gGThE5jme1YoDuEuYuq9j3gkqu1lXH5+g=; b=ROqM9PqCkxxPbO1H5N
+	sPEnIS8ofOKZWLtL/PBeKBY16urFeIVOmXD2RRaiVVVEIMS2ljCGXP/viS/zMGKN
+	SVrE30Y2f3Kds72GrJaBeuAEpuOz9WvTChkkjHjq1lvWIq6+ZOasLfLVa4Li9RyW
+	hFTrYaLcwiX2wSok48r4cc2W8=
+Received: from China-163-team (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgDnT0lNS_1pEpSiCw--.108S2;
+	Fri, 08 May 2026 10:32:52 +0800 (CST)
+From: Wenshan Lan <jetlan9@163.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Felix Gu <ustc.gu@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 5.15.y] spi: meson-spicc: Fix double-put in remove path
+Date: Fri,  8 May 2026 10:32:15 +0800
+Message-ID: <20260508023215.10480-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260507233748.327004-1-aaron1esau@gmail.com>
-X-Rspamd-Queue-Id: 8FFB24F0DCA
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgDnT0lNS_1pEpSiCw--.108S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr45Xr1DWF4furyUArWUJwb_yoW8WryfpF
+	4xGr45urZ7JrsYkF1UJw43uFW5ta47XFyDXay3KanxurnaqFy5tr9FqF4fZr1YvF48Cay0
+	vry5Ja1rKF45ZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEXdbnUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCwxXBimn9S1WE3QAA3O
+X-Rspamd-Queue-Id: 1FB2C4F0DE0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244656-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-244657-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,apana.org.au:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gondor.apana.org.au:mid,gondor.apana.org.au:dkim]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 06:37:48PM -0500, Aaron Esau wrote:
->
-> diff --git a/crypto/acompress.c b/crypto/acompress.c
-> index f7a3fbe54..5a8b0cf3a 100644
-> --- a/crypto/acompress.c
-> +++ b/crypto/acompress.c
-> @@ -237,7 +237,7 @@ static void acomp_virt_to_sg(struct acomp_req *req)
->  		sg_init_table(&state->dsg, 1);
->  		sg_set_page(&state->dsg, folio_page(folio, off / PAGE_SIZE),
->  			    dlen, off % PAGE_SIZE);
-> -		acomp_request_set_src_sg(req, &state->dsg, dlen);
-> +		acomp_request_set_dst_sg(req, &state->dsg, dlen);
->  	}
->  }
+From: Felix Gu <ustc.gu@gmail.com>
 
-This patch doesn't apply against mainline.  In fact the code
-that you're referencing does not exist on mainline.
+[ Upstream commit 63542bb402b7013171c9f621c28b609eda4dbf1f ]
 
-Thanks,
+meson_spicc_probe() registers the controller with
+devm_spi_register_controller(), so teardown already drops the
+controller reference via devm cleanup.
+
+Calling spi_controller_put() again in meson_spicc_remove()
+causes a double-put.
+
+Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ In v5.15, commit 68bf3288c7eb ("spi: meson-spicc: switch to use modern name")
+has not been applied, so the driver still uses the legacy spicc->master field
+and spi_master_put() API. The line to remove is spi_master_put(spicc->master)
+rather than spi_controller_put(spicc->host) as in the upstream patch.
+They are functionally identical. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+---
+ drivers/spi/spi-meson-spicc.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 6974a1c947aa..ae818e7df791 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -863,8 +863,6 @@ static int meson_spicc_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(spicc->core);
+ 	clk_disable_unprepare(spicc->pclk);
+ 
+-	spi_master_put(spicc->master);
+-
+ 	return 0;
+ }
+ 
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.43.0
+
 
