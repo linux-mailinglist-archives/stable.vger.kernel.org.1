@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-244679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDIiN1iK/WnWfgAAu9opvQ
-	(envelope-from <stable+bounces-244679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:01:44 +0200
+	id ADRzHO2J/WnWfgAAu9opvQ
+	(envelope-from <stable+bounces-244678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 08:59:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3E34F2B76
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:01:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831284F2B28
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 08:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B4303022965
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 07:01:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BD7A83010695
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 06:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C69374E7A;
-	Fri,  8 May 2026 07:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8297036EAAB;
+	Fri,  8 May 2026 06:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="jEc9QA17"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="X+4ni4mq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail78-59.sinamail.sina.com.cn (mail78-59.sinamail.sina.com.cn [219.142.78.59])
+Received: from smtp134-32.sina.com.cn (smtp134-32.sina.com.cn [180.149.134.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6622132E75A
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 07:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=219.142.78.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A01358372
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 06:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778223664; cv=none; b=U778a19ouabKnrIn7w9gl33GwGRiOVYl86X+NFEFRsWAF9aIpolmkLBuDko9NFji5HNpaNAJOc1meDXXhdEo5TvYQDP+qQDnhOqeO6EVWUctC96/Pelq7fEFAbhMD5MrxaOMInlIY+uVFExEyty8U5trAADcfldSlzb1k+93FaQ=
+	t=1778223575; cv=none; b=rRTf1PX+EViUMMMaZps8l8C9GzpzP3CJH6sy4nPgs35nxatH8K+pYodQYyhuwKSiOL7UJ2rjUi6kP1CzUmSme0Acpkz1YwEQQKkZlJCR+7gjkJ+oLViH5Huv+/aKGG6nktvdoCcT5rQthzGsPGPNJo59M/mmNzaGehX8tc5ULp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778223664; c=relaxed/simple;
-	bh=Ny5lasZHyO87EegPFrBjX2eufmvrdYmaIvUhQ44Lp5M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QDCde5duwB5CHslQ/8yB972tQjrNfarBjbo3z9oi7AOJeWlAt8YHgO7F8GzqBqJO6P4a6jEg88lkbrCrgnOj0YEHBby1cbKzfJLOs42xSe3Y/BBY38hocLDMlhs/Bi1dWxw9TXMil9Cp3iZk+kiQgauG6vbiIE0jxx9tHAF1MSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=jEc9QA17; arc=none smtp.client-ip=219.142.78.59
+	s=arc-20240116; t=1778223575; c=relaxed/simple;
+	bh=EnYg4YStxteAETbi/pqzyOEawxnwsuPqt4HqxD9x2SI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ToMMTvpw3IGFSI1BPzAvzxv17LYQvlqy4IibGckjsWpbPIB9D0pJh7fHxuA5eJfgRWiuWg204X+V1gHuf6c00542DowlkL71OMgDG4TA6u5Ugr62scc2RfQ7iMJm3jE4FJdRfCifN0MjgLVtq1wwQpkDf9CCXszODVC9YyGlaCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=X+4ni4mq; arc=none smtp.client-ip=180.149.134.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1778223659;
-	bh=mknp58zzNXrMHnzixaFoNMYGsNeXzm8WGz4EEnUO4qM=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1778223566;
+	bh=oQlBFXWBtVJr2Gtmt8ckdNW6h+dG64f8U7L3BEb5vF0=;
 	h=From:Subject:Date:Message-Id;
-	b=jEc9QA17+9hz0344QDmqc76YnsbiHbcjRdwDJi2ZjRJdMAX8Tjuetgu+dAWU+EwWI
-	 CdypoWbGfAxGEx8Wfv2O6lywvsQ8YAlABZNfnbTOx2eNdjRT05DfV8+mJRmHghyWmD
-	 dxcImylcRuSlSsqPKgsP5q2iQbAL24IrjjaxmH54=
+	b=X+4ni4mqSi1VI98WHnh2bnG1zKP7MSmnopjGRDqvUtvP6g4UZxFihJocHPLbuDopB
+	 l8QfqRzBMol7jCziBGNNRrabqYhe9g0jp8Cb+vN6PEN+FRn3ZWQigAUMzcZrYkXPMb
+	 3/D08O3D5iGfJtn1BO3aI5i6elBs92pkirtQmxiU=
 X-SMAIL-HELO: NTT-kernel-dev
 Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.24) with ESMTP
-	id 69FD899500007A39; Fri, 8 May 2026 14:58:31 +0800 (CST)
+	by sina.cn (10.185.250.21) with ESMTP
+	id 69FD89A50000270D; Fri, 8 May 2026 14:58:47 +0800 (CST)
 X-Sender: jianqkang@sina.cn
 X-Auth-ID: jianqkang@sina.cn
 Authentication-Results: sina.cn;
 	 spf=none smtp.mailfrom=jianqkang@sina.cn;
 	 dkim=none header.i=none;
 	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 48299210747922
-X-SMAIL-UIID: 8D42F8EFFC414A5DA0CB3185ACE2023C-20260508-145831-1
+X-SMAIL-MID: 6295883408445
+X-SMAIL-UIID: F7F94DC9A00340F5A0DB27FCDA67CEBC-20260508-145847-1
 From: Jianqiang kang <jianqkang@sina.cn>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc: patches@lists.linux.dev,
 	tytso@mit.edu,
 	adilger.kernel@dilger.ca,
 	linux-ext4@vger.kernel.org
-Subject: [PATCH 6.1.y] ext4: validate p_idx bounds in ext4_ext_correct_indexes
-Date: Fri,  8 May 2026 14:58:29 +0800
-Message-Id: <20260508065829.3030954-1-jianqkang@sina.cn>
+Subject: [PATCH 6.6.y] ext4: validate p_idx bounds in ext4_ext_correct_indexes
+Date: Fri,  8 May 2026 14:58:45 +0800
+Message-Id: <20260508065845.3031006-1-jianqkang@sina.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,7 +71,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4D3E34F2B76
+X-Rspamd-Queue-Id: 831284F2B28
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
 	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -87,10 +87,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,outlook.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244679-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244678-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[sina.cn:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[sina.cn];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
@@ -100,7 +100,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,sina.cn:email,sina.cn:mid,sina.cn:dkim,outlook.com:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email,appspotmail.com:email]
 X-Rspamd-Action: no action
 
 From: Tejas Bharambe <tejas.bharambe@outlook.com>
@@ -136,10 +136,10 @@ Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
  1 file changed, 15 insertions(+)
 
 diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 1df717477469..6d95dab53847 100644
+index 7626cf2b07f1..a94798e23c1a 100644
 --- a/fs/ext4/extents.c
 +++ b/fs/ext4/extents.c
-@@ -1740,6 +1740,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
+@@ -1743,6 +1743,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
  	err = ext4_ext_get_access(handle, inode, path + k);
  	if (err)
  		return err;
@@ -153,7 +153,7 @@ index 1df717477469..6d95dab53847 100644
  	path[k].p_idx->ei_block = border;
  	err = ext4_ext_dirty(handle, inode, path + k);
  	if (err)
-@@ -1752,6 +1759,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
+@@ -1755,6 +1762,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
  		err = ext4_ext_get_access(handle, inode, path + k);
  		if (err)
  			break;
