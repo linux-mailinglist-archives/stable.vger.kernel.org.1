@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-244831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNuRL/BS/mntpAAAu9opvQ
-	(envelope-from <stable+bounces-244831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:17:36 +0200
+	id kH7lKQpT/mntpAAAu9opvQ
+	(envelope-from <stable+bounces-244832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:18:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7874FBD6B
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:17:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF454FBD72
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5D803027109
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 21:17:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E73B30277DF
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 21:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2461D379993;
-	Fri,  8 May 2026 21:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1AC379993;
+	Fri,  8 May 2026 21:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdjRPF0W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DkMCowwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB73E376464
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 21:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6267C35E95A
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 21:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778275053; cv=none; b=oIlUrl0Ysrn1r7pY5dbs9AdTwzFfoXMLX5Wilv39oSOKDRyujS0uyydbJjrP9DhVYIxDRuCH4ypcvDNm92eXmMugsMoFOylgIB5PhO6p/semTQH9+tQEx3DzhH6BZMeOZe18LgOKAlT9XiLeYyJhEbIoJh8G7wUHBBVjmDC//1o=
+	t=1778275079; cv=none; b=GK1QodalhMRMU6/OjmVUW0g4JC2tuS3SIWTXSjG5IEJoleNV1M9/l1obRt8GAVy8YVN81piT6sGXpw87oIgMPx1aPNSoXzprHhDqAWYZB/P3v1k8Vk+rO2B2xEC97tDbxE7w//cTKhQD5QVRlhaM1Gt7+JNXhDGyom8LkGkqwsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778275053; c=relaxed/simple;
-	bh=qCd/eJPhG0ju1VlBIOeTzd99PgETlV9q5cmSxBkWwbM=;
+	s=arc-20240116; t=1778275079; c=relaxed/simple;
+	bh=RiMJDoehrv66r4+JfmD2QEkkUhEsWuBIHlDfMw43XXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ea4TFU8ZXuoLi+FjVzLYKUaIVnvDVeRF2kntkleGrryZumdDLa5o3ZQohv4yDNDKAbj4YVqw92o0QpSTUJTzfzOGsW4Otnam2V62dqUgfLZFwBQ94sBuS7/H/5D6hcaTXhD0ywq+KTPz3mWBNLq6jDRzKSBLUBWcUHn3w3X8IdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdjRPF0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF246C2BCB4;
-	Fri,  8 May 2026 21:17:32 +0000 (UTC)
+	 MIME-Version; b=JnhB9VyLvZMs4/TON3V+S6WoTsIMBafqoWOfvR2ZVMvJ+xTj88g84W4gNzRyAoUydU3VttLWzCfG/BvgWAC4i5Zp6cK2G/bYFw26VQ2Ul7+jeitrVEKRdedkyCqdQKH0cXVPi+Arh1Mq76RXllfKeBgzIY8u3nQf2HZHPljNIA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DkMCowwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB397C2BCB0;
+	Fri,  8 May 2026 21:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778275053;
-	bh=qCd/eJPhG0ju1VlBIOeTzd99PgETlV9q5cmSxBkWwbM=;
+	s=k20201202; t=1778275079;
+	bh=RiMJDoehrv66r4+JfmD2QEkkUhEsWuBIHlDfMw43XXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdjRPF0W9ZEVxGN77nuhh4dUyU4u41U6GWaA6UfHGcoCMrmEBa96tY84EKfTkYGhz
-	 iTrZ2yOSj3PsEvHbkM06ADbQeQ/0OTFKKIfTZaPXrYY9Hed67kUOiL+E5JfmdYbZ69
-	 4Wwz/8RPWM/grtSh7rnqfZiuxCXdqiY5iNlHLlBbRYtIl42PvloK3QwE0xLseD7boA
-	 0SRiRzFm5WPmdwsRDml8nekfRZGw1neviumXhLJ4M/dFNHocQfEX7YbRr4Kbvz+/M0
-	 6S5CZ/3HjHiI89eDzeO2IvherGv9fEA6CeTzOGEez2lqoeup6tFLU8pbvjH0AlO8cR
-	 srmHBJyEOB87g==
+	b=DkMCowwbMZye+iDzEpZwQGGfXmrkXr3KnORk6CM7aa+8VRv41QBAsWWLpsGxnK8lj
+	 5ptkTNs2r3+cqClDY0kZWCzHWJGgDqrCRZgUBkym+aUebHDiQLwSzTNcMOQ2Kcrn/b
+	 HGhHUY27JvFcefRcpj1CfnfO7jdKYxJQaLa8lSUkYeH8NVmV+XKQ+Yc8sg/cuBnMHE
+	 NK0FZpjTeEbHWDL2mv1/ysyRx0pQOlxliWXYohIwsjQT9SWSURsCidM0OMk4nJ9dAc
+	 PQEDVoegZoQ3ewbWo/lPPkstOztNV0JpArPv85DTve42PEOa0uvtIzV+Oa5tSA06Vs
+	 UKgcn+smiJbFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Seohyeon Maeng <bioloidgp@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+Cc: Kairui Song <kasong@tencent.com>,
+	Carsten Grohmann <mail@carstengrohmann.de>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] udf: fix partition descriptor append bookkeeping
-Date: Fri,  8 May 2026 17:17:31 -0400
-Message-ID: <20260508211731.1959991-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y] mm, swap: speed up hibernation allocation and writeout
+Date: Fri,  8 May 2026 17:17:56 -0400
+Message-ID: <20260508211756.1960595-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050425-sage-prelaunch-0822@gregkh>
-References: <2026050425-sage-prelaunch-0822@gregkh>
+In-Reply-To: <2026050440-judgingly-glandular-5a54@gregkh>
+References: <2026050440-judgingly-glandular-5a54@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,92 +68,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D7874FBD6B
+X-Rspamd-Queue-Id: 0BF454FBD72
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [4.84 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244831-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244832-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[tencent.com,carstengrohmann.de,redhat.com,kernel.org,huaweicloud.com,gmail.com,linux-foundation.org];
+	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,meta];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.266];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huaweicloud.com:email,tencent.com:email]
 X-Rspamd-Action: no action
 
-From: Seohyeon Maeng <bioloidgp@gmail.com>
+From: Kairui Song <kasong@tencent.com>
 
-[ Upstream commit 08841b06fa64d8edbd1a21ca6e613420c90cc4b8 ]
+[ Upstream commit 396f57b5720024638dbb503f6a4abd988a49d815 ]
 
-Mounting a crafted UDF image with repeated partition descriptors can
-trigger a heap out-of-bounds write in part_descs_loc[].
+Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+hibernation has been using the swap slot slow allocation path for
+simplification, which turns out might cause regression for some devices
+because the allocator now rotates clusters too often, leading to slower
+allocation and more random distribution of data.
 
-handle_partition_descriptor() deduplicates entries by partition number,
-but appended slots never record partnum. As a result duplicate
-Partition Descriptors are appended repeatedly and num_part_descs keeps
-growing.
+Fast allocation is not complex, so implement hibernation support as well.
 
-Once the table is full, the growth path still sizes the allocation from
-partnum even though inserts are indexed by num_part_descs. If partnum is
-already aligned to PART_DESC_ALLOC_STEP, ALIGN(partnum, step) can keep
-the old capacity and the next append writes past the end of the table.
+Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
+performance is several times better [1]:
+6.19:               324 seconds
+After this series:  35 seconds
 
-Store partnum in the appended slot and size growth from the next append
-count so deduplication and capacity tracking follow the same model.
-
-Fixes: ee4af50ca94f ("udf: Fix mounting of Win7 created UDF filesystems")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seohyeon Maeng <bioloidgp@gmail.com>
-Link: https://patch.msgid.link/20260310081652.21220-1-bioloidgp@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-[ replaced kzalloc_objs() helper with equivalent kcalloc() ]
+Link: https://lkml.kernel.org/r/20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com
+Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de/ [1]
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
+Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
+Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org/
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ adjusted helper signatures ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/swapfile.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index a186d2418b500..dbbdd44b337f0 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1657,8 +1657,9 @@ static struct udf_vds_record *handle_partition_descriptor(
- 			return &(data->part_descs_loc[i].rec);
- 	if (data->num_part_descs >= data->size_part_descs) {
- 		struct part_desc_seq_scan_data *new_loc;
--		unsigned int new_size = ALIGN(partnum, PART_DESC_ALLOC_STEP);
-+		unsigned int new_size;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 89746abc47373..ca0298a840cdd 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2014,8 +2014,9 @@ void free_swap_and_cache_nr(swp_entry_t entry, int nr)
  
-+		new_size = data->num_part_descs + PART_DESC_ALLOC_STEP;
- 		new_loc = kcalloc(new_size, sizeof(*new_loc), GFP_KERNEL);
- 		if (!new_loc)
- 			return ERR_PTR(-ENOMEM);
-@@ -1668,6 +1669,7 @@ static struct udf_vds_record *handle_partition_descriptor(
- 		data->part_descs_loc = new_loc;
- 		data->size_part_descs = new_size;
- 	}
-+	data->part_descs_loc[data->num_part_descs].partnum = partnum;
- 	return &(data->part_descs_loc[data->num_part_descs++].rec);
- }
+ swp_entry_t get_swap_page_of_type(int type)
+ {
+-	struct swap_info_struct *si = swap_type_to_info(type);
+-	unsigned long offset;
++	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
++	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
++	struct swap_cluster_info *ci;
+ 	swp_entry_t entry = {0};
  
+ 	if (!si)
+@@ -2025,11 +2026,21 @@ swp_entry_t get_swap_page_of_type(int type)
+ 	if (get_swap_device_info(si)) {
+ 		if (si->flags & SWP_WRITEOK) {
+ 			/*
+-			 * Grab the local lock to be complaint
+-			 * with swap table allocation.
++			 * Try the local cluster first if it matches the device. If
++			 * not, try grab a new cluster and override local cluster.
+ 			 */
+ 			local_lock(&percpu_swap_cluster.lock);
+-			offset = cluster_alloc_swap_entry(si, 0, 1);
++			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
++			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
++			if (pcp_si == si && pcp_offset) {
++				ci = swap_cluster_lock(si, pcp_offset);
++				if (cluster_is_usable(ci, 0))
++					offset = alloc_swap_scan_cluster(si, ci, pcp_offset, 0, 1);
++				else
++					swap_cluster_unlock(ci);
++			}
++			if (!offset)
++				offset = cluster_alloc_swap_entry(si, 0, 1);
+ 			local_unlock(&percpu_swap_cluster.lock);
+ 			if (offset)
+ 				entry = swp_entry(si->type, offset);
 -- 
 2.53.0
 
