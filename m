@@ -1,150 +1,122 @@
-Return-Path: <stable+bounces-244681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QINODMCP/WnWfgAAu9opvQ
-	(envelope-from <stable+bounces-244681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:24:48 +0200
+	id UHkACTOQ/WnWfgAAu9opvQ
+	(envelope-from <stable+bounces-244680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:26:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3331C4F2F6C
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:24:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B9D4F2FB3
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 253E7301946A
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 07:24:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6D993013D60
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 07:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DA337189A;
-	Fri,  8 May 2026 07:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DF92D9792;
+	Fri,  8 May 2026 07:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/deom38"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A615E1D5CFB;
-	Fri,  8 May 2026 07:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0384833DEF9;
+	Fri,  8 May 2026 07:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778225074; cv=none; b=BiyhgJLCo4AaiABMGpapwoLwXsf4GBf9EQNfp+VsHWgXen510y906RwsXQtIxyHnVrrlN9lbF8OrfCUqCdZKQnd5HMQD84IgDTTuOx1aEH1dwANVqSlNEPjfDtXM1hrlS37gYEjFF6BNitzg867v4uSP3I2BiKzG4vfj3eKTTlg=
+	t=1778225069; cv=none; b=MzfjLMbzg6TflJ7iDl0UL3SvJemg/7RrTHHc6SkECd2b5976vLLuN2Cc1Ehw3aS/M1Nzsao1IoMoNEvth+6qzKgzjwYOTlfSeCUAZ+6O+i7cE8wPtsiwhMfOoJfk+HUw+/7XuZmnEAI0oi+XO2RIRV0kruUBKp68UNNYHehuz+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778225074; c=relaxed/simple;
-	bh=TI90CHXwtptjDqV8T7my7F6jyD1/4mK2rWz8hwhRW3o=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=SZABRBiaID/6zmmSBVG3bwLK1urdEXlI1IeVGD5D9S8HTqvUFrYEsn5Ha+r6CFBq9iTqXKw4H2kX88Q0VBnCtjdxYAYufH4Yq4TpOEktoRr6xPgzmUmgRnqWih82ByIKriBuHHAttoF7K7g/vUL5So1jOopxxA8XJuIj6UNCfW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxT+qpj_1pis4HAA--.24411S3;
-	Fri, 08 May 2026 15:24:25 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxTMKoj_1pUcZ8AA--.38271S3;
-	Fri, 08 May 2026 15:24:24 +0800 (CST)
-Subject: Re: [PATCH 2/5] KVM: loongarch: Grab MMU lock in
- kvm_arch_flush_shadow_all()
-To: James Houghton <jthoughton@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Zenghui Yu <yuzenghui@huawei.com>, Sean Christopherson <seanjc@google.com>,
- Gavin Shan <gshan@redhat.com>, Shaoqin Huang <shahuang@redhat.com>,
- Ricardo Koller <ricarkol@google.com>, Tianrui Zhao
- <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- James Hogan <jhogan@kernel.org>, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260504224213.1049426-1-jthoughton@google.com>
- <20260504224213.1049426-3-jthoughton@google.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <f47ec704-813e-e6a2-687b-7076be465a1b@loongson.cn>
-Date: Fri, 8 May 2026 15:21:28 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1778225069; c=relaxed/simple;
+	bh=/khDBepNx1c364rbi8pgtX7+uG0Lc9RvMwMkEXrW1PY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E+XTMfEKAylPZXiYs+qmWMbuVMCvjTFIMyG0ua2KHVs+3IH3S5YuXPM9SyshKPRa1wNx4scXE58MpzvlTXKfwh1u////aHIlgEdvByvLQa9f8UOI/6PKpQEnbOwEOGM1ID5nhIeO57+DTo6LY2DjqBjhNTLb2HbZseFqPa6J1v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/deom38; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33ED1C2BCB0;
+	Fri,  8 May 2026 07:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778225068;
+	bh=/khDBepNx1c364rbi8pgtX7+uG0Lc9RvMwMkEXrW1PY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=u/deom38LzcdFbjLBVQk/SSJHGeNGg0yWmwPLpTPOQM9x5hH9WLSVnWqkj73cEhV5
+	 YDQjEP22blg2Zzb7/0XaoLw08Whw/eU2iEGvu24aTMHgrZVUa6PYloDP2f18mDVmF7
+	 nDpi0tiD2dndYC15ZLQytYLcFOoQLU9RFkRC4D8k=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.6.138
+Date: Fri,  8 May 2026 09:24:24 +0200
+Message-ID: <2026050825-heaving-spender-13a8@gregkh>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260504224213.1049426-3-jthoughton@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxTMKoj_1pUcZ8AA--.38271S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7XFWrCw1UZrW7Kw4rAr13Awc_yoWkCrc_AF
-	12yw10grWxJa93X3Wkt3W3tF9Iyw1rCFsavrn7Xr97J3s8t3sakr4jgan3Cr90grWxWFW3
-	ArWDZrZ5Zr4avosvyTuYvTs0mTUanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbqkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
-	6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07joc_-UUU
-	UU=
-X-Rspamd-Queue-Id: 3331C4F2F6C
+X-Rspamd-Queue-Id: 99B9D4F2FB3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [2.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_HAM(-0.00)[-0.937];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244681-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[loongson.cn];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email,loongson.cn:mid]
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244680-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
+I'm announcing the release of the 6.6.138 kernel.
 
+All users of the 6.6 kernel series must upgrade.
 
-On 2026/5/5 上午6:42, James Houghton wrote:
-> kvm_arch_flush_shadow_all() may be called concurrently on the same
-> `kvm`. This could at least result in accounting mistakes (e.g.
-> underflows on `kvm->stat.*pages`).
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 752e2cd7b4fb ("LoongArch: KVM: Implement kvm mmu operations")
-> Signed-off-by: James Houghton <jthoughton@google.com>
-> ---
-> Note: This is compile-tested only!
-> 
->   arch/loongarch/kvm/mmu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
-> index a7fa458e3360..5dbce9b18e1c 100644
-> --- a/arch/loongarch/kvm/mmu.c
-> +++ b/arch/loongarch/kvm/mmu.c
-> @@ -486,7 +486,7 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->   
->   void kvm_arch_flush_shadow_all(struct kvm *kvm)
->   {
-> -	kvm_flush_range(kvm, 0, kvm->arch.gpa_size >> PAGE_SHIFT, 0);
-> +	kvm_flush_range(kvm, 0, kvm->arch.gpa_size >> PAGE_SHIFT, 1);
->   }
->   
->   void kvm_arch_flush_shadow_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+The updated 6.6.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile              |    2 +-
+ net/ipv4/esp4.c       |    3 ++-
+ net/ipv4/ip_output.c  |    2 ++
+ net/ipv6/esp6.c       |    3 ++-
+ net/ipv6/ip6_output.c |    2 ++
+ 5 files changed, 9 insertions(+), 3 deletions(-)
+
+Greg Kroah-Hartman (1):
+      Linux 6.6.138
+
+Kuan-Ting Chen (1):
+      xfrm: esp: avoid in-place decrypt on shared skb frags
 
 
