@@ -1,126 +1,138 @@
-Return-Path: <stable+bounces-244785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNZ3NJz//WkTlwAAu9opvQ
-	(envelope-from <stable+bounces-244785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 17:22:04 +0200
+	id urarH2sG/mkxmQAAu9opvQ
+	(envelope-from <stable+bounces-244788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 17:51:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013E64F89FA
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 17:22:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880344F901F
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 17:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B171430046AC
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 15:22:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5CE83041A45
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 15:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E219A3FBEDE;
-	Fri,  8 May 2026 15:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8FA30FC1A;
+	Fri,  8 May 2026 15:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMuxdTE4"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="p4+LF1Sa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A3C3FB7EF;
-	Fri,  8 May 2026 15:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895B12FF144;
+	Fri,  8 May 2026 15:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778253718; cv=none; b=NMDveR3OE3hpZo2o2w3GIBTaFzDVHL42t0zqT17JC6suPpqmPWZPykahNKqNrwG9xWhU9tBiNmA+VdEtVD5yblmtEVZBGe4nDRyMWNE3xTnDUWbm4rC19l6mdF0RtX0QfxE7jYK3lYK9GvtWMLJ7mBH9V+FeZ/ai26BudU9RIyI=
+	t=1778255430; cv=none; b=dPZTUyD71WtlTfjRj8vatnddVbGf6cD2eMys2RGvYzCzXQsqmwc1VX82/GhfpP1vFit7/XWnV9Jw2FFZgcA7JiHvNYPh5KFGEx+ZGGiUJryif8cZ4FWVX/MG8gkVOcTMXuvU0aaM1fqlsNQD4MMAzLHEG93LWh5Byw53kh5haw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778253718; c=relaxed/simple;
-	bh=1Ts4kYseduboKsIUf+lbfxpxNyozd7l4VzIGUhH5GtA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OTWFAGYSemuR6b/eCYjhY+C8u/G/tpQvdxilgp40D6hxSUGLVIP7pRWqSgECmup4QJMRQWGI6lz+Y7tmFBtj46AhP9ZWINaVcPA6DAF2odSaU7rEUGseHVzOvQdk9Ih4/AsoeV1fZmfyXqLMqftD2pLU3+lwS8VKNhG2SKcVAIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMuxdTE4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD1FC2BCB0;
-	Fri,  8 May 2026 15:21:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778253717;
-	bh=1Ts4kYseduboKsIUf+lbfxpxNyozd7l4VzIGUhH5GtA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RMuxdTE4WdGdY6Ms3G75+5Sd9Tz5kXTHmCAaeFF0rc8SarwZ518vkkKQvKxRCghL6
-	 IfPkgpWWQZT9JrkkB96zVRVHyPUY3/PgCXNJoPWZMsGqvZQ4StDzboAaxQdW9/J2TQ
-	 z9DBrjpW4suhPA+lRu5CSJFgXGstEDuWf0teBuKk=
-Date: Fri, 8 May 2026 17:21:55 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>
-Cc: ilpo.jarvinen@linux.intel.com, stable@vger.kernel.org,
-	linux-serial@vger.kernel.org, andriy.shevchenko@linux.intel.com,
-	chris.friesen@windriver.com
-Subject: Re: [REQUEST] Backport 8250_dw BUSY deassert series to 6.12.y stable
-Message-ID: <2026050837-criteria-occupant-c6ec@gregkh>
-References: <20260508151614.498810-1-ionut.nechita@windriver.com>
+	s=arc-20240116; t=1778255430; c=relaxed/simple;
+	bh=Kk33coW1BTPPsoCzN/JAaLnY1ljWrmKl1FiAXHveNYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=H0HLi7PUeAGSxtBgA0YlIY+4AyoSzaJDK3JbGVR4udQNQoFanbbp6qwBNtEMrOfRsWfiLLHhJqGLZderwUWnUlsMdF72PHvPQumk/ukHDT+/6xrkFZT+xyy7Vv3UMFiMHAG1WpzqWRy1xY5kpAO4CYxTMAeWgMYXJTB6Z2KuvU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=p4+LF1Sa; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1778255007;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rnpguk5kWeeiPMWnYmoJrWVYQWeHIgM9Bw9lqx5btd8=;
+	b=p4+LF1SaGzSqq95SIiJjAFZpQZEZ5JI/fpKPr+uoXjKGXWhJl3/zGW/HbZu+rleL4SSx2/
+	BX7HtEvWdhhUfsmjZ4a03+6BBNQD2/B+5GRD3sVvSBA2lu/H2MUU7tMlbmsQIcPscRyztx
+	bdr/EPFCy4SLxzR5d0VdDyBEZrwJAOGqBDadWIORfddHkOQR8Qyc6KgYXYQVVz4N78Ak80
+	A0dJAaloRPrgbk2+9zD5Nf8shToYQRpl1gXpqXZbMjKX5TS7SfePcvhl9SpXV/7FnQ/vJd
+	L8aFUEtzK2HA0eZVaIUM39lW6vNpcWRIC9xOCjEZDrhL3Hhqtc1E2Nwrp35dNg==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Lyes Bourennani <lbourennani@fuzzinglabs.com>,
+	stable@vger.kernel.org,
+	Alexis Pinson <apinson@fuzzinglabs.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 1/8] batman-adv: fix integer overflow on buff_pos
+Date: Fri,  8 May 2026 17:43:07 +0200
+Message-ID: <20260508154314.12817-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260508154314.12817-1-sw@simonwunderlich.de>
+References: <20260508154314.12817-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260508151614.498810-1-ionut.nechita@windriver.com>
-X-Rspamd-Queue-Id: 013E64F89FA
+X-Rspamd-Queue-Id: 880344F901F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[simonwunderlich.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[simonwunderlich.de:s=09092022];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244785-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244788-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sw@simonwunderlich.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[simonwunderlich.de:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,windriver.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,simonwunderlich.de:email,simonwunderlich.de:mid,simonwunderlich.de:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Fri, May 08, 2026 at 06:16:14PM +0300, Ionut Nechita (Wind River) wrote:
-> From: Ionut Nechita <ionut.nechita@windriver.com>
-> 
-> Hi Ilpo, Greg,
-> 
-> We're running kernel 6.12 (LTS) on production systems with DesignWare
-> 8250 UARTs and are hitting the BUSY assertion issue that your recent
-> series addresses in 6.18:
-> 
->   Ilpo Järvinen (7):
->     serial: 8250: Protect LCR write in shutdown
->     serial: 8250_dw: Avoid unnecessary LCR writes
->     serial: 8250: Add serial8250_handle_irq_locked()
->     serial: 8250_dw: Rework dw8250_handle_irq() locking and IIR handling
->     serial: 8250_dw: Rework IIR_NO_INT handling to stop interrupt storm
->     serial: 8250: Add late synchronize_irq() to shutdown to handle DW UART BUSY
->     serial: 8250_dw: Ensure BUSY is deasserted
-> 
-> Patch 7/7 has Cc: stable, but it depends on patches 1-6 for the new
-> infrastructure (serial8250_handle_irq_locked(), the reworked locking in
-> dw8250_handle_irq(), etc.).
-> 
-> Could the full series be nominated for 6.12.y stable backport?  Or if
-> that's too invasive for stable, could you advise on the minimal subset
-> that would allow patch 7 to apply cleanly on 6.12?
+From: Lyes Bourennani <lbourennani@fuzzinglabs.com>
 
-Why not just move to 6.18.y instead if you have this issue?
+Fixing an integer overflow present in batadv_iv_ogm_send_to_if. The size
+check is done using the int type in batadv_iv_ogm_aggr_packet whereas the
+buff_pos variable uses the s16 type. This could lead to an out-of-bound
+read.
 
-thanks,
+Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Signed-off-by: Lyes Bourennani <lbourennani@fuzzinglabs.com>
+Signed-off-by: Alexis Pinson <apinson@fuzzinglabs.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/bat_iv_ogm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index f28e9cbf8ad5f..618d1889c04e7 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -335,7 +335,7 @@ static void batadv_iv_ogm_send_to_if(struct batadv_forw_packet *forw_packet,
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
+ 	const char *fwd_str;
+ 	u8 packet_num;
+-	s16 buff_pos;
++	int buff_pos;
+ 	struct batadv_ogm_packet *batadv_ogm_packet;
+ 	struct sk_buff *skb;
+ 	u8 *packet_pos;
+-- 
+2.47.3
+
 
