@@ -1,60 +1,79 @@
-Return-Path: <stable+bounces-244793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GF4KFwL/mm2mQAAu9opvQ
-	(envelope-from <stable+bounces-244793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:12:12 +0200
+	id QMkAHm0L/mm2mQAAu9opvQ
+	(envelope-from <stable+bounces-244794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:12:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8DF4F940E
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:12:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7ED4F9423
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9305303F04C
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 16:07:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 503E13035242
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 16:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C3F2F99BD;
-	Fri,  8 May 2026 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689203D524E;
+	Fri,  8 May 2026 16:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JuRjxFrd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zu0DqkFn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAC83101C0
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 16:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDC537BE6A
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 16:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778256467; cv=none; b=imfLrM1lJN11TvaIh6CpKUOXCelhbwBwO48BAoJNggwzdAy2fwHZFMNyPeP9It+8oD6eNPfL+hLLSzU6f33om7C4tIZK6WLEwoTAHuRKYB/zC1u3YAQAKE2bhdIfTF5i6N3WL048cS5YTNc90aaJ5iJucb4wq6Xobfp0K+cBmVc=
+	t=1778256588; cv=none; b=VnRhnmRS3Bfq9qpiikL5cCI6jlJjcXoDsqxaB0oeVSywe8cZ1B/VK7cZEVoc0yFYBZDet2A56i7hoDdugI8C6aFOORuS3myAESxJKN284t3iJaGWLIsjUu/Z+enUTx0ysMaZvcNn0ydvwKYMFJDeRdJCIv1LKlUN2k4qOu+DhW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778256467; c=relaxed/simple;
-	bh=KH6X/mGli+ZiJD34mdAZLhfDOzzcfqgWV1ThMWaPgAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=obf94UM+UuLvnHXdQ7FQkuAyrdlZNg8zEwL6nH9a5klz67MRWNeebgn+6ZikhdqcyEMS7vZJRkSE1eiNvieqBEsHuGnvEB0zchQ06kM0qJ/uXDqckll/WtwL53/YtbV7OUdQc+xhRODX9z9mFUtSXShpy1CapiPBr1m5JfrnCcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JuRjxFrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC36C2BCB0;
-	Fri,  8 May 2026 16:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778256466;
-	bh=KH6X/mGli+ZiJD34mdAZLhfDOzzcfqgWV1ThMWaPgAQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuRjxFrdP/Uzn3b4PsJNqR+lHdLSKQc6gC8DZbBXNYYIuoAfQ1oApsRsA6M1szw9z
-	 q78Am2kyzJ80/C4kTo6vDUXa1BUBsvyp+SlUkhWJUrkozcscDVvK2c6ixVQy79PLrP
-	 ISCuoZlctsUkIp/IleD/I6HVIWwOs3QTR2uQlXJgwASDjD/eX1xe8COdAwRU1dFgf6
-	 8V4nKvwCEQd+k0eaXb2xpUrlPLb4SsKvTCm/DO45LD69G9wDBA2Qp/Kab/T1Y7mOds
-	 UDdVdABCpzZuKEBuF8QPV4T/C2JpRkICD8SO+F8tsJHTG6VJFHijzkepyFAKN/+AeY
-	 Btnox5uecQ4jQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] pwm: imx-tpm: Count the number of enabled channels in probe
-Date: Fri,  8 May 2026 12:07:44 -0400
-Message-ID: <20260508160744.1606501-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050332-washer-legislate-ef0e@gregkh>
-References: <2026050332-washer-legislate-ef0e@gregkh>
+	s=arc-20240116; t=1778256588; c=relaxed/simple;
+	bh=Pw89MZSsx4bacdYuTC5zAh+6l0iElYL9UiZ16rDQxZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HpnerJS6TX/s7gJbF2GTZNdqFrCTb0g2pGwdEDj5SNp5HOqlx4QF4Mp8y590yDJpuk+76QimE5D4qtgFtsZp6GJ8ZUs973lg8mEqp1+HS0EXiR5EzJS8hJGMCPdsjEijEEIbMG7lZDS9vwLOAaaTATm4J4dwV/sqnCpS3Qyc6dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zu0DqkFn; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778256585; x=1809792585;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Pw89MZSsx4bacdYuTC5zAh+6l0iElYL9UiZ16rDQxZc=;
+  b=Zu0DqkFn2ngPTaXUfFbO031gny7t/GyqeM9d7No19AVW5lZsd6YsU8ar
+   Vo/PLPAGQjcPcbKGLmCsTRwhGOCG/DIdqKlvR7UqcmsWespBfJqHdL3Ki
+   ehaI/JB6JFcJso25ho54kCxhof4dD9kJ7C7lVLt/jAux7mxzxFvyXiB3O
+   sCZwCbfToIF3ggtQxm7jodpkIHT2O2uB4SCKyyhOx6WJZ2EbyWRm1jCe/
+   PZ+sLski0nGOJ2Z0ctk9jmnLe4bdOa1R/VuGHklT03D8mYnNASVXaBlRu
+   nSS87FHMk9wr9RK1bDc9RkwOBP8TorJtfvww9jjc7QoKIoR7/IDgQxuMA
+   A==;
+X-CSE-ConnectionGUID: L1C8aWEUT+6znvbnRO0xGg==
+X-CSE-MsgGUID: h9tY5fM1SpmfnllBAMi0Hg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="89539871"
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="89539871"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 09:09:45 -0700
+X-CSE-ConnectionGUID: FJAc6G/QQyy1fPCAC7AGUg==
+X-CSE-MsgGUID: aH38HiWrQ4C3m41TPr42Yg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="274916674"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO fedora) ([10.245.244.34])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 09:09:43 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Tejun Heo <tj@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Christian Koenig <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/ttm: Convert -EAGAIN from dmem_cgroup_try_charge to -ENOSPC
+Date: Fri,  8 May 2026 18:09:20 +0200
+Message-ID: <20260508160920.230339-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,90 +82,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE8DF4F940E
+X-Rspamd-Queue-Id: CE7ED4F9423
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244793-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,gmx.de,lankhorst.se,kernel.org,amd.com,lists.freedesktop.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244794-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,amd.com:email,lankhorst.se:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,linux.intel.com:mid,lists.freedesktop.org:email]
 X-Rspamd-Action: no action
 
-From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
+dmem_cgroup_try_charge() returns -EAGAIN when the cgroup limit is
+hit and the charge fails. TTM has no concept of -EAGAIN from resource
+allocation; -ENOSPC is the canonical error meaning "no space, try
+eviction". Convert at the source in ttm_resource_alloc() so no caller
+needs to handle an unexpected error code, and clean up the now-redundant
+-EAGAIN check in ttm_bo_alloc_resource().
 
-[ Upstream commit 3962c24f2d14e8a7f8a23f56b7ce320523947342 ]
+Without this, -EAGAIN escaping ttm_resource_alloc() during an eviction
+walk causes the walk to terminate early instead of continuing to the
+next candidate.
 
-On a soft reset TPM PWM IP may preserve its internal state from previous
-runtime, therefore on a subsequent OS boot and driver probe
-"enable_count" value and TPM PWM IP internal channels "enabled" states
-may get unaligned. In consequence on a suspend/resume cycle the call "if
-(--tpm->enable_count == 0)" may lead to "enable_count" overflow the
-system being blocked from entering suspend due to:
-
-   if (tpm->enable_count > 0)
-       return -EBUSY;
-
-Fix the problem by counting the enabled channels in probe function.
-
-Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-Link: https://patch.msgid.link/20260311123309.348904-1-viorel.suman@oss.nxp.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-[ substituted `base` with `tpm->base` and `npwm` with `tpm->chip.npwm` to match the older non-devm probe layout ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Friedrich Vock <friedrich.vock@gmx.de>
+Cc: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.14+
+Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
+Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- drivers/pwm/pwm-imx-tpm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/ttm/ttm_bo.c       | 2 +-
+ drivers/gpu/drm/ttm/ttm_resource.c | 5 ++++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-index 081f511cd2130..e1caaef7dbd16 100644
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -350,6 +350,7 @@ static int pwm_imx_tpm_probe(struct platform_device *pdev)
- {
- 	struct imx_tpm_pwm_chip *tpm;
- 	int ret;
-+	unsigned int i;
- 	u32 val;
+diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+index d85f0a37ac35..cee3828df655 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -739,7 +739,7 @@ static int ttm_bo_alloc_resource(struct ttm_buffer_object *bo,
+ 		may_evict = (force_space && place->mem_type != TTM_PL_SYSTEM);
+ 		ret = ttm_resource_alloc(bo, place, res, force_space ? &limit_pool : NULL);
+ 		if (ret) {
+-			if (ret != -ENOSPC && ret != -EAGAIN) {
++			if (ret != -ENOSPC) {
+ 				dmem_cgroup_pool_state_put(limit_pool);
+ 				return ret;
+ 			}
+diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+index 9f36631d48b6..b0efffe5a526 100644
+--- a/drivers/gpu/drm/ttm/ttm_resource.c
++++ b/drivers/gpu/drm/ttm/ttm_resource.c
+@@ -385,8 +385,11 @@ int ttm_resource_alloc(struct ttm_buffer_object *bo,
  
- 	tpm = devm_kzalloc(&pdev->dev, sizeof(*tpm), GFP_KERNEL);
-@@ -383,6 +384,13 @@ static int pwm_imx_tpm_probe(struct platform_device *pdev)
+ 	if (man->cg) {
+ 		ret = dmem_cgroup_try_charge(man->cg, bo->base.size, &pool, ret_limit_pool);
+-		if (ret)
++		if (ret) {
++			if (ret == -EAGAIN)
++				ret = -ENOSPC;
+ 			return ret;
++		}
+ 	}
  
- 	mutex_init(&tpm->lock);
- 
-+	/* count the enabled channels */
-+	for (i = 0; i < tpm->chip.npwm; ++i) {
-+		val = readl(tpm->base + PWM_IMX_TPM_CnSC(i));
-+		if (FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val))
-+			++tpm->enable_count;
-+	}
-+
- 	ret = pwmchip_add(&tpm->chip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add PWM chip: %d\n", ret);
+ 	ret = man->func->alloc(man, bo, place, res_ptr);
 -- 
-2.53.0
+2.54.0
 
 
