@@ -1,98 +1,69 @@
-Return-Path: <stable+bounces-244677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNXsG7aJ/WnWfgAAu9opvQ
-	(envelope-from <stable+bounces-244677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 08:59:02 +0200
+	id YDIiN1iK/WnWfgAAu9opvQ
+	(envelope-from <stable+bounces-244679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:01:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95BC4F2AFB
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 08:59:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3E34F2B76
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:01:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ADBC5303672A
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 06:58:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B4303022965
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 07:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631937C107;
-	Fri,  8 May 2026 06:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C69374E7A;
+	Fri,  8 May 2026 07:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=quora.org header.i=@quora.org header.b="GGgwzGrD"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="jEc9QA17"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail78-59.sinamail.sina.com.cn (mail78-59.sinamail.sina.com.cn [219.142.78.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B9437A4BA
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 06:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6622132E75A
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 07:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=219.142.78.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778223454; cv=none; b=UsIvxy2WAsZFCBwH/Ixi4XOZL4UuBQ9LVwwZTnZonlRMDJ1qHSpAEFRd7liY9p5KbujCmfTkO8q5NGI6gOwN/zvulAzfm8r3u8MO0tuSUhvLok8pTdRsR63naz3wJGR2vFN1cpKyslKh37v6peIe29YkkWO4Xjv2CJ4vbkpenoQ=
+	t=1778223664; cv=none; b=U778a19ouabKnrIn7w9gl33GwGRiOVYl86X+NFEFRsWAF9aIpolmkLBuDko9NFji5HNpaNAJOc1meDXXhdEo5TvYQDP+qQDnhOqeO6EVWUctC96/Pelq7fEFAbhMD5MrxaOMInlIY+uVFExEyty8U5trAADcfldSlzb1k+93FaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778223454; c=relaxed/simple;
-	bh=DEMWSZM9KxA3IK075yW/Z0nxHb2UrjCm4MgZr+2y00I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gpRBWxmSIfKsF5FPJq7zR4k9zhjvauVW1cDjMTCXxs47L2qhOsXawd9n5Dzk90vFRewCXck0TYvDanc1iw6cXI2KPYKoG/Tj+SBBJaWN41QvI2JB3483YU4V7M+xVoGjnNoqPIMlaVRfmMaeH08zKWtJzUIfR0Bn+Lgkp7ZR1lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=quora.org; spf=pass smtp.mailfrom=quora.org; dkim=pass (1024-bit key) header.d=quora.org header.i=@quora.org header.b=GGgwzGrD; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=quora.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quora.org
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2aaed195901so8487255ad.0
-        for <stable@vger.kernel.org>; Thu, 07 May 2026 23:57:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=quora.org; s=google; t=1778223450; x=1778828250; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TetnCK6YoCpHxJceDDOD/QB+oKi7cDlyFmiU7j9vyl4=;
-        b=GGgwzGrD9FPyFDtB8wGt1o191LNDsH8psWrXBVBYj0DZAH2vpUvf2u4fHYVQxTIGFh
-         qH//m1fGQnXC4Y47d+ZcbPoGuXUDF5Tj5IR1wxUBBzY7XD+AP5j+hx+1F1KaOEjuR5pE
-         rfP6IMbBIDqAcHkXssstXn9EQ3EqMUT3CN7Yo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778223450; x=1778828250;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TetnCK6YoCpHxJceDDOD/QB+oKi7cDlyFmiU7j9vyl4=;
-        b=Fe1k99gH8V6waBQN6V9pbJ/IqEyxubAvkC2b7KfoBNFALOgSAI1Wnrshr+8l7OAvLG
-         zrk9M3u/qxokOAQaZx3Pg3pPcr0t+cBxYn85XHpmIeKqbUnZWNDDM6XOYcAxSrwkw7L8
-         doamHkPHV44H8UgxjVIYVshc5cVfeX1kqG1/FzMmcM7gaXYewoXej8sTdka/Yzg7Krtk
-         P5eImPcM8uCAg33XOEcTF4VV+Z1WkPTQYfMPKXV8slDaCwzr+NURqJT6DuKbxiRq6Utl
-         Rch+SEVLO3CdmO5JPb/dVNVswtWxUiJbQP4QTiG1mRI9wYWz0ciKekfL9kaef3wOh6tq
-         /fkg==
-X-Forwarded-Encrypted: i=1; AFNElJ/Yl6LMwqWj+lkz10noFrNL/EeF2t69PuBcjFA+WMDs8MY7vtMDFXKRQ8plem5tRHTHRxBV2vc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7OEaeFMLF2BNrap0hivPg1stB23hIx6DJIOZjlL6SgyJMSoJi
-	pH/IS7Tnc9TnMXvZ1MjG+ONQBDvJphYNssCCbCL6EPiBg7Q8VjSsQMg9EdVd8DkrfXM=
-X-Gm-Gg: Acq92OHaW9DWyee6VY5LbcwlSVgfSJauXp4UBPQ7cawegzR1tbO5QSUl+8x2HZnb1Th
-	eoLFv+3mxSyVYmBbu05ydtNDj35j+PxGUYYuVwQmtZe6ms+T1fYw+2IL/kXBC9CYlcC7+9FfVft
-	aVIbO1k6hD15LMQNoS9U9bb6yn8GoOv1ukEvqCxd8SaMOx9xuEHxbmmiGp20nOcxcSp/2ot61Iq
-	5XRwlJhRyY9FrH4/T1c7FJ/DlKQWdCzRSAU/c6DUvOg7n2VQuTdP7gMfNSgqMW7PUWgSYZJrnQh
-	wbvdc/QoE0HlAGrR3lQJwAjN+zsu4glb9O0k9UkEGR28ypWiSVHAwS4DbvfBNDMUs4nu2OVPIjU
-	qCeAn5mS00P/xheBACw8G2nTgSu+thp4fdYIxnBPGQhZZ/5NCDn2Qk2bYBBFsUWP2ob15TBs/5o
-	uUthGosuoTsalGz1QM/0ZTpibeYxSmryxYnYFOrTlOjUjt7Zqjjxd780i17jPkhgkbkYRHkuvEC
-	vvsAu4RqIwiG6r4GZd4TRWVUQcyPzfR4vGy4xU4PVlnZjm/RzGzwro2RAEJwXvcWRYH7yfNi++W
-	G+GJhYWDNDLLa/CQ5lZM4G6Q5HMhxIb03JMWoQYvPczyFJ4eIJe9cUGYamp++n8T
-X-Received: by 2002:a17:903:3c2b:b0:2b9:ea53:4cfc with SMTP id d9443c01a7336-2ba794b8118mr117896365ad.19.1778223450102;
-        Thu, 07 May 2026 23:57:30 -0700 (PDT)
-Received: from aegis ([2001:fd8:4d01:3602:5317:86f3:5298:5270])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1ead938sm10650785ad.73.2026.05.07.23.57.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 23:57:29 -0700 (PDT)
-From: Daniel J Blueman <daniel@quora.org>
-To: Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Antonino Maniscalco <antomani103@gmail.com>
-Cc: Daniel J Blueman <daniel@quora.org>,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
+	s=arc-20240116; t=1778223664; c=relaxed/simple;
+	bh=Ny5lasZHyO87EegPFrBjX2eufmvrdYmaIvUhQ44Lp5M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QDCde5duwB5CHslQ/8yB972tQjrNfarBjbo3z9oi7AOJeWlAt8YHgO7F8GzqBqJO6P4a6jEg88lkbrCrgnOj0YEHBby1cbKzfJLOs42xSe3Y/BBY38hocLDMlhs/Bi1dWxw9TXMil9Cp3iZk+kiQgauG6vbiIE0jxx9tHAF1MSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=jEc9QA17; arc=none smtp.client-ip=219.142.78.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1778223659;
+	bh=mknp58zzNXrMHnzixaFoNMYGsNeXzm8WGz4EEnUO4qM=;
+	h=From:Subject:Date:Message-Id;
+	b=jEc9QA17+9hz0344QDmqc76YnsbiHbcjRdwDJi2ZjRJdMAX8Tjuetgu+dAWU+EwWI
+	 CdypoWbGfAxGEx8Wfv2O6lywvsQ8YAlABZNfnbTOx2eNdjRT05DfV8+mJRmHghyWmD
+	 dxcImylcRuSlSsqPKgsP5q2iQbAL24IrjjaxmH54=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.24) with ESMTP
+	id 69FD899500007A39; Fri, 8 May 2026 14:58:31 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 48299210747922
+X-SMAIL-UIID: 8D42F8EFFC414A5DA0CB3185ACE2023C-20260508-145831-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	tejas.bharambe@outlook.com
+Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/msm: Fix shrinker deadlock
-Date: Fri,  8 May 2026 14:57:21 +0800
-Message-ID: <20260508065722.18785-1-daniel@quora.org>
-X-Mailer: git-send-email 2.53.0
+	tytso@mit.edu,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH 6.1.y] ext4: validate p_idx bounds in ext4_ext_correct_indexes
+Date: Fri,  8 May 2026 14:58:29 +0800
+Message-Id: <20260508065829.3030954-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,206 +71,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D95BC4F2AFB
+X-Rspamd-Queue-Id: 4D3E34F2B76
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[quora.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244677-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[quora.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,ffwll.ch];
-	DKIM_TRACE(0.00)[quora.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,outlook.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244679-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[sina.cn];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@quora.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,quora.org:email,quora.org:mid,quora.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,sina.cn:email,sina.cn:mid,sina.cn:dkim,outlook.com:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-With PROVE_LOCKING on an Snapdragon X1 and VM reclaim pressure, we see:
+From: Tejas Bharambe <tejas.bharambe@outlook.com>
 
-"""
-kswapd0/121 is trying to acquire lock:
-ffff800080ed3800 (reservation_ww_class_acquire){+.+.}-{0:0}, at:
-  msm_gem_shrinker_scan (drivers/gpu/drm/msm/msm_gem_shrinker.c:189)
+[ Upstream commit 2acb5c12ebd860f30e4faf67e6cc8c44ddfe5fe8 ]
 
-but task is already holding lock:
-ffffbf4ddb44ca40 (fs_reclaim){+.+.}-{0:0}, at:
-  balance_pgdat (mm/vmscan.c:7236 (discriminator 2))
+ext4_ext_correct_indexes() walks up the extent tree correcting
+index entries when the first extent in a leaf is modified. Before
+accessing path[k].p_idx->ei_block, there is no validation that
+p_idx falls within the valid range of index entries for that
+level.
 
-which lock already depends on the new lock.
+If the on-disk extent header contains a corrupted or crafted
+eh_entries value, p_idx can point past the end of the allocated
+buffer, causing a slab-out-of-bounds read.
 
-the existing dependency chain (in reverse order) is:
+Fix this by validating path[k].p_idx against EXT_LAST_INDEX() at
+both access sites: before the while loop and inside it. Return
+-EFSCORRUPTED if the index pointer is out of range, consistent
+with how other bounds violations are handled in the ext4 extent
+tree code.
 
--> #2 (fs_reclaim){+.+.}-{0:0}:
-lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825)
-fs_reclaim_acquire (mm/page_alloc.c:4325 mm/page_alloc.c:4339)
-dma_resv_lockdep (drivers/dma-buf/dma-resv.c:798)
-do_one_initcall (init/main.c:1392)
-kernel_init_freeable (init/main.c:1454 (discriminator 1) init/main.c:1470
-  (discriminator 1) init/main.c:1490 (discriminator 1) init/main.c:1703
-  (discriminator 1))
-kernel_init (init/main.c:1593)
-ret_from_fork (arch/arm64/kernel/entry.S:858)
-
--> #1 (reservation_ww_class_mutex){+.+.}-{4:4}:
-lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825)
-dma_resv_lockdep (./include/linux/ww_mutex.h:164 (discriminator 1)
-  drivers/dma-buf/dma-resv.c:791 (discriminator 1))
-do_one_initcall (init/main.c:1392)
-kernel_init_freeable (init/main.c:1454 (discriminator 1) init/main.c:1470
-  (discriminator 1) init/main.c:1490 (discriminator 1) init/main.c:1703
-  (discriminator 1))
-kernel_init (init/main.c:1593)
-ret_from_fork (arch/arm64/kernel/entry.S:858)
-
--> #0 (reservation_ww_class_acquire){+.+.}-{0:0}:
-check_prev_add (kernel/locking/lockdep.c:3165)
-__lock_acquire (kernel/locking/lockdep.c:3284
-  kernel/locking/lockdep.c:3908 kernel/locking/lockdep.c:5237)
-lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825)
-drm_gem_lru_scan (./include/linux/ww_mutex.h:163 (discriminator 1)
-  drivers/gpu/drm/drm_gem.c:1681 (discriminator 1))
-msm_gem_shrinker_scan (drivers/gpu/drm/msm/msm_gem_shrinker.c:189)
-do_shrink_slab (mm/shrinker.c:436)
-shrink_slab (mm/shrinker.c:667)
-shrink_one (mm/vmscan.c:5071)
-shrink_node (mm/vmscan.c:5132 mm/vmscan.c:5210 mm/vmscan.c:6198)
-balance_pgdat (mm/vmscan.c:7052 mm/vmscan.c:7228)
-kswapd (mm/vmscan.c:7501)
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/arm64/kernel/entry.S:858)
-
-other info that might help us debug this:
-
-Chain exists of:
-reservation_ww_class_acquire --> reservation_ww_class_mutex --> fs_reclaim
-"""
-
-kswapd0 holding fs_reclaim calls the MSM shrinker, which calls
-dma_resv_lock. This in turn acquires fs_reclaim.
-
-Fix this deadlock by using dma_resv_trylock() instead, dropping the
-subsequently unused passed wait-wound lock 'ticket'.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel J Blueman <daniel@quora.org>
-Fixes: fe4952b5f27c ("drm/msm: Convert vm locking")
+Reported-by: syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=04c4e65cab786a2e5b7e
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Link: https://patch.msgid.link/JH0PR06MB66326016F9B6AD24097D232B897CA@JH0PR06MB6632.apcprd06.prod.outlook.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
- drivers/gpu/drm/msm/msm_gem_shrinker.c | 34 ++++++++++----------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ fs/ext4/extents.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-index 31fa51a44f86..5320ef57dd90 100644
---- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
-+++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-@@ -43,8 +43,7 @@ msm_gem_shrinker_count(struct shrinker *shrinker, struct shrink_control *sc)
- }
- 
- static bool
--with_vm_locks(struct ww_acquire_ctx *ticket,
--	      void (*fn)(struct drm_gem_object *obj),
-+with_vm_locks(void (*fn)(struct drm_gem_object *obj),
- 	      struct drm_gem_object *obj)
- {
- 	/*
-@@ -52,7 +51,7 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
- 	 * success paths
- 	 */
- 	struct drm_gpuvm_bo *vm_bo, *last_locked = NULL;
--	int ret = 0;
-+	bool locked = true;
- 
- 	drm_gem_for_each_gpuvm_bo (vm_bo, obj) {
- 		struct dma_resv *resv = drm_gpuvm_resv(vm_bo->vm);
-@@ -60,23 +59,14 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
- 		if (resv == obj->resv)
- 			continue;
- 
--		ret = dma_resv_lock(resv, ticket);
--
- 		/*
--		 * Since we already skip the case when the VM and obj
--		 * share a resv (ie. _NO_SHARE objs), we don't expect
--		 * to hit a double-locking scenario... which the lock
--		 * unwinding cannot really cope with.
-+		 * dma_resv_lock can't be used due to acquiring 'ticket' before the
-+		 * fs_reclaim lock, which is held in shrinker context
- 		 */
--		WARN_ON(ret == -EALREADY);
--
--		/*
--		 * Don't bother with slow-lock / backoff / retry sequence,
--		 * if we can't get the lock just give up and move on to
--		 * the next object.
--		 */
--		if (ret)
-+		if (!dma_resv_trylock(resv)) {
-+			locked = false;
- 			goto out_unlock;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 1df717477469..6d95dab53847 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1740,6 +1740,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
+ 	err = ext4_ext_get_access(handle, inode, path + k);
+ 	if (err)
+ 		return err;
++	if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
++		EXT4_ERROR_INODE(inode,
++				 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
++				 k, path[k].p_idx,
++				 EXT_LAST_INDEX(path[k].p_hdr));
++		return -EFSCORRUPTED;
++	}
+ 	path[k].p_idx->ei_block = border;
+ 	err = ext4_ext_dirty(handle, inode, path + k);
+ 	if (err)
+@@ -1752,6 +1759,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
+ 		err = ext4_ext_get_access(handle, inode, path + k);
+ 		if (err)
+ 			break;
++		if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
++			EXT4_ERROR_INODE(inode,
++					 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
++					 k, path[k].p_idx,
++					 EXT_LAST_INDEX(path[k].p_hdr));
++			err = -EFSCORRUPTED;
++			break;
 +		}
- 
- 		/*
- 		 * Hold a ref to prevent the vm_bo from being freed
-@@ -108,7 +98,7 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
- 		}
- 	}
- 
--	return ret == 0;
-+	return locked;
- }
- 
- static bool
-@@ -120,7 +110,7 @@ purge(struct drm_gem_object *obj, struct ww_acquire_ctx *ticket)
- 	if (msm_gem_active(obj))
- 		return false;
- 
--	return with_vm_locks(ticket, msm_gem_purge, obj);
-+	return with_vm_locks(msm_gem_purge, obj);
- }
- 
- static bool
-@@ -164,7 +154,6 @@ static unsigned long
- msm_gem_shrinker_scan(struct shrinker *shrinker, struct shrink_control *sc)
- {
- 	struct msm_drm_private *priv = shrinker->private_data;
--	struct ww_acquire_ctx ticket;
- 	struct {
- 		struct drm_gem_lru *lru;
- 		bool (*shrink)(struct drm_gem_object *obj, struct ww_acquire_ctx *ticket);
-@@ -185,11 +174,14 @@ msm_gem_shrinker_scan(struct shrinker *shrinker, struct shrink_control *sc)
- 	for (unsigned i = 0; (nr > 0) && (i < ARRAY_SIZE(stages)); i++) {
- 		if (!stages[i].cond)
- 			continue;
-+		/*
-+		 * 'ticket' not needed on trylock paths
-+		 */
- 		stages[i].freed =
- 			drm_gem_lru_scan(stages[i].lru, nr,
- 					 &stages[i].remaining,
- 					 stages[i].shrink,
--					 &ticket);
-+					 NULL);
- 		nr -= stages[i].freed;
- 		freed += stages[i].freed;
- 		remaining += stages[i].remaining;
+ 		path[k].p_idx->ei_block = border;
+ 		err = ext4_ext_dirty(handle, inode, path + k);
+ 		if (err)
 -- 
-2.53.0
+2.34.1
 
 
