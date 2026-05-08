@@ -1,53 +1,65 @@
-Return-Path: <stable+bounces-244838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDsPFnxf/mmppwAAu9opvQ
-	(envelope-from <stable+bounces-244838-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 00:11:08 +0200
+	id LclpMT5j/mmoqAAAu9opvQ
+	(envelope-from <stable+bounces-244839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 00:27:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A25F4FC302
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 00:11:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215154FC55A
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 00:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 10F34300D765
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 22:11:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03377301DE22
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 22:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F6833F59C;
-	Fri,  8 May 2026 22:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B913389115;
+	Fri,  8 May 2026 22:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a94oXeY5"
+	dkim=pass (4096-bit key) header.d=cipherat.com header.i=@cipherat.com header.b="HjUjVyRo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.cipherat.com (mail.cipherat.com [91.98.42.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE94F33121F;
-	Fri,  8 May 2026 22:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D4F32E743;
+	Fri,  8 May 2026 22:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.98.42.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778278261; cv=none; b=F2lbb3IXZ4E60wrUFLPmp77hlY0DPJ4JCzmby9QcHQrOg2xvtfEBU3BKaaVQfprOu/MAXHvQTLuHvlSDu3jjCcd4IiscEy7PRAV8JrEYbogMg2hpZpJJ6wDF9eLl7YG4X6VlZb5aLUQOkSh4AoaaR5Kf4Wlm2WM5vv80z3HV++o=
+	t=1778279225; cv=none; b=uyxgPMofBMKk8UvhLdvKlWyh1NgJB82RBMEQq6QdEhsyZjIP3YdFDoW1mErqyIXfXSEeqGXFcGVMkWtXCI/AvgmPbGIekDFzDJVbhYjRkWaqwYetWRJg41LEWQDLr5JOTedhVrIZpIgjmVnMVw8e6DvOSCWdcDfUj8ILHOffiVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778278261; c=relaxed/simple;
-	bh=ydAR8V+7zevaxXw8m1Yxudzwidzt7WxufB1JAXPlRdo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kPOjuOwq3sG+qcnPZnUH86EcoicwrG5syKtlwUYhJBpjQru7lrj3vbxLvzvUCZqoi1XiuE4kBSbWwihErhzYgIzDHMSKn3A5rjwcygfBv6kPHg5VGuzo3SLXb5snXBtnqdF8jNqfD8HUoyCIw8GnDQRms9l2z30BmvOr4j3jbgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a94oXeY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E7FC2BCB0;
-	Fri,  8 May 2026 22:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778278261;
-	bh=ydAR8V+7zevaxXw8m1Yxudzwidzt7WxufB1JAXPlRdo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=a94oXeY5hW+PC0+RERYUlkB761eDdVddearB9x2dNVjco4pftkuzV3njHJsZJkgHz
-	 wGGjiY4/SBp1X6lZ9BgePe6YKRyClgh5wjxvdaO5CXa4CZm5Y/ZvQj8sZp/RrJ2isX
-	 Lud/tihHlFyjn+0LHS+uF7vLS2avbN+7029fjo1kTerTwPJ5+JPV8OqWhHUgeFdYsD
-	 Rv0O8qyA5AuZG4qTe6mnFKI5VCdHkgDRjCjpcrZASOaUIkYS1ynr6D8R9OjKeMfGOW
-	 Gqgw2Zv/BW5pDSaDTpEUp8apYf19qYK6uW1j7EsZ2sZUYMCINDvixcAe0SZt86Igy/
-	 2dHSFXGJJcTQA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E7CE438119CC;
-	Fri,  8 May 2026 22:10:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1778279225; c=relaxed/simple;
+	bh=rZHYkXggah79PkVFN+6E/RKD6b6tAyfkViysUFDb8oc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i3f7SLxm0O6WsTM8hgFS/VyMuHA14jXkKKpM6lOtZ6mna21O3fnSKP7Ac8tkCWOSqhELfdw+CWonbyirJhzcPjCfADZqHqdIjVtTKzb3/qTuhRTW0Z6+YL5YKpjxWGCKM7FveT0h520iph0+oIlu+IR1C/eQh8WrY+02DyJ3Ut4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cipherat.com; spf=pass smtp.mailfrom=cipherat.com; dkim=pass (4096-bit key) header.d=cipherat.com header.i=@cipherat.com header.b=HjUjVyRo; arc=none smtp.client-ip=91.98.42.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cipherat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cipherat.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9AE1184FCA;
+	Sat,  9 May 2026 01:26:54 +0300 (+03)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cipherat.com;
+	s=dkim; t=1778279215; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=9UgJASqxAWAeh3eiXQ4y7gcX7HLK+OapSPbuxmiLW5Y=;
+	b=HjUjVyRodngW/H+qn2dcAWiBquCCdo7+YuY232Q5ddlqK7AoC7h1ZxI0urdwJ+nA1FC99I
+	B+Ykjf90Tj+1Zk7VagrgJLLco0flhv4gaSCC0RlV7j934e62xlULZHaAK4LV+BvbWFB67K
+	HEi8COEYKOcYrTSIontfab9RIxc6n6/CnQ2R5KU4rSfu+8ediVixFzfXcW5bbzXXMAYcYw
+	sC+ky/RZYab63qdbKQMOJGTM6NVbxbOwgpar+HVa5AUyiYQLpIZZVjNUtysU0y2Sv3oAtg
+	8aA+9dOgRrAZ1kt65YQysOYGyMvisS2yQt7j3F703T+kGzBKjud6ResqBI5PNui+KwmeY0
+	OWAB4gzoQM1ZxXPfrHbf4pcR0WI0kipSTmMYEgbxo9D/e/6V0zQxPwo9VwIq6MmyT8pUQq
+	5sSpfG8vy03PeIY82vWh9p/v6DnBYVVfyROUz88seH1bNv4G+rkYeZYIeyXL7vpR0g8jhh
+	++rSuL62l3E7G/wuueuL1uKBmuSYt7IOyqmY6oOopV5dm8H45CY744c6YDi43TjqxGidvi
+	OzXFdNUd02J6R0lBa8jBbdNDhXHKCWrzefGgqTTIKmIug2lCVSAThqwiMVUA9n7mbsul6i
+	3dhk1q5nPYT689bJinsovN7q6rU+836s1X6Ef0ISUFPRpKGip/92o=
+From: Salman Alghamdi <me@cipherat.com>
+To: gregkh@linuxfoundation.org
+Cc: straube.linux@gmail.com,
+	error27@gmail.com,
+	luka.gejak@linux.dev,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v1] staging: rtl8723bs: fix buffer over-read in rtw_update_protection
+Date: Sat,  9 May 2026 01:26:14 +0300
+Message-ID: <20260508222649.23989-1-me@cipherat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,79 +67,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v8 0/2] ipv6: flowlabel: per-netns budget for
- unprivileged
- callers
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177827820980.868876.13043664849343604381.git-patchwork-notify@kernel.org>
-Date: Fri, 08 May 2026 22:10:09 +0000
-References: <20260506082416.2259567-1-maoyixie.tju@gmail.com>
-In-Reply-To: <20260506082416.2259567-1-maoyixie.tju@gmail.com>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, dsahern@kernel.org, kuznet@ms2.inr.ac.ru,
- willemb@google.com, willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, maoyi.xie@ntu.edu.sg
-X-Rspamd-Queue-Id: 2A25F4FC302
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 215154FC55A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[cipherat.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244838-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,redhat.com,google.com,ms2.inr.ac.ru,gmail.com,vger.kernel.org,ntu.edu.sg];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,linux.dev,lists.linux.dev,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244839-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DMARC_NA(0.00)[cipherat.com];
+	DKIM_TRACE(0.00)[cipherat.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[me@cipherat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
 X-Rspamd-Action: no action
 
-Hello:
+rtw_update_protection() is called with a pointer offset into the
+ies buffer but the full ie_length is passed, causing a potential
+buffer over-read.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fixes: e945c43df60b ("Staging: rtl8723bs: Delete dead code from update_current_network()")
+Fixes: d3fcee1b78a5 ("staging: rtl8723bs: fix camel case in struct wlan_bssid_ex")
+Reported-by: Luka Gejak <luka.gejak@linux.dev>
+Closes: https://lore.kernel.org/linux-staging/DI2H39EAAFBZ.3KI5NWN02AQ2S@linux.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Salman Alghamdi <me@cipherat.com>
+---
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-On Wed,  6 May 2026 16:24:14 +0800 you wrote:
-> From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-> 
-> This series fixes the cross-tenant DoS in net/ipv6/ip6_flowlabel.c.
-> v1 through v6 were single-patch postings, each in its own thread.
-> v6 review pointed out that the existing fl_size read in
-> mem_check() and the corresponding write in fl_intern() are not in
-> the same critical section. v7 split the work into 2 patches.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v8,1/2] ipv6: flowlabel: take ip6_fl_lock across mem_check and fl_intern
-    https://git.kernel.org/netdev/net/c/7ce5556f255a
-  - [net,v8,2/2] ipv6: flowlabel: enforce per-netns limit for unprivileged callers
-    https://git.kernel.org/netdev/net/c/e68eadffb724
-
-You are awesome, thank you!
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index ddfc56f0253d..268f294528e6 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -464,8 +464,11 @@ static void update_current_network(struct adapter *adapter, struct wlan_bssid_ex
+ 
+ 	if (check_fwstate(pmlmepriv, _FW_LINKED) && (is_same_network(&pmlmepriv->cur_network.network, pnetwork, 0))) {
+ 		update_network(&pmlmepriv->cur_network.network, pnetwork, adapter, true);
++		if (pmlmepriv->cur_network.network.ie_length < sizeof(struct ndis_802_11_fix_ie))
++			return;
++
+ 		rtw_update_protection(adapter, (pmlmepriv->cur_network.network.ies) + sizeof(struct ndis_802_11_fix_ie),
+-								pmlmepriv->cur_network.network.ie_length);
++								pmlmepriv->cur_network.network.ie_length - sizeof(struct ndis_802_11_fix_ie));
+ 	}
+ }
+ 
+@@ -1072,8 +1075,11 @@ static void rtw_joinbss_update_network(struct adapter *padapter, struct wlan_net
+ 			break;
+ 	}
+ 
++	if (cur_network->network.ie_length < sizeof(struct ndis_802_11_fix_ie))
++		return;
++
+ 	rtw_update_protection(padapter, (cur_network->network.ies) + sizeof(struct ndis_802_11_fix_ie),
+-									(cur_network->network.ie_length));
++									(cur_network->network.ie_length - sizeof(struct ndis_802_11_fix_ie)));
+ 
+ 	rtw_update_ht_cap(padapter, cur_network->network.ies, cur_network->network.ie_length, (u8) cur_network->network.configuration.ds_config);
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0
 
 
