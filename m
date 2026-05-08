@@ -1,159 +1,187 @@
-Return-Path: <stable+bounces-244833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMFYOR1T/mntpAAAu9opvQ
-	(envelope-from <stable+bounces-244833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:18:21 +0200
+	id eKs8Ca1V/mlTpQAAu9opvQ
+	(envelope-from <stable+bounces-244834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:29:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915614FBD79
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:18:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B34FBE8C
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 23:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D861E3009094
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 21:18:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0F283012CE8
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 21:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7607E376464;
-	Fri,  8 May 2026 21:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6A2423A6B;
+	Fri,  8 May 2026 21:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQjUW8W5"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="L118ten7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B51336896
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 21:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F97318139;
+	Fri,  8 May 2026 21:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778275099; cv=none; b=dlhoWiEsCZYKrs6Ly8nNx1O/TUWRydceX1WVUbe2Mb3odlQp+X5bwF053nKG1Ft1YNwBRrBZ60lefZle0XJVUYINal8W32tUfWdSCpq1kJETOhgtSblC4xy9argG6zYSLL7v5HiVV+RgAcP00b1wPVjU1TkBbjhsy63TpjwhYjE=
+	t=1778275752; cv=none; b=Jk26V2ZDdue4eR+/kgVAvYMmZTXcpOjXxPVS8EZMf/G34E/QV/nAh4AUxjMXCJeYSRKaZnLBqBLLWqj2c/GQpf/BMgGUlXmfaG4ZM16u69kT377kc06W90nVc2X5+0VA3pwAzF8PNjwcCFqqtLgpYH6uU0meg00+c1Pn6upSnsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778275099; c=relaxed/simple;
-	bh=xBgJyvA/bM47mnjHadGw0FOuT/Z4Gf7GGt1qER6NKpI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfUsiReILwKIipF0MU5ZeUhCOkn18dAlmLrQvEyNuQEOEqi3YV8hhgj0dr722evo+g9HYXHZcMeb2Ybb1gaJDXsuR8k5hG+5EkbxxiqYQ0FQMQ4yRQupH7wb1baqIFd3cS0EKJjUY3uJrSai1hAXY4YfwWyNM8oBhC3VXLldaMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQjUW8W5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD3AC2BCB0;
-	Fri,  8 May 2026 21:18:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778275098;
-	bh=xBgJyvA/bM47mnjHadGw0FOuT/Z4Gf7GGt1qER6NKpI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQjUW8W5KMVUdDTt4GoUMQph/PnDMGj1vqI33p59jKRJSJjfrJeHX7fgjdrWk7ZQp
-	 gcw/j9yHqv9bgGDpqfJvug0CpOilk9SuP72C9MfKdPcqzFxnXOzjVUgvLGmTpxjCbS
-	 oCm2m4I9hy2L2b1lnw5q9RLeE9mRpgXzK/zgG4d/kMV8RgVooy1zPJZByjpWHQYNtb
-	 YSBTd9K+3usPRzXdJU823TWvikZVLmV7pxnmsDfxZforadxXWl60awpMSC2GfGq+uU
-	 2UjyRgHQ2asyMANJKtQEMt/9T1W0pkfOnHNXVQjz/OWXJ+6qZAZddqLmvMs9rtW1gl
-	 L2rJ5csQEBLMg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
-	Hendrik Donner <hd@os-cillation.de>,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mtd: spi-nor: sst: Fix write enable before AAI sequence
-Date: Fri,  8 May 2026 17:18:16 -0400
-Message-ID: <20260508211816.1960968-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050406-deputize-unengaged-f5c5@gregkh>
-References: <2026050406-deputize-unengaged-f5c5@gregkh>
+	s=arc-20240116; t=1778275752; c=relaxed/simple;
+	bh=IOVcrk9REVLC/7YFQYwiNnSAENEwg1JIY8dDdJKSs9E=;
+	h=Date:To:From:Subject:Message-Id; b=YK5HcgoRMGr9av9gQJwQouxjxUwsM6RRu8BunSqk/3aQpKWWI/bd70sqU0uZARtPMb5XFd+hQ832B23QkugJoNIcDbJVm1gpwFpAoY0SsOGMfu9KmrLRBXBeIy7lEskhPuDhKi3awkzJ5pSsUqDCmytWL7fsfXnZgiguK26+MzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=L118ten7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101BEC2BCB0;
+	Fri,  8 May 2026 21:29:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778275752;
+	bh=IOVcrk9REVLC/7YFQYwiNnSAENEwg1JIY8dDdJKSs9E=;
+	h=Date:To:From:Subject:From;
+	b=L118ten7lulb7j9iDO9BtH2YD8oEAuM7ttGyA3uw14njaNziaXsyEG7FlM/Wg606N
+	 BJC3LceVXSmptKkPUm0xUxZENkQL2JQ9ETGn6M7ARVIQyWKjF/2n0kAl1rduX7E8mX
+	 wLhEaizkzLeBSpf/BK8+17LbfMseGkOOBz/D6rsY=
+Date: Fri, 08 May 2026 14:29:11 -0700
+To: mm-commits@vger.kernel.org,youngjun.park@lge.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,kerayhuang@tencent.com,kasong@tencent.com,flyingpeng@tencent.com,chrisl@kernel.org,baoquan.he@linux.dev,baohua@kernel.org,albinwyang@tencent.com,huangzjsmile@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-swap-add-cond_resched-in-swap_reclaim_full_clusters-to-prevent-softlockup.patch added to mm-new branch
+Message-Id: <20260508212912.101BEC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 915614FBD79
+X-Rspamd-Queue-Id: 8F3B34FBE8C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244833-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244834-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linux-foundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[vger.kernel.org,lge.com,huaweicloud.com,gmail.com,tencent.com,kernel.org,linux.dev,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	NEURAL_HAM(-0.00)[-0.961];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,os-cillation.de:email]
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,smtp.kernel.org:mid,tencent.com:email,huaweicloud.com:email,linux-foundation.org:email,linux-foundation.org:dkim,lge.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 
-[ Upstream commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 ]
+The patch titled
+     Subject: mm/swap: add cond_resched() in swap_reclaim_full_clusters to prevent softlockup
+has been added to the -mm mm-new branch.  Its filename is
+     mm-swap-add-cond_resched-in-swap_reclaim_full_clusters-to-prevent-softlockup.patch
 
-When writing to SST flash starting at an odd address, a single byte is
-first programmed using the byte program (BP) command. After this
-operation completes, the flash hardware automatically clears the Write
-Enable Latch (WEL) bit.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-add-cond_resched-in-swap_reclaim_full_clusters-to-prevent-softlockup.patch
 
-If an AAI (Auto Address Increment) word program sequence follows, it
-requires WEL to be set. Without re-enabling writes, the AAI sequence
-fails.
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Add spi_nor_write_enable() after the odd-address byte program when more
-data needs to be written. Use a local boolean for clarity.
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
 
-Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-Tested-by: Hendrik Donner <hd@os-cillation.de>
-Reviewed-by: Hendrik Donner <hd@os-cillation.de>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-[ kept inline `nor->program_opcode = SPINOR_OP_BP;` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Zijiang Huang <huangzjsmile@gmail.com>
+Subject: mm/swap: add cond_resched() in swap_reclaim_full_clusters to prevent softlockup
+Date: Wed, 6 May 2026 21:09:19 +0800
+
+We hit a real softlockup in an internal stress test environment.  The
+workload was LTP memory/swap stress on a large arm64 machine, with 320
+CPUs, about 1TB memory and an 8.6GB swap device.  The system was under
+heavy load and the swap device had a large number of full clusters.  The
+softlockup was triggered during a stress test after about 3 days.
+
+So, add periodic cond_resched() calls during large full_clusters
+reclaim operations to prevent softlockup issues.
+
+Detailed call trace as follow:
+
+PID: 3817773  TASK: ffff0883bb28b780  CPU: 48   COMMAND: "kworker/48:7"
+   #0 [ffff800080183d10] __crash_kexec at ffffa4c1361e5de4
+   #1 [ffff800080183d90] panic at ffffa4c1360d5e9c
+   #2 [ffff800080183e20] watchdog_timer_fn at ffffa4c136231fa8
+   ...
+  #16 [ffff8000c4ad3cb0] swap_cache_del_folio at ffffa4c1363e1614
+  #17 [ffff8000c4ad3ce0] __try_to_reclaim_swap at ffffa4c1363e4bfc
+  #18 [ffff8000c4ad3d40] swap_reclaim_full_clusters at ffffa4c1363e5474
+  #19 [ffff8000c4ad3da0] swap_reclaim_work at ffffa4c1363e550c
+  #20 [ffff8000c4ad3dc0] process_one_work at ffffa4c136102edc
+  #21 [ffff8000c4ad3e10] worker_thread at ffffa4c136103398
+  #22 [ffff8000c4ad3e70] kthread at ffffa4c13610d95c
+
+Link: https://lore.kernel.org/20260506130919.2298807-1-kerayhuang@tencent.com
+Fixes: 5168a68eb78f ("mm, swap: avoid over reclaim of full clusters")
+Signed-off-by: Zijiang Huang <kerayhuang@tencent.com>
+Reviewed-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Hao Peng <flyingpeng@tencent.com>
+Reviewed-by: albinwyang <albinwyang@tencent.com>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+Acked-by: Chris Li <chrisl@kernel.org>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Youngjun Park <youngjun.park@lge.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/mtd/spi-nor/sst.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
-index 980f4c09c91de..4c970c33957a3 100644
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -112,6 +112,8 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
- 
- 	/* Start write from odd address. */
- 	if (to % 2) {
-+		bool needs_write_enable = (len > 1);
-+
- 		nor->program_opcode = SPINOR_OP_BP;
- 
- 		/* write one byte. */
-@@ -125,6 +127,17 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
- 
- 		to++;
- 		actual++;
-+
-+		/*
-+		 * Byte program clears the write enable latch. If more
-+		 * data needs to be written using the AAI sequence,
-+		 * re-enable writes.
-+		 */
-+		if (needs_write_enable) {
-+			ret = spi_nor_write_enable(nor);
-+			if (ret)
-+				goto out;
-+		}
+ mm/swapfile.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/swapfile.c~mm-swap-add-cond_resched-in-swap_reclaim_full_clusters-to-prevent-softlockup
++++ a/mm/swapfile.c
+@@ -1054,6 +1054,7 @@ static void swap_reclaim_full_clusters(s
+ 		swap_cluster_unlock(ci);
+ 		if (to_scan <= 0)
+ 			break;
++		cond_resched();
  	}
+ }
  
- 	/* Write out most of the data here. */
--- 
-2.53.0
+_
+
+Patches currently in -mm which might be from huangzjsmile@gmail.com are
+
+mm-swap-add-cond_resched-in-swap_reclaim_full_clusters-to-prevent-softlockup.patch
 
 
