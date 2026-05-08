@@ -1,232 +1,176 @@
-Return-Path: <stable+bounces-244663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4C6OErZm/WlhdQAAu9opvQ
-	(envelope-from <stable+bounces-244663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 06:29:42 +0200
+	id aKtbIrVn/WkMdgAAu9opvQ
+	(envelope-from <stable+bounces-244664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 06:33:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA164F1875
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 06:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D128C4F18DF
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 06:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F18ED302C0FF
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 04:25:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1ACD8301FD6A
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 04:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24519328B71;
-	Fri,  8 May 2026 04:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAB71EE01A;
+	Fri,  8 May 2026 04:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="RwZmqKMW"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ofus8D2l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m1086.netease.com (mail-m1086.netease.com [154.81.10.86])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBED17BCA;
-	Fri,  8 May 2026 04:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=154.81.10.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA88D2F8EAC
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 04:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778214336; cv=none; b=jwjhgF+5Boy9qlzh9ilvGkTo0Wj3HB7QzXuiXbyf4HLw2fZxf+oMw3waSzmRgruUSvj5PlufrW86os6d1Qli7xoDMNwN63BMLz8LPqkkbNbX3WSmxCENXvL+TWO3qPzOq5vAOBhRjdAvVUPtoIiKzz3ygRYXpGAT1B4dWyLYh3o=
+	t=1778214832; cv=none; b=bteXbF0QeYvhmAMh9dXZmDcWCd7jE8Jf8ztek19PLCNdpv2H1jW/8ucBjMPdRuMwcBnEWpl4DPbWbDncMJ0TbTSpG+SD4VetVoXuIRL+PIMCeLG2szF0AaNbyy8w1pEMT+pUTHYL1hBqXMWk3MrbKe08u4Hf3uISjVc93/3UhUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778214336; c=relaxed/simple;
-	bh=imbmKA8/GIt1wbg+bEhZxp7IN9IP12IyqA4aYzLJD+o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=e4dzl6XII9k9O1D6vM/gMnOZr4N4lRRzWWXREGRfkjb+jPeNO5VJLfPETe655WwKk83m0Yu4z+PnjBXw0BDRfFfnDCSTcn+k0nelQpFUIGNozLVO/+3fhb8yBsU2X9IoN7JE9VwtCkqVHHOKZocm+FvqOWf9gisF6m3dXHXjBig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=RwZmqKMW; arc=none smtp.client-ip=154.81.10.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3d94c5089;
-	Fri, 8 May 2026 12:25:27 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: clabbe@baylibre.com
-Cc: herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	linux-crypto@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH] crypto: amlogic - avoid double cleanup in meson_crypto_probe()
-Date: Fri,  8 May 2026 12:24:16 +0800
-Message-Id: <20260508042416.419216-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1778214832; c=relaxed/simple;
+	bh=CF6CzsRqWja1BJc1mI1nxHf2+ArKjd7JVrHbaoU6erc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=pGAfhazLYxsZYd26KxenwxsFXSK57/myQ8wD38Jh3FmPcMOAEw8zkcZmM5PKfZNoTXvvhIP731zpU+OmxSpe5TRadqY2UUv6sY8gdNFlCBzm9q7zmJlXcy8CmlQlsloh55tyy5I5nVZg/eZkBUpAuaopqan/914mK1IxHL7spr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ofus8D2l; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Fri, 08 May 2026 06:33:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778214819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5pE5lh1EP4AvUvaUhonsJnT7fLdhXLCTLwJ90eIHpPg=;
+	b=ofus8D2lGEbnlCZdXHdMik3eeeAKrjxcxV97a+Mob84fY8T5W+BzNQDf8ZRN5VNIQ6fdhi
+	T8QrzM+HBiGqxHuinMZ3l6DAeeABJbo6NOueXkSud+cw3e5nwoqaJmLyO3zLkG68TXIF14
+	XOEQ7jxsJju8zxrNbd50thbOrTYDcVc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Luka Gejak <luka.gejak@linux.dev>
+To: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+CC: Sascha Hauer <s.hauer@pengutronix.de>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>, luka.gejak@linux.dev
+Subject: =?US-ASCII?Q?RE=3A_=5BPATCH_v2=5D_wifi=3A_rtw88=3A_usb=3A_fi?=
+ =?US-ASCII?Q?x_memory_leaks_on_USB_write_failures?=
+In-Reply-To: <25a127932474456f862b0a20f7c60b65@realtek.com>
+References: <20260507163709.73581-1-luka.gejak@linux.dev> <25a127932474456f862b0a20f7c60b65@realtek.com>
+Message-ID: <1C7E1191-635B-4806-946C-62DD1C82F79A@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e05d5551b03a2kunm37bde91c1c4a92
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSxlOVk5MT0IZQ0JPT0NDTFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=RwZmqKMWXSvafifpiB3lnaIkS/Ws2hOXUbtyBstRe+r09wGDe1p0qCRphGqU114LaSTlC11y6DthlTeD0cs89CFTfYy8DZ5moo0XraSfWDk3M5HSsYYKEkWFB2C6equZR6QfftJoGs4vJwMrZGNT6luBSP/LnUpsl/MFaOdMo9o=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=mHVqsCvb98Lei5CXFJf/akKsThFt9Vc2evrRIiE7DqE=;
-	h=date:mime-version:subject:message-id:from;
-X-Rspamd-Queue-Id: 9BA164F1875
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: D128C4F18DF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244663-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244664-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-When meson_allocate_chanlist() fails after a partial allocation, it already
-unwinds the allocated chanlist state through its local error path.
-meson_crypto_probe() then jump to error_flow and calls
-meson_free_chanlist() again, causing the same per-flow resources to be torn
-down twice. In the reproduced failure path, the second teardown
-re-entered crypto_engine_exit() on an already destroyed worker and KASAN
-reported a slab-use-after-free in kthread_destroy_worker().
-
-Prevent double-free by handling partial allocation failures locally within
-meson_allocate_chanlist() and skipping the outer cleanup path.
-
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available.
-
-The bug was reproduced in a QEMU x86_64 guest booted with KASAN on v7.1,
-using the reproducer under tools/testing/meson_crypto_probe. The reproducer
-forces the second dma_alloc_attrs() call in the gxl-crypto probe path to
-return NULL, making meson_allocate_chanlist() fail after partial
-initialization. On the unpatched kernel this reliably triggered a
-slab-use-after-free. With this fix applied, the same reproducer no longer
-emits any KASAN report and the probe fails cleanly with -ENOMEM.
-
-    ==================================================================
-    BUG: KASAN: slab-use-after-free in kthread_destroy_worker+0xb2/0xd0
-    Read of size 8 at addr ff1100010c057a68 by task insmod/265
-
-    CPU: 1 UID: 0 PID: 265 Comm: insmod Tainted: G           O        7.1.0-rc2-00376-g810af9adc907-dirty #10 PREEMPT(lazy)
-    Tainted: [O]=OOT_MODULE
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-    Call Trace:
-     <TASK>
-     dump_stack_lvl+0x68/0xa0
-     print_report+0xcb/0x5e0
-     ? __virt_addr_valid+0x21d/0x3f0
-     ? kthread_destroy_worker+0xb2/0xd0
-     ? kthread_destroy_worker+0xb2/0xd0
-     kasan_report+0xca/0x100
-     ? kthread_destroy_worker+0xb2/0xd0
-     kthread_destroy_worker+0xb2/0xd0
-     meson_crypto_probe+0x4d0/0xc10 [amlogic_gxl_crypto]
-     platform_probe+0x99/0x140
-     really_probe+0x1c6/0x6a0
-     ? __pfx___device_attach_driver+0x10/0x10
-     __driver_probe_device+0x248/0x310
-     ? acpi_driver_match_device+0xb0/0x100
-     driver_probe_device+0x48/0x210
-     ? __pfx___device_attach_driver+0x10/0x10
-     __device_attach_driver+0x160/0x320
-     bus_for_each_drv+0x104/0x190
-     ? __pfx_bus_for_each_drv+0x10/0x10
-     ? _raw_spin_unlock_irqrestore+0x2c/0x50
-     __device_attach+0x19d/0x3b0
-     ? __pfx___device_attach+0x10/0x10
-     ? do_raw_spin_unlock+0x53/0x220
-     device_initial_probe+0x78/0xa0
-     bus_probe_device+0x5b/0x130
-     device_add+0xcfd/0x1430
-     ? __pfx_device_add+0x10/0x10
-     ? insert_resource+0x34/0x50
-     ? lock_release+0xc9/0x290
-     platform_device_add+0x24e/0x590
-     ? __pfx_meson_crypto_probe_repro_init+0x10/0x10 [meson_crypto_probe_repro]
-     meson_crypto_probe_repro_init+0x330/0xff0 [meson_crypto_probe_repro]
-     do_one_initcall+0xc0/0x450
-     ? __pfx_do_one_initcall+0x10/0x10
-     ? _raw_spin_unlock_irqrestore+0x2c/0x50
-     ? __create_object+0x59/0x80
-     ? kasan_unpoison+0x27/0x60
-     do_init_module+0x27b/0x7d0
-     ? __pfx_do_init_module+0x10/0x10
-     ? kasan_quarantine_put+0x84/0x1d0
-     ? kfree+0x32c/0x510
-     ? load_module+0x561e/0x5ff0
-     load_module+0x54fe/0x5ff0
-     ? __pfx_load_module+0x10/0x10
-     ? security_file_permission+0x20/0x40
-     ? kernel_read_file+0x23d/0x6e0
-     ? mmap_region+0x235/0x4a0
-     ? __pfx_kernel_read_file+0x10/0x10
-     ? __file_has_perm+0x2c0/0x3e0
-     init_module_from_file+0x158/0x180
-     ? __pfx_init_module_from_file+0x10/0x10
-     ? __lock_acquire+0x45a/0x1ba0
-     ? idempotent_init_module+0x315/0x610
-     ? lock_release+0xc9/0x290
-     ? lockdep_init_map_type+0x4b/0x220
-     ? do_raw_spin_unlock+0x53/0x220
-     idempotent_init_module+0x330/0x610
-     ? __pfx_idempotent_init_module+0x10/0x10
-     ? __pfx_cred_has_capability.isra.0+0x10/0x10
-     ? ksys_mmap_pgoff+0x385/0x520
-     __x64_sys_finit_module+0xbe/0x120
-     do_syscall_64+0x115/0x690
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-    RIP: 0033:0x7f7d6d31690d
-    Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d f3 b4 0f 00 f7 d8 >
-    RSP: 002b:00007fffc027ac68 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-    RAX: ffffffffffffffda RBX: 000055f7b81967c0 RCX: 00007f7d6d31690d
-    RDX: 0000000000000000 RSI: 000055f79a0d6cd2 RDI: 0000000000000003
-    RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-    R10: 0000000000000003 R11: 0000000000000246 R12: 000055f79a0d6cd2
-    R13: 000055f7b8196790 R14: 000055f79a0d5888 R15: 000055f7b81968e0
-     </TASK>
-
-Fixes: 48fe583fe541 ("crypto: amlogic - Add crypto accelerator for amlogic GXL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/crypto/amlogic/amlogic-gxl-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/crypto/amlogic/amlogic-gxl-core.c b/drivers/crypto/amlogic/amlogic-gxl-core.c
-index 1c18a5b8470e..6cb33949915f 100644
---- a/drivers/crypto/amlogic/amlogic-gxl-core.c
-+++ b/drivers/crypto/amlogic/amlogic-gxl-core.c
-@@ -291,8 +291,8 @@ static int meson_crypto_probe(struct platform_device *pdev)
- 	return 0;
- error_alg:
- 	meson_unregister_algs(mc);
--error_flow:
- 	meson_free_chanlist(mc, MAXFLOW - 1);
-+error_flow:
- 	clk_disable_unprepare(mc->busclk);
- 	return err;
- }
--- 
-2.34.1
-
+On May 8, 2026 5:47:55 AM GMT+02:00, Ping-Ke Shih <pkshih@realtek=2Ecom> wr=
+ote:
+>luka=2Egejak@linux=2Edev <luka=2Egejak@linux=2Edev> wrote:
+>> From: Luka Gejak <luka=2Egejak@linux=2Edev>
+>>=20
+>> When rtw_usb_write_port() fails to submit a USB Request Block (URB)
+>> (e=2Eg=2E, due to device disconnect or ENOMEM), the completion callback=
+ is
+>> never executed=2E
+>>=20
+>> Currently, the driver ignores the return value of rtw_usb_write_port()
+>> in rtw_usb_write_data() and rtw_usb_tx_agg_skb()=2E Because these
+>> functions rely on the completion callback to free the socket buffers
+>> (skbs) and the transaction control block (txcb), a submission failure
+>> results in:
+>> 1=2E A memory leak of the allocated skb in rtw_usb_write_data()=2E
+>> 2=2E A memory leak of the txcb structure and all aggregated skbs in
+>>    rtw_usb_tx_agg_skb()=2E
+>>=20
+>> Fix this by checking the return value of rtw_usb_write_port()=2E If it
+>> fails, explicitly free the skb in rtw_usb_write_data(), and properly
+>> purge the tx_ack_queue and free the txcb in rtw_usb_tx_agg_skb()=2E
+>>=20
+>> The issue was discovered in practice during device disconnect/reconnect
+>> scenarios and memory pressure conditions=2E Tested by verifying normal =
+TX
+>> operation continues after the fix without regressions=2E
+>
+>Did the memory pressure condition happen? and falls into the cases you ar=
+e
+>adding? This is main thing I want to know=2E
+>
+>>=20
+>> Fixes: 87caeef032fc ("wifi: rtw88: Add rtw8723du chipset support")
+>
+>I don't find this commit touching the code related to this patch=2E
+>
+>> Cc: stable@vger=2Ekernel=2Eorg
+>> Tested-by: Luka Gejak <luka=2Egejak@linux=2Edev>
+>> Signed-off-by: Luka Gejak <luka=2Egejak@linux=2Edev>
+>> ---
+>> Changes in v2:
+>>  - Use ret =3D rtw_usb_write_port(=2E=2E=2E); style, and check by next =
+line (in
+>>    rtw_usb_tx_agg_skb)
+>>  - Remove unnecessary comment
+>>  - Use ieee80211_purge_tx_queue() instead of skb_queue_purge()
+>
+>If it falls into the case, you will see some warnings without this change=
+=2E
+>
+>Again, I'd like to know if OOM can happen in your test? If not, the test
+>you are doing will prove nothing, since your changes are executed only if=
+ OOM=2E
+>
+>>  - Add testing details to commit message
+>>=20
+>
+While triggering a genuine OOM condition (-ENOMEM) during=20
+usb_submit_urb is admittedly difficult to force and rare in standard=20
+environments, my testing primarily relied on device disconnects=2E
+When a USB adapter is abruptly unplugged, rtw_usb_write_port()=20
+naturally fails to submit the URB=20
+(returning -ENODEV, -ESHUTDOWN, etc=2E)=2E When this happens, the USB=20
+subsystem never executes the completion callback=20
+(rtw_usb_write_port_tx_complete or rtw_usb_write_port_complete)=2E=20
+Because the original code ignored the return value of=20
+rtw_usb_write_port(), it leaked the skb and txcb structures every time
+a write was attempted immediately following a disconnect=2E Checking the
+return value catches this exact submission failure and frees the=20
+structures on the spot=2E
+And should I use commit that introduced USB support for Fixes tag?
+Best regards,
+Luka Gejak
 
