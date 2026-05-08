@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-244740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNjSKljA/WkpigAAu9opvQ
-	(envelope-from <stable+bounces-244740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 12:52:08 +0200
+	id EB8TBAvE/WkpigAAu9opvQ
+	(envelope-from <stable+bounces-244741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 13:07:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8D44F54CE
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 12:52:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FABA4F57E6
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 13:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4EFC83034300
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 10:51:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 152A630421DF
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 11:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEC83101A7;
-	Fri,  8 May 2026 10:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197BC3101B6;
+	Fri,  8 May 2026 11:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFyUY/4R"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lQ4iQgkp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9294A07;
-	Fri,  8 May 2026 10:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF85351C2A;
+	Fri,  8 May 2026 11:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778237498; cv=none; b=ZI0lWR6Ob9doHE4h3KD48TtQ55H4Pc+eEf6tqGPZhtZPQYhTUQgNu9kN2zf7KZUbGhcv81PeAm+Hg+XqT9U470UsLF258JvAJoi7vHmaSPvUxk7AthD2VujDddP3ZqAw249QtThmqSqm1PvBx93CLIuWX331ylnHifGipCQ/Ecs=
+	t=1778238112; cv=none; b=OmmdTIRYbFuqTn6YlJYaozC3muaBaGFBT0VhFx1ShvHQjaJEUNhw9XSax58jEAg09O7xOxLxawMtzAhPFTv3nx4QZcjLw7pbHBx7FVqYuai9W1WkmA1wc0X9NKehSknX7UthSbflObT4OrRZUY8vq4PffbFiK3Zi964a5cszpCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778237498; c=relaxed/simple;
-	bh=qCpEEfxXt+O2YalNOz8YFSPd7ea9aZm7SxUJ43Dltv4=;
+	s=arc-20240116; t=1778238112; c=relaxed/simple;
+	bh=mqK+2YeESJaV7QV6CYDbc34GQT+5UVZCH1ggHivoFU8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m+rSjYHSzRgc4cZnON+3B8bXwdMm8NPgkj8S5H5t9FTEK0Cxxt8bTd2Tcsp2l3ZkaMaACQUkzUSS/hXHhEdzRY+5H6d89eo7MmPwHfmIKCWoSG2TMxfsovdkC9+Ex4n8b6LXkuNtv7rqhF2bHKlzBzb+zZMpvpbxcUTZlB1KpR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFyUY/4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6125AC2BCB0;
-	Fri,  8 May 2026 10:51:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778237498;
-	bh=qCpEEfxXt+O2YalNOz8YFSPd7ea9aZm7SxUJ43Dltv4=;
+	 In-Reply-To:Content-Type; b=cRsq09/ABHAPEz3YcqalIRmYPTKS4hpQb/DQdXrGXhK7y4ORuZMt5oGjitkyIiciyA80C1ppnoR7FFLOQHShyWqQubli2kiuqUCyfdV/FvCL7BB+Q1F5/aJ+AGH42ZYFZWwa2sRpDzc2bEXHJqNTRlpAdX253GoF/2mG7fvJoQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lQ4iQgkp; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3437E1BCA;
+	Fri,  8 May 2026 04:01:44 -0700 (PDT)
+Received: from [10.57.63.248] (unknown [10.57.63.248])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1F0FA3F763;
+	Fri,  8 May 2026 04:01:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778238109; bh=mqK+2YeESJaV7QV6CYDbc34GQT+5UVZCH1ggHivoFU8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hFyUY/4RVuCp9PbaDxytWEEh5iyW1CSlyT8wIvpIfGE+c17XC4wEEtzslZWwYLIPK
-	 lngFKI70LiyK0+lA4OOoIvpfjpAtULpiL6HuAMJWS0REi3HtCWqJglVQSm4G8wrpGx
-	 X5BrVT0vHz5MUiDzsBEB6ZzWqVskqNqpamiHDQpbCMtmQLLM3/voRHlXN/OiuuXbAG
-	 R291+c13szL/G7sg10Cdllhc+46mqJ+Zh1alQ4NkIB41hRGiMsRVg+Bsvj1MLr4P7X
-	 7/SB+xOG8ybgJb5B2J3X4ISSt29Lb/qYJo7pjmWRKULLsAeEUWxDDrs1MraCRaMFaD
-	 P8gNZl34eATiw==
-Message-ID: <32fc4c35-acdb-4202-8369-ac0fe00c5b86@kernel.org>
-Date: Fri, 8 May 2026 12:51:31 +0200
+	b=lQ4iQgkpS5ezS7c4f00lDSFmSEvhs+mspN0EmqGsx5if4FCwdrzbHpdT7mnfOkyk8
+	 dJTni/hnNWwcrLgw/p2GP7ZB2BYC71vQBRK+9D7NLF7VD9a8LhTQC0qKrTUgtm4ffy
+	 vInVgGd10H0aWhQD0xqoa1/PQtE3/RcWIol2KOT4=
+Message-ID: <ad90b0cd-a5d2-4953-af7d-753aed60354f@arm.com>
+Date: Fri, 8 May 2026 12:01:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,151 +53,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/mm: fix freeing of PMD-sized vmemmap pages
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, Lu Baolu <baolu.lu@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lance Yang
- <lance.yang@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
- <0c20d1e6-1a39-42c5-8c94-9bd2222fb6b3@kernel.org>
- <20260508092341.GP3126523@noisy.programming.kicks-ass.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260508092341.GP3126523@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0D8D44F54CE
+Subject: Re: [PATCH] dma-mapping: remove bogus test for pfn_valid from
+ dma_map_resource
+To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>, m.szyprowski@samsung.com
+Cc: leon@kernel.org, kbusch@kernel.org, jgg@ziepe.ca, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260507032120.4072283-1-jianpeng.chang.cn@windriver.com>
+ <2dcc29d6-a4a9-4fdf-861d-312941ab0f07@arm.com>
+ <89094011-fe78-40f9-9695-d50ee19167c5@windriver.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <89094011-fe78-40f9-9695-d50ee19167c5@windriver.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6FABA4F57E6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244740-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244741-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,arm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On 5/8/26 11:23, Peter Zijlstra wrote:
-> On Fri, May 08, 2026 at 11:19:26AM +0200, David Hildenbrand (Arm) wrote:
->> On 4/29/26 12:49, David Hildenbrand (Arm) wrote:
->>> In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
->>> from freeing non-boot page tables through __free_pages() to
->>> pagetable_free().
->>>
->>> However, the function is also called to free vmemmap pages.
->>>
->>> Given that vmemmap pages are not page tables, already the page_ptdesc(page)
->>> is wrong. But worse, pagetable_free() calls
->>>
->>> 	__free_pages(page, compound_order(page));
->>>
->>> As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
->>> except for HVO, which doesn't apply here -- we will only free the first
->>> page when freeing a PMD-sized vmemmap page, leaking the other ones.
->>>
->>> Fix it by properly decoupling pagetable and vmemmap freeing.
->>> free_pagetable() no longer has to mess with SECTION_INFO, as only the
->>> vmemmap is marked like that in register_page_bootmem_memmap().
->>>
->>> The indentation in remove_pmd_table() is messed up, let's fix that
->>> while touching it.
->>>
->>> Note that we'll try to get rid of that bootmem info handling soon. For
->>> now, we'll handle it similar to free_pagetable(), just avoiding the
->>> ifdef.
->>>
->>> Tested-by: Lance Yang <lance.yang@linux.dev>
->>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>> Reproduced and tested with a simple VM with a virtio-mem device,
->>> repeatedly adding and removing memory.
->>>
->>> Found by code inspection while working on bootmem_info removal.
->>> ---
->>
->> @x86 maintainers, do you want to take this through your tree or should we merge
->> this through the MM tree?
->>
->> I have another MM series coming up that will touch this code (no fixes, though).
+On 2026-05-08 11:01 am, Jianpeng Chang wrote:
 > 
-> I'm thinking this should go in rather more urgent, yes?
+> 
+> 在 2026/5/7 下午9:18, Robin Murphy 写道:
+>> CAUTION: This email comes from a non Wind River email account!
+>> Do not click links or open attachments unless you recognize the sender 
+>> and know the content is safe.
+>>
+>> On 07/05/2026 4:21 am, Jianpeng Chang wrote:
+>>> dma_map_resource() uses pfn_valid() to ensure the range is not RAM.
+>>> However, pfn_valid() only checks for availability of the memory map 
+>>> for a
+>>> PFN but it does not ensure that the PFN is actually backed by RAM. On
+>>> ARM64 with SPARSEMEM (128MB section granularity), MMIO addresses that
+>>> share a section with RAM will falsely trigger the WARN_ON_ONCE.
+>>>
+>>> This causes a WARNING on Raspberry Pi 4 during spi_bcm2835 probe because
+>>> the SPI FIFO register (0xfe204004) falls in the same sparsemem 
+>>> section as
+>>> the end of RAM (0xf8000000-0xfbffffff), both in section 31
+>>> (0xf8000000-0xffffffff).
+>>>
+>>> The pfn_valid() check was originally removed by commit a9c38c5d267c
+>>> ("dma-mapping: remove bogus test for pfn_valid from dma_map_resource")
+>>> but was accidentally re-introduced by commit f7326196a781
+>>> ("dma-mapping: export new dma_*map_phys() interface") during the
+>>> refactoring of dma_map_resource() into a wrapper around dma_map_phys().
+>>>
+>>> Drop the pfn_valid() test from dma_map_resource() again.
+>>
+>> As I said last time, I think pfn_valid() && !PageReserved(pfn_to_page())
+>> would be enough for what we want here, although now it's strictly under
+>> CONFIG_DMA_API_DEBUG, perhaps the overhead of memblock_is_map_memory()
+>> might be less of an issue. Either way though, now that it's all
+>> channelled through the single dma_map_phys() path, it would probably
+>> make sense to consolidate any MMIO sanity-checking into
+>> dma_debug_map_phys() anyway :/
+> Thanks for the suggestion. Move the check into debug_dma_map_phys() is 
+> indeed better, and I will replace pfn_valid() with pfn_valid() && ! 
+> PageReserved() as you suggested.
 
-Yes, please :)
+Oh, and just to clarify on the points DavidH raised last time, indeed 
+PageReserved isn't 100% accurate for this, and there may well be 
+reserved pages which shouldn't be DMA-mapped either, but that's a 
+reasonable false-negative (especially compared to having no check at 
+all!) - the main thing is any *non*-reserved page represents "kernel 
+memory" to enough of a degree that using DMA_ATTR_MMIO is almost 
+certainly wrong and liable to break coherency.
 
--- 
 Cheers,
-
-David
+Robin.
 
