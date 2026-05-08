@@ -1,154 +1,154 @@
-Return-Path: <stable+bounces-244821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wP1DIeJB/mkZogAAu9opvQ
-	(envelope-from <stable+bounces-244821-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 22:04:50 +0200
+	id oN5dCmJE/mlFogAAu9opvQ
+	(envelope-from <stable+bounces-244822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 22:15:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D964FB533
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 22:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 986B64FB64C
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 22:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0277B302AD39
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 20:04:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D70F83044A41
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 20:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC0B327C09;
-	Fri,  8 May 2026 20:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034D6402B8B;
+	Fri,  8 May 2026 20:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOxl53wq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0HPuCH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF8A27979A
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 20:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B583FB7F1
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 20:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778270687; cv=none; b=jgeEaZzHSXjA3vmSQdEA1X0BhXcO7L0wCgGmCoddIs0eHrypkhc8Vokqj+WOyUsd0WnybetzaY78ffZ2GG0o2/Z+s8CErZPtfh2F07gJgCJqC6DkusA5BFcpMOLiQSpkNORGd4UWn91e+JTh7v96AiEjI0okO/WRuDkeWjVUtf8=
+	t=1778271262; cv=none; b=j5IDhIMLwohUOVOT2SXuZSfHhRopsLIUuSnIGDo9sqUACWAaIN1FE7zHUOV8X31VnhlH9PITgSCI9JppAt83IvrlKP8GIi5CWcFoREkS02vm0+jRqpFa1XmSzRdQgaTpvHfb2V9ZXVLzNMMKR/Iuoru7MrqrrbuckJZR5QO3yac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778270687; c=relaxed/simple;
-	bh=zb1ItW0gsMGPsy0U1aAJKq+lS/E4LKV/qzBTLDGMxaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UvU/yB+UOAymFY2t69tkGYVaqxtO1Vso3yI9Gb2NMGDW/rg6tD7pLVw84qe8hovZ6fmj8MjfpCDq8EwA9fgrWBmbtDnXzLpAocaLRzKm6mBfq7V01c7nZrFNtz58AvHJffob0Fv8h/BlT1wzorpvadJfZzIlwgRgi+GFFEsyNzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOxl53wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1CCC2BCB0;
-	Fri,  8 May 2026 20:04:46 +0000 (UTC)
+	s=arc-20240116; t=1778271262; c=relaxed/simple;
+	bh=vJz4MyRRqHz69E66/O5kDd7yLuLDgBnoNU4QmBDbKH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P5ypWJG+JJ2eDWOV5McuRs8XD4yLIT7XXxvbwkANmDaRC63vuuI651F2QQ/PNQJFsdA1BZbwJW9UqedhOw315/61LZIRed8gU7QWtc+RtFXBHn4/6fVF0eN1+flvSQV5qvDvyNQaXYgLOuLJyN4QxNPFiPf7Bkk1htEWPLAnOeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0HPuCH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E562BC2BCB0;
+	Fri,  8 May 2026 20:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778270687;
-	bh=zb1ItW0gsMGPsy0U1aAJKq+lS/E4LKV/qzBTLDGMxaI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOxl53wqifLormDM114FwlnFMQ3DD+mrflUFrT/DfqzAmZePCWrBofnwQpXlTKwwo
-	 SD2+mvQ84l6rBmaQ+5pK3LlIFH+tWkYBex4Lw+pH11Klyj+Ed4qvCbitk7JJ9ROVO4
-	 ZKI9JS3p31l6cc9KbB+CVBlQZgpruBffyD/+Tf+Yu6WYsWCWffx9IvinQ7pdTiDQR/
-	 Jvlh9tjOzMslUvLKi2R0wsT8xFFsxZWqWBj82lY97QZKJ+VgqJyLZQEIXP5nMjmMzl
-	 uxbrdLOK8wSveudsFLWP15FawO9295CewzDyZH69xky01KrvNpUyxoRos2j2fBohKw
-	 S16B7yGW/ut3g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Seohyeon Maeng <bioloidgp@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] udf: fix partition descriptor append bookkeeping
-Date: Fri,  8 May 2026 16:04:44 -0400
-Message-ID: <20260508200444.1891021-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050425-dinner-bonanza-9b96@gregkh>
-References: <2026050425-dinner-bonanza-9b96@gregkh>
+	s=k20201202; t=1778271262;
+	bh=vJz4MyRRqHz69E66/O5kDd7yLuLDgBnoNU4QmBDbKH8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X0HPuCH3VKSVAgYNq1BiEMopDgkpml7Z3vYl/cl6W3NQI8Dz1qCUJBil/Xn67GTB2
+	 D3/AsCHQR0pflmpQiuZCoM9M3WZCe8pL990tH4+zAtLjdRNi7wO4w41MDZEObfQo6H
+	 +rpG6aRDjlatM7fDFcnDcdtWhi7E618AHM8ubUG1faVgbGsFUM5/+zKEthpOvXYG8y
+	 U8QcO93G8dTTph3UNeretPLCP71m14CKowSEgk4fsqu4UcmdrXn8zGezKRgA44bxH9
+	 Qmv+q9FERQUzEsAevbr0GoFpkX5Ht8yT85GhfNW4/9hgAAE6FSCIdlFMdsB+mJJUBu
+	 BZLnNNbNb+L2w==
+Date: Fri, 8 May 2026 22:14:19 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: viorel.suman@oss.nxp.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] pwm: imx-tpm: Count the number of enabled
+ channels in probe" failed to apply to 6.1-stable tree
+Message-ID: <af5CI1ZrJIAoUnf5@monoceros>
+References: <2026050332-washer-legislate-ef0e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E8D964FB533
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="g7bl57fqxct5su22"
+Content-Disposition: inline
+In-Reply-To: <2026050332-washer-legislate-ef0e@gregkh>
+X-Rspamd-Queue-Id: 986B64FB64C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244822-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244821-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ukleinek@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.cz:email]
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,gregkh:email]
 X-Rspamd-Action: no action
 
-From: Seohyeon Maeng <bioloidgp@gmail.com>
 
-[ Upstream commit 08841b06fa64d8edbd1a21ca6e613420c90cc4b8 ]
+--g7bl57fqxct5su22
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: FAILED: patch "[PATCH] pwm: imx-tpm: Count the number of enabled
+ channels in probe" failed to apply to 6.1-stable tree
+MIME-Version: 1.0
 
-Mounting a crafted UDF image with repeated partition descriptors can
-trigger a heap out-of-bounds write in part_descs_loc[].
+Hello Greg,
 
-handle_partition_descriptor() deduplicates entries by partition number,
-but appended slots never record partnum. As a result duplicate
-Partition Descriptors are appended repeatedly and num_part_descs keeps
-growing.
+On Sun, May 03, 2026 at 01:46:32PM +0200, gregkh@linuxfoundation.org wrote:
+>=20
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>=20
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>=20
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 3962c24f2d14e8a7f8a23f56b7ce320523947342
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050332-=
+washer-legislate-ef0e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+>=20
 
-Once the table is full, the growth path still sizes the allocation from
-partnum even though inserts are indexed by num_part_descs. If partnum is
-already aligned to PART_DESC_ALLOC_STEP, ALIGN(partnum, step) can keep
-the old capacity and the next append writes past the end of the table.
+You wrote already on 2026-05-03 about this patch that failed to apply to
+6.6, 6.1, 5.15 and 5.10. I replied to the 6.6 one with the exact patch
+that Sasha now recreated in reply to this new 6.1 failure. I would have
+expected that the 6.6 backport is tried to be applied to 6.1 and the
+other older versions given the mainline original doesn't apply cleanly.
 
-Store partnum in the appended slot and size growth from the next append
-count so deduplication and capacity tracking follow the same model.
+:-( that this resulted in duplicate work being done
 
-Fixes: ee4af50ca94f ("udf: Fix mounting of Win7 created UDF filesystems")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seohyeon Maeng <bioloidgp@gmail.com>
-Link: https://patch.msgid.link/20260310081652.21220-1-bioloidgp@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-[ replaced kzalloc_objs() helper with equivalent kcalloc() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/udf/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Uwe
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index cb13a07a4aa85..dbf5faf079128 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1656,8 +1656,9 @@ static struct udf_vds_record *handle_partition_descriptor(
- 			return &(data->part_descs_loc[i].rec);
- 	if (data->num_part_descs >= data->size_part_descs) {
- 		struct part_desc_seq_scan_data *new_loc;
--		unsigned int new_size = ALIGN(partnum, PART_DESC_ALLOC_STEP);
-+		unsigned int new_size;
- 
-+		new_size = data->num_part_descs + PART_DESC_ALLOC_STEP;
- 		new_loc = kcalloc(new_size, sizeof(*new_loc), GFP_KERNEL);
- 		if (!new_loc)
- 			return ERR_PTR(-ENOMEM);
-@@ -1667,6 +1668,7 @@ static struct udf_vds_record *handle_partition_descriptor(
- 		data->part_descs_loc = new_loc;
- 		data->size_part_descs = new_size;
- 	}
-+	data->part_descs_loc[data->num_part_descs].partnum = partnum;
- 	return &(data->part_descs_loc[data->num_part_descs++].rec);
- }
- 
--- 
-2.53.0
+--g7bl57fqxct5su22
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmn+RBgACgkQj4D7WH0S
+/k5ZTgf8CXXgMtIvbo5N0m2GVWxyhTqaJCmLFB+vEFwfEvuq6MfyuiZcOYjema+4
+UgYmL9scgOZwx+WiTnYhQu+QFNRJDInzjz5ZK+KfvKGOOq5XnT7WH57JsWv4pS1C
+s7+A8F6wngopTMTpIUE6iPZDo7ccXhg9duHm6QZy1GbypJuq4xnWJIqZ6eER33gb
+YQ2/yGgu1GPUa+WB+uTkEfiWfwz/uqZ7y6OujDxJANTSJRN1QA/ywLuTbhx4xAjY
+bwFROBivx/kRLoYuodO8WFjo27WtAes+tR2EfWybMpvImWegRipvqYyuew5qHxYW
+f2tkyeCFW9qfXoD1gBosptWSm7Dgbg==
+=ke9W
+-----END PGP SIGNATURE-----
+
+--g7bl57fqxct5su22--
 
