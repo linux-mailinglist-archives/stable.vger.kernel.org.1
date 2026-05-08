@@ -1,174 +1,150 @@
-Return-Path: <stable+bounces-244678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADRzHO2J/WnWfgAAu9opvQ
-	(envelope-from <stable+bounces-244678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 08:59:57 +0200
+	id QINODMCP/WnWfgAAu9opvQ
+	(envelope-from <stable+bounces-244681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:24:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831284F2B28
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 08:59:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3331C4F2F6C
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 09:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD7A83010695
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 06:59:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 253E7301946A
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 07:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8297036EAAB;
-	Fri,  8 May 2026 06:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="X+4ni4mq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DA337189A;
+	Fri,  8 May 2026 07:24:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp134-32.sina.com.cn (smtp134-32.sina.com.cn [180.149.134.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A01358372
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 06:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.32
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A615E1D5CFB;
+	Fri,  8 May 2026 07:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778223575; cv=none; b=rRTf1PX+EViUMMMaZps8l8C9GzpzP3CJH6sy4nPgs35nxatH8K+pYodQYyhuwKSiOL7UJ2rjUi6kP1CzUmSme0Acpkz1YwEQQKkZlJCR+7gjkJ+oLViH5Huv+/aKGG6nktvdoCcT5rQthzGsPGPNJo59M/mmNzaGehX8tc5ULp0=
+	t=1778225074; cv=none; b=BiyhgJLCo4AaiABMGpapwoLwXsf4GBf9EQNfp+VsHWgXen510y906RwsXQtIxyHnVrrlN9lbF8OrfCUqCdZKQnd5HMQD84IgDTTuOx1aEH1dwANVqSlNEPjfDtXM1hrlS37gYEjFF6BNitzg867v4uSP3I2BiKzG4vfj3eKTTlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778223575; c=relaxed/simple;
-	bh=EnYg4YStxteAETbi/pqzyOEawxnwsuPqt4HqxD9x2SI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ToMMTvpw3IGFSI1BPzAvzxv17LYQvlqy4IibGckjsWpbPIB9D0pJh7fHxuA5eJfgRWiuWg204X+V1gHuf6c00542DowlkL71OMgDG4TA6u5Ugr62scc2RfQ7iMJm3jE4FJdRfCifN0MjgLVtq1wwQpkDf9CCXszODVC9YyGlaCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=X+4ni4mq; arc=none smtp.client-ip=180.149.134.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1778223566;
-	bh=oQlBFXWBtVJr2Gtmt8ckdNW6h+dG64f8U7L3BEb5vF0=;
-	h=From:Subject:Date:Message-Id;
-	b=X+4ni4mqSi1VI98WHnh2bnG1zKP7MSmnopjGRDqvUtvP6g4UZxFihJocHPLbuDopB
-	 l8QfqRzBMol7jCziBGNNRrabqYhe9g0jp8Cb+vN6PEN+FRn3ZWQigAUMzcZrYkXPMb
-	 3/D08O3D5iGfJtn1BO3aI5i6elBs92pkirtQmxiU=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.21) with ESMTP
-	id 69FD89A50000270D; Fri, 8 May 2026 14:58:47 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 6295883408445
-X-SMAIL-UIID: F7F94DC9A00340F5A0DB27FCDA67CEBC-20260508-145847-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	tejas.bharambe@outlook.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	tytso@mit.edu,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH 6.6.y] ext4: validate p_idx bounds in ext4_ext_correct_indexes
-Date: Fri,  8 May 2026 14:58:45 +0800
-Message-Id: <20260508065845.3031006-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1778225074; c=relaxed/simple;
+	bh=TI90CHXwtptjDqV8T7my7F6jyD1/4mK2rWz8hwhRW3o=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=SZABRBiaID/6zmmSBVG3bwLK1urdEXlI1IeVGD5D9S8HTqvUFrYEsn5Ha+r6CFBq9iTqXKw4H2kX88Q0VBnCtjdxYAYufH4Yq4TpOEktoRr6xPgzmUmgRnqWih82ByIKriBuHHAttoF7K7g/vUL5So1jOopxxA8XJuIj6UNCfW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8BxT+qpj_1pis4HAA--.24411S3;
+	Fri, 08 May 2026 15:24:25 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxTMKoj_1pUcZ8AA--.38271S3;
+	Fri, 08 May 2026 15:24:24 +0800 (CST)
+Subject: Re: [PATCH 2/5] KVM: loongarch: Grab MMU lock in
+ kvm_arch_flush_shadow_all()
+To: James Houghton <jthoughton@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, Sean Christopherson <seanjc@google.com>,
+ Gavin Shan <gshan@redhat.com>, Shaoqin Huang <shahuang@redhat.com>,
+ Ricardo Koller <ricarkol@google.com>, Tianrui Zhao
+ <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ James Hogan <jhogan@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260504224213.1049426-1-jthoughton@google.com>
+ <20260504224213.1049426-3-jthoughton@google.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <f47ec704-813e-e6a2-687b-7076be465a1b@loongson.cn>
+Date: Fri, 8 May 2026 15:21:28 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260504224213.1049426-3-jthoughton@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 831284F2B28
+X-CM-TRANSID:qMiowJDxTMKoj_1pUcZ8AA--.38271S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7XFWrCw1UZrW7Kw4rAr13Awc_yoWkCrc_AF
+	12yw10grWxJa93X3Wkt3W3tF9Iyw1rCFsavrn7Xr97J3s8t3sakr4jgan3Cr90grWxWFW3
+	ArWDZrZ5Zr4avosvyTuYvTs0mTUanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbqkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07joc_-UUU
+	UU=
+X-Rspamd-Queue-Id: 3331C4F2F6C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	NEURAL_HAM(-0.00)[-0.937];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,outlook.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244678-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[sina.cn:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[sina.cn];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email,appspotmail.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244681-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[loongson.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email,loongson.cn:mid]
 X-Rspamd-Action: no action
 
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
 
-[ Upstream commit 2acb5c12ebd860f30e4faf67e6cc8c44ddfe5fe8 ]
 
-ext4_ext_correct_indexes() walks up the extent tree correcting
-index entries when the first extent in a leaf is modified. Before
-accessing path[k].p_idx->ei_block, there is no validation that
-p_idx falls within the valid range of index entries for that
-level.
-
-If the on-disk extent header contains a corrupted or crafted
-eh_entries value, p_idx can point past the end of the allocated
-buffer, causing a slab-out-of-bounds read.
-
-Fix this by validating path[k].p_idx against EXT_LAST_INDEX() at
-both access sites: before the while loop and inside it. Return
--EFSCORRUPTED if the index pointer is out of range, consistent
-with how other bounds violations are handled in the ext4 extent
-tree code.
-
-Reported-by: syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=04c4e65cab786a2e5b7e
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Link: https://patch.msgid.link/JH0PR06MB66326016F9B6AD24097D232B897CA@JH0PR06MB6632.apcprd06.prod.outlook.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
----
- fs/ext4/extents.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 7626cf2b07f1..a94798e23c1a 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1743,6 +1743,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 	err = ext4_ext_get_access(handle, inode, path + k);
- 	if (err)
- 		return err;
-+	if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+		EXT4_ERROR_INODE(inode,
-+				 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+				 k, path[k].p_idx,
-+				 EXT_LAST_INDEX(path[k].p_hdr));
-+		return -EFSCORRUPTED;
-+	}
- 	path[k].p_idx->ei_block = border;
- 	err = ext4_ext_dirty(handle, inode, path + k);
- 	if (err)
-@@ -1755,6 +1762,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 		err = ext4_ext_get_access(handle, inode, path + k);
- 		if (err)
- 			break;
-+		if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+			EXT4_ERROR_INODE(inode,
-+					 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+					 k, path[k].p_idx,
-+					 EXT_LAST_INDEX(path[k].p_hdr));
-+			err = -EFSCORRUPTED;
-+			break;
-+		}
- 		path[k].p_idx->ei_block = border;
- 		err = ext4_ext_dirty(handle, inode, path + k);
- 		if (err)
--- 
-2.34.1
+On 2026/5/5 上午6:42, James Houghton wrote:
+> kvm_arch_flush_shadow_all() may be called concurrently on the same
+> `kvm`. This could at least result in accounting mistakes (e.g.
+> underflows on `kvm->stat.*pages`).
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 752e2cd7b4fb ("LoongArch: KVM: Implement kvm mmu operations")
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+> Note: This is compile-tested only!
+> 
+>   arch/loongarch/kvm/mmu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
+> index a7fa458e3360..5dbce9b18e1c 100644
+> --- a/arch/loongarch/kvm/mmu.c
+> +++ b/arch/loongarch/kvm/mmu.c
+> @@ -486,7 +486,7 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+>   
+>   void kvm_arch_flush_shadow_all(struct kvm *kvm)
+>   {
+> -	kvm_flush_range(kvm, 0, kvm->arch.gpa_size >> PAGE_SHIFT, 0);
+> +	kvm_flush_range(kvm, 0, kvm->arch.gpa_size >> PAGE_SHIFT, 1);
+>   }
+>   
+>   void kvm_arch_flush_shadow_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
+> 
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
 
