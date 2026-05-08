@@ -1,145 +1,191 @@
-Return-Path: <stable+bounces-244791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Bf3LCwL/mm2mQAAu9opvQ
-	(envelope-from <stable+bounces-244791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:11:24 +0200
+	id 6Cp+HlAK/mmlmQAAu9opvQ
+	(envelope-from <stable+bounces-244792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:07:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329E54F93E9
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:11:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5714F932D
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1245330531FF
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 16:04:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8710730089B9
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 16:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BE43D524E;
-	Fri,  8 May 2026 16:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA553ED12A;
+	Fri,  8 May 2026 16:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Ew52XfXR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3PVeC4f"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B710376BD9;
-	Fri,  8 May 2026 16:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9E93D1CA8
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 16:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778256277; cv=none; b=Jy5imbL/5HEYuUq4d1aF5cyzjwXrKnrnLLoYfQihhn/1rL14B0utCOXhG08lmH2sQJSLqpLy2OxsOeHMncIupkt9bamkanUwNuQ4QI73nc0yZl5CE1X0Q1wo6mjbrVd9oZBkQaSKrchSLSBCDV51QWosXNf+qS/iGul5Zy3iubY=
+	t=1778256454; cv=none; b=Fc6XGA01adj0FYJd7d3E7ZjqrGH9tQ4VoY+mp+rCb4VFWcvPIVdFmURyZ5+Pt626BzMBvwK7pzatFYqvKXyEmcnAQl9znnfTkd6kwp5997ZI5j7h443qXWja8Mujv3FSZJQNNRRH8RjjNUo37dzz+PkQ6FcllJMVTnGogo08xlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778256277; c=relaxed/simple;
-	bh=kmD/l6NJJEgqq90/B8qBpAxyVg8m8aN6Dr1wB60XbVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IMU1r3DXxXFfUXNR9JJq0sS35FA/7uZSljqvFRRY9H1ojMSN+Y225YKRWFRUA4eK7kIM+eekRZEAlubGvvzetLzIBKAeKu1jyWPykz+qXsy8nzbBK6Rz191Ar2UJbYfNVoCZ3T/HO+T5pejX7M9WHzLGq0vMICPSsip3nCER6SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Ew52XfXR; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 862641E5E;
-	Fri,  8 May 2026 09:04:29 -0700 (PDT)
-Received: from [10.57.63.248] (unknown [10.57.63.248])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6867E3F763;
-	Fri,  8 May 2026 09:04:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778256274; bh=kmD/l6NJJEgqq90/B8qBpAxyVg8m8aN6Dr1wB60XbVg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ew52XfXRv1zqge0MsDtQJn/S+diiX2J5oNTuPQxBNK81e47icmoL89a67yhXrmXnb
-	 dMW7EX4NXvBVHWnDd3Vv/+Tl9LWeJ7Rlq0/+ioVClwTcEgYxzWQRiKOTB4zhmhsejE
-	 AbFUjSvAzysaEmi8NWCHRSY7pJs9B3iuuoTwsttk=
-Message-ID: <4134fcd9-7d12-4e76-955d-5a679916a0c0@arm.com>
-Date: Fri, 8 May 2026 17:04:31 +0100
+	s=arc-20240116; t=1778256454; c=relaxed/simple;
+	bh=LXiraz7XcQev7vxuY/eilYS+8mXgfJxY7XrGYXmd8Nc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Gnp+NC8Mt6yWXmr2En6bcOGaJpSJPXJ6Cnkdaum5PWAaO2pbzQcbekxef8ijXI34BY/Zs2Cd7pxm3XBkhxbMqyTAqjUR+crzP+Vl0+Nlxkrc6Vo3s5bH8fqKAXL0Rprn44t867jLb1QqzUoUL7IER5uvBYmYeC6ljOUCqZJWS24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3PVeC4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C69AC2BCC7;
+	Fri,  8 May 2026 16:07:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778256454;
+	bh=LXiraz7XcQev7vxuY/eilYS+8mXgfJxY7XrGYXmd8Nc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=L3PVeC4fF3Qoh+47RMibyZnsLvh9/YYaByvcRfhI3+gYVRiwiYVeEpTwBdZm2PRJp
+	 SzslMSSFsATLVWLokLAEyyfRbJnqVa210JEQ+cb3erpGPqLgQhc2u0Td8caS0JVZg1
+	 6E9Po9W3j/u4jr0RBG3T7qcqNEVw0ZjhJRBP7EmAsIhu2Gwoq7H4WiHYjIMiiz66zI
+	 +FNUs9omY813bQi3AIrnyKyPHi4tTfAvZOFRQ/TGeR7uxFG3yctzKSTBvYoRB+n1VV
+	 jWRAnqP5BIC6gT86gZ3rcjVrTnYuqxla2dJts2KOXBAEBwoIHB1zewwJDZQ662leNx
+	 cQVEy1GGrmgsw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Luke Wang <ziniu.wang_1@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] mmc: core: Optimize time for secure erase/trim for some Kingston eMMCs
+Date: Fri,  8 May 2026 12:07:30 -0400
+Message-ID: <20260508160730.1605502-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050305-snipping-skillet-87a9@gregkh>
+References: <2026050305-snipping-skillet-87a9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dma-mapping: remove bogus test for pfn_valid from
- dma_map_resource
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
- m.szyprowski@samsung.com, leon@kernel.org, kbusch@kernel.org,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260507032120.4072283-1-jianpeng.chang.cn@windriver.com>
- <2dcc29d6-a4a9-4fdf-861d-312941ab0f07@arm.com>
- <89094011-fe78-40f9-9695-d50ee19167c5@windriver.com>
- <20260508113100.GA9285@ziepe.ca>
- <662fdf07-6475-4807-94b0-54b3b439ae1c@arm.com>
- <20260508151857.GB9285@ziepe.ca>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260508151857.GB9285@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 329E54F93E9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1B5714F932D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244791-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244792-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,arm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email]
 X-Rspamd-Action: no action
 
-On 2026-05-08 4:18 pm, Jason Gunthorpe wrote:
-> On Fri, May 08, 2026 at 01:16:25PM +0100, Robin Murphy wrote:
->> On 2026-05-08 12:31 pm, Jason Gunthorpe wrote:
->>> On Fri, May 08, 2026 at 06:01:01PM +0800, Jianpeng Chang wrote:
->>>>> As I said last time, I think pfn_valid() && !PageReserved(pfn_to_page())
->>>>> would be enough for what we want here, although now it's strictly under
->>>>> CONFIG_DMA_API_DEBUG, perhaps the overhead of memblock_is_map_memory()
->>>>> might be less of an issue. Either way though, now that it's all
->>>>> channelled through the single dma_map_phys() path, it would probably
->>>>> make sense to consolidate any MMIO sanity-checking into
->>>>> dma_debug_map_phys() anyway :/
->>>
->>>> Thanks for the suggestion. Move the check into debug_dma_map_phys() is
->>>> indeed better, and I will replace pfn_valid() with pfn_valid() &&
->>>> !PageReserved() as you suggested.
->>>
->>> I'm not sure that is right. IIRC pfn_valid() is true for ZONE_DEVICE
->>> P2P pages that are used with map_phys but never with map_resource.
->>>
->>> PageReserved isn't enough to fix it.
->>
->> It fixes the false-positive on non-reserved pages, which is the important
->> thing. Yes, we'll get false-negatives on reserved ZONE_DEVICE pages and
->> similar, but that's still an improvement over getting false-negatives on
->> _everything_ by not checking at all. Realistically, dma-debug can never be
->> exhaustive and 100% accurate, but there's still value in catching as much
->> obvious misuse as is straightforward to do.
-> 
-> I'm saying I think the new expression still has a false positive for
-> the common case of map_phys with ZONE_DEVICE P2P, and I don't want to
-> see debugging logging for normal as-designed scenarios in map_phys.
-> 
-> So we either need to narrow the expression further somehow, or leave
-> it in map_resource which has fewer users and doesn't accept
-> ZONE_DEVICE anyhow.
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-But surely anything with a ZONE_DEVICE page is "memory" to the degree 
-that mapping it with DMA_ATTR_MMIO would be wrong, no? However, IIRC 
-ZONE_DEVICE pages _are_ reserved, so still wouldn't warn whether we'd 
-like it or not. I'm confused as to what you're objecting to...
+[ Upstream commit d6bf2e64dec87322f2b11565ddb59c0e967f96e3 ]
 
-Robin.
+Kingston eMMC IY2964 and IB2932 takes a fixed ~2 seconds for each secure
+erase/trim operation regardless of size - that is, a single secure
+erase/trim operation of 1MB takes the same time as 1GB. With default
+calculated 3.5MB max discard size, secure erase 1GB requires ~300 separate
+operations taking ~10 minutes total.
+
+Add a card quirk, MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME, to set maximum
+secure erase size for those devices. This allows 1GB secure erase to
+complete in a single operation, reducing time from 10 minutes to just 2
+seconds.
+
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ translated `lim->max_secure_erase_sectors` queue-limits API to legacy `blk_queue_max_secure_erase_sectors()` setter ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/core/card.h   | 5 +++++
+ drivers/mmc/core/queue.c  | 8 ++++++--
+ drivers/mmc/core/quirks.h | 9 +++++++++
+ include/linux/mmc/card.h  | 1 +
+ 4 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
+index fe0b2fa3bb89d..4af43f9f14767 100644
+--- a/drivers/mmc/core/card.h
++++ b/drivers/mmc/core/card.h
+@@ -297,4 +297,9 @@ static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
+ 	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
+ }
+ 
++static inline int mmc_card_fixed_secure_erase_trim_time(const struct mmc_card *c)
++{
++	return c->quirks & MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME;
++}
++
+ #endif
+diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+index b396e39007177..9eed7562e2672 100644
+--- a/drivers/mmc/core/queue.c
++++ b/drivers/mmc/core/queue.c
+@@ -188,8 +188,12 @@ static void mmc_queue_setup_discard(struct request_queue *q,
+ 	/* granularity must not be greater than max. discard */
+ 	if (card->pref_erase > max_discard)
+ 		q->limits.discard_granularity = SECTOR_SIZE;
+-	if (mmc_can_secure_erase_trim(card))
+-		blk_queue_max_secure_erase_sectors(q, max_discard);
++	if (mmc_can_secure_erase_trim(card)) {
++		if (mmc_card_fixed_secure_erase_trim_time(card))
++			blk_queue_max_secure_erase_sectors(q, UINT_MAX >> card->erase_shift);
++		else
++			blk_queue_max_secure_erase_sectors(q, max_discard);
++	}
+ 	if (mmc_can_trim(card) && card->erased_byte == 0)
+ 		blk_queue_max_write_zeroes_sectors(q, max_discard);
+ }
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index 63e332f523733..c3f81cf7b941d 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -153,6 +153,15 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ 	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
+ 		  MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
+ 
++	/*
++	 * On Some Kingston eMMCs, secure erase/trim time is independent
++	 * of erase size, fixed at approximately 2 seconds.
++	 */
++	MMC_FIXUP("IY2964", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
++		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
++	MMC_FIXUP("IB2932", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
++		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
++
+ 	END_FIXUP
+ };
+ 
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 7c6da19fff9f0..d9fbd389dce2e 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -298,6 +298,7 @@ struct mmc_card {
+ #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
+ #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
+ #define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
++#define MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME	(1<<20) /* Secure erase/trim time is fixed regardless of size */
+ 
+ 	bool			written_flag;	/* Indicates eMMC has been written since power on */
+ 	bool			reenable_cmdq;	/* Re-enable Command Queue */
+-- 
+2.53.0
+
 
