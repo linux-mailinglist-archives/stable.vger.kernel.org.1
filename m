@@ -1,195 +1,265 @@
-Return-Path: <stable+bounces-244795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aABiMBQS/mnBmgAAu9opvQ
-	(envelope-from <stable+bounces-244795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:40:52 +0200
+	id kLTWKl4T/mnZmgAAu9opvQ
+	(envelope-from <stable+bounces-244796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:46:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4048D4F9884
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:40:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207694F98EE
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 18:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D27C3013A61
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 16:38:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 953A230725E6
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 16:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCB63D7D80;
-	Fri,  8 May 2026 16:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71EE40DFB6;
+	Fri,  8 May 2026 16:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jQUnJrHu"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LRjbjRXY"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012023.outbound.protection.outlook.com [52.101.53.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3225B2494D8
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 16:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778258333; cv=none; b=V+lk8PR4QAgSTPCnAnwuRh1+lGeoeiNlUau1ZRe522XyhWkvfCSbri0gdEm7XjSjQ5X7S9CMjNFFSTPsyy2o5iBrgV4uDR1UWLqkKmESIDGwKRID3uia813k/Mz6uS2OD9XprFB9FYohagYfqC+Dm57FtSOQZKRTl+2S6G9M2hY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778258333; c=relaxed/simple;
-	bh=KCGBrLsM1JvyFSOqhR4P4DJDV8c58I+GovnRiJDfX0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KRAIAaN6y6p1C+n+I10SQcC/PbwOqp7ZuX0ZdCNA7o3oueirEui839r/KoIbV90gb/naBX7K4Anlc+1LVktvc2fGyqi59k/3E7cXpPkBh3twem188N/BIcezibZoP/iqvgIjyDP9WKKABJp4tmZd8DduOZQW7NQh4sYnQuVKYa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jQUnJrHu; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 648ErMN8577034
-	for <stable@vger.kernel.org>; Fri, 8 May 2026 16:38:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=tfA0NOsJ+BBJV2uR4TAL5Pfx3kwihpLznrUlwvu59
-	eQ=; b=jQUnJrHuLrXKrJ5NwHJ3+xXx/TTU1gCRo917DRtE//R0Yn2KTKG0GpSKO
-	sTYAcduCRXVynQiRrPS3yFkL2vjW2DC50fig9T7SvQlQfJh8bMIVFPeKgUSbVV3p
-	+L/yOV3hLWo/LGrgVerlpBMU48L+Kr2maHtHIRC1hXRC4iBtN+G/SbNRCbZCI5YH
-	wKXUEUTr2e1but2Zs0PAm5P6Q1Z6a/YhzkWhAdZUzhLwMJy3ooxgHnVhmchEx4NS
-	sbtWrspkzMspXKhfO7udbn+s6VbPfimfBhTJZz9kLaL0EwbxmOTny9Sra89wTp+h
-	1eGVMPkKmN+pX+JXLknGjrUCrvgdQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xy39p8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 08 May 2026 16:38:50 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 648GOPBp032086
-	for <stable@vger.kernel.org>; Fri, 8 May 2026 16:38:50 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtgruqy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 08 May 2026 16:38:49 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 648Gciho11010372
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 May 2026 16:38:44 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CFB7D2004D;
-	Fri,  8 May 2026 16:38:44 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9978D2004B;
-	Fri,  8 May 2026 16:38:44 +0000 (GMT)
-Received: from t83lp71.lnxne.boe (unknown [9.87.84.240])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  8 May 2026 16:38:44 +0000 (GMT)
-From: Nagamani PV <nagamani@linux.ibm.com>
-To: wintera@linux.ibm.com, aswin@linux.ibm.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com, pasic@linux.ibm.com, mjambigi@linux.ibm.com,
-        dk@linux.ibm.com, twinkler@linux.ibm.com, jaka@linux.ibm.com,
-        wenjia@linux.ibm.com, gbayer@linux.ibm.com,
-        linux390-list@tuxmaker.boeblingen.de.ibm.com
-Cc: Nagamani PV <nagamani@linux.ibm.com>, stable@vger.kernel.org,
-        syzbotz+89435e7383b82238dd91@linux.ibm.com
-Subject: [PATCH] net/iucv: fix UAF in afiucv_netdev_event()
-Date: Fri,  8 May 2026 18:38:36 +0200
-Message-ID: <20260508163836.2207648-1-nagamani@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4A840B6C7;
+	Fri,  8 May 2026 16:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778258670; cv=fail; b=uBqOFrW5Jhi1O3VSAZFwbLeXpJj5+QGz9mtGsjOpjD+vRyTiCp0xnSTcvliNdRAJ8RSSCRAtdZT2dqnm+2TifuwMOom46W7uBa/0f7IsnWVJCB6mjcV538ZfscFdsBvhU8Dqr18ZgLIS6EToWN8WcAQmlztCcDfUmd54hXmkyDs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778258670; c=relaxed/simple;
+	bh=EC88jfShMkaBPHaXeTMGSTVappROdKTj5C42uzps0m0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RgXACZIgBGcpEwhu+xsI5KGnkQ2aEdkGx6bWjarYt1cWNoKksXjuttyzeYrdS5Gg03hs3dYt5TU2MvTOvQe4MgWlruxqyXKwCNbkj9S4KTd250A6hxrIZQzdBdaroAA/UYz8nEDLDSh9hGOFJ1Bz+envrx6lIJb9ONNJdbAZkms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LRjbjRXY; arc=fail smtp.client-ip=52.101.53.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JQ1ndRvTbUzxyuKHC7RD715/9dG595yKo77JVHFXgaj8gkL5RQVzhrT2mzMDdz5eLc9k9d46gr7BLE56fRs3ZRqabgPDYoroJWL/cKx2/ukMVb3vUdKyQvaB0+YBGbyn+D0W/m6QA9l0M3wn4ak7AvCLbVQzXxQ1Ur+QxT/t1nq/c2Hous7gmN1Dm5us4fKk4zeIUbq2gQKaOPq5wi/2J5syRqa2s36tkDnhZzHFsABHaAO8VQktUbcFjYTOXdM6FGHJ7MOee6PuOY40bS8nLGyC+yZG82xt22fFgejrrF9cRCzTFcZPowBDu3Oo24eV7kGMoHwKQft8lp/srUEYIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JVh+mJ/1nYCzawy+c7Ai9Nk2MN+bNm1fAl8GRPeZ248=;
+ b=YQeWCvBzKsLyxWLXBPakgElEtB1Z5RsT1g75gKxQWaLlhn7dS7Dq0exe2gURGXFFE/8wr+Co38VIyGsh6d+vK3GCq5xaVJfPznHJfUfHU2miwz7gJWZ2cnxN0y7mB7kv8+SdMb/M2CbnYyQC9ok6hNpTwHUrKA/9QpfMm/263kFfocHAudRMVKB2TsTorkBTYfHLJQdLlLkRrNzvW7fqCqjc6Ris1laQ2TkSUVihnGZEvF3gTGJgkswfq2MmCNcb0d7dr9SdOXUkyj4b5+nRCa/X2YDug7fGVsvIwBE4ox6p4WrvJfq7om4nD7PTbXIhd9Bh1bgjYjfJDtbRGAu4jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JVh+mJ/1nYCzawy+c7Ai9Nk2MN+bNm1fAl8GRPeZ248=;
+ b=LRjbjRXYj+hNgz1pZW6TX48j1ZANN/M03fd5EnNTGJhmaPqe+jDgfcllKkCcpsPj/PIRzaTl7n51ccbiphHLAxGtSrBl3bTj+bT38gpM4XGyPlch8NY1xfEUYnDpduRAx+x8dJKjXqm2Vb9TVtyKyUhWv8iS9uHK/CKPKFgrdso/L9QFdWuzRvUknT+6ZflJfwJPvR5i+R9xjrAy2KBOPCuGBrlOuKwKO3U0gJA0tAE1g+HA7XhanDFGF9njF/HAb6omM3uAr++TqR7Kph2Cjg4tikbdx54vz3W0oyHhbEs1nZnlSRUqWDugExxJkk85mqjTtea30FN6R9s7EIzhPw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ CY5PR12MB6528.namprd12.prod.outlook.com (2603:10b6:930:43::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.19; Fri, 8 May 2026 16:44:24 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9891.008; Fri, 8 May 2026
+ 16:44:24 +0000
+Date: Sat, 9 May 2026 02:44:14 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Souvik Banerjee <souvik@amlalabs.com>, dan.j.williams@intel.com, 
+	willy@infradead.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
+	nvdimm@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs/dax: check for empty/zero entries before calling
+ pfn_to_page()
+Message-ID: <af4SR5-QwUCAClR8@nvdebian.thelocal>
+References: <20260501233933.2614302-1-souvik@amlalabs.com>
+ <a708a295-9d80-4538-9d12-53c12820f9ed@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a708a295-9d80-4538-9d12-53c12820f9ed@kernel.org>
+X-ClientProxiedBy: SY6PR01CA0006.ausprd01.prod.outlook.com
+ (2603:10c6:10:e8::11) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDE2NiBTYWx0ZWRfX6ne6nNcUN7hI
- DGA3JPcn754O6DPoQp3kwCUwybpTF08uGQnG5JUpUIZsS9QZUt7xMdxAhYz0zsSNPIxb06yKpPg
- QXiugF4VQ/aQwmC3oS3jVFKHynAwEamNhRmJHwWbx1wB1qVoJKbRWPZE4ScgJ4FrOBIPBRQ7/M1
- LswjUaTbSif8LRpFH9n5c9+ksuZCKDOm57DPjOPsDgq4+qzu0mmuZ2JvNSzW3NQGTsvoE/kBatZ
- UnN0GOwPDFfSQ4jz05tehNOnB0bf+KCTtP5P0jch6EESX9F8p/1welR/ZAQcTOH+JbUhnNh+U4t
- bE9MMNuMhkj8SUmq00l94U9Q/L+Rs7Tlm+c66tZexEvAdUeCc0IRPgfstnb++i5BYZ/p6/K1xKF
- s1enopHUDmNJL685LtnVAZvhE0oPd5K+tGzKY6SIBOMyXHsq97QoB1Y4fa2zkKjQh6VkuFEE5Ew
- lyFQq7GPRBpjdWRjlpg==
-X-Proofpoint-ORIG-GUID: JEVlk-_3wMEdY9IuZUt8xkW4xhBih6Mg
-X-Proofpoint-GUID: JEVlk-_3wMEdY9IuZUt8xkW4xhBih6Mg
-X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69fe119a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=2L6bTA5ms6rrk1lURLYA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1011
- suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605080166
-X-Rspamd-Queue-Id: 4048D4F9884
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CY5PR12MB6528:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab7b36a0-3363-4dc1-cac2-08dead210fa4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	kmAd7uc5LmEOqL4eQB6Gps32pmXqPFbNZVyHRL8XfRIE8JNFsky1baTmojs7F8/djBButoXSzzuYPUr5gE0Kmy8zQB0mVNuSQjBidau9U1RClhQMPVbqFueBttsczBcqjmjyY1kMC03dG1BVswOLoNWmyUd9Ads6BKUWwWM6hklGSlhSOMygTnU9eqzmFrcTIayhw0pfg4qDWwRdv10DOG90lwl5OdmZv7Uolf6LCBdk32bS4I4RYCd6UCNxxeNKYk04xWfZl4K1P9DZ2GB1djZZkaXU47M6t/hXXnRc/P7s5qmUxVwhhdoSjst15Y1FJQTK9JzY/+GOhKw2KmIldAPfLYUNlEHwi12YrmT/IipnupjBMJGkCb+3uzVLqzKhhrlkiK2tJJQlxA0wbkXDJzz7KG2Gcv+Mii7xItUj9Nou4TCgQMP3yMFB9U4EX/rIbCnkJYGed2T/8ElTxhYRujumojpY0vA8sO5p7j44OZfpyA2wytub31ILFmrdYV51EFcA3SFWtXwMDloMNab0pjTdjLr/nQtwf1K0/cbUcYD6o3KhLmUTTtscPE8HZXJ789+fv6OZqvxm4RwQUlmheEc31i7fZibyI45bxrTwE/6MXFsTlt7660JYWFqZaa2v4JHt24uLIWNUfYe8ctSeZUJMewmwRjehQx4A0ObKxozHMZO0fUT257CrDbPjapXt
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bg+ovCIMOvPnQmErLf83WVuE+t2QKnysoZDcxh7nUkk5YTIHOggaUOeJVDcr?=
+ =?us-ascii?Q?XfO7DRFkYWEBmyeCrK8A2JdiQXQx2wvDTVnxflzz6EwdP4N/A1gluH/v88q8?=
+ =?us-ascii?Q?/ZETSStScNS0B+lN1OQ5o9t051SB0J7bEBgmkhrGW/OtZDk1ZWgN/8kmO3Eb?=
+ =?us-ascii?Q?W4rU6F6oxS6cZ9J+mCc8NEOVSTuoRmZBbMwnsZXwOqNPGuH24X6n3qJ/Ui8m?=
+ =?us-ascii?Q?mY8mLlZivaVSsptAtgaaSV8yz2hO9t9H5bPGmXnbXUMZCugF5N3KjRVSyQhO?=
+ =?us-ascii?Q?psPyRHBcBXdooehWjDS3IpHyH3XtBKXT8/PB69yUZAtZDEi4RD2JKsEr7Ttd?=
+ =?us-ascii?Q?cqXFWjdKRxh4+NeTiB/gWjaAeTUnsixT53iGdFa/6IwVMHTk41RpUj55OTBY?=
+ =?us-ascii?Q?xtDbEl8VtprN0KpEazfoy54snykRfY6sa8SKRoCBYc7NEWm17o8iq5L0rGDF?=
+ =?us-ascii?Q?BIa+EvhT8CyrIQjFcoBo5MT/VoY3gGWEn+wLMTgGwwZrvzw3ZcDKfdCafLnG?=
+ =?us-ascii?Q?5KgbzuJ3h6PPLeNDv8hr1lLXBvKLgKxd0bgMTThbiVR1z8KYJexB8Ko2QvLj?=
+ =?us-ascii?Q?fccEDkpQE2zEbVcijxHbDJHyrketYJtXfIsauoVD4TuWd9NkYqcnvBLDfzSk?=
+ =?us-ascii?Q?UbVKcy81mRYFFhtBbr1g0kSCRqPcdTdm8CwOToR8GPDieuo7lZHu1uJueOQd?=
+ =?us-ascii?Q?MUoXKsUT9YTUD+J+M3wDnfpaqydXZYdIAk68BQjOLnyt1dmUbbdonuPyFVDE?=
+ =?us-ascii?Q?k+mvDESzemRnBPFT/T7b4kV2nRmPu+pTikkgdkIhgd8O7QnwlLBpIkEgnfiZ?=
+ =?us-ascii?Q?fUp3tnbnq5xD8JVjo3Y3Z6qhkXW9E6V67K694QsBnpUnzNV5MJB3cNBCCq/k?=
+ =?us-ascii?Q?dQ/H29cf61yk9nPrAKLo5qo/mn7z15rBJzH2gqT3XI10sCEDGPfKIdTprVrb?=
+ =?us-ascii?Q?RLPfLvte/lgu71oYStdxD0RkxiWLBzm1bUKUEXTsXn9JbAuTv17mg3Ed8Kxf?=
+ =?us-ascii?Q?Bv+m83YdtCMdfo31nplHHukuZhzBtG1xSRaSa9oOrI34WQIddbrofrqd0eWe?=
+ =?us-ascii?Q?t5telK244pbJ90SxJV1L5uTM2ZM+YQvfIkF1vcsn9X1Ud2G0hhAW0wdAmYWM?=
+ =?us-ascii?Q?/HEb2KJWTEfJ0h7a2UV1+NFPJClhFVHT1I1yZCJwRJnBtnN5Im8OulVeXJyY?=
+ =?us-ascii?Q?bhxrdoXo9+7oXeDnXvAM1hatbsySwAjN6YecrLDmSrBErurYb8ZV+AOHpUfz?=
+ =?us-ascii?Q?8B0ZdzfJLhuXvqY70lbimYafv4PzD2lYyHi1f0O6EPxRdC/MOVvzYJKTFALc?=
+ =?us-ascii?Q?53kGgoi+8whEOrLYUndSbJcJetE8oweyQLJBh4r4PW7VrliEFbFeqwpaOiPX?=
+ =?us-ascii?Q?Ibt5dTFB5DplIMUetq5KwQ3OrBSVEGwP0lVUxgaeIrwzJahKKZkDGPoLAkRC?=
+ =?us-ascii?Q?MIKsSNrDPXsYuNX7TE6cd8JdQD2hJ5rVY1WBieOhAHFtR21voGKdDYjKGvFf?=
+ =?us-ascii?Q?4UL3xfkIVikxAaKVF///QqjO7FhlCn8SjjjQu+wd/ufCtITXDQ4Rp/Wy+Thm?=
+ =?us-ascii?Q?RCSfHzsK7Pv8s9kbYByB5+UbMzpgZEU6Sc8ZjN9AEznT3CiHj4ZQ2Fp23WCg?=
+ =?us-ascii?Q?jD1jReywSxCofqV1EIjmNb+piC+DF+8vjO4ROIcBPtgWJm/YSCplR2V1hbR8?=
+ =?us-ascii?Q?yWNdlQ2hgchSQ9baezoRPNqvuydb5z8+ZfQaUdZ6+OvmDw7amFde0NiTpWhl?=
+ =?us-ascii?Q?XsyLRUvxLg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab7b36a0-3363-4dc1-cac2-08dead210fa4
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 16:44:24.5959
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nMu8ocvQbyfH8hd/SUbBtU0jF1+o7VdxUKHaVs5yoFaMsYnyz0ISMaSRiWZ5HuF6MfnjkSS32LDVKfBQj7qo8Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6528
+X-Rspamd-Queue-Id: 207694F98EE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244795-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nagamani@linux.ibm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244796-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.ibm.com:mid];
-	TAGGED_RCPT(0.00)[stable,89435e7383b82238dd91];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[apopple@nvidia.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvdebian.thelocal:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,Nvidia.com:dkim,nvidia.com:email,amlalabs.com:email]
 X-Rspamd-Action: no action
 
-afiucv_netdev_event() traverses iucv_sk_list without holding
-iucv_sk_list.lock.
+On 2026-05-08 at 19:15 +1000, "David Hildenbrand (Arm)" <david@kernel.org> wrote...
+> On 5/2/26 01:39, Souvik Banerjee wrote:
+> > Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
+> > added zero/empty-entry early returns to dax_associate_entry() and
+> > dax_disassociate_entry(), but placed them *after* the
+> > `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
+> > expands to page_folio(pfn_to_page(dax_to_pfn(entry))), and page_folio()
+> > performs READ_ONCE(page->compound_head) -- a real dereference of the
+> > struct page pointer derived from a bogus PFN extracted from the
+> > empty/zero XA value.
+> > 
+> > On systems where vmemmap covers all of RAM that dereference reads
+> > garbage and is harmless: the early return then discards the result.
+> > On virtio-pmem with altmap (vmemmap stored inside the device), only
+> > the real device PFN range is mapped, so the dereference triggers a
+> > kernel paging fault from the truncate / invalidate path and from the
+> > PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
+> > freed:
+> > 
+> >   Unable to handle kernel paging request at
+> >   virtual address ffff_fdff_bf00_0008 (vmemmap region)
+> >   Call trace:
+> >    dax_disassociate_entry.isra.0+0x20/0x50
+> >    dax_iomap_pte_fault
+> >    dax_iomap_fault
+> >    erofs_dax_fault
+> > 
+> > Close the residual gap by moving the dax_to_folio() call after the
+> > zero/empty guard in dax_disassociate_entry().  Apply the same
+> > treatment to dax_busy_page(), which has the identical pattern but
+> > was not touched by the prior fix.
+> > 
+> > Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
+> > Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
+> > Cc: stable@vger.kernel.org # v6.15+
+> > Cc: Alistair Popple <apopple@nvidia.com>
 
-A concurrent socket teardown can unlink and free the socket via
-iucv_sock_kill() while the notifier path is still iterating over
-the list, leading to a possible use-after-free when dereferencing
-the socket.
+Thanks for fixing this.
 
-Protect the traversal using the existing read-side lock, matching
-the locking pattern already used by other iucv_sk_list traversal
-paths in af_iucv.c.
+> > Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
+> > ---
+> >  fs/dax.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/fs/dax.c b/fs/dax.c
+> > index 6d175cd47a99..6878473265bb 100644
+> > --- a/fs/dax.c
+> > +++ b/fs/dax.c
+> > @@ -505,21 +505,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
+> >  static void dax_disassociate_entry(void *entry, struct address_space *mapping,
+> >  				bool trunc)
+> >  {
+> > -	struct folio *folio = dax_to_folio(entry);
+> > +	struct folio *folio;
+> >  
+> >  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
+> >  		return;
+> >  
+> > +	folio = dax_to_folio(entry);
+> >  	dax_folio_put(folio);
+> >  }
+> >  
+> >  static struct page *dax_busy_page(void *entry)
+> >  {
+> > -	struct folio *folio = dax_to_folio(entry);
+> > +	struct folio *folio;
+> >  
+> >  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
+> >  		return NULL;
+> >  
+> > +	folio = dax_to_folio(entry);
+> >  	if (folio_ref_count(folio) - folio_mapcount(folio))
+> >  		return &folio->page;
+> >  	else
+> 
+> Makes perfect sense to me.
+> 
+> 
+> What about the usage in dax_associate_entry()?
 
-Use read_lock()/read_unlock() to remain consistent with existing
-softirq/tasklet-side readers in the same file.
+Pretty sure the issue exists there as well given this code path implies we could
+pass zero/empty entries there as well:
 
-Fixes: 9fbd87d41392 ("af_iucv: handle netdev events")
-Cc: stable@vger.kernel.org
-Reported-by: syzbotz+89435e7383b82238dd91@linux.ibm.com
-Closes: https://lnxgwne1.boeblingen.de.ibm.com/linux-ci/syzbot/dashboard/bug?extid=89435e7383b82238dd91
-Suggested-by: Hidayath Khan <hidayath@linux.ibm.com>
-Signed-off-by: Nagamani PV <nagamani@linux.ibm.com>
----
- net/iucv/af_iucv.c | 2 ++
- 1 file changed, 2 insertions(+)
+	if (shared || dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
+		void *old;
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index 72dfccd4e3d5..e8a0b55fc55d 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -2188,6 +2188,7 @@ static int afiucv_netdev_event(struct notifier_block *this,
- 	switch (event) {
- 	case NETDEV_REBOOT:
- 	case NETDEV_GOING_DOWN:
-+		read_lock(&iucv_sk_list.lock);
- 		sk_for_each(sk, &iucv_sk_list.head) {
- 			iucv = iucv_sk(sk);
- 			if ((iucv->hs_dev == event_dev) &&
-@@ -2198,6 +2199,7 @@ static int afiucv_netdev_event(struct notifier_block *this,
- 				sk->sk_state_change(sk);
- 			}
- 		}
-+		read_unlock(&iucv_sk_list.lock);
- 		break;
- 	case NETDEV_DOWN:
- 	case NETDEV_UNREGISTER:
--- 
-2.53.0
+		dax_disassociate_entry(entry, mapping, false);
+		dax_associate_entry(new_entry, mapping, vmf->vma,
+					vmf->address, shared);
 
+ - Alistair
+
+> -- 
+> Cheers,
+> 
+> David
 
