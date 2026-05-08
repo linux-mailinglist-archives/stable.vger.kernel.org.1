@@ -1,152 +1,163 @@
-Return-Path: <stable+bounces-244799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJxwDnsX/ml0mwAAu9opvQ
-	(envelope-from <stable+bounces-244799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:03:55 +0200
+	id WHhkDPIZ/mmQmwAAu9opvQ
+	(envelope-from <stable+bounces-244801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:14:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9E94F9BFA
-	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:03:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835434F9D4A
+	for <lists+stable@lfdr.de>; Fri, 08 May 2026 19:14:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15BA2301387B
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 17:01:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF80D30477D1
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 17:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B84336EC0;
-	Fri,  8 May 2026 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFEC3FF8B1;
+	Fri,  8 May 2026 17:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d0Q+ARH/"
+	dkim=pass (2048-bit key) header.d=lankhorst.se header.i=@lankhorst.se header.b="miuG7geX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lankhorst.se (unknown [141.105.120.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1524A31B82B
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 17:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F011DE8AD
+	for <stable@vger.kernel.org>; Fri,  8 May 2026 17:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778259718; cv=none; b=fgBn5flfU8aJclTolt6UE9J12US/GH/VBP2vNoFM5whXMhguPXgLOXYVajOeWcxXAwyppWhQu2T8bAbhAOZQHR/E8MDpYVqpjm3qPKA79er/ikW58Syq1+F7lPAQCw6ZURWcsy1aszaFBiaelB+DSDXm+h1YjxCAd+5IAoG1Fig=
+	t=1778260182; cv=none; b=lQEtGBas+9ySGZur0w08qvPURl5DzGzfS56L5Cp1XOR6T9AMLfMj6YI3kT/D26p7Jui9ooM7wl/RlaTXk+VPjky5wHI12MMy5htUcXi8vRBlkuz5rwXZh2sK1wtwZW0hqx+J+N1imdISjNlKcnOJQMZpk5oinV9wyqyKtMULZMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778259718; c=relaxed/simple;
-	bh=4RWwMgUznrL3G8yZyc15jqagw63taAvJ+UwZUbJ3HZ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KcH06MuYtQ4hwh3axZB96lDBQ/jMcju7wCm5hSAr5iPRKIlQdoeMmhKUT6/LBQrCAQJqdy6vRCbPPgalkd9xsMqqvl1Uf/fnGdNqsI1OQClcXLqcoD3jRinNMrx0LiAKiaTnr3cKAB5zcgK6buvv39fbB7lypiINh3uyB+8w7qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d0Q+ARH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DADCC2BCB0;
-	Fri,  8 May 2026 17:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778259717;
-	bh=4RWwMgUznrL3G8yZyc15jqagw63taAvJ+UwZUbJ3HZ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0Q+ARH/IX+5eaaDBK+MyyiQKQ4RY7BR8X98+E11PfsQX+at/RGPj2AgACnrnrD+7
-	 nkqTlZ9dLSwWgbKoF81j0K9aDKeiamcHsIvtT+0CKFQvZhcTXSeIO91iK94Gf/h6LY
-	 BTDEPXpCFo9xFHMkHMZjespB5KmxDudOrUG18JvLlAgPHkE5xa7i4V879GK6PIjUJF
-	 0We44X0HyCznMMwiXpt9j87wR7zsGb8PEYvh1ApIR71ZIRHaBbRsVHeKOGx5VhfhgK
-	 jmOY3UV5T+l5tYjngbGlU4E65G9F1G/75MK0f9ZJroaNi5k/mzT+iBam4GzDKYXubz
-	 K6sdQR3egveHA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] pwm: imx-tpm: Count the number of enabled channels in probe
-Date: Fri,  8 May 2026 13:01:55 -0400
-Message-ID: <20260508170155.1731439-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050333-employed-opponent-f918@gregkh>
-References: <2026050333-employed-opponent-f918@gregkh>
+	s=arc-20240116; t=1778260182; c=relaxed/simple;
+	bh=g7sFg48r5Dm+Qo/8mMdFgMdzbwgpDyCQ/p6NpvKjuO8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nhzH1OWJjHCNJFPpzNHPt3SwvbTx2lvFhMcCCUxLQ18nz4q9NczLHx78Jf0WZrV2X27rE5KTqbCnm+EyaMyKa2v0gZ8zTuoGFbGxfyi8vY/rrcf37wfWrrJ226/AGtkuFiT18ItWe1hKtssJFLkSJQBp+OnInUAAed2dg2QB/zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; dkim=pass (2048-bit key) header.d=lankhorst.se header.i=@lankhorst.se header.b=miuG7geX; arc=none smtp.client-ip=141.105.120.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
+	s=default; t=1778259792;
+	bh=g7sFg48r5Dm+Qo/8mMdFgMdzbwgpDyCQ/p6NpvKjuO8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=miuG7geX4V6aqu09394g21y6aer2ii5J64k2rHShJV8jxg/42yvdAD+jr8x1BExwg
+	 PmLL9b/4p/cj6ohFV2NhFfHbyKkXEuIwEFeFsOo3TxcQv424om/vILos5m59ZGvfHQ
+	 /yOrmhjgjr0Pskt7f0HccWUa1Lis4ijC1oiBt410jI5yfdIEEcccL4FT/e+hzPOX9O
+	 2bvHcx2+FCcRCyGs9J3p5iBtXsdGk2cZkEUCaL3svIVO63DCZ1kasqQmCeMk5vX+gy
+	 sTWk2FNsVbcecTdbihl5sTP32OhZ1LoYQCZsVwLnkQ6gHvNFVtzStkIqvvTsR0TemU
+	 IKi5yt+iqOA2A==
+Message-ID: <433c0bbd-6c47-4011-8551-d1cfd0b4e17c@lankhorst.se>
+Date: Fri, 8 May 2026 19:03:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/ttm: Convert -EAGAIN from dmem_cgroup_try_charge to
+ -ENOSPC
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Friedrich Vock <friedrich.vock@gmx.de>, Tejun Heo <tj@kernel.org>,
+ Maxime Ripard <mripard@kernel.org>,
+ Christian Koenig <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+References: <20260508160920.230339-1-thomas.hellstrom@linux.intel.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <20260508160920.230339-1-thomas.hellstrom@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AB9E94F9BFA
+X-Rspamd-Queue-Id: 835434F9D4A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[lankhorst.se,none];
+	R_DKIM_ALLOW(-0.20)[lankhorst.se:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-244799-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmx.de,kernel.org,amd.com,lists.freedesktop.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244801-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[lankhorst.se:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[dev@lankhorst.se,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,i.mx:url,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email,intel.com:email,gmx.de:email,amd.com:email,lankhrost.se:email]
 X-Rspamd-Action: no action
 
-From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
+Hey,
 
-[ Upstream commit 3962c24f2d14e8a7f8a23f56b7ce320523947342 ]
+Den 2026-05-08 kl. 18:09, skrev Thomas Hellström:
+> dmem_cgroup_try_charge() returns -EAGAIN when the cgroup limit is
+> hit and the charge fails. TTM has no concept of -EAGAIN from resource
+> allocation; -ENOSPC is the canonical error meaning "no space, try
+> eviction". Convert at the source in ttm_resource_alloc() so no caller
+> needs to handle an unexpected error code, and clean up the now-redundant
+> -EAGAIN check in ttm_bo_alloc_resource().
+> 
+> Without this, -EAGAIN escaping ttm_resource_alloc() during an eviction
+> walk causes the walk to terminate early instead of continuing to the
+> next candidate.
+> 
+> Cc: Friedrich Vock <friedrich.vock@gmx.de>
+> Cc: Maarten Lankhorst <dev@lankhorst.se>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.14+
+> Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
+> Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>  drivers/gpu/drm/ttm/ttm_bo.c       | 2 +-
+>  drivers/gpu/drm/ttm/ttm_resource.c | 5 ++++-
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+> index d85f0a37ac35..cee3828df655 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+> @@ -739,7 +739,7 @@ static int ttm_bo_alloc_resource(struct ttm_buffer_object *bo,
+>  		may_evict = (force_space && place->mem_type != TTM_PL_SYSTEM);
+>  		ret = ttm_resource_alloc(bo, place, res, force_space ? &limit_pool : NULL);
+>  		if (ret) {
+> -			if (ret != -ENOSPC && ret != -EAGAIN) {
+> +			if (ret != -ENOSPC) {
+>  				dmem_cgroup_pool_state_put(limit_pool);
+>  				return ret;
+>  			}
+> diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+> index 9f36631d48b6..b0efffe5a526 100644
+> --- a/drivers/gpu/drm/ttm/ttm_resource.c
+> +++ b/drivers/gpu/drm/ttm/ttm_resource.c
+> @@ -385,8 +385,11 @@ int ttm_resource_alloc(struct ttm_buffer_object *bo,
+>  
+>  	if (man->cg) {
+>  		ret = dmem_cgroup_try_charge(man->cg, bo->base.size, &pool, ret_limit_pool);
+> -		if (ret)
+> +		if (ret) {
+> +			if (ret == -EAGAIN)
+> +				ret = -ENOSPC;
+>  			return ret;
+> +		}
+>  	}
+>  
+>  	ret = man->func->alloc(man, bo, place, res_ptr);
 
-On a soft reset TPM PWM IP may preserve its internal state from previous
-runtime, therefore on a subsequent OS boot and driver probe
-"enable_count" value and TPM PWM IP internal channels "enabled" states
-may get unaligned. In consequence on a suspend/resume cycle the call "if
-(--tpm->enable_count == 0)" may lead to "enable_count" overflow the
-system being blocked from entering suspend due to:
+Yeah looks reasonable with the conversion to callbacks.
 
-   if (tpm->enable_count > 0)
-       return -EBUSY;
-
-Fix the problem by counting the enabled channels in probe function.
-
-Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-Link: https://patch.msgid.link/20260311123309.348904-1-viorel.suman@oss.nxp.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-[ substituted `base` with `tpm->base` and `npwm` with `tpm->chip.npwm` to match the older non-devm probe layout ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/pwm/pwm-imx-tpm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-index 327db8ffe70c5..50b6f6663523e 100644
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -348,6 +348,7 @@ static int pwm_imx_tpm_probe(struct platform_device *pdev)
- {
- 	struct imx_tpm_pwm_chip *tpm;
- 	int ret;
-+	unsigned int i;
- 	u32 val;
- 
- 	tpm = devm_kzalloc(&pdev->dev, sizeof(*tpm), GFP_KERNEL);
-@@ -381,6 +382,13 @@ static int pwm_imx_tpm_probe(struct platform_device *pdev)
- 
- 	mutex_init(&tpm->lock);
- 
-+	/* count the enabled channels */
-+	for (i = 0; i < tpm->chip.npwm; ++i) {
-+		val = readl(tpm->base + PWM_IMX_TPM_CnSC(i));
-+		if (FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val))
-+			++tpm->enable_count;
-+	}
-+
- 	ret = pwmchip_add(&tpm->chip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add PWM chip: %d\n", ret);
--- 
-2.53.0
-
+Reviewed-by: Maarten Lankhorst <dev@lankhrost.se>
 
