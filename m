@@ -1,91 +1,53 @@
-Return-Path: <stable+bounces-244844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HFyLRBq/mmIqQAAu9opvQ
-	(envelope-from <stable+bounces-244844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 00:56:16 +0200
+	id wAKHLu5v/mnNqgAAu9opvQ
+	(envelope-from <stable+bounces-244845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 01:21:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD614FC88A
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 00:56:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC434FCB51
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 01:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D69CF3053DDD
-	for <lists+stable@lfdr.de>; Fri,  8 May 2026 22:55:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D7ADA300D567
+	for <lists+stable@lfdr.de>; Fri,  8 May 2026 23:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375C23A3E88;
-	Fri,  8 May 2026 22:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54FB32E121;
+	Fri,  8 May 2026 23:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kzTOJtdf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGEMfB7a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8374139D6CF
-	for <stable@vger.kernel.org>; Fri,  8 May 2026 22:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A834512CD8B;
+	Fri,  8 May 2026 23:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778280916; cv=none; b=H2zz3xNU0Jf+fZ7Ndtxe4e1lgUmAmU4pvF971FslRwxUJyhFnut6aRRB3HdGu9p27PygvY2EzKndhh3LmQs1NWbGnGpAUQkvv6+xRJWP+yZg2RyQjvpSAyqsSGu19z3xSJLsSYQDhgTgUYykwCZTFJWigkOwL302t/z26f/eV90=
+	t=1778282470; cv=none; b=LtEsMY+FH9fuXgPy2PgjExn9HPnf6bxJekrHeqBST0k44ws7s75Za3rGnMGRSwxwNOu+VBhzQm4UxFuM1O0nWRprA/iVckoJFeNpjWGisVcEyCJiM5KPhPmmRhszQ6ilumR7wPv4yt1YJBxr6V33NJ1DjuqYf0FskDBdnZZbpB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778280916; c=relaxed/simple;
-	bh=QSX7YN2Kkqt0mJt8UgVJ6i9GbnwZDdxdNDd4zHflDnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=je+d9Vv36tH1bhmEogB5Jxwmkme78CmMzLnq/evBGpAWFB7bmzqmrUsGGfEO+7em/womf56f5RO0gjpol/egj7TQCC7PgPbE+enHbq1I0nyV3D8br1rSmTut7gQrScOkhE+zwpaJ0OLAGwt9pf0OBiaXs7ytvKiS1Z6PBPyJtyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kzTOJtdf; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8dbbc6c16b2so337449885a.0
-        for <stable@vger.kernel.org>; Fri, 08 May 2026 15:55:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778280914; x=1778885714; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vtE+YuXWqKSidY4VGGV6JauwPm/5vzq7+5m3m3uoYkQ=;
-        b=kzTOJtdfvfqHvy60iKa1A12p74a8OEsPBEgXlM8KdhaRikkZgaf5IHbPCXS8XIhr0m
-         O4DDQVs4/RwvZfdtIoGzcREUO4CuR8Ky8o8I2eJpkTXf4KZcbZvwjZsF8SOl48DQpLPx
-         AfnZEiBuLMPkCMn4aXXc72v4w4bd2Ll0xn0LYcf7RiQuxWMSqHi+1M3bMUO/U4VqSgQp
-         wUXnvZEZ1Pl3tJ8sSkWILdtrAKe4BqW2HKifk/jNsKs6qz+L0BSpkLUCRZ6SARFung1J
-         5x/zmfY2lwh8bmFjIQnvE5efUDE5fdec+21LZxE2tFMqnUmfpk1m5Z55/Aelw+Ecw9km
-         cfEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778280914; x=1778885714;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vtE+YuXWqKSidY4VGGV6JauwPm/5vzq7+5m3m3uoYkQ=;
-        b=DoYGcmDDDw7/xwcCIsl9G+6gU28SW1eZSXzjaRoKRj2Iz10ynEiWDJHYE7CYTeqGI3
-         enkbqeUr77ARoWu4N3YIna3NVkSVaOyE1s9g2geURhvbjeQz75kGQDW4A6RQuR8hvWCP
-         ufy+afSM1XDPURAZAyNPVc1YKzLbAgnNcR1NH9KcWWYorT9CaDPFG9znkODfmXgiqSr+
-         22bhhsoSp4JhGICOdGWkRqJN/vE6XEYtEYmsh/Nhge2Z6QRorMdOnspqS4hzGb/6YQgG
-         ieQ3H8+21YXb4htaN2//hdyLWH+WvKnMZJJEXHqKW47qzZQ7p4BSWAg4ftkKAYtip+/I
-         CJXg==
-X-Forwarded-Encrypted: i=1; AFNElJ+dXULrHK2rqChjRxA7XwHDg8sab3n1CUWmeip2XNIx+fowCsOXBwMbeonAOZL7pRN5bIvaM5o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpLfMd6OdnSc1Lu0GCDiGbZO89ifOMOMa1BrxAfgqJXWqdmrF2
-	/+T4eGr9FeTIOJ63jldRFCExtk+/pogxnem2Hb/5q55xKYx8moHcxjUz
-X-Gm-Gg: AeBDievCJHE+mW0A2gIvFQkchf2cQOeB/whXFHR6EwHjOB6uYL3NV9pE3y47RI1jmdd
-	mBIlAcLHngwLttm3v7O7cMe81tBkd91KCj6pAnZkdBd8L2I+Ee4PRA6LW0jeI9J7oi4Sedztk5V
-	WNRBSrO3qleB8KBUfV6Ye0mOc5Zv0OFstx7u8l54DRCPp/6avYHOWtSTa3X2+FOoNFARlhq9dlW
-	YcYf9/P6+Sk4EozIBjbPR6atBe+c7KUlJJ0Du0queJwmWsYEyCYwB6eNqPPgumAaylPC5tjJWXV
-	jfJuRCojXVOpKi7KlZoyupKTQjxEjyQA1DejhxPR5obHiwn5ywhUb5UZSo8HRNA8r2a/7F3j+Hw
-	Y3zld53Hvqs7BhftEQ0sg1EpogmMrebDNCIVGumpH9wuxEtvlHAZCZWTN1Oa6Wqilj21F7L2eiV
-	H+NWku4RnfuF3gDSEqhONwwVnxOi4xZrZJeFdOAkhBKDbTaja6/3xq7SnQvSDo3T5lx9yjogje2
-	8+ayh+M4ZsJt4ot/0Rcr9Wx4dB9
-X-Received: by 2002:a05:620a:472c:b0:8ca:3715:eea5 with SMTP id af79cd13be357-9065091a471mr1294812185a.14.1778280914383;
-        Fri, 08 May 2026 15:55:14 -0700 (PDT)
-Received: from nick-lenovolegion-16ithg6.tailf3aaf.ts.net (dyn-pppoe-142-51-228-191.vianet.ca. [142.51.228.191])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b8bae450sm332652985a.21.2026.05.08.15.55.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 15:55:13 -0700 (PDT)
-From: Nicholas Bonello <hadobedo@gmail.com>
-To: perex@perex.cz,
-	tiwai@suse.com
-Cc: linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nicholas Bonello <hadobedo@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ALSA: hda/realtek: Fix Legion 7 16ITHG6 speaker amp binding
-Date: Fri,  8 May 2026 18:55:07 -0400
-Message-ID: <20260508225507.47667-1-hadobedo@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1778282470; c=relaxed/simple;
+	bh=jiBBAh+tYPq01D1+yZYu764BQl5VgaiQlj5egEd6T0U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YpQdJ7398MadzJPXmwlkLHsCyD7oqOkk31nO9owhi5sWh9HFMOBfGjT2ZenD97ECdmxUgADPWPE8NqubcmndS7mJjNmyCdDg6do8gp96wetcUBdYEihjAcFef/+ygVFnvFsj2M20QfKyTNuQjTT8ZvnLD8IiG5SusiI/c9awDgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGEMfB7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269A3C2BCB0;
+	Fri,  8 May 2026 23:21:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778282470;
+	bh=jiBBAh+tYPq01D1+yZYu764BQl5VgaiQlj5egEd6T0U=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=eGEMfB7a+7c7g+M7fl40Y1/cUSASCmqYG57gbOiuRivqSYO7Ftt6/G3ctm/cwL7xa
+	 FA8/EBMRBzleoY7ayfyoTccvw2H58W4jrqx1BvFnfCjCQ6u3gZ1d8c7k0DvPTMQ7aU
+	 W3WgwTAw8//YvOWCENb63O0dSJj94Hn/SuCdO4CNh66drMI2wGB817NTQDqZ8Wsgwo
+	 9s5xFDpWhgpq8R76n8Kq4qJ/JdWxfBc0bXTErFafgRWaBqcNe5JUHdMRVw7ChxupyL
+	 azNUEuSmrh95xB7tdLNMtyUxIh0UC+dn/9Rpg+LEEO+rXh+SoePCDA0P/3gVHPOjcW
+	 D0ZWnmksKyPJg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EA838119DB;
+	Fri,  8 May 2026 23:20:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,81 +55,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2FD614FC88A
+Subject: Re: [PATCH net v2 0/8] Intel Wired LAN Driver Updates 2026-05-04
+ (i40e, ice, idpf)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177828241855.890779.16522525518979245121.git-patchwork-notify@kernel.org>
+Date: Fri, 08 May 2026 23:20:18 +0000
+References: <20260506-jk-iwl-net-2026-05-04-v2-0-a5ea4dc837a9@intel.com>
+In-Reply-To: <20260506-jk-iwl-net-2026-05-04-v2-0-a5ea4dc837a9@intel.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ piotr.kwapulinski@intel.com, aleksandr.loktionov@intel.com,
+ arkadiusz.kubalewski@intel.com, maciej.fijalkowski@intel.com,
+ joshua.a.hay@intel.com, madhu.chittim@intel.com, willemb@google.com,
+ david.m.ertman@intel.com, ivecera@redhat.com, grzegorz.nitka@intel.com,
+ netdev@vger.kernel.org, stable@vger.kernel.org, tactii@gmail.com,
+ sunithax.d.mekala@intel.com, kohei@enjuk.jp, pmenzel@molgen.mpg.de,
+ emil.s.tantilov@intel.com, horms@kernel.org, Samuel.salin@intel.com,
+ gregkh@linuxfoundation.org, anthony.l.nguyen@intel.com, stable@kernel.org,
+ marcin.szycik@linux.intel.com, bvanassche@acm.org,
+ intel-wired-lan@lists.osuosl.org, arpanax.arland@intel.com
+X-Rspamd-Queue-Id: BEC434FCB51
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-244844-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com,enjuk.jp,molgen.mpg.de,linuxfoundation.org,linux.intel.com,acm.org,lists.osuosl.org];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-244845-lists,stable=lfdr.de,netdevbpf];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hadobedo@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[33];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-The Lenovo Legion 7 16ITHG6 uses codec SSID 17aa:3855, but its PCI
-SSID is 17aa:3811.  The latter is now also used by the Legion S7 15IMH05
-quirk, which is matched before codec SSID fallback and incorrectly
-routes Legion 7 16ITHG6 machines to ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS.
+Hello:
 
-That fixup does not bind the CLSA0101 CS35L41 companion amplifiers,
-making the built-in speakers silent even though playback appears to be
-active.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Add a codec SSID quirk for 17aa:3855 before the conflicting PCI SSID
-quirk so that the Legion 7 16ITHG6 uses ALC287_FIXUP_LEGION_16ITHG6.
-This restores CS35L41 firmware loading and binds both speaker
-amplifiers.
+On Wed, 06 May 2026 14:48:09 -0700 you wrote:
+> Matt Volrath fixes two issues with the i40e driver probe routine, ensuring
+> that PTP is properly cleaned up if the probe fails.
+> 
+> Emil corrects the initialization of the read_dev_clk_lock spinlock in
+> idpf_ptp_init, ensuring it is initialized prior to when the
+> ptp_schedule_worker() is called.
+> 
+> [...]
 
-Fixes: 67f4c61a73e9 ("ALSA: hda/realtek: Add quirk for Legion S7 15IMH")
-Cc: stable@vger.kernel.org
-Tested-by: Nicholas Bonello <hadobedo@gmail.com>
-Assisted-by: Codex:GPT-5
-Signed-off-by: Nicholas Bonello <hadobedo@gmail.com>
----
- sound/hda/codecs/realtek/alc269.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Here is the summary with links:
+  - [net,v2,1/8] i40e: Cleanup PTP registration on probe failure
+    https://git.kernel.org/netdev/net/c/1619553b0a6b
+  - [net,v2,2/8] i40e: Cleanup PTP pins on probe failure
+    https://git.kernel.org/netdev/net/c/678b713ece1e
+  - [net,v2,3/8] idpf: fix read_dev_clk_lock spinlock init in idpf_ptp_init()
+    https://git.kernel.org/netdev/net/c/da4f76b6a84e
+  - [net,v2,4/8] idpf: fix double free and use-after-free in aux device error paths
+    https://git.kernel.org/netdev/net/c/6c77b9510829
+  - [net,v2,5/8] ice: fix setting RSS VSI hash for E830
+    https://git.kernel.org/netdev/net/c/b3cda96feb60
+  - [net,v2,6/8] ice: fix locking in ice_dcb_rebuild()
+    https://git.kernel.org/netdev/net/c/0ded1f36ba40
+  - [net,v2,7/8] ice: dpll: fix rclk pin state get for E810
+    https://git.kernel.org/netdev/net/c/cce709d8df6b
+  - [net,v2,8/8] ice: dpll: fix misplaced header macros
+    https://git.kernel.org/netdev/net/c/30f1658fc538
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 11d0ea8ed859..16993f8cf978 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7675,10 +7675,11 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	HDA_CODEC_QUIRK(0x17aa, 0x3802, "DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8", ALC287_FIXUP_TAS2781_I2C),
--	/* Yoga Pro 9 16IMH9 shares PCI SSID 17aa:3811 with Legion S7 15IMH05;
--	 * use codec SSID to distinguish them
-+	/* Yoga Pro 9 16IMH9 and Legion 7 16ITHG6 share PCI SSID 17aa:3811
-+	 * with Legion S7 15IMH05; use codec SSID to distinguish them
- 	 */
- 	HDA_CODEC_QUIRK(0x17aa, 0x38d6, "Lenovo Yoga Pro 9 16IMH9", ALC287_FIXUP_TAS2781_I2C),
-+	HDA_CODEC_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
- 	SND_PCI_QUIRK(0x17aa, 0x3811, "Legion S7 15IMH05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
+You are awesome, thank you!
 -- 
-2.54.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
