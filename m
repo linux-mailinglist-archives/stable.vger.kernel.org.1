@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-244953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBHiEPst/2mT3AAAu9opvQ
-	(envelope-from <stable+bounces-244953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 14:52:11 +0200
+	id 8Fm2Jygu/2mT3AAAu9opvQ
+	(envelope-from <stable+bounces-244954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 14:52:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC9B4FFB0B
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 14:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EE74FFB1D
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 14:52:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEC4930750B1
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 12:47:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA0283015E26
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 12:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421B93890EF;
-	Sat,  9 May 2026 12:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021AB35CB6F;
+	Sat,  9 May 2026 12:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Chxmj1Z8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBlr9JPa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E4E361DBF;
-	Sat,  9 May 2026 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8BE1C5D59
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 12:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778330860; cv=none; b=m8dUdm7ZMc1stTFkETrR7RjFebU8X122G2QaVoNhb61gV/zMTCod/Zekp1yIcwDTsyNTcc/hYtQzXTf1cIlgqbwsNJp4l7EqTBFo97kojRJWNcG109n87AXlSQ/MbQSiiqg1yfk2PG7QqVr1/BZyeoUjRUMjxFXRK9AGU1fR/zE=
+	t=1778331000; cv=none; b=sSo1P0Bc/BuAzpoEKbDdtKinHIFTgMseYFkoJqwVNzoeeLVnAEcFApyDQQxL/7o6usMPm5iMfMxmDOHpqb6HNv6RadG/V8Zg8oVwp9jxDipzNU3FKS3h8MRRLVP/lslG6N199c3pi3l4mj+KBji0711j3kmJuT5fI770z/MfDTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778330860; c=relaxed/simple;
-	bh=gmOaICabTFu5sMHYBHGDCm9pI4MjTr/rikRLCLru1W8=;
+	s=arc-20240116; t=1778331000; c=relaxed/simple;
+	bh=DgMWOcOeWA6BEMqe/AYFvLQd5rzID1zOTckIqAWRBho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBmwiuJ+e4dAO97/o6isa0QkfetvvP+3ZLNPMaYgGXplQP1ak7o9LAXj8L6nXxvJ7ZTUwVvuZOPtmiqAN8oVyZmTPEmaY+YsT3G0s0u1LA5p9fzcA1WfHrJbeM+pJ91OKqkKpuy850ZXBKGArBE/vCQx09JWjrcLoBXuOjF4oqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Chxmj1Z8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950F1C2BCF4;
-	Sat,  9 May 2026 12:47:38 +0000 (UTC)
+	 MIME-Version; b=id2AlQp6c8rlnmY8HLYmmokYdsMxeus/g5JzVxujfsU/+M+k6SRm+IKRAtxD0Mi3sxKaHYi77H5Fb38rDnpRPBo/y4wWZY4TBwZfY/J8E21pFvYMLebO5MDnhuAyNRgkAUYDxhDev36cDE4lmdGNJpOW4akuoK8LG9MwqgVFM4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBlr9JPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A848CC2BCB2;
+	Sat,  9 May 2026 12:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778330859;
-	bh=gmOaICabTFu5sMHYBHGDCm9pI4MjTr/rikRLCLru1W8=;
+	s=k20201202; t=1778331000;
+	bh=DgMWOcOeWA6BEMqe/AYFvLQd5rzID1zOTckIqAWRBho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Chxmj1Z89x3UMb2e5qYM3K5CaRwXMYfI4QNQhqMM2qVnVJJx80dt5Q/T5d492Ejhv
-	 sVSszKuErULd4G34OrHnjuW4tDLsNBpueYtHVUHRbbJZMEJAuhxdpFhHWq5Q/dGh5F
-	 RueyvzuXyPCApMNtc5GHn/XXpNrKfDmUk3kMJYg9K7vo1dVXFcMPqRjqqxXMcK1vji
-	 Xtk5dusHCC367WZLYhZ56mi0v7tV+WvX0mfSrGhPQPoN37SB2P6twUYf6PDRQeocD2
-	 TqtCgPDgoh7mO10knzXs0fd9Fx5wFKGH3LeEVI7PVlXlMDh9lDyq2ZqueGWDKs+wml
-	 C+mDk2kfWQFXQ==
+	b=IBlr9JPaoTYOnxXSu2xEah2F/KQ2rxLndQEu7eYvlQrIZd/MB60toahJR4VZ2OQou
+	 sVp1MP0yEvGjZof3sRsyCr0JaQHE1+WI3fdAnAXftpXyANl5oqXjykpp/cC2KB0uHh
+	 G3m7ATHaNZYSS2u5cN1vnpqtfzPOCbBGb0cfaAnvGow2LgeZLQcvZeFbeS1oHyHOiP
+	 S/pDfm4NrlI5uFq/5HMWTbUCifXtJAihAnX+B/970m4h4IhjUIrXywFyQEoH55ytqh
+	 Ew0Uzs0cT9GN1kxHU7UaRhg/gv0nzummDH1Z7MqqN/EGB3+8F2up8TPYLWne2tW/rf
+	 MaK6IwD/YHj1A==
 From: Sasha Levin <sashal@kernel.org>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com,
-	syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Bin Lan <lanbincn@139.com>
-Subject: Re: [PATCH 5.15.y] ext4: avoid infinite loops caused by residual data
-Date: Sat,  9 May 2026 08:47:02 -0400
-Message-ID: <20260509122858.4575ede3c425.re-ext4-infinite-loops-5.15@kernel.org>
+To: stable@vger.kernel.org
+Cc: Junrui Luo <moonafterrain@outlook.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()
+Date: Sat,  9 May 2026 08:49:57 -0400
+Message-ID: <20260509124957.3382270-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260506073835.32481-1-lanbincn@139.com>
-References: <20260506073835.32481-1-lanbincn@139.com>
+In-Reply-To: <2026050416-engraving-prefix-0214@gregkh>
+References: <2026050416-engraving-prefix-0214@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,51 +63,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8EC9B4FFB0B
+X-Rspamd-Queue-Id: 19EE74FFB1D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-244953-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,qq.com,syzkaller.appspotmail.com,suse.cz,mit.edu,139.com];
+	FREEMAIL_CC(0.00)[outlook.com,gmail.com,linux.alibaba.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,512459401510e2a9a39f,1659aaaaa8d9d11265d7];
+	TAGGED_FROM(0.00)[bounces-244954-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,outlook.com:email]
 X-Rspamd-Action: no action
 
-> [PATCH 5.15.y] ext4: avoid infinite loops caused by residual data
+From: Junrui Luo <moonafterrain@outlook.com>
 
-Holding for now.
+[ Upstream commit 21e161de2dc660b1bb70ef5b156ab8e6e1cca3ab ]
 
-I had to revert the 6.1.y backport of upstream 5422fe71d26d
-(c66545e83a80) on 2026-04-11 (9594622f8a39) as part of a coordinated
-revert of the surrounding ppath-removal series, so the fix is no
-longer present on 6.1.y. We can't queue it on 5.15.y while it's
-missing from 6.1.y - if you want this on 5.15.y, please also send
-a 6.1.y backport (and ideally help untangle the ppath-removal-revert
-issue there) so the fix is consistent newest-first.
+Some crafted images can have illegal (!partial_decoding &&
+m_llen < m_plen) extents, and the LZ4 inplace decompression path
+can be wrongly hit, but it cannot handle (outpages < inpages)
+properly: "outpages - inpages" wraps to a large value and
+the subsequent rq->out[] access reads past the decompressed_pages
+array.
 
---
-Sasha
+However, such crafted cases can correctly result in a corruption
+report in the normal LZ4 non-inplace path.
+
+Let's add an additional check to fix this for backporting.
+
+Reproducible image (base64-encoded gzipped blob):
+
+H4sIAJGR12kCA+3SPUoDQRgG4MkmkkZk8QRbRFIIi9hbpEjrHQI5ghfwCN5BLCzTGtLbBI+g
+dilSJo1CnIm7GEXFxhT6PDDwfrs73/ywIQD/1ePD4r7Ou6ETsrq4mu7XcWfj++Pb58nJU/9i
+PNtbjhan04/9GtX4qVYc814WDqt6FaX5s+ZwXXeq52lndT6IuVvlblytLMvh4Gzwaf90nsvz
+2DF/21+20T/ldgp5s1jXRaN4t/8izsy/OUB6e/Qa79r+JwAAAAAAAL52vQVuGQAAAP6+my1w
+ywAAAAAAAADwu14ATsEYtgBQAAA=
+
+$ mount -t erofs -o cache_strategy=disabled foo.erofs /mnt
+$ dd if=/mnt/data of=/dev/null bs=4096 count=1
+
+Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+[ renamed `rq->outpages`/`rq->inpages` to `nrpages_out`/`nrpages_in` and inverted the check to `nrpages_out < nrpages_in` on the existing `goto docopy` chain ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/erofs/decompressor.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
+index b4be6c524815c..87773583b7da4 100644
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -140,6 +140,7 @@ static void *z_erofs_handle_inplace_io(struct z_erofs_decompress_req *rq,
+ 
+ 	if (rq->inplace_io) {
+ 		if (rq->partial_decoding || !support_0padding ||
++		    nrpages_out < nrpages_in ||
+ 		    ofull - oend < LZ4_DECOMPRESS_INPLACE_MARGIN(inputsize))
+ 			goto docopy;
+ 
+-- 
+2.53.0
+
 
