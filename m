@@ -1,165 +1,139 @@
-Return-Path: <stable+bounces-244931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFSoMGb7/mlW0wAAu9opvQ
-	(envelope-from <stable+bounces-244931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 11:16:22 +0200
+	id MBRZIf77/mlW0wAAu9opvQ
+	(envelope-from <stable+bounces-244932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 11:18:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D0E4FEF67
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 11:16:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D92104FEF80
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 11:18:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23C413019BA1
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 09:16:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F3053010BB1
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 09:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6671FECAB;
-	Sat,  9 May 2026 09:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="LMjyljtF";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="vQ92Oc4a"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78A139EF2A;
+	Sat,  9 May 2026 09:18:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC36338E135
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 09:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFBA18EFD1;
+	Sat,  9 May 2026 09:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778318171; cv=none; b=GISTaKKHU424cOrEFur+3Zy3zXerruB6epXI4UD6m4QXalCz/pulCvj3uv2Bko3JEChol6oDK3sCBLj6N60tZJXCtwC06gNFGOT/6vFHE+PUBFidFaiR7jYDMFurRuDeZxdS/Rxh5RwKHGacsCcwVAtrXIGQk+A/xG6wq6AJW2A=
+	t=1778318315; cv=none; b=LG+6eXGYcQ4niJZOE1K5wgYt+Axwi3IrateLgn3FbAZTHHce6eBjaJ5VKgAVWMs9o8AlV6eCwko3vhstaCJaaiRMrBasT9cgz1lnF1g6IYh1LfZtxjUcFyffVVObohgwnWKEUy9+RZJYDSNTSJ8fkp+jSX7TQ96rOzQJY72/wBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778318171; c=relaxed/simple;
-	bh=OrHy6Rjm3c6Jr7d052C1h50+sIQqeZDaXfci3W9/cVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MDbmV3bz75BDJSUBPQFkpx3TH7B8lM9kPpV1/IEbWAqLj0DuDhPovzNlEUGK6gvj00BPMctdCzyvIKkMNCQ1hxlMnrC2jsP78QuYdm6xfAv7XP/9b2hAA4K68IO/cRCCskVz49MebVx2qJ7VBtbcFlpUI4HOqaKCmvdM+5KRnKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=LMjyljtF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=vQ92Oc4a; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D45DE7A00CD;
-	Sat,  9 May 2026 05:16:07 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sat, 09 May 2026 05:16:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1778318167; x=1778404567; bh=k4Qy2yQRQn
-	AQkPzGLK9kEUwvs9HGcxud4+CFk2JrXEs=; b=LMjyljtFr0JpaECagG1zExE5P1
-	+YVGEPGM5/mCt3QOkaKRgs0AS6NJ0jO72uJMzNH7Qr7u19AV2tll2u0aiIxblmqX
-	KxBptJXbjSgkSbnsTjPsqbSYDkk8Ka+2iwRJAadUjCDfNXjGcqVpLlsbjt5b3240
-	x/iIh6UrwdjSDVxvWtxi4sHy28FWwnesMh1ys6vCgY7rhmjywIkMrlM08qdprvvn
-	8r7xAf6GDr+JnGaj0NWd7RwO3rXZWSmaQqMAKxvD2otYi+IMAfr6IwMb4map5ZZA
-	COoYy097yl25L1yNZd/owY3J77vVh4pu5Uwk3C0I3o4E5phVozRmsmBbZRwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778318167; x=1778404567; bh=k4Qy2yQRQnAQkPzGLK9kEUwvs9HGcxud4+C
-	Fk2JrXEs=; b=vQ92Oc4a9TlniJ7jdz2e+T2VXcGtiqweNQyqP4kE7Bu9oIJCVe+
-	begWklA1uFwDpe42Wa9dyi8TIvhTEUD2vKzEt4+FjvkhtnJrf2lvsLJDj5gMxzHO
-	+a+i2y6KRAvfXAlEAgXb4tCg4LvhXj3+yznt3q9aIkhawQg7c/12mkj85962RySc
-	C0MTUf9nUHvMuvi06h5YODSyDfNQ5QEN24I8xNltnYjAlwLjZhy0ZxhLRY4rxAs1
-	U0GzmPN1GNgPnw+MsGFPEAz6HS6JeYSMtAGBQdPi0ASdDGWToJ/9aji6vVZiORRb
-	G9k0sHmd2Uu6IJHXCK5Sh/FRsNoAOn8AiFQ==
-X-ME-Sender: <xms:V_v-aRH90UioYhp4df_6L9WSA99mZNsDM816uyl4UD0dfU4-HJV1Hw>
-    <xme:V_v-aUIUko0BQAG4wZ7xIpsqO5Gb0LS2IR8OIs76D4XnjcgQQuovVn-t05jbtSndj
-    QytCoVyplHUtvhlgf21mfStbaRvXmoF7BHoz7lhzDLzn6bw06U>
-X-ME-Received: <xmr:V_v-adkhfxuW9hX5QcoTUr7BjV4GRcUI0j92eakJiYaSmEvbxmvk2qqFnSoQcIVMsuaylClh8hR5fWPHWZ4AK_jvWA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduuddvkeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
-    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehkihhguhgthhhirdhrrdhsvggtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhtrg
-    gslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:V_v-aUStLJ7UpFSY0FbIzj09clomumbMIsi3pNYLuoX2mljpkHP3mg>
-    <xmx:V_v-aXLxS7fXjav0II0FUDCevPUDrQRLpMTGrIiIWzYFwRb0omfoVQ>
-    <xmx:V_v-aSAgh9LRg6IekND2Y4hnB5cutk3AoULcXXFUa-vs6Wg_HN-gjA>
-    <xmx:V_v-aYAA-Aqxa5c22uMjbi-GC-xS0qPKyfj-GwTNtV1cmAiUy58fnQ>
-    <xmx:V_v-ab-wQO41TWE9-BPP_9O270MpvzTPsZjHNxO6Ad_gLlbEboNjWHy3>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 9 May 2026 05:16:07 -0400 (EDT)
-Date: Sat, 9 May 2026 11:16:06 +0200
-From: Greg KH <greg@kroah.com>
-To: Rion Kiguchi <kiguchi.r.sec@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH v3] staging: vme_user: validate slave window size against
- buffer size
-Message-ID: <2026050921-shifty-oxidation-f184@gregkh>
-References: <2026050935-designing-glancing-2e16@gregkh>
- <20260509090721.1136091-1-kiguchi.r.sec@gmail.com>
+	s=arc-20240116; t=1778318315; c=relaxed/simple;
+	bh=NmrSk7zhfQFEH8f7bH1xmg81YzHhBPCNFpczcW1eHVw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JRT96D6xzEetdOfub75cgPpTgkIxMDH92Lf1VdvkVrxxaOuxZ+/Ydzh2kpe7tk5KgLGOyASvox1/GKhAZSOirkG9M8IDFnkR7sLEMhyB8DkaC2Esvdkqdt8bpv+JWZ2RklWwWTjA5Yr8PpIW0+7kEUdOrfTxsBKwyss/7crV++E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowAAXvWjg+_5pxa6xDw--.15480S2;
+	Sat, 09 May 2026 17:18:24 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: linux@armlinux.org.uk,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/armada: fix device_node reference leak in armada_lcd_bind()
+Date: Sat,  9 May 2026 09:18:21 +0000
+Message-Id: <20260509091821.963513-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260509090721.1136091-1-kiguchi.r.sec@gmail.com>
-X-Rspamd-Queue-Id: 38D0E4FEF67
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAXvWjg+_5pxa6xDw--.15480S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7XFWDGw1fZrW7KFyDXFy8Grg_yoW8Jry8pa
+	yxCryYkry5GF4Skay7CFWq9FWDCaySqas3Kr18Gws7ur43Xw4vyr1j9w1Ygw1DAr97Ca47
+	AFsrJFyaqF1UCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjJ73PUUUU
+	U==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoCA2n+2cZ9hAAAs9
+X-Rspamd-Queue-Id: D92104FEF80
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm3,messagingengine.com:s=fm3];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244931-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[armlinux.org.uk,gmail.com,ffwll.ch];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244932-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.450];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Sat, May 09, 2026 at 06:07:21PM +0900, Rion Kiguchi wrote:
-> The VME_SET_SLAVE ioctl in drivers/staging/vme_user/vme_user.c accepts
-> a user-controlled slave.size and forwards it to vme_slave_set() without
-> comparing it against image[minor].size_buf. The slave-image kernel
-> buffer is allocated at probe time with a fixed size of PCI_BUF_SIZE
-> (0x20000 / 128 KiB), but the configured VME window size can be made
-> much larger via the ioctl.
+In armada_lcd_bind(), of_get_child_by_name() obtains a reference to
+the "port" device_node which is passed to armada_drm_crtc_create().
+On success, the reference is transferred to the crtc structure and
+released later. However, if armada_drm_crtc_create() fails, the
+function returns directly without releasing the port node, causing a
+reference leak.
 
-<snip>
+Fix by adding of_node_put(port) in the error path.
 
-For some reason you are not using scripts/get_maintainer.pl on your
-patch to know who to send this to (hint, it's not the stable email
-address...)
+Fixes: 9611cb93fa65 ("drm/armada: register crtc with port")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/gpu/drm/armada/armada_crtc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> @@ -401,7 +409,6 @@ static int vme_user_ioctl(struct inode *inode, struct file *file,
->  				slave.enable, slave.vme_addr, slave.size,
->  				image[minor].pci_buf, slave.aspace,
->  				slave.cycle);
-> -
->  			break;
->  		}
->  		break;
+diff --git a/drivers/gpu/drm/armada/armada_crtc.c b/drivers/gpu/drm/armada/armada_crtc.c
+index 0900e4466ffb..dfca664847b6 100644
+--- a/drivers/gpu/drm/armada/armada_crtc.c
++++ b/drivers/gpu/drm/armada/armada_crtc.c
+@@ -1035,7 +1035,10 @@ armada_lcd_bind(struct device *dev, struct device *master, void *data)
+ 		}
+ 	}
+ 
+-	return armada_drm_crtc_create(drm, dev, res, irq, variant, port);
++	ret = armada_drm_crtc_create(drm, dev, res, irq, variant, port);
++	if (ret)
++		of_node_put(port);
++	return ret;
+ }
+ 
+ static void
+-- 
+2.34.1
 
-Why was this change made?
-
-thanks,
-
-greg k-h
 
