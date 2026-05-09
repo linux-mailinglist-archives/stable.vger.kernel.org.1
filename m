@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-244858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGH/HmSB/mnyrwAAu9opvQ
-	(envelope-from <stable+bounces-244858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 02:35:48 +0200
+	id 6Ua5EYyC/mn1sAAAu9opvQ
+	(envelope-from <stable+bounces-244859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 02:40:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E1A4FD11E
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 02:35:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0AC4FD160
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 02:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 535A6301467E
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 00:35:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B7E930215A1
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 00:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEAF1DB13A;
-	Sat,  9 May 2026 00:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8431E0DE8;
+	Sat,  9 May 2026 00:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/d1qKVs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n62fTDFg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C531A6807
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 00:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD02DF59
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 00:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778286940; cv=none; b=MOiAfRPijJkkiO1bCqLnYNp5+lZ0yvzWXoz7UlLblq5/sOrb4T+d8G618TwV9UpIzljmJxJqYGV3VJo4xO71m+ryFxQPdi7wFiq4YZiArzRx/xIIAv6+nI8aPh6TtN4rYypTCXfMxaFXVJb7ia3/Pre8pJeA0nWtWqq/FknmoKM=
+	t=1778287238; cv=none; b=k1nFmtwRUoKHAGfLZizPtwiRZqNp1ia0ic6IMpex2ZoHbXf+WN8K2qjpH11dpujcdYQQosI14oh3X3PeIoh9kiL6UA9INeg6YSc4Wvh4SAREEPXOjXfYypq0WHKADbOr4dg/N/EsnjijTA3MDwxY7bExwpY45nsfyEnwllNzLbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778286940; c=relaxed/simple;
-	bh=l1CkBlz3iBoWk6wp8qZtr753VDtNkjeIvcYdii39cFM=;
+	s=arc-20240116; t=1778287238; c=relaxed/simple;
+	bh=9MGfdzyzzX2Ezxxv3kbmkAOm0r3WUvskX/U1jSyPpHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5myUd3fQn9VfN4jN5IBKmM17dRw6xMv42rGdrMAmz0Q5e3SufrJ0bCPvhSjUHLkL0dTTuOxJsPrHsDDlHnUM4/+ac/2CfgQoJy76egqaGcgOvXkMmjBm8PIb3xhTZS2qIrysypJ25H19l/aYbd7jiQCWw14RNG96fyEhz5+4uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/d1qKVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D9AC2BCB0;
-	Sat,  9 May 2026 00:35:39 +0000 (UTC)
+	 MIME-Version; b=dFDujx65dFpRpqzL9FyEfoLlvI6qNGs526mfEZ5tE+g/JxslAX/HHI7W/6BiKra/tsz5hPMVGiRNHYG9U9LyblWggAwJC/srdvW2M8OsWqgEUpAyMAOqqIuGEKfoOxQcQBY6zNsDfgFnhozer2T6UoFNEcHJ62mrII+G/uBmobs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n62fTDFg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE5AC2BCB4;
+	Sat,  9 May 2026 00:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778286940;
-	bh=l1CkBlz3iBoWk6wp8qZtr753VDtNkjeIvcYdii39cFM=;
+	s=k20201202; t=1778287238;
+	bh=9MGfdzyzzX2Ezxxv3kbmkAOm0r3WUvskX/U1jSyPpHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/d1qKVsbquR/gRvBmuG6R6EMUZBpC61tFhmlkPqVUtBYbXkm/xZxlX5eVf0Y2Dia
-	 e0Pmuf/yxuxZ173/B/msmSAMEzuIBXZ2bWNeRjOs8MaDX8d5lFvMDaUUel0mSfhNkA
-	 2cXF65GhA5dsA7YVIq1ueuCgezw8vkkMOm67V/3FgG2j11CxOkeSh63OeRugUBKpkd
-	 zxtNNok00T12QmioWVQOozVysmtymNUu4nuPVkGWqdLcpovYnfkDjBMa+ma+D8nd2a
-	 b496TARW2RhYglgBlmO9E8GHKWAvzuxR1mpt1wERyu6KCWonZ+y3tUnFQU8S03ioWo
-	 wAud6/IdpUiVw==
+	b=n62fTDFgOXdjRfXmvDmkOzZ48Kd+BVA+iRWcSeZKAN+eEuuhd0NplmldJo8Jo8zlz
+	 n2hruEEJcsxHTAW5GRDB0I7aEj40hHfFuXY85x2KogpTu6oOC7V6eMydEM2g36TFBS
+	 IF3Y5hrdKGFnAPzjQ/7ChhFo1Kzrjw7nwaiQmokNe88kM/SY3Y4F1Z9zp4mRQXkyTf
+	 4gwQmf/tFZ2t7RvPtG/HDPRFxiPnX+N5zuRS6j9kDeTkMqpDXJhbkopI1tA6ctgnfS
+	 gOk3/aphvkTdWfGEolesMigtE+yoFAeAnGw17Ik0nIM+La4az5dG9zcEnYxawnsu9U
+	 sjFGtWBh4lRiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Seohyeon Maeng <bioloidgp@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] udf: fix partition descriptor append bookkeeping
-Date: Fri,  8 May 2026 20:35:37 -0400
-Message-ID: <20260509003537.2360522-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] hfsplus: fix uninit-value by validating catalog record size
+Date: Fri,  8 May 2026 20:40:34 -0400
+Message-ID: <20260509004035.2365441-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050427-dreamless-halogen-0749@gregkh>
-References: <2026050427-dreamless-halogen-0749@gregkh>
+In-Reply-To: <2026050453-debrief-unloaded-53f5@gregkh>
+References: <2026050453-debrief-unloaded-53f5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,92 +64,228 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D2E1A4FD11E
+X-Rspamd-Queue-Id: 9F0AC4FD160
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244858-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244859-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,dubeyko.com,posteo.net,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email]
+	TAGGED_RCPT(0.00)[stable,d80abb5b890d39261e72];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-From: Seohyeon Maeng <bioloidgp@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 08841b06fa64d8edbd1a21ca6e613420c90cc4b8 ]
+[ Upstream commit b6b592275aeff184aa82fcf6abccd833fb71b393 ]
 
-Mounting a crafted UDF image with repeated partition descriptors can
-trigger a heap out-of-bounds write in part_descs_loc[].
+Syzbot reported a KMSAN uninit-value issue in hfsplus_strcasecmp(). The
+root cause is that hfs_brec_read() doesn't validate that the on-disk
+record size matches the expected size for the record type being read.
 
-handle_partition_descriptor() deduplicates entries by partition number,
-but appended slots never record partnum. As a result duplicate
-Partition Descriptors are appended repeatedly and num_part_descs keeps
-growing.
+When mounting a corrupted filesystem, hfs_brec_read() may read less data
+than expected. For example, when reading a catalog thread record, the
+debug output showed:
 
-Once the table is full, the growth path still sizes the allocation from
-partnum even though inserts are indexed by num_part_descs. If partnum is
-already aligned to PART_DESC_ALLOC_STEP, ALIGN(partnum, step) can keep
-the old capacity and the next append writes past the end of the table.
+  HFSPLUS_BREC_READ: rec_len=520, fd->entrylength=26
+  HFSPLUS_BREC_READ: WARNING - entrylength (26) < rec_len (520) - PARTIAL READ!
 
-Store partnum in the appended slot and size growth from the next append
-count so deduplication and capacity tracking follow the same model.
+hfs_brec_read() only validates that entrylength is not greater than the
+buffer size, but doesn't check if it's less than expected. It successfully
+reads 26 bytes into a 520-byte structure and returns success, leaving 494
+bytes uninitialized.
 
-Fixes: ee4af50ca94f ("udf: Fix mounting of Win7 created UDF filesystems")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seohyeon Maeng <bioloidgp@gmail.com>
-Link: https://patch.msgid.link/20260310081652.21220-1-bioloidgp@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-[ replaced kzalloc_objs() helper with equivalent kcalloc() ]
+This uninitialized data in tmp.thread.nodeName then gets copied by
+hfsplus_cat_build_key_uni() and used by hfsplus_strcasecmp(), triggering
+the KMSAN warning when the uninitialized bytes are used as array indices
+in case_fold().
+
+Fix by introducing hfsplus_brec_read_cat() wrapper that:
+1. Calls hfs_brec_read() to read the data
+2. Validates the record size based on the type field:
+   - Fixed size for folder and file records
+   - Variable size for thread records (depends on string length)
+3. Returns -EIO if size doesn't match expected
+
+For thread records, check against HFSPLUS_MIN_THREAD_SZ before reading
+nodeName.length to avoid reading uninitialized data at call sites that
+don't zero-initialize the entry structure.
+
+Also initialize the tmp variable in hfsplus_find_cat() as defensive
+programming to ensure no uninitialized data even if validation is
+bypassed.
+
+Reported-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d80abb5b890d39261e72
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Link: https://lore.kernel.org/all/20260120051114.1281285-1-kartikey406@gmail.com/ [v1]
+Link: https://lore.kernel.org/all/20260121063109.1830263-1-kartikey406@gmail.com/ [v2]
+Link: https://lore.kernel.org/all/20260212014233.2422046-1-kartikey406@gmail.com/ [v3]
+Link: https://lore.kernel.org/all/20260214002100.436125-1-kartikey406@gmail.com/T/ [v4]
+Link: https://lore.kernel.org/all/20260221061626.15853-1-kartikey406@gmail.com/T/ [v5]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20260307010302.41547-1-kartikey406@gmail.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Stable-dep-of: 90c500e4fd83 ("hfsplus: fix held lock freed on hfsplus_fill_super()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/hfsplus/bfind.c      | 51 +++++++++++++++++++++++++++++++++++++++++
+ fs/hfsplus/catalog.c    |  4 ++--
+ fs/hfsplus/dir.c        |  2 +-
+ fs/hfsplus/hfsplus_fs.h |  9 ++++++++
+ fs/hfsplus/super.c      |  2 +-
+ 5 files changed, 64 insertions(+), 4 deletions(-)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index 723184b1201f8..33d66da17922f 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1657,8 +1657,9 @@ static struct udf_vds_record *handle_partition_descriptor(
- 			return &(data->part_descs_loc[i].rec);
- 	if (data->num_part_descs >= data->size_part_descs) {
- 		struct part_desc_seq_scan_data *new_loc;
--		unsigned int new_size = ALIGN(partnum, PART_DESC_ALLOC_STEP);
-+		unsigned int new_size;
- 
-+		new_size = data->num_part_descs + PART_DESC_ALLOC_STEP;
- 		new_loc = kcalloc(new_size, sizeof(*new_loc), GFP_KERNEL);
- 		if (!new_loc)
- 			return ERR_PTR(-ENOMEM);
-@@ -1668,6 +1669,7 @@ static struct udf_vds_record *handle_partition_descriptor(
- 		data->part_descs_loc = new_loc;
- 		data->size_part_descs = new_size;
- 	}
-+	data->part_descs_loc[data->num_part_descs].partnum = partnum;
- 	return &(data->part_descs_loc[data->num_part_descs++].rec);
+diff --git a/fs/hfsplus/bfind.c b/fs/hfsplus/bfind.c
+index 26ebac4c60424..41f4f56f90fac 100644
+--- a/fs/hfsplus/bfind.c
++++ b/fs/hfsplus/bfind.c
+@@ -287,3 +287,54 @@ int hfs_brec_goto(struct hfs_find_data *fd, int cnt)
+ 	fd->bnode = bnode;
+ 	return res;
  }
++
++/**
++ * hfsplus_brec_read_cat - read and validate a catalog record
++ * @fd: find data structure
++ * @entry: pointer to catalog entry to read into
++ *
++ * Reads a catalog record and validates its size matches the expected
++ * size based on the record type.
++ *
++ * Returns 0 on success, or negative error code on failure.
++ */
++int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry)
++{
++	int res;
++	u32 expected_size;
++
++	res = hfs_brec_read(fd, entry, sizeof(hfsplus_cat_entry));
++	if (res)
++		return res;
++
++	/* Validate catalog record size based on type */
++	switch (be16_to_cpu(entry->type)) {
++	case HFSPLUS_FOLDER:
++		expected_size = sizeof(struct hfsplus_cat_folder);
++		break;
++	case HFSPLUS_FILE:
++		expected_size = sizeof(struct hfsplus_cat_file);
++		break;
++	case HFSPLUS_FOLDER_THREAD:
++	case HFSPLUS_FILE_THREAD:
++		/* Ensure we have at least the fixed fields before reading nodeName.length */
++		if (fd->entrylength < HFSPLUS_MIN_THREAD_SZ) {
++			pr_err("thread record too short (got %u)\n", fd->entrylength);
++			return -EIO;
++		}
++		expected_size = hfsplus_cat_thread_size(&entry->thread);
++		break;
++	default:
++		pr_err("unknown catalog record type %d\n",
++		       be16_to_cpu(entry->type));
++		return -EIO;
++	}
++
++	if (fd->entrylength != expected_size) {
++		pr_err("catalog record size mismatch (type %d, got %u, expected %u)\n",
++		       be16_to_cpu(entry->type), fd->entrylength, expected_size);
++		return -EIO;
++	}
++
++	return 0;
++}
+diff --git a/fs/hfsplus/catalog.c b/fs/hfsplus/catalog.c
+index 1995bafee8390..dc3f98ec5e2d2 100644
+--- a/fs/hfsplus/catalog.c
++++ b/fs/hfsplus/catalog.c
+@@ -194,12 +194,12 @@ static int hfsplus_fill_cat_thread(struct super_block *sb,
+ int hfsplus_find_cat(struct super_block *sb, u32 cnid,
+ 		     struct hfs_find_data *fd)
+ {
+-	hfsplus_cat_entry tmp;
++	hfsplus_cat_entry tmp = {0};
+ 	int err;
+ 	u16 type;
  
+ 	hfsplus_cat_build_key_with_cnid(sb, fd->search_key, cnid);
+-	err = hfs_brec_read(fd, &tmp, sizeof(hfsplus_cat_entry));
++	err = hfsplus_brec_read_cat(fd, &tmp);
+ 	if (err)
+ 		return err;
+ 
+diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
+index d23f8c4cd717e..eecb72c800d04 100644
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -49,7 +49,7 @@ static struct dentry *hfsplus_lookup(struct inode *dir, struct dentry *dentry,
+ 	if (unlikely(err < 0))
+ 		goto fail;
+ again:
+-	err = hfs_brec_read(&fd, &entry, sizeof(entry));
++	err = hfsplus_brec_read_cat(&fd, &entry);
+ 	if (err) {
+ 		if (err == -ENOENT) {
+ 			hfs_find_exit(&fd);
+diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
+index 6122bbd5a8370..af264f8dc5360 100644
+--- a/fs/hfsplus/hfsplus_fs.h
++++ b/fs/hfsplus/hfsplus_fs.h
+@@ -536,6 +536,15 @@ int hfsplus_submit_bio(struct super_block *sb, sector_t sector, void *buf,
+ 		       void **data, blk_opf_t opf);
+ int hfsplus_read_wrapper(struct super_block *sb);
+ 
++static inline u32 hfsplus_cat_thread_size(const struct hfsplus_cat_thread *thread)
++{
++	return offsetof(struct hfsplus_cat_thread, nodeName) +
++	       offsetof(struct hfsplus_unistr, unicode) +
++	       be16_to_cpu(thread->nodeName.length) * sizeof(hfsplus_unichr);
++}
++
++int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry);
++
+ /*
+  * time helpers: convert between 1904-base and 1970-base timestamps
+  *
+diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
+index b4c7748c4cf98..fa90cc9fe93a9 100644
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -547,7 +547,7 @@ static int hfsplus_fill_super(struct super_block *sb, void *data, int silent)
+ 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+ 	if (unlikely(err < 0))
+ 		goto out_put_root;
+-	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
++	if (!hfsplus_brec_read_cat(&fd, &entry)) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+ 			err = -EIO;
 -- 
 2.53.0
 
