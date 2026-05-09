@@ -1,91 +1,68 @@
-Return-Path: <stable+bounces-244912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JkgNWG5/mkRvgAAu9opvQ
-	(envelope-from <stable+bounces-244912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 06:34:41 +0200
+	id 9f2WGVPN/mlZwgAAu9opvQ
+	(envelope-from <stable+bounces-244913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 07:59:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2625D4FE11C
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 06:34:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F314FE2E4
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 07:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5A6F300EF66
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 04:34:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 283A9301B16A
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 05:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AE233263B;
-	Sat,  9 May 2026 04:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038EA38236A;
+	Sat,  9 May 2026 05:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Za4zVImj"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XgO/2kq/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B214242050
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 04:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A05F381AFF;
+	Sat,  9 May 2026 05:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778301276; cv=none; b=JKZxbq2u1aD9jt+uH1yJnkp2WVTlRuVW85RcPLOGHVqp9JDngsFBsKCEABW3qV02OTFjIrrea1AG8mGYph6wy4dO0dn1/PxpOmBc5FttTHS7RDre+LZkOCmad7YQ57nu8er3cC54GkHWktb3VFyNXIrwm7n8czp83/bG3g5yEfc=
+	t=1778306383; cv=none; b=L9M89bufDAwREcWVglPwov0kMIAi/aUx9cMdWJycov94auBGfyftCR+4XKDXxxAa4eVPjpx8SM2PPOleyEtTVRkKk4QGGVzJyVa3vJ7h3I7Jo0qg6OvQP6W48up7qmE7cGQoOsVAztLFbF+giRTaAadZcZLHDUfK/jJbatKMVwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778301276; c=relaxed/simple;
-	bh=gtxY+4TOi0oA41qVHGkJ/QLj89NC1FA7J5o+n/DdpMg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KIvfUd49Iu1+QKvP1LgKWEhVZ6TSPvm27ocLLWXOTUX5X8nVF8zGsyRbv6ZYa6pW+qFBxIdSakh3LpL4v01ndQMuyVLCC0sPnABCBLAk8kJcvD9l/lDRhvS1FfCVWljjB4UBxwbFAJzxXEsKic8cMkgynrFFeHkeQmf8llntPZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Za4zVImj; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b9705613ddso17123785ad.1
-        for <stable@vger.kernel.org>; Fri, 08 May 2026 21:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778301275; x=1778906075; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qHby+hWH9+W424QK2ah85IJT+/j+8nWOsWmsllDI9MU=;
-        b=Za4zVImjLqNml7p+0s6UTUqQNeP/SEyVIro4wSxgQJ3NUs1cEW6A0wMYtf5GYWNxbF
-         RozOOdcDWYT8rrT8qoTcmfE0eur2Ww3qEHDWFFL8PYSrs4LJkV4vk8MYH6DGLlJXDdtG
-         rBNuZ5iokYX+8c/Qvh5TxFToyqcJF4XBLdYadxvAZMIk3OCbMazgcVCN+ZIk0+Rp+UTk
-         0aivQHBlXrubf8pjMOqvmPFM+/AB6T+5guxoTaQl1UHAuonJIPHLvzlW60y0de2RHIx2
-         XilEO1tk+qWqoo0SZUXLKps+Lh1DhphCEINTi+fCq9KzsTiljloMQtKW/rKD2mOK4F/v
-         BqzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778301275; x=1778906075;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qHby+hWH9+W424QK2ah85IJT+/j+8nWOsWmsllDI9MU=;
-        b=dqjsab110mES4J1IQlvGn5FhEADpurceawET4LgRTm3MFms/IV2mXmE/c4zgeSbhOv
-         +A6EeNoygjtQXCtUW/VMNVnaNfIGxhqyOFBl8MRUNzQb5t5fAJznvSaqE6IfRcWdDXRy
-         SCKqk92VlmixGFTIwEJo1kd2oSw9ErHvjwfN2oT/C0R83SOXz6N5iDdU3j8Ov/xWGOEZ
-         r0LlAU0IckwLOLP3rZpUUs6DGVl8eOPmJLDBVMB+4qhrbGNS4R7mBLIeXiSCHCQUj9we
-         ZjfXRwiU0wF/F8n1zABlyigPmUO15l2N7WpiOPcZhYj9kb4mYsCdgDFXexgpMQrD61wd
-         cE2w==
-X-Forwarded-Encrypted: i=1; AFNElJ+2QZTuCbL3Ma6mJBtmTc3YhA6q/Eg5c5GWBlvdWzF7RX+qA84vQbGzOEfEzNZCLDXK44Fw8SM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUGtp9uPIX6T2Nffky83OXGxjZkP3+YCGv+4+xoeqfI9UDcb4O
-	PWuCW4anDBSr7hsUZx1kXrAyaaCf8dwhz3w2s79ByvbY7PEtWo3BP6yL
-X-Gm-Gg: Acq92OG2LWApeoQG5TIqBxl2F1vfrpJ+bkbk3vimU86jrQPZ+Hv5lP42lJBSCTrTpgq
-	dH/Kmt9nEHadfzo5+P/PxfzxnN1RUNifE88uV1wmCf42G3O/EUMBg7rhG3TtD+eNxd8GzGR0feK
-	fyVyrDbJbRMMutJ3ipsGMpFouJhHBWRKQnpsUMwUHDHmHOmS0kNDz9FyJ/TRnCEzXl/bcbKSBls
-	liodd4Ohqor5jNEAE/rHdmfVc5f6g6mpj49ki3DcTwglKaGWZVXDluk2wV5ZqyaAbDMyldjFOYw
-	Kjs0WHycN16Wob2Vk1lVdEhhiNP6F7VMjCeS7gqhWH/4D8chB5ZzLdnyEsX6yQqAypSTWQy+Ocv
-	XNnxT0s6Aus2343Xe25n0TWkPl3HlijsFOo7qKZ5Fr33uvJsqE+7+nBaBIfF1heCASPY/VQijgj
-	NwasmKqciAPOGzMpKTuZeW3Gs+BoCTNjF9YCV5VhuOqjtwLSZyPJtEOYk=
-X-Received: by 2002:a17:903:1d2:b0:2b0:663f:6b53 with SMTP id d9443c01a7336-2ba7908bfb1mr159909685ad.13.1778301274960;
-        Fri, 08 May 2026 21:34:34 -0700 (PDT)
-Received: from KRHW1CJW23.bytedance.net ([203.208.189.9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1e6199csm52018435ad.55.2026.05.08.21.34.31
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 08 May 2026 21:34:34 -0700 (PDT)
-From: Zhao Li <enderaoelyther@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Felix Fietkau <nbd@nbd.name>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: mac80211: capture fast-RX rate before mesh reuses skb->cb
-Date: Sat,  9 May 2026 12:34:28 +0800
-Message-ID: <20260509043427.60322-2-enderaoelyther@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1778306383; c=relaxed/simple;
+	bh=03zDnbuy0ge/uTi2WayL2lyjcl0oa2J34OgTRCkXfm0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YCKqF2RJHfaoO0q7NRF+DvoZxxjH7j4Jp3MIKUtOwTUjcTea75sDjDFUQshw7aYxSGYjehXNfYCq/ZkSIc/Y+Y87w/qjjf72chn7a+90S6fjXdkDoDKVJUIbuvDB2jHTpsWfkaUtexgRQGb61uPgHX1DCDYMIVIs9IsNUuDCjr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XgO/2kq/; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Pw
+	gyqmK18A0yWJ0ebueAVQ3uqfZfErwXx/M3NICsG+M=; b=XgO/2kq/J3MxfoJ1V3
+	/yoKZmeZxu89HsoySAM8n89aT7O8fLDf5lA5imqwzppZQ9aOvLbqbjRboi1yAHxN
+	1Bz7wHcEXIWGtgICzz6ZJ6y9v//PRVQCIxbLb+N3dp3diEdLx2n0kXkXWnim5mmK
+	qTyhmMA/w+QHeFXhpmvXxNNbo=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3XxYWzf5pXJdWAQ--.26500S2;
+	Sat, 09 May 2026 13:58:47 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Dipendra Khadka <kdipendra88@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	hariprasad <hkelam@marvell.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Naveen Mamindlapalli <naveenm@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Suman Ghosh <sumang@marvell.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_flows.c
+Date: Sat,  9 May 2026 13:58:46 +0800
+Message-Id: <20260509055846.1893377-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,92 +70,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2625D4FE11C
+X-CM-TRANSID:_____wD3XxYWzf5pXJdWAQ--.26500S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww18ZF1fuF43AFWrGw4UArb_yoW8AFW3pa
+	18ury8ZFy8tF17GwnrX3WrAF4Y9a1vga4UKw18Cw1Fqw13JFn8Cas5KFWrWry8CrWUWFWY
+	qayY9393uF1DJFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pifgArUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAReS-Wn+zRfMLQAA3V
+X-Rspamd-Queue-Id: 55F314FE2E4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244912-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-244913-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[163.com:+];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lunn.ch,kernel.org,marvell.com,163.com,davemloft.net,redhat.com,vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-ieee80211_invoke_fast_rx() reads RX status through
-IEEE80211_SKB_RXCB(skb), which aliases the same skb->cb storage
-that ieee80211_rx_mesh_data() reuses as IEEE80211_TX_INFO.  In the
-unicast forward path, mesh_data does:
+From: Dipendra Khadka <kdipendra88@gmail.com>
 
-	info = IEEE80211_SKB_CB(fwd_skb);
-	memset(info, 0, sizeof(*info));
+[ Upstream commit 5d55ed19d4190d2c210ac05ac7a53f800a8c6fe5 ]
 
-on the same skb the caller still names via rx->skb, then either
-queues the skb for TX (success) or kfree_skb()'s it (no-route)
-before returning RX_QUEUED.  The caller's RX_QUEUED arm then
-calls sta_stats_encode_rate(status) on memory that is either
-zeroed (success path) or freed (no-route path).  The latter is
-KASAN slab-use-after-free in ieee80211_prepare_and_rx_handle.
+Adding error pointer check after calling otx2_mbox_get_rsp().
 
-Fix by encoding the rate from status before invoking
-ieee80211_rx_mesh_data(), so the RX_QUEUED arm consumes a value
-captured while status was still backed by valid memory.
-
-Fixes: 3468e1e0c639 ("wifi: mac80211: add mesh fast-rx support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
+Fixes: 9917060fc30a ("octeontx2-pf: Cleanup flow rule management")
+Fixes: f0a1913f8a6f ("octeontx2-pf: Add support for ethtool ntuple filters")
+Fixes: 674b3e164238 ("octeontx2-pf: Add additional checks while configuring ucast/bcast/mcast rules")
+Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
- net/mac80211/rx.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4984,6 +4984,7 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 		u8 sa[ETH_ALEN];
- 	} addrs __aligned(2);
- 	struct ieee80211_sta_rx_stats *stats;
-+	u32 encoded_rate;
-
- 	/* for parallel-rx, we need to have DUP_VALIDATED, otherwise we write
- 	 * to a common data structure; drivers can implement that per queue
-@@ -5090,11 +5091,14 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 	/* push the addresses in front */
- 	memcpy(skb_push(skb, sizeof(addrs)), &addrs, sizeof(addrs));
-
-+	/* capture before mesh forward may memset or free skb->cb */
-+	encoded_rate = sta_stats_encode_rate(status);
-+
- 	res = ieee80211_rx_mesh_data(rx->sdata, rx->sta, rx->skb);
- 	switch (res) {
- 	case RX_QUEUED:
- 		stats->last_rx = jiffies;
--		stats->last_rate = sta_stats_encode_rate(status);
-+		stats->last_rate = encoded_rate;
- 		return true;
- 	case RX_CONTINUE:
- 		break;
---
-2.50.1
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+index c3e5ebc41667..3c46cb0bd0de 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+@@ -119,6 +119,8 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
+ 
+ 		rsp = (struct npc_mcam_alloc_entry_rsp *)otx2_mbox_get_rsp
+ 			(&pfvf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp))
++			goto exit;
+ 
+ 		for (ent = 0; ent < rsp->count; ent++)
+ 			flow_cfg->flow_ent[ent + allocated] = rsp->entry_list[ent];
+@@ -195,6 +197,10 @@ static int otx2_mcam_entry_init(struct otx2_nic *pfvf)
+ 
+ 	rsp = (struct npc_mcam_alloc_entry_rsp *)otx2_mbox_get_rsp
+ 	       (&pfvf->mbox.mbox, 0, &req->hdr);
++	if (IS_ERR(rsp)) {
++		mutex_unlock(&pfvf->mbox.lock);
++		return PTR_ERR(rsp);
++	}
+ 
+ 	if (rsp->count != req->count) {
+ 		netdev_info(pfvf->netdev,
+-- 
+2.34.1
 
 
