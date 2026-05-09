@@ -1,235 +1,159 @@
-Return-Path: <stable+bounces-244872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJYfMieK/mlasgAAu9opvQ
-	(envelope-from <stable+bounces-244872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 03:13:11 +0200
+	id kHUhAfaL/mlasgAAu9opvQ
+	(envelope-from <stable+bounces-244873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 03:20:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F154FD331
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 03:13:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D06F4FD3F1
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 03:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FA77301A91E
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 01:13:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EA72301A706
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 01:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF981A9B46;
-	Sat,  9 May 2026 01:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411E713DBA0;
+	Sat,  9 May 2026 01:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="COS0PiTT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qx7sAKkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69931A6823
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 01:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034161A6828;
+	Sat,  9 May 2026 01:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778289185; cv=none; b=W1dW5h+wRGzcy0O8K8U0Dn3te3RVYqvxUnTHIBfsKLNa9xcmf4AjwObeMLqC3pa3w+FLcxbK5bnlSe67j+UItWOI5gueRdubSh3JeyipjiMo3Lg04/5xGmhkPxRNDG7QdtbFL1ng/iDLuadDg49KUen2S8hQjYj7DQvIcCgsaIw=
+	t=1778289647; cv=none; b=DSYERb7RDtfMP6PaxSGizVBLGMTnh1ACzS86ekTr+TvTXCB8raaWJq11th091w/KD4B4R30rGRPeCgZ1bjQHWUlyEvqQd3zbCTLMKtPxqp4JNJngKolEpT/MfJARJ65UQfQAWKR2Qd+Qaprjjn7i8pFnUk/Kc88YizpjgaoRLv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778289185; c=relaxed/simple;
-	bh=yEs1JAfjASiH6pGBi26J+swHG2w4YVx4v5zhykLKSkM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9VrOe55lpnLZW+mKW8O6Sd7gIhipaOk5wHfhHAGZdGDmH07XxjiUkhBQABz4vjDju/nDYRCQUqDbkWbxRoGm7QCnobZ5wrpy2DNiWqxJ+EvIdmL6/wvHZLM3Rmp8QYMRG6HbZSrmGc6NCzYQXVtj6rgAR1nlzUeefBYQ/vJv0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COS0PiTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A239C2BCF4;
-	Sat,  9 May 2026 01:13:04 +0000 (UTC)
+	s=arc-20240116; t=1778289647; c=relaxed/simple;
+	bh=ngWZRieocRakAOXz1tz/rs2DBtyC2VDgowa5l0YcfHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FmtmERB023DCCEGE7+W8g88bDcp3oeF1syG4+QSF4ZBxVf17VODw4+qKJwlYiRBbaI4mld1h4hT60ylZhTK6R+sjh29EljWtSuKK6fqZxaY5f/+TP4TksLRkVs3FX+Azta6dGDA4tkhgDfOUA+i1uYQXNWJSn5SXLUhlHO5EdHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qx7sAKkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BB4C2BCB0;
+	Sat,  9 May 2026 01:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778289184;
-	bh=yEs1JAfjASiH6pGBi26J+swHG2w4YVx4v5zhykLKSkM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=COS0PiTTRnvXHB1e0d6F0abLkWAbD+9TJJ+FLcafLx1NkDQH3/W6RDPqAOk4aKpXt
-	 P87kshPZgoq5XR4tXwFvLaI0FsUFJrHMOu8u9q6P++NgSgyk917kl0HlZ+WGZhJMzD
-	 MgIeoQ4f1EXT8p/kossj0hsE20UOfZpRTNBqKUN+72U8TR29HBiSFwHzX7lNfm8NBZ
-	 igfHV2LOu8w5YQ0xmpU22qczCKzhld7iEa2/vsz5dCNxviyCth79dy3NqVNc1M9IUL
-	 q2noH5iCGxfQcjwYty7zd31Twc8mc08QRe94QwUHDnp1TI7U5EPVX6Z/eHvyNEKycC
-	 2/GoXBlMVOe/g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zilin Guan <zilin@seu.edu.cn>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] hfsplus: fix held lock freed on hfsplus_fill_super()
-Date: Fri,  8 May 2026 21:12:59 -0400
-Message-ID: <20260509011259.2724832-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260509011259.2724832-1-sashal@kernel.org>
-References: <2026050457-reprogram-lyricist-2669@gregkh>
- <20260509011259.2724832-1-sashal@kernel.org>
+	s=k20201202; t=1778289646;
+	bh=ngWZRieocRakAOXz1tz/rs2DBtyC2VDgowa5l0YcfHg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Qx7sAKkSMRcEBn6YzbEWweidcl9FDkQZJq6NZEms598/gwzD27H73WFmjw3qFuatk
+	 k3mvkSZIsjiSWxf80JXW534TY3S3/4zMyl4vzHK7GDC/Qlat8RMohpJ3pguDW88qPu
+	 45J45Nm6kNygQ3Z3fHgy78GtCFiz9lPZnnnLF6YGG6FfV+VL9h3baJ7QF8xtmt8vSj
+	 sPfvA5VBUlJs+pOgW4qAolzlC5nnZv1jkAgqswDteKSdTP0aSJi3bU6tlpYiiDjaIo
+	 WdiaCtxIBrEzMbpSewV6bF8DSflAwozIUyhLbMDv4suN84bdioReovyGua/A+oMpNo
+	 MZ4y18hYkkBMA==
+Date: Fri, 8 May 2026 18:20:44 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: joycathacker@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, security@kernel.org, Ben Morris
+ <bmorris@anthropic.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] sctp: revalidate list cursor after
+ sctp_sendmsg_to_asoc() in SCTP_SENDALL
+Message-ID: <20260508182044.55b567c1@kernel.org>
+In-Reply-To: <CADvbK_fOduqbZSx7xefbDhDi+=eLmgN8k=Bm+J0tRDrFj6ZYmQ@mail.gmail.com>
+References: <20260508001455.3137-1-joycathacker@gmail.com>
+	<CADvbK_fOduqbZSx7xefbDhDi+=eLmgN8k=Bm+J0tRDrFj6ZYmQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 38F154FD331
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9D06F4FD3F1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244873-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,google.com,redhat.com,kernel.org,vger.kernel.org,anthropic.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244872-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dubeyko.com:email]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,anthropic.com:email]
 X-Rspamd-Action: no action
 
-From: Zilin Guan <zilin@seu.edu.cn>
+On Fri, 8 May 2026 16:35:21 -0400 Xin Long wrote:
+> On Thu, May 7, 2026 at 8:15=E2=80=AFPM <joycathacker@gmail.com> wrote:
+> >
+> > From: Ben Morris <bmorris@anthropic.com>
+> >
+> > The SCTP_SENDALL path in sctp_sendmsg() iterates ep->asocs with
+> > list_for_each_entry_safe(), which caches the next entry in @tmp before
+> > the loop body runs.  The body calls sctp_sendmsg_to_asoc(), which may
+> > drop the socket lock inside sctp_wait_for_sndbuf().
+> >
+> > While the lock is dropped, another thread can SCTP_SOCKOPT_PEELOFF the
+> > association cached in @tmp, migrating it to a new endpoint via
+> > sctp_sock_migrate() (list_del_init() + list_add_tail() to
+> > newep->asocs), and optionally close the new socket which frees the
+> > association via kfree_rcu().  The cached @tmp can also be freed by a
+> > network ABORT for that association, processed in softirq while the
+> > lock is dropped.
+> >
+> > sctp_wait_for_sndbuf() revalidates @asoc (the current entry) on re-lock
+> > via the "sk !=3D asoc->base.sk" and "asoc->base.dead" checks, but nothi=
+ng
+> > revalidates @tmp.  After a successful return, the iterator advances to
+> > the stale @tmp, yielding either a use-after-free (if the peeled socket
+> > was closed) or a list-walk onto the new endpoint's list head (type
+> > confusion of &newep->asocs as a struct sctp_association *).
+> >
+> > Both are reachable from CapEff=3D0; the type-confusion path gives
+> > controlled indirect call via the outqueue.sched->init_sid pointer.
+> >
+> > Fix by re-deriving @tmp from @asoc after sctp_sendmsg_to_asoc()
+> > returns.  @asoc is known to still be on ep->asocs at that point: the
+> > only callers that list_del an association from ep->asocs are
+> > sctp_association_free() (which sets asoc->base.dead) and
+> > sctp_assoc_migrate() (which changes asoc->base.sk), and
+> > sctp_wait_for_sndbuf() checks both under the lock before any
+> > successful return; a tripped check propagates as err < 0 and the loop
+> > bails before the re-derive.
+> >
+> > The SCTP_ABORT path in sctp_sendmsg_check_sflags() returns 0 and the
+> > loop hits 'continue' before sctp_sendmsg_to_asoc() is ever called, so
+> > the @tmp cached by list_for_each_entry_safe() still covers the
+> > lock-held free that ba59fb027307 ("sctp: walk the list of asoc
+> > safely") was added for.
+> >
+> > Fixes: 4910280503f3 ("sctp: add support for snd flag SCTP_SENDALL proce=
+ss in sendmsg")
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: claude:mythos
+> > Signed-off-by: Ben Morris <bmorris@anthropic.com> =20
+>=20
+> Acked-by: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 ]
+FWIW sashiko says there's more?
 
-hfsplus_fill_super() calls hfs_find_init() to initialize a search
-structure, which acquires tree->tree_lock. If the subsequent call to
-hfsplus_cat_build_key() fails, the function jumps to the out_put_root
-error label without releasing the lock. The later cleanup path then
-frees the tree data structure with the lock still held, triggering a
-held lock freed warning.
-
-Fix this by adding the missing hfs_find_exit(&fd) call before jumping
-to the out_put_root error label. This ensures that tree->tree_lock is
-properly released on the error path.
-
-The bug was originally detected on v6.13-rc1 using an experimental
-static analysis tool we are developing, and we have verified that the
-issue persists in the latest mainline kernel. The tool is specifically
-designed to detect memory management issues. It is currently under active
-development and not yet publicly available.
-
-We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
-lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
-used GDB to dynamically shrink the max_unistr_len parameter to 1 before
-hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
-return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
-exercises the faulty error path. The following warning was observed
-during mount:
-
-	=========================
-	WARNING: held lock freed!
-	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
-	-------------------------
-	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
-	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-	2 locks held by mount/174:
-	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
-	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-
-	stack backtrace:
-	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	Call Trace:
-	<TASK>
-	dump_stack_lvl+0x82/0xd0
-	debug_check_no_locks_freed+0x13a/0x180
-	kfree+0x16b/0x510
-	? hfsplus_fill_super+0xcb4/0x18a0
-	hfsplus_fill_super+0xcb4/0x18a0
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x65f/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? pointer+0x4ce/0xbf0
-	? trace_contention_end+0x11c/0x150
-	? __pfx_pointer+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x79b/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? vsnprintf+0x6da/0x1270
-	? srso_return_thunk+0x5/0x5f
-	? __mutex_unlock_slowpath+0x157/0x740
-	? __pfx_vsnprintf+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? mark_held_locks+0x49/0x80
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? irqentry_exit+0x17b/0x5e0
-	? trace_irq_disable.constprop.0+0x116/0x150
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	get_tree_bdev_flags+0x302/0x580
-	? __pfx_get_tree_bdev_flags+0x10/0x10
-	? vfs_parse_fs_qstr+0x129/0x1a0
-	? __pfx_vfs_parse_fs_qstr+0x3/0x10
-	vfs_get_tree+0x89/0x320
-	fc_mount+0x10/0x1d0
-	path_mount+0x5c5/0x21c0
-	? __pfx_path_mount+0x10/0x10
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? kmem_cache_free+0x307/0x540
-	? user_path_at+0x51/0x60
-	? __x64_sys_mount+0x212/0x280
-	? srso_return_thunk+0x5/0x5f
-	__x64_sys_mount+0x212/0x280
-	? __pfx___x64_sys_mount+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	do_syscall_64+0x111/0x680
-	entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7ffacad55eae
-	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
-	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
-	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
-	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
-	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
-	</TASK>
-
-After applying this patch, the warning no longer appears.
-
-Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/hfsplus/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 1a34e20ac9951..9646cde02010b 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -539,8 +539,10 @@ static int hfsplus_fill_super(struct super_block *sb, void *data, int silent)
- 	if (err)
- 		goto out_put_root;
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
--	if (unlikely(err < 0))
-+	if (unlikely(err < 0)) {
-+		hfs_find_exit(&fd);
- 		goto out_put_root;
-+	}
- 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
--- 
-2.53.0
-
+https://sashiko.dev/#/patchset/20260508001455.3137-1-joycathacker%40gmail.c=
+om
 
