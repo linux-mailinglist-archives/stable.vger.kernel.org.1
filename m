@@ -1,61 +1,98 @@
-Return-Path: <stable+bounces-244987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id B+VeFF2n/2mx8wAAu9opvQ
-	(envelope-from <stable+bounces-244987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 23:30:05 +0200
+	id mNl2HEWs/2lX9AAAu9opvQ
+	(envelope-from <stable+bounces-244988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 23:51:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1E7501793
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 23:30:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32C350196B
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 23:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E09C2300B852
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 21:30:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65073300D633
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 21:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7CF2D8376;
-	Sat,  9 May 2026 21:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6F73D1CD7;
+	Sat,  9 May 2026 21:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3ijurXC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QW32ZTS/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00B138C2AE
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 21:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98813CCA02
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 21:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778362201; cv=none; b=BGXbqMZarKEjzjplkmkAGXQcaFWSCNpnv7gSR2nHc+XDqXY4KZB8JiyVlN9xJvX8kUdAydVs7og3aSEt0dvktvI1zznsNcUiDne0+htEZaxN1BmJ23bGv1jgxMHRVzogsDIYADm7ASelqPW7lvse1GCsh17Pjscbc2u1Wmyxxw8=
+	t=1778363456; cv=none; b=ASjnXMDPZrSLDGuN7ecK7Xn6eCvXHst7duIUJPI9JXfUdG2CdjohCByGs2QyLDZ1Oq5QAya9JIkmCJYPUkLf9Y20+/u1LZThgdsucY80J4ZsoDNdQ6bxBWEXE6zSuyjSx76v2/T0kJ53uDJmN/mlznPmvMYuny0UjtF7tIZGX5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778362201; c=relaxed/simple;
-	bh=PK96LQRTk4rXiNW3GxipRkW7hEDKbYrovYrmL7WVDRk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AB+g53Jl2bTdZG9761xEv367CDmYzHYt+23OW3OwT1IR7Err/e8Qpp/9n8x2soTo+TpbpSFvby/3yAapMYYsfWmoiM28gjZ1vsOhDkiGfT1SEKu+zjv8VFuZK7/JTlQbHfRqHPV4Bp/Srk25rQXBOATMLpfGSNlxrpxo3iG3vdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3ijurXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA777C2BCC7;
-	Sat,  9 May 2026 21:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778362201;
-	bh=PK96LQRTk4rXiNW3GxipRkW7hEDKbYrovYrmL7WVDRk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3ijurXC9nPbhVLKew3a4iqxYBUAITNiAcdlZU6vEGX4ocbfvs1d0Ios6SDl3IXXp
-	 2wa82hfH46CYeG3l5eHNFzvXnT4jfBpiAOqtmyJhA9F+gIzqow8rheU48zxP4XFqU4
-	 pcNT+KFe7+WMTcli/uXKh9LklOJN72rwlpx1wk0clnF2ZxbE8IoRMBIj/nf4FTAlVa
-	 yMuY+mt7ewxVuLfHYeef+sX5foRzkSMLC0DiXgsB0VEUrmYSsIoUf/hQNd8FL9cYyl
-	 tUFyXsCV7BbWzFlZUjIGquJcdb0Cm8hLTFh5d8upXrdxApEks4dSsBJWDiT9ftwfUU
-	 2m+vS/boHzN+A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] crypto: caam - guard HMAC key hex dumps in hash_digest_key
-Date: Sat,  9 May 2026 17:29:57 -0400
-Message-ID: <20260509212957.3843722-2-sashal@kernel.org>
+	s=arc-20240116; t=1778363456; c=relaxed/simple;
+	bh=zZ4zRaKGq3lXVJHzulsLNYmFoDhtm/d3hxn8G7IHlb8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MmmeODb0KrQnjcxxXR7ePoFOxLNP3qKuUbIWc5wf7NIr3FoO4PzfNy1xsDYw2lkkPH0TtKvM4qMZvy9o+KCCDdLyFpHNUTXEQ0gpK4ciNs1GGMZuRaAtdQqOTj432nbwhU1UQHpVf/6hz8u+OdTtI68/ehDp3IHHz/TAvebsQS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QW32ZTS/; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso28592335e9.3
+        for <stable@vger.kernel.org>; Sat, 09 May 2026 14:50:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778363451; x=1778968251; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YvqluUKCfP5Ei1uU539utS8CTMy0nMi+hBfXFQXhHRY=;
+        b=QW32ZTS/DAak+S0VHi54BQZ0fyp71bh2NvPX9fDbN4XLgZMeKd0oJ15sgh4gnKYvA5
+         vRbDayEUc2PtHZ1+oOvBJpTIoUQ0/LunOlYKvkO+5qexDjyPWx2e7Y5HmlzVR4r+qkTa
+         Bhif+gBjUrUB0nRZtY1rvl2BBztlfsV5Uo4alYftiQqMqUTsqCjEnuX0+dF44y2T968R
+         Gq+DWWnT8phNKHoT0+bb07kCsghjI0wipiRgF2LoqQMtYTksfK0fiuMHDWknn/w9Cgh6
+         0iySToaUXACAxpFTwHGFIvxfIDDjt6OvB2bp4CpssjcB4xc6pzsHnLJqkPkeum7jtEda
+         ES3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778363451; x=1778968251;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YvqluUKCfP5Ei1uU539utS8CTMy0nMi+hBfXFQXhHRY=;
+        b=kqnSoFfiDV0dKQVywOOML+IV9egUSvgU0asCaou0lhhVGt5IfxB94qr5/j0GonVI02
+         R0q16kSgjQYJAw6I0fm/L81DRBbqxypkVpm8f9M0iqYbBsL1KWAi1JMrhsYUKKK6MJLa
+         OhYRE3tLFaIgJPPhoaz12ICAgHvE9BchZD9+UZDXHcFuw9Clif1RmsM30ze2sTHrkO8v
+         OJqWfvB2mO4+WAssaCuf51/Ba71K6VwAkImgt3QHTMKMOrsjxcuTIPDAw7cjAFyzRoZH
+         zPFp92/dEoiAhgOkoPelPGYeKJ32ElwjrlvazI48k7SBKZu29MRCgxKhh/VxekS8YWDd
+         JseA==
+X-Forwarded-Encrypted: i=1; AFNElJ9hTruMQq9G0f8m86fjXGNYQAhGgZlXoBk89vw+TJOu01Oyihcu129JTS65lCztjQ/JL0yEijU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS71/obY1cSU9FsrankmMFXVRo+Cabja+lAs8TXSBZbR8wSXyh
+	zy+CisP2enGF48KUKWrh2MWi7D3SUoKPgoz775t+VZ7oLQLEbN25a4JT
+X-Gm-Gg: Acq92OEWGlryAU4dn7DLeOGqU3+L1p+L2Z23DbP7gj+Xm9qom9Dql9vlaBomFnYL5/I
+	FvnNXs4z5GScUPduEV4wFnaG4rbFuJqLWLZuYUtc+ZNwbkicDLGkWFPzNzgyG6CV296xT6J83mD
+	KehnAEcPVBLftPmJsXmLU2urHOaNgMGBZKgALQeLECOpXrXqK1U97KK4aGexaix5m8f+05TMDoO
+	zz39M5AvTY5r6qzmFs4L6RW1y8ksQVwUqKbHSDbvEFaMpQnKUlA7jUbkfBcgOB1cmegD+luiRrP
+	/hN9z8l7FQ1VD/WNTxSeyyhvfB7lL4yB1zui5gX71pBdOQuzT2T8xGO6MCr326kE7Cd7IDXzTba
+	baFId1sJlEA57XWQzTwSOT0Mb6WsN/619YPYayiYH16OEvh5TwbTa4CgKtkEFO61R3ofgVF69iO
+	Fgv0yTqZ7bC8stk6GJRDwielMyiUbr/ChiVdbhhfqr/h4ski/4xhTI+y1hliv8huR+713gtkZZb
+	r/y4HJhwiSjHKknuG3EHg==
+X-Received: by 2002:a05:600c:17d2:b0:485:ae14:8191 with SMTP id 5b1f17b1804b1-48e51e0a8b9mr172833435e9.5.1778363451396;
+        Sat, 09 May 2026 14:50:51 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e702ec426sm71076565e9.10.2026.05.09.14.50.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 May 2026 14:50:51 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Russell King <linux@armlinux.org.uk>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH net] net: ethtool: phy: avoid NULL deref when PHY driver is unbound
+Date: Sat,  9 May 2026 22:50:46 +0100
+Message-ID: <20260509215046.107157-1-devnexen@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260509212957.3843722-1-sashal@kernel.org>
-References: <2026050436-chastity-emoticon-ecfc@gregkh>
- <20260509212957.3843722-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,100 +100,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF1E7501793
+X-Rspamd-Queue-Id: E32C350196B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[bootlin.com,armlinux.org.uk,vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-244988-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244987-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[lunn.ch,gmail.com,kernel.org,davemloft.net,google.com,redhat.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	NEURAL_HAM(-0.00)[-0.982];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+phydev->drv can become NULL while the phy_device is still attached to
+its net_device, namely after the PHY driver is unbound via sysfs:
 
-[ Upstream commit 177730a273b18e195263ed953853273e901b5064 ]
+	echo <mdio_id> > /sys/bus/mdio_bus/drivers/<phy_drv>/unbind
 
-Use print_hex_dump_devel() for dumping sensitive HMAC key bytes in
-hash_digest_key() to avoid leaking secrets at runtime when
-CONFIG_DYNAMIC_DEBUG is enabled.
+phy_remove() clears phydev->drv but doesn't call phy_detach(), so the
+phy_device stays in the link topology xarray and ethnl_req_get_phydev()
+still hands it back. ETHTOOL_MSG_PHY_GET then oopses on:
 
-Fixes: 045e36780f11 ("crypto: caam - ahash hmac support")
-Fixes: 3f16f6c9d632 ("crypto: caam/qi2 - add support for ahash algorithms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	rep_data->drvname = kstrdup(phydev->drv->name, GFP_KERNEL);
+
+drvname is already treated as optional by phy_reply_size(),
+phy_fill_reply() and phy_cleanup_data(), so just skip the allocation
+when there is no driver bound.
+
+Fixes: 9dd2ad5e92b9 ("net: ethtool: phy: Convert the PHY_GET command to generic phy dump")
+Cc: stable@vger.kernel.org # 6.13.x
+Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
- drivers/crypto/caam/caamalg_qi2.c | 4 ++--
- drivers/crypto/caam/caamhash.c    | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/ethtool/phy.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
-index 07665494c8758..c97c10cdf207a 100644
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -3269,7 +3269,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 	dpaa2_fl_set_addr(out_fle, key_dma);
- 	dpaa2_fl_set_len(out_fle, digestsize);
+diff --git a/net/ethtool/phy.c b/net/ethtool/phy.c
+index f76d94d848d6..ddc6eab701ed 100644
+--- a/net/ethtool/phy.c
++++ b/net/ethtool/phy.c
+@@ -94,10 +94,12 @@ static int phy_prepare_data(const struct ethnl_req_info *req_info,
+ 	if (!rep_data->name)
+ 		return -ENOMEM;
  
--	print_hex_dump_debug("key_in@" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("shdesc@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -3289,7 +3289,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 		/* in progress */
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
--		print_hex_dump_debug("digested key@" __stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@" __stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
+-	rep_data->drvname = kstrdup(phydev->drv->name, GFP_KERNEL);
+-	if (!rep_data->drvname) {
+-		ret = -ENOMEM;
+-		goto err_free_name;
++	if (phydev->drv) {
++		rep_data->drvname = kstrdup(phydev->drv->name, GFP_KERNEL);
++		if (!rep_data->drvname) {
++			ret = -ENOMEM;
++			goto err_free_name;
++		}
  	}
-diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
-index 053af748be86d..cc942e5ab2799 100644
---- a/drivers/crypto/caam/caamhash.c
-+++ b/drivers/crypto/caam/caamhash.c
-@@ -393,7 +393,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 	append_seq_store(desc, digestsize, LDST_CLASS_2_CCB |
- 			 LDST_SRCDST_BYTE_CONTEXT);
  
--	print_hex_dump_debug("key_in@"__stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("jobdesc@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -408,7 +408,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
- 
--		print_hex_dump_debug("digested key@"__stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@"__stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
- 	}
+ 	rep_data->upstream_type = pdn->upstream_type;
 -- 
 2.53.0
 
