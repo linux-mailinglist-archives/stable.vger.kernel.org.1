@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-244903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJ13LrWq/mkyuwAAu9opvQ
-	(envelope-from <stable+bounces-244903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 05:32:05 +0200
+	id ffnfFZyt/mnJuwAAu9opvQ
+	(envelope-from <stable+bounces-244904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 05:44:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535F54FDE18
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 05:32:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D14F4FDF04
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 05:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88D243008D76
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 03:32:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D82A3016C95
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 03:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A8A2BE7AB;
-	Sat,  9 May 2026 03:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F8F37AA72;
+	Sat,  9 May 2026 03:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+EIm+fp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LG7uXQsD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED12926F2AF
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 03:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C1626ED5D
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 03:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778297524; cv=none; b=Nb78a20PqE3/RCwH44YURLkhUedbYI1hSUEBNg7BJQaSIkSKLo3IMje+FqDCmDMKQJ4RZ7vlEXG04FE3jcV56F/SmqH96/KVSMD1MixfZsgCRYpEYlsSNvmuIKRMHFiV4hi41XmwvRzrstTUiCMdsSmPIyuX9QAft7bbR9o7Dpw=
+	t=1778298264; cv=none; b=O0Gi0A0UR3I6RZpEec3viIc7nd1ghdcQKlctmb8AfKdsITgma9ZuKb4J8zObIXtnPE3cR6rh+3MTa2z6L/O/6XZS0gpJkh+YsXpic8NnCnqhcN6ATV4ukaLvwEB6UOHVH4DJbDYFHW/cjIIW93psTZ844AEaqMvTnwzVUUqCmN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778297524; c=relaxed/simple;
-	bh=x85TW0GKD4IJIwQcMkIxO0FQZ38tFhUvTGJ82/u+v5E=;
+	s=arc-20240116; t=1778298264; c=relaxed/simple;
+	bh=4RgCJkSolusmIKupEwAPWQYa3DQ67SucW3YkxL+Z860=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFMKfLbtETVKIZSb90i7/sa6gP0FqioxU1o+J2VgOdYUxtNlNpB5VXK8LxTn7yu4roue+H/i/mSVepK5CFQ+OVoyDB7qdd5dDn4HAlBrOLtCpVnirAnoExvrjVLcBV9Jktr0zsr35fhSLY4F50pjfMcXO+Ufhx/fUv/3KXDBlAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+EIm+fp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAECC2BCB0;
-	Sat,  9 May 2026 03:32:02 +0000 (UTC)
+	 MIME-Version; b=etAwvRUwmQra/kayJr1t497BhMGWez2X7+uCczQl50VO5GgQKBKmDvkBCOXmBLdS03XaSbuSaUcAi/SCn+NS2npI9PBA5GvNqty2hO/3UrFS8Ar6srihY8THtlT28HHhs35EciX3FNp4iZy8bfSvEr361W47CrccB5mkAOKead0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LG7uXQsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B79C2BCB2;
+	Sat,  9 May 2026 03:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778297523;
-	bh=x85TW0GKD4IJIwQcMkIxO0FQZ38tFhUvTGJ82/u+v5E=;
+	s=k20201202; t=1778298263;
+	bh=4RgCJkSolusmIKupEwAPWQYa3DQ67SucW3YkxL+Z860=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+EIm+fpBmYPvG780Dpl59CBp6LKfuZODxQFgxF8+bXL38wUyA+hb4p3PiEIs081e
-	 SRU6lrmlRdO6ndlmSRBnR9rXO16fGi/r2W4KhX9cm10k/moDLAn35SL7M+Zl9FrTrZ
-	 fJV3aea0E8izkgRZmavMcQsE/fNXJRtM8De2Vg80HxhyEIes2cavYckhNkZRBkJXpz
-	 RUbSd2VHnxdZmLQGLFoMRuwJq7stlY6dXgvFZe+lUdvkhorWi9GkWNy4vEq0wausc1
-	 T3YaI304z3J8E2DJEqTp+apHj7OLBQSYDHOSao19uEgwKepWFokDYNUrD/e07OV+Qw
-	 WLLllMFg0yBsg==
+	b=LG7uXQsDpqBFraxu9Fztwd8OEBZPu56Lr2ewy7Vo0bIb1Ykj01OKhugEPYPGqDD85
+	 9a9YJ8D4SsPOijKwJzHwuFnjRK7NvW/Amd5AYWjJ1A1h2vqpZFUMs3DDirW48Ed3eW
+	 j2AhmsiFGEzY3oW6CRBnGbCRwcmg/ManZxf3ER9/iEyd86RwsZsIt6oJAX3EKDdXkP
+	 qJAjY+N2u5IeYCydnT2CoHawgvswemNU1gUMK7rAxnbtnpchqOgBmw7aTqWmhfojt1
+	 bZDD2eEOGxsXBNo8ul9hjxRrlCLQKKwK/oxdLSWru4IR/Tk9eKGj2xHLDKeqd+7GFw
+	 mrtaaL+Kdp7WA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()
-Date: Fri,  8 May 2026 23:31:59 -0400
-Message-ID: <20260509033159.3082967-3-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] crypto: nx - Avoid -Wflex-array-member-not-at-end warning
+Date: Fri,  8 May 2026 23:44:17 -0400
+Message-ID: <20260509034419.3105450-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260509033159.3082967-1-sashal@kernel.org>
-References: <2026050414-copied-panther-40d1@gregkh>
- <20260509033159.3082967-1-sashal@kernel.org>
+In-Reply-To: <2026050440-situation-phosphate-8856@gregkh>
+References: <2026050440-situation-phosphate-8856@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,87 +62,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 535F54FDE18
+X-Rspamd-Queue-Id: 8D14F4FDF04
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[outlook.com,gmail.com,linux.alibaba.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244903-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244904-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 
-[ Upstream commit 21e161de2dc660b1bb70ef5b156ab8e6e1cca3ab ]
+[ Upstream commit 1e6b251ce1759392666856908113dd5d7cea044d ]
 
-Some crafted images can have illegal (!partial_decoding &&
-m_llen < m_plen) extents, and the LZ4 inplace decompression path
-can be wrongly hit, but it cannot handle (outpages < inpages)
-properly: "outpages - inpages" wraps to a large value and
-the subsequent rq->out[] access reads past the decompressed_pages
-array.
+-Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
+ready to enable it globally. So, we are deprecating flexible-array
+members in the middle of another structure.
 
-However, such crafted cases can correctly result in a corruption
-report in the normal LZ4 non-inplace path.
+There is currently an object (`header`) in `struct nx842_crypto_ctx`
+that contains a flexible structure (`struct nx842_crypto_header`):
 
-Let's add an additional check to fix this for backporting.
+struct nx842_crypto_ctx {
+	...
+        struct nx842_crypto_header header;
+        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
+	...
+};
 
-Reproducible image (base64-encoded gzipped blob):
+So, in order to avoid ending up with a flexible-array member in the
+middle of another struct, we use the `struct_group_tagged()` helper to
+separate the flexible array from the rest of the members in the flexible
+structure:
 
-H4sIAJGR12kCA+3SPUoDQRgG4MkmkkZk8QRbRFIIi9hbpEjrHQI5ghfwCN5BLCzTGtLbBI+g
-dilSJo1CnIm7GEXFxhT6PDDwfrs73/ywIQD/1ePD4r7Ou6ETsrq4mu7XcWfj++Pb58nJU/9i
-PNtbjhan04/9GtX4qVYc814WDqt6FaX5s+ZwXXeq52lndT6IuVvlblytLMvh4Gzwaf90nsvz
-2DF/21+20T/ldgp5s1jXRaN4t/8izsy/OUB6e/Qa79r+JwAAAAAAAL52vQVuGQAAAP6+my1w
-ywAAAAAAAADwu14ATsEYtgBQAAA=
+struct nx842_crypto_header {
+	struct_group_tagged(nx842_crypto_header_hdr, hdr,
 
-$ mount -t erofs -o cache_strategy=disabled foo.erofs /mnt
-$ dd if=/mnt/data of=/dev/null bs=4096 count=1
+		... the rest of the members
 
-Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+	);
+        struct nx842_crypto_header_group group[];
+} __packed;
+
+With the change described above, we can now declare an object of the
+type of the tagged struct, without embedding the flexible array in the
+middle of another struct:
+
+struct nx842_crypto_ctx {
+	...
+        struct nx842_crypto_header_hdr header;
+        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
+	...
+ } __packed;
+
+We also use `container_of()` whenever we need to retrieve a pointer to
+the flexible structure, through which we can access the flexible
+array if needed.
+
+So, with these changes, fix the following warning:
+
+In file included from drivers/crypto/nx/nx-842.c:55:
+drivers/crypto/nx/nx-842.h:174:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+  174 |         struct nx842_crypto_header header;
+      |                                    ^~~~~~
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: adb3faf2db1a ("crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/decompressor.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/nx/nx-842.c |  6 ++++--
+ drivers/crypto/nx/nx-842.h | 10 ++++++----
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
-index 7415949a80b32..87009c4d2cf3a 100644
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -149,6 +149,7 @@ static void *z_erofs_lz4_handle_overlap(const struct z_erofs_decompress_req *rq,
- 	oend = rq->pageofs_out + rq->outputsize;
- 	omargin = PAGE_ALIGN(oend) - oend;
- 	if (!rq->partial_decoding && may_inplace &&
-+	    rq->outpages >= rq->inpages &&
- 	    omargin >= LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize)) {
- 		for (i = 0; i < rq->inpages; ++i)
- 			if (rq->out[rq->outpages - rq->inpages + i] !=
+diff --git a/drivers/crypto/nx/nx-842.c b/drivers/crypto/nx/nx-842.c
+index 2ab90ec10e61e..82214cde2bcd9 100644
+--- a/drivers/crypto/nx/nx-842.c
++++ b/drivers/crypto/nx/nx-842.c
+@@ -251,7 +251,9 @@ int nx842_crypto_compress(struct crypto_tfm *tfm,
+ 			  u8 *dst, unsigned int *dlen)
+ {
+ 	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+-	struct nx842_crypto_header *hdr = &ctx->header;
++	struct nx842_crypto_header *hdr =
++				container_of(&ctx->header,
++					     struct nx842_crypto_header, hdr);
+ 	struct nx842_crypto_param p;
+ 	struct nx842_constraints c = *ctx->driver->constraints;
+ 	unsigned int groups, hdrsize, h;
+@@ -490,7 +492,7 @@ int nx842_crypto_decompress(struct crypto_tfm *tfm,
+ 	}
+ 
+ 	memcpy(&ctx->header, src, hdr_len);
+-	hdr = &ctx->header;
++	hdr = container_of(&ctx->header, struct nx842_crypto_header, hdr);
+ 
+ 	for (n = 0; n < hdr->groups; n++) {
+ 		/* ignore applies to last group */
+diff --git a/drivers/crypto/nx/nx-842.h b/drivers/crypto/nx/nx-842.h
+index b66f19ac600f2..fee422865e512 100644
+--- a/drivers/crypto/nx/nx-842.h
++++ b/drivers/crypto/nx/nx-842.h
+@@ -157,9 +157,11 @@ struct nx842_crypto_header_group {
+ } __packed;
+ 
+ struct nx842_crypto_header {
+-	__be16 magic;		/* NX842_CRYPTO_MAGIC */
+-	__be16 ignore;		/* decompressed end bytes to ignore */
+-	u8 groups;		/* total groups in this header */
++	struct_group_tagged(nx842_crypto_header_hdr, hdr,
++		__be16 magic;		/* NX842_CRYPTO_MAGIC */
++		__be16 ignore;		/* decompressed end bytes to ignore */
++		u8 groups;		/* total groups in this header */
++	);
+ 	struct nx842_crypto_header_group group[];
+ } __packed;
+ 
+@@ -171,7 +173,7 @@ struct nx842_crypto_ctx {
+ 	u8 *wmem;
+ 	u8 *sbounce, *dbounce;
+ 
+-	struct nx842_crypto_header header;
++	struct nx842_crypto_header_hdr header;
+ 	struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
+ 
+ 	struct nx842_driver *driver;
 -- 
 2.53.0
 
