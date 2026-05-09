@@ -1,63 +1,85 @@
-Return-Path: <stable+bounces-244921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBIRHQ/n/mlLzAAAu9opvQ
-	(envelope-from <stable+bounces-244921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:49:35 +0200
+	id RZfINB7o/mlCzQAAu9opvQ
+	(envelope-from <stable+bounces-244924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:54:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A234FE92A
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC064FE968
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC20E302B76A
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 07:49:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 463713009CCD
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 07:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9683806C7;
-	Sat,  9 May 2026 07:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F743537C7;
+	Sat,  9 May 2026 07:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kK0k+5KR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UqRPa73c"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA3D35B63D;
-	Sat,  9 May 2026 07:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98A81E8320
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 07:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778312941; cv=none; b=Lmx1bIDpCR43ST7o1kn5rzyBV1oHWHIuKYVSnhvvny5dkahXJb2g9SzLoNQs6ndVtZQL1Z708SCyF5ehl+fIcC1Jvh2/hHhqVoxo5WTJPp6+i9BP7i0yF4fA1M7Y0mdFP5R2KWC2bKwKYVHy35irbYQ6ZZvyvgFHAPbpPgO4yVs=
+	t=1778313217; cv=none; b=R2C/WP8JytrWXi86tZGXeVAhDFb8MSmnFeqERwShX56ZLz3yeuV3VPNn3m8BYu3IqL6MCBKMWQ91a3EXkdFo4vSIYJ0fL/Z/jrKCuazo3+lOGsoRoEy14tut73VViJDivnscM02QPJMo+RXA4Yv1zzIdJUWH61jLOvTahz8go0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778312941; c=relaxed/simple;
-	bh=0lmm43bJm6wHyWUAAmxfIVZVCishr7271DHqldppO4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqwcALw5zk64aHEcAhKsEIwuRfAfRCpVQjNbGWye9Nx1x033KrvNv5nL3YuPRornn4kAaqSF4+Z/+4rz2eSTqfllEv7MNMgqa1Rc3jlLwzRs/KwIgbAS70Nen7V40i3Dn5wozv+IzKaLh6AhwpZzl1fStI8cvSQ7x2k6WZvq8yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kK0k+5KR; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ZT
-	UWpsDi0q7O8I50MMzd6hYadrzxAun/71ZcCAsMoFA=; b=kK0k+5KRRg+sIa7OiE
-	Ra7PIg0ANw+5Uo21LtrUCd1Lst6QoBIfTGW+tWthz7GBliiAq48CNjyU6VOCuPSW
-	vuCJPRFoslP3/51UzDxFG/9y2Q5EBoOTij4OlIG6ukH8jlyo3QwSmDTNyMjXAhm4
-	VGfcYBEuo91Fi8T1z8Bh9xP5s=
-Received: from China-163-team (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3vx7H5v5pPBpuAQ--.62799S4;
-	Sat, 09 May 2026 15:48:30 +0800 (CST)
-From: Wenshan Lan <jetlan9@163.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	vinicius.gomes@intel.com,
-	dave.jiang@intel.com,
-	vkoul@kernel.org,
-	jetlan9@163.com
-Subject: [PATCH 6.6.y v2 2/2] dmaengine: idxd: Fix leaking event log memory
-Date: Sat,  9 May 2026 15:48:22 +0800
-Message-ID: <20260509074822.2587-3-jetlan9@163.com>
+	s=arc-20240116; t=1778313217; c=relaxed/simple;
+	bh=3B9mghRGfG6NfMCUWmI2vb/rw+V9XG23rc0+3od1t/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TSiUequtwQ8K1Bwp98hqpkaUvjhzlZ8UwXwh78Y+zIsAv602+vOW4wGAYm2i89L0gBE+IiR4rHRjRSVZyeWGJ/oc17Kud5Io7trmO4bLdcSEOqkRjuRlUHzt6mC/Li/EJckl/Y9kjE1XOTzFnfNuD6WVlRmMpo75FUryh0TDZ/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UqRPa73c; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2baef9f5ecdso11138705ad.1
+        for <stable@vger.kernel.org>; Sat, 09 May 2026 00:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778313215; x=1778918015; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xOdWB60cPMW/PFpHCU8hncuPFFRRtLa7yAfAZLtU4YM=;
+        b=UqRPa73co664VRkVtRiSpDGSGVJnFXZKC59wqyR1JjN+O76DS/inA++1GLjw1SuxNd
+         RwjV6pziXQ4Ky/gNpEAR9/upM8C+Z6hPO0/R6PLlpt/FlCaE00y6Kxe4UlvHAM4aZdej
+         6YUsoaxPwgdP5/rQz7/tRGG6JDRqIrXJ4uprlAy89qk3c/1BGWgRnoZmbFjUlG8riJRb
+         Y4U9QIl+R/vUWKvq6kM9LHBxorfLkJXRP3M9OPbVRnMtOWYGOtfubmgehxfYuZ7bTzRd
+         BJf6fa81FiTp84JH+Jzh+4dv/yuKRNRw2VtrhVE6eYTjYZ8I1NJsxu6LTFMrjg2Vtr+U
+         vtxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778313215; x=1778918015;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xOdWB60cPMW/PFpHCU8hncuPFFRRtLa7yAfAZLtU4YM=;
+        b=RMhUHiRZlPZyreVH0JmWrLRI11ID+VbIYJyZr71whz+q/P8ZVi3bGrViVvWjPUWE8D
+         Ik9/ZsUmgUs1rAY8lYMfNQABMz3KIbgDK7z/9iVaF2xCowNeTe3an3KefITEO2KaEKkx
+         +lTXcEDeKS8VH7NpSZmPb5kiPgA7Vw9AJTlG3MGY2GXqnStMEGXygkD0mz/JMu/hSeUm
+         RouIDu8QlwR3SJCcFwM7hUJBYIanuJLdadd3wmV+/yH5/EbGud5cd9WRjUCvyb1RObi9
+         Hn5LBki3VEwD96GqmtCEoy6X3VEDncPNNizxMDKg8+0pfn+/HNIA6v6+PXVQcXsNbylW
+         n5Kw==
+X-Gm-Message-State: AOJu0YwfpU33AzZeYtWfKsFpiFBteyKp675GpFZksEsDmhXjS08QbgYd
+	6wamWmOKbXxQ1gqwsVE3cSNcnTsUEwR+gjF7sPaAW3/5Noym695KozJfh60pzw==
+X-Gm-Gg: Acq92OHFzJRBUH2vy8yatXWpu4X2+HDn2Ak+F7asMO6jOPiY1OOWXaZh4f25SIXDAWx
+	EeTOgDwlTFLNSByHYXKY/L6lYwMIx4M7w2FQEqVBk3004w8ZhGt4AiYoVcttkClKBWIAMi9Q8yj
+	4AbI6RXB5isFLyGayrhdkUp0iV87RCFGL2PEISdwaaD+NUjxkCe5/d6m5hKhSc2QcdKu0gPYfsy
+	JBlctPvG9BURaqqRYK/ZjuKdP3tuE4T6jlLx+/bVPup/G+N4MpAvE+t1QX49qJiZ07xdjWxIaXS
+	KPgQ+ilL+YqxRmn7jt+19KS34jcP8iF3ZOZIYxSc+EuAg7/M5gFyFhnUb3Au4iopu6ycYgr7jIL
+	MjDeJzixiHB/JeE5TSj2vyEH6Vi7lEhS5bnMSjXzQsVZ0W28I3bRvZk0qkh69gdlQYkB/Pak6xG
+	OONURrFX3pEXyZV+mRPS+kIeDNSvAGAWEPCKiaD+AG2EcA5ogrVN87Ms3xHPqAiihzD3WV24QH
+X-Received: by 2002:a17:903:1aa4:b0:2bc:810b:5c0c with SMTP id d9443c01a7336-2bc810b5c75mr8911425ad.34.1778313215089;
+        Sat, 09 May 2026 00:53:35 -0700 (PDT)
+Received: from PC.localdomain (softbank060090219114.bbtec.net. [60.90.219.114])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d405efsm45779045ad.23.2026.05.09.00.53.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 May 2026 00:53:34 -0700 (PDT)
+From: Rion Kiguchi <kiguchi.r.sec@gmail.com>
+To: kiguchi.r.sec@gmail.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] staging: vme_user: validate slave window size against buffer size
+Date: Sat,  9 May 2026 16:53:18 +0900
+Message-ID: <20260509075318.640383-1-kiguchi.r.sec@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260509074822.2587-1-jetlan9@163.com>
-References: <20260509074822.2587-1-jetlan9@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,81 +87,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3vx7H5v5pPBpuAQ--.62799S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WF1DJF4kXw1fWw1UKr4fuFg_yoW8Xw17pr
-	4UW3WFyr9xWr17uw1UXF47ZFyYka17A3ySg3y2y3Wa9F43ZFy3WryftF1agr18Jr95Gay5
-	Xa4aqrWxur48Jw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi1EEUUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7A8Hz2n+5s9zuQAA3f
-X-Rspamd-Queue-Id: C9A234FE92A
+X-Rspamd-Queue-Id: 1DC064FE968
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,kernel.org,163.com];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244921-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244924-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_NEQ_ENVFROM(0.00)[kiguchirsec@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.993];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[163.com];
-	FROM_HAS_DN(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+The VME_SET_SLAVE ioctl in drivers/staging/vme_user/vme_user.c accepts
+a user-controlled slave.size and forwards it to vme_slave_set() without
+comparing it against image[minor].size_buf. The slave-image kernel
+buffer is allocated at probe time with a fixed size of PCI_BUF_SIZE
+(0x20000 / 128 KiB), but the configured VME window size can be made
+much larger via the ioctl.
 
-[ Upstream commit ee66bc29578391c9b48523dc9119af67bd5c7c0f ]
+The subsequent read() / write() handlers (vme_user_read /
+vme_user_write) clamp the I/O range against vme_get_size() (the
+configured window size, attacker-controlled) but never consult
+size_buf. The slave I/O paths buffer_to_user() and buffer_from_user()
+then index image[minor].kern_buf with *ppos values up to
+image_size - 1, well beyond the actual allocation.
 
-During the device remove process, the device is reset, causing the
-configuration registers to go back to their default state, which is
-zero. As the driver is checking if the event log support was enabled
-before deallocating, it will fail if a reset happened before.
+Result: a local user with read/write access to /dev/bus/vme/s* can
+trigger out-of-bounds read and write of the kernel slab adjacent to
+the slave-image buffer.
 
-Do not check if the support was enabled, the check for 'idxd->evl'
-being valid (only allocated if the HW capability is available) is
-enough.
+Fix: reject slave.size > size_buf in the VME_SET_SLAVE handler. Also
+add defensive bounds checks against size_buf in buffer_to_user() and
+buffer_from_user() so that the I/O paths cannot exceed the
+allocation even if a future ioctl path forgets to validate.
 
-Fixes: 244da66cda35 ("dmaengine: idxd: setup event log configuration")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-10-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Rion Kiguchi <kiguchi.r.sec@gmail.com>
 ---
- drivers/dma/idxd/device.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/staging/vme_user/vme_user.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
-index e769e1f0d28b..13af4ef2f43f 100644
---- a/drivers/dma/idxd/device.c
-+++ b/drivers/dma/idxd/device.c
-@@ -813,10 +813,6 @@ static void idxd_device_evl_free(struct idxd_device *idxd)
- 	if (!evl)
- 		return;
+diff --git a/drivers/staging/vme_user/vme_user.c b/drivers/staging/vme_user/vme_user.c
+index 11e25c2f6..41b8d5b51 100644
+--- a/drivers/staging/vme_user/vme_user.c
++++ b/drivers/staging/vme_user/vme_user.c
+@@ -156,6 +156,11 @@ static ssize_t buffer_to_user(unsigned int minor, char __user *buf,
+ {
+ 	void *image_ptr;
  
--	gencfg.bits = ioread32(idxd->reg_base + IDXD_GENCFG_OFFSET);
--	if (!gencfg.evl_en)
--		return;
++	if (*ppos < 0 || (u64)*ppos >= image[minor].size_buf ||
++	    count > image[minor].size_buf - (u64)*ppos) {
++		pr_warn_ratelimited("%s: out-of-bounds access\n", __func__);
++		return -EINVAL;
++	}
+ 	image_ptr = image[minor].kern_buf + *ppos;
+ 	if (copy_to_user(buf, image_ptr, (unsigned long)count))
+ 		return -EFAULT;
+@@ -168,6 +173,11 @@ static ssize_t buffer_from_user(unsigned int minor, const char __user *buf,
+ {
+ 	void *image_ptr;
+ 
++	if (*ppos < 0 || (u64)*ppos >= image[minor].size_buf ||
++	    count > image[minor].size_buf - (u64)*ppos) {
++		pr_warn_ratelimited("%s: out-of-bounds access\n", __func__);
++		return -EINVAL;
++	}
+ 	image_ptr = image[minor].kern_buf + *ppos;
+ 	if (copy_from_user(image_ptr, buf, (unsigned long)count))
+ 		return -EFAULT;
+@@ -394,6 +404,14 @@ static int vme_user_ioctl(struct inode *inode, struct file *file,
+ 				return -EFAULT;
+ 			}
+ 
++			/*
++			 * Reject window sizes larger than the kernel buffer
++			 * allocated at probe time, otherwise subsequent
++			 * read/write would access memory beyond kern_buf.
++			 */
++			if (slave.size > image[minor].size_buf)
++				return -EINVAL;
++
+ 			/* XXX	We do not want to push aspace, cycle and width
+ 			 *	to userspace as they are
+ 			 */
+@@ -401,7 +419,6 @@ static int vme_user_ioctl(struct inode *inode, struct file *file,
+ 				slave.enable, slave.vme_addr, slave.size,
+ 				image[minor].pci_buf, slave.aspace,
+ 				slave.cycle);
 -
- 	mutex_lock(&evl->lock);
- 	gencfg.evl_en = 0;
- 	iowrite32(gencfg.bits, idxd->reg_base + IDXD_GENCFG_OFFSET);
+ 			break;
+ 		}
+ 		break;
 -- 
 2.43.0
 
