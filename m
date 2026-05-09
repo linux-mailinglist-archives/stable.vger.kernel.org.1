@@ -1,161 +1,152 @@
-Return-Path: <stable+bounces-244979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHV8LJxk/2lM6AAAu9opvQ
-	(envelope-from <stable+bounces-244979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 18:45:16 +0200
+	id YDLvAMFr/2kR6QAAu9opvQ
+	(envelope-from <stable+bounces-244980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 19:15:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF2500892
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 18:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58833500B2D
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 19:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40478300A8DD
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 16:45:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70041300A8ED
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 17:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E79C2FF66A;
-	Sat,  9 May 2026 16:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968D93AE189;
+	Sat,  9 May 2026 17:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOhQ6UM9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mze20OuS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f67.google.com (mail-qv1-f67.google.com [209.85.219.67])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9218D2DC791
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 16:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778345111; cv=pass; b=qi76gi1VztLDOc/9NfIQMeXyvsjg7KI8FmIQukBT/i4D+hukT3wJCCafFkCoA6WjlTBxP/QvJnvdpsTVL5RuWXPjXxYl4fkDHgquSkOPV8828JE9wNiC6hEjZg5hE5ltecUmkoBgmlZ6VXfClLk1opNraMtSQfjChUFmsSkHey8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778345111; c=relaxed/simple;
-	bh=RTDsNVE3ocqjOsopP8iwGEg0f1/zwRBYg7404Npk/Nc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=paRlG0/GPfMdztBHi9eEUVqc+zuikBmARW7f2bPp2dfadXmdKSDjNBpxEuMD/nGK8Ea91S8t0rgo9mWl58Fc3ZhP8qn0+Jux4tdoLBvqXKJsAzxWVh+RHRuphGDTn2LF2LaDeazRYoTV7mHILKW6l+oQlCgXG+4zNFFBjKNXFfM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOhQ6UM9; arc=pass smtp.client-ip=209.85.219.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51892175D53
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 17:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778346899; cv=none; b=WMYpAVdOBcHrwtAiiW8OY8CX30U35+8uUi6tq5L0cIgBYjrE2T3Mu0hBRAVGndgTHxvnYSvx/0NXNAgIdRsO7+fUEET4VbsllyZG8EtJkdQQ8zY6N2OAmOVj47tJgNCzZZb0t5/8DNxdX3qKsGHnZ6lDPp/FhJpwZPl83x7Q6ts=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778346899; c=relaxed/simple;
+	bh=V7kCa7g50bjI089QsgYbShaoV1q8ppYh7Ghmai38EeQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dnmMO+M5RakiPqEXAt/FKvuJ/qZZuYmEEcZEQ92/C2oFS6d1pCW7BCv+xZAePFjENkpWv7uuxk0uktQP65ZeNXfgJdbmRJQoFU/ixCiJ6c9X0canOWfJvQudBjagHvadruYhCNJE2J7mD1bhWgwtdJQh85skrixENcabNBCl/BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mze20OuS; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f67.google.com with SMTP id 6a1803df08f44-8b7dccd6fe4so21976516d6.1
-        for <stable@vger.kernel.org>; Sat, 09 May 2026 09:45:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778345109; cv=none;
-        d=google.com; s=arc-20240605;
-        b=C7JxsHmv5iVMdIDyg+oZwqf4O8sCEbfKsTW9PzZtvoncv7tCZk0f/rud0YLsPkrBLj
-         PKINHbRUGfwMxoZOmkJDq62gJQ9UCe7xL6qns5lh8bWJa5hDT1r8IzABX5LqKVJBRE0W
-         WerN54GYmi2SwhMc3zlXMdRehG0jUVE4RzG4OR9cq7FTom1gPu3/t2aaHcNti4tJZOTQ
-         1fQVDmSFocYxFtOuGFEg9OmsJIucRY18uyFmmpJa8kLo8znoYcXP9pjZ2PzvnxisaaTb
-         gTxWvHOF7Ggomyhn3sJhJ3s4FQSz2wS092SnMeGqTdRLAepsuFrqNFnz4/dCp32eDP/4
-         1/mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RTDsNVE3ocqjOsopP8iwGEg0f1/zwRBYg7404Npk/Nc=;
-        fh=d4Wp6RtcaDgEFVoVWNd6SIuNROqtnzu+NVBCUPESzt0=;
-        b=XrLNQJdsq6yufbmVgNEY05vwIeEnr3veu8TAdQEUqIn06ykgjXR7O3v+G+SHGSp02U
-         FHS/wjyBoTtKuO54lOedtEMKv80ulurXliGQ6KgAgGNSO65klebxWR0GucphcycoVxGO
-         XrV74VYvcUDMfYTzm/G53k2RH50r9YFQXwmeOJfcaajnHPVNuocZ01dkFf9Yj6IcfZif
-         MpgepaUMG4r3HApu3Tru1J98qHQ4bUtq5wLNCDzJrMfJ6qKhAlCnI4oCMCYlJwXM48Ow
-         6TuAEvDvcAL+UbdM7RLsDl0iRWjFUYCQAIWNwXqTMo3q/Y1BdRZwxWR12e6s//b1m53r
-         D8mQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bab2548e8bso14001425ad.0
+        for <stable@vger.kernel.org>; Sat, 09 May 2026 10:14:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778345109; x=1778949909; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778346898; x=1778951698; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RTDsNVE3ocqjOsopP8iwGEg0f1/zwRBYg7404Npk/Nc=;
-        b=SOhQ6UM9iW5Y1ORgNK8DhGe7xJp6pTWgCmD9IgF8e88Eo7LwNFDIjgpKXMOiEQeToN
-         BaCNr6fVJ6FN8EMJ74d2YZOw8ebOb/6y9FOGlbHZTR9shiA9WtE2mTI6eqK6zoMTOYhe
-         FTwxPHRXDLUI+COGw/hHFhWCP4w+DkbeQefXAs3cnip9XpQeIpofEuqiYBydTQav7vEL
-         KZwWtyA8b3IPZKx/SSBe0Xoz3YAVz8Y4drMt20vc38WF0IMtzq9b/qZgpfaYnLmPKY25
-         VRO4MLcFwrIDQWXFcZHhdc/ysKjLXPObNyXdzxmkwDC5rGCG65p+/UPBzgF1nsfimeL2
-         +aAw==
+        bh=vsm6iRbgrzXYFIwlQx5X50SIqM7IIVrJi5fl7hMYCB8=;
+        b=Mze20OuSPsUkVj5aMo9dJtQPl1lhUA2oieLa14C2lCtcfD5WvI1VcKBaTD5DQzAewn
+         FZ01pa8TqTB8z6emMhtbJhS+ieZ3J4WaJEii4fF9upapzADM2k4HFM98FPIMEU+zUG/J
+         1M6SFSi511iOozqzC4BMoV2SetWwE0V15KEHVYJD1mRkytYY+9wYUqCEG++pwgGnw81l
+         Nx91AqM1iBgYzbv4q+iqXKycMvRu0/KUsagnRo6+7WnInXbBw9B46lLMkqT+R61Qx1z5
+         WUUZzD4Yk0/4dZa9Dmfe0lQJW+ReUsyo9RluF5ykiZaun0wLdZcDrh2akRZNCDwuLokc
+         Im8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778345109; x=1778949909;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1778346898; x=1778951698;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RTDsNVE3ocqjOsopP8iwGEg0f1/zwRBYg7404Npk/Nc=;
-        b=Xl+Zp/N/oPd/R7vJeKVP1wrGSFMsaQSMwdHXXvsfIzVE5808wRw6ue3yDl9D2pOS7P
-         PmAuA7PhkwqFuaE8oHKDqc4XuBLCKDGv8NXMXnwJW9HmL33nt4TPcZ+gAgOe9uTVhwp/
-         Ryv4j9k/hG82UiIYwoX/RdiV+0EcgAXR4yc0oItxwuBAaSwto/2GMsvMuOuPeCnd1+5g
-         4IsONUYwo6EsViGp3Sxl4o87fyO4o1ZlgR2CxhnBtAzUeNQZpE0YW8H7WG46xv6D3f8r
-         E6GeH52TTYTbtq+PlbiRa2ZMwcfgWF1K4Slo8qI5Na4jajovBVAsIjD/MkQzTJzgqUCr
-         GFUQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9ipCPmysZ4GpT0rj/CDQiYX6uCetHDdiA2YO23J7D8Zbi9Cckwo3YR88X9wFHXE3Oba9T0UOM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCCpORAs3GvWedCM0Ehx8zarq7Pj/pMvf6bh4le/2/juZEFoSQ
-	tHNbP9pxmyL+vJiVrGdInBMkM7IIkv4X7aK9XC6Zl1uNmlvvLgdfSvTBsKxW5K6JR7X1Z80pkmT
-	Cysj55zGyj4Vt0+td3yAs+jU/dMjMcNk=
-X-Gm-Gg: Acq92OF8Cftj7hjDV6AJxvqYKF3/h5RDRbGptj4vC/s2Qa4+c5EHxBlIMRlJPfLDJpY
-	SFZlmiZEbcIP4p0SARTH9F8V4xY+i2wgFaWf0wQZah0Fgo0Q++y9vvpNzQ0MN3vD2nK41mIOYon
-	ZXSCoalvLRjRp+pGIyWPqaUL35M3HHsKaSw/WbHJKHd/QLbxVKBuVMxezvsQ9iTwZAlpk3bko2c
-	93xufWr6R+F4xnB1doZvykGmGyXq6M92YxpyKDoWRcFRls5H95TxYlTr3JHIsung/Yv7PI84564
-	hDNlx6GfELcRmsdE2M65MYetLude3n7NbCLwHCwxQ7jFjxezVQw8umh0dvGzbNYJ5cqz
-X-Received: by 2002:a05:6214:48e:b0:895:498e:e9dd with SMTP id
- 6a1803df08f44-8bc42784279mr256622446d6.2.1778345109540; Sat, 09 May 2026
- 09:45:09 -0700 (PDT)
+        bh=vsm6iRbgrzXYFIwlQx5X50SIqM7IIVrJi5fl7hMYCB8=;
+        b=Z8GSY4R7ZC34+B2j1kAu7Xs9zDKbKq1CR+ClbGdofNxg35yuhFEOp5n2/hWwEfy72k
+         riqZVrI1UEEcJxAVqdwDIXZRShXAX5mZ7usJ1HqLaMdxJBicPvywJB/zzHFvMAdUvemG
+         /a0j/kVlP3frT9N7CiOplNEztJB73fMooSiwRZBT5zJWTZKrNIm/xJw1sm++BZEOjLyC
+         DbHSjFnbBpYND4mR5OzilRoT2MOGlASpO3nazDSmvGZN2Bq8kF8epkzIlrs1racjxC3Z
+         i66/LSq0FoFgd5Anh506T7GzBpIGAGK6LFtzQ2syiJzOP1gX8VbLSbztiUo8eZCE7Z9p
+         kclQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9a0OTr3cGAocBoO6V6OK2qNGfy6WwUDYfUarVey/57H8XrG8d4qOaScAB2lSrFnfqZyEMKZRg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8TbLhJUs+rTbpJnctvQRXaT945z9jbCF5AQ6UzsPppYRTq2hJ
+	zmaKfpE+wPdYOtQOD2jiR5RcW8rJlxTvt8Ji6eUhrCjQy3/Xqv32n2s=
+X-Gm-Gg: Acq92OGty1N0tN3Fp9eWYrDnVlkELACezVS1T33AtHLciMmDbnjb+DTe/RNPHhjp9ui
+	y+pTHBIH6Ty/WgKMCrK7GTft/VidJCBtIXTHhVx4tFrpL6Y7FNK1soNGSK5i977FnXVSK/R6ZqO
+	MGyyBkZEErHD7c3SZ1YQ8k0v723vbJWTZ4onxnemAuYHg1jEQR38eUzPVjXRbO14jrjKsRXYrjx
+	PfwOu/jRWczR6LmH7fShJWdd14l2SW7fY3lNefRRW1iFuZBnvT9OYF5Bp1M6+n5NXTUu10rB2h5
+	OZbrTdVpMWjOSZzD/bE6INsrHPzT4HfeM2WWXQqKx6CAx3WXvY4mOBUEj3LWoHdROIWCas1KwQN
+	ioOV/ALdnCCUyNdhiJ289WQ09Z1X9Urky7notsnre6sF8/I9ljegPivmi8SyP7UTE1P+JDNcYNA
+	y3uBcTUVPQjOu+ImAMpWh2b1UmMKmMfnjdQd5XBbXveDYnDFzjGK4dyTtGn/iYAtUMAIhwF6pP/
+	I4EyUY5lf9FCNc=
+X-Received: by 2002:a17:903:1249:b0:2b2:4611:5dca with SMTP id d9443c01a7336-2ba793aee10mr175847495ad.24.1778346897463;
+        Sat, 09 May 2026 10:14:57 -0700 (PDT)
+Received: from coe.tail83f5bd.ts.net ([202.177.225.148])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1ebd0ddsm55098795ad.75.2026.05.09.10.14.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 May 2026 10:14:57 -0700 (PDT)
+From: Ramesh Adhikari <adhikari.resume@gmail.com>
+To: matthew.brost@intel.com
+Cc: thomas.hellstrom@linux.intel.com,
+	intel-xe@lists.freedesktop.org,
+	rodrigo.vivi@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/xe: Add bounds check for num_binds to prevent memory exhaustion
+Date: Sat,  9 May 2026 22:44:43 +0530
+Message-ID: <20260509171443.58152-1-adhikari.resume@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260507055352.61017-1-adhikari.resume@gmail.com>
+References: <20260507055352.61017-1-adhikari.resume@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260509014246.21649-1-enelsonmoore@gmail.com>
-In-Reply-To: <20260509014246.21649-1-enelsonmoore@gmail.com>
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Sat, 9 May 2026 09:44:57 -0700
-X-Gm-Features: AVHnY4KgdnUDXFOPNu9q7392VVUMqFCBpgGPyfSaViyblkIGEqmRglq6axhe8Qg
-Message-ID: <CADkSEUjuzsGLnL5N43dc6sa6bH8nGBr_U=tf-nXNAkTD7N=Cug@mail.gmail.com>
-Subject: Re: [PATCH] mfd: twl4030-power: fix stale ARM machine ID checks to
- use the DT
-To: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Cc: Russell King <linux@armlinux.org.uk>, stable@vger.kernel.org, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>, Jon Hunter <jon-hunter@ti.com>, 
-	Benoit Cousson <benoit.cousson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4ABF2500892
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 58833500B2D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244979-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244980-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Fri, May 8, 2026 at 6:43=E2=80=AFPM Ethan Nelson-Moore
-<enelsonmoore@gmail.com> wrote:
-> The twl4030-power driver contains two checks for ARM machine IDs via
-> machine_is_*() macros. These checks are incorrect because the two
-> platforms concerned now support only FDT booting, which does not use
-> machine IDs, and therefore they will always fail.
+Hi Matthew and Thomas,
 
-I have been informed that this is not correct and the kernel still
-considers the machine ID when booting with FDT, though there is still
-value in updating the check because it allows removing the machine IDs
-from mach-types. I will resend this patch with a fixed commit message
-after the 24-hour deadline.
+I apologize if you receive this message multiple times - I had mailing list 
+subscription issues that prevented my earlier replies from reaching the 
+archives. I'm now properly subscribed and following up on the discussion.
+
+When I was tracing through the code, I found that vm_bind_ioctl_ops_create
+allocates about 160 bytes per bind (drm_gpuva_ops + xe_vma_op) in the loop,
+and those allocations use GFP_KERNEL without __GFP_ACCOUNT. That's separate
+from the main arrays you already have protected with __GFP_ACCOUNT.
+
+At 2048 binds that's only 320KB unaccounted, which is why I thought it was
+safe to start conservative. But you're right - at 64k binds it would still
+only be about 10MB unaccounted, which is probably fine and won't force
+unnecessary fallbacks.
+
+Should I send a v4 with 64k? Or do you think the loop allocations I found
+need a different approach?
+
+Thanks,
+Ramesh
 
