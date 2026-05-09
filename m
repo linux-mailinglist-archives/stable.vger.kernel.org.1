@@ -1,153 +1,206 @@
-Return-Path: <stable+bounces-244956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id VAY3NwxD/2lU4AAAu9opvQ
-	(envelope-from <stable+bounces-244956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 16:22:04 +0200
+	id iFlZCx5D/2lU4AAAu9opvQ
+	(envelope-from <stable+bounces-244957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 16:22:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6BB4FFFE0
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 16:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB3C4FFFE8
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 16:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 050503014941
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 14:22:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 179633014964
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 14:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB2030EF9A;
-	Sat,  9 May 2026 14:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9E830EF9A;
+	Sat,  9 May 2026 14:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zjh3neru"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDvmZ4Qz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92754DDCD
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 14:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E243DDCD
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 14:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778336518; cv=none; b=Zm39znhiW1HilLBcswdEREdlCmd4l3kjM+DAwPhwDNpXeK5HtT+duN/bptPCrRSHl2qnUQEmeFJmLRB1IVDfSNNJ+NSkgDYoGAO12XyiddolDllPFdrqkqUuGXcAfmApRN6Z5GpbJbOlCA+52kgIZIBGb04ofd7UKBc8GgOEcnQ=
+	t=1778336539; cv=none; b=j80fMF0uwA+xglk/tm7SSas5fQAJryreYcnMQ4uPrrkfRuCWSHY0kgnKclaHNgToTjI+S6a2+TV1txgyLTSnV+7nBdR3zoNCeLD7C4It32M/sXhaM54vNAcg6ynbEwEPJ6uR0jv6ichmAJ5GVE5ztMgRhu4JzxDZ1ITf1ncCG8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778336518; c=relaxed/simple;
-	bh=pLOPgvP8/md3i61/Iy1kMcHOo9DQefk7H1SNISo92Zc=;
+	s=arc-20240116; t=1778336539; c=relaxed/simple;
+	bh=okeen24eKd2XG3f8RpPr3bpEldRfUHdYhcBpxyjwPrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=utz1G2ruXzkqwjqBzpvdvRJtG4fkKWILfmPMNpmUtI+8tQ07xbfVqpYra6ACwbjwlQFvRbN4a4MqIYw2Ow4adnx3lcaQKbMwGTjPpx97lAtBt9zi1RxIod9NkJEcPYwhpltrlUgMth05l7p6k32vSVO9fzIChygLygI6zsVr8Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zjh3neru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38AEC2BCB2;
-	Sat,  9 May 2026 14:21:57 +0000 (UTC)
+	 MIME-Version; b=HvvWMGLFkgf9NSiOAKclybNiL+vtjrHHjvgeg0V4kbtEKWgPoQsyxq9j6RwXoifHTJotmL1DEYDf3ByqrlzTbh8cr0JHNHjcS4n2mIJlICnjTF7TIOCcywjtsFTuCYJnd9wAVVAIuR6UAnDoZNGyf4K2AzLDJY8URBKyeVoNTXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDvmZ4Qz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EDCC2BCB2;
+	Sat,  9 May 2026 14:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778336518;
-	bh=pLOPgvP8/md3i61/Iy1kMcHOo9DQefk7H1SNISo92Zc=;
+	s=k20201202; t=1778336538;
+	bh=okeen24eKd2XG3f8RpPr3bpEldRfUHdYhcBpxyjwPrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zjh3neruxZ3w3OKodTrXwT41WtNP9Uao3Zy5X9qg0Ut4bvYOo7rGOe3VOh3F1L488
-	 WSwumXGNXLLbqXf8p65Dax3wjwhSDsvgVUyqDBwSi5Nt2OR4D0bcGY8+gosysv3ZWl
-	 kuJfmFBjxaidkTbLHj3fLwXwC3otIXz8V8kjS1yIRiqJ7qi+t22belGe4a0Q4SaW6R
-	 1KMmz3tXiH3LkoDaMvVtCwdUS34dTsZECmNrIV6EKfNqcuChV0KGUk9wNDaZfWDF+j
-	 vn8ADbIw31cCu82SGTBHPNOvJmSEXgKqc/i2bskvnVnHjlmpU5G+BazHpn9S6zt2rO
-	 eWzJAhHtlkSXA==
+	b=nDvmZ4Qz/ZiQ1QgPdcl/4s5V9M8JpWgDxbLoSKKNAyoOGZYCdWg5GnYEGhzTZ1dhp
+	 5qJkuP4U4ZLwC1fCfJazmM7xsM6BKu/LMH0FrOWYR4iyTk7RlXYamW15sw7TjNo5Zt
+	 lVPbiiRPhgw93ci6tR21/NESXRCj1XEIsk0jTqHgSt75XZnQLL81KNqMyRYT3oPP8U
+	 e4WUjaU4xFPpPdA0XwGlePMY1BsRtYDPP9RQkOhB2ybprUkPT30YEoX3gDKjM+dnfy
+	 gShLXRNOfuhHnPYZzODexX6XXiLJTY082TK1KcPXBX3T9DN0iNIVbrkQqGsBQht1qo
+	 0nSYYJ4jn50BA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Carlier <devnexen@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] gtp: disable BH before calling udp_tunnel_xmit_skb()
-Date: Sat,  9 May 2026 10:21:55 -0400
-Message-ID: <20260509142155.3462128-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] ceph: only d_add() negative dentries when they are unhashed
+Date: Sat,  9 May 2026 10:22:16 -0400
+Message-ID: <20260509142216.3462686-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050428-flaky-polish-d0e3@gregkh>
-References: <2026050428-flaky-polish-d0e3@gregkh>
+In-Reply-To: <2026050408-banana-unroasted-5bb4@gregkh>
+References: <2026050408-banana-unroasted-5bb4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0A6BB4FFFE0
+X-Rspamd-Queue-Id: 8EB3C4FFFE8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244956-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[ionos.com,ibm.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-244957-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ionos.com:email]
 X-Rspamd-Action: no action
 
-From: David Carlier <devnexen@gmail.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 5638504a2aa9e1b9d72af9060df1a160cce2d379 ]
+[ Upstream commit 803447f93d75ab6e40c85e6d12b5630d281d70d6 ]
 
-gtp_genl_send_echo_req() runs as a generic netlink doit handler in
-process context with BH not disabled. It calls udp_tunnel_xmit_skb(),
-which eventually invokes iptunnel_xmit() — that uses __this_cpu_inc/dec
-on softnet_data.xmit.recursion to track the tunnel xmit recursion level.
+Ceph can call d_add(dentry, NULL) on a negative dentry that is already
+present in the primary dcache hash.
 
-Without local_bh_disable(), the task may migrate between
-dev_xmit_recursion_inc() and dev_xmit_recursion_dec(), breaking the
-per-CPU counter pairing. The result is stale or negative recursion
-levels that can later produce false-positive
-SKB_DROP_REASON_RECURSION_LIMIT drops on either CPU.
+In the current VFS that is not safe.  d_add() goes through __d_add()
+to __d_rehash(), which unconditionally reinserts dentry->d_hash into
+the hlist_bl bucket.  If the dentry is already hashed, reinserting the
+same node can corrupt the bucket, including creating a self-loop.
+Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
+typically looping only on the d_name.hash mismatch check and
+eventually triggering RCU stall reports like this one:
 
-The other udp_tunnel_xmit_skb() call sites in gtp.c are unaffected:
-the data path runs under ndo_start_xmit and the echo response handlers
-run from the UDP encap rx softirq, both with BH already disabled.
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
+ rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
+ CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
+ Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
+ RIP: 0010:__d_lookup+0x46/0xb0
+ Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
+ RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
+ RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
+ RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
+ RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
+ R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
+ R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
+ FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  lookup_fast+0x9f/0x100
+  walk_component+0x1f/0x150
+  link_path_walk+0x20e/0x3d0
+  path_lookupat+0x68/0x180
+  filename_lookup+0xdc/0x1e0
+  vfs_statx+0x6c/0x140
+  vfs_fstatat+0x67/0xa0
+  __do_sys_newfstatat+0x24/0x60
+  do_syscall_64+0x6a/0x230
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fix it by disabling BH around the udp_tunnel_xmit_skb() call, mirroring
-commit 2cd7e6971fc2 ("sctp: disable BH before calling
-udp_tunnel_xmit_skb()").
+This is reachable with reused cached negative dentries.  A Ceph lookup
+or atomic_open can be handed a negative dentry that is already hashed,
+and fs/ceph/dir.c then hits one of two paths that incorrectly assume
+"negative" also means "unhashed":
 
-Fixes: 6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit functions")
+  - ceph_finish_lookup():
+      MDS reply is -ENOENT with no trace
+      -> d_add(dentry, NULL)
+
+  - ceph_lookup():
+      local ENOENT fast path for a complete directory with shared caps
+      -> d_add(dentry, NULL)
+
+Both paths can therefore re-add an already-hashed negative dentry.
+
+Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
+calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
+is true.
+
+Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
+negative dentry when it is actually unhashed.  If the negative dentry
+is already hashed, leave it in place and reuse it as-is.
+
+This preserves the existing behavior for unhashed dentries while
+avoiding d_hash list corruption for reused hashed negatives.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260417055408.4667-1-devnexen@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Context ]
+Fixes: 2817b000b02c ("ceph: directory operations")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+[ kept existing dout() debug call instead of upstream's doutc() form when adding the d_unhashed() guard around d_add() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ceph/dir.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 33b78b4007fe7..d7f644dfaa8d9 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -2401,6 +2401,7 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
- 		return -ENODEV;
+diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
+index cc448470fd9b9..d3bb28939194d 100644
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -745,7 +745,8 @@ struct dentry *ceph_finish_lookup(struct ceph_mds_request *req,
+ 				d_drop(dentry);
+ 				err = -ENOENT;
+ 			} else {
+-				d_add(dentry, NULL);
++				if (d_unhashed(dentry))
++					d_add(dentry, NULL);
+ 			}
+ 		}
  	}
- 
-+	local_bh_disable();
- 	udp_tunnel_xmit_skb(rt, sk, skb_to_send,
- 			    fl4.saddr, fl4.daddr,
- 			    fl4.flowi4_tos,
-@@ -2410,6 +2411,7 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
- 			    !net_eq(sock_net(sk),
- 				    dev_net(gtp->dev)),
- 			    false);
-+	local_bh_enable();
- 	return 0;
- }
- 
+@@ -813,7 +814,8 @@ static struct dentry *ceph_lookup(struct inode *dir, struct dentry *dentry,
+ 			__ceph_touch_fmode(ci, mdsc, CEPH_FILE_MODE_RD);
+ 			spin_unlock(&ci->i_ceph_lock);
+ 			dout(" dir %p complete, -ENOENT\n", dir);
+-			d_add(dentry, NULL);
++			if (d_unhashed(dentry))
++				d_add(dentry, NULL);
+ 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
+ 			return NULL;
+ 		}
 -- 
 2.53.0
 
