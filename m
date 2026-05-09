@@ -1,83 +1,77 @@
-Return-Path: <stable+bounces-244915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAp3KGbc/mnZxgAAu9opvQ
-	(envelope-from <stable+bounces-244915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:04:06 +0200
+	id +OfRDOjd/mkkxwAAu9opvQ
+	(envelope-from <stable+bounces-244916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:10:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057EA4FE649
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:04:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A704FE696
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FB5130180BF
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 07:04:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAC913017C0D
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 07:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965C233CE80;
-	Sat,  9 May 2026 07:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201B8372EFF;
+	Sat,  9 May 2026 07:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GHUnWtz/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dlz607us"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D9F27874F;
-	Sat,  9 May 2026 07:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400C31799F;
+	Sat,  9 May 2026 07:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778310240; cv=none; b=S7fxMz6L8WlJSbRqulCIRUVoh92IKCD2d/Toi0Gtjuwp7FLsXp4b8XV8LAX3yycr7CbyUlgD6YFf2uAHQEtb7Yt7ajf/PVPn9KbVb6VNKyPnSIjqT3SegYyn1+H7K7o1YghiLm7tVtxIRCQunPoKqp3YqyFfOASuFMsLWhkA5gA=
+	t=1778310626; cv=none; b=emfBgulrPWIS384S8qdV0SkkfN1wuFHr5Hcz2AJAm2FNC8Jwl0hMfusXdGhbOUlTbCIyapHdNcQd1qgg+hi1XmyADcvEjjwIqQw0wxSpx8stXygutHW8V5qgxdQMGjtaO6lv2jSTFj76bStjiyiyQdIgYnbrUHUeNMDEluzH8GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778310240; c=relaxed/simple;
-	bh=UUmb746tZFqR41iZYFSitf9OhMmCex2DsrDQcwbfj1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJrGshcgCdVCH3Elx/H/pdxGA6WTUFhscDKGPgC6b5N+o2uj3d5JlzeaU5jYbPt/NmCC3D5Qvw27wAACECbdvRNC3lRMUuLNZqdNHzsaLAN2yZHeAiy5rnWfehCzJ5fDeDXMT5cGhsculz3DF3Y9YkiR7BI1GqMg4MbsdOB4ev0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GHUnWtz/; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1778310626; c=relaxed/simple;
+	bh=f3RFkqSdYIkxr3rUqS/vXv49ucwTjeFJ7mExOMGu49c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X+TX6heZkcE9Kj4N9h7L1nCxm0Jc2xRfrZG0lPGQM4dXF08gmPrPMGxUEJe3qL5peD46DfnvNoULY4HeGDFc45ug9885nrLHvjkzciJrg9di24COmWq7IpbdIz1mjLs8ept7Eq/qFQ+KdhVKCeVor8tu/EMmgEQKtn0Hq6ua6/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dlz607us; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778310238; x=1809846238;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=UUmb746tZFqR41iZYFSitf9OhMmCex2DsrDQcwbfj1M=;
-  b=GHUnWtz/BLdzB1SDYbZ/H4sk9LN1lWt9CFSe3NtLqU1kvnaqtHFpv/4T
-   MhGY+PVnNdb4MkEfMRoFLPdoPuozlnb/6dnJXBl6/dklhvqnJ23zsFoQp
-   ikaiHbChIokHl6ZiNWs3Lpax2fDG7gx8p3Ij6q6NVwUpr7xtGuCGmllgf
-   04fExlG7CiiGx5oxgjXJCcTgWc0tmEqPHdpSRORibOZWSBijZ8zpwIAB4
-   j4fftbULczvEaazns5tBLOJ/AtOO9+p4A/uAY5VIS+YObdPxU72vNYn8s
-   Ovw7p+1fqab0fGsP/sH9wO+jbOa5PiczNjRAgb7ugh8oizP8vKpWju/xq
-   Q==;
-X-CSE-ConnectionGUID: oYp0U4DSRy+yR3Xbc6AsIQ==
-X-CSE-MsgGUID: 9NTBLJFGQA+jmyE0f0kUfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="90660190"
+  t=1778310626; x=1809846626;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=f3RFkqSdYIkxr3rUqS/vXv49ucwTjeFJ7mExOMGu49c=;
+  b=dlz607uscpF6NbFlj+D/TU6TF2NF6x+TLemrb4X3LzQJIlzUwsdrkjbg
+   voC9hqTRJ+AZSWlwEc2fOVBjeBvYqfdk8n3wZfOuLdYlGEBI5WjSdD32N
+   beLZHVoPf05tPsAK6OaIgu8uwHnGf3S8I/AGX4gCCXTEUmcIADBZ4EJpw
+   dw/t8JXQrJ4j4erdFyiRBG4zTnTCgBSv9tlR9IVg+X5y1NHe6Eot3STq2
+   KyeLvL4KUXdAJwrUfSrlwgVzF4b3PJZkVOTUf01WoWqECbYaBZStg+xrr
+   oG0FVbV6ptv1/iiJqJ62dVCgtqTdR0qGadtmYgEOtEh6uZ4NOq8XinfEA
+   A==;
+X-CSE-ConnectionGUID: nxHQbrv8QDOtvWqFW3s+9w==
+X-CSE-MsgGUID: PDRMhUBWTRGt6CnlnWv+OA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="90745885"
 X-IronPort-AV: E=Sophos;i="6.23,225,1770624000"; 
-   d="scan'208";a="90660190"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 00:03:58 -0700
-X-CSE-ConnectionGUID: 7TEGkYOFQzW/GJ/WaqFxNQ==
-X-CSE-MsgGUID: MCL5uuzlQ2OLzBtiduP5Tw==
+   d="scan'208";a="90745885"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 00:10:23 -0700
+X-CSE-ConnectionGUID: ixee1jYkTIO0uvFw1SjO7A==
+X-CSE-MsgGUID: hAIB2fPPSMaqeRSnPADtUg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,225,1770624000"; 
-   d="scan'208";a="234304146"
+   d="scan'208";a="241322888"
 Received: from unknown (HELO fedora.iind.intel.com) ([10.49.0.89])
-  by fmviesa008.fm.intel.com with ESMTP; 09 May 2026 00:03:55 -0700
+  by orviesa004.jf.intel.com with ESMTP; 09 May 2026 00:10:20 -0700
 From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 To: herbert@gondor.apana.org.au
 Cc: linux-crypto@vger.kernel.org,
 	qat-linux@intel.com,
-	wangzhi@stu.xidian.edu.cn,
-	byu@xidian.edu.cn,
-	w15303746062@163.com,
 	vdronov@redhat.com,
 	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
 	stable@vger.kernel.org,
 	Ahsan Atta <ahsan.atta@intel.com>
-Subject: [PATCH v2 1/2] crypto: qat - remove unused character device and IOCTLs
-Date: Sat,  9 May 2026 08:00:12 +0100
-Message-ID: <20260509070340.12201-2-giovanni.cabiddu@intel.com>
+Subject: [PATCH] crypto: qat - fix VF2PF work teardown race in adf_disable_sriov()
+Date: Sat,  9 May 2026 08:09:35 +0100
+Message-ID: <20260509071017.13189-1-giovanni.cabiddu@intel.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260509070340.12201-1-giovanni.cabiddu@intel.com>
-References: <20260509070340.12201-1-giovanni.cabiddu@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,723 +80,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 057EA4FE649
+X-Rspamd-Queue-Id: 81A704FE696
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244915-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,stu.xidian.edu.cn,xidian.edu.cn,163.com,redhat.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[giovanni.cabiddu@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244916-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	HAS_ORG_HEADER(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[giovanni.cabiddu@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim,xidian.edu.cn:email,section.name:url,dev_info.name:url,dev_info.dev:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim]
 X-Rspamd-Action: no action
 
-The QAT driver exposes a character device (qat_adf_ctl) with IOCTLs
-for device configuration, start, stop, status query and enumeration.
-These IOCTLs are not part of any public uAPI header and have no known
-in-tree or out-of-tree users. Device lifecycle is already managed via
-sysfs.
+The VF2PF interrupt handler queues PF-side response work that stores a
+raw pointer to per-VF state (struct adf_accel_vf_info). Currently,
+adf_disable_sriov() destroys per-VF mutexes and frees vf_info without
+stopping new VF2PF work or waiting for in-flight workers to complete. A
+concurrently scheduled or already queued worker can then dereference
+freed memory.
 
-The ioctl interface also increases the attack surface and is the
-subject of a number of bug reports.
+This manifests as a use-after-free when KASAN is enabled:
 
-Remove the character device, the IOCTL definitions, and the related
-data structures (adf_dev_status_info, adf_user_cfg_key_val,
-adf_user_cfg_section, adf_user_cfg_ctl_data). Drop the now-unused
-adf_cfg_user.h header and strip adf_ctl_drv.c down to the minimal
-module_init/module_exit hooks for workqueue, AER, and crypto/compression
-algorithm registration.
+  BUG: KASAN: null-ptr-deref in mutex_lock+0x76/0xe0
+  Write of size 8 at addr 0000000000000260 by task kworker/24:2/...
+  Workqueue: qat_pf2vf_resp_wq adf_iov_send_resp [intel_qat]
+  Call Trace:
+    kasan_report+0x119/0x140
+    mutex_lock+0x76/0xe0
+    adf_gen4_pfvf_send+0xd4/0x1f0 [intel_qat]
+    adf_recv_and_handle_vf2pf_msg+0x290/0x360 [intel_qat]
+    adf_iov_send_resp+0x8c/0xe0 [intel_qat]
+    process_one_work+0x6ac/0xfd0
+    worker_thread+0x4dd/0xd30
+    kthread+0x326/0x410
+    ret_from_fork+0x33b/0x670
 
-Clean up leftover dead code that was only reachable from the removed
-IOCTL paths: adf_cfg_del_all(), adf_devmgr_verify_id(),
-adf_devmgr_get_num_dev(), and the ADF_CFG_ALL_DEVICES /
-ADF_CFG_NO_DEVICE macros.
+Add a PF-local flag, vf2pf_disabled, that gates work queueing, worker
+processing, and interrupt re-enabling during teardown. Set this flag
+atomically with the hardware interrupt mask inside
+adf_disable_all_vf2pf_interrupts(). After masking, synchronize the AE
+cluster MSI-X interrupt and flush the PF response workqueue before
+tearing down per-VF locks and state so all in-flight work completes
+before vf_info is destroyed.
 
-Additionally, drop the entry associated to QAT IOCTLs in
-ioctl-number.rst.
+Introduce adf_enable_all_vf2pf_interrupts() to clear the flag and
+unmask all VF2PF interrupts under the same lock when SR-IOV is
+re-enabled. This ensures the software flag and hardware state transition
+atomically on both the enable and disable paths.
 
 Cc: stable@vger.kernel.org
-Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
-Reported-by: Zhi Wang <wangzhi@stu.xidian.edu.cn>
-Reported-by: Bin Yu <byu@xidian.edu.cn>
-Reported-by: MingYu Wang <w15303746062@163.com>
-Closes: https://lore.kernel.org/all/61d6d499.ab89.19b9b7f3186.Coremail.wangzhi_xd@stu.xidian.edu.cn/
-Link: https://lore.kernel.org/all/20260508034841.256794-1-w15303746062@163.com/
-Link: https://lore.kernel.org/all/20260508023542.256299-1-w15303746062@163.com/
-Link: https://lore.kernel.org/all/20260504025120.98242-1-w15303746062@163.com/
+Fixes: ed8ccaef52fa ("crypto: qat - Add support for SRIOV")
 Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
 ---
- .../userspace-api/ioctl/ioctl-number.rst      |   1 -
- drivers/crypto/intel/qat/qat_common/adf_cfg.c |  10 -
- drivers/crypto/intel/qat/qat_common/adf_cfg.h |   1 -
- .../intel/qat/qat_common/adf_cfg_common.h     |  29 --
- .../intel/qat/qat_common/adf_cfg_user.h       |  38 --
- .../intel/qat/qat_common/adf_common_drv.h     |   2 -
- .../crypto/intel/qat/qat_common/adf_ctl_drv.c | 404 +-----------------
- .../crypto/intel/qat/qat_common/adf_dev_mgr.c |  32 --
- 8 files changed, 1 insertion(+), 516 deletions(-)
- delete mode 100644 drivers/crypto/intel/qat/qat_common/adf_cfg_user.h
+ .../intel/qat/qat_common/adf_accel_devices.h  |  2 +
+ .../intel/qat/qat_common/adf_common_drv.h     |  2 +
+ drivers/crypto/intel/qat/qat_common/adf_isr.c | 40 +++++++++++++++++++
+ .../crypto/intel/qat/qat_common/adf_sriov.c   | 24 +++++++++--
+ 4 files changed, 65 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-index 331223761fff..29a08bc059dd 100644
---- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -229,7 +229,6 @@ Code  Seq#    Include File                                             Comments
-                                                                        <mailto:gregkh@linuxfoundation.org>
- 'a'   all    linux/atm*.h, linux/sonet.h                               ATM on linux
-                                                                        <http://lrcwww.epfl.ch/>
--'a'   00-0F  drivers/crypto/qat/qat_common/adf_cfg_common.h            conflict! qat driver
- 'b'   00-FF                                                            conflict! bit3 vme host bridge
-                                                                        <mailto:natalia@nikhefk.nikhef.nl>
- 'b'   00-0F  linux/dma-buf.h                                           conflict!
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg.c b/drivers/crypto/intel/qat/qat_common/adf_cfg.c
-index c202209f17d5..ea5d72d5090c 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_cfg.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_cfg.c
-@@ -103,16 +103,6 @@ static void adf_cfg_section_del_all(struct list_head *head);
- static void adf_cfg_section_del_all_except(struct list_head *head,
- 					   const char *section_name);
- 
--void adf_cfg_del_all(struct adf_accel_dev *accel_dev)
--{
--	struct adf_cfg_device_data *dev_cfg_data = accel_dev->cfg;
--
--	down_write(&dev_cfg_data->lock);
--	adf_cfg_section_del_all(&dev_cfg_data->sec_list);
--	up_write(&dev_cfg_data->lock);
--	clear_bit(ADF_STATUS_CONFIGURED, &accel_dev->status);
--}
--
- void adf_cfg_del_all_except(struct adf_accel_dev *accel_dev,
- 			    const char *section_name)
- {
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg.h b/drivers/crypto/intel/qat/qat_common/adf_cfg.h
-index 2afa6f0d15c5..108032b39242 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_cfg.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_cfg.h
-@@ -34,7 +34,6 @@ void adf_cfg_dev_remove(struct adf_accel_dev *accel_dev);
- void adf_cfg_dev_dbgfs_add(struct adf_accel_dev *accel_dev);
- void adf_cfg_dev_dbgfs_rm(struct adf_accel_dev *accel_dev);
- int adf_cfg_section_add(struct adf_accel_dev *accel_dev, const char *name);
--void adf_cfg_del_all(struct adf_accel_dev *accel_dev);
- void adf_cfg_del_all_except(struct adf_accel_dev *accel_dev,
- 			    const char *section_name);
- int adf_cfg_add_key_value_param(struct adf_accel_dev *accel_dev,
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg_common.h b/drivers/crypto/intel/qat/qat_common/adf_cfg_common.h
-index 81e9e9d7eccd..dd0e40971928 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_cfg_common.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_cfg_common.h
-@@ -4,7 +4,6 @@
- #define ADF_CFG_COMMON_H_
- 
- #include <linux/types.h>
--#include <linux/ioctl.h>
- 
- #define ADF_CFG_MAX_STR_LEN 64
- #define ADF_CFG_MAX_KEY_LEN_IN_BYTES ADF_CFG_MAX_STR_LEN
-@@ -12,10 +11,7 @@
- #define ADF_CFG_MAX_SECTION_LEN_IN_BYTES ADF_CFG_MAX_STR_LEN
- #define ADF_CFG_BASE_DEC 10
- #define ADF_CFG_BASE_HEX 16
--#define ADF_CFG_ALL_DEVICES 0xFE
--#define ADF_CFG_NO_DEVICE 0xFF
- #define ADF_CFG_AFFINITY_WHATEVER 0xFF
--#define MAX_DEVICE_NAME_SIZE 32
- #define ADF_MAX_DEVICES (32 * 32)
- #define ADF_DEVS_ARRAY_SIZE BITS_TO_LONGS(ADF_MAX_DEVICES)
- 
-@@ -51,29 +47,4 @@ enum adf_device_type {
- 	DEV_420XX,
- 	DEV_6XXX,
- };
--
--struct adf_dev_status_info {
--	enum adf_device_type type;
--	__u32 accel_id;
--	__u32 instance_id;
--	__u8 num_ae;
--	__u8 num_accel;
--	__u8 num_logical_accel;
--	__u8 banks_per_accel;
--	__u8 state;
--	__u8 bus;
--	__u8 dev;
--	__u8 fun;
--	char name[MAX_DEVICE_NAME_SIZE];
--};
--
--#define ADF_CTL_IOC_MAGIC 'a'
--#define IOCTL_CONFIG_SYS_RESOURCE_PARAMETERS _IOW(ADF_CTL_IOC_MAGIC, 0, \
--		struct adf_user_cfg_ctl_data)
--#define IOCTL_STOP_ACCEL_DEV _IOW(ADF_CTL_IOC_MAGIC, 1, \
--		struct adf_user_cfg_ctl_data)
--#define IOCTL_START_ACCEL_DEV _IOW(ADF_CTL_IOC_MAGIC, 2, \
--		struct adf_user_cfg_ctl_data)
--#define IOCTL_STATUS_ACCEL_DEV _IOW(ADF_CTL_IOC_MAGIC, 3, __u32)
--#define IOCTL_GET_NUM_DEVICES _IOW(ADF_CTL_IOC_MAGIC, 4, __s32)
- #endif
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg_user.h b/drivers/crypto/intel/qat/qat_common/adf_cfg_user.h
-deleted file mode 100644
-index 421f4fb8b4dd..000000000000
---- a/drivers/crypto/intel/qat/qat_common/adf_cfg_user.h
-+++ /dev/null
-@@ -1,38 +0,0 @@
--/* SPDX-License-Identifier: (BSD-3-Clause OR GPL-2.0-only) */
--/* Copyright(c) 2014 - 2020 Intel Corporation */
--#ifndef ADF_CFG_USER_H_
--#define ADF_CFG_USER_H_
--
--#include "adf_cfg_common.h"
--#include "adf_cfg_strings.h"
--
--struct adf_user_cfg_key_val {
--	char key[ADF_CFG_MAX_KEY_LEN_IN_BYTES];
--	char val[ADF_CFG_MAX_VAL_LEN_IN_BYTES];
--	union {
--		struct adf_user_cfg_key_val *next;
--		__u64 padding3;
--	};
--	enum adf_cfg_val_type type;
--} __packed;
--
--struct adf_user_cfg_section {
--	char name[ADF_CFG_MAX_SECTION_LEN_IN_BYTES];
--	union {
--		struct adf_user_cfg_key_val *params;
--		__u64 padding1;
--	};
--	union {
--		struct adf_user_cfg_section *next;
--		__u64 padding3;
--	};
--} __packed;
--
--struct adf_user_cfg_ctl_data {
--	union {
--		struct adf_user_cfg_section *config_section;
--		__u64 padding;
--	};
--	__u8 device_id;
--} __packed;
--#endif
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
+index 03a4e9690208..d9b2a1cf474e 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
+@@ -480,6 +480,8 @@ struct adf_accel_dev {
+ 		struct {
+ 			/* protects VF2PF interrupts access */
+ 			spinlock_t vf2pf_ints_lock;
++			/* prevents VF2PF handling from racing with VF state teardown */
++			bool vf2pf_disabled;
+ 			/* vf_info is non-zero when SR-IOV is init'ed */
+ 			struct adf_accel_vf_info *vf_info;
+ 		} pf;
 diff --git a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
-index fb0fd46a79b0..e918d9b5e4f2 100644
+index e918d9b5e4f2..955934a8dd03 100644
 --- a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
 +++ b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
-@@ -70,8 +70,6 @@ void adf_devmgr_rm_dev(struct adf_accel_dev *accel_dev,
- struct list_head *adf_devmgr_get_head(void);
- struct adf_accel_dev *adf_devmgr_get_dev_by_id(u32 id);
- struct adf_accel_dev *adf_devmgr_pci_to_accel_dev(struct pci_dev *pci_dev);
--int adf_devmgr_verify_id(u32 id);
--void adf_devmgr_get_num_dev(u32 *num);
- int adf_devmgr_in_reset(struct adf_accel_dev *accel_dev);
- int adf_dev_started(struct adf_accel_dev *accel_dev);
- int adf_dev_restarting_notify(struct adf_accel_dev *accel_dev);
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c b/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c
-index c2e6f0cb7480..f01f2946de6e 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c
-@@ -2,410 +2,13 @@
- /* Copyright(c) 2014 - 2020 Intel Corporation */
+@@ -118,6 +118,7 @@ void qat_comp_alg_callback(void *resp);
  
- #include <crypto/algapi.h>
-+#include <linux/errno.h>
- #include <linux/module.h>
--#include <linux/mutex.h>
--#include <linux/slab.h>
--#include <linux/fs.h>
--#include <linux/bitops.h>
--#include <linux/pci.h>
--#include <linux/cdev.h>
--#include <linux/uaccess.h>
+ int adf_isr_resource_alloc(struct adf_accel_dev *accel_dev);
+ void adf_isr_resource_free(struct adf_accel_dev *accel_dev);
++void adf_isr_sync_ae_cluster(struct adf_accel_dev *accel_dev);
+ int adf_vf_isr_resource_alloc(struct adf_accel_dev *accel_dev);
+ void adf_vf_isr_resource_free(struct adf_accel_dev *accel_dev);
  
--#include "adf_accel_devices.h"
- #include "adf_common_drv.h"
--#include "adf_cfg.h"
--#include "adf_cfg_common.h"
--#include "adf_cfg_user.h"
--
--#define ADF_CFG_MAX_SECTION 512
--#define ADF_CFG_MAX_KEY_VAL 256
--
--#define DEVICE_NAME "qat_adf_ctl"
--
--static DEFINE_MUTEX(adf_ctl_lock);
--static long adf_ctl_ioctl(struct file *fp, unsigned int cmd, unsigned long arg);
--
--static const struct file_operations adf_ctl_ops = {
--	.owner = THIS_MODULE,
--	.unlocked_ioctl = adf_ctl_ioctl,
--	.compat_ioctl = compat_ptr_ioctl,
--};
--
--static const struct class adf_ctl_class = {
--	.name = DEVICE_NAME,
--};
--
--struct adf_ctl_drv_info {
--	unsigned int major;
--	struct cdev drv_cdev;
--};
--
--static struct adf_ctl_drv_info adf_ctl_drv;
--
--static void adf_chr_drv_destroy(void)
--{
--	device_destroy(&adf_ctl_class, MKDEV(adf_ctl_drv.major, 0));
--	cdev_del(&adf_ctl_drv.drv_cdev);
--	class_unregister(&adf_ctl_class);
--	unregister_chrdev_region(MKDEV(adf_ctl_drv.major, 0), 1);
--}
--
--static int adf_chr_drv_create(void)
--{
--	dev_t dev_id;
--	struct device *drv_device;
--	int ret;
--
--	if (alloc_chrdev_region(&dev_id, 0, 1, DEVICE_NAME)) {
--		pr_err("QAT: unable to allocate chrdev region\n");
--		return -EFAULT;
--	}
--
--	ret = class_register(&adf_ctl_class);
--	if (ret)
--		goto err_chrdev_unreg;
--
--	adf_ctl_drv.major = MAJOR(dev_id);
--	cdev_init(&adf_ctl_drv.drv_cdev, &adf_ctl_ops);
--	if (cdev_add(&adf_ctl_drv.drv_cdev, dev_id, 1)) {
--		pr_err("QAT: cdev add failed\n");
--		goto err_class_destr;
--	}
--
--	drv_device = device_create(&adf_ctl_class, NULL,
--				   MKDEV(adf_ctl_drv.major, 0),
--				   NULL, DEVICE_NAME);
--	if (IS_ERR(drv_device)) {
--		pr_err("QAT: failed to create device\n");
--		goto err_cdev_del;
--	}
--	return 0;
--err_cdev_del:
--	cdev_del(&adf_ctl_drv.drv_cdev);
--err_class_destr:
--	class_unregister(&adf_ctl_class);
--err_chrdev_unreg:
--	unregister_chrdev_region(dev_id, 1);
--	return -EFAULT;
--}
--
--static struct adf_user_cfg_ctl_data *adf_ctl_alloc_resources(unsigned long arg)
--{
--	struct adf_user_cfg_ctl_data *cfg_data;
--
--	cfg_data = memdup_user((void __user *)arg, sizeof(*cfg_data));
--	if (IS_ERR(cfg_data))
--		pr_err("QAT: failed to copy from user cfg_data.\n");
--	return cfg_data;
--}
--
--static int adf_add_key_value_data(struct adf_accel_dev *accel_dev,
--				  const char *section,
--				  const struct adf_user_cfg_key_val *key_val)
--{
--	if (key_val->type == ADF_HEX) {
--		long *ptr = (long *)key_val->val;
--		long val = *ptr;
--
--		if (adf_cfg_add_key_value_param(accel_dev, section,
--						key_val->key, (void *)val,
--						key_val->type)) {
--			dev_err(&GET_DEV(accel_dev),
--				"failed to add hex keyvalue.\n");
--			return -EFAULT;
--		}
--	} else {
--		if (adf_cfg_add_key_value_param(accel_dev, section,
--						key_val->key, key_val->val,
--						key_val->type)) {
--			dev_err(&GET_DEV(accel_dev),
--				"failed to add keyvalue.\n");
--			return -EFAULT;
--		}
--	}
--	return 0;
--}
--
--static int adf_copy_key_value_data(struct adf_accel_dev *accel_dev,
--				   struct adf_user_cfg_ctl_data *ctl_data)
--{
--	struct adf_user_cfg_key_val key_val;
--	struct adf_user_cfg_key_val *params_head;
--	struct adf_user_cfg_section section, *section_head;
--	int i, j;
--
--	section_head = ctl_data->config_section;
--
--	for (i = 0; section_head && i < ADF_CFG_MAX_SECTION; i++) {
--		if (copy_from_user(&section, (void __user *)section_head,
--				   sizeof(*section_head))) {
--			dev_err(&GET_DEV(accel_dev),
--				"failed to copy section info\n");
--			goto out_err;
--		}
--
--		if (adf_cfg_section_add(accel_dev, section.name)) {
--			dev_err(&GET_DEV(accel_dev),
--				"failed to add section.\n");
--			goto out_err;
--		}
--
--		params_head = section.params;
--
--		for (j = 0; params_head && j < ADF_CFG_MAX_KEY_VAL; j++) {
--			if (copy_from_user(&key_val, (void __user *)params_head,
--					   sizeof(key_val))) {
--				dev_err(&GET_DEV(accel_dev),
--					"Failed to copy keyvalue.\n");
--				goto out_err;
--			}
--			if (adf_add_key_value_data(accel_dev, section.name,
--						   &key_val)) {
--				goto out_err;
--			}
--			params_head = key_val.next;
--		}
--		section_head = section.next;
--	}
--	return 0;
--out_err:
--	adf_cfg_del_all(accel_dev);
--	return -EFAULT;
--}
--
--static int adf_ctl_ioctl_dev_config(struct file *fp, unsigned int cmd,
--				    unsigned long arg)
--{
--	struct adf_user_cfg_ctl_data *ctl_data;
--	struct adf_accel_dev *accel_dev;
--	int ret = 0;
--
--	ctl_data = adf_ctl_alloc_resources(arg);
--	if (IS_ERR(ctl_data))
--		return PTR_ERR(ctl_data);
--
--	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
--	if (!accel_dev) {
--		ret = -EFAULT;
--		goto out;
--	}
--
--	if (adf_dev_started(accel_dev)) {
--		ret = -EFAULT;
--		goto out;
--	}
--
--	if (adf_copy_key_value_data(accel_dev, ctl_data)) {
--		ret = -EFAULT;
--		goto out;
--	}
--	set_bit(ADF_STATUS_CONFIGURED, &accel_dev->status);
--out:
--	kfree(ctl_data);
--	return ret;
--}
--
--static int adf_ctl_is_device_in_use(int id)
--{
--	struct adf_accel_dev *dev;
--
--	list_for_each_entry(dev, adf_devmgr_get_head(), list) {
--		if (id == dev->accel_id || id == ADF_CFG_ALL_DEVICES) {
--			if (adf_devmgr_in_reset(dev) || adf_dev_in_use(dev)) {
--				dev_info(&GET_DEV(dev),
--					 "device qat_dev%d is busy\n",
--					 dev->accel_id);
--				return -EBUSY;
--			}
--		}
--	}
--	return 0;
--}
--
--static void adf_ctl_stop_devices(u32 id)
--{
--	struct adf_accel_dev *accel_dev;
--
--	list_for_each_entry(accel_dev, adf_devmgr_get_head(), list) {
--		if (id == accel_dev->accel_id || id == ADF_CFG_ALL_DEVICES) {
--			if (!adf_dev_started(accel_dev))
--				continue;
--
--			/* First stop all VFs */
--			if (!accel_dev->is_vf)
--				continue;
--
--			adf_dev_down(accel_dev);
--		}
--	}
--
--	list_for_each_entry(accel_dev, adf_devmgr_get_head(), list) {
--		if (id == accel_dev->accel_id || id == ADF_CFG_ALL_DEVICES) {
--			if (!adf_dev_started(accel_dev))
--				continue;
--
--			adf_dev_down(accel_dev);
--		}
--	}
--}
--
--static int adf_ctl_ioctl_dev_stop(struct file *fp, unsigned int cmd,
--				  unsigned long arg)
--{
--	int ret;
--	struct adf_user_cfg_ctl_data *ctl_data;
--
--	ctl_data = adf_ctl_alloc_resources(arg);
--	if (IS_ERR(ctl_data))
--		return PTR_ERR(ctl_data);
--
--	if (adf_devmgr_verify_id(ctl_data->device_id)) {
--		pr_err("QAT: Device %d not found\n", ctl_data->device_id);
--		ret = -ENODEV;
--		goto out;
--	}
--
--	ret = adf_ctl_is_device_in_use(ctl_data->device_id);
--	if (ret)
--		goto out;
--
--	if (ctl_data->device_id == ADF_CFG_ALL_DEVICES)
--		pr_info("QAT: Stopping all acceleration devices.\n");
--	else
--		pr_info("QAT: Stopping acceleration device qat_dev%d.\n",
--			ctl_data->device_id);
--
--	adf_ctl_stop_devices(ctl_data->device_id);
--
--out:
--	kfree(ctl_data);
--	return ret;
--}
--
--static int adf_ctl_ioctl_dev_start(struct file *fp, unsigned int cmd,
--				   unsigned long arg)
--{
--	int ret;
--	struct adf_user_cfg_ctl_data *ctl_data;
--	struct adf_accel_dev *accel_dev;
--
--	ctl_data = adf_ctl_alloc_resources(arg);
--	if (IS_ERR(ctl_data))
--		return PTR_ERR(ctl_data);
--
--	ret = -ENODEV;
--	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
--	if (!accel_dev)
--		goto out;
--
--	dev_info(&GET_DEV(accel_dev),
--		 "Starting acceleration device qat_dev%d.\n",
--		 ctl_data->device_id);
--
--	ret = adf_dev_up(accel_dev, false);
--
--	if (ret) {
--		dev_err(&GET_DEV(accel_dev), "Failed to start qat_dev%d\n",
--			ctl_data->device_id);
--		adf_dev_down(accel_dev);
--	}
--out:
--	kfree(ctl_data);
--	return ret;
--}
--
--static int adf_ctl_ioctl_get_num_devices(struct file *fp, unsigned int cmd,
--					 unsigned long arg)
--{
--	u32 num_devices = 0;
--
--	adf_devmgr_get_num_dev(&num_devices);
--	if (copy_to_user((void __user *)arg, &num_devices, sizeof(num_devices)))
--		return -EFAULT;
--
--	return 0;
--}
--
--static int adf_ctl_ioctl_get_status(struct file *fp, unsigned int cmd,
--				    unsigned long arg)
--{
--	struct adf_hw_device_data *hw_data;
--	struct adf_dev_status_info dev_info;
--	struct adf_accel_dev *accel_dev;
--
--	if (copy_from_user(&dev_info, (void __user *)arg,
--			   sizeof(struct adf_dev_status_info))) {
--		pr_err("QAT: failed to copy from user.\n");
--		return -EFAULT;
--	}
--
--	accel_dev = adf_devmgr_get_dev_by_id(dev_info.accel_id);
--	if (!accel_dev)
--		return -ENODEV;
--
--	hw_data = accel_dev->hw_device;
--	dev_info.state = adf_dev_started(accel_dev) ? DEV_UP : DEV_DOWN;
--	dev_info.num_ae = hw_data->get_num_aes(hw_data);
--	dev_info.num_accel = hw_data->get_num_accels(hw_data);
--	dev_info.num_logical_accel = hw_data->num_logical_accel;
--	dev_info.banks_per_accel = hw_data->num_banks
--					/ hw_data->num_logical_accel;
--	strscpy(dev_info.name, hw_data->dev_class->name, sizeof(dev_info.name));
--	dev_info.instance_id = hw_data->instance_id;
--	dev_info.type = hw_data->dev_class->type;
--	dev_info.bus = accel_to_pci_dev(accel_dev)->bus->number;
--	dev_info.dev = PCI_SLOT(accel_to_pci_dev(accel_dev)->devfn);
--	dev_info.fun = PCI_FUNC(accel_to_pci_dev(accel_dev)->devfn);
--
--	if (copy_to_user((void __user *)arg, &dev_info,
--			 sizeof(struct adf_dev_status_info))) {
--		dev_err(&GET_DEV(accel_dev), "failed to copy status.\n");
--		return -EFAULT;
--	}
--	return 0;
--}
--
--static long adf_ctl_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
--{
--	int ret;
--
--	if (mutex_lock_interruptible(&adf_ctl_lock))
--		return -EFAULT;
--
--	switch (cmd) {
--	case IOCTL_CONFIG_SYS_RESOURCE_PARAMETERS:
--		ret = adf_ctl_ioctl_dev_config(fp, cmd, arg);
--		break;
--
--	case IOCTL_STOP_ACCEL_DEV:
--		ret = adf_ctl_ioctl_dev_stop(fp, cmd, arg);
--		break;
--
--	case IOCTL_START_ACCEL_DEV:
--		ret = adf_ctl_ioctl_dev_start(fp, cmd, arg);
--		break;
--
--	case IOCTL_GET_NUM_DEVICES:
--		ret = adf_ctl_ioctl_get_num_devices(fp, cmd, arg);
--		break;
--
--	case IOCTL_STATUS_ACCEL_DEV:
--		ret = adf_ctl_ioctl_get_status(fp, cmd, arg);
--		break;
--	default:
--		pr_err_ratelimited("QAT: Invalid ioctl %d\n", cmd);
--		ret = -EFAULT;
--		break;
--	}
--	mutex_unlock(&adf_ctl_lock);
--	return ret;
--}
+@@ -191,6 +192,7 @@ int adf_sriov_configure(struct pci_dev *pdev, int numvfs);
+ void adf_disable_sriov(struct adf_accel_dev *accel_dev);
+ void adf_reenable_sriov(struct adf_accel_dev *accel_dev);
+ void adf_enable_vf2pf_interrupts(struct adf_accel_dev *accel_dev, u32 vf_mask);
++void adf_enable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev, u32 num_vfs);
+ void adf_disable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev);
+ bool adf_recv_and_handle_pf2vf_msg(struct adf_accel_dev *accel_dev);
+ bool adf_recv_and_handle_vf2pf_msg(struct adf_accel_dev *accel_dev, u32 vf_nr);
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_isr.c b/drivers/crypto/intel/qat/qat_common/adf_isr.c
+index 4639d7fd93e6..01be0f166efc 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_isr.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_isr.c
+@@ -62,6 +62,24 @@ void adf_enable_vf2pf_interrupts(struct adf_accel_dev *accel_dev, u32 vf_mask)
+ 	unsigned long flags;
  
- static int __init adf_register_ctl_device_driver(void)
+ 	spin_lock_irqsave(&accel_dev->pf.vf2pf_ints_lock, flags);
++	if (!READ_ONCE(accel_dev->pf.vf2pf_disabled))
++		GET_PFVF_OPS(accel_dev)->enable_vf2pf_interrupts(pmisc_addr, vf_mask);
++	spin_unlock_irqrestore(&accel_dev->pf.vf2pf_ints_lock, flags);
++}
++
++void adf_enable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev, u32 num_vfs)
++{
++	void __iomem *pmisc_addr = adf_get_pmisc_base(accel_dev);
++	unsigned long flags;
++	u32 vf_mask;
++
++	if (!num_vfs)
++		return;
++
++	vf_mask = BIT_ULL(num_vfs) - 1;
++
++	spin_lock_irqsave(&accel_dev->pf.vf2pf_ints_lock, flags);
++	WRITE_ONCE(accel_dev->pf.vf2pf_disabled, false);
+ 	GET_PFVF_OPS(accel_dev)->enable_vf2pf_interrupts(pmisc_addr, vf_mask);
+ 	spin_unlock_irqrestore(&accel_dev->pf.vf2pf_ints_lock, flags);
+ }
+@@ -72,6 +90,7 @@ void adf_disable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&accel_dev->pf.vf2pf_ints_lock, flags);
++	WRITE_ONCE(accel_dev->pf.vf2pf_disabled, true);
+ 	GET_PFVF_OPS(accel_dev)->disable_all_vf2pf_interrupts(pmisc_addr);
+ 	spin_unlock_irqrestore(&accel_dev->pf.vf2pf_ints_lock, flags);
+ }
+@@ -174,6 +193,27 @@ static irqreturn_t adf_msix_isr_ae(int irq, void *dev_ptr)
+ 	return IRQ_NONE;
+ }
+ 
++void adf_isr_sync_ae_cluster(struct adf_accel_dev *accel_dev)
++{
++	struct adf_accel_pci *pci_dev_info = &accel_dev->accel_pci_dev;
++	struct adf_hw_device_data *hw_data = GET_HW_DATA(accel_dev);
++	u32 num_entries = pci_dev_info->msix_entries.num_entries;
++	struct adf_irq *irqs = pci_dev_info->msix_entries.irqs;
++	u32 irq_idx;
++	int irq;
++
++	if (!test_bit(ADF_STATUS_IRQ_ALLOCATED, &accel_dev->status) || !irqs)
++		return;
++
++	irq_idx = num_entries > 1 ? hw_data->num_banks : 0;
++	if (irq_idx >= num_entries || !irqs[irq_idx].enabled)
++		return;
++
++	irq = pci_irq_vector(pci_dev_info->pci_dev, hw_data->num_banks);
++	if (irq >= 0)
++		synchronize_irq(irq);
++}
++
+ static void adf_free_irqs(struct adf_accel_dev *accel_dev)
  {
--	if (adf_chr_drv_create())
--		goto err_chr_dev;
--
- 	if (adf_init_misc_wq())
- 		goto err_misc_wq;
+ 	struct adf_accel_pci *pci_dev_info = &accel_dev->accel_pci_dev;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_sriov.c b/drivers/crypto/intel/qat/qat_common/adf_sriov.c
+index 8bf0fe1fcb4d..646f78009ccc 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_sriov.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_sriov.c
+@@ -26,6 +26,9 @@ static void adf_iov_send_resp(struct work_struct *work)
+ 	u32 vf_nr = vf_info->vf_nr;
+ 	bool ret;
  
-@@ -437,15 +40,11 @@ static int __init adf_register_ctl_device_driver(void)
- err_aer:
- 	adf_exit_misc_wq();
- err_misc_wq:
--	adf_chr_drv_destroy();
--err_chr_dev:
--	mutex_destroy(&adf_ctl_lock);
- 	return -EFAULT;
++	if (READ_ONCE(accel_dev->pf.vf2pf_disabled))
++		goto out;
++
+ 	mutex_lock(&vf_info->pfvf_mig_lock);
+ 	ret = adf_recv_and_handle_vf2pf_msg(accel_dev, vf_nr);
+ 	if (ret)
+@@ -33,20 +36,33 @@ static void adf_iov_send_resp(struct work_struct *work)
+ 		adf_enable_vf2pf_interrupts(accel_dev, 1 << vf_nr);
+ 	mutex_unlock(&vf_info->pfvf_mig_lock);
+ 
++out:
+ 	kfree(pf2vf_resp);
  }
  
- static void __exit adf_unregister_ctl_device_driver(void)
+ void adf_schedule_vf2pf_handler(struct adf_accel_vf_info *vf_info)
  {
--	adf_chr_drv_destroy();
- 	adf_exit_misc_wq();
- 	adf_exit_aer();
- 	adf_exit_vf_wq();
-@@ -453,7 +52,6 @@ static void __exit adf_unregister_ctl_device_driver(void)
- 	qat_crypto_unregister();
- 	qat_compression_unregister();
- 	adf_clean_vf_map(false);
--	mutex_destroy(&adf_ctl_lock);
++	struct adf_accel_dev *accel_dev = vf_info->accel_dev;
+ 	struct adf_pf2vf_resp *pf2vf_resp;
+ 
++	if (READ_ONCE(accel_dev->pf.vf2pf_disabled))
++		return;
++
+ 	pf2vf_resp = kzalloc_obj(*pf2vf_resp, GFP_ATOMIC);
+ 	if (!pf2vf_resp)
+ 		return;
+ 
+ 	pf2vf_resp->vf_info = vf_info;
+ 	INIT_WORK(&pf2vf_resp->pf2vf_resp_work, adf_iov_send_resp);
+-	queue_work(pf2vf_resp_wq, &pf2vf_resp->pf2vf_resp_work);
++
++	if (!queue_work(pf2vf_resp_wq, &pf2vf_resp->pf2vf_resp_work))
++		kfree(pf2vf_resp);
++}
++
++static void adf_flush_pf2vf_resp_wq(void)
++{
++	if (pf2vf_resp_wq)
++		flush_workqueue(pf2vf_resp_wq);
  }
  
- module_init(adf_register_ctl_device_driver);
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_dev_mgr.c b/drivers/crypto/intel/qat/qat_common/adf_dev_mgr.c
-index e050de16ab5d..982f86ca4f54 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_dev_mgr.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_dev_mgr.c
-@@ -329,38 +329,6 @@ struct adf_accel_dev *adf_devmgr_get_dev_by_id(u32 id)
- 	return NULL;
- }
+ static int adf_enable_sriov(struct adf_accel_dev *accel_dev)
+@@ -75,7 +91,7 @@ static int adf_enable_sriov(struct adf_accel_dev *accel_dev)
+ 		hw_data->configure_iov_threads(accel_dev, true);
  
--int adf_devmgr_verify_id(u32 id)
--{
--	if (id == ADF_CFG_ALL_DEVICES)
--		return 0;
--
--	if (adf_devmgr_get_dev_by_id(id))
--		return 0;
--
--	return -ENODEV;
--}
--
--static int adf_get_num_dettached_vfs(void)
--{
--	struct list_head *itr;
--	int vfs = 0;
--
--	mutex_lock(&table_lock);
--	list_for_each(itr, &vfs_table) {
--		struct vf_id_map *ptr =
--			list_entry(itr, struct vf_id_map, list);
--		if (ptr->bdf != ~0 && !ptr->attached)
--			vfs++;
--	}
--	mutex_unlock(&table_lock);
--	return vfs;
--}
--
--void adf_devmgr_get_num_dev(u32 *num)
--{
--	*num = num_devices - adf_get_num_dettached_vfs();
--}
--
- /**
-  * adf_dev_in_use() - Check whether accel_dev is currently in use
-  * @accel_dev: Pointer to acceleration device.
+ 	/* Enable VF to PF interrupts for all VFs */
+-	adf_enable_vf2pf_interrupts(accel_dev, BIT_ULL(totalvfs) - 1);
++	adf_enable_all_vf2pf_interrupts(accel_dev, totalvfs);
+ 
+ 	/*
+ 	 * Due to the hardware design, when SR-IOV and the ring arbiter
+@@ -248,8 +264,10 @@ void adf_disable_sriov(struct adf_accel_dev *accel_dev)
+ 	adf_pf2vf_wait_for_restarting_complete(accel_dev);
+ 	pci_disable_sriov(accel_to_pci_dev(accel_dev));
+ 
+-	/* Disable VF to PF interrupts */
++	/* Block VF2PF work and disable VF to PF interrupts */
+ 	adf_disable_all_vf2pf_interrupts(accel_dev);
++	adf_isr_sync_ae_cluster(accel_dev);
++	adf_flush_pf2vf_resp_wq();
+ 
+ 	/* Clear Valid bits in AE Thread to PCIe Function Mapping */
+ 	if (hw_data->configure_iov_threads)
+
+base-commit: 1e0613cd5cfb9fc6d622f0ae5ed33fafd184d259
 -- 
 2.54.0
 
