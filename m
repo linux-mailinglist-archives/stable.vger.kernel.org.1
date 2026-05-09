@@ -1,130 +1,140 @@
-Return-Path: <stable+bounces-244886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLoTEzSX/ml5tAAAu9opvQ
-	(envelope-from <stable+bounces-244886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:08:52 +0200
+	id iD/9IUaZ/mn0tQAAu9opvQ
+	(envelope-from <stable+bounces-244887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:17:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A654FD8BD
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:08:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84244FD946
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0573A3008D43
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 02:08:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF1D1301B707
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 02:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C252C028F;
-	Sat,  9 May 2026 02:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00F8293B5F;
+	Sat,  9 May 2026 02:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMjPmNH+"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="TGQZxyM5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B6D27874F;
-	Sat,  9 May 2026 02:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F0A2673AA;
+	Sat,  9 May 2026 02:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778292527; cv=none; b=MaKqcIXkFgpCb+s8NvuytSzEvEcCKsdadDcyCk2KHJxyfO1K1viqIdaMjUVw4ZG3iSIdwwuJuvZFv7xFcq9mtgJ/KCrkd7xF7W7E95KxgVgVzdP4gafSCKwThCUd4QyyJwza7JcU4jLlWuGzRozBlxaayeCHMwwKUfB8XwuTHrM=
+	t=1778293056; cv=none; b=CnKFhEDf/zfDCA78cwqckGIHW+2Kr0w7N4eOigPuu1TPeU+lEAtiPuuH/xJelYB/ucgUAw+YryL5yEk7XvzaMH6gSqH1PCIBXiR03t+kyCBglLzTBBrZl/odngW/x0HUL/fGl5vgq4R467fbOPmQm3CENBW1glom2bzSCTK3+UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778292527; c=relaxed/simple;
-	bh=KG9aytZQNyLOuti2Qvw+0nxc891otfs+o8ENIUpCR+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GAQbQECIaIohA+LiL/z1avGMV6Gp9hkaxaBcJ7Y63ZOkb1g4uFKtz4d2aI/3b5HLcQuLzDzEjsBt4ZxMmKSriLviI/HAy1/hTo643Rkx05lC7arJYV/92X76ldIj7kNqxkZZBZdhp7oScmrL3CLYo0LbClkI1W+/0bXkXS3Ksq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMjPmNH+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE15AC2BCF5;
-	Sat,  9 May 2026 02:08:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778292526;
-	bh=KG9aytZQNyLOuti2Qvw+0nxc891otfs+o8ENIUpCR+4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMjPmNH+tttbb1g24KHnI/TmgELHwJdsKYdY0OaEgR+NtQW1eZ5OL8hvCzSVQrdbk
-	 dntQOXe9IsqfdXH4ImNVkZV8C/oMBhllJPnzvQCC1NWPT7tOvKUmpYX8AbnRSfX9WX
-	 YSdGTQUTG+b4Q+KlFQIMW+D2Mf6l/1xVuGQ8rrw/rm+qwwI+DH/hmZUE71225aYm+s
-	 XuNXf1JRe3n7+p2gd+E2kwcboA5ZFQWMyeN7WEl7Fy+tE9bVacCaxDv5i8F61GLOlY
-	 Y0BVY7WtDR1MBQkCBW16JO3QgEDUhzem3/VG2yEH23mw00ibftXeQXRoXhFcMmOOZI
-	 rN13o3cpLwf6A==
-From: Sasha Levin <sashal@kernel.org>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: Re: [PATCH 6.6.y] dmaengine: idxd: Fix leaking event log memory
-Date: Fri,  8 May 2026 22:08:39 -0400
-Message-ID: <20260509015927.agent5-0003@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260507040415.565-1-jetlan9@163.com>
-References: <20260507040415.565-1-jetlan9@163.com>
+	s=arc-20240116; t=1778293056; c=relaxed/simple;
+	bh=HRmuLMDGFYWhflCqKnfSkmScy+y46tyDgDM3eZms4hs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R61WVzVWUBXB9MWaf2rr4X8LDi++iYXocS12OFvNQphQQPZQeDFYsLhQzDOPhA6B79AnUNare+I5gtxO2zDIpqHJIhGwvNN/R2LdHvC8qD80SQigluURVBrP0+3MXfg6u4XzeA2kzd8/amlsVBMeOSNTfagFeFtGsYHgDDujmL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=TGQZxyM5; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=UKqqnZOvff6wGycc934hoYnnxSVsfu+OX89TZPksU5Q=;
+	b=TGQZxyM5AiArmiorag8L41jzjr70HJE4x8IiDf4dm6mq6dXDzlVeaP2EH82eMK
+	ZT4Rl6wDUEsf3FICOmnCfNIlY+i80v9uDHWRxldyY6hCQQlFh9e7KdTQLXPaeQbT
+	HDn2XgjrVk3k9ShrFfIXybR5lU+tcPOO96U/p6AiJECew=
+Received: from [192.168.1.40] (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgBXUA0Ymf5pGXcQCw--.145S2;
+	Sat, 09 May 2026 10:17:00 +0800 (CST)
+Message-ID: <00716c13-bec3-49f2-ab23-161b6e48c2c4@163.com>
+Date: Sat, 9 May 2026 10:16:56 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 16A654FD8BD
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y] dmaengine: idxd: Fix leaking event log memory
+To: Sasha Levin <sashal@kernel.org>, gregkh@linuxfoundation.org,
+ stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ Dave Jiang <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>
+References: <20260507040415.565-1-jetlan9@163.com>
+ <20260509015927.agent5-0003@kernel.org>
+From: Wenshan Lan <jetlan9@163.com>
+Content-Language: en-US
+In-Reply-To: <20260509015927.agent5-0003@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:PigvCgBXUA0Ymf5pGXcQCw--.145S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrZF4kuryxGw18XFWkJFWUurg_yoW8JF17pF
+	W3K34Yyr9rtFyUG390ga10y34Yyrsak3yrGw18KF9FkF4fGFyftFyfAF4jgr1rCw4fCFy5
+	ta90q3ykCrs0yr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UTHqxUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC6x2HUGn+mR08BwAA3J
+X-Rspamd-Queue-Id: B84244FD946
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,intel.com,163.com];
-	TAGGED_FROM(0.00)[bounces-244886-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244887-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+	DKIM_TRACE(0.00)[163.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 12:04:15PM +0800, Wenshan Lan wrote:
-> From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+
+On 5/9/2026 10:08 AM, Sasha Levin wrote:
+> On Thu, May 07, 2026 at 12:04:15PM +0800, Wenshan Lan wrote:
+>> From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+>>
+>> [ Upstream commit ee66bc29578391c9b48523dc9119af67bd5c7c0f ]
+>>
+>> -	gencfg.bits = ioread32(idxd->reg_base + IDXD_GENCFG_OFFSET);
+>> -	if (!gencfg.evl_en)
+>> -		return;
+>> -
+>>   	mutex_lock(&evl->lock);
+> This drops the only thing that protects no-evl-capable hardware
+> (idxd->evl == NULL) from dereferencing evl in idxd_device_evl_free().
+> On 6.6, idxd_init_evl() returns 0 without allocating evl when
+> hw.gen_cap.evl_support == 0, and idxd_device_evl_free() is still
+> reachable in that path, so taking ee66bc29 alone will introduce a
+> NULL deref on hardware without event-log support.
 >
-> [ Upstream commit ee66bc29578391c9b48523dc9119af67bd5c7c0f ]
+> The required prerequisite is upstream commit 52d2edea0d63c
+> ("dmaengine: idxd: Fix crash when the event log is disabled"), which
+> adds the "if (!evl) return;" guard at the top of idxd_device_evl_free().
+> It landed as patch 2 of the same v3 series and is missing from 6.6.y.
 >
-> -	gencfg.bits = ioread32(idxd->reg_base + IDXD_GENCFG_OFFSET);
-> -	if (!gencfg.evl_en)
-> -		return;
-> -
->  	mutex_lock(&evl->lock);
+> Could you resend as a 2-patch series with 52d2edea0d63c as the
+> prerequisite? Then I'm happy to queue both for 6.6.y.
 
-This drops the only thing that protects no-evl-capable hardware
-(idxd->evl == NULL) from dereferencing evl in idxd_device_evl_free().
-On 6.6, idxd_init_evl() returns 0 without allocating evl when
-hw.gen_cap.evl_support == 0, and idxd_device_evl_free() is still
-reachable in that path, so taking ee66bc29 alone will introduce a
-NULL deref on hardware without event-log support.
+Thank you for your review. I will resend v2.
 
-The required prerequisite is upstream commit 52d2edea0d63c
-("dmaengine: idxd: Fix crash when the event log is disabled"), which
-adds the "if (!evl) return;" guard at the top of idxd_device_evl_free().
-It landed as patch 2 of the same v3 series and is missing from 6.6.y.
+Wenshan Lan
 
-Could you resend as a 2-patch series with 52d2edea0d63c as the
-prerequisite? Then I'm happy to queue both for 6.6.y.
+>
+> --
+> Thanks,
+> Sasha
 
---
-Thanks,
-Sasha
 
