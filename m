@@ -1,94 +1,65 @@
-Return-Path: <stable+bounces-244969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gE23KklW/2mo4wAAu9opvQ
-	(envelope-from <stable+bounces-244969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:44:09 +0200
+	id RrspNBlc/2mQ5QAAu9opvQ
+	(envelope-from <stable+bounces-244970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 18:08:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C935005BE
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:44:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443445006D9
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 18:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C575030103BB
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 15:43:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0D2FC3010B9B
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 16:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4BA13DDA4;
-	Sat,  9 May 2026 15:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EFD2D0617;
+	Sat,  9 May 2026 16:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLSF5dbB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpCW2R6d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FA219067C
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 15:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0A8282F3F
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 16:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778341390; cv=none; b=HtR2HYSNwK73r1RvJZVS4mxxMTWy31kT9Ju+a6xOdlyfvaLr8/xWqXSS13Hzi5yMLYAtwIcGSmnKg9/JY5jeTxNdwuvbhz6OdXFc+ATmckTiJMSJ8E0dv0+OpYQ3Ueipi2SWvfE0vrv7xqRRUcPPqyCVJQ8VVHUfL6/1cWQ/hNo=
+	t=1778342932; cv=none; b=af6PFs00KuNtCpkaXktbwirHraxSXUhIMviiPw0OXTAOh7trhrRMowD0tFRjqbYzxtI8F1pgo3l7NgOQ6fp6pNfnl4ggyJ971AeOu7Nn92tQ7I1bCi5rUrDS9PWL0BqHPTJcBPXPo2xiHMRoovbnuz23vZ7JkTp8XeAWfHi4P9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778341390; c=relaxed/simple;
-	bh=QIxNKk5iv/RLLp+JtmSaZA7qJUTSm3Fnay0kST4Od7I=;
+	s=arc-20240116; t=1778342932; c=relaxed/simple;
+	bh=e6mGxAGp2jGPFUSyH0hKA1xBOBNqPy9grdPlsl3dLGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N14wW+90wwpkEyfZCX7dqkqgpLAM+YOdM/rzzo7qch78LjA9sk41cZld0KEuNBYNWmPyK5gMJACCF+lvCDu/ClPSkSAQdgOp6mo4D9D51zRp3zfEdcBdC7pldA7NSOnvy1NiB+13XabB+D6hFK4HRuhsffvml7wjoiLBB1x/9Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLSF5dbB; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-83659d38e38so1358144b3a.1
-        for <stable@vger.kernel.org>; Sat, 09 May 2026 08:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778341388; x=1778946188; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2yXJqhcLXVF2p4UTzna8YZIe4V2LsKcR1MgCwvWlSaE=;
-        b=GLSF5dbB57Jxeum1bEI9qyI5n1Kx/otq1ONk1yruWSV3edHd0hBL5LfjRRAzbO1ToG
-         uasX3V+KcyNsvpIMJ5sspghzPK0tkxBvodznPipNBwAjEbq0YAS7fOktmtIMVtxrTJfC
-         e/NqgZawGUMHTvVG2DEfBuxb3suPYmvzQ8CnBvSIPyLpp8LybuFKPH5kvYqQmJsZr0h9
-         gUiMupqHJYTyxwmdavq3w7z8SfVGcSrHy8JADQYztOzDTgKOT9NhTbuw+PNxzqiZ8Eph
-         DcsUdS1JSe93L6DDze7p4QNVExZl+yMIFM3RDbw0pVKf6zljb+J3RMKJo3XQDOv7yXmm
-         aWYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778341388; x=1778946188;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2yXJqhcLXVF2p4UTzna8YZIe4V2LsKcR1MgCwvWlSaE=;
-        b=gTobsQ9+RZgu7HtFEOehFLwtns/OklB1IhnPatRg3RArxmKusbGcMsDBgw/BVKe47T
-         /rXVOTvSZajD+jXp7BE0BYHfEofNqJIJ1dBPMuUF/witdXEMnRc2hYs7EF6Rf4DFEy4f
-         4eukvKF+CzJwf/Gnz5uYYCil2YgRRKrL04b9R/5wzG2/752IzYmcdOAQbd+4353trFBp
-         ciwWJH8skvS3vE99EN6evlsZVE6gbkE9Sx8+yc/lhfSNtA+fm7xvzfAAkkJaCXQC4Mta
-         NhdaUE+TTZx00eh4gsq8TtToBNIcUx6HyYFhx9QGSmCE1msppWR9+VHzwGiSl7w08NU5
-         gYVw==
-X-Forwarded-Encrypted: i=1; AFNElJ+Ouwon/+SgTTEfNIeepaIZuJVRpedQjIaNee6aoiaSd8nX02BirJa6uqL8uz9yOXa2g29M+DY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7xQqsYyHpWN7dbFR5w2/suRh84a+2gN7WOMN15AfLtvkNGq3V
-	+L8t7hr/1YbPQoNvtp2ToXS2o+bmcwohtgUZfh412O7+sE6EOu/fLjQyC3VBvmY=
-X-Gm-Gg: Acq92OECXGSQsLWI2rshH8+jY1dMVc4llay6Mpj73E52/+hZIF7bv/TPPl8tSuxplhl
-	se/8Xvt6IJ0Pzj68kwiGUpLGXH8y9VLBKCV4SGJbPQPyXCfRf9wcxhQp6iW9+5jujPzCM03lmJo
-	rxX345n2BJlLs9k8iTh9vDvsR0XYIpw+31KZ9mJV1ihfBDjmrUGc+nXY7Avh33UdKvxCg3mlpsB
-	d+bqNRAI2Mbybxkz73UD0yvlRBq/ofCdH2Q4j5sCJvSe3BNgeWx59/cjf9R96KYm/KP+0vN5TOw
-	97UPRlWZiCwa3Vmy3DdL0zHEC3ww0OfUwv8GDITdwentGMGYmVEXsSA0IZ9jJ2rYhHZRucp05gK
-	66gWu/fYZLrYpYg5lJlhVg8qfqRy2SeCuoca5Hpb62XC4m4kzm+DEHmJvML/ni9k883N6dGLnFE
-	/VYaGe+2DQGudlkTLIn04PgpyGpijQtkmLS3e1G1ShJfMcUf6eZeb/2Nb7bgRWNN+Xg5ZaF0O13
-	e4=
-X-Received: by 2002:a05:6a00:2442:b0:829:8942:2ca4 with SMTP id d2e1a72fcca58-83a5badbf5fmr16448655b3a.19.1778341387775;
-        Sat, 09 May 2026 08:43:07 -0700 (PDT)
-Received: from coe.tail83f5bd.ts.net ([125.19.217.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965a3e3ecsm15848028b3a.19.2026.05.09.08.43.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 May 2026 08:43:06 -0700 (PDT)
-From: Ramesh Adhikari <adhikari.resume@gmail.com>
-To: matthew.brost@intel.com
-Cc: thomas.hellstrom@linux.intel.com,
-	intel-xe@lists.freedesktop.org,
-	rodrigo.vivi@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/xe: Add bounds check for num_binds to prevent memory exhaustion
-Date: Sat,  9 May 2026 21:12:37 +0530
-Message-ID: <20260509154237.57082-1-adhikari.resume@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260507055352.61017-1-adhikari.resume@gmail.com>
-References: <20260507055352.61017-1-adhikari.resume@gmail.com>
+	 MIME-Version; b=MdgchlKjIM3NlEGo9KyqQi+rT3IzFLsypPIplvR7iqbM+pGg6zGYYnvNn931gKcCBzOgkkHfTGH/Pu8LxKjlKedTD6VVIqnO8Zo8HOO4rDFkEsF7gUgZF+9lgEUSfHj5yCadCG2a6oY1NAMB3dXJJxhKBp0nm8e+5WulRxbdQaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpCW2R6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FA6C2BCB2;
+	Sat,  9 May 2026 16:08:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778342932;
+	bh=e6mGxAGp2jGPFUSyH0hKA1xBOBNqPy9grdPlsl3dLGY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cpCW2R6dd5OeuLs9i6se3DvnMPvcL0LfeamMfBNW1bPOLZSX1CwdN0Ju6VetGZfDg
+	 GwtAXs4bVgYtS0DZjgQFPysGGnmEQtBlPN9mwgJ92aTlLkDh8J0wap3FpTDuIC8LKo
+	 7/eL8G0jnb7UxRVxTEQuCFxqRYsAoO/FwXbsoD5LtE/I1EgbpRx8t+e03MtYJFKjYt
+	 0TQtChORbqfnokfuuddFS/Bt7mOqr2vi/jV0f/TXMvedJEBpG7Pl0zi4ZdFMiguazX
+	 JyCfPgqCrPS1eqIqaaR5DDAngGT1GIc/KM+jTskTffGOhkhrvLU3ytrUVjbI3eXwP5
+	 e5kMrYoMdGJqQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Hannes Reinecke <hare@suse.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/4] scsi: core: pm: Rely on the device driver core for async power management
+Date: Sat,  9 May 2026 12:08:46 -0400
+Message-ID: <20260509160849.3584738-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050456-overview-shaking-6135@gregkh>
+References: <2026050456-overview-shaking-6135@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,59 +67,244 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43C935005BE
+X-Rspamd-Queue-Id: 443445006D9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-244969-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-244970-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,suse.com:email,intel.com:email,acm.org:email,harvard.edu:email]
 X-Rspamd-Action: no action
 
-Hi Matthew and Thomas,
+From: Bart Van Assche <bvanassche@acm.org>
 
-I apologize if you're receiving this message multiple times - I've tried 
-sending replies twice before but they don't appear in the mailing list 
-archives or on Patchwork, so I'm not sure if they reached you. I also 
-attempted to send a v3 patch which similarly didn't appear. If you did 
-receive my previous emails, I sincerely apologize for the duplicate messages.
+[ Upstream commit a19a93e4c6a98c9c0f2f5a6db76846f10d7d1f85 ]
 
-When I was tracing through the code, I found that vm_bind_ioctl_ops_create
-allocates about 160 bytes per bind (drm_gpuva_ops + xe_vma_op) in the loop,
-and those allocations use GFP_KERNEL without __GFP_ACCOUNT. That's separate
-from the main arrays you already have protected with __GFP_ACCOUNT.
+Instead of implementing asynchronous resume support in the SCSI core, rely
+on the device driver core for resuming SCSI devices asynchronously.
+Instead of only supporting asynchronous resumes, also support asynchronous
+suspends.
 
-At 2048 binds that's only 320KB unaccounted, which is why I thought it was
-safe to start conservative. But you're right - at 64k binds it would still
-only be about 10MB unaccounted, which is probably fine and won't force
-unnecessary fallbacks.
+Link: https://lore.kernel.org/r/20211006215453.3318929-2-bvanassche@acm.org
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Hannes Reinecke <hare@suse.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 1e111c4b3a72 ("scsi: sd: fix missing put_disk() when device_add(&disk_dev) fails")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/scsi/hosts.c      |  1 +
+ drivers/scsi/scsi.c       |  8 -------
+ drivers/scsi/scsi_pm.c    | 44 ++-------------------------------------
+ drivers/scsi/scsi_priv.h  |  4 +---
+ drivers/scsi/scsi_scan.c  | 17 +++++++++++++++
+ drivers/scsi/scsi_sysfs.c |  1 +
+ drivers/scsi/sd.c         |  1 -
+ 7 files changed, 22 insertions(+), 54 deletions(-)
 
-Should I send a v4 with 64k? Or do you think the loop allocations I found
-need a different approach?
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index cf842c97639a7..c7d85591a192f 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -487,6 +487,7 @@ struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
+ 	dev_set_name(&shost->shost_gendev, "host%d", shost->host_no);
+ 	shost->shost_gendev.bus = &scsi_bus_type;
+ 	shost->shost_gendev.type = &scsi_host_type;
++	scsi_enable_async_suspend(&shost->shost_gendev);
+ 
+ 	device_initialize(&shost->shost_dev);
+ 	shost->shost_dev.parent = &shost->shost_gendev;
+diff --git a/drivers/scsi/scsi.c b/drivers/scsi/scsi.c
+index a499a57150720..d031c577d5d32 100644
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -86,14 +86,6 @@ unsigned int scsi_logging_level;
+ EXPORT_SYMBOL(scsi_logging_level);
+ #endif
+ 
+-/*
+- * Domain for asynchronous system resume operations.  It is marked 'exclusive'
+- * to avoid being included in the async_synchronize_full() that is invoked by
+- * dpm_resume().
+- */
+-ASYNC_DOMAIN_EXCLUSIVE(scsi_sd_pm_domain);
+-EXPORT_SYMBOL(scsi_sd_pm_domain);
+-
+ #ifdef CONFIG_SCSI_LOGGING
+ void scsi_log_send(struct scsi_cmnd *cmd)
+ {
+diff --git a/drivers/scsi/scsi_pm.c b/drivers/scsi/scsi_pm.c
+index e91a0a5bc7a3e..c622e7f812daf 100644
+--- a/drivers/scsi/scsi_pm.c
++++ b/drivers/scsi/scsi_pm.c
+@@ -56,9 +56,6 @@ static int scsi_dev_type_suspend(struct device *dev,
+ 	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+ 	int err;
+ 
+-	/* flush pending in-flight resume operations, suspend is synchronous */
+-	async_synchronize_full_domain(&scsi_sd_pm_domain);
+-
+ 	err = scsi_device_quiesce(to_scsi_device(dev));
+ 	if (err == 0) {
+ 		err = cb(dev, pm);
+@@ -123,48 +120,11 @@ scsi_bus_suspend_common(struct device *dev,
+ 	return err;
+ }
+ 
+-static void async_sdev_resume(void *dev, async_cookie_t cookie)
+-{
+-	scsi_dev_type_resume(dev, do_scsi_resume);
+-}
+-
+-static void async_sdev_thaw(void *dev, async_cookie_t cookie)
+-{
+-	scsi_dev_type_resume(dev, do_scsi_thaw);
+-}
+-
+-static void async_sdev_restore(void *dev, async_cookie_t cookie)
+-{
+-	scsi_dev_type_resume(dev, do_scsi_restore);
+-}
+-
+ static int scsi_bus_resume_common(struct device *dev,
+ 		int (*cb)(struct device *, const struct dev_pm_ops *))
+ {
+-	async_func_t fn;
+-
+-	if (!scsi_is_sdev_device(dev))
+-		fn = NULL;
+-	else if (cb == do_scsi_resume)
+-		fn = async_sdev_resume;
+-	else if (cb == do_scsi_thaw)
+-		fn = async_sdev_thaw;
+-	else if (cb == do_scsi_restore)
+-		fn = async_sdev_restore;
+-	else
+-		fn = NULL;
+-
+-	if (fn) {
+-		async_schedule_domain(fn, dev, &scsi_sd_pm_domain);
+-
+-		/*
+-		 * If a user has disabled async probing a likely reason
+-		 * is due to a storage enclosure that does not inject
+-		 * staggered spin-ups.  For safety, make resume
+-		 * synchronous as well in that case.
+-		 */
+-		if (strncmp(scsi_scan_type, "async", 5) != 0)
+-			async_synchronize_full_domain(&scsi_sd_pm_domain);
++	if (scsi_is_sdev_device(dev)) {
++		scsi_dev_type_resume(dev, cb);
+ 	} else {
+ 		pm_runtime_disable(dev);
+ 		pm_runtime_set_active(dev);
+diff --git a/drivers/scsi/scsi_priv.h b/drivers/scsi/scsi_priv.h
+index b531dec3d4206..2032db81897be 100644
+--- a/drivers/scsi/scsi_priv.h
++++ b/drivers/scsi/scsi_priv.h
+@@ -117,7 +117,7 @@ extern void scsi_exit_procfs(void);
+ #endif /* CONFIG_PROC_FS */
+ 
+ /* scsi_scan.c */
+-extern char scsi_scan_type[];
++void scsi_enable_async_suspend(struct device *dev);
+ extern int scsi_complete_async_scans(void);
+ extern int scsi_scan_host_selected(struct Scsi_Host *, unsigned int,
+ 				   unsigned int, u64, enum scsi_scan_mode);
+@@ -171,8 +171,6 @@ static inline int scsi_autopm_get_host(struct Scsi_Host *h) { return 0; }
+ static inline void scsi_autopm_put_host(struct Scsi_Host *h) {}
+ #endif /* CONFIG_PM */
+ 
+-extern struct async_domain scsi_sd_pm_domain;
+-
+ /* scsi_dh.c */
+ #ifdef CONFIG_SCSI_DH
+ void scsi_dh_add_device(struct scsi_device *sdev);
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index 518aa152849ef..b80dd68d79e9d 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -122,6 +122,22 @@ struct async_scan_data {
+ 	struct completion prev_finished;
+ };
+ 
++/**
++ * scsi_enable_async_suspend - Enable async suspend and resume
++ */
++void scsi_enable_async_suspend(struct device *dev)
++{
++	/*
++	 * If a user has disabled async probing a likely reason is due to a
++	 * storage enclosure that does not inject staggered spin-ups. For
++	 * safety, make resume synchronous as well in that case.
++	 */
++	if (strncmp(scsi_scan_type, "async", 5) != 0)
++		return;
++	/* Enable asynchronous suspend and resume. */
++	device_enable_async_suspend(dev);
++}
++
+ /**
+  * scsi_complete_async_scans - Wait for asynchronous scans to complete
+  *
+@@ -499,6 +515,7 @@ static struct scsi_target *scsi_alloc_target(struct device *parent,
+ 	dev_set_name(dev, "target%d:%d:%d", shost->host_no, channel, id);
+ 	dev->bus = &scsi_bus_type;
+ 	dev->type = &scsi_target_type;
++	scsi_enable_async_suspend(dev);
+ 	starget->id = id;
+ 	starget->channel = channel;
+ 	starget->can_queue = 0;
+diff --git a/drivers/scsi/scsi_sysfs.c b/drivers/scsi/scsi_sysfs.c
+index 7d3cbf4e6bc6e..b761c88f32dfe 100644
+--- a/drivers/scsi/scsi_sysfs.c
++++ b/drivers/scsi/scsi_sysfs.c
+@@ -1643,6 +1643,7 @@ void scsi_sysfs_device_initialize(struct scsi_device *sdev)
+ 	device_initialize(&sdev->sdev_gendev);
+ 	sdev->sdev_gendev.bus = &scsi_bus_type;
+ 	sdev->sdev_gendev.type = &scsi_dev_type;
++	scsi_enable_async_suspend(&sdev->sdev_gendev);
+ 	dev_set_name(&sdev->sdev_gendev, "%d:%d:%d:%llu",
+ 		     sdev->host->host_no, sdev->channel, sdev->id, sdev->lun);
+ 
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 1e887c11e83d0..f06cb6c5615a7 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3505,7 +3505,6 @@ static int sd_remove(struct device *dev)
+ 	sdkp = dev_get_drvdata(dev);
+ 	scsi_autopm_get_device(sdkp->device);
+ 
+-	async_synchronize_full_domain(&scsi_sd_pm_domain);
+ 	device_del(&sdkp->dev);
+ 	del_gendisk(sdkp->disk);
+ 	sd_shutdown(dev);
+-- 
+2.53.0
 
-Thanks,
-Ramesh
 
