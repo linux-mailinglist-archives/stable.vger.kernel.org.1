@@ -1,117 +1,142 @@
-Return-Path: <stable+bounces-244918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEKLAjLh/mlpyQAAu9opvQ
-	(envelope-from <stable+bounces-244918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:24:34 +0200
+	id 8O0KCA/l/mkhywAAu9opvQ
+	(envelope-from <stable+bounces-244919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:41:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954A64FE72C
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:24:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5A14FE8B5
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 09:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 74691301C90B
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 07:18:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6976C301CC4C
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 07:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8772837AA88;
-	Sat,  9 May 2026 07:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVHNbdKd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBCE3822A9;
+	Sat,  9 May 2026 07:40:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E4E2E7F0A;
-	Sat,  9 May 2026 07:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3975637CD52;
+	Sat,  9 May 2026 07:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778311097; cv=none; b=TQYvB9um68LULBi8UcpRkwUytdavyNqqySMvTydYZhs/jAYzMlW+gdrgI31GAeiKjeA34bMvRHQscUyoReseh6bHw5nQ02lzbfLXNdIYkAonPNu2YVGRTsevHi1F61YBOPCWB7C/N05ZjT6+svlq1/mW0ORFFdxwsYQeIDOxF8I=
+	t=1778312457; cv=none; b=Q3Jo1KvzNoIS2H+KzBurXVRlDObgUXa8MagdRZO0Xo9LycETgVhIDQUftDbj4jmjh2XxvBr2/eYfSXj+ZXYtFdh3bIeRGTovFaprVrEgtYFew0SM4FL16hVXSCSeQTbj36nQYmqhXJEDJqeMurghGnX6lLzfHLQxg8h0BaFsEu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778311097; c=relaxed/simple;
-	bh=CfaQizb78de1n+N5YUP8CfRQSYNCVrk0yL+FyZH0XzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iUJC8RdznR1bc/bDpnYVdHNVk5NKHKF/qBjsi+kaL3Bp/4mBAOfzrqF1pYd1OcH74qpVdfB3CYSeIE1FZHlu+pX9jENnAisOXZcaFLtipHpFgLXKLWk2iw2cT1Yujf57pQayPPXpOX6xDMHZ0hX/HnUxrngd+c4oTGK8+J7bgqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVHNbdKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85978C2BCB2;
-	Sat,  9 May 2026 07:18:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778311096;
-	bh=CfaQizb78de1n+N5YUP8CfRQSYNCVrk0yL+FyZH0XzY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jVHNbdKdUjeI8wvlqs43aFkdN8mVvVFMmfHgl+DtJGMWjPOINWJPPbDIZmCvk9ZHp
-	 W2Sv/PQu5n85y8qnVtb9EtQogv00BFiFuD+N+H108Lys/+VVDishN7OeJidbCY7MS8
-	 3/ITJTdyFqCskwDEzdDbGvLgsWvUQXFFa9N0Zk6s=
-Date: Sat, 9 May 2026 09:17:33 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: =?utf-8?B?5pyo5Y+j55KD6Z+z?= <kiguchi.r.sec@gmail.com>
-Cc: linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, security@kernel.org
-Subject: Re: [PATCH] staging: vme_user: validate slave window size against
- buffer size
-Message-ID: <2026050919-gerbil-audience-3895@gregkh>
-References: <CAKs+XO1WXrv4jvNuEyMxu-iP9E-fifJLwOZ1nJynDjpvfn2n=g@mail.gmail.com>
+	s=arc-20240116; t=1778312457; c=relaxed/simple;
+	bh=EGoyfTRmViYp8W+B2y2IxIoEBI7ARsu2cY8c37BHKv0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gyl3H+RW87qfCs3Rsgla56W56x1tHJ3+5WMbZt4vufvBoAF1IaGXaeMFEajuTvZfvxcnxM3OXJxTD6UCEtaS5wFtbxluc8vhPxiSpPjY1uW5T/bGsqrgL/kPeEXwOeHgETlwkrUv/X5AJo3L6IIVsytZc0n/bW5rpjP7p09fqBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from yzs (unknown [115.199.218.204])
+	by APP-01 (Coremail) with SMTP id qwCowAD3mmb65P5pU+yvDw--.35245S2;
+	Sat, 09 May 2026 15:40:42 +0800 (CST)
+From: Zishun Yi <vulab@iscas.ac.cn>
+To: pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: alex@ghiti.fr,
+	atish.patra@linux.dev,
+	Zishun Yi <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] riscv: cacheinfo: Fix node reference leak in populate_cache_leaves
+Date: Sat,  9 May 2026 15:40:40 +0800
+Message-ID: <20260509074040.1747800-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKs+XO1WXrv4jvNuEyMxu-iP9E-fifJLwOZ1nJynDjpvfn2n=g@mail.gmail.com>
-X-Rspamd-Queue-Id: 954A64FE72C
+X-CM-TRANSID:qwCowAD3mmb65P5pU+yvDw--.35245S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7JrW5KF1rKw4xKr4rGFy5XFb_yoW8Jr4Upr
+	WjkrZIyFyrur4xGa4IyrZ7u3yIqasxWrsxC3Z7C3WUZwsxXry5XwnYq34YqrnYqFWrurWF
+	vr15Gw4Ivwn8A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	tVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUZYFZUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRECA2n+2gklYAAAsY
+X-Rspamd-Queue-Id: 7C5A14FE8B5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	FROM_DN_EQ_ADDR(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-244919-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.876];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244918-lists,stable=lfdr.de];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid]
 X-Rspamd-Action: no action
 
-On Sat, May 09, 2026 at 03:58:45PM +0900, 木口璃音 wrote:
-> diff --git a/drivers/staging/vme_user/vme_user.c
-> b/drivers/staging/vme_user/vme_user.c
-> index 11e25c2f6..41b8d5b51 100644
-> --- a/drivers/staging/vme_user/vme_user.c
-> +++ b/drivers/staging/vme_user/vme_user.c
-> @@ -156,6 +156,11 @@ static ssize_t buffer_to_user(unsigned int minor,
-> char __user *buf,
->  {
->   void *image_ptr;
-> 
-> + if (*ppos < 0 || (u64)*ppos >= image[minor].size_buf ||
-> +     count > image[minor].size_buf - (u64)*ppos) {
-> + pr_warn_ratelimited("%s: out-of-bounds access\n", __func__);
-> + return -EINVAL;
-> + }
+Currently, the while loop drops the reference to prev in each iteration.
+If the loop terminates early due to a break, the final of_node_put(np)
+correctly drops the reference to the current node.
 
-Also the patch is corrupted :(
+However, if the loop terminates naturally because np == NULL, calling
+of_node_put(np) is a no-op. This leaves the last valid node stored in
+prev without its reference dropped, resulting in a node reference leak.
+
+Fix this by changing the final `of_node_put(np)` to `of_node_put(prev)`.
+
+Fixes: 94f9bf118f1e ("RISC-V: Fix of_node_* refcount")
+Cc: stable@vger.kernel.org
+Assisted-by: Gemini:gemini-3.1-pro
+Signed-off-by: Zishun Yi <vulab@iscas.ac.cn>
+---
+Changes in v2:
+- Added 'Assisted-by' tag.
+
+ arch/riscv/kernel/cacheinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+index 26b085dbdd07..6c9a1ef2d45a 100644
+--- a/arch/riscv/kernel/cacheinfo.c
++++ b/arch/riscv/kernel/cacheinfo.c
+@@ -133,7 +133,7 @@ int populate_cache_leaves(unsigned int cpu)
+ 			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+ 		levels = level;
+ 	}
+-	of_node_put(np);
++	of_node_put(prev);
+ 
+ 	return 0;
+ }
+-- 
+2.51.2
 
 
