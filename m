@@ -1,96 +1,80 @@
-Return-Path: <stable+bounces-244888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FepLsSZ/mn0tQAAu9opvQ
-	(envelope-from <stable+bounces-244888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:19:48 +0200
+	id 6PlfEzac/mnItwAAu9opvQ
+	(envelope-from <stable+bounces-244889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:30:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FAD4FD984
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:19:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8C34FDA62
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 04:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 58835300493B
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 02:19:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50934301F78D
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 02:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076722C0298;
-	Sat,  9 May 2026 02:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A424D2D0603;
+	Sat,  9 May 2026 02:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EyTRX4yI"
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="A3XYy4Rd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f194.google.com (mail-dy1-f194.google.com [74.125.82.194])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE3F2BE656
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 02:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF1F2C3252
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 02:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778293185; cv=none; b=dUTX7zVkjAC7eKJrm53YcZJOPL83v5moMcUKv5+cTda73L0y+Os9ykXtH2cYeV2Nn6M0aqJWj4FDDDLCdy+2uLdPPMEqzH9uCGRQ+FhKQMcqiP4VHcttOno9Hlai464J0M7Yp+4UZNUlH3+NRzmil9HCIvcgtf+d0QJkgk6QC6E=
+	t=1778293811; cv=none; b=BEZNAgkenBDErHtUiEASeqxz5j736dXnsuyR1X0GknTketczsX5Y8PE6XJdtw7U+/83T7ckV4Bm9sM2qAOUuEa1VT07dc2ODzLvm8AgsoLKAL0g/H3jQl80VQ1ENGMPdfbOgfFQRcUmIdXQB3JWM4ics9t4dUoF97FMZ4aJMiPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778293185; c=relaxed/simple;
-	bh=kTfUgBhBHNuBtL9eJOgwzYGCFRBPPNjKq226/ZPUROE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fd1hsF0+Og9K06xwAjBBB9QSbZP8kxUbKBMiyzLgx1yudEgmj0X9NxcqumR2//PbyyQ3G1AfP1w/26GNdW6kavCHlYTuBtodhFrkHxLWM2oAp0vchqJ5xj9vCilDoGmJ+bnq8A4sqAc2HN59hSikWi7tE9UwC91NklN6dOVaYmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EyTRX4yI; arc=none smtp.client-ip=74.125.82.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f194.google.com with SMTP id 5a478bee46e88-2ef2a1cc06dso1812450eec.0
-        for <stable@vger.kernel.org>; Fri, 08 May 2026 19:19:44 -0700 (PDT)
+	s=arc-20240116; t=1778293811; c=relaxed/simple;
+	bh=fAgTWNAI0aq2QqApA+sP6K9mCXMb+SJUe0dsd30nwzc=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=eEcm4oTMdIE+4upHHFzY8vQVF8hAwEUNqcd91LSHnUiB6Sst/gRW/MB7+7NwQRZOv/VBVdoycsXOKVSLd58MSn2Y0Ac0MQYu6c56gvzm7fgiYm86x/ZxBriHT6dQG/pIU672cbzhFCXVYhlWyy+4jSaYyEK5IeTdkpJ1VG/3oFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=A3XYy4Rd; arc=none smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12c1a170a50so3712708c88.0
+        for <stable@vger.kernel.org>; Fri, 08 May 2026 19:30:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778293183; x=1778897983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7rx5oAgzTfQrxNSItVjPyuKjULjUzEucljH1SJ8cUBc=;
-        b=EyTRX4yIyXBdvHtGkI4sK/HhCikELmksbuPv/j9nXjrdy+Qy+aV2NcvJ5Fvq7a0rqw
-         r/5H09wO3ofq4ozg95TRkLvNZkSUz5nnVhiBeOsU40DfAdkG92DMpg42kRkVm7/CYFTj
-         9jQ4LhePHb94b8dgBtkx+nB1yM/7HgUkB9H/Q3Y6TUgc9lEMa4KgwzxptdcajcqhA54u
-         engSjjGUPy+Se73DANH9yJWFHESt8BzkbQZu2aWHFBTuojWOYa1pgdrg1M3xVfhY794y
-         5nvct9BN1W1uEYlEqElolVOAfF2CGoOt4w5FRw+AhWQ24reokF6l89awRz5t9/4XxSuX
-         2Y3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778293183; x=1778897983;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=kernelci.org; s=google; t=1778293808; x=1778898608; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7rx5oAgzTfQrxNSItVjPyuKjULjUzEucljH1SJ8cUBc=;
-        b=nJiznXtewYLK0ASjp/IEL2HP+cWxPVhNwNieZi+GQKU5eRe1T9qty1IndzdroZeSpw
-         495oQSMQg0hUd1Dlmeh15NNnG4YtS8KyRIPxZ7h+bcRjE3aagxjQiUv+15ukLPAgLl4l
-         YBNJWAS0w09qG5nAabRYcRQpDbPvumTnQn+fx22JWApNPsLWWo3J9ZD9a3/oZ/99GATb
-         FVXK5F5BFmASzBFgKS6f7Y7XKng85ElgxGJV0XR3TQ53p2LcRfPL9YOOenqVJtxEQaX2
-         HH4AfpY5KA9OlW5dW93r0KyJf/2tj91HgkY4iE2N8YQ5svoNITj4wsTDA96N8fGeUgyR
-         kJKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ82GL31KE+mZHvvRbMY4LeBtNlzclbhoip8rywNFxkqbxDuciXjc+EaPColcMy5itk/QlhEBpQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfRCWnHozYToo4nCiKOkQycjUR9RmKnlIHmhZMmTx9jLyehxzQ
-	6zmOs3MBXTNjH6Bn80PHvtwU60PCWIGfxGbmXf/JhBB300Zv+RXh+1MR
-X-Gm-Gg: Acq92OFDHaloB9vMrzaAJtv6OssPn0AxEPTAqVI9Fmz8r8bHG2Y7p7nYCrQENaDmdn+
-	DekGI1nlc3ksmA+vc1ymG7J30RKJQprZrHMz3woJ5j4Iap1JZnr0+QR6rWUu6dtx7490k3//V1+
-	IsqSWiBQmWWErk5AJu1pwfasN1/QzdFL/cNV4dsIdzEeVbV7FBukDfoFzq4xk02B7QGqwrNe0z6
-	Jpg2q/SFLoN/U+f0v91U9QauYH2bmtKMzkWd2IUKBFZ/J83HX0H10cP56WxtCZtpp8DMBJWy/CO
-	zxIY0syGWshTHGBqtwtB1ELxRxZy2KdIWS7LCkoN5JYipXAGHBUEerZndKN8BoI0VYHVo/9roTx
-	NZmtDvMu5e75ddxobKVtm/nmEXyvasg29Dj3bUWgFB1SUsMJPlNg9u8NkTYbNUKOLlU5D2zNsH0
-	Wp49+vt8E9IJvshZOhJKu9D3woIs78qO710Daf5ntW/lCiFlqSfqVpkboVditeYM6JYs0Pe4OBd
-	gZpXAhozJsSMUndcnk4RNle1ICUMNecyZhp+ieNMSyUOWSn6Q8ENp6JsMqT+t2Mdj7Q+13rwffH
-	6EN64xFaGDCXf38vCw==
-X-Received: by 2002:a05:693c:2c11:b0:2df:7b88:a1b0 with SMTP id 5a478bee46e88-2fb4bdffa79mr234663eec.27.1778293183198;
-        Fri, 08 May 2026 19:19:43 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8860c7accsm4775298eec.8.2026.05.08.19.19.42
+        bh=Z5h2pqsdCImcOSYOSE72O2wcGe7vIe5zG6FVGoyu1TE=;
+        b=A3XYy4RdVaHnoF+LlQx7QxUTDw7n6nhP7MZMr6TJvDn1ZZLgjACdonH3HLMa48v+mz
+         GQZQ1GjfkQjTSpyOs9S2WgL0cfCW+y8J9VGg/J5MMJpahyeB21Jpj5rvybnIUjk7xC+k
+         15qknTBuTpkU3TgMJjW7k2zDKIEdMehYmQJufproib37w72wk3D5RutAFOlCxtdYRfkf
+         QI8pQWBN2nguS3FrYUnpYvqIAUEgMYIlFal1l0LbP7Lru6AHN7xgaLK1Z3cRhMrtNYjv
+         sQfCT8kzof3BItXx2Nbh3efuGz8Ub1p3dsqZZ/G31TCAx9rXcPSduc6EqAgsqE2XlI6X
+         wFaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778293808; x=1778898608;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z5h2pqsdCImcOSYOSE72O2wcGe7vIe5zG6FVGoyu1TE=;
+        b=eULvDz/kvydNKkg8igq0vWIZ34NDUay+NL4ReY6Ob+/PVrfbTuMJeZQcYmnCJjfY8I
+         Qzd/gLuleTZfNsbufNgBynyWWYguIOv3cSC90crVXGKAeDyoeUlQoGdvbhAmJ4AbD4YK
+         8PeV4rooiDNox/VhwFlCVGDPhsaUXLWkKczR64Itx4dcJPmqKkku1c7EE3EeFoZ6i/nn
+         BpS3Sjwp8Ls5VlLU+2CIYc6wTSFc0/c5KS7adBRCOZXQs8jsQfQp4DMxj/zlu3ptDy/y
+         J1uT1M1R9yHZgp2vQRbEaCZvoS42fhGaLDHejQargnFTw1W07NkBTfdb6kknhXGHA6dL
+         FFrw==
+X-Gm-Message-State: AOJu0YxxjFpbqZWNoiJiWlvs2i9K3Qg3yGNGEgsoROc0wfJxjIathN00
+	vJAA8Q1GVevp19CzgTQmwj48XeiZRXcCKBLPQdNO/c4GHRZ7tHnlv438fd97lDRGyws=
+X-Gm-Gg: AeBDievmuE08/6qtI1uyjsil0l6NTEUCheHiKRf6S/YZg7bDTSJIub9KftC/CJqiJCk
+	U0stKM9DHfWVDk6cmhgdZMHVLd6vld0UVK3dgBQ2+zY6USRtJaf4AdIkkm5CdvMTeXpHeASfuKK
+	fYbbc/Lif05XAjJCmg6eKbPvft3W6pnnXrUtcU/fIFCMEeZCob/SxklDSaGUZmNi6NbsUZ/pDvD
+	3sLdAY1zmWzVca/CmQ+PKUmHmkknLrE/YIyU0sx/2ftRu7WygYFlgYiVm0hDvQTHO1WfNtVZ8CX
+	3LF3I63uNfnyfSXJkUaiD3yMIn1GBIIyloJ8mTj7ml3ro3VwlccQVEMQTD6ZU07mdxuiZ0LGt06
+	x1yjGTASWLlyMGYV6Dhzfb3XIJSlX7lvsecIqgF515wi0JC/hRR9H+e2zuNQKZ0KBwlNzJ9WHFl
+	KKgnJ5/L+x17yS9a/O
+X-Received: by 2002:a05:7022:f102:b0:12d:b396:eaed with SMTP id a92af1059eb24-131967d523fmr6843655c88.9.1778293808165;
+        Fri, 08 May 2026 19:30:08 -0700 (PDT)
+Received: from 997d03828cfd ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-132787673ffsm5946241c88.15.2026.05.08.19.30.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 19:19:42 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Russell King <linux@armlinux.org.uk>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-	Jason Cooper <jason@lakedaemon.net>
-Subject: [PATCH] arm: orion5x: correct machine ID check in mss2_pci_init() to use DT
-Date: Fri,  8 May 2026 19:19:34 -0700
-Message-ID: <20260509021935.36898-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Fri, 08 May 2026 19:30:07 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,78 +82,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 57FAD4FD984
+Subject: [STATUS] stable/linux-6.12.y -
+ 8bf2f55ef536982e44802d99340119dac6f50636
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Sat, 09 May 2026 02:30:07 -0000
+Message-ID: <177829380679.4454.8855415511670222041@997d03828cfd>
+X-Rspamd-Queue-Id: BC8C34FDA62
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
+	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[armlinux.org.uk,gmail.com,vger.kernel.org,lunn.ch,bootlin.com,free-electrons.com,lakedaemon.net];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-244889-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244888-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[kernelci.org:+];
+	MISSING_XM_UA(0.00)[];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lists.linux.dev:replyto,linux.dev:email]
 X-Rspamd-Action: no action
 
-The mss2_pci_init() function contains a check for the ARM machine ID
-via the machine_is_mss2() macro. This check is incorrect because the
-machine concerned now supports only FDT booting, which does not use
-machine IDs, and therefore it will always fail. The machine was
-converted to FDT booting in commit fbf04d814d0a ("ARM: orion5x: convert
-Maxtor Shared Storage II to the Device Tree"). To resolve this issue,
-use of_machine_is_compatible() instead.
 
-Fixes: fbf04d814d0a ("ARM: orion5x: convert Maxtor Shared Storage II to the Device Tree")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
- arch/arm/mach-orion5x/board-mss2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-orion5x/board-mss2.c b/arch/arm/mach-orion5x/board-mss2.c
-index 9e3d69891d2f..322ae29d05aa 100644
---- a/arch/arm/mach-orion5x/board-mss2.c
-+++ b/arch/arm/mach-orion5x/board-mss2.c
-@@ -10,7 +10,7 @@
- #include <linux/platform_device.h>
- #include <linux/pci.h>
- #include <linux/irq.h>
--#include <asm/mach-types.h>
-+#include <linux/of.h>
- #include <asm/mach/arch.h>
- #include <asm/mach/pci.h>
- #include "orion5x.h"
-@@ -47,7 +47,7 @@ static struct hw_pci mss2_pci __initdata = {
- 
- static int __init mss2_pci_init(void)
- {
--	if (machine_is_mss2())
-+	if (of_machine_is_compatible("maxtor,shared-storage-2"))
- 		pci_common_init(&mss2_pci);
- 
- 	return 0;
--- 
-2.43.0
 
+
+Hello,
+
+Status summary for stable/linux-6.12.y
+
+Dashboard:
+https://d.kernelci.org/c/stable/linux-6.12.y/8bf2f55ef536982e44802d99340119dac6f50636/
+
+giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+branch: linux-6.12.y
+commit hash: 8bf2f55ef536982e44802d99340119dac6f50636
+origin: maestro
+test start time: 2026-05-08 07:34:14.874000+00:00
+
+Builds:	   43 ✅    0 ❌    0 ⚠️
+Boots: 	   73 ✅    0 ❌    0 ⚠️
+Tests: 	 9012 ✅  590 ❌ 2836 ⚠️
+
+### POSSIBLE REGRESSIONS
+    
+Hardware: imx8mp-evk
+  > Config: defconfig+lab-setup+kselftest
+    - Architecture/compiler: arm64/gcc-14
+      - kselftest.device_error_logs
+      last run: https://d.kernelci.org/test/maestro:69fda06d0e4ee292cbed7490
+      history:  > ✅  > ❌  
+            
+      - kselftest.device_error_logs.devices_error_logs_test_device_error_logs_py
+      last run: https://d.kernelci.org/test/maestro:69fdbcee0e4ee292cbee546c
+      history:  > ✅  > ❌  
+            
+Hardware: k3-am625-verdin-wifi-mallow
+  > Config: defconfig+arm64-chromebook+kselftest
+    - Architecture/compiler: arm64/gcc-14
+      - kselftest.kvm.kvm_arch_timer_edge_cases
+      last run: https://d.kernelci.org/test/maestro:69fdaf660e4ee292cbedecd2
+      history:  > ✅  > ❌  
+            
+      - kselftest.kvm.kvm_memslot_perf_test
+      last run: https://d.kernelci.org/test/maestro:69fdaf660e4ee292cbedec83
+      history:  > ✅  > ❌  
+            
+Hardware: mt8183-kukui-jacuzzi-juniper-sku16
+  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
+    - Architecture/compiler: arm64/gcc-14
+      - kernelci_watchdog_reset.wdt-reset.wdt-trigger-reset
+      last run: https://d.kernelci.org/test/maestro:69fdac700e4ee292cbedea00
+      history:  > ✅  > ❌  
+            
+
+
+### FIXED REGRESSIONS
+    
+Hardware: asus-CX3402CVA-brya
+  > Config: x86_64_defconfig+lab-setup+x86-board+kselftest
+    - Architecture/compiler: x86_64/gcc-14
+      - kernelci_wifi_basic
+      last run: https://d.kernelci.org/test/maestro:69fdcb150e4ee292cbeeef09
+      history:  > ❌  > ✅  
+            
+
+
+### UNSTABLE TESTS
+
+  No unstable tests observed.
+
+
+Sent every day if there were changes in the past 24 hours.
+Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
