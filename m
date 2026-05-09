@@ -1,207 +1,405 @@
-Return-Path: <stable+bounces-244967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEhZDdRT/2lZ4wAAu9opvQ
-	(envelope-from <stable+bounces-244967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:33:40 +0200
+	id uBhSLQlU/2mo4wAAu9opvQ
+	(envelope-from <stable+bounces-244968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:34:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842925004BD
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 102DA5004CB
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88298300B450
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 15:33:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB52D300B13F
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 15:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8788125EF87;
-	Sat,  9 May 2026 15:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5E22C11F9;
+	Sat,  9 May 2026 15:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="px+YH1bh"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ABpwWVjw";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Lh0PWwr+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0BC1F4C96
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 15:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778340813; cv=none; b=pNfOsyYW8lAnLa1oB4aUqOBGWPkWaZivytpr+QNTfeOEECWGUKHXXmUbLtjZVxpUyqO1XiCsUeBI+iIhe7WSljmCTCnEuP4ph9yLpEt7g48a9BwmKXBnL+XfE9JIVIQ35DlKP00hlSwQOsoMeW9tRnH+4FImvqs+t2DCZFdnLro=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778340813; c=relaxed/simple;
-	bh=ltkZbNtDI3hgT7DTqBz+M1mXKoY21hjYb5GV363aUcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8LpszB1OpahxX5jA1sBghXcgzp20sjz08hhIfexfby7/nTfjx7HiwQV8mOcg2Jf+XH90tFDvwWiEAhBHnoXh+5Vpb873hgdVDdCmVfIIEYMc8coh4Zp87SBte2aO6hfHuTHA+1UqBlSPAsHAShrTWq8fbUg06TEpcD7fD+kqtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=px+YH1bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8395BC2BCB2;
-	Sat,  9 May 2026 15:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778340813;
-	bh=ltkZbNtDI3hgT7DTqBz+M1mXKoY21hjYb5GV363aUcE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=px+YH1bhIWLhr6hbUEuVYpvIjyW+vpFuXghBIngK7n9LY8i8Qe9vuEOiLk921D6cH
-	 bqRp/CdViic7ICA+4uA2qDCq1yKJWbDCPVuka52+jCFejW0sLOiyrdZTaG1nEGAZ0A
-	 Wu9iRHL2ZxJ29T44uRxejxE7GBUBZpLoWQloxBKuGCEjiPHLkWcZremyEEokDYrJT6
-	 DNGqQfZSU4eFovbQPHe3MVXS4f0Wvaf3BMFXRnfEDcYwTPLKWxHdJCGeciTCWqS31W
-	 rEX+ztDx90G/n2jup/vNIqTecpx/kVj+9qdmGVGXiMVfhXd9aIdjDlEenJw3btATz/
-	 /7AwrRitkUgIg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ceph: only d_add() negative dentries when they are unhashed
-Date: Sat,  9 May 2026 11:33:30 -0400
-Message-ID: <20260509153330.3523928-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026050412-unnerving-cupped-09f7@gregkh>
-References: <2026050412-unnerving-cupped-09f7@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA982C3244
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 15:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778340870; cv=pass; b=uG6TcivMw9PWdZ3ZdyygrtGCiMFkg4eY1DTFzk6AP28+64omhHwjHpkDNdqVEJVfuLlfnzGPz43oQsjj/WcTpufoGRNS8DHiWXQgPfmmIczaUh2N0oPc26gmOLynnpROM3Y3FZcl0rEJER42N4hCLiXLBQJ8DzjyO7PH5DVbECg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778340870; c=relaxed/simple;
+	bh=4XX3VmIcDvHqIF/LrlDKXDrML4vVKj9rQoTDDvjcKMM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MUCVmO376WfapeLQthISkMYqfOsye48nC40u5OAmxMLxbejlR1CbEU+DFn1sXg9OFB2+1KmJNntQ1Whdnu78MIOzuuLqbyvae4HDQ75p7lA97yL72fx5cq/Ak/q3Jr5AFdXBZBVHVdDSuTptIj85hdW60Q2504PPGTQV3DYeP/I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ABpwWVjw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Lh0PWwr+; arc=pass smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 649FRJk6192977
+	for <stable@vger.kernel.org>; Sat, 9 May 2026 15:34:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=
+	qcppdkim1; bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=; b=AB
+	pwWVjwZQZtcSo607odhyhAjGd0VqF/8yXabsIaq+sFmSvGLAeGq5fvg6t4wEdmee
+	GjwCV//lEhszZGpmEZz7kubXqcq/FU4EFiMoWvmGqGAUO8W3QoF4wJxuoK+L/cDg
+	soZZUCVwNY1lJj3OF4kpjp2Ts2rcFu9CmGAhNXDZvQQlZtx/xwzu5ZKZv+LADwhG
+	jgOYZDUfUkrhvWrB/7JefuVUs33eePVFU/1Cwj5AVQVfUF3fSfAjm1KT/IVcJYHR
+	nOa7XYJ+BGyB0HkUUMxP2CZ/pnGETkmeaXmPba6Qm80RvzGwb6tLbTHantHCkR6L
+	nBDdzi7DQwDmoAwumyCA==
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e1x3k13pu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Sat, 09 May 2026 15:34:27 +0000 (GMT)
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-467dc3431cbso975654b6e.0
+        for <stable@vger.kernel.org>; Sat, 09 May 2026 08:34:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778340867; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K7sNcOt90eaorcXXbh3DC4kxYfb0rAk8on3iweQzDWUVHIqSYH4JTsQ7wHMA5Jg4ep
+         5YGl9WyyqXzoKea6ICKr1QUAPSnbZ4su/p+iP10UmqIbClIMxI7b0U1JrhUJ0BkouBSN
+         TrORbJqDR567cPowUF5BvbHWpRBHphN+wh3bPUw+VIEIEXOZZHUxSf9KK284MF72HI9m
+         +O5XkJeYBwwVSL96Nw2ZA4HFpBmnGHhd5yBU0cADgfsqH5bYi66mLzW5+MKyM6IKKAsM
+         SE6fuKRd6h7HmSKBPevn6DjM3sr0VcGCwygcI0wLXwJRZ+XJEf84Lz5ySY97SfnOXJin
+         fCow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=;
+        fh=dLuCVUKinrvAmqwRjDgAB4Lr6DasepnplccpvxwIbqU=;
+        b=EwAeRRoCSr5ERihU34SXgBkjT0YalLG9Wj9b+jUHN43WeTvjwPlt/9ECrbvarVDiD/
+         WpCfuAkgEFjZsu9Jal1NNxfgneClAW4kZIlvkIcOk+54LJgLrpk30sjCpwYFwZbKFDlx
+         Im42988uWIJ2OatR273AKZhdk2YMjXvpqWSiMsHjOeyRDl5j6Y+Fblr0aGTB9UJgLPYz
+         RBRfLE+Xpm6aLeWZEdgSRcKOCNXMkPy6a5X0Mwzu/Xy6qURoHZsYvVr5aOw05J7UUMJw
+         jbyv9PdCsPQWKb+5creGCgb/ccAxcwp2e84S8eQ7yvVZE7aYrmAZI5eev//turVODUjF
+         wURg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778340867; x=1778945667; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=;
+        b=Lh0PWwr+/+2jfmU0cE+ujylN+eBC1UngFsC9moeUG4tcHaDh9BSC4q59mn78IanuOS
+         VsmwpnWaHI0Z4xeCDe0MIFmTc2Uln0S0b4G0nthnPnJsYFD/TzOaLqeLbBmIIuUdJB6q
+         KJKhJeo1ZE26pfOq9rDUIDTXv0yEapVlvB7h7dJ2BN85w+/YBDApJZy+AoGfw2nIMu7N
+         QSkQYQIo6B0vrsentog8r7S8n3iK6iwx5qqFCRKhabvDFcp0G7+Qhk7/WldDzdzASvV2
+         dGC5JEil8Gc8STfpTQT1yWA2jRxyNg9dKfEK0qlnekXj8EAShTccD6FtGWuPvGy2lzfj
+         2X+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778340867; x=1778945667;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=;
+        b=UpRkPBj7cwLc9x1Qr8mVIjy94Hj1gvqFueJOW+2/uiGaX6ur4nLkQF2XzW5aDhbHoa
+         qfXg1QAqrEphq1mTeSDPjOIjjZ7LqEmMGAAcOaRHXw8YRycq01vomsxZQmPbXOW0k3eO
+         GdU2+x2X8wLdJ+/xv5HB5LADikHK2Bs6nGvgt/6jpI2/GP6GWhieUs+Q2XWsPEVwMh1R
+         bCEfCj4KF6HqnfRr7nMSggoiyZF8N4XHNbFtlIS5UiPknsb1Mn8u0eNIotVDt/zUXdE0
+         2WIwyVkVZye3fvZCdp7/bhuAZUhFnQdWdnarbdXix65dwNfMffyZqMaHlL6bd1iah21M
+         yMpQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9PSYbqY8j7Xuwb3eFW90yy09vwzClBssWsKU3kTgD+0UxsYxRShNAubpiwsgcTe7IssyGmwlc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMlwyqpcgPgExv7oBFGEp7HkymNPvI+AaSJZWzY15QT44OUujV
+	dgpiVERdsihD/QxB2NuBWz0oIWrELZEr/z7XJ5mzsbs3MewM3eTZcvO3lPioDA48Ma6ALzuxFqz
+	J9m5GFo1YQrVucp8btmYJ9PJNpHT3ecYnmYVk7QZv8c9oKhDnToMzipITEvsjK2ouhHUx2I3c2x
+	BLU3qKMFRCw9VYNVm8PspXg8jFdHZJDq4UWA==
+X-Gm-Gg: Acq92OGoYqgXGKpegCzTi0ktsxwv9H8kBSzueyRJ87d3G535zjkh5opaaVnrxkqMR38
+	BNbk0Pc8by809MzFbhscDcr6x0kQGbVb37kDe1hBi2f77ghkDKW9Z/cDJSxiBgsH8YY3SRRM4OJ
+	Rm073uf31Bl2pHQSaInH7vX+6vWHZ7DRjB85IrSwvn5zVPFRRYnan40cA70WTbLnHcBZ77O1vZM
+	CWaAzKKR2Qrk83IzKqSF3uezg6A0ju6J8DrnQ==
+X-Received: by 2002:a05:6808:f8c:b0:467:255a:7453 with SMTP id 5614622812f47-4824a6c5a04mr1570573b6e.14.1778340866778;
+        Sat, 09 May 2026 08:34:26 -0700 (PDT)
+X-Received: by 2002:a05:6808:f8c:b0:467:255a:7453 with SMTP id
+ 5614622812f47-4824a6c5a04mr1570561b6e.14.1778340866232; Sat, 09 May 2026
+ 08:34:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 842925004BD
+References: <20260508065722.18785-1-daniel@quora.org>
+In-Reply-To: <20260508065722.18785-1-daniel@quora.org>
+Reply-To: rob.clark@oss.qualcomm.com
+From: Rob Clark <rob.clark@oss.qualcomm.com>
+Date: Sat, 9 May 2026 08:34:15 -0700
+X-Gm-Features: AVHnY4LYyvwLr8XG8e2YiuOn8i1bG5G0Km9pemR5eMsqy_jRO5574zgwrGB50VQ
+Message-ID: <CACSVV02t99r2JpT9EUar_YRs+zgpzjNYgNvvB9BGLLnpssY4BA@mail.gmail.com>
+Subject: Re: [PATCH] drm/msm: Fix shrinker deadlock
+To: Daniel J Blueman <daniel@quora.org>
+Cc: Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Antonino Maniscalco <antomani103@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Boris Brezillon <boris.brezillon@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA5MDE2OSBTYWx0ZWRfX/z50GfgXERhk
+ kWnagQtQbAyJuQMXUL730C+1CDLWOa9RkfGDsaIfCj8F1S2mtqTnpUYRUjfefDhWVZFvdxHaFQs
+ +LTfluhq4N5NwIOxWWKdQ+cuijZ/4rMsw66Re0Ggb4q46o0JLnl1Fs+LPFW9uDY5TpLKYPtc3Zv
+ ziPOHln0RhhMROAdapSxGjwimGUkcTxLPJxHPNu6dRsbgpVQ1IBYmRXLZAI3S2BcPjphRq2tO8m
+ ow6kXO4cqevOvoM/eJYDzx7gMwTNERSfkBF7xuJ+xXNxKnRBt4GvkUoAz3vxkRl+jJ7KINWBaWl
+ qsObHXI6gFgbq2OGPDeQ+wOVL+hN/mG8r/Y/Pp19tl3RMPYovCEl1bCbGD6649Wd1gprgXwd70s
+ lqBuKB5RVYgFochSc7q2ZzTBNQBYlE/yX73v8rfGo7rEsPS6vcDgQ+lmhBLPzNRuf6Kio2DKpEu
+ QnH4E0nOT1KQ8S4drCw==
+X-Proofpoint-ORIG-GUID: EVexYC6SFOK38Q646RBEXR9GIV1y7o3B
+X-Authority-Analysis: v=2.4 cv=UNvt2ify c=1 sm=1 tr=0 ts=69ff5403 cx=c_pps
+ a=AKZTfHrQPB8q3CcvmcIuDA==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=DJpcGTmdVt4CTyJn9g5Z:22 a=t9ty7G3lAAAA:8 a=VwQbUJbxAAAA:8
+ a=T09HirTOTrSZx1JCU_UA:9 a=QEXdDO2ut3YA:10 a=pF_qn-MSjDawc0seGVz6:22
+ a=CsAS6f0m0zARWR-uHzm3:22
+X-Proofpoint-GUID: EVexYC6SFOK38Q646RBEXR9GIV1y7o3B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-09_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 spamscore=0 priorityscore=1501 phishscore=0
+ bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605090169
+X-Rspamd-Queue-Id: 102DA5004CB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[ionos.com,ibm.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-244967-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-244968-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,ffwll.ch,vger.kernel.org,lists.freedesktop.org,collabora.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob.clark@oss.qualcomm.com,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	HAS_REPLYTO(0.00)[rob.clark@oss.qualcomm.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,oss.qualcomm.com:replyto,oss.qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,quora.org:email]
 X-Rspamd-Action: no action
 
-From: Max Kellermann <max.kellermann@ionos.com>
+On Thu, May 7, 2026 at 11:57=E2=80=AFPM Daniel J Blueman <daniel@quora.org>=
+ wrote:
+>
+> With PROVE_LOCKING on an Snapdragon X1 and VM reclaim pressure, we see:
+>
+> """
+> kswapd0/121 is trying to acquire lock:
+> ffff800080ed3800 (reservation_ww_class_acquire){+.+.}-{0:0}, at:
+>   msm_gem_shrinker_scan (drivers/gpu/drm/msm/msm_gem_shrinker.c:189)
+>
+> but task is already holding lock:
+> ffffbf4ddb44ca40 (fs_reclaim){+.+.}-{0:0}, at:
+>   balance_pgdat (mm/vmscan.c:7236 (discriminator 2))
+>
+> which lock already depends on the new lock.
+>
+> the existing dependency chain (in reverse order) is:
+>
+> -> #2 (fs_reclaim){+.+.}-{0:0}:
+> lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825=
+)
+> fs_reclaim_acquire (mm/page_alloc.c:4325 mm/page_alloc.c:4339)
+> dma_resv_lockdep (drivers/dma-buf/dma-resv.c:798)
+> do_one_initcall (init/main.c:1392)
+> kernel_init_freeable (init/main.c:1454 (discriminator 1) init/main.c:1470
+>   (discriminator 1) init/main.c:1490 (discriminator 1) init/main.c:1703
+>   (discriminator 1))
+> kernel_init (init/main.c:1593)
+> ret_from_fork (arch/arm64/kernel/entry.S:858)
+>
+> -> #1 (reservation_ww_class_mutex){+.+.}-{4:4}:
+> lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825=
+)
+> dma_resv_lockdep (./include/linux/ww_mutex.h:164 (discriminator 1)
+>   drivers/dma-buf/dma-resv.c:791 (discriminator 1))
+> do_one_initcall (init/main.c:1392)
+> kernel_init_freeable (init/main.c:1454 (discriminator 1) init/main.c:1470
+>   (discriminator 1) init/main.c:1490 (discriminator 1) init/main.c:1703
+>   (discriminator 1))
+> kernel_init (init/main.c:1593)
+> ret_from_fork (arch/arm64/kernel/entry.S:858)
+>
+> -> #0 (reservation_ww_class_acquire){+.+.}-{0:0}:
+> check_prev_add (kernel/locking/lockdep.c:3165)
+> __lock_acquire (kernel/locking/lockdep.c:3284
+>   kernel/locking/lockdep.c:3908 kernel/locking/lockdep.c:5237)
+> lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825=
+)
+> drm_gem_lru_scan (./include/linux/ww_mutex.h:163 (discriminator 1)
+>   drivers/gpu/drm/drm_gem.c:1681 (discriminator 1))
 
-[ Upstream commit 803447f93d75ab6e40c85e6d12b5630d281d70d6 ]
+Your line #s don't quite match mine, but AFAICT this is from the
+ww_acquire_init()
 
-Ceph can call d_add(dentry, NULL) on a negative dentry that is already
-present in the primary dcache hash.
+What I'm unsure about is if this could cause live-lock against another
+operation which requires obtaining both obj and vm locks in a
+potentially different order (which would also be using a
+ww_acquire_ctx ticket to backoff in case of conflicting locking
+order).  It wouldn't deadlock because we don't sleep forever if we do
+sleep, but...
 
-In the current VFS that is not safe.  d_add() goes through __d_add()
-to __d_rehash(), which unconditionally reinserts dentry->d_hash into
-the hlist_bl bucket.  If the dentry is already hashed, reinserting the
-same node can corrupt the bucket, including creating a self-loop.
-Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
-typically looping only on the d_name.hash mismatch check and
-eventually triggering RCU stall reports like this one:
+Possibly we should also be using trylock to also acquire the vm lock,
+but lockdep would still complain as it doesn't know the ticket will be
+only used w/ trylock (unless we did something hacky by using a
+different ww_class?)
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
- rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
- CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
- Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
- RIP: 0010:__d_lookup+0x46/0xb0
- Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
- RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
- RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
- RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
- RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
- R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
- R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
- FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  lookup_fast+0x9f/0x100
-  walk_component+0x1f/0x150
-  link_path_walk+0x20e/0x3d0
-  path_lookupat+0x68/0x180
-  filename_lookup+0xdc/0x1e0
-  vfs_statx+0x6c/0x140
-  vfs_fstatat+0x67/0xa0
-  __do_sys_newfstatat+0x24/0x60
-  do_syscall_64+0x6a/0x230
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+BR,
+-R
 
-This is reachable with reused cached negative dentries.  A Ceph lookup
-or atomic_open can be handed a negative dentry that is already hashed,
-and fs/ceph/dir.c then hits one of two paths that incorrectly assume
-"negative" also means "unhashed":
-
-  - ceph_finish_lookup():
-      MDS reply is -ENOENT with no trace
-      -> d_add(dentry, NULL)
-
-  - ceph_lookup():
-      local ENOENT fast path for a complete directory with shared caps
-      -> d_add(dentry, NULL)
-
-Both paths can therefore re-add an already-hashed negative dentry.
-
-Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
-calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
-is true.
-
-Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
-negative dentry when it is actually unhashed.  If the negative dentry
-is already hashed, leave it in place and reuse it as-is.
-
-This preserves the existing behavior for unhashed dentries while
-avoiding d_hash list corruption for reused hashed negatives.
-
-Cc: stable@vger.kernel.org
-Fixes: 2817b000b02c ("ceph: directory operations")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-[ kept existing dout() debug call instead of upstream's doutc() form when adding the d_unhashed() guard around d_add() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ceph/dir.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
-index 398a5da2cb9a0..852bcbd8b88f9 100644
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -719,7 +719,8 @@ struct dentry *ceph_finish_lookup(struct ceph_mds_request *req,
- 				d_drop(dentry);
- 				err = -ENOENT;
- 			} else {
--				d_add(dentry, NULL);
-+				if (d_unhashed(dentry))
-+					d_add(dentry, NULL);
- 			}
- 		}
- 	}
-@@ -775,7 +776,8 @@ static struct dentry *ceph_lookup(struct inode *dir, struct dentry *dentry,
- 			__ceph_touch_fmode(ci, mdsc, CEPH_FILE_MODE_RD);
- 			spin_unlock(&ci->i_ceph_lock);
- 			dout(" dir %p complete, -ENOENT\n", dir);
--			d_add(dentry, NULL);
-+			if (d_unhashed(dentry))
-+				d_add(dentry, NULL);
- 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
- 			return NULL;
- 		}
--- 
-2.53.0
-
+> msm_gem_shrinker_scan (drivers/gpu/drm/msm/msm_gem_shrinker.c:189)
+> do_shrink_slab (mm/shrinker.c:436)
+> shrink_slab (mm/shrinker.c:667)
+> shrink_one (mm/vmscan.c:5071)
+> shrink_node (mm/vmscan.c:5132 mm/vmscan.c:5210 mm/vmscan.c:6198)
+> balance_pgdat (mm/vmscan.c:7052 mm/vmscan.c:7228)
+> kswapd (mm/vmscan.c:7501)
+> kthread (kernel/kthread.c:436)
+> ret_from_fork (arch/arm64/kernel/entry.S:858)
+>
+> other info that might help us debug this:
+>
+> Chain exists of:
+> reservation_ww_class_acquire --> reservation_ww_class_mutex --> fs_reclai=
+m
+> """
+>
+> kswapd0 holding fs_reclaim calls the MSM shrinker, which calls
+> dma_resv_lock. This in turn acquires fs_reclaim.
+>
+> Fix this deadlock by using dma_resv_trylock() instead, dropping the
+> subsequently unused passed wait-wound lock 'ticket'.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Daniel J Blueman <daniel@quora.org>
+> Fixes: fe4952b5f27c ("drm/msm: Convert vm locking")
+> ---
+>  drivers/gpu/drm/msm/msm_gem_shrinker.c | 34 ++++++++++----------------
+>  1 file changed, 13 insertions(+), 21 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm=
+/msm_gem_shrinker.c
+> index 31fa51a44f86..5320ef57dd90 100644
+> --- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
+> +++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+> @@ -43,8 +43,7 @@ msm_gem_shrinker_count(struct shrinker *shrinker, struc=
+t shrink_control *sc)
+>  }
+>
+>  static bool
+> -with_vm_locks(struct ww_acquire_ctx *ticket,
+> -             void (*fn)(struct drm_gem_object *obj),
+> +with_vm_locks(void (*fn)(struct drm_gem_object *obj),
+>               struct drm_gem_object *obj)
+>  {
+>         /*
+> @@ -52,7 +51,7 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
+>          * success paths
+>          */
+>         struct drm_gpuvm_bo *vm_bo, *last_locked =3D NULL;
+> -       int ret =3D 0;
+> +       bool locked =3D true;
+>
+>         drm_gem_for_each_gpuvm_bo (vm_bo, obj) {
+>                 struct dma_resv *resv =3D drm_gpuvm_resv(vm_bo->vm);
+> @@ -60,23 +59,14 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
+>                 if (resv =3D=3D obj->resv)
+>                         continue;
+>
+> -               ret =3D dma_resv_lock(resv, ticket);
+> -
+>                 /*
+> -                * Since we already skip the case when the VM and obj
+> -                * share a resv (ie. _NO_SHARE objs), we don't expect
+> -                * to hit a double-locking scenario... which the lock
+> -                * unwinding cannot really cope with.
+> +                * dma_resv_lock can't be used due to acquiring 'ticket' =
+before the
+> +                * fs_reclaim lock, which is held in shrinker context
+>                  */
+> -               WARN_ON(ret =3D=3D -EALREADY);
+> -
+> -               /*
+> -                * Don't bother with slow-lock / backoff / retry sequence=
+,
+> -                * if we can't get the lock just give up and move on to
+> -                * the next object.
+> -                */
+> -               if (ret)
+> +               if (!dma_resv_trylock(resv)) {
+> +                       locked =3D false;
+>                         goto out_unlock;
+> +               }
+>
+>                 /*
+>                  * Hold a ref to prevent the vm_bo from being freed
+> @@ -108,7 +98,7 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
+>                 }
+>         }
+>
+> -       return ret =3D=3D 0;
+> +       return locked;
+>  }
+>
+>  static bool
+> @@ -120,7 +110,7 @@ purge(struct drm_gem_object *obj, struct ww_acquire_c=
+tx *ticket)
+>         if (msm_gem_active(obj))
+>                 return false;
+>
+> -       return with_vm_locks(ticket, msm_gem_purge, obj);
+> +       return with_vm_locks(msm_gem_purge, obj);
+>  }
+>
+>  static bool
+> @@ -164,7 +154,6 @@ static unsigned long
+>  msm_gem_shrinker_scan(struct shrinker *shrinker, struct shrink_control *=
+sc)
+>  {
+>         struct msm_drm_private *priv =3D shrinker->private_data;
+> -       struct ww_acquire_ctx ticket;
+>         struct {
+>                 struct drm_gem_lru *lru;
+>                 bool (*shrink)(struct drm_gem_object *obj, struct ww_acqu=
+ire_ctx *ticket);
+> @@ -185,11 +174,14 @@ msm_gem_shrinker_scan(struct shrinker *shrinker, st=
+ruct shrink_control *sc)
+>         for (unsigned i =3D 0; (nr > 0) && (i < ARRAY_SIZE(stages)); i++)=
+ {
+>                 if (!stages[i].cond)
+>                         continue;
+> +               /*
+> +                * 'ticket' not needed on trylock paths
+> +                */
+>                 stages[i].freed =3D
+>                         drm_gem_lru_scan(stages[i].lru, nr,
+>                                          &stages[i].remaining,
+>                                          stages[i].shrink,
+> -                                        &ticket);
+> +                                        NULL);
+>                 nr -=3D stages[i].freed;
+>                 freed +=3D stages[i].freed;
+>                 remaining +=3D stages[i].remaining;
+> --
+> 2.53.0
+>
 
