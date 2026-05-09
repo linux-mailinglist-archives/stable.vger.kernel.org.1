@@ -1,405 +1,154 @@
-Return-Path: <stable+bounces-244968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBhSLQlU/2mo4wAAu9opvQ
-	(envelope-from <stable+bounces-244968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:34:33 +0200
+	id gE23KklW/2mo4wAAu9opvQ
+	(envelope-from <stable+bounces-244969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:44:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102DA5004CB
-	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C935005BE
+	for <lists+stable@lfdr.de>; Sat, 09 May 2026 17:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB52D300B13F
-	for <lists+stable@lfdr.de>; Sat,  9 May 2026 15:34:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C575030103BB
+	for <lists+stable@lfdr.de>; Sat,  9 May 2026 15:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5E22C11F9;
-	Sat,  9 May 2026 15:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4BA13DDA4;
+	Sat,  9 May 2026 15:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ABpwWVjw";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Lh0PWwr+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLSF5dbB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA982C3244
-	for <stable@vger.kernel.org>; Sat,  9 May 2026 15:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778340870; cv=pass; b=uG6TcivMw9PWdZ3ZdyygrtGCiMFkg4eY1DTFzk6AP28+64omhHwjHpkDNdqVEJVfuLlfnzGPz43oQsjj/WcTpufoGRNS8DHiWXQgPfmmIczaUh2N0oPc26gmOLynnpROM3Y3FZcl0rEJER42N4hCLiXLBQJ8DzjyO7PH5DVbECg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778340870; c=relaxed/simple;
-	bh=4XX3VmIcDvHqIF/LrlDKXDrML4vVKj9rQoTDDvjcKMM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MUCVmO376WfapeLQthISkMYqfOsye48nC40u5OAmxMLxbejlR1CbEU+DFn1sXg9OFB2+1KmJNntQ1Whdnu78MIOzuuLqbyvae4HDQ75p7lA97yL72fx5cq/Ak/q3Jr5AFdXBZBVHVdDSuTptIj85hdW60Q2504PPGTQV3DYeP/I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ABpwWVjw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Lh0PWwr+; arc=pass smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 649FRJk6192977
-	for <stable@vger.kernel.org>; Sat, 9 May 2026 15:34:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:to; s=
-	qcppdkim1; bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=; b=AB
-	pwWVjwZQZtcSo607odhyhAjGd0VqF/8yXabsIaq+sFmSvGLAeGq5fvg6t4wEdmee
-	GjwCV//lEhszZGpmEZz7kubXqcq/FU4EFiMoWvmGqGAUO8W3QoF4wJxuoK+L/cDg
-	soZZUCVwNY1lJj3OF4kpjp2Ts2rcFu9CmGAhNXDZvQQlZtx/xwzu5ZKZv+LADwhG
-	jgOYZDUfUkrhvWrB/7JefuVUs33eePVFU/1Cwj5AVQVfUF3fSfAjm1KT/IVcJYHR
-	nOa7XYJ+BGyB0HkUUMxP2CZ/pnGETkmeaXmPba6Qm80RvzGwb6tLbTHantHCkR6L
-	nBDdzi7DQwDmoAwumyCA==
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e1x3k13pu-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Sat, 09 May 2026 15:34:27 +0000 (GMT)
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-467dc3431cbso975654b6e.0
-        for <stable@vger.kernel.org>; Sat, 09 May 2026 08:34:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778340867; cv=none;
-        d=google.com; s=arc-20240605;
-        b=K7sNcOt90eaorcXXbh3DC4kxYfb0rAk8on3iweQzDWUVHIqSYH4JTsQ7wHMA5Jg4ep
-         5YGl9WyyqXzoKea6ICKr1QUAPSnbZ4su/p+iP10UmqIbClIMxI7b0U1JrhUJ0BkouBSN
-         TrORbJqDR567cPowUF5BvbHWpRBHphN+wh3bPUw+VIEIEXOZZHUxSf9KK284MF72HI9m
-         +O5XkJeYBwwVSL96Nw2ZA4HFpBmnGHhd5yBU0cADgfsqH5bYi66mLzW5+MKyM6IKKAsM
-         SE6fuKRd6h7HmSKBPevn6DjM3sr0VcGCwygcI0wLXwJRZ+XJEf84Lz5ySY97SfnOXJin
-         fCow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=;
-        fh=dLuCVUKinrvAmqwRjDgAB4Lr6DasepnplccpvxwIbqU=;
-        b=EwAeRRoCSr5ERihU34SXgBkjT0YalLG9Wj9b+jUHN43WeTvjwPlt/9ECrbvarVDiD/
-         WpCfuAkgEFjZsu9Jal1NNxfgneClAW4kZIlvkIcOk+54LJgLrpk30sjCpwYFwZbKFDlx
-         Im42988uWIJ2OatR273AKZhdk2YMjXvpqWSiMsHjOeyRDl5j6Y+Fblr0aGTB9UJgLPYz
-         RBRfLE+Xpm6aLeWZEdgSRcKOCNXMkPy6a5X0Mwzu/Xy6qURoHZsYvVr5aOw05J7UUMJw
-         jbyv9PdCsPQWKb+5creGCgb/ccAxcwp2e84S8eQ7yvVZE7aYrmAZI5eev//turVODUjF
-         wURg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FA219067C
+	for <stable@vger.kernel.org>; Sat,  9 May 2026 15:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778341390; cv=none; b=HtR2HYSNwK73r1RvJZVS4mxxMTWy31kT9Ju+a6xOdlyfvaLr8/xWqXSS13Hzi5yMLYAtwIcGSmnKg9/JY5jeTxNdwuvbhz6OdXFc+ATmckTiJMSJ8E0dv0+OpYQ3Ueipi2SWvfE0vrv7xqRRUcPPqyCVJQ8VVHUfL6/1cWQ/hNo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778341390; c=relaxed/simple;
+	bh=QIxNKk5iv/RLLp+JtmSaZA7qJUTSm3Fnay0kST4Od7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N14wW+90wwpkEyfZCX7dqkqgpLAM+YOdM/rzzo7qch78LjA9sk41cZld0KEuNBYNWmPyK5gMJACCF+lvCDu/ClPSkSAQdgOp6mo4D9D51zRp3zfEdcBdC7pldA7NSOnvy1NiB+13XabB+D6hFK4HRuhsffvml7wjoiLBB1x/9Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLSF5dbB; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-83659d38e38so1358144b3a.1
+        for <stable@vger.kernel.org>; Sat, 09 May 2026 08:43:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778340867; x=1778945667; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=;
-        b=Lh0PWwr+/+2jfmU0cE+ujylN+eBC1UngFsC9moeUG4tcHaDh9BSC4q59mn78IanuOS
-         VsmwpnWaHI0Z4xeCDe0MIFmTc2Uln0S0b4G0nthnPnJsYFD/TzOaLqeLbBmIIuUdJB6q
-         KJKhJeo1ZE26pfOq9rDUIDTXv0yEapVlvB7h7dJ2BN85w+/YBDApJZy+AoGfw2nIMu7N
-         QSkQYQIo6B0vrsentog8r7S8n3iK6iwx5qqFCRKhabvDFcp0G7+Qhk7/WldDzdzASvV2
-         dGC5JEil8Gc8STfpTQT1yWA2jRxyNg9dKfEK0qlnekXj8EAShTccD6FtGWuPvGy2lzfj
-         2X+w==
+        d=gmail.com; s=20251104; t=1778341388; x=1778946188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2yXJqhcLXVF2p4UTzna8YZIe4V2LsKcR1MgCwvWlSaE=;
+        b=GLSF5dbB57Jxeum1bEI9qyI5n1Kx/otq1ONk1yruWSV3edHd0hBL5LfjRRAzbO1ToG
+         uasX3V+KcyNsvpIMJ5sspghzPK0tkxBvodznPipNBwAjEbq0YAS7fOktmtIMVtxrTJfC
+         e/NqgZawGUMHTvVG2DEfBuxb3suPYmvzQ8CnBvSIPyLpp8LybuFKPH5kvYqQmJsZr0h9
+         gUiMupqHJYTyxwmdavq3w7z8SfVGcSrHy8JADQYztOzDTgKOT9NhTbuw+PNxzqiZ8Eph
+         DcsUdS1JSe93L6DDze7p4QNVExZl+yMIFM3RDbw0pVKf6zljb+J3RMKJo3XQDOv7yXmm
+         aWYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778340867; x=1778945667;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AQTiS5P2oiFWdLEgVOdRu7bU4r8wnKpKMw3wR2rV5pQ=;
-        b=UpRkPBj7cwLc9x1Qr8mVIjy94Hj1gvqFueJOW+2/uiGaX6ur4nLkQF2XzW5aDhbHoa
-         qfXg1QAqrEphq1mTeSDPjOIjjZ7LqEmMGAAcOaRHXw8YRycq01vomsxZQmPbXOW0k3eO
-         GdU2+x2X8wLdJ+/xv5HB5LADikHK2Bs6nGvgt/6jpI2/GP6GWhieUs+Q2XWsPEVwMh1R
-         bCEfCj4KF6HqnfRr7nMSggoiyZF8N4XHNbFtlIS5UiPknsb1Mn8u0eNIotVDt/zUXdE0
-         2WIwyVkVZye3fvZCdp7/bhuAZUhFnQdWdnarbdXix65dwNfMffyZqMaHlL6bd1iah21M
-         yMpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9PSYbqY8j7Xuwb3eFW90yy09vwzClBssWsKU3kTgD+0UxsYxRShNAubpiwsgcTe7IssyGmwlc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMlwyqpcgPgExv7oBFGEp7HkymNPvI+AaSJZWzY15QT44OUujV
-	dgpiVERdsihD/QxB2NuBWz0oIWrELZEr/z7XJ5mzsbs3MewM3eTZcvO3lPioDA48Ma6ALzuxFqz
-	J9m5GFo1YQrVucp8btmYJ9PJNpHT3ecYnmYVk7QZv8c9oKhDnToMzipITEvsjK2ouhHUx2I3c2x
-	BLU3qKMFRCw9VYNVm8PspXg8jFdHZJDq4UWA==
-X-Gm-Gg: Acq92OGoYqgXGKpegCzTi0ktsxwv9H8kBSzueyRJ87d3G535zjkh5opaaVnrxkqMR38
-	BNbk0Pc8by809MzFbhscDcr6x0kQGbVb37kDe1hBi2f77ghkDKW9Z/cDJSxiBgsH8YY3SRRM4OJ
-	Rm073uf31Bl2pHQSaInH7vX+6vWHZ7DRjB85IrSwvn5zVPFRRYnan40cA70WTbLnHcBZ77O1vZM
-	CWaAzKKR2Qrk83IzKqSF3uezg6A0ju6J8DrnQ==
-X-Received: by 2002:a05:6808:f8c:b0:467:255a:7453 with SMTP id 5614622812f47-4824a6c5a04mr1570573b6e.14.1778340866778;
-        Sat, 09 May 2026 08:34:26 -0700 (PDT)
-X-Received: by 2002:a05:6808:f8c:b0:467:255a:7453 with SMTP id
- 5614622812f47-4824a6c5a04mr1570561b6e.14.1778340866232; Sat, 09 May 2026
- 08:34:26 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778341388; x=1778946188;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2yXJqhcLXVF2p4UTzna8YZIe4V2LsKcR1MgCwvWlSaE=;
+        b=gTobsQ9+RZgu7HtFEOehFLwtns/OklB1IhnPatRg3RArxmKusbGcMsDBgw/BVKe47T
+         /rXVOTvSZajD+jXp7BE0BYHfEofNqJIJ1dBPMuUF/witdXEMnRc2hYs7EF6Rf4DFEy4f
+         4eukvKF+CzJwf/Gnz5uYYCil2YgRRKrL04b9R/5wzG2/752IzYmcdOAQbd+4353trFBp
+         ciwWJH8skvS3vE99EN6evlsZVE6gbkE9Sx8+yc/lhfSNtA+fm7xvzfAAkkJaCXQC4Mta
+         NhdaUE+TTZx00eh4gsq8TtToBNIcUx6HyYFhx9QGSmCE1msppWR9+VHzwGiSl7w08NU5
+         gYVw==
+X-Forwarded-Encrypted: i=1; AFNElJ+Ouwon/+SgTTEfNIeepaIZuJVRpedQjIaNee6aoiaSd8nX02BirJa6uqL8uz9yOXa2g29M+DY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7xQqsYyHpWN7dbFR5w2/suRh84a+2gN7WOMN15AfLtvkNGq3V
+	+L8t7hr/1YbPQoNvtp2ToXS2o+bmcwohtgUZfh412O7+sE6EOu/fLjQyC3VBvmY=
+X-Gm-Gg: Acq92OECXGSQsLWI2rshH8+jY1dMVc4llay6Mpj73E52/+hZIF7bv/TPPl8tSuxplhl
+	se/8Xvt6IJ0Pzj68kwiGUpLGXH8y9VLBKCV4SGJbPQPyXCfRf9wcxhQp6iW9+5jujPzCM03lmJo
+	rxX345n2BJlLs9k8iTh9vDvsR0XYIpw+31KZ9mJV1ihfBDjmrUGc+nXY7Avh33UdKvxCg3mlpsB
+	d+bqNRAI2Mbybxkz73UD0yvlRBq/ofCdH2Q4j5sCJvSe3BNgeWx59/cjf9R96KYm/KP+0vN5TOw
+	97UPRlWZiCwa3Vmy3DdL0zHEC3ww0OfUwv8GDITdwentGMGYmVEXsSA0IZ9jJ2rYhHZRucp05gK
+	66gWu/fYZLrYpYg5lJlhVg8qfqRy2SeCuoca5Hpb62XC4m4kzm+DEHmJvML/ni9k883N6dGLnFE
+	/VYaGe+2DQGudlkTLIn04PgpyGpijQtkmLS3e1G1ShJfMcUf6eZeb/2Nb7bgRWNN+Xg5ZaF0O13
+	e4=
+X-Received: by 2002:a05:6a00:2442:b0:829:8942:2ca4 with SMTP id d2e1a72fcca58-83a5badbf5fmr16448655b3a.19.1778341387775;
+        Sat, 09 May 2026 08:43:07 -0700 (PDT)
+Received: from coe.tail83f5bd.ts.net ([125.19.217.182])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965a3e3ecsm15848028b3a.19.2026.05.09.08.43.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 May 2026 08:43:06 -0700 (PDT)
+From: Ramesh Adhikari <adhikari.resume@gmail.com>
+To: matthew.brost@intel.com
+Cc: thomas.hellstrom@linux.intel.com,
+	intel-xe@lists.freedesktop.org,
+	rodrigo.vivi@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/xe: Add bounds check for num_binds to prevent memory exhaustion
+Date: Sat,  9 May 2026 21:12:37 +0530
+Message-ID: <20260509154237.57082-1-adhikari.resume@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260507055352.61017-1-adhikari.resume@gmail.com>
+References: <20260507055352.61017-1-adhikari.resume@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260508065722.18785-1-daniel@quora.org>
-In-Reply-To: <20260508065722.18785-1-daniel@quora.org>
-Reply-To: rob.clark@oss.qualcomm.com
-From: Rob Clark <rob.clark@oss.qualcomm.com>
-Date: Sat, 9 May 2026 08:34:15 -0700
-X-Gm-Features: AVHnY4LYyvwLr8XG8e2YiuOn8i1bG5G0Km9pemR5eMsqy_jRO5574zgwrGB50VQ
-Message-ID: <CACSVV02t99r2JpT9EUar_YRs+zgpzjNYgNvvB9BGLLnpssY4BA@mail.gmail.com>
-Subject: Re: [PATCH] drm/msm: Fix shrinker deadlock
-To: Daniel J Blueman <daniel@quora.org>
-Cc: Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Antonino Maniscalco <antomani103@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org,
-        Boris Brezillon <boris.brezillon@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA5MDE2OSBTYWx0ZWRfX/z50GfgXERhk
- kWnagQtQbAyJuQMXUL730C+1CDLWOa9RkfGDsaIfCj8F1S2mtqTnpUYRUjfefDhWVZFvdxHaFQs
- +LTfluhq4N5NwIOxWWKdQ+cuijZ/4rMsw66Re0Ggb4q46o0JLnl1Fs+LPFW9uDY5TpLKYPtc3Zv
- ziPOHln0RhhMROAdapSxGjwimGUkcTxLPJxHPNu6dRsbgpVQ1IBYmRXLZAI3S2BcPjphRq2tO8m
- ow6kXO4cqevOvoM/eJYDzx7gMwTNERSfkBF7xuJ+xXNxKnRBt4GvkUoAz3vxkRl+jJ7KINWBaWl
- qsObHXI6gFgbq2OGPDeQ+wOVL+hN/mG8r/Y/Pp19tl3RMPYovCEl1bCbGD6649Wd1gprgXwd70s
- lqBuKB5RVYgFochSc7q2ZzTBNQBYlE/yX73v8rfGo7rEsPS6vcDgQ+lmhBLPzNRuf6Kio2DKpEu
- QnH4E0nOT1KQ8S4drCw==
-X-Proofpoint-ORIG-GUID: EVexYC6SFOK38Q646RBEXR9GIV1y7o3B
-X-Authority-Analysis: v=2.4 cv=UNvt2ify c=1 sm=1 tr=0 ts=69ff5403 cx=c_pps
- a=AKZTfHrQPB8q3CcvmcIuDA==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=DJpcGTmdVt4CTyJn9g5Z:22 a=t9ty7G3lAAAA:8 a=VwQbUJbxAAAA:8
- a=T09HirTOTrSZx1JCU_UA:9 a=QEXdDO2ut3YA:10 a=pF_qn-MSjDawc0seGVz6:22
- a=CsAS6f0m0zARWR-uHzm3:22
-X-Proofpoint-GUID: EVexYC6SFOK38Q646RBEXR9GIV1y7o3B
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-09_05,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 suspectscore=0 spamscore=0 priorityscore=1501 phishscore=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605090169
-X-Rspamd-Queue-Id: 102DA5004CB
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 43C935005BE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-244968-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,ffwll.ch,vger.kernel.org,lists.freedesktop.org,collabora.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob.clark@oss.qualcomm.com,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	HAS_REPLYTO(0.00)[rob.clark@oss.qualcomm.com];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-244969-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,oss.qualcomm.com:replyto,oss.qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,quora.org:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 7, 2026 at 11:57=E2=80=AFPM Daniel J Blueman <daniel@quora.org>=
- wrote:
->
-> With PROVE_LOCKING on an Snapdragon X1 and VM reclaim pressure, we see:
->
-> """
-> kswapd0/121 is trying to acquire lock:
-> ffff800080ed3800 (reservation_ww_class_acquire){+.+.}-{0:0}, at:
->   msm_gem_shrinker_scan (drivers/gpu/drm/msm/msm_gem_shrinker.c:189)
->
-> but task is already holding lock:
-> ffffbf4ddb44ca40 (fs_reclaim){+.+.}-{0:0}, at:
->   balance_pgdat (mm/vmscan.c:7236 (discriminator 2))
->
-> which lock already depends on the new lock.
->
-> the existing dependency chain (in reverse order) is:
->
-> -> #2 (fs_reclaim){+.+.}-{0:0}:
-> lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825=
-)
-> fs_reclaim_acquire (mm/page_alloc.c:4325 mm/page_alloc.c:4339)
-> dma_resv_lockdep (drivers/dma-buf/dma-resv.c:798)
-> do_one_initcall (init/main.c:1392)
-> kernel_init_freeable (init/main.c:1454 (discriminator 1) init/main.c:1470
->   (discriminator 1) init/main.c:1490 (discriminator 1) init/main.c:1703
->   (discriminator 1))
-> kernel_init (init/main.c:1593)
-> ret_from_fork (arch/arm64/kernel/entry.S:858)
->
-> -> #1 (reservation_ww_class_mutex){+.+.}-{4:4}:
-> lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825=
-)
-> dma_resv_lockdep (./include/linux/ww_mutex.h:164 (discriminator 1)
->   drivers/dma-buf/dma-resv.c:791 (discriminator 1))
-> do_one_initcall (init/main.c:1392)
-> kernel_init_freeable (init/main.c:1454 (discriminator 1) init/main.c:1470
->   (discriminator 1) init/main.c:1490 (discriminator 1) init/main.c:1703
->   (discriminator 1))
-> kernel_init (init/main.c:1593)
-> ret_from_fork (arch/arm64/kernel/entry.S:858)
->
-> -> #0 (reservation_ww_class_acquire){+.+.}-{0:0}:
-> check_prev_add (kernel/locking/lockdep.c:3165)
-> __lock_acquire (kernel/locking/lockdep.c:3284
->   kernel/locking/lockdep.c:3908 kernel/locking/lockdep.c:5237)
-> lock_acquire (kernel/locking/lockdep.c:5868 kernel/locking/lockdep.c:5825=
-)
-> drm_gem_lru_scan (./include/linux/ww_mutex.h:163 (discriminator 1)
->   drivers/gpu/drm/drm_gem.c:1681 (discriminator 1))
+Hi Matthew and Thomas,
 
-Your line #s don't quite match mine, but AFAICT this is from the
-ww_acquire_init()
+I apologize if you're receiving this message multiple times - I've tried 
+sending replies twice before but they don't appear in the mailing list 
+archives or on Patchwork, so I'm not sure if they reached you. I also 
+attempted to send a v3 patch which similarly didn't appear. If you did 
+receive my previous emails, I sincerely apologize for the duplicate messages.
 
-What I'm unsure about is if this could cause live-lock against another
-operation which requires obtaining both obj and vm locks in a
-potentially different order (which would also be using a
-ww_acquire_ctx ticket to backoff in case of conflicting locking
-order).  It wouldn't deadlock because we don't sleep forever if we do
-sleep, but...
+When I was tracing through the code, I found that vm_bind_ioctl_ops_create
+allocates about 160 bytes per bind (drm_gpuva_ops + xe_vma_op) in the loop,
+and those allocations use GFP_KERNEL without __GFP_ACCOUNT. That's separate
+from the main arrays you already have protected with __GFP_ACCOUNT.
 
-Possibly we should also be using trylock to also acquire the vm lock,
-but lockdep would still complain as it doesn't know the ticket will be
-only used w/ trylock (unless we did something hacky by using a
-different ww_class?)
+At 2048 binds that's only 320KB unaccounted, which is why I thought it was
+safe to start conservative. But you're right - at 64k binds it would still
+only be about 10MB unaccounted, which is probably fine and won't force
+unnecessary fallbacks.
 
-BR,
--R
+Should I send a v4 with 64k? Or do you think the loop allocations I found
+need a different approach?
 
-> msm_gem_shrinker_scan (drivers/gpu/drm/msm/msm_gem_shrinker.c:189)
-> do_shrink_slab (mm/shrinker.c:436)
-> shrink_slab (mm/shrinker.c:667)
-> shrink_one (mm/vmscan.c:5071)
-> shrink_node (mm/vmscan.c:5132 mm/vmscan.c:5210 mm/vmscan.c:6198)
-> balance_pgdat (mm/vmscan.c:7052 mm/vmscan.c:7228)
-> kswapd (mm/vmscan.c:7501)
-> kthread (kernel/kthread.c:436)
-> ret_from_fork (arch/arm64/kernel/entry.S:858)
->
-> other info that might help us debug this:
->
-> Chain exists of:
-> reservation_ww_class_acquire --> reservation_ww_class_mutex --> fs_reclai=
-m
-> """
->
-> kswapd0 holding fs_reclaim calls the MSM shrinker, which calls
-> dma_resv_lock. This in turn acquires fs_reclaim.
->
-> Fix this deadlock by using dma_resv_trylock() instead, dropping the
-> subsequently unused passed wait-wound lock 'ticket'.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daniel J Blueman <daniel@quora.org>
-> Fixes: fe4952b5f27c ("drm/msm: Convert vm locking")
-> ---
->  drivers/gpu/drm/msm/msm_gem_shrinker.c | 34 ++++++++++----------------
->  1 file changed, 13 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm=
-/msm_gem_shrinker.c
-> index 31fa51a44f86..5320ef57dd90 100644
-> --- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
-> +++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-> @@ -43,8 +43,7 @@ msm_gem_shrinker_count(struct shrinker *shrinker, struc=
-t shrink_control *sc)
->  }
->
->  static bool
-> -with_vm_locks(struct ww_acquire_ctx *ticket,
-> -             void (*fn)(struct drm_gem_object *obj),
-> +with_vm_locks(void (*fn)(struct drm_gem_object *obj),
->               struct drm_gem_object *obj)
->  {
->         /*
-> @@ -52,7 +51,7 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
->          * success paths
->          */
->         struct drm_gpuvm_bo *vm_bo, *last_locked =3D NULL;
-> -       int ret =3D 0;
-> +       bool locked =3D true;
->
->         drm_gem_for_each_gpuvm_bo (vm_bo, obj) {
->                 struct dma_resv *resv =3D drm_gpuvm_resv(vm_bo->vm);
-> @@ -60,23 +59,14 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
->                 if (resv =3D=3D obj->resv)
->                         continue;
->
-> -               ret =3D dma_resv_lock(resv, ticket);
-> -
->                 /*
-> -                * Since we already skip the case when the VM and obj
-> -                * share a resv (ie. _NO_SHARE objs), we don't expect
-> -                * to hit a double-locking scenario... which the lock
-> -                * unwinding cannot really cope with.
-> +                * dma_resv_lock can't be used due to acquiring 'ticket' =
-before the
-> +                * fs_reclaim lock, which is held in shrinker context
->                  */
-> -               WARN_ON(ret =3D=3D -EALREADY);
-> -
-> -               /*
-> -                * Don't bother with slow-lock / backoff / retry sequence=
-,
-> -                * if we can't get the lock just give up and move on to
-> -                * the next object.
-> -                */
-> -               if (ret)
-> +               if (!dma_resv_trylock(resv)) {
-> +                       locked =3D false;
->                         goto out_unlock;
-> +               }
->
->                 /*
->                  * Hold a ref to prevent the vm_bo from being freed
-> @@ -108,7 +98,7 @@ with_vm_locks(struct ww_acquire_ctx *ticket,
->                 }
->         }
->
-> -       return ret =3D=3D 0;
-> +       return locked;
->  }
->
->  static bool
-> @@ -120,7 +110,7 @@ purge(struct drm_gem_object *obj, struct ww_acquire_c=
-tx *ticket)
->         if (msm_gem_active(obj))
->                 return false;
->
-> -       return with_vm_locks(ticket, msm_gem_purge, obj);
-> +       return with_vm_locks(msm_gem_purge, obj);
->  }
->
->  static bool
-> @@ -164,7 +154,6 @@ static unsigned long
->  msm_gem_shrinker_scan(struct shrinker *shrinker, struct shrink_control *=
-sc)
->  {
->         struct msm_drm_private *priv =3D shrinker->private_data;
-> -       struct ww_acquire_ctx ticket;
->         struct {
->                 struct drm_gem_lru *lru;
->                 bool (*shrink)(struct drm_gem_object *obj, struct ww_acqu=
-ire_ctx *ticket);
-> @@ -185,11 +174,14 @@ msm_gem_shrinker_scan(struct shrinker *shrinker, st=
-ruct shrink_control *sc)
->         for (unsigned i =3D 0; (nr > 0) && (i < ARRAY_SIZE(stages)); i++)=
- {
->                 if (!stages[i].cond)
->                         continue;
-> +               /*
-> +                * 'ticket' not needed on trylock paths
-> +                */
->                 stages[i].freed =3D
->                         drm_gem_lru_scan(stages[i].lru, nr,
->                                          &stages[i].remaining,
->                                          stages[i].shrink,
-> -                                        &ticket);
-> +                                        NULL);
->                 nr -=3D stages[i].freed;
->                 freed +=3D stages[i].freed;
->                 remaining +=3D stages[i].remaining;
-> --
-> 2.53.0
->
+Thanks,
+Ramesh
 
