@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-245024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMakIhOOAGrfKAEAu9opvQ
-	(envelope-from <stable+bounces-245024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 15:54:27 +0200
+	id HhQuEb6UAGpvKgEAu9opvQ
+	(envelope-from <stable+bounces-245025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 16:22:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E9A50475D
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 15:54:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946A650493E
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 16:22:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9027300BD87
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 13:54:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3381F300B11F
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 14:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654153939C9;
-	Sun, 10 May 2026 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A41F382373;
+	Sun, 10 May 2026 14:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhieFwul"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="thmA1BCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D6F3932DC
-	for <stable@vger.kernel.org>; Sun, 10 May 2026 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3C719CD03
+	for <stable@vger.kernel.org>; Sun, 10 May 2026 14:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778421260; cv=none; b=hGshioX02938eYUgTtP6KBFz2qsFAS7uUvCwbbAZ054LHhgBlk3gh7AHA5nZANcSI99A44OKQbgXIE2uMQmWtNeirx3T/VAA6q/Rj3u9dkD6Jt3HNlb71/S0mqLI70A25oO6KMy3LF/1eWiOrmWR5z5Y8qlgmwnv2LMdw79efGY=
+	t=1778422970; cv=none; b=Q4n9ga2yItO9b1GHfxU7sJ4WuEVgzxYFTdSFDKl165BANJlKNuYnGrvhRJiPXyqIxswhhvJQpWTIpvrngWvTmdjkidKcPfPPIcmrPSaoscs4Vd8ZcGw0z0rcesyzrugL9UtLYghpLw/da8i0yf6dC4rwZOLc90x6kHrvKvvOasI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778421260; c=relaxed/simple;
-	bh=hhTqSZt+oz1yDNS8n9Woj0yOeiTfj6694y604+A7o38=;
+	s=arc-20240116; t=1778422970; c=relaxed/simple;
+	bh=SVmScnbSzMLHxVHpRRzEZAJkZHpxPrFxZ8AzlRy7krQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMPf/JTVj3snwRfjGYoJeVDzMIjwSTRqlcxTu9Ugl3gYIMjNWbryPkj2D4CS4BO4G0tUAQAN5gaRkg+hmq5UVbDR6p+fmv9BmUyC1nzGf7yleo/3/WbhroSa3O41OojhkH5KhBadmmVLzlP5KCLevtdBI4Fok9G/0k2LEwE1ZLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhieFwul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4831BC2BCF6;
-	Sun, 10 May 2026 13:54:19 +0000 (UTC)
+	 MIME-Version; b=LpcoPE09pSTxcKbbAfpwG2J6s+aR06OLUH2p6LL7qFGpYBsh7+tjaPOGM/KA6Te9KO3jsxUh/8hy8K1XnfMF04GgWZrAAESCouy/i+LLSirecHXFb3nz5Kz6t2WE6I6f0W4ZqW8fiVuOTj3kgA6854zCPM0p+DYIkpJuH+1LJSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=thmA1BCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFFEC2BCB8;
+	Sun, 10 May 2026 14:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778421259;
-	bh=hhTqSZt+oz1yDNS8n9Woj0yOeiTfj6694y604+A7o38=;
+	s=k20201202; t=1778422969;
+	bh=SVmScnbSzMLHxVHpRRzEZAJkZHpxPrFxZ8AzlRy7krQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhieFwulucIn53X8hRFCj9VJLYdAuaO+0bzYC/5boSCM/6wTs4gwR3U6Jf3HXm3MV
-	 ykU5ZCME/PHgaON/O45FB6SxUIN76Lqw2fCUGXq6XC2DWl8GI+Kwyq05sWByTIAous
-	 E/sNSgEm/KcKO3SPbW2S6UkC/WMT6NJ6YMSOllfxb9PrH0YFJ4hjLNatAilOL5ie6y
-	 XlYUCFgSGkk8PQPa1uumvQSq4fDTHSWu4AzNkJBPDapfRFo0l9t2tJsbzKe1bav93q
-	 JCUfbVzQCIugkiJCknJwQtBVuEMyZ3jcjBt9q1V0+sy83Txw3Ibq4DYo+7LHcaRVGM
-	 /vEeaRccgrfCg==
+	b=thmA1BCgib02EDjKnC1o6vj6MxpwtYbUZFDLzUjH0QO3aTxGuHsdXK6LuHq/RnvkC
+	 uMhgPh/f4VthruVI5OwNPqcU/nWtNSKYwPF60Mnp0D1bvhFWyXB7vd/QBVBhHrSpB1
+	 IJg7j+DgSazIZ0xmKvQ1TLBZWnyL7lS6VErW00so0jFJ00MHQgFDo4kn1YEuvGimlC
+	 abJwMYlD9GwMGlYKK5t3dqNq5vc6HgywY7aJ7xJZtULS7DfbMS2oqk3WpWqYci+8x/
+	 4gKnFNp/XbpiSeNqfvjbefZ78UdMw1hgG0S0OFbzmt5AWUSwgKYvPU5NnZIASeXomm
+	 JvVHoHa+YlD3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sam Edwards <cfsworks@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Sam Edwards <CFSworks@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Furong Xu <0x1207@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] net: stmmac: Prevent NULL deref when RX memory exhausted
-Date: Sun, 10 May 2026 09:54:16 -0400
-Message-ID: <20260510135416.4143602-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] net: stmmac: avoid shadowing global buf_sz
+Date: Sun, 10 May 2026 10:22:45 -0400
+Message-ID: <20260510142247.4179438-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260510135416.4143602-1-sashal@kernel.org>
-References: <2026050447-babied-knee-1574@gregkh>
- <20260510135416.4143602-1-sashal@kernel.org>
+In-Reply-To: <2026050448-gawk-hybrid-73b9@gregkh>
+References: <2026050448-gawk-hybrid-73b9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,151 +63,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 13E9A50475D
+X-Rspamd-Queue-Id: 946A650493E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,armlinux.org.uk,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245024-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[armlinux.org.uk,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245025-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.992];
+	NEURAL_HAM(-0.00)[-0.983];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,armlinux.org.uk:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Sam Edwards <cfsworks@gmail.com>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 0bb05e6adfa99a2ea1fee1125cc0953409f83ed8 ]
+[ Upstream commit 876cfb20e8892143c0c967b3657074f9131f9b5f ]
 
-The CPU receives frames from the MAC through conventional DMA: the CPU
-allocates buffers for the MAC, then the MAC fills them and returns
-ownership to the CPU. For each hardware RX queue, the CPU and MAC
-coordinate through a shared ring array of DMA descriptors: one
-descriptor per DMA buffer. Each descriptor includes the buffer's
-physical address and a status flag ("OWN") indicating which side owns
-the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
-the flag and the MAC is only allowed to clear it, and both must move
-through the ring in sequence: thus the ring is used for both
-"submissions" and "completions."
+stmmac_rx() declares a local variable named "buf_sz" but there is also
+a global variable for a module parameter which is called the same. To
+avoid confusion, rename the local variable.
 
-In the stmmac driver, stmmac_rx() bookmarks its position in the ring
-with the `cur_rx` index. The main receive loop in that function checks
-for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
-network stack (NULLing the pointer), and increments `cur_rx` modulo the
-ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
-position with `dirty_rx`, allocates fresh buffers and rearms the
-descriptors (setting OWN=1). If it fails any allocation, it simply stops
-early (leaving OWN=0) and will retry where it left off when next called.
-
-This means descriptors have a three-stage lifecycle (terms my own):
-- `empty` (OWN=1, buffer valid)
-- `full` (OWN=0, buffer valid and populated)
-- `dirty` (OWN=0, buffer NULL)
-
-But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
-the past (see 'Fixes:'), there was a bug where the loop could cycle
-`cur_rx` all the way back to the first descriptor it dirtied, resulting
-in a NULL dereference when mistaken for `full`. The aforementioned
-commit resolved that *specific* failure by capping the loop's iteration
-limit at `dma_rx_size - 1`, but this is only a partial fix: if the
-previous stmmac_rx_refill() didn't complete, then there are leftover
-`dirty` descriptors that the loop might encounter without needing to
-cycle fully around. The current code therefore panics (see 'Closes:')
-when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
-catch up to `dirty_rx`.
-
-Fix this by explicitly checking, before advancing `cur_rx`, if the next
-entry is dirty; exit the loop if so. This prevents processing of the
-final, used descriptor until stmmac_rx_refill() succeeds, but
-fully prevents the `cur_rx == dirty_rx` ambiguity as the previous bugfix
-intended: so remove the clamp as well. Since stmmac_rx_zc() is a
-copy-paste-and-tweak of stmmac_rx() and the code structure is identical,
-any fix to stmmac_rx() will also need a corresponding fix for
-stmmac_rx_zc(). Therefore, apply the same check there.
-
-In stmmac_rx() (not stmmac_rx_zc()), a related bug remains: after the
-MAC sets OWN=0 on the final descriptor, it will be unable to send any
-further DMA-complete IRQs until it's given more `empty` descriptors.
-Currently, the driver simply *hopes* that the next stmmac_rx_refill()
-succeeds, risking an indefinite stall of the receive process if not. But
-this is not a regression, so it can be addressed in a future change.
-
-Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
-Cc: stable@vger.kernel.org
-Suggested-by: Russell King <linux@armlinux.org.uk>
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-Link: https://patch.msgid.link/20260422044503.5349-1-CFSworks@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Furong Xu <0x1207@gmail.com>
+Link: https://patch.msgid.link/E1tpswi-005U6C-Py@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0bb05e6adfa9 ("net: stmmac: Prevent NULL deref when RX memory exhausted")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 59d406c212996..176f083fda4a7 100644
+index 5016b8c39b684..8d32d4fc67735 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5278,9 +5278,12 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
- 			break;
- 
- 		/* Prefetch the next RX descriptor */
--		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
--						priv->dma_conf.dma_rx_size);
--		next_entry = rx_q->cur_rx;
-+		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
-+					       priv->dma_conf.dma_rx_size);
-+		if (unlikely(next_entry == rx_q->dirty_rx))
-+			break;
-+
-+		rx_q->cur_rx = next_entry;
- 
- 		if (priv->extend_desc)
- 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
-@@ -5418,7 +5421,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+@@ -5406,10 +5406,10 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 	struct sk_buff *skb = NULL;
+ 	struct stmmac_xdp_buff ctx;
+ 	int xdp_status = 0;
+-	int buf_sz;
++	int bufsz;
  
  	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
- 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
--	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
+-	buf_sz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
++	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+ 	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
  
  	if (netif_msg_rx_status(priv)) {
- 		void *rx_head;
-@@ -5474,9 +5476,12 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 		if (unlikely(status & dma_own))
- 			break;
+@@ -5524,7 +5524,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 			dma_sync_single_for_cpu(priv->device, buf->addr,
+ 						buf1_len, dma_dir);
  
--		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
--						priv->dma_conf.dma_rx_size);
--		next_entry = rx_q->cur_rx;
-+		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
-+					       priv->dma_conf.dma_rx_size);
-+		if (unlikely(next_entry == rx_q->dirty_rx))
-+			break;
-+
-+		rx_q->cur_rx = next_entry;
+-			xdp_init_buff(&ctx.xdp, buf_sz, &rx_q->xdp_rxq);
++			xdp_init_buff(&ctx.xdp, bufsz, &rx_q->xdp_rxq);
+ 			xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
+ 					 buf->page_offset, buf1_len, true);
  
- 		if (priv->extend_desc)
- 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
 -- 
 2.53.0
 
