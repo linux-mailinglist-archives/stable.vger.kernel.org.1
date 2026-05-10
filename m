@@ -1,122 +1,127 @@
-Return-Path: <stable+bounces-245011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMfGBH5mAGqNIgEAu9opvQ
-	(envelope-from <stable+bounces-245011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 13:05:34 +0200
+	id eExOGj15AGpZJQEAu9opvQ
+	(envelope-from <stable+bounces-245012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 14:25:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009E0503B2B
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 13:05:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB5F503E1A
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 14:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C2AC43002B49
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 11:05:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12A0A30293D0
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 12:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B3D367F25;
-	Sun, 10 May 2026 11:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496F23815CB;
+	Sun, 10 May 2026 12:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="yqYsQJZr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AD0b9e+e"
 X-Original-To: stable@vger.kernel.org
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECFD365A0B;
-	Sun, 10 May 2026 11:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF9E372B50;
+	Sun, 10 May 2026 12:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778411125; cv=none; b=a4mUrZ9mB+LwUtEoX4v8wb8JXvtvuziJKtgMwzPkzqk7ZyuxYlZdnRZ6vyPAlUhhqPoD+m1fb7KMY55GRAgKj30S6Fxx2N7Iutx89UIz6Dn53u81h8KM6nY50eZF+ygo00pTTEpfsT+LjUIp0wp5GXYH1n7ye/txPfP5X2A8r1I=
+	t=1778415834; cv=none; b=kezu1hHFANwCfJr/Cyd5RhwkXhpm96GpsAR88NcLuzMn5HiOFM5J+Ytu51K9QF/ct/L2Bk1CYcjfk42c+bemvAYDaCnJjWh8dN2WdbsoDLV6nr4M+sWGGDikBJCgJjHBl/2JrIW6Yn+NK0BxYFes6Jr/PCxKVXvcPB/FAQLtgcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778411125; c=relaxed/simple;
-	bh=7a2iV1/sBxU9K04sH1JBSHWzaxM6qao+99Uz3Ft6FNY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E3aT8/YXTNeGUsVIT68wcRRqSY2weARiFbeG6Gxad+Vwq55mIVx28d8lxEJPYP6Q8jf8cXkXUktnX/2ea88WKp4ricMzzJOnJ1U4vDOLulICGEqfEffyGPP75LHvQMwU9usq4lHBLUjaf5yXUzS1cG7IL9kBxCDMRmE9eW7Ypqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=yqYsQJZr; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=tiLiDH5Rk2B2hLGZ0F0I+C/JK7yurZrcWAQHdfdnzaE=; b=yqYsQJZrIYcrsMt+2twsoS37j9
-	DiEB2njuLyYSwvSvMBKbKvMGtXMvgGRsPRbm738mQDiT7EVtPFIQuSDvY1SJyLS3ra7AnkM7RdFxx
-	KW6LlaVEehgRRHHmncB256i781DWg6/VhYqWwHd2bI/rnxEUfQ8q46x80yfRjWI4B8Dbtgy8ZoL+x
-	gq99Ia172mmD+ddOOyDOZc/VMH+U86rfx4Gl3XFuJGBQ2h+y9eOimGXVIgCApea4IJzgI2fDRsXz9
-	E8HKf942IqVh9+IEJqc3PUGWPTa7EsuTf3uG1bVjYRpnThIHkI0XmmbatXG2YPtbQNxBFqnrEHCFK
-	AJNVgMrLJKpzf9ZK7Ox57/NMbmf6R+WhSMWFg/ZW8EfpNQxGA1ysOyYCGFwvX/6kRRAMzc/2lbBYP
-	I7ehCBj7DLvc7nLumRiS6AlBkwmJide5sr8veHYtJtHlx8zmRWujW1eltuIj7mxX5GPxUqTF5MmUj
-	n7gfD2aDMqocrJeivlrXfxEM;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1wM1yD-00000007jN8-0OSW;
-	Sun, 10 May 2026 11:05:13 +0000
-Message-ID: <e1ed4bb2-80b9-4e81-aa4a-502fc89077f0@samba.org>
-Date: Sun, 10 May 2026 13:05:12 +0200
+	s=arc-20240116; t=1778415834; c=relaxed/simple;
+	bh=TC873zStqJ259MiwNikRrru9L89mhebxpZ8MWRYnZmM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=d0BYj7uP839Eh3Dv3TruYkS+YNkoDVYB3rhaNgDR6dAlRkwJe6+MOiKTiWZVXAy+v0UPBcGZQwbXog4wx54iUGsBn9xDnEaQxe0wFtLhA0IyfQIMkhnsdA3JUUBPL9aTaZNsWwSnI239qSLWz9XNOCJgLCiG9fOLBDH7iSZ9X4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AD0b9e+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD44C2BCF7;
+	Sun, 10 May 2026 12:23:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778415833;
+	bh=TC873zStqJ259MiwNikRrru9L89mhebxpZ8MWRYnZmM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=AD0b9e+ezrryuNWZ8BZEaU0+rFHiKV5efAYKwxEINwCllXX7j2Fv9630NzBqPHRD0
+	 UaDnpvaG4g8DuuO0A5YWgdFWl7E0YwH91ujb1+3YGGEcz4aqGaqmnjxz5cSM14/mb3
+	 0UqhiYJxb8Q8DojeQueJupwWhq64tCHK/Txgh1lnA2k6PguhvDW+5nX9TlAmtVZmK4
+	 myJceoTdZAiZpIIFR906BUQhqQ8qseQlxUGZs6QUXSOZ9NtGvcPbXlNakbgAqX1BZO
+	 YEbx7zcLhAqC95s5fzmqKUOybvOnKcApvB2olYBFwcwKa3T+csPiOng5phrWmGUIos
+	 gxDw2DwSFWZ/g==
+From: Vinod Koul <vkoul@kernel.org>
+To: =?utf-8?q?=C5=81ukasz_Lebiedzi=C5=84ski?= <kernel@lvkasz.us>
+Cc: neil.armstrong@linaro.org, krzk@kernel.org, alim.akhtar@samsung.com, 
+ andre.draszik@linaro.org, pritam.sutar@samsung.com, kauschluss@disroot.org, 
+ johan@kernel.org, ivo.ivanov.ivanov1@gmail.com, 
+ linux-phy@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260406135627.234835-1-kernel@lvkasz.us>
+References: <20260406135627.234835-1-kernel@lvkasz.us>
+Subject: Re: [PATCH v2] phy: exynos5-usbdrd: fix USB 2.0 HS PHY tuning
+ values for Exynos7870
+Message-Id: <177841582887.420676.2529810300062190966.b4-ty@kernel.org>
+Date: Sun, 10 May 2026 17:53:48 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for stable] smb: client/smbdirect: fix MR registration for
- coalesced SG lists
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- Yi Kuo <yi@yikuo.dev>, Namjae Jeon <linkinjeon@kernel.org>,
- Steve French <stfrench@microsoft.com>
-References: <20260508081546.4177429-2-metze@samba.org>
- <20260509122858.2097e82fa847.re-smbdirect-mr-coalesced-sg@kernel.org>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <20260509122858.2097e82fa847.re-smbdirect-mr-coalesced-sg@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 009E0503B2B
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13.0
+X-Rspamd-Queue-Id: BBB5F503E1A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[samba.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[samba.org:s=42];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245011-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245012-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[samba.org:+];
+	FREEMAIL_CC(0.00)[linaro.org,kernel.org,samsung.com,disroot.org,gmail.com,lists.infradead.org,vger.kernel.org,oss.qualcomm.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[metze@samba.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vkoul@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Am 09.05.26 um 14:47 schrieb Sasha Levin:
->> [PATCH for stable] smb: client/smbdirect: fix MR registration for coalesced SG lists
-> 
-> Queued for 7.0.y and 6.18.y, thanks.
-> 
-> The Fixes commit c7398583340a is also present on 6.12/6.6/6.1, but the
-> patch you sent uses the post-rename mr->sgt/.../mr-> field names that
-> match 7.0/6.18; on 6.12/6.6 the same code uses smbdirect_mr->... and
-> 6.1 has yet another older variant. Could you send adapted backports
-> for 6.12.y, 6.6.y and 6.1.y (or let me know if you'd like me to skip
-> those branches)?
 
-https://bugzilla.kernel.org/show_bug.cgi?id=221408 talks
-about 6.17, so I guess we can skip older branches.
+On Mon, 06 Apr 2026 15:56:27 +0200, Łukasz Lebiedziński wrote:
+> The existing PHYPARAM0 tuning values for Exynos7870 are incorrect,
+> causing the USB 2.0 PHY to fail high-speed negotiation and fall back
+> to full-speed (12Mbps) operation.
+> 
+> Fix TXVREFTUNE (transmitter voltage reference) from 14 to 3,
+> TXRESTUNE (transmitter impedance) from 3 to 2, and SQRXTUNE
+> (squelch threshold) from 6 to 5. Also explicitly set
+> TXPREEMPPULSETUNE to 0, which was previously missing from the
+> tuning table despite being included in the register mask.
+> 
+> [...]
 
-Thanks!
-metze
+Applied, thanks!
+
+[1/1] phy: exynos5-usbdrd: fix USB 2.0 HS PHY tuning values for Exynos7870
+      commit: 5a759b120e31aa3ed914d98b51eb1755235250f2
+
+Best regards,
+-- 
+~Vinod
+
 
 
