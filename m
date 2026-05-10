@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-245087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MN+wOkkSAWq4QQEAu9opvQ
-	(envelope-from <stable+bounces-245087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:18:33 +0200
+	id GGA2EEgSAWq4QQEAu9opvQ
+	(envelope-from <stable+bounces-245086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:18:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98852506C9F
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:18:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D206506C98
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 855A23033FB0
+	by sea.lore.kernel.org (Postfix) with ESMTP id 579FA303350F
 	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935203AF66F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F71B3A7582;
 	Sun, 10 May 2026 23:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MpJmxHLT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hcuNx532"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5548D3A5E61
-	for <stable@vger.kernel.org>; Sun, 10 May 2026 23:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9527D3ACF1E
+	for <stable@vger.kernel.org>; Sun, 10 May 2026 23:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778455042; cv=none; b=ahFwwWWNyPT0mBYdFfCpTXRO2bj8lQt2DNhXNDIm0J2DCOQwogmtjQWy4PJiGm5fQ5hqyVHoao0XdmNonvApCTMoCFJCKxTMzO5el8AI+rzSeTkey3yryckqJWv1N+C3RxBzW4PQNKDTaUZJJO26VBU+qyE8aTynkkqBPYvg9mc=
+	t=1778455042; cv=none; b=hg/ld6XBXIJgFVLjInU10vzqWdBx8cKNGxECtua2e8CBmDiATN04IuRjvIkfmHMsCnaht9m7HWXq8liXQr2KeioMdcGiR2xLDcRzVqa6btRwmPfU2WMQ6ZRMP4p4xYE+L1Bm3dLGdBTOqDyyK0+44+Ws/EoxEAk4qlf4/VoFihc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778455042; c=relaxed/simple;
-	bh=dF5X1LUG4r0lQCtZsSoClebMfzIDwW0CmxgsuMikSXg=;
+	bh=yCeRqCqV/OuDGj8AxgSGkFPw7mgtyvM8WobSjT8OE+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZLrje/yldmig1WDAUV2ZGpsLMou8pAXPvEy0r7p5zQBN2gOWrCukrG1yvXNY4Dyo6X6UVfohsZlSnGkooC69eQvOAN5MqhLp7FhSs6VPQLfE9T9uIZP9JaN6IbeRw9lsjXkPlHeOL+R4AYWiwSdzCTO4j6YNBUSfITSvod43CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MpJmxHLT; arc=none smtp.client-ip=209.85.219.49
+	 MIME-Version; b=PzEkeSmXfijeW9iI3L7JOSRCm4FXLCfDglt/X7cEAnvo1uU+Vq3ELRDXWccpesdOGWd3sXHcZUI7xRwEG2L20gyhnB+pUixVyuVB+f7ZFi0VE33ouWbqrx11fUgaTGUQPJB694Mcal0gDVwBsyDyADlUQ8TjvjSA6Pd8L1HFlH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hcuNx532; arc=none smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8b5cda2dab9so39980206d6.0
-        for <stable@vger.kernel.org>; Sun, 10 May 2026 16:17:19 -0700 (PDT)
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-514ae601e01so9830311cf.1
+        for <stable@vger.kernel.org>; Sun, 10 May 2026 16:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778455038; x=1779059838; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778455039; x=1779059839; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=494zAqIk8zsiLJlcWBVQHIjNxVWqGVKEvJi7UcMRGg8=;
-        b=MpJmxHLT/RYdk48gXTuE2zW7wR2N4qIz+GMK+X5jFZ6b942obo319ubHmJDOl1tKOG
-         Ms+ZYR09foP3qTzXn1IrTTqdtzY6m726rPLD1C/uNkTlm7QrLaLls61b23aUviRRFV3P
-         HWIY+bjLiHwv1ASy6C1tVWHP18vHAlgDhZHyuLKiZht33vrQZl+i5jQG5skFGiQm0P9w
-         kPxPINAXBHVtTOADgXgNbvrWSg4Fs1m6j7DPkvz0W5QLFpXshjBvMbixugbfPD8uimao
-         nReRlHz1kjd5NWrmfxqhRTJ2qzK+/4RGJcndJi/WEHv6zfOcWQ2SfApvgXTUqPMIS25D
-         MSPg==
+        bh=1OOx8AfJKBXD4a8uWQ5sr/40g6B5/Qyw4VyuwfwX8dw=;
+        b=hcuNx532i9KbR5N2F9qHc0SfssLjMmZi5vNP9MOfnwWxjwdSstSpu9KNZ1RTf/M1Vc
+         p3bkff8f4kybBPePK2fWFCbdY8p+zNt1J8qycCiTmQY1g0Ir1YRh3dpWQrEdGJhMftcc
+         ILWF1QFCXev3jzADC1QDVxrZCNePIvg82BciefwXBliKP067TBGZmDSLH9I1T3dq1ptd
+         UR+O9Ou59RgZFyUWKbf6TO5y419iD9Mlr0c3Rzw4r8LpY3GDoM/CR5PpERgizh7rVmMU
+         8Th7Q2djzpSGmb1P8hGC2cLl9RVZEVr5ffDloDR3uoPZg5yCkoR7cXwazT1/9SWtsp8j
+         GVnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778455038; x=1779059838;
+        d=1e100.net; s=20251104; t=1778455039; x=1779059839;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=494zAqIk8zsiLJlcWBVQHIjNxVWqGVKEvJi7UcMRGg8=;
-        b=Ic+kqasWgCfa9n70NclMiDO1jRNvedMuFPrw0RYXlYAn6E9Tu6VRQ6VeQTkhZEVm8J
-         jwItMBu3EcekLN8Nf0vYENOri+YZZH1/+NrVUQHxepAp0VzezcF88Nwj5aaaghwk8sjR
-         TavEfgG5BZ7IUTKFB58MYQ+XefVVpBJxKJJHYsw8DcOA1ICzMXAcC7isH77UoWKzvvFi
-         l8aAd2ifzud7PFoyk9ZxGI3UcTnZl3Zbl3ArlR/28FJZD2rjjeXOdN71sO19BujXMCli
-         S+btI/61JtcTzA0OGC+Ub5npoQ1lTphEANkW4HHnh/enPW50WvSpGwDDi5mAoLveVnlc
-         bbvA==
-X-Forwarded-Encrypted: i=1; AFNElJ+mDTDM+j6siFTDQ2s1a74TQugI98EeWSl3IDjLsEjKSKlbLX818uFE0pgh8K2vlPspZZGgTu4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhgSmoEwV89t6hHwRuT6xB4U7XdhDhdhCNMGrpu5FU77znPbIt
-	jJ/xwtMg9dsg6IPHtpBdptjKQ6shAPQigh1j03SLx+XZIcfdKWxSMOzjme0K3Q==
-X-Gm-Gg: Acq92OHxG9CpZTU0dbe0536XYFGx7eJKV8H7sDnwm6l/pomfYgZgghvXbNyqytJ+Phb
-	KybW29Op1EAm5QvJB4L2Krf7PXfr0eA8LEu8dcuLrg/3Z3/QQRsu+1breZo/6PMPh6+fvvDVKBR
-	ft9WzaRg3/D7N1oqIYrDHs8rXJFwvdSWwyGqln3wak+TsAEqEPd0ZxDycIday01UrG1wsMmbGW7
-	UNR7AaeBgBA1jfoq+ZdLvFX3qJ06Mgf2srVo214xFCurgE5o2cu2XnGfF2oiXT91ra1m5ppVhm7
-	d9JX5Z+tF+FxgVmy0ptrfiBpu9yVWdBHAQv1JcD06X3Zr4pZBho0aHItJMfVAMEM7bmlvexhD5J
-	o13zPW9Zs6YsyKhDb3Gc4MBeHxc1eYMZUqfU4QcZT/UuomCg3guvz1c8d2vT8nuffSstCUR5LxW
-	CJrUWmBMSQlAQsE99OVb2ODwCkPwhIIB6jtbTmcZ/krV3Lt4mOPhh+iYkAt0t5+1tKBUlLYTlhl
-	wdWR7T/rbpfgWpNTAvsWKLFZuoSOjLbs17AV2eE/IYTC1RfW2jB9A==
-X-Received: by 2002:a05:622a:2b48:b0:510:4174:507d with SMTP id d75a77b69052e-51475c8cdd4mr207655871cf.29.1778455038269;
-        Sun, 10 May 2026 16:17:18 -0700 (PDT)
+        bh=1OOx8AfJKBXD4a8uWQ5sr/40g6B5/Qyw4VyuwfwX8dw=;
+        b=V9oVtqFcE6r0HYLqU3dEWpIrfkjwr8lnkwLjynlMG92PWTZzmwVM5GtSaDwkt0Eloe
+         oMciZQftptvbPRV0vKqcVi5WiR78dbpK2zqGCtWmPe5ZmRxdvoDdwZ/V8A+jULJsxIAe
+         HKlF/5+eMdhIwvw1IF5qpbUdK1M63OfDlP3BkYxlrXIjl+1tleJZAggCOzWP5RR+02f9
+         VeTGmRY1VTXj6Lx+Csr7xV9+pcuxHERTtJ2aTRZvMkCxG7XgUOkoys9eiVf4z/QHKXJo
+         lX+thKAayhqofSkJFiGexUKWXnCbQnQl6mUnhpzA8eKVm7lXee7guJDJhktsbS/o1W9f
+         4fyA==
+X-Forwarded-Encrypted: i=1; AFNElJ8653DuHZupqpL97SouQFGWGGxL+6KaW1NkuKfYa0DbFUUrs3aIRYxzzWdbSc7sFyJYM/UAx7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyO8xW+HcYOLCbT9mq0tT4JPy0M+vJLLh7j2l31XxdBa2HLddj
+	wca1JMopTjQ4k4tmgHCd6EezutxrgrU86w3uQhfSlYe4GscfDkUUVwq4
+X-Gm-Gg: Acq92OEFY0Z1REQ6SDaK7fZx49DtL51Z/bVuNCbE4k7xh+98qAT52CaeWrgbV+CAQac
+	rqazh0Mu5Muwcqotj/APRgHrvzUwwxtbXocksEP0dIlSaK6jarbrHJz5W4J8kHPph1pyQuZhhuX
+	Uw1iIyuow9QdtHogd87VyU98EvQVGg/iH0MnDiJlOa5HpAf0uZCRBhKmJQR1K+tVzNsan+nwiaN
+	/MrqgqI4TszfbfzsY7jaXwhsA7dbhnqxqqSblWugvrTm9tFnZJqrYZF/Bn9mK0zyCeEjdgRuMdN
+	Fiq16Zu1ifbpxYJ4tHnHM2UOsAQd9n0xhGUPQmj3C/R6BIRW6dQcO9bwaiYLslTh0HrIlnjJBg0
+	CtGxSn1rC0uWUY+B2llzPzW4UfiY1wvWCCOV8bT+6Ibzev2+7eTFGINU/TwhC/M9FCX79SAZyPL
+	Ki39dV3tfrqwlQeXyJ9VkZw9AZFsXFVxtRkJZAsYT0GZvBOEWGCBh84NZ370+EuyA11luTvB5X/
+	4T8G6wGuGP0eo5buH3lY3uMez7ll0gznb5dukF/CxA=
+X-Received: by 2002:a05:622a:480b:b0:50b:2876:586 with SMTP id d75a77b69052e-514619ddc56mr310925521cf.5.1778455039551;
+        Sun, 10 May 2026 16:17:19 -0700 (PDT)
 Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e830ddfsm75015031cf.27.2026.05.10.16.17.17
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e830ddfsm75015031cf.27.2026.05.10.16.17.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 16:17:17 -0700 (PDT)
+        Sun, 10 May 2026 16:17:19 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Mika Westerberg <westeri@kernel.org>,
 	linux-usb@vger.kernel.org
@@ -87,9 +87,9 @@ Cc: Andreas Noever <andreas.noever@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v4 2/4] thunderbolt: property: reject dir_len < 4 to prevent size_t underflow
-Date: Sun, 10 May 2026 19:16:57 -0400
-Message-ID: <20260510231715.2215605-2-michael.bommarito@gmail.com>
+Subject: [PATCH v4 3/4] thunderbolt: property: cap recursion depth in __tb_property_parse_dir()
+Date: Sun, 10 May 2026 19:16:58 -0400
+Message-ID: <20260510231715.2215605-3-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.v4.git.michael.bommarito@gmail.com>
 References: <20260415123221.225149-1-michael.bommarito@gmail.com> <cover.1777817011.git.michael.bommarito@gmail.com> <cover.v4.git.michael.bommarito@gmail.com>
@@ -100,21 +100,21 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 98852506C9F
+X-Rspamd-Queue-Id: 4D206506C98
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245087-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245086-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -130,36 +130,26 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On the non-root path, __tb_property_parse_dir() takes dir_len from
-entry->length (u16 widened to size_t).  Two distinct OOB conditions
-follow when entry->length < 4:
+A DIRECTORY entry's value field is used as the dir_offset for a
+recursive call into __tb_property_parse_dir() with no depth counter.
+A crafted peer that chains DIRECTORY entries into a back-reference
+loop drives the parser until the kernel stack is exhausted and the
+guard page fires.  Any untrusted XDomain peer (cable, dock, in-line
+inspector, adjacent host) that reaches the PROPERTIES_REQUEST
+control-plane exchange can trigger this without authentication.
 
-1. The non-root path begins with kmemdup(&block[dir_offset],
-   sizeof(*dir->uuid), ...) which always reads 4 dwords from
-   dir_offset.  tb_property_entry_valid() only enforces
-   dir_offset + entry->length <= block_len, so a crafted entry
-   with dir_offset close to the end of the property block and
-   entry->length in 0..3 passes that gate but lets the UUID copy
-   run off the block (e.g. dir_offset = 497, dir_len = 3 in a
-   500-dword block reads block[497..501]).
+Thread a depth counter through tb_property_parse() and
+__tb_property_parse_dir(), and reject blocks that exceed
+TB_PROPERTY_MAX_DEPTH = 8.  That is comfortably larger than any
+observed legitimate XDomain layout.
 
-2. After the kmemdup, content_len = dir_len - 4 underflows size_t
-   to ~SIZE_MAX, nentries becomes SIZE_MAX / 4, and the entry
-   walk runs OOB on each iteration until an entry fails
-   validation or the kernel oopses on an unmapped page.
-
-Reject dir_len < 4 on the non-root path *before* the UUID kmemdup,
-which closes both holes.
-
-Also move INIT_LIST_HEAD(&dir->properties) up to immediately after
-the dir allocation so the new error-return path (and the existing
-uuid-alloc failure path) calling tb_property_free_dir() sees a
-walkable list rather than the zero-initialized NULL next/prev that
-list_for_each_entry_safe() would oops on.
+Operators who do not need XDomain host-to-host discovery can disable
+the path entirely with thunderbolt.xdomain=0 on the kernel command
+line.
 
 Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
 Cc: stable@vger.kernel.org
@@ -167,39 +157,82 @@ Assisted-by: Claude:claude-opus-4-6
 Assisted-by: Codex:gpt-5-4
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
- drivers/thunderbolt/property.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/property.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/thunderbolt/property.c b/drivers/thunderbolt/property.c
-index 29cd60c11ac4..74c92f9801ff 100644
+index 74c92f9801ff..da2c59a17db5 100644
 --- a/drivers/thunderbolt/property.c
 +++ b/drivers/thunderbolt/property.c
-@@ -174,10 +174,16 @@ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+@@ -35,10 +35,11 @@ struct tb_property_dir_entry {
+ };
+ 
+ #define TB_PROPERTY_ROOTDIR_MAGIC	0x55584401
++#define TB_PROPERTY_MAX_DEPTH		8
+ 
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+ 	size_t block_len, unsigned int dir_offset, size_t dir_len,
+-	bool is_root);
++	bool is_root, unsigned int depth);
+ 
+ static inline void parse_dwdata(void *dst, const void *src, size_t dwords)
+ {
+@@ -97,7 +98,8 @@ tb_property_alloc(const char *key, enum tb_property_type type)
+ }
+ 
+ static struct tb_property *tb_property_parse(const u32 *block, size_t block_len,
+-					const struct tb_property_entry *entry)
++					const struct tb_property_entry *entry,
++					unsigned int depth)
+ {
+ 	char key[TB_PROPERTY_KEY_SIZE + 1];
+ 	struct tb_property *property;
+@@ -118,7 +120,7 @@ static struct tb_property *tb_property_parse(const u32 *block, size_t block_len,
+ 	switch (property->type) {
+ 	case TB_PROPERTY_TYPE_DIRECTORY:
+ 		dir = __tb_property_parse_dir(block, block_len, entry->value,
+-					      entry->length, false);
++					      entry->length, false, depth + 1);
+ 		if (!dir) {
+ 			kfree(property);
+ 			return NULL;
+@@ -163,13 +165,17 @@ static struct tb_property *tb_property_parse(const u32 *block, size_t block_len,
+ }
+ 
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+-	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root)
++	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root,
++	unsigned int depth)
+ {
+ 	const struct tb_property_entry *entries;
+ 	size_t i, content_len, nentries;
+ 	unsigned int content_offset;
+ 	struct tb_property_dir *dir;
+ 
++	if (depth > TB_PROPERTY_MAX_DEPTH)
++		return NULL;
++
+ 	dir = kzalloc_obj(*dir);
  	if (!dir)
  		return NULL;
- 
-+	INIT_LIST_HEAD(&dir->properties);
-+
- 	if (is_root) {
- 		content_offset = dir_offset + 2;
- 		content_len = dir_len;
- 	} else {
-+		if (dir_len < 4) {
-+			tb_property_free_dir(dir);
-+			return NULL;
-+		}
- 		dir->uuid = kmemdup(&block[dir_offset], sizeof(*dir->uuid),
- 				    GFP_KERNEL);
- 		if (!dir->uuid) {
-@@ -191,8 +197,6 @@ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
- 	entries = (const struct tb_property_entry *)&block[content_offset];
- 	nentries = content_len / (sizeof(*entries) / 4);
- 
--	INIT_LIST_HEAD(&dir->properties);
--
+@@ -200,7 +206,7 @@ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
  	for (i = 0; i < nentries; i++) {
  		struct tb_property *property;
  
+-		property = tb_property_parse(block, block_len, &entries[i]);
++		property = tb_property_parse(block, block_len, &entries[i], depth);
+ 		if (!property) {
+ 			tb_property_free_dir(dir);
+ 			return NULL;
+@@ -239,7 +245,7 @@ struct tb_property_dir *tb_property_parse_dir(const u32 *block,
+ 		return NULL;
+ 
+ 	return __tb_property_parse_dir(block, block_len, 0, rootdir->length,
+-				       true);
++				       true, 0);
+ }
+ 
+ /**
 -- 
 2.53.0
 
