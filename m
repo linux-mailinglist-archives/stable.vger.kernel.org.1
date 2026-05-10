@@ -1,148 +1,191 @@
-Return-Path: <stable+bounces-245073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id XOQOMlvxAGrxOgEAu9opvQ
-	(envelope-from <stable+bounces-245073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 22:58:03 +0200
+	id GM4vHJD0AGqMOwEAu9opvQ
+	(envelope-from <stable+bounces-245074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:11:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AE35065D7
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 22:58:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5FBD5066B8
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 965B7300902B
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 20:57:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 260973020A6E
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 21:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330FF33689C;
-	Sun, 10 May 2026 20:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4A833B95E;
+	Sun, 10 May 2026 21:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ZzEosxeQ"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="YCSMJhEt"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460813043CE;
-	Sun, 10 May 2026 20:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778446676; cv=none; b=kxPLkdGVvvZBAoUzSekw4hVuDD57U0sDcyLC5AYpREUQu7E2LHj1lOHNAmMEXA3cbAl/Thg4mwmN4nWmuwoHxt9ivJJTzDCJEDl90wlK0Bh8uKid+w71KTtT7EUm8UN/Ge1JJuyt06cC78jMqjoyDCfA62g2VanO6n45OqjFvn4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778446676; c=relaxed/simple;
-	bh=U3XG11g75IcTjdRGvwT9tM9l7i7M8yifd56uOB36Wsk=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=uKBPkhlFLyGFoi4F8LH+NTUgPsMuh1TMjxo8mOuGRQ46izWQ2Ie7aPRqMAXgxsKL2OgBpQ107WbADin7blRvmoXEIAqsmy0sCfWBONskdcM8Ggd4VGQXuMYIby02XsDxfjB4S1nMI4cZNpGnjqJhftCQCkvDOATTbxlN03Fmob8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ZzEosxeQ; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gDFYT6Sztz9t8W;
-	Sun, 10 May 2026 22:57:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1778446670;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JhbkDIgXOs/Y9f4bIfEtVjnIvM/A/84iZ7rQjx1TFrs=;
-	b=ZzEosxeQ3kh0XSwlKI+79DS079iUxOiXPGpsqiiu79VPMcXIjnn26+3ubtGlQCgjHJsxkk
-	EagOTRR+b9+YR6JzYKeh3yrsgHRPvCKwOyzmgvekp+og5URxGpm0gEKy+qE5VmF97gYUnF
-	r8QkOgPbhElyJAF+XF0+cbNdv5g7ykd1ps+ahQsaV2zt2OPVd7pAhjEyQq22UAmynCTG1s
-	1p1LMZVj++ljAKqkP63C8yDP5YJUiiO575O7AFrB3cVuW/OdPTIR5PGwiIioVPj2Y36KmJ
-	xW06mZmYzxRZG5WcxFocCOSECYNPKksU4u0RDRmN7ZUtZEuXWeRi6ZYpv5jN6Q==
-Message-ID: <04657838-46d1-432d-95e1-eb73b930b032@mailbox.org>
-Date: Sun, 10 May 2026 22:57:46 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1443254B3;
+	Sun, 10 May 2026 21:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778447496; cv=pass; b=R8z5Duy3JguO58qJy35YW1NPp1xsc2X2N4I24DXGo7wHvL506OJt8dOrDO1C6TVy62KDAKxLaAeEzqZFBdu+wHDOIXEfL3qTRZTLo1np1KlS7n22l4UiV4WXQJ7lb9BuP3RFK5Xtt5OJuohOz7DBXI45E+RO1RLLPumbz0M2Mv4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778447496; c=relaxed/simple;
+	bh=YykXtioms2na/6ou6mHxW3mlKFXNYklrDeZ6wHNJgJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t5nR4VWMAhB95kgosK3W3phm5VDJ3pK4F3YZmhcmu53fIhn+ZSSuBlkXfLugCJLyYbapYfoZmyyJPORKhSkbb3a0Z3xqHzSAHsJLWu62/kvRZu5ch0XPn6Q3olN+rbNo/GgozWguzTNl0r2CGZDWj9CWmOmptWvmJDaXoPno+SY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=YCSMJhEt; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1778447473; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=m3hSG6VFA+VMKYC8uPHLLw+wZYxxe9fYN8ypjfVbDkigy4DKmO12uvbuxZ3FA8D9y/0lm5vQ5OwZGGw1ObfkaViBdz4nbuhTQz1UErSc1BYMDopo+8iqO1y/SUo8M0FGHNvX8HsXT+WCTOpcqw8B6Tdofyd0OQF2VKyfjR2A0uQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1778447473; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dC+SQBvHA00jKA55ndpglBB83kxP2d4e2FYSPidsICs=; 
+	b=kkSx1L5UJJ8bV7RIPevje+2oDORYVMfNuawEG5Afp4WyPIIOSuyYG3WIqfa+KTecYPxOpSgT+8wsL5YPULdy7JMqCtvnH5M3AykccFeLitMf7V+SmxgF8eqlEp9S3B2vGBWgh5MeJfNzvTAl4XBe3FZu47FgNLWmp1ScgpsyOiY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778447473;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=dC+SQBvHA00jKA55ndpglBB83kxP2d4e2FYSPidsICs=;
+	b=YCSMJhEtdE86ILIB75QrvWALkfFwT7oSr+tZzZkTC8HGMiTMuOoDVMOfWxkzDc+l
+	nrxJLX92/a4dI86I+cXxe1KfyKnDXJfBep7BXqWhPA/rHIU2kUe6aTdHE4GlDhrYauL
+	YhQVdOa4/Wpwx1RYBH8K31mtabAXxEntI2AY4jaE=
+Received: by mx.zohomail.com with SMTPS id 1778447470381353.01025610308295;
+	Sun, 10 May 2026 14:11:10 -0700 (PDT)
+Message-ID: <e1741cf2-3416-4464-bcae-741f0c87448b@collabora.com>
+Date: Mon, 11 May 2026 00:11:03 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/virtio: check virtio_gpu_array_lock_resv() return in
+ cursor update
+To: Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
+ kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ simona@ffwll.ch, sumit.semwal@linaro.org, christian.koenig@amd.com
+Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org,
+ syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260510053025.100224-1-kartikey406@gmail.com>
 Content-Language: en-US
-To: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
- <juri.lelli@redhat.com>, Sasha Levin <sashal@kernel.org>
-Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
- linux-rt-users@vger.kernel.org
-From: Lukas Beckmann <lbckmnn@mailbox.org>
-Subject: [REGRESSION] 6.12.y: d66792919d4f (sched/deadline: Use revised wakeup
- rule for dl_server) causes latencies up to 50ms with PREEMPT_RT
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20260510053025.100224-1-kartikey406@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: 819ydxywk7c5su85wrfixtgzefupgtru
-X-MBO-RS-ID: 69f2eb288b23dbea7ee
-X-Rspamd-Queue-Id: 35AE35065D7
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: C5FBD5066B8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245073-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245074-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org,amd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lbckmnn@mailbox.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mailbox.org:mid,mailbox.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:mid,collabora.com:dkim]
 X-Rspamd-Action: no action
 
-Hi,
+Hello,
 
-I am reporting a regression which was introduced by d66792919d4f on 6.12.y.
-Since this commit, cyclictest reports latencies up to 50 milliseconds, 
-on kernels with CONFIG_PREEMPT_RT=y.
+On 5/10/26 08:30, Deepanshu Kartikey wrote:
+> virtio_gpu_cursor_plane_update() calls virtio_gpu_array_lock_resv()
+> but ignores its return value. The function can fail in two ways:
+> 
+>   - dma_resv_lock_interruptible() returns -ERESTARTSYS when a signal
+>     is delivered while waiting for the reservation lock.
+>   - dma_resv_reserve_fences() returns -ENOMEM if it fails to allocate
+>     a fence slot; in this case lock_resv unlocks before returning.
+> 
+> In both cases the resv lock is not held on return. The cursor path
+> proceeds to queue a fenced transfer command. The queue path then
+> walks the object array and calls dma_resv_add_fence() on the cursor
+> BO's reservation. dma_resv_add_fence() requires the resv lock to be
+> held; with lockdep enabled the missing lock trips
+> dma_resv_assert_held():
+> 
+>   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
+>   Call Trace:
+>    virtio_gpu_array_add_fence+0xcd/0x140
+>    virtio_gpu_queue_ctrl_sgs
+>    virtio_gpu_queue_fenced_ctrl_buffer+0x578/0xfb0
+>    virtio_gpu_cursor_plane_update+0x411/0xbc0
+>    drm_atomic_helper_commit_planes+0x497/0xf10
+>    ...
+>    drm_mode_cursor_ioctl+0xd4/0x110
+>    drm_ioctl+0x5e6/0xc60
+>    __x64_sys_ioctl+0x18e/0x210
+> 
+> Beyond the WARN, mutating the dma_resv fence list without the lock
+> races with concurrent readers/writers and can corrupt the list.
+> 
+> Check the return value of virtio_gpu_array_lock_resv(). On failure,
+> drop the references taken by virtio_gpu_array_add_obj() with
+> virtio_gpu_array_put_free() (which does not unlock, matching the
+> not-locked state) and return without queueing the command. A
+> skipped cursor frame is harmless; the WARN and the underlying race
+> are not.
+> 
+> The bug was reported by syzbot, triggered via fault injection
+> (fail_nth) on the DRM_IOCTL_MODE_CURSOR path, which forces the
+> -ENOMEM branch in dma_resv_reserve_fences().
+> 
+> Reported-by: syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=72bd3dd3a5d5f39a0271
+> Fixes: 5cfd31c5b3a3 ("drm/virtio: fix virtio_gpu_cursor_plane_update().")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+>  drivers/gpu/drm/virtio/virtgpu_plane.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
+> index a126d1b25f46..ca379b08b9ec 100644
+> --- a/drivers/gpu/drm/virtio/virtgpu_plane.c
+> +++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
+> @@ -459,7 +459,10 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
+>  		if (!objs)
+>  			return;
+>  		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+> -		virtio_gpu_array_lock_resv(objs);
+> +		if (virtio_gpu_array_lock_resv(objs)) {
+> +			virtio_gpu_array_put_free(objs);
+> +			return;
+> +		}
+>  		virtio_gpu_cmd_transfer_to_host_2d
+>  			(vgdev, 0,
+>  			 plane->state->crtc_w,
 
-Steps to reproduce:
-1. run a load (e.g. stress-ng --cpu 4 --io 2 --vm 2 --vm-bytes 128M)
-2. run cyclictest (e.g. cyclictest -a -t -m -p 80 -i 250 -d 0)
+Thanks for the patch. Atomic update shouldn't fail due to non-critical
+errors like on a signal interrupt. Could you please move this code that
+may fail in update() to .prepare/cleanup_fb() callbacks?
 
-cyclictest results on the current linux-6.12.y branch (tag v6.12.87):
-# /dev/cpu_dma_latency set to 0us
-policy: fifo: loadavg: 9.37 9.21 6.90 9/211 978
-T: 0 ( 884) P:80 I:250 C:4688252 Min: 3 Act: 6 Avg: 6 Max: 51956
-T: 1 ( 885) P:80 I:250 C:4688051 Min: 3 Act: 7 Avg: 6 Max: 50106
-T: 2 ( 886) P:80 I:250 C:4688242 Min: 3 Act: 6 Avg: 6 Max: 51965
-T: 3 ( 887) P:80 I:250 C:4688434 Min: 3 Act: 12 Avg: 8 Max: 59
-
-cyclictest results on 6.12.y with d66792919d4f reverted:
-# /dev/cpu_dma_latency set to 0us
-policy: fifo: loadavg: 9.43 9.50 9.44 8/204 5758
-T: 0 ( 862) P:80 I:250 C:272329322 Min: 3 Act: 6 Avg: 6 Max: 57
-T: 1 ( 863) P:80 I:250 C:272329324 Min: 3 Act: 7 Avg: 6 Max: 77
-T: 2 ( 864) P:80 I:250 C:272329322 Min: 3 Act: 7 Avg: 6 Max: 68
-T: 3 ( 865) P:80 I:250 C:272329322 Min: 3 Act: 16 Avg: 7 Max: 81
-
-This is reproducible on multiple machines.
-
-It looks like the timer fires and there is also a sched_waking event in 
-the trace, but the cyclictest thread does not get scheduled for another 
-50ms.
-
-I found this, because Debian updated its rt kernel from 6.12.74 to 6.12.85.
-The issue was also present with upstream 6.12.85 and HEAD, but not with 
-6.12.74, so I started bisecting and eventually found d66792919d4f.
-
-Is it possible to revert the commit?
-
-I can provide traces or help with testing if needed.
-
-Thanks
-Lukas Beckmann
-
-#regzbot introduced: d66792919d4f
-
+-- 
+Best regards,
+Dmitry
 
