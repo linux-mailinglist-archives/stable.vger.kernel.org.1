@@ -1,280 +1,249 @@
-Return-Path: <stable+bounces-245009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJtCFmcnAGrkDgEAu9opvQ
-	(envelope-from <stable+bounces-245009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 08:36:23 +0200
+	id uFE7ED4pAGotDwEAu9opvQ
+	(envelope-from <stable+bounces-245010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 08:44:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92BC502CB6
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 08:36:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998FA502D36
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 08:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C75DA3005596
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 06:36:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5B52300FEE1
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 06:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A954135BDCE;
-	Sun, 10 May 2026 06:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE60D35DA4A;
+	Sun, 10 May 2026 06:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EEGpFHB7"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="MQoIOTvB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010017.outbound.protection.outlook.com [52.103.72.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288D42628D
-	for <stable@vger.kernel.org>; Sun, 10 May 2026 06:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778394980; cv=none; b=lp1SYQDIsMAPBuAKodFTRL2Z6f8AaELb9+ORJ2Udh/LEO/TRBbXQY7FgjEo0pr3zUwq21laV1y1Lf0tXv4cP5zgdb7Hi3fHsNAd4DPKTQu2eF1GxVNWFpxhHnraYKbe/FCCNsbwY+PRjS3TBaXpE2ftPgicxdT+UyXz9ey2oxE4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778394980; c=relaxed/simple;
-	bh=phdnQxRsFNGzKAcu/4enEnu/G9ERVK1WGTbPg6FbUOo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=B3HPHKwtUGRxk/UrNgNrJXjT4ux8SRCSnkPzgVIOeQ3d+CnmALGsuu6L5l655FT42J2RgglSCI8GJCoVVd5mEcrKbe0A4jQzDmSk0UFLnbNV6CNawfgGHM1ATfftWcuzdRPpIsIF2kxUU9IgSwQ7cPhZVPbFFd/oaumdINp+ssA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EEGpFHB7; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b461b36990so37088465ad.3
-        for <stable@vger.kernel.org>; Sat, 09 May 2026 23:36:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778394978; x=1778999778; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3aQJiZTRBJkBFZ975taZr8YJVOyVprFYSJVw8C+91Rk=;
-        b=EEGpFHB7hgOWisUab5fuBgHikJsPBDGMWZVyKFieo9qsBTK34jPDeGWCryYLyjP/SB
-         UUNHx0a/46RbmQAQOm/lbA4rFQeDy2nTq0tE3oT37x9jQ6dpqKMJ/jnMUEHgdYFnDWQR
-         Fm+YKNWq9E5fHpPY0g584J5GTdPTBXXZ8cMNybQaj0Z+U3AVskXetx1pEMq18oNfzk2R
-         W0j0V/ZDSo2slWVUATRgYzxqxIXhE8aDg1euxiFW5+WFkNqw2jvriRcwpVEcCU0raeWX
-         Uhf5gSujk3lrSOb+g8l2Wux7lnh9Lj0h+rqao1Ako3eEfOhxbglDkmp6g4+bSCOGDn81
-         6sMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778394978; x=1778999778;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3aQJiZTRBJkBFZ975taZr8YJVOyVprFYSJVw8C+91Rk=;
-        b=HkkOaFSY1LypbgCPm2CfoJAaVRajuHs+l2+JeMvi2nE2TRfbKFqt9Uay0tyduPt5RW
-         4gTlRykoUnEkFyaW5/cg2LEacIsXGA2N7gOInJwzNtYD+fYhCLVdvuLycx4ruVDCTGyR
-         w00k7oRPJ9QfT0SlSGDu/wpPSqJq10uQ0QDxs5xVJp9wGxTNdt/rzI9VTyhDoOSoGpRy
-         vrrQUyDquOQ3/XMuriSPF5LbMh8ixtd5rAi0Pfq8Tqw0PhY3CgM6vfizQPPim1IxlSqM
-         nRseiHcvR8wYySObVbTT/0fk1jyIpS/J+PwvJZOUiZJUkU6MfTz/ZVVCvXD3I7hgC7Ui
-         Svww==
-X-Forwarded-Encrypted: i=1; AFNElJ8tcIPMhfeIjbqLVfp3OKeROroe1HIcmuFnXGjqzlLWrriICgtVEAp4eoHJU3mNNsWSh1wPNxM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzywIrkek07OJNZN0DHRaO9ldzTAIxjzHOiycIVu+nMSnXb1E66
-	EuQRrCy/ApXg4M4L6oFAE0kdeD1dydfo5ZGqoftiH5pODlFWPkdANkhnAHTJuEpDBhcair3Zl9P
-	tNgp/HknbESPxth+IlysKZPusWQ==
-X-Received: from plkz6.prod.google.com ([2002:a17:902:7086:b0:2ba:8f0:838b])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:388d:b0:2ba:3b71:5814 with SMTP id d9443c01a7336-2baf0d4b827mr90924315ad.18.1778394978235;
- Sat, 09 May 2026 23:36:18 -0700 (PDT)
-Date: Sun, 10 May 2026 06:36:12 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA922628D;
+	Sun, 10 May 2026 06:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778395446; cv=fail; b=PTH85O7LcNI2Ca7+k3ljwHvlMBeOhjoo8hbmjs6kWT3jRmV1YolxcCpXljv8Q4r44NHW+Lt9oaC9ekNQd1P5AV8x8CitaW8JvuktDdGqOQCQEUCYn52zQBFvRvJPKStBNJZbZP6xOnOtwN/ygkF+aEbYH21qxYnjQxsGDD7yzBE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778395446; c=relaxed/simple;
+	bh=dVYi+MwJ58RH5ctFzGIVA7CLG/g9Ux4vs4EojcbR5Ew=;
+	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=AmDQk2ORAYIvv5XAVEpcbGSNd25HYClVITDhaI3JQEamjTOUyRdPu5IOYTF4fsNdfvMJStVaoDTkOxBTv+OHEke785QX74684AyWG6/p0AJuwIIbo0js/D5f0FSMMtGLvYD+kaNFA3BMRwevPQfVdaj31vHC7w5+nZC4w7H6VZA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=MQoIOTvB; arc=fail smtp.client-ip=52.103.72.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J1AchztU5njkNIFw2MvBh74WVFFkkTmE+aWiBejHPcwp42zv/yqTSpDlaurFQoSnBL4nhAkXArS/GaM0RXg9cysRsLvPhbhGh5l0g/3vzO+mqmDGQsnzeZC/2d1l5H+WQex1nzuNJ+50ChjNuAB1sieaS7WSCE1nut8XzQMMpEwaM2mwx2kAVSn99b86jw7M7g6Tle46IZrupuyNytiDEgiAqmuS3ebg7+QEAc5ro/sl1t2lG0mU9MlTVLxIgsz3RxElXQow4pBGt3VYNjaP1mHOoYS1nPRFc1MEySSksIHoY0My9urHOMtpPip12PtuLxxknsv7bwBgmJOe7+Cn6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bze0Gngje9GRivtCDoBtJYxOtyMjbjiSwS1KsIFk+8M=;
+ b=fqsW/ZTLsqTCOnXNLECeeOAUsM5ZUYRmKZHcb5OVqRzuZq2cc6S0mqMRMa8lx6tAbynCD0IXBDA6wE0RSEpl1doWGvmGkYRU2gQ6iG3f6u7PKWuS+UbSoXrZkDhg20J/1ZGmG8lqyHHHtU3783RTqRNGaWNjN597NbR8Y+ctONkbL3sDpw2vCYqN+VSH0+FwZ8tVmGmMaDF9L9ATzh1yKMOeT8VfuaWIVIuQa7UfuJ/rsLGuOtIVuxg3Zh1jxRNj+USrstcVrIoHOpSrdVBZ78q0nMI3+K7ZG3j9mGk0U1YfC3XTui48viSzj1G59L3v1u/MqWqcWsMb4xVTIPRIRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bze0Gngje9GRivtCDoBtJYxOtyMjbjiSwS1KsIFk+8M=;
+ b=MQoIOTvByqT35+/t1OoLzU2wGgwLvUHvMzpMF7AjuqZ+kca5WF7LOXE2QVTCqLTuI632ww/UV+lHtNa1jFIz+KvNzvV81IXPY/W+tIkkSBhNHry1DxH8mM7feU1UbkjHVpQuAdjnJJM6JfnOESd2PGtEXd+iqlbnWNEdjdYtibys88ue6I07aeR64cjr8RB/rNa0b2E5vyeVraX+yVZM36WxGswkaSQ8wb3uXcdnEmWWOCN51VYAInSAhtvy3hnNfWiIQjcui7SXcllfkiGfxe/ANLaN9S+NzbFXOxQUVXcpVM7ojROJyOfBOihMXbB5y8yen8wvIs14wHAS0Gks3w==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SY1PR01MB10628.ausprd01.prod.outlook.com (2603:10c6:10:31b::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Sun, 10 May
+ 2026 06:44:00 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.20.9891.020; Sun, 10 May 2026
+ 06:44:00 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Sun, 10 May 2026 14:43:24 +0800
+Subject: [PATCH] scsi: mpi3mr: fix out-of-bounds write in
+ mpi3mr_bsg_build_sgl()
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID:
+ <SYBPR01MB7881B11E32668EA113475980AF3B2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-B4-Tracking: v=1; b=H4sIAAspAGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDU0MD3bTMitRi3UQj4+S05BRTI9O0VCWg2oKiVLAEUGl0bG0tAOVKLg5
+ XAAAA
+X-Change-ID: 20260510-fixes-a23cfcd525fe
+To: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>, 
+ Kashyap Desai <kashyap.desai@broadcom.com>, 
+ Sumit Saxena <sumit.saxena@broadcom.com>, 
+ Sreekanth Reddy <sreekanth.reddy@broadcom.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Cc: mpi3mr-linuxdrv.pdl@broadcom.com, linux-scsi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Yuhao Jiang <danisjiang@gmail.com>, Junrui Luo <moonafterrain@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1552;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=dVYi+MwJ58RH5ctFzGIVA7CLG/g9Ux4vs4EojcbR5Ew=;
+ b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGLAZN7pRzC/tZnyq5ucvsO6x1RMDzQaK9/OK3S35+m
+ Vr1efE1xeaOUhYGMS4GWTFFluMFl75Z+G7R3eKzJRlmDisTyBAGLk4BmEiGBCPD/9b8RZnbaxdt
+ zu1kZNySKLp4y6VNm++wFE40XTFDSHT5H4a/4vsl96sxZ6mwS0dUqnz8UKHDyPTo1exrvHsv611
+ c4fyRBwC2eEhH
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+X-ClientProxiedBy: TPYP295CA0025.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:a::15) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20260510-fixes-v1-1-554b1ffbb390@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260510063613.1158801-1-joonwonkang@google.com>
-Subject: [PATCH RESEND 6.12.y] mailbox: Fix NULL message support in mbox_send_message()
-From: Joonwon Kang <joonwonkang@google.com>
-To: sashal@kernel.org, stable@vger.kernel.org, jassisinghbrar@gmail.com
-Cc: thierry.reding@gmail.com, jonathanh@nvidia.com, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	joonwonkang@google.com, dianders@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E92BC502CB6
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SY1PR01MB10628:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81ebebfe-122a-43bd-5b9e-08deae5f843c
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|15080799012|23021999003|19110799012|8060799015|5072599009|55001999006|6090799003|5062599005|24021099003|51005399006|24121999003|22091999003|440099028|3412199025|40105399003|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VWxOSFNCa05zNWc3OVhlUlByVk93ZFBiMldyZm9sRDRReG1GMThIY2FpamE4?=
+ =?utf-8?B?VE5oNUZ2dk1BbU44SXlIUGF4K3ZYNnpnTU5CNXlSMkFsZW0rQnpEbWpEL3Zm?=
+ =?utf-8?B?TU5sRG16K2hqVS9tdU5oM3VjVk01ak1VNkNqV3ZmbXZFc29rTXlWUmdZanN2?=
+ =?utf-8?B?QmlKMmQ3QTN6dlBQdEZIUW00RTgxUmZzUWc2ZTRmYzFOT1BVWEZ2NWhDQjJu?=
+ =?utf-8?B?eEZISDJYaUp0ZUYxZCtFQy94clVCYXFyL2d6YlArTGNQVHdQTkdWcEZ3ZS9t?=
+ =?utf-8?B?ZFR6aHM5U2dSWmVKV1Yzd1pqekZVRERvR3VIemtNTGhoRkdadzhVZi9ORWtH?=
+ =?utf-8?B?S21KbEQvbGhVMmh0b0p2cVl2Rm9TQTRHZkx3YmJjLzVEemFwVHJ5MTlWKzhz?=
+ =?utf-8?B?NGI3ZHk2Y2Zjb0NPRXdKNHRyVWFlakJub0ZCMGJWc0lCRGFUODhtNVpUdWEx?=
+ =?utf-8?B?cyt2NjlMK3Z5QzFqNXVVVW1yV1RIVFdZTG10bWE2RVh4bEFDNm1jeTJLbm9M?=
+ =?utf-8?B?cXcyNk1MK1AxaHA4UWtVR0ZscUJnNEdlbENObUhPb3NTeHJOV1RPSUNwSXhF?=
+ =?utf-8?B?M3dUeFQySlNhdm9MdGxRZVkvOUFwRGxoc09JVkNxOGpLc0JHbENxWlNxYi9P?=
+ =?utf-8?B?cUFuZGxSSW53ZTR6VDloOUgrNUN4SFBlNDNSZnp1L2t6TzIyRHdZeVZNdVlS?=
+ =?utf-8?B?ZU9hcklPN1F2TzJ2cVBYT2JXaE4zY2QyNnZneXpUa1k4TFFFVVRsWkUwU044?=
+ =?utf-8?B?SkFZekI0cUkvSTkxVll0dWtFcDBEZTFUemJUUytGWmdtbmR4cUI1T1JJNUxK?=
+ =?utf-8?B?Um5KdzdLa1VqT0d1NFJQZlBkY3JOTmhCTlRKWnRNNDlKODlTU1VXYmx2UUJF?=
+ =?utf-8?B?a25WZXlSSE85NEoxVGVVeUIrZjJFbk5ENXY4VEl5a3VTYzBLdUZjRVo5SVpV?=
+ =?utf-8?B?NTNOMWpSZUQvdnU1S0Z2STFKQmxrZlhKTmJDajlzN2t3bFJUdnF2eW5jSkZT?=
+ =?utf-8?B?UStOV21TM1FmRFlsT3JHNDRuem1JRXg0YUNoaTJjL1dsQ3Y5TGZWY0hxcStI?=
+ =?utf-8?B?RXFRcWlGWFRhZytEdWdBdCs5WFVCWVJUNmJDZm0zRmJmc3MxWGJNYmhhd0sr?=
+ =?utf-8?B?Wk1BdW9HOTMzLzA0aVVyc3gwVWRjQXFvVDlHd3V3WW9SclFJM2dORGtNWG1T?=
+ =?utf-8?B?NDZFbWlkeW1BbzJNSUJSQWVkY0xIcDd5N2ZMeXdBZVp6R3VSeXRrU0NTMUVF?=
+ =?utf-8?B?UjZKTVZKelM4ZXJxdTNYL1RqYjJHemxqRXE1cnllQnBZT0p3QlNHdzFZeWsr?=
+ =?utf-8?B?bE5rbmwvRXZVdjlmQVJoVElkcFh1QWtoUDRubDJ1bW5ZeXJMa21ML3lXSUxt?=
+ =?utf-8?B?cmx2a1A5UE9lOVdHUmFyWGl0SEhXZ051ZXdZV2g2R0NNeG9PbnQrRDByaGV1?=
+ =?utf-8?B?enVuOTBwdTFUaGtCZDVFYzJyM2VuWVQ5R1YwcG80SnBmS0NHOXVGZnFVUnM0?=
+ =?utf-8?Q?4YL3LqkCjwiyu4+N4rWPT0vE1NI?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UWVITHM3VXpZa2xZKzk0ckp3dVdtKzg0djZQQU1nbVRpWkVhNGR3VEg5VjA0?=
+ =?utf-8?B?UGF0S1lTMDdVMENMUkVFVXF3VGFWVUdFcU5URU8zb3F4akQ5WVcrM2NPOWJJ?=
+ =?utf-8?B?eE9aUVZaM1Jlb0gzajg5M205SEgzTC84ZnhuUDhKM2Z5a3JNOFlLTjYvT0Jv?=
+ =?utf-8?B?bHZ6dDlxd3VYeVM5WUdyamwzWDZQZklmOVZMaS9JS3NRWnlvdnFuTXBlMmhN?=
+ =?utf-8?B?dzBYTTU5RTBqOGNTWEcwcC9yMHFvNlI2Z21MeDhUMmNqSStQTGRqM094NU5l?=
+ =?utf-8?B?UWppRG92bzR0WGdIWklQVWYxLzhPanp5Y1ZzQUJlZUVFdEo3b2lGREFxZ2lz?=
+ =?utf-8?B?ZGFTaVZ1ZVFZazJORFk5eVBIa3VzeFFiUi83UFAzQVAvd3dYTTNvcUhndllu?=
+ =?utf-8?B?eXVmOHcybGQrRW0zR0dWK05wdmZpZ09EWVk5SWJIQTNYL3V0N3lPN2Y1YWVp?=
+ =?utf-8?B?UXZXKzcySWE3cDRhVFFqVzZkOVFPOXI1Wm9tNEd5ZkVndExPYlV4R1VQMnQ5?=
+ =?utf-8?B?SURBRm13dk9qa3o3cmJOU2FSNzk2LzNraU5EQnZGbWxDV3JnRmVNNy9ZV0dN?=
+ =?utf-8?B?VFVXcHFadEROYnVZbkNXWDRaV2JPM0tTVnpKbUtnS0RhenRmcU1aaG5BeDZE?=
+ =?utf-8?B?M1J1eVY3RkpTanNncXh2NEc4Sm5sMlNwM1d6WWNjOXlmVDZmdE1EVE5ZcWht?=
+ =?utf-8?B?YXNlT1RZa1NHZjBocG5MTG5xYm1tYnBkNGJweTlXNTRuZWlyNGYzTE1UMFVi?=
+ =?utf-8?B?Z3NCUi9QNGhMQ0o1TGpqWU95OEVyM3RtVzVST1QyWkZ4SU54bWEwQUx5WW5P?=
+ =?utf-8?B?RVhaanAzbVlOcFdqK3NTa0Q4ei8wUVZlSHFJMU4vd1VPNGloaWxxc2F6dWpu?=
+ =?utf-8?B?ajZ2am96b3RweGJXZk5MTjFlY0Y0WTVWWEozMHA4bmhuZjFYaWpJd2NmY0hI?=
+ =?utf-8?B?MEpYUXdIYThjYkhjTkd3ZXo3cTREQlNqRU5rUUF4ZFhFa1BBN3Y3dFR1V2h3?=
+ =?utf-8?B?MDRVVnhYZFoxbFAxR3RSV2JwWlFYNHhVRm5aeTdKa2s2NlI0eSs1RE10Umxv?=
+ =?utf-8?B?OG1UL0ZWTUo5K2pZU1BWb1Q5ZVlzYWVYSHdTUkRUa3QweEZIdVkyR1pLbUV5?=
+ =?utf-8?B?S2g5NWZ2TTFaYzJGbVFWRmc3dTF4bnppWFVWTWpsNzNpRG50YU82SWlDMGMz?=
+ =?utf-8?B?bTc1US81NDFSTktNWDdOcnJqaThUazIzWmZBMzdiV091cVlLOU5CWVE1R2ZC?=
+ =?utf-8?B?SHhMWlZ6KzBWSG1wYktuRlcrWDZaNkVsdDA4d1JkMi8xNWFrTUNWNG5OZGpG?=
+ =?utf-8?B?WHVZVXAyTmR3ZlpTZXQ3R3ZwcjZZOVZzTHc2YnZMYkpYWFh6ekFJcnhNeHQz?=
+ =?utf-8?B?UytNbGtpMEtUQURLenllUnM4bUpRMkZnbUZzRGtSTHBHMzR0UVNLeTAzZXRk?=
+ =?utf-8?B?OTdubTFKZkVOeFNJRzhmNldWenppc0p6ZUcrb2EycVRQck5Tb1FKOTVsUFgr?=
+ =?utf-8?B?UDB2Umd4Y1JpU0RUZGJCbFgrUHpWWXZtbElaY1N0cm8xaW1oeGg1V3RXd3lm?=
+ =?utf-8?B?NHF6ZDdGajhpQU5yMkwxTFo1YmV6MysrcnNxbUVVd3RyUlZjQzJVekFWN0tM?=
+ =?utf-8?B?OUFOYWZTSiszMkpPTGJPOTE3azExbVlJQ1o4QitpMy9JU3BKVDE4UDVjM0Ur?=
+ =?utf-8?B?NVFoMXFqalpGQTBMOEE0cTZNNEo1NU0vaDNMV1V0Rjg5OEZOdExpT0Y4b2V3?=
+ =?utf-8?B?ZnNYRFlqUE5FZ2VyeWFRSzFYWU1qUjc4YVZidzRNblBtMUE2SzFHa1cyUE1j?=
+ =?utf-8?B?Q084UU4xczdLRTlNWVdSdVUyUWcxMHpMUG1qeklESTQ5NkZVYlpDUHYrV2Jy?=
+ =?utf-8?B?ZjVrK1pkNENnY1hjaVhFMDZUR1ZITVlHdHZtRm9MTGJna3c9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81ebebfe-122a-43bd-5b9e-08deae5f843c
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2026 06:44:00.2017
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY1PR01MB10628
+X-Rspamd-Queue-Id: 998FA502D36
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org,google.com,chromium.org];
-	FREEMAIL_TO(0.00)[kernel.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-245009-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245010-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email]
+	FREEMAIL_CC(0.00)[broadcom.com,vger.kernel.org,gmail.com,outlook.com];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,outlook.com:dkim]
 X-Rspamd-Action: no action
 
-From: Jassi Brar <jassisinghbrar@gmail.com>
+In mpi3mr_bsg_process_mpt_cmds(), the RAIDMGMT_CMD path sets kern_buf_len
+to the chain buffer size but leaves bsg_buf_len at the user-supplied
+value. When bsg_buf_len exceeds kern_buf_len, the unsigned subtraction in
+mpi3mr_bsg_build_sgl() underflows available_sges, leading to out-of-bounds
+writes past the chain buffer. The analogous RAIDMGMT_RESP path already
+clamps its buffer length via min(), but the RAIDMGMT_CMD path does not.
 
-commit c58e9456e30c ("mailbox: Fix NULL message support in mbox_send_message()") upstream.
+Fix by clamping bsg_buf_len to kern_buf_len.
 
-The active_req field serves double duty as both the "is a TX in
-flight" flag (NULL means idle) and the storage for the in-flight
-message pointer. When a client sends NULL via mbox_send_message(),
-active_req is set to NULL, which the framework misinterprets as
-"no active request". This breaks the TX state machine by:
-
- - tx_tick() short-circuits on (!mssg), skipping the tx_done
-   callback and the tx_complete completion
- - txdone_hrtimer() skips the channel entirely since active_req
-   is NULL, so poll-based TX-done detection never fires.
-
-Fix this by introducing a MBOX_NO_MSG sentinel value that means
-"no active request," freeing NULL to be valid message data. The
-sentinel is defined in the subsystem-internal mailbox.h so that
-controller drivers within drivers/mailbox/ can reference it, but
-it is not exposed to clients outside the subsystem.
-
-Fifteen in-tree callers send NULL (doorbell-style IPCs on Qualcomm,
-Tegra, TI, Xilinx, i.MX, SCMI, and PCC platforms). All were
-audited for regression:
-
- - Most already work around the bug via knows_txdone=true with a
-   manual mbox_client_txdone() call, making the framework's
-   tracking irrelevant. These are unaffected.
-
- - Poll-based callers (Xilinx zynqmp/r5) are strictly better off:
-   the poll timer now correctly detects NULL-active channels
-   instead of silently skipping them.
-
- - irq-qcom-mpm.c was a pre-existing bug -- the only Qualcomm
-   caller that omitted the knows_txdone + mbox_client_txdone()
-   pattern. Fixed in a companion commit ("irqchip/qcom-mpm: Fix
-   missing mailbox TX done acknowledgment").
-
- - No caller sets both a tx_done callback and sends NULL, nor
-   combines tx_block=true with NULL sends, so the newly reachable
-   callback/completion paths are never exercised.
-
-Also update tegra-hsp's flush callback, which directly inspects
-active_req to wait for the channel to drain: the old "!= NULL"
-check becomes "!= MBOX_NO_MSG", otherwise flush spins until
-timeout since the sentinel is non-NULL.
-
-The only tradeoff is that 'MBOX_NO_MSG' can not be used as a message
-by clients.
-
-Reported-by: Joonwon Kang <joonwonkang@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+Cc: stable@vger.kernel.org
+Fixes: fb231d7deffb ("scsi: mpi3mr: Support for preallocation of SGL BSG data buffers part-2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
- drivers/mailbox/mailbox.c          | 15 ++++++++-------
- drivers/mailbox/tegra-hsp.c        |  2 +-
- include/linux/mailbox_controller.h |  3 +++
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_app.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index b4d52b814055..383c54d353ee 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -59,7 +59,7 @@ static void msg_submit(struct mbox_chan *chan)
- 
- 	spin_lock_irqsave(&chan->lock, flags);
- 
--	if (!chan->msg_count || chan->active_req)
-+	if (!chan->msg_count || chan->active_req != MBOX_NO_MSG)
- 		goto exit;
- 
- 	count = chan->msg_count;
-@@ -97,13 +97,13 @@ static void tx_tick(struct mbox_chan *chan, int r)
- 
- 	spin_lock_irqsave(&chan->lock, flags);
- 	mssg = chan->active_req;
--	chan->active_req = NULL;
-+	chan->active_req = MBOX_NO_MSG;
- 	spin_unlock_irqrestore(&chan->lock, flags);
- 
- 	/* Submit next message */
- 	msg_submit(chan);
- 
--	if (!mssg)
-+	if (mssg == MBOX_NO_MSG)
- 		return;
- 
- 	/* Notify the client */
-@@ -125,7 +125,7 @@ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
- 	for (i = 0; i < mbox->num_chans; i++) {
- 		struct mbox_chan *chan = &mbox->chans[i];
- 
--		if (chan->active_req && chan->cl) {
-+		if (chan->active_req != MBOX_NO_MSG && chan->cl) {
- 			txdone = chan->mbox->ops->last_tx_done(chan);
- 			if (txdone)
- 				tx_tick(chan, 0);
-@@ -257,7 +257,7 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
- {
- 	int t;
- 
--	if (!chan || !chan->cl)
-+	if (!chan || !chan->cl || mssg == MBOX_NO_MSG)
- 		return -EINVAL;
- 
- 	t = add_to_rbuf(chan, mssg);
-@@ -331,7 +331,7 @@ static int __mbox_bind_client(struct mbox_chan *chan, struct mbox_client *cl)
- 	spin_lock_irqsave(&chan->lock, flags);
- 	chan->msg_free = 0;
- 	chan->msg_count = 0;
--	chan->active_req = NULL;
-+	chan->active_req = MBOX_NO_MSG;
- 	chan->cl = cl;
- 	init_completion(&chan->tx_complete);
- 
-@@ -492,7 +492,7 @@ void mbox_free_channel(struct mbox_chan *chan)
- 	/* The queued TX requests are simply aborted, no callbacks are made */
- 	spin_lock_irqsave(&chan->lock, flags);
- 	chan->cl = NULL;
--	chan->active_req = NULL;
-+	chan->active_req = MBOX_NO_MSG;
- 	if (chan->txdone_method == TXDONE_BY_ACK)
- 		chan->txdone_method = TXDONE_BY_POLL;
- 
-@@ -549,6 +549,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
- 
- 		chan->cl = NULL;
- 		chan->mbox = mbox;
-+		chan->active_req = MBOX_NO_MSG;
- 		chan->txdone_method = txdone;
- 		spin_lock_init(&chan->lock);
- 	}
-diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
-index 76f54f8b6b6c..8ef8b444de61 100644
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -497,7 +497,7 @@ static int tegra_hsp_mailbox_flush(struct mbox_chan *chan,
- 			mbox_chan_txdone(chan, 0);
- 
- 			/* Wait until channel is empty */
--			if (chan->active_req != NULL)
-+			if (chan->active_req != MBOX_NO_MSG)
- 				continue;
- 
- 			return 0;
-diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
-index b91379922cb3..1689031c58c9 100644
---- a/include/linux/mailbox_controller.h
-+++ b/include/linux/mailbox_controller.h
-@@ -11,6 +11,9 @@
- 
- struct mbox_chan;
- 
-+/* Sentinel value distinguishing "no active request" from "NULL message data" */
-+#define MBOX_NO_MSG	((void *)-1)
-+
- /**
-  * struct mbox_chan_ops - methods to control mailbox channels
-  * @send_data:	The API asks the MBOX controller driver, in atomic
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
+index 1353a8ff9c85..2e44a734a573 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -2628,6 +2628,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 			       drv_buf_iter->kern_buf_len);
+ 			tmplen = min(drv_buf_iter->kern_buf_len,
+ 				     drv_buf_iter->bsg_buf_len);
++			drv_buf_iter->bsg_buf_len = tmplen;
+ 			rmc_size = tmplen;
+ 			memcpy(drv_buf_iter->kern_buf, drv_buf_iter->bsg_buf, tmplen);
+ 		} else if (is_rmrb && (count == 1)) {
+
+---
+base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+change-id: 20260510-fixes-a23cfcd525fe
+
+Best regards,
 -- 
-2.54.0.563.g4f69b47b94-goog
+Junrui Luo <moonafterrain@outlook.com>
 
 
