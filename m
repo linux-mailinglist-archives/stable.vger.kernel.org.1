@@ -1,132 +1,142 @@
-Return-Path: <stable+bounces-245035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id bJ03CwulAGo8LQEAu9opvQ
-	(envelope-from <stable+bounces-245035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 17:32:27 +0200
+	id UDUVOLOnAGp/LQEAu9opvQ
+	(envelope-from <stable+bounces-245036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 17:43:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D1B504D9C
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 17:32:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD4504E35
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 17:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFA30300A3A8
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 15:32:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B873300767A
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 15:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A0136AB5A;
-	Sun, 10 May 2026 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3A439E6C6;
+	Sun, 10 May 2026 15:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F67ppo9p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqYc4Hp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7BACA4E;
-	Sun, 10 May 2026 15:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F29228A72F
+	for <stable@vger.kernel.org>; Sun, 10 May 2026 15:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778427141; cv=none; b=qoyEfvTges87/dAYieUkuPLZcR4zLpNaciFUWuXpNMtn29GvCA5pfeUZ7zfZQUg2nde0aB0GelR3m4bt1YmzpT21FVk6+ML1ZJSSzhd5BBepIg9Q7UMCBjPyoe5dOmqOzAXDw1hyOPK5v56pUTIL0IL7Bk5X0Xes+pGP+DXgrPI=
+	t=1778427823; cv=none; b=gvLum0vjdsacqyvG/vuUiBw4Cld1AeBj6rgcxhrjwh0OOQSywHFSJI9HjPteLueMTn+fjffrMUTYxFc9dkFEsrLwI7Ko37Xti1VZAtgojTnjkxdhsiVUN1JTVucqpDLjA8cn5fmwPaZomzaCVwl/Y3CbvHx26ihEkDvPXGCKNfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778427141; c=relaxed/simple;
-	bh=IP9ymPdhjEvlsXziBwpZgl3VeAVkIzU9wywqT4QOBtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VceUGhGDVscxs0lwzNcj+GZpPyh3Vp6NrWoH04yOosylnjeL/GMybQWSyLxYlINHYCiVrmz9yKzaWjGniL6onqW3zQHv5Aesgj6MOl7ENaeeM9+m3g8ale+PQIZN4jYSdASE8YanReB+vJuB90/s5Izxz6ivrRZd2EswJBYvHh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F67ppo9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78E7C2BCB8;
-	Sun, 10 May 2026 15:32:18 +0000 (UTC)
+	s=arc-20240116; t=1778427823; c=relaxed/simple;
+	bh=S0bZ8v7nHGKy3hxxgGrd4C5ie1AhyeU7ckT3aaDEdOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SCpvzHROnjgHRMhOSYEYDEEp5fzIdlIWb3x2adUtJ9b6TUr1rHw+dIdxYcQK7RoKligboAPcWoSd8aUSQjm6w25tjsCDBCSpT2QLOtustqssDJ9T2IvooV6d9ORYJHaPdLS5tcSwAQmzTlNpJpDo5UjJutfl3wzxOYvJOaP+QWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqYc4Hp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C458C2BCB8;
+	Sun, 10 May 2026 15:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778427141;
-	bh=IP9ymPdhjEvlsXziBwpZgl3VeAVkIzU9wywqT4QOBtE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F67ppo9pcFhYGh5QQ+R/kDruLnCYONRpYIMakk04BzmRRzyGvDRzYpvPObfZYGyPM
-	 xkwrcKlLXL1U4LyEiqzK4mbmzJtOEyJV464lde8Ahl35J0Tdaj5l+SA8nvmI8TsMT4
-	 PffOXiNV7C3PuVzUen0IEDHSsFXsBfZ1PpvFzt749yUo5YbCOtAYZsY8k/17/wNUOR
-	 udpf1xuOV8namHBU2mcfOY5zHN87Fnm5NsAqtuU64UzDTxlFKbBpFeiPoK1tm4O4c4
-	 uc9aiqEj58jkVfzLO78PXLnTwQenuFb/exRSrr8F7i3PMwaTQMt8222R5nUK1RPEVk
-	 i0deBd1uPN43g==
-Date: Sun, 10 May 2026 16:32:16 +0100
-From: Simon Horman <horms@kernel.org>
-To: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
-	jacob.e.keller@intel.com, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH iwl-net] ice: restore PTP Rx timestamp config after
- ethtool  set-channels
-Message-ID: <20260510153216.GU15617@horms.kernel.org>
-References: <20260507081653.1717172-1-grzegorz.nitka@intel.com>
+	s=k20201202; t=1778427822;
+	bh=S0bZ8v7nHGKy3hxxgGrd4C5ie1AhyeU7ckT3aaDEdOI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tqYc4Hp8DiyXbQzwlmlG2bleNYMnObIJ4n1wbV5zGTI27qx8N8VSaH0O1XrUtba01
+	 T8oNA30alLxEoM9snZ1CqMqucPQH81XZSu+TCRHfITAShZwNWqCvY+6OFnE0zk4dBQ
+	 755yTjyQVUFRYqgPaDui7mDa64C0eysNPBDHGf49cFnG5pNV/gqFELXwaCAdc5xrhf
+	 pQFXBUC2M8d+xCe89R4YkvEnjoW00JTWTpE1hatAMvZ3q5r73/b/87ELhw7KyskHG2
+	 BGBQ6Z7Yr0w7e3PSy+PCvB6b48a/41E6o4fXjW5/c3WUjEz1XDuX7swZGhiBGKCRbZ
+	 DVZQHSAkan0hg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] printk: add print_hex_dump_devel()
+Date: Sun, 10 May 2026 11:43:37 -0400
+Message-ID: <20260510154339.144690-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026050438-conical-landscape-5b4d@gregkh>
+References: <2026050438-conical-landscape-5b4d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260507081653.1717172-1-grzegorz.nitka@intel.com>
-X-Rspamd-Queue-Id: C2D1B504D9C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3BCD4504E35
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245035-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245036-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.osuosl.org,vger.kernel.org,intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linutronix.de:email]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 10:16:53AM +0200, Grzegorz Nitka wrote:
-> When ethtool -L changes queue counts, ice_vsi_recfg_qs() closes and
-> rebuilds the VSI, reallocating Rx rings. The newly allocated rings have
-> ptp_rx cleared, so RX hardware timestamps are no longer attached to skb
-> until hwtstamp configuration is applied again.
-> 
-> Restore timestamp mode after ice_vsi_open() in the queue reconfiguration
-> path, matching reset/rebuild behavior and ensuring newly rebuilt Rx rings
-> have PTP RX timestamping re-enabled.
-> 
-> Testing hints:
-> - run ptp4l application in client synchronization mode:
-> 	 ptp4l -i ethX -m -s
-> - run PTP traffic
-> - change queue number on ethX netdev interface:
-> 	ethtool -L ethX combined new_queue_size
-> - observe ptp4l output
-> - expected result: no "received DELAY_REQ without timestamp" messages
-> 
-> Fixes: 77a781155a65 ("ice: enable receive hardware timestamping")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+[ Upstream commit d134feeb5df33fbf77f482f52a366a44642dba09 ]
 
-FTR: There is an AI-generated review of this patch available on sashiko.dev.
-     I do not believe any of the issues raised there should block progress
-     of this patch.
+Add print_hex_dump_devel() as the hex dump equivalent of pr_devel(),
+which emits output only when DEBUG is enabled, but keeps call sites
+compiled otherwise.
+
+Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 177730a273b1 ("crypto: caam - guard HMAC key hex dumps in hash_digest_key")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/printk.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 344f6da3d4c36..de3f8f774dee9 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -608,6 +608,19 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
+ }
+ #endif
+ 
++#if defined(DEBUG)
++#define print_hex_dump_devel(prefix_str, prefix_type, rowsize,		\
++			     groupsize, buf, len, ascii)		\
++	print_hex_dump(KERN_DEBUG, prefix_str, prefix_type, rowsize,	\
++		       groupsize, buf, len, ascii)
++#else
++static inline void print_hex_dump_devel(const char *prefix_str, int prefix_type,
++					int rowsize, int groupsize,
++					const void *buf, size_t len, bool ascii)
++{
++}
++#endif
++
+ /**
+  * print_hex_dump_bytes - shorthand form of print_hex_dump() with default params
+  * @prefix_str: string to prefix each line with;
+-- 
+2.53.0
+
 
