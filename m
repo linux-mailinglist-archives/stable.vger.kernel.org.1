@@ -1,191 +1,260 @@
-Return-Path: <stable+bounces-245074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GM4vHJD0AGqMOwEAu9opvQ
-	(envelope-from <stable+bounces-245074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:11:44 +0200
+	id +CyYM1/3AGoFPAEAu9opvQ
+	(envelope-from <stable+bounces-245077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:23:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FBD5066B8
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:11:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA2050674D
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 260973020A6E
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 21:11:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A42D3001D72
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 21:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4A833B95E;
-	Sun, 10 May 2026 21:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8F733FE12;
+	Sun, 10 May 2026 21:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="YCSMJhEt"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lw5AgOD2"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012012.outbound.protection.outlook.com [40.107.209.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1443254B3;
-	Sun, 10 May 2026 21:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494E833F394;
+	Sun, 10 May 2026 21:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778447496; cv=pass; b=R8z5Duy3JguO58qJy35YW1NPp1xsc2X2N4I24DXGo7wHvL506OJt8dOrDO1C6TVy62KDAKxLaAeEzqZFBdu+wHDOIXEfL3qTRZTLo1np1KlS7n22l4UiV4WXQJ7lb9BuP3RFK5Xtt5OJuohOz7DBXI45E+RO1RLLPumbz0M2Mv4=
+	t=1778448211; cv=fail; b=dzN2rQSVWynvlbfqp9V0AY9zHSbZMUfrrFZy5Tfjy54+MMsaXz6QNZ7S6zwkTGJOP81ULMVtOSnV3iVxV2wJQ7Yf/ssmC1NTD5XG4jb2KGtP9/MvZJaEN/A8brVd2ug+oeS1XJhR1x6gH5MSP/TnZV31WRNPbQwPDu6dD+sMkhU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778447496; c=relaxed/simple;
-	bh=YykXtioms2na/6ou6mHxW3mlKFXNYklrDeZ6wHNJgJw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t5nR4VWMAhB95kgosK3W3phm5VDJ3pK4F3YZmhcmu53fIhn+ZSSuBlkXfLugCJLyYbapYfoZmyyJPORKhSkbb3a0Z3xqHzSAHsJLWu62/kvRZu5ch0XPn6Q3olN+rbNo/GgozWguzTNl0r2CGZDWj9CWmOmptWvmJDaXoPno+SY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=YCSMJhEt; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1778447473; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=m3hSG6VFA+VMKYC8uPHLLw+wZYxxe9fYN8ypjfVbDkigy4DKmO12uvbuxZ3FA8D9y/0lm5vQ5OwZGGw1ObfkaViBdz4nbuhTQz1UErSc1BYMDopo+8iqO1y/SUo8M0FGHNvX8HsXT+WCTOpcqw8B6Tdofyd0OQF2VKyfjR2A0uQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778447473; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dC+SQBvHA00jKA55ndpglBB83kxP2d4e2FYSPidsICs=; 
-	b=kkSx1L5UJJ8bV7RIPevje+2oDORYVMfNuawEG5Afp4WyPIIOSuyYG3WIqfa+KTecYPxOpSgT+8wsL5YPULdy7JMqCtvnH5M3AykccFeLitMf7V+SmxgF8eqlEp9S3B2vGBWgh5MeJfNzvTAl4XBe3FZu47FgNLWmp1ScgpsyOiY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778447473;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=dC+SQBvHA00jKA55ndpglBB83kxP2d4e2FYSPidsICs=;
-	b=YCSMJhEtdE86ILIB75QrvWALkfFwT7oSr+tZzZkTC8HGMiTMuOoDVMOfWxkzDc+l
-	nrxJLX92/a4dI86I+cXxe1KfyKnDXJfBep7BXqWhPA/rHIU2kUe6aTdHE4GlDhrYauL
-	YhQVdOa4/Wpwx1RYBH8K31mtabAXxEntI2AY4jaE=
-Received: by mx.zohomail.com with SMTPS id 1778447470381353.01025610308295;
-	Sun, 10 May 2026 14:11:10 -0700 (PDT)
-Message-ID: <e1741cf2-3416-4464-bcae-741f0c87448b@collabora.com>
-Date: Mon, 11 May 2026 00:11:03 +0300
+	s=arc-20240116; t=1778448211; c=relaxed/simple;
+	bh=WYK/T9Go5IfJyCZ/FjTGApYiK7a/VktAUzTflCb/0UQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C6J9+O4PntYTtwk36Pg5DiM3hP6DSzLQk1DSFeLmDA7dvcl+JKM5Nl3msvfHPSYwBDaJbM6j1jk0CzaCdwp8mdB8LCF2FFsNf2OPPS4S0Vw80p6LW4J2fIRMHCz5rJ+nJiffKq1IOlifO86AkkbPuTZNIFmUWT4OyKiSzoAWNB0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lw5AgOD2; arc=fail smtp.client-ip=40.107.209.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AtuQHHIakmDO85zTqmf9LQZvXboY4ClpNyculcXFLcUPBQa79AjBuocaDEoabCwnIAzmHbU4lVPM713A83a7bHyTUbUaoPRy5vI1CYVXkAL9bVLghyq7+EHhi1yKB4Op3RjbavB/fkE7UD/f/wqCnedLsnAkphf4v8BzyhI9z9BP3ug68mKpKaXx+98ujimrfUgI98/EgCCRHg4HOQ8YRg94h2TlkbrnSSNXCiyFmPuXelQHOdjvcVsnoMVlkI8ABrD0PpVu+sNXEIrKhW64Ycf4qmcFQPgmIxtJRjbQJLLntCIiNDZRpjQGurkcOGmibuVrtpldsYB+PQrZdLsQdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vtAOu0eFA23o05V5CRmaq8PrJpQx9XPRwAfVORuS8Yo=;
+ b=ORsrQ9hVy8Z+xM84CDY5HVBPFwu5l+hZiQwVv0djRmZZ9exVPFqzTN1QlCb31D088Fy9CNUYJ0or0Ho4guIjbLHXj+uDYXigJ6WpavvHH00wsJkzvYNg5wT8KH5NihU8QtTvTN3lUZBIURbheuLuRiIAFTX7L07x9UGLlawaiWnkNYgRXjqVmuvR27jTWnVLfy/6bQFlvpbyRXBOCuNaqCufrFDgFvcxbqxcZS7jnXp2ALCfix41SdcGjN2TWjN57uLRZw/XjMnmDfcrBZBoKnUqB+JQcyXbuzsTRBdy2zaHyry61hFB74L+dltXYNSCQ0dnYUKnSZZObBv1ZDskiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vtAOu0eFA23o05V5CRmaq8PrJpQx9XPRwAfVORuS8Yo=;
+ b=lw5AgOD2B0wfcoWJIJ01fNUnbBnzI6YdCeVYIKkiQxvUOrJEYm/Z+61qiX/csjl0EESX9wfhx6ZzVJ0LedZLONn0zxWxFG7QUP1e+q0Yb9u4LEvh0YRqpDFb8inK0vs0Z7d3fga6n+Fo5Ts05IpRZko8QTx3Ykdo8ebLc8nf6ya0dXuLVTO/2raZTpLzLyGhqQANHGpRMlwCynM/lRwjJoSnNev9p8lMo+sS0OCRq78yizm3MMRDuaJsqZ5cTeX75gIlruz0BjrczbpcgCRZUkF1StvDICMhSsJsmjWcjpeRcS9ncQQK6hEm0TWkvbjHG3IaF75uQp+bROmI+fR9Hw==
+Received: from MW4PR04CA0337.namprd04.prod.outlook.com (2603:10b6:303:8a::12)
+ by DM3PR12MB9286.namprd12.prod.outlook.com (2603:10b6:8:1ae::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Sun, 10 May
+ 2026 21:23:23 +0000
+Received: from CO1PEPF00012E61.namprd05.prod.outlook.com
+ (2603:10b6:303:8a:cafe::52) by MW4PR04CA0337.outlook.office365.com
+ (2603:10b6:303:8a::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.22 via Frontend Transport; Sun,
+ 10 May 2026 21:23:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CO1PEPF00012E61.mail.protection.outlook.com (10.167.249.70) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Sun, 10 May 2026 21:23:23 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 10 May
+ 2026 14:23:11 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Sun, 10 May 2026 14:23:11 -0700
+Received: from Asurada-Nvidia.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Sun, 10 May 2026 14:23:10 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: <will@kernel.org>, <robin.murphy@arm.com>, <jgg@nvidia.com>,
+	<kevin.tian@intel.com>
+CC: <joro@8bytes.org>, <praan@google.com>, <kees@kernel.org>,
+	<baolu.lu@linux.intel.com>, <miko.lenczewski@arm.com>, <smostafa@google.com>,
+	<linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, <jamien@nvidia.com>
+Subject: [PATCH v5 0/6] iommu/arm-smmu-v3: Fix device crash on kdump kernel
+Date: Sun, 10 May 2026 14:22:59 -0700
+Message-ID: <cover.1778416609.git.nicolinc@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/virtio: check virtio_gpu_array_lock_resv() return in
- cursor update
-To: Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
- kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- simona@ffwll.ch, sumit.semwal@linaro.org, christian.koenig@amd.com
-Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org,
- syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260510053025.100224-1-kartikey406@gmail.com>
-Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20260510053025.100224-1-kartikey406@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: C5FBD5066B8
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E61:EE_|DM3PR12MB9286:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98ca889c-3c3d-420b-5193-08deaeda5df5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700016|1800799024|82310400026|18002099003|56012099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	ZnEctmjsMOzQIOntJUTQEQVxRQHt3Q4f4u3gvxxy5Urrb59BDbfyuZU8JVEIJaXxJxJ0Ltrs6988YrFwT5tr4obWZxcJcD9+BzMg0C6K5q/4ozxudmJiZpd5nWT65KmPKA31QipXcoq7aIxo2Ega615O4vnXkYwlQIEvpQwONqFk9Laqpyhg6rZ7UrskPaCvqyncsR7xzDUomvWMxtX8k8QBPv6h5/WO6ptvC416m7CA7eSxte7HvlsI6Y6JeVJb0lRDvprQ4ZHO8rip96fPToTd2wqnJCcshgDIl7e6VW2m1fchwFWfEf8JApGqBU9mOSzOyOkI2jDYj8u9KAKAP/k4JCm+PVazLOCLpEoOzmxNiHKgw6Xc/1XHzt4f1OCQWMFbwyQ7yN5TQOCRpm03fff8OpQh+5Kd5uHjgvPlTPpIuCir2YgygNd5GkXs+QPXbisAV8n+y94p+XZ8qkXDRwvx5htKlh4Gwnj9ReyjY9M9PO/3fkdb91wLeDgmf1R0aOGagnhZOc4Epya3LhbOyxGD2iY5g52IMs/91V0t4ulQqvf0kYfHCixcmlhJ5TOm9K2wzIqSfdcpgYedXaxXYb2cj/usYuowwyq2VYOvlFisYlD3oiKNrUl+Uts6TVACuBt29XpuLQvNNZ0Ssiy4bRfj12EZiwGiZUF/px+R3D6v1xNS0QeN3+EqWRpHbzwo0LuPwzB0lK8f/mIKGxIdR9e12aEGe62yx5MRXmvAuTg3WoZH7RGXkWnRJnXbgmEG
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(1800799024)(82310400026)(18002099003)(56012099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	aNM+SX3RjGd8UHlEXufyi988XssveuMwO/uV1yYw4qW5x1W9XTYf/6OxgTdxkro/TDK91UlrtWl3SB7WcPgUdd9A3Qtr1c4nDtGY262KuLsrrnOBbg7iHWAg/3aFD/L/YUqwXiARP2DchcQ8m1n9p9UtT3GdmJ1ExZAtGwnnImF/KzTutDDdRAkQMITJAOYlZOEoqBEeakJvoV73cgcLQjyCcmJw3Gb902oMzVNHmwWp+yLpCfs9z3CSm5BDNaXnGCpjfHd5O2/RrOAQ2C3S/A/wqAuawU5uzddNWUWODvu1zBOJk/xRVkAmqvb1houlrEX2ZsgPYxEnVQm4NVxRGbgCz8b6u/RavI4Bna+N/lTt6VF7zRN9+YtN4Ep/YClrLhEdrsb3hwCG37JyVCHwwaz1mRPU4TiELb7sTFBNGm0xeHG8gx/Q5lwfUshh3Na0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2026 21:23:23.4618
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98ca889c-3c3d-420b-5193-08deaeda5df5
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E61.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9286
+X-Rspamd-Queue-Id: 6AA2050674D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245074-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org,amd.com];
+	TAGGED_FROM(0.00)[bounces-245077-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicolinc@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
+	TO_DN_NONE(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:mid,collabora.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,Nvidia.com:dkim];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[9]
 X-Rspamd-Action: no action
 
-Hello,
+When transitioning to a kdump kernel, the primary kernel might have crashed
+while endpoint devices were actively bus-mastering DMA. Currently, the SMMU
+driver aggressively resets the hardware during probe by clearing CR0_SMMUEN
+and setting the Global Bypass Attribute (GBPA) to ABORT.
 
-On 5/10/26 08:30, Deepanshu Kartikey wrote:
-> virtio_gpu_cursor_plane_update() calls virtio_gpu_array_lock_resv()
-> but ignores its return value. The function can fail in two ways:
-> 
->   - dma_resv_lock_interruptible() returns -ERESTARTSYS when a signal
->     is delivered while waiting for the reservation lock.
->   - dma_resv_reserve_fences() returns -ENOMEM if it fails to allocate
->     a fence slot; in this case lock_resv unlocks before returning.
-> 
-> In both cases the resv lock is not held on return. The cursor path
-> proceeds to queue a fenced transfer command. The queue path then
-> walks the object array and calls dma_resv_add_fence() on the cursor
-> BO's reservation. dma_resv_add_fence() requires the resv lock to be
-> held; with lockdep enabled the missing lock trips
-> dma_resv_assert_held():
-> 
->   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
->   Call Trace:
->    virtio_gpu_array_add_fence+0xcd/0x140
->    virtio_gpu_queue_ctrl_sgs
->    virtio_gpu_queue_fenced_ctrl_buffer+0x578/0xfb0
->    virtio_gpu_cursor_plane_update+0x411/0xbc0
->    drm_atomic_helper_commit_planes+0x497/0xf10
->    ...
->    drm_mode_cursor_ioctl+0xd4/0x110
->    drm_ioctl+0x5e6/0xc60
->    __x64_sys_ioctl+0x18e/0x210
-> 
-> Beyond the WARN, mutating the dma_resv fence list without the lock
-> races with concurrent readers/writers and can corrupt the list.
-> 
-> Check the return value of virtio_gpu_array_lock_resv(). On failure,
-> drop the references taken by virtio_gpu_array_add_obj() with
-> virtio_gpu_array_put_free() (which does not unlock, matching the
-> not-locked state) and return without queueing the command. A
-> skipped cursor frame is harmless; the WARN and the underlying race
-> are not.
-> 
-> The bug was reported by syzbot, triggered via fault injection
-> (fail_nth) on the DRM_IOCTL_MODE_CURSOR path, which forces the
-> -ENOMEM branch in dma_resv_reserve_fences().
-> 
-> Reported-by: syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=72bd3dd3a5d5f39a0271
-> Fixes: 5cfd31c5b3a3 ("drm/virtio: fix virtio_gpu_cursor_plane_update().")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
->  drivers/gpu/drm/virtio/virtgpu_plane.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
-> index a126d1b25f46..ca379b08b9ec 100644
-> --- a/drivers/gpu/drm/virtio/virtgpu_plane.c
-> +++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
-> @@ -459,7 +459,10 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
->  		if (!objs)
->  			return;
->  		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
-> -		virtio_gpu_array_lock_resv(objs);
-> +		if (virtio_gpu_array_lock_resv(objs)) {
-> +			virtio_gpu_array_put_free(objs);
-> +			return;
-> +		}
->  		virtio_gpu_cmd_transfer_to_host_2d
->  			(vgdev, 0,
->  			 plane->state->crtc_w,
+In a kdump scenario, this aggressive reset is highly destructive:
+a) If GBPA is set to ABORT, in-flight DMA will be aborted, generating fatal
+   PCIe AER or SErrors that may panic the kdump kernel
+b) If GBPA is set to BYPASS, in-flight DMA targeting some IOVAs will bypass
+   the SMMU and corrupt the physical memory at those 1:1 mapped IOVAs.
 
-Thanks for the patch. Atomic update shouldn't fail due to non-critical
-errors like on a signal interrupt. Could you please move this code that
-may fail in update() to .prepare/cleanup_fb() callbacks?
+To safely absorb in-flight DMA, the kdump kernel must leave SMMUEN=1 intact
+and avoid modifying STRTAB_BASE. This allows HW to continue translating in-
+flight DMA using the crashed kernel's page tables until the endpoint device
+drivers probe and quiesce their respective hardware.
+
+However, the ARM SMMUv3 architecture specification states that updating the
+SMMU_STRTAB_BASE register while SMMUEN == 1 is UNPREDICTABLE or ignored.
+
+This leaves a kdump kernel no choice but to adopt the stream table from the
+crashed kernel.
+
+In this series:
+ - Introduce an ARM_SMMU_OPT_KDUMP_ADOPT
+ - Skip SMMUEN and STRTAB_BASE resets in arm_smmu_device_reset()
+ - Skip EVENTQ and PRIQ setups including interrupts and their handlers
+ - Memremap the crashed kernel's stream tables into the kdump kernel [*]
+ - Defer any default domain attachment to retain STEs until device drivers
+   explicitly request it.
+
+[*] For verification reason, this series only fixes coherent SMMUs.
+
+For non-ARM_SMMU_OPT_KDUMP_ADOPT cases, keep a status quo since the commit
+3f54c447df34f ("iommu/arm-smmu-v3: Don't disable SMMU in kdump kernel"):
+full reset followed by driver-initiated reattach, potentially rejecting any
+in-flight DMA.
+
+Note that the series requires Jason's work that was merged in v6.12: commit
+85196f54743d ("iommu/arm-smmu-v3: Reorganize struct arm_smmu_strtab_cfg").
+I have a backported version that is verified with a v6.8 kernel. I can send
+if we see a strong need after this version is accepted.
+
+This is on Github:
+https://github.com/nicolinc/iommufd/commits/smmuv3_kdump-v5
+
+Changelog
+v5
+ * Add Reviewed-by from Kevin
+ * Drop READ_ONCE on lazy-attach L1 read
+ * Split "Skip EVTQ/PRIQ setup" into two patches
+ * Tighten kdump probe comment and dev_warn message
+ * Use MEM + BUSY in arm_smmu_kdump_phys_is_corrupted
+v4
+ https://lore.kernel.org/all/cover.1777446969.git.nicolinc@nvidia.com/
+ * Rebase v7.1-rc1
+ * s/arm_smmu_adopt/arm_smmu_kdump_adopt
+ * Revert alloc/memremap/fmt on fallback
+ * Reorder patches to avoid bisect regression
+ * Use IRQ_NONE for spurious evtq/priq entries
+ * Cap linear log2size by kdump's allocation bound
+ * Defer clearing FEAT_2_LVL_STRTAB on linear adopt
+ * Add arm_smmu_kdump_phys_is_corrupted() validation
+ * Defer l2 stream table memremap till master inserts
+ * Re-validate L1 desc on master insert with READ_ONCE
+v3
+ https://lore.kernel.org/all/cover.1777150307.git.nicolinc@nvidia.com/
+ * s/OPT_KDUMP/OPT_KDUMP_ADOPT
+ * Do not adopt if GERROR_SFM_ERR
+ * Retain CR0_ATSCHK beside CR0_SMMUEN
+ * Clear latched GERROR bits (e.g. CMDQ_ERR)
+ * Assert ARM_SMMU_FEAT_COHERENCY in adopt functions
+ * Add STE.Cfg check in arm_smmu_is_attach_deferred()
+ * Fix validations on return codes from devm_memremap()
+ * Sanitize crashed kernel register values in adopt functions
+ * Drop unnecessary l2ptrs guard in arm_smmu_is_attach_deferred()
+ * Don't enable PRIQ/EVTQ irqs and guard the irq functions for combined
+   irq cases
+v2
+ https://lore.kernel.org/all/cover.1776286352.git.nicolinc@nvidia.com/
+ * Add warning in non-coherent SMMU cases
+ * Keep eventq/priq disabled v.s. enabling-and-disabling-later
+ * Check KDUMP option in the beginning of arm_smmu_device_reset()
+ * Validate STRTAB format matches HW capability instead of forcing flags
+v1:
+ https://lore.kernel.org/all/cover.1775763475.git.nicolinc@nvidia.com/
+
+Nicolin Chen (6):
+  iommu/arm-smmu-v3: Add arm_smmu_kdump_adopt_strtab() for kdump
+  iommu/arm-smmu-v3: Implement is_attach_deferred() for kdump
+  iommu/arm-smmu-v3: Suppress EVTQ/PRIQ events in kdump kernel
+  iommu/arm-smmu-v3: Skip EVTQ/PRIQ setup in kdump kernel
+  iommu/arm-smmu-v3: Retain CR0_SMMUEN during kdump device reset
+  iommu/arm-smmu-v3: Detect ARM_SMMU_OPT_KDUMP_ADOPT in probe()
+
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |   1 +
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 473 +++++++++++++++++++-
+ 2 files changed, 450 insertions(+), 24 deletions(-)
 
 -- 
-Best regards,
-Dmitry
+2.43.0
+
 
