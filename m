@@ -1,271 +1,188 @@
-Return-Path: <stable+bounces-245067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB3qDv7jAGqIOAEAu9opvQ
-	(envelope-from <stable+bounces-245067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 22:01:02 +0200
+	id UIZ+BRfoAGpaOQEAu9opvQ
+	(envelope-from <stable+bounces-245068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 22:18:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FA50622A
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 22:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676425062D4
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 22:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 600A8300DE0A
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 20:00:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71097300C010
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 20:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9800A32A3FE;
-	Sun, 10 May 2026 20:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4D82F0C7E;
+	Sun, 10 May 2026 20:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eNJAO4iv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KNsOcX9m"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012022.outbound.protection.outlook.com [40.93.195.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120A32494F0;
-	Sun, 10 May 2026 20:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778443255; cv=fail; b=ciWgXcIZEL0clCAXqSWSPj3PZFHlpoZPoSs2BpASG4G4792qcYP1mHjsOygFP92IMKp23Vq29MncobjtfIb1qAlRYoLkHUjCibrtGRUjib/nh0anQslicVbIVEw+Pd1/zJbvDA552c18mMQjEibg+qVTyBRCYebcUvYtRMhaEZQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778443255; c=relaxed/simple;
-	bh=eXRPBuOGI0fvSEj+2F1LNFvFxXyNNRt7pdNcegYWlAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=f1/w4F+M+7I71jOv1gQOkJYO15sYoXTOBlKBGKEceFScZ62+hOdsEPkNl5W+EQK3asOrizNCJ/uQdyA+A5mUhujRUM6KCrKfJSrv/RfVQBNLk4ZLsGebQUEy2zpSSbPX/uOpW2VhI5m+xg5bkdT9Bs/pn3VPw1KIhCEqjUnv5gU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eNJAO4iv; arc=fail smtp.client-ip=40.93.195.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JjuCyJd3WiG6WUsq5FA9cPQuPZFs2avpW4B4kAZDeoEke0VpZ7QW3G8hzQnpNfEXFvuIqLiiVI+sXZdkBUoTTgWrPJqheju5ghr9P+D/KT6cNDIRCDiy7VLwQmz5BFOEmLWbiXbk3Y/pasC7NYhZIaig8aI4dZPetsWxGHZ09DD59RAl83sXI1su65BY7QoFNgPUX2Qo1HDfBmw298wfTDjw4avxwAKYXrjCpqLW87pvoqSdahRUDGUuUSkb3KoZJDaQYP2fIpRb6RqJx0jMS1g+Bc0pxIovLZcf1cze+7f7p/ECe/IsKBiOB/JXtsqrskq0TIOnV6QLJftCuWxXfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1smsuae30AjyQc9/YbEBjSa9uEQuCYZasL7WcDs4TuE=;
- b=Znzeer0UffgOg/phkYgFpQVzGlzSVbrjBwra8Ma1nwHUReC49o/MkqUvqmmtQba+UDyUSH9+S38DYtf3V9Yr/+4tzLciLu4x9Zqw1Al42m0oOXS7XhyRbib2FkzmNu+3NlAXOznnQ9HXM5y/skBWtK4k499h7oXAC7Z8XM5FGJrp4WLaGrrmNOQLwjnqrO9KWSwvhU8paVqUFY4t4753DmKlqzLFVX7eCOD7hHAz1tZh5bzCDEIhDNPCKX0maef38zZwkc3YwvUkTdKCE5Ll15HEy9K2p24yIpc42UymoYTpARU0DdjO2pzRLY5nJR67tZp15Z49sA0tsYJc609zdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1smsuae30AjyQc9/YbEBjSa9uEQuCYZasL7WcDs4TuE=;
- b=eNJAO4ivlhTnIXuyQKDY2GBX0q5ZeZZUGu89fHd1o56aKmkcxreDqUblVuvygMDVC9v9eTU+qOZbPJVvH7houPkI47DNnwEpxNOxFJrprf2VlNiB+qY1+aWVG/9AL1M+hP/zo4q/5VMUXSx/Ew0PAJqXWH4T5nvsTBSU6FlJYoBdJYQpwIJpSevhJbG9A2KcNmTIbpxgbDtvq3+En+l18y9HeO5vGp3AmP+7NTOG7dPQywqA02xXOn7s9ueMLqEHO/vhHbzNf3ENQ1MY3EEZKlkLluYQQka2Yg1Zwa2n9W5Y6cD4EmSrgf1u5J+OxKsV0o5JnQohdJWTVHen5dXeMA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by DM4PR12MB7645.namprd12.prod.outlook.com (2603:10b6:8:107::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Sun, 10 May
- 2026 20:00:49 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9891.021; Sun, 10 May 2026
- 20:00:49 +0000
-Date: Sun, 10 May 2026 16:00:46 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: mana: Optimize irq affinity for low vcpu
- configs
-Message-ID: <af4X_52txN28b9RV@yury>
-References: <20260429090640.1790104-1-shradhagupta@linux.microsoft.com>
- <afTTPLClWwIMWTOh@yury>
- <afYMN6vbiX7Rzss+@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <afYxOPL4DNjXM7tL@yury>
- <afmK531eRcPCecKm@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <afoQHm28qj8JnKww@yury>
- <af15yfdotzVbK8Kb@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af15yfdotzVbK8Kb@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-X-ClientProxiedBy: BN9PR03CA0383.namprd03.prod.outlook.com
- (2603:10b6:408:f7::28) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6E025A2A4
+	for <stable@vger.kernel.org>; Sun, 10 May 2026 20:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778444306; cv=none; b=BXiJBqsnB3FTE8K11iPEKup3bQWJAy9RTn96ghz/rfs59q3/KQL3+CmjHjkSwD5jRp+TQNGIwRhVDr7fAxJjCMF81WyH3WHpWyWy/TAaDahbvfThviMI6vqsT6i9HtPOuRWpz2nBb23epZ3IojlyFjnhmqId4hx3Hdll4I9YfPY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778444306; c=relaxed/simple;
+	bh=no/1qeHJkclP/vqyRMHVtp/AFnakt9WfqICbC12BM5g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ptV6yRFx7Wtw2m1SL/azJwM9p64TGqFaZQskYgKS983vbF5TzsaxFUb6Sc7FolkhgK9pHE25YvMQTIZZDoUjCHAkwtoQWfqJ8zUPwWuCIiP/1BJ97orsefCHElEikZI47vXDgi20Wz5BRMNIxsq4UYFxZMXjAdS7LMWujixlnB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KNsOcX9m; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8b7105dfb35so37977926d6.3
+        for <stable@vger.kernel.org>; Sun, 10 May 2026 13:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778444304; x=1779049104; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K67pIs/nY03A+3XziFzgPYzBlsoSwWL+5glnFKhN0Ic=;
+        b=KNsOcX9mOEDPDam2QjjM6c90iLxrqDMQNOgN7akxUD9yRAZh9safcSjsHBnT9ZGJCw
+         Q8R9Qz9SYgYXnNJ0/5Ru6t9mJw9Ntw7OQ4BzMrxGqr448iFPZ/nU8RoIxnA/VLshftlW
+         wLwxn86VNyXGQt7rKvKNytqRIoCptrjjHFPW4C8gffX5qikodHm0nb3HoPdOOtrzFllz
+         R9tzeajnVb/3rZMj4eWL8gPqUhv94vvOLv27VEguO4onR8qwyGesm1oZ49gcZaaNLULN
+         nj9VzQYtBiz5vAtlvuaWMd5fIv6Tr0VsxfIHSctWn4BCBA4uORgxSiOtKYsaONuRJr8H
+         WfhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778444304; x=1779049104;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K67pIs/nY03A+3XziFzgPYzBlsoSwWL+5glnFKhN0Ic=;
+        b=IXeSdkS+R/aYz7YF/gl58Upd84he0qwfvcPg5FslpwUJF5xMlwuGuOdW3Z8M+vHmp2
+         Ycs9KIjfD5Pc+gQ/WXT29UaFWOhbhzJraqhFw+LM/+/OG+qyXkIDq0IEMkUH/0wcMIVy
+         dy3lcWJ10DcRN4eDWfMz7iok2MZeFYiLTY1TJkbe400WBJ7PJiVGZgUiADFWhj5rXyKj
+         rinMl3jb4zRBi7l6fW2Dk5cQNCmI+6k1b73JoAcA8KNs2bjEfAZTc2k8KKgCn8/5HeeR
+         Lh31PgcasDT0iLHkJnwIkKU6w8xZpxXDZweRn573kw1SxE63fgAJ5G+Rem/7hnmTB11d
+         JK8Q==
+X-Gm-Message-State: AOJu0YwAtm98OYw33cy15NWMon6fBuMyrt+lzcPYBnvuGVgYbPZt86uz
+	s4IY6GqJlYDz6OkEUluGNd1TPhMQLXCme9iif5MRFQyJPwOuN+mncaUhIIQZVGaCs5JAEQ==
+X-Gm-Gg: Acq92OEfS9Jm775ktMg/Q3RndjPuTyJ72ObTj5sqtqLxYpwaOI1DWmiF01RjHbmdUtt
+	A6/cdJLdXWf2VmKNoKj5bG/bypH9Om0DFZ1WcJ8QGPOW7cfl8pjDRtxpGK4feV77H4wHckun9Bk
+	qOTuGzhqxMcT/TV6TK/WJQ1/ONZuYu9qfJfumKd8/b+bXzzSCc80jahO01TfTVxXiMwy1Qy7UGH
+	u4/WOswySbfPe94GdPAJRzgOhHPbS727eXD/y9Igbz4MHEOpXnq6HMpdF1qcO4czgb3zpdGM2/5
+	0Nf2VIufiQcTf4rlPYw9qBymdt01dIItMTOV0mqzbB6KKvNH4HrYd4vfOq6pvmany5lQJDK5mLl
+	5RGrZ2IeuLrPKGZO2uDeSpegfegMF0uJdBeriGPoUkiotkcBoqLrOyGqY6Etxi5dUCA1HzwgINU
+	6qrC7K7MFHjj2CNXiG0TYkCfiJpBw8s2qkG4/Cl8eW9uUaIkQeXR6OEee1gLxZKHZbiE9ZxGoY7
+	BW+S/gis8ByP2Sh/XnLJi1BnkIE
+X-Received: by 2002:a05:6214:5e03:b0:8bd:4bc7:e19 with SMTP id 6a1803df08f44-8bd4bc714d5mr285979606d6.47.1778444304161;
+        Sun, 10 May 2026 13:18:24 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8bf3a43636fsm76040566d6.21.2026.05.10.13.18.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 May 2026 13:18:23 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org,
+	lyude@redhat.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	simona@ffwll.ch,
+	linux-kernel@vger.kernel.org,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v2] drm/dp/mst: fix OOB reads in remote DPCD/I2C sideband reply parsers
+Date: Sun, 10 May 2026 20:17:33 +0000
+Message-Id: <20260510201733.2882224-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|DM4PR12MB7645:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d3eb0ab-c87e-4fa4-b66e-08deaeced4e7
-X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	c+9TSzjenjFPB74khPmyaxsyh5z17KFafA77eQ5Uj4thiE773CwqgI9VSaNf21jx43q2MTNRI1JIBIGYczuYGN7wtxMhpGBGEkdhi4nWvICh6AJFE4RB2LtmYsPYnDAHEG1F7myXdB3Z98MfGdkFE/ZhldLwFf11RVRrVF3yR0OLYMHFi5XNFPRRjcHqdfASn2pvR9IUYdw/XIOiYwJM90hmePD17+fbvJA4HBhNdZ0QLr2PJ/YX6AomAKL+3jyi3fbwv2yuS56IM24ELlsMoGyD1rV2ZKiTYtL5RSpr2SSZJzmAayTp4odx9v9ebNKACKBEOAkx3MOCnx9ccA8Sh4XxQoFcXIRVEHr/LHcgvCMwt6jAyl7N8I91MV/sbjOB+EJgWT6OpP2XKVB2Fe0Lw8m5v47u2LCaNopUSkfCRt8bY/Gr5HjkPykVX6uy+wQ7em94gW6WdQZJPwMSkDv70Aau+MbrrqvS2OBOaf5AFFnSDIQvEZ7cXFqukdc5/hhWG3ErD8QP31A3OJ0pfswrXM9/QM5Pw6H/mH7a27U0kcoBo5EaDYo0hCjnVjv6LKhoMXh9XLXHnlYrt1l9QhjFEq3Oh4UVZjQYmve+kWRgNdBzBaYXZBevN8NGd3hYB8PhkNIL/Pb8tPLw0iDzhUamqF/hzvgi4AUwFlkj0VF+SFE+KpYkEFA07qg1UdOAA1tN
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xF6jHWh91I8a2FJMhZEdkpZQ6f0XHPmFL5EpdejnZ1f8Ivmh/0LTD3voERkT?=
- =?us-ascii?Q?KmZZq9U6W5/Q/XO0PUyQr8d8bYwgzx6tHM8y5YDEuWaWJavi5afiFJfhSPS/?=
- =?us-ascii?Q?rAGwTRG0MKDvZpM0/R3E17WZLawirHUrsbEJHkAlc271lSw7BEJuEXUjkPZK?=
- =?us-ascii?Q?zBlaCTuMXon5PrOkGY3Z9fFhQI2zje5DpEhOK+OR7LpZ1q7+NfPs0t//O9Lt?=
- =?us-ascii?Q?iHXRuOjGpf74Aai54k/32aXMrZI55teNwtmpNe5WQ7/U72o5pzHIRy6XlWoE?=
- =?us-ascii?Q?WSVcUbwKRU7poHQspZ4FaxwMSRnUtTaEvdjlbJoo9V2iEN55z3YJ1699IQSW?=
- =?us-ascii?Q?Co9yBS6SEG1dteCQWe4p5BAUlAgOvqZm0lVKKT8lcTuLHUmO7diCFkq3UfgD?=
- =?us-ascii?Q?pgpPMvKTNmnwpfFBXuwZA0bIdXlpI11o7W2HleU6qPaC0B89OwM/gKRTTeWM?=
- =?us-ascii?Q?2Hiiu9FmcA28TOof3TjOMi4RmJYnfQPqZd1x96VZsilIODB84mosf6I/748d?=
- =?us-ascii?Q?4h4mxmxs6RsAW6pW4gGhyzbHyKTZc7nR/mIV3LQ8bTlRT1N6TYbrLLorICyc?=
- =?us-ascii?Q?n6tXGkFDHafzy/9O3iY5l+67SFLjfm3vzZF7kGlC799yLECeYtnNB/YMCpE3?=
- =?us-ascii?Q?J/qZeY/7BBFssLjhJzj61Jxencd/4B931SsP3hf0Zv07jMhbc544xMMpdUiE?=
- =?us-ascii?Q?Xqeqqo2JOx277yEg6338vmtLFPmzFv1oXkmfDSpElodFH4SN96NdOAK4ey+E?=
- =?us-ascii?Q?UE0F72hhS0tZLfI5cpukf5Q9v1ZPaa77ooZUTwiGpCQhTvBV+Sz1NnhugQ9s?=
- =?us-ascii?Q?MDVcTLYw6OXk66rO3/4XgZKwSAP1ch6J1Uy6ys8YkoW6ajyeXSR9m36d1Zvu?=
- =?us-ascii?Q?fMQCcFSbHfbaa4KZGk0QM0rf58nPBwEBOasgiLoTmjU/mMh07bKpRMiv3Jzc?=
- =?us-ascii?Q?hb9+tgpbFRmigsmAEOAw/tv93yKL5m7mTnyCMj3rLRlzgnBxI7h/05Zmv8e5?=
- =?us-ascii?Q?mrYPGHZMy7H4sO5sswG+jGBZ9xp1K9iOnvNMJxX9tbG/6aF45Bv8GVT3yWuh?=
- =?us-ascii?Q?m4TgsRf6Nw1zQKfjWj8hwNcBIoFT2mwdZu0nNteVc3y348j2bWTyC8IhvfFC?=
- =?us-ascii?Q?MUKGRERHtiq9apybE/Y1JymIyP2NOslxcuQiLnsFaA2bSpWzHViQI1uBzuFi?=
- =?us-ascii?Q?KiBbZPXwNRigQXAbljVHySSLpwkyWJO4veXOUeY+rm9ld/bBpFEUgeJH3BNh?=
- =?us-ascii?Q?QViSG5dEIjPA22QL0ZFcoWP4/wNY6nHHn360yY2nYUGzsSo1LcFx5jTigKtO?=
- =?us-ascii?Q?ph+RGX3YrTNxwF1+7IYEp23v/k7R4R7KVg8Yqqr76+U9NMq9VHpsgQKpP6FX?=
- =?us-ascii?Q?B1dk6fD5OUwFRePNp+H48IqpJEeH1EgACI1MrrP8uH8EIJdnN0VEd8Xxn7In?=
- =?us-ascii?Q?21gFGwGlHzExvmbFT1NYIIxJFL8AA33CeG2olAVbnjtDCt34onon81v6d2IZ?=
- =?us-ascii?Q?kyDZODgaO+jHcbnweWviFoAdUWB7x/sZbe7S4egRIlSG7kqsxGP9QTk+ucH/?=
- =?us-ascii?Q?mxcvwTVFeqPOJQl9ALeRorxZMIv1inyufGTlyQOQkifsxMkWE8qRV1ynZB3T?=
- =?us-ascii?Q?0opyVbWWYJpbGbRO5pAaxbGJ7qT29i+qieu0VQK3kwjHgYZybuqjTsAxgB2O?=
- =?us-ascii?Q?VNe5bcL2RFu7FE2FoJqPTqRvL2k1Sk0i506IqdOfQfOkBQdhWIKC43cB2Ge5?=
- =?us-ascii?Q?4tfMoj3PKEP/yqxsdwKy0P/KOF28BRKNnIKDeu1NPiTCXyyPpwk5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d3eb0ab-c87e-4fa4-b66e-08deaeced4e7
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2026 20:00:49.4354
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kal06p/ZVr3BRyy/tyEaz8o42l8y4ILR073T+XdR9/5r9KoLIkL6EEtqluwfwy3AK64HLZ6W2CS+E6JbaTFdyw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7645
-X-Rspamd-Queue-Id: 6D4FA50622A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 676425062D4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245067-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,gmail.com,ffwll.ch,linux.intel.com,kernel.org,suse.de];
+	TAGGED_FROM(0.00)[bounces-245068-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ynorov@nvidia.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 10:51:05PM -0700, Shradha Gupta wrote:
+drm_dp_sideband_parse_remote_dpcd_read() reads num_bytes from the raw
+message and then unconditionally does:
 
-...
+  memcpy(bytes, &raw->msg[idx], num_bytes);
 
-> > > We can definately get our throughput run results on other suggestions
-> > > you have. And about that, I just needed a bit more clarity on what to
-> > > test against. Are you suggesting, with irq_setup() intact and in use, we
-> > > configure the non-mana IRQs to say CPU0 and capture the numbers?
-> > 
-> > Can you try this:
-> > 
-> >        while(len--)
-> >                // Or cpu_online_mask or cpu_all_mask?
-> >                irq_set_affinity_and_hint(*irqs++, NULL);
-> > 
-> > And compare it to the linear version under your vCPU scenario?
-> > 
-> > Can you run your throughput test alone and on parallel with some
-> > IRQ torture test?
-> > 
-> >         stress-ng --timer 4 --timeout 60s
-> > 
-> > And maybe pin the stress test to the default CPU. Assuming it's 0:
-> > 
-> >         taskset -c 0 stress-ng --timer 4 --timeout 60s
-> > 
-> > Unless the 'linear' version is significantly faster, I'd stick to the
-> > above.
-> > 
-> > Thanks,
-> > Yury
-> 
-> Hey Yury,
-> 
-> We tried a few tests with your suggestion, and throughput seems to be
-> the same compared to the linear distribution approach. We stressed out
-> CPU0 in both the cases and the results were similar. No IRQ migration
-> was observed in either case and no throughput drop.
->  
-> But one observation I had was that " irq_set_affinity_and_hint(*irqs++,
-> NULL);" is essentially a no-op and we end up relying on the initial
-> placement from pci_alloc_irq_vectors().
+without checking that idx + num_bytes <= raw->curlen. raw->msg[] is
+256 bytes; if a malicious or misbehaving MST hub sets num_bytes larger
+than the remaining payload, the memcpy reads past the received data
+into whatever follows in raw->msg[].
 
-Yes you are, assuming you're not binding them before in your call chain.
+drm_dp_sideband_parse_remote_i2c_read_ack() has the same flaw (noted
+with a /* TODO check */ comment since the code was introduced).
 
-> Even though in these tests we
-> were not able to reproduce it, but with this distribution there is a
-> chance we end up clustering the mana queue IRQs, while other vCPUs are
-> not running any network load.
+Fix both functions by using a single combined check
+(idx + num_bytes > curlen) before each memcpy. Since num_bytes is u8,
+it is always >= 0, so this strictly subsumes the simpler idx > curlen
+form and no separate step is needed.
 
-That sounds like an IRQ balancer bug which you're unable to reproduce. 
+Cc: stable@vger.kernel.org
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+---
+Changes in v2:
+- Drop separate idx > curlen check; idx + num_bytes > curlen with u8
+  num_bytes (always >= 0) strictly subsumes it (Lyude Paul)
 
-> It's because the placement depends on
-> system-wide IRQ state at allocation time.
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-I don't understand this point. The 
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 170113520a43..9416a48804c8 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -871,7 +871,7 @@ static bool drm_dp_sideband_parse_remote_dpcd_read(struct drm_dp_sideband_msg_rx
+ 		goto fail_len;
+ 	repmsg->u.remote_dpcd_read_ack.num_bytes = raw->msg[idx];
+ 	idx++;
+-	if (idx > raw->curlen)
++	if (idx + repmsg->u.remote_dpcd_read_ack.num_bytes > raw->curlen)
+ 		goto fail_len;
+ 
+ 	memcpy(repmsg->u.remote_dpcd_read_ack.bytes, &raw->msg[idx], repmsg->u.remote_dpcd_read_ack.num_bytes);
+@@ -907,7 +907,9 @@ static bool drm_dp_sideband_parse_remote_i2c_read_ack(struct drm_dp_sideband_msg
+ 		goto fail_len;
+ 	repmsg->u.remote_i2c_read_ack.num_bytes = raw->msg[idx];
+ 	idx++;
+-	/* TODO check */
++	if (idx + repmsg->u.remote_i2c_read_ack.num_bytes > raw->curlen)
++		goto fail_len;
++
+ 	memcpy(repmsg->u.remote_i2c_read_ack.bytes, &raw->msg[idx], repmsg->u.remote_i2c_read_ack.num_bytes);
+ 	return true;
+ fail_len:
+-- 
+2.34.1
 
-        irq_set_affinity_and_hint(*irqs++, NULL);
-
-simply means: I trust system IRQ balancer to pick the best CPU for my
-IRQ at runtime. It doesn't refer any "IRQ state at allocation time".
-  
-> The linear approach however gaurantees each queue IRQ lands on a
-> distinct vCPU regardless of system state. Even after stressing the cpus
-> using stress-ng, we did not observe any significant throughput drop.
-
-If you just do nothing, it would lead to the same numbers, right? What
-does that "non-significant throughput drop" mean? It sounds like the
-linear approach is slightly worse.
-
---
-
-So, as you can't demonstrate solid benefit for the 'linear' IRQ placement,
-I would just stick to the no-affinity logic.
-
-Thanks,
-Yury
 
