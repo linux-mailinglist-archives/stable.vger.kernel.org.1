@@ -1,96 +1,96 @@
-Return-Path: <stable+bounces-244990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-244991-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id dMgRKWfd/2lP/gAAu9opvQ
-	(envelope-from <stable+bounces-244990-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 03:20:39 +0200
+	id aF1zNe3d/2lP/gAAu9opvQ
+	(envelope-from <stable+bounces-244991-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 03:22:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2D7502192
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 03:20:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC39B5021A4
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 03:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 789E23020D5F
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 01:20:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D60213002D31
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 01:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3132C1922F5;
-	Sun, 10 May 2026 01:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB8E1A680F;
+	Sun, 10 May 2026 01:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJiNByA7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rtg7dumC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A7D54768
-	for <stable@vger.kernel.org>; Sun, 10 May 2026 01:20:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A85354768
+	for <stable@vger.kernel.org>; Sun, 10 May 2026 01:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778376034; cv=none; b=E6l3UyHn0CMzfWi9qNex0wfRxtbWzOKVSWqdiBU/V3Bk/Dlsj1gcqHdInpBeSj6xeVrBFHJa23Z85/7KdHXe6iSAGV2y7GXlCxqDKb9Q2+XmjstzCO2cZFwQR3N0wlN4/ePMKm7AJBpM5kQEVv9kRWyxBmiNWUQTXZFNRFShxtk=
+	t=1778376168; cv=none; b=H2T41EzFzSXB+JJAFoDml83yKHVmXpQ6nOq+YEChUpn3rNYu6hTx/A3w/x1kBYE4EsE0HH39kxOxvmpwYHtf87eD1s76Tp9IbsOEWq1/IKVeapeyfUHdOlUhADtglwRejqPJK4tirWvDlXrWPKmc8iY0mmNL667LhwwczGDPKNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778376034; c=relaxed/simple;
-	bh=3kpe19e/LCI6ZhqNQio5TTPduzokaZx44qToJmUrPdM=;
+	s=arc-20240116; t=1778376168; c=relaxed/simple;
+	bh=gaiCjuvl6DWIm0UPof/Di7bSB9es7/VNQSw7PLPJRyQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p1R5JMqnE/JqF6jLblfV4XfHWhKOoEIgVfaAbWEcrm0NyAgtHJ0RtdfY6KKBrMeW400kNde0pmh1R/C1QlZuvGj5qRFrs4E+EEdnZN5F7qyYpE/AzBfHSYosgWOk4W3pvrBD2REPrJa8FippHa9UGEQQLqqh1wJHee1DMPQ7oss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TJiNByA7; arc=none smtp.client-ip=209.85.218.49
+	 Content-Type:Content-Disposition:In-Reply-To; b=DeudvywTl+fEjMk1k2aLCVJTipkI8H9Ew5lMRv3pPb/VepUpgF4vKDyVLou+xB0eIoTvIzHo3f4v56V3h6D5G1sn4PnBSupiKJjsV6HAJRcTN+mYeSM8pI3m1SePuAbohBza2Bzs+WHN5VsTeIN8h9aQSOcbhy/4PNER30iZjps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rtg7dumC; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b9382e59c0eso502965966b.0
-        for <stable@vger.kernel.org>; Sat, 09 May 2026 18:20:32 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-67c566cb519so5974981a12.3
+        for <stable@vger.kernel.org>; Sat, 09 May 2026 18:22:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778376031; x=1778980831; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778376165; x=1778980965; darn=vger.kernel.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GPeyCSpilgNhYSZ9AJzQNjhonaLltjeBimOAJhldfaA=;
-        b=TJiNByA7UaphNOMMOUTNSQ9EhhDEAl7wMReayfQstHaSZzcVecocBtS+yk1BOa98lF
-         Rw3IT2wQLckiwPCpMq9gIFkAY5rsS9rkrwT3wchfI7Ok+vMvhp+SYxE9p97gN/q1if6A
-         pOvCZ6dVPz0XgbA8I8/KuMqv0D5H9+WYNpXysD5ydbiP90K+csvY82vYs7TtphULdmYr
-         j4PORMqLz3OFaXKyzhLHCoAUeDVDRmZoph13O+4qpEuV9JIJYbIILCeFweOAqjhdS6Fv
-         ad/b9nst9TGiRisNhcCFH8d0x8sHjEDf4oAfoy/aEG9A7FB6TFCk8ADL5CNsFLcumEJT
-         zyiQ==
+        bh=oIhWSVTY403il12RL/w6eCME3eB95/PHvNgqJ5h0N+4=;
+        b=Rtg7dumCj1kM5g15LVSKn/ByQmj6WhMQ5s/zwDvmXub+EXUvq7PozEX1NbEetBIFhu
+         VnUVNyqCrAT1E0I31olyYsbQnJIhxK/C4ZlzwpFuOebScSxUKzBhWCqRiLlP8po48Ak3
+         NvWPOxW+AhMthC88eRyO9mBCsJ4TNXb9eMV5WUjzou2GFnVaSxFDKizW4dPfVJio9mHK
+         2iLih7AG/RRsfTGRAUFstx1fjpRF6j+yD1eNN1zImfa60f69KDsAP9zVDNfe/LSuYxRz
+         dKiqdyyxCb/X2DAKGAOyxmuhKMAnTZYkQpIe+qS7E7hg/BEHm3Cb4lhqjRVtmz59p1l4
+         Wepw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778376031; x=1778980831;
+        d=1e100.net; s=20251104; t=1778376165; x=1778980965;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GPeyCSpilgNhYSZ9AJzQNjhonaLltjeBimOAJhldfaA=;
-        b=Dd9B3+MZvUY/57ioAJzx3OqRDvbJuqDtVfQUx9/GjDvMvX5NxpQK+KHBepBwpsoH36
-         hUc/EUJAgXuWk4dtHNshRQ72re9DSdi0BpBR19W4Hsu2gFsOxqINEtdh6vefufo+bDyr
-         fkw3U/Xz4xigWA9MXdIm1wUutSmB1Wgg0Gh/6gyXqA7AAXWwzLncT2rhIPekD1vL5uSR
-         FyFNz+8GmvUrY6SLrjh+7iyXK8sij7ycXDH0WmRh17FjJhMBEwXWXyJ05/GVDR8ZvXTN
-         ECJpCKSDlEHGRZmiDjjRicnY6W1Cuh9n1u8xdlesQc9IoJ8Zkeey5VLD/PzlS3oWBk4B
-         hxZg==
-X-Forwarded-Encrypted: i=1; AFNElJ/kp4OF0bnmSBZ3OV+rbjXZqYuFva+BXpUgg9ywt3ErZbEwa9QbnL6l8CD2Biyfr0iWmH3WII4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu5BZl/iQNMGhtb3A7zxcnvcBGUgcuL2hd8BJtsgmr0snLSm1V
-	G4M5+dfumizmRehydQ1CqTqyEB1RD6y1dYA4j2/L5thWcHRuq1tZo7p8
-X-Gm-Gg: Acq92OG9BcvEPGNp8NcI38aAmVRl6cxoOKeswZ9N2LsCj94oobzlInBsGBzExB7X8kE
-	/+hJMFG53HD9WDJxCE0Pes9ENLzQ++h25z76A/idMhvHH+DYNXfk4PHJmo2zyUL+vtIBomxDtb7
-	Gvl7ETurMbd6ONFyxLhHooK7/EDH+w7eTE07JACs6bEBF/tqixqju3lPIKQjo+MvRIYHQm8CVLA
-	fFwTAo9emjEP1EyYeIPTJ46MhfQohU+qCzcoym9p1qWv/YX/Qz5Gf/JnZTGHzWdG/ylzyXOz3H2
-	cFnkGsopB5BqCGl3j8pl8i9YohjdgDyP79zIvpFjgKI2ynMBdre/kZBOw4gBAqjHmJYp+6+QAIu
-	cXMxZbvj5xnaARECrHR7TF/423aYc3Gt+PpbrL8bkE2yvZ2NYkmF98FflKdC6WuVKw2zzy2f5r2
-	ZQzKXLBbMVcIcT+vi0rZk1JA==
-X-Received: by 2002:a17:907:9305:b0:ba7:7f6d:be4a with SMTP id a640c23a62f3a-bc56d132a0amr1076366066b.26.1778376030451;
-        Sat, 09 May 2026 18:20:30 -0700 (PDT)
+        bh=oIhWSVTY403il12RL/w6eCME3eB95/PHvNgqJ5h0N+4=;
+        b=fW9IEOiHlimuYPyqtooWxrLA5c9nigm96VKPHsX/eCEeDLtQbvwUEeQC24XdK6ueVJ
+         J2p3MMTZr87mKQox6Iw9X/OwPpDXi4sqhePnFueMzWMzsqk5QDCliizwYERHsUNMFy6y
+         r9DBdEICEjpGggYk4RQZKAr7A8D+61KGBg6srE8iowM00A/zGUaZHR5WBDr24Zkf3Q1+
+         pWsu4c9fvKuj10XzmzTzZfnQw4/xirf+JS/+XkoP84VqBGLnYQ99qAZZsbr2L7qcuXwy
+         TdFdctliT7GPrc6B4wzzaZiZ4I89YVyeU38Vis7U9OXZel6g+z9LDuR1Gbn1q0Exv1ZS
+         l7sA==
+X-Forwarded-Encrypted: i=1; AFNElJ8QuvxDNwJ4ospMqbcmSgT/lOFFnWwM+Kg/314F0j3nAJxKyY8bBrusKHXl72c9AL4RYNHc0Ag=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL+D5TUHniDHwmS8/PHlAPTghLOVGQJJRlFQr2ZSaNb/e1Ceip
+	fTMNgsoiQbL/KVUv0sjhSuHgu3rrxafejuHAHUJA+Br0I2ue3AP12HM2
+X-Gm-Gg: Acq92OGbs+MkNdVnfAzWW5aUFTVC4pba9On7QujSkVvRMCHq8d8dw6O7KU3+NIT7BSa
+	4zisaYMFuc+eqTGBgI4IpRCSYWmObQEG5onvcaSi+rXs41jdXa6cJtgaNvuvvE2BhbJ4bMNbJFe
+	xXHs5RcySGCX1V7rCP40G7ZZvlY1IZkF/tzqyPeJmbOg82IC34Lb/YTR285lEQht0MxZWa5I0pC
+	NxC8C0BHfkkjeN13NjDh47FZPvhFseTGpn+rVG5ZxL0KqzoZ/7GPDSLIeeJDR7Lg74XAzBPAGXF
+	F/jYwEdRCN+GKn4nPAdtnOp/GAA/UaFDhg53i8cse38Rl9DrXDaU0GCXa7Ic9mPR1A75r40Dt6g
+	UXwQRBA5/rr8bGKi4Cb8rw55g0j6tvcWf5XcptdUxbr2ZgL2cM5NubFrBFjMI7ae163uX9JJmJ4
+	kT+vkOeCr10CvxGKJePAYhVMpgDwd9qwxi
+X-Received: by 2002:a17:906:4787:b0:bb9:36dd:cd3d with SMTP id a640c23a62f3a-bc56ae2ca84mr1094557666b.4.1778376165369;
+        Sat, 09 May 2026 18:22:45 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcac02c82a3sm285137566b.13.2026.05.09.18.20.28
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcb706b7631sm219272266b.61.2026.05.09.18.22.43
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 09 May 2026 18:20:29 -0700 (PDT)
-Date: Sun, 10 May 2026 01:20:27 +0000
+        Sat, 09 May 2026 18:22:44 -0700 (PDT)
+Date: Sun, 10 May 2026 01:22:43 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, riel@surriel.com,
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
-	jannh@google.com, sj@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, david@kernel.org, ljs@kernel.org,
+	riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+	harry@kernel.org, jannh@google.com, sj@kernel.org, ziy@nvidia.com,
+	balbirs@nvidia.com, linux-mm@kvack.org,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check
  before return device-private pmd
-Message-ID: <20260510012027.rez7v33w44rkbtyx@master>
+Message-ID: <20260510012243.sz2ex6hzlmdckmmh@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20260508013728.21285-1-richard.weiyang@gmail.com>
- <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
+ <20260508145121.35e2552d403b94ea6f748b90@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,9 +99,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
+In-Reply-To: <20260508145121.35e2552d403b94ea6f748b90@linux-foundation.org>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: DB2D7502192
+X-Rspamd-Queue-Id: CC39B5021A4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -109,7 +109,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -118,28 +118,29 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_REPLYTO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-244990-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-244991-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[15];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	HAS_REPLYTO(0.00)[richard.weiyang@gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux-foundation.org,kernel.org,surriel.com,infradead.org,google.com,nvidia.com,kvack.org,oracle.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,surriel.com,infradead.org,google.com,nvidia.com,kvack.org,oracle.com,vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	REPLYTO_EQ_FROM(0.00)[]
 X-Rspamd-Action: no action
 
-On Sat, May 09, 2026 at 08:48:37AM +1000, Balbir Singh wrote:
->On 5/8/26 11:37, Wei Yang wrote:
+On Fri, May 08, 2026 at 02:51:21PM -0700, Andrew Morton wrote:
+>On Fri,  8 May 2026 01:37:28 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+>
 >> For pmd_trans_huge() and pmd_is_migration_entry(), we does following
 >> before return the pmd entry:
 >> 
@@ -149,14 +150,13 @@ On Sat, May 09, 2026 at 08:48:37AM +1000, Balbir Singh wrote:
 >>   * handle on pte level if split under us
 >> 
 >> But for device-private pmd, we just return after pmd_lock(). This may
->> lead to inproper situation.
->> 
+>> lead to improper situation.
 >
->Could you elaborate a more on the improper situation?
+>What is "improper situation"?
 >
 
-For example, in remove_migration_pte() page_vma_mapped_walk() may return true
-on a device-private entry even it is not a migration entry.
+For example, in remove_migration_pte(), page_vma_mapped_walk() may return
+device-private entry which is not a migration entry.
 
 >> This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
 >> support device-private entries") by following the same pattern as
@@ -170,106 +170,18 @@ on a device-private entry even it is not a migration entry.
 >> Cc: Zi Yan <ziy@nvidia.com>
 >> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 >> Cc: <stable@vger.kernel.org>
->> ---
->>  mm/page_vma_mapped.c | 34 +++++++++++++++++++++++-----------
->>  1 file changed, 23 insertions(+), 11 deletions(-)
->> 
->> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> index a4d52fdb3056..5d337ea43019 100644
->> --- a/mm/page_vma_mapped.c
->> +++ b/mm/page_vma_mapped.c
->> @@ -269,21 +269,33 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>  			spin_unlock(pvmw->ptl);
->>  			pvmw->ptl = NULL;
->>  		} else if (!pmd_present(pmde)) {
->> -			const softleaf_t entry = softleaf_from_pmd(pmde);
->> +			softleaf_t entry = softleaf_from_pmd(pmde);
->>  
->>  			if (softleaf_is_device_private(entry)) {
->>  				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> -				return true;
->> -			}
->> -
->> -			if ((pvmw->flags & PVMW_SYNC) &&
->> -			    thp_vma_suitable_order(vma, pvmw->address,
->> -						   PMD_ORDER) &&
->> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
->> -				sync_with_folio_pmd_zap(mm, pvmw->pmd);
->> +				entry = softleaf_from_pmd(*pvmw->pmd);
->> +
->> +				if (softleaf_is_device_private(entry)) {
 >
->Do we need to check softleaf_is_device_private() twice, can't we hold the pmd
->lock and check once?
+>If we're to propose a fix for -stable backporting I believe we should
+>fully explain to -stable maintainers *why* we're making that proposal.
 >
 
-We discussed this code on [1], which spot the difference between
-device-private pmd and the other two pmd case which re-validation after
-pmd_lock().
+IIUC, we may do migration on a wrong pmd entry, which may corrupt data.
 
-Do check after pmd_lock() share the same pattern as the other two pmd entry
-case. Also lock is heavy, check & lock & re-validate seems more friendly to
-system. Otherwise we always need to grab lock.
-
-And David suggest to use softleaf_is_device_private() again, [2]. 
-
->> +					if (pvmw->flags & PVMW_MIGRATION)
->> +						return not_found(pvmw);
->
->Double check, do we want to skip migration pte's (from remove_migration_pte)
+>IOW, and not for the first time(!), what are the worst-case
+>userspace-visible effects of this bug?
 >
 
-Do you mean skip device-private entry?
-
-remove_migration_pte() looks for migration entry, and tries to replace it.
-
-The semantics above is: if it looks for migration entry, return not_found()
-for device-private entry. Since device-private entry is not migration entry,
-IIUC.
-
->> +					if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> +						return not_found(pvmw);
->> +					return true;
->> +				}
->>  
->> -			step_forward(pvmw, PMD_SIZE);
->> -			continue;
->> +				/* THP pmd was split under us: handle on pte level */
->> +				spin_unlock(pvmw->ptl);
->> +				pvmw->ptl = NULL;
->> +			} else {
->> +				if ((pvmw->flags & PVMW_SYNC) &&
->> +				    thp_vma_suitable_order(vma, pvmw->address,
->> +							   PMD_ORDER) &&
->> +				    (pvmw->nr_pages >= HPAGE_PMD_NR))
->> +					sync_with_folio_pmd_zap(mm, pvmw->pmd);
->> +
->> +				step_forward(pvmw, PMD_SIZE);
->> +				continue;
->> +			}
->>  		}
->>  		if (!map_pte(pvmw, &pmde, &ptl)) {
->>  			if (!pvmw->pte)
->
->
->How was this tested? Did you run hmm-tests? Is there a broken user space
->that caught the issue?
-
-I didn't do device-private memory related test.
-
-IIUC, device-private memory is device related. I don't have such devices.
-Or we have other workaround to test it? Glad to know if so.
-
-BTW, this fix is from pure code analysis and discussion. Maybe it would be
-better to include you in the discussion first, then I could get more
-background on it.
-
->
->Balbir Singh
-
-[1]: https://lore.kernel.org/all/c71930ae-19d9-4b3b-a74d-3de3261c4d43@kernel.org/
-[2]: https://lore.kernel.org/all/413feed4-6aab-43d9-b7e5-a9386fa79f4b@kernel.org/
-
+Got it, will pay attention. Sorry for the trouble.
 
 -- 
 Wei Yang
