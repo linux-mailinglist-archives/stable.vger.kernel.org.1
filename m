@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-245085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJyaMBcSAWq4QQEAu9opvQ
-	(envelope-from <stable+bounces-245085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:17:43 +0200
+	id GN7wLAQSAWq4QQEAu9opvQ
+	(envelope-from <stable+bounces-245084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:17:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD44506C8A
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:17:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3565D506C63
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 045F63021EBD
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:17:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FA35300AEEE
+	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC1A3ACA6A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C4C13B58A;
 	Sun, 10 May 2026 23:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OQUksigC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HubDfnyx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4D62D5C83
-	for <stable@vger.kernel.org>; Sun, 10 May 2026 23:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F352D6E44
+	for <stable@vger.kernel.org>; Sun, 10 May 2026 23:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778455039; cv=none; b=ehBbSko19SthsEhAjjvWjIu9jmJHI7GHPBTSgIioRiIZjwoiskGu+eVYDc2uWOENE7kRQHpyx+olDOp9VxiEBk8o/TK0rsJV6Tj5iza1H8hk9doonBwqUQskuYJooQCK6TOGA8WhSRpIhz1LdAB+3riNSfw0UFPY4wlm7WaLeGk=
+	t=1778455039; cv=none; b=sAeA5vrXdduugmTICgCalfWD+LwSPFPEFNS/QrVKk/h9saFl8RsXmU8GxEgey8AsPeXJF7dKU+AGGyiG+zYx56J2c3ZGWsPjj94WcAh+sM8MzqqpXFXJSk0YNRSA29fg/3AynnBpT5Tp4fIqNor/X4wPKaQnB2KfVQzW5u0/d04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778455039; c=relaxed/simple;
-	bh=YZII72Oick9IeAiiaT/UnCAg+UD6smbLqUSA0eLyeIY=;
+	bh=r8DfgjwteyhNATjsAQWVfs8YuAP56djRXgiQDaVaWdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czv9RvpMK8HKDCybIWOJuTLZdqCeVA+U32xI13F6afBteuX1WHSt9uSmMhBWOSKIPu8xVvqB1ZBFLRGu0EX/N+Fio6v6khM80oC+U+m/ZtX15q4xLX0LGSkodaBYKS1XbX9cOyVbcNvixuqGJgwZ3mqy4phyZv/1tCodPDX/Abo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OQUksigC; arc=none smtp.client-ip=209.85.219.52
+	 MIME-Version; b=Ldga/ucyRDvbU1WoMYtus79/48hKn9UdZ/8BvdHPYdI5SIAa1tAeyerlUVLj2K8/1ySzq4+GodOtgcy5YnCyquEoTHGqneVwXUAuki41mF8sox0E+35VJXeTbUumdMJeE4YPY5J1P5VYXISE5SfiiPBWbOqwv7pbuZuKtgwrYNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HubDfnyx; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8b3fe2f19a4so37382776d6.2
-        for <stable@vger.kernel.org>; Sun, 10 May 2026 16:17:16 -0700 (PDT)
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50fb8e9a4edso42147931cf.1
+        for <stable@vger.kernel.org>; Sun, 10 May 2026 16:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778455036; x=1779059836; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778455037; x=1779059837; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p5zjnDrUiSkYFu0TKawgtoTzPZ8uHjh+BGUiMJGyQLk=;
-        b=OQUksigCEJ8SKvHMEQitSXdRtuM1VQkvtBZTZE5KtHS6gnfPEqyH5z1JZZj4xJkRAL
-         VioUvrblo1UxzQ/OzclGdPJOCuNKALGPxzh0ewV71ZcPNQyNYHyUL7YtRcCfBODAIwWg
-         9TilibBEP0rJAk0s8MPWA4QlUO0Y2ndpO+7kYOc1uxk1J8P6qoYnYoECl5uQZAecCwlh
-         4mbcJnRpeKqHuGNyPOqVKjhcqHPE/AjFi/Z0aw4Cbo+HQqFsuO4yBSL8TWdNqBpn0VwT
-         0p29C4j4+WcaVvZPxVK2AhzS7p8fek2b7D+uOuZ41DhMFbBqCmX/FedoFsCiQS2D/9BA
-         wq3w==
+        bh=D+Pq1q7AVM368YnM6hKBCnVHKHtkRiZ76Gi1xm2eLZc=;
+        b=HubDfnyxcrGf94B9pj7++gT/c4Y30F/ov46ZOxWQ+bbLtflN1UsP5eyV91u7/FvRKT
+         VhH0plh7jIyK/bvm6rTE6OdfWwC4FU/O4ytTMOoFHWD/4Q4/UfT3+4OWt/nQZBrjpzgW
+         Ep26G0Jp/OhNVzCD2XGx7UbpuPs38hdjbsRDXCcJRYMpKGZ+98KcCQGP6Kcgqq0TzT/Z
+         R93+EsatCHzZ57ZS10/6aHtssJkxUm0qRUIsfsVCkcSCngYgrQK5trASGGLhv/1APzDx
+         USu/ziycidlNYZ+gjPgn6iSLhWs71I0h7nhTOEgGgrCZm+5hSnHs5kkBSWQCWd3NeRpD
+         YyNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778455036; x=1779059836;
+        d=1e100.net; s=20251104; t=1778455037; x=1779059837;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=p5zjnDrUiSkYFu0TKawgtoTzPZ8uHjh+BGUiMJGyQLk=;
-        b=Cvz0D7yDBhJmYv4EX+10dDid4c3cfNhyKRIo8w+m0C4oBetfFpC+eqcGs5hq3w8d1Q
-         CIC/BUZN8ODMFq5vhfYzpBr37dpTXWPsGNakDAzSHZgq0VZMSrXeMyUYWabeSTv2k/U4
-         GebCESLLxoSy3fKa6/TLBnQPQXH2xhuumabayNm5G0YsjVWB6xW3lI0KNIN9ISZPUBGl
-         9RGpCfIjbeCpu0u0xQgEUwEA+dVx7iDfHN2D563AzBF/7jIJDDeCFxwUG/jfU1JWjqTE
-         S60wQj7sApaG7Gub+c1VFOGYiAGHeE5ccUNBBE98cUVpO7dk2DT1IomYNdtsTAYt0ltX
-         bsRw==
-X-Forwarded-Encrypted: i=1; AFNElJ9dgROAHjUZha05NWVa+9F3ChL+dTJmNM7MnGGAGiExAlnZjE3BxlhpycXOMo0OhH0qRJWSAbE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeZxADDc6pMRt5LBvsdacrEbFZy2dwEmLBU8wnH/qylmnVoPZg
-	PIe3fDTOFMiBZI8W/VBDNiKdPTwnuzHG+eBu325RmM/Vt8nFeKQHRtlK
-X-Gm-Gg: Acq92OH+6y9tJAmNJ1kjh3DBlarDrjVaPhXn5tgIB5lndWWRstdhLdtcwZb4tflc0BB
-	kIaYYBtzK6g6XGW4e8MgLW2tEyEp8Qk8f8eFH9OZ7czbvli2+/ofMshL7Lmekr7FHQN0oZuqcfQ
-	lNs3Tx/oQORZPD/Wp2bKzh/qthhz/yOdC537+wj/7w/BVBQr++AzIlxoJgq7HCIIVE6fX9allIN
-	0psFFZLg9tc139ZA8dBoZqwwwGoeIVUqCQaYPd2FXIjVaEGnOh3y+0gSmVsoi5HZDWt1XVeMNed
-	gh4XXbwIkwNP0hWdxHwi5yL+X5WyMr30kK0YfeDpwfW/JOqhlMhT0IOKGEuvtfOGWcdBYKN9JsP
-	oO8tQoC6DpAqCLA+UzvIxTETY6xODNHJ8WyKit9BfVsmr+0pIdplLv9+9osEjBsYYe4w6mIksw1
-	8O+Sl9tRvzKxM5+btJD+K9ft1W4aaiKb3j/dfdOyueCY78qdjQYbosA1gkwug/nVot8fnb/ls3G
-	+I0gPUJaHD4FC4TXTcZhDfw7vdQfWpsahCXrbg3H8PcWkH9jg2AMw==
-X-Received: by 2002:ac8:700e:0:b0:510:1b61:d103 with SMTP id d75a77b69052e-5148e95028bmr124590681cf.36.1778455035680;
-        Sun, 10 May 2026 16:17:15 -0700 (PDT)
+        bh=D+Pq1q7AVM368YnM6hKBCnVHKHtkRiZ76Gi1xm2eLZc=;
+        b=fwXSOZP9F+bBAzllZXb1RcFMQDPR56DmUU0t1uMwcn8TEbArtY/OmgJqz5HoZdTKUS
+         JqSlGquvbzn2Z/olvdsKSURF1GBNufU2oCanbjBw/YCfHcxpSAjb8s7p7ZWSz+xplGKY
+         HzEGr8EB2fRE8QB+hx01brkT7SQJuxWwZJxFnJFMrPzvjSYvvMWIVi2AquTdwO2eIdSC
+         IevUMbVY3pgPYlOqc+8GtVZd5zQHkc3vmnwvxvFGeJebaixnmJ/RPXQ02RV3e2vDIbMT
+         O50/6oTRmYTxujsB2ZhfKI5LXKE2m7ehd5oLkcHJ6SEDbCWnFLc2Y8+wpksJu4qU+muh
+         WjLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+N/SEbOPnIIRbW59I7Th4Lz04YfoS81sE/TaKYxnt+x64v0pk2uCBE8TZ4zeFC2t3MVUQQEbg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSlowvC68aWfn8dZXZldcc00LdY2eDm5bUEPCtwbKvfdN12Odv
+	NQv2MmtgnI5X2jd7FTVL41vxiimEreVciWsNMo73/xAQvmg6aFiq/q+C
+X-Gm-Gg: Acq92OElgiyR1kn5e0iWV1ziuUysWtexq/YQKzmY3fmVJpAcpwuwoegbwhB69Q2NJjK
+	khc3R1x/R4xj2KipneSHTdQCZr7KmdoMS0Ugo6shvvbwQg77IbFUeJDmdpU3Rx5keTgkeX1GS7V
+	Dxh9gnDgZ3po7gDKTo4vzBrkWRUeW23FkoFFbqwiMMXt2DK/c7/JDHPD5W/ldqdpv3JzBduvnaE
+	Om3Fb1AZXAXp26Y1dCHj7hl6+YVCKJpVi0x91CdtDpmgJUGJyRfMMJ+Xs5b4j2p/1YiscUtx8Gc
+	FS3Yd48/GAHq5RdFNndiG0MhvgvH5GnSiksDsBZpIgjJ+h3Pv8eR4Um/mgEjzi5ZtfHygIR0Mln
+	9h5sqbIoqfcFncZ6qOSjCS1h3CW4e3raI+CAb7cXYnh8EIFetbQ9VpqfcDvLoQ8sGa349mCP3Fm
+	dZNJPbqw1GuZkAL1AerEFlA1tlg8A1dTXIpi5094PuBaSm7Vh6hhM13BfOvTBuh+YlU3omfOVdL
+	fI6hopRK4GBrors2b1kZnF0OkWrQnJe16kTG/w60BE=
+X-Received: by 2002:a05:622a:352:b0:50d:8db0:7abb with SMTP id d75a77b69052e-51461fc4f53mr300106661cf.42.1778455037011;
+        Sun, 10 May 2026 16:17:17 -0700 (PDT)
 Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e830ddfsm75015031cf.27.2026.05.10.16.17.14
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e830ddfsm75015031cf.27.2026.05.10.16.17.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 16:17:15 -0700 (PDT)
+        Sun, 10 May 2026 16:17:16 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Mika Westerberg <westeri@kernel.org>,
 	linux-usb@vger.kernel.org
@@ -87,12 +87,12 @@ Cc: Andreas Noever <andreas.noever@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v4 0/4] thunderbolt: harden XDomain property parser
-Date: Sun, 10 May 2026 19:16:55 -0400
-Message-ID: <cover.v4.git.michael.bommarito@gmail.com>
+Subject: [PATCH v4 1/4] thunderbolt: property: reject u32 wrap in tb_property_entry_valid()
+Date: Sun, 10 May 2026 19:16:56 -0400
+Message-ID: <20260510231715.2215605-1-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1777817011.git.michael.bommarito@gmail.com>
-References: <20260415123221.225149-1-michael.bommarito@gmail.com> <cover.1777817011.git.michael.bommarito@gmail.com>
+In-Reply-To: <cover.v4.git.michael.bommarito@gmail.com>
+References: <20260415123221.225149-1-michael.bommarito@gmail.com> <cover.1777817011.git.michael.bommarito@gmail.com> <cover.v4.git.michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,21 +100,21 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1DD44506C8A
+X-Rspamd-Queue-Id: 3565D506C63
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245085-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245084-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -130,144 +130,66 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Style cleanups only on top of v3.  Andy's three nits on 1/4, 2/4,
-3/4 are applied; Mika's request to drop the duplicated on-wire
-entry struct in 4/4 is applied.  No behavioural change to any
-patch; the bug analysis and the gating in patches 1-3 are
-unchanged.
+entry->value is u32 and entry->length is u16; the sum is performed in
+u32 and wraps.  A malicious XDomain peer can pick
+value = 0xffffff00, length = 0x100 so the sum 0x100000000 wraps to 0
+and passes the > block_len check.  tb_property_parse() then passes
+entry->value to parse_dwdata() as a dword offset into the property
+block, reading attacker-directed memory far past the allocation.
 
-Three independent memory-safety defects in drivers/thunderbolt/property.c
-are reachable when an untrusted Thunderbolt/USB4 XDomain peer responds
-to a PROPERTIES_REQUEST during host-to-host discovery.  The peer
-supplies up to TB_XDP_PROPERTIES_MAX_LENGTH (500) dwords of attacker-
-controlled property block which the local host passes to
-tb_property_parse_dir() as part of the control-plane exchange that
-runs before any tunnels are set up.
+For TEXT-typed entries with the "deviceid" or "vendorid" keys this
+lands in xd->device_name / xd->vendor_name and is readable back via
+the per-XDomain device_name / vendor_name sysfs attributes; the leak
+is NUL-bounded (kstrdup() stops at the first zero byte) and
+untargeted (the attacker picks a delta, not an absolute address).
+DATA-typed entries are parsed into property->value.data but not
+generically surfaced to userspace.
 
-Patches 1-3 are one bug per patch: u32 overflow in
-tb_property_entry_valid(), short-dir_len OOB+underflow in
-__tb_property_parse_dir(), and unbounded recursion in the same.
-Patch 4 is three KUnit regression cases exercising all three.
+Use check_add_overflow() so a wrapped sum is rejected.
 
-All three defects are OOB-read or DoS at worst.  No controlled OOB
-write is reachable through the parser; parse_dwdata()'s destination
-is a freshly kcalloc'd buffer sized by entry->length.
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+---
+ drivers/thunderbolt/property.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Operators who do not need XDomain host-to-host discovery can disable
-the path entirely with thunderbolt.xdomain=0 on the kernel command
-line.
-
-Reproduced on v7.0-rc7 + CONFIG_KASAN=y + CONFIG_USB4_KUNIT_TEST=y
-via the KUnit suite in patch 4.  Pre-fix on a v7.0-rc7 + patch 4
-kernel: u32_wrap fails with a KASAN use-after-free trace in
-__tb_property_parse_dir() (the parser reads ~16 GiB past the
-block); recursion fails with KASAN + an Oops on RIP=0 as the
-parser exhausts its guard page.  dir_len_underflow returns NULL
-on pre-fix because the downstream content_len = dir_len - 4
-underflow makes the entry walk bail at tb_property_entry_valid();
-the UUID kmemdup over-read is silent here because KASAN-Generic's
-slab redzones do not flag a 4-byte over-read into the
-kmalloc-chunk tail.  Treat dir_len_underflow as the post-fix
-invariant pin; u32_wrap and recursion are the active pre-fix
-detectors.
-
-Post-fix (all four patches): all three pass cleanly with KASAN
-active.
-
-Changes since v3
-----------------
-
-Cosmetic (per v3 review):
-
-  - Patch 1/4 (Andy Shevchenko): drop the redundant (u32) cast on
-    entry->length in check_add_overflow().  __builtin_add_overflow
-    handles mixed width via implicit promotion; the cast was noise.
-
-  - Patch 2/4 (Andy Shevchenko): insert a blank line between the
-    !dir error return and the new INIT_LIST_HEAD(&dir->properties).
-
-  - Patch 3/4 (Andy Shevchenko): keep the four-argument
-    tb_property_parse(block, block_len, &entries[i], depth) on a
-    single line (>80 col) instead of wrapping the trailing argument.
-
-  - Patch 4/4 (Mika Westerberg): drop the private
-    struct tb_test_property_entry overlay.  Populate the crafted
-    blocks by writing u32 dwords directly, matching the existing
-    root_directory[] style used elsewhere in this file.  Each test's
-    kunit_kzalloc is right-sized to the dwords needed to actually
-    exercise the bug (0x102 for u32_wrap, 10 for recursion, 7 for
-    dir_len_underflow); the 500-dword allocation v3 used has been
-    dropped.
-
-    u32_wrap retains length=0x100 / value=0xffffff00 from v3 so
-    the entry's length field clears the "entry->length > block_len"
-    gate (block_len = 0x102 dwords) and the wrap check is what
-    actually fires.  recursion uses length=8 (was 16 in v3) so the
-    smaller block can hold both the parent UUID kmemdup and the
-    single child entry that drives the recursion.  All three
-    pre-fix scenarios are still observable: u32_wrap page-faults
-    on the KASAN shadow lookup for the wild OOB offset, recursion
-    trips a KASAN out-of-bounds report in __unwind_start as the
-    per-task kernel stack is consumed, dir_len_underflow trips
-    KASAN slab-out-of-bounds in kmemdup_noprof.  Post-fix all
-    three pass.
-
-Changes since v2
-----------------
-
-Material:
-
-  - Patch 2/4: move "dir_len < 4" reject before the UUID kmemdup
-    in the non-root parse path.  v2 placed it after, so a crafted
-    entry with dir_offset near end of block and dir_len in 0..3
-    OOB-read up to 4 dwords past the block before the reject ran
-    (dir_offset=497, dir_len=3, block_len=500 reads
-    block[497..501]).  Both that OOB and the original
-    content_len = dir_len - 4 underflow now hit the same gate.
-
-  - Patch 4/4: tighten dir_len_underflow's buffer (7 dwords,
-    kmalloc-32) and reposition the entry (e->value=4) to focus the
-    UUID kmemdup on the chunk tail.  KASAN-Generic does not flag
-    the 4-byte over-read into the tail, so the test remains a
-    post-fix invariant pin (documented above); v2's wider buffer
-    obscured even the post-fix-pin shape.
-
-  - Patches 1/4, 2/4, 3/4: fix Fixes: SHA.  v2 used e69b6c02b4c3
-    ("net: Add support for networking over Thunderbolt cable"),
-    the wrong commit.  Correct is cdae7c07e3e3 ("thunderbolt: Add
-    support for XDomain properties").
-
-Cosmetic (per v2 review):
-
-  - Lowercase 0xffffff00 in 1/4 and 4/4 commit messages, and 4/4
-    code + comments.
-  - Patch 4/4: use TB_PROPERTY_TYPE_DATA / TB_PROPERTY_TYPE_DIRECTORY
-    constants from <linux/thunderbolt.h> instead of bare 0x64 / 0x44.
-    (v4 reverts to bare hex in the u32 dword that packs (type <<
-    24), since the type byte is now part of a packed dword literal;
-    each dword carries a `/* type=... */` comment.)
-  - Patch 4/4: convert all multi-line block comments to put the
-    opening "/*" on its own line per the thunderbolt subsystem's
-    coding style.
-
-
-Michael Bommarito (4):
-  thunderbolt: property: reject u32 wrap in tb_property_entry_valid()
-  thunderbolt: property: reject dir_len < 4 to prevent size_t underflow
-  thunderbolt: property: cap recursion depth in
-    __tb_property_parse_dir()
-  thunderbolt: test: add KUnit regression tests for XDomain property
-    parser
-
- drivers/thunderbolt/property.c |  32 ++++++---
- drivers/thunderbolt/test.c     | 126 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 149 insertions(+), 9 deletions(-)
-
---
+diff --git a/drivers/thunderbolt/property.c b/drivers/thunderbolt/property.c
+index 50cbfc92fe65..29cd60c11ac4 100644
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/err.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/uuid.h>
+@@ -52,13 +53,16 @@ static inline void format_dwdata(void *dst, const void *src, size_t dwords)
+ static bool tb_property_entry_valid(const struct tb_property_entry *entry,
+ 				  size_t block_len)
+ {
++	u32 end;
++
+ 	switch (entry->type) {
+ 	case TB_PROPERTY_TYPE_DIRECTORY:
+ 	case TB_PROPERTY_TYPE_DATA:
+ 	case TB_PROPERTY_TYPE_TEXT:
+ 		if (entry->length > block_len)
+ 			return false;
+-		if (entry->value + entry->length > block_len)
++		if (check_add_overflow(entry->value, entry->length, &end) ||
++		    end > block_len)
+ 			return false;
+ 		break;
+ 
+-- 
 2.53.0
-
 
