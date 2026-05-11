@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-245137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gO7oDEKHAWpscgEAu9opvQ
-	(envelope-from <stable+bounces-245137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:37:38 +0200
+	id SBooG0GHAWpOcQEAu9opvQ
+	(envelope-from <stable+bounces-245138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:37:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CD9509597
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 577AC50958F
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9930A30074AB
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:37:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5F0530089A7
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60D538F658;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC8C38E12D;
 	Mon, 11 May 2026 07:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m3ZeHKEW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p74clJlz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7F9388E5A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E800A38F240
 	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778485039; cv=none; b=eRF5m215HcKfjd3/FP2MS9GUN3/REpdPtgpBHR9/opKFhZfeIitDqOvZwubQ5SX/kxLA0FjFBMMpaDG5PLcndCz8TkvhOXt7SnL5G3PB3qsGWvKSmaILWalYHm7HAb4Sex8D/0SLp8MY/vv2/giTZ1WQ/zqn8EHr83MlXu/h5qI=
+	t=1778485039; cv=none; b=QVgbfzOYUleuiOiJgtW0ACXd0UZU+PmhXZ3i4gpDuqNludBC2H0cinb+u8OadJj6xrFoa43YXR/SdIfBKGlPvXC+8IFMsVcHJYAdzJZG13u0XyJYMfI+RUkyUMq82k+dVt2LR6qel9VcsUQ659FOqY57REt4KPOGqYxJnXND3mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778485039; c=relaxed/simple;
-	bh=LhiJRtzOkHcZmjhOK/MMOPZlZ7IAFi3HvAQqtzgpkiI=;
+	bh=mOXcEC1/lVkVHZYZn2XHTPMu1CGJw9SeFHzyaOzmbtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N14txmAhjeYRTV+ZMtIrn2tCZ1JRBKVr4lr2Q+wYOqApo9F4S9HE09bALN1ip5xhjKDPWp4Z8C+WYBJyfCv9WRTcEm5LAXMElRBnZZFBtbtV963YeTZD7bWivsA/pzZzAR3Pg9cF1q+BBs9r7onbbpegXG7ajdjHZSPuZimieYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m3ZeHKEW; arc=none smtp.client-ip=209.85.222.173
+	 MIME-Version; b=fbzQHGrous8I7yy2sOt/CvBa8CBPuE/+H226DsNd56JLZlmGI3UVy9H0uBk0QAhXZDl5bv77taM8z0dWBjgwHUrvIM8p62bZxi3PgOcUFDLO3Jil2mkk87Yjgw422zbKYfTXBoKGanjVrv0HLPgR7Qg3hj0nYc78DuMG5h0taJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p74clJlz; arc=none smtp.client-ip=209.85.222.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8ec9f099fc6so450476785a.0
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 00:37:15 -0700 (PDT)
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8d6d5e45c43so438246185a.3
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 00:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778485034; x=1779089834; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778485035; x=1779089835; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t0Fc2nsc2zJNmZlEdODGlaABqI4wuUC6NjCqszmnvkc=;
-        b=m3ZeHKEWryPIUnPOOoyAx5Aem2LnrM5tCz/QuqAnIyKotqPoELxg+uU43axHstzMGv
-         OeJh7/9pFJYu2loDe8v0TKYP3splRGH+D/o7jXhsPd5loND7LmUwv+vPVrWfcrLfRH6/
-         A8ZuUh+/F2rYw4S6fjyqUZl7UFQ3tSKqG80V3DHMRELWAXFl+OtB6UMTGZbI+e8mYWxq
-         1d8C8ymxwVUfASLfxMm1YZOJJI8zURRVls8s4XU3Sp9D8yKLhAR9bOQ1AsEe+mUTsQCE
-         I7e/7d4RKyIxXDks/aRNip/H2DccNeZVtq6KBV67sIW0jE2H2HXfuFA+97p0weCH7Ahg
-         E0RA==
+        bh=9q729bgQHVeDW2L1+l2aARSKoamCj2E0AC8tSERmxT8=;
+        b=p74clJlzaVAS9TKAZ0q8QKYC6hJd4NVFjJ/U9buXHY2P6xuqpnV7RXL8Y6dJSlAt+8
+         MRQ/riRtZw0Sf8DzmqQB30Il6jLgNw6tmeSnwRmp7dnBhSHnFbuCMYMuL6Fy3wthg+jo
+         kVMkwLzwDHXbyG8SDG4fF/w7EWF6JqClX/EQQxiYh9mrOyJgcyf3JGWtcqK7+FQ5ENRs
+         Lhscovc29KD8s66v/5ottw3iFw0p0vja0mxGYFIKJiR1AawoOOZz5Hn6USd83mdHQuLr
+         36CVnLJdFT8vDv2w3QWSVClVdvlHTXpW/IrNpWhda7y/aaFRsrtKrCG+HHKCXd4Y5NaD
+         7Mtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778485034; x=1779089834;
+        d=1e100.net; s=20251104; t=1778485035; x=1779089835;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=t0Fc2nsc2zJNmZlEdODGlaABqI4wuUC6NjCqszmnvkc=;
-        b=f5aicw6OrkDYwBO8Kz+sXBzE9BbUpyjCdbsbIwRixntg2uJbpKkmSQBi7dry3asJVJ
-         KF9FztCJIfE5y/B1W2yv2GYEJFUpmqM0API6N1+A/yChyBGcEqW2gmgKzdDGmTFbBMQl
-         Y9W/lLyesKvWw4qu+U0GvygDjI/YAttYdjzRPFDAoGB5w7eaqg66WboN4CBZigMeJRxV
-         sOvN+Rp9I9IacptM6/U/9ljEuF88OKJDf+p9AzOojK1xiAFcnC8hXp/xO9EiREC5Ix1J
-         nBsNK/3LEuWQmEUg6mpqWoMwrH7vmyTbQH0CyFh8H/s7M2RDDedswd2l6rmI8giQGMd8
-         VDag==
-X-Forwarded-Encrypted: i=1; AFNElJ/BY6FlPNvm7PqPxQrUhh026kfbzXRf00gPTUhzRnQ5xm65l6ixBpJYt0XG2WNqnG/ERUsR0bw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJ/OkHTsuiMsOlaSpxufoaoixHGNm0Uy+bodAMGs6H19AUFb82
-	qZZpqPOuRkflEnSb7xnqMh++tyceRWCsUuBKbEpSnXZwTBIPFkQLfwdUeebl1bZD
-X-Gm-Gg: Acq92OF9uwazyToZFzXwGYGUvZRj6n6hcYLjo7TcgZFHbKfOij4IeUhOOCQiWFo4FGm
-	ffMPKWyoZKhAH5sVCifG6rjO7PnY6dvAY5lgI1IsuXd+Odq+27bvQK068qVKskYJi756vC3/o4S
-	mMPxp0w72WiHOK+X7fzqJXLaU1nJ8Xq0aJfBrASsRaVzHVTGIgq9MusMYBFj/QGk6Fv82eONJ6x
-	wwmxDCAqDypLK9plrcWl0GXkNxzp4qhat2jp4ur6tT1FPjG1SV7HvdFFYQf6nI0EYyFohFZ9VnK
-	7CWUq4RzX2A0tguC3EUuJomvyd6Qa6RJi0PGllTplIe7k5yKfj/eFWC/d1Zip1X4TIjiA3BiUl9
-	cI7oLcxP3b+Skf9JotVIY2sl8F/NoXI87wpSbbBFxftp8k7az8mzhgADOYLnA6oJygpR3/GHqsA
-	s1Tyob/jjC4IcKX/1oVr0F583n7iAIMVesghLKe8kRT8NkXs+EC+3SBZP6Pn/rLQ==
-X-Received: by 2002:a05:620a:1a19:b0:8e4:ebbb:b162 with SMTP id af79cd13be357-904d3eac012mr3144783085a.9.1778485033971;
-        Mon, 11 May 2026 00:37:13 -0700 (PDT)
+        bh=9q729bgQHVeDW2L1+l2aARSKoamCj2E0AC8tSERmxT8=;
+        b=PxTEffcxHKwlx7VUNZFND7oPh5BqAXKVYWud7UyI8PbjychCQ1CtX2JjUYLEMBByXU
+         UxIQLMJB8wK//293Le9csDumy4EiABFUyueNy0m/yq139GjgHE4xgeFW5BaAgIQ8S+wi
+         N+DT1/oH2AzRNKWt4XhRYzzHGv0+pVGM/TxE1esafzjVPPPj/+EB0UaUaWk+JqAo5W8s
+         qZeotKJnJeYIsHdW69QdbrB+V//h/oDW29eYO6+x0ui8B8SqK/YBYhvJTEqoodrPYXtV
+         VPFrFy+Hly0pMJ1JO5irnax2Z8b0rcd5X/Jpn60SAZi08U7cwgrDlQR4Jtld09VbB4Js
+         ThMg==
+X-Forwarded-Encrypted: i=1; AFNElJ8XPLeKocoD7Ltx2pcUWdgHSuhmd9xqW476qS/VdXDsgPei05tDHEcZHmfusm+BFwA6Nwcr3aU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9HgrUkDk2Kb0UVBevhuk/hncDn+9unwHttQYT6PZLelc5h/tM
+	VOvAAxJ5IbyiqZXX9BRFbt/3ve9ClL/IisDoyC9QuYWc4f3w6XUuxIce
+X-Gm-Gg: Acq92OHLocji0eWhR3A/pHdwI2heyrMBEJPNkIoU/MGJlXmTa5klfbo+VxDTFFmCvhJ
+	9hFLZtVppDUKyNzAlEsYvzVk4pwYdtIqNCC63KCU78gDKcbiTG+nBGx6FXwhH5iv9G7e8tK9WJD
+	1C1boL+P/B/h+D/W5r0N/jyQhsCQ103c6p/quo0bGFc+2aFXlUTIoznNOxqDCSDPVObqslbsPEL
+	UUOh3FGyGfseFdUmxvjil+IREeZedlAKCexK9JkFG+h5Opcv5YV2tUD++2uUQgJ7+qLQs3b364K
+	SFO3tcLe7oNWt3f8wkFs89x36l3kCI2bQW4BEaEzuf0M7vj/gF7eTxuMzyvj1HlhpMc9UsCBHM9
+	Z4ms8bEpdxcRvJgssBSOigX1rwiIpJHEUWbcaeA5SXN4f5HKFz47H6MpzH96lzGDd3iu4ajZrdp
+	NF+28mu9HScz1MXr4XXPch7TxPTR+t2GHIRjJqM+NdyDrRdc2W7gZlmkNt1brzCJtd5k5Zfv2o
+X-Received: by 2002:a05:620a:1a11:b0:905:ea85:a03a with SMTP id af79cd13be357-907bb6d754cmr1844761585a.47.1778485035155;
+        Mon, 11 May 2026 00:37:15 -0700 (PDT)
 Received: from rawhide.lvn.broadcom.net ([192.19.161.250])
-        by smtp.googlemail.com with ESMTPSA id af79cd13be357-907b986c371sm957371385a.2.2026.05.11.00.37.12
+        by smtp.googlemail.com with ESMTPSA id af79cd13be357-907b986c371sm957371385a.2.2026.05.11.00.37.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 00:37:13 -0700 (PDT)
+        Mon, 11 May 2026 00:37:14 -0700 (PDT)
 From: Shreenidhi Shedi <yesshedi@gmail.com>
 To: gregkh@linuxfoundation.org,
 	acme@kernel.org,
@@ -84,9 +84,9 @@ To: gregkh@linuxfoundation.org,
 Cc: yesshedi@gmail.com,
 	stable@vger.kernel.org,
 	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.1.y v2 15/18] perf time-utils: Constify variables storing the result of strchr() on const tables
-Date: Mon, 11 May 2026 12:40:48 +0530
-Message-ID: <20260511071051.537859-16-yesshedi@gmail.com>
+Subject: [PATCH 6.1.y v2 16/18] perf demangle-java: Constify variables storing the result of strchr() on const tables
+Date: Mon, 11 May 2026 12:40:49 +0530
+Message-ID: <20260511071051.537859-17-yesshedi@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260511071051.537859-1-yesshedi@gmail.com>
 References: <20260511071051.537859-1-yesshedi@gmail.com>
@@ -97,7 +97,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F0CD9509597
+X-Rspamd-Queue-Id: 577AC50958F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -116,7 +116,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245137-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245138-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -134,7 +134,7 @@ X-Rspamd-Action: no action
 
 From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 21c0bc9144834e39762dd6fddbb255ebb80cf079 upstream
+commit 79bba3a1834e7ba6c437674582cc9f3ae6fb638c upstream
 
 As newer glibcs will propagate the const attribute of the searched table
 to its return.
@@ -142,31 +142,22 @@ to its return.
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Shreenidhi Shedi <yesshedi@gmail.com>
 ---
- tools/perf/util/time-utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/demangle-java.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/time-utils.c b/tools/perf/util/time-utils.c
-index 1b91ccd4d523..d43c4577d7eb 100644
---- a/tools/perf/util/time-utils.c
-+++ b/tools/perf/util/time-utils.c
-@@ -325,7 +325,7 @@ static int percent_comma_split(struct perf_time_interval *ptime_buf, int num,
- }
- 
- static int one_percent_convert(struct perf_time_interval *ptime_buf,
--			       const char *ostr, u64 start, u64 end, char *c)
-+			       const char *ostr, u64 start, u64 end, const char *c)
+diff --git a/tools/perf/util/demangle-java.c b/tools/perf/util/demangle-java.c
+index ddf33d58bcd3..c3cb327ed562 100644
+--- a/tools/perf/util/demangle-java.c
++++ b/tools/perf/util/demangle-java.c
+@@ -158,7 +158,7 @@ char *
+ java_demangle_sym(const char *str, int flags)
  {
- 	char *str;
- 	int len = strlen(ostr), ret;
-@@ -358,7 +358,7 @@ static int one_percent_convert(struct perf_time_interval *ptime_buf,
- int perf_time__percent_parse_str(struct perf_time_interval *ptime_buf, int num,
- 				 const char *ostr, u64 start, u64 end)
- {
--	char *c;
-+	const char *c;
+ 	char *buf, *ptr;
+-	char *p;
++	const char *p;
+ 	size_t len, l1 = 0;
  
- 	/*
- 	 * ostr example:
+ 	if (!str)
 -- 
 2.54.0
 
