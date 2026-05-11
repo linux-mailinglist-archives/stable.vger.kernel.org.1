@@ -1,66 +1,69 @@
-Return-Path: <stable+bounces-245341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIn9FK5XAmpurgEAu9opvQ
-	(envelope-from <stable+bounces-245341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:26:54 +0200
+	id QCYfDGFWAmoOrgEAu9opvQ
+	(envelope-from <stable+bounces-245343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:21:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02F9516DEC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:26:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80997516B77
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1255E30C23C8
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:20:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAA6C30CACBD
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1794DBD74;
-	Mon, 11 May 2026 22:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259B84DD6FA;
+	Mon, 11 May 2026 22:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWbOOmdb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPjA+c36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAA6423A7B;
-	Mon, 11 May 2026 22:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97894DD6ED;
+	Mon, 11 May 2026 22:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778537992; cv=none; b=g8INZXAD0x4DzpuS1F53rjmbuqxp0M2EtKiXFi95DVHRCh8SR9wGDXIyO+P8RSITPSh5Dg1kSr/ld5SLWF5WmC1vXTCumHdHS2r1MzlISzpDH+ds+vphtKQkS/ZnCHjj8fd19vFNIETqdGtkG+dQ+EqomPCWAkNRPHc+4hYvLTo=
+	t=1778537994; cv=none; b=UbxtOLnEuDXIp8HgYXvRyKJcHM2sjIJUbS3OqfFWg1cC7ALpVT47qug6qw7hACtT6XRi6D9pk8IUt9JfYpUZ+S7XfGVGf1VuPcP/3QKT/zpFdPocYNMMIcLXKB/RBacim2bvbGa4hb/vOa7gPG3uUK2D31lWFNl+2jBahvMQgJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778537992; c=relaxed/simple;
-	bh=HaYXk42WvCSIShW8FZ0bSZslAXirNKtycnqzXYI2XpY=;
+	s=arc-20240116; t=1778537994; c=relaxed/simple;
+	bh=LRN2672r35IyVec++JGBaiETnqJv8Sk5nTuKiSNxa8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aTT9BCraJXgKCwKVJDgb7zb+dvf50Udf+QCYg0MPr5eJMkokUqgIeUilIMdnWCF6yzS4qnJ6YFAfPRwsCbNgLrc4pmnlLyd+toI1l9jIwrUZzJDCJVxGvyRP3lFXq5MxWYxr3p7WTJkTzgypoVz6wuDmbX+PGg62A8cHeZ8H6Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWbOOmdb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42531C2BCF7;
-	Mon, 11 May 2026 22:19:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C4+a5lo8ITKv6HHjgo86Vy7O9ehTNfSKE4rlCIPfD2eZRdRkbP3EbIjfOFTEp6jpvO7jkeg+ZD4WEsNh2gsjo0GTKZRPH8whhJ2+eF80mF1Qf+cUfjMwfddLXMpUKwbovWAyvkk2c9JWwnD9CqoF2LCxBKrKgBA4c86lydHeZSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPjA+c36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6ABC2BCFF;
+	Mon, 11 May 2026 22:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778537992;
-	bh=HaYXk42WvCSIShW8FZ0bSZslAXirNKtycnqzXYI2XpY=;
+	s=k20201202; t=1778537994;
+	bh=LRN2672r35IyVec++JGBaiETnqJv8Sk5nTuKiSNxa8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWbOOmdbhph7gAhY8ds3O0gOLXUE1uCohdW1HllrLZ/jqP8bs6VRQwbkvlr7qeosO
-	 eX6rZKrNIiAcC1toDD4iff5B3JPi6Ry+PUEJGc6DJ9l7vQ2dNnOPzeHy3UldftChv2
-	 vEwEQ9Qj12fAcqR77W1CNkPBEKJP7HDcoUmCaJJCosvDOdBM9MVrMCEKMD9KgB5LWe
-	 U4PQPnIqKhIPsSxTtkkteAbkvPhiRoa7954BSt2V72b3eSY2XMHU4A6dGeHcsW+Udw
-	 NXCyH5nL78heXr02AH338DlCFj+Q8nUkuuClw2+QeIo9U0jYB4Cvu+zxfS0pQTyQCK
-	 hYlSt4xwKMd0Q==
+	b=YPjA+c36T+a+XWppJhFnE1jUu+l34vyBIgacKzfLiBQkdcUuIJ+BPdQsCwZbZlNHu
+	 mxxLd5cqoUAW3Ap9mEcKuJcH+RrMdiPNbMzl1sG42Eka7jaup2QtFBrZjDJE4dLEfY
+	 oJjC0FCZo5n+XUpekJ9zPOPlO7lMSR9eUBZ5f0HfiAn23PB241V4qzCz4H2QU7I5Uq
+	 XDUqFWkDErZq8+W+X+v1ob4FGHNSBMBkhi1WtkiFr/USwLg3I8KgVR8MzDuMoxuhAY
+	 OuVblheAp48z1i2RQGJkMdER8nsinm0CGhrPRf84iqcoJFQzc5grPB4t7ZkcW46rXe
+	 Ni9l8CrWs9PWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
+	rfoss@kernel.org,
+	todor.too@gmail.com,
+	agross@kernel.org,
+	andersson@kernel.org,
+	konrad.dybcio@linaro.org,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.10] wifi: nl80211: require CAP_NET_ADMIN over the target netns in SET_WIPHY_NETNS
-Date: Mon, 11 May 2026 18:19:13 -0400
-Message-ID: <20260511221931.2370053-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.12] media: qcom: camss: avoid format string warning
+Date: Mon, 11 May 2026 18:19:14 -0400
+Message-ID: <20260511221931.2370053-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260511221931.2370053-1-sashal@kernel.org>
 References: <20260511221931.2370053-1-sashal@kernel.org>
@@ -75,64 +78,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0.6
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A02F9516DEC
+X-Rspamd-Queue-Id: 80997516B77
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245341-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-245343-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[arndb.de,linaro.org,kernel.org,gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ntu.edu.sg:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,patch:url]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linaro.org:email]
 X-Rspamd-Action: no action
 
-From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 15994bb0cbb8fc4879da7552ddd08c1896261c39 ]
+[ Upstream commit 23c39cb598977f10909a2387c5e5f34afc1d6933 ]
 
-NL80211_CMD_SET_WIPHY_NETNS dispatches with GENL_UNS_ADMIN_PERM, which
-verifies that the caller has CAP_NET_ADMIN for the source netns. It
-doesn't verify that the caller has CAP_NET_ADMIN over the target netns
-selected by NL80211_ATTR_NETNS_FD or NL80211_ATTR_PID.
+clang-22 warns about csiphy_match_clock_name() taking a variable format
+string that is not checked against the 'int index' argument:
 
-This diverges from the convention enforced in
-net/core/rtnetlink.c::rtnl_get_net_ns_capable():
+drivers/media/platform/qcom/camss/camss-csiphy.c:566:44: error: diagnostic behavior may be improved by
+      adding the 'format(printf, 2, 3)' attribute to the declaration of 'csiphy_match_clock_name'
+      [-Werror,-Wmissing-format-attribute]
+  561 | static bool csiphy_match_clock_name(const char *clock_name, const char *format,
+      | __attribute__((format(printf, 2, 3)))
+  562 |                                     int index)
+  563 | {
+  564 |         char name[16]; /* csiphyXXX_timer\0 */
+  565 |
+  566 |         snprintf(name, sizeof(name), format, index);
+      |                                                   ^
+drivers/media/platform/qcom/camss/camss-csiphy.c:561:13: note: 'csiphy_match_clock_name' declared here
+  561 | static bool csiphy_match_clock_name(const char *clock_name, const char *format,
+      |             ^
 
-    /* For now, the caller is required to have CAP_NET_ADMIN in
-     * the user namespace owning the target net ns.
-     */
-    if (!sk_ns_capable(sk, net->user_ns, CAP_NET_ADMIN))
-        return ERR_PTR(-EACCES);
+Change the function to use a snprintf() style format string that allows this
+to be checked at the call site.
 
-A user with CAP_NET_ADMIN in their own user namespace can therefore
-push a wiphy into an arbitrary netns (including init_net) over which
-they have no privilege.
-
-Mirror the rtnetlink convention by requiring CAP_NET_ADMIN in the
-target netns before calling cfg80211_switch_netns().
-
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Link: https://patch.msgid.link/20260506064854.2207105-2-maoyixie.tju@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -141,259 +147,230 @@ LLM Generated explanations, may be completely bogus:
 ## Phase Walkthrough
 
 ### Phase 1: Commit Message Forensics
-Record: `wifi: nl80211` subsystem; action verb `require`; intent is to
-require `CAP_NET_ADMIN` over the target network namespace before
-`NL80211_CMD_SET_WIPHY_NETNS` moves a wiphy.
+Step 1.1 Record: Subsystem is `media: qcom: camss`; action verb is
+`avoid`; claimed intent is to avoid a clang-22 format-string build
+warning/error in `csiphy_match_clock_name()`.
 
-Record: Tags in the provided commit message:
-`Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>`, `Link: https://patch.
-msgid.link/20260506064854.2207105-2-maoyixie.tju@gmail.com`, `Signed-
-off-by: Johannes Berg <johannes.berg@intel.com>`. No `Fixes:`,
-`Reported-by:`, `Tested-by:`, `Reviewed-by:`, or `Cc: stable` tag was
-present in the provided message.
+Step 1.2 Record: Verified fetched commit
+`2211e826bd69c041534093735241182013dde7bc` has:
+- `Signed-off-by: Arnd Bergmann <arnd@arndb.de>`
+- `Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>`
+- `Signed-off-by: Bryan O'Donoghue <bod@kernel.org>`
 
-Record: The described bug is an authorization gap. `GENL_UNS_ADMIN_PERM`
-verifies `CAP_NET_ADMIN` for the netlink socket/source netns, but
-`NL80211_ATTR_NETNS_FD` / `NL80211_ATTR_PID` selects a target netns that
-was not separately checked. The b4-fetched cover letter includes a
-concrete reproducer with `mac80211_hwsim`: a caller privileged only in
-its own user namespace can move a delegated wiphy back into `init_net`.
+The original lore submission also has `Fixes: 0727615fb975 ("media:
+qcom: camss: Functionally decompose CSIPHY clock lookups")`. No
+`Reported-by`, `Tested-by`, `Cc: stable`, or bug-report `Link` was
+verified.
 
-Record: This is not a hidden cleanup fix; it is an explicit
-security/permission bug fix.
+Step 1.3 Record: The body describes a clang-22 diagnostic promoted to
+error: `[-Werror,-Wmissing-format-attribute]`. The root cause is that
+`csiphy_match_clock_name()` takes a `const char *format` and passes it
+to `snprintf()` with a fixed `int index`, but the helper itself lacks a
+checkable printf-style prototype.
+
+Step 1.4 Record: This is not a hidden runtime bug fix. It is a build-
+warning/build-error fix for newer clang plus warning-as-error
+configurations.
 
 ### Phase 2: Diff Analysis
-Record: One file changed, `net/wireless/nl80211.c`, with 13 insertions
-in `nl80211_wiphy_netns()`. Scope is a single-function surgical fix.
+Step 2.1 Record: One file changed:
+`drivers/media/platform/qcom/camss/camss-csiphy.c`, `7 insertions(+), 3
+deletions(-)`. One function modified: `csiphy_match_clock_name()`. Scope
+is single-file surgical.
 
-Record: Before: after resolving the target netns and checking
-`IS_ERR(net)`, the function directly called `cfg80211_switch_netns()` if
-the wiphy was not already in that netns. After: it first checks
-`ns_capable(net->user_ns, CAP_NET_ADMIN)`, drops the netns reference
-with `put_net(net)`, and returns `-EPERM` on failure.
+Step 2.2 Record: Before, the helper accepted `format, int index` and
+called `snprintf(name, sizeof(name), format, index)`. After, it is
+declared `__printf(2, 3)`, accepts varargs, uses `va_start()`,
+`vsnprintf()`, and `va_end()`. Call sites remain unchanged.
 
-Record: Bug category is security authorization / logic correctness. The
-missing check allowed a source-netns-capable caller to affect a
-different target netns without privilege there.
+Step 2.3 Record: Bug category is build fix / compiler diagnostic fix. It
+does not fix memory safety, locking, refcounting, or runtime logic.
 
-Record: Fix quality is high: small, localized, follows the verified
-rtnetlink convention in `rtnl_get_net_ns_capable()`, and preserves
-reference cleanup. Regression risk is low and limited to denying
-previously accepted unauthorized cross-netns moves.
+Step 2.4 Record: The fix is mechanically correct and minimal. Existing
+callers pass literal format strings plus `csiphy->id`, so behavior is
+preserved while allowing compiler format checking. Regression risk is
+very low; the only meaningful risk is varargs misuse, but current call
+sites were verified unchanged and simple.
 
 ### Phase 3: Git History Investigation
-Record: `git blame` on the current stable checkout blamed the function
-body to a repository snapshot-style commit, so it was not useful for
-introduction history. `git log v2.6.29..v2.6.32 -S...` found the
-command/function introduced by `463d018323851` (`cfg80211: make aware of
-net namespaces`), first contained in `v2.6.32-rc1`.
+Step 3.1 Record: `git blame` shows the helper body was introduced by
+`0727615fb975f6`, authored by Bryan O'Donoghue on 2023-09-25. `git
+describe --contains` places it at `v6.7-rc1~51^2~149`.
 
-Record: No `Fixes:` tag is present, so there was no tagged commit to
-follow.
+Step 3.2 Record: The final fetched commit lacks a `Fixes:` trailer, but
+the original lore submission includes `Fixes: 0727615fb975`. I inspected
+that commit; it introduced the helper and the `snprintf(..., format,
+index)` pattern.
 
-Record: Recent local `net/wireless/nl80211.c` history showed unrelated
-wireless fixes/conversions and no existing equivalent target-netns
-capability fix.
+Step 3.3 Record: Recent file history includes later CAMSS/CSIPHY
+changes, especially `74cae7794341` changing callers to use `csiphy->id`.
+No prerequisite for this format-warning fix was found beyond the helper
+existing.
 
-Record: No local prior `Maoyi Xie` commits were found under
-`net/wireless`. `MAINTAINERS` verifies Johannes Berg as maintainer for
-`802.11 (including CFG80211/NL80211)`, and the patch was addressed to
-Johannes on linux-wireless.
+Step 3.4 Record: Arnd Bergmann has prior CAMSS build/undefined-behavior
+fixes in history. Bryan O'Donoghue, who reviewed the patch, is listed as
+a CAMSS maintainer in `MAINTAINERS`.
 
-Record: No code dependency was found for this patch. It is patch 1/2 in
-the submitted series; patch 2 is related namespace hardening, but patch
-1 is standalone for the direct permission bypass.
+Step 3.5 Record: No dependent commits were found. The patch only needs
+the existing helper and kernel `__printf`/`va_list` support, both
+present in the checked tree.
 
 ### Phase 4: Mailing List And External Research
-Record: No commit hash was provided and the exact subject was not found
-in local `master`, `wireless-next`, `net-next`, or `fixes-next`, so `b4
-dig -c <commit>` was not applicable. I used the provided message-id with
-`b4 am`/`b4 mbox`.
+Step 4.1 Record: `b4 dig -c 2211e826...` found the original patch at
+`https://patch.msgid.link/20260320151828.3456863-1-arnd@kernel.org`. `b4
+dig -a` found only v1.
 
-Record: `b4 am` found `[PATCH v3 0/2] wifi: nl80211: tighten netns
-handling in SET_WIPHY_NETNS and dump continuation`, including this patch
-as `v3 1/2`. `b4 am -c` did not report a newer revision. Attempts to
-fetch v1/v2 directly with `b4 -v 1/-v 2` did not find those revisions,
-but the v3 cover records that patch 1 was unchanged since v1.
+Step 4.2 Record: `b4 dig -w` shows relevant maintainers/lists were
+included: CAMSS maintainers, media maintainers, `linux-media`, `linux-
+arm-msm`, `linux-kernel`, and `llvm`.
 
-Record: The full mbox contained three messages: cover, patch 1, patch 2.
-It did not contain reviewer reply messages, but the cover records
-Johannes review feedback about trailers/comment wording and says no code
-changes since v2.
+Step 4.3 Record: No separate bug report was present. The concrete report
+is the compiler diagnostic embedded in the patch.
 
-Record: Original recipients were Johannes Berg, `linux-
-wireless@vger.kernel.org`, and `linux-kernel@vger.kernel.org`. No stable
-nomination or NAK was found in the fetched mbox. Lore WebFetch searches
-were blocked by Anubis, so stable-list discussion could not be
-independently verified through WebFetch.
+Step 4.4 Record: This is a standalone one-patch fix, not part of a
+multi-patch series.
+
+Step 4.5 Record: Direct lore stable search was blocked by Anubis; web
+search did not find stable-specific discussion for this exact patch.
 
 ### Phase 5: Code Semantic Analysis
-Record: Modified function: `nl80211_wiphy_netns()`.
+Step 5.1 Record: Modified function: `csiphy_match_clock_name()`.
 
-Record: Caller surface: the only direct reference is the generic-netlink
-op for `NL80211_CMD_SET_WIPHY_NETNS`; `genl_family_rcv_msg()` checks
-`GENL_UNS_ADMIN_PERM` against `net->user_ns`, then
-`genl_family_rcv_msg_doit()` calls `ops->doit()`, reaching
-`nl80211_wiphy_netns()` from userspace netlink.
+Step 5.2 Record: Callers are only within `msm_csiphy_subdev_init()`, at
+the three verified clock-name checks: `"csiphy%d_timer"`, `"csi%d_phy"`,
+and `"csiphy%d"`.
 
-Record: Key callees: `get_net_ns_by_pid()`, `get_net_ns_by_fd()`, new
-`ns_capable(net->user_ns, CAP_NET_ADMIN)`, `cfg80211_switch_netns()`,
-and `put_net()`. `cfg80211_switch_netns()` moves associated wireless
-netdevs with `dev_change_net_namespace()` and updates `wiphy_net_set()`.
+Step 5.3 Record: The helper calls formatting and string comparison
+functions: previously `snprintf()` and `strcmp()`, after patch
+`vsnprintf()` and `strcmp()`.
 
-Record: Reachability is verified by the op table and by the b4 cover’s
-PoC. A userspace caller can trigger the path by sending
-`NL80211_CMD_SET_WIPHY_NETNS` with target PID or netns fd.
+Step 5.4 Record: The affected path is CAMSS device probe:
+`camss_probe()` calls `camss_init_subdevices()`, which calls
+`msm_csiphy_subdev_init()`. Runtime behavior remains equivalent for the
+verified call sites.
 
-Record: Similar convention verified in `rtnl_get_net_ns_capable()`,
-which checks target `net->user_ns` before using another netns.
+Step 5.5 Record: Nearby CAMSS code has no other `const char *format`
+helper or `vsnprintf()`/`__printf()` pattern matching this issue.
 
 ### Phase 6: Stable Tree Analysis
-Record: The vulnerable handler/op shape exists in `v5.4`, `v5.10`,
-`v5.15`, `v6.1`, `v6.6`, `v6.12`, `v6.19`, and current `7.0.y`, with no
-`ns_capable(net->user_ns, CAP_NET_ADMIN)` check in the handler.
+Step 6.1 Record: The buggy helper exists from `v6.7` onward. Verified
+absent in `v6.6`, present in `v6.12`, and present in `v7.0`.
 
-Record: `v3.18` has `NL80211_CMD_SET_WIPHY_NETNS`, but uses
-`GENL_ADMIN_PERM`, so the unprivileged-user-namespace aspect is not the
-same there. For active modern stable trees, the issue is present.
+Step 6.2 Record: `git apply --check` succeeds against the current
+`7.0.5` checkout. For `v6.12`, the same helper and `snprintf(name,
+sizeof(name), format, index)` pattern are present, but I did not run a
+separate worktree apply check.
 
-Record: `git apply --check` of the fetched v3 mbox succeeds on the
-current `7.0.y` checkout. Older stable trees have line offsets and minor
-surrounding differences, but the same local hunk context exists at least
-in `v5.4`; expected backport difficulty is clean or minor-context-only.
-
-Record: No related local fix already present was found by subject/grep
-searches.
+Step 6.3 Record: No related stable-specific fix for this exact CAMSS
+warning was found in local targeted searches or public web search.
 
 ### Phase 7: Subsystem Context
-Record: Subsystem is cfg80211/nl80211 wireless configuration.
-Criticality is IMPORTANT: it is not core-mm/VFS, but it is a userspace-
-facing network configuration and permission boundary.
+Step 7.1 Record: Subsystem is Qualcomm CAMSS media driver under
+`drivers/media/platform/qcom/camss/`. Criticality is peripheral/driver-
+specific, but build failures affect anyone building this driver or
+COMPILE_TEST coverage.
 
-Record: The wireless subsystem is active in local history, with recent
-cfg80211/nl80211-adjacent fixes.
+Step 7.2 Record: CAMSS is actively developed; recent history shows many
+CAMSS commits, including fixes and new platform support.
 
 ### Phase 8: Impact And Risk
-Record: Affected users are systems with cfg80211/nl80211, network
-namespaces/user namespaces, and a `WIPHY_FLAG_NETNS_OK` wiphy. Verified
-examples include `mac80211` and drivers setting the flag such as
-`brcmfmac`, `mwifiex`, and `qtnfmac`.
+Step 8.1 Record: Affected population is config-specific: builders with
+`CONFIG_VIDEO_QCOM_CAMSS`, including `COMPILE_TEST`, using clang-22 with
+`-Wmissing-format-attribute` and warnings-as-errors.
 
-Record: Trigger requires the caller to hold a movable wiphy in its own
-netns and pass a target netns fd or pid. The b4 cover verifies this is
-reachable from an unprivileged user namespace after legitimate admin
-delegation using `mac80211_hwsim`.
+Step 8.2 Record: Trigger is build-time, not runtime.
+`scripts/Makefile.warn` verifies `-Wmissing-format-attribute` is under
+`W=1`; `-Werror` is enabled by `W=e` or `CONFIG_WERROR`.
 
-Record: Failure mode is a security/namespace isolation violation:
-unauthorized movement of a wiphy into a netns, including `init_net`,
-where the caller lacks privilege. Severity is HIGH because it bypasses
-kernel namespace permission boundaries.
+Step 8.3 Record: Failure mode is build failure, not
+crash/corruption/security. Severity is medium, but build fixes are an
+accepted stable exception.
 
-Record: Benefit is high for stable users because it closes a concrete
-privilege boundary bug. Risk is low: 13 lines, one function, no new API,
-no data structure change, and only unauthorized operations change
-behavior.
+Step 8.4 Record: Benefit is moderate: keeps affected stable builds
+working with newer clang warning behavior. Risk is very low: 10-line
+single-function mechanical change, no API change, call sites unchanged.
 
 ### Phase 9: Final Synthesis
-Record: Evidence for backporting: real security/authorization bug,
-concrete PoC in the submitted cover, reachable userspace netlink
-command, vulnerable code present across modern stable trees, small
-contained fix, and it mirrors an existing rtnetlink convention.
+Evidence for backporting:
+- Real build failure mode documented in commit and lore.
+- Fits stable build-fix exception.
+- Very small, contained, reviewed by CAMSS maintainer.
+- Applies cleanly to current `7.0.5`; buggy code exists in `v6.12+` and
+  `v7.0`.
 
-Record: Evidence against backporting: no `Fixes:`/stable tag, no fetched
-reviewer reply carrying an explicit stable nomination, and the exact
-applied commit hash was not present in local searched branches. These do
-not outweigh the verified technical issue.
-
-Record: Unresolved: I could not verify the final applied commit object
-or run `b4 dig -c` because no commit hash was provided and local branch
-searches did not find the subject. WebFetch to lore/stable was blocked
-by Anubis. I did not run the runtime PoC or a kernel build.
+Evidence against backporting:
+- Not a runtime correctness, crash, data corruption, or security fix.
+- Trigger requires specific compiler/warning-as-error build settings.
+- Not relevant to `v6.6` and older because the helper is absent there.
 
 Stable rules checklist:
-1. Obviously correct and tested: yes by inspection; PoC result described
-   in b4 cover, though not locally rerun.
-2. Fixes a real bug affecting users: yes, verified missing target-netns
-   authorization.
-3. Important issue: yes, security/namespace permission bypass.
-4. Small and contained: yes, one function, 13 added lines.
-5. No new features or APIs: yes.
-6. Can apply to stable: yes for current `7.0.y`; older active stable
-   trees likely clean/minor context based on matching code.
+1. Obviously correct and tested: yes for code review/readability; no
+   local clang-22 build reproduction.
+2. Fixes a real bug: yes, a verified build diagnostic/error path.
+3. Important issue: medium; build failure, not runtime failure.
+4. Small and contained: yes, one function, one file, 7+/3-.
+5. No new feature/API: yes.
+6. Can apply to stable: verified for current `7.0.5`; likely
+   straightforward for `v6.12+`, not applicable to `v6.6` and older.
 
-Exception category: none. This is not a device ID/quirk/build/doc fix;
-it is a security permission fix.
+Exception category: Build fix.
 
 ## Verification
-- [Phase 1] Parsed provided subject/tags and b4-fetched patch/cover;
-  found no `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, or
-  stable tag.
-- [Phase 2] Compared provided diff and b4 mbox patch; confirmed 13 lines
-  added to `nl80211_wiphy_netns()`.
-- [Phase 3] `git blame -L` was not useful due snapshot-style history;
-  `git log v2.6.29..v2.6.32 -S...` found `463d018323851`, first
-  contained in `v2.6.32-rc1`.
-- [Phase 3] `git log --author='Maoyi Xie' -- net/wireless` found no
-  local prior commits.
-- [Phase 3] `MAINTAINERS` confirms Johannes Berg maintains `802.11
-  (including CFG80211/NL80211)`.
-- [Phase 4] `b4 am` found v3 2-patch series and the supplied patch
-  message-id.
-- [Phase 4] `b4 am -c` found no newer revision.
-- [Phase 4] `b4 mbox` saved the full 3-message thread; no stable
-  nomination or NAK was present there.
-- [Phase 5] `rg` confirmed `nl80211_wiphy_netns()` is reached via the
-  `NL80211_CMD_SET_WIPHY_NETNS` generic-netlink op.
-- [Phase 5] Read `genetlink.c`; confirmed `GENL_UNS_ADMIN_PERM` checks
-  `net->user_ns` before calling `ops->doit()`.
-- [Phase 5] Read `cfg80211_switch_netns()`; confirmed it moves wireless
-  netdevs and changes the wiphy netns.
-- [Phase 6] Checked `v5.4`, `v5.10`, `v5.15`, `v6.1`, `v6.6`, `v6.12`,
-  `v6.19`, and current `7.0.y`; all have the handler/op without the
-  target `ns_capable()` check.
-- [Phase 6] `git apply --check` of the b4 mbox succeeded on current
-  `7.0.y`.
-- [Phase 8] `rg WIPHY_FLAG_NETNS_OK` verified affected mac80211 and
-  several wireless drivers expose movable wiphys.
-- UNVERIFIED: exact final commit SHA and final applied-object metadata,
-  because the subject was not found in local searched branches.
-- UNVERIFIED: stable-list discussion via WebFetch, because lore WebFetch
-  returned Anubis anti-bot pages.
-- UNVERIFIED: local runtime PoC/build; not performed.
+- Phase 1: `git show` verified candidate commit metadata and exact diff
+  for `2211e826bd69...`.
+- Phase 2: `git diff --shortstat` verified `1 file changed, 7
+  insertions(+), 3 deletions(-)`.
+- Phase 3: `git blame` verified helper introduced by `0727615fb975`;
+  `git show` inspected that commit.
+- Phase 3/6: `git describe --contains` and tag containment checks
+  verified introduction in `v6.7`, presence in `v6.12+`, absence from
+  `v6.6`.
+- Phase 4: `b4 dig`, `b4 dig -a`, `b4 dig -w`, and saved mbox verified
+  original lore thread, v1-only series, recipients, `Fixes:` trailer,
+  and Bryan’s review.
+- Phase 5: `rg` and file reads verified call sites and probe call chain.
+- Phase 6: `git apply --check` verified clean apply to current `7.0.5`.
+- Phase 7: `MAINTAINERS` verified Bryan O'Donoghue is a CAMSS
+  maintainer.
+- Phase 8: `scripts/Makefile.warn` verified when `-Wmissing-format-
+  attribute` and `-Werror` are enabled.
+- UNVERIFIED: I did not reproduce the clang-22 build failure locally.
+- UNVERIFIED: I did not perform an actual `git apply --check` in a
+  separate `v6.12` worktree.
 
-This should be backported to stable kernel trees that contain the
-`GENL_UNS_ADMIN_PERM` version of `NL80211_CMD_SET_WIPHY_NETNS`,
-especially active v5.4+ stable/LTS trees.
+This is stable-worthy as a low-risk build fix for stable trees that
+contain the helper, especially `v6.12+`/`v7.0` era trees, and should be
+skipped for older trees where the code does not exist.
 
 **YES**
 
- net/wireless/nl80211.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/media/platform/qcom/camss/camss-csiphy.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ce3121b1c3319..13c2943ad3e4b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -13568,6 +13568,19 @@ static int nl80211_wiphy_netns(struct sk_buff *skb, struct genl_info *info)
- 	if (IS_ERR(net))
- 		return PTR_ERR(net);
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
+index 62623393f4144..78a1b568dbae6 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
+@@ -558,12 +558,16 @@ static int csiphy_init_formats(struct v4l2_subdev *sd,
+ 	return csiphy_set_format(sd, fh ? fh->state : NULL, &format);
+ }
  
-+	/*
-+	 * The caller already has CAP_NET_ADMIN over the source netns
-+	 * (enforced by GENL_UNS_ADMIN_PERM on the genl op). Mirror the
-+	 * convention used by net/core/rtnetlink.c::rtnl_get_net_ns_capable()
-+	 * and require CAP_NET_ADMIN over the target netns as well, so that
-+	 * a caller that is privileged in their own user namespace cannot
-+	 * push a wiphy into a netns where they have no privilege.
-+	 */
-+	if (!ns_capable(net->user_ns, CAP_NET_ADMIN)) {
-+		put_net(net);
-+		return -EPERM;
-+	}
+-static bool csiphy_match_clock_name(const char *clock_name, const char *format,
+-				    int index)
++static bool __printf(2, 3)
++csiphy_match_clock_name(const char *clock_name, const char *format, ...)
+ {
+ 	char name[16]; /* csiphyXXX_timer\0 */
++	va_list args;
 +
- 	err = 0;
++	va_start(args, format);
++	vsnprintf(name, sizeof(name), format, args);
++	va_end(args);
  
- 	/* check if anything to do */
+-	snprintf(name, sizeof(name), format, index);
+ 	return !strcmp(clock_name, name);
+ }
+ 
 -- 
 2.53.0
 
