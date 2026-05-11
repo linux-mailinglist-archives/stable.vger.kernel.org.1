@@ -1,321 +1,188 @@
-Return-Path: <stable+bounces-245227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEh6E8viAWq1lwEAu9opvQ
-	(envelope-from <stable+bounces-245227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:08:11 +0200
+	id IDzjLnfiAWq1lwEAu9opvQ
+	(envelope-from <stable+bounces-245228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:06:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC51250FBA7
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:08:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2126C50FA9E
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A78D309AD38
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:00:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E19973009501
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7B53FE379;
-	Mon, 11 May 2026 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270953F0A88;
+	Mon, 11 May 2026 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eIlmWjfd"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DT46Shop"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CC53FCB03;
-	Mon, 11 May 2026 13:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D723F54AB
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 14:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778507966; cv=none; b=GvepRp0ayyeU7pf0E/rQl1OBQBhMamhiF6YnXEfMkDyxIQFCcmvcs8Pl8ZKiVdXogIYXnAdd5V9Zu3KaX5B1qzNd38X1akcan44cAvyErQ6GsL2vynl03Obt/TbS+1ug1QfB/UYZALjHOR17RTNLgp1kyLSQtJSF/6AYur/fdt4=
+	t=1778508259; cv=none; b=XYd+URhdYq9M3I0BLhQ3Nds59RC4OCk51kKSdLDIsctlGb1K7WNuZZybqgbzO/DsNWrtJHpaj1JwCGasbC5MnbSYkPQqA0NIpXFOL8HTXQ3OLvgYlrLD/58KPq+JxABL0gXujkKoFmxNNvNLwgjyLwcwct+TXOQkHiPSKvQdk9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778507966; c=relaxed/simple;
-	bh=GxJylG5lOVTB/ixztFRmzwzVGtHfePl2rp5kNd9TTjc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nvDUaZrEDIsqGsf2a80qIM/1d0ik9EBEwjAJLbZQsxuR7UMDyQxqVmDYZ9vliRvYWXMoY22xP6InPtkZWJcjXCXt1i4D3VJdmap+K10215s+G4NTYOND4lN38USb+PuQpV/VaSPN6IYYuP6wVZ8+G98SzJ9sarC+vyhirKg9R28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eIlmWjfd; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BDHPVu1258415;
-	Mon, 11 May 2026 13:58:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=NDkR/w65DS253ceti+YfW4LrgkR4RO8h2d7
-	atfEUTOk=; b=eIlmWjfdcUKJDt0HRIj4DFjd7kTp7DNTjAz2T+O1lYZqk63XoJT
-	/Z2UBtege8dVhDAFWHBofqgiGpswxh7NQNBwEj7UTXtFR4HmgTfEkchRf/G2kO/E
-	NADA4Awdbo7UAIHGbEh9As5LG3taxAXbpk/Kv/1NEgT5BdxdphI4NDxQZ33mQtt7
-	n7rZShbqEdLub0gv05/5n6vpRv3ygRHtybBRTaixejApwwNRwxH/tHOQwT+eTpsK
-	+3TpSh8xllTsCrzbP3yCVhmEyw+SCz8C/8urCPencK6OTT9VzPFOWx91r3zlOalM
-	f7j2IUjtI2N1W5+c94Bj/M0Jeojml8H2Auw==
-Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e3ag21e1d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 13:58:59 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (8.18.1.7/8.18.1.7) with ESMTP id 64BDwvcL025065;
-	Mon, 11 May 2026 13:58:57 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 4e1x0hx240-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 13:58:57 +0000 (GMT)
-Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64BDwvZD025059;
-	Mon, 11 May 2026 13:58:57 GMT
-Received: from shuaz-gv.ap.qualcomm.com (smtphost-taiwan.qualcomm.com [10.249.136.33])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 64BDwuUH025055
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 13:58:57 +0000 (GMT)
-Received: by shuaz-gv.ap.qualcomm.com (Postfix, from userid 4467449)
-	id C0E2B5EB; Mon, 11 May 2026 21:58:55 +0800 (CST)
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-To: Bartosz Golaszewski <brgl@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
-        quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com,
-        jinwang.li@oss.qualcomm.com, mengshi.wu@oss.qualcomm.com,
-        shuai.zhang@oss.qualcomm.com, stable@vger.kernel.org,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH v6] Bluetooth: hci_qca: Convert timeout from jiffies to ms
-Date: Mon, 11 May 2026 21:58:37 +0800
-Message-Id: <20260511135837.3967550-1-shuai.zhang@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1778508259; c=relaxed/simple;
+	bh=S+311uJMJYr97xeuLfKyaISZazETY8CLJpyrv6RP1fE=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=qkCals25gNOlVOu4brjSs5I/1vA1gTEamUeN+V7tgCN5RiZRUy73Md/gw12PildOraLBpRUoaErqKNppLc3LP3CKs5eJzranoGuCvCpm/zSX7KD8dYVhXcFuygJ11oiogxYfNDV/J2zMZgkC6YkVprpNaMUPp+q6DUx4qZQEOiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DT46Shop; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B8U3OV2306345
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 14:04:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ZesvbD
+	NdF3JFEbZpbULJkQ44qhkb9+HZYwJVCsOkiS4=; b=DT46Shops+mncxX0c5OWWp
+	Bmj7kFbWNnGTdYuUE7MNu+jPqHbVdpfRHi8kkHqxMsD3easkKsipiQxuJlJPxOXd
+	37TREGDuBx79QsK7C+RdY2FcK0gXLE1p8jS0LpsVEVmij2DnELKUxJZ+rdt7bHsv
+	fAtRnKqJaNbxPg8zV6bHnP+vVn+nKiyGBM4f/lyzSvK36LNkLTTTGB6gPeiRZiM5
+	LMuOY49ERfQ9EQchP0U/ilee/3Y/D568fNIaDkhcDllYVPHlUXPKAOFQ3DPX4VpB
+	K3lO+BVT14Nn1hQoLAPObEelWb9r6NDI7+65xLBOkx2hON9XBubFxjDl2Qi7mGRw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1vn4rk78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 14:04:17 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64BDsQi9003082
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 14:04:16 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e2fmvwmv3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 14:04:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64BE4BkG26673652
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 May 2026 14:04:11 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9EE3720043;
+	Mon, 11 May 2026 14:04:11 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 649FF20040;
+	Mon, 11 May 2026 14:04:11 +0000 (GMT)
+Received: from [9.52.200.120] (unknown [9.52.200.120])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 May 2026 14:04:11 +0000 (GMT)
+Message-ID: <ce7ac073-62ef-4ca4-b325-eef7c829292d@linux.ibm.com>
+Date: Mon, 11 May 2026 16:04:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-ORIG-GUID: xNSjKJLpVvRvDCfc9sx-4d770aIsYqW7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDE1NCBTYWx0ZWRfX1LdYHKOQyKrR
- re52YML+hwNLgOObgWWxbtDkOGzrGQ1q6M/vHyjM4wJbjhoZdCuM2g+i3PUqWAdyqMs8OO2Xfjf
- O5L2ZKAwcTUPuGZ0lBrmH7NSDOn6Od+J19WyQiR66GEH5GUP00HhjZSARycA1TDk3D9z2F/bD+d
- gY85HHnJGAcS5ffWYVmDDzG/ljEtyxfz/FLwOINtx1/I3LaJuXMGCKcIk6rC3CyBFhGfETVzpn8
- gUQEtPEmqG31hK6NdhJFDVaQ2zaT5h9CFThjJ351kO8AbfBabNjfgdj6jy00c6uIRtCv+NAENQn
- r/csJv3EgrDbLZvWFZVsh8IE8nOAA+ytEZ99fXNc0EglTcUWEpfpdIlaYSDlhwz59TD3Su7DgSp
- b0DqIZuy99/IhWbvWC9PgKEbjSxIqyggB/a9G4IwkMw+11VAyWIynb9+QGHK0FxqpMwKdhFHxlF
- ZWzgGh5kPXUP8DGnnHw==
-X-Proofpoint-GUID: xNSjKJLpVvRvDCfc9sx-4d770aIsYqW7
-X-Authority-Analysis: v=2.4 cv=NODlPU6g c=1 sm=1 tr=0 ts=6a01e0a3 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=3WHJM1ZQz_JShphwDgj5:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8
- a=KKAkSRfTAAAA:8 a=HmGob9d6dpwOpU2T9dAA:9 a=TjNXssC_j7lpFel5tvFf:22
- a=cvBusfyB2V15izCimMoJ:22
+User-Agent: Mozilla Thunderbird
+From: Steffen Maier <maier@linux.ibm.com>
+Subject: Re: [PATCH net-next V2] net/iucv: fix UAF in afiucv_netdev_event()
+To: Nagamani PV <nagamani@linux.ibm.com>, wintera@linux.ibm.com,
+        aswin@linux.ibm.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
+        pasic@linux.ibm.com, mjambigi@linux.ibm.com, dk@linux.ibm.com,
+        twinkler@linux.ibm.com, jaka@linux.ibm.com, wenjia@linux.ibm.com,
+        gbayer@linux.ibm.com, linux390-list@tuxmaker.boeblingen.de.ibm.com
+Cc: stable@vger.kernel.org, syzbotz+89435e7383b82238dd91@linux.ibm.com
+References: <20260508170534.2208812-1-nagamani@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260508170534.2208812-1-nagamani@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=BM+DalQG c=1 sm=1 tr=0 ts=6a01e1e1 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=VxHW02VjvWZeiVljZOcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDE1MSBTYWx0ZWRfX56Mq16ZrkZkn
+ j32Tl7XL6tyQc9XJgT3qbOXcE4q89c3i6Xz30KIUTdS+7hOoSS9ATbX6s4efU3pcYyAWS0DqU4w
+ KAvGsuuY/kqhgkRiCVJbDteTeGVY+wGkSjD5hEX9oCYwmjK7rsVbqkJMITNsJ4dysiOMjlZUJ5T
+ KhWLlF7YmkYuqi1FfPdK5udSLuVbEAPEr/RjAG6tYl4/KpQn9AD3FpsKFgHsDFSETKT56BkDmUl
+ KmywpZApcR6cmWP9/VHP8s8I79Xm9UNOOgyxSRrFb/3UzwjpJN9d6BjGSv7Gy902KspTVUPG5uL
+ HkJOiEgIZXWIJwxgaj+z+g2aQQI0qduIQQyzDShKIQI1CBrrvw0vxNPYzpfnLZKuDZos2QbF5u8
+ mRajBRpdj686InMI1bP+xIA4tQpA7ZJDJpr+H3LJpAU4iY2J8TTWfeq6L98nFGapn77cdACJ73q
+ pTGYtAPmC9FO71eOkjw==
+X-Proofpoint-GUID: Tx3rvXP_F9c3AE4psKfePFvmUHUO2qvZ
+X-Proofpoint-ORIG-GUID: Tx3rvXP_F9c3AE4psKfePFvmUHUO2qvZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-11_04,2026-05-08_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 spamscore=0 phishscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110154
-X-Rspamd-Queue-Id: BC51250FBA7
+ clxscore=1011 impostorscore=0 suspectscore=0 bulkscore=0 spamscore=0
+ lowpriorityscore=0 priorityscore=1501 adultscore=0 malwarescore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605110151
+X-Rspamd-Queue-Id: 2126C50FA9E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[kernel.org,holtmann.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245227-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245228-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shuai.zhang@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[maier@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:mid,qualcomm.com:email,qualcomm.com:dkim,mpg.de:email];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.991];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,89435e7383b82238dd91];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Action: no action
 
-Since the timer uses jiffies as its unit rather than ms, the timeout value
-must be converted from ms to jiffies when configuring the timer. Otherwise,
-the intended 8s timeout is incorrectly set to approximately 33s.
+On 5/8/26 19:05, Nagamani PV wrote:
 
-To improve readability, embed msecs_to_jiffies() directly in the macro
-definitions and drop the _MS suffix from macros that now yield jiffies
-values: MEMDUMP_TIMEOUT, FW_DOWNLOAD_TIMEOUT, IBS_DISABLE_SSR_TIMEOUT,
-CMD_TRANS_TIMEOUT, and IBS_BTSOC_TX_IDLE_TIMEOUT.
+> Fixes: 9fbd87d41392 ("af_iucv: handle netdev events")
+> Cc: stable@vger.kernel.org
 
-IBS_WAKE_RETRANS_TIMEOUT_MS and IBS_HOST_TX_IDLE_TIMEOUT_MS are
-intentionally left unchanged. Their values are stored in the struct fields
-wake_retrans and tx_idle_delay, which hold ms values at runtime and can be
-modified via debugfs. The msecs_to_jiffies() conversion happens at each
-call site against the field value, so it cannot be embedded in the macro.
+> Reported-by: syzbotz+89435e7383b82238dd91@linux.ibm.com
 
-Wake timer depends on commit c347ca17d62a
+Not sure: Is that our IBM-internal syzbot from our Linux on Z project?
+Are we allowed to expose this publicly and would someone external even have use 
+for links to IBM-internal finding reports?
 
-Cc: stable@vger.kernel.org
-Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory dump during SSR")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
----
-Changes v6:
-- Move msecs_to_jiffies() into macro definitions instead of wrapping
-  each call site
-- Rename macros by dropping the _MS suffix to reflect that they now yield jiffies values.
-- Change wait_timeout from u32 to unsigned long to properly hold jiffies values.
-- Link to v5:
-  https://lore.kernel.org/all/20260429123802.1310681-1-shuai.zhang@oss.qualcomm.com/
+> Closes: https://lnxgwne1.boeblingen.de.ibm.com/linux-ci/syzbot/dashboard/bug?extid=89435e7383b82238dd91
 
-Changes v5:
-- add depends on commit
-- Link to v4
-  https://lore.kernel.org/all/20260327082941.1396521-1-shuai.zhang@oss.qualcomm.com/
+This looks like an IBM-internal URL, we might not want to expose to the public.
+We have one specific tag "Reference-ID" which stays internal and is not sent 
+upstream.
+Do you plang to remove your "Closes:" before sending upstream?
 
-Changes v4:
-- add review-by signoff
-- Link to v3
-  https://lore.kernel.org/all/20251107033924.3707495-1-quic_shuaz@quicinc.com/
+> Suggested-by: Hidayath Khan <hidayath@linux.ibm.com>
+> Signed-off-by: Nagamani PV <nagamani@linux.ibm.com>
+> 
+> ---
+> v2:
+> - Target net-next (missed in v1 subject)
 
-Changes v3:
-- add Fixes tag
-- Link to v2
-  https://lore.kernel.org/all/20251106140103.1406081-1-quic_shuaz@quicinc.com/
-
-Changes v2:
-- Split timeout conversion into a separate patch.
-- Clarified commit messages and added test case description.
-- Link to v1
-  https://lore.kernel.org/all/20251104112601.2670019-1-quic_shuaz@quicinc.com/
----
- drivers/bluetooth/hci_qca.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index cd1834246..ed280399b 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -48,13 +48,12 @@
- #define HCI_MAX_IBS_SIZE	10
- 
- #define IBS_WAKE_RETRANS_TIMEOUT_MS	100
--#define IBS_BTSOC_TX_IDLE_TIMEOUT_MS	200
-+#define IBS_BTSOC_TX_IDLE_TIMEOUT	msecs_to_jiffies(200)
- #define IBS_HOST_TX_IDLE_TIMEOUT_MS	2000
--#define CMD_TRANS_TIMEOUT_MS		100
--#define MEMDUMP_TIMEOUT_MS		8000
--#define IBS_DISABLE_SSR_TIMEOUT_MS \
--	(MEMDUMP_TIMEOUT_MS + FW_DOWNLOAD_TIMEOUT_MS)
--#define FW_DOWNLOAD_TIMEOUT_MS		3000
-+#define CMD_TRANS_TIMEOUT		msecs_to_jiffies(100)
-+#define MEMDUMP_TIMEOUT			msecs_to_jiffies(8000)
-+#define FW_DOWNLOAD_TIMEOUT		msecs_to_jiffies(3000)
-+#define IBS_DISABLE_SSR_TIMEOUT		(MEMDUMP_TIMEOUT + FW_DOWNLOAD_TIMEOUT)
- 
- /* susclk rate */
- #define SUSCLK_RATE_32KHZ	32768
-@@ -1096,7 +1095,7 @@ static void qca_controller_memdump(struct work_struct *work)
- 
- 			queue_delayed_work(qca->workqueue,
- 					   &qca->ctrl_memdump_timeout,
--					   msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
-+					   MEMDUMP_TIMEOUT);
- 			skb_pull(skb, sizeof(qca_memdump->ram_dump_size));
- 			qca_memdump->current_seq_no = 0;
- 			qca_memdump->received_dump = 0;
-@@ -1369,7 +1368,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
- 
- 	if (hu->serdev)
- 		serdev_device_wait_until_sent(hu->serdev,
--		      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
-+		      CMD_TRANS_TIMEOUT);
- 
- 	/* Give the controller time to process the request */
- 	switch (qca_soc_type(hu)) {
-@@ -1401,8 +1400,8 @@ static inline void host_set_baudrate(struct hci_uart *hu, unsigned int speed)
- 
- static int qca_send_power_pulse(struct hci_uart *hu, bool on)
- {
-+	int timeout = CMD_TRANS_TIMEOUT;
- 	int ret;
--	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
- 	u8 cmd = on ? QCA_WCN3990_POWERON_PULSE : QCA_WCN3990_POWEROFF_PULSE;
- 
- 	/* These power pulses are single byte command which are sent
-@@ -1607,7 +1606,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
- 	struct qca_data *qca = hu->priv;
- 
- 	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
--			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
-+			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT);
- 
- 	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
- }
-@@ -2591,7 +2590,7 @@ static void qca_serdev_remove(struct serdev_device *serdev)
- static void qca_serdev_shutdown(struct serdev_device *serdev)
- {
- 	int ret;
--	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
-+	int timeout = CMD_TRANS_TIMEOUT;
- 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
- 	struct hci_uart *hu = &qcadev->serdev_hu;
- 	struct hci_dev *hdev = hu->hdev;
-@@ -2648,7 +2647,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 	bool tx_pending = false;
- 	int ret = 0;
- 	u8 cmd;
--	u32 wait_timeout = 0;
-+	unsigned long wait_timeout = 0;
- 
- 	set_bit(QCA_SUSPENDING, &qca->flags);
- 
-@@ -2669,15 +2668,15 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 	if (test_bit(QCA_IBS_DISABLED, &qca->flags) ||
- 	    test_bit(QCA_SSR_TRIGGERED, &qca->flags)) {
- 		wait_timeout = test_bit(QCA_SSR_TRIGGERED, &qca->flags) ?
--					IBS_DISABLE_SSR_TIMEOUT_MS :
--					FW_DOWNLOAD_TIMEOUT_MS;
-+					IBS_DISABLE_SSR_TIMEOUT :
-+					FW_DOWNLOAD_TIMEOUT;
- 
- 		/* QCA_IBS_DISABLED flag is set to true, During FW download
- 		 * and during memory dump collection. It is reset to false,
- 		 * After FW download complete.
- 		 */
- 		wait_on_bit_timeout(&qca->flags, QCA_IBS_DISABLED,
--			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(wait_timeout));
-+			    TASK_UNINTERRUPTIBLE, wait_timeout);
- 
- 		if (test_bit(QCA_IBS_DISABLED, &qca->flags)) {
- 			bt_dev_err(hu->hdev, "SSR or FW download time out");
-@@ -2729,7 +2728,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 
- 	if (tx_pending) {
- 		serdev_device_wait_until_sent(hu->serdev,
--					      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
-+					      CMD_TRANS_TIMEOUT);
- 		serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_OFF, hu);
- 	}
- 
-@@ -2738,7 +2737,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 	 */
- 	ret = wait_event_interruptible_timeout(qca->suspend_wait_q,
- 			qca->rx_ibs_state == HCI_IBS_RX_ASLEEP,
--			msecs_to_jiffies(IBS_BTSOC_TX_IDLE_TIMEOUT_MS));
-+			IBS_BTSOC_TX_IDLE_TIMEOUT);
- 	if (ret == 0) {
- 		ret = -ETIMEDOUT;
- 		goto error;
 -- 
-2.34.1
+Mit freundlichen Gruessen / Kind regards
+Steffen Maier
 
+Linux on IBM Z and LinuxONE
+
+https://www.ibm.com/privacy/us/en/
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Geschaeftsfuehrung: David Faller
+Sitz der Gesellschaft: Ehningen / Registergericht: Amtsgericht Stuttgart, HRB 
+243294
 
