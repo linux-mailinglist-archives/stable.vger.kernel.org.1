@@ -1,194 +1,197 @@
-Return-Path: <stable+bounces-245178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mI1NHs61AWr2igEAu9opvQ
-	(envelope-from <stable+bounces-245178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 12:56:14 +0200
+	id gBG3AlbEAWqSjgEAu9opvQ
+	(envelope-from <stable+bounces-245179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:58:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB95B50C57A
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 12:56:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AEF50D370
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A16F3043C15
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 10:52:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC7AB303A8D8
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 11:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B173E3C7E1B;
-	Mon, 11 May 2026 10:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29BB377031;
+	Mon, 11 May 2026 11:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTyVZyDr"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vJo6Hoz/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jpLrsP5Q";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vJo6Hoz/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jpLrsP5Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BD0344DBD;
-	Mon, 11 May 2026 10:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16371374187
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 11:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778496756; cv=none; b=EpGkSZAcdsq3Bwry6paJUCygqB7GpJWwVSdbyrfbtHXbBd5m8PsPWPd00iWSyaRmh0xo3y9ftZiDw5oJrFt1Xa0wcaZF8KPMN1QRhTEFv+EfJGJspSeQ16HcsYryeZ5av1sL63jUygdlxPCAcWBQfycXMqhwgkGsMcG2rTY1Dz4=
+	t=1778500547; cv=none; b=hvC1SFtc6H+ujZaZK51IiSyAFTn7WxAlzbrpVmhPykrE2O/uU61JTt2YVt+D7vUTDPXTjaRPYTLDPhv7Y6nCiaWdsdW/o4HqTXHwydqJ5UvRx5ygIROPT9YyNgwbn+17Tkr05gHAuWS/S0tfeVgEmmJqJH0FQHYt6gZzTrGwulY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778496756; c=relaxed/simple;
-	bh=TK8vbFo3IPPLv3mDTVloWgVI8sIHrIme4x6bk2ipAk4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RjvGaY4kXPAASle6ei6sDAg07BdfVlan2u4+wyh2OlVyb0D/m1UFAdhfnaE0hn2guuCXojr910dxI9XRweHkIvFp28sq43nujwTNbPs4JYiiyta17O4Ug/WMNfcMctTQVcY4Jg3N3k4Mtg52OPGVTKzLYuJn5Ezp0A5uMpho8eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTyVZyDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC26C2BCB0;
-	Mon, 11 May 2026 10:52:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778496754;
-	bh=TK8vbFo3IPPLv3mDTVloWgVI8sIHrIme4x6bk2ipAk4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bTyVZyDrH7UkNmmXFlL5FS+6s4zqf+bpazGJAlPXifeAZ8X7sE9DaU/pNI1v4U9eb
-	 kCQAWT/UzEjcN1f0/2/D2zFRQSjI77sYkCBhPwIBy7Z61/4WsVNDwHLALipDGzHujW
-	 9BX3FGtxDjvy8cB9VAVWXUQv5e58a8nGVydKNnvoFe1iejsfAj7tlLI3ndwbuOJGcx
-	 r4Re3dc954Sz3OAYCGPnF/vjVVw7YTLutZVXnX9lB6vFr9wqtiPdD82RYvhRtWbZpP
-	 izQlWj02ahPVAq9st/RSBiDTxWgqlI7hW71LT68PPIpf/nA0Qgp+Nw/9563oeqXFlG
-	 17tMMKszYRzyQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Hugh Dickins <hughd@google.com>,
-  Baolin Wang <baolin.wang@linux.alibaba.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Jeff Xu <jeffxu@google.com>,  Kees Cook
- <kees@kernel.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Brendan Jackman
- <jackmanb@google.com>,  Greg Thelen <gthelen@google.com>,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] memfd: deny writeable mappings when implying SEAL_WRITE
-In-Reply-To: <04a4e82a-2479-45e7-92e3-047ac8365ae4@kernel.org> (David
-	Hildenbrand's message of "Fri, 8 May 2026 11:37:13 +0200")
-References: <20260505133922.797635-1-pratyush@kernel.org>
-	<04a4e82a-2479-45e7-92e3-047ac8365ae4@kernel.org>
-Date: Mon, 11 May 2026 12:52:30 +0200
-Message-ID: <2vxz8q9qdxqp.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1778500547; c=relaxed/simple;
+	bh=uwia3rlf0Boz6lTCKVhiaHp/seSlsYrM6oyDDAO3RQw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CRgi4FKp+UbAO/WmEamheXDTX8kExR5NQTrbDniDN5xXVrlzXp5ZGAxatJ+xvGx/cVQAyA+Vbz0BkN4WpX1RGOfz9Ok45bmGfdvxa08Sh9pW5P/ewzFA98NIJrEVoWPSbfccrRerNLQql8XfvbYcEZOp3V+kvFBBFmgt5bz9qgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vJo6Hoz/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jpLrsP5Q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vJo6Hoz/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jpLrsP5Q; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 618DC75A8D;
+	Mon, 11 May 2026 11:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778500543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AzR/0cV+87qdDOowZhG+TluF31kQyuNXdGczJSJzyMs=;
+	b=vJo6Hoz/NkP1JnlKZwLQ9lmaO2f8JqfEsIcxkRa0JSujx/8fkYfiUFvvoEe4BANAMa86PT
+	VV1mP3D1SsLMyyNcKWvNZlOJyMU5xhFt/AbxZOX9kQzqv33oFlkbb+0nsDAhSG5MBqyOxl
+	a/CDCcg9E+eQmZtI0NFH9JdrMlNfxPM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778500543;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AzR/0cV+87qdDOowZhG+TluF31kQyuNXdGczJSJzyMs=;
+	b=jpLrsP5QtEKkYHV6Zo7pAp/nC6KxKYyAR/MlRyVYTXAcgj40JOM+HkpN86OaPEm1+NJBM+
+	YYd8UrZStegxcJDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778500543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AzR/0cV+87qdDOowZhG+TluF31kQyuNXdGczJSJzyMs=;
+	b=vJo6Hoz/NkP1JnlKZwLQ9lmaO2f8JqfEsIcxkRa0JSujx/8fkYfiUFvvoEe4BANAMa86PT
+	VV1mP3D1SsLMyyNcKWvNZlOJyMU5xhFt/AbxZOX9kQzqv33oFlkbb+0nsDAhSG5MBqyOxl
+	a/CDCcg9E+eQmZtI0NFH9JdrMlNfxPM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778500543;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AzR/0cV+87qdDOowZhG+TluF31kQyuNXdGczJSJzyMs=;
+	b=jpLrsP5QtEKkYHV6Zo7pAp/nC6KxKYyAR/MlRyVYTXAcgj40JOM+HkpN86OaPEm1+NJBM+
+	YYd8UrZStegxcJDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11DD4593A9;
+	Mon, 11 May 2026 11:55:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GOgaA7/DAWoERgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 11 May 2026 11:55:43 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	m.szyprowski@samsung.com,
+	wens@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	linux-samsung-soc@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/5] drm/exynos: fbdev: Remove offset into screen_buffer
+Date: Mon, 11 May 2026 13:54:31 +0200
+Message-ID: <20260511115538.57884-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260511115538.57884-1-tzimmermann@suse.de>
+References: <20260511115538.57884-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: EB95B50C57A
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -6.80
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 48AEF50D370
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245178-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-245179-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[samsung.com,kernel.org,gmail.com,ffwll.ch];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pratyush@kernel.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,man7.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,suse.de:mid,suse.de:dkim,infradead.org:email,samsung.com:email]
 X-Rspamd-Action: no action
 
-On Fri, May 08 2026, David Hildenbrand (Arm) wrote:
+The screen_buffer field in struct fb_info contains the kernel address
+of the first byte of framebuffer memory. Do not add the display offset.
+This offset only describes scrolling during scanout.
 
-> On 5/5/26 15:39, Pratyush Yadav wrote:
->> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->> 
->> When SEAL_EXEC is added, SEAL_WRITE is implied to make W^X. 
->
-> I don't quite understand that.
->
-> I guess what you mean is "SEAL_EXEC implies SEAL_WRITE if the file is
-> executable, to prevent W^X after sealing".
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 19c8b8343d9c ("drm/exynos: fixed overlay data updating.")
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v3.2+
+---
+ drivers/gpu/drm/exynos/exynos_drm_fbdev.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Yes, exactly. If the file is executable and SEAL_EXEC is set, SEAL_WRITE
-is also set to make sure the executable code is not writeable.
-
->
-> Because if the file is not executable, there is no sealing of writes happening?
->
-> It's rather odd to combine both things, though. Likely the callers should just
-> have requested SEAL_WRITE.
->
-> But I guess we are stuck with this mess.
-
-Yep :-/
-
->
->
->> But the
->> implied seal is set after the check that makes sure the memfd can not
->> have any writable mappings. This means one can use SEAL_EXEC to apply
->> SEAL_WRITE while having writeable mappings.
->> 
->> This breaks the contract that SEAL_WRITE provides and can be used by an
->> attacker to pass a memfd that appears to be write sealed but can still
->> be modified arbitrarily.
->> 
->> Fix this by adding the implied seals before the call for
->> mapping_deny_writable() is done.
->> 
->> Fixes: c4f75bc8bd6b ("mm/memfd: add write seals when apply SEAL_EXEC to executable memfd")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
->> ---
->>  mm/memfd.c | 12 ++++++------
->>  1 file changed, 6 insertions(+), 6 deletions(-)
->> 
->> diff --git a/mm/memfd.c b/mm/memfd.c
->> index fb425f4e315f..abe13b291ddc 100644
->> --- a/mm/memfd.c
->> +++ b/mm/memfd.c
->> @@ -283,6 +283,12 @@ int memfd_add_seals(struct file *file, unsigned int seals)
->>  		goto unlock;
->>  	}
->>  
->> +	/*
->> +	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
->> +	 */
->> +	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
->> +		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
->> +
->>  	if ((seals & F_SEAL_WRITE) && !(*file_seals & F_SEAL_WRITE)) {
->>  		error = mapping_deny_writable(file->f_mapping);
->>  		if (error)
->> @@ -295,12 +301,6 @@ int memfd_add_seals(struct file *file, unsigned int seals)
->>  		}
->>  	}
->>  
->> -	/*
->> -	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
->> -	 */
->> -	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
->> -		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
->> -
->>  	*file_seals |= seals;
->>  	error = 0;
->>  
->
-> Given the weird semantics, this makes sense to me.
->
-> Do we have to update documentation to reflect this? But staring at the man page
-> [1] we don't even seem to document F_SEAL_EXEC?
-
-I discovered the same when trying to read more about F_SEAL_EXEC. I've
-never written man pages but I suppose I can give this a shot.
-
->
->
-> [1] https://www.man7.org/linux/man-pages/man2/F_ADD_SEALS.2const.html
-
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_fbdev.c b/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
+index 637927818dfe..d283ded266d5 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
+@@ -61,17 +61,13 @@ static int exynos_drm_fbdev_update(struct drm_fb_helper *helper,
+ 	struct fb_info *fbi = helper->info;
+ 	struct drm_framebuffer *fb = helper->fb;
+ 	unsigned int size = fb->width * fb->height * fb->format->cpp[0];
+-	unsigned long offset;
+ 
+ 	fbi->fbops = &exynos_drm_fb_ops;
+ 
+ 	drm_fb_helper_fill_info(fbi, helper, sizes);
+ 
+-	offset = fbi->var.xoffset * fb->format->cpp[0];
+-	offset += fbi->var.yoffset * fb->pitches[0];
+-
+ 	fbi->flags |= FBINFO_VIRTFB;
+-	fbi->screen_buffer = exynos_gem->kvaddr + offset;
++	fbi->screen_buffer = exynos_gem->kvaddr;
+ 	fbi->screen_size = size;
+ 	fbi->fix.smem_len = size;
+ 
 -- 
-Regards,
-Pratyush Yadav
+2.54.0
+
 
