@@ -1,242 +1,182 @@
-Return-Path: <stable+bounces-245277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPMTOisIAmqTnQEAu9opvQ
-	(envelope-from <stable+bounces-245277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:47:39 +0200
+	id YFChIaQJAmqknQEAu9opvQ
+	(envelope-from <stable+bounces-245278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:53:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6F351297F
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:47:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000B1512B9F
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F4763115F4B
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:11:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09FEA315391B
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871FA43E495;
-	Mon, 11 May 2026 16:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E19A4266AE;
+	Mon, 11 May 2026 16:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ri5SD8pf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LGCk6+Y+"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011030.outbound.protection.outlook.com [52.101.62.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E12243DA53;
-	Mon, 11 May 2026 16:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778515741; cv=fail; b=PcxDPRlnTi/TFWrDrTTrERRB518ZpOH08LVbAS9sNiaTX8LSZ6lTMb8zrXMBMVTLwSNi46Cs/CxA83BQKVPRCmbpEysHPHsB2fm0uQzWKtfKT9KZc6ipJlflhowPdIxZ1d5Lamqb/h4T2fuRy7v6b6FKpNl8blij8bIbhGGz44Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778515741; c=relaxed/simple;
-	bh=OO2s0NXFTywGOCRlvnC1hhDjFFCvcwKO07Dd2DexLKM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YgGkI/5dMKBYOL5DZegGNfRhduYrwGyau1dLbwktXMOw+8gzLAWhBbeIzliO99yZveLnOWVGq5wkAsPUl0kroBSsft3MWrnOl+8SRsEJBOiJRVeMkq5aC4Gkpol9Em4uRuLZ0gL/IGfw+E+j3zsKdBIDICpFe/QjL0aRBWmpgfM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ri5SD8pf; arc=fail smtp.client-ip=52.101.62.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KtIaTvMKhS6R4tsqzI2g528i6zQJK7irSqWXrY7f9N11FotOv7RAvMSkqIGFYaeeACwdQ9/mIrWbbpkEJFGgHYgKFEKxFhhwWkFWRDfiL7+hP/tPErnWR+/LO1N6qf9PzYTrckSNgr0lg7KRrX8kz5mjnFctUjrL7HZ0zWhg79vqLGWVIscr4xy83PdF5fz1g7vST1vb10k+jk7GfJJkh+DD6E7pm3LxEBioSTSFIKo9kntVVO9M3FY4LtPCiCeQ3b7OcIev4fQmpsifBtb1u02IgUxwwe2mWrCU+dG94JxWCPkQ74tBpKpOPIKcOOfsK0TUK+3J1MGLCOWI5OIyrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cG35ACqT/FVNtqcO7uTsy9EdWEZOE5AWOCoQmz6mPM8=;
- b=ZFpn8YcdPT2VAfK+X6l62y9Qhppg4/U5aZeYuG4hp8ht0r36TT+JT6uF7g7evXRQtPrcZRZaZLcRWiBFV38KkL+zK823HI+rSqp51RoZ49g2LmEuQqiI6maYNk7DwmN7Ir25h5ttyok9XUuSiYoiICCDvnT2+q0OV1Z+jVoxugcHP61/FGPTuJPRCTZWUSjcEZO8+9SA1bxrEle/lmfAIUKzuZZ7uMGlcvwrDKin4a3WCXzQ98xx3q7mwcjJoMR90H5yoy0x1DTD2TsAVQVRQjHlwhEANXRdFJsev6Zq7lN09BXA9lDANjVmEjh/u3si2tC8rXkWG2ThoHZHJbv/fw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=synopsys.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cG35ACqT/FVNtqcO7uTsy9EdWEZOE5AWOCoQmz6mPM8=;
- b=ri5SD8pfJBWNIyMWGqpYPHlISWFofqOCCx4hbXZ9FvEd1rIkGtPuoXq1LUeNdO5dahM94/yduToVY8il4+S1LkgZ9TSjJiyPlB3V2fZh3OixpakAOqCg1FqP7mnbyCB6Pv6l5VpXRjftDmaRjS5Rcru75nqBkjxtIRnricdUV54=
-Received: from BN9P221CA0005.NAMP221.PROD.OUTLOOK.COM (2603:10b6:408:10a::28)
- by SJ5PPFE4FC9FAB3.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 11 May
- 2026 16:08:54 +0000
-Received: from BN2PEPF000055DF.namprd21.prod.outlook.com
- (2603:10b6:408:10a:cafe::21) by BN9P221CA0005.outlook.office365.com
- (2603:10b6:408:10a::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Mon,
- 11 May 2026 16:08:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN2PEPF000055DF.mail.protection.outlook.com (10.167.245.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.3 via Frontend Transport; Mon, 11 May 2026 16:08:51 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 11 May
- 2026 11:08:47 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 11 May
- 2026 09:08:46 -0700
-Received: from xhdradheys41.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 11 May 2026 11:08:44 -0500
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-To: <Thinh.Nguyen@synopsys.com>, <gregkh@linuxfoundation.org>,
-	<michal.simek@amd.com>, <p.zabel@pengutronix.de>
-CC: <linux-usb@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <git@amd.com>, Radhey Shyam Pandey
-	<radhey.shyam.pandey@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH 3/3] usb: dwc3: xilinx: fix error handling in zynqmp init error paths
-Date: Mon, 11 May 2026 21:38:14 +0530
-Message-ID: <20260511160814.2904882-4-radhey.shyam.pandey@amd.com>
-X-Mailer: git-send-email 2.44.4
-In-Reply-To: <20260511160814.2904882-1-radhey.shyam.pandey@amd.com>
-References: <20260511160814.2904882-1-radhey.shyam.pandey@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17BA42669C
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 16:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778516488; cv=none; b=rF+C6wXG4sj5U/TAyeQCO379z5ESvAKbQb2SLEBnLtcD2tzomFRT+FzAcQ+14kCCr+5/b2At1Nc5xtiEkVSP2ofXOp3+8/xKqsocl6KLvQ/nDlc0Y5iwBXosDIfrxl/srt7ija1jSI8ng7/jZ8UAFajzO/9mh+clWg3KXgrE8Ak=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778516488; c=relaxed/simple;
+	bh=VMou3et05x2Gmxi5Q0nsiaXTjc3pU1mdVLxsxyvPde8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=anPHRCeUHbyVf+LeoyxTYnaTvwQfH/R6Dpkhq7/vXX1dq7WZ2LEn9OPH182iFwqulJCt7JBm9Yd0cttwWV5XI5Vk+dORhWPv+pmIY7/+wnmKeyOU6IlYJFAn7pd37ALM/L6QgGS7erK6nW+S/pVbUNltOe1HhYYGoQmJ2l+znnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LGCk6+Y+; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45562c41ec7so1572204f8f.1
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 09:21:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778516485; x=1779121285; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hmerjSvYNeLVR7DVsVGWVSNu5uOfQjg3Co7usm7E9NI=;
+        b=LGCk6+Y+XznhcjVAxHsFCwo1kfvLyyRFKRD40/ip79ZGS4tNov4pXcGXUulbUofpaZ
+         wztHOub2ReT+TN7FXaDQCmm0VKENvebiM6MRImwTxSqvJ6L4XTXTnR4O5VihAM1wVDF/
+         Nl1cb2lMc6DWIheCaHye1PDzJQ3oijmIaqtYNW0Bjz60xqzLWgy0RBBDB8uReks6+TIJ
+         Oqqwzqx2rzIxAGNG46jEFPhNa5tCDY4dR/EADsOw7tXHFO+8hD26xeS7eo/YI0p7vB+H
+         epPAU2k9xVNX0mqv3MkvCskwXLGhraO40feF5IB6SOGyTTzKXq4VhiHhppLBA9I/uAn9
+         XpPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778516485; x=1779121285;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hmerjSvYNeLVR7DVsVGWVSNu5uOfQjg3Co7usm7E9NI=;
+        b=oKzIyRqGxSKFs6nSG1CTCltsnR6KlRXpi+Yfo5YOmDNo8ujYpB4nkUX8Bq6BN2aY7y
+         bu0vwP3KOSqSsN1PzyZZgx6kP6dZ2965jl+A+Rc0TjjqdCRZdfDTg4sQbQHjYJyT7qWR
+         QZO2BUytWQHBtqgxl+EU7cfsuBOuoXmOLEAwG93ymf1Nr/h/HcaAr3VT7pvo7yH0uGAe
+         AEgHOcvJFhc7urZ1G49v8Poe1krWPDbqAnbOIMR56xr5E71OD2/tHBuv6fiBcIfEOVHN
+         XAU87ABHxH/eFIgrgqhWHDo1nWDsuQWegDfCwBgXGBMq0Dhak+6zRS+yK1vN+0TECOLT
+         NIhw==
+X-Gm-Message-State: AOJu0YwKVFwNLDlUMxBGvUn107V1H6XmeWa+v00Hu8HPi2so+RtuW8hJ
+	znFotwKbfbrqWl2ptdYbslHW45TEkOzVn0NRykgGSf3zHMZ8oIf73y/ffQ2J/Qga
+X-Gm-Gg: Acq92OGQ7eUFIue5wFczhMIYU3JeqqSQj7LnHHEpanO17I4fQgPgy/qHklamH16+9Ak
+	KUuQ0s0s5lHTSXOIPDg9OmUKoIYrCRnHxHDGFqWerC4K+sS/b5gViBu1YwdAuve9nebu1E2aiwJ
+	wwEHgKywRWtm0Pimf8ErYLowwEmIqZoc5/WtAKMAd1sJc0SnJnx4i4RKwWWN9MALNaCiN0FpdYy
+	HszYyGGosebgstLhH8Oc/BDT8zCyksMJ9lfL/rauFJiJYLpdLq4xc6gkdYIkXxsK++b1rVGKd70
+	4lnjtKhJ28pbd7lJ4GGPzcS01xD8DTZ85MY0hoVtrFUKXL3t8oqHxcLx1uL2Rwe5TahEiheAOv8
+	dz+LdOuAKaYZeLjM3GNPrQoCmBzG/ttPA5nClaxkvg/rqDfwpXnFyG1W0uGO2JytvvYcyXby7to
+	GTDvwMtMvA/Jd4xqLGfZ6Fojep6kPHFfZvbS2TcBJa4v7oVh30IcaQ/JMHvL9nrJi0H+Cyt7wmr
+	OvXfXTnDmGJDOd9k7hS0lflgWCTVB/CB7jNY1XzfVGeLVZ2bEANm+HvXXrvU5QtRGSDLjrpGXGG
+	+bA9QjdHiYGXgEzTYcquVTRTAkr7XA13gMlq1uZUFAA=
+X-Received: by 2002:a05:6000:2403:b0:441:2381:b630 with SMTP id ffacd0b85a97d-4515c575330mr39176076f8f.24.1778516484996;
+        Mon, 11 May 2026 09:21:24 -0700 (PDT)
+Received: from mail.gmail.com (2a01cb0889497e00f76596008310132d.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:f765:9600:8310:132d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45491bae13csm25932818f8f.29.2026.05.11.09.21.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 09:21:24 -0700 (PDT)
+Date: Mon, 11 May 2026 18:21:22 +0200
+From: Paul Chaignon <paul.chaignon@gmail.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>, Tao Lyu <tao.lyu@epfl.ch>,
+	Levi Zim <rsworktech@outlook.com>
+Subject: [PATCH 6.6.y 00/10] bpf: fix precision backtracking instruction
+ iteration
+Message-ID: <cover.1778516196.git.paul.chaignon@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DF:EE_|SJ5PPFE4FC9FAB3:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd34c352-25e0-4a8c-c825-08deaf7797a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|22082099003|11063799003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	58Ja7m4y3fq4HuxufNK0tOOqLyk0w1n1jbszYLb2BPVWnJb3PM8i92Vzqjm7pSRIBJ1h1F9f6tf17FhvqW9ee/1BaKPB+6l3mDfO0g2+bStoJgGH/G0GOsVfOV8DSCmIhPWH88FYA54mRyBOkyXmDupHKafENxRiv/iIbto20m3gH9t86YdcEhN/ubffu9p/A6M5rLX/8MIpgByI4Vu9DKDYSXaE4PHnt1RhB3R4CJZ6fMiP1P4cNGEpgAUcfTZzDOLmJCLDoWfZm7AiWB+ooti5bRtkaKQjaF/zjursgRrfdcbc8MubgeVFmXbLb+/cFiTnWfuozw2xYUS3zCTO1K4+YwaX2Bn9iBnXCdRiKQqa7seOLLkFvLCES9/Vm2cRM8yGtb3fLH8iYK+ApxY3433OZSlqdmCI0X7RIqLpaB5VzGYlbnijdE1MZeSHLFTolCeAWchD5czM87M+VUnZnfwxyHVI+QLfWMsV4iNTL1HNdPtHkkbbKISxrZW3oEBzxfgpJpcoXIA7m7lS5cpYV291Xxq3CvqJkXZ/5+gMiMXToxHdEmh4m/+cky82QD98lZi7d5Exuj6Gc7fTs62pZwQMiInRl5UoZ8C3NRZlgXSq4JbDk5KLkY42U8I7GKHeM+7zATyp5wP4GWGPfXJKSvdHNUMRMbZQFEFTRaMthK01pCmkF/n6An1e9MC8xMvIq1IQWMh9pGYUbL3w/3FeFtqt/57T6/kMnDFc35jlIzk=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(22082099003)(11063799003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	kk2KipnSM441Jp4SkLTMjHOVZ99z5RXRXH6rnbGyYYiN8WExQAKzKKJhJ5sQDQpo0yyo6TkQpowHNvd8HGVaDBcC7rYMOJHXo6rTEiL3d+ouD9Pw1q80QmxZhdQupuFELzqTMcUSwJqBds1ikftxhQbBy+oC4sdu8pbbMFSh9JYsu7LhOaG4JxlC9qC6He06Cxw+4Q6Z6XsvMQb0Y2xb53NJ9jm+fNC7SMYjfSNbvJMyEqrcRzDAhXiJaqLEAFb90IrymTZfXWcrbnssmBiXY1n9Zgs8tvKlqrloBqbPjHbtcP1kQ88+GrwpwnaSMLx/rULrYFpk3pgPWQTlbY8ia1dOACnnaAAcok7iQtHxVNX+VyZtJABRFioaM/GD6HjT0ruU3TPlPb3Kl32DTqUu1yeafMzJLZY1yZBCnk5K1aaZSw/za+4cN+1YHkXw9gdS
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 16:08:51.2629
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd34c352-25e0-4a8c-c825-08deaf7797a0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000055DF.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFE4FC9FAB3
-X-Rspamd-Queue-Id: 6D6F351297F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 000B1512B9F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245277-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,amd.com:mid,amd.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[radhey.shyam.pandey@amd.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,suse.com,iogearbox.net,kernel.org,gmail.com,epfl.ch,outlook.com];
+	TAGGED_FROM(0.00)[bounces-245278-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[paulchaignon@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Fix error handling and resource cleanup i.e remove invalid
-phy_exit() after failed phy_init(), route failures through
-proper cleanup paths and return 0 explicitly on success.
+The first patch in this patchset was already backported before, as
+commit ecc2aeeaa08a, to address CVE-2023-52920 [1]. That backport was
+however later reverted in commit 199f04528737 because it reduced the
+efficiency of the BPF verifier, to the point that it rejected some
+previously-accepted programs.
 
-Fixes: 84770f028fab ("usb: dwc3: Add driver for Xilinx platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
----
- drivers/usb/dwc3/dwc3-xilinx.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+This patchset backports commit 41f6f64e6999 ("bpf: support non-r10
+register spill/fill to/from stack in precision tracking") again, but
+this time with the subsequent commits that improved the efficiency of
+the verifier. In addition, the last two commits fix and test a
+regression that was later found in commit 41f6f64e6999.
 
-diff --git a/drivers/usb/dwc3/dwc3-xilinx.c b/drivers/usb/dwc3/dwc3-xilinx.c
-index 94458b3da1a0..b832505e1b04 100644
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -176,15 +176,13 @@ static int dwc3_xlnx_init_zynqmp(struct dwc3_xlnx *priv_data)
- 	}
- 
- 	ret = phy_init(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
-+	if (ret < 0)
- 		goto err;
--	}
- 
- 	ret = reset_control_deassert(apbrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release APB reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	if (priv_data->usb3_phy) {
-@@ -200,26 +198,24 @@ static int dwc3_xlnx_init_zynqmp(struct dwc3_xlnx *priv_data)
- 	ret = reset_control_deassert(crst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release core reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	ret = reset_control_deassert(hibrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release hibernation reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	ret = phy_power_on(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
--		goto err;
--	}
-+	if (ret < 0)
-+		goto err_phy_exit;
- 
- 	/* ulpi reset via gpio-modepin or gpio-framework driver */
- 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset_gpio)) {
--		return dev_err_probe(dev, PTR_ERR(reset_gpio),
--				     "Failed to request reset GPIO\n");
-+		ret = PTR_ERR(reset_gpio);
-+		goto err_phy_power_off;
- 	}
- 
- 	if (reset_gpio) {
-@@ -229,6 +225,13 @@ static int dwc3_xlnx_init_zynqmp(struct dwc3_xlnx *priv_data)
- 	}
- 
- 	dwc3_xlnx_set_coherency(priv_data, XLNX_USB_TRAFFIC_ROUTE_CONFIG);
-+
-+	return 0;
-+
-+err_phy_power_off:
-+	phy_power_off(priv_data->usb3_phy);
-+err_phy_exit:
-+	phy_exit(priv_data->usb3_phy);
- err:
- 	return ret;
- }
+It took us a while with Shung-Hsi to come back to this because we felt
+we didn't have enough test coverage to backport this. That changed with
+the stable BPF CI Shung-Hsi built for v6.6, which successfully
+validated this patchset [2]. In addition, I tested the impact of this
+patchset on the verifier's efficiency with Cilium's BPF programs [3]:
+it significantly improves, reducing the number of instructions the
+verifier has to analyze by up to 87% in some cases!
+
+1: https://lore.kernel.org/linux-cve-announce/2024110518-CVE-2023-52920-17f6@gregkh/
+2: https://github.com/pchaigno/stable-bpf-ci/actions/runs/25671397661/job/75357317078
+3: https://pchaigno.github.io/test-verifier-complexity.html
+
+Andrii Nakryiko (10):
+  bpf: support non-r10 register spill/fill to/from stack in precision
+    tracking
+  selftests/bpf: add stack access precision test
+  bpf: preserve STACK_ZERO slots on partial reg spills
+  selftests/bpf: validate STACK_ZERO is preserved on subreg spill
+  bpf: preserve constant zero when doing partial register restore
+  selftests/bpf: validate zero preservation for sub-slot loads
+  bpf: track aligned STACK_ZERO cases as imprecise spilled registers
+  selftests/bpf: validate precision logic in
+    partial_stack_load_preserves_zeros
+  bpf: handle fake register spill to stack with BPF_ST_MEM instruction
+  selftests/bpf: validate fake register spill/fill precision
+    backtracking logic
+
+ include/linux/bpf_verifier.h                  |  31 +-
+ kernel/bpf/verifier.c                         | 233 +++++++++------
+ .../selftests/bpf/progs/verifier_spill_fill.c | 281 ++++++++++++++++++
+ .../bpf/progs/verifier_subprog_precision.c    |  87 +++++-
+ .../testing/selftests/bpf/verifier/precise.c  |  38 ++-
+ 5 files changed, 557 insertions(+), 113 deletions(-)
+
 -- 
-2.44.4
+2.43.0
 
 
