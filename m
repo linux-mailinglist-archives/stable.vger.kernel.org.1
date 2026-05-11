@@ -1,191 +1,202 @@
-Return-Path: <stable+bounces-245309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBgGMZoOAmplngEAu9opvQ
-	(envelope-from <stable+bounces-245309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:15:06 +0200
+	id YJt0HFQXAmoZnwEAu9opvQ
+	(envelope-from <stable+bounces-245310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:52:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85CA751330F
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:15:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CAA513D88
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ADAEE300F5DE
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:13:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D91A5304D5EF
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFCF449EA4;
-	Mon, 11 May 2026 17:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S1B3cRTm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F0A43636B;
+	Mon, 11 May 2026 17:23:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F2946AF36
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 17:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8352442882C;
+	Mon, 11 May 2026 17:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778519550; cv=none; b=sX5X2amd2u9GnO9vMRvCmGtekxlcm3ZOTs5eqhD4tElLdt0Y4OVHfdunMTT1YWa13eTd1UuQPZDXFatAaQ4YumKtqYZOi1kt7V8WyWKxwqiuzWz8B3Qg9ftqbhWJwWhPAMWiNVrSKuhhBHr+EJpVilwFpDp9wmLwAYozJQcHqzc=
+	t=1778520187; cv=none; b=LmTWEzw3iUF6qUv5pqn3pCN4jmWy3VE0hoFkVXG7IDaDt17DiUcTuLzJUez39R/iNNkUjqcpglLsm8gvc+0FWlgqywLjp3wdXYePn4FWxVw5eMeUy9/7Awe0X58LIVEgCYRV8kiepdbNlSibgvQt8JUWjJ25b1CAiRshep8V2iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778519550; c=relaxed/simple;
-	bh=Gt3yIVFcMfYZ48mYTPU++4MAqYZaXfW/cae5IEUlc88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecPCjeTk4To48sk+3wq/ucuRIIis7skIAbVbvsC8m7uXxQd90mBjzBkR7XKIfacyTAzVscqQ+TCWi1VHErpOzsetn2bIMONk1V7yLT5MDC3bC0W8ibstaj7xyMFVaaOCKn3qdqF6NDcZfv9cxoLSMfiE05t43UahMEjGcOW00nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S1B3cRTm; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a74ac8b40aso4194883e87.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 10:12:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778519547; x=1779124347; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7HLgvNKbFd9dvErpzRIPe7Oy/Q20OX1O2SmZxWVb8gM=;
-        b=S1B3cRTmdSG7WhR78gz+ZcCvPVN3Qqd1GOUiUd1N7KWGflFn2rOwh9TzFmt0FrfwY/
-         z0rHWIeH0CALbtGzZHAoX9BnoEnrUzhh5X/9QCTz2+0a5PBPnTVtXY3ia6gpdkUSiMsy
-         9HY/mbKKLOYOQnVuLinJ8mhZZulo54IWIpsic1j0rLvDe4dSo5/M432pvzDo5YMCPBEk
-         mER9FQ5Zvn+gr8reKT6HsYS0Mo5VZZLw0oS6FVz57kvzFg8NaKL+a5G3z3jKc1wPET6K
-         phcXLI4idnuWe+4lD9yqf1/UUaOZ77BG+SP53JrC38qsAxTDgd5uS/wRboaCrNNf0kZZ
-         lSFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778519547; x=1779124347;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7HLgvNKbFd9dvErpzRIPe7Oy/Q20OX1O2SmZxWVb8gM=;
-        b=ZeuVCBs7uadpuXfx0CMk/QaHc5v+Ta4DZGHHoP4IK164ISFIPLgzsXrYkfg0TZGGfd
-         TajEsOzcHieFyIf0dWajlbeliPQEIvOyyIDnJYnHBQcgnteY7J4me+7M6ayr0XeF4cT+
-         JrKaULP0iQFsbOta7TFTv/TGwFqSQn6954d2uVonpN9ewj/VP5NtdmUErutNIwi2Ia99
-         HeWubm/HAimh1AfPuMDhG2W4bz/44tt2+rkyw4KMrU3HzhRRRmchY5s4VlhUTorzwXPv
-         9K6q6scH8d0O2A3FNuI2ImYSff8S6gB46SdItpOYNVOLFquIxZGUoUuU+Mqkz1UvpLZC
-         Ts6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8yBIPUdj8Z6lJElUj/NCF5Duv1Y1LnhrYfZMG9ylCO4OzXXr5yZxDIvSIWNeob03q9Lc81Lzo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn5QUCQ5C9VBnpM62edpQUUj0hkkgEIe4pJaxGw/4THnNM+J0V
-	3pD9oHmT7DfDbgkQ+AnvQcFoo5YMGvxxVATbIaI2WII3VHu8C3tme1tl
-X-Gm-Gg: Acq92OG6zPIitDmKf9MMsS+nP80zohO7hWQHjwHuhcmoH7lsQ+GYoGJjoTXzRMnPGbM
-	3XCzH9Oz1T3IvlzaN7gAJ61Pavg8fUAL1x/f9yY8TXYflVfLwTKPKKe/1vE7cZhhWIXNbEdflqh
-	GWjtvaGAAX5jCJLKTsbua2THY2aQIKf1rmIIIAr82PWUvEJJfap3/WDAM1H0TLP4zLgMBlTSC9A
-	4u+omqPi/vgylROL4tl0KXu9aEirUtz0pV3BOCjGHukYnQf1PByHiIGZK8eDk6yCbh57R7JJt1U
-	8q3+FRZFAgopMt5GmCyy/qToiqrbFyWsGNEFqp0MWiEkP73FpU7AtF3jT0XRbPqOAlw6qphzjyu
-	R4876WYBEbJBrFgKF1n/BQAWnjWvCE0NiQXaxjFRIlx77WlhCgvdvfPOqnuPX7Q8WGk97tFp0jS
-	cB8d9VbR1PpIl/l/qXmwltoHaNAb4zyzEQt4Jnz6PIRLWQfULepOy6Cuxobsk9
-X-Received: by 2002:a05:6512:3d8a:b0:5a8:a558:63b3 with SMTP id 2adb3069b0e04-5a8b709b088mr3026360e87.30.1778519546521;
-        Mon, 11 May 2026 10:12:26 -0700 (PDT)
-Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([193.0.150.248])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a8a95660b6sm2765488e87.62.2026.05.11.10.12.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 10:12:26 -0700 (PDT)
-From: Valery Borovsky <vebohr@gmail.com>
-To: linux-media@vger.kernel.org
-Cc: mchehab@kernel.org,
-	hverkuil@kernel.org,
-	hansg@kernel.org,
-	hugues.fruchet@foss.st.com,
-	alain.volmat@foss.st.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	sakari.ailus@linux.intel.com,
-	mripard@kernel.org,
-	wens@kernel.org,
-	jernej.skrabec@gmail.com,
-	samuel@sholland.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Valery Borovsky <vebohr@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 6/6] media: sun4i-csi: Return queued buffers on start_streaming() failure
-Date: Mon, 11 May 2026 20:12:11 +0300
-Message-ID: <b914d204dbcc642e56a8d54dff33c94f1a9802fa.1778518085.git.vebohr@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1778518085.git.vebohr@gmail.com>
-References: <cover.1778518085.git.vebohr@gmail.com>
+	s=arc-20240116; t=1778520187; c=relaxed/simple;
+	bh=mT99ulOMYhhBNtA2BSd3bQ5V6JrrYvcD32B1OO8rpPM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=A13YE3DkxEiEnNjRTmg60ViLm7VvZltpdyBD7NeNIan7m5GgGXeZLlA/9Ub/0Xw6hkyTD7uVriKBpe3cNGY/aAKrX7YS/r/d+FEWJp0X9IYtWMwdGrWL682Mr/Y05pE/4gWdFbCJ+3Uql18SJvKuJtM/xRY42gDtscbUUOjDDEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from edelgard.fodlan.icenowy.me (unknown [112.94.100.82])
+	by APP-03 (Coremail) with SMTP id rQCowAA3G+JhEAJq99uzEA--.13588S2;
+	Tue, 12 May 2026 01:22:42 +0800 (CST)
+Message-ID: <3ee00ebc4ff5bcf2a8754466f8d9d04b24f81858.camel@iscas.ac.cn>
+Subject: Re: [PATCH] drm/loongson: clean up KMS polling on probe failure
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+To: Myeonghun Pak <mhun512@gmail.com>, dri-devel@lists.freedesktop.org
+Cc: Sui Jingfeng <suijingfeng@loongson.cn>, Jianmin Lv
+ <lvjianmin@loongson.cn>,  Qianhai Wu <wuqianhai@loongson.cn>, Huacai Chen
+ <chenhuacai@kernel.org>, Mingcong Bai <jeffbai@aosc.io>,  Xi Ruoyao
+ <xry111@xry111.site>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard	 <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie	 <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, 	linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
+Date: Tue, 12 May 2026 01:22:41 +0800
+In-Reply-To: <20260511170152.16957-1-mhun512@gmail.com>
+References: <20260511170152.16957-1-mhun512@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 85CA751330F
+X-CM-TRANSID:rQCowAA3G+JhEAJq99uzEA--.13588S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF48WFWkXF1xKrWUWrWktFb_yoW5Xw18pF
+	s3Ga4Ykry0qrs7KryDXFyDZa4aqrWxta4S9rs7J340gr1qyrWvqFy0vF12qw15JFZYkF1a
+	q3WvqrWru347C3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I
+	8E87Iv6xkF7I0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+	UI43ZEXa7IU56yI5UUUUU==
+X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
+X-Rspamd-Queue-Id: C1CAA513D88
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,foss.st.com,gmail.com,linux.intel.com,sholland.org,st-md-mailman.stormreply.com,lists.infradead.org,lists.linux.dev,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245310-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-245309-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[loongson.cn,kernel.org,aosc.io,xry111.site,linux.intel.com,suse.de,gmail.com,ffwll.ch,vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.981];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:mid]
 X-Rspamd-Action: no action
 
-The vb2 framework hands buffers to the driver via buf_queue() before
-calling start_streaming().  If start_streaming() returns an error
-without first returning those buffers via vb2_buffer_done(),
-vb2_start_streaming() fires WARN_ON(owned_by_drv_count) and the queued
-buffers leak.
+=E5=9C=A8 2026-05-12=E4=BA=8C=E7=9A=84 02:01 +0900=EF=BC=8CMyeonghun Pak=E5=
+=86=99=E9=81=93=EF=BC=9A
+> lsdc_pci_probe() initializes KMS polling before setting up vblank
+> support,
+> requesting the IRQ and registering the DRM device. If any of those
+> later
+> steps fails, probe returns without finalizing polling. The remove
+> path has
+> the same lifetime gap when tearing down a successfully registered
+> device.
+>=20
+> Route those probe failures through a poll cleanup label. Also
+> finalize
+> polling from remove before unregistering the DRM device.
 
-sun4i_csi_start_streaming() returned -EINVAL when no matching CSI
-format could be found, before any setup (scratch buffer allocation,
-pipeline start) had been performed.  The remaining error paths already
-converge on the err_clear_dma_queue label, which calls
-return_all_buffers(..., VB2_BUF_STATE_QUEUED) under csi->qlock.  Jump
-to that label directly: the intermediate err_disable_device /
-err_disable_pipeline / err_free_scratch_buffer labels are skipped,
-which is correct because nothing they would undo has happened yet.
+Interesting, but it looks like a `drmm_kms_helper_poll_init` function
+exists (while rarely used).
 
-This mirrors the uvcvideo fix in commit 4cf3b6fd54eb ("media: uvcvideo:
-Return queued buffers on start_streaming() failure").
+Maybe it's better to switch to this? Or maybe there's some reason not
+to use this?
 
-Fixes: 577bbf23b758 ("media: sunxi: Add A10 CSI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Valery Borovsky <vebohr@gmail.com>
----
- drivers/media/platform/sunxi/sun4i-csi/sun4i_dma.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Thanks,
+Icenowy
 
-diff --git a/drivers/media/platform/sunxi/sun4i-csi/sun4i_dma.c b/drivers/media/platform/sunxi/sun4i-csi/sun4i_dma.c
-index e911c7f7acc5..4781db21c205 100644
---- a/drivers/media/platform/sunxi/sun4i-csi/sun4i_dma.c
-+++ b/drivers/media/platform/sunxi/sun4i-csi/sun4i_dma.c
-@@ -234,8 +234,10 @@ static int sun4i_csi_start_streaming(struct vb2_queue *vq, unsigned int count)
- 	int ret;
- 
- 	csi_fmt = sun4i_csi_find_format(&csi->fmt.pixelformat, NULL);
--	if (!csi_fmt)
--		return -EINVAL;
-+	if (!csi_fmt) {
-+		ret = -EINVAL;
-+		goto err_clear_dma_queue;
-+	}
- 
- 	dev_dbg(csi->dev, "Starting capture\n");
- 
--- 
-2.51.0
+>=20
+> This issue was identified during our ongoing static-analysis research
+> while
+> reviewing kernel code.
+>=20
+> Fixes: f39db26c5428 ("drm: Add kms driver for loongson display
+> controller")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> ---
+> =C2=A0drivers/gpu/drm/loongson/lsdc_drv.c | 11 ++++++++---
+> =C2=A01 file changed, 8 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c
+> b/drivers/gpu/drm/loongson/lsdc_drv.c
+> index abf5bf68ee..3db1f8690a 100644
+> --- a/drivers/gpu/drm/loongson/lsdc_drv.c
+> +++ b/drivers/gpu/drm/loongson/lsdc_drv.c
+> @@ -297,7 +297,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
+> const struct pci_device_id *ent)
+> =C2=A0	if (loongson_vblank) {
+> =C2=A0		ret =3D drm_vblank_init(ddev, descp->num_of_crtc);
+> =C2=A0		if (ret)
+> -			return ret;
+> +			goto err_poll_fini;
+> =C2=A0
+> =C2=A0		ret =3D devm_request_irq(&pdev->dev, pdev->irq,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 descp->funcs->irq_handler,
+> @@ -305,7 +305,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
+> const struct pci_device_id *ent)
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_name(&pdev->dev), ddev=
+);
+> =C2=A0		if (ret) {
+> =C2=A0			drm_err(ddev, "Failed to register interrupt:
+> %d\n", ret);
+> -			return ret;
+> +			goto err_poll_fini;
+> =C2=A0		}
+> =C2=A0
+> =C2=A0		drm_info(ddev, "registered irq: %u\n", pdev->irq);
+> @@ -313,17 +313,22 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
+> const struct pci_device_id *ent)
+> =C2=A0
+> =C2=A0	ret =3D drm_dev_register(ddev, 0);
+> =C2=A0	if (ret)
+> -		return ret;
+> +		goto err_poll_fini;
+> =C2=A0
+> =C2=A0	drm_client_setup(ddev, NULL);
+> =C2=A0
+> =C2=A0	return 0;
+> +
+> +err_poll_fini:
+> +	drm_kms_helper_poll_fini(ddev);
+> +	return ret;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static void lsdc_pci_remove(struct pci_dev *pdev)
+> =C2=A0{
+> =C2=A0	struct drm_device *ddev =3D pci_get_drvdata(pdev);
+> =C2=A0
+> +	drm_kms_helper_poll_fini(ddev);
+> =C2=A0	drm_dev_unregister(ddev);
+> =C2=A0	drm_atomic_helper_shutdown(ddev);
+> =C2=A0}
 
 
