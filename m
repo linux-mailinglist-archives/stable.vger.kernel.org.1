@@ -1,221 +1,402 @@
-Return-Path: <stable+bounces-245321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oM5YLqlBAmp9pgEAu9opvQ
-	(envelope-from <stable+bounces-245321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:52:57 +0200
+	id wLOqBB1MAmpaqQEAu9opvQ
+	(envelope-from <stable+bounces-245322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 23:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3824E51606C
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:52:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AB351659E
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 23:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F714304FB93
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 20:52:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A01E33007503
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 21:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1723B634E;
-	Mon, 11 May 2026 20:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D45B4D90D2;
+	Mon, 11 May 2026 21:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KNL95gjv"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lxPVL1Cz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5C43B530A
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 20:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778532757; cv=pass; b=JVP2Vf2KOltvXFS1Lj+rachI4yCWH9zHqSM9K4QS7fBz+WCmlU5YmP+q2CIju61wA9BOpy+52s6H023bgNMAfhNtfWJZKAIh3DdrzT4Zr+q7xQxdpn2SlMFk4O8QSeE0CB7w0Iln6G0VwnKGVBZyRNbng0dGa3g3EXq3uQJ4xhY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778532757; c=relaxed/simple;
-	bh=DiHWs1sOoiu2X3GZePgpXCTnujQDkMBn+jXMmT4E3Xo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B984D90BD
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 21:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778535450; cv=none; b=eeZZQRl+nepEwCuduAD4jpUtYcW28jTXrSkdv0XOmEu706W5cWIXrKuhHB/iO2s8RLT47XvkdM5kGT6m5irH+jV/mGTffZqOZdNmnIF/k74fp6/dmGW2kJKYhoUAYPKbzC6JnHnvJWQDn4QGcaNtp2zKHSyks5tEA/s2BxyaHYo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778535450; c=relaxed/simple;
+	bh=A3MJypCEqW61QXNqmA+FMxYPBjIm/S7t+aAdvmTTzZE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OQ6QiVef5DotLQXW3VoJEqi8jfA/jzEGQZpCisiWbNIzFhDIJOFXTAprowSSETjtcKVEdH535jcpSSkTCmmdc8UfkNJvMYT6XczQ/JtLCIU7bksaxCvqe4k/vEt4Oy4etNCNNRM+F2JYRUO5yGIM5pMMsBCOIxKmM0p0DAv7lwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KNL95gjv; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8379e010b01so1960108b3a.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 13:52:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778532754; cv=none;
-        d=google.com; s=arc-20240605;
-        b=i2HDwfwkvWSPNKFyvRGXhQjpTytqa4XXj0GSO+XH1W+1hS3FCKuyL709BNzx0lPLb8
-         OqWbLGLxDwGXxvPRZNcIL6ivdjxICVjNxF4vqj64ZavSWkpwbw1g27cKzZz3HEoDIXMK
-         1di2E4e2+/Mo3xZa96GwlAvp0tMMgRnbtL0wdxCI6X3s3m9uW4N9vQHAxjV2i3urYP6K
-         xnaokyvO1lPTd1k9SfpzhaqeKBzU3drrwHrLhLM80KE6MFt6UNWq/Kn57Mf4s4i+8GC7
-         +QKpcKI3gVcsY0jFFA8zd6zQ55+zXLB+cF+URMD7/OS2mP8DGygjxARbdsCIQ9QYuFQ/
-         hsQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qb2D7VaeqYETPPxAqKFZu7rg55Sh46PbfZK/pmKKrP0=;
-        fh=4vBEYjnUnLRa8RDgyhK4Rc4wmt8Z5mQC/3WqNvtEtSk=;
-        b=g1MaR50Q5tBK9ZLNZ7U1vICO6Np2sL2OCrKuM/0ttRjr3pnAMZUnyAS6qxhLHYWJ2P
-         GKmE+fVUKABzOsR8CUp2N8Pg+40RCrAphFEv8uza7m2JvFklcp8kXrER/v51B553ePRj
-         DyLarJgEQUDcVkcK+AcUSmqwCCUq65MW2+somBGSOA4AieLldX9gHSBiUwTiYayCTrbm
-         mF/fER8i86DMERE/bZk+p6xU9uThp2tbsJTWR+DBvtQnh1xEGEoieXJjly+DdlbQmWAc
-         Tdzem6TV5qYUPUsL4YFUzyV6n55T5Dmd9yOfx7nSI9NgEvryR9G8w/s8d5e40AC2fdqd
-         6mNg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 To:Cc:Content-Type; b=niIHd+dWSevqzfSLXMwapy/qY46uJMQFRsXveBnBw0h3nGFkySHT4WB9LazAFSJAKbf/eH5Mxx1jM20bewHVpn+YYkyd5WJsH+OySK9/jrGr3PWr62nMT5sql1dWUH6kjlkxNWKoDsONAz8w8ywnn06Lc/cYutQp+I/89fnGjJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lxPVL1Cz; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bce57c132b2so263772066b.0
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 14:37:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778532754; x=1779137554; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qb2D7VaeqYETPPxAqKFZu7rg55Sh46PbfZK/pmKKrP0=;
-        b=KNL95gjvbWQXoawbUCz0Gg17P/zErBroamUNEtu6ucAMcF6gXWEzMI4S4HvYKbMD3C
-         apml2UkN5+zj2Ld2qje12S7sXOjZ+h4j71Ou+M8aQ2Nyr7Kd0uU/zCt1ViL0jDNDYR3M
-         QmNYjkvu0JUlHXvJ00w3/HjCMo2ou/Ia8+dNmAs82qVSyI1wXd3a/CRMryd1GtoXhpSE
-         4hZabtcnSE3sG+G4lcuLorg3wrEb12Xk/l40QaTrI9/amqf9ilHLL6uu9hKPdFR9y9wf
-         TqMG3uJUqo+GhNihyFhpWnfEFmXOcrKNNowkVdKOwRe6wpn+M0AfK2iy7dVWZqADjle1
-         ExMg==
+        d=chromium.org; s=google; t=1778535446; x=1779140246; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fLoelSKoan22JmqYjfWJMk8ZdX9uFP9e2dwS6RmeLfQ=;
+        b=lxPVL1CzEAmmsmZZV+CzLNQfn3pE79l+DBGPxriqAr4K8p2O5MJPIRj/5ouZ2uOOJf
+         p34I3ZrZVzGAbuMPqhzRE63RHgrQbB7s2IrL9IDOJdn5KMUsVkjxN9BDKUea9rgGynko
+         lX61AYlZ5S7SxkBxN7sRJ7qnwL01U4mnVJyn8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778532754; x=1779137554;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qb2D7VaeqYETPPxAqKFZu7rg55Sh46PbfZK/pmKKrP0=;
-        b=l0Hxua0jyOYkyNepsDpihHQu5sTsZYSD0DqfMvIYlfukKNAiEqENtWeITz748WGgDf
-         Do30edEEPUNbdDK1wkwxZn29pVWNnJOP0vyQvorwCRMleivCWI3K0O5v2kU1o8FJDTzL
-         6HvFojk1xmG3mWGUmtYzTiGIytFP7F4bzzr5SZihfGChDSY3Jxrjo5fG1oyMmYkrDPLw
-         93q7uZimorr1qpgie2bB5DOwtDAm/2iNk5JJZVVWFvzFNdQl9xwu4+G9nIXFpG6k60gX
-         MXjjurSnwLwyyhESGj6Oraq9Yg/dlZpppmInwqnykG/UWc0333byBPed1PloiF3dYzK9
-         gjgA==
-X-Forwarded-Encrypted: i=1; AFNElJ+3hJHSv0+o91ix9U+rmQksIIhjs/G8yQK4B/EK7Ky/U5S/XsAdbv2bTATB3ScgkF1R3meleJM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyal2MXKYnO1bCv2MycYHpSPV4O5nHt/PLSQYa0ZbSn5wmM2TC+
-	OgGJqYz1ojmYAvkrrvjI0qbDYvfUgpgAKhutIAuqTyqYE4FrvEF3dgSkye29cOVyb4W+Uvgp0nP
-	fJ/uYY9uFsQzkFBijtqzxcL6QrIIVq7U=
-X-Gm-Gg: Acq92OECbteXi5yLY05MnW/hUq59D8XjftdQH71iY4aYZlKSjzm8r6sisj6WMUIiy6U
-	aPVceJDKMFU3dvHroiD/P0KBxSLBoenS/w9h0rBfuLBfg50po2eo+rG5LOqghVppCq3vaOWuqjk
-	6Qc7+ewOGUd8D6LS44HSU5Dtf/9XNRoDB6xdtA5a7wMsEjKV+kxc7yrlQv2NxTrUb4XwDrvb+ZL
-	yMptOsnrkvjn8LRvC1Sd+WXj/1eHhsj+h6YrQphY9RaaMsO5ozgp/AF3WhznQkfgvZWFDyOet2Q
-	q0w/CrFmVoV8LKg5Xvux+aObWrkc91tXBenTxKZU424wAGlxHDcxfPZxLi/Ci8W/3NlrybFcLii
-	XLxSGuj55MP70jITkpiYceMkuP3tT3/fMuWaf2k9y
-X-Received: by 2002:a05:6a00:1bc9:b0:82c:d7c4:4c5c with SMTP id
- d2e1a72fcca58-83a5bae02b6mr23896094b3a.20.1778532754053; Mon, 11 May 2026
- 13:52:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778535446; x=1779140246;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fLoelSKoan22JmqYjfWJMk8ZdX9uFP9e2dwS6RmeLfQ=;
+        b=rS+wK4XRJJEjpsxl8sTPX0E8SqpEeWRCog15aZBhWzhvwaZTRXcEI1olGnBBlKI6Il
+         LMTgL2qpjnxOuOkp4mkPexLrXWc7YyxkH20JO9XO16+SrLfqhPBS/tbYHGIZjXGAHWnl
+         yCe26cuUlNj6EBnx5J2gkOZLbCjaJ3dv+9hXzpcl3WFYO1z1e6Tnf4juWNa5arMmvjJf
+         7wr2HAYJeFjuhuZAFpjatq7/bU9B8sXb0COdygr5b/0dX7kWTRZVOEwqFkPoyDrR4hbN
+         Q3wrDT/sTjiA8o20bQRvngE1VHgVIYVK/sZm8kt1qUXxX7XrjqGT9u6QcHojySN2Xcqp
+         OmZg==
+X-Forwarded-Encrypted: i=1; AFNElJ+NysuMmS/oPDNbv0ppgBht3YTmJKBviU5Ppk+sOkh7YuEDM6b3FB4ABbMb81gaYAWN+yBobhw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd6c1Cyk06kcQl9TaFpr3RKFSizCxEi4KFSH/NoYBSWhllwqxT
+	qr5Lb5ESBTo21fkFfJfVD4mjfZQ86eSWm73m4JxWW/SNm4BarlOQfzCyixxqTyhdrBibLYWluHk
+	vMGs=
+X-Gm-Gg: Acq92OFaVCvl9mL9AKVzYDcGq9asi44RJD39LGW3GzX6z9QfnmImPE9snD56q8isbSF
+	0izV7CeHeij7YLj1r3Ki2cQT0E/QwtqkfsyC3fDWsEd9359Wpla7WiZmemJ+yw1UtlUdvVfOphk
+	JibBS0UTZ3DuplugudPuGyXg/1qA48H0ys32YzsqMickGpNpTobvGxhXN3d3XdOkNFqEqe8Qg2A
+	ga1MP04jBpH9fTCR/vX6F7F/IztxH4Up62E+lA+Z2g5brVz5YUkRWCnVURaBYf2kpxEWO+hmmiq
+	z0hbLrXK5NYGdVnmp3G1K9Btcah36cC/0GhFDTcDcBJEZpP6WQOihOyxLkX7HJUHavVeVZ1n2qr
+	lgz+pDqf+DKIff4fhpYxutv2jKnpj/LLK2l//jrcdhRHJXafdmSnFpSg1YC9vEhEqaM0bH8/7E1
+	rIrUqD77DvDYCRlZ+RFSbvFKdBNC4SiWDjXEs0Sd/y5mzJlCpU2+Px85NogCv0
+X-Received: by 2002:a17:907:5ca:b0:bc1:1808:7fe1 with SMTP id a640c23a62f3a-bd23be009ebmr78902166b.21.1778535446301;
+        Mon, 11 May 2026 14:37:26 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bce33b0071csm305926666b.51.2026.05.11.14.37.24
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 May 2026 14:37:24 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6763cc8775cso10440328a12.0
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 14:37:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8HXndjkeLr6TWiqKWIjsTCydTjeKaGIheEcCfbK8Q/D0ejJ/qq/SthMBPvq4prlkHPAeUkudQ=@vger.kernel.org
+X-Received: by 2002:a17:906:6a1c:b0:bd0:6293:bd0d with SMTP id
+ a640c23a62f3a-bd23ae147d3mr75481766b.7.1778535443392; Mon, 11 May 2026
+ 14:37:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260508001455.3137-1-joycathacker@gmail.com> <CADvbK_fOduqbZSx7xefbDhDi+=eLmgN8k=Bm+J0tRDrFj6ZYmQ@mail.gmail.com>
- <20260508182044.55b567c1@kernel.org>
-In-Reply-To: <20260508182044.55b567c1@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 11 May 2026 16:52:21 -0400
-X-Gm-Features: AVHnY4K-4oufZ5Bh_ouYXMsrGsz6Jdk671TfT3bU5bBuK9XkaMlt9GEU6bPpSL8
-Message-ID: <CADvbK_f0hTB5rsjNO7Mkg69KqTF2QmCKHNH__JCwS5LtfPgRLg@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: revalidate list cursor after
- sctp_sendmsg_to_asoc() in SCTP_SENDALL
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: joycathacker@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, security@kernel.org, 
-	Ben Morris <bmorris@anthropic.com>, stable@vger.kernel.org
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+ <20260323-uvc-hwtimestamp-v1-4-aa42e3865204@chromium.org> <10a08462-30ce-4a79-bb5d-001ab7f3d0d8@kernel.org>
+ <CANiDSCs9gby6bNBCRmxT15D8c-nksdUmwH8iUDAsiV1tmQTM3Q@mail.gmail.com> <2edd1e71-d345-4c91-92f0-15d39299f0b9@kernel.org>
+In-Reply-To: <2edd1e71-d345-4c91-92f0-15d39299f0b9@kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 11 May 2026 23:36:57 +0200
+X-Gmail-Original-Message-ID: <CANiDSCsoRP9vzKHPN3arKX1OZ-dyyTxgsfMC9Xxp8kE6+UStAQ@mail.gmail.com>
+X-Gm-Features: AVHnY4KLsR7QkcvaLV23mSwAoBpguXDr49sx5Ko_0bX2dba0T-pPbP8RgjI8tuo
+Message-ID: <CANiDSCsoRP9vzKHPN3arKX1OZ-dyyTxgsfMC9Xxp8kE6+UStAQ@mail.gmail.com>
+Subject: Re: [PATCH 4/4] media: uvcvideo: Do not add clock samples with small
+ sof delta
+To: Hans de Goede <hansg@kernel.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Tomasz Figa <tfiga@chromium.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Yunke Cao <yunkec@google.com>, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3824E51606C
+X-Rspamd-Queue-Id: A7AB351659E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245321-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,google.com,redhat.com,kernel.org,vger.kernel.org,anthropic.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245322-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucienxin@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,anthropic.com:email,mail.gmail.com:mid,sashiko.dev:url]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On Fri, May 8, 2026 at 9:20=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
+Hi Hans
+
+(Hi Laurent :P)
+
+
+
+On Mon, 11 May 2026 at 20:33, Hans de Goede <hansg@kernel.org> wrote:
 >
-> On Fri, 8 May 2026 16:35:21 -0400 Xin Long wrote:
-> > On Thu, May 7, 2026 at 8:15=E2=80=AFPM <joycathacker@gmail.com> wrote:
-> > >
-> > > From: Ben Morris <bmorris@anthropic.com>
-> > >
-> > > The SCTP_SENDALL path in sctp_sendmsg() iterates ep->asocs with
-> > > list_for_each_entry_safe(), which caches the next entry in @tmp befor=
-e
-> > > the loop body runs.  The body calls sctp_sendmsg_to_asoc(), which may
-> > > drop the socket lock inside sctp_wait_for_sndbuf().
-> > >
-> > > While the lock is dropped, another thread can SCTP_SOCKOPT_PEELOFF th=
-e
-> > > association cached in @tmp, migrating it to a new endpoint via
-> > > sctp_sock_migrate() (list_del_init() + list_add_tail() to
-> > > newep->asocs), and optionally close the new socket which frees the
-> > > association via kfree_rcu().  The cached @tmp can also be freed by a
-> > > network ABORT for that association, processed in softirq while the
-> > > lock is dropped.
-> > >
-> > > sctp_wait_for_sndbuf() revalidates @asoc (the current entry) on re-lo=
-ck
-> > > via the "sk !=3D asoc->base.sk" and "asoc->base.dead" checks, but not=
-hing
-> > > revalidates @tmp.  After a successful return, the iterator advances t=
-o
-> > > the stale @tmp, yielding either a use-after-free (if the peeled socke=
-t
-> > > was closed) or a list-walk onto the new endpoint's list head (type
-> > > confusion of &newep->asocs as a struct sctp_association *).
-> > >
-> > > Both are reachable from CapEff=3D0; the type-confusion path gives
-> > > controlled indirect call via the outqueue.sched->init_sid pointer.
-> > >
-> > > Fix by re-deriving @tmp from @asoc after sctp_sendmsg_to_asoc()
-> > > returns.  @asoc is known to still be on ep->asocs at that point: the
-> > > only callers that list_del an association from ep->asocs are
-> > > sctp_association_free() (which sets asoc->base.dead) and
-> > > sctp_assoc_migrate() (which changes asoc->base.sk), and
-> > > sctp_wait_for_sndbuf() checks both under the lock before any
-> > > successful return; a tripped check propagates as err < 0 and the loop
-> > > bails before the re-derive.
-> > >
-> > > The SCTP_ABORT path in sctp_sendmsg_check_sflags() returns 0 and the
-> > > loop hits 'continue' before sctp_sendmsg_to_asoc() is ever called, so
-> > > the @tmp cached by list_for_each_entry_safe() still covers the
-> > > lock-held free that ba59fb027307 ("sctp: walk the list of asoc
-> > > safely") was added for.
-> > >
-> > > Fixes: 4910280503f3 ("sctp: add support for snd flag SCTP_SENDALL pro=
-cess in sendmsg")
-> > > Cc: stable@vger.kernel.org
-> > > Assisted-by: claude:mythos
-> > > Signed-off-by: Ben Morris <bmorris@anthropic.com>
+> Hi,
+>
+> On 11-May-26 18:50, Ricardo Ribalda wrote:
+> > Hi Hans
 > >
-> > Acked-by: Xin Long <lucien.xin@gmail.com>
+> > On Mon, 11 May 2026 at 18:07, Hans de Goede <hansg@kernel.org> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 23-Mar-26 14:10, Ricardo Ribalda wrote:
+> >>> Some UVC 1.1 cameras running in fast isochronous mode tend to spam the
+> >>> USB host with a lot of empty packets. These packets contain clock
+> >>> information and are added to the clock buffer but do not add any
+> >>> accuracy to the calculation. In fact, it is quite the opposite, in our
+> >>> calculations, only the first and the last timestamp is used, and we only
+> >>> have 32 slots.
+> >>>
+> >>> Ignore the samples that will produce less than MIN_HW_TIMESTAMP_DIFF
+> >>> data.
+> >>>
+> >>> Fixes: 141270bd95d4 ("media: uvcvideo: Refactor clock circular buffer")
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> >>> ---
+> >>>  drivers/media/usb/uvc/uvc_video.c | 18 ++++++++++++++++--
+> >>>  1 file changed, 16 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> >>> index dcbc0941ffe6..e1a4e84d6841 100644
+> >>> --- a/drivers/media/usb/uvc/uvc_video.c
+> >>> +++ b/drivers/media/usb/uvc/uvc_video.c
+> >>> @@ -544,6 +544,19 @@ static void uvc_video_clock_add_sample(struct uvc_clock *clock,
+> >>>       spin_unlock_irqrestore(&clock->lock, flags);
+> >>>  }
+> >>>
+> >>> +static inline u16 sof_diff(u16 a, u16 b)
+> >>> +{
+> >>> +     u32 aux;
+> >>> +
+> >>> +     a &= 2047;
+> >>> +     b &= 2047;
+> >>> +     if (a >= b)
+> >>> +             return a - b;
+> >>> +
+> >>> +     aux = a + 2048;
+> >>> +     return (u16)(aux - b);
+> >>> +}
+> >>> +
+> >>>  static void
+> >>>  uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+> >>>                      const u8 *data, int len)
+> >>> @@ -664,12 +677,13 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+> >>>       sample.dev_sof = (sample.dev_sof + stream->clock.sof_offset) & 2047;
+> >>>
+> >>>       /*
+> >>> -      * To limit the amount of data, drop SCRs with an SOF identical to the
+> >>> +      * To limit the amount of data, drop SCRs with an SOF similar to the
+> >>>        * previous one. This filtering is also needed to support UVC 1.5, where
+> >>>        * all the data packets of the same frame contains the same SOF. In that
+> >>>        * case only the first one will match the host_sof.
+> >>>        */
+> >>> -     if (sample.dev_sof == stream->clock.last_sof)
+> >>> +     if (sof_diff(sample.dev_sof, stream->clock.last_sof) <=
+> >>> +         (MIN_HW_TIMESTAMP_DIFF / stream->clock.size))
+> >>>               return;
+> >>
+> >> If I understand things correctly then uvc_video_clock_update() uses
+> >> first->host_time + some correction time. But you might end up not
+> >> storing a sample for the very first isochronous USB packet of a frame
+> >> because of this new check.  Which means that the first->host_time used
+> >> as a starting point for the timestamp just has become inaccurate ?
+> >
+> > In UVC 1.5 All the ISOC packets have the same dev_sof and dev_stc.
+> > So this check will avoid adding a whole frame into the timestamp
+> > circular buffer when running at more than 320 Hz (1/(0.1/32))
+> >
+> > In UVC 1.1 all ISOC packets have the same dev_stc but different dev_sof.
+> > This check will avoid adding some of those packets into the circular
+> > buffer, but the accuracy will not be lost. We will use the data from
+> > the neighbour packets (even from previous frames) to recover the sof.
+> >
+> > The biggest winner for this patch is UVC 1.1, which will have much
+> > more accurate timestamps, because the distance between the first and
+> > last will be bigger (as in uvc1.5)
 >
-> FWIW sashiko says there's more?
+> I'm still trying to wrap my head about the whole concept of the hw
+> timestamps TBH.
 >
-> https://sashiko.dev/#/patchset/20260508001455.3137-1-joycathacker%40gmail=
-.com
+> Upon reading it a couple of times I now see that when exactly we
+> take samples is not important because the actual frame time in
+> STC units is stored in buf->pts and that is supposed to be our
+> starting point. And the rest is just used to calculate
+> a factor + offset.
+>
+> At least that is what the big comment says but I'm confused by
+> the code which is supposed to implement:
+>
+>  * SOF = (SOF2 - SOF1) / (STC2 - STC1) * PTS
+>  *     + (SOF1 * STC2 - SOF2 * STC1) / (STC2 - STC1)
+>  *
+>  * or
+>  *
+>  * SOF = ((SOF2 - SOF1) * PTS + SOF1 * STC2 - SOF2 * STC1) / (STC2 - STC1)   (1)
+>
+> I think that the code tries to implement the second formula:
+>
+> We've (with some checks removed):
+>
+>         /* First step, PTS to SOF conversion. */
+>         delta_stc = buf->pts - (1UL << 31);
+>         x1 = first->dev_stc - delta_stc;
+>         x2 = last->dev_stc - delta_stc;
+>
+>         y1 = (first->dev_sof + 2048) << 16;
+>         y2 = (last->dev_sof + 2048) << 16;
+>         if (y2 < y1)
+>                 y2 += 2048 << 16;
+>
+>         y = (u64)(y2 - y1) * (1ULL << 31) + (u64)y1 * (u64)x2
+>           - (u64)y2 * (u64)x1;
+>         y = div_u64(y, x2 - x1);
+>
+>         sof = y;
+>
+> Simplifying this by removing all the range-shifting
+> and using sof1/sof2 instead of y1/y2 like in the comment
+> we end up with:
+>
+>         x1 = first->dev_stc - buf->pts;
+>         x2 = last->dev_stc - buf->pts;
+>
+>         sof1 = first->dev_sof;
+>         sof2 = last->dev_sof
+>
+>         sof = ((sof2 - sof1) + sof1 * x2 - sof2 * x1) / (x2 - x1)
+>
+> Now substitute stc1/stc2 for first->dev_stc / last->dev_stc
+> and just pts for buf->pts and expand x1 + x2 we get:
+>
+>         sof = ((sof2 - sof1) + sof1 * (stc2 - pts) - sof2 * (stc1 - pts)) /
+>               ((stc2 - pts) - (stc1 - pts))
 
-I will try to verify this and submit a fix if it could be reproduced.
 
-Thanks.
+
+I think this is where your explanation goes slightly off:
+
+x2 is actually stc2 - pts + (1UL << 31), and x1 is stc1 - pts + (1UL << 31).
+
+Before you scream at me, look at the end of the mail! :P
+
+
+>
+> We can simplify the divisor here by getting rid of the pts bit
+> since the 2 "- pts" parts negate each other:
+>
+>         sof = ((sof2 - sof1) + sof1 * (stc2 - pts) - sof2 * (stc1 - pts)) /
+>               (stc2 - stc1)
+>
+> Now lets get rid of the () from expanding x1 / x2:
+>
+>         sof = ((sof2 - sof1) + sof1 * stc2 - sof1 * pts - sof2 * stc1 + sof2 * pts)) /
+>               (stc2 - stc1)
+>
+> Shuffle bringing " * pts" parts to the front:
+>
+>         sof = (sof2 * pts - sof1 * pts + (sof2 - sof1) + sof1 * stc2 - sof2 * stc1)) /
+>               (stc2 - stc1)
+>
+> Simplify:
+>
+>         sof = ((sof2 - sof1) * pts + (sof2 - sof1) + sof1 * stc2 - sof2 * stc1) /
+>               (stc2 - stc1)
+>
+> Looks a lot like the comment except there is a + (sof2 - sof1) too much
+> in there ?
+>
+> And some of the range shifting also feels wrong. As long as we're only
+> subtracting the range shifting is fine. But as soon as we start multiplying
+> variables in different shifted ranges the end result actually changes.
+>
+> Especially weird here is that we range-shift by (1UL << 31) for calculating
+> delta_stc and then *multiply* (y2 - y1) by (1ULL << 31) I guess this is
+> to compensate for the (1ULL << 31) component of x1/x2 but the first->dev_stc
+> and pts parts of x1 where never multiplied by (1ULL << 31) so these
+> are still in their original *scale*. Either we should multiply all
+> parts to go to some other fixed scale and the sof value are both range-shifted
+> by 2048 as well as multiplied by 65536, which also seems wrong to me as
+> soon as we do sof1 * stc2 or sof2 * stc1
+>
+> All in all this all feels like there are some issues lurking here and it
+> does not seem to match the comment at the top.
+>
+> Regards,
+>
+> Hans
+>
+>
+>
+
+Lets go back to the beggining:
+
+SOF = ((SOF2 - SOF1) * PTS + SOF1 * STC2 - SOF2 * STC1) / (STC2 - STC1)
+
+This is the formula for a straight line when you know two points. The
+names are super ugly, lets use something we are more used to:
+
+y = ((y2 - y1) * x + y1 * x2 - y2 * x1) / (x2 - x1) ;
+
+Ok. how would this look if we want x to be exactly at (1 << 31) to
+prevent unsigned underflow? ?
+
+we just have to move things around:
+
+delta = x - (1<<31);
+
+new_x1 = x1 - delta = x1 - x + (1<<31)
+new_x2 = x2 - delta = x2 - x + (1<<31)
+
+We plug this in the formula and:
+
+y = ((y2-y1) * (1 <<31) + y1 * new_x2 - y2*new_x1) /(new_x2-new_x1);
+Which is exactly what we have.
+
+
+Now lets look at the scaling:
+
+         delta_stc = buf->pts - (1UL << 31);
+         x1 = first->dev_stc - delta_stc;
+         x2 = last->dev_stc - delta_stc;
+
+X1 and X2 are NOT scaled
+
+         y1 = (first->dev_sof + 2048) << 16;
+         y2 = (last->dev_sof + 2048) << 16;
+         if (y2 < y1)
+                 y2 += 2048 << 16;
+
+Y1 and Y2 is scaled 16 (ignore the +2048, the variable is mod(2048))
+
+         y = (u64)(y2 - y1) * (1ULL << 31) + (u64)y1 * (u64)x2
+           - (u64)y2 * (u64)x1;
+         y = div_u64(y, x2 - x1);
+
+y = (SCALE16 - SCALE16)*K + SCALE16*SCALE1 - SCALE16*SCALE1; => Result
+is SCALE16
+y = div64(SCALE16, SCALE1) => Result is SCALE16
+
+So it looks good to me. It is a painful code, but I think it is correct.
+
+(Painful, but I would probably fail to do it better :P)
+
+Regards
+
+
+
+-- 
+Ricardo Ribalda
 
