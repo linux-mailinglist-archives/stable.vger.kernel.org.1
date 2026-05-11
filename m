@@ -1,263 +1,142 @@
-Return-Path: <stable+bounces-245240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGQ/MVzqAWpamQEAu9opvQ
-	(envelope-from <stable+bounces-245240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:40:28 +0200
+	id wEGfCQnrAWpHmQEAu9opvQ
+	(envelope-from <stable+bounces-245246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:43:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F923510592
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:40:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB795106DC
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55DCD308D424
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:34:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EE6E830C5CE0
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5A43FF89D;
-	Mon, 11 May 2026 14:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3773FF8BB;
+	Mon, 11 May 2026 14:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXQw6eet"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iJgBLbhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB1B3FF881;
-	Mon, 11 May 2026 14:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB9F3FE67E;
+	Mon, 11 May 2026 14:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778510072; cv=none; b=lI6mXqqTsTsvEE+g/7xroc/JHOs0gMFjK255Zt98FpO+syaLSOG1o4wC/q4xh8ID/WIZXY0VGOC2nsUhI0ra4INo4b/13RhPLLLppUVuXgaZOFDxFCE00Tn8hYixYPYRJeS/T/lUyoSNvhlxQTHstvBbuQjJABQGdXhWfX2iHms=
+	t=1778510245; cv=none; b=NaEyckNlXc9+mkt38AOv03QoyuNW0CGAJicFj+vB57gvmyF/wA+EnLgc/af1mmEAh9CCDebe+1moVu2Tdo1HeEpl0s1m+CV3zUlybT2he3fsmCK8mYjUU8SYGhSyj0zZ6piD6xzJTSr3gC+jFHi75NBgx4L/uZb5NITsiw0m06U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778510072; c=relaxed/simple;
-	bh=NxEdhgVml/9CHOk6VphJBRaD99OlXHF3ZLYM28HI5jA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WW7WnujztRFlHeaOFMMrLduJvj7R3VYDIm9Fs3TZPz2ZWzuaAz5e1OFmjs3MoNGKSeJlAAsTg6Y2M0kqiymfDSlKYRndUkeUeUaJ4vsnRlrzeoQwdQEVACg/6bY97ALYd37Qgg1exyUfSxG4kTDCtCTs77+0ZSVGTWTcYnByKHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXQw6eet; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB09C2BCFA;
-	Mon, 11 May 2026 14:34:27 +0000 (UTC)
+	s=arc-20240116; t=1778510245; c=relaxed/simple;
+	bh=Syz9agCjo0v7ek7ZUl8IDRv5CIYKzs5t99pAAWh8o7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=a11lgylY7ozmqth5iUcD0+wboY16FZoc0G+0PVaGFzAihbiGNI4TTD0Qj8BSyEOZfSyXo08Qxv6AN5vYeLpKGKuTzj/kML2gT+xcXLOqjuY/E4ok5Zk6fR/21SfA25mdIa7fJTd8MwVal/+H/RHaTSTY4MwQ/Wj9eUT0/AwS8lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iJgBLbhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD34C4AF0B;
+	Mon, 11 May 2026 14:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778510072;
-	bh=NxEdhgVml/9CHOk6VphJBRaD99OlXHF3ZLYM28HI5jA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JXQw6eetjX/+acIOeyQNxIc7OmLOyw9UoOTz/ssbQc5zk/LhbjkPUteoN3pDQ/F07
-	 dqma62bDpgJGd4ZmPkyqo2eJBuI4xx2DtH8H9lU8dyQSBQeYCjH9Tn8E5nnNLsp6ER
-	 noIP0VIv7kaSd0QImIabgiwnNDlUia7nyXJbEFhnHoJLteMlf9kPv+JiVxNYpkGiTG
-	 2QL7TcXO4sVlk8X5WhVogi4+YaIZY0cLS65VAnQsS2a46Jq5OXl9p+pN3K8JwWSvuA
-	 sXpPQikAoXLk0IlANqg3fCt6TT0Dfeo6qPke41KuRD8LL+pAB9H3xVpf8/w3RIj9Uq
-	 REBrZMrptMWQw==
-Date: Mon, 11 May 2026 20:04:24 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Cc: linux-pci@vger.kernel.org, stable@vger.kernel.org, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Koichiro Den <den@valinux.co.jp>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
-	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] PCI: rcar-gen4: Limit Max_Read_Request_Size and
- Max_Payload_Size to 256 Bytes
-Message-ID: <dicudl6knlptqnscyqkedp5zrs4vyosjggysnqsaupxi3g3o4x@rngp35usnurb>
-References: <20260425233845.459175-1-marek.vasut+renesas@mailbox.org>
+	s=k20201202; t=1778510244;
+	bh=Syz9agCjo0v7ek7ZUl8IDRv5CIYKzs5t99pAAWh8o7Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iJgBLbhCrwBKgY2hvKQvF238S4Zu3IsuatUk/oA1J//26H3DodD048y4pTQtCqry7
+	 p3reXAdUmgSTcBIzCylZaez5P6PL0KXDHTRxZP8+keH1K1xYws0vqIupd4Ds9NRu8L
+	 3jsAO3Wvik3ouQbrc66iVMDthdFiNUDFrFXgr05K0DIrS2spu/JhVKWx0+Z7JENA7h
+	 1AjGNyQbKtIe9UYqjn9rMCA9mVK2tDT8nsZZ/MND7Xxbl5b9CXDgFExzwGMxOc25x/
+	 gRABapJILGgm7JGvWOqy+J1eaeeNKElw+HJYz9utGQJEPqD85aenaXtkxGw9roKmxH
+	 P5gkpUnZ5ItHQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wMRl4-000000033q7-0cpH;
+	Mon, 11 May 2026 16:37:22 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH v3 01/10] i2c: core: fix irq domain leak on adapter registration failure
+Date: Mon, 11 May 2026 16:37:06 +0200
+Message-ID: <20260511143715.729714-2-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260511143715.729714-1-johan@kernel.org>
+References: <20260511143715.729714-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260425233845.459175-1-marek.vasut+renesas@mailbox.org>
-X-Rspamd-Queue-Id: 2F923510592
+X-Rspamd-Queue-Id: AFB795106DC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245240-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,glider.be,valinux.co.jp,gmail.com,renesas.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245246-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[valinux.co.jp:email,renesas.com:email,glider.be:email,mailbox.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Sun, Apr 26, 2026 at 01:38:28AM +0200, Marek Vasut wrote:
-> R-Car Gen4 PCIe controller has a hardware limitation of 256 Bytes
-> maximum payload size. The PCIe DMA generates requests of size up
-> to minimum(Max_Read_Request_Size, Max_Payload_Size). Force limit
-> both Max_Read_Request_Size and Max_Payload_Size to 256 Bytes and
-> propagate this limit to all downstream devices.
-> 
-> This limitation can be triggered for example by using an NVMe SSD
-> which does not use host memory buffer, Samsung 980 PRO is such an
-> SSD. Affected SSD reports 'hmpre' field as 0:
-> "
-> $ nvme id-ctrl /dev/nvme0 | grep hmpre
-> hmpre     : 0
-> "
-> 
-> The symptom is a read from the SSD which wraps around at 256 Byte
-> boundary. The test for this symptom can be implemented by writing
-> 512 Byte of random data into the SSD and reading the data back. If
-> the read back data repeat after 256 Bytes, the device is affected.
-> "
-> $ dd if=/dev/urandom of=/tmp/data.bin bs=256 count=2 \
->   dd if=/tmp/data.bin of=/dev/nvme0n1 bs=256 count=2 \
->   dd if=/dev/nvme0n1 bs=256 count=2 of=/tmp/readback.bin
-> "
-> 
-> Expected data:
-> "
-> $ hexdump -vC /tmp/data.bin
-> 00000000  97 81 b7 3b 0e 38 2b 4d  a7 d3 e0 47 ff c2 4b ca
-> 00000010  c1 85 98 f0 4a ac 03 a0  3b ab f3 19 44 dd 06 8b
-> ...
-> 00000100  7a ce 3c b2 e1 d5 d9 11  88 63 10 59 76 3c dc 32 <-- random
-> 00000110  72 32 2a 7d a3 e1 aa 13  7c da 58 a1 7b 21 11 50 <-- data
-> "
-> 
-> Faulty readback, collected without this change in place:
-> "
-> $ hexdump -vC /tmp/readback.bin
-> 00000000  97 81 b7 3b 0e 38 2b 4d  a7 d3 e0 47 ff c2 4b ca <---.
-> 00000010  c1 85 98 f0 4a ac 03 a0  3b ab f3 19 44 dd 06 8b <-. |
-> ...                                                          | |
-> 00000100  97 81 b7 3b 0e 38 2b 4d  a7 d3 e0 47 ff c2 4b ca <-:-+- repeated
-> 00000110  c1 85 98 f0 4a ac 03 a0  3b ab f3 19 44 dd 06 8b <-+--- data
->      ^^^
->       |
->       '--- Repeat starts at offset 0x100 = 256 Bytes
-> "
-> 
-> Fixes: 0d0c551011df ("PCI: rcar-gen4: Add R-Car Gen4 PCIe controller support for host mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-> ---
-> Cc: "Krzysztof Wilczyński" <kwilczynski@kernel.org>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: Koichiro Den <den@valinux.co.jp>
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Magnus Damm <magnus.damm@gmail.com>
-> Cc: Manivannan Sadhasivam <mani@kernel.org>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-pci@vger.kernel.org
-> Cc: linux-renesas-soc@vger.kernel.org
-> ---
->  drivers/pci/controller/dwc/pcie-rcar-gen4.c | 56 +++++++++++++++++++++
->  1 file changed, 56 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> index 8b03c42f8c84c..82f0a074a71da 100644
-> --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> @@ -576,6 +576,7 @@ static int r8a779f0_pcie_ltssm_control(struct rcar_gen4_pcie *rcar, bool enable)
->  static void rcar_gen4_pcie_additional_common_init(struct rcar_gen4_pcie *rcar)
->  {
->  	struct dw_pcie *dw = &rcar->dw;
-> +	u16 offset = dw_pcie_find_capability(dw, PCI_CAP_ID_EXP);
->  	u32 val;
->  
->  	val = dw_pcie_readl_dbi(dw, PCIE_PORT_LANE_SKEW);
-> @@ -584,11 +585,66 @@ static void rcar_gen4_pcie_additional_common_init(struct rcar_gen4_pcie *rcar)
->  		val |= BIT(6);
->  	dw_pcie_writel_dbi(dw, PCIE_PORT_LANE_SKEW, val);
->  
-> +	val = dw_pcie_readl_dbi(dw, offset + PCI_EXP_DEVCTL);
-> +	val &= ~(PCI_EXP_DEVCTL_PAYLOAD | PCI_EXP_DEVCTL_READRQ);
-> +	val |= PCI_EXP_DEVCTL_PAYLOAD_256B | PCI_EXP_DEVCTL_READRQ_256B;
-> +	dw_pcie_writel_dbi(dw, offset + PCI_EXP_DEVCTL, val);
+Make sure to tear down the host notify irq domain on adapter
+registration failure to avoid leaking it.
 
-Instead of limiting the MRRS/MPS values for all devices through quirks, why
-can't you just limit the Root Port's MPSS value in PCI_EXP_DEVCAP?
+This issue was flagged by Sashiko when reviewing another adapter
+registration fix.
 
-- Mani
+Fixes: 4d5538f5882a ("i2c: use an IRQ to report Host Notify events, not alert")
+Cc: stable@vger.kernel.org	# 4.10
+Cc: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/i2c/i2c-core-base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> +
->  	val = readl(rcar->base + PCIEPWRMNGCTRL);
->  	val |= APP_CLK_REQ_N | APP_CLK_PM_EN;
->  	writel(val, rcar->base + PCIEPWRMNGCTRL);
->  }
->  
-> +static void rcar_gen4_rc_pcie_quirk(struct pci_dev *dev)
-> +{
-> +	static const struct pci_device_id rcar_gen4_pcie_rc_devid = {
-> +		PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0030),
-> +		.class = PCI_CLASS_BRIDGE_PCI_NORMAL, .class_mask = ~0
-> +	};
-> +	struct pci_bus *bus = dev->bus;
-> +	struct pci_dev *bridge;
-> +
-> +	if (pci_is_root_bus(bus))
-> +		bridge = dev;
-> +
-> +	/* Look for the host bridge */
-> +	while (!pci_is_root_bus(bus)) {
-> +		bridge = bus->self;
-> +		bus = bus->parent;
-> +	}
-> +
-> +	if (!bridge)
-> +		return;
-> +
-> +	if (!pci_match_one_device(&rcar_gen4_pcie_rc_devid, bridge))
-> +		return;
-> +
-> +	/*
-> +	 * R-Car Gen4 PCIe controller has a hardware limitation of 256 Bytes
-> +	 * maximum payload size. The PCIe DMA generates requests of size up
-> +	 * to minimum(Max_Read_Request_Size, Max_Payload_Size). Force limit
-> +	 * both Max_Read_Request_Size and Max_Payload_Size to 256 Bytes and
-> +	 * propagate this limit to all downstream devices.
-> +	 *
-> +	 * For details, refer to:
-> +	 * R-Car S4 R19UH0161EJ0130 Rev.1.30 Jun. 16, 2025 or
-> +	 * R-Car V4H R19UH0186EJ0130 Rev.1.30 Apr. 21, 2025 or
-> +	 * R-Car V4M R19UH0217EJ0100 Rev.1.00 Dec. 12, 2025,
-> +	 * chapters 104.1.1 Features and 104.3.9 DMA Transfer
-> +	 * section DMA Read Transfer.
-> +	 */
-> +	if (pcie_get_readrq(dev) > 256) {
-> +		dev_info(&dev->dev, "Limiting MRRS to 256 bytes\n");
-> +		pcie_set_readrq(dev, 256);
-> +	}
-> +
-> +	if (pcie_get_mps(dev) > 256) {
-> +		dev_info(&dev->dev, "Limiting MPS to 256 bytes\n");
-> +		pcie_set_mps(dev, 256);
-> +	}
-> +}
-> +DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, rcar_gen4_rc_pcie_quirk);
-> +
->  static void rcar_gen4_pcie_phy_reg_update_bits(struct rcar_gen4_pcie *rcar,
->  					       u32 offset, u32 mask, u32 val)
->  {
-> -- 
-> 2.53.0
-> 
-> 
-
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 9c46147e3506..abe8341c1d6e 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1574,7 +1574,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	if (res) {
+ 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
+ 		put_device(&adap->dev);
+-		goto out_list;
++		goto err_remove_irq_domain;
+ 	}
+ 
+ 	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
+@@ -1609,6 +1609,8 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	init_completion(&adap->dev_released);
+ 	device_unregister(&adap->dev);
+ 	wait_for_completion(&adap->dev_released);
++err_remove_irq_domain:
++	i2c_host_notify_irq_teardown(adap);
+ out_list:
+ 	mutex_lock(&core_lock);
+ 	idr_remove(&i2c_adapter_idr, adap->nr);
 -- 
-மணிவண்ணன் சதாசிவம்
+2.53.0
+
 
