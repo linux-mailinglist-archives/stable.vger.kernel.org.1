@@ -1,398 +1,221 @@
-Return-Path: <stable+bounces-245357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC0TChJYAmpurgEAu9opvQ
-	(envelope-from <stable+bounces-245357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:28:34 +0200
+	id oGmQJNtaAmosrgEAu9opvQ
+	(envelope-from <stable+bounces-245358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:40:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D716516E7C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:28:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70F5517080
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1E206301FDE9
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:22:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C5B93041A63
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5300B4DB56A;
-	Mon, 11 May 2026 22:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E84356753;
+	Mon, 11 May 2026 22:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XMzxw/Jo"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="o3Pc9umN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11941356763;
-	Mon, 11 May 2026 22:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C0538331E;
+	Mon, 11 May 2026 22:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778538015; cv=none; b=mL2rexPVFM9yz/VQ/OJKHQh4nB79r4BQsHxPfc28437/usvB6B5MPJalfcqRY+tcbKzRS7ndFDIMSvmsNWCTfCGjkXaMrhIryuk9SKlN5Clf49YsHYRHCccjAifxmg62/sqoKJSBRZVqUM9UPH6pPGMbAJ7lTOOf6n+AqL7m/jw=
+	t=1778539119; cv=none; b=aEwaTMoXkHqJUiusqBY05CIby22sQkx8CTuDnGK63UeEm9Kkke8p50unEeC1OUsp8raEvR3MjwMhk0YA3a/cZCDhyybDBVsA6upyWL1FJoalc1pTiBK5PSrl2RNOYKge5XfxbxjshDljcsfEmedVpSY/6ndkmKQ7kBE+CIvO1y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778538015; c=relaxed/simple;
-	bh=1HMRzZtg0k8/nvIgwDsX4uKJoe+7oD0VtaVUcCoOMMQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fc/lmSP6PBjqspRmBx5noB/UriKEevndRxXFY2YUQ6sFKxFPSyNTFkmHBOw4qQRAfJjsuazdze7rGRGbt4tEVXY5xay9DcC93+BCP/ha1nKcdeJXZCsPamGDBxfPoTbjtUYECpLZMgv/wR5D3wny8Bai575vHekIufEUEq5L7EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XMzxw/Jo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756C3C2BCFA;
-	Mon, 11 May 2026 22:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778538014;
-	bh=1HMRzZtg0k8/nvIgwDsX4uKJoe+7oD0VtaVUcCoOMMQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMzxw/JoVWVnQ1eJiwxAcnAByVFXFv38D1eDL1fNVXsldJo6RJRSyBEuAdQiuFoFz
-	 4Uy0vTNFFUuHxMmiRMhYb3OexCsHiiMweLghpkXNbcF46buv38oL44sJ36Pl2V0vyp
-	 0KcGjPruO8HE5BU8IfjZCPwMQHWeuFgJGDQ2vd/g9a0a9KxKRWIvtJIiMXaRRgvay7
-	 Ox2pCCtiZRXPBUQo7y29NHerrPU5Gf8Xu/ccZdEUHSYEnrxRAwt2sL3Ye2dMa25DU4
-	 tEUwMQkQe1lt7hErhq3pdK8+eqOefLNmSlF9q2so/uIHvd/1L8zArYbvBQx1cHVvVl
-	 CfxipbGW/hE1g==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
+	s=arc-20240116; t=1778539119; c=relaxed/simple;
+	bh=iMsaIOMg3NDQ9OV4wA0W2qxxjEwTQbto4JT7m84YR0Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T0s+tpLobRCqXSj4iA5vLcVzgwKYLFtVJ+CwPrg+Kf+6E5ErYi2QzHnRiweTvTAf/368VaRtlvxVfp8ovy44QHwhpPdbsnB8yXCDosoYe1lVfqc94YTuIKxRUtnl/isTtdk0UQlaT18kQV5nxwFVzEmhlTHdVkswpn20KHnIDGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=o3Pc9umN; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 404CB838;
+	Tue, 12 May 2026 00:38:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1778539106;
+	bh=iMsaIOMg3NDQ9OV4wA0W2qxxjEwTQbto4JT7m84YR0Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=o3Pc9umN42ds1FS3/WWZzYWlXN48n3Br7b1XlhmMaCJ6E1kkxqw2M8x2Hx3eF6Rl1
+	 u2G8uInTt2n5w8A2W0qzMhIpOtLSRld1bZKnUEMfTYgln2738yXBYbjQP1G5d+oKmq
+	 vqZ3hG4W7obPB5y8Pv+NdsgXnQtlZ4JhsgB6bSyA=
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
 	stable@vger.kernel.org
-Cc: Derek Fang <derek.fang@realtek.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0] ASoC: sdw_utils: avoid the SDCA companion function not supported failure
-Date: Mon, 11 May 2026 18:19:28 -0400
-Message-ID: <20260511221931.2370053-29-sashal@kernel.org>
+Subject: [PATCH] media: renesas: vsp1: Fix race condition when stopping display pipeline
+Date: Tue, 12 May 2026 01:38:32 +0300
+Message-ID: <20260511223832.3385049-1-laurent.pinchart+renesas@ideasonboard.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260511221931.2370053-1-sashal@kernel.org>
-References: <20260511221931.2370053-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 7.0.6
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2D716516E7C
+X-Rspamd-Queue-Id: E70F5517080
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[realtek.com,opensource.cirrus.com,linux.intel.com,kernel.org,gmail.com,perex.cz,suse.com,alsa-project.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-245357-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245358-lists,stable=lfdr.de,renesas];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,cirrus.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ideasonboard.com:email,ideasonboard.com:mid,ideasonboard.com:dkim]
 X-Rspamd-Action: no action
 
-From: Derek Fang <derek.fang@realtek.com>
+When stopping a display pipeline, the vsp1_du_setup_lif() function first
+stops the hardware by calling vsp1_pipeline_stop(), and then resets
+drm_pipe->du_complete to NULL. Stopping the hardware ensures no new
+interrupt is generated, but does not wait for completion of any running
+interrupt handler. This creates a race with vsp1_du_pipeline_frame_end()
+which tests drm_pipe->du_complete before calling the function pointer.
+If the drm_pipe->du_complete pointer is reset to NULL between those two
+operations, a NULL pointer derefence will occur.
 
-[ Upstream commit 56d5a9eaf60af5c824a33a83e1468aa143627a62 ]
+Fix this by setting pipe->state to STOPPING before stopping the
+hardware, and avoid calling the frame end handler if the state is not
+RUNNING. Condition the latter to the display pipeline, as the other
+pipeline use a different stop procedure that waits for the frame end
+handler to set the state to STOPPED.
 
-Treat the companion amp as generic AMP until full support for companion
-amp is added.
+The state check needs to be protected by the pipe->irqlock. The lock is
+used by the video and vspx completion handlers already, so move it one
+level up to vsp1_pipeline_frame_end().
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20260430121043.552241-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7ade201ae7f ("v4l: vsp1: Extend VSP1 module API to allow DRM callbacks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 ---
 
-LLM Generated explanations, may be completely bogus:
+I have noticed this race condition while debugging a separate issue and
+adding printk() statements in the display pipeline frame end. I have
+tested the fix with the DU test suite and VSP test suite, exercising
+both the display and video pipelines. I'm fairly confident that the VSPX
+pipeline won't be negatively affected, but it would be good to
+double-check that. Jacopo, Niklas, would you be able to give test it ?
 
-## Phase 1: Commit Message Forensics
-Step 1.1 Record: subsystem `ASoC: sdw_utils`; action verb `avoid`;
-claimed intent is to avoid SDCA companion amp being treated as
-unsupported.
+---
+ drivers/media/platform/renesas/vsp1/vsp1_pipe.c  | 12 ++++++++++--
+ drivers/media/platform/renesas/vsp1/vsp1_video.c |  5 -----
+ drivers/media/platform/renesas/vsp1/vsp1_vspx.c  | 13 +++++--------
+ 3 files changed, 15 insertions(+), 15 deletions(-)
 
-Step 1.2 Record: tags present:
-- `Signed-off-by: Derek Fang <derek.fang@realtek.com>`
-- `Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>`
-- `Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>`
-- `Link: https://patch.msgid.link/20260430121043.552241-1-yung-
-  chuan.liao@linux.intel.com`
-- `Signed-off-by: Mark Brown <broonie@kernel.org>`
-No `Fixes:`, `Reported-by:`, `Tested-by:`, `Acked-by:`, or `Cc:
-stable@vger.kernel.org` tags were present.
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.c b/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
+index 5d769cc42fe1..aaec1aa15091 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
+@@ -509,6 +509,10 @@ int vsp1_pipeline_stop(struct vsp1_pipeline *pipe)
+ 		 * When using display lists in continuous frame mode the only
+ 		 * way to stop the pipeline is to reset the hardware.
+ 		 */
++		scoped_guard(spinlock_irqsave, &pipe->irqlock) {
++			pipe->state = VSP1_PIPELINE_STOPPING;
++		}
++
+ 		ret = vsp1_reset_wpf(vsp1, pipe->output->entity.index);
+ 		if (ret == 0) {
+ 			spin_lock_irqsave(&pipe->irqlock, flags);
+@@ -583,8 +587,12 @@ void vsp1_pipeline_frame_end(struct vsp1_pipeline *pipe)
+ 	 * Regardless of frame completion we still need to notify the pipe
+ 	 * frame_end to account for vblank events.
+ 	 */
+-	if (pipe->frame_end)
+-		pipe->frame_end(pipe, flags);
++	scoped_guard(spinlock_irqsave, &pipe->irqlock) {
++		if (pipe->state == VSP1_PIPELINE_RUNNING || !pipe->lif) {
++			if (pipe->frame_end)
++				pipe->frame_end(pipe, flags);
++		}
++	}
+ 
+ 	pipe->sequence++;
+ }
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_video.c b/drivers/media/platform/renesas/vsp1/vsp1_video.c
+index fe1dac11d4ae..a8db94bdb670 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_video.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_video.c
+@@ -325,14 +325,11 @@ static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
+ {
+ 	struct vsp1_device *vsp1 = pipe->output->entity.vsp1;
+ 	enum vsp1_pipeline_state state;
+-	unsigned long flags;
+ 	unsigned int i;
+ 
+ 	/* M2M Pipelines should never call here with an incomplete frame. */
+ 	WARN_ON_ONCE(!(completion & VSP1_DL_FRAME_END_COMPLETED));
+ 
+-	spin_lock_irqsave(&pipe->irqlock, flags);
+-
+ 	/* Complete buffers on all video nodes. */
+ 	for (i = 0; i < vsp1->info->rpf_count; ++i) {
+ 		if (!pipe->inputs[i])
+@@ -354,8 +351,6 @@ static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
+ 		wake_up(&pipe->wq);
+ 	else if (vsp1_pipeline_ready(pipe))
+ 		vsp1_video_pipeline_run(pipe);
+-
+-	spin_unlock_irqrestore(&pipe->irqlock, flags);
+ }
+ 
+ static int vsp1_video_pipeline_build_branch(struct vsp1_pipeline *pipe,
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+index 1673479be0ff..26c477708858 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+@@ -176,14 +176,11 @@ static void vsp1_vspx_pipeline_frame_end(struct vsp1_pipeline *pipe,
+ {
+ 	struct vsp1_vspx_pipeline *vspx_pipe = to_vsp1_vspx_pipeline(pipe);
+ 
+-	scoped_guard(spinlock_irqsave, &pipe->irqlock) {
+-		/*
+-		 * Operating the vsp1_pipe in singleshot mode requires to
+-		 * manually set the pipeline state to stopped when a transfer
+-		 * is completed.
+-		 */
+-		pipe->state = VSP1_PIPELINE_STOPPED;
+-	}
++	/*
++	 * Operating the vsp1_pipe in singleshot mode requires to manually set
++	 * the pipeline state to stopped when a transfer is completed.
++	 */
++	pipe->state = VSP1_PIPELINE_STOPPED;
+ 
+ 	if (vspx_pipe->vspx_frame_end)
+ 		vspx_pipe->vspx_frame_end(vspx_pipe->frame_end_data);
 
-Step 1.3 Record: the body says companion amps should be treated as
-generic amps until full companion-amp support exists. The user-visible
-symptom implied by the subject and code is an SDCA companion amp being
-classified as unsupported. No stack trace, crash, version statement, or
-bug report is included.
-
-Step 1.4 Record: this is a hidden bug fix. The verb “avoid” plus the
-one-line mapping change fixes incorrect handling of a valid SDCA
-function type that was already accepted elsewhere in the SDCA code.
-
-## Phase 2: Diff Analysis
-Step 2.1 Record: one file changed,
-`sound/soc/sdw_utils/soc_sdw_utils.c`, one line added. Modified
-function: `asoc_sdw_get_dai_type()`. Scope: single-file surgical logic
-fix.
-
-Step 2.2 Record: before the patch, `SDCA_FUNCTION_TYPE_COMPANION_AMP`
-fell through to `default` and returned `-EINVAL`. After the patch, it
-returns `SOC_SDW_DAI_TYPE_AMP`, like smart and simple amp function
-types. This affects SDCA endpoint detection and SOF SoundWire endpoint
-construction paths that call `asoc_sdw_get_dai_type()`.
-
-Step 2.3 Record: bug category is logic/correctness plus hardware
-compatibility. The broken mechanism is that a valid SDCA companion amp
-function type was known to SDCA parsing code but not known to the SDW
-DAI-type mapper, so amp endpoint matching could fail.
-
-Step 2.4 Record: the fix is obviously small and locally correct:
-“companion amp” is mapped into the existing amp class. Regression risk
-is very low; the only behavior change is for devices reporting
-`SDCA_FUNCTION_TYPE_COMPANION_AMP`.
-
-## Phase 3: Git History Investigation
-Step 3.1 Record: `git blame` on the pre-fix switch shows
-`asoc_sdw_get_dai_type()` and its default `-EINVAL` mapping came from
-`4f8ef33dd44a3d` (“ASoC: soc_sdw_utils: skip the endpoint that doesn't
-present”), first contained from v6.16. The actual companion-amp exposure
-came later from `f5cb3ee251b4f` (“ASoC: SDCA: Add companion amp
-Function”), first contained from v6.19.
-
-Step 3.2 Record: no `Fixes:` tag is present, so no tag target exists to
-follow. The likely prerequisite/regression source was verified
-separately as `f5cb3ee251b4f`, which added
-`SDCA_FUNCTION_TYPE_COMPANION_AMP` to `include/sound/sdca_function.h`
-and `sound/soc/sdca/sdca_functions.c`.
-
-Step 3.3 Record: recent history for `soc_sdw_utils.c` shows active
-SDCA/SoundWire endpoint work. Related commits include `506cbe36a2ac7b`
-exporting `asoc_sdw_get_dai_type()`, `f5cb3ee251b4f` adding the
-companion amp function type, and later SDCA/sdw_utils fixes. This patch
-is standalone except that it only applies meaningfully to trees already
-containing the companion-amp enum.
-
-Step 3.4 Record: Derek Fang has multiple Realtek ASoC codec commits,
-including the RT1017 SDCA amplifier driver. Bard Liao has many
-SDW/SOF/ASoC commits in this area and is listed as an SDCA reviewer in
-`MAINTAINERS`.
-
-Step 3.5 Record: dependency identified:
-`SDCA_FUNCTION_TYPE_COMPANION_AMP` must exist. It is present in v6.19
-and v7.0, absent in v6.18. The patch should not be applied to older
-trees unless that enum support is also present.
-
-## Phase 4: Mailing List And External Research
-Step 4.1 Record: `b4 dig -c 56d5a9eaf60a` matched the original patch by
-exact patch-id at the supplied patch link. `b4 dig -a` found only v1 of
-a single-patch series. No newer revision was found.
-
-Step 4.2 Record: `b4 dig -w` showed the original recipients included
-Bard Liao, Mark Brown, Takashi Iwai, `linux-sound@vger.kernel.org`,
-Intel/Realtek audio contributors, and Derek Fang. The patch carries
-`Reviewed-by: Charles Keepax`, who is listed as an SDCA maintainer.
-
-Step 4.3 Record: no bug-report link or `Reported-by` tag exists.
-Web/lore fetches for the search pages were blocked by Anubis, but `b4`
-successfully fetched the actual thread. No syzbot or user bug report was
-found.
-
-Step 4.4 Record: `b4 dig -a` shows this is not part of a multi-patch
-series. Local related-patch search found `f5cb3ee251b4f` as the
-companion-amp type addition, which is the important dependency/context.
-
-Step 4.5 Record: no stable-specific discussion was found in local stable
-tag history or web search. No reviewer stable nomination was found in
-the fetched thread.
-
-## Phase 5: Code Semantic Analysis
-Step 5.1 Record: modified function: `asoc_sdw_get_dai_type()`.
-
-Step 5.2 Record: callers found:
-- `is_sdca_endpoint_present()` in `sound/soc/sdw_utils/soc_sdw_utils.c`,
-  used while parsing SoundWire endpoints for ASoC machine drivers.
-- `is_endpoint_present()` in `sound/soc/sof/intel/hda.c`, present in
-  v7.0 and later, used while building default SoundWire machine
-  descriptions from detected peripherals.
-
-Step 5.3 Record: key callees/side effects: `is_sdca_endpoint_present()`
-gets a SoundWire device by name, checks `slave->sdca_data`, loops over
-firmware-provided SDCA functions, and skips endpoints if no matching DAI
-type is found. The SOF HDA path similarly checks
-`sdw_device->sdca_data.function[]` before adding endpoints.
-
-Step 5.4 Record: reachability is verified through machine-driver setup
-paths: Intel `sof_sdw`, AMD ACP SDW SOF, and AMD ACP SDW legacy machine
-drivers call `asoc_sdw_parse_sdw_endpoints()`. The HDA default machine
-path calls `find_acpi_adr_device()` during SoundWire machine selection.
-This is boot/probe-time hardware enumeration, not an unprivileged
-syscall path.
-
-Step 5.5 Record: similar pattern search found
-`SDCA_FUNCTION_TYPE_COMPANION_AMP` handled in the SDCA name parser but
-missing from the DAI-type mapper before this patch. No other
-`asoc_sdw_get_dai_type()` companion mapping existed before the fix.
-
-## Phase 6: Stable Tree Analysis
-Step 6.1 Record: v6.18 has `asoc_sdw_get_dai_type()` but no
-`SDCA_FUNCTION_TYPE_COMPANION_AMP`. v6.19 and v7.0 contain the companion
-enum/name support but lack this mapper case. v7.1-rc3 contains the fix.
-Therefore the affected stable trees are v6.19.y and v7.0.y, not older
-trees lacking `f5cb3ee251b4f`.
-
-Step 6.2 Record: `git apply --check` of the target patch succeeded on
-the current checkout, which is v7.0.5. The v6.19 helper context around
-`SDCA_FUNCTION_TYPE_SIMPLE_AMP` matches the same missing-case pattern,
-so expected v6.19 backport difficulty is clean or trivial.
-
-Step 6.3 Record: local stable history checks for v6.19.y and v7.0.y
-found no existing stable commit with this subject. v7.1-rc3 contains
-`56d5a9eaf60a`.
-
-## Phase 7: Subsystem And Maintainer Context
-Step 7.1 Record: subsystem is ASoC SoundWire/SDCA audio support.
-Criticality is driver/platform-specific, important for affected
-SoundWire laptop/audio hardware but not universal core kernel code.
-
-Step 7.2 Record: subsystem activity is high; recent history shows many
-SDCA and `sdw_utils` changes across v6.19 to v7.1. This is a newer,
-actively evolving area, which reinforces the dependency check.
-
-## Phase 8: Impact And Risk Assessment
-Step 8.1 Record: affected users are systems with SoundWire SDCA devices
-reporting companion amp functions, especially Intel/AMD SoundWire laptop
-audio configurations using these helper paths.
-
-Step 8.2 Record: trigger condition is hardware/firmware enumeration
-where `slave->sdca_data.function[i].type` is
-`SDCA_FUNCTION_TYPE_COMPANION_AMP`. It happens during boot/probe/machine
-selection, not from unprivileged userspace.
-
-Step 8.3 Record: failure mode is endpoint/DAI detection failure: the
-companion amp can be treated as unsupported and skipped or not included
-in generated SoundWire endpoint data. Severity is medium for the general
-kernel, high for affected hardware because it can break audio amp
-availability.
-
-Step 8.4 Record: benefit is high for affected hardware and low-risk
-globally. Risk is very low: one added switch case, no new API, no
-locking, no memory lifetime changes, and no behavior change for other
-function types.
-
-## Phase 9: Final Synthesis
-Step 9.1 Record: evidence for backporting:
-- Fixes real incorrect handling of an already-defined SDCA companion amp
-  type.
-- Prevents affected SoundWire audio endpoints from being classified
-  unsupported.
-- One-line, single-function, single-file change.
-- Reviewed by Charles Keepax; applied by Mark Brown; relevant
-  maintainers/lists were included.
-- Applies to stable trees that already contain `f5cb3ee251b4f`, verified
-  for v6.19/v7.0 presence.
-
-Evidence against backporting:
-- No crash, data corruption, security issue, syzbot report, or explicit
-  stable tag.
-- It is hardware/functionality enablement rather than a core reliability
-  fix.
-- It must not be applied to trees without
-  `SDCA_FUNCTION_TYPE_COMPANION_AMP`.
-
-Unresolved questions:
-- No external user bug report was found, so exact affected product count
-  is unverified.
-- I did not run a full v6.19 worktree apply test, but verified matching
-  context and dependency presence.
-
-Step 9.2 Stable rules:
-1. Obviously correct and tested? Yes for correctness by code inspection;
-   no explicit `Tested-by` on this patch.
-2. Fixes a real bug? Yes, incorrect mapping of a valid SDCA companion
-   amp function.
-3. Important issue? Yes for affected hardware audio functionality,
-   though not crash/security.
-4. Small and contained? Yes, one line in one function.
-5. No new feature/API? Yes, it uses an existing enum and existing DAI
-   type.
-6. Can apply to stable? Yes for v7.0.5 verified; expected trivial for
-   v6.19.y; not applicable to older trees lacking the enum.
-
-Step 9.3 Exception category: closest category is hardware
-compatibility/workaround for existing SoundWire SDCA audio support. It
-is not a new driver or new userspace API.
-
-Step 9.4 Decision: backport to stable trees that already include
-`f5cb3ee251b4f` (`SDCA_FUNCTION_TYPE_COMPANION_AMP`), notably v6.19.y
-and v7.0.y. Do not backport to older trees unless that prerequisite is
-intentionally present.
-
-## Verification
-- [Phase 1] Parsed commit `56d5a9eaf60a` with `git show`; confirmed
-  subject, body, tags, and one-file/one-line patch.
-- [Phase 2] Inspected diff; confirmed only `asoc_sdw_get_dai_type()`
-  adds `SDCA_FUNCTION_TYPE_COMPANION_AMP` to the amp cases.
-- [Phase 3] `git blame 56d5a9eaf60a^` showed the mapper switch came from
-  `4f8ef33dd44a3d`; `git show f5cb3ee251b4f` confirmed companion amp
-  enum/name support was added later.
-- [Phase 3] `git tag --contains f5cb3ee...` showed companion amp support
-  starts at v6.19; `git grep` confirmed absent in v6.18 and present in
-  v6.19/v7.0.
-- [Phase 4] `b4 dig -c 56d5a9eaf60a` found the original patch thread;
-  `b4 dig -a` showed only v1; `b4 dig -w` showed original recipients.
-- [Phase 4] Fetched the mbox with `b4`; confirmed Mark Brown applied it
-  to `sound.git for-7.1` and no NAK/objection appeared in the fetched
-  thread.
-- [Phase 5] `rg` found callers in `is_sdca_endpoint_present()` and SOF
-  HDA `is_endpoint_present()`; file reads verified endpoint filtering
-  behavior.
-- [Phase 6] `git grep` across v6.18/v6.19/v7.0/v7.1-rc3 verified where
-  the enum and fix exist.
-- [Phase 6] `git apply --check` verified the patch applies cleanly to
-  current v7.0.5.
-- [Phase 7] `MAINTAINERS` verified Mark Brown as ASoC maintainer and
-  Charles Keepax/Bard Liao as SDCA maintainer/reviewer contacts.
-- [Phase 8] Failure mode was verified from code paths that skip
-  endpoints when no matching DAI type is found.
-- UNVERIFIED: exact real-world affected laptop/device count; no public
-  bug report was found.
-
-**YES**
-
- sound/soc/sdw_utils/soc_sdw_utils.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/sound/soc/sdw_utils/soc_sdw_utils.c b/sound/soc/sdw_utils/soc_sdw_utils.c
-index 0e67d9f34cba3..2b4b54e8241e6 100644
---- a/sound/soc/sdw_utils/soc_sdw_utils.c
-+++ b/sound/soc/sdw_utils/soc_sdw_utils.c
-@@ -1400,6 +1400,7 @@ int asoc_sdw_get_dai_type(u32 type)
- 	switch (type) {
- 	case SDCA_FUNCTION_TYPE_SMART_AMP:
- 	case SDCA_FUNCTION_TYPE_SIMPLE_AMP:
-+	case SDCA_FUNCTION_TYPE_COMPANION_AMP:
- 		return SOC_SDW_DAI_TYPE_AMP;
- 	case SDCA_FUNCTION_TYPE_SMART_MIC:
- 	case SDCA_FUNCTION_TYPE_SIMPLE_MIC:
+base-commit: bc1ba628e37c93cf2abeb2c79716f49087f8a024
 -- 
-2.53.0
+Regards,
+
+Laurent Pinchart
 
 
