@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-245304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHJsOxUOAmoSngEAu9opvQ
-	(envelope-from <stable+bounces-245304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:12:53 +0200
+	id wBsoECAOAmoSngEAu9opvQ
+	(envelope-from <stable+bounces-245305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:13:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A02513276
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E3B5132A3
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C2693300E004
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:12:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AE015301B359
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345CE44CF44;
-	Mon, 11 May 2026 17:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F48A43E9C8;
+	Mon, 11 May 2026 17:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KcrY5pQu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M+V5Khs5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8205942E013
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 17:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FD644BCAF
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 17:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778519540; cv=none; b=fa9AtRw5oShILI7ptNn1iQJLlweZWb6qU/eMa1+diyZwQVwcxjbptKfGHfDDUZ0KrRL81WuQXJO16/x92xqsNW4N3UymDyNgAt7UeYSkIXkWqzR3cOnndt/lXSmfbtMyvE1sFe8O9ig7HtrRhjXAa8vX/iCqqzd5nVoB+H8P8Ms=
+	t=1778519540; cv=none; b=dEfpHbWnTCnZpIAndkii0NVFDAOghGtiSH3/sUSd0OqDznWrgZutej5v0ys0Brz/CkEfh5CFq8HAOqE7sNosb/grgRumL0dSURaiYe1qXcCKDNT2rixv4DkqRH3fwvQg0yNZ8Kt/uG1aJ0f1gvTby1YLHNlJaGjLCGciV+cTEw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778519540; c=relaxed/simple;
-	bh=qSesX2ZDGhaCZrzr8oezoBtstChG//vMkmqR9KwS7d0=;
+	bh=4DlyG+iXICv8PFIjVe2HgIrTduPnzOhVbzvai6W3884=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B859YCDbBQQcqYcLOcxqep+TkEuqKwA0tIEte3JlQ2KdADB18+UiSeqh1yIUad7lQL4XfvuTAYY8SbYOPaShXGt4SoETfmiNUNPXG9DKQb4fh6FxlZE97rrdwu+uB0BU2NSV6OzwXNC7JqtJCurplBuZaNG+gGtjItQBm/oKgX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KcrY5pQu; arc=none smtp.client-ip=209.85.167.42
+	 MIME-Version; b=k9YLzFXqYzddnb3U5+nWPXCQn7Mqu61/20YGHbC24+QxecA7sZguqa+2FPb5l0Sv6NQasYXzyx4VRl7MplX/bFIq5CHudQr1jtOE/7NoTvxxsAwbeoxYdtQEeuHj2PFKTB8+lHwRK3kKw/TnT2qtqdp4sGvV1yhN+M3PamdILO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M+V5Khs5; arc=none smtp.client-ip=209.85.208.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a746f9c092so7192004e87.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 10:12:17 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38e7b0903cdso43832431fa.3
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 10:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778519536; x=1779124336; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778519537; x=1779124337; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s42sCXaEIYI2iT8o/2WjdzJavucMWxgVZFV2JYX3rF8=;
-        b=KcrY5pQueoCa4MoLMldHSXm4iJ3/EjEqLttwIT098h1TCW6DCISHfy/6r+bVPtjZUx
-         PXi9OeeW1CItkGfm2MWvoFrFhJk0H9QqqUMAueQeyRld7+9UTuOOYD+1coRjUw9UX3DU
-         9x/k4JKOtJGa5sXYnMiQSr4BeUEoHYuDchPWGlKMiIW7+zSPdBN1x27qIGLmDSxNncgz
-         IbEHIJCOj7xlCuHB0Lqar+7TJmC/O67BmkZ510AYqaOzqoKqHf1R2LPZC+gPfEG++zkj
-         QDhJuWdx6moAHmvyIvwEEnp+LalJIPiTqwp82itG6QHvpJRcRxvsHG87VOi8pEiQg03I
-         YYXw==
+        bh=XSIxIJUh3eL2dSuA1xrUNZiqoyBIDeeVRxEk9r/yyRo=;
+        b=M+V5Khs5sW5CnKNYTvSJ9U6Fhg9+w6YeNPtI+moPEmZTma0x4ZuGzYW+pwebfPyiYA
+         8eollKjLl9KhXsmzQ/Rjf3ime4ya9qQGo9uDjf5dphnRc7UvKwyHWEDgcIrLd4Am9oku
+         Ui4QPMIQtqYEepdYjipQDtBFQ+Ib78PD9EdFzC1AnaD83ZglGb30EF5YxvwUyReZtYQO
+         bWJoeAPA/j2ZPTBdaHM40JY6VOqqrHokz9VHi89qMpi/YWzJvzVB3+qaY9X+MYC71ZvP
+         muRD8uYuXzgt4YntFqhfVVrdQYippWpVhME6oC22IFY9KskzGfA46CXzFuZQCIjfxR8w
+         7qdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778519536; x=1779124336;
+        d=1e100.net; s=20251104; t=1778519537; x=1779124337;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=s42sCXaEIYI2iT8o/2WjdzJavucMWxgVZFV2JYX3rF8=;
-        b=GVYRy5/O7lXd2AUdbmkesl/O+Zf7MtduuZN+hyqHbZ9RXYjNM2rLSCMslYDoK9sufm
-         qZ0Mw9UaKCv3AmMpdXYc4MeOshMWb62yeQCA+g3OIzq632Yz6Bbl6BU9uRv+3ciMwoj+
-         nxs2ZbexJ4d6tQqisfiOFs4KuFdojGhSpaTImOqZ56vqEOaTKjfOBKX8m5ZqSBpCg3n+
-         3ERkP7k0X1DI+RDDKekg+K0Jj6tfRUMj0r0WgkTn+qrdFz+Ns/hwkAraSSFqRM7A0aHl
-         GqnQ1emf8NgEJvHbfxLs7cEymzp4DroLIJoGieR1JlHyrTDnbD5VMjA6EQINq/T+U6j4
-         lkyw==
-X-Forwarded-Encrypted: i=1; AFNElJ+kZBJQpS8vE++pMBIBwO633eo+/lqoOvFzsDtBL7ehIPIZdbUBAWFlyJ2ZiV4d25rumiqhGdE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjTv0v38q9QlRizDiavgM070GcowMjtZ+lui3FsWMIBPfDM60c
-	6WUxzX+nXv/Ncc5skT9gCum2ZeZLJVmIjth3srWUjBgeBblnfoMh0PwG
-X-Gm-Gg: Acq92OFkWP1853Bozk4Xadck4kw0V7Di4zkuy4IrW/Ty2s7vwQFVyj/QGrgjeRs7YGS
-	2r3/lQwMuNY7sYzOHqFoKoeRa0t1g0nhBiLXfk7PrevtvG749JoE7Za/27tYWW+LAvijyiH1Gf2
-	UQdjBmpma7tROMe4olayiM40wJ4b8wE+eC16NCxXsIaSXONwU55Git/jcbzLu4ROIvy38i2eDNg
-	McEia7rsmQ2nvVEjVb8O3MYw6fHW6feJM4ba5YCrp1l+ezTSz2XKAEPdE+x1QfJupwKcQLu3LQx
-	vXy3j/0XzTSG1lNTVc04jk7BOs0MWVBBv7XvrhpDmxt1oWQq68eGT+C+bT0FzveAXrwb+Y4Wmxr
-	WP+jYONPqEA7iYUfHmn2ou60Gh28VvPgHcb8bjbZKK1LyRncnYy5pvNJFO8BErZt2DvcvSFmOiD
-	QEuLgBUCNVGJGqjARu6ORhaDHhReCp3LWltPvu5Sj2z9BuVP0sCHWd3PevYNmxOgYY5jTtBZI=
-X-Received: by 2002:a05:6512:a8c:b0:5a8:99dd:1648 with SMTP id 2adb3069b0e04-5a8e0c8c320mr110927e87.0.1778519535453;
-        Mon, 11 May 2026 10:12:15 -0700 (PDT)
+        bh=XSIxIJUh3eL2dSuA1xrUNZiqoyBIDeeVRxEk9r/yyRo=;
+        b=rE9eMSPGKHaTPmwz697H6bk3Bi6jRL/+TkNLga4i/asKZAW2u4ogyvF3zNwCug10zH
+         pZ56KRA73RPnNBuF+UKbgmolY/vqgoYHGG9oz57DnMZrM1alOT4JcFyMpPqkKF+0aFj6
+         fBu5IL3oTnb1QZCEQc7fFXZ2UCygMLIGPJmYAppRZp3p2Ldl1K8Ulp+QYl+jfW7IdJpI
+         RyPnb/6l3kYLOly9ZjjtcokckqcwxIQgM5Esz0kSamGY6faf/ohF0g0ONuMMzCFUERL/
+         tkwe+Iw4EYDOgj6b36LUCWUt7bZOccDSYyayfVvbIHf3MwUn8oPpTT41i/IdAUocZ0MR
+         e9/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/4ibC+Toie6ljb1T+bLqGMy9Czb+3nqC+E+ZywcMCKWdsuz2IDqVs6/lsbAxa43o/sHuF+gqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLhj02IjBZyHo2vNBiBnbOaWLB7Rs05C5K222Am0oTOnIcj5VX
+	M0svE8J3/MqLrfV8Fm2IpkPN37ZZafPah90EQbr914ztHgahMJVcJelR
+X-Gm-Gg: Acq92OFv+TUKidGuSxs8qAmyJz/UcJ7ISKoiN8GMKWu0bThrbtf/0BO+B7Xe+taKEmd
+	16dHSDcD/vhVeHjmkFEF6By+uKJT+0GOKRyCYNxa7J+oX8wCszzZsiMQSWQb0ojVI0JvnSum1TM
+	cMPNbwDeVfGxFVt6/KcYdx9EeTe4iYvBZ9/M9/DDvyIXvw3RzvUn90PHucznwbXfTPMfBgRky/Q
+	m88SLSoJ10VBCmhHc6FSQrT4aaY/hcIpixAJw5bKgmrzTLZ69nO37SRqlnLSUoIOjWLJXAy4/qs
+	JU5itpMZOyZOGjd+LNrgUPQ2P8RzfuDB8JsXbr2h34S60xwHi7aRbd6bLSFcOmKyxdxRG0Y7Gdz
+	uyQJj5z6dg6s+itAQ2FVnNkpnga+9IFL2ll8oTGVuo9v3JlomOzef64bKrrnySPqNM4kiYzfK0O
+	pbhXgDbjR/K7+d5HNDYNPTPv1xX4eHYCIfE2BuMqDQvTH1IeRXFYTi63ZeZpvZ
+X-Received: by 2002:a05:6512:3ca1:b0:5a8:7be1:24c8 with SMTP id 2adb3069b0e04-5a887ceaa65mr9581194e87.37.1778519537055;
+        Mon, 11 May 2026 10:12:17 -0700 (PDT)
 Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([193.0.150.248])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a8a95660b6sm2765488e87.62.2026.05.11.10.12.13
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a8a95660b6sm2765488e87.62.2026.05.11.10.12.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 10:12:15 -0700 (PDT)
+        Mon, 11 May 2026 10:12:16 -0700 (PDT)
 From: Valery Borovsky <vebohr@gmail.com>
 To: linux-media@vger.kernel.org
 Cc: mchehab@kernel.org,
@@ -96,9 +96,9 @@ Cc: mchehab@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Valery Borovsky <vebohr@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/6] media: airspy: Return queued buffers on start_streaming() failure
-Date: Mon, 11 May 2026 20:12:06 +0300
-Message-ID: <649601988189f031670215cb35add5e80439559d.1778518085.git.vebohr@gmail.com>
+Subject: [PATCH 2/6] media: msi2500: Return queued buffers on start_streaming() failure
+Date: Mon, 11 May 2026 20:12:07 +0300
+Message-ID: <e3052e648c898900582b7bebb6890ff4042100c0.1778518085.git.vebohr@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1778518085.git.vebohr@gmail.com>
 References: <cover.1778518085.git.vebohr@gmail.com>
@@ -109,7 +109,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 91A02513276
+X-Rspamd-Queue-Id: E2E3B5132A3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-245304-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245305-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -149,43 +149,119 @@ without first returning those buffers via vb2_buffer_done(),
 vb2_start_streaming() fires WARN_ON(owned_by_drv_count) and the queued
 buffers leak.
 
-airspy_start_streaming() returned -ENODEV early when the USB device had
-been disconnected (s->udev == NULL) without returning any buffers that
-buf_queue() had already accepted.  Take v4l2_lock first and jump to the
-existing err_clear_bit label, which already drains s->queued_bufs via
-vb2_buffer_done(..., VB2_BUF_STATE_QUEUED) before unlocking.
+msi2500_start_streaming() had five error paths that all hit this trap
+and were further tangled by ret-overwriting between calls:
+
+  - -ENODEV when the USB device was already disconnected
+  - -ERESTARTSYS when mutex_lock_interruptible() was interrupted
+  - msi2500_set_usb_adc() failure: ret was silently overwritten by
+    the next call (msi2500_isoc_init), so the error was lost entirely
+  - msi2500_isoc_init() failure: cleanup_queued_bufs was called, but
+    the function then fell through to msi2500_ctrl_msg() and again
+    masked the original error by overwriting ret
+  - msi2500_ctrl_msg(CMD_START_STREAMING) failure: no cleanup at all,
+    leaving isoc URBs submitted with no way for the driver to consume
+    them
+
+Consolidate the error paths into a small goto chain.  Every failure
+now stops the function, drains the queued-buffer list, and returns
+the real error code.  The ctrl_msg failure path also rolls back the
+preceding msi2500_isoc_init() via msi2500_isoc_cleanup() before
+unlocking and draining.
+
+The cleanup helper takes a vb2_buffer_state argument so that the
+start_streaming error paths can pass VB2_BUF_STATE_QUEUED (as
+expected by userspace on start_streaming failure) while stop_streaming
+keeps its existing VB2_BUF_STATE_ERROR semantics.
 
 This mirrors the uvcvideo fix in commit 4cf3b6fd54eb ("media: uvcvideo:
 Return queued buffers on start_streaming() failure").
 
-Fixes: 634fe5033951 ("[media] airspy: AirSpy SDR driver")
+Fixes: 977e444f59ad ("[media] Mirics MSi3101 SDR Dongle driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Valery Borovsky <vebohr@gmail.com>
 ---
- drivers/media/usb/airspy/airspy.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/usb/msi2500/msi2500.c | 32 +++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/usb/airspy/airspy.c b/drivers/media/usb/airspy/airspy.c
-index 8f6b721ba107..57edb42463e8 100644
---- a/drivers/media/usb/airspy/airspy.c
-+++ b/drivers/media/usb/airspy/airspy.c
-@@ -522,11 +522,13 @@ static int airspy_start_streaming(struct vb2_queue *vq, unsigned int count)
+diff --git a/drivers/media/usb/msi2500/msi2500.c b/drivers/media/usb/msi2500/msi2500.c
+index 1ff98956b680..0614087c3c3c 100644
+--- a/drivers/media/usb/msi2500/msi2500.c
++++ b/drivers/media/usb/msi2500/msi2500.c
+@@ -541,7 +541,8 @@ static int msi2500_isoc_init(struct msi2500_dev *dev)
+ }
  
- 	dev_dbg(s->dev, "\n");
+ /* Must be called with vb_queue_lock hold */
+-static void msi2500_cleanup_queued_bufs(struct msi2500_dev *dev)
++static void msi2500_cleanup_queued_bufs(struct msi2500_dev *dev,
++					enum vb2_buffer_state state)
+ {
+ 	unsigned long flags;
  
--	if (!s->udev)
+@@ -554,7 +555,7 @@ static void msi2500_cleanup_queued_bufs(struct msi2500_dev *dev)
+ 		buf = list_entry(dev->queued_bufs.next,
+ 				 struct msi2500_frame_buf, list);
+ 		list_del(&buf->list);
+-		vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_ERROR);
++		vb2_buffer_done(&buf->vb.vb2_buf, state);
+ 	}
+ 	spin_unlock_irqrestore(&dev->queued_bufs_lock, flags);
+ }
+@@ -830,25 +831,40 @@ static int msi2500_start_streaming(struct vb2_queue *vq, unsigned int count)
+ 
+ 	dev_dbg(dev->dev, "\n");
+ 
+-	if (!dev->udev)
 -		return -ENODEV;
--
- 	mutex_lock(&s->v4l2_lock);
- 
-+	if (!s->udev) {
++	if (!dev->udev) {
 +		ret = -ENODEV;
-+		goto err_clear_bit;
++		goto err_cleanup;
 +	}
-+
- 	s->sequence = 0;
  
- 	set_bit(POWER_ON, &s->flags);
+-	if (mutex_lock_interruptible(&dev->v4l2_lock))
+-		return -ERESTARTSYS;
++	if (mutex_lock_interruptible(&dev->v4l2_lock)) {
++		ret = -ERESTARTSYS;
++		goto err_cleanup;
++	}
+ 
+ 	/* wake-up tuner */
+ 	v4l2_subdev_call(dev->v4l2_subdev, core, s_power, 1);
+ 
+ 	ret = msi2500_set_usb_adc(dev);
++	if (ret)
++		goto err_unlock_cleanup;
+ 
+ 	ret = msi2500_isoc_init(dev);
+ 	if (ret)
+-		msi2500_cleanup_queued_bufs(dev);
++		goto err_unlock_cleanup;
+ 
+ 	ret = msi2500_ctrl_msg(dev, CMD_START_STREAMING, 0);
++	if (ret)
++		goto err_isoc_cleanup;
+ 
+ 	mutex_unlock(&dev->v4l2_lock);
++	return 0;
+ 
++err_isoc_cleanup:
++	msi2500_isoc_cleanup(dev);
++err_unlock_cleanup:
++	mutex_unlock(&dev->v4l2_lock);
++err_cleanup:
++	msi2500_cleanup_queued_bufs(dev, VB2_BUF_STATE_QUEUED);
+ 	return ret;
+ }
+ 
+@@ -863,7 +879,7 @@ static void msi2500_stop_streaming(struct vb2_queue *vq)
+ 	if (dev->udev)
+ 		msi2500_isoc_cleanup(dev);
+ 
+-	msi2500_cleanup_queued_bufs(dev);
++	msi2500_cleanup_queued_bufs(dev, VB2_BUF_STATE_ERROR);
+ 
+ 	/* according to tests, at least 700us delay is required  */
+ 	msleep(20);
 -- 
 2.51.0
 
