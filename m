@@ -1,235 +1,364 @@
-Return-Path: <stable+bounces-245328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAuQLptVAmr3rQEAu9opvQ
-	(envelope-from <stable+bounces-245328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:18:03 +0200
+	id EK4zE11XAmosrgEAu9opvQ
+	(envelope-from <stable+bounces-245329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:25:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27BBF516ABA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A73C4516D78
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 00:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC85E30209CF
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:16:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9919C302452D
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 22:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0061134751E;
-	Mon, 11 May 2026 22:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F913C2791;
+	Mon, 11 May 2026 22:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DlmP9YOF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="go9Jnchv"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011027.outbound.protection.outlook.com [52.101.62.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583A03CB2FD;
-	Mon, 11 May 2026 22:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778537815; cv=fail; b=QioJkb3bzlSo4cjOgI13cGqO7fneRwpFgLMRRe1SjrjD6AvswUUTC+Rt/WlXSebJkH4p5EKh8KmH49hDFD5GlHx77ckLZHV3WLP4ZrC2vdtQFvoMv3GdlExq/z2Ww+wcOK4lnv3FwLan8qOogC8mPSzZXh70n+tiAENPQuPnM6s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778537815; c=relaxed/simple;
-	bh=WT6XdtABcM6qpeW1fmJnt9m48jTOU9/WezB+CdIW23s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GryBLbdgOD0bl/mmR+kgpAwazc9TwqGv7zktz40+d9MpS3FlAV61luTmfDzzaPUmwganD4cWKm1f9AdaE1vRecs6kwzVvoBgUlto4yO1P3vQuwiQ5+z4139ivT1KneqiM71JmpiFfZjtkcchQn89Fww/k9t1kY5LhCqVO7hT1jg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DlmP9YOF; arc=fail smtp.client-ip=52.101.62.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bTaZKwyJB0KI0ZKeSiV/EHckErlc0ZhxlXVNObRqxeDZUR00Wlshmw59h9f7RG09T/OQbGxURjrwmqXuafJCbDXkkCJ5hjqCXjMZytadf1C96jEJvgY+3pezLc3xvPiUEdi0rC/1sC+CUfLRTA3OzZvbJ/oj5vzC2ELnNHfTrwwaMnwAEzFFyHB0V0nP0/vwyqVMSpm9sr9UdTN6XoLzm2lWTLyv0RO1rQJlUtNA5EYzOyLlFuXdqjK7XkmEI2ZYjvVeox2y2Fv3LZzo32ox/LqGqv+j6miKwnPyVqbC2bJYpxPh8x4loQvbWU/X1T6HzDMkc30/1s9Mp1PLrBlwmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
- b=WmIU52z59xkIE00+nQxCUXLtyL+uqIpLnvQRaVA+Mjyyd1H7SoFG5KGLOp+70fBfKpBgHMM7gA7qHgAen35HnlsA7MswAQY8I4TRDUHDRpI+MOyGANOorKgzK1Qtld3lmElP3YoqizcyrafU39/97GxmkvvjUFOdlEp6vFFro4lLMZsAHwJ7duE7msNPFI0eaTAeyZ+COiMu9IVEB7q0kBz2nVcu5BgPhoqKVx5G2VSTnx+lWFE6tKQ+2z+i/O6WlkAYUwyf7hur8JkUosotiWj8VAGu6u5WjMgaBhWLE2TYgMu/XXgxx/uN3xP1AJyJOdX69x7KPhrZFIIMIbZM9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
- b=DlmP9YOFXOMivkjw1PR6rMMuVhBlfOcVATm7dSxtCvf7Z4Lh8GvbSfkeTwRbWV02nJGD7d03dAuHR3fv5vx9h5qIh8KjCYXP+U4+2laqLe9oOeslXPY+bIXQIPFKN/VZcc6rNsMZOOxhKlEfRZOwPY6fChFgHnD8VqAA5gwOv8Kh9lHw7WL5uVxsopHSY4ojepRwPab6ANTpS7X/tLla1e4dfaeoMTclUjWugxSPiYn4h+dAm8qlDeG/lIb2Ez7L+o17srfm1rO3IdyxLKedtCwVeQZK0issKcJxr5MkqdXurZTOTWO3go+V7CGijbVGpS+WJR3ZoHWb0hlBG7zLkQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
- by DS0PR12MB9321.namprd12.prod.outlook.com (2603:10b6:8:1b8::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
- 2026 22:16:49 +0000
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15%4]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 22:16:49 +0000
-From: Alex Williamson <alex.williamson@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>,
-	kvm <kvm@vger.kernel.org>
-Cc: Alex Williamson <alex.williamson@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	rananta@google.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EB435F5EC;
+	Mon, 11 May 2026 22:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778537973; cv=none; b=TYYiCtdOcaxR8aCz/JmUTGf9agsc1EfHUdjs0GnXxPVFctesqRohBYA06xOwcrBDYCooJHUVlWnCDrQiMvzA0P45Cz6xqUhCfhxXSf+f/0blmBrOT2HiD8muRJZqwfbxId43TEAWP7LYkOjrzFrkiOXs7mZrtVoR0hVk2vszs1M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778537973; c=relaxed/simple;
+	bh=v3FKuA5Z3gNVdXGKkVpFozfT5lnuMlMV+Rq5LvGtlrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RcOXnU6MkIx1hbECCDTGg+Rhmpv62xE3LUFVIxFu3CZg6km/fcUhMcFN8BJb6S8AKC5wq2vvTttr7C5OPsMvOZGiP23zD2RlGeCikCtHySYxf8Nf4YoNbqozFrcjE7sw3mfpKQoErjHRqK7u+guzKXZvDN7X/oYHEPdgE3s15W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=go9Jnchv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A75C2BCB0;
+	Mon, 11 May 2026 22:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778537973;
+	bh=v3FKuA5Z3gNVdXGKkVpFozfT5lnuMlMV+Rq5LvGtlrg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=go9JnchvRHdqcdetNfBwvSEKxPrAc9y2OO83cH6gAa8tKD5v1wqOjnJk4I87MY0sw
+	 nvhxjux6aYSumEaEgKYfFQNWeAc7GUdP0uLIylir8SW/Zxmf0CLA0clIthorVdmbvw
+	 jtj7RUlQ9wm2la7g0i3GykG4qdpqbuDGfhi604MKatxpKPYTjzqQaRbX6NJAbp+ccQ
+	 eTZRwjcmmOrduZmobVhUzqMUhbKWKKWy+Lc9Fn1veW1Nwa4qBaVPsBICTJxW4qNMgW
+	 xcN7mr4+daM3mLRzA7RWa9JmPrBezJP0p8X805KZ7g/zqadZR5ZKzNkJITpOof7KUF
+	 u810uFvCA9j5w==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] vfio/mlx5: Fix racy bitfields and tighten struct layout
-Date: Mon, 11 May 2026 16:16:03 -0600
-Message-ID: <20260511221609.3837652-3-alex.williamson@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260511221609.3837652-1-alex.williamson@nvidia.com>
-References: <20260511221609.3837652-1-alex.williamson@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DS7P220CA0003.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:8:1ca::17) To LV3PR12MB9411.namprd12.prod.outlook.com
- (2603:10b6:408:215::20)
+Cc: Rosen Penev <rosenp@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-5.10] ALSA: sparc/dbri: add missing fallthrough
+Date: Mon, 11 May 2026 18:19:00 -0400
+Message-ID: <20260511221931.2370053-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|DS0PR12MB9321:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc949ab9-6188-49b0-f816-08deafaaff53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|11063799003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	LBK8mWrmH3RqG3AH4TOOdxCSLe7/pSXrsa4bxAfOAu69b6zaBz/60t8GphEgrZiwOALepcC1U+ArUYZ51iMQi1bw1yA16IsP0FdTRVWbFEkDHAJFJR3qFj75AL8MDpQsNkvCyhDjd5OQn06ucGNCZMspWqpvHTwaGcpSfYSpvkiTMkoEOsWT1dTunnewcPoRrwueKcnIXqNZEs+PnIgbkjiovDK7Wczr1nVZdLUtp5tNjPc8dTkqsPvOoA1llUOwHQ5RMwkNreKDTBpeuJq8xgse6M9fNTPaolLXps49vX6hX3LxOC+KYQFKxsyJfOfn6Wl5niga5mRWjF4k238zE1pNXYQKE6VIGPEO1ukX0DNYbw3W06AJfTjY3gM2NjgGGnzyYD4ayFrQgNIXCgHi7zvDdJ+3r2BWkPN8oJUemDrwjzNmbI5yg9gHBYCEPJG+hhqx3tHGZgRJrJOvKJEmFxYaEdSbbzGcD4XY6Yi+Ki+dSAACEGUPWejrs9jBHM55Zp5JU6rvTYv7Z14SZaOR4KJ4xpzNSN69tbBkLTXmxdxSjMbtFVm5yXFTa+5UPp7ELf7ty3nAJm5P2F65LMsVnb2gU0GQTbxYaZ6Y1DA3/yBdIytjh2hHfJEO3BTF1L7p3QvrqwxlZIUNNrhiTwkEcn8TZPQEgLjj+49rv7awqVh9clfrjNECQpxcUnoFozhS
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(11063799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?29PDov8EdzG/cNFAqqGwRC578M+9dK1EhjfZ5hZx9YbMwhml/AB26rHRSZ69?=
- =?us-ascii?Q?5nibABQcVOQAJpqHE3zo4lRyJl9q5ktQ8rRXPbLEifPS8YLXQhj842u7ePgs?=
- =?us-ascii?Q?Gk8o3YjVpr2fxNbkKiYxJJOhBX1LEvC2eMpZ2YtYrXLleSg/5kYauuM5dFuK?=
- =?us-ascii?Q?gQwyN5kpHiCrG+wzCTS/VT56OgdhF3q0bzWw0hmPnERvzqY7gJ5LgqPKV9YX?=
- =?us-ascii?Q?ukhqxUREA2LZ+lVX12oQO/VJqqzwrI7XCAvCjhzdn5Zu8VVKJB2YB+Ve14S+?=
- =?us-ascii?Q?leMRsM76JLAfMGkMrYMgTILna7T3FxhHDkk7n4y1NlNL+DN75KwnaUG+jONa?=
- =?us-ascii?Q?euDeuSqa5W0rkXTBRbutVp1P4pjfI57egPuQ6nCk+YOs/yLaPbQ28qjfpIPl?=
- =?us-ascii?Q?oTBVHc+aomqTT7f/jIAaaH+pgU2j3h7ravHyI9wwvajXfsqTnQEP3L2ktFLE?=
- =?us-ascii?Q?PxehgzL3ORlLaEqPuHdH5Btt4TYlmLh9AE1TdIOYvZSLovRpMcK5ypxPRZwR?=
- =?us-ascii?Q?bRlzJuZoJxrBwBpF9xUIVBd2DCZMFBJlbReT0/gPQrqU5Igr5tbg6YvwXD/e?=
- =?us-ascii?Q?TftDwwFoQW/FmNwD1mEJt/jkJllSzdnPopffp46ekUkgf9W0lTpcn/Qt9YzN?=
- =?us-ascii?Q?aNQNyBRLS8Ljfq+Pzg8QfGjuIExb7GjyMThZjYMZTPQpzVi9gLt/+WSOMAC0?=
- =?us-ascii?Q?sqaE8lNzkuEIw3bZaFHKXnGQKNupEumu89rIsFaZTrhSuy2D2Bjd3q2mcRgR?=
- =?us-ascii?Q?PBdf+vttDTUk1fbRGi3snLYBX4ntKKBBb/YnDfqlDAX9HphnPjpWJFEXiJ4E?=
- =?us-ascii?Q?m57bNErDD+mLGDp3LboO4MkGNFrnQGdG2lNwCmINcsxAMXmbkq/8gMlQqs/c?=
- =?us-ascii?Q?Qx4BM03/MS9xOMVKLwsMZnMG3FcNDmbviCe3av4kzltIuEJ64qAD4U50pc2Q?=
- =?us-ascii?Q?kLHFQfBOvRBbde2W8p0NzUNDdkagYXv8+SlTUQhzLeW83FSlhWLMM/cvDOF2?=
- =?us-ascii?Q?4hWaBE2cHnHIqz48BMmhDWxLTmNQWOK9FPwTm2tVlt2FhdhUaF99BqTP4TZf?=
- =?us-ascii?Q?WrxDH2XvKCloj8Rz7COFx6GA18IhfWXZ3L4425VM3GrNUv7UP2jgpVu7KQzz?=
- =?us-ascii?Q?QXTeEbVU1iNl+dP0bUvPLpUPBLCzLg3aMucGQwZ4D9zIJScZrJqkX9S59HNJ?=
- =?us-ascii?Q?Ca3uMCIYzoOQuFy4fpBMtXMtG3Ay4B5E6zyC2AGyNO/qjQbnFQXFAiEFEAIU?=
- =?us-ascii?Q?5tM+wRQ03u46ZDM45PwjuuNSM2IqHtl2ypmL2VZy+m69bfGotCKEhVisKHwy?=
- =?us-ascii?Q?4mipSTuLE8c0fdeDsX8FUcwbHyTP7lFiNVP4SlXre1oEZfJptoIJutOfe1/R?=
- =?us-ascii?Q?SBgLealoMM3pkO5gGK33tPf8Q+nhuqarsWx+G/4zVpHgb6SC2fx/jb8irVsl?=
- =?us-ascii?Q?uLzMYRn+zVLvCbSd5kSFRrt5WzzC/Sb7KJKvfa6SOPuv+mReeCUbm7x2ugnP?=
- =?us-ascii?Q?70b6tgZZM0dNFUCRZluZw/CfDXZM7FTeLt6+3HSeqNrYy0oFblrtBULm6ORz?=
- =?us-ascii?Q?dLfWFwx3tRrAbxEnbC4sMPZ4jUrBeXjqslbe0v74hjuiUOFdbk/nfNq3sOHl?=
- =?us-ascii?Q?LxuSRYH3jPf/5A55gKZ98HscxU+TYYSdn7ofG9yZ/fSxhwTaA2P4GaL3/jUQ?=
- =?us-ascii?Q?WuVa5OwVdvKKQJroU2hQzFwZBXi6t/4G9VS/RQ0oNmTNxk2xA5yMRiUUC0pD?=
- =?us-ascii?Q?hBuqgWl4ow=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc949ab9-6188-49b0-f816-08deafaaff53
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 22:16:49.7385
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fC/TMiMEtBRLVSLqydp0pTtVb7PyfQOCuQS68/7fabKb3cEdPkJTZKUdqRfXYLv64I9ZjWRnURZD0LZFlgfAgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9321
-X-Rspamd-Queue-Id: 27BBF516ABA
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 7.0.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A73C4516D78
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245328-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org,perex.cz,suse.com,alsa-project.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-245329-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex.williamson@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,nvidia.com:mid,Nvidia.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Bitfield operations are not atomic, they use a read-modify-write
-pattern, therefore we should be careful not to pack bitfields that
-can be concurrently updated into the same storage unit.
+From: Rosen Penev <rosenp@gmail.com>
 
-The split fields (is_err and object_changed in mlx5_vhca_page_tracker,
-deferred_reset in mlx5vf_pci_core_device) are mutated from contexts
-that don't serialize against the other writers in the same storage
-unit, so a bitfield RMW could drop an adjacent field's update.  The
-remaining bitfields are either probe-only or share a single writer
-context, so they stay packed.
+[ Upstream commit 2bcbb163162789d3488562073dbb99d9bd71a762 ]
 
-The page tracker's status field is also relocated to fill the
-alignment hole the split exposes.
+Fixes compiler error with probably newer compilers:
 
-Fixes: f886473071d6 ("vfio/mlx5: Add support for tracker object change event")
-Fixes: 61a2f1460fd0 ("vfio/mlx5: Manage the VF attach/detach callback from the PF")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+sound/sparc/dbri.c:595:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+  595 |         case 1:
+      |         ^
+sound/sparc/dbri.c:595:2: note: insert 'break;' to avoid fall-through
+  595 |         case 1:
+      |         ^
+      |         break;
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20260506031854.780411-1-rosenp@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/mlx5/cmd.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vfio/pci/mlx5/cmd.h b/drivers/vfio/pci/mlx5/cmd.h
-index deed0f132f39..b782139eb8be 100644
---- a/drivers/vfio/pci/mlx5/cmd.h
-+++ b/drivers/vfio/pci/mlx5/cmd.h
-@@ -158,14 +158,14 @@ struct mlx5_vhca_qp {
- struct mlx5_vhca_page_tracker {
- 	u32 id;
- 	u32 pdn;
--	u8 is_err:1;
--	u8 object_changed:1;
-+	u8 is_err;
-+	u8 object_changed;
-+	int status;
- 	struct mlx5_uars_page *uar;
- 	struct mlx5_vhca_cq cq;
- 	struct mlx5_vhca_qp *host_qp;
- 	struct mlx5_vhca_qp *fw_qp;
- 	struct mlx5_nb nb;
--	int status;
- };
- 
- struct mlx5vf_pci_core_device {
-@@ -173,11 +173,11 @@ struct mlx5vf_pci_core_device {
- 	int vf_id;
- 	u16 vhca_id;
- 	u8 migrate_cap:1;
--	u8 deferred_reset:1;
- 	u8 mdev_detach:1;
- 	u8 log_active:1;
- 	u8 chunk_mode:1;
- 	u8 mig_state_cap:1;
-+	u8 deferred_reset;
- 	struct completion tracker_comp;
- 	/* protect migration state */
- 	struct mutex state_mutex;
+LLM Generated explanations, may be completely bogus:
+
+## Phase 1: Commit Message Forensics
+
+Step 1.1 Record: Subsystem `ALSA: sparc/dbri`; action verb `add`; intent
+is to add a missing `fallthrough` annotation in `reverse_bytes()`.
+
+Step 1.2 Record: Tags present: `Signed-off-by: Rosen Penev
+<rosenp@gmail.com>`, `Link:
+https://patch.msgid.link/20260506031854.780411-1-rosenp@gmail.com`,
+`Signed-off-by: Takashi Iwai <tiwai@suse.de>`. No `Fixes:`, `Reported-
+by:`, `Tested-by:`, `Reviewed-by:`, `Acked-by:`, or `Cc: stable`.
+
+Step 1.3 Record: The commit body reports a concrete compiler error:
+`-Werror,-Wimplicit-fallthrough` in `sound/sparc/dbri.c` at the
+fallthrough from `case 2` to `case 1`. Symptom is a build failure for
+this driver/config with a compiler that diagnoses this unannotated
+fallthrough as an error. No kernel version is named. Root cause is an
+intentional fallthrough lacking the kernel `fallthrough;` marker.
+
+Step 1.4 Record: This is not a hidden runtime bug fix; it is an explicit
+build fix. Build fixes are stable-acceptable when they repair
+compilation of existing code.
+
+## Phase 2: Diff Analysis
+
+Step 2.1 Record: One file changed: `sound/sparc/dbri.c`, `+1/-0`. One
+function modified: `reverse_bytes()`. Scope is a single-file, one-line
+surgical build fix.
+
+Step 2.2 Record: Before, `case 2` performed the final bit swap and
+implicitly fell into `case 1`/`case 0`, which then `break`s. After, the
+same fallthrough is explicitly annotated with `fallthrough;`. Runtime
+control flow is unchanged.
+
+Step 2.3 Record: Bug category is build fix / compiler diagnostic fix.
+Specific mechanism: the kernel already annotates earlier intentional
+fallthroughs in the same switch, but the `case 2` to `case 1`
+fallthrough lacked the annotation, triggering `-Wimplicit-fallthrough`
+as an error.
+
+Step 2.4 Record: Fix quality is high: it is one line, uses the existing
+kernel `fallthrough` pseudo-keyword, matches nearby code style in
+current branches, and does not change APIs or runtime behavior.
+Regression risk is very low.
+
+## Phase 3: Git History Investigation
+
+Step 3.1 Record: `git blame` on `2bcbb16316278^` attributes this code to
+`c3c9a75ede23f`, but the repository is shallow/grafted there, so that is
+not a reliable true introduction point. I verified the same missing
+annotation exists in local stable-related branches `pending-5.4`,
+`pending-5.10`, `pending-5.15`, `pending-6.1`, `pending-6.6`,
+`pending-6.12`, `pending-6.19`, and `pending-7.0`.
+
+Step 3.2 Record: No `Fixes:` tag is present, so there is no introducing
+commit to follow from the message.
+
+Step 3.3 Record: Recent `sound/sparc/dbri.c` history on `linux-
+next/master` shows this commit, then `ALSA: sparc/dbri: Use guard() for
+spin locks`, then the shallow boundary. The guard refactor is not a
+semantic prerequisite for adding this annotation, although older stable
+branches may have slightly different context.
+
+Step 3.4 Record: Author Rosen Penev has this recent `sound/sparc` commit
+in the checked history. The commit was applied by Takashi Iwai, and
+`MAINTAINERS` lists Takashi Iwai and Jaroslav Kysela as SOUND
+maintainers.
+
+Step 3.5 Record: No dependent `reverse_bytes` commits were found by
+subject search. The change can be applied standalone as an annotation.
+For `pending-5.4`, context differs because earlier fallthroughs are
+comments rather than `fallthrough;`, so that tree may need a trivial
+backport adjustment.
+
+## Phase 4: Mailing List And External Research
+
+Step 4.1 Record: `b4 dig -c 2bcbb16316278` found the original submission
+at the provided lore/patch URL. `b4 dig -a` found only v1; no later
+revision. The saved mbox contains Takashi Iwai’s reply: “Applied now.
+Thanks.” No NAKs or concerns were present in the fetched thread.
+
+Step 4.2 Record: `b4 dig -w` shows recipients: Rosen Penev, `linux-
+sound@vger.kernel.org`, Jaroslav Kysela, Takashi Iwai, and `linux-
+kernel@vger.kernel.org`.
+
+Step 4.3 Record: No separate bug report or `Reported-by` tag. The
+reported failure is the compiler diagnostic included in the patch email
+and commit message.
+
+Step 4.4 Record: `b4 dig -a` shows this is a single-patch series, not
+part of a multi-patch dependency chain.
+
+Step 4.5 Record: WebFetch to lore/stable search was blocked by Anubis.
+Local stable branch log searches did not find this exact fix or a
+related `unannotated fall-through` fix already present in the checked
+stable branches.
+
+## Phase 5: Code Semantic Analysis
+
+Step 5.1 Record: Modified function: `reverse_bytes()`.
+
+Step 5.2 Record: Callers found in `sound/sparc/dbri.c`: `xmit_fixed()`
+calls `reverse_bytes()` for MSB fixed-pipe transmit data;
+`dbri_process_one_interrupt()` calls it for fixed-data receive
+interrupts.
+
+Step 5.3 Record: `reverse_bytes()` only performs bit manipulation and
+may print an error for unsupported lengths; it does not allocate memory,
+take locks, or call into external subsystems.
+
+Step 5.4 Record: Runtime paths are reachable through DBRI/CS4215
+initialization/control and interrupt handling on supported SPARC SBus
+DBRI hardware. For this patch, runtime reachability is not the main
+issue because the fix targets compilation and preserves runtime flow.
+
+Step 5.5 Record: Nearby switch cases already had intentional fallthrough
+annotations; this patch fills the only missing annotation in that chain.
+
+## Phase 6: Stable Tree Analysis
+
+Step 6.1 Record: The missing annotation exists in checked stable-related
+branches from `pending-5.4` through `pending-7.0`. Therefore the
+affected source is present in active stable-era trees available locally.
+
+Step 6.2 Record: Expected backport difficulty is clean or trivial for
+most branches. `pending-5.4` has older comment-style fallthrough context
+before `case 2`, so it may require a small context adjustment, but the
+same one-line semantic change applies.
+
+Step 6.3 Record: No related fix with this subject or `unannotated fall-
+through` in `sound/sparc/dbri.c` was found in the checked stable-related
+branches.
+
+## Phase 7: Subsystem And Maintainer Context
+
+Step 7.1 Record: Subsystem is ALSA SPARC sound driver, specifically Sun
+DBRI. Criticality is peripheral/platform-specific, not core kernel-wide.
+
+Step 7.2 Record: Recent `sound/sparc` history is sparse and mostly
+maintenance/refactoring/build-style changes, indicating a mature low-
+churn driver area.
+
+## Phase 8: Impact And Risk Assessment
+
+Step 8.1 Record: Affected users are config/platform-specific: SPARC/SBus
+builds with `SND_SUN_DBRI`.
+
+Step 8.2 Record: Trigger is building this driver with a
+compiler/configuration that treats the unannotated fallthrough warning
+as an error. I did not independently reproduce the compiler failure
+locally.
+
+Step 8.3 Record: Failure mode is build failure, not runtime crash or
+data corruption. Severity is high for affected builders because the
+kernel/module cannot be built successfully under that toolchain/config.
+
+Step 8.4 Record: Benefit is meaningful for affected stable users because
+it restores buildability of an existing driver. Risk is very low: one
+annotation line, no feature, no API change, no runtime logic change.
+Risk-benefit ratio favors backporting.
+
+## Phase 9: Final Synthesis
+
+Step 9.1 Record: Evidence for backporting: concrete compiler error,
+existing driver code in stable branches, one-line obviously-correct fix,
+maintainer-applied patch, no runtime behavior change, and build fixes
+are valid stable material. Evidence against: platform-specific impact
+and no independent local build reproduction. Unresolved: exact true
+historical introduction predates the shallow boundary; lore stable
+search via WebFetch was blocked.
+
+Step 9.2 Record: Stable rules checklist:
+1. Obviously correct and tested: yes for correctness by inspection;
+   maintainer applied it. No local build test performed.
+2. Fixes a real bug: yes, reported compiler error in existing code.
+3. Important issue: yes for affected stable builds, because it can stop
+   compilation.
+4. Small and contained: yes, one line in one function.
+5. No new features/APIs: yes.
+6. Can apply to stable trees: yes with at most trivial context
+   adjustment, especially for older comment-style fallthrough branches.
+
+Step 9.3 Record: Exception category applies: build fix.
+
+Step 9.4 Record: Decision is to backport. This is exactly the kind of
+low-risk build fix stable trees should carry.
+
+## Verification
+
+- [Phase 1] Parsed `git show --format=fuller --stat --patch
+  2bcbb16316278`: confirmed subject, tags, compiler-error body, and one-
+  line patch.
+- [Phase 2] Read `sound/sparc/dbri.c`: confirmed `reverse_bytes()` has
+  annotated fallthroughs except the candidate-added `case 2` annotation.
+- [Phase 3] Ran `git blame 2bcbb16316278^ -L 578,598 --
+  sound/sparc/dbri.c`: confirmed changed area, with shallow/grafted
+  limitation.
+- [Phase 3] Ran branch snippet checks on `pending-5.4` through
+  `pending-7.0`: confirmed the missing annotation exists in all checked
+  stable-related branches.
+- [Phase 3] Ran recent file history and author history checks: found
+  only related maintenance/refactor commits, no dependency series.
+- [Phase 4] Ran `b4 dig -c`, `-a`, `-w`, and saved the mbox: confirmed
+  single v1 patch, proper ALSA recipients, and maintainer “Applied now”
+  reply.
+- [Phase 5] Searched `reverse_bytes(` call sites: confirmed callers are
+  `xmit_fixed()` and `dbri_process_one_interrupt()`.
+- [Phase 6] Searched stable branch logs: no existing backport or
+  duplicate fix found locally.
+- [Phase 7] Checked `MAINTAINERS`: confirmed SOUND maintainers include
+  Jaroslav Kysela and Takashi Iwai.
+- [Phase 8] Checked `include/linux/compiler_attributes.h`: confirmed
+  `fallthrough` is the intended kernel pseudo-keyword and is available
+  in checked stable branches.
+- UNVERIFIED: I did not reproduce the compiler error with a local
+  SPARC/SBus DBRI build.
+- UNVERIFIED: The exact original introduction before the repository’s
+  shallow/grafted boundary could not be determined.
+- UNVERIFIED: WebFetch could not read lore/stable search results because
+  Anubis blocked the page.
+
+**YES**
+
+ sound/sparc/dbri.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/sparc/dbri.c b/sound/sparc/dbri.c
+index 75f82a92ff44f..2f5f62079fa4a 100644
+--- a/sound/sparc/dbri.c
++++ b/sound/sparc/dbri.c
+@@ -592,6 +592,7 @@ static __u32 reverse_bytes(__u32 b, int len)
+ 		fallthrough;
+ 	case 2:
+ 		b = ((b & 0xaaaaaaaa) >> 1) | ((b & 0x55555555) << 1);
++		fallthrough;
+ 	case 1:
+ 	case 0:
+ 		break;
 -- 
-2.51.0
+2.53.0
 
 
