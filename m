@@ -1,243 +1,172 @@
-Return-Path: <stable+bounces-245262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mH1DLoz8AWomnAEAu9opvQ
-	(envelope-from <stable+bounces-245262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:58:04 +0200
+	id sA3TGVr7AWomnAEAu9opvQ
+	(envelope-from <stable+bounces-245259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:52:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C824511AFD
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:58:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7715119CC
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 450913063816
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:47:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 499DD304A669
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98178406298;
-	Mon, 11 May 2026 15:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE21406269;
+	Mon, 11 May 2026 15:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnxGXhIx"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="SslE0Pfu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473DD407562;
-	Mon, 11 May 2026 15:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2E7402B83;
+	Mon, 11 May 2026 15:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778514416; cv=none; b=PKer7aKC5WAd3rAxUB1rRECXMD9imVeO/hqyYQh3NDdmz5WGLKRvpu9nRUgWotbQSa88zMj9UwleDsYtplsFBHZ+xjqSL9tKTRiQQFObeoweKK7ykb1GYrMCNRGDsqXtNPMfRVdhExMDEv3bXUZrtF8+WonTF/ALIphcijIYZC4=
+	t=1778514396; cv=none; b=HTnTpmbC6+90ymQOkEF1H+9LsETL5mbcfQ0nNY3DHcAnbEpJxhcCT2ixAPRcBOrlvsb3Eh9yat2BGGOrSJUnoc0rtKv8QyYZQj/7l0IhpafcdCEK4ImfTBW4JsgN1ytBbUu1krfQpSjrb5tKTI9slhymnF5/nSO0Ai6gi+WoaIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778514416; c=relaxed/simple;
-	bh=ura07Chl7rB5tl98tzEGB6YAbYJ3qRgqBG5KyqdNSjg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ttXGJAAOQB9F/tOp6k9aq6gfuZ+r41f3NxwaN+1ppJVSL1naDJxaSZR9pydHkoCRE9PjGwtBcm636K38XnY73jUDYe+IqO7djFTmbLFooYIw/BaDDKEWz23/LDUjzreVg1rzrfQ1HWuyBTZsZOyvHABzOxdNuYwK9zVvMVa6D7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnxGXhIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941E6C2BCF6;
-	Mon, 11 May 2026 15:46:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778514415;
-	bh=ura07Chl7rB5tl98tzEGB6YAbYJ3qRgqBG5KyqdNSjg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DnxGXhIxwCKfH9iIqMJtgBhlCAuMVlhM8u30Ei8SFELorZ1FvXugdLj6QKXaxVJuQ
-	 R/hHZB8Ogbiu8CH3tGubL9YmNgyNFAeG9X6C/jHJTzoJqK7NBiO1gpSUdYAT60ZM8C
-	 pC+ZTXLJ7YwrYKYpsGIwRvBP/dQVp/eN9a/y8duLo1soE+HAMpyw8vlRtPWHMte3Ot
-	 VYTVYq0MkkooXIhVmP7pWktJ03YGgRx4Y1ij8UHYkMlOor8JrUxu2LzdtnqbXbRVNz
-	 nTc8gUsOVHa0BLGj67h3wuG5ioxB2WIghXMb26BlbUZs4e49Bt62e/1zSXyxH/uNO6
-	 a1gOk5sWkD4ZA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 11 May 2026 17:46:28 +0200
-Subject: [PATCH net 2/5] mptcp: pm: fix ADD_ADDR timer infinite retry on
- option space insufficient
+	s=arc-20240116; t=1778514396; c=relaxed/simple;
+	bh=PrPSKAnXBLfy63wfzWxv7f/T78+vQlZFjU+oK2ahnts=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hiwwiP/LpqHee7/rpEnoaxJEk00X4xzs+pqkobwEXkV6r5SvqneFagOvdvBNEEgv4N3zkw3ouF8zT5CJGasg25d1+cEatq/4QN9IIqkUjBJYYXoNlOjk6GZVOJTjsxu7HzaykyTq5WM2n+nZnyeq1ONmYRDCB8Bx6aqE32HZ5ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=SslE0Pfu; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DE0301544;
+	Mon, 11 May 2026 17:46:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1778514384;
+	bh=PrPSKAnXBLfy63wfzWxv7f/T78+vQlZFjU+oK2ahnts=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SslE0Pfur31Y8yF+ee/j8+0neeIGq9gX/1oLhYhNc63MJFRyeY12qNYjM8qGH91o8
+	 6NJtul+kPFI+JhQFPk1iaKpWELeiQmO0HCp+NdqQLkZdv/lPxg+sf/4OPNTLHBciQn
+	 uQFofONv2IfCC6KEG+O4sh0GKdelmNn5c2tfZvFk=
+Date: Mon, 11 May 2026 18:46:29 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yunke Cao <yunkec@google.com>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] media: uvcvideo: Fix dev_sof filtering in hw
+ timestamp
+Message-ID: <20260511154629.GB3043805@killaraus.ideasonboard.com>
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+ <20260323-uvc-hwtimestamp-v1-1-aa42e3865204@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-2-5ee57cb2b7eb@kernel.org>
-References: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-0-5ee57cb2b7eb@kernel.org>
-In-Reply-To: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-0-5ee57cb2b7eb@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: Eric Dumazet <edumaze@google.com>, netdev@vger.kernel.org, 
- mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Li Xiasong <lixiasong1@huawei.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4639; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=VOnSjP0TUm2WsWL/QY3x2OalMuxDxQgQwzRxuzX0ywo=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIYfz4tfaml2dIS8md9zHl5069Lb3u8W30qpjr+4NYql
- 3I5lVc6HaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABMRqmFkmDbBxe9e0Rp377Cg
- F5Y+glGBX++xNi5Y8treslPetvudCiPDUx/fbH1luxMCJ4ITFh9ULjss2zPZw8xVgHvjpcfZi1a
- yAgA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Rspamd-Queue-Id: 3C824511AFD
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260323-uvc-hwtimestamp-v1-1-aa42e3865204@chromium.org>
+X-Rspamd-Queue-Id: DB7715119CC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245262-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	TAGGED_FROM(0.00)[bounces-245259-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Li Xiasong <lixiasong1@huawei.com>
+Hi Ricardo,
 
-When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
-IPv6 address and port while tcp_timestamps is enabled), the original code
-jumped to out_unlock without clearing the addr_signal flag. This caused
-mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
-preventing subsequent addresses in the endpoint list from being announced.
+Thank you for the patch.
 
-Handle this case by clearing the ADD_ADDR signal and skipping the matching
-ADD_ADDR retransmission entry. The skip path cancels the matching timer
-(with id check) and advances PM state progression, preserving forward
-progress to subsequent PM work.
+On Mon, Mar 23, 2026 at 01:10:28PM +0000, Ricardo Ribalda wrote:
+> To avoid filling the clock circular buffer with duplicated data we only
+> add it if the new value sof is different than the last added sof.
+> 
+> The issue is that we compare the unprocess sof with the processed sof.
+> If there is a sof_offset, or UVC_QUIRK_INVALID_DEVICE_SOF is enabled,
+> the comparison will not work as expected.
+> 
+> This patch moves the comparison to the right place.
+> 
+> Fixes: 141270bd95d4 ("media: uvcvideo: Refactor clock circular buffer")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  drivers/media/usb/uvc/uvc_video.c | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> index 40c76c051da2..6786ca38fe5e 100644
+> --- a/drivers/media/usb/uvc/uvc_video.c
+> +++ b/drivers/media/usb/uvc/uvc_video.c
+> @@ -583,16 +583,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+>  	if (!has_scr)
+>  		return;
+>  
+> -	/*
+> -	 * To limit the amount of data, drop SCRs with an SOF identical to the
+> -	 * previous one. This filtering is also needed to support UVC 1.5, where
+> -	 * all the data packets of the same frame contains the same SOF. In that
+> -	 * case only the first one will match the host_sof.
+> -	 */
+>  	sample.dev_sof = get_unaligned_le16(&data[header_size - 2]);
+> -	if (sample.dev_sof == stream->clock.last_sof)
+> -		return;
+> -
+>  	sample.dev_stc = get_unaligned_le32(&data[header_size - 6]);
+>  
+>  	/*
+> @@ -664,6 +655,16 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+>  	}
+>  
+>  	sample.dev_sof = (sample.dev_sof + stream->clock.sof_offset) & 2047;
+> +
+> +	/*
+> +	 * To limit the amount of data, drop SCRs with an SOF identical to the
+> +	 * previous one. This filtering is also needed to support UVC 1.5, where
+> +	 * all the data packets of the same frame contains the same SOF. In that
+> +	 * case only the first one will match the host_sof.
+> +	 */
+> +	if (sample.dev_sof == stream->clock.last_sof)
+> +		return;
+> +
 
-This cancellation is inherently best-effort. A concurrent add_timer
-callback may already be running and may acquire pm.lock before the
-cancel path updates entry state. In that case, one final ADD_ADDR
-transmit attempt can still be executed.
+We will now uncondtionally call some potentially more expensive
+operations, in particular usb_get_current_frame_number(). Wouldn't it be
+better to store the unprocessed SOF in the sample in addition to the
+processed SOF, to allow early comparison ?
 
-Once the cancel path sets entry->retrans_times to
-ADD_ADDR_RETRANS_MAX, the callback-side retrans_times check suppresses
-further ADD_ADDR retransmissions.
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/pm.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 46 insertions(+), 10 deletions(-)
-
-diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
-index 3c152bf66cd5..3e770c7407e1 100644
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -364,7 +364,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 
- 	spin_lock_bh(&msk->pm.lock);
- 
--	if (!mptcp_pm_should_add_signal_addr(msk)) {
-+	/* The cancel path (mptcp_pm_del_add_timer()) can race with this
-+	 * callback. Once cancel updates retrans_times to MAX, suppress further
-+	 * retransmissions here. If this callback acquires pm.lock first, one
-+	 * final transmit attempt is still possible.
-+	 */
-+	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX &&
-+	    !mptcp_pm_should_add_signal_addr(msk)) {
- 		pr_debug("retransmit ADD_ADDR id=%d\n", entry->addr.id);
- 		mptcp_pm_announce_addr(msk, &entry->addr, false);
- 		mptcp_pm_add_addr_send_ack(msk);
-@@ -414,8 +420,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
- 	/* Note: entry might have been removed by another thread.
- 	 * We hold rcu_read_lock() to ensure it is not freed under us.
- 	 */
--	if (stop_timer)
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+	if (stop_timer) {
-+		if (check_id)
-+			sk_stop_timer(sk, &entry->add_timer);
-+		else
-+			sk_stop_timer_sync(sk, &entry->add_timer);
-+	}
- 
- 	rcu_read_unlock();
- 	return entry;
-@@ -882,6 +892,7 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 			      struct mptcp_addr_info *addr, bool *echo,
- 			      bool *drop_other_suboptions)
- {
-+	bool skip_add_addr = false;
- 	int ret = false;
- 	u8 add_addr;
- 	u8 family;
-@@ -903,24 +914,49 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 	}
- 
- 	*echo = mptcp_pm_should_add_signal_echo(msk);
--	port = !!(*echo ? msk->pm.remote.port : msk->pm.local.port);
--
--	family = *echo ? msk->pm.remote.family : msk->pm.local.family;
--	if (remaining < mptcp_add_addr_len(family, *echo, port))
--		goto out_unlock;
--
- 	if (*echo) {
- 		*addr = msk->pm.remote;
- 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_ECHO);
-+		port = !!msk->pm.remote.port;
-+		family = msk->pm.remote.family;
- 	} else {
- 		*addr = msk->pm.local;
- 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_SIGNAL);
-+		port = !!msk->pm.local.port;
-+		family = msk->pm.local.family;
- 	}
--	WRITE_ONCE(msk->pm.addr_signal, add_addr);
-+
-+	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
-+		struct net *net = sock_net((struct sock *)msk);
-+
-+		if (!*drop_other_suboptions)
-+			goto out_unlock;
-+
-+		if (*echo) {
-+			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
-+		} else {
-+			skip_add_addr = true;
-+			MPTCP_INC_STATS(net, MPTCP_MIB_ADDADDRTXDROP);
-+		}
-+		goto drop_signal_mark;
-+	}
-+
- 	ret = true;
- 
-+drop_signal_mark:
-+	WRITE_ONCE(msk->pm.addr_signal, add_addr);
-+
- out_unlock:
- 	spin_unlock_bh(&msk->pm.lock);
-+
-+	/* On pure-ACK option-space exhaustion, stop retrying this ADD_ADDR:
-+	 * clear the signal bit, cancel the matching retransmission timer, and
-+	 * let the PM state machine progress.
-+	 */
-+	if (skip_add_addr) {
-+		mptcp_pm_del_add_timer(msk, addr, true);
-+		mptcp_pm_subflow_established(msk);
-+	}
- 	return ret;
- }
- 
+>  	uvc_video_clock_add_sample(&stream->clock, &sample);
+>  	stream->clock.last_sof = sample.dev_sof;
+>  }
+> 
 
 -- 
-2.53.0
+Regards,
 
+Laurent Pinchart
 
