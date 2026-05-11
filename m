@@ -1,195 +1,187 @@
-Return-Path: <stable+bounces-245272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBgZHUMAAmppnAEAu9opvQ
-	(envelope-from <stable+bounces-245272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:13:55 +0200
+	id OJMgCrAEAmo3nQEAu9opvQ
+	(envelope-from <stable+bounces-245273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:32:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34A7511E59
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:13:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D0151237A
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CC76316E2E5
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:02:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FDBC30BDC50
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34160426D2F;
-	Mon, 11 May 2026 16:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A48A426D32;
+	Mon, 11 May 2026 16:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Vj95Q6ZP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tz6KNEer"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520635950;
-	Mon, 11 May 2026 16:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95600311977;
+	Mon, 11 May 2026 16:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778515244; cv=none; b=kLvalKTGGwfkFnqaHuUiX++d/JErekEBsXJdWyjQPzrnKR6PxpxblVLJFFMg4PU9kHKfDUKsjxoVG58cO05pSRQkIBLpMlSfd2T4uo2FBOMseoWpGyaNVG4ee+6MUR8784aXUFgA5TVQRKLklra9auIFlbFjJakphlgkNCcNfQw=
+	t=1778515542; cv=none; b=km/FdUNkPoVTO3mEQKEEy/kpSqPuCWDsQtuXrKEKYjfWA+161lL+R8AknGAL7Q/5Qc4yoAXVGkNVMujBESsvSk1akeZEhqYcABw0O3iqNu6yTNZd1+QM7GUtrG/1xr1dFFXmA/OiyqPbIRzvu8G7sMENzVieu+63QKU6Zq83bJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778515244; c=relaxed/simple;
-	bh=4TP647h6bUcWpLakNWuVEPNBqVaigqPU6a5rJXnvNrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRxpf8LkFOTdDQGWpNG0kj0bK+JFac03/gjfQ4cBAwuAcOMMJnzIzRkf3HJS2G4HZmL8+pjtNcTI/BZlZdeCWzZGE63++XlfSXt+jUXdWKFxMO1zbAIdHOgLSv9W2W0rjEaClz2uLx/pKqGCMmNgN29iGVzUhsWlHg37t39XtVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Vj95Q6ZP; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 17BCFC5E14B;
-	Mon, 11 May 2026 16:01:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7D27B60646;
-	Mon, 11 May 2026 16:00:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4D7E11AF9F2D;
-	Mon, 11 May 2026 18:00:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778515239; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=bKqIe7WRSBpcbkduycfdUius+fdoa8lS+ROf87HCzsw=;
-	b=Vj95Q6ZPshNanZOcR9ZKav90YIJrBT58CHMzeCV960whdbMmwRonhTR4DxYcbPkZDcIsUt
-	8Lo8LoH8LmUo6wLiqD2rMkT00ApFiamXjMMaoEmK5xSr7jHfeZwSws2M9Iutz9nHB8ev6U
-	K8zBaH+9GrYqtaXUqkjWsB3gz6gH79p+3FnbQIXgs9oEOEEVP2jv7BXCsPzy8CbNmyjbVy
-	tLbE2ssOjgosNUQC+Vzy69fiOvMOE42T1gnbo+/p9Lj4tr76+BB6/qijyXvrvZfzKPlPBg
-	3juJBPm6aCd8ozPqyt9ssknX7Xv8QcOjm6Ec5+EsvnwJW2BQ9jWrcB7bgHgQrQ==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <djbw@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Herve Codina <herve.codina@bootlin.com>
-Cc: driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v7 8/8] PCI: of: Remove fwnode_dev_initialized() call for a PCI root bridge node
-Date: Mon, 11 May 2026 17:59:28 +0200
-Message-ID: <20260511155930.34604-9-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260511155930.34604-1-herve.codina@bootlin.com>
-References: <20260511155930.34604-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1778515542; c=relaxed/simple;
+	bh=jxP9amh2tC50kwk8NDUkRIAwZHVes3F7TVXTGePVNSA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PoolFxj0thLJv00v3uKjdUzV+axkpr7BRomI9LINlKsSX0r1d7QfkFW5U06OSxB/E107SIlNSdYrPbNJLU9DfknDN8uEmJaZ8DFTq1jACH7KDDgX6LFsaPqq0U+HO0NUNHt6jCn3fpJwUKNufvkb8Qg2qPS4db6NIRP18M3z48g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tz6KNEer; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93E0C2BCB0;
+	Mon, 11 May 2026 16:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778515542;
+	bh=jxP9amh2tC50kwk8NDUkRIAwZHVes3F7TVXTGePVNSA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Tz6KNEerTe4bzhVIoZ+tO4UgYi6Tva0hOTHQVUeA7DkEvabXPdarzlZyV+ywtVczI
+	 NZ3PJ/BIiRoJpOhFH+z1/LV/BsAa/fxSFmT6ofIM8SBVyg/HFanI/gex9Hl+yXxebo
+	 drKdE0DeWm1XfF7DXhSA6ZM1h8ecQBLUES6CqY78nHLLkE8K3DVXkHjkoaa5La/84/
+	 yME4kt2v/FjC3vP09WEOL2PxlEzDWWtZ7kHhhdSx6yXl+rJC1/Otuy5tHX9NGz5Gwq
+	 NZQ+jQ9CkWJQ9dAO7HMcC7EqOtH1Gcx+teK1cuE1z7gM7ioAUcu0odcydNMRm9EV/w
+	 JUmA3tCtLfnUw==
+Message-ID: <8803be15-1e64-4a97-a5b6-cf2b97eea38c@kernel.org>
+Date: Mon, 11 May 2026 18:05:39 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: D34A7511E59
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] media: uvcvideo: Fix dev_sof filtering in hw
+ timestamp
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Ricardo Ribalda <ribalda@chromium.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Tomasz Figa <tfiga@chromium.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Yunke Cao
+ <yunkec@google.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+ <20260323-uvc-hwtimestamp-v1-1-aa42e3865204@chromium.org>
+ <20260511154629.GB3043805@killaraus.ideasonboard.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20260511154629.GB3043805@killaraus.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B7D0151237A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[40];
-	TAGGED_FROM(0.00)[bounces-245272-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245273-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[lunn.ch,kernel.org,linuxfoundation.org,google.com,opensource.cirrus.com,cirrus.com,linux.intel.com,gmail.com,stgolabs.net,intel.com,amd.com,bootlin.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,bootlin.com:mid,bootlin.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
 X-Rspamd-Action: no action
 
-During the instantiation of devices described by a device-tree overlay
-applied on a PCI device, devlink displays the following kind of debug
-messages instead of creating the expected links:
-   'Not linking xxxx - might never become dev'
+Hi,
 
-Without those expected links, the device removal order cannot be
-correct.
+On 11-May-26 17:46, Laurent Pinchart wrote:
+> Hi Ricardo,
+> 
+> Thank you for the patch.
+> 
+> On Mon, Mar 23, 2026 at 01:10:28PM +0000, Ricardo Ribalda wrote:
+>> To avoid filling the clock circular buffer with duplicated data we only
+>> add it if the new value sof is different than the last added sof.
+>>
+>> The issue is that we compare the unprocess sof with the processed sof.
+>> If there is a sof_offset, or UVC_QUIRK_INVALID_DEVICE_SOF is enabled,
+>> the comparison will not work as expected.
+>>
+>> This patch moves the comparison to the right place.
+>>
+>> Fixes: 141270bd95d4 ("media: uvcvideo: Refactor clock circular buffer")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>> ---
+>>  drivers/media/usb/uvc/uvc_video.c | 19 ++++++++++---------
+>>  1 file changed, 10 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+>> index 40c76c051da2..6786ca38fe5e 100644
+>> --- a/drivers/media/usb/uvc/uvc_video.c
+>> +++ b/drivers/media/usb/uvc/uvc_video.c
+>> @@ -583,16 +583,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+>>  	if (!has_scr)
+>>  		return;
+>>  
+>> -	/*
+>> -	 * To limit the amount of data, drop SCRs with an SOF identical to the
+>> -	 * previous one. This filtering is also needed to support UVC 1.5, where
+>> -	 * all the data packets of the same frame contains the same SOF. In that
+>> -	 * case only the first one will match the host_sof.
+>> -	 */
+>>  	sample.dev_sof = get_unaligned_le16(&data[header_size - 2]);
+>> -	if (sample.dev_sof == stream->clock.last_sof)
+>> -		return;
+>> -
+>>  	sample.dev_stc = get_unaligned_le32(&data[header_size - 6]);
+>>  
+>>  	/*
+>> @@ -664,6 +655,16 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+>>  	}
+>>  
+>>  	sample.dev_sof = (sample.dev_sof + stream->clock.sof_offset) & 2047;
+>> +
+>> +	/*
+>> +	 * To limit the amount of data, drop SCRs with an SOF identical to the
+>> +	 * previous one. This filtering is also needed to support UVC 1.5, where
+>> +	 * all the data packets of the same frame contains the same SOF. In that
+>> +	 * case only the first one will match the host_sof.
+>> +	 */
+>> +	if (sample.dev_sof == stream->clock.last_sof)
+>> +		return;
+>> +
+> 
+> We will now uncondtionally call some potentially more expensive
+> operations, in particular usb_get_current_frame_number(). Wouldn't it be
+> better to store the unprocessed SOF in the sample in addition to the
+> processed SOF, to allow early comparison ?
 
-Those debug traces are printed by fw_devlink_create_devlink(). In our
-use case, they are all printed because the supplier of the link has at
-least one of its ancestor with its fwnode flag FWNODE_FLAG_INITIALIZED
-set.
+While reviewing 4/4 I just came to the same conclusion,
+uvc_video_get_time() is also expensive and unnecessary unless we
+actually end up doing the uvc_video_clock_add_sample().
 
-The culprit ancestor is the PCI root bridge.
+Moving the uvc_video_get_time() to below the check is
+a straight-forward change.
 
-The fwnode related to the PCI root bridge is created dynamically by the
-of_pci_make_host_bridge_node() function. During this creation
-fwnode_dev_initialized() is called which set the FWNODE_FLAG_INITIALIZED
-flag.
+Regards,
 
-Calling fwnode_dev_initialized() tells devlink that the device related
-to this node is handled out of the driver core. This is not correct in
-our case. Indeed the device related to this firmware node is handled
-using driver core mechanisms and is fully compliant devlink
-expectations.
+Hans
 
-Simply remove the fwnode_dev_initialized() call. With that done, the
-devlink debug messages are no more displayed and links that were missing
-are correctly created.
 
-Fixes: 1f340724419e ("PCI: of: Create device tree PCI host bridge node")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/of.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index 25fb02c3dc72..53a8a4f30eb6 100644
---- a/drivers/pci/of.c
-+++ b/drivers/pci/of.c
-@@ -811,7 +811,6 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
- 	 */
- 	of_node_set_flag(np, OF_POPULATED);
- 	fw_devlink_set_device(&np->fwnode, &bridge->dev);
--	fwnode_dev_initialized(&np->fwnode, true);
- 
- 	ret = of_changeset_apply(cset);
- 	if (ret)
--- 
-2.54.0
+> 
+>>  	uvc_video_clock_add_sample(&stream->clock, &sample);
+>>  	stream->clock.last_sof = sample.dev_sof;
+>>  }
+>>
+> 
 
 
