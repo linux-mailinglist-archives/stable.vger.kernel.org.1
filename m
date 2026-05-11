@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-245132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HVCNZ+JAWpJcwEAu9opvQ
-	(envelope-from <stable+bounces-245132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:47:43 +0200
+	id YBkpOlSKAWpJcwEAu9opvQ
+	(envelope-from <stable+bounces-245134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:50:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C47950983A
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:47:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF2E509911
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E39B307EDB5
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:37:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 71D38303F095
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310D938E5FF;
-	Mon, 11 May 2026 07:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7FE38E5D7;
+	Mon, 11 May 2026 07:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R0x29dmQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JiaZ55VB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E115388E5A
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1103538E129
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778485033; cv=none; b=iEQKAMMRRVbjHd0yMcqNilTiif08xv4Pp73kUYNh+lD6UhWWD3hN4GuJqz73vNh4hNEYdPvhgyVrNYZQhgzyt1RDB9GbUtE5tabZdhYx2Q7faumDJJOfQFEXWpeTkjtXcmJyHcsXYqOtmX046PUKkUbfr/WcFU7Q7INyZ8QqUKI=
+	t=1778485034; cv=none; b=pKoRDKA4i3P6DgM+Nv4WEk/kljBCJQz064vsT9s9S/WA/PVkThIXB1nZ7aWv6SNd2H5tg/JAdOxkxseiT1peCVnN9VwKfLz3E0U36LIZ1N/aqu3J+P4ebIbU+8iC3+FZeRw6UsGXlFI2bbd58xHDIz3lH3Ysff1s0dGlHolieMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778485033; c=relaxed/simple;
-	bh=qcNrEv/jfg+I4I6M1t6P7XqDAKksc+Pc1fYgtkeUV+4=;
+	s=arc-20240116; t=1778485034; c=relaxed/simple;
+	bh=qk1nNRF7YRkwNtfIV79J4/gBqQUFwyn2hgSqnr1n7Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajhT3Y+TE/tD04bwYaIQGAOsiMLQSj0caK3e42RZQoC2qiuedoQcf+mKQdR4a5Bthaagjfst6qDULE30Ig2Omz6L0fDxVc3RHi9yOftOdDrDdrSgWrWy5wFT6d/Q6g7Ci0blAKIK0XRyW72Y9xrrtOeJOc2bgcMfkuDf14ikTq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R0x29dmQ; arc=none smtp.client-ip=209.85.222.170
+	 MIME-Version; b=YUMCT4KkW8zULUr7HwnJBS31AZeLX83tPfhe4/GQZv/yiTTZg8YBe+IWw1diPv4TlSAVCcFJxfc+N5uIcesv9KMbfua6VbWfsHQDZRpyOf+BUMwSqTROyq3NyzPjYoR0hL99CksYlXD1z2bFqTzkeEE0oAaSqQcx/2BKOOpGxhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JiaZ55VB; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8ec37d52c0dso587036685a.0
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 00:37:10 -0700 (PDT)
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8dbbc6c16b2so521535185a.0
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 00:37:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778485029; x=1779089829; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778485030; x=1779089830; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mHSiekuCEar9z7zxxVyxGWaT4bdPpjxiJbsbUEHSK3g=;
-        b=R0x29dmQe9LtRf55tTXu19dlP9Pyuy918PR4w3mK1buJzADFhl9ABGauAKb1Xzrq41
-         kGC2pWyR6j4u9mJ8hDoecqxhWFpMOpsPdn8vCkrrYQgj/lJPlAOAEghi5J/giJxNAWsQ
-         kBCGMA4amuEt/CYBGC5EVuiabSQK86je4B76w1iRlp9+DV0wglFR4/99PbtLIdwzP2+V
-         rI4zXusQslF6WXFU9NMTQEZhZxmN3zpcQXiPkt+/Z6c2hvJZoXq/hEYLXsLVrGPp2M8P
-         2Aj6S55wfQfCnqjgavFtf2hk4lfpeqju0enpTHrUSJmZHRpyAt+F7sl+wREvD33lVABn
-         9cEw==
+        bh=d/8KvM77sRYnPHW3yZuy4s0vRAkwh3OhvrBXXxoufco=;
+        b=JiaZ55VB9O7mR/q3zmnEHn8rt4OQ5ugHskhBPuFUB5J1SwO18X1IOPFGXu9ELAlslL
+         f1MnTHJOUObsuwQise08st7vPQ8BmiRoypRNhff5uM5VIKvfKni/jnSfA3AFzrekjm4h
+         h1Ti1ifkMUXRS688kwCURwE/f7WV1s8CEXvaDFMKLwG1fQXzdWRbFiM3aXx0801IHUji
+         cH3CDkEQsGAFWy4kNk+n13qMdgmU8PJkEir4e0K8I+C6gzQqW1iFmSsFpr1pFOlKI4tZ
+         QBeyM4dpZ9s2CnLcS9o+vXGxHsRmBsInXk8e4ZnrcInM89nQx3q5tnFYPz/HNazoRQx0
+         wSVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778485029; x=1779089829;
+        d=1e100.net; s=20251104; t=1778485030; x=1779089830;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=mHSiekuCEar9z7zxxVyxGWaT4bdPpjxiJbsbUEHSK3g=;
-        b=FZGKlr13n9n2HFYZDn629OhCZTThqTd4hejxIQpMY3O0BMwN3HYHpto81Uf1/DSODI
-         bknKPTCJ3tRFukAXQGGsI0xuLEB5XHQIvmbjMcnunQkLVAomiU5b5krlaFyRl+jciTSn
-         x5GPX/lsUTXqOLsIRQ++8M9Ra1bVKeoYMztLnmd+gOwBeFutUXr8Qe75E4j1esEYn9Dw
-         w3otnvtcOyS3Gz1DG8aMkoC8k0srGa3137afan5UH4uPmLRSMdphiVBGz6EbF9Ui6iKL
-         pZD5++MEylYz3JS/rY8VRlRDMVycBeuEHoXvOFiQ3yeh4vc4Ux934jWm/26q3AEbfhQs
-         6YfA==
-X-Forwarded-Encrypted: i=1; AFNElJ/Ps60eMG04Xrx2eVI72o0oAHd/icD/iMNEnjSLh//yB/mbvo2FiA2gZqHFifLlRbjkNaWMCdM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8l3aM7YI3neYfUMoKma5p1lsVexkpHHri38RBrevkZ5U6cvWW
-	xSlrTt4n9Q2maj7DkhFSDie1KfowuBJrTSsubtxA6LZzbxL/RWpwlOHN
-X-Gm-Gg: Acq92OGbZPTDnjMfGVRIqmh9HJNQ1Q2ZlWwfKB9U8ES53HpeNly5Q2YsJlsAS31QKBL
-	yvzBJ8GlD/1lqtonr6xDaQaBVJv4vSUfarey5M4xMd9tOSXNi5NS6xJgDhhoElPOGVUO9T/un62
-	fnEeKOYVuSflCL++8Xzcp2xE1s5G74LwJbnWowItw1TjV3nJOjYawOIjPVRzOolqlEZIIVKPjg7
-	6vHhXvsFysofYpgJcbFqiDH8Om11wniKd48aCtkIFU7aGAMxbgSCUPeQ42LG7yB1eelExevBddy
-	nJP2qs4+fHK4UDUwp552URnzoqlJk1XhKD0TeycTcNnjirSIlZMbS3DX5PjJZmHs0uReTdjh1Ca
-	x1JPTrgxVrrAo2D6e1KcpGgJMdi4TvmZzcueHeoEL+9hxBiUCy6bTrvtZFUdajNJuERZY7XcsPL
-	0DlDsykk/hByzS/Scmm79KJL4NFweplJgWTWI6tDUg+4cfsOxufEd77AyK0yPmkg==
-X-Received: by 2002:a05:620a:3195:b0:8cf:ffee:c616 with SMTP id af79cd13be357-904d43911fcmr3474565185a.7.1778485029172;
-        Mon, 11 May 2026 00:37:09 -0700 (PDT)
+        bh=d/8KvM77sRYnPHW3yZuy4s0vRAkwh3OhvrBXXxoufco=;
+        b=B85hLoAziuvlvmgGfFQrMgk7qWpFK71jPJOVUdrAikT1MwAXPvl5bQYTd1jgLbOvpW
+         VNjx1B90suQp+xaGNg/mGXZI4oVWkthpquYoEdvK7pnYOXFiRjjnCBkgsnwEkN/Jwln3
+         UzWhNuPrszgQ0xUG8KFe8mQAiiwQsQbp6+Zowo1mkMtilAzd4guWi9A3oZL6G4fFo/Zt
+         bIpasCHpIvDUAZrzjHGbgl9e+79XnjjfdlPkozAgsmuCbzFZUDgFZay0pkdmVzF0bKN5
+         xH1yRpxoHSiAJDMWwcRTOf6Ww0ZRO+R285uVDkLCIgTKEdB+1tH+z/Yfaih8PlaCctuS
+         7jjQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/Q8k+3BP36G/dPnFxWkX+IGs9n5YIsj0keW//X4APvH3U26/01zuT+uUtQsX9dsXpfGRkBTF8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYJZRzHqjSAH7HWliR1wT4Wq3xVLhGA8eWgVgiXLZOiqyNfM1P
+	vc3x3NOcyN/G3MV1TYq3wNnYGu61AvZfhlT2EN7+Bi/SX+dFCadGoEO6
+X-Gm-Gg: Acq92OFUkW8B2YmLuVK9jI9SaURIAm60Yjdm/mCAAIWz8ylAaONWRALNzHFHDBZdR72
+	oxXz+9GRwD1o9/pXak0MXMKIKR1zkQp8LVepni2R+aEvIQjv9PCQvPUBygGgVtyk/YyDI+kBsOG
+	HBqmQvEBe7o+QP9e5/CqOfcOSIP9ZvguCvEqtlOwN/sHV0bfJNdYQafrbUBWJHhIlLG6kPGRSh+
+	Y2o31W1snbP80GEIGbEOaT21AaAnL2u+LFvE1Qq5V6OfqhkuxRo8RyZF6XmxB9zaLoxm/3gHOAO
+	Kiv27vg9PkQLR/aRnzcstDpxL9s57bt9r4JCOpeUDsiltoNZoM9TCi/vLf0FrYlEvRPBeRzvKbL
+	pznIofvs/wvJcz9mrcuATgsQLwrKHhPAqeA3of047gCTNXyICNSzYhF4430A/b49XzFrKv3Kllc
+	l8exlSMRmjuLdBIDBKkymEq8Z37ftEvtn4dYKrCmvhABjZfp42S57GDJrXc8QtcA==
+X-Received: by 2002:a05:620a:3199:b0:8ef:2118:aec5 with SMTP id af79cd13be357-9065209af62mr2330144685a.20.1778485030372;
+        Mon, 11 May 2026 00:37:10 -0700 (PDT)
 Received: from rawhide.lvn.broadcom.net ([192.19.161.250])
-        by smtp.googlemail.com with ESMTPSA id af79cd13be357-907b986c371sm957371385a.2.2026.05.11.00.37.08
+        by smtp.googlemail.com with ESMTPSA id af79cd13be357-907b986c371sm957371385a.2.2026.05.11.00.37.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 00:37:08 -0700 (PDT)
+        Mon, 11 May 2026 00:37:10 -0700 (PDT)
 From: Shreenidhi Shedi <yesshedi@gmail.com>
 To: gregkh@linuxfoundation.org,
 	acme@kernel.org,
@@ -84,9 +84,9 @@ To: gregkh@linuxfoundation.org,
 Cc: yesshedi@gmail.com,
 	stable@vger.kernel.org,
 	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.1.y v2 11/18] perf session: Don't write to memory pointed to a const pointer
-Date: Mon, 11 May 2026 12:40:44 +0530
-Message-ID: <20260511071051.537859-12-yesshedi@gmail.com>
+Subject: [PATCH 6.1.y v2 12/18] perf trace-event: Constify variables storing the result of strchr() on const tables
+Date: Mon, 11 May 2026 12:40:45 +0530
+Message-ID: <20260511071051.537859-13-yesshedi@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260511071051.537859-1-yesshedi@gmail.com>
 References: <20260511071051.537859-1-yesshedi@gmail.com>
@@ -97,7 +97,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7C47950983A
+X-Rspamd-Queue-Id: 1AF2E509911
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -106,7 +106,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -116,66 +116,48 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245132-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-245134-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[yesshedi@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.981];
+	NEURAL_HAM(-0.00)[-0.982];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit f1321cce848c558fde4c0c6bcd5e53f3cefd3af2 upstream
+commit 97b81df7225830c4db3c17ed1235d2f3eb613d3d uptream
 
-Since it is freshly allocated just attribute it to a non-const pointer
-and then change it via that pointer.
-
-That way we avoid const-correctness warnings in recent glibc versions.
+As newer glibcs will propagate the const attribute of the searched table
+to its return.
 
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Shreenidhi Shedi <yesshedi@gmail.com>
 ---
- tools/perf/util/session.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/util/trace-event-info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index 1c4d124b1053..9d11cf2aab0c 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -2641,7 +2641,7 @@ bool perf_session__has_traces(struct perf_session *session, const char *msg)
- 
- int map__set_kallsyms_ref_reloc_sym(struct map *map, const char *symbol_name, u64 addr)
+diff --git a/tools/perf/util/trace-event-info.c b/tools/perf/util/trace-event-info.c
+index 892c323b4ac9..5a6dec2dc0d8 100644
+--- a/tools/perf/util/trace-event-info.c
++++ b/tools/perf/util/trace-event-info.c
+@@ -477,7 +477,7 @@ static struct tracepoint_path *tracepoint_id_to_path(u64 config)
+ static struct tracepoint_path *tracepoint_name_to_path(const char *name)
  {
--	char *bracket;
-+	char *bracket, *name;
- 	struct ref_reloc_sym *ref;
- 	struct kmap *kmap;
+ 	struct tracepoint_path *path = zalloc(sizeof(*path));
+-	char *str = strchr(name, ':');
++	const char *str = strchr(name, ':');
  
-@@ -2649,13 +2649,13 @@ int map__set_kallsyms_ref_reloc_sym(struct map *map, const char *symbol_name, u6
- 	if (ref == NULL)
- 		return -ENOMEM;
- 
--	ref->name = strdup(symbol_name);
-+	ref->name = name = strdup(symbol_name);
- 	if (ref->name == NULL) {
- 		free(ref);
- 		return -ENOMEM;
- 	}
- 
--	bracket = strchr(ref->name, ']');
-+	bracket = strchr(name, ']');
- 	if (bracket)
- 		*bracket = '\0';
- 
+ 	if (path == NULL || str == NULL) {
+ 		free(path);
 -- 
 2.54.0
 
