@@ -1,136 +1,126 @@
-Return-Path: <stable+bounces-245250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOB3FhHuAWpHmQEAu9opvQ
-	(envelope-from <stable+bounces-245250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:56:17 +0200
+	id YHNACjLtAWpHmQEAu9opvQ
+	(envelope-from <stable+bounces-245251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:52:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8503A510AB7
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:56:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 912F95109A5
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E98043014A10
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:44:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F17F93051BCE
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8273FCB37;
-	Mon, 11 May 2026 14:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F48D3FFAA0;
+	Mon, 11 May 2026 14:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TRyJsdx5"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VWaqAKoL"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E09C375ADD;
-	Mon, 11 May 2026 14:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878C03E63B8;
+	Mon, 11 May 2026 14:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778510646; cv=none; b=u52MPzWSGh47qWdXKalV3SPyINzrIJXOWJTjAtDhgC9pS2ZwkxZWH5+zaTzS0LaNDNbG6NUFOer2TEbQuHVV3UmtvkgVvh8oXi4+ObcgybvLrBk0u8zGPF/ojH1bEtixz0+2q85ouzZbls/N68sjVozp46eF4x7pA0UgBKqIOww=
+	t=1778510824; cv=none; b=j6VIa1NZmU4EJcSz1nn0lw4MBfrNeJSVSHZXO9qHpUnLAbl1RLcZd5F0oWUhmvXL5/44pnSSUDOKpq7TK+5zB2pHz3qlWhwamKrCVG0Qq+y/WXs6V6cA68V3/h8G1C/l/q0T+TAMCinpWBTYIyW+JRvfyP8GzPW45C46Q+LPTbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778510646; c=relaxed/simple;
-	bh=VC0qwBvW9uh3ax11d9mMf0G/+4UImx8n0OwvJHvD/NY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EjO9Q6sDwUqTZL7H3f63Q0AvI+OGDccNtOatL4EyGduF6L9jaYbHUB2FuCMIEIKaLwlamFMhX0pq2Ch6EPw5o4OkGksp5H+EMsCggLJLKQsAEKelMjg4jzQzpgi8c2HumtJ6ynOI4gKJRWI3a4cAEQuON8zxCgynyT8biz/M7Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TRyJsdx5; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1216)
-	id 9F83820B7166; Mon, 11 May 2026 07:43:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9F83820B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1778510637;
-	bh=pZwWxmSrkgp8p9kdDRnD1K3ktHCKfIa40Ag0yUTw8/s=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TRyJsdx5BVlBWzluMIDUJICtV1Pkv192SVvfuzd+1fYwRchx0D6PJ8SDzfBhDzy/5
-	 vQV3hOJqjjrl0WRZyEeVNWf/puN9uYu0LaBbKywGaLqrUtJq5qsWtlBfAjD/22lcy1
-	 VDMLifwQjXmOHPgw/R936zf8cbpY7F3K9QNz95L0=
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-To: netfilter-devel@vger.kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	coreteam@netfilter.org,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH nf] netfilter: conntrack: tcp: do not force CLOSE on invalid-seq RST without direction check
-Date: Mon, 11 May 2026 10:43:14 -0400
-Message-ID: <20260511144314.183870-1-hamzamahfooz@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1778510824; c=relaxed/simple;
+	bh=RYmIXowrr7pr3gorZbTZ3rhHQYY3hTTTsYnjsPi+7WU=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=psE3fMvKGk+MlElOW15fRZsuk3AkHx1bBfHU+cbtVK4Bs+z6FseZHJkIpUH2z+nKwgmHwFCyFHgxnZ70c/nakmzJ5bakjYbk1mb9Ge3U2blMzlFpbWoVmst2CNBo+vuGZ7OYpYqV+VstwEpOe9weaj7bM/oLsRz4UfgBGC3NoVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VWaqAKoL; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CE44C1A3507;
+	Mon, 11 May 2026 14:47:00 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9157960646;
+	Mon, 11 May 2026 14:47:00 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E8FBE11AF9E71;
+	Mon, 11 May 2026 16:46:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1778510819; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=G1i5mz2DWzKBNwv2Sy64RuYnaQuN20oFQ0vjUn6j8Ek=;
+	b=VWaqAKoLo7iSnjsWK23N+ph9jQaUME0KChbqVzf9tLYzeheWPidalhUTSaFTbWgUYaqKfK
+	+71228TfaAxz53t4iMjAN3Tfme0JSBzuk3pimeLjg7G+bdTfkj/Pyo+61OWsradBAROdDc
+	xURMoZn124wkB8c7Wkuul1VsopF9s9IF+rsMmFQsIMagw+x0kNr3NX3ETrQYM/d9c1OZAY
+	GROGkbhxhFOWlQYueuoJO3BB/55AwaM/Rt2JfCTj8QOCJrPJ2DUY9Bh0DZWjsV5JOAe4Z2
+	oyIR4V5RpC3Wy75+yhvuI8IuBsY21haBe0MwpkUV7vrvLNZAuvY97uMbDIsZSw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8503A510AB7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 1/2] drm/bridge: chipone-icn6211: use
+ devm_drm_bridge_add in i2c probe
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Osama Abdelkader <osama.abdelkader@gmail.com>
+Cc: luca.ceresoli@bootlin.com, Jagan Teki <jagan@amarulasolutions.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260430194944.78119-1-osama.abdelkader@gmail.com>
+References: <20260430194944.78119-1-osama.abdelkader@gmail.com>
+Date: Mon, 11 May 2026 16:46:43 +0200
+Message-Id: <177851080324.59556.13424478378599102713.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 912F95109A5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245250-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hamzamahfooz@linux.microsoft.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-245251-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[bootlin.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,denx.de,lists.freedesktop.org,vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:mid,linux.microsoft.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,bootlin.com:url,bootlin.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-An unintended behavior in the TCP conntrack state machine allows a
-connection to be forced into the CLOSE state using an RST packet with an
-invalid sequence number.
+On Thu, 30 Apr 2026 21:49:42 +0200, Osama Abdelkader <osama.abdelkader@gmail.com> wrote:
+> drm/bridge: chipone-icn6211: use devm_drm_bridge_add in i2c probe
 
-Specifically, after a SYN packet is observed, an RST with an invalid SEQ
-can transition the conntrack entry to TCP_CONNTRACK_CLOSE, regardless of
-whether the RST corresponds to the expected reply direction. The relevant
-code path assumes the RST is a response to an outgoing SYN, but does not
-validate packet direction or ensure that a matching SYN was actually sent
-in the opposite direction.
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-As a result, a crafted packet sequence consisting of a SYN followed by an
-invalid-sequence RST can prematurely terminate an active NAT entry. This
-makes connection teardown easier than intended.
-
-So, tighten the state transition logic to ensure that RST-triggered
-CLOSE transitions only occur when the RST is a valid response to a
-previously observed SYN in the correct direction.
-
-Cc: stable@vger.kernel.org
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
----
- net/netfilter/nf_conntrack_proto_tcp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
-index b67426c2189b..e99ab1e88e9f 100644
---- a/net/netfilter/nf_conntrack_proto_tcp.c
-+++ b/net/netfilter/nf_conntrack_proto_tcp.c
-@@ -1221,7 +1221,8 @@ int nf_conntrack_tcp_packet(struct nf_conn *ct,
- 			new_state = old_state;
- 		}
- 		if (((test_bit(IPS_SEEN_REPLY_BIT, &ct->status)
--			 && ct->proto.tcp.last_index == TCP_SYN_SET)
-+			 && ct->proto.tcp.last_index == TCP_SYN_SET
-+			 && ct->proto.tcp.last_dir != dir)
- 			|| (!test_bit(IPS_ASSURED_BIT, &ct->status)
- 			    && ct->proto.tcp.last_index == TCP_ACK_SET))
- 		    && ntohl(th->ack_seq) == ct->proto.tcp.last_end) {
 -- 
-2.54.0
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
