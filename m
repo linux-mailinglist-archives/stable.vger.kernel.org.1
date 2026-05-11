@@ -1,202 +1,201 @@
-Return-Path: <stable+bounces-245310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJt0HFQXAmoZnwEAu9opvQ
-	(envelope-from <stable+bounces-245310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:52:20 +0200
+	id 4DzMKpMTAmrangEAu9opvQ
+	(envelope-from <stable+bounces-245311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:36:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CAA513D88
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:52:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8FD51395D
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D91A5304D5EF
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:23:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFEF2302F408
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F0A43636B;
-	Mon, 11 May 2026 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61101441037;
+	Mon, 11 May 2026 17:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hE4ZFYc/"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8352442882C;
-	Mon, 11 May 2026 17:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50B3FD131;
+	Mon, 11 May 2026 17:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778520187; cv=none; b=LmTWEzw3iUF6qUv5pqn3pCN4jmWy3VE0hoFkVXG7IDaDt17DiUcTuLzJUez39R/iNNkUjqcpglLsm8gvc+0FWlgqywLjp3wdXYePn4FWxVw5eMeUy9/7Awe0X58LIVEgCYRV8kiepdbNlSibgvQt8JUWjJ25b1CAiRshep8V2iM=
+	t=1778520657; cv=none; b=oqOq/F3DZn0DnSuqwbvImcQLiaeYSHgtsoM2E47wdvOygzQniOyawWXI6Ir45b1yPAchv99NKixyCdKTHCMCSTRJvZEGITodCJFgISNP/YC4t/HdXWhMfsGjD1tC+CUvR7D+74mmJXhDfB8wqkuZGceCSkckZj3GoaP2F90nOt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778520187; c=relaxed/simple;
-	bh=mT99ulOMYhhBNtA2BSd3bQ5V6JrrYvcD32B1OO8rpPM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A13YE3DkxEiEnNjRTmg60ViLm7VvZltpdyBD7NeNIan7m5GgGXeZLlA/9Ub/0Xw6hkyTD7uVriKBpe3cNGY/aAKrX7YS/r/d+FEWJp0X9IYtWMwdGrWL682Mr/Y05pE/4gWdFbCJ+3Uql18SJvKuJtM/xRY42gDtscbUUOjDDEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.100.82])
-	by APP-03 (Coremail) with SMTP id rQCowAA3G+JhEAJq99uzEA--.13588S2;
-	Tue, 12 May 2026 01:22:42 +0800 (CST)
-Message-ID: <3ee00ebc4ff5bcf2a8754466f8d9d04b24f81858.camel@iscas.ac.cn>
-Subject: Re: [PATCH] drm/loongson: clean up KMS polling on probe failure
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Myeonghun Pak <mhun512@gmail.com>, dri-devel@lists.freedesktop.org
-Cc: Sui Jingfeng <suijingfeng@loongson.cn>, Jianmin Lv
- <lvjianmin@loongson.cn>,  Qianhai Wu <wuqianhai@loongson.cn>, Huacai Chen
- <chenhuacai@kernel.org>, Mingcong Bai <jeffbai@aosc.io>,  Xi Ruoyao
- <xry111@xry111.site>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard	 <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie	 <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, 	linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
-Date: Tue, 12 May 2026 01:22:41 +0800
-In-Reply-To: <20260511170152.16957-1-mhun512@gmail.com>
-References: <20260511170152.16957-1-mhun512@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 
+	s=arc-20240116; t=1778520657; c=relaxed/simple;
+	bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cv750ScBUK+71UQL1coRQ622hWFPS4gYI349OWdthYxtMfmzNhUiSlJ6JKz+XHFWd7rUujCKyAvtHpYWx2T6ppthpkX+JMNiH+58IVGXi1Yxg98Vk7RCHuSZ/3pjfKuNGBpHCFpSyUh6d216kzmZz/D8TZYKgQ8EJTg+yGwhiyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hE4ZFYc/; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778520655; x=1810056655;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
+  b=hE4ZFYc/2/nB0/Y+xi27khGjg96mQK1WGrvduCh+zcRdasiKIJGF/ZLk
+   ppc9Quq/yAidwJkXtWU1g/MpnXxWAspoEk7f8GPP/eI//s5LaEs8bd2EP
+   DXoBPg82KaxfDoIhb1HKPfdxpRXc97eZWQxHJgJSBePWAlURix2jltFTa
+   PCd5n4oebSyT/bR9KiSPpPXz+QuUlnUMyqhtFCDeheLEmvR7shhLzgaKJ
+   S8eZGePWsFKtXr3T3WfR0LcDzK+QOmGuDaJBk9ql/pPZLK2ED70C9kHji
+   RrpLs2rKpEjmSJ7sglvx764sYZCRAUSNAnicqH2EGn9I8iFCUp5A4gK76
+   w==;
+X-CSE-ConnectionGUID: lzDWTOeLQw2U91JTJuLDrQ==
+X-CSE-MsgGUID: iXZh2kymReGM5jjDpkLnPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314118"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="79314118"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:30:45 -0700
+X-CSE-ConnectionGUID: cQZX9EhnR/iT6c7D0YB+FQ==
+X-CSE-MsgGUID: RVLexnFOSyCbdPBgRcYhSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="261000339"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fedora) ([10.245.244.248])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:30:39 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sashiko-bot <sashiko-bot@kernel.org>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Tejun Heo <tj@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Natalie Vock <natalie.vock@gmx.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	cgroups@vger.kernel.org,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/5] drm/amdgpu: Fix init ordering in amdgpu_vram_mgr_init()
+Date: Mon, 11 May 2026 19:30:04 +0200
+Message-ID: <20260511173008.36526-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260511173008.36526-1-thomas.hellstrom@linux.intel.com>
+References: <20260511173008.36526-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:rQCowAA3G+JhEAJq99uzEA--.13588S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF48WFWkXF1xKrWUWrWktFb_yoW5Xw18pF
-	s3Ga4Ykry0qrs7KryDXFyDZa4aqrWxta4S9rs7J340gr1qyrWvqFy0vF12qw15JFZYkF1a
-	q3WvqrWru347C3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-	UI43ZEXa7IU56yI5UUUUU==
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
-X-Rspamd-Queue-Id: C1CAA513D88
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6B8FD51395D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245310-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-245311-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,gmx.de,lankhorst.se,amd.com,lists.freedesktop.org,vger.kernel.org,cmpxchg.org,suse.com,intel.com,suse.de,ffwll.ch,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[25];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[loongson.cn,kernel.org,aosc.io,xry111.site,linux.intel.com,suse.de,gmail.com,ffwll.ch,vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.981];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:mid]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,lists.freedesktop.org:email,gmx.de:email,amd.com:email,linux.intel.com:mid]
 X-Rspamd-Action: no action
 
-=E5=9C=A8 2026-05-12=E4=BA=8C=E7=9A=84 02:01 +0900=EF=BC=8CMyeonghun Pak=E5=
-=86=99=E9=81=93=EF=BC=9A
-> lsdc_pci_probe() initializes KMS polling before setting up vblank
-> support,
-> requesting the IRQ and registering the DRM device. If any of those
-> later
-> steps fails, probe returns without finalizing polling. The remove
-> path has
-> the same lifetime gap when tearing down a successfully registered
-> device.
->=20
-> Route those probe failures through a poll cleanup label. Also
-> finalize
-> polling from remove before unregistering the DRM device.
+drmm_cgroup_register_region() is called before INIT_LIST_HEAD() and
+gpu_buddy_init() in amdgpu_vram_mgr_init(). If it fails, the function
+returns early and bypasses those initializations.
 
-Interesting, but it looks like a `drmm_kms_helper_poll_init` function
-exists (while rarely used).
+Since adev->mman.initialized is set to true before amdgpu_vram_mgr_init()
+is called, a failure triggers amdgpu_ttm_fini(), which calls
+amdgpu_vram_mgr_fini(), which then:
 
-Maybe it's better to switch to this? Or maybe there's some reason not
-to use this?
+ - Calls list_for_each_entry_safe() on reservations_pending and
+   reserved_pages, whose list_head::next pointers are zero-initialized
+   (NULL). The loop does not recognize them as empty and dereferences NULL.
 
-Thanks,
-Icenowy
+ - Calls gpu_buddy_fini(), which iterates free_trees[] unconditionally
+   via for_each_free_tree(). Since mm->free_trees is NULL
+   (never allocated), this dereferences NULL.
 
->=20
-> This issue was identified during our ongoing static-analysis research
-> while
-> reviewing kernel code.
->=20
-> Fixes: f39db26c5428 ("drm: Add kms driver for loongson display
-> controller")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> ---
-> =C2=A0drivers/gpu/drm/loongson/lsdc_drv.c | 11 ++++++++---
-> =C2=A01 file changed, 8 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c
-> b/drivers/gpu/drm/loongson/lsdc_drv.c
-> index abf5bf68ee..3db1f8690a 100644
-> --- a/drivers/gpu/drm/loongson/lsdc_drv.c
-> +++ b/drivers/gpu/drm/loongson/lsdc_drv.c
-> @@ -297,7 +297,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
-> const struct pci_device_id *ent)
-> =C2=A0	if (loongson_vblank) {
-> =C2=A0		ret =3D drm_vblank_init(ddev, descp->num_of_crtc);
-> =C2=A0		if (ret)
-> -			return ret;
-> +			goto err_poll_fini;
-> =C2=A0
-> =C2=A0		ret =3D devm_request_irq(&pdev->dev, pdev->irq,
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 descp->funcs->irq_handler,
-> @@ -305,7 +305,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
-> const struct pci_device_id *ent)
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_name(&pdev->dev), ddev=
-);
-> =C2=A0		if (ret) {
-> =C2=A0			drm_err(ddev, "Failed to register interrupt:
-> %d\n", ret);
-> -			return ret;
-> +			goto err_poll_fini;
-> =C2=A0		}
-> =C2=A0
-> =C2=A0		drm_info(ddev, "registered irq: %u\n", pdev->irq);
-> @@ -313,17 +313,22 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
-> const struct pci_device_id *ent)
-> =C2=A0
-> =C2=A0	ret =3D drm_dev_register(ddev, 0);
-> =C2=A0	if (ret)
-> -		return ret;
-> +		goto err_poll_fini;
-> =C2=A0
-> =C2=A0	drm_client_setup(ddev, NULL);
-> =C2=A0
-> =C2=A0	return 0;
-> +
-> +err_poll_fini:
-> +	drm_kms_helper_poll_fini(ddev);
-> +	return ret;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static void lsdc_pci_remove(struct pci_dev *pdev)
-> =C2=A0{
-> =C2=A0	struct drm_device *ddev =3D pci_get_drvdata(pdev);
-> =C2=A0
-> +	drm_kms_helper_poll_fini(ddev);
-> =C2=A0	drm_dev_unregister(ddev);
-> =C2=A0	drm_atomic_helper_shutdown(ddev);
-> =C2=A0}
+Both result in a kernel panic on the module load error path.
+
+Fix by moving drmm_cgroup_register_region() to after the list and buddy
+allocator are fully initialized, so the teardown path is safe to run.
+
+Reported-by: Sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260428073116.15687-1-thomas.hellstrom@linux.intel.com?part=4
+Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
+Cc: Friedrich Vock <friedrich.vock@gmx.de>
+Cc: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.14+
+Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 2a241a5b12c4..ac3f71d77140 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -918,9 +918,6 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
+ 	struct ttm_resource_manager *man = &mgr->manager;
+ 	int err;
+ 
+-	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
+-	if (IS_ERR(man->cg))
+-		return PTR_ERR(man->cg);
+ 	ttm_resource_manager_init(man, &adev->mman.bdev,
+ 				  adev->gmc.real_vram_size);
+ 
+@@ -935,6 +932,10 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
+ 	if (err)
+ 		return err;
+ 
++	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
++	if (IS_ERR(man->cg))
++		return PTR_ERR(man->cg);
++
+ 	ttm_set_driver_manager(&adev->mman.bdev, TTM_PL_VRAM, &mgr->manager);
+ 	ttm_resource_manager_set_used(man, true);
+ 	return 0;
+-- 
+2.54.0
 
 
