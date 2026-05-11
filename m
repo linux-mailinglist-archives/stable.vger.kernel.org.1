@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-245207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK8uNZDYAWpMlQEAu9opvQ
-	(envelope-from <stable+bounces-245207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:24:32 +0200
+	id GAhFCW/XAWryjwEAu9opvQ
+	(envelope-from <stable+bounces-245208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:19:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C361350ED30
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:24:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0CB50EC0A
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 70F5F3036187
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:18:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C0F6300599E
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290423A4520;
-	Mon, 11 May 2026 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0448E3E5ED5;
+	Mon, 11 May 2026 13:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ITKhP3HM"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rbdLSwzT"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAA9394471;
-	Mon, 11 May 2026 13:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C3F3A4520
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778505515; cv=none; b=DYSKryORyStFXQl7RMn336OR7SM8lwMl9uHn8i0ZxYs/1h2FiCr8iID9ANuQSvqqUjAC+brGR7gyb5To3m8QMXBkrSc7eod5viRt0dvpUMu8nKA1/YupTpHlQoAWdFxIrNBZfzfUcLNjWKedPHgfcPcErW7FDSH1kMeUBRGCaGk=
+	t=1778505580; cv=none; b=I1PpopmFxXlMRfSHgmHGKB7jCuWbnvrezUVTorNXp1Np+UfjAUfRNd4neLP7EjuTgGdmqvsz1MYSNQCIvvj3Thprs7IADUBg0LtNxu3TlIE9pLamc3wMO0cgPTNcg9JlBbG8PfPNRxgts4UF4zgsIGUAAndWNUjDnW5q7du4iZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778505515; c=relaxed/simple;
+	s=arc-20240116; t=1778505580; c=relaxed/simple;
 	bh=tSxu3v1zFVmz1Ow1glgROXhvIIbM5P+KMcZs43VSTrg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bHdGz27IbQupPfYauEGCefjz/ayIuF823R0g+JYozcMSjaVHy/mqQr84g0AEoioAzCjNxPpQo5n6Nhgqt1LCLaIeSvaZqkH4QlO0i1WzoxUXG2WV1kiVSadQTnzQRnCCX6dOGG0/oIvZs3mrY6ky77r3nBIGYLlRzTX7NqzRiCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ITKhP3HM; arc=none smtp.client-ip=115.124.30.97
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XhMoVr1pzR3ZjRvZN7YZ8xRb8MLMtRk12ZAessqwCvI+e2hQRNE+CXu3+wJuu6KXgGOTSWkrwFCuB9xPHxLi9wS3EFf/azEUkMu98BkX8GZCg3VsHX8QC3NTbMZRohzMLcOuV1I/yydGcqU7sVOHV0KIdjvU1BB9qKUzkWN630M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rbdLSwzT; arc=none smtp.client-ip=115.124.30.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1778505506; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	t=1778505575; h=From:To:Subject:Date:Message-Id:MIME-Version;
 	bh=qMTukbhOsh4wTjLAvEST29FKEUGQSBkjs6AvGD3bNxM=;
-	b=ITKhP3HM+6/6dIioCD3Y4siAI3nDphv/tA1FBQrQWZ51ednKoLEjKlMN0yluNOKkN8U0AEIT25VeVe/aOw6L9FB2IPLSw0X2rHrKwyXXLz44Pfr3zUOUBjzgIUV4xMXzzOzCEbP8EBBAAWBahKSLKQSK04fdHIDGRktY3ZxhTw0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R901e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=mengferry@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X2kmh0a_1778505499;
-Received: from localhost(mailfrom:mengferry@linux.alibaba.com fp:SMTPD_---0X2kmh0a_1778505499 cluster:ay36)
+	b=rbdLSwzT5YBlpqy5u7C8hyCrsukO+N3PInV/7t4LMAP43+VG9mn8u5pQI0MNLSv1HGT0mpPMxLl6pzzHIh8wDBICN8MUD0G+/vIjVxL+AWBXw/KdxGxG6KPdIp6041TSkTE6NXQ2wKS1L+5+mlImzOf3qpvB97f/ZwrskVdJoms=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R401e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=mengferry@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0X2ka8gr_1778505572;
+Received: from localhost(mailfrom:mengferry@linux.alibaba.com fp:SMTPD_---0X2ka8gr_1778505572 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 11 May 2026 21:18:26 +0800
+          Mon, 11 May 2026 21:19:35 +0800
 From: Ferry Meng <mengferry@linux.alibaba.com>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	Tristan Madani <tristan@talencesecurity.com>,
-	linux-cifs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ferry Meng <mengferry@linux.alibaba.com>
+To: joseph.qi@linux.alibaba.com
+Cc: oliver.yang@linux.alibaba.com,
+	Ferry Meng <mengferry@linux.alibaba.com>,
+	stable@vger.kernel.org
 Subject: [PATCH] ksmbd: fix SID memory leak in set_posix_acl_entries_dacl() on overflow
-Date: Mon, 11 May 2026 21:18:16 +0800
-Message-Id: <20260511131816.93314-1-mengferry@linux.alibaba.com>
+Date: Mon, 11 May 2026 21:19:31 +0800
+Message-Id: <20260511131931.95685-1-mengferry@linux.alibaba.com>
 X-Mailer: git-send-email 2.19.1.6.gb485710b
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,7 +58,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C361350ED30
+X-Rspamd-Queue-Id: AC0CB50EC0A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-7.66 / 15.00];
 	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
@@ -71,28 +66,27 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245207-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245208-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[mengferry@linux.alibaba.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email,linux.alibaba.com:mid,linux.alibaba.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,linux.alibaba.com:mid,linux.alibaba.com:dkim]
 X-Rspamd-Action: no action
 
 Commit 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16
