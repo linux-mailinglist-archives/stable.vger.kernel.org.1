@@ -1,177 +1,207 @@
-Return-Path: <stable+bounces-245360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDxOHyhmAmqhsQEAu9opvQ
-	(envelope-from <stable+bounces-245360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:28:40 +0200
+	id kCNKNEJtAmqosgEAu9opvQ
+	(envelope-from <stable+bounces-245361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:58:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5BB517490
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:28:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5410517AB8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A0BD301FF81
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 23:27:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4EDF530142A2
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 23:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BB936166F;
-	Mon, 11 May 2026 23:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19F436A35F;
+	Mon, 11 May 2026 23:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="F2fpMxcy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kJns1m/+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFAC33F5BA;
-	Mon, 11 May 2026 23:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D762A363C75;
+	Mon, 11 May 2026 23:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778542065; cv=none; b=cLUv2De/fdEzBvpx5/u0aFijsRnPcYmfCYoZn3G4UjiFny5n2uRyAisW0rAT+tBva6upUMVf8oH6PaZ/pZf9BsuN3Ppc4csqBqfw2rp+VpayGbVigQHxCS28AJXf8aCgedc0a4rSMEn8iB8vg3aNL7d/lO6pG1YfJtoFh52lgQQ=
+	t=1778543615; cv=none; b=KkST1+g4wQfwbwIBxZGVRU7OOoTt+nv8oIvLLbLe/Cnj+80+N/jfTlvmL7iJKALBXN74DiUeWI/DFGO1xJW9mtvc/XFNlfcTAwCnWPp11NNvXF4WiST95lXsQWKDFH4PQLZT41tEfF33Y0LKnAa4crU4Qvb0rzUcj4Npqajl/VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778542065; c=relaxed/simple;
-	bh=ieBgu9am0VQHY0paHtbko4O+0J7K7RPqj8F9Z25VaKo=;
-	h=Date:To:From:Subject:Message-Id; b=Sx0XuimVqPnXhWSh6Dt6qTBnb28lr12MQ6M22fWKahcbZ2CiAJESGfVFwLFzLRbSg7tBxNfauZG89pI5c8YMvfpfIcqXn1WQusPfDsuEw9UiOTerlmUmOO7T5F6VWR25wKv8DPLQKBCwLgg85kZx++alocsndXspqILBl3CDJ60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=F2fpMxcy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08D3C2BCB0;
-	Mon, 11 May 2026 23:27:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778542064;
-	bh=ieBgu9am0VQHY0paHtbko4O+0J7K7RPqj8F9Z25VaKo=;
-	h=Date:To:From:Subject:From;
-	b=F2fpMxcyhI4j4/I0cFX86rTuNLRK+d3f86R/YV5E11XCwJpiQsGbj4pzU2dUm/XXr
-	 HTp0EyRpkmG6cyXgpfvNUyPw5+R55xBqwzUS54IaEnPfAKqfYvZnE/rR1Rd0LrpIiU
-	 vBuqABRIXRFD9eG00rhhpfjlVObmBwEJ5ZGJd2bQ=
-Date: Mon, 11 May 2026 16:27:44 -0700
-To: mm-commits@vger.kernel.org,zaslonko@linux.ibm.com,stable@vger.kernel.org,ptikhomirov@virtuozzo.com,ojeda@kernel.org,oberpar@linux.ibm.com,nathan@kernel.org,masahiroy@kernel.org,linux@weissschuh.net,arnd@arndb.de,khorenko@virtuozzo.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch removed from -mm tree
-Message-Id: <20260511232744.A08D3C2BCB0@smtp.kernel.org>
+	s=arc-20240116; t=1778543615; c=relaxed/simple;
+	bh=bdqK3wxSZ7fn5l9i+QKCZmvLjVgO4GGihF8twhzJ9o8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uQneuR8RPk1CYUDGMUlHm08KSddv26hFJMdjz1QA8Z+BvBL8h+cFIIfHaClHKw2nDizRVMdsQRWImPJE3LAFy2FCVpinkNcb7DUHVsn4YWWjOzlQeqeBmm+JG/w4EWWUxdjdPGmnhVrCHilp6ZjATj13K+7kVe1PaKYbu2lJ8gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kJns1m/+; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778543614; x=1810079614;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bdqK3wxSZ7fn5l9i+QKCZmvLjVgO4GGihF8twhzJ9o8=;
+  b=kJns1m/+o7eCw2M4FqyBFixpshirGcDcvCamaS8ZNSkqzLq8stfPgPrh
+   21bgFA+7YX2KfMXVv1cIeDow1FIim4hnVh0UxbFdFPVtbAg5BssSeA4nq
+   wdZSFV3PuJMjdEJpNpxhK8/b9UFxw/37p3GTDJ7JMIwLlGftNJtqlMpQT
+   JhZxttUYzZiIVUTMcsiD0FDRnsD/24v8oT6tZbUIsjKl2REW7jWSsOTu5
+   vDBSDmPrRAdWP5fCE+9mAYyN+Z9QIRsMOnwZztbwrGNtgfOB+MiUt6uHO
+   LDBwHdwkLAcQlKJorM2e82mVglAHGjJXJdDU23S1kGPbRsm2sJl/dnMzz
+   g==;
+X-CSE-ConnectionGUID: DaoUFSDeQnuf/0BT+Ei1Iw==
+X-CSE-MsgGUID: 7/abrQAmQ6WHCndXJaTf/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79393270"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="79393270"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 16:53:33 -0700
+X-CSE-ConnectionGUID: Wv2UeC1DRVarUf5MyxtcjA==
+X-CSE-MsgGUID: 5FO5m48+S52ff23cjdzqZA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="239423967"
+Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
+  by fmviesa004.fm.intel.com with ESMTP; 11 May 2026 16:53:32 -0700
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: rafael@kernel.org,
+	viresh.kumar@linaro.org
+Cc: linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Henry Tseng <henrytseng@qnap.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] cpufreq: intel_pstate: Fix Raptor Lake-E cpufreq limits
+Date: Mon, 11 May 2026 16:53:28 -0700
+Message-ID: <20260511235328.2018458-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: DA5BB517490
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D5410517AB8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-245360-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245361-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.995];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arndb.de:email,weissschuh.net:email,virtuozzo.com:email,linux-foundation.org:email,linux-foundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qnap.com:email,intel.com:email,intel.com:dkim,linux.intel.com:mid]
 X-Rspamd-Action: no action
 
+Raptor Lake-E processors are not correctly showing cpufreq frequency
+limits.
 
-The quilt patch titled
-     Subject: gcov: use atomic counter updates to fix concurrent access crashes
-has been removed from the -mm tree.  Its filename was
-     gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch
+These CPUs don't set X86_FEATURE_HYBRID_CPU and have no E-cores, but
+P-cores still use hybrid scaling factor.
 
-This patch was dropped because an updated version will be issued
+commit 0fcfc9e51990 ("cpufreq: intel_pstate: Fix scaling for
+hybrid-capable systems with disabled E-cores") added support for
+such configuration. Here using CPPC nominal freq and perf was compared
+to still return hybrid scaling factor.
 
-------------------------------------------------------
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: gcov: use atomic counter updates to fix concurrent access crashes
-Date: Wed, 22 Apr 2026 15:51:12 +0300
+Commit 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get scaling
+factors") restructured hwp_get_cpu_scaling() and added an explicit check
+for X86_FEATURE_HYBRID_CPU and when not set returns core scaling factor.
 
-GCC's GCOV instrumentation can merge global branch counters with loop
-induction variables as an optimization.  In inflate_fast(), the inner copy
-loops get transformed so that the GCOV counter value is loaded multiple
-times to compute the loop base address, start index, and end bound.  Since
-GCOV counters are global (not per-CPU), concurrent execution on different
-CPUs causes the counter to change between loads, producing inconsistent
-values and out-of-bounds memory writes.
+To address this remove check for X86_FEATURE_HYBRID_CPU and call
+intel_pstate_cppc_get_scaling().
 
-The crash manifests during IPComp (IP Payload Compression) processing when
-inflate_fast() runs concurrently on multiple CPUs:
+Ideally this change should be enough. But using CPPC for scaling factor
+results in rounding error, so still doesn't restore the original
+behavior.
 
-  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
-  RIP: inflate_fast+1431
-  Call Trace:
-   zlib_inflate
-   __deflate_decompress
-   crypto_comp_decompress
-   ipcomp_decompress [xfrm_ipcomp]
-   ipcomp_input [xfrm_ipcomp]
-   xfrm_input
+In intel_pstate_cppc_get_scaling() return core scaling factor when
+ACPI CPPC is not present or when CPPC nominal frequency or nominal
+performance are invalid.
 
-At the crash point, the compiler generated three loads from the same
-global GCOV counter (__gcov0.inflate_fast+216) to compute base, start, and
-end for an indexed loop.  Another CPU modified the counter between loads,
-making the values inconsistent - the write went 3.4 MB past a 65 KB
-buffer.
+Use hybrid_scaling_factor for P-cores when defined for a CPU, if not
+calculate from ACPI CPPC nominal frequency and performance.
 
-Add -fprofile-update=prefer-atomic to CFLAGS_GCOV at the global level in
-the top-level Makefile.  On architectures where the target supports atomic
-profile updates (x86_64, arm64, ...) GCC emits atomic instructions (e.g. 
-lock addq) for GCOV counter updates instead of plain load/store, which
-prevents the compiler from merging counters with loop induction variables
-and fixes the observed concurrent-access crash.
-
-On architectures that do not support atomic profile updates (m68k and
-other small/UP targets) GCC silently falls back to the non-atomic 'single'
-mode, so behaviour there is no worse than before this patch.
-
-Applying this globally rather than per-subsystem not only addresses the
-observed crash in zlib but makes GCOV coverage data more consistent
-overall, preventing similar issues in any kernel code path that may
-execute concurrently.
-
-Link: https://lore.kernel.org/20260422125112.3583649-2-khorenko@virtuozzo.com
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-Tested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get scaling factors")
+Reported-by: Henry Tseng <henrytseng@qnap.com>
+Closes: https://lore.kernel.org/linux-pm/20260508063032.3248602-1-henrytseng@qnap.com/
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org
 ---
+ drivers/cpufreq/intel_pstate.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
- Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/Makefile~gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes
-+++ a/Makefile
-@@ -826,7 +826,7 @@ all: vmlinux
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 1292da53e5fc..0379efdee5f8 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -421,15 +421,23 @@ static int intel_pstate_cppc_get_scaling(int cpu)
+ {
+ 	struct cppc_perf_caps cppc_perf;
  
- CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
- ifdef CONFIG_CC_IS_GCC
--CFLAGS_GCOV	+= -fno-tree-loop-im
-+CFLAGS_GCOV	+= -fno-tree-loop-im -fprofile-update=prefer-atomic
- endif
- export CFLAGS_GCOV
++	if (cppc_get_perf_caps(cpu, &cppc_perf) || !cppc_perf.nominal_freq ||
++	    !cppc_perf.nominal_perf)
++		goto core_scaling;
++
++	if (cppc_perf.nominal_perf * 100 == cppc_perf.nominal_freq)
++		goto core_scaling;
++
++	if (hybrid_scaling_factor)
++		return hybrid_scaling_factor;
++
+ 	/*
+-	 * Compute the perf-to-frequency scaling factor for the given CPU if
+-	 * possible, unless it would be 0.
++	 * Compute the perf-to-frequency scaling factor for the given CPU
++	 * from nominal freq and nominal_perf
+ 	 */
+-	if (!cppc_get_perf_caps(cpu, &cppc_perf) &&
+-	    cppc_perf.nominal_perf && cppc_perf.nominal_freq)
+-		return div_u64(cppc_perf.nominal_freq * KHZ_PER_MHZ,
+-			       cppc_perf.nominal_perf);
++	return div_u64(cppc_perf.nominal_freq * KHZ_PER_MHZ, cppc_perf.nominal_perf);
  
-_
-
-Patches currently in -mm which might be from khorenko@virtuozzo.com are
-
++core_scaling:
+ 	return core_get_scaling();
+ }
+ 
+@@ -2281,17 +2289,10 @@ static int hwp_get_cpu_scaling(int cpu)
+ 		 */
+ 		if (hybrid_get_cpu_type(cpu) == INTEL_CPU_TYPE_CORE)
+ 			return hybrid_scaling_factor;
+-
+-		return core_get_scaling();
+ 	}
+ 
+-	/* Use core scaling on non-hybrid systems. */
+-	if (!cpu_feature_enabled(X86_FEATURE_HYBRID_CPU))
+-		return core_get_scaling();
+-
+ 	/*
+-	 * The system is hybrid, but the hybrid scaling factor is not known or
+-	 * the CPU type is not one of the above, so use CPPC to compute the
++	 * The system is hybrid, so use CPPC to compute the
+ 	 * scaling factor for this CPU.
+ 	 */
+ 	return intel_pstate_cppc_get_scaling(cpu);
+-- 
+2.43.0
 
 
