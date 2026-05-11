@@ -1,98 +1,66 @@
-Return-Path: <stable+bounces-245311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DzMKpMTAmrangEAu9opvQ
-	(envelope-from <stable+bounces-245311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:36:19 +0200
+	id Q+zXHsMSAmrangEAu9opvQ
+	(envelope-from <stable+bounces-245312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:32:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8FD51395D
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:36:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0882A513839
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:32:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AFEF2302F408
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:31:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AB033026F27
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61101441037;
-	Mon, 11 May 2026 17:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7553D1CD1;
+	Mon, 11 May 2026 17:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hE4ZFYc/"
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="cObVn5Vy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50B3FD131;
-	Mon, 11 May 2026 17:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC3B2DFA25;
+	Mon, 11 May 2026 17:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778520657; cv=none; b=oqOq/F3DZn0DnSuqwbvImcQLiaeYSHgtsoM2E47wdvOygzQniOyawWXI6Ir45b1yPAchv99NKixyCdKTHCMCSTRJvZEGITodCJFgISNP/YC4t/HdXWhMfsGjD1tC+CUvR7D+74mmJXhDfB8wqkuZGceCSkckZj3GoaP2F90nOt4=
+	t=1778520687; cv=none; b=nmpgFtJBHB6kmHgTTL0pbENmMo9bsHD05RjJJQXXdwCBYqkHDjv1cQsDDv5i5l2rptByH4QgQD15o9kyv9RvSeTxHv+Afyr9/oryywKDBlaOgf4RsdDcw2sM3P2GMau4oomN+P5Cs/sPLDb/XWb2+NwXVPOyvCr3hG0/87ZaXHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778520657; c=relaxed/simple;
-	bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cv750ScBUK+71UQL1coRQ622hWFPS4gYI349OWdthYxtMfmzNhUiSlJ6JKz+XHFWd7rUujCKyAvtHpYWx2T6ppthpkX+JMNiH+58IVGXi1Yxg98Vk7RCHuSZ/3pjfKuNGBpHCFpSyUh6d216kzmZz/D8TZYKgQ8EJTg+yGwhiyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hE4ZFYc/; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778520655; x=1810056655;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
-  b=hE4ZFYc/2/nB0/Y+xi27khGjg96mQK1WGrvduCh+zcRdasiKIJGF/ZLk
-   ppc9Quq/yAidwJkXtWU1g/MpnXxWAspoEk7f8GPP/eI//s5LaEs8bd2EP
-   DXoBPg82KaxfDoIhb1HKPfdxpRXc97eZWQxHJgJSBePWAlURix2jltFTa
-   PCd5n4oebSyT/bR9KiSPpPXz+QuUlnUMyqhtFCDeheLEmvR7shhLzgaKJ
-   S8eZGePWsFKtXr3T3WfR0LcDzK+QOmGuDaJBk9ql/pPZLK2ED70C9kHji
-   RrpLs2rKpEjmSJ7sglvx764sYZCRAUSNAnicqH2EGn9I8iFCUp5A4gK76
-   w==;
-X-CSE-ConnectionGUID: lzDWTOeLQw2U91JTJuLDrQ==
-X-CSE-MsgGUID: iXZh2kymReGM5jjDpkLnPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314118"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="79314118"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:30:45 -0700
-X-CSE-ConnectionGUID: cQZX9EhnR/iT6c7D0YB+FQ==
-X-CSE-MsgGUID: RVLexnFOSyCbdPBgRcYhSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="261000339"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fedora) ([10.245.244.248])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:30:39 -0700
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sashiko-bot <sashiko-bot@kernel.org>,
-	Friedrich Vock <friedrich.vock@gmx.de>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Tejun Heo <tj@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	Natalie Vock <natalie.vock@gmx.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	cgroups@vger.kernel.org,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Simona Vetter <simona@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/5] drm/amdgpu: Fix init ordering in amdgpu_vram_mgr_init()
-Date: Mon, 11 May 2026 19:30:04 +0200
-Message-ID: <20260511173008.36526-2-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260511173008.36526-1-thomas.hellstrom@linux.intel.com>
-References: <20260511173008.36526-1-thomas.hellstrom@linux.intel.com>
+	s=arc-20240116; t=1778520687; c=relaxed/simple;
+	bh=BZa4LoFat3U7shPpQGqQLGRVfR9aV5X2+0NE4NZ5aK0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EE7xjHpUXOHfKlixhaNxJgnRyhHpNZms13QG3yhR5vyMIhG+jh4ybRwHY2BEkn6XcZC+/wy6boF76SGA5iXhg7i/P1eghbDUqN4nT8rO+Dv8177O5LFixrEzhxkYX02PG7/oAx1Dex2tjTBGaYozk0g0N8wgXsBHhuqoD8JF13g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=cObVn5Vy; arc=none smtp.client-ip=162.243.161.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Type:
+	Content-Transfer-Encoding; bh=TUUQRs9HhMqP3HWHt+L7bjWR36USXU4nA3
+	E3mjKI5Pk=; b=cObVn5VybjQo6CkOKMzq4wi0VBoTg2ZKJVH0rt4T15h27RQ0mb
+	l9rBULhsQdjnF7wfYTJVE97ZKYEuAPu5q10CAlcWmA9AS034cf7MjAa6t+MZRiuB
+	szXF9mPv+YYH1wWCZwZC/GspBepsBzjQqm90zCbGCWvA/ET4sxyIPC3oA=
+Received: from localhost.localdomain (unknown [59.66.141.241])
+	by web5 (Coremail) with SMTP id zAQGZQDHf79XEgJq0HWBAQ--.5603S2;
+	Tue, 12 May 2026 01:31:03 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netfilter-devel@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 nf] netfilter: nft_inner: Fix IPv6 inner_thoff desync
+Date: Tue, 12 May 2026 01:30:41 +0800
+Message-ID: <20260511173048.7256-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,101 +69,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B8FD51395D
+X-CM-TRANSID:zAQGZQDHf79XEgJq0HWBAQ--.5603S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WF18ZFWxXF13CF4xCw43trb_yoW8ZF18pa
+	y5Ga95AFy7Gry3Aws2k3y7Ar4rAFs8CrW7ZrWUtry5ZFn09Fy5X34fKrW3uFyqyFWDKr4F
+	qFZ0yFyjvwn8XrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l
+	84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262
+	IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx2
+	6r4rKr1UJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4
+	CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY
+	02Avz4vE14v_GwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4rKr1UJr1l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
+	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
+	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU4na9DUUUU
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgUEAWoBi6DxvwAAsM
+X-Rspamd-Queue-Id: 0882A513839
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245311-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,gmx.de,lankhorst.se,amd.com,lists.freedesktop.org,vger.kernel.org,cmpxchg.org,suse.com,intel.com,suse.de,ffwll.ch,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245312-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[mails.tsinghua.edu.cn,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,126.com,tsinghua.edu.cn,vger.kernel.org];
+	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,lists.freedesktop.org:email,gmx.de:email,amd.com:email,linux.intel.com:mid]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[z.ai:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mails.tsinghua.edu.cn:mid,mails.tsinghua.edu.cn:dkim]
 X-Rspamd-Action: no action
 
-drmm_cgroup_register_region() is called before INIT_LIST_HEAD() and
-gpu_buddy_init() in amdgpu_vram_mgr_init(). If it fails, the function
-returns early and bypasses those initializations.
+In nft_inner_parse_l2l3(), when processing inner IPv6 packets,
+ipv6_find_hdr() correctly computes the transport header offset
+traversing all extension headers, but the result is immediately
+overwritten with nhoff + sizeof(_ip6h) (40 bytes), which only
+accounts for the IPv6 base header. This creates a desync between
+inner_thoff (wrong — points to extension header start) and l4proto
+(correct — e.g., IPPROTO_TCP), enabling transport header forgery
+and potential firewall bypass. This issue affects stable versions
+from Linux 6.2.
 
-Since adev->mman.initialized is set to true before amdgpu_vram_mgr_init()
-is called, a failure triggers amdgpu_ttm_fini(), which calls
-amdgpu_vram_mgr_fini(), which then:
+For comparison, the normal (non-inner) IPv6 path correctly
+preserves ipv6_find_hdr()'s result. Removing the incorrect overwrite
+ensures that ipv6_find_hdr()'s calculated transport header offset is
+preserved, thereby fixing the desynchronization.
 
- - Calls list_for_each_entry_safe() on reservations_pending and
-   reserved_pages, whose list_head::next pointers are zero-initialized
-   (NULL). The loop does not recognize them as empty and dereferences NULL.
-
- - Calls gpu_buddy_fini(), which iterates free_trees[] unconditionally
-   via for_each_free_tree(). Since mm->free_trees is NULL
-   (never allocated), this dereferences NULL.
-
-Both result in a kernel panic on the module load error path.
-
-Fix by moving drmm_cgroup_register_region() to after the list and buddy
-allocator are fully initialized, so the teardown path is safe to run.
-
-Reported-by: Sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260428073116.15687-1-thomas.hellstrom@linux.intel.com?part=4
-Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
-Cc: Friedrich Vock <friedrich.vock@gmx.de>
-Cc: Maarten Lankhorst <dev@lankhorst.se>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.14+
-Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
+Cc: stable@vger.kernel.org
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn> 
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM:5.1 Z.ai
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Changes in v2:
+- Fix the format
+- Link to v1: https://lore.kernel.org/netfilter-devel/20260510131953.32790-1-zhaoyz24@mails.tsinghua.edu.cn/
+---
+ net/netfilter/nft_inner.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 2a241a5b12c4..ac3f71d77140 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -918,9 +918,6 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
- 	struct ttm_resource_manager *man = &mgr->manager;
- 	int err;
+diff --git a/net/netfilter/nft_inner.c b/net/netfilter/nft_inner.c
+index c4569d4b9..1b3e7a976 100644
+--- a/net/netfilter/nft_inner.c
++++ b/net/netfilter/nft_inner.c
+@@ -163,7 +163,6 @@ static int nft_inner_parse_l2l3(const struct nft_inner *priv,
+ 			return -1;
  
--	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
--	if (IS_ERR(man->cg))
--		return PTR_ERR(man->cg);
- 	ttm_resource_manager_init(man, &adev->mman.bdev,
- 				  adev->gmc.real_vram_size);
- 
-@@ -935,6 +932,10 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
- 	if (err)
- 		return err;
- 
-+	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
-+	if (IS_ERR(man->cg))
-+		return PTR_ERR(man->cg);
-+
- 	ttm_set_driver_manager(&adev->mman.bdev, TTM_PL_VRAM, &mgr->manager);
- 	ttm_resource_manager_set_used(man, true);
- 	return 0;
+ 		if (fragoff == 0) {
+-			thoff = nhoff + sizeof(_ip6h);
+ 			ctx->flags |= NFT_PAYLOAD_CTX_INNER_TH;
+ 			ctx->inner_thoff = thoff;
+ 			ctx->l4proto = l4proto;
 -- 
-2.54.0
+2.43.0
 
 
