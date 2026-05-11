@@ -1,159 +1,161 @@
-Return-Path: <stable+bounces-245213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMMYHOvYAWpMlQEAu9opvQ
-	(envelope-from <stable+bounces-245213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:26:03 +0200
+	id +L9BM7TZAWoDlgEAu9opvQ
+	(envelope-from <stable+bounces-245214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:29:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB4650ED85
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3188250EE9D
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A959E307FB20
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:20:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3231E3032981
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824D33E5EC0;
-	Mon, 11 May 2026 13:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF4A3E6398;
+	Mon, 11 May 2026 13:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="WXJTYhVt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r2rc3hWJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1562433ADB3
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B64A3E6389
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778505624; cv=none; b=XZcjH23/fn4SQ8BiGUjUEKzmKCM4+wnz4lhq21HXlrAzsuoCIDiNsSG6X+UFXJhjNBYXk2LHohxueGwXqQmMfkoCwP8WefXEpW3UIJYTIEDYg+23As/KAeNCvbtrLOFpaIKZxGhfmy7VVzIhRY/E49PIDwJSP1zMowfggS2ybiA=
+	t=1778505728; cv=none; b=MhzQ6Nu1ZmJJSFHH10XHQQY3Lze+HIF8pmmzS3R41h4b8Ci/dWH4ZsQu8nUvehjt2w/IRB8PklV+weB2ql2M5bnKottI0Nf0oZitWB2eWfLnCwLHSkvaMspsjYCLnCWPT4R4TChLexI1g07JiKJIili0T41JqGF6N/ZVKddmA3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778505624; c=relaxed/simple;
-	bh=TmlF73mBAE8nFK7SrXa/lCumDBYZ/TfJZ+mvM60yTxs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9M1WZmAvfFJD1nRuGhCxYm3sfv3ucME5NHos0QfJOxD6/XQPgAsb07d5UR1PYWwiz4ol+ZMLiPYU4nj5TEaB62H1UM5oJKYngzJ3qrhBaR89u2yIk1XKU7D+4DsuEMl5RbwtbOsYKGUfzXGXr/8HjZkHmHUx3aa0hnF9W3MXTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=WXJTYhVt; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-4303eb92930so3018520fac.3
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 06:20:22 -0700 (PDT)
+	s=arc-20240116; t=1778505728; c=relaxed/simple;
+	bh=+JbXbcKDM9tLFcb/oST0T3xjyz8MPd/DooQAyYXusjY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FL51Q6FuO4viNUiIaZOVdPRjdwGMs6N+n7ZMBWrdZUPkHwCK2jn1XkZ1wVm5puM9sE+Ce4D7xrB+Q5LoKVwtIPSmVCRm56D/RlYW17WA3fxW58SC+JwaaG2C6Bf+wwdD+hhV/RY9ogobSgSFwYqGHU5cabPL1o2J3aB0+rTdYjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r2rc3hWJ; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48d146705b4so53929435e9.3
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 06:22:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1778505622; x=1779110422; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ZiY94xRt+IuZ0M/273x48bBifax+x2ozD/E/r9Um4w=;
-        b=WXJTYhVtsqhWaLf9G98USyPifx+rNUb6+oDTddD4mJbDtehCdHEtU7mr7TpBNiteKR
-         zv2oT/tUN22GYgMWATZXS6us0RaXSMrP6z4uH0k58+6fy3X8Gi5JhNmIeDTjymBgWtWa
-         fsTZGBOwNoS8Gff/M8UL81nsuJB1t/gN7qI0ci7/n7BcqwUKVyLxXaWPdOT51mxLuK7E
-         feYvi9A9mGC9cAP8QaXDxRFAbTxVc0kxvSOxvnzi1W9U+0aa0ZXTFgtcNx9ScmIScUxa
-         jRkrKn6cHTwGXFHd4IHs4kxdzMh9sI/l/OeTHsQF2UPbadcEMtDUXw1idCBK9Fwiew41
-         Dteg==
+        d=gmail.com; s=20251104; t=1778505725; x=1779110525; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jjVhhqtI7XvHvBXt5ZBrdyL+WZE05jLTGWEJNy/AWV4=;
+        b=r2rc3hWJf+9Mf1480OkY+3jCjbiePrcjLgY20xniMmJQIbYzg5AVJ5ZTcX9PpUo7Sk
+         JhM5uQMBzhOo7wI/mXk5Zn2j7oZ7NdREQ0V0MYT13Agun1/dKUUOXy8XdDb0Lfz5qJYr
+         4pk/iMEIxxoCslhNvPBye1aDa29dwLxpCuKNDqdq2w4N6NPnpuFRcW06cGRL0Z95Uu4S
+         z2BR4om/x+wmHvRvcuXV2ZpgffzLoHt4VHZyqU8xC1cHrImvg8AceGlyF7wrZPKcZYSL
+         BogrPJbRWNcvvQt9M1ro/kf+Kak8VMfRRZsa4CmKlcefxfQGarHm5TEl1YffWIa+d+Nk
+         z/9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778505622; x=1779110422;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5ZiY94xRt+IuZ0M/273x48bBifax+x2ozD/E/r9Um4w=;
-        b=tOE8EWrwH7ElMO3Cc2ZWUgKCaBzcgS2ZEg28PXqGsKxIrz3ui0Es2q3fEtmesuUjLb
-         cAIVnFsZAzOOTAUqEp+gSvRvTInMGiqY3Swof51yGQRMUu5cjC1xtnICUf4wSXUT6yt6
-         Cqq9IDgMVbdS9Q6M0B28uw8UUXENUbYmBgElOSF2oFMB/D1ymD+YqRleDy5j3E90MUrz
-         sqW4QsXr8a1arkW0WP2g1zusI2xnpeFH5efwnk3NASkRxcnvX8MlO/dulp67MyCr+3/d
-         jYCqQZjzyNjkm9O52YDOvHV0c+3ahqeVOBk9XfKJi7ALExZthwpA2EnIZg90KhYILbWA
-         0GxA==
-X-Forwarded-Encrypted: i=1; AFNElJ/XGoKCKDw5FdyBbTIgJkBiHUwgwx7IJ87H7WX4W1Cle530IZjHc8d3kL5dM7I2ytEK6jjfS6E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkZ5akPJqD35DHmLVzKTv1YVgU/vhSzzkVRvwcVh10ZJDQ4BbK
-	NIruCIi8Pcf90NFapqLNVYNkkRlB4bbPA7yPY/ETAxzbJkoQwAE3rI0ZVtfaZA600jo=
-X-Gm-Gg: Acq92OFmk/Xf2IbCEmVLKzwGsKPX61DdfIBmxQLYfYUyzIKmk2FJBiM4RFYH2nZ8EWQ
-	66+OcDxn7CahFVpc4hAaYUQWG0HwAaYzYgmg/4Xz3dSlcoPPiHMObCpjZEQdrDIsHQnk4Gp8tQy
-	PjHx5SoT3Jx5rKy2Tpb1VlIMAX7bSozFth2BzM2smmKCxP97aS66qrRBPfdyyKtpaT3xRjXAzS3
-	TUl09uaCN0n7HNQhEK6isC4lwHo0EgmND5VQ4fRb48HOhxeds37T0a4DD2LqiHbGrmNeVDKu0/v
-	fDfCK/a9psfVfdZffJ3zqIE6JuiW48xm9kh1LoOTpSVtKXkPFXaXN5oANXPVhd4aD61YWkycrxk
-	JxWmk9Jdry1+nRSnMwiJQWwqvnTRiRce/jagAtSNcvOFX1nkAu5bBaqty0s4zsef+lGp4i1gV4R
-	nXHrd1svptPQ8SxquJWv0b342oRilhV2k8hJso3YLMzOpTpwC5qvRG6f+ldcEt4Vfl5uwQbOxRB
-	yg=
-X-Received: by 2002:a05:6871:72b:b0:430:3591:26ce with SMTP id 586e51a60fabf-43556ebb0c9mr7944911fac.24.1778505621892;
-        Mon, 11 May 2026 06:20:21 -0700 (PDT)
-Received: from localhost ([2001:470:b8f6:1b:8478:44:4948:b0d3])
-        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-435573e6ec9sm10085171fac.15.2026.05.11.06.20.21
+        d=1e100.net; s=20251104; t=1778505725; x=1779110525;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jjVhhqtI7XvHvBXt5ZBrdyL+WZE05jLTGWEJNy/AWV4=;
+        b=RK1FRRX3C1p9NCUWf9RdilccdWWcaUfr/U+5pWlJUOZR0ERTPWYQanUfTAKDLViXZO
+         xeayw0jrClkMnNCir8bcNl6dK5k11uUKPNKDsQv31NXqvBFij5hJ1FGL1CQ/xxqeCoAs
+         +uq448+W9EllOp0NHGHNM/6syIgn76mmCpm5w3Uzwdv/5ocwb+2vcUy1F9rwO2vhvcxn
+         hoILfe6eguNNQUPO/TfqRBuNhb6pPXywuHi3+d+oyCFmNVOZKdIp9lhQ+3/jhEldyPJg
+         pdOhPyqfMwd8Lf7hPA4g2bAzhzHVgNSBcjAAynyz+/XhACmLmKbTT9CHbOkRYBM3qZJP
+         qG4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9dkjGOCFRf7hCpf9D3h6yySvlhpzgVwzQGoabL7gzp4zCLpWhN4Svun9dN5f/okI0xxS+zEr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzk2Ml+sXa3gHc0q5mw/ohFCbqnprskZofGIoLk3zSz19EKnoW
+	GMfGlWS6/UKq0d1ZFqBSoD16jQKSRb5ZUtq3om6VSFCeK7EyqU0C30OK
+X-Gm-Gg: Acq92OHTeuRQEKYE1bAszJDP/ObT5i1927cKCYABEJEsGirzpHgZ/XzuUvQaTmnOW3n
+	NtRPPnLn1HevSg4tMByrlKW22XgW6UnEnTiEp9PFh4l4ByXQ3oqDWwUHxXNncdirWBUR6QyDPYa
+	t47zzRHpW9UriW1Ht39BgcX5xnnX5yXMosBJH5YbnDga+DAuB4hQra425BXfLAhKmTcTetUwIzI
+	Z+/P3K2txIdG9CvS1U4mmXUEFRYjRO2NsUFz7131cWqC/s5hK54s3v3rBVq3BwwuCuqlfruvtjj
+	fD/yzXs3RJwADV1MRqWMRmT6248tiFV4OZJvlndMgSzvNsTpUL0iTSevq6ez5ZNDFZt6X0xHr9V
+	4iRycXlwkkrz9gKXXxv2QJ7BoE2gBe5CTv4o2Av6M7XjiF4r+llVxatTWY9GUzOvl+prD0GhXg8
+	CjvRaQGQrieMFCgacFRNxYz7EnPOujFV3Pow6vAkv9JEg+zq7l3KseyZ/hqDkfhPnF/BvYgLcu2
+	g==
+X-Received: by 2002:a05:600c:2ed3:b0:488:d6eb:e63c with SMTP id 5b1f17b1804b1-48e51f427b3mr251306315e9.15.1778505725311;
+        Mon, 11 May 2026 06:22:05 -0700 (PDT)
+Received: from ?IPV6:2001:871:22a:34b1:bb7b:f969:515e:9d45? ([2001:871:22a:34b1:bb7b:f969:515e:9d45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6fff9ab8sm194958305e9.2.2026.05.11.06.22.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 May 2026 06:20:21 -0700 (PDT)
-From: Corey Minyard <corey@minyard.net>
-To: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org
-Cc: Li Xiao <252270051@hdu.edu.cn>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 5.10.y v3 4/4] ipmi:ssif: NULL thread on error
-Date: Mon, 11 May 2026 08:19:42 -0500
-Message-ID: <20260511132012.1831026-5-corey@minyard.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260511132012.1831026-1-corey@minyard.net>
-References: <20260509122858.ae87f8133ecd.re-ipmi-ssif-cleanup-5.15@kernel.org>
- <20260511132012.1831026-1-corey@minyard.net>
+        Mon, 11 May 2026 06:22:04 -0700 (PDT)
+Message-ID: <c216a62b-1653-43b3-b6a7-dd81af9da626@gmail.com>
+Date: Mon, 11 May 2026 15:22:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CBB4650ED85
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: Do not select HAVE_RUST when KASAN is enabled
+To: Nathan Chancellor <nathan@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+References: <20260511-arm-avoid-rust-with-kasan-v1-1-24d55f4a900b@kernel.org>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <20260511-arm-avoid-rust-with-kasan-v1-1-24d55f4a900b@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3188250EE9D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245214-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245213-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[kernel.org,armlinux.org.uk,garyguo.net,protonmail.com,google.com,umich.edu];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,minyard.net:email,minyard.net:mid,minyard.net:dkim]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chrisischrefl@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Cleanup code was checking the thread for NULL, but it was possibly
-a PTR_ERR() in one spot.
+On 5/11/26 10:02 AM, Nathan Chancellor wrote:
+> When KASAN is enabled, such as with allmodconfig, the build fails when
+> building the Rust code with:
+> 
+>   error: kernel-address sanitizer is not supported for this target
+> 
+>   error: aborting due to 1 previous error
+> 
+>   make[4]: *** [rust/Makefile:654: rust/core.o] Error 1
+> 
+> The arm-unknown-linux-gnueabi target does not support KASAN, so avoid
+> saying Rust is supported when it is enabled.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: ccb8ce526807 ("ARM: 9441/1: rust: Enable Rust support for ARMv7")
+> Link: https://github.com/Rust-for-Linux/linux/issues/1234
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Seems fine to me either like this or as Alice mentioned in another reply. 
 
-Spotted with static analysis.
+Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
 
-Link: https://sourceforge.net/p/openipmi/mailman/message/59324676/
-Fixes: 75c486cb1bca ("ipmi:ssif: Clean up kthread on errors")
-Cc: <stable@vger.kernel.org> # 91eb7ec72612: ipmi:ssif: Remove unnecessary indention
-Cc: stable@vger.kernel.org
-Signed-off-by: Corey Minyard <corey@minyard.net>
----
- drivers/char/ipmi/ipmi_ssif.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index c973c0d92319..43c4863e7b03 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1891,6 +1891,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 					"kssif%4.4x", thread_num);
- 	if (IS_ERR(ssif_info->thread)) {
- 		rv = PTR_ERR(ssif_info->thread);
-+		ssif_info->thread = NULL;
- 		dev_notice(&ssif_info->client->dev,
- 			   "Could not start kernel thread: error %d\n",
- 			   rv);
--- 
-2.43.0
-
+Cheers,
+Christian
 
