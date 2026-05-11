@@ -1,248 +1,227 @@
-Return-Path: <stable+bounces-245293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MzAKMIIAmqknQEAu9opvQ
-	(envelope-from <stable+bounces-245293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:50:10 +0200
+	id MODwFy0VAmr+ngEAu9opvQ
+	(envelope-from <stable+bounces-245295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:43:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4E2512A3F
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:50:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE038513A9E
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99FFC30A0888
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:35:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B52B130A1287
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4D147A0B0;
-	Mon, 11 May 2026 16:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486D142EEDF;
+	Mon, 11 May 2026 16:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bU7jpOHq"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cwTmoJA3"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011025.outbound.protection.outlook.com [52.101.57.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40AA43635D;
-	Mon, 11 May 2026 16:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778517180; cv=fail; b=M6oHJ18wksP1Vp0vuQJMikybtXhPcMGSOOGfND5hua3KTEv7SIMGljtV60aj8SBHgk5bYkF3rDefebGNgHMRQU7kXMTgNk0sD1S/tclfaNiwWwGXLImuOlrJZtUd3LTZnWN8aHIos4mbcKjc3L6+lWlWC4LZkqap4dHHQ6CbHvw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778517180; c=relaxed/simple;
-	bh=4S1z0aOnous20LKvRAI3NSz2fzKHRIEZszNFg8H05Vo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AHTYjL8uAI+x+TtcQSIHO18GBB27XKo+uyvlpxK/GMmqxD4o6Ze/MotEEfzxkVvTsoBY3QinzFnOEyatTEEQHXF/pnzeQHYU0O7ytI0DtRdGqhgSSU8UzArNBm0gh/OcMzND6If201N3Y6GIuhylvpn7gE6WBqsKheQWbiVLXkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bU7jpOHq; arc=fail smtp.client-ip=52.101.57.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L/Kz8WW1lEdyIEOOExm+aBBz2xRhfthrKn5ioKV3qlHcN1P2HSuhfjvQaOXZXbZHK4FferXuRSk/xKeqRm9qz+yHC9XVUWksdxPQC3bG3WWjELd+R4STg1jsMr0B3DDIaB4k3oQwriiEenPXsAxpNQAFTTYW7TMpbOXOTgLv1/RXapPezABphgjH/kL8rFuS0EKziQjYYabarvbuocvFctnyHZ/jqIP7a9qbmYtcy7RANm0k8OaDhXT7+m0Dj1SKy4gfgkSKgANpkxEgIQqgjkE5n+xVi2TfjZ8wyNdtHIASJKSEZWjB2Jo6m4x1svb2kVaYoBqcKhvG8NBqn1CE7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JTBdThVFEpNHi2dU+mAd4gM1WT8C3kXv+HJ2zJ9hpyU=;
- b=qqyDqk/dbB6Uawcy0tF/4KKJ5A8oYtMAlCPtZffKuC1Jph4kSN+3VTNrt34K/iKUFo0H1gu2K2NREYWu2aH0UeBbA0KQOrqZxE1dFfu82WYJZ+eWAqv8o6lkBZU+q1tQl5THh0MoNz2r7xCAK4sssbFHZKCCBH4Zz+rY8FLso/e4BxAi77+XWGxd6caELGN3r226k6UnDbXpOiHNYG5zS0uor+7zN+4eXFVCF68hrewBGFFiruyvbq8Y9w4c6NRxdXiRop2h+CA7PtzMrhWhwVhEGFAK6NgdcaxxbqMWoGKhEG5VGwWlOcEgrFh4r5PGis3qUOwnfC91B0tTGBBDmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ideasonboard.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JTBdThVFEpNHi2dU+mAd4gM1WT8C3kXv+HJ2zJ9hpyU=;
- b=bU7jpOHqlth+ZMeKUGjpdlX2XGBFAKyQByXbjZDVizNSWryf8JRwhhBB0VxRlNL6EE9W+SJ1ULsykdSYDKAE/nrb/e0BfcOzqP1jUMRrBRcRZCbdjnkIot7vqrF3whbX+mbPwEGF0yQcWHjCxhFJeyRA2aJMRgwhICvi7u3osGY=
-Received: from BL1PR13CA0010.namprd13.prod.outlook.com (2603:10b6:208:256::15)
- by MN2PR12MB4334.namprd12.prod.outlook.com (2603:10b6:208:1d1::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
- 2026 16:32:52 +0000
-Received: from BL6PEPF0002256F.namprd02.prod.outlook.com
- (2603:10b6:208:256:cafe::ad) by BL1PR13CA0010.outlook.office365.com
- (2603:10b6:208:256::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.15 via Frontend Transport; Mon, 11
- May 2026 16:32:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0002256F.mail.protection.outlook.com (10.167.249.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 16:32:52 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 11 May
- 2026 11:32:27 -0500
-Received: from xhdradheys41.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 11 May 2026 11:32:24 -0500
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-To: <laurent.pinchart@ideasonboard.com>, <vkoul@kernel.org>,
-	<neil.armstrong@linaro.org>, <michal.simek@amd.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-	<linux-arm-kernel@lists.infradead.org>, <git@amd.com>, Nava kishore Manne
-	<nava.kishore.manne@amd.com>, <stable@vger.kernel.org>, Radhey Shyam Pandey
-	<radhey.shyam.pandey@amd.com>
-Subject: [PATCH 3/3] phy: zynqmp: keep SERDES scrambler and 8b/10b enabled for USB
-Date: Mon, 11 May 2026 22:01:35 +0530
-Message-ID: <20260511163135.2924642-4-radhey.shyam.pandey@amd.com>
-X-Mailer: git-send-email 2.44.4
-In-Reply-To: <20260511163135.2924642-1-radhey.shyam.pandey@amd.com>
-References: <20260511163135.2924642-1-radhey.shyam.pandey@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750B33D647A
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 16:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778518222; cv=none; b=TIBeuzr5niCfY+pIVK+BLRtFEhBBN/2gB5pDuT3csHypTyiSU5YceMdGJFf6qNkLc2C+fUMEkMK1ZfaTprJ5DY8zxYov6odSMoflVbbm8IJo2yI85hXT+HEv39McQGXWDzUnk1ZSmxpWevFJnoyDXX/HvH+5zXPSpDZEZEzDoHc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778518222; c=relaxed/simple;
+	bh=3ddHCI/u6AMzCPiKrNEM/VNWHhoOwc6c1h5VWFgOqig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d7oQuTfkaDbEGO7s4Z3xeaKI0nh3hNcIwdvbwXrqPeQVgoIDzwpPYIw+7cZn3SekHODso544u1E1BevsErinVsR0Ix6/my9KTBIspniFh4by8H4rEtdRNo7+M1HFDUs9Y3FT25hRpWgHCnN+CpKkYWer+KdJMmRYIqgeJEN5A9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cwTmoJA3; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ba7a1cc0380so814930666b.2
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 09:50:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1778518219; x=1779123019; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pyc2irlV4hpTozzdn4QAIYkKHdvExB4pAKBzqwiHQiY=;
+        b=cwTmoJA3d/+psOsBsCkW7T/Xbets/AL5b/UABqEcs0e2QXQBiqeGNDs1PdAEEmxJkC
+         YpJNGapd2iAB7yfDm/4FB9OaqQZQ//aryHxbejLYZIiBOBKobp/Xi6SSnN+lA0cKJraL
+         eF6uZj9bET+/x6tdUhkySUSoZBCuMO6ID+Gzo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778518219; x=1779123019;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pyc2irlV4hpTozzdn4QAIYkKHdvExB4pAKBzqwiHQiY=;
+        b=jD4J6sHP5bKri8whJU5QsxQ4rzr3Or/c0P7gBodN6Y2+zNU9zy5m0xApHXw0CPnT2H
+         7qeBIZMsAEO54rzBDxdLVUdfkUD0p+2/8IqTYvOgWOSMztHgCzLRITmSSvST3sIAh7GJ
+         pTeyyFtfkBG+PLXJ4PagtacXBE7D+U9MCrCh8V4KLYW720UHZlx0AvC8s3KapLc+BC8A
+         eishwgF1X/atwdvosbjVoT4AefLu/Vwr/EI7w7+CVSiy/RwEd7iML1CHSVrlrav51lgo
+         VdPDtZWwhHwlis7UVYAdVRuDIRnuCU8/baJ0N33N9xfr4BMk32ALvS1MwiCiPMAKX56N
+         vt0Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+HIjpSmbThkbcxsZbb3bGgUGK/I0z4ZtIJ6gitJihv/A5bGXyH9DFvdE3wiXZJr3xd3gnJ18U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2Ya5aT2ZsfP0tpV5Pt6q9OLrGnhZlOV0yDa5wqVBr8P6wOiZG
+	0WcqswO4Eu2A4OBG7gv0m3QL4+jboUkjyFoj0SIfsbPY6C/QZLsVqaEP/p2OtlDvvhsPXwtTAM0
+	ZFo8=
+X-Gm-Gg: Acq92OFvW2CpkKhSvWU+ab4X2ofM1HaD6Nwj6RlJ+I0+UoxhBBkcHjDhAbAUEJaYt6B
+	V18MCBzA3pVDrOdqZjdJjlukcdJw1lOHtLR2htXwqp1l+PnJwqxR5sjoFX7CuLhWtoYIRhd2RJt
+	gH9tv6GzrkiYtiQgRKWvI4I0SEkIkD1DZSoLFYzaS4tvDNrGXp17rse9iJOrF6GMB5ozBST2j35
+	qB6iBTecQuEZAr3qoQcNKKLJbr04uKcfv/2TySc8fJe6Q3FNCt3iILXomGzmuHr7dgRmSHcdRKj
+	hGy6sRng3DUlMVsiMqSW7UCUz9rOwOOrESk0AL54Y6Wg9uVEw2UANtH2G6S4uEoTwK1PcKyeDU7
+	wkb3cJ7gcKZL7HPlMH57N60Mc/O8IHVAfNVeKNZGQFcz9U5hEg4FMVDpUhVFmjDIh+sWey7WpSk
+	NK+jso08M3ByXt6Re6BgHnxU135SeASmO6jxQjy4a0n7r8u0k/jIqW64Yzn10q
+X-Received: by 2002:a17:906:4fc8:b0:bc6:502e:6d68 with SMTP id a640c23a62f3a-bc6502e7514mr1218914366b.40.1778518218536;
+        Mon, 11 May 2026 09:50:18 -0700 (PDT)
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com. [209.85.218.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcf3226d77csm224719166b.26.2026.05.11.09.50.17
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 May 2026 09:50:17 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bcb5370bb0dso568271666b.1
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 09:50:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+vEUFIOp80kGBo2VB6L/QtlFoIbLvUi4/BeeSHleCjNvaRmAGRHh9p3WkZ8qHX/MXFVcuG+bw=@vger.kernel.org
+X-Received: by 2002:a17:907:748:b0:ba8:9137:da5f with SMTP id
+ a640c23a62f3a-bc56e6fb36emr1500682166b.32.1778518216661; Mon, 11 May 2026
+ 09:50:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0002256F:EE_|MN2PR12MB4334:EE_
-X-MS-Office365-Filtering-Correlation-Id: 512d3fbb-8984-42a7-7e7e-08deaf7af2e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700016|1800799024|18002099003|22082099003|11063799003|56012099003|3023799003;
-X-Microsoft-Antispam-Message-Info:
-	4049EorZND+0+1JCmB5nO8Rq+nJD8DpDgBNUsAtGbPTe9YacBrGJczMH2upUvGJih8SBZNoyToaDEFFGGWAO/B5Cs8oxyqQbdkfF+zusd77BNVePhmH+bJhbg4eTjE4esf/8JfQRGKnly8hOmCfpx2TfG6qVM02JFQ5HKp3VrNyp4trcL/GtOYiRtfvSAGgcQZwxO7J/oIbobAoE/g07XjObsqyAKEcsD2PyKOq9XKy+syUQaRPXvejJIhOR54+kVbqhQemnCf68VNSTPdmzcCh/PM38TSDSMbbsDI1+oIGH5L3qOgP60uqoeaYJ4Lk9rj19zE+fjT414BaUiMYMaekFsGM+ggSkOHEF7siWScI95Fxx8j3cxSpEpe4GtE2SSzqsw+Ne4AUoo/kmKsTv9fKTN/dFkU9k0zPIrmu+ixe7axps5cVyPaAO53fsAAtU7V33t9N0ahd71nHCprTq0FVIQ0gHlYmM1t3Re+ZMEVuH5cpzXsDoVp8MNPUxcUOEyagpnKzy4KsC1rsjXVUtQ5bsLErCtlZ4vjFBnoTmxP9AHjQIwQ8X9LYHjzpZQwE5SKfRqJOZ4AeAW4eFzUOLNs95vNY0O+CIHCsZnsRhlH7kRVw6Ot9Z6IAKjUPX/kiSGvChivvfPGXVGk4mwRrk1l+hAf0TVGWUcTo/bTBzTpqPUbd+iup1P3vsVLJhEo7lbBoAO4RIka3thR+WWSCIwgJ5nqz+n3jXuC0rGlws1eQ=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(1800799024)(18002099003)(22082099003)(11063799003)(56012099003)(3023799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	/KlCj3WsU7w9EgVVg3K61imYNjRnMrOWh4OgnndL+6GOCtxSxTNbxzNtvwN3RaJRIIUlSKs2ddWLsFTdSmxsnKD1+jGlRRuPz7xR6d6bb082WBw9vAequWW6ez3Y4iRnOQOAiL1pp65CiOmgPIVBUmHv7Nge6JhWPPV75ITxiusXFGUkeGKuwiBwVTNiz1g/qSP1/a2BgoTaiHPPxvajn/lUXTppkKX93G4oruGdxILfHuMyw9EPATBC8a2IN0N7oWjK+82NQQQ9dscxja2upZSFu1XIEv6mVlUsjKKZkLh5iS6YUB5PaIQEsaH0XyvUkXEIXCO11M7bLTNK2UOHYNYHDYKkG/C5YfhkNVgzQHBzEeKmv8qMXQnLRvOdH1CixqUZ08rCFCDOm5nn/zVUu28PTqtyO8zZDJNv3KAfW4i5Xr+wQMlBNKILkkVeNApW
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 16:32:52.8516
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 512d3fbb-8984-42a7-7e7e-08deaf7af2e0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0002256F.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4334
-X-Rspamd-Queue-Id: 1E4E2512A3F
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+ <20260323-uvc-hwtimestamp-v1-4-aa42e3865204@chromium.org> <10a08462-30ce-4a79-bb5d-001ab7f3d0d8@kernel.org>
+In-Reply-To: <10a08462-30ce-4a79-bb5d-001ab7f3d0d8@kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 11 May 2026 18:50:03 +0200
+X-Gmail-Original-Message-ID: <CANiDSCs9gby6bNBCRmxT15D8c-nksdUmwH8iUDAsiV1tmQTM3Q@mail.gmail.com>
+X-Gm-Features: AVHnY4JL0Aa54-Afx6BfrRiZHEfsHTgnEN1oSkHuKXH696j2MXYzf_2uO0CcVZg
+Message-ID: <CANiDSCs9gby6bNBCRmxT15D8c-nksdUmwH8iUDAsiV1tmQTM3Q@mail.gmail.com>
+Subject: Re: [PATCH 4/4] media: uvcvideo: Do not add clock samples with small
+ sof delta
+To: Hans de Goede <hansg@kernel.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Tomasz Figa <tfiga@chromium.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Yunke Cao <yunkec@google.com>, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: AE038513A9E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245293-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,amd.com:mid,amd.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[radhey.shyam.pandey@amd.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245295-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email,chromium.org:dkim]
 X-Rspamd-Action: no action
 
-From: Nava kishore Manne <nava.kishore.manne@amd.com>
+Hi Hans
 
-USB Gen1 requires scrambling and 8b/10b encoding to be performed in the
-physical layer. Do not bypass PHY-side scrambler or encoder/decoder for
-USB operation, as mandated by the USB 3.x specification.
+On Mon, 11 May 2026 at 18:07, Hans de Goede <hansg@kernel.org> wrote:
+>
+> Hi,
+>
+> On 23-Mar-26 14:10, Ricardo Ribalda wrote:
+> > Some UVC 1.1 cameras running in fast isochronous mode tend to spam the
+> > USB host with a lot of empty packets. These packets contain clock
+> > information and are added to the clock buffer but do not add any
+> > accuracy to the calculation. In fact, it is quite the opposite, in our
+> > calculations, only the first and the last timestamp is used, and we only
+> > have 32 slots.
+> >
+> > Ignore the samples that will produce less than MIN_HW_TIMESTAMP_DIFF
+> > data.
+> >
+> > Fixes: 141270bd95d4 ("media: uvcvideo: Refactor clock circular buffer")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+> >  drivers/media/usb/uvc/uvc_video.c | 18 ++++++++++++++++--
+> >  1 file changed, 16 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> > index dcbc0941ffe6..e1a4e84d6841 100644
+> > --- a/drivers/media/usb/uvc/uvc_video.c
+> > +++ b/drivers/media/usb/uvc/uvc_video.c
+> > @@ -544,6 +544,19 @@ static void uvc_video_clock_add_sample(struct uvc_clock *clock,
+> >       spin_unlock_irqrestore(&clock->lock, flags);
+> >  }
+> >
+> > +static inline u16 sof_diff(u16 a, u16 b)
+> > +{
+> > +     u32 aux;
+> > +
+> > +     a &= 2047;
+> > +     b &= 2047;
+> > +     if (a >= b)
+> > +             return a - b;
+> > +
+> > +     aux = a + 2048;
+> > +     return (u16)(aux - b);
+> > +}
+> > +
+> >  static void
+> >  uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+> >                      const u8 *data, int len)
+> > @@ -664,12 +677,13 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+> >       sample.dev_sof = (sample.dev_sof + stream->clock.sof_offset) & 2047;
+> >
+> >       /*
+> > -      * To limit the amount of data, drop SCRs with an SOF identical to the
+> > +      * To limit the amount of data, drop SCRs with an SOF similar to the
+> >        * previous one. This filtering is also needed to support UVC 1.5, where
+> >        * all the data packets of the same frame contains the same SOF. In that
+> >        * case only the first one will match the host_sof.
+> >        */
+> > -     if (sample.dev_sof == stream->clock.last_sof)
+> > +     if (sof_diff(sample.dev_sof, stream->clock.last_sof) <=
+> > +         (MIN_HW_TIMESTAMP_DIFF / stream->clock.size))
+> >               return;
+>
+> If I understand things correctly then uvc_video_clock_update() uses
+> first->host_time + some correction time. But you might end up not
+> storing a sample for the very first isochronous USB packet of a frame
+> because of this new check.  Which means that the first->host_time used
+> as a starting point for the timestamp just has become inaccurate ?
 
-Scrambler and 8b/10b bypass remain restricted to SATA and SGMII
-modes, where encoding is handled in the controller.
+In UVC 1.5 All the ISOC packets have the same dev_sof and dev_stc.
+So this check will avoid adding a whole frame into the timestamp
+circular buffer when running at more than 320 Hz (1/(0.1/32))
 
-Fixes: 4a33bea00314 ("phy: zynqmp: Add PHY driver for the Xilinx ZynqMP Gigabit Transceiver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nava kishore Manne <nava.kishore.manne@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
----
- drivers/phy/xilinx/phy-zynqmp.c | 39 ++++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 10 deletions(-)
+In UVC 1.1 all ISOC packets have the same dev_stc but different dev_sof.
+This check will avoid adding some of those packets into the circular
+buffer, but the accuracy will not be lost. We will use the data from
+the neighbour packets (even from previous frames) to recover the sof.
 
-diff --git a/drivers/phy/xilinx/phy-zynqmp.c b/drivers/phy/xilinx/phy-zynqmp.c
-index 6c56c4df8523..087fe402e4e2 100644
---- a/drivers/phy/xilinx/phy-zynqmp.c
-+++ b/drivers/phy/xilinx/phy-zynqmp.c
-@@ -502,15 +502,30 @@ static void xpsgtr_lane_set_protocol(struct xpsgtr_phy *gtr_phy)
- 	}
- }
- 
--/* Bypass (de)scrambler and 8b/10b decoder and encoder. */
--static void xpsgtr_bypass_scrambler_8b10b(struct xpsgtr_phy *gtr_phy)
-+/**
-+ * xpsgtr_bypass_scrambler_8b10b - Configure scrambler/encoder behavior
-+ * @gtr_phy: pointer to lane context
-+ * @bypass: true to enable scrambler/encoder bypass (SATA/SGMII),
-+ *          false to disable scrambler/encoder bypass (USB3)
-+ *
-+ * Uses RMW to preserve reserved and unrelated register fields.
-+ */
-+static void xpsgtr_bypass_scrambler_8b10b(struct xpsgtr_phy *gtr_phy,
-+					  bool bypass)
- {
--	xpsgtr_clr_set_phy(gtr_phy, L0_TM_DIG_6,
--			   L0_TM_DIS_DESCRAMBLE_DECODER,
--			   L0_TM_DIS_DESCRAMBLE_DECODER);
--	xpsgtr_clr_set_phy(gtr_phy, L0_TX_DIG_61,
--			   L0_TM_DISABLE_SCRAMBLE_ENCODER,
--			   L0_TM_DISABLE_SCRAMBLE_ENCODER);
-+	if (bypass) {
-+		xpsgtr_clr_set_phy(gtr_phy, L0_TM_DIG_6,
-+				   L0_TM_DIS_DESCRAMBLE_DECODER,
-+				   L0_TM_DIS_DESCRAMBLE_DECODER);
-+		xpsgtr_clr_set_phy(gtr_phy, L0_TX_DIG_61,
-+				   L0_TM_DISABLE_SCRAMBLE_ENCODER,
-+				   L0_TM_DISABLE_SCRAMBLE_ENCODER);
-+	} else {
-+		xpsgtr_clr_set_phy(gtr_phy, L0_TM_DIG_6,
-+				   L0_TM_DIS_DESCRAMBLE_DECODER, 0);
-+		xpsgtr_clr_set_phy(gtr_phy, L0_TX_DIG_61,
-+				   L0_TM_DISABLE_SCRAMBLE_ENCODER, 0);
-+	}
- }
- 
- /* DP-specific initialization. */
-@@ -531,7 +546,7 @@ static void xpsgtr_phy_init_sata(struct xpsgtr_phy *gtr_phy)
- {
- 	struct xpsgtr_dev *gtr_dev = gtr_phy->dev;
- 
--	xpsgtr_bypass_scrambler_8b10b(gtr_phy);
-+	xpsgtr_bypass_scrambler_8b10b(gtr_phy, true);
- 
- 	writel(gtr_phy->lane, gtr_dev->siou + SATA_CONTROL_OFFSET);
- }
-@@ -547,7 +562,7 @@ static void xpsgtr_phy_init_sgmii(struct xpsgtr_phy *gtr_phy)
- 	xpsgtr_clr_set(gtr_dev, TX_PROT_BUS_WIDTH, mask, val);
- 	xpsgtr_clr_set(gtr_dev, RX_PROT_BUS_WIDTH, mask, val);
- 
--	xpsgtr_bypass_scrambler_8b10b(gtr_phy);
-+	xpsgtr_bypass_scrambler_8b10b(gtr_phy, true);
- }
- 
- /* Configure TX de-emphasis and margining for DP. */
-@@ -707,6 +722,10 @@ static int xpsgtr_phy_init(struct phy *phy)
- 	case ICM_PROTOCOL_SGMII:
- 		xpsgtr_phy_init_sgmii(gtr_phy);
- 		break;
-+
-+	case ICM_PROTOCOL_USB:
-+		xpsgtr_bypass_scrambler_8b10b(gtr_phy, false);
-+		break;
- 	}
- 
- out:
+The biggest winner for this patch is UVC 1.1, which will have much
+more accurate timestamps, because the distance between the first and
+last will be bigger (as in uvc1.5)
+>
+> Regards,
+>
+> Hans
+>
+>
+
+
 -- 
-2.44.4
-
+Ricardo Ribalda
 
