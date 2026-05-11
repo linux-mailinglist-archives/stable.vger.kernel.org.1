@@ -1,191 +1,185 @@
-Return-Path: <stable+bounces-245313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPMbL6QaAmofoAEAu9opvQ
-	(envelope-from <stable+bounces-245313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 20:06:28 +0200
+	id kCl0GJwYAmognwEAu9opvQ
+	(envelope-from <stable+bounces-245314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:57:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7B1514104
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 20:06:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C257A513EE9
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 19:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A99B319047E
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:35:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E4D543018FB5
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EADC4657F1;
-	Mon, 11 May 2026 17:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E7946AECC;
+	Mon, 11 May 2026 17:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bc4Hyq64"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ju5nl9OE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8A9450902
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 17:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778520944; cv=pass; b=md0iZe4PldC0WZIRtrt/Y6LrhmT5LRsG2TRPrrFRXYaMWpkmUpB4sa9hEaO1JNDOumOZO7JmkiTj2EdzvYaQvpST9BIMgQEW1NPUK4lRm5GAdFe/koffGUw+j1riek4UgeFwIhOqo309WNbD8ta+qkgkMMqJyRFKuvwPWvlGW+o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778520944; c=relaxed/simple;
-	bh=PrHitHZsoYkpOMvbmxI3GoouXwZw7Mpx8RnnPHK+sF8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=exY8IG9+Y/5UfBVUcGV9zuua9qVcQ74b35an3F+nBIK9XATpu5Pg+7wqJJ4gR2q0Uh/NrW3L3Y+fiZjp7am1eCc8IHLKQzZOuv5ee9kGtYyZUpyZIrGFYQVWmqaWCivEyvsjtGgPHOOgdoOXdIciQA/XwLl3cFmgiTjFoFXd8/Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bc4Hyq64; arc=pass smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-65dbe04fc1bso1394554d50.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 10:35:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778520942; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WUNlGsVmjUDw4jwganGjs9p4+NgvF5Cv+g9qWcqQyec00Xfh0JfQ+QS/PMuktIC1bT
-         BnQMzQxTKh3NH3yTnJWkYtzFIB5oeYa7agc/iCbJ0tqxlR3xraeS71DlwU1yOkvA6+ou
-         rJUtHFOV9xSMLf3w2HQoJ2Ws3m1xULLvrE/3oiYQku46LSmA9/y8RrSKm+3xL+zadkmv
-         vqJCrCqP9LNLiwbS1nhLZxGdcVVfTxBolOigf4JRJaJ0hP4fUdkW7ITHqYXhTbURD0ty
-         6uS0efRV6VCeVH/ltkRgpGCVmtooN+I6sZSpUmYYZlB4dmTn/uj4o6cud6bFzTHpkZjD
-         SiXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dlz/dzPv3rXYhFqA+0mmgm8FDTZKSNmwOlN+ACRup7M=;
-        fh=o9GpgVYvGsI3wpJYplX/EHKpWX+OztrUPRIErhhrBO0=;
-        b=AOJB99UOmtM4rFfzVGMi19A21BZAjVkTxyuB+zXQRtyC0iyrHzwhT3VW0yDFBlhVqE
-         Xi0iY5vJ0X07xxkhF8NHPWXIlarWHSguK+4A94SNFZO9x2gv1CU4c2H7zvOk7PJCLTxj
-         4tsp6XXZvPQWGDzd7ocdZEm0bfALK0G0hDi1TQcFWtu9Wgy+3ZM8Oel6KVPKL3iCED0J
-         31UmGcJm0gbXnaCwZ0+MrxszWXRdSnbHlsZAbxJ+YpFjzkTGUefBt2GcUyRqx87pwuc+
-         ZjKlDrrnosKfdsJyDOuXogv4WmvH2TXP+OIUO3zV7D6Sliwd/sqMgu+j16AAxILGHcTu
-         +v8g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778520942; x=1779125742; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dlz/dzPv3rXYhFqA+0mmgm8FDTZKSNmwOlN+ACRup7M=;
-        b=bc4Hyq6422T08nEavjrv0nDDz85pVXB3eTqJKoNwnpdT8bP8Bcl4KiEc2T32rsGCnR
-         rQBiLxpofKw27UTTEer8HxQMuuFQTNtybfmTHLOUcjFC01b2futXIZnJkpAf/SxRAe5T
-         4IEBJR4+6A0JQ3lmblaixA6Xavv2Su0YfU2Rxoiszu/K1wy8M1QdSJGMbIRL5xLuddKT
-         olhNLsqOa2ZxCDocaVSA3GDhEbP3Axifd2YAiQnkt5xF2MReURk6aZ9vftmjn0Zt5k5k
-         WnR9mEMats8f+i9zBxTrDwuT/CA4g0+RXlEeN+f5nGBaitZynX1AK+/iRbTkWQEqi6Lk
-         hCTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778520942; x=1779125742;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dlz/dzPv3rXYhFqA+0mmgm8FDTZKSNmwOlN+ACRup7M=;
-        b=P8SepRXCULQnFy2O2xXq+UQZLpvD9K2ZJsXbtnr5TsGTIpqcxDhYLgyCd0UnRvC5ME
-         gh/yCYKik1k/h1lwWGaxy6bvCeoSZ8uhcEQGabRlgfia/JYU4cCbbXOJdsfdWuQmIZ3Z
-         IVVDgtMM5V+NJ4sDyLKxxTnz2B/5MaTnpIg9dIWRYKVc2jQichTwU3jRVplyVvMjFzn8
-         2Ge0GG8Bh5JrlMu2UcPFgmCvoSepkUygPtTRa3QauwnEANwlUMh0V4N1+mSHj/t0MAbD
-         3CTaXyUWNX6okUNMG+IyW3hRMoAd900VcZWxvINGjwv+pQMl9IOK5azDDNvO+hfFH12X
-         Jd3g==
-X-Forwarded-Encrypted: i=1; AFNElJ9cvRVsMHNe5stTzHo4R7pAV8rrStR4hiSy99js3jjGmFyTcirYksOr5UvOj9/jMYRteHyMexE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUOvV1e/FsPQfCFrJIgq+iittxJV8nVooGxggF4ifuj2Jm8yjv
-	hWLioy/lbLhGcWlW4mAYxdI3vpjGyd2g5FDxmnl4Rk/NQS8qfMpyzNwrz67Dtfojc65wC+f0JUJ
-	VUQ/U9iYJdIeBXlakbPhhiyiD6si2Uu0=
-X-Gm-Gg: Acq92OGYUHrLcAnxrAnuuUPkwucfKzkNp7IEtpGAMP4kha+1inAl0RUUP0cPNMQyBuG
-	edBipLf9bO3mZKjrCBcRy+gUXqS9HDXQ8fBzzQF+Wr6ulGzZZL6UUblQcF3CXpB2M87KRf64Fu8
-	GC0k7jd11WzJ/hxCtbdJRHc0TWwmxl2ymhyji0EnlXpQEZz9zDQ94VyJzcIihOkVFdC4X9EA5HS
-	Vs3qgGBvMO6QZ+Z43LN+TSVKO+4cMuI2EObyCRnbbz+yrHb6TxzQ/HTgGBdaVrgjyD6GIgwT53o
-	hyB91yH2ks2vAuBnM2aDQNK6Zmu0HaN+QS/G5Ic43KihpIwuuDSAITCrq+rsjC9aOLbIoA==
-X-Received: by 2002:a05:690e:120d:b0:65d:8123:25e5 with SMTP id
- 956f58d0204a3-65d94afdef1mr13964872d50.7.1778520942181; Mon, 11 May 2026
- 10:35:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0256A36D9F8;
+	Mon, 11 May 2026 17:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778522208; cv=none; b=AcdN+chxQuFlHL/j1+VdTRvq2lQLTxbWP3UbMREkRY40zm872Nmkk6NouPtFbOcMsl73VUauS3Mkko7aEtpw1KIJ8g6L687nRVPxO/7s83aOb2Ez0khIuRL4e/cq7+UHFoH5RJEnyGyaUqM+UzoDAsPN9GZwPORVFeIhDZnHcM4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778522208; c=relaxed/simple;
+	bh=wWPR3Z3pINbn3KtsYC+19U2lza/TgQV1Wvb7U7l2jmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X7OeOaPrlHTIDdXz0l3m8I1ZyVd3HGFCefP981b/KsnZr27OUij3XC29A0KaKI+A2kz58b7OnrTs7nR+AqA8zsWONYq0k1Koy4tKprF/l3dEUiyJC6lkQn7wVKgO5W7fLVP0cpcVaX9t6FFKUsRCjBHFMVfaxrRqsCXvSK7XOOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ju5nl9OE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B3CC2BCF5;
+	Mon, 11 May 2026 17:56:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778522207;
+	bh=wWPR3Z3pINbn3KtsYC+19U2lza/TgQV1Wvb7U7l2jmw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ju5nl9OETjvrFQmOEPGPKlDirxEP18xoxFYafD21aUX0IT3KSmhitqE4dTjsk0Jbd
+	 uzUPkPWKF+qD7pvydhtFjOttblywKU/+fc5zcKUt25DUKAyyvoB8WAP4t5L7DAv7oY
+	 pfmCIVYTo6Elh6m8n20HB2QnUfVgWKVr59A8SQY45IoDlb7cATRhgaI1C9NKzl34NN
+	 eOS0a+4mJ94Q7FO77OSpuFVDuQo1W/b/3aJORsVaE7CaYOEVYO1KpBOfSydU+yHlZD
+	 rxK7t0g9YCSkhm9/VC0/sE5pCl8GOcVrn7fGh4TWiQJ+I+B25/7JxC4CNJPjEXh9H6
+	 FXSOGS489jxyg==
+Date: Mon, 11 May 2026 20:56:41 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Cc: m.szyprowski@samsung.com, robin.murphy@arm.com, kbusch@kernel.org,
+	jgg@ziepe.ca, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] dma-mapping: move dma_map_resource() sanity check
+ into debug code
+Message-ID: <20260511175641.GL15586@unreal>
+References: <20260511083133.1096171-1-jianpeng.chang.cn@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1778506829.git.michael.bommarito@gmail.com>
- <490e228dd02983fb1530fb114d4174148f810261.1778506829.git.michael.bommarito@gmail.com>
- <CABBYNZL-f+AzFWdhvLcxdf0oCXbgr3AXqM1W2npOPZEv0gRA6w@mail.gmail.com> <CAJJ9bXxdm6LRW-5a4a1eDyZSQjNkJ4PNF+aERHkHe9EMQFX8oA@mail.gmail.com>
-In-Reply-To: <CAJJ9bXxdm6LRW-5a4a1eDyZSQjNkJ4PNF+aERHkHe9EMQFX8oA@mail.gmail.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Mon, 11 May 2026 13:35:30 -0400
-X-Gm-Features: AVHnY4L-7jwHCz-ogOtNC6Z8VESGLPAPWW1nNwcsCVS7lrb7wnAJ7aIMYilRan0
-Message-ID: <CABBYNZ+nyk+hZ498373bLJ0dOkDbNqP0PyoH5MWsPerHhBSfLA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] Bluetooth: hci_sync: pin conn across hci_le_create_conn_sync
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Mat Martineau <martineau@kernel.org>, netdev@vger.kernel.org, 
-	stable@vger.kernel.org, Pauli Virtanen <pav@iki.fi>, Aaron Esau <git@aaronesau.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1D7B1514104
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260511083133.1096171-1-jianpeng.chang.cn@windriver.com>
+X-Rspamd-Queue-Id: C257A513EE9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245313-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-245314-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,windriver.com:email]
 X-Rspamd-Action: no action
 
-Hi Michael,
+On Mon, May 11, 2026 at 04:31:33PM +0800, Jianpeng Chang wrote:
+> dma_map_resource() uses pfn_valid() to ensure the range is not RAM.
+> However, pfn_valid() only checks for availability of the memory map for
+> a PFN but it does not ensure that the PFN is actually backed by RAM. On
+> ARM64 with SPARSEMEM (128MB section granularity), MMIO addresses that
+> share a section with RAM will falsely trigger the WARN_ON_ONCE and cause
+> dma_map_resource() to return DMA_MAPPING_ERROR.
+> 
+> This causes a WARNING on Raspberry Pi 4 during spi_bcm2835 probe because
+> the SPI FIFO register (0xfe204004) falls in the same sparsemem section
+> as the end of RAM (0xf8000000-0xfbffffff), both in section 31
+> (0xf8000000-0xffffffff).
+> 
+> Move the sanity check from dma_map_resource() into debug_dma_map_phys()
+> and replace the unreliable pfn_valid() with pfn_valid() &&
+> !PageReserved(), which correctly identifies actual usable RAM without
+> false positives for MMIO regions that happen to have struct pages.
+> 
+> Since dma_map_resource() is dma_map_phys(DMA_ATTR_MMIO), the check
+> applies equally to both APIs. Any non-reserved page represents kernel
+> memory to a sufficient degree that using DMA_ATTR_MMIO on it is almost
+> certainly wrong and risks breaking coherency on non-coherent platforms.
+> ZONE_DEVICE pages used for PCI P2P DMA (MEMORY_DEVICE_PCI_P2PDMA) have
+> PageReserved set, so they will not trigger a false positive.
+> 
+> The check is now a WARN_ONCE that no longer blocks the mapping, since
+> being unobtrusive is more important than being exhaustive for what is
+> merely a debug sanity check.
+> 
+> Fixes: f7326196a781 ("dma-mapping: export new dma_*map_phys() interface")
+> Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+> ---
+> v2:
+>   - move check to debug_dma_map_phys and replace pfn_valid() with
+>     pfn_valid() && !PageReserved() as Robin suggested.
+>   - update commit message to explain why PageReserved is safe for
+>     ZONE_DEVICE PCI_P2PDMA pages
+> v1: https://lore.kernel.org/all/20260507032120.4072283-1-jianpeng.chang.cn@windriver.com/
+>  kernel/dma/debug.c   | 9 +++++++++
+>  kernel/dma/mapping.c | 4 ----
+>  2 files changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+> index 1a725edbbbf6..180aa2c930b5 100644
+> --- a/kernel/dma/debug.c
+> +++ b/kernel/dma/debug.c
+> @@ -1239,6 +1239,15 @@ void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+>  	if (dma_mapping_error(dev, dma_addr))
+>  		return;
+>  
+> +	if (attrs & DMA_ATTR_MMIO) {
+> +		unsigned long pfn = PHYS_PFN(phys);
+> +
+> +		WARN_ONCE(pfn_valid(pfn) && !PageReserved(pfn_to_page(pfn)),
+> +			  "dma_map_resource called for RAM address %pa\n",
+> +			  &phys);
+> +		return;
 
-On Mon, May 11, 2026 at 1:01=E2=80=AFPM Michael Bommarito
-<michael.bommarito@gmail.com> wrote:
->
-> On Mon, May 11, 2026 at 10:53=E2=80=AFAM Luiz Augusto von Dentz
-> <luiz.dentz@gmail.com> wrote:
-> > Id suggest we dropped the once at the end so just hci_cmd_sync_queue_co=
-nn.
-> >
-> > > +                                       hci_cmd_sync_work_func_t func=
-,
-> > > +                                       struct hci_conn *conn,
-> > > +                                       hci_cmd_sync_work_destroy_t d=
-estroy)
-> > > +{
-> > > +       int err;
-> > > +
-> > > +       err =3D hci_cmd_sync_queue_once(hdev, func, hci_conn_get(conn=
-), destroy);
-> > > +       if (err)
-> > > +               hci_conn_put(conn);
-> > > +
-> > > +       return err;
-> >
-> > Then we incorporate return (err =3D=3D -EEXIST) ? 0 : err; logic above,=
- so
-> > I don't think any caller should require queuing multiple procedures
-> > for the same conn.
->
-> OK, good call.  I checked the other 10 callers for
-> hci_cmd_sync_queue_once and there isn't any variation today, so that
-> seems safe.
->
-> Do you want me to wait another 24-48 for others to weigh in or ship v2 no=
-w?
+I’m not comfortable with this return statement. It effectively disables  
+DMA debugging for any caller that uses dma_map_phys(..., DMA_ATTR_MMIO),
+like dma-buf, block layer, HMM, e.t.c
 
-Just create a v2, anyone with comments can add them there as well.
+Thanks
 
---=20
-Luiz Augusto von Dentz
+> +	}
+> +
+>  	entry = dma_entry_alloc();
+>  	if (!entry)
+>  		return;
+> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+> index 23ed8eb9233e..e6b07f160d20 100644
+> --- a/kernel/dma/mapping.c
+> +++ b/kernel/dma/mapping.c
+> @@ -365,10 +365,6 @@ EXPORT_SYMBOL(dma_unmap_sg_attrs);
+>  dma_addr_t dma_map_resource(struct device *dev, phys_addr_t phys_addr,
+>  		size_t size, enum dma_data_direction dir, unsigned long attrs)
+>  {
+> -	if (IS_ENABLED(CONFIG_DMA_API_DEBUG) &&
+> -	    WARN_ON_ONCE(pfn_valid(PHYS_PFN(phys_addr))))
+> -		return DMA_MAPPING_ERROR;
+> -
+>  	return dma_map_phys(dev, phys_addr, size, dir, attrs | DMA_ATTR_MMIO);
+>  }
+>  EXPORT_SYMBOL(dma_map_resource);
+> -- 
+> 2.54.0
+> 
 
