@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-245116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNN/FjOGAWpOcQEAu9opvQ
-	(envelope-from <stable+bounces-245116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:33:07 +0200
+	id yIq/OIGFAWoFcAEAu9opvQ
+	(envelope-from <stable+bounces-245117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:30:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5EC509443
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:33:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64946509326
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C865230488F1
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:28:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E3DD3025E75
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AE93815CF;
-	Mon, 11 May 2026 07:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A65386C13;
+	Mon, 11 May 2026 07:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCYWFCRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="En2JABTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BDD37F73E
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05E3386555
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778484494; cv=none; b=H6ov76Sa+r/M7JfLQeNlgqQ3mhL1c5YWsVjGge8j1//Vr9997iXAgP9xwDUzUYZm/GkgXVMHeLb9gI+S+DLfZV63h3anw/18kkt3wcJ+cd/n6r3DrgR7UeX+mol7yeU4QvZ0hvXuBIakTu3fUll8X5k5F8/9NWF8ABB05vbpUSM=
+	t=1778484512; cv=none; b=W1jpqmu6uyquQL2FXVJbyNQVvJX31Q63rtAIYtUmPa2bqDfDYwS0z30BEAN01TTBP2LN0P24X5BQjNUlHagq9F5suaq+YDtMbuKyt40YRaoizO5g3ARErLWWmPOACTf/XYVT2rfzoeERXnvsHhvr0rgcAPa+sEiMa/rCtb/WLfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778484494; c=relaxed/simple;
-	bh=4z/wfE5Za01yyEXVfcacuTEN8QQNoxxbNOO0MjNSIBk=;
+	s=arc-20240116; t=1778484512; c=relaxed/simple;
+	bh=Hkm+ej5KFIhDwJGLKG18T97rBzFUof9AcSagqlJvnjk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CCYPNVV47a5/wcu9AOFov8wMtz/l6bN9dVPJt+fc3d5zO92gQFDvv21Co4dL2dgaGcl3pdkW8NFahAfiVzCeXnf1bZyR6x+vqX8RZhssCTIv92PCIrZC4oRzeV1WwmO2VjXqdjWa+0q89xRRwVijmOC2gV6Z9r7WPMrTv3T/IR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCYWFCRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1651C2BCB0;
-	Mon, 11 May 2026 07:28:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=SdIpKNBzv7FJ+Ecc4mLgo1DBstT6lPWWuJRlIvcJkOCjNkipiRBXFfrpHmKadBigZRX8xfmf0JupCO/DHIcRu49xl4WfQC6dzHZZFEwJDio6d6mqSiwBh4k2cFHLeI+6OwNBzC9Xsb5LBYG+TOjR59EfXKJrpmjzZ2ErdJPtgyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=En2JABTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4735FC2BCF6;
+	Mon, 11 May 2026 07:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778484494;
-	bh=4z/wfE5Za01yyEXVfcacuTEN8QQNoxxbNOO0MjNSIBk=;
+	s=korg; t=1778484511;
+	bh=Hkm+ej5KFIhDwJGLKG18T97rBzFUof9AcSagqlJvnjk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eCYWFCRkZqX3nnZnR9sYpT42CIoCXCTccEKyF5tI87D3VfqZcbbCDjfntAVRYJDxw
-	 AXlkkf0iJa4ELVPNx+CKTeDHEyJFQ0MwYmyQSlPrd2KD0SRsZ2PEzku6XOyE5cZGjY
-	 Bsg6JZyWnAJRofTBdXqQR0yWsoCLjEdPiKwbrQCM=
-Date: Mon, 11 May 2026 09:28:11 +0200
+	b=En2JABTkLYZlcvyw4s3Fy199ye1HUXJ51H/mF959vX3VRMyXzXM9xHlfMbYKfbd+V
+	 2M8he+xcITV41wk/pwMi2LDk41I77JuieaMVP1WanExf1Go3JqPIlbTAsAacbFmoA6
+	 bYXX3pKTrMjmah4aU5DayA0W9MJ3+moVZaAElwzc=
+Date: Mon, 11 May 2026 09:28:29 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Wentao Guan <guanwentao@uniontech.com>
 Cc: dhowells@redhat.com, imv4bel@gmail.com, jiayuan.chen@linux.dev,
-	stable@vger.kernel.org, torvalds@linux-foundation.org,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
-	stable@kernel.org, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 1/2] rxrpc: Fix conn-level packet handling to unshare
- RESPONSE packets
-Message-ID: <2026051152-mobster-abacus-7833@gregkh>
+	stable@vger.kernel.org, torvalds@linux-foundation.org
+Subject: Re: [PATCH 2/2] rxrpc: Also unshare DATA/RESPONSE packets when paged
+ frags are present
+Message-ID: <2026051119-family-spiritual-5b2c@gregkh>
 References: <2026051109-ocelot-dwindle-a7e9@gregkh>
  <20260511071833.44144-1-guanwentao@uniontech.com>
+ <20260511071833.44144-2-guanwentao@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,25 +60,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511071833.44144-1-guanwentao@uniontech.com>
-X-Rspamd-Queue-Id: AC5EC509443
+In-Reply-To: <20260511071833.44144-2-guanwentao@uniontech.com>
+X-Rspamd-Queue-Id: 64946509326
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245116-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245117-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,linux.dev,vger.kernel.org,linux-foundation.org,auristor.com,kernel.org,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[redhat.com,gmail.com,linux.dev,vger.kernel.org,linux-foundation.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -91,42 +88,44 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,auristor.com:email,sashiko.dev:url,uniontech.com:email,msgid.link:url,infradead.org:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,uniontech.com:email,linux-foundation.org:email,linux.dev:email]
 X-Rspamd-Action: no action
 
-On Mon, May 11, 2026 at 03:18:32PM +0800, Wentao Guan wrote:
-> From: David Howells <dhowells@redhat.com>
+On Mon, May 11, 2026 at 03:18:33PM +0800, Wentao Guan wrote:
+> From: Hyunwoo Kim <imv4bel@gmail.com>
 > 
-> The security operations that verify the RESPONSE packets decrypt bits of it
-> in place - however, the sk_buff may be shared with a packet sniffer, which
-> would lead to the sniffer seeing an apparently corrupt packet (actually
-> decrypted).
+> The DATA-packet handler in rxrpc_input_call_event() and the RESPONSE
+> handler in rxrpc_verify_response() copy the skb to a linear one before
+> calling into the security ops only when skb_cloned() is true.  An skb
+> that is not cloned but still carries externally-owned paged fragments
+> (e.g. SKBFL_SHARED_FRAG set by splice() into a UDP socket via
+> __ip_append_data, or a chained skb_has_frag_list()) falls through to
+> the in-place decryption path, which binds the frag pages directly into
+> the AEAD/skcipher SGL via skb_to_sgvec().
 > 
-> Fix this by handing a copy of the packet off to the specific security
-> handler if the packet was cloned.
+> Extend the gate to also unshare when skb_has_frag_list() or
+> skb_has_shared_frag() is true.  This catches the splice-loopback vector
+> and other externally-shared frag sources while preserving the
+> zero-copy fast path for skbs whose frags are kernel-private (e.g. NIC
+> page_pool RX, GRO).  The OOM/trace handling already in place is reused.
 > 
-> Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-> Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Marc Dionne <marc.dionne@auristor.com>
-> cc: Jeffrey Altman <jaltman@auristor.com>
-> cc: Simon Horman <horms@kernel.org>
-> cc: linux-afs@lists.infradead.org
-> cc: stable@kernel.org
-> Link: https://patch.msgid.link/20260422161438.2593376-5-dhowells@redhat.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> (cherry picked from commit 24481a7f573305706054c59e275371f8d0fe919f)
-> Stable-dep-of: aa54b1d27fe0 ("rxrpc: Also unshare DATA/RESPONSE packets when
-> paged frags are present")
+> Fixes: d0d5c0cd1e71 ("rxrpc: Use skb_unshare() rather than skb_cow_data()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Acked-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> (cherry picked from commit aa54b1d27fe0c2b78e664a34fd0fdf7cd1960d71)
 > Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 > ---
->  net/rxrpc/conn_event.c | 29 ++++++++++++++++++++++++++++-
->  1 file changed, 28 insertions(+), 1 deletion(-)
+>  net/rxrpc/call_event.c | 4 +++-
+>  net/rxrpc/conn_event.c | 3 ++-
+>  2 files changed, 5 insertions(+), 2 deletions(-)
 
-What branch(es) are you wanting this applied to?
+Same here, what branches is this for?
 
 thanks,
 
