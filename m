@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-245144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AlXG5mKAWp4dQEAu9opvQ
-	(envelope-from <stable+bounces-245144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:51:53 +0200
+	id ACUZIWuKAWpJcwEAu9opvQ
+	(envelope-from <stable+bounces-245145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:51:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACFF50998E
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:51:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C018F509930
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 09:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B4C930465C3
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:43:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEAF430488DB
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A4B39D6D6;
-	Mon, 11 May 2026 07:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725A839D6E2;
+	Mon, 11 May 2026 07:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="EcEjiu8q"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="CnMXMawL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0A539D6F6
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F6D39901A
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778485394; cv=none; b=KxTwEoB6f2zG7PXnnnoihc1NyrkdR9xpc95hhyYSN3pyUJxqrkwtcamBQAWex+g/74Qj/3CP19yAMQg3k/5qnybpdEyPE5zgEfLn85MfQfwY7bVgkOl+LIhMV4FcdaDmiTyjMDlP9X1qV+aXAzKUkgdf1REuEfimZY5w5sPEc1Q=
+	t=1778485416; cv=none; b=sy5iTXOSNqx2/Qb1Qd+SBN0qLB/GLGjcHROcUn3vTRAw1aLB+vwH2/UBrNn7cygnS+G4EdPAdlYF6v7oVpbBBDoezp9CIv7k37MakmwoPDtxmg6vr+Jbfd0LIuVd4AThnZMD4i4UWSGfFnKmY0fJiPxnfcXNkGa1ByGq5BWdqfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778485394; c=relaxed/simple;
-	bh=J0d5KBJlYhb4G+hYPHDCrsWOzCzLKYiXGMM+cG4jJnU=;
+	s=arc-20240116; t=1778485416; c=relaxed/simple;
+	bh=tjm3ZEhc35VabzZoFADkw8/QhRvgUHCjDmHFqBejJf8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KAywoBxP9BjYOFnSWD3HqHYKr1QaiCEEmbkr+/JKY89C0VC6dGnewOdOzaNHYbj3SXuMBhkks2CzzXzK+r2bCzUYBghGi32JfICVN5HmblOqg2/itqMk37jqNCBpAWsH+lvxKk9xki14T5qGB+CL0luHaPcBy9QyBwWORmV4m38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=EcEjiu8q; arc=none smtp.client-ip=54.254.200.92
+	 MIME-Version; b=qFZejMbpqwIEt0PgEU063l4N195yAGXDdFMjDTHlFdgiPwszBT/YT3glXxGqLo/J7/6vkiKsWxHX+Teo/08pqIPf6lbYhrhkPHttTlzHeMFIaqWefNDzW1yah6tRrtjplDIpCi3IiAj27Lc34s4inKZG+ev6RflT8l4tLqKsHPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=CnMXMawL; arc=none smtp.client-ip=54.92.39.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
 	s=onoh2408; t=1778485362;
-	bh=v1KKfYmrUY8b4UQxl1lzM5vF1VMF0m9JO9Tl1UIxiKQ=;
+	bh=KjdIqJHowoxVpEK7WVFd42JsQdYJl6fMxtjS9qhH7MQ=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=EcEjiu8qs6yE92aq+F/7U43Bdi6TxniAq63jpd5vp6Z+6s6bjP8UeW2vK5wFTMwa+
-	 xA4bnn31yz/s5GpjlxS65Ufi+U1ypzRBuXfFrshxwScEomEKq0sD8NqXjr9nyPtzDE
-	 hG5T/mpvwVWo4/IezM8I2WteXUkBPbkM/VwZGzh4=
-X-QQ-mid: zesmtpip2t1778485343t275879ae
-X-QQ-Originating-IP: v5hs4R2sFMgzUUE2s5UM10LppigihY6NgSZ0AaVPBtY=
+	b=CnMXMawLg3vbYATUJKU7JFQ40PV69aZBA8D8zUQer1WB3N0ON0lJLKnuHsAS7kqlX
+	 KwnZA7xUmnjH85/S5gjwpS+0831cvEU+sGOz9QJzbHKZCB4qMTH6mXowElgEElTeVl
+	 RLKAPf7wUV196BieVM1mAhW0FgsJv/ILUriuUqcQ=
+X-QQ-mid: zesmtpip2t1778485357te043757f
+X-QQ-Originating-IP: 9usmcOnLIzUH4xZHMpLtmursJLIlygSy6CFxM1eyxao=
 Received: from localhost.localdomain ( [localhost])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 11 May 2026 15:42:21 +0800 (CST)
+	id ; Mon, 11 May 2026 15:42:36 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 7227412292921570934
-EX-QQ-RecipientCnt: 13
+X-BIZMAIL-ID: 7996480324036906134
+EX-QQ-RecipientCnt: 7
 From: Wentao Guan <guanwentao@uniontech.com>
 To: gregkh@linuxfoundation.org
 Cc: dhowells@redhat.com,
@@ -57,16 +57,10 @@ Cc: dhowells@redhat.com,
 	imv4bel@gmail.com,
 	jiayuan.chen@linux.dev,
 	stable@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12.y v3 1/2] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
-Date: Mon, 11 May 2026 15:41:04 +0800
-Message-Id: <20260511074104.60836-1-guanwentao@uniontech.com>
+	torvalds@linux-foundation.org
+Subject: [PATCH 6.12.y v3 2/2] rxrpc: Also unshare DATA/RESPONSE packets when paged frags are present
+Date: Mon, 11 May 2026 15:41:19 +0800
+Message-Id: <20260511074119.60900-1-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <2026051132-equity-umbrella-a786@gregkh>
 References: <2026051132-equity-umbrella-a786@gregkh>
@@ -79,146 +73,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NVt3aLSv6AKCDI0Tx8poMBlHNyLHLFvyuZ6it7qB3TGQzAnozrJmvaVT
-	SeRtc7z/Ug7dKig2sdbsWF0rW5u93LpA/q+xGbzlhz987W6ILAnRRTew/DM8p3izGuWALLL
-	qjfxVDFHKl9Qgoqx+CEmO1Eqf7NwsXVyE3hu4rc1AgtmQzOnK2KEQCOgamykplyLQt2kHhM
-	SPJns0qDthaLADZqWPlo2XzOVCVdbLhz2oeFqpRsbHhkCyK2OUqPv73cU4Uy4soRlB14znZ
-	yUhGpa0ijBbcgvYUkzjPIvWLJFEbhP6tzkwx26NSoYf7YiEXJlwLqmNpZGlKy3iLjLpdGdM
-	ngZESGMvn0N01rny0YZhs/zqLemLN1t+WMtShZvqPK7QXSgQpMgYei5r0YAsspTs30YARK9
-	OxZKtvbUz0gjhCpTR30S0SRwGsjVaxQRWloS9mF0erFpITwRHx0duvaTy6Kkd8U7n2gjXOs
-	JMVJHgnsG4twLw5wxo7Iqoh/5+wwTYgvifKObeegpisyCrl7vBhpuICilfq6dXbpzI6RNSs
-	WNzE0+bgOY8sO2CoN63k37s8YKshCIWCHhcu/dCGIXv12uuafMr9uK3Xtw0NnPSdcRgt+v/
-	rYNcyR3V271yGYZXvW5MtkBzfRnFk36KFj+XiayCqrv/dB4ZLrcRUDc77JM0VThSRHAI3ho
-	DcWWvC2u82gb3mvwa8ztXMjLX7tavYaApCLUeyrYZJB0wqE9+FX+wIvTcOpCGxDDksXOj74
-	UzWK02eZTMKehKcpQkq7arCgp0/a7N1z8SvzQw9726uF7hTbEfqxZ82fGP1v7mDiyLbD+Y9
-	6mUgAlAHszcZZ5kOsQyT6dGx7iFz33S3FZZ55X3GfstAZ2t96dT5iESAur+iIfmwB+rs03L
-	r57bE9YVBh5suU90or+ziVR/pc4YMVht3o27ecwu6xg4e319SgzwsPQ2tne7a1NTe2ElhdN
-	M9T+JTaMNlbIY82vjgzcd5fSnB0hZiAzp+mcfk5rKPBG4l00bPkrfGxLYPCaIWbn9paAu3u
-	wdAHzfDgZGgV2YRyyIbthYXe7EtBNQbFpTjlEfQNM6Q/wGR9TeGeh1n4aqUnIISF5zKvLlc
-	yV2mLcr0IBxi0vvVrTEUBNpgHZM8NpZkcg7c/NlqsaGiCIUxSHO3DZ8pK9Maj09lOeLAelC
-	5QVblp0YE1vgI7IEU/2/xu6Ki5Wi2v718sTkJnF9G75bQJ8=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-XMAILINFO: NR3PJyWXADsZt0plwt8mq8KHsZDZ0pNB1pqJmKoFHRGxGiCWzaexcJ6Q
+	rMPPu/z8Rb8XNsENwDlBwyL6eKm5ZSfAKPRhJ6YGxI+Uw+x3C1+WEnQRObyXHnnFrXwyxNr
+	MeO0uwWGyk07/WX8Mt2clUN9e4yCUaSqVX9aDT4fKqyqrJvuNS9/Sdy3ifNJZo9o8HkqeLJ
+	TsjSV5miYXKuigaN2yZ20rmRQK61B7OjOianWAvYL86h3m3/F0yqSVOTuLSia9qGgRCEuxU
+	AL7nruIkjr7I0v4fpI0BZXt5vHTf9G5a4rM2X1GZVzJC7gGISJ7E1skrSz2eCgK0jJ/TheO
+	yP72DRLdJIY0ugSt8SNl/KDlRYVzd3KBzDp9n9+ZsJ9OuH1RlEoAOZaTBAC04WkWkhZAe/C
+	7yXR2zXF1HX0RV9PXiM4UcvENObeS/GCZXoAyb92WN0tUAU7wg7gqzNjA7ly0I/yGL9K2lQ
+	YfzqDFvZt429WXpGrlJgju1DELRlOgqanMRVyELh2JsJEB+at0xl4iytmDgrJiI8EIP4wiT
+	zvFNj6N9BOlIyh3dWCSKnkaM1pFFhpCky0Gll79DrSPVmNw0IMWW4VQALPoKoj7gN9jnYhW
+	oDhInYyitEhr6wApvmkMdpXMqUBZDi1EUct9iFmEu66l+c7IayMfGh3Ux3BoXPCG6K4uMsY
+	ddiyBJQ1uk0kYv7SO1i7xGZX7KikS0JxxwfPrzx7E8EwXt0mIGbabpK/DGe2AcSrSuaodWG
+	wJonBVLNYuY4zTBdfZD00zH338VhHdtRGEz4pEyYG8SGDuDEBi8GofPs+/VSGXshn86G8ms
+	7ePjMJ8FIHZ/5wUD7RVJ0lOIzU+XKjg3fS1RKL4bXYo51YODLfAic+mFEumDEZVsgPfFD9Q
+	o31u+cnrCg8wZjuUpiWjnCi+N0wJFqlAfdDvUw4rshfTKV58swNubhMenEi+Hv/s5JMBn+C
+	IX56fIZUiWmbO/QGUauNiKNBCgi530ZlFHPfmFbchTy/giY7NH7ZAcd6ZLhkMAhWbVVwTey
+	nDnZvEFcx6DZft9nIEPaIVb/GxjDXYsX59k1OQNCFZPCMAkLTWeqScOGpnhG2G/ymvrn9Jh
+	SMRgQCh+vuuxo0QfySig3XsrUluK//hnuaEj04ucii3Ph4KhJrIsLIRsNHGFj82pgeKmHMJ
+	L18CxgXMkUZzfV4=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: CACFF50998E
+X-Rspamd-Queue-Id: C018F509930
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,uniontech.com,gmail.com,linux.dev,vger.kernel.org,linux-foundation.org,auristor.com,kernel.org,lists.infradead.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245144-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245145-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[redhat.com,uniontech.com,gmail.com,linux.dev,vger.kernel.org,linux-foundation.org];
+	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,auristor.com:email,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-From: David Howells <dhowells@redhat.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-The security operations that verify the RESPONSE packets decrypt bits of it
-in place - however, the sk_buff may be shared with a packet sniffer, which
-would lead to the sniffer seeing an apparently corrupt packet (actually
-decrypted).
+The DATA-packet handler in rxrpc_input_call_event() and the RESPONSE
+handler in rxrpc_verify_response() copy the skb to a linear one before
+calling into the security ops only when skb_cloned() is true.  An skb
+that is not cloned but still carries externally-owned paged fragments
+(e.g. SKBFL_SHARED_FRAG set by splice() into a UDP socket via
+__ip_append_data, or a chained skb_has_frag_list()) falls through to
+the in-place decryption path, which binds the frag pages directly into
+the AEAD/skcipher SGL via skb_to_sgvec().
 
-Fix this by handing a copy of the packet off to the specific security
-handler if the packet was cloned.
+Extend the gate to also unshare when skb_has_frag_list() or
+skb_has_shared_frag() is true.  This catches the splice-loopback vector
+and other externally-shared frag sources while preserving the
+zero-copy fast path for skbs whose frags are kernel-private (e.g. NIC
+page_pool RX, GRO).  The OOM/trace handling already in place is reused.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 24481a7f573305706054c59e275371f8d0fe919f)
-[Readd rxrpc_skb_put_response_copy which missed in 016725807ce3 in v6.12.86]
-Stable-dep-of: aa54b1d27fe0 ("rxrpc: Also unshare DATA/RESPONSE packets when
-paged frags are present")
+Fixes: d0d5c0cd1e71 ("rxrpc: Use skb_unshare() rather than skb_cow_data()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+(cherry picked from commit aa54b1d27fe0c2b78e664a34fd0fdf7cd1960d71)
 Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 ---
- include/trace/events/rxrpc.h |  1 +
- net/rxrpc/conn_event.c       | 29 ++++++++++++++++++++++++++++-
- 2 files changed, 29 insertions(+), 1 deletion(-)
+ net/rxrpc/call_event.c | 4 +++-
+ net/rxrpc/conn_event.c | 3 ++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 9377acad0c5f9..63efc9e4e4102 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -146,6 +146,7 @@
- 	EM(rxrpc_skb_put_jumbo_subpacket,	"PUT jumbo-sub") \
- 	EM(rxrpc_skb_put_last_nack,		"PUT last-nack") \
- 	EM(rxrpc_skb_put_purge,			"PUT purge    ") \
-+	EM(rxrpc_skb_put_response_copy,		"PUT resp-cpy ") \
- 	EM(rxrpc_skb_put_rotate,		"PUT rotate   ") \
- 	EM(rxrpc_skb_put_unknown,		"PUT unknown  ") \
- 	EM(rxrpc_skb_see_conn_work,		"SEE conn-work") \
+diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
+index 62ddaa129ce5a..fda16b39e8e73 100644
+--- a/net/rxrpc/call_event.c
++++ b/net/rxrpc/call_event.c
+@@ -347,7 +347,9 @@ bool rxrpc_input_call_event(struct rxrpc_call *call, struct sk_buff *skb)
+ 
+ 		if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA &&
+ 		    sp->hdr.securityIndex != 0 &&
+-		    skb_cloned(skb)) {
++		    (skb_cloned(skb) ||
++		     skb_has_frag_list(skb) ||
++		     skb_has_shared_frag(skb))) {
+ 			/* Unshare the packet so that it can be modified for
+ 			 * in-place decryption.
+ 			 */
 diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 82cc72123c9c9..6dcfaed1f7485 100644
+index 6dcfaed1f7485..3a58fb9210383 100644
 --- a/net/rxrpc/conn_event.c
 +++ b/net/rxrpc/conn_event.c
-@@ -226,6 +226,33 @@ static void rxrpc_call_is_secure(struct rxrpc_call *call)
- 		rxrpc_notify_socket(call);
- }
+@@ -231,7 +231,8 @@ static int rxrpc_verify_response(struct rxrpc_connection *conn,
+ {
+ 	int ret;
  
-+static int rxrpc_verify_response(struct rxrpc_connection *conn,
-+				 struct sk_buff *skb)
-+{
-+	int ret;
-+
-+	if (skb_cloned(skb)) {
-+		/* Copy the packet if shared so that we can do in-place
-+		 * decryption.
-+		 */
-+		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
-+
-+		if (nskb) {
-+			rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
-+			ret = conn->security->verify_response(conn, nskb);
-+			rxrpc_free_skb(nskb, rxrpc_skb_put_response_copy);
-+		} else {
-+			/* OOM - Drop the packet. */
-+			rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
-+			ret = -ENOMEM;
-+		}
-+	} else {
-+		ret = conn->security->verify_response(conn, skb);
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * connection-level Rx packet processor
-  */
-@@ -253,7 +280,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 		}
- 		spin_unlock(&conn->state_lock);
- 
--		ret = conn->security->verify_response(conn, skb);
-+		ret = rxrpc_verify_response(conn, skb);
- 		if (ret < 0)
- 			return ret;
- 
+-	if (skb_cloned(skb)) {
++	if (skb_cloned(skb) || skb_has_frag_list(skb) ||
++	    skb_has_shared_frag(skb)) {
+ 		/* Copy the packet if shared so that we can do in-place
+ 		 * decryption.
+ 		 */
 -- 
 2.30.2
 
