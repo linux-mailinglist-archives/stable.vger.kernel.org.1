@@ -1,288 +1,157 @@
-Return-Path: <stable+bounces-245112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eLoAHd19AWrFbAEAu9opvQ
-	(envelope-from <stable+bounces-245112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 08:57:33 +0200
+	id ECi0HVp+AWoMbQEAu9opvQ
+	(envelope-from <stable+bounces-245113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 08:59:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137B5508BC8
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 08:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC34E508C04
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 08:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC9DF302E7BE
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 06:54:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22691301DE2D
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 06:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E59C2FF66B;
-	Mon, 11 May 2026 06:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600CB3033C6;
+	Mon, 11 May 2026 06:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WdL+ouEI"
+	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="G7KiyDDv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838C42F99B8
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 06:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778482490; cv=pass; b=XIkz1G4LOgSddOZEk/isM6Y732ZYP7IO09VfJ3JyDipCizEERpyoS6E+xExuKpDEO5I1lmd+4r5Y7Bg7fUK7oyXxmKfz0LWFMShWpLqlNsaNWzu0RLqs7kBNoKibbm2qy1+nNX6buDZZv/l3T9urpSYrFZ5MFpJrLOAQrvA2cwQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778482490; c=relaxed/simple;
-	bh=m9ggfBeGwWwf4Ny30oM6cEV7a/Kn+7pJ2p6ePJp+XO0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rsby+gftBYj01zvguZHdu3g0TBdpibY1SEQ4g983HcC9CUbgeMcQ4l0mXb+Jew6NWHuQNbGIhSdGRT7jSi6+N9p6bmRnN2wZ2sFBDsYeaDSOrRonoZPb1Nr/4+MSXzBBLRUiYFEDHMbtHa4yf1aTTvBzkm69vk3DEu8H5XJJ+fs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WdL+ouEI; arc=pass smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e5c5033f6so27523731cf.0
-        for <stable@vger.kernel.org>; Sun, 10 May 2026 23:54:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778482487; cv=none;
-        d=google.com; s=arc-20240605;
-        b=klqTH+VQpvmM+8JTMZ6d8HNxhb6y8VnWkZRZ1u7PrZzT++h2iCg8VsXBs1LMFHgyQy
-         jHVQU9XBvMAqTL/CMb4WkzSt7jf3qvdLKMRCfkuc+q8b1ODFeDMuB7tGG8dM492Q3/Cx
-         mI8BQ5K3TrYVfDps3Xte4uKNnT0EZ7MoIUnttFHsb0VZ+VkEiKwPz+m5bCj7q8qI9n1T
-         YBXk85mJ5UTLGVajmZt7UdNRg+5fggs+r22AzmuMMycCN49ObbrNG5sU8qPoqZF3pZjK
-         cO5VuYVNcG4iVssrjlKWTpBAK65D0w2oB43TJ8UWmr7En9c46Md/mUVxVG//EwTWi/ps
-         lmOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AyhRRlnK2R9IgaNjTQof4ske+M21SjbRc9ikQCLlfwc=;
-        fh=W8KgMaG8nQI5Kxg9vVNDF38Vhm66gVi7Zypox3IqnZ8=;
-        b=jXTQwOFOlFqZ4+/j1ZFdP2G91+lnESI+wQBnfzEVwncfvvaRx9vqFtP7JALo7QP/sX
-         rj1gJw/WXHCS+KgLACRnMCjPeFet5B78nTU9sji1IWsa/KJ1OvXVP1lMz8i9+v10x/0L
-         tEJSCoG9OGbjD+rDonCfd7v7m0qIfUttlhU0060GPrNiMFADxxxR1FliHPI2IhQBGdjo
-         y6Erilax4xK1gVIVCZnim+9S5qDVTrcoWNO8/WZNWh61+CV66rnNsG7OfrUilyxL//ln
-         Dg+LrpMd4+ctHupEthtWgQRv6ZA1N8q3bv/OWogxLtW7AXcqD88iKEUYYL31dE0+XOfu
-         qMSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F114C2DB7A3
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 06:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778482692; cv=none; b=Fjl0rVhsE0dlUA9aiNf4+hgHccCsky/DIWB7QVdRq9EQPYWwSIZ2psfjG9PxMKesOyCcN8E6orrRK5hnE2lWGTZtM8hDVVo6ic66h7SUSlA+Si0PwW+RsYevuZgRVlcTURlWOqAk0r18A+peMgBnU9CPMJd5F9rjG7A2uZLPZG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778482692; c=relaxed/simple;
+	bh=pAfSR+l7wN17yt/DIe6cWy36lj4IM5O/wJ/9Kftnl3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W1WXlDjYgWgdl9ZbvPMcuqgMgETQJjG32F8NeSmgQR4RsCV2Rl0X/BSdMDNdlD4XEQMjUi1J/6QATRhpgt7RR4fBu0LlffkAwwMmKo5W9qmUnJHWXI8ZhT1BWwHvifkg8UlVn6gywQbrXkpgYGgSWL+uflQ35mJfjWaAiMSgyxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=G7KiyDDv; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-83537a80ab6so2514440b3a.1
+        for <stable@vger.kernel.org>; Sun, 10 May 2026 23:58:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778482487; x=1779087287; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AyhRRlnK2R9IgaNjTQof4ske+M21SjbRc9ikQCLlfwc=;
-        b=WdL+ouEIc2+zBkmyR6ajxhIbi1Sswlz1WEnQwgZkeFuuQFM3tj9czp6jQMNzRu7RKj
-         vFS7dUq8scyC4dKYoXkAQK26JQP1Rg5b5/dODIexzIw2uVorMbvvwjU6Tf8XWqV8srG0
-         gKv63OD3Kiz5fpxmqJcRj+uSWx9r+R5pitWCdG4ooN3xKTKxUw0tfF/Ojf3F8fV4+pRv
-         VohrJVwZQw28s1fqgrq8b4KwnWJNTZm4abVnjs4W5P+KIJ0eMQi9XlmqawfYBSMvCYt4
-         MPl7fsUE7kyQyRcx8vVHD0CVuYkCHes+GikL3KJOVfGL7M7rd+5ONCgjtY0MRdzE7KUd
-         vKtg==
+        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1778482690; x=1779087490; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4r0tJ9SsE9hnxxU34JfGu26fGcFCd7TwYQ/xqlalG2M=;
+        b=G7KiyDDvFxCeMsvIKgsRcZ3MWZGAgIQBAq88EdM4FjOgvB3sDcSwxxeGufqcCGbWqn
+         xpT6DLitSSDzXvMACVQLMTeahy6IlbaCoK55KvzdWd/UDZKSkEMA3qcxjPaPAVJmlVuk
+         OznuusblkBXTd85G/XU4syUwUAaay9ZjpRyM9k5v9kZp75mTaqWAXBxv0fAVEZhvtCNw
+         p6jaX/cwH8bdWu+2Vjnfw1m9d8ArX8D7cIHNp0F0fGWy1kiRE0veMoUb2R4v8sPAXiCH
+         CLCvD9JxYhOIx2Hy4JdGeQlbdRVg8RiJiutZjQSFgoXTpVim6NezMzK1uRxjRmkAOc8i
+         9ejQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778482487; x=1779087287;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AyhRRlnK2R9IgaNjTQof4ske+M21SjbRc9ikQCLlfwc=;
-        b=ou0dDizkU3iL0ZHUqIic0Pzawr+Ph7B0QSsVJlXG+gq9u9WLnQcv56HHs3xMSSoWRC
-         jhdataSWkKOIQh+6p8HrbwVFoW7LZMHHpIlzI6MLgKa5KdCoODRYz2Ay+dex3yfvp4md
-         h0o/fH6k5a+PRC+kLuJWwWYTGsVir0pa2HtM5M4EGJunteTfmAS9gpFmjNv8fwoHP9CM
-         30ATNoWrGA9KLiRy252TAAz9kR8bQynV1lq9mU0tklDDJnm+ROwL6EMC6Ue4rHCst+0x
-         qoGUw4pf99NNQj7cD93uH6gNBBUZWADecyNXOxfofj2xTLewXSh4vVH2MeHtuHDfK2eU
-         b/Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ9a/BPJzvhyAfSCRKW5bl/BwxO6cHK7e/797Uj1jQ86b43GeAZONTFlFCuOKs7Ans+gHp79aic=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycjLteRt7H+ui0jDvf6Ktsyr2ARuOpzb6LAR+NYMg8zX1Nvsn1
-	j7jPciynfPujLOiNOUj3gvVU3jqTz0GludfynQjd8/Cy6PQIXnBsVBLuVY2hd58RzuyNq+1E6YD
-	ng00TQOogULWGd1ld+Xh0IWI16b2dLb65VAQW3220
-X-Gm-Gg: Acq92OEeaSmyfdm3qx9SI/3USM5QtnWA1vCB+q2RV4XqYsPuB7UFr9n5Z60a65Z3tmt
-	Ni5N1eO/v8BNczDaXJd9hJk+/yDjYKdHQTfgyUUDiJqhTuzamd5WeU87yPByLW2ODve2gPadJDa
-	pc9haEzyJtuRhg8GHzSBOOtLCtBTb52BKEhY7gmfXZAWOfFCLOSp9lygtgO3FD+Tl95YCfbBFK0
-	/SbsFJKJ6K+XChJPdSuPEJ3+Db7OscMM2CnsYx4RqUl51YXNhsc2ZTeyUCUEy+DEubTbEru/C2f
-	EA+a7XG8hZHhnX+knr0AN26w8QykERLa36lvl/GFL/E5mMgE9/MvtqEY3Je64NVOYC0WWXSC9sT
-	ZD1dfO6Sk0pYO5ctY5yYlJ1W/6vaQ
-X-Received: by 2002:a05:622a:114c:b0:50b:41bf:4ee5 with SMTP id
- d75a77b69052e-514621f338cmr353965191cf.57.1778482486865; Sun, 10 May 2026
- 23:54:46 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778482690; x=1779087490;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4r0tJ9SsE9hnxxU34JfGu26fGcFCd7TwYQ/xqlalG2M=;
+        b=pJx/ioNPv45PFKqoO9jVXkxV6Zxqg1O744eODZr9ynBm4+uX8WoZVrtmzbpiey/L36
+         xYZ1ac3hFqx55xjlgXLNvZJ5BcLK5WbSQmH8ByXm8Zof7JGhnxOdAHWgFTclKOyxKBK0
+         LZWFZZwvsv3BEK8H/XV8EXzUEK5lGa2wW/t6zs5okJT8+K7/crwKCOq8cdKwn3eTZcbn
+         nxeKs/QvTpPkB5JYOA5GYAmM9GqbxpQyarywUylSaNk4Un0IvCLIg35sI0+wJxVorNZR
+         Od66yMC9e8y4EYL+55fPTx/jxY4u7JN6eoUBLtIodEli4436N8eox8FxYpEXY/I7kIvx
+         2u5w==
+X-Forwarded-Encrypted: i=1; AFNElJ+DPySolE7e4eJxZWTVsAV25e96Zd83xY9cMi36trsGPhwUvBAYKHwdbL2xfgYNDmDqyJigs10=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCQ9OXvnDk7RHCweDYzrxZnGINEsY/wbBndUMEG0VvEFbOUaOO
+	Nz9oslxonOqjpvquIlVQBpnj++ORT5g3WsA83EVFAyJAZRKGPMbzVyWWztHFb1PeknY=
+X-Gm-Gg: Acq92OHTYpqQCd9Eztitz8Ryt6Bpva6/XM4Zs9rWZxYQ7xD3AsSsgdusmgZuBU0cYk8
+	aET9P8UVy7Eg6IU7Ocj+YyGZoLpSanJQI+ezZUtfw4N3aD9g+ng1lETfcxTzkYo+Fl3R73Ku9xu
+	oV9JOjzN6K8qdyTDFeWMdUjR3wYyLmNNKSimGgXyXX5dkfxMcQdpwsu1ei4iBCV8TNdw0DaJlD9
+	aotffJ5CexuQs7pQGTrxxnRilvVYzbRt/wWQXj+ssjt9qrYjutP2BTZ9vDMCalPyz+Q3gwAn/TM
+	uABe76tI+yIdRqogc73U0DE3JtzFvXynCthmB8zMxV274fbKqxgg287dQCBOw6viZkiQfoF/+5W
+	7nEsbrcI8ii86HqT/21u6YemtEAuSlPG7qSiEovHrcsFjPLA3M+d4jOJlLSvR4Kh8+Cx0c0rlny
+	5f47YmRyDkH/EnR13Wqdqm80boyhRm0AMDlfJIFjkITFi4vWXowiT4xUBVTDdBAsWHKlLfTuDoJ
+	kDsAg79ccEtONz8OV/n5wloX4aeVE/RTCt3vTOURKW6AzSDXxlZHoN5bw==
+X-Received: by 2002:a05:6a00:2d24:b0:81f:31c3:2e34 with SMTP id d2e1a72fcca58-83e3afd78f8mr8387020b3a.25.1778482689898;
+        Sun, 10 May 2026 23:58:09 -0700 (PDT)
+Received: from localhost.localdomain ([103.158.43.41])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-839679c861esm23913907b3a.30.2026.05.10.23.58.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 May 2026 23:58:09 -0700 (PDT)
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+To: ajay.kathat@microchip.com
+Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	claudiu.beznea@tuxon.dev,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	marex@denx.de,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: wilc1000: Fix memory leak in wilc_wlan_firmware_download()
+Date: Mon, 11 May 2026 12:27:57 +0530
+Message-ID: <20260511065759.37713-1-nihaal@cse.iitm.ac.in>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260511063005.38134-1-zhaoyz24@mails.tsinghua.edu.cn>
-In-Reply-To: <20260511063005.38134-1-zhaoyz24@mails.tsinghua.edu.cn>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 10 May 2026 23:54:35 -0700
-X-Gm-Features: AVHnY4Ic4M7f6SXQlN9sMIgnbx4Uj6isQ8OzNi8GIl2ydTasZYrS_kxOfsNW04Q
-Message-ID: <CANn89i+wKfikSrBJ+eatERFx+kC+vQV4WDTe9aCERiv9HtncDA@mail.gmail.com>
-Subject: Re: [PATCH net] net: core: dev: add reprocess depth limit for
- another_round in __netif_receive_skb_core
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Hangbin Liu <liuhangbin@gmail.com>, 
-	Krishna Kumar <krikku@gmail.com>, Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, 
-	Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 137B5508BC8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CC34E508C04
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+X-Spamd-Result: default: False [-0.06 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245112-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,kernel.org,redhat.com,gmail.com,google.com,mails.tsinghua.edu.cn,126.com,tsinghua.edu.cn];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245113-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,z.ai:url,tsinghua.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cse.iitm.ac.in:mid,cse-iitm-ac-in.20251104.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iitm.ac.in:email]
 X-Rspamd-Action: no action
 
-On Sun, May 10, 2026 at 11:30=E2=80=AFPM Yizhou Zhao
-<zhaoyz24@mails.tsinghua.edu.cn> wrote:
->
-> In __netif_receive_skb_core(), the another_round label can be reached
-> via a TC ingress redirect (bpf_redirect_peer returning -EAGAIN).
->
-> Across network namespaces, two BPF programs on peer devices can redirect
-> packets back and forth indefinitely, creating an unbounded loop that
-> monopolizes a CPU core in softirq context. This leads to RCU stalls,
-> soft lockups, and system-wide denial of service.
->
-> We reproduced it by creating a pair of TC BPF programs across two
-> network namespaces that redirect packets to each other, and the RCU
-> subsystem detects a stall:
->
-> ```
-> [   24.835219] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> [   24.835837] rcu:     (detected by 0, t=3D21002 jiffies, g=3D-627, q=3D=
-2 ncpus=3D1)
-> [   24.835959] rcu: All QSes seen, last rcu_preempt kthread activity 2100=
-2 (4294691810-4294670808), jiffies_till_next_fqs=3D3, root ->qsmask 0x0
-> [   24.836239] rcu: rcu_preempt kthread starved for 21002 jiffies! g-627 =
-f0x2 RCU_GP_WAIT_FQS(5) ->state=3D0x0 ->cpu=3D0
-> [   24.836362] rcu:     Unless rcu_preempt kthread gets sufficient CPU ti=
-me, OOM is now expected behavior.
-> [   24.836460] rcu: RCU grace-period kthread stack dump:
-> [   24.836601] task:rcu_preempt     state:R  running task     stack:15448=
- pid:15    tgid:15    ppid:2      task_flags:0x208040 flags:0x00080000
-> [   24.837139] Call Trace:
-> [   24.837568]  <TASK>
-> [   24.838008]  __schedule+0x4ed/0xea0
-> [   24.838934]  schedule+0x22/0xd0
-> [   24.839023]  schedule_timeout+0x81/0x100
-> [   24.839095]  ? __pfx_process_timeout+0x10/0x10
-> [   24.839165]  rcu_gp_fqs_loop+0x11b/0x650
-> [   24.839226]  ? __pfx_rcu_gp_kthread+0x10/0x10
-> [   24.839282]  rcu_gp_kthread+0x17e/0x210
-> [   24.839333]  ? __pfx_rcu_gp_kthread+0x10/0x10
-> [   24.839383]  kthread+0xdd/0x110
-> [   24.839433]  ? __pfx_kthread+0x10/0x10
-> [   24.839481]  ret_from_fork+0x1aa/0x260
-> [   24.839538]  ? __pfx_kthread+0x10/0x10
-> [   24.839585]  ret_from_fork_asm+0x1a/0x30
-> [   24.839686]  </TASK>
-> ......
-> ```
->
-> Fix this by adding a depth counter at the another_round label. When the
-> counter exceeds XMIT_RECURSION_LIMIT (8), the packet is dropped. This
-> follows the same pattern as dev_xmit_recursion() which protects the TX
-> redirect path with the same limit.
->
-> Add SKB_DROP_REASON_RECEIVE_REPROCESS_LOOP for observability.
->
-> This issue was found and reproduced with the assistance of GLM 5.1 from
-> Z.ai, affecting stable versions from v5.10.
->
-> Fixes: 9aa1206e8f482 ("bpf: Add redirect_peer helper")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> Reported-by: Xuewei Feng <fengxw06@126.com>
-> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-> Reported-by: GLM 5.1 from Z.ai
-> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> ---
->  include/net/dropreason-core.h | 6 ++++++
->  net/core/dev.c                | 8 ++++++++
->  2 files changed, 14 insertions(+)
->
-> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.=
-h
-> index a7b7abd66..f0f420f39 100644
-> --- a/include/net/dropreason-core.h
-> +++ b/include/net/dropreason-core.h
-> @@ -130,6 +130,7 @@
->         FN(DUALPI2_STEP_DROP)           \
->         FN(PSP_INPUT)                   \
->         FN(PSP_OUTPUT)                  \
-> +       FN(RECEIVE_REPROCESS_LOOP)      \
+The memory allocated for dma_buffer is not freed in the error path
+following the acquire_bus() call. Fix that by jumping to the error
+unwind path which frees the dma_buffer.
 
-I do not think we need a specific drop reason.
+Fixes: 1241c5650ff7 ("wifi: wilc1000: Fill in missing error handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+---
+Compile tested only. Issue found using static analysis.
 
->         FNe(MAX)
->
->  /**
-> @@ -622,6 +623,11 @@ enum skb_drop_reason {
->         SKB_DROP_REASON_PSP_INPUT,
->         /** @SKB_DROP_REASON_PSP_OUTPUT: PSP output checks failed */
->         SKB_DROP_REASON_PSP_OUTPUT,
-> +       /**
-> +        * @SKB_DROP_REASON_RECEIVE_REPROCESS_LOOP: __netif_receive_skb_c=
-ore
-> +        * exceeded max reprocess loop iterations (another_round).
-> +        */
-> +       SKB_DROP_REASON_RECEIVE_REPROCESS_LOOP,
->         /**
->          * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
->          * shouldn't be used as a real 'reason' - only for tracing code g=
-en
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 831129f2a..376b595b3 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -5958,6 +5958,7 @@ static int __netif_receive_skb_core(struct sk_buff =
-**pskb, bool pfmemalloc,
->         struct net_device *orig_dev;
->         bool deliver_exact =3D false;
->         int ret =3D NET_RX_DROP;
-> +       int reprocess_depth =3D 0;
->         __be16 type;
->
->         net_timestamp_check(!READ_ONCE(net_hotdata.tstamp_prequeue), skb)=
-;
-> @@ -5980,6 +5981,13 @@ static int __netif_receive_skb_core(struct sk_buff=
- **pskb, bool pfmemalloc,
->         pt_prev =3D NULL;
->
->  another_round:
-> +       if (unlikely(++reprocess_depth > XMIT_RECURSION_LIMIT)) {
-> +               net_warn_ratelimited(
-> +                       "%s: reprocess loop limit reached, dropping (dev=
-=3D%s)\n",
-> +                       __func__, skb->dev->name);
-> +               drop_reason =3D SKB_DROP_REASON_RECEIVE_REPROCESS_LOOP;
-> +               goto drop;
-> +       }
->         skb->skb_iif =3D skb->dev->ifindex;
->
->         __this_cpu_inc(softnet_data.processed);
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Can we please try to fix this issue without adding yet another cost in
-the fast path.
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 3fa8592eb250..4b116fe6f9ea 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -1265,7 +1265,7 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
+ 
+ 	ret = acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+ 	if (ret)
+-		return ret;
++		goto fail;
+ 
+ 	wilc->hif_func->hif_read_reg(wilc, WILC_GLB_RESET_0, &reg);
+ 	reg &= ~BIT(10);
+-- 
+2.43.0
 
-Presumably this could be done before one specific "goto another_round"
 
