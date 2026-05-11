@@ -1,218 +1,203 @@
-Return-Path: <stable+bounces-245148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL0kJoiNAWpyeAEAu9opvQ
-	(envelope-from <stable+bounces-245148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 10:04:24 +0200
+	id qL+hKJONAWpyeAEAu9opvQ
+	(envelope-from <stable+bounces-245149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 10:04:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BEA509C61
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 10:04:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88823509C70
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 10:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3FA9730A5E6D
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 07:51:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A8CF53000096
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 08:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4738F3A8730;
-	Mon, 11 May 2026 07:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399D63B5842;
+	Mon, 11 May 2026 08:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="R84is9rq";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KAq3i4lL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AoHNq4wN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0583A7F5E
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83943B6BE8
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 08:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778485793; cv=none; b=G/SUXC7n//YrzPdOuz40gsXbSXl+6laYLfGaq5EpWo7QXlfcKk/Utk0queCB5/IDWPvfmiYa69hY8+TSAidKYf8apUmjGBrEWpnSh+EDeX0Dk52MGLVnJdux9V/g2a5DWtZPtfIyF6Q6WT2rMeduPsY6I+AhfMrod5+A/8Yx8No=
+	t=1778486558; cv=none; b=i/qqhoPEJg9i8mSiElKsdZNJ+xbJp6Ys9XTdfPXQ/Z7Wh2WKjDDkEsH51mUqbbGizq1DFIgfUhnjO8FAvQy6kxvAPGezsmpHQRtLCBMlwtwZhfgShIB8kmer3jkmzdl7KbAb6qH5IB9k5xoCe42q+1Mw+3WbkZ4TFXc88LbA0fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778485793; c=relaxed/simple;
-	bh=dfcYwkyuDNYynj44TLY/xzDAGhF6slaoqu29/jCOjLg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cDLfw4/i5/VZVjONnZ+CGB1lnW2rJhzHvY6WQ+UBPF5TwgaZEdly+nSQznfT2sjUbS4KTExQN+0vi1WzuS3YCFctXJ2hI1H9sjxVGxNrnicLX/WDFBZiagIBVnmreKrLu03tBVZVTgLrMyqFTBSq3MnesWkjcjmIBOmX8xKfS+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=R84is9rq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KAq3i4lL; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B4bPeL1805990
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:49:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=zD0OZ3vl1Z6/q5f1uoJsnOx26bZdUEuAO+g
-	pWzawFUc=; b=R84is9rqwSI5OH3TizEVkUFTdeHN+ftcMSJX/hfgCHCf+nfc0JC
-	O0KRYqwiUFypzewXzD2GMob62VE+Ndg9lefuFwqwAxpbDC2j1dolRfUkzYcb7Yge
-	L6f+TdG8GILv8mWAO7bYISRygcdFIhkOIzvafVewdzQPd3k+rkIeLo/ed+6xdj8N
-	tl8oeTBgyByJUWZ3rVJsVzGHvnQJUoc8LAWUd5ayq2cUmlk+Tkhjs83EcXiPwLB9
-	uYB5qOZvkMmLps9lmCl39l1t2wb50SZwHPsE9sa7FH9C9BFu95sdq6kzYOheHF5b
-	/+zrYYmBg3w2cwXTa1w8HYxwfcjdsBwJEqA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e2dksu7j0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 07:49:32 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8acb0aa51c6so22211736d6.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 00:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778485771; x=1779090571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zD0OZ3vl1Z6/q5f1uoJsnOx26bZdUEuAO+gpWzawFUc=;
-        b=KAq3i4lLtAwqckL+dOLezbhEoR42dOK3EPl2BdjWVY8CZV3LJEGqq+MmKDO9atlmwA
-         U22hn8o9mI9RsIiSYjAYR4AfPI4WkMshDDsSMcoMffi9F9kZR5NzSSLlWw6AcQDzCaRj
-         T8V4ICBaj3pnxKt6cxFFw7B3KMffxk4XMmZjfaK2zZ1y3NyCBZkgD1e/zu0g+rzd2kA3
-         QcqGLRkirX6sUq1ZOd4JxTkWnJKqUjCQzHL+4b43LG6/fI2K2jcVHEYeYInxUV8kzhh7
-         m5k2drZbt+sgc2MUHaP/y6+gRi4rv6PKsmwMF+DQDL0fLkrBB2UspcDnz2H34acMra48
-         /qsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778485771; x=1779090571;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zD0OZ3vl1Z6/q5f1uoJsnOx26bZdUEuAO+gpWzawFUc=;
-        b=hGIU9TDTBVQP6ThsZsxYHlHtl7aaTJMaGgCemES8M7QFteTbCXvqe9ItyXjncJwje9
-         5OyzITI8ovvKBCuE6U2RJItdQp0DE8//moeCBsB/Vzfasuq0Qjy8oV+MXteGh91SXeLW
-         5lkyfaE1Heotag4UULF57bz/kfK5jS3KHl+zkESB4v+x0W8BSvyNJ5jYBHb4Y68Cy1aS
-         5aTr0Oj7ydMnn/6vfEt9QJf+HVsetfxDKsJxdrLQB1EQ43PBmNLlx/RDmmb+BWxTd2YA
-         VBeuA3qZnZaRHfCwIzSrF1qZZN1UAAzxU5cHwRRFPXTqldD3pu84Dq7cSsC6oe0AiqTi
-         TcBw==
-X-Forwarded-Encrypted: i=1; AFNElJ/CfzMoWX5O4NRLnWcLulSATTor1o1b4lTGuRvBMTLZVl2bucPnrqUUdtxl3Mwn+eUM0OlsMjA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyejYt5NTuJ0WSYTFTQDWZAssb5XEAQvX/ti0dmzyIWD8Bef3MX
-	3LRkKsFetqrFBsxh45MH75FsBl4h0dHU9js0lqRtwG+tBv51mdpdRvzUvxAE5S9A4fOUA/fIa3I
-	7JUEbGL/e3NQ0pKKywPTUn86gCJygLjVa9ERVjfsUYSoh1JZe00Ek59dbTf4=
-X-Gm-Gg: Acq92OHwbIZptLHD+aeMVZf7Mm1H4uJ384O4E2i79R3wGI0CUstoIoX2gyhcji0ZHyu
-	reKOp0EPAzOoyWBArjl9Q/hinuS6yIWkK3HzQMTuGKriwn6AWgq9Hbp09XCC4IzbSXSFYySXazW
-	qakHklYemEXQDeccP5u6fzBkkjIDmDO4MOuhTnEyo/4OKcV3QJn3NiAmO5FncMYcHJFepwAPwYH
-	6s5gi6PDJuFu9U27YEaMnF8v9gD5NvbEeLY5YcR6JQMm+y4Fezixwuw6yPlDOjPBwI5YwrENbFd
-	RDiukT+7mwT2NjMjODm+brSRchMmSf0/mKrw7Qca0pa1WFsgpIPweewKdU2vmlV7N4vpSP5Ls/J
-	ko+/ekRBTnTFFGRscRyPt40IhOyunilDWFQaq1VPjLHOFffBVeUVGBdmtHO8J
-X-Received: by 2002:a05:6214:2386:b0:89a:1c81:65a6 with SMTP id 6a1803df08f44-8bdb9b59b8emr211043346d6.17.1778485771478;
-        Mon, 11 May 2026 00:49:31 -0700 (PDT)
-X-Received: by 2002:a05:6214:2386:b0:89a:1c81:65a6 with SMTP id 6a1803df08f44-8bdb9b59b8emr211043146d6.17.1778485771059;
-        Mon, 11 May 2026 00:49:31 -0700 (PDT)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:63bd:c2f9:cedb:aa32])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e702ec51fsm147605045e9.12.2026.05.11.00.49.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 00:49:30 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Saravana Kannan <saravanak@kernel.org>, Rob Herring <robh@kernel.org>
-Cc: linux-acpi@vger.kernel.org, driver-core@lists.linux.dev,
-        linux-kernel@vger.kernel.org, brgl@kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v2] device property: initialize the remaining fields of fwnode_handle in fwnode_init()
-Date: Mon, 11 May 2026 09:49:26 +0200
-Message-ID: <20260511074927.9473-1-bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1778486558; c=relaxed/simple;
+	bh=xRZd89/2Cf/SyjbXMCN+xfbG4F9Wl1sZpFpdFn3/fl0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=l0hobc/HT9U1jcn10ylJGiu5JnjUI0ru1dQbL5/ZFHZixguaMmEsosmj7K8W2ho73t/gn1f81VwbOCsbQc5Yfis69nqTaOyGXK6Da1r/EHLGR9CapXll1P3KG1EmZcHn7cHJ5aJdWuv564WwE8dc1V6YaAY4GunLd3YVFQLafig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AoHNq4wN; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778486553; x=1810022553;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=xRZd89/2Cf/SyjbXMCN+xfbG4F9Wl1sZpFpdFn3/fl0=;
+  b=AoHNq4wNbOEc/StFiVJ1pUKDVayGUdjD7KpLIbyU/q7OKOEUoVOrebyk
+   yR0MnyROOgdRT0/GxZWrmssWy+NbOcTlveVMioz2m8OwF2KJO5g936lMo
+   Fm2TZalLSWNx0Z4cOu0lJ7qurMgQV/Wwh/MZxalOr3aKRAje8fFmMvbBB
+   j1OtXQ9oIlk8JwWOZ8FIJgu3fexWvQ67NPjCoXxwTI5RAUbyDghXvZDb3
+   edM8+I0b1jf50f/CVwVAgIqc3963xgRmNlGkPxQQKQbkbKxGnXxxVQWbc
+   sywVfCdt+ZRagHao2o8gAncmHJi6Iyl1Lne5sBZG4M9ZZ9xqU8TQwq34Z
+   w==;
+X-CSE-ConnectionGUID: 8iMLxe+dSSO6Da5l2Ddglw==
+X-CSE-MsgGUID: Hm4g4C9iSGeOFyYimd58og==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="90469013"
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="90469013"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 01:02:22 -0700
+X-CSE-ConnectionGUID: MkZCFCAYTlWHMvWT2AN/1A==
+X-CSE-MsgGUID: 8PdQqgaOT/63IhSweIzyAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="232903163"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.248]) ([10.245.244.248])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 01:02:19 -0700
+Message-ID: <ebc6a1f60e180e20eb5f599603c087e952c427e1.camel@linux.intel.com>
+Subject: Re: [PATCH] drm/ttm: Convert -EAGAIN from dmem_cgroup_try_charge to
+ -ENOSPC
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Maarten Lankhorst <dev@lankhorst.se>, intel-xe@lists.freedesktop.org
+Cc: Friedrich Vock <friedrich.vock@gmx.de>, Tejun Heo <tj@kernel.org>, 
+ Maxime Ripard <mripard@kernel.org>, Christian Koenig
+ <christian.koenig@amd.com>, 	dri-devel@lists.freedesktop.org,
+ stable@vger.kernel.org
+Date: Mon, 11 May 2026 10:02:17 +0200
+In-Reply-To: <433c0bbd-6c47-4011-8551-d1cfd0b4e17c@lankhorst.se>
+References: <20260508160920.230339-1-thomas.hellstrom@linux.intel.com>
+	 <433c0bbd-6c47-4011-8551-d1cfd0b4e17c@lankhorst.se>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 5-duDzhB-Ml1-d34W4uSqFSYswL61PP_
-X-Authority-Analysis: v=2.4 cv=d93FDxjE c=1 sm=1 tr=0 ts=6a018a0c cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=xqWC_Br6kY4A:10 a=NGcC8JguVDcA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=yOCtJkima9RkubShWh1s:22 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8
- a=VQTjnhxCuS3Q28dGhDUA:9 a=OIgjcC2v60KrkQgK7BGD:22
-X-Proofpoint-ORIG-GUID: 5-duDzhB-Ml1-d34W4uSqFSYswL61PP_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDA4MyBTYWx0ZWRfX3JX0E1d/faz3
- PkPajM3Pi1+Q1Acg+o8/iLh+6ZVbyLPH+tV0WCX/ey/qP9+TOf7Zgmy/cqVX/6ib7hh3tSRY8qh
- a1W+1Xny2Mj81AzQalr2cIkmm2Z+XB2zIEKTCnHVr027XWtHmPXniPKDvAtkt2lo19OVIe8KqRK
- Hje3LYh8KKoTaPV85qA5JSvKp8i3nZ9RzXUdancOGOXhL0TCnJHmeKdHe9WTpFrcA4HOmTPUk8O
- VOzhK63xugvBjQ/SrT1NQkVX5ewh9YxpbzZlZuNCJYxvPAKWQFMh4erZ7w2IzN9fFv5d+gO3c/R
- sVhLUICBMecAoyeTwpCE62IajBL8T3RgQfMvH7Mi3VNhQsiF4ug+nJsSBJOMA63VrhWuQnQzvTT
- 4p7T+PxRPDqys06X3zIKC0TXiv7oqtoyN0C73Hm+yI8OphrS49+YQTtt/U4hVYrEqPe2ADE2hUZ
- 8SC9JpD4B0K8coInoTQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_02,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 clxscore=1015 bulkscore=0 adultscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605110083
-X-Rspamd-Queue-Id: 26BEA509C61
+X-Rspamd-Queue-Id: 88823509C70
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-245148-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,linuxfoundation.org,linux.intel.com,gmail.com];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bartosz.golaszewski@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmx.de,kernel.org,amd.com,lists.freedesktop.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-245149-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,lankhorst.se:email,lists.freedesktop.org:email,amd.com:email,intel.com:email,intel.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lankhrost.se:email]
 X-Rspamd-Action: no action
 
-If a firmware node is allocated on the stack (for instance: temporary
-software node whose life-time we control) or on the heap - but using a
-non-zeroing allocation function - and initialized using fwnode_init(),
-its secondary pointer will contain uninitalized memory which likely will
-be neither NULL nor IS_ERR() and so may end up being dereferenced (for
-example: in dev_to_swnode()). Set fwnode->secondary to NULL on
-initialization. While at it: initialize the remaining fields of struct
-fwnode_handle too just to be sure.
+On Fri, 2026-05-08 at 19:03 +0200, Maarten Lankhorst wrote:
+> Hey,
+>=20
+> Den 2026-05-08 kl. 18:09, skrev Thomas Hellstr=C3=B6m:
+> > dmem_cgroup_try_charge() returns -EAGAIN when the cgroup limit is
+> > hit and the charge fails. TTM has no concept of -EAGAIN from
+> > resource
+> > allocation; -ENOSPC is the canonical error meaning "no space, try
+> > eviction". Convert at the source in ttm_resource_alloc() so no
+> > caller
+> > needs to handle an unexpected error code, and clean up the now-
+> > redundant
+> > -EAGAIN check in ttm_bo_alloc_resource().
+> >=20
+> > Without this, -EAGAIN escaping ttm_resource_alloc() during an
+> > eviction
+> > walk causes the walk to terminate early instead of continuing to
+> > the
+> > next candidate.
+> >=20
+> > Cc: Friedrich Vock <friedrich.vock@gmx.de>
+> > Cc: Maarten Lankhorst <dev@lankhorst.se>
+> > Cc: Tejun Heo <tj@kernel.org>
+> > Cc: Maxime Ripard <mripard@kernel.org>
+> > Cc: Christian Koenig <christian.koenig@amd.com>
+> > Cc: dri-devel@lists.freedesktop.org
+> > Cc: <stable@vger.kernel.org> # v6.14+
+> > Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in
+> > TTM")
+> > Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+> > Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> > ---
+> > =C2=A0drivers/gpu/drm/ttm/ttm_bo.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+| 2 +-
+> > =C2=A0drivers/gpu/drm/ttm/ttm_resource.c | 5 ++++-
+> > =C2=A02 files changed, 5 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/ttm/ttm_bo.c
+> > b/drivers/gpu/drm/ttm/ttm_bo.c
+> > index d85f0a37ac35..cee3828df655 100644
+> > --- a/drivers/gpu/drm/ttm/ttm_bo.c
+> > +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+> > @@ -739,7 +739,7 @@ static int ttm_bo_alloc_resource(struct
+> > ttm_buffer_object *bo,
+> > =C2=A0		may_evict =3D (force_space && place->mem_type !=3D
+> > TTM_PL_SYSTEM);
+> > =C2=A0		ret =3D ttm_resource_alloc(bo, place, res,
+> > force_space ? &limit_pool : NULL);
+> > =C2=A0		if (ret) {
+> > -			if (ret !=3D -ENOSPC && ret !=3D -EAGAIN) {
+> > +			if (ret !=3D -ENOSPC) {
+> > =C2=A0				dmem_cgroup_pool_state_put(limit_p
+> > ool);
+> > =C2=A0				return ret;
+> > =C2=A0			}
+> > diff --git a/drivers/gpu/drm/ttm/ttm_resource.c
+> > b/drivers/gpu/drm/ttm/ttm_resource.c
+> > index 9f36631d48b6..b0efffe5a526 100644
+> > --- a/drivers/gpu/drm/ttm/ttm_resource.c
+> > +++ b/drivers/gpu/drm/ttm/ttm_resource.c
+> > @@ -385,8 +385,11 @@ int ttm_resource_alloc(struct
+> > ttm_buffer_object *bo,
+> > =C2=A0
+> > =C2=A0	if (man->cg) {
+> > =C2=A0		ret =3D dmem_cgroup_try_charge(man->cg, bo-
+> > >base.size, &pool, ret_limit_pool);
+> > -		if (ret)
+> > +		if (ret) {
+> > +			if (ret =3D=3D -EAGAIN)
+> > +				ret =3D -ENOSPC;
+> > =C2=A0			return ret;
+> > +		}
+> > =C2=A0	}
+> > =C2=A0
+> > =C2=A0	ret =3D man->func->alloc(man, bo, place, res_ptr);
+>=20
+> Yeah looks reasonable with the conversion to callbacks.
+>=20
+> Reviewed-by: Maarten Lankhorst <dev@lankhrost.se>
 
-Cc: stable@vger.kernel.org
-Fixes: 01bb86b380a3 ("driver core: Add fwnode_init()")
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
-Changes in v2:
-- initialize all remaining fields in struct fwnode_handle too
+Thanks for reviewing, Maarten!=C2=A0
 
- include/linux/fwnode.h | 3 +++
- 1 file changed, 3 insertions(+)
+@Christian, any concerns?
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 80b38fbf2121..c30a9baafc0d 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -208,9 +208,12 @@ struct fwnode_operations {
- static inline void fwnode_init(struct fwnode_handle *fwnode,
- 			       const struct fwnode_operations *ops)
- {
-+	fwnode->secondary = NULL;
- 	fwnode->ops = ops;
-+	fwnode->dev = NULL;
- 	INIT_LIST_HEAD(&fwnode->consumers);
- 	INIT_LIST_HEAD(&fwnode->suppliers);
-+	fwnode->flags = 0;
- }
- 
- static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
--- 
-2.47.3
-
+/Thomas
 
