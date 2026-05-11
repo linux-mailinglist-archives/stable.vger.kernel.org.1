@@ -1,170 +1,139 @@
-Return-Path: <stable+bounces-245264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ4FMrf8AWomnAEAu9opvQ
-	(envelope-from <stable+bounces-245264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:58:47 +0200
+	id IBv+IGT8AWomnAEAu9opvQ
+	(envelope-from <stable+bounces-245265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:57:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BC3511B1B
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:58:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F45511ABB
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A38A2312C44A
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:48:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E6E603061002
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59031410D08;
-	Mon, 11 May 2026 15:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C436402B85;
+	Mon, 11 May 2026 15:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdVmIYXY"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="UyfOhyfO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC4140FDAE;
-	Mon, 11 May 2026 15:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E4F371068;
+	Mon, 11 May 2026 15:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778514424; cv=none; b=TZJ5cMDL3Gncz0HKMNt6UnZ/Xt7CaKr4vmB0gWyFgSEe8RNFpInFjnl+mX0XqGHL4T3F7+hAJnPJ/ddEZzf7L6x8e1qPIKQD3iXdeuJcESsDTENUkPGoYQUSnJfdvCeYFodKqvtcx0CBc4aHdY8EqD9rMTAS7ZHdE1D7S4vcyNs=
+	t=1778514576; cv=none; b=cKKHLWYA5Sl55dJEz/GVD5HlB9qgjMtqjhSQrQZMw+ZYsJVnfyhrYNdn7q1SHP4eQOPJWiFDXOvZGWQEkdyY5trNMLR76wJ7uQagXDEsPsvVM9aoMa+JcYa1ejmSqOT3/O3SeEKkSlw00ASEYdtarFkxiTqp32nzJ4MPfBTMhCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778514424; c=relaxed/simple;
-	bh=Pvc4wGSjhVhIBgmeGHWrbxZecHGbRz8bUAOHQrD+mU8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Jc2Afoqoy8uTb99Dq7D6X1PcTz2jTds/e/HVZbTjJTDMgX7IzOIVKA4widWwnB+WKrCDf+8ugcd2/SMJ9hBGf2EA9OCPTPKUXMQBVkIFCWT65MTl7YH/lPURS7E8Mtcg+vPEvKtJkNyAoR3FYBI0w8011qoxquL5KmnhPHhOaXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdVmIYXY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B96C2BCF5;
-	Mon, 11 May 2026 15:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778514423;
-	bh=Pvc4wGSjhVhIBgmeGHWrbxZecHGbRz8bUAOHQrD+mU8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RdVmIYXYMb5VQdVjU8Wm2wH40QMtOTXfjdVFTdu38SYBLK227uBpOrrNEVVzHOdj/
-	 8RKyKW5eo/F6N45VG3B4S6SO822ScIb34L+ooaQgmRjIGmg5OpKV6nww/fbMv92MjZ
-	 28+qyfDQks1oGZkKfch2bja78iaSLrNrmumEUHUxJkpvPyB3lGw/Ym1op2NnV5EUcA
-	 8m4vpzMaTbRq+R6g6sIXfKIP+BDzIg2+yhg+BKeIzPpgWvFzotAat04nN89ZJ1Nx+p
-	 s66h0CipwMCEBJSqEgrsfvbs9TaUqn+JaY25v62vesNv5IHvzzSStwG/ZKcmA/vkUt
-	 CD4zc895xZwIg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 11 May 2026 17:46:31 +0200
-Subject: [PATCH net 5/5] mptcp: update window_clamp on subflows when
- SO_RCVBUF is set
+	s=arc-20240116; t=1778514576; c=relaxed/simple;
+	bh=W5TVVZ6jHlKquxY4/gorNImpfWx/EUwufPwpk3+WIWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HAXcgEdmnhSkWSXl+u4QFMVKSZtoJfizLW3bd0ZoNHqfmC+g25cZHZ4AkK0lit83UqU2bUcopCp9nV2+tRjBjlJckoUEc4CLLCWyCNdKmiaAiib5Uiq3gdPDJHelDOrz0LZMw6QXFoaXNWw5bM1Ei3xFG6YBtxCaqzszqX85aRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UyfOhyfO; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E70181544;
+	Mon, 11 May 2026 17:49:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1778514566;
+	bh=W5TVVZ6jHlKquxY4/gorNImpfWx/EUwufPwpk3+WIWk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UyfOhyfOKGIPXjHwMpiUuMi16HsymHyCwO52sqKqCz4LZo4as8wyOPSt0a1ess2oV
+	 Cl0MFb7mRaunmpgon1Fyd97Vtqeuk8yDPVfCLOctYJeAHFMh7eyi36WchUUEUBDnc3
+	 iwgI1AUduC5abcd7a9Pj75hm89Bc/urxbj2M8eI8=
+Date: Mon, 11 May 2026 18:49:31 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yunke Cao <yunkec@google.com>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] media: uvcvideo: Use hw timestaming if the clock
+ buffer is full
+Message-ID: <20260511154931.GC3043805@killaraus.ideasonboard.com>
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+ <20260323-uvc-hwtimestamp-v1-2-aa42e3865204@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-5-5ee57cb2b7eb@kernel.org>
-References: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-0-5ee57cb2b7eb@kernel.org>
-In-Reply-To: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-0-5ee57cb2b7eb@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: Eric Dumazet <edumaze@google.com>, netdev@vger.kernel.org, 
- mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Gang Yan <yangang@kylinos.cn>, stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2246; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=ismW0iII4QhYJ6sgxMbjuN/Lcx0EQOH75zkJ2hNVKak=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIYfz6vrhZ0eCB0QoWh7/CGShNTw57z+mKRcrXLXBcd7
- W08fIK/o5SFQYyLQVZMkUW6LTJ/5vMq3hIvPwuYOaxMIEMYuDgFYCIxDowM0+ZuLDF6FGhxyeDa
- 68WBoluOczWe+FkkuTVqEWPkpRwHUUaGObdqmLavOr5RI0Bh2icVgbIJSXZuEstmfxd+U3DJQus
- WHwA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Rspamd-Queue-Id: 33BC3511B1B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260323-uvc-hwtimestamp-v1-2-aa42e3865204@chromium.org>
+X-Rspamd-Queue-Id: 00F45511ABB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245264-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	TAGGED_FROM(0.00)[bounces-245265-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
 X-Rspamd-Action: no action
 
-From: Gang Yan <yangang@kylinos.cn>
+On Mon, Mar 23, 2026 at 01:10:29PM +0000, Ricardo Ribalda wrote:
+> In some situations, even with a full clock buffer, it does not contain
+> 250msec of data. This results in the driver jumping back from software
+> to hardware timestapsing creating a nasty artifact in the video.
+> 
+> If the clock buffer is full, use it to calculate the timestamp instead
+> of defaulting to software stamps, the reduced accuracy is less visible
+> than jumping from one timestamping mechanism to the other.
+> 
+> Fixes: 6243c83be6ee8 ("media: uvcvideo: Allow hw clock updates with buffers not full")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  drivers/media/usb/uvc/uvc_video.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> index 6786ca38fe5e..c7ebedb3450f 100644
+> --- a/drivers/media/usb/uvc/uvc_video.c
+> +++ b/drivers/media/usb/uvc/uvc_video.c
+> @@ -842,7 +842,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
+>  	 * dev_sof runs at 1KHz, and we have a fixed point precision of
+>  	 * 16 bits.
+>  	 */
+> -	if ((y2 - y1) < ((1000 / 4) << 16))
+> +	if (clock->size != clock->count && (y2 - y1) < ((1000 / 4) << 16))
+>  		goto done;
 
-Add __mptcp_subflow_set_rcvbuf() helper to write the subflow sk_rcvbuf,
-but also to call the recently added tcp_set_rcvbuf() helper to update
-window_clamp. This is needed because the window clap is updated when
-scaling_ratio changes, in tcp_measure_rcv_mss(). Until scaling_ratio
-changes, the subflow is stuck with the old window clamp which may be
-based on a small initial buffer.
+This requires an update to the comment above.
 
-Use this new helper in both mptcp_sol_socket_sync_intval() (setsockopt
-path) and sync_socket_options() (new subflow creation path).
-
-Fixes: b025461303d8 ("tcp: update window_clamp when SO_RCVBUF is set")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/619
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/sockopt.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 1cf608e7357b..1544e3563852 100644
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -67,6 +67,12 @@ static int mptcp_get_int_option(struct mptcp_sock *msk, sockptr_t optval,
- 	return 0;
- }
- 
-+static inline void __mptcp_subflow_set_rcvbuf(struct sock *ssk, int val)
-+{
-+	WRITE_ONCE(ssk->sk_rcvbuf, val);
-+	tcp_set_rcvbuf(ssk, val);
-+}
-+
- static void mptcp_sol_socket_sync_intval(struct mptcp_sock *msk, int optname, int val)
- {
- 	struct mptcp_subflow_context *subflow;
-@@ -100,7 +106,7 @@ static void mptcp_sol_socket_sync_intval(struct mptcp_sock *msk, int optname, in
- 		case SO_RCVBUF:
- 		case SO_RCVBUFFORCE:
- 			ssk->sk_userlocks |= SOCK_RCVBUF_LOCK;
--			WRITE_ONCE(ssk->sk_rcvbuf, sk->sk_rcvbuf);
-+			__mptcp_subflow_set_rcvbuf(ssk, sk->sk_rcvbuf);
- 			break;
- 		case SO_MARK:
- 			if (READ_ONCE(ssk->sk_mark) != sk->sk_mark) {
-@@ -1560,7 +1566,7 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
- 			mptcp_subflow_ctx(ssk)->cached_sndbuf = sk->sk_sndbuf;
- 		}
- 		if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
--			WRITE_ONCE(ssk->sk_rcvbuf, sk->sk_rcvbuf);
-+			__mptcp_subflow_set_rcvbuf(ssk, sk->sk_rcvbuf);
- 	}
- 
- 	if (sock_flag(sk, SOCK_LINGER)) {
+>  
+>  	y = (u64)(y2 - y1) * (1ULL << 31) + (u64)y1 * (u64)x2
+> 
 
 -- 
-2.53.0
+Regards,
 
+Laurent Pinchart
 
