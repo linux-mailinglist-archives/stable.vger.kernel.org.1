@@ -1,161 +1,198 @@
-Return-Path: <stable+bounces-245214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +L9BM7TZAWoDlgEAu9opvQ
-	(envelope-from <stable+bounces-245214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:29:24 +0200
+	id MILVLHrYAWpMlQEAu9opvQ
+	(envelope-from <stable+bounces-245215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:24:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3188250EE9D
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:29:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDA750ED14
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3231E3032981
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:22:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6AA2A30087D7
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF4A3E6398;
-	Mon, 11 May 2026 13:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561AE3B19AA;
+	Mon, 11 May 2026 13:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r2rc3hWJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UgoROtAZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B64A3E6389
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA87029C328
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778505728; cv=none; b=MhzQ6Nu1ZmJJSFHH10XHQQY3Lze+HIF8pmmzS3R41h4b8Ci/dWH4ZsQu8nUvehjt2w/IRB8PklV+weB2ql2M5bnKottI0Nf0oZitWB2eWfLnCwLHSkvaMspsjYCLnCWPT4R4TChLexI1g07JiKJIili0T41JqGF6N/ZVKddmA3s=
+	t=1778505848; cv=none; b=CGfjfRJeo9XIJoY/DNnKLBLsakjsdYZ2U1HBIaTBZqZDZWLBZtVlQvXc/T+WFmi5Gn7X5LcLErOuL9WvGdZcCoHqPW68KkwnAeIEhSACRZSGORf9Ghxsxqna2QnN+WLk3MYomzQyJ3l4V3FSoqSRqfRL3oSxMUk+787nUnzxiL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778505728; c=relaxed/simple;
-	bh=+JbXbcKDM9tLFcb/oST0T3xjyz8MPd/DooQAyYXusjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FL51Q6FuO4viNUiIaZOVdPRjdwGMs6N+n7ZMBWrdZUPkHwCK2jn1XkZ1wVm5puM9sE+Ce4D7xrB+Q5LoKVwtIPSmVCRm56D/RlYW17WA3fxW58SC+JwaaG2C6Bf+wwdD+hhV/RY9ogobSgSFwYqGHU5cabPL1o2J3aB0+rTdYjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r2rc3hWJ; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48d146705b4so53929435e9.3
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 06:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778505725; x=1779110525; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jjVhhqtI7XvHvBXt5ZBrdyL+WZE05jLTGWEJNy/AWV4=;
-        b=r2rc3hWJf+9Mf1480OkY+3jCjbiePrcjLgY20xniMmJQIbYzg5AVJ5ZTcX9PpUo7Sk
-         JhM5uQMBzhOo7wI/mXk5Zn2j7oZ7NdREQ0V0MYT13Agun1/dKUUOXy8XdDb0Lfz5qJYr
-         4pk/iMEIxxoCslhNvPBye1aDa29dwLxpCuKNDqdq2w4N6NPnpuFRcW06cGRL0Z95Uu4S
-         z2BR4om/x+wmHvRvcuXV2ZpgffzLoHt4VHZyqU8xC1cHrImvg8AceGlyF7wrZPKcZYSL
-         BogrPJbRWNcvvQt9M1ro/kf+Kak8VMfRRZsa4CmKlcefxfQGarHm5TEl1YffWIa+d+Nk
-         z/9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778505725; x=1779110525;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jjVhhqtI7XvHvBXt5ZBrdyL+WZE05jLTGWEJNy/AWV4=;
-        b=RK1FRRX3C1p9NCUWf9RdilccdWWcaUfr/U+5pWlJUOZR0ERTPWYQanUfTAKDLViXZO
-         xeayw0jrClkMnNCir8bcNl6dK5k11uUKPNKDsQv31NXqvBFij5hJ1FGL1CQ/xxqeCoAs
-         +uq448+W9EllOp0NHGHNM/6syIgn76mmCpm5w3Uzwdv/5ocwb+2vcUy1F9rwO2vhvcxn
-         hoILfe6eguNNQUPO/TfqRBuNhb6pPXywuHi3+d+oyCFmNVOZKdIp9lhQ+3/jhEldyPJg
-         pdOhPyqfMwd8Lf7hPA4g2bAzhzHVgNSBcjAAynyz+/XhACmLmKbTT9CHbOkRYBM3qZJP
-         qG4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9dkjGOCFRf7hCpf9D3h6yySvlhpzgVwzQGoabL7gzp4zCLpWhN4Svun9dN5f/okI0xxS+zEr4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzk2Ml+sXa3gHc0q5mw/ohFCbqnprskZofGIoLk3zSz19EKnoW
-	GMfGlWS6/UKq0d1ZFqBSoD16jQKSRb5ZUtq3om6VSFCeK7EyqU0C30OK
-X-Gm-Gg: Acq92OHTeuRQEKYE1bAszJDP/ObT5i1927cKCYABEJEsGirzpHgZ/XzuUvQaTmnOW3n
-	NtRPPnLn1HevSg4tMByrlKW22XgW6UnEnTiEp9PFh4l4ByXQ3oqDWwUHxXNncdirWBUR6QyDPYa
-	t47zzRHpW9UriW1Ht39BgcX5xnnX5yXMosBJH5YbnDga+DAuB4hQra425BXfLAhKmTcTetUwIzI
-	Z+/P3K2txIdG9CvS1U4mmXUEFRYjRO2NsUFz7131cWqC/s5hK54s3v3rBVq3BwwuCuqlfruvtjj
-	fD/yzXs3RJwADV1MRqWMRmT6248tiFV4OZJvlndMgSzvNsTpUL0iTSevq6ez5ZNDFZt6X0xHr9V
-	4iRycXlwkkrz9gKXXxv2QJ7BoE2gBe5CTv4o2Av6M7XjiF4r+llVxatTWY9GUzOvl+prD0GhXg8
-	CjvRaQGQrieMFCgacFRNxYz7EnPOujFV3Pow6vAkv9JEg+zq7l3KseyZ/hqDkfhPnF/BvYgLcu2
-	g==
-X-Received: by 2002:a05:600c:2ed3:b0:488:d6eb:e63c with SMTP id 5b1f17b1804b1-48e51f427b3mr251306315e9.15.1778505725311;
-        Mon, 11 May 2026 06:22:05 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:34b1:bb7b:f969:515e:9d45? ([2001:871:22a:34b1:bb7b:f969:515e:9d45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6fff9ab8sm194958305e9.2.2026.05.11.06.22.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 May 2026 06:22:04 -0700 (PDT)
-Message-ID: <c216a62b-1653-43b3-b6a7-dd81af9da626@gmail.com>
-Date: Mon, 11 May 2026 15:22:03 +0200
+	s=arc-20240116; t=1778505848; c=relaxed/simple;
+	bh=GK/B3DlXW3lRPywOOkaR03IAPrX9KenXMdrIUbgApdg=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=YytLJVisCrdrNF5JhZot6pRlnPPjyV+axZn/GTrDmiYnh6kC0d/gtmdGkRfhBm5aQ19sPcrOfdJ/lLqltWeael4IwYUn7VpIP10XqvNKufnRF4jk4NAwDbZrM7RpZx/EJ7I2h5+Lwm4wmr9nFTp0eURYIPWTicrzv6fV1uOuuqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UgoROtAZ; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778505847; x=1810041847;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=GK/B3DlXW3lRPywOOkaR03IAPrX9KenXMdrIUbgApdg=;
+  b=UgoROtAZ9F4ntC4n9CDcLaoU/NPc2yDBUSdhbCW99ocs2FnOk1KeUNTE
+   0JBfWo8k5h5CGfakdd14fp/rdvr6R7tJmUOsS7D6lCcGjWnHW/aXDhkzs
+   4rBy6vPxM2W9weoN3/IkRIiMEDkcoXZQvMs4L6JKgES+Q8BVOJ4Uh+BSt
+   gvSlk8RG9i+IVuHyl7DWRBuSxm8VxV/pcDPcrbg8lKPPA+9aTggr0a+Ra
+   HYNhK6AYCV30Lz7XBBxROOO9jvs+BucLOgYRfYAdAxl4tR5Z29ia45Zwx
+   229a7llxofai1m9pebvj20Z7rw+NHSS7x1rnKMc084OB3YC+A2UQSsnQh
+   w==;
+X-CSE-ConnectionGUID: CRPucarNR/SEgL/dSAGWGQ==
+X-CSE-MsgGUID: rKqN+VaeQ7CNYGKBzsiVBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79112645"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="79112645"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 06:24:07 -0700
+X-CSE-ConnectionGUID: fHyHMPuwScOUOAAZClGkjA==
+X-CSE-MsgGUID: 6oWP56s+RgSOGJrfyA3tWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="241807027"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 06:24:05 -0700
+Date: Mon, 11 May 2026 15:24:03 +0200 (CEST)
+From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
+To: =?ISO-8859-15?Q?Jouni_H=F6gander?= <jouni.hogander@intel.com>
+cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] drm/i915/psr: Block DC states on vblank enable when
+ Panel Replay supported
+In-Reply-To: <20260511121551.2373824-1-jouni.hogander@intel.com>
+Message-ID: <6e9aff22-6ca1-92cb-c8c0-3fcd2fcfaef3@intel.com>
+References: <20260511121551.2373824-1-jouni.hogander@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: Do not select HAVE_RUST when KASAN is enabled
-To: Nathan Chancellor <nathan@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-References: <20260511-arm-avoid-rust-with-kasan-v1-1-24d55f4a900b@kernel.org>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20260511-arm-avoid-rust-with-kasan-v1-1-24d55f4a900b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3188250EE9D
+Content-Type: multipart/mixed; BOUNDARY="8323329-248716376-1778505529=:541093"
+Content-ID: <1cd4dfa7-81d2-5fb9-3f91-fb45c814f245@intel.com>
+X-Rspamd-Queue-Id: 6EDA750ED14
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245214-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[kernel.org,armlinux.org.uk,garyguo.net,protonmail.com,google.com,umich.edu];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chrisischrefl@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245215-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+,1:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michal.grzelak@intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim,intel.co:email]
 X-Rspamd-Action: no action
 
-On 5/11/26 10:02 AM, Nathan Chancellor wrote:
-> When KASAN is enabled, such as with allmodconfig, the build fails when
-> building the Rust code with:
-> 
->   error: kernel-address sanitizer is not supported for this target
-> 
->   error: aborting due to 1 previous error
-> 
->   make[4]: *** [rust/Makefile:654: rust/core.o] Error 1
-> 
-> The arm-unknown-linux-gnueabi target does not support KASAN, so avoid
-> saying Rust is supported when it is enabled.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: ccb8ce526807 ("ARM: 9441/1: rust: Enable Rust support for ARMv7")
-> Link: https://github.com/Rust-for-Linux/linux/issues/1234
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Seems fine to me either like this or as Alice mentioned in another reply. 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+--8323329-248716376-1778505529=:541093
+Content-Type: text/plain; CHARSET=ISO-8859-2; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <03fd19ef-4622-1089-a705-3c1166dc9982@intel.com>
 
-Cheers,
-Christian
+On Mon, 11 May 2026, Jouni Högander wrote:
+> Currently we are blocking DC states only when Panel Replay is enabled on
+> vblank enable. It may happen that Panel Replay is getting enabled when
+> vblank is already enabled. Fix this by blocking DC states always if Panel
+> Replay is supported.
+>
+> While at it take care of possible dual eDP case by looping all encoders
+> supporting PSR.
+>
+> Fixes: 0c427ac78a1d ("drm/i915/psr: Add interface to notify PSR of vblank enable/disable")
+> Cc: <stable@vger.kernel.org> # v6.16+
+> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+> ---
+> drivers/gpu/drm/i915/display/intel_psr.c | 19 ++++++++++---------
+> 1 file changed, 10 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+> index 9958230a3dd9..657b1614cd65 100644
+> --- a/drivers/gpu/drm/i915/display/intel_psr.c
+> +++ b/drivers/gpu/drm/i915/display/intel_psr.c
+> @@ -4141,32 +4141,33 @@ void intel_psr_notify_vblank_enable_disable(struct intel_display *display,
+> 					    bool enable)
+> {
+> 	struct intel_encoder *encoder;
+> +	bool block_dc_states = false;
+>
+> 	for_each_intel_encoder_with_psr(display->drm, encoder) {
+> 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
+>
+> 		mutex_lock(&intel_dp->psr.lock);
+> -		if (intel_dp->psr.panel_replay_enabled) {
+> -			mutex_unlock(&intel_dp->psr.lock);
+> -			break;
+> -		}
+> +		if (CAN_PANEL_REPLAY(intel_dp))
+> +			block_dc_states = true;
+>
+> -		if (intel_dp->psr.enabled && intel_dp->psr.pkg_c_latency_used)
+> +		if (intel_dp->psr.enabled && !intel_dp->psr.panel_replay_enabled &&
+> +		    intel_dp->psr.pkg_c_latency_used)
+> 			intel_psr_apply_underrun_on_idle_wa_locked(intel_dp);
+>
+> 		mutex_unlock(&intel_dp->psr.lock);
+> -		return;
+> 	}
+>
+> 	/*
+> 	 * NOTE: intel_display_power_set_target_dc_state is used
+> -	 * only by PSR * code for DC3CO handling. DC3CO target
+> +	 * only by PSR code for DC3CO handling. DC3CO target
+> 	 * state is currently disabled in * PSR code. If DC3CO
+
+Here '*' could be dropped as well. Anyways it doesn't make much
+difference since next patch will remove the whole block.
+
+Reviewed-by: Micha³ Grzelak <michal.grzelak@intel.co>
+
+BR,
+Micha³
+
+> 	 * is taken into use we need take that into account here
+> 	 * as well.
+> 	 */
+> -	intel_display_power_set_target_dc_state(display, enable ? DC_STATE_DISABLE :
+> -						DC_STATE_EN_UPTO_DC6);
+> +	if (block_dc_states)
+> +		intel_display_power_set_target_dc_state(display, enable ?
+> +							DC_STATE_DISABLE :
+> +							DC_STATE_EN_UPTO_DC6);
+> }
+>
+> static void
+> -- 
+> 2.43.0
+>
+>
+--8323329-248716376-1778505529=:541093--
 
