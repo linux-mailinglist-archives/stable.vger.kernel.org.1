@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-245279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJUBOe0JAmrTnQEAu9opvQ
-	(envelope-from <stable+bounces-245279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:55:09 +0200
+	id QHh9AZUCAmrknAEAu9opvQ
+	(envelope-from <stable+bounces-245280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:23:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2D8512BE3
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:55:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BDFC5120B1
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 119B13045EF3
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:22:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0119F3006836
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38E24266B1;
-	Mon, 11 May 2026 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C0F426D24;
+	Mon, 11 May 2026 16:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqcGf+jp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dpOyive6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533D93B38B7
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 16:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F52425CCB
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 16:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778516561; cv=none; b=YlDa8KfyBWb1bTm+czq2OMIpUqF3woiL/ni5HwxPIgYtYff+ckuBH3vewSlMbHOTrgUeR7SRKOlwNwfIwhQ6KP3b7HzXghheUFnOQWORLd7HV2TXRid728gJnR6rz1VD/+dWa0jLFlPY1/AC+HKEBUNR193CTjr3dTSjcFyZDgE=
+	t=1778516626; cv=none; b=ulgqbkPtHFefTlb5/7hY3f34ID0rMKo1ceJlktqXDkJtXlDAF2P92kW5j5KM/Od8T03YuPnJFhFYR//eakFLmG/NkqTEiD0buiTXHt+dBi2oy6wdNzHo/SJd0Z08OpS1leEPQwQ5ytUA8MmCW9nMAHUc+fjJGXGvUm163Vvn1ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778516561; c=relaxed/simple;
-	bh=SN/jOjWeFnb9zd9PU8cccTevSPqJx5CaWjLundSIQyU=;
+	s=arc-20240116; t=1778516626; c=relaxed/simple;
+	bh=tmV04ccJo2DqqDuy1wjVgxDVRO2nJ8uxajOLgt7HkKI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=igxK1v2rOOp/Y59/1LTQo8TW/AxG7Rta8SXPEGWl86Nu0U025ONVyJbnz1HZstCAVl5UZc4klquC1GwPsrwcuCrY30mOVUzKclgE6fvfk9l/qGGq9zhqmoSilL5wJrSQ71j/wymSgoiZeUylPKHKT6mAizulFPDmAjSPWkKsMGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqcGf+jp; arc=none smtp.client-ip=209.85.221.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=hX9nA6t3/2Aq0dVcA54zrIOoN34Az5tNKNFmOo2X/+LIskL8vRVqh68TpmX4l1F8c5Wet43snVxkj9Edd6PN80udepXy6JfI4XNFCMMqq9gYGW87oCBeCvrQSrCNiqHl93lQvi30AcgZVm8awHi6/wl8aEBfOSTTWs6jEe8DGlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dpOyive6; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d75312379so3542185f8f.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 09:22:39 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so41357355e9.0
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 09:23:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778516558; x=1779121358; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778516623; x=1779121423; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hmPpK0a25Ebx+j/ilm9ECiIbBTiQH791TCsDPBdyb9k=;
-        b=dqcGf+jpGTNXLZUM2weXCXG8Lq7+IhbpWb5Q/ng35HPqQ5Ydlog7QSEDXWWrN54V6r
-         j5mDL4aAoAdP8xGLQM+6f0AqMHuylTuPjKCnN4Y4oKws6aSe/JX/GtNAifaSVapZKM/Y
-         wD1LTUkSVrYEyDPnqLb2P9bLtVjT/ZKXoCKJJH3SXHRNDQnzMtwsVUk9rM5/2WAz+RnB
-         DLrjN1z1FfuhETjG3YBlA/10SH+oxhOeSHpDUxtz79V3FPR0bLwok5OpEK8RfLJVVbM1
-         1AQ7d7cNZFRowXGStcUksmfgjUqXCKqMn1lJDw16QUjhCOMlZidTktdfyB/KYKwnFO46
-         T68g==
+        bh=lEYbbGCLAz3hBtT/j8MAIFp8PMD5M9fLIOWA7RXEh3A=;
+        b=dpOyive6W4KucdJ5DqbqBezjVeBTZDfO7LxvGZyzs76BIZ9kV9Lx6m9XSaZc8ZJu3T
+         Eef/45w2auJ/lCQIsHfCf1HzjJTpPITyusZQ9ce/f1Lbsqz+j63lDclfZffOkWkq1vzw
+         1o8roKZDv2WBmAS2HM8R8a64Mp9ZS0ydxyPRLsp9MuCRZQHnCmw9yTw0RQSbmdx22glU
+         GeacUtqeXPAI3mNxBO4FnF1E2vCq/R0Uru4kubNXGcPp7oyVMs1yB6zNgP0b9dndSNoA
+         HkrFPLerYLz9nUFdi3n5j1+AU8ccEGgnrxjfjfi2nftm0Oyc+ZuoKvDE60aSx+PP2myV
+         x0Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778516558; x=1779121358;
+        d=1e100.net; s=20251104; t=1778516623; x=1779121423;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hmPpK0a25Ebx+j/ilm9ECiIbBTiQH791TCsDPBdyb9k=;
-        b=MS94kXX19T0yPNsucqm6A2IEtBfRsFV1ESWT/KQ8VnpWFq2nZ8bkLg544ExKvU7qMX
-         +CdvGww+b+QEPCxIlitnuxwGSk+lFHvk25hHilMx2o+lnn8lMOCxH38Wa7tjf7o1FCSc
-         YVVo+Lj9yuTh8D4cwgwJgbNKdxqv3Dh6k0zI31KWswXqtpY1SpljicM2ceDaEYKtN3Rj
-         ghzA65zxXp3CEMhXrMKEACXm9B1c8jgrrvIqj/wyrCfuJYuPLM7dkz2CZ0J6/w6Eqpee
-         5V2uzwp38W/ehEu5rXWRjqb1dCD383apxDbZdA9f8IhsiL5suCaqSsX/vSTlJXB4tSmd
-         XtEg==
-X-Gm-Message-State: AOJu0YyBv8ZKjabGAYrfyAjDA6WaF2swjaYHBvUzMEZHZ1Da1D+A2zGV
-	s3HP4sKMIaFmJ4z1qu/4wkRT0pi6eiofIlH7QwQ23+g+z1wWv1HCj6CzE0742Ci1
-X-Gm-Gg: Acq92OFNO1trVdSMsCzkq4CD4WjWXcS8P9kPUfccz/+JmyUamkqdBe8TwSMTl2FU/tl
-	m1yPc08OBe7Bd5QN3dvoVK0gZBIxtl+yCjB62/y8O3bNN2T/ngj/pRXMWsDQQtBtXbyMkq4fAvo
-	A7gcsWNXOcKSC52Tn3OYKo6/6Xzp8zSGyVf5yb6v7ZYE/IJWdN6B6vs4sYM42T56w1u+2QZoQhN
-	0iGZfYOqMoO+/5sF3tN+FZQDsvHVosRh8111zW/ssrc1eWRDcZFLTyKzQYjqSDAV4F0kIh4qhQ6
-	+lra7sCa7yVd8xraad/nCKyKOb/D7iWSiR5enpKAZOrgXWRLbVHVevtMavjVvd14JR68Dx2Bhzv
-	zU9//+zmRWtojJpmBc4wM8QJfu5rIVBjxPoSNGC6hUYr7EYN9hIxjnaU6zjpRwVBgIiJyeQYGza
-	Wx++9FV0Lj+4J5DTw9j5QFLnRPfnX7p3me5UMmROrQZu+ivq09yIYNZrB56bWa0CitXrI0IlqoS
-	k0DNSAzAsuhesJcixYYr9IMebAQewN0f66wsEt9YQmhOySpE/yHUR1ecEpoDQ0D9L547KAjltsS
-	FQeAuKgnLN9u8RNxxGi+h4QUFIgD08PqfamGCtfZP51+s1w7/rYcow==
-X-Received: by 2002:a05:6000:184f:b0:452:f380:5508 with SMTP id ffacd0b85a97d-45abdbfdaa1mr450495f8f.0.1778516557395;
-        Mon, 11 May 2026 09:22:37 -0700 (PDT)
+        bh=lEYbbGCLAz3hBtT/j8MAIFp8PMD5M9fLIOWA7RXEh3A=;
+        b=m417oI/uhL29sN8sqjHFF+sCGYtrrzR6S2IQBycR+YTrd2gyLbSBUi923zyyvPmjs1
+         ghQs1jZLxTfneT2a9yrd8vLSmg9/IYfdqY6cbxkwOdRmG4afUjVCm9yK6Ob9pRBVJyJ6
+         wdFqIfRzClpxuPkuqThTQuH0dii4YVrscuZ5hFuou1/HZudGckZ7FUYcTakmWvfVb7d6
+         2IFi3lzAcRVpAI3xlrhFJWZOQbJafiAG3KSw6eFPwDMYrUsOoClNOjrnyYVltmpjSCGL
+         hb+zBBgXiCBu/zrwGp5zHrAyGVDOpBgraFwlAUtM4A1qkoIyxtVbCULoBBB1EHU1PQTK
+         CpVQ==
+X-Gm-Message-State: AOJu0YziOVCsBRma4n0YGd/muBU/7zdmYIo14rtcQve8+5nZw13T6p+b
+	M0uE403awqmXbRN+FouXUSFrU80Qw2F5f5pZ+c0AyuVmY5taU4EKqeq7Pik/ym9y
+X-Gm-Gg: Acq92OEtDBkv6x/+d24sdIQvcp7XRCW4RQkmXxjZzhweIb3/hneZsxTOSG9TZjS+mdC
+	ixPgvC0vnZxFATpjrtsRBfJS3x3SoZ8p/qFOhf9T4sCEb56Xm4+YEN5pTimhQfkZGOGiA5bb8S2
+	IfnfTv+I9C1XY+oZU6myaAWEIkjdnmT4QknoczE2ia4of5be7+FdHlE3iBQjtE2Rn+agh3kF4CV
+	o2RvgHoFWGZId/BR73ogM7uP/IRSZkwKJZixreQN2j9tF8HVQmr8Ui8Q55XaAnz/EPPzoURtewB
+	ehjVqAPB5iHiIFIJR3MAPkhLKbrd/3q+bWh3ieQPhAIYgF5G6fu7pQaBS9le9QECvXMroCd2iYB
+	LmbtILZAjoMDZbvoCtYJraG0fpXQywgeVcUBBs9k9KetS71YOOenoKqIl0uZSRQwOZlVcJhIVI0
+	qaZjL+GpNvcaw8jd8jpAHUdhebS6IKKfjlMZq6dOYSllLy/1j4Ko1mDsnCqSuY93rj/gIchM2H9
+	cERnzZRArofC85U4O84pi1zpb/2mfKCs/uDfkcxTTuuqvazvKmfpIJ9pYhYqyByjk9ZJJ12JV1q
+	6GlfVUekn09kcEUEVieJT9ITuKSmnC7QyTCOfszr8Zg=
+X-Received: by 2002:a05:600c:4a25:b0:48a:768b:eea9 with SMTP id 5b1f17b1804b1-48e51e09797mr225302465e9.4.1778516622802;
+        Mon, 11 May 2026 09:23:42 -0700 (PDT)
 Received: from mail.gmail.com (2a01cb0889497e00f76596008310132d.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:f765:9600:8310:132d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548e6a68ebsm25022521f8f.1.2026.05.11.09.22.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e701e957asm196002185e9.6.2026.05.11.09.23.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 09:22:36 -0700 (PDT)
-Date: Mon, 11 May 2026 18:22:35 +0200
+        Mon, 11 May 2026 09:23:42 -0700 (PDT)
+Date: Mon, 11 May 2026 18:23:40 +0200
 From: Paul Chaignon <paul.chaignon@gmail.com>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -86,9 +86,8 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eduard Zingerman <eddyz87@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>, Tao Lyu <tao.lyu@epfl.ch>,
 	Levi Zim <rsworktech@outlook.com>
-Subject: [PATCH 6.6.y 01/10] bpf: support non-r10 register spill/fill to/from
- stack in precision tracking
-Message-ID: <adcebb699ae977311c557edfaf7e07754b7130fb.1778516196.git.paul.chaignon@gmail.com>
+Subject: [PATCH 6.6.y 02/10] selftests/bpf: add stack access precision test
+Message-ID: <36f60faaac96f64772628545f1186bce0b75f53f.1778516196.git.paul.chaignon@gmail.com>
 References: <cover.1778516196.git.paul.chaignon@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -99,12 +98,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1778516196.git.paul.chaignon@gmail.com>
-X-Rspamd-Queue-Id: 5A2D8512BE3
+X-Rspamd-Queue-Id: 9BDFC5120B1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -113,7 +112,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,suse.com,iogearbox.net,kernel.org,gmail.com,epfl.ch,outlook.com];
-	TAGGED_FROM(0.00)[bounces-245279-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245280-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -123,624 +122,114 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[paulchaignon@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iogearbox.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,iogearbox.net:email]
 X-Rspamd-Action: no action
 
 From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 41f6f64e6999a837048b1bd13a2f8742964eca6b ]
+[ Upstream commit 876301881c436bf38e83a2c0d276a24b642e4aab ]
 
-Use instruction (jump) history to record instructions that performed
-register spill/fill to/from stack, regardless if this was done through
-read-only r10 register, or any other register after copying r10 into it
-*and* potentially adjusting offset.
-
-To make this work reliably, we push extra per-instruction flags into
-instruction history, encoding stack slot index (spi) and stack frame
-number in extra 10 bit flags we take away from prev_idx in instruction
-history. We don't touch idx field for maximum performance, as it's
-checked most frequently during backtracking.
-
-This change removes basically the last remaining practical limitation of
-precision backtracking logic in BPF verifier. It fixes known
-deficiencies, but also opens up new opportunities to reduce number of
-verified states, explored in the subsequent patches.
-
-There are only three differences in selftests' BPF object files
-according to veristat, all in the positive direction (less states).
-
-File                                    Program        Insns (A)  Insns (B)  Insns  (DIFF)  States (A)  States (B)  States (DIFF)
---------------------------------------  -------------  ---------  ---------  -------------  ----------  ----------  -------------
-test_cls_redirect_dynptr.bpf.linked3.o  cls_redirect        2987       2864  -123 (-4.12%)         240         231    -9 (-3.75%)
-xdp_synproxy_kern.bpf.linked3.o         syncookie_tc       82848      82661  -187 (-0.23%)        5107        5073   -34 (-0.67%)
-xdp_synproxy_kern.bpf.linked3.o         syncookie_xdp      85116      84964  -152 (-0.18%)        5162        5130   -32 (-0.62%)
-
-Note, I avoided renaming jmp_history to more generic insn_hist to
-minimize number of lines changed and potential merge conflicts between
-bpf and bpf-next trees.
-
-Notice also cur_hist_entry pointer reset to NULL at the beginning of
-instruction verification loop. This pointer avoids the problem of
-relying on last jump history entry's insn_idx to determine whether we
-already have entry for current instruction or not. It can happen that we
-added jump history entry because current instruction is_jmp_point(), but
-also we need to add instruction flags for stack access. In this case, we
-don't want to entries, so we need to reuse last added entry, if it is
-present.
-
-Relying on insn_idx comparison has the same ambiguity problem as the one
-that was fixed recently in [0], so we avoid that.
-
-  [0] https://patchwork.kernel.org/project/netdevbpf/patch/20231110002638.4168352-3-andrii@kernel.org/
+Add a new selftests that validates precision tracking for stack access
+instruction, using both r10-based and non-r10-based accesses. For
+non-r10 ones we also make sure to have non-zero var_off to validate that
+final stack offset is tracked properly in instruction history
+information inside verifier.
 
 Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Reported-by: Tao Lyu <tao.lyu@epfl.ch>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231205184248.1502704-2-andrii@kernel.org
+Link: https://lore.kernel.org/r/20231205184248.1502704-3-andrii@kernel.org
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ Note: Adapted the expected log format for selftests as the map format
-  in verifier logs was changed in commits 1db747d75b1d and
-  0c95c9fdb696. ]
 Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
 Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 ---
- include/linux/bpf_verifier.h                  |  31 +++-
- kernel/bpf/verifier.c                         | 175 ++++++++++--------
- .../bpf/progs/verifier_subprog_precision.c    |  23 ++-
- .../testing/selftests/bpf/verifier/precise.c  |  38 ++--
- 4 files changed, 169 insertions(+), 98 deletions(-)
+ .../bpf/progs/verifier_subprog_precision.c    | 64 +++++++++++++++++--
+ 1 file changed, 59 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 32e89758176b..dba211d3bb9a 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -319,12 +319,34 @@ struct bpf_func_state {
- 	struct bpf_stack_state *stack;
- };
- 
--struct bpf_idx_pair {
--	u32 prev_idx;
-+#define MAX_CALL_FRAMES 8
-+
-+/* instruction history flags, used in bpf_jmp_history_entry.flags field */
-+enum {
-+	/* instruction references stack slot through PTR_TO_STACK register;
-+	 * we also store stack's frame number in lower 3 bits (MAX_CALL_FRAMES is 8)
-+	 * and accessed stack slot's index in next 6 bits (MAX_BPF_STACK is 512,
-+	 * 8 bytes per slot, so slot index (spi) is [0, 63])
-+	 */
-+	INSN_F_FRAMENO_MASK = 0x7, /* 3 bits */
-+
-+	INSN_F_SPI_MASK = 0x3f, /* 6 bits */
-+	INSN_F_SPI_SHIFT = 3, /* shifted 3 bits to the left */
-+
-+	INSN_F_STACK_ACCESS = BIT(9), /* we need 10 bits total */
-+};
-+
-+static_assert(INSN_F_FRAMENO_MASK + 1 >= MAX_CALL_FRAMES);
-+static_assert(INSN_F_SPI_MASK + 1 >= MAX_BPF_STACK / 8);
-+
-+struct bpf_jmp_history_entry {
- 	u32 idx;
-+	/* insn idx can't be bigger than 1 million */
-+	u32 prev_idx : 22;
-+	/* special flags, e.g., whether insn is doing register stack spill/load */
-+	u32 flags : 10;
- };
- 
--#define MAX_CALL_FRAMES 8
- /* Maximum number of register states that can exist at once */
- #define BPF_ID_MAP_SIZE ((MAX_BPF_REG + MAX_BPF_STACK / BPF_REG_SIZE) * MAX_CALL_FRAMES)
- struct bpf_verifier_state {
-@@ -407,7 +429,7 @@ struct bpf_verifier_state {
- 	 * For most states jmp_history_cnt is [0-3].
- 	 * For loops can go up to ~40.
- 	 */
--	struct bpf_idx_pair *jmp_history;
-+	struct bpf_jmp_history_entry *jmp_history;
- 	u32 jmp_history_cnt;
- 	u32 dfs_depth;
- 	u32 callback_unroll_depth;
-@@ -641,6 +663,7 @@ struct bpf_verifier_env {
- 		int cur_stack;
- 	} cfg;
- 	struct backtrack_state bt;
-+	struct bpf_jmp_history_entry *cur_hist_ent;
- 	u32 pass_cnt; /* number of times do_check() was called */
- 	u32 subprog_cnt;
- 	/* number of instructions analyzed by the verifier */
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 45eb795c8c04..e44da369dff6 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -1763,8 +1763,8 @@ static int copy_verifier_state(struct bpf_verifier_state *dst_state,
- 	int i, err;
- 
- 	dst_state->jmp_history = copy_array(dst_state->jmp_history, src->jmp_history,
--					    src->jmp_history_cnt, sizeof(struct bpf_idx_pair),
--					    GFP_USER);
-+					  src->jmp_history_cnt, sizeof(*dst_state->jmp_history),
-+					  GFP_USER);
- 	if (!dst_state->jmp_history)
- 		return -ENOMEM;
- 	dst_state->jmp_history_cnt = src->jmp_history_cnt;
-@@ -3418,6 +3418,21 @@ static int check_reg_arg(struct bpf_verifier_env *env, u32 regno,
- 	return __check_reg_arg(env, state->regs, regno, t);
- }
- 
-+static int insn_stack_access_flags(int frameno, int spi)
-+{
-+	return INSN_F_STACK_ACCESS | (spi << INSN_F_SPI_SHIFT) | frameno;
-+}
-+
-+static int insn_stack_access_spi(int insn_flags)
-+{
-+	return (insn_flags >> INSN_F_SPI_SHIFT) & INSN_F_SPI_MASK;
-+}
-+
-+static int insn_stack_access_frameno(int insn_flags)
-+{
-+	return insn_flags & INSN_F_FRAMENO_MASK;
-+}
-+
- static void mark_jmp_point(struct bpf_verifier_env *env, int idx)
- {
- 	env->insn_aux_data[idx].jmp_point = true;
-@@ -3429,28 +3444,51 @@ static bool is_jmp_point(struct bpf_verifier_env *env, int insn_idx)
- }
- 
- /* for any branch, call, exit record the history of jmps in the given state */
--static int push_jmp_history(struct bpf_verifier_env *env,
--			    struct bpf_verifier_state *cur)
-+static int push_jmp_history(struct bpf_verifier_env *env, struct bpf_verifier_state *cur,
-+			    int insn_flags)
- {
- 	u32 cnt = cur->jmp_history_cnt;
--	struct bpf_idx_pair *p;
-+	struct bpf_jmp_history_entry *p;
- 	size_t alloc_size;
- 
--	if (!is_jmp_point(env, env->insn_idx))
-+	/* combine instruction flags if we already recorded this instruction */
-+	if (env->cur_hist_ent) {
-+		/* atomic instructions push insn_flags twice, for READ and
-+		 * WRITE sides, but they should agree on stack slot
-+		 */
-+		WARN_ONCE((env->cur_hist_ent->flags & insn_flags) &&
-+			  (env->cur_hist_ent->flags & insn_flags) != insn_flags,
-+			  "verifier insn history bug: insn_idx %d cur flags %x new flags %x\n",
-+			  env->insn_idx, env->cur_hist_ent->flags, insn_flags);
-+		env->cur_hist_ent->flags |= insn_flags;
- 		return 0;
-+	}
- 
- 	cnt++;
- 	alloc_size = kmalloc_size_roundup(size_mul(cnt, sizeof(*p)));
- 	p = krealloc(cur->jmp_history, alloc_size, GFP_USER);
- 	if (!p)
- 		return -ENOMEM;
--	p[cnt - 1].idx = env->insn_idx;
--	p[cnt - 1].prev_idx = env->prev_insn_idx;
- 	cur->jmp_history = p;
-+
-+	p = &cur->jmp_history[cnt - 1];
-+	p->idx = env->insn_idx;
-+	p->prev_idx = env->prev_insn_idx;
-+	p->flags = insn_flags;
- 	cur->jmp_history_cnt = cnt;
-+	env->cur_hist_ent = p;
-+
- 	return 0;
- }
- 
-+static struct bpf_jmp_history_entry *get_jmp_hist_entry(struct bpf_verifier_state *st,
-+						        u32 hist_end, int insn_idx)
-+{
-+	if (hist_end > 0 && st->jmp_history[hist_end - 1].idx == insn_idx)
-+		return &st->jmp_history[hist_end - 1];
-+	return NULL;
-+}
-+
- /* Backtrack one insn at a time. If idx is not at the top of recorded
-  * history then previous instruction came from straight line execution.
-  * Return -ENOENT if we exhausted all instructions within given state.
-@@ -3612,9 +3650,14 @@ static inline bool bt_is_reg_set(struct backtrack_state *bt, u32 reg)
- 	return bt->reg_masks[bt->frame] & (1 << reg);
- }
- 
-+static inline bool bt_is_frame_slot_set(struct backtrack_state *bt, u32 frame, u32 slot)
-+{
-+	return bt->stack_masks[frame] & (1ull << slot);
-+}
-+
- static inline bool bt_is_slot_set(struct backtrack_state *bt, u32 slot)
- {
--	return bt->stack_masks[bt->frame] & (1ull << slot);
-+	return bt_is_frame_slot_set(bt, bt->frame, slot);
- }
- 
- /* format registers bitmask, e.g., "r0,r2,r4" for 0x15 mask */
-@@ -3668,7 +3711,7 @@ static bool calls_callback(struct bpf_verifier_env *env, int insn_idx);
-  *   - *was* processed previously during backtracking.
-  */
- static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
--			  struct backtrack_state *bt)
-+			  struct bpf_jmp_history_entry *hist, struct backtrack_state *bt)
- {
- 	const struct bpf_insn_cbs cbs = {
- 		.cb_call	= disasm_kfunc_name,
-@@ -3681,7 +3724,7 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 	u8 mode = BPF_MODE(insn->code);
- 	u32 dreg = insn->dst_reg;
- 	u32 sreg = insn->src_reg;
--	u32 spi, i;
-+	u32 spi, i, fr;
- 
- 	if (insn->code == 0)
- 		return 0;
-@@ -3744,20 +3787,15 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 		 * by 'precise' mark in corresponding register of this state.
- 		 * No further tracking necessary.
- 		 */
--		if (insn->src_reg != BPF_REG_FP)
-+		if (!hist || !(hist->flags & INSN_F_STACK_ACCESS))
- 			return 0;
--
- 		/* dreg = *(u64 *)[fp - off] was a fill from the stack.
- 		 * that [fp - off] slot contains scalar that needs to be
- 		 * tracked with precision
- 		 */
--		spi = (-insn->off - 1) / BPF_REG_SIZE;
--		if (spi >= 64) {
--			verbose(env, "BUG spi %d\n", spi);
--			WARN_ONCE(1, "verifier backtracking bug");
--			return -EFAULT;
--		}
--		bt_set_slot(bt, spi);
-+		spi = insn_stack_access_spi(hist->flags);
-+		fr = insn_stack_access_frameno(hist->flags);
-+		bt_set_frame_slot(bt, fr, spi);
- 	} else if (class == BPF_STX || class == BPF_ST) {
- 		if (bt_is_reg_set(bt, dreg))
- 			/* stx & st shouldn't be using _scalar_ dst_reg
-@@ -3766,17 +3804,13 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 			 */
- 			return -ENOTSUPP;
- 		/* scalars can only be spilled into stack */
--		if (insn->dst_reg != BPF_REG_FP)
-+		if (!hist || !(hist->flags & INSN_F_STACK_ACCESS))
- 			return 0;
--		spi = (-insn->off - 1) / BPF_REG_SIZE;
--		if (spi >= 64) {
--			verbose(env, "BUG spi %d\n", spi);
--			WARN_ONCE(1, "verifier backtracking bug");
--			return -EFAULT;
--		}
--		if (!bt_is_slot_set(bt, spi))
-+		spi = insn_stack_access_spi(hist->flags);
-+		fr = insn_stack_access_frameno(hist->flags);
-+		if (!bt_is_frame_slot_set(bt, fr, spi))
- 			return 0;
--		bt_clear_slot(bt, spi);
-+		bt_clear_frame_slot(bt, fr, spi);
- 		if (class == BPF_STX)
- 			bt_set_reg(bt, sreg);
- 	} else if (class == BPF_JMP || class == BPF_JMP32) {
-@@ -3820,10 +3854,14 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 					WARN_ONCE(1, "verifier backtracking bug");
- 					return -EFAULT;
- 				}
--				/* we don't track register spills perfectly,
--				 * so fallback to force-precise instead of failing */
--				if (bt_stack_mask(bt) != 0)
--					return -ENOTSUPP;
-+				/* we are now tracking register spills correctly,
-+				 * so any instance of leftover slots is a bug
-+				 */
-+				if (bt_stack_mask(bt) != 0) {
-+					verbose(env, "BUG stack slots %llx\n", bt_stack_mask(bt));
-+					WARN_ONCE(1, "verifier backtracking bug (subprog leftover stack slots)");
-+					return -EFAULT;
-+				}
- 				/* propagate r1-r5 to the caller */
- 				for (i = BPF_REG_1; i <= BPF_REG_5; i++) {
- 					if (bt_is_reg_set(bt, i)) {
-@@ -3848,8 +3886,11 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 				WARN_ONCE(1, "verifier backtracking bug");
- 				return -EFAULT;
- 			}
--			if (bt_stack_mask(bt) != 0)
--				return -ENOTSUPP;
-+			if (bt_stack_mask(bt) != 0) {
-+				verbose(env, "BUG stack slots %llx\n", bt_stack_mask(bt));
-+				WARN_ONCE(1, "verifier backtracking bug (callback leftover stack slots)");
-+				return -EFAULT;
-+			}
- 			/* clear r1-r5 in callback subprog's mask */
- 			for (i = BPF_REG_1; i <= BPF_REG_5; i++)
- 				bt_clear_reg(bt, i);
-@@ -4286,6 +4327,7 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
- 	for (;;) {
- 		DECLARE_BITMAP(mask, 64);
- 		u32 history = st->jmp_history_cnt;
-+		struct bpf_jmp_history_entry *hist;
- 
- 		if (env->log.level & BPF_LOG_LEVEL2) {
- 			verbose(env, "mark_precise: frame%d: last_idx %d first_idx %d subseq_idx %d \n",
-@@ -4349,7 +4391,8 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
- 				err = 0;
- 				skip_first = false;
- 			} else {
--				err = backtrack_insn(env, i, subseq_idx, bt);
-+				hist = get_jmp_hist_entry(st, history, i);
-+				err = backtrack_insn(env, i, subseq_idx, hist, bt);
- 			}
- 			if (err == -ENOTSUPP) {
- 				mark_all_scalars_precise(env, env->cur_state);
-@@ -4402,22 +4445,10 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
- 			bitmap_from_u64(mask, bt_frame_stack_mask(bt, fr));
- 			for_each_set_bit(i, mask, 64) {
- 				if (i >= func->allocated_stack / BPF_REG_SIZE) {
--					/* the sequence of instructions:
--					 * 2: (bf) r3 = r10
--					 * 3: (7b) *(u64 *)(r3 -8) = r0
--					 * 4: (79) r4 = *(u64 *)(r10 -8)
--					 * doesn't contain jmps. It's backtracked
--					 * as a single block.
--					 * During backtracking insn 3 is not recognized as
--					 * stack access, so at the end of backtracking
--					 * stack slot fp-8 is still marked in stack_mask.
--					 * However the parent state may not have accessed
--					 * fp-8 and it's "unallocated" stack space.
--					 * In such case fallback to conservative.
--					 */
--					mark_all_scalars_precise(env, env->cur_state);
--					bt_reset(bt);
--					return 0;
-+					verbose(env, "BUG backtracking (stack slot %d, total slots %d)\n",
-+						i, func->allocated_stack / BPF_REG_SIZE);
-+					WARN_ONCE(1, "verifier backtracking bug (stack slot out of bounds)");
-+					return -EFAULT;
- 				}
- 
- 				if (!is_spilled_scalar_reg(&func->stack[i])) {
-@@ -4582,7 +4613,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 	int i, slot = -off - 1, spi = slot / BPF_REG_SIZE, err;
- 	struct bpf_insn *insn = &env->prog->insnsi[insn_idx];
- 	struct bpf_reg_state *reg = NULL;
--	u32 dst_reg = insn->dst_reg;
-+	int insn_flags = insn_stack_access_flags(state->frameno, spi);
- 
- 	/* caller checked that off % size == 0 and -MAX_BPF_STACK <= off < 0,
- 	 * so it's aligned access and [off, off + size) are within stack limits
-@@ -4621,17 +4652,6 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 	mark_stack_slot_scratched(env, spi);
- 	if (reg && !(off % BPF_REG_SIZE) && register_is_bounded(reg) &&
- 	    !register_is_null(reg) && env->bpf_capable) {
--		if (dst_reg != BPF_REG_FP) {
--			/* The backtracking logic can only recognize explicit
--			 * stack slot address like [fp - 8]. Other spill of
--			 * scalar via different register has to be conservative.
--			 * Backtrack from here and mark all registers as precise
--			 * that contributed into 'reg' being a constant.
--			 */
--			err = mark_chain_precision(env, value_regno);
--			if (err)
--				return err;
--		}
- 		save_register_state(state, spi, reg, size);
- 		/* Break the relation on a narrowing spill. */
- 		if (fls64(reg->umax_value) > BITS_PER_BYTE * size)
-@@ -4643,6 +4663,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 		__mark_reg_known(&fake_reg, insn->imm);
- 		fake_reg.type = SCALAR_VALUE;
- 		save_register_state(state, spi, &fake_reg, size);
-+		insn_flags = 0; /* not a register spill */
- 	} else if (reg && is_spillable_regtype(reg->type)) {
- 		/* register containing pointer is being spilled into stack */
- 		if (size != BPF_REG_SIZE) {
-@@ -4688,9 +4709,12 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 
- 		/* Mark slots affected by this stack write. */
- 		for (i = 0; i < size; i++)
--			state->stack[spi].slot_type[(slot - i) % BPF_REG_SIZE] =
--				type;
-+			state->stack[spi].slot_type[(slot - i) % BPF_REG_SIZE] = type;
-+		insn_flags = 0; /* not a register spill */
- 	}
-+
-+	if (insn_flags)
-+		return push_jmp_history(env, env->cur_state, insn_flags);
- 	return 0;
- }
- 
-@@ -4879,6 +4903,7 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
- 	int i, slot = -off - 1, spi = slot / BPF_REG_SIZE;
- 	struct bpf_reg_state *reg;
- 	u8 *stype, type;
-+	int insn_flags = insn_stack_access_flags(reg_state->frameno, spi);
- 
- 	stype = reg_state->stack[spi].slot_type;
- 	reg = &reg_state->stack[spi].spilled_ptr;
-@@ -4924,12 +4949,10 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
- 					return -EACCES;
- 				}
- 				mark_reg_unknown(env, state->regs, dst_regno);
-+				insn_flags = 0; /* not restoring original register state */
- 			}
- 			state->regs[dst_regno].live |= REG_LIVE_WRITTEN;
--			return 0;
--		}
--
--		if (dst_regno >= 0) {
-+		} else if (dst_regno >= 0) {
- 			/* restore register state from stack */
- 			copy_register_state(&state->regs[dst_regno], reg);
- 			/* mark reg as written since spilled pointer state likely
-@@ -4965,7 +4988,10 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
- 		mark_reg_read(env, reg, reg->parent, REG_LIVE_READ64);
- 		if (dst_regno >= 0)
- 			mark_reg_stack_read(env, reg_state, off, off + size, dst_regno);
-+		insn_flags = 0; /* we are not restoring spilled register */
- 	}
-+	if (insn_flags)
-+		return push_jmp_history(env, env->cur_state, insn_flags);
- 	return 0;
- }
- 
-@@ -7050,7 +7076,6 @@ static int check_atomic(struct bpf_verifier_env *env, int insn_idx, struct bpf_i
- 			       BPF_SIZE(insn->code), BPF_WRITE, -1, true, false);
- 	if (err)
- 		return err;
--
- 	return 0;
- }
- 
-@@ -16845,7 +16870,8 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
- 			 * the precision needs to be propagated back in
- 			 * the current state.
- 			 */
--			err = err ? : push_jmp_history(env, cur);
-+			if (is_jmp_point(env, env->insn_idx))
-+				err = err ? : push_jmp_history(env, cur, 0);
- 			err = err ? : propagate_precision(env, &sl->state);
- 			if (err)
- 				return err;
-@@ -17069,6 +17095,9 @@ static int do_check(struct bpf_verifier_env *env)
- 		u8 class;
- 		int err;
- 
-+		/* reset current history entry on each new instruction */
-+		env->cur_hist_ent = NULL;
-+
- 		env->prev_insn_idx = prev_insn_idx;
- 		if (env->insn_idx >= insn_cnt) {
- 			verbose(env, "invalid insn idx %d insn_cnt %d\n",
-@@ -17108,7 +17137,7 @@ static int do_check(struct bpf_verifier_env *env)
- 		}
- 
- 		if (is_jmp_point(env, env->insn_idx)) {
--			err = push_jmp_history(env, state);
-+			err = push_jmp_history(env, state, 0);
- 			if (err)
- 				return err;
- 		}
 diff --git a/tools/testing/selftests/bpf/progs/verifier_subprog_precision.c b/tools/testing/selftests/bpf/progs/verifier_subprog_precision.c
-index f61d623b1ce8..7c159b561862 100644
+index 7c159b561862..4b8b0f45d17d 100644
 --- a/tools/testing/selftests/bpf/progs/verifier_subprog_precision.c
 +++ b/tools/testing/selftests/bpf/progs/verifier_subprog_precision.c
-@@ -541,11 +541,24 @@ static __u64 subprog_spill_reg_precise(void)
+@@ -593,14 +593,68 @@ __naked int subprog_spill_into_parent_stack_slot_precise(void)
+ 	);
+ }
  
- SEC("?raw_tp")
- __success __log_level(2)
--/* precision backtracking can't currently handle stack access not through r10,
-- * so we won't be able to mark stack slot fp-8 as precise, and so will
-- * fallback to forcing all as precise
-- */
--__msg("mark_precise: frame0: falling back to forcing all scalars precise")
-+__msg("10: (0f) r1 += r7")
-+__msg("mark_precise: frame0: last_idx 10 first_idx 7 subseq_idx -1")
-+__msg("mark_precise: frame0: regs=r7 stack= before 9: (bf) r1 = r8")
-+__msg("mark_precise: frame0: regs=r7 stack= before 8: (27) r7 *= 4")
-+__msg("mark_precise: frame0: regs=r7 stack= before 7: (79) r7 = *(u64 *)(r10 -8)")
-+__msg("mark_precise: frame0: parent state regs= stack=-8:  R0_w=2 R6_w=1 R8_rw=map_value(off=0,ks=4,vs=16,imm=0) R10=fp0 fp-8_rw=P1")
-+__msg("mark_precise: frame0: last_idx 18 first_idx 0 subseq_idx 7")
-+__msg("mark_precise: frame0: regs= stack=-8 before 18: (95) exit")
-+__msg("mark_precise: frame1: regs= stack= before 17: (0f) r0 += r2")
-+__msg("mark_precise: frame1: regs= stack= before 16: (79) r2 = *(u64 *)(r1 +0)")
-+__msg("mark_precise: frame1: regs= stack= before 15: (79) r0 = *(u64 *)(r10 -16)")
-+__msg("mark_precise: frame1: regs= stack= before 14: (7b) *(u64 *)(r10 -16) = r2")
-+__msg("mark_precise: frame1: regs= stack= before 13: (7b) *(u64 *)(r1 +0) = r2")
-+__msg("mark_precise: frame1: regs=r2 stack= before 6: (85) call pc+6")
-+__msg("mark_precise: frame0: regs=r2 stack= before 5: (bf) r2 = r6")
-+__msg("mark_precise: frame0: regs=r6 stack= before 4: (07) r1 += -8")
-+__msg("mark_precise: frame0: regs=r6 stack= before 3: (bf) r1 = r10")
+-__naked __noinline __used
+-static __u64 subprog_with_checkpoint(void)
++SEC("?raw_tp")
++__success __log_level(2)
++__msg("17: (0f) r1 += r0")
++__msg("mark_precise: frame0: last_idx 17 first_idx 0 subseq_idx -1")
++__msg("mark_precise: frame0: regs=r0 stack= before 16: (bf) r1 = r7")
++__msg("mark_precise: frame0: regs=r0 stack= before 15: (27) r0 *= 4")
++__msg("mark_precise: frame0: regs=r0 stack= before 14: (79) r0 = *(u64 *)(r10 -16)")
++__msg("mark_precise: frame0: regs= stack=-16 before 13: (7b) *(u64 *)(r7 -8) = r0")
++__msg("mark_precise: frame0: regs=r0 stack= before 12: (79) r0 = *(u64 *)(r8 +16)")
++__msg("mark_precise: frame0: regs= stack=-16 before 11: (7b) *(u64 *)(r8 +16) = r0")
++__msg("mark_precise: frame0: regs=r0 stack= before 10: (79) r0 = *(u64 *)(r7 -8)")
++__msg("mark_precise: frame0: regs= stack=-16 before 9: (7b) *(u64 *)(r10 -16) = r0")
++__msg("mark_precise: frame0: regs=r0 stack= before 8: (07) r8 += -32")
++__msg("mark_precise: frame0: regs=r0 stack= before 7: (bf) r8 = r10")
++__msg("mark_precise: frame0: regs=r0 stack= before 6: (07) r7 += -8")
++__msg("mark_precise: frame0: regs=r0 stack= before 5: (bf) r7 = r10")
++__msg("mark_precise: frame0: regs=r0 stack= before 21: (95) exit")
++__msg("mark_precise: frame1: regs=r0 stack= before 20: (bf) r0 = r1")
++__msg("mark_precise: frame1: regs=r1 stack= before 4: (85) call pc+15")
++__msg("mark_precise: frame0: regs=r1 stack= before 3: (bf) r1 = r6")
 +__msg("mark_precise: frame0: regs=r6 stack= before 2: (b7) r6 = 1")
- __naked int subprog_spill_into_parent_stack_slot_precise(void)
++__naked int stack_slot_aliases_precision(void)
  {
  	asm volatile (
-diff --git a/tools/testing/selftests/bpf/verifier/precise.c b/tools/testing/selftests/bpf/verifier/precise.c
-index 0d84dd1f38b6..8a2ff81d8350 100644
---- a/tools/testing/selftests/bpf/verifier/precise.c
-+++ b/tools/testing/selftests/bpf/verifier/precise.c
-@@ -140,10 +140,11 @@
- 	.result = REJECT,
- },
- {
--	"precise: ST insn causing spi > allocated_stack",
-+	"precise: ST zero to stack insn is supported",
- 	.insns = {
- 	BPF_MOV64_REG(BPF_REG_3, BPF_REG_10),
- 	BPF_JMP_IMM(BPF_JNE, BPF_REG_3, 123, 0),
-+	/* not a register spill, so we stop precision propagation for R4 here */
- 	BPF_ST_MEM(BPF_DW, BPF_REG_3, -8, 0),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_10, -8),
- 	BPF_MOV64_IMM(BPF_REG_0, -1),
-@@ -157,11 +158,11 @@
- 	mark_precise: frame0: last_idx 4 first_idx 2\
- 	mark_precise: frame0: regs=r4 stack= before 4\
- 	mark_precise: frame0: regs=r4 stack= before 3\
--	mark_precise: frame0: regs= stack=-8 before 2\
--	mark_precise: frame0: falling back to forcing all scalars precise\
--	force_precise: frame0: forcing r0 to be precise\
- 	mark_precise: frame0: last_idx 5 first_idx 5\
--	mark_precise: frame0: parent state regs= stack=:",
-+	mark_precise: frame0: parent state regs=r0 stack=:\
-+	mark_precise: frame0: last_idx 4 first_idx 2\
-+	mark_precise: frame0: regs=r0 stack= before 4\
-+	5: R0=-1 R4=0",
- 	.result = VERBOSE_ACCEPT,
- 	.retval = -1,
- },
-@@ -169,6 +170,8 @@
- 	"precise: STX insn causing spi > allocated_stack",
- 	.insns = {
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_get_prandom_u32),
-+	/* make later reg spill more interesting by having somewhat known scalar */
-+	BPF_ALU64_IMM(BPF_AND, BPF_REG_0, 0xff),
- 	BPF_MOV64_REG(BPF_REG_3, BPF_REG_10),
- 	BPF_JMP_IMM(BPF_JNE, BPF_REG_3, 123, 0),
- 	BPF_STX_MEM(BPF_DW, BPF_REG_3, BPF_REG_0, -8),
-@@ -179,18 +182,21 @@
- 	},
- 	.prog_type = BPF_PROG_TYPE_XDP,
- 	.flags = BPF_F_TEST_STATE_FREQ,
--	.errstr = "mark_precise: frame0: last_idx 6 first_idx 6\
-+	.errstr = "mark_precise: frame0: last_idx 7 first_idx 7\
- 	mark_precise: frame0: parent state regs=r4 stack=:\
--	mark_precise: frame0: last_idx 5 first_idx 3\
--	mark_precise: frame0: regs=r4 stack= before 5\
--	mark_precise: frame0: regs=r4 stack= before 4\
--	mark_precise: frame0: regs= stack=-8 before 3\
--	mark_precise: frame0: falling back to forcing all scalars precise\
--	force_precise: frame0: forcing r0 to be precise\
--	force_precise: frame0: forcing r0 to be precise\
--	force_precise: frame0: forcing r0 to be precise\
--	force_precise: frame0: forcing r0 to be precise\
--	mark_precise: frame0: last_idx 6 first_idx 6\
-+	mark_precise: frame0: last_idx 6 first_idx 4\
-+	mark_precise: frame0: regs=r4 stack= before 6: (b7) r0 = -1\
-+	mark_precise: frame0: regs=r4 stack= before 5: (79) r4 = *(u64 *)(r10 -8)\
-+	mark_precise: frame0: regs= stack=-8 before 4: (7b) *(u64 *)(r3 -8) = r0\
-+	mark_precise: frame0: parent state regs=r0 stack=:\
-+	mark_precise: frame0: last_idx 3 first_idx 3\
-+	mark_precise: frame0: regs=r0 stack= before 3: (55) if r3 != 0x7b goto pc+0\
-+	mark_precise: frame0: regs=r0 stack= before 2: (bf) r3 = r10\
-+	mark_precise: frame0: regs=r0 stack= before 1: (57) r0 &= 255\
-+	mark_precise: frame0: parent state regs=r0 stack=:\
-+	mark_precise: frame0: last_idx 0 first_idx 0\
-+	mark_precise: frame0: regs=r0 stack= before 0: (85) call bpf_get_prandom_u32#7\
-+	mark_precise: frame0: last_idx 7 first_idx 7\
- 	mark_precise: frame0: parent state regs= stack=:",
- 	.result = VERBOSE_ACCEPT,
- 	.retval = -1,
+-		"r0 = 0;"
+-		/* guaranteed checkpoint if BPF_F_TEST_STATE_FREQ is used */
+-		"goto +0;"
++		"r6 = 1;"
++		/* pass r6 through r1 into subprog to get it back as r0;
++		 * this whole chain will have to be marked as precise later
++		 */
++		"r1 = r6;"
++		"call identity_subprog;"
++		/* let's setup two registers that are aliased to r10 */
++		"r7 = r10;"
++		"r7 += -8;"			/* r7 = r10 - 8 */
++		"r8 = r10;"
++		"r8 += -32;"			/* r8 = r10 - 32 */
++		/* now spill subprog's return value (a r6 -> r1 -> r0 chain)
++		 * a few times through different stack pointer regs, making
++		 * sure to use r10, r7, and r8 both in LDX and STX insns, and
++		 * *importantly* also using a combination of const var_off and
++		 * insn->off to validate that we record final stack slot
++		 * correctly, instead of relying on just insn->off derivation,
++		 * which is only valid for r10-based stack offset
++		 */
++		"*(u64 *)(r10 - 16) = r0;"
++		"r0 = *(u64 *)(r7 - 8);"	/* r7 - 8 == r10 - 16 */
++		"*(u64 *)(r8 + 16) = r0;"	/* r8 + 16 = r10 - 16 */
++		"r0 = *(u64 *)(r8 + 16);"
++		"*(u64 *)(r7 - 8) = r0;"
++		"r0 = *(u64 *)(r10 - 16);"
++		/* get ready to use r0 as an index into array to force precision */
++		"r0 *= 4;"
++		"r1 = %[vals];"
++		/* here r0->r1->r6 chain is forced to be precise and has to be
++		 * propagated back to the beginning, including through the
++		 * subprog call and all the stack spills and loads
++		 */
++		"r1 += r0;"
++		"r0 = *(u32 *)(r1 + 0);"
+ 		"exit;"
++		:
++		: __imm_ptr(vals)
++		: __clobber_common, "r6"
+ 	);
+ }
+ 
 -- 
 2.43.0
 
