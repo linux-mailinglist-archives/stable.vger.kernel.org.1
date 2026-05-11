@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-245244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIM/NsHpAWohmQEAu9opvQ
-	(envelope-from <stable+bounces-245244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:37:53 +0200
+	id eOB3FhHuAWpHmQEAu9opvQ
+	(envelope-from <stable+bounces-245250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:56:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9205F5104CA
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:37:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8503A510AB7
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 16:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6FBA83017E79
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:37:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E98043014A10
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EE43FF895;
-	Mon, 11 May 2026 14:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8273FCB37;
+	Mon, 11 May 2026 14:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtFfAwCu"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TRyJsdx5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E3F3FE373;
-	Mon, 11 May 2026 14:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E09C375ADD;
+	Mon, 11 May 2026 14:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778510244; cv=none; b=qgRF5rxRy9uXhBwEg0KsQxrfDPuAbu4SX1LE1ZKqZDsibRrg07O2cxsq7mvYGbZ93wQbcZlFhEdtaIBqXzGdoHUchwD8AuCyP6cPyIlx1Ld1QuXTwvSEENKLZ4JX4qlGrhgG3SQ8r3UroyOzH2R0PAk/UFMlaugraiYR0G0Msug=
+	t=1778510646; cv=none; b=u52MPzWSGh47qWdXKalV3SPyINzrIJXOWJTjAtDhgC9pS2ZwkxZWH5+zaTzS0LaNDNbG6NUFOer2TEbQuHVV3UmtvkgVvh8oXi4+ObcgybvLrBk0u8zGPF/ojH1bEtixz0+2q85ouzZbls/N68sjVozp46eF4x7pA0UgBKqIOww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778510244; c=relaxed/simple;
-	bh=oaJ1fIHI4x87EvSRfZxR+ViJYFD68Ek/0RZ9v3HJYrw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShZQbMOTksH8PuwLqlCAgDV12sIHx0QIJsug3zph7nheIdf95qBAbmISFqTHHN8LK9AgHqR1XZmwP1gTfXm78ezUl4KP+0bzqD2SrnABba/aVzQ6DxP48ITuvKUMUBp985GpSKCcAgypLiVJeJqhFnRyGjivSsunrwowYEGpJKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtFfAwCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9732FC2BCF7;
-	Mon, 11 May 2026 14:37:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778510244;
-	bh=oaJ1fIHI4x87EvSRfZxR+ViJYFD68Ek/0RZ9v3HJYrw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtFfAwCubGBMWV36ZzHJPXjvK00xCSwlQsoD5hOUSz14PmhDGh4SD5+uMZ5wC+USv
-	 +Jg/No9SEw5/KpD3L03+LQlsPKlPDyCAXs2U2IACxiMsrZTs9XjF3PMMN5pYFvRwHG
-	 PwU5eRPw4XCpHtUij1hB3UTi+4cVbaRFzVwJ1uK3fFcvE9LVumrNMdo3LV0KCuwoAh
-	 k8K+m2ljip5RJnSQ/279J6mg7V5l5yy90aLWwjxZbtCzOrfUGOL1wob6Xko6VXs5cP
-	 Z6Mj0nFT4MdPZovMW1PFEGLrp03vEmCXZD63Fei1+ZHF02kCKqBsD2Yt7ZORqfWj7q
-	 bY9G0euTToX/g==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wMRl4-000000033qL-10gS;
-	Mon, 11 May 2026 16:37:22 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Jean Delvare <khali@linux-fr.org>
-Subject: [PATCH v3 08/10] i2c: core: fix adapter deregistration race
-Date: Mon, 11 May 2026 16:37:13 +0200
-Message-ID: <20260511143715.729714-9-johan@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260511143715.729714-1-johan@kernel.org>
-References: <20260511143715.729714-1-johan@kernel.org>
+	s=arc-20240116; t=1778510646; c=relaxed/simple;
+	bh=VC0qwBvW9uh3ax11d9mMf0G/+4UImx8n0OwvJHvD/NY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EjO9Q6sDwUqTZL7H3f63Q0AvI+OGDccNtOatL4EyGduF6L9jaYbHUB2FuCMIEIKaLwlamFMhX0pq2Ch6EPw5o4OkGksp5H+EMsCggLJLKQsAEKelMjg4jzQzpgi8c2HumtJ6ynOI4gKJRWI3a4cAEQuON8zxCgynyT8biz/M7Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TRyJsdx5; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1216)
+	id 9F83820B7166; Mon, 11 May 2026 07:43:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9F83820B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1778510637;
+	bh=pZwWxmSrkgp8p9kdDRnD1K3ktHCKfIa40Ag0yUTw8/s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TRyJsdx5BVlBWzluMIDUJICtV1Pkv192SVvfuzd+1fYwRchx0D6PJ8SDzfBhDzy/5
+	 vQV3hOJqjjrl0WRZyEeVNWf/puN9uYu0LaBbKywGaLqrUtJq5qsWtlBfAjD/22lcy1
+	 VDMLifwQjXmOHPgw/R936zf8cbpY7F3K9QNz95L0=
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	coreteam@netfilter.org,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH nf] netfilter: conntrack: tcp: do not force CLOSE on invalid-seq RST without direction check
+Date: Mon, 11 May 2026 10:43:14 -0400
+Message-ID: <20260511144314.183870-1-hamzamahfooz@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,87 +60,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9205F5104CA
+X-Rspamd-Queue-Id: 8503A510AB7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245244-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245250-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[hamzamahfooz@linux.microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:mid,linux.microsoft.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Adapters can be looked up by their id using i2c_get_adapter() which
-takes a reference to the embedded struct device.
+An unintended behavior in the TCP conntrack state machine allows a
+connection to be forced into the CLOSE state using an RST packet with an
+invalid sequence number.
 
-Remove the adapter from the IDR before tearing it down during
-deregistration (and on registration failure) to make sure its resources
-are not accessed after having been freed (e.g. the device name).
+Specifically, after a SYN packet is observed, an RST with an invalid SEQ
+can transition the conntrack entry to TCP_CONNTRACK_CLOSE, regardless of
+whether the RST corresponds to the expected reply direction. The relevant
+code path assumes the RST is a response to an outgoing SYN, but does not
+validate packet direction or ensure that a matching SYN was actually sent
+in the opposite direction.
 
-Fixes: 35fc37f81881 ("i2c: Limit core locking to the necessary sections")
-Cc: stable@vger.kernel.org	# 2.6.31
-Cc: Jean Delvare <khali@linux-fr.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+As a result, a crafted packet sequence consisting of a SYN followed by an
+invalid-sequence RST can prematurely terminate an active NAT entry. This
+makes connection teardown easier than intended.
+
+So, tighten the state transition logic to ensure that RST-triggered
+CLOSE transitions only occur when the RST is a valid response to a
+previously observed SYN in the correct direction.
+
+Cc: stable@vger.kernel.org
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 ---
- drivers/i2c/i2c-core-base.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_proto_tcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 01a984d3ca0e..38f425aecef8 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1587,7 +1587,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
- 	res = device_add(&adap->dev);
- 	if (res) {
- 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
--		goto err_remove_debugfs;
-+		goto err_replace_id;
- 	}
- 
- 	res = i2c_setup_smbus_alert(adap);
-@@ -1614,7 +1614,10 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
- out_reg:
- 	i2c_deregister_clients(adap);
- 	device_del(&adap->dev);
--err_remove_debugfs:
-+err_replace_id:
-+	mutex_lock(&core_lock);
-+	idr_replace(&i2c_adapter_idr, NULL, adap->nr);
-+	mutex_unlock(&core_lock);
- 	debugfs_remove_recursive(adap->debugfs);
- 	pm_runtime_disable(&adap->dev);
- err_put_adap:
-@@ -1804,6 +1807,8 @@ void i2c_del_adapter(struct i2c_adapter *adap)
- 	/* First make sure that this adapter was ever added */
- 	mutex_lock(&core_lock);
- 	found = idr_find(&i2c_adapter_idr, adap->nr);
-+	if (found == adap)
-+		idr_replace(&i2c_adapter_idr, NULL, adap->nr);
- 	mutex_unlock(&core_lock);
- 	if (found != adap) {
- 		pr_debug("attempting to delete unregistered adapter [%s]\n", adap->name);
+diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
+index b67426c2189b..e99ab1e88e9f 100644
+--- a/net/netfilter/nf_conntrack_proto_tcp.c
++++ b/net/netfilter/nf_conntrack_proto_tcp.c
+@@ -1221,7 +1221,8 @@ int nf_conntrack_tcp_packet(struct nf_conn *ct,
+ 			new_state = old_state;
+ 		}
+ 		if (((test_bit(IPS_SEEN_REPLY_BIT, &ct->status)
+-			 && ct->proto.tcp.last_index == TCP_SYN_SET)
++			 && ct->proto.tcp.last_index == TCP_SYN_SET
++			 && ct->proto.tcp.last_dir != dir)
+ 			|| (!test_bit(IPS_ASSURED_BIT, &ct->status)
+ 			    && ct->proto.tcp.last_index == TCP_ACK_SET))
+ 		    && ntohl(th->ack_seq) == ct->proto.tcp.last_end) {
 -- 
-2.53.0
+2.54.0
 
 
