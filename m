@@ -1,211 +1,178 @@
-Return-Path: <stable+bounces-245216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMouGlvaAWoDlgEAu9opvQ
-	(envelope-from <stable+bounces-245216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:32:11 +0200
+	id CBjSK9PZAWrPlQEAu9opvQ
+	(envelope-from <stable+bounces-245217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:29:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D9B50EFBD
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:32:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A0A50EEDC
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F12093048DCE
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:25:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60FCD303C65B
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C363783BB;
-	Mon, 11 May 2026 13:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6337A3F7AB5;
+	Mon, 11 May 2026 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DFuX4BST"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q6zzcstT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CWtgRT5x"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212CA3B19AA
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F19A3EDAA8;
+	Mon, 11 May 2026 13:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778505918; cv=none; b=gWBpsCxy85q9TbiMfBnU7zX2SgaTe1uLfg0Fz7XMhnQEcIvGE6yM6+dwQk8nUdItlYnCCVyj+BvFVbppBOuZFaQdccQmNhSg1LzO5c2NXI/6u8479+O49oPm09gZxrsoshSwoNrIoU3+g/i42mzuJ9dbAY/9wg/QPPCFPL2DeVY=
+	t=1778506033; cv=none; b=Qgg8b+3iSOHmvvfw6manMWqDLom+xAIeKpZ08ZLOI4aJ0JUTnTh5tcPglzZy6FctfHfF6XumfYECN5UatCX269uHJTRc/B+n2gMnU+YcR/ixrJd12OdZkZwdraE4BLgBSCc+HtFQ2crs+twBayaRzMS2SKfgVVKIlunXJVNzUzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778505918; c=relaxed/simple;
-	bh=0AJH8elwU2s8KFirikXSOPnVKp9/S963D5Srz8NT0/4=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=GTcVXEEOvGG5fJoD7hDdf7lboxDPV6s1M11NKZ2mDicE0xlOZQ8TbI55xLdRp+weZvaQAZvZCO66xznF97voRDtIyLahO8IHi/nqlo8Mf5zUQRr9q3jKUGyneb3I6OxQ42KaiYD9mIf5XYWzzn/VGfr4k1f0KDSRcOvcAHcbWg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DFuX4BST; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778505917; x=1810041917;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=0AJH8elwU2s8KFirikXSOPnVKp9/S963D5Srz8NT0/4=;
-  b=DFuX4BSTk8z7PofQyp7bVjolwsX98p7aC/CA7mrMUC6x++g4vnOfuIhy
-   F6jY1fmmtOYdzZSHzZoEuY9Q7uCT/TyB9iQ2doxsiS0ctNmwToe8XrBwI
-   YCjzZgrage5uBeFuGlOiYh5l1OJxzipnr7yHWynMy3Z9KAxwUIf+oBd0u
-   nXkzLSw39h2l40Ruq6gGXPKvDjMW1qJNL//Hvo7T4cDL/XwSo8wAJ0KqZ
-   UL4KaWd10Ma2x3LB29XBEsWPzugSIuEn52B14/WSfYW27rbsmlvUBsc/k
-   IdrRloUYiqf3mM2YPF82qZITbmCSCzIP+89C/+J88PvftwnsryxGfXlf4
-   A==;
-X-CSE-ConnectionGUID: YDI0gyOnTEKi8kZL8lHXFQ==
-X-CSE-MsgGUID: 4EQoBgfxTamKktKylwK/GQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79338086"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="79338086"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 06:25:17 -0700
-X-CSE-ConnectionGUID: SOQn5w02SqyGbvz9M4gOtw==
-X-CSE-MsgGUID: k16o8aNPSXWDBj1xxUsmeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="267810814"
-Received: from dev-417.igk.intel.com ([10.91.214.181])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 06:25:16 -0700
-Date: Mon, 11 May 2026 15:25:13 +0200 (CEST)
-From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
-To: =?ISO-8859-15?Q?Jouni_H=F6gander?= <jouni.hogander@intel.com>
-cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] drm/i915/psr: Use DC_OFF wake reference to block
- DC6 on vblank enable
-In-Reply-To: <20260511121551.2373824-2-jouni.hogander@intel.com>
-Message-ID: <7af4c9b9-c2f8-8970-ec4f-b244df92dd08@intel.com>
-References: <20260511121551.2373824-1-jouni.hogander@intel.com> <20260511121551.2373824-2-jouni.hogander@intel.com>
+	s=arc-20240116; t=1778506033; c=relaxed/simple;
+	bh=TGMrt0CUBZC+RDkO8sr8AWJM4VCFNEo8h1ID166xi40=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=sCI8zia0ozvK/SiojU+ZBeWS9wapNnJ+GE+spkUWYC2GiUUSZaaFexXowkbgucPPl3n/BF+MIiBOWMuVMdvcXlk54vuTVs6aewM03JaDs5RMx205xtgn/dmUyx5IEp7JxXOyyHbfzyzerwJUOAQS/RmoQARnVlUl//0e5bGVmW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q6zzcstT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CWtgRT5x; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 11 May 2026 13:27:09 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1778506031;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+IB5ImmIo1UNPNo0czMHeOpt+ZMRgA1Aoa4RPcA7nnQ=;
+	b=q6zzcstTvAgBlPf4qBtn+9GkgtjQp8gGla8RFspZY9aNbWNmYIru6mfQQvheuTNWAOa6WY
+	hzPBR7YUTmavpktrRlK+NMZfxJmWAw+42GPDzed+a7M1YRrmX7f6dP+JTzJwvQX4NFI4Ni
+	NBW+Qa8Ur3S6xr8T7+JyhrZBjUIWUSOTE3SJqtNaPkFHlyLHBP5WlOtzNrrUvBQ5PMZcd/
+	ryYpD9FIWSU7bSPhPpaLbWVYTmiC9+JrGcRVKY9lw0kIMYSbv71w62MubZCGNJCRoUpOBT
+	t15EDAGrdVq3xRCNjsKBBXmSJ4FeWANHjhY4qwaGLnuIpG6qUlMoQEQrBDYmBQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1778506031;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+IB5ImmIo1UNPNo0czMHeOpt+ZMRgA1Aoa4RPcA7nnQ=;
+	b=CWtgRT5xNsMQC7YFyrXU+PTtD+bb/TdfaGHo7qKJGtdXCwRl9a+R690yjmk6u7hhX2KLBq
+	CO/jMrmvdlhtVrCg==
+From: "tip-bot2 for Yong-Xuan Wang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/riscv-imsic: Clear interrupt move state
+ during CPU offlining
+Cc: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>,
+ Thomas Gleixner <tglx@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20260508-imsic-v2-1-e9f08dd46cf5@sifive.com>
+References: <20260508-imsic-v2-1-e9f08dd46cf5@sifive.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-983092090-1778505731=:541093"
-Content-ID: <135e2c34-5465-c537-ee08-5e56dd62c7ab@intel.com>
-X-Rspamd-Queue-Id: A3D9B50EFBD
+Message-ID: <177850602951.188840.12884197698863259648.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 70A0A50EEDC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTYPE_MIXED_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245217-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245216-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michal.grzelak@intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,linutronix.de:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The following commit has been merged into the irq/urgent branch of tip:
 
---8323329-983092090-1778505731=:541093
-Content-Type: text/plain; CHARSET=ISO-8859-2; format=flowed
-Content-Transfer-Encoding: 8BIT
-Content-ID: <98b15bf3-fc96-01fc-9e4c-282201889e14@intel.com>
+Commit-ID:     cefafbd561402b0fe6447449364a30315b9b1570
+Gitweb:        https://git.kernel.org/tip/cefafbd561402b0fe6447449364a30315b9=
+b1570
+Author:        Yong-Xuan Wang <yongxuan.wang@sifive.com>
+AuthorDate:    Fri, 08 May 2026 02:31:21 -07:00
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Mon, 11 May 2026 15:23:11 +02:00
 
-On Mon, 11 May 2026, Jouni Högander wrote:
-> We are observing following warnings:
->
-> *ERROR* power well DC_off state mismatch (refcount 0/enabled 1)
->
-> gen9_dc_off_power_well_enabled is concidering target state DC_STATE_DISABLE
+irqchip/riscv-imsic: Clear interrupt move state during CPU offlining
 
-s/concidering/considering/
+Affinity changes of IMSIC interrupts have to be careful to not lose an
+interrupt in the process. Each vector keeps track of an affinity change in
+progress with two pointers in struct imsic_vector.
 
-Reviewed-by: Micha³ Grzelak <michal.grzelak@intel.com>
+imsic_vector::move_prev points to the previous CPU target data and
+imsic_vector::move_next to the designated new CPU target data.
 
-BR,
-Micha³
+imsic_vector::move_prev on the new CPU can only be cleared after the
+previous CPU has cleared imsic_vector::move_next, which ususally happens in
+__imsic_remote_sync().
 
-> as DC_OFF power well being enabled. Fix this by using wakeref for the
-> purpose.
->
-> Fixes: aa451abcffb5 ("drm/i915/display: Prevent DC6 while vblank is enabled for Panel Replay")
-> Cc: <stable@vger.kernel.org> # v6.13+
-> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-> ---
-> .../drm/i915/display/intel_display_types.h    |  2 ++
-> drivers/gpu/drm/i915/display/intel_psr.c      | 24 +++++++------------
-> 2 files changed, 11 insertions(+), 15 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-> index 26e59110e743..e2861476b215 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display_types.h
-> +++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-> @@ -1789,6 +1789,8 @@ struct intel_psr {
-> 	u8 active_non_psr_pipes;
->
-> 	const char *no_psr_reason;
-> +
-> +	struct ref_tracker *vblank_wakeref;
-> };
->
-> struct intel_dp {
-> diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-> index 657b1614cd65..a8f02f928bd8 100644
-> --- a/drivers/gpu/drm/i915/display/intel_psr.c
-> +++ b/drivers/gpu/drm/i915/display/intel_psr.c
-> @@ -4141,14 +4141,20 @@ void intel_psr_notify_vblank_enable_disable(struct intel_display *display,
-> 					    bool enable)
-> {
-> 	struct intel_encoder *encoder;
-> -	bool block_dc_states = false;
->
-> 	for_each_intel_encoder_with_psr(display->drm, encoder) {
-> 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
->
-> 		mutex_lock(&intel_dp->psr.lock);
-> -		if (CAN_PANEL_REPLAY(intel_dp))
-> -			block_dc_states = true;
-> +		if (CAN_PANEL_REPLAY(intel_dp)) {
-> +			if (enable)
-> +				intel_dp->psr.vblank_wakeref =
-> +					intel_display_power_get(display,
-> +								POWER_DOMAIN_DC_OFF);
-> +			else
-> +				intel_display_power_put(display, POWER_DOMAIN_DC_OFF,
-> +							intel_dp->psr.vblank_wakeref);
-> +		}
->
-> 		if (intel_dp->psr.enabled && !intel_dp->psr.panel_replay_enabled &&
-> 		    intel_dp->psr.pkg_c_latency_used)
-> @@ -4156,18 +4162,6 @@ void intel_psr_notify_vblank_enable_disable(struct intel_display *display,
->
-> 		mutex_unlock(&intel_dp->psr.lock);
-> 	}
-> -
-> -	/*
-> -	 * NOTE: intel_display_power_set_target_dc_state is used
-> -	 * only by PSR code for DC3CO handling. DC3CO target
-> -	 * state is currently disabled in * PSR code. If DC3CO
-> -	 * is taken into use we need take that into account here
-> -	 * as well.
-> -	 */
-> -	if (block_dc_states)
-> -		intel_display_power_set_target_dc_state(display, enable ?
-> -							DC_STATE_DISABLE :
-> -							DC_STATE_EN_UPTO_DC6);
-> }
->
-> static void
-> -- 
-> 2.43.0
->
->
---8323329-983092090-1778505731=:541093--
+In case of CPU hot-unplug __imsic_remote_sync() is not invoked because the
+CPU is already marked offline. That means imsic_vector::move_prev becomes
+stale until the CPU is onlined again.
+
+The stale pointer prevents further affinity changes for the affected
+interrupts.
+
+Solve this by clearing the imsic_vector::move_prev pointers in the CPU
+hotplug offline path.
+
+[ tglx: Replace word salad in change log ]
+
+Fixes: 0f67911e821c ("irqchip/riscv-imsic: Separate next and previous pointer=
+s in IMSIC vector")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260508-imsic-v2-1-e9f08dd46cf5@sifive.com
+---
+ drivers/irqchip/irq-riscv-imsic-early.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/irqchip/irq-riscv-imsic-early.c b/drivers/irqchip/irq-ri=
+scv-imsic-early.c
+index ba903fa..a7a1852 100644
+--- a/drivers/irqchip/irq-riscv-imsic-early.c
++++ b/drivers/irqchip/irq-riscv-imsic-early.c
+@@ -158,6 +158,8 @@ static int imsic_dying_cpu(unsigned int cpu)
+ 	/* Cleanup IPIs */
+ 	imsic_ipi_dying_cpu();
+=20
++	imsic_local_sync_all(false);
++
+ 	/* Mark per-CPU IMSIC state as offline */
+ 	imsic_state_offline();
+=20
 
