@@ -1,56 +1,92 @@
-Return-Path: <stable+bounces-245208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAhFCW/XAWryjwEAu9opvQ
-	(envelope-from <stable+bounces-245208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:19:43 +0200
+	id UC5QHR3ZAWqvlQEAu9opvQ
+	(envelope-from <stable+bounces-245209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:26:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0CB50EC0A
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:19:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7444D50EDB1
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C0F6300599E
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:19:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2B49D3006836
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0448E3E5ED5;
-	Mon, 11 May 2026 13:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A753E5EEB;
+	Mon, 11 May 2026 13:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rbdLSwzT"
+	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="oQ70BCXS"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C3F3A4520
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D5833ADB3
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778505580; cv=none; b=I1PpopmFxXlMRfSHgmHGKB7jCuWbnvrezUVTorNXp1Np+UfjAUfRNd4neLP7EjuTgGdmqvsz1MYSNQCIvvj3Thprs7IADUBg0LtNxu3TlIE9pLamc3wMO0cgPTNcg9JlBbG8PfPNRxgts4UF4zgsIGUAAndWNUjDnW5q7du4iZk=
+	t=1778505617; cv=none; b=nX25Og2iP0gvKykPIcBLuxAI2dYqKvWjJXZQcwiVwcj9OSQ5TwuJTlHqkd4MakGPUho5m4ToZx7ZvgzUJT91nOYn4MLImBEmVtxjYpvSxPyrf43VVLKTCJX+973+FRjcoQOvWa4gPTMGkL8RiQuAMOl+EgJdaUdb2PbSsWKyxMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778505580; c=relaxed/simple;
-	bh=tSxu3v1zFVmz1Ow1glgROXhvIIbM5P+KMcZs43VSTrg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XhMoVr1pzR3ZjRvZN7YZ8xRb8MLMtRk12ZAessqwCvI+e2hQRNE+CXu3+wJuu6KXgGOTSWkrwFCuB9xPHxLi9wS3EFf/azEUkMu98BkX8GZCg3VsHX8QC3NTbMZRohzMLcOuV1I/yydGcqU7sVOHV0KIdjvU1BB9qKUzkWN630M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rbdLSwzT; arc=none smtp.client-ip=115.124.30.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778505575; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=qMTukbhOsh4wTjLAvEST29FKEUGQSBkjs6AvGD3bNxM=;
-	b=rbdLSwzT5YBlpqy5u7C8hyCrsukO+N3PInV/7t4LMAP43+VG9mn8u5pQI0MNLSv1HGT0mpPMxLl6pzzHIh8wDBICN8MUD0G+/vIjVxL+AWBXw/KdxGxG6KPdIp6041TSkTE6NXQ2wKS1L+5+mlImzOf3qpvB97f/ZwrskVdJoms=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R401e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=mengferry@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0X2ka8gr_1778505572;
-Received: from localhost(mailfrom:mengferry@linux.alibaba.com fp:SMTPD_---0X2ka8gr_1778505572 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 11 May 2026 21:19:35 +0800
-From: Ferry Meng <mengferry@linux.alibaba.com>
-To: joseph.qi@linux.alibaba.com
-Cc: oliver.yang@linux.alibaba.com,
-	Ferry Meng <mengferry@linux.alibaba.com>,
+	s=arc-20240116; t=1778505617; c=relaxed/simple;
+	bh=+ZUpcpMYEUXEaJnO9qiIXkVppurwU/x4hpZl008T2nk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qp0hne0jW/IYKFsRphhYPORcoqGLNLE1SYHvZytHPlVkWCXqsrCg46mC+udusCaYlB+oXIWGmQhkvEp9/FMrth/9uGXJsiTJy3esKcytKxmeEOqP5KrcK7+1xA0i3X1xrKHnhpqore2PFiSAbhRyW6ZSuoFKzL5Xhc183gG/19E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=oQ70BCXS; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7de7c57b52cso3485442a34.3
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 06:20:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=minyard.net; s=google; t=1778505615; x=1779110415; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7XaDF4hZ0HHCSzW0/BTdof1uueZEID8xFU5dqFnIvUE=;
+        b=oQ70BCXScXjPx9C75hHXsgVu3kmcLDfjQ2nHbSVSuXtxunabyL7vn+PZPXp81ovYp6
+         KDmm8fxCeuh4EAlpCbC7r2uGEJrWwUMhiS/3mAwcY38oJj1VVT7pJjD/94Udk91AjXC8
+         KeZw/a+qxMcfZcpF281pBKb+qmmoQwM9zVgQ7pbHVGc2AyxDqRgwo55+82C/JSLZWO/4
+         8IrTdCVhxVOEvtVB5s7vTl+wqeDSwUlFA0IjqIsyA89TiJgJKXZFORiUn+LbQZUkhSkW
+         5bTzNfv24D+CUGb5Rr6olrEzOLgMjsGvRj5/+LWyk/BSYQjLNl+wOXxANFhxj5lpiYmg
+         2hKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778505615; x=1779110415;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7XaDF4hZ0HHCSzW0/BTdof1uueZEID8xFU5dqFnIvUE=;
+        b=BqzQxoUDVpNU6WAfKX/Ez99Ua9g5A5ebQv+S5CTdBoVrc6T4G3FOXR4GRpH2825RJg
+         IrKsi/3jgcUtBZGcC0s5sS+cTuaVh0JAMi/MiDlCXKfoipHRefvuNXPd+LEfeXNjatda
+         9Df+vEAdFJ7+ZsV09IWa4tXKyqzFCWWKuGyk5V9PzIPg6dO/ec3dmeNF8YIeuj5C7Ejn
+         f5h+iASrMVnwFyNea94ityFaOj1ZDe4ofkCQ2iw8F0Q4MggX5/az7NBuhJqiZj09TUTs
+         l11n3IzAUX+ur5kxvlk2JHyxu32iDuhK/yQ1Fc/TAEF+m4r4T6iYdMtECEnPiO+0St8G
+         UkxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9qgkQW95Hn2qH9/kzSvoHSmP5mnNVniq8CmnXELkugVO88XkiBfs80I43o3R7hLL8y5/GRVls=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMKJtlCAwxjdJZaANrVXopO/NbjaPy5XSvx072l2+/Ds6vUdvK
+	WtFLZ+mWHMmMGFWuEcNR7xdFiCW8mS9ggQaag4IDSxI7ixE7ZXCqUGW6DdBozhyJeFw=
+X-Gm-Gg: Acq92OGNgHxzIK/v3HNawRNuq3DKvxfeZwTvA5Qm3fbw/KZ90+NzhFFh29Ei74YFWgP
+	aNmkJ+nBGksIhlEZnW/bXU+cgO9In98EnGDPLNouKm7p9J4YF42qCvZCqtktdYKBHfRxIhA7bEi
+	4UvWt5TlzkbSfqtTowXu27JjFg5xYhOlTaP3z3LpCRg/ESIECHBO13386BcV7xGaR95uVeWdY2k
+	luoxrLr1OOE/WyvdlAo0JdEJ95cqwp1GGKOIteK7OV7rXWvxugtdNWwisNRPZZauCxmkZK/2Qgd
+	E02hLqR7hqlPiB9ON2stBhZaArAg5EnmHRl10OHCYq1mMeje/TN9dAUm++YkfJEMb1lRaLhOUaz
+	oJY47BRUB/kh+vwotrGjatA6EHmp7kQPJJMzABEs//+n+r6D6wB6F1QNNrpYN+GncksgWLnXV+3
+	BxpLgu95ATu2x627EdxTf9MAbro7DF1hu6rD9LmfmKHrHHpO63qCeODBJ1aQQugNXdS08EAjgqr
+	bU=
+X-Received: by 2002:a05:6830:6588:b0:7d7:e3b9:58d6 with SMTP id 46e09a7af769-7e1df1ba521mr13999117a34.22.1778505615606;
+        Mon, 11 May 2026 06:20:15 -0700 (PDT)
+Received: from localhost ([2001:470:b8f6:1b:8478:44:4948:b0d3])
+        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7e367be21f6sm6830459a34.2.2026.05.11.06.20.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 May 2026 06:20:15 -0700 (PDT)
+From: Corey Minyard <corey@minyard.net>
+To: Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] ksmbd: fix SID memory leak in set_posix_acl_entries_dacl() on overflow
-Date: Mon, 11 May 2026 21:19:31 +0800
-Message-Id: <20260511131931.95685-1-mengferry@linux.alibaba.com>
-X-Mailer: git-send-email 2.19.1.6.gb485710b
+Cc: Li Xiao <252270051@hdu.edu.cn>
+Subject: [PATCH 5.10.y v3 1/4] Fix error in IPMI SSIF shutdown
+Date: Mon, 11 May 2026 08:19:38 -0500
+Message-ID: <20260511132012.1831026-1-corey@minyard.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260509122858.ae87f8133ecd.re-ipmi-ssif-cleanup-5.15@kernel.org>
+References: <20260509122858.ae87f8133ecd.re-ipmi-ssif-cleanup-5.15@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,104 +94,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AC0CB50EC0A
+X-Rspamd-Queue-Id: 7444D50EDB1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
+	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245208-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[mengferry@linux.alibaba.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245209-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[minyard.net:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,linux.alibaba.com:mid,linux.alibaba.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,minyard.net:mid,minyard.net:dkim]
 X-Rspamd-Action: no action
 
-Commit 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16
-DACL size overflow") added check_add_overflow() guards that break out
-of the ACE-building loops in set_posix_acl_entries_dacl() when the
-accumulated DACL size would wrap past 65535.
+This is a backport of 75c486cb1bca ("ipmi:ssif: Clean up kthread on
+errors") and other necessary patches with it.
 
-However, each iteration allocates a struct smb_sid via kmalloc_obj()
-at the top of the loop and relies on the kfree(sid) call at the end
-of the loop body (the 'pass_same_sid' label in the first loop, and
-the explicit kfree at the tail of the second loop) to release it.
-The newly introduced 'break' statements bypass those kfree() calls,
-leaking the sid buffer every time an overflow is detected.
+Version 2: Don't take the "ipmi:ssif: Fix a shutdown race" and then
+remove it and fix it later.  Just do the fix.
 
-A malicious or malformed file with enough POSIX ACL entries to trip
-the overflow check will leak one or more struct smb_sid allocations
-on every request that touches the file's DACL, providing a trivial
-kernel memory exhaustion vector.
-
-Free sid before breaking out of the loops to plug the leak.
-
-Fixes: 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16 DACL size overflow")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
----
- fs/smb/server/smbacl.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index c1d1f34581d6..9161e9d7ed24 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -643,8 +643,10 @@ static void set_posix_acl_entries_dacl(struct mnt_idmap *idmap,
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
- 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
- 				pace->e_perm, 0777);
--		if (check_add_overflow(*size, ace_sz, size))
-+		if (check_add_overflow(*size, ace_sz, size)) {
-+			kfree(sid);
- 			break;
-+		}
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
-@@ -655,8 +657,10 @@ static void set_posix_acl_entries_dacl(struct mnt_idmap *idmap,
- 			ntace = (struct smb_ace *)((char *)pndace + *size);
- 			ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
- 					0x03, pace->e_perm, 0777);
--			if (check_add_overflow(*size, ace_sz, size))
-+			if (check_add_overflow(*size, ace_sz, size)) {
-+				kfree(sid);
- 				break;
-+			}
- 			(*num_aces)++;
- 			if (pace->e_tag == ACL_USER)
- 				ntace->access_req |=
-@@ -698,8 +702,10 @@ static void set_posix_acl_entries_dacl(struct mnt_idmap *idmap,
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
- 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
- 				pace->e_perm, 0777);
--		if (check_add_overflow(*size, ace_sz, size))
-+		if (check_add_overflow(*size, ace_sz, size)) {
-+			kfree(sid);
- 			break;
-+		}
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
--- 
-2.43.5
+Version 3: Include a8aebe93a493 ("ipmi:ssif: NULL thread on error")
+in the patch set.
 
 
