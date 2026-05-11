@@ -1,162 +1,177 @@
-Return-Path: <stable+bounces-245359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLszKNxiAmposAEAu9opvQ
-	(envelope-from <stable+bounces-245359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:14:36 +0200
+	id iDxOHyhmAmqhsQEAu9opvQ
+	(envelope-from <stable+bounces-245360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:28:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD94A517340
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:14:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5BB517490
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8671B300B9DD
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 23:14:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A0BD301FF81
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 23:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD921364E81;
-	Mon, 11 May 2026 23:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BB936166F;
+	Mon, 11 May 2026 23:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gcl5bjXO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="F2fpMxcy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0C1356777;
-	Mon, 11 May 2026 23:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFAC33F5BA;
+	Mon, 11 May 2026 23:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778541248; cv=none; b=iCoQa7FT/OPvxHLP9ZmrRT6YtZpVNbp8qdKxupDrdHCPihjJdOK+mhH3D9AVUrUA83WKf0lgiVTHtE2XVRgydWY9rOkU2l2cQbwdanrVl4E18bMjPj+WJAMec2NMnnJmwwN12rxS2TE9ZUd8pJlaQ20vOh00czSBXWDfgVFHAaQ=
+	t=1778542065; cv=none; b=cLUv2De/fdEzBvpx5/u0aFijsRnPcYmfCYoZn3G4UjiFny5n2uRyAisW0rAT+tBva6upUMVf8oH6PaZ/pZf9BsuN3Ppc4csqBqfw2rp+VpayGbVigQHxCS28AJXf8aCgedc0a4rSMEn8iB8vg3aNL7d/lO6pG1YfJtoFh52lgQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778541248; c=relaxed/simple;
-	bh=fFM7lla6UGM3h5hfEvNbwtOwJxgnMMIR4e6uQcmG0cs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fN6E/lQ2/x9MzIfucHGQ8Clt6+AbWi/smEzD2AqEhpGw5WunDXnnAyAr0CwHQrFjYMXheClBm25KD3f5DXC0WRkooc+RnJJdfu9W97GyCNCfbqSdWReFz96ZVVKZxfHf9sFZOIJOdxNv/H0BAtzy3vWHdCrbNdfZK/d9MIYZmd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gcl5bjXO; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778541246; x=1810077246;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=fFM7lla6UGM3h5hfEvNbwtOwJxgnMMIR4e6uQcmG0cs=;
-  b=gcl5bjXOIKXpvW+iH7wGqEmmhDE8i8pflB9sVp18PZujiT4AXvbplAT0
-   hSB/BgzoxHVIyAYBIKoTyD/VfisQywccrV7Nvr4fMeHpZcBfwnA6zCYVJ
-   MnhewoGhIJuRT51d7Tlu7UIcAp34hUV0w4hwRA+hE6jjTWeHwsGx/kf1l
-   8Gl2fq7b2zSlZvtjctKtoBRd3IvbkUwwZBslsbDMgMjJ8fD0XuWk/zjsy
-   DOdVLol6cBQ1aKM5GEjBGUXN/hg00g6z8rDr1zT4mNuNHlqvYGEbmRE1z
-   FsYvvJWaVBr0znz34h5AoyaO6geed6Kbtx6ucZ9IS098bkPPP397HbZAY
-   w==;
-X-CSE-ConnectionGUID: maiwrhjkSfOvr3+85VYS5A==
-X-CSE-MsgGUID: HxOrX3yvSaWIG3KxSS7f4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83058112"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="83058112"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 16:14:06 -0700
-X-CSE-ConnectionGUID: u8a1BpfCT92oXCGW9M3sZg==
-X-CSE-MsgGUID: GsKpFoiJQICmPNyc2giBOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="267944463"
-Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 16:14:06 -0700
-From: Zide Chen <zide.chen@intel.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/6] perf/x86/intel/uncore: Defer ADL global PMON enable to enable_box()
-Date: Mon, 11 May 2026 16:05:24 -0700
-Message-ID: <20260511230527.26096-4-zide.chen@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260511230527.26096-1-zide.chen@intel.com>
-References: <20260511230527.26096-1-zide.chen@intel.com>
+	s=arc-20240116; t=1778542065; c=relaxed/simple;
+	bh=ieBgu9am0VQHY0paHtbko4O+0J7K7RPqj8F9Z25VaKo=;
+	h=Date:To:From:Subject:Message-Id; b=Sx0XuimVqPnXhWSh6Dt6qTBnb28lr12MQ6M22fWKahcbZ2CiAJESGfVFwLFzLRbSg7tBxNfauZG89pI5c8YMvfpfIcqXn1WQusPfDsuEw9UiOTerlmUmOO7T5F6VWR25wKv8DPLQKBCwLgg85kZx++alocsndXspqILBl3CDJ60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=F2fpMxcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08D3C2BCB0;
+	Mon, 11 May 2026 23:27:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778542064;
+	bh=ieBgu9am0VQHY0paHtbko4O+0J7K7RPqj8F9Z25VaKo=;
+	h=Date:To:From:Subject:From;
+	b=F2fpMxcyhI4j4/I0cFX86rTuNLRK+d3f86R/YV5E11XCwJpiQsGbj4pzU2dUm/XXr
+	 HTp0EyRpkmG6cyXgpfvNUyPw5+R55xBqwzUS54IaEnPfAKqfYvZnE/rR1Rd0LrpIiU
+	 vBuqABRIXRFD9eG00rhhpfjlVObmBwEJ5ZGJd2bQ=
+Date: Mon, 11 May 2026 16:27:44 -0700
+To: mm-commits@vger.kernel.org,zaslonko@linux.ibm.com,stable@vger.kernel.org,ptikhomirov@virtuozzo.com,ojeda@kernel.org,oberpar@linux.ibm.com,nathan@kernel.org,masahiroy@kernel.org,linux@weissschuh.net,arnd@arndb.de,khorenko@virtuozzo.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch removed from -mm tree
+Message-Id: <20260511232744.A08D3C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DD94A517340
+X-Rspamd-Queue-Id: DA5BB517490
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	R_BAD_CTE_7BIT(3.50)[unknown];
+	BROKEN_CONTENT_TYPE(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245359-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zide.chen@intel.com,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-245360-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim]
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arndb.de:email,weissschuh.net:email,virtuozzo.com:email,linux-foundation.org:email,linux-foundation.org:dkim]
 X-Rspamd-Action: no action
 
-On some Raptor Cove CPUs, enabling uncore PMON globally at driver init
-may increase power consumption even when no perf events are in use.
 
-Drop adl_uncore_msr_init_box() and defer programming the global control
-register to enable_box(), so it is only set when a box is actually used.
+The quilt patch titled
+     Subject: gcov: use atomic counter updates to fix concurrent access crashes
+has been removed from the -mm tree.  Its filename was
+     gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Zide Chen <zide.chen@intel.com>
+This patch was dropped because an updated version will be issued
+
+------------------------------------------------------
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+Subject: gcov: use atomic counter updates to fix concurrent access crashes
+Date: Wed, 22 Apr 2026 15:51:12 +0300
+
+GCC's GCOV instrumentation can merge global branch counters with loop
+induction variables as an optimization.  In inflate_fast(), the inner copy
+loops get transformed so that the GCOV counter value is loaded multiple
+times to compute the loop base address, start index, and end bound.  Since
+GCOV counters are global (not per-CPU), concurrent execution on different
+CPUs causes the counter to change between loads, producing inconsistent
+values and out-of-bounds memory writes.
+
+The crash manifests during IPComp (IP Payload Compression) processing when
+inflate_fast() runs concurrently on multiple CPUs:
+
+  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
+  RIP: inflate_fast+1431
+  Call Trace:
+   zlib_inflate
+   __deflate_decompress
+   crypto_comp_decompress
+   ipcomp_decompress [xfrm_ipcomp]
+   ipcomp_input [xfrm_ipcomp]
+   xfrm_input
+
+At the crash point, the compiler generated three loads from the same
+global GCOV counter (__gcov0.inflate_fast+216) to compute base, start, and
+end for an indexed loop.  Another CPU modified the counter between loads,
+making the values inconsistent - the write went 3.4 MB past a 65 KB
+buffer.
+
+Add -fprofile-update=prefer-atomic to CFLAGS_GCOV at the global level in
+the top-level Makefile.  On architectures where the target supports atomic
+profile updates (x86_64, arm64, ...) GCC emits atomic instructions (e.g. 
+lock addq) for GCOV counter updates instead of plain load/store, which
+prevents the compiler from merging counters with loop induction variables
+and fixes the observed concurrent-access crash.
+
+On architectures that do not support atomic profile updates (m68k and
+other small/UP targets) GCC silently falls back to the non-atomic 'single'
+mode, so behaviour there is no worse than before this patch.
+
+Applying this globally rather than per-subsystem not only addresses the
+observed crash in zlib but makes GCOV coverage data more consistent
+overall, preventing similar issues in any kernel code path that may
+execute concurrently.
+
+Link: https://lore.kernel.org/20260422125112.3583649-2-khorenko@virtuozzo.com
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Tested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Thomas Weißschuh <linux@weissschuh.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/x86/events/intel/uncore_snb.c | 7 -------
- 1 file changed, 7 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
-index 3dbc6bacbd9d..edddd4f9ab5f 100644
---- a/arch/x86/events/intel/uncore_snb.c
-+++ b/arch/x86/events/intel/uncore_snb.c
-@@ -563,12 +563,6 @@ void tgl_uncore_cpu_init(void)
- 	skl_uncore_msr_ops.init_box = rkl_uncore_msr_init_box;
- }
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/Makefile~gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes
++++ a/Makefile
+@@ -826,7 +826,7 @@ all: vmlinux
  
--static void adl_uncore_msr_init_box(struct intel_uncore_box *box)
--{
--	if (box->pmu->pmu_idx == 0)
--		wrmsrq(ADL_UNC_PERF_GLOBAL_CTL, SNB_UNC_GLOBAL_CTL_EN);
--}
--
- static void adl_uncore_msr_enable_box(struct intel_uncore_box *box)
- {
- 	wrmsrq(ADL_UNC_PERF_GLOBAL_CTL, SNB_UNC_GLOBAL_CTL_EN);
-@@ -587,7 +581,6 @@ static void adl_uncore_msr_exit_box(struct intel_uncore_box *box)
- }
+ CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
+ ifdef CONFIG_CC_IS_GCC
+-CFLAGS_GCOV	+= -fno-tree-loop-im
++CFLAGS_GCOV	+= -fno-tree-loop-im -fprofile-update=prefer-atomic
+ endif
+ export CFLAGS_GCOV
  
- static struct intel_uncore_ops adl_uncore_msr_ops = {
--	.init_box	= adl_uncore_msr_init_box,
- 	.enable_box	= adl_uncore_msr_enable_box,
- 	.disable_box	= adl_uncore_msr_disable_box,
- 	.exit_box	= adl_uncore_msr_exit_box,
--- 
-2.54.0
+_
+
+Patches currently in -mm which might be from khorenko@virtuozzo.com are
+
 
 
