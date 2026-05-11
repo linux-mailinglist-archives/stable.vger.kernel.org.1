@@ -1,218 +1,222 @@
-Return-Path: <stable+bounces-245197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCTCJPDRAWryjwEAu9opvQ
-	(envelope-from <stable+bounces-245197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:56:16 +0200
+	id GAEGLAfVAWryjwEAu9opvQ
+	(envelope-from <stable+bounces-245198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:09:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF6750E557
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 14:56:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB20F50E991
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A1562306D973
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 12:47:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9950F3029448
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E157339BFF4;
-	Mon, 11 May 2026 12:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C663D75C9;
+	Mon, 11 May 2026 13:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Qgrl0bgs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Yy6X5iiA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VIr9Q2HK"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC083A1E95
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 12:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78B43A1A2F;
+	Mon, 11 May 2026 13:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778503623; cv=none; b=oiZpCulWyjscu+Y0oYd5snXvIwJQ2PUoxUjWKBQg9+tM6nbGTn0jeKBSDWfKEZ0IyeNTDZYoFK+adZlkGJFoQoby93U2S/BXsmPl7PktIL14VAHLZeJf6ffj68nbUTako/PaglmCdFA6+yv6wBjA74iyON3ohJRf+9HxEb8cUbc=
+	t=1778504412; cv=none; b=ZsF54iNOvq9AQ7kZf/zDKm5qadDkxPhHAwohxWMEd2TXyI/j98mdJqJXPdq8pYsGt4MX14jvYV5k6kE/Q40A/QcZ3CF4QOpKMtp68A58wegmx74PjhI5+1VyRRKc4vmGN/5sTBV07pQzgm+rCP+QammZRex90+3fenE9/QgXcSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778503623; c=relaxed/simple;
-	bh=8v98h1umxeJxxw4itTnLm7PtLCnoi0c1iRO9WBKqjkc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MzNVX0djpQqIKpKK30fsaHkkhBf7jzb2ZqJ8gG9S0WcbLWv4IvYGPrVnQXn3xnTslihqR/R4kPQxazw0f69QrJRdIK8jx55CENL63KIqK2KK6DwYJfzlmOdNeLxyboWR4yTk0PDCoz9S1VMMnoXsHw8IV6WPvOy+fWYzf4l1XeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Qgrl0bgs; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B8r40k2368922
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 12:47:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cJ3EVk
-	l6DraskVPAivBI8d4z/pnih2EwPwlrFptGNeA=; b=Qgrl0bgsVBV2Z1xgpibWnd
-	wJPo9CDSDxwHIITFb4+Yfs2ZUcqQBQWJbIoqUhgpAODBQDTHaCMqNRenaPvuK8zX
-	mAaxxxNjvg3/SLx+/4owbIi65qTKtu/AlClA3VBS9MykZDWgNt8OcMpPi8BU+BRt
-	OlVcTc3Tq/X6XnAF1SBDm9o9YJNxcWaDoiPTFZlifA+yeZNwj+ThP7RWJTL9r8Cu
-	DZ/GsqI21MtjKQl39hXWy0fQFYdETiXnCAOUrzklsNb18rSyZnM8+mVjtvrUr0j7
-	SpsJ2vAGYhMZ7ZhZA37ayGRUeaHh6UUrcQO5p6ooZFVT1/Ue238oP2yrqF4zCeVg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1vn4r8r9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 12:47:01 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64BCdTbE020475
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 12:47:00 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e2grh56e9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 12:47:00 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64BCkteu52232638
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 May 2026 12:46:55 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13F5A20049;
-	Mon, 11 May 2026 12:46:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 882DC20040;
-	Mon, 11 May 2026 12:46:50 +0000 (GMT)
-Received: from [9.39.26.74] (unknown [9.39.26.74])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 11 May 2026 12:46:50 +0000 (GMT)
-Message-ID: <726fd09c-0b08-4da2-a5c5-981f4c4970b4@linux.ibm.com>
-Date: Mon, 11 May 2026 18:16:49 +0530
+	s=arc-20240116; t=1778504412; c=relaxed/simple;
+	bh=E22K32CGAnPu8NZQ2xj1llMmlRlbr5u3bB/hXdHzz2M=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=MALDW7qdenJSIAh+GpHE7mR4n5I10iu4ZrRqTncc780ot4zi+tDF0K18VyEAAphA2OaXNcdKVFaqZJcXLfAovaNpqa/PayM9PgdLmeXmTSouJMQPKrCHf2Z5c4OAeec31NFbYcnq/T/xAuWs/2uDcDCSGiVxMBh6WOx7D82PbwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Yy6X5iiA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VIr9Q2HK; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 11 May 2026 13:00:07 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1778504409;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/CChJ4dxFg1orCIOhafG1TVwMlcSDWgqOL32pkORQyU=;
+	b=Yy6X5iiAbDGhWI1S1XfkHTtEZgCfQqWeXW6f7QkA2nQc/g9c15Nkk+m7vhspMov532ne7P
+	7cbiG63MR53DtRyJ3iH0NeAnAJdIwliqXs5vi52hRFzYYBi5l4gJx5X2iPrgi4tFLUpG1D
+	cvdGPCJavRt9GcwOsOj2fWaCCO8nmbWKit7AC/gCKTGxfD6L3Ey82KYEJrGbgtP8jRcVEW
+	3faSxUgNGWUNjDvDbb8QXKTV0NXnZsFn2J2tz0YKmlCxlJrMo55QNnKBbROL78ajDXy1HI
+	56iD3kAFaAlczErylyCVYIoAMKw+A5j8YRlzxSmuqR8H1UHuMSYWy6zi0NhKUg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1778504409;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/CChJ4dxFg1orCIOhafG1TVwMlcSDWgqOL32pkORQyU=;
+	b=VIr9Q2HKk5dS0NwjcXbvaelFxx32skfpcP8nb0JlfXoBdwVWtTDjWivxRZgg1S1omfZ8M3
+	+oB07k7QjrbwcOAw==
+From: "tip-bot2 for Sascha Bischoff" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/gic-v5: Allocate ITS parent LPIs as a range
+Cc: Sascha Bischoff <sascha.bischoff@arm.com>,
+ Thomas Gleixner <tglx@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260506093634.382062-4-sascha.bischoff@arm.com>
+References: <20260506093634.382062-4-sascha.bischoff@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/iucv: fix UAF in afiucv_netdev_event()
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: wintera@linux.ibm.com, aswin@linux.ibm.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com, pasic@linux.ibm.com, mjambigi@linux.ibm.com,
-        dk@linux.ibm.com, twinkler@linux.ibm.com, jaka@linux.ibm.com,
-        wenjia@linux.ibm.com, gbayer@linux.ibm.com,
-        linux390-list@tuxmaker.boeblingen.de.ibm.com, stable@vger.kernel.org,
-        syzbotz+89435e7383b82238dd91@linux.ibm.com
-References: <20260508163836.2207648-1-nagamani@linux.ibm.com>
- <20260511090234.9589A54-hca@linux.ibm.com>
-Content-Language: en-US
-From: Nagamani PV <nagamani@linux.ibm.com>
-In-Reply-To: <20260511090234.9589A54-hca@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=BM+DalQG c=1 sm=1 tr=0 ts=6a01cfc5 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=GT7X7vSS5ZSHD5DRrRUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDE0MCBTYWx0ZWRfXyhv97zF/4MyO
- vUOSXXIC6r78mUjHbb14QZzechthUCcybFHO/nanWIN2CiyibMHhlZemG4vvhzscg7ESsIktnia
- vSmkwDc2CS9f+RV8T9IP1cYksop5GrW31HjlbHLAarxXB0MiFMLH/GoaeAsy7OzoCQVQUT7kUa2
- /GffwpEStMLmYDt/7tv3RxTDuaAx5IJD2MPSik/A76bJRLC2OEN0EIXJJNj/sNvf8Do+VJ03oHe
- hFEAQWIM49mXRDOss3PSm0sTulhsBrCMSIcw/YdQBtrl2wxKETZOyT3gTLiWvpzRfbyVH54TVUO
- +4MtEVhuFUGKzkT0nUQqqjkLEmVNMcL7Ee25I/CUapU5CjpIrZNPebZO8w2JCS7yO2jqnyVJRsk
- QPaXSDSqs8t5vkNpH3MvNPwXCHhZ9aOSicek+5+Fwhqs0TfBa86zKo4q8tbVR/QkhSSQrxLvT2o
- k9HzA/3j7NzczSQUqZQ==
-X-Proofpoint-GUID: b5D08Md0QymXzh19IG1fGFkTgh22s3Js
-X-Proofpoint-ORIG-GUID: b5D08Md0QymXzh19IG1fGFkTgh22s3Js
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_03,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 suspectscore=0 bulkscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 adultscore=0 malwarescore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605110140
-X-Rspamd-Queue-Id: 0EF6750E557
+Message-ID: <177850440785.188840.12841305612405622836.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: EB20F50E991
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245197-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.ibm.com:mid];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245198-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nagamani@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,89435e7383b82238dd91];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,msgid.link:url,vger.kernel.org:replyto,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linutronix.de:dkim]
 X-Rspamd-Action: no action
 
+The following commit has been merged into the irq/urgent branch of tip:
 
+Commit-ID:     a7c7e42654b6a8676610ee09d22901432c4851af
+Gitweb:        https://git.kernel.org/tip/a7c7e42654b6a8676610ee09d22901432c4=
+851af
+Author:        Sascha Bischoff <Sascha.Bischoff@arm.com>
+AuthorDate:    Wed, 06 May 2026 09:37:43=20
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Mon, 11 May 2026 14:56:04 +02:00
 
-On 11/05/26 2:32 PM, Heiko Carstens wrote:
-> On Fri, May 08, 2026 at 06:38:36PM +0200, Nagamani PV wrote:
->> afiucv_netdev_event() traverses iucv_sk_list without holding
->> iucv_sk_list.lock.
->>
->> A concurrent socket teardown can unlink and free the socket via
->> iucv_sock_kill() while the notifier path is still iterating over
->> the list, leading to a possible use-after-free when dereferencing
->> the socket.
->>
->> Protect the traversal using the existing read-side lock, matching
->> the locking pattern already used by other iucv_sk_list traversal
->> paths in af_iucv.c.
->>
->> Use read_lock()/read_unlock() to remain consistent with existing
->> softirq/tasklet-side readers in the same file.
->>
->> Fixes: 9fbd87d41392 ("af_iucv: handle netdev events")
->> Cc: stable@vger.kernel.org
->> Reported-by: syzbotz+89435e7383b82238dd91@linux.ibm.com
->> Closes: https://lnxgwne1.boeblingen.de.ibm.com/linux-ci/syzbot/dashboard/bug?extid=89435e7383b82238dd91
-> 
-> Please don't add IBM internal references to commit messages. They are
-> useless, besides that they will go away rather sooner than later. Better:
-> add the _relevant_ parts of the crash output to the commit message, which
-> allows people to make verify if this patch is actually fixing what the
-> commit message says.
-> 
->> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
->> index 72dfccd4e3d5..e8a0b55fc55d 100644
->> --- a/net/iucv/af_iucv.c
->> +++ b/net/iucv/af_iucv.c
->> @@ -2188,6 +2188,7 @@ static int afiucv_netdev_event(struct notifier_block *this,
->>  	switch (event) {
->>  	case NETDEV_REBOOT:
->>  	case NETDEV_GOING_DOWN:
->> +		read_lock(&iucv_sk_list.lock);
->>  		sk_for_each(sk, &iucv_sk_list.head) {
->>  			iucv = iucv_sk(sk);
->>  			if ((iucv->hs_dev == event_dev) &&
-> 
-> Are you sure that afiucv_netdev_event() is called in either tasklet context
-> or with bottom halves disabled? Doesn't look like it to me.
-> Read: most likely this should be read_lock_bh() to avoid deadlocks.
-> 
-> But then again I might be completely wrong, and lockdep says that this code
-> is actually correct :)
+irqchip/gic-v5: Allocate ITS parent LPIs as a range
 
+The ITS MSI domain no longer manages LPI allocation directly. LPIs are
+allocated and freed by the parent LPI domain, which can now handle a
+full range of interrupts and unwind partial allocations internally.
 
-Thanks Heiko.
+Make the ITS domain request and release the parent IRQs as a single
+range instead of iterating over each interrupt. The ITS allocation
+path then only needs to reserve EventIDs, allocate the parent range,
+and fill in the ITS irq_data for each MSI. Since no operation in the
+per-MSI loop can fail, the partial parent-free unwind becomes
+unnecessary.
 
-You’re right on both points. I’ll drop the IBM-internal reference and add
-the relevant KASAN/UAF details directly to the commit message.
+On teardown, reset the ITS irq_data for the range and then release the
+parent range in one call, leaving LPI teardown to the LPI domain.
 
-Regarding the locking: afiucv_netdev_event() is invoked from the
-netdevice notifier chain in process context without bottom halves being
-disabled. Since iucv_sk_list is modified under write_lock_bh() and also
-accessed from softirq/callback paths, using read_lock_bh() in the
-notifier is the correct and safer choice to avoid lock inversion.
+Fixes: 0f0101325876 ("irqchip/gic-v5: Add GICv5 LPI/IPI support")
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260506093634.382062-4-sascha.bischoff@arm.com
+---
+ drivers/irqchip/irq-gic-v5-its.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-Thanks Alexandra as well for confirming. I’ll resend a v2 with these
-updates.
-
+diff --git a/drivers/irqchip/irq-gic-v5-its.c b/drivers/irqchip/irq-gic-v5-it=
+s.c
+index 36d03f8..28e39b0 100644
+--- a/drivers/irqchip/irq-gic-v5-its.c
++++ b/drivers/irqchip/irq-gic-v5-its.c
+@@ -937,6 +937,7 @@ static int gicv5_its_irq_domain_alloc(struct irq_domain *=
+domain, unsigned int vi
+ 	int ret, i;
+=20
+ 	its_dev =3D info->scratchpad[0].ptr;
++	device_id =3D its_dev->device_id;
+=20
+ 	ret =3D gicv5_its_alloc_eventid(its_dev, info, nr_irqs, &event_id_base);
+ 	if (ret)
+@@ -946,14 +947,11 @@ static int gicv5_its_irq_domain_alloc(struct irq_domain=
+ *domain, unsigned int vi
+ 	if (ret)
+ 		goto out_eventid;
+=20
+-	device_id =3D its_dev->device_id;
++	ret =3D irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, NULL);
++	if (ret)
++		goto out_eventid;
+=20
+ 	for (i =3D 0; i < nr_irqs; i++) {
+-		ret =3D irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
+-		if (ret) {
+-			goto out_free_irqs;
+-		}
+-
+ 		/*
+ 		 * Store eventid and deviceid into the hwirq for later use.
+ 		 *
+@@ -972,12 +970,6 @@ static int gicv5_its_irq_domain_alloc(struct irq_domain =
+*domain, unsigned int vi
+=20
+ 	return 0;
+=20
+-out_free_irqs:
+-	while (--i >=3D 0) {
+-		irqd =3D irq_domain_get_irq_data(domain, virq + i);
+-		irq_domain_reset_irq_data(irqd);
+-		irq_domain_free_irqs_parent(domain, virq + i, 1);
+-	}
+ out_eventid:
+ 	gicv5_its_free_eventid(its_dev, event_id_base, nr_irqs);
+ 	return ret;
+@@ -1000,14 +992,14 @@ static void gicv5_its_irq_domain_free(struct irq_domai=
+n *domain, unsigned int vi
+ 	bitmap_release_region(its_dev->event_map, event_id_base,
+ 			      get_count_order(nr_irqs));
+=20
+-	/*  Hierarchically free irq data */
+ 	for (i =3D 0; i < nr_irqs; i++) {
+ 		d =3D irq_domain_get_irq_data(domain, virq + i);
+-
+ 		irq_domain_reset_irq_data(d);
+-		irq_domain_free_irqs_parent(domain, virq + i, 1);
+ 	}
+=20
++	/*  Hierarchically free irq data */
++	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
++
+ 	gicv5_its_syncr(its, its_dev);
+ 	gicv5_irs_syncr();
+ }
 
