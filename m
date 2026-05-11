@@ -1,101 +1,62 @@
-Return-Path: <stable+bounces-245089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJfQDegTAWoFQgEAu9opvQ
-	(envelope-from <stable+bounces-245089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:25:28 +0200
+	id wFPELIgeAWrLQwEAu9opvQ
+	(envelope-from <stable+bounces-245090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 02:10:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D5D506CE8
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 01:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1990E506E2D
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 02:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B29AC3011778
-	for <lists+stable@lfdr.de>; Sun, 10 May 2026 23:25:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44A7D300BD8C
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 00:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAFA3ACA58;
-	Sun, 10 May 2026 23:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863061E89C;
+	Mon, 11 May 2026 00:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWSFukBs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPEmsLm5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED3E3A544C
-	for <stable@vger.kernel.org>; Sun, 10 May 2026 23:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FDE17555
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 00:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778455516; cv=none; b=l+1kiLXAzWkEqkPHp+SlA4YOe2lItvD50v9SvrMCtMoB523ayLmNrXaP5GXS46hvzQpXyRJjYkedgCmpJs/2yaY99fC4U3mmfrsrKXNxMJDPvUfhfu3ZTn3+tNfHK6qCF27vWi74P7zEGSvPjX6a3VwyQxgCiJZowCRkS/RVukA=
+	t=1778458245; cv=none; b=EGzndz3YUM9ZBbiTHXxBeNqxwFX4Q/cFWvvOzICsI+n3fFm4f9XeBLMpX1CPz84XxZVjZgQAiq9NG6EiJdMzgRVWjVLNcna+3OGLW0l/8lp/ooJjhZv7m1F93vY+350f65evqu3Q5a1NEGgTH1oFakEW+sLnTMQ4o8hvVjroaLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778455516; c=relaxed/simple;
-	bh=/8xhVXrz8Q3xpD7n94ZUl2QrHgwje+BwlZ2z4YrUPuI=;
+	s=arc-20240116; t=1778458245; c=relaxed/simple;
+	bh=PIQB7f+i8B4/HR/HNgSpGS+oPjjGp4gkP/dIJjlaSaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KnOc9qwVDzU9QmddBv7h8REtJd65DpuwZ49nXujxsTvyy6Y2KkllgAG+PJYQn5LyPxYJTJTqM7Pt4njHXLse/wAaFO5nuSz921BHpiccT5ylbABsf4IFEy5NsNwHsg8B6QOa9sNBE9KjgToGZJYAtRnRKNxhNHNJbLYMAivF1kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWSFukBs; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7bf02533706so31596837b3.0
-        for <stable@vger.kernel.org>; Sun, 10 May 2026 16:25:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778455513; x=1779060313; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZOy80O60KUIlyR9w5AQAgpnG4tbnSWNzRVhKEWyyTiM=;
-        b=PWSFukBsuCDiJKYHM2AhTDVXUMY6qTVT+shRweNH6zUcpDuTqUIVWpapzBAhQWCRo5
-         DwCRRoz7b+jorgtjI8zNlA4PUXwN331i5g8ugB0YGxEOMtrZkFaK5JXZogEEnXRusL5Y
-         s7lTG4zv17VpA93jF8GyWBPa5UAadom+Bfv8AwdT0DazeVXTipShUmf5HmV73JEsfQM8
-         cw/ZUBqogbATcUFvoaOKXIU6dBst+hjM9G3sQklRVI55wfRLujCLgoIXeBC4wz0lnvQD
-         WeUzquPTwg7qRAmjgn51HEiWB2d7blMUimSfmTu7yS3taiHcEJIT2jzRTtGduiK+KMhS
-         FQlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778455513; x=1779060313;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZOy80O60KUIlyR9w5AQAgpnG4tbnSWNzRVhKEWyyTiM=;
-        b=kd5GU9SQhjrYhKwATO5hZ8NnCv/rEMZ0wzf5F7fpZdnePH5RcD0t4/Z2VqdcIz7KEO
-         uaDNXgiGEK3WKdsb41MNyk3mAbBkRUuCRT3sYj01kRDBIjkK297SlR+xQz8JWYsSH0t/
-         4+Z+SGaIMP7cuXLxThNdT/41AHzIYHFM3IA7g06Wt8CA8pyfNEUwkOUQxRkn0RE3/Nhg
-         rLa4u3SiQQz6JpThR89uwxYO5DZT55ZbbRqpaXnP8CfRp7W+25n2fIjtasnJ15L5BN3Y
-         0S7axElL8UTSVizi//2lItu2pI/+qxdtOv1JF3CShlA7GvHHDgt6EAmwO+ybdNOVFgAV
-         eNzQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/uKOeUrnMQOPZHCZFu8uJbzZmQlHitGC3D0H4kAOLud5nCJzJw8fojVXJw6LrSfN/TlUdE8OQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdPGfAHgsHNqx7PkLrSvoUAIEDw00+9EBsTD6LQH/19o4qoVZP
-	EdPnSA8yqcsjDaAQabq2FECv5DMjudXALyAvbO+UnflgbopbhhO3DFbU
-X-Gm-Gg: Acq92OGUprQ+0487pzowrWGFrGvhlkDuDx2MB5wcATKJtM0PILnUZRZcSy/A7MyymoX
-	5Ci8MsiXGbbAeQwBBfwLU81kAvvcePgddvRwlOEtPt07P9KQWyofPynSDXQkYaAaufPxpaqlV/E
-	+xr4jEvT0xJWExLZ86a9b3oF7+fklJ+YADoTIUFRPiCxE+me8eOmPvscPhQVzBgWf05obOEjW5/
-	rxNL4jMAu7EVT6ki9yuOKf6CNiN9yDpaAtupkcC6fbK0e5ZEKIU4CDrH/uBkR9YJmwXeDrYnRWY
-	XuTCUqST2G5UKxHPl0SQ4PF18KUVc5IxKxpJu7MEu2o6qYM82Wtl9BAbVgchPFG+LVBq4U5hXaG
-	OYBvVUa1pW1IlhKBcm2nIoXO9eprPBLuO4lgKHeMARoErKEz84cTYN/V9VgfwW9HV/uWeE0b6Hb
-	r9S2fBNj8bnxxLnWWcoMIfqnfQT8BeJ6AnNHfOB032BRInqjwS9v9ZLcwdj0JjV3R9r4RF0iQc5
-	cEOJfvdUY9NpfK4BJCT56kApdWqrVs9wX6ieJZ10Bw=
-X-Received: by 2002:a05:690c:6f06:b0:79a:7157:879 with SMTP id 00721157ae682-7bdf5f37cf8mr216629967b3.50.1778455513123;
-        Sun, 10 May 2026 16:25:13 -0700 (PDT)
-Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd6656d218sm137549197b3.22.2026.05.10.16.25.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 16:25:12 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-crypto@vger.kernel.org
-Cc: Eric Biggers <ebiggers@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	ceph-devel@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] crypto: krb5 - filter out async aead implementations at alloc
-Date: Sun, 10 May 2026 19:24:55 -0400
-Message-ID: <20260510232455.2245650-1-michael.bommarito@gmail.com>
+	 MIME-Version; b=f1rw/+AVNA8st/OMQX3iRNwoqsf+d/wBBZeOJDSqFiwE7wy6ZjmLfGCvcKdBiLgoYgbaeCOOzFn/zpnbMzidxYcgshJg59j8iQqxMKvEVCP67wOqvFJKwODJQaLmUSuqC0AoTljh/mZvDy4iVjiB9Wqc6YiXmnhmfv364Wd4p/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPEmsLm5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439A8C2BCB8;
+	Mon, 11 May 2026 00:10:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778458244;
+	bh=PIQB7f+i8B4/HR/HNgSpGS+oPjjGp4gkP/dIJjlaSaY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qPEmsLm5uF+BLyhTcO2uxn6w2nmHMtNjG4GVS53MXY2V0AgOMDO5Rgh66NVSS/UZF
+	 FYRrXEEuL7zsLPxY7lnQG/15TAcmdEn61C+2fc3ou9zoCFZ65DA2hqmhB7fOJcBEmL
+	 6tp9fQuVVANBYLI5ZAj6o8Va8oP052j6SqFhzeFK7S6QmZ7hh5xrMmaQkN98Ulx2Sj
+	 fyRh4zjGXAMpP6gyBs7MDam8cvKCzg0C2nYP/WD6lG/9wO9Lu1iJbnNl915KAnZnLL
+	 Hcev5Rvw8ju/8R/KZxPMHo7Sc9YfZSOwL725g/lYhiOqx0CHqdZK7NGmzVs+vw4gET
+	 eLyGPB7Jn5ZTw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Carlier <devnexen@gmail.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] tracepoint: balance regfunc() on func_add() failure in tracepoint_add_func()
+Date: Sun, 10 May 2026 20:10:41 -0400
+Message-ID: <20260511001041.752593-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260502132506.1936358-1-michael.bommarito@gmail.com>
-References: <20260502132506.1936358-1-michael.bommarito@gmail.com>
+In-Reply-To: <2026050736-pelican-vendor-20aa@gregkh>
+References: <2026050736-pelican-vendor-20aa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,84 +64,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D7D5D506CE8
+X-Rspamd-Queue-Id: 1990E506E2D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245089-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,auristor.com,lists.infradead.org,gmail.com,redhat.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,efficios.com,goodmis.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245090-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,efficios.com:email,goodmis.org:email]
 X-Rspamd-Action: no action
 
-krb5_aead_encrypt(), krb5_aead_decrypt() in rfc3961_simplified.c and
-rfc8009_encrypt(), rfc8009_decrypt() in rfc8009_aes2.c set a NULL
-completion callback and treat any negative return from
-crypto_aead_{encrypt,decrypt}() as terminal, falling through to
-kfree_sensitive(buffer).  When the encrypt_name resolves to an
-async AEAD instance the request returns -EINPROGRESS, the buffer
-is freed while the backend's worker still holds a pointer, and the
-worker dereferences the freed slab on completion.
+From: David Carlier <devnexen@gmail.com>
 
-KASAN report under UML+SLUB with a synthetic async aead backend
-bound to krb5->encrypt_name:
+[ Upstream commit fad217e16fded7f3c09f8637b0f6a224d58b5f2e ]
 
-  BUG: KASAN: slab-use-after-free in t5_stub_complete+0x7d/0xc7
+When a tracepoint goes through the 0 -> 1 transition, tracepoint_add_func()
+invokes the subsystem's ext->regfunc() before attempting to install the
+new probe via func_add(). If func_add() then fails (for example, when
+allocate_probes() cannot allocate a new probe array under memory pressure
+and returns -ENOMEM), the function returns the error without calling the
+matching ext->unregfunc(), leaving the side effects of regfunc() behind
+with no installed probe to justify them.
 
-The helpers were written synchronously, so filter the async
-instances out at allocation time instead of plumbing
-crypto_wait_req() through every call site.
+For syscall tracepoints this is particularly unpleasant: syscall_regfunc()
+bumps sys_tracepoint_refcount and sets SYSCALL_TRACEPOINT on every task.
+After a leaked failure, the refcount is stuck at a non-zero value with no
+consumer, and every task continues paying the syscall trace entry/exit
+overhead until reboot. Other subsystems providing regfunc()/unregfunc()
+pairs exhibit similarly scoped persistent state.
 
-Reachable via net/rxrpc/rxgk.c, fs/afs/cm_security.c and
-net/ceph/crypto.c on systems with an async AEAD provider bound to
-the krb5 enctype name.
+Mirror the existing 1 -> 0 cleanup and call ext->unregfunc() in the
+func_add() error path, gated on the same condition used there so the
+unwind is symmetric with the registration.
 
-Fixes: 00244da40f78 ("crypto/krb5: Implement the Kerberos5 rfc3961 encrypt and decrypt functions")
-Fixes: 6c3c0e86c2ac ("crypto/krb5: Implement the AES enctypes from rfc8009")
+Fixes: 8cf868affdc4 ("tracing: Have the reg function allow to fail")
 Cc: stable@vger.kernel.org
-Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260413190601.21993-1-devnexen@gmail.com
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ changed `tp->ext->unregfunc` to `tp->unregfunc` to match older struct layout ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/krb5/krb5_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/tracepoint.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/crypto/krb5/krb5_api.c b/crypto/krb5/krb5_api.c
-index 23026d4206c8..2b20284fa0ab 100644
---- a/crypto/krb5/krb5_api.c
-+++ b/crypto/krb5/krb5_api.c
-@@ -165,7 +165,7 @@ struct crypto_aead *krb5_prepare_encryption(const struct krb5_enctype *krb5,
- 	struct crypto_aead *ci = NULL;
- 	int ret = -ENOMEM;
- 
--	ci = crypto_alloc_aead(krb5->encrypt_name, 0, 0);
-+	ci = crypto_alloc_aead(krb5->encrypt_name, 0, CRYPTO_ALG_ASYNC);
- 	if (IS_ERR(ci)) {
- 		ret = PTR_ERR(ci);
- 		if (ret == -ENOENT)
+diff --git a/kernel/tracepoint.c b/kernel/tracepoint.c
+index f23144af57430..55af3586371c2 100644
+--- a/kernel/tracepoint.c
++++ b/kernel/tracepoint.c
+@@ -337,6 +337,8 @@ static int tracepoint_add_func(struct tracepoint *tp,
+ 			lockdep_is_held(&tracepoints_mutex));
+ 	old = func_add(&tp_funcs, func, prio);
+ 	if (IS_ERR(old)) {
++		if (tp->unregfunc && !static_key_enabled(&tp->key))
++			tp->unregfunc();
+ 		WARN_ON_ONCE(warn && PTR_ERR(old) != -ENOMEM);
+ 		return PTR_ERR(old);
+ 	}
 -- 
 2.53.0
 
