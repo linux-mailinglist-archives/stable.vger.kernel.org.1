@@ -1,91 +1,90 @@
-Return-Path: <stable+bounces-245212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UB2WOCTZAWrPlQEAu9opvQ
-	(envelope-from <stable+bounces-245212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:27:00 +0200
+	id qMMYHOvYAWpMlQEAu9opvQ
+	(envelope-from <stable+bounces-245213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:26:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DCC50EDC9
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:26:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB4650ED85
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97534301EFB5
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:20:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A959E307FB20
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 13:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D923E5EEB;
-	Mon, 11 May 2026 13:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824D33E5EC0;
+	Mon, 11 May 2026 13:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="KDUQomt2"
+	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="WXJTYhVt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F273D9028
-	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1562433ADB3
+	for <stable@vger.kernel.org>; Mon, 11 May 2026 13:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778505623; cv=none; b=GoXmrfFWIKmNkHg6eCoVDrYoUEZsU6d54IrNoeSLXQZoZrPXuieFyg0K0FPDl0e0Z+nAtMs1YfdJn5iNWQGB4aZoNt8Lz1pLx14vNOVyUu+VrxWAM+A6q5fP13YmA4kCLqEXT6hGk0FoTJsUTE2qRxbufhqEyuMGYgAsuunlrMw=
+	t=1778505624; cv=none; b=XZcjH23/fn4SQ8BiGUjUEKzmKCM4+wnz4lhq21HXlrAzsuoCIDiNsSG6X+UFXJhjNBYXk2LHohxueGwXqQmMfkoCwP8WefXEpW3UIJYTIEDYg+23As/KAeNCvbtrLOFpaIKZxGhfmy7VVzIhRY/E49PIDwJSP1zMowfggS2ybiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778505623; c=relaxed/simple;
-	bh=m1VjibQSABnFB/aAZeh4bSs2jBj8wTT8H75h7ENkOLg=;
+	s=arc-20240116; t=1778505624; c=relaxed/simple;
+	bh=TmlF73mBAE8nFK7SrXa/lCumDBYZ/TfJZ+mvM60yTxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nn5OPujGISLoswWDsdRpb7t3mETx/4V7T3A+iEdkIiST4+ybJV2AEMhdjy0YBrb2kZVmrCCZ6kf7ylaSWSh8GoFY+NjBOQ+xoq1A6rItH5KRs5LRI4Yg88qahYJWNPpu79W6wxV90wofR50d5QpVnwYNKOSrFb8psuJkczQ/EDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=KDUQomt2; arc=none smtp.client-ip=209.85.210.44
+	 MIME-Version; b=h9M1WZmAvfFJD1nRuGhCxYm3sfv3ucME5NHos0QfJOxD6/XQPgAsb07d5UR1PYWwiz4ol+ZMLiPYU4nj5TEaB62H1UM5oJKYngzJ3qrhBaR89u2yIk1XKU7D+4DsuEMl5RbwtbOsYKGUfzXGXr/8HjZkHmHUx3aa0hnF9W3MXTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=WXJTYhVt; arc=none smtp.client-ip=209.85.160.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7de4ed0593fso2262557a34.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 06:20:21 -0700 (PDT)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-4303eb92930so3018520fac.3
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 06:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1778505620; x=1779110420; darn=vger.kernel.org;
+        d=minyard.net; s=google; t=1778505622; x=1779110422; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LsS9z79IwAtzZWEYeAgqMXVuQT538ECls8A8mbDl7mo=;
-        b=KDUQomt2bojFNR2HlpHQw9tToz6nHS4nomAj0KPgTlVlOGdcQmJw5UbErGKhp8kzDP
-         +SqSuJUBe+/1PLgcArErUfumTDQorNJbqSwHeCuHqrCU0Y4SlLsMZV4U+vnXSZeWwFrA
-         3tuyfBwi6ZWfD+a8nDA1hXUPhPChit2yG5eWnJTUYL8rJKZrRee3lzKlPd8g+FyulQoF
-         vF0QMSP36oXkwqL5FqvchMPOrcaElHs/HLsLi7Py3/OLAqRmjzBUAPrmlhwwOlUo8QqB
-         TjYvSVQiPqLIzd+iGv7lq6vzPjDLv8buoAviynUdV16txRtb5M1AyIWMaqN21oO8fWkg
-         HYkg==
+        bh=5ZiY94xRt+IuZ0M/273x48bBifax+x2ozD/E/r9Um4w=;
+        b=WXJTYhVtsqhWaLf9G98USyPifx+rNUb6+oDTddD4mJbDtehCdHEtU7mr7TpBNiteKR
+         zv2oT/tUN22GYgMWATZXS6us0RaXSMrP6z4uH0k58+6fy3X8Gi5JhNmIeDTjymBgWtWa
+         fsTZGBOwNoS8Gff/M8UL81nsuJB1t/gN7qI0ci7/n7BcqwUKVyLxXaWPdOT51mxLuK7E
+         feYvi9A9mGC9cAP8QaXDxRFAbTxVc0kxvSOxvnzi1W9U+0aa0ZXTFgtcNx9ScmIScUxa
+         jRkrKn6cHTwGXFHd4IHs4kxdzMh9sI/l/OeTHsQF2UPbadcEMtDUXw1idCBK9Fwiew41
+         Dteg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778505620; x=1779110420;
+        d=1e100.net; s=20251104; t=1778505622; x=1779110422;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LsS9z79IwAtzZWEYeAgqMXVuQT538ECls8A8mbDl7mo=;
-        b=i4smQFfh5ycex77dlHSFnTKSpNNk9xX831XAU7ei2E2owFi8ZBUHAFsyRqV0Br5Jai
-         u88rsUjGtJU9Sg2F1jPoziZ0wpF5JeCjhTwNI/WchCPzrbHBZrCky7C5Gx43ICRSIM4f
-         3DJav8Vj+06MIL8Cp4DXI7C+qwaDA4oEq+KDjcS9cSwr4hPkRsM7SHIsXcAPbLPc/fLQ
-         sv+BxRd8N89KuQLJZVWn+C4sADaQo2TGVLO4Mr6qmB3efKSFvNn42P2YVxky4809kXNi
-         y4uXeJeIPWNUjcBwBZTF+f/q1dlPoMzpApgvFa6a2A5ZU/Zu/CLbfLem8/AKn6r+gAQB
-         3vlg==
-X-Forwarded-Encrypted: i=1; AFNElJ9D+zBrz4NVqA3Uzj47rTsiakBgA7pLwaxrZj5n9RKbCgaszgPF/VeTmkmEoLf5SNQ8cZ5kd5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc7F0kZ7l9zWPtqneeyw7+Qnvr/mbjX/e1zqJWb4bqxERbIWCj
-	sRUQIEYRltz9fCM86jb8nf6ilhcoaxLWktxqd8fguKQ3MnbBoBwRgQq7VLUzdfahFMepNvIqxCL
-	1hSbZ
-X-Gm-Gg: Acq92OEqZ2j+ppTyYcTfRSv8U5ME9syLvu/4DN5t6fL1N0+Ww8O+TIeB8y8Uto5WQmy
-	wpmZJtppGQxd//jtlmLtyK/5+NWxAmefSykdqBmAqC/D5NELLVk8BGyP9OPXVcUG4dvJ+DYtaYr
-	G2w/RuD4JzvsKL9Hk4nIAJVRNQV8IBw0wY+MLek8pKvwTqwQfEIOi51dWOYhd7/yUvnAT4lZYYR
-	6ngzlWQsXIOQF13i/R65QnKtGS7sCauWZeF76NcLgn0J68tIP5hGXB8ZWcjUPqUiDASO5/aCTL9
-	55omI9quVblpmX3FzzhoBrETbkctLejy6BpHUNBwnPT5pLKWLAYyAjEFWDcTgTl3XvCJsdsOv+B
-	p3oEJl1hnHx5ieIIBWPBgs5KGAO0b72vas8yKB7e2bxdH5GPdu6NZZQfnVgpm+HWb/ct8a4JN2+
-	gPaibHp1ifi5UeFsBCiggbfVTztUTDdin6f8PV5VVXvf++MyY21mYufg68eGND+B9R61mF33TWo
-	d8=
-X-Received: by 2002:a05:6830:2b29:b0:7d7:4ee9:c39a with SMTP id 46e09a7af769-7e1dee2db81mr14331525a34.4.1778505620682;
-        Mon, 11 May 2026 06:20:20 -0700 (PDT)
+        bh=5ZiY94xRt+IuZ0M/273x48bBifax+x2ozD/E/r9Um4w=;
+        b=tOE8EWrwH7ElMO3Cc2ZWUgKCaBzcgS2ZEg28PXqGsKxIrz3ui0Es2q3fEtmesuUjLb
+         cAIVnFsZAzOOTAUqEp+gSvRvTInMGiqY3Swof51yGQRMUu5cjC1xtnICUf4wSXUT6yt6
+         Cqq9IDgMVbdS9Q6M0B28uw8UUXENUbYmBgElOSF2oFMB/D1ymD+YqRleDy5j3E90MUrz
+         sqW4QsXr8a1arkW0WP2g1zusI2xnpeFH5efwnk3NASkRxcnvX8MlO/dulp67MyCr+3/d
+         jYCqQZjzyNjkm9O52YDOvHV0c+3ahqeVOBk9XfKJi7ALExZthwpA2EnIZg90KhYILbWA
+         0GxA==
+X-Forwarded-Encrypted: i=1; AFNElJ/XGoKCKDw5FdyBbTIgJkBiHUwgwx7IJ87H7WX4W1Cle530IZjHc8d3kL5dM7I2ytEK6jjfS6E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkZ5akPJqD35DHmLVzKTv1YVgU/vhSzzkVRvwcVh10ZJDQ4BbK
+	NIruCIi8Pcf90NFapqLNVYNkkRlB4bbPA7yPY/ETAxzbJkoQwAE3rI0ZVtfaZA600jo=
+X-Gm-Gg: Acq92OFmk/Xf2IbCEmVLKzwGsKPX61DdfIBmxQLYfYUyzIKmk2FJBiM4RFYH2nZ8EWQ
+	66+OcDxn7CahFVpc4hAaYUQWG0HwAaYzYgmg/4Xz3dSlcoPPiHMObCpjZEQdrDIsHQnk4Gp8tQy
+	PjHx5SoT3Jx5rKy2Tpb1VlIMAX7bSozFth2BzM2smmKCxP97aS66qrRBPfdyyKtpaT3xRjXAzS3
+	TUl09uaCN0n7HNQhEK6isC4lwHo0EgmND5VQ4fRb48HOhxeds37T0a4DD2LqiHbGrmNeVDKu0/v
+	fDfCK/a9psfVfdZffJ3zqIE6JuiW48xm9kh1LoOTpSVtKXkPFXaXN5oANXPVhd4aD61YWkycrxk
+	JxWmk9Jdry1+nRSnMwiJQWwqvnTRiRce/jagAtSNcvOFX1nkAu5bBaqty0s4zsef+lGp4i1gV4R
+	nXHrd1svptPQ8SxquJWv0b342oRilhV2k8hJso3YLMzOpTpwC5qvRG6f+ldcEt4Vfl5uwQbOxRB
+	yg=
+X-Received: by 2002:a05:6871:72b:b0:430:3591:26ce with SMTP id 586e51a60fabf-43556ebb0c9mr7944911fac.24.1778505621892;
+        Mon, 11 May 2026 06:20:21 -0700 (PDT)
 Received: from localhost ([2001:470:b8f6:1b:8478:44:4948:b0d3])
-        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7e367d8ffb7sm6884199a34.22.2026.05.11.06.20.19
+        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-435573e6ec9sm10085171fac.15.2026.05.11.06.20.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 May 2026 06:20:20 -0700 (PDT)
+        Mon, 11 May 2026 06:20:21 -0700 (PDT)
 From: Corey Minyard <corey@minyard.net>
 To: Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org
 Cc: Li Xiao <252270051@hdu.edu.cn>,
 	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 5.10.y v3 3/4] ipmi:ssif: Remove unnecessary indention
-Date: Mon, 11 May 2026 08:19:41 -0500
-Message-ID: <20260511132012.1831026-4-corey@minyard.net>
+Subject: [PATCH 5.10.y v3 4/4] ipmi:ssif: NULL thread on error
+Date: Mon, 11 May 2026 08:19:42 -0500
+Message-ID: <20260511132012.1831026-5-corey@minyard.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260511132012.1831026-1-corey@minyard.net>
 References: <20260509122858.ae87f8133ecd.re-ipmi-ssif-cleanup-5.15@kernel.org>
@@ -97,7 +96,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 26DCC50EDC9
+X-Rspamd-Queue-Id: CBB4650ED85
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -105,7 +104,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
 	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -114,8 +113,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245212-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-245213-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
@@ -123,65 +122,37 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[minyard.net:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,minyard.net:email,minyard.net:mid,minyard.net:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,minyard.net:email,minyard.net:mid,minyard.net:dkim]
 X-Rspamd-Action: no action
 
-A section was in {} that didn't need to be, move the variable
-definition to the top and set th eindentino properly.
+Cleanup code was checking the thread for NULL, but it was possibly
+a PTR_ERR() in one spot.
 
+Spotted with static analysis.
+
+Link: https://sourceforge.net/p/openipmi/mailman/message/59324676/
+Fixes: 75c486cb1bca ("ipmi:ssif: Clean up kthread on errors")
+Cc: <stable@vger.kernel.org> # 91eb7ec72612: ipmi:ssif: Remove unnecessary indention
+Cc: stable@vger.kernel.org
 Signed-off-by: Corey Minyard <corey@minyard.net>
 ---
- drivers/char/ipmi/ipmi_ssif.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index b884bfae7fa6..c973c0d92319 100644
+index c973c0d92319..43c4863e7b03 100644
 --- a/drivers/char/ipmi/ipmi_ssif.c
 +++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1675,6 +1675,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	int               len;
- 	int               i;
- 	u8		  slave_addr = 0;
-+	unsigned int      thread_num;
- 	struct ssif_addr_info *addr_info = NULL;
- 
- 	mutex_lock(&ssif_infos_mutex);
-@@ -1883,22 +1884,17 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	ssif_info->handlers.request_events = request_events;
- 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
- 
--	{
--		unsigned int thread_num;
--
--		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
--			       << 8) |
--			      ssif_info->client->addr);
--		init_completion(&ssif_info->wake_thread);
--		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
--					       "kssif%4.4x", thread_num);
--		if (IS_ERR(ssif_info->thread)) {
--			rv = PTR_ERR(ssif_info->thread);
--			dev_notice(&ssif_info->client->dev,
--				   "Could not start kernel thread: error %d\n",
--				   rv);
--			goto out;
--		}
-+	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
-+		      ssif_info->client->addr);
-+	init_completion(&ssif_info->wake_thread);
-+	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
-+					"kssif%4.4x", thread_num);
-+	if (IS_ERR(ssif_info->thread)) {
-+		rv = PTR_ERR(ssif_info->thread);
-+		dev_notice(&ssif_info->client->dev,
-+			   "Could not start kernel thread: error %d\n",
-+			   rv);
-+		goto out;
- 	}
- 
- 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
+@@ -1891,6 +1891,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 					"kssif%4.4x", thread_num);
+ 	if (IS_ERR(ssif_info->thread)) {
+ 		rv = PTR_ERR(ssif_info->thread);
++		ssif_info->thread = NULL;
+ 		dev_notice(&ssif_info->client->dev,
+ 			   "Could not start kernel thread: error %d\n",
+ 			   rv);
 -- 
 2.43.0
 
