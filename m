@@ -1,165 +1,211 @@
-Return-Path: <stable+bounces-245258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBeUFpz9AWppnAEAu9opvQ
-	(envelope-from <stable+bounces-245258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:02:36 +0200
+	id CLbdCQH3AWoFmwEAu9opvQ
+	(envelope-from <stable+bounces-245253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:34:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE571511BD9
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 18:02:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF84B51140E
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 17:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 31CEB311F93D
-	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:43:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CDC4F3042946
+	for <lists+stable@lfdr.de>; Mon, 11 May 2026 15:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABF9407591;
-	Mon, 11 May 2026 15:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FEA402B80;
+	Mon, 11 May 2026 15:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="La+ttmjw"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b="Wx2okLjC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605893FD152;
-	Mon, 11 May 2026 15:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E81401A10;
+	Mon, 11 May 2026 15:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778514146; cv=none; b=QoiRJ5Z9I3kXdNiOJt2NSqtnwRbP1+ms2BS+hbBZswt6EsIOIk0D556KHc4ctHU69GfCetetscZaesVY/F5JdmSl4lqZ4FmBy3SwkrEL3XDGQvHOYBITlK8qH6XuczTz8CwcKhZkK+83MAxcd3wDanZYdj864lYpldVJ6K7GJv4=
+	t=1778513447; cv=none; b=fYFdp+PUIWW9iDqKgyupZR3dDo9VU4uqFG3/gw3mYNamBXe/k+b97P5mb5vgEl8aPLsZ92OlrCS7MfYLKfKvR/7ya7yQXsWwjzrtFwicyQq2AzMh4dOeqoPeJZk9FXAf5ICR+D4V3W8H0+Ar/406xLPv9O6LHs1VU0JnzP7cnes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778514146; c=relaxed/simple;
-	bh=5xkwwt0IhI1fL6Su+oxiTo0tOlXF+xjkOAnP7BUrFgQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=myUtDXetlJaqho+XWCQ6I12RtwVZvRWY9ZbTBGArp26DPqlXDwYwI2VMsdkGkqR7C3dFCdROJMEXkw7lzSEEOzo0DPAikfs+UnI6YNuqyBUzGRpTKlmTcVhgAvAdKYwEXnoSOaX0rxjknNJIuF7AEhRVVdyn7LmkpoqbHivhlJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=La+ttmjw; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778514146; x=1810050146;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5xkwwt0IhI1fL6Su+oxiTo0tOlXF+xjkOAnP7BUrFgQ=;
-  b=La+ttmjw4rHtAUNYZ3BSrqtzcCZee15LJ2pY35Iy6AmCk4q/WQTaftbp
-   n+fQiwDti+maAUn0jG/miHeTo16rRHO778ATyZThmCXGffsmEo8d88JGu
-   vVB/JYYxO72ivLNdsBEVqWSAv2XT195hE1jcWgW6DF7DVXBf3jMpIu3ns
-   h+Sw4Or8AX7GwuXMXaVo0nQLhdwSH8zFjN79liZFX9VTaUE6Uiwdv2HlE
-   PWWGOU/Xc08nODStHLZP/Oirj9gE9emMcjrpl+7Rfwr+NGPJPYAolwBWc
-   LXvBxjuNBmk++3uH0rbEeXMuUjuP+AH2Q+2V0iBpuels23F06BWIwj98H
-   w==;
-X-CSE-ConnectionGUID: aAWbd3RmS9GUNvilqtXmDg==
-X-CSE-MsgGUID: Z7Ew5BY5QWCCyHYECRx9Uw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="96969690"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="96969690"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 08:42:17 -0700
-X-CSE-ConnectionGUID: uDQDU3tDS7ySpzg9MsqqGA==
-X-CSE-MsgGUID: eDrwlhyITL2Mto68flGG3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="237443700"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa008.jf.intel.com with ESMTP; 11 May 2026 08:42:15 -0700
-Date: Mon, 11 May 2026 23:19:06 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Cc: gregkh@linuxfoundation.org, linux-fpga@vger.kernel.org,
-	conor.dooley@microchip.com, mdf@kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] fpga: dfl: add bounds check in
- dfh_get_param_size()
-Message-ID: <agHzavPSk2XJp775@yilunxu-OptiPlex-7050>
-References: <20260504121332.1053563-1-sebasjosue84@gmail.com>
+	s=arc-20240116; t=1778513447; c=relaxed/simple;
+	bh=FnGbrgcWchxKK43+wWIzf4HDhK/0euHgwPjamcdl1x4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CZTmf0/sU9HqvGmM5jVf7r/Kda4ZJIxMlbaaZ5GxUoe5KRGU4gNpxtLHbrwgTkDKoVulujYRAaQrQWE3RfseeVN0FbTD+KWq5IE8k41gJalFRrjccbSk6tMIODujWDe4TmuWbLoapseQ9fRgkns4Wgm7CqVJTlg43jvvc4VF3dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b=Wx2okLjC; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1778513402; x=1779118202; i=efault@gmx.de;
+	bh=NCWQn2ZDOOzbcZTex4isIZKHZcd1mSINNk94wvwkSGs=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:MIME-Version:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Wx2okLjCQWoXBo+Qwu2N9PwgHxDWgvnOxH9M4rar9eXLYb6VsL36baLZcpZ25cJU
+	 QnfopnSbvKQF9/0A2ewYGXFg2i5jNlU5qxH1dV95Q92jLIIQIMGUUX1qPfspGFYNK
+	 ldUR7g+grhR7s24YjiUx6/mMJ0SpyCYEWIR1C35YuBpD+Avbfwsy4NuWn8O2rapsf
+	 uLhdY/W71cuAltYmjg87rW2nyccLbZ2Ovj820+1T1qS2DS0DYQ5gippFzwx7c4EhY
+	 E1ZgxSu0KE+GLRM7J8cqJaHqJwe9dUk3vxhhgtYuRCIPu1mzY+6iaV9mK6zpMmymY
+	 HAbDh+pn21hexnQxng==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSbx3-1wogfD1tlp-00OBDf; Mon, 11
+ May 2026 17:30:02 +0200
+Message-ID: <72333205daf4663b6bd133efa9766c7cee7b22ef.camel@gmx.de>
+Subject: Re: [REGRESSION] 6.12.y: d66792919d4f (sched/deadline: Use revised
+ wakeup rule for dl_server) causes latencies up to 50ms with PREEMPT_RT
+From: Mike Galbraith <efault@gmx.de>
+To: Sasha Levin <sashal@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org, 
+	linux-rt-users@vger.kernel.org, Lukas Beckmann <lbckmnn@mailbox.org>
+Date: Mon, 11 May 2026 17:30:01 +0200
+In-Reply-To: <20260511141441.stable-reply-0001@kernel.org>
+References: <04657838-46d1-432d-95e1-eb73b930b032@mailbox.org>
+	 <20260511141441.stable-reply-0001@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504121332.1053563-1-sebasjosue84@gmail.com>
-X-Rspamd-Queue-Id: CE571511BD9
+X-Provags-ID: V03:K1:Dbvbhv0H6J1TilgRn0sneQjMh2C6vcPhUH1VmKWRqByOX3Pp9Pa
+ 3ScMlm3zV8g9VxeQVJSFezhoVMuwhh6JhvX19/eJBxZqB9hJdEyd8ps9wImTWjwxNZDSgMp
+ 6YKSDQKo4Q2qh/foY88trvj+ipIcuf5T6wpatC/36gzu/gSZbu9grzVnjK4L/vFy9xvjHTn
+ 2hhuqtv2N6g9bu0zuyunA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:foBmjayto0E=;vZvKxesVJJU/R0973hArEWqdhZ/
+ 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
+X-Rspamd-Queue-Id: BF84B51140E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245258-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245253-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yilun.xu@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmx.de];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[efault@gmx.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:mid,gmx.de:dkim]
 X-Rspamd-Action: no action
 
-On Mon, May 04, 2026 at 06:13:30AM -0600, Sebastian Alba Vives wrote:
-> dfh_get_param_size() can return a parameter size larger than the feature
-> region because the loop bounds check is evaluated before incrementing
-> size. If the EOP (End of Parameters) bit is set in the same iteration,
-> the inflated size is returned without re-validation against max.
-> 
-> This can cause create_feature_instance() to call memcpy_fromio() with a
-> size exceeding the ioremap'd region when a malicious FPGA device provides
-> crafted DFHv1 parameter headers.
-> 
-> Add a bounds check after the size increment to ensure the accumulated
-> size never exceeds the feature boundary.
-> 
-> Fixes: a80a4b2b2e4f ("fpga: dfl: add support for DFHv1")
-> Signed-off-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-> ---
-> Changes in v5:
->   - Add blank line after the new bounds check.
->     Suggested by Xu Yilun.
-> Changes in v4:
->   - Resubmit as full series per maintainer request.
-> Changes in v2:
->   - Use (size > max) instead of (size + DFHv1_PARAM_HDR > max).
->     Suggested by Xu Yilun.
-> ---
->  drivers/fpga/dfl.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/fpga/dfl.c b/drivers/fpga/dfl.c
-> index 81d7a68..4c63c7c 100644
-> --- a/drivers/fpga/dfl.c
-> +++ b/drivers/fpga/dfl.c
-> @@ -1134,6 +1134,7 @@ static int dfh_get_param_size(void __iomem *dfh_base, resource_size_t max)
->  		size += next * sizeof(u64);
->  		if (size > max)
->  			return -EINVAL;
-> +
+On Mon, 2026-05-11 at 10:21 -0400, Sasha Levin wrote:
+>=20
+> Mike's reply notes that his local 6.12-rt tree carrying the following
+> three commits in cannot reproduce, while the same tree without them
+> reproduces quickly:
+>=20
+> =C2=A0 cccb45d7c429 ("sched/deadline: Less agressive dl_server handling")
+> =C2=A0 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+> =C2=A0 a3a70caf7906 ("sched/deadline: Fix dl_server behaviour")
+>=20
+> d66792919d4f's upstream commit message explicitly says it relies on the
+> state established by a3a70caf7906, and none of the three are in 6.12.y.
+>=20
+> Could you give those three commits a spin on top of 6.12.y (keeping
+> d66792919d4f in place) and see whether the latency goes away?
 
-Hey, please provide a patch that can apply to linux-next. I can do
-nothing to your series. Please read Documentation/process/ before
-submit.
+I've meanwhile tried those three alone, and the size XXL hits my box
+readily reproduces in virgin source do indeed go away.
 
-Also, please make a cover-letter (Patch #0) when you make the patch
-series.
+'course there may be another shoe, so...
 
->  		if (FIELD_GET(DFHv1_PARAM_HDR_NEXT_EOP, v))
->  			return size;
->  	}
-> -- 
-> 2.43.0
-> 
+	-Mike
 
