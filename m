@@ -1,253 +1,229 @@
-Return-Path: <stable+bounces-245596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 5d2TIag6A2oL2AEAu9opvQ
-	(envelope-from <stable+bounces-245596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:35:20 +0200
+	id qA30LXQwA2qN1QEAu9opvQ
+	(envelope-from <stable+bounces-245598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:51:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27432522A30
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:35:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9BB521AE5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB57A33A604C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:40:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 96CA130736FC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF7D390609;
-	Tue, 12 May 2026 13:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D84B394E96;
+	Tue, 12 May 2026 13:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsywHaLw"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="f1E1gGQW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010031.outbound.protection.outlook.com [40.93.198.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1369837DAA5
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778593258; cv=none; b=tHTUlcJ/hmurl1Gk6q3sq6mgimxDxrbApJSF5NLaZCHclK+QWJDDR0iCk6D8QIKcAbKCCf3UsFMPDkr9H+Hni/bx8OJ/9psMFJFyEmtSPV97o1vUlA46UekOposKdpl7k8apiJBJTsOLUo3dtQ/aNlnBZh+rTz/lwDow+TmmbKs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778593258; c=relaxed/simple;
-	bh=soqi62OvEXJZ3JA+3qDX+e9Uj8f+2G7jLh6bUENu1dk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WmmQuNQYmtOb8AGC79PE5k/yHCbwup2DDPP3pmkAJzOPht1ekqaKhCYhV91RMeVIaFnqzTVSJrA5u+RFpESLVFmpODOgpjl7aEAjI2BvL6NJa/sXMjZbYr07Y/6jyBaIpHE54q83Fn0j7FOa+KPFYdyCVK0KwYGIgR73EA+uWvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsywHaLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7ADC2BCB0;
-	Tue, 12 May 2026 13:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778593257;
-	bh=soqi62OvEXJZ3JA+3qDX+e9Uj8f+2G7jLh6bUENu1dk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=dsywHaLwmHmc24S443fMg306T6XDw/St19wjg4jgNCvPWgsx2dkFqiN21+p7gOqB4
-	 T8oLKADYLi1mjyUw7ybdOBRFlR7ztQ9LdGxhFSEAf0uVBZxMYuGU0cPtM+0ukabiJ4
-	 4mBlKDYaeglKL2xlVJg0roiy9Uo0iDA8IPGi7czY=
-Subject: FAILED: patch "[PATCH] net: wwan: t7xx: validate port_count against message length" failed to apply to 5.15-stable tree
-To: jhapavitra98@gmail.com,kuba@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 15:40:52 +0200
-Message-ID: <2026051252-waffle-poet-54f3@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72182384CC6
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778593490; cv=fail; b=MBYEGxE5yGHUI100pv9aL6SA3LqQX8F9E4+/NfHclVLmZ8ylgOqB/BIuP1PS1JcQCjr/EDJbwxNlKUIq/HOu0tKFa8iple6wEFc5ESf+WmNcTlRzR1hvoXYmgKWsSY0Co0zTa4pqNW3gbSLW6PufBVf/qRR1KRmUHUHepiVEkIY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778593490; c=relaxed/simple;
+	bh=og6XSQXuU4Qfd+z/AfjRGViB51Ql44g60lb89uYuqfQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Pkzazm6V2rto4Q+K9gp5GqxqQaOQ7tHv8JYFq8r+dkLRW9u6Q0Yw8t721Du8jV691sjC7v9FoT+1KrKTaIFeJDV7iF1ZOx9FG8rPmiYACYuS9j9zifVgSGvj8XCUsojQiGpWbIkyLEe3hLAELLtyYz8Q9Iqsy2GK3Cw+CAOkySU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=f1E1gGQW; arc=fail smtp.client-ip=40.93.198.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ooG+565Xpfoxau6mTV+ghFZarzvlVn09GsO1SBQE8v4kgV9Seri5qkhSzaSLUjauWlm3WE3duASwytSPBxUPvO47gBQwQn3ZGtd6rKt4agJilX1M3a6brjtpY7ycT1Hc102B+BV3FlLCXXPnRLDrqY2C8Ddth2zoIbHY77gJmZMDGkTnxiR5HNoHfxUqT87NLKLaexbxpQTO3TdCU0cVbaNw1IvACPRcMXafSuzMoeNCmiPm6zHlM8Xtt+swkNO30hvYwdnXurZ05HLuC9DZQhoXh0zJh43th+xT6hKge4qaVFBEGiOAJ8CyzasKE3rQvwra08nxDuHZ/Q6LhI6IiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z+PpVBjJhdtwPBgA43dpOd1Yetlje93tbL8IiFi/OtM=;
+ b=P+GshJXCEtN6lGVbVe9UTUgFFsjj+HJBZRZNqEvu7i7UJIMZfN8Xs0zML5uXEA1BPtO8QE3XnxAU/lzR6kQpAy6RPsXeXWma3UoQ5NojTG58vUIRUd4vjIYqSR+hsuPNrl2mBBXrHx5ZUO+YYPBt100cBXoqoqePKVarBXFK3Pm0eMq+V34C7loOSqJrgFpcdLpWSWVLWI4fMJ7f0wkrm5uKN5fiAZ/Mm6Ui/VFxo6GLhqZqnwTm8JRn4sd4G3Wg+ugXvJ0lpXTgJtJ3U/a0Aw1J32xdlKzYzryRXT5UcvOlUWcqLfWkT6uk9htTfebMBKoWO/s2v6vUeitsBwN/kg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z+PpVBjJhdtwPBgA43dpOd1Yetlje93tbL8IiFi/OtM=;
+ b=f1E1gGQWW1TrPjh4UAnAvR1eJzFwpASLi/D4KloottMtmkCfWPaYPZrZNnTlkmVdOhq1VVHwxywkT5U1PY+FNZHvpdUoaNaWj3XKKrw3gnHSrCppjKq/Ck/Opz1Z1eUamVFfnVUiUIzM/zGvkJiUrWlcdE9hYuKgurxrLCV6s4wwo4cSwmXaziFjP6wZDUs5qrQFOs3Y2hmkF7DUFaXGMHz9ZRZ5rk1kkwHpPBw93KV6w4CruZH76an6DMz/WBcmkzLwwROs+FUGerjj+D1sJQKidS6c4lx//8/a+d/oVu5RX/iyq/JIIFdfEsESObG2xYrsVCrE1OnYwjnT5jCEUA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY1PR12MB9601.namprd12.prod.outlook.com (2603:10b6:930:107::16)
+ by SJ0PR12MB7006.namprd12.prod.outlook.com (2603:10b6:a03:486::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
+ 2026 13:44:43 +0000
+Received: from CY1PR12MB9601.namprd12.prod.outlook.com
+ ([fe80::cd76:b497:475f:4de3]) by CY1PR12MB9601.namprd12.prod.outlook.com
+ ([fe80::cd76:b497:475f:4de3%5]) with mapi id 15.20.9913.009; Tue, 12 May 2026
+ 13:44:43 +0000
+Date: Tue, 12 May 2026 10:44:42 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex.williamson@nvidia.com>
+Cc: alex@shazbot.org, kvm@vkger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
+	Matt Evans <mattev@meta.com>,
+	Joonas =?utf-8?B?S3lsbcOkbMOk?= <joonas.kylmala@netum.fi>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] vfio/pci: fix dma-buf kref underflow after revoke
+Message-ID: <20260512134442.GB7655@nvidia.com>
+References: <20260507143548.1018405-1-alex.williamson@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260507143548.1018405-1-alex.williamson@nvidia.com>
+X-ClientProxiedBy: YT4PR01CA0046.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:fe::14) To CY1PR12MB9601.namprd12.prod.outlook.com
+ (2603:10b6:930:107::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 27432522A30
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY1PR12MB9601:EE_|SJ0PR12MB7006:EE_
+X-MS-Office365-Filtering-Correlation-Id: c6763944-0ed6-4bd2-4090-08deb02c9f8f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|22082099003|18002099003|56012099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	IRo+c7KdfldgdN1xKM1EpqvHDOLVgtzOzKoW4mkJZ6dD6n3TET7+ykYoLqRfAq9RKrlxcqZAmAx+s8L3wsMaLMM0O5tWKFKpb02aW0mYo6FBcTHZYFbrgwCQ7pI9lanczrWb+hkMcr0P+Jh2Krtjj7HUSSWWNZm5SQna+7mPVjPHr9ueNMbS2XgA2VvsAzNIMawZT+Pj16zptLJ+RqW6pXrek6D9QJFBLrTTr/Wn6Rz/a//Ee1BvF/oR3Egf9DztSWTb5NkOGCVXZVxKp2hmZ4y+jOqx1tkLxZ5W6DHp+7eQT0wuEymyC033uOYapb7PRtkha/01EcTD2I4OFDyxXr2irCFl484PS7XIkNBum1vhmsLOBo2qIQa/LME78NiqLE7aCV7Rp63eHdiICAh9Lxi84st/ZA23VXBqQAMgpjLivtImcckQXwPYpvYI6RelZpy6WFgH9+31pR1NDMkS5QAeFrbxRd3DttLLXv5kp3pl+JJC4CnoLwxwjA/lIaiuAQ40BzlYYCqOESYfDFDeKS2HDZy1KFTrFTEnNQuDtHe35wYdwOaI7WgAh4QQpMZlRTK9CMkCmMxDP5amMudG9/nJt7feeOaR1+ulLoKTviajSGY2+gWwJzWxQJfb7lJkhOzVewGpOKf5HoLe24HyWFCJJx5hYqCN6R3VOe0vzhy9xZV7SCx/Sv1NJEVTeRYx
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9601.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(22082099003)(18002099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cTBzbXdmbHdSUTl1RUtSSkIzS2dvaHc4WS9rS3l2YlMya3ZYRDVUVEFZQlBu?=
+ =?utf-8?B?MGdSTzlDcDlEa3VtWDQ1M1FjOWdRNStsRHdxaU9SbkVsRWNHWnJTV3VEcm5k?=
+ =?utf-8?B?MWlxVjBuVHp6UC9XRWVDVnIzVWNFS3hWY0lXV0tuZkp1WmpIOGNRMGZmeGxJ?=
+ =?utf-8?B?TUJrY3M4eUFCczcvOUlLS3A3NFNGZ2Z5WmlTUHNpeUQ5WG9NYi94UGpBN2Vy?=
+ =?utf-8?B?VkQ2NTFRY2RQVWNOcHY5aGVtY0JGTkluYUc5MDhzS1FlbDhIc0hXRUhMUW5v?=
+ =?utf-8?B?eWYvNkZ5dkROVWdpTVpsOUs1UXN2RFd2aU0vZ2IzQVdManNzT3lEWDZMUXc2?=
+ =?utf-8?B?L3hRSTJFWk9CckJXZkdWQ0NDNGo1c1NkRHJMdk1ZaTFxM21QVlo0NEF6QjFw?=
+ =?utf-8?B?WUU4Z2w4VHhkVXlJUnE1dmVVb2FqYzdWTDAwTWVJMFl0eXkwVkZ5V0FiTjdk?=
+ =?utf-8?B?RkI4bEo3clpsblhva2xFK3BKSnhheVQyVlJvM1NLL1lGaHU4MDNPTWtSWk1Q?=
+ =?utf-8?B?VHdSVnk5UWNudUx4QUM3OHUyektvSHQ0dDVpbmJ2SUs2OC9QMGp5eDl5NE13?=
+ =?utf-8?B?K0t6bGM4OGpDQ2ZrbUtoOWhPMGZ5b0RBb3ZhdjFVcG9pUUZ4QVU3dDEzR2JF?=
+ =?utf-8?B?aHRxUnJNSjdqSUhMbzZqb0gxUGwrQ1o4eVU3TUhjWGNFTmlSRFFleEtlaEVy?=
+ =?utf-8?B?T0FLdkZzdlJtSGVxWHFuMXhNUkF6M2FoOFhNWFZ3TytxU2ZSa2NWcDFvNXp1?=
+ =?utf-8?B?VTZHZlBMY0x3Tkh2U3JxVE1TZjMwWm5SYi8rWm9adFpoeFc5UmZjVTIxcXRX?=
+ =?utf-8?B?WEJVcUl5OTNqUnVFeHB3MW8rdm4rU0RUUlpaVGpOMFJQV2JKMk9aTXZkcXBW?=
+ =?utf-8?B?UVJjbjlHUmZxTm05N09ydzBnQm9LQjNQazNuVzRoOW40ZVJXUUtUL0dCVlhs?=
+ =?utf-8?B?MllrTXpaWVVZbWNvTWlZM3hpSWhFK3hFdUFnY29Jcmtibm9yK2ZlM2pxVkll?=
+ =?utf-8?B?WlFjMVVRZCtXVlc2by9KR29sczZRakFDdXVDWndXZEhYaW80ZTR0M3JxaHg5?=
+ =?utf-8?B?OTh3eXJKOFZDVm9GcXhrM2FZbHo0YUFBSWRJNmJjQWpkYTZvY0pTcnRBN2Rm?=
+ =?utf-8?B?VXVQUnduaUhvVmQwaW5LR3NLaGNrOWdLOVJSclpIOUZaaUhXa3FJeE14TDdn?=
+ =?utf-8?B?bUhuZ0I2OXYxWDFzR2dVNW8ycFpGbmdFNGpHcWxwSXRYdzREbHhqQ0JMcjZx?=
+ =?utf-8?B?c1psSjZOWE5UQnhramtZSDIrZjdxWDloaEJocldDQ0NJcG5XM2ZyK0loWXZJ?=
+ =?utf-8?B?Qlh1ZldDcG9pZ1RMSmV5TFZRT3dyaGlIeFNSNVp2VWZ5Qk4zcmNyd1ZUeTl0?=
+ =?utf-8?B?NWh3YjFTVTJ4MERmL09HdHcrVG4wVk1ONDh0NWNmdGNJdjdZN3pPQ3E2MTBG?=
+ =?utf-8?B?UGZmbUxmN1hIQXAySXFBbWp1c3BqVDZORDZmUUFWemdhcnFJUFdWVndTTVRZ?=
+ =?utf-8?B?VVhuY1pucklrUi9Dekpab0ZyU0hGTmJvM3BRZXlBcXJpTjMrM1FBcVVtbnNN?=
+ =?utf-8?B?a0drb0JZUjg4WDZhemdqU3FGZDBia2JITzBCditYMHhSRWJiYUY2TGI1VmRI?=
+ =?utf-8?B?cENZUFBRZjVwZmNPM3pDeTJVbjkya201Yko5YlNpeGlZN3BlYmNkOG8wdUdl?=
+ =?utf-8?B?dGpKWlhHQVBrZVk3aHlYeTlyOHQxUkp1dGNKTGt4QUYzeUpmTytLMHNIUWFI?=
+ =?utf-8?B?cjZETnhEa1A5STUxczJENHkyYktobStEeDllbUZCajhveXlwdU9qeDR2bzFV?=
+ =?utf-8?B?dDFLN2JFRm5kbW51N245TmNPLzNaeWlBa1YweDNCeDJScGdKNXdrNncxQkJ0?=
+ =?utf-8?B?MnVNNjdoYUdyaFVvWkFyYUJxcjAraWpjYjFzaEI4eEtqdWpLcHBCM3kzSUtu?=
+ =?utf-8?B?aTdBQ2h6d1ppcXhVckZETEQ1aDZMQ3UyZUZSMFFmOHdDb1ZMeVhONFpWemdS?=
+ =?utf-8?B?QTFOQmtxclM4bnpWWWo0T0Y0UDI5djZESlFzSThWcGJaZTJybG5Yc0dYcCt6?=
+ =?utf-8?B?NFRjdXZ4RDc4NENnTjYvRm9BQ3Z6YzBDUGlZdlZ3YUVxUzUzL2pha2hwQWN4?=
+ =?utf-8?B?T1AzbTdmMVlWVG1vdGMzVUd1MVhoVlFEQk5vYXJ3b0dSOFpEUEVLWXpONkF1?=
+ =?utf-8?B?Um9jSkxjcTlzb28rUWVxb0h0N0tyNGZxd2VQd3BLK0F5YWdDMVM0Q1hsU0F3?=
+ =?utf-8?B?SUtsVDlMdE5QZWkwVnZzMk5rNm8yQkVkNHoxVUd5aFdpUFZjM1IzY0phK0gv?=
+ =?utf-8?Q?rfNcl7G4+5m9kWuzx3?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6763944-0ed6-4bd2-4090-08deb02c9f8f
+X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9601.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 13:44:43.7334
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1wECxTFXnQFBICvezyyaJeHdchmbEWHLcryvJdce3I7yLLrno0E949mKnemxKB4q
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7006
+X-Rspamd-Queue-Id: 2F9BB521AE5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-245598-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245596-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,msgid.link:url,linuxfoundation.org:dkim]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,nvidia.com:email,nvidia.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,netum.fi:email]
 X-Rspamd-Action: no action
 
+On Thu, May 07, 2026 at 08:35:46AM -0600, Alex Williamson wrote:
+> vfio_pci_dma_buf_move(revoked=true) and vfio_pci_dma_buf_cleanup()
+> ran the same drain sequence: set priv->revoked, invalidate mappings,
+> wait for fences, drop the registered kref, wait for completion.
+> When the VFIO device fd was closed after PCI_COMMAND_MEMORY had been
+> cleared, both ran in turn -- the second kref_put underflowed and the
+> subsequent wait_for_completion() blocked on a completion that the
+> first run had already consumed:
+> 
+>   refcount_t: underflow; use-after-free.
+>   WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x59/0x90
+>   Call Trace:
+>    vfio_pci_dma_buf_cleanup+0x163/0x168 [vfio_pci_core]
+>    vfio_pci_core_close_device+0x67/0xe0 [vfio_pci_core]
+>    vfio_df_close+0x4c/0x80 [vfio]
+>    vfio_df_group_close+0x36/0x80 [vfio]
+>    vfio_device_fops_release+0x21/0x40 [vfio]
+>    __fput+0xe6/0x2b0
+>    __x64_sys_close+0x3d/0x80
+> 
+> Collapse the duplication: vfio_pci_dma_buf_cleanup() now delegates
+> the drain to vfio_pci_dma_buf_move(true), which is idempotent for
+> already-revoked dma-bufs.  cleanup retains only list removal and
+> the device registration drop; the dma_resv_lock that bracketed
+> those is dropped along with the in-line drain that required it,
+> memory_lock continues to protect them.
+> 
+> Re-arm the kref and the completion at the end of move()'s revoke
+> branch so post-revoke state matches post-creation (kref == 1,
+> completion ready).  This keeps cleanup's call into move() a no-op
+> when revoke already ran, and replaces the explicit kref_init() that
+> the un-revoke branch used to perform for the un-revoke -> remap
+> path.
+> 
+> Fixes: 1a8a5227f229 ("vfio: Wait for dma-buf invalidation to complete")
+> Reported-by: Joonas Kylmälä <joonas.kylmala@netum.fi>
+> Closes: https://lore.kernel.org/all/GVXPR02MB12019AA6014F27EF5D773E89BFB372@GVXPR02MB12019.eurprd02.prod.outlook.com/
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-7
+> Reviewed-by: Leon Romanovsky <leon@kernel.org>
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+> ---
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0e7c074cfcd9bd93765505f9eb8b42f03ed2a744
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051252-waffle-poet-54f3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0e7c074cfcd9bd93765505f9eb8b42f03ed2a744 Mon Sep 17 00:00:00 2001
-From: Pavitra Jha <jhapavitra98@gmail.com>
-Date: Fri, 1 May 2026 07:07:12 -0400
-Subject: [PATCH] net: wwan: t7xx: validate port_count against message length
- in t7xx_port_enum_msg_handler
-
-t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
-a loop bound over port_msg->data[] without checking that the message buffer
-contains sufficient data. A modem sending port_count=65535 in a 12-byte
-buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
-
-Add a sizeof(*port_msg) check before accessing the port message header
-fields to guard against undersized messages.
-
-Add a struct_size() check after extracting port_count and before the loop.
-
-In t7xx_parse_host_rt_data(), guard the rt_feature header read with a
-remaining-buffer check before accessing data_len, validate feat_data_len
-against the actual remaining buffer to prevent OOB reads and signed
-integer overflow on offset.
-
-Pass msg_len from both call sites: skb->len at the DPMAIF path after
-skb_pull(), and the validated feat_data_len at the handshake path.
-
-Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
-Link: https://patch.msgid.link/20260501110713.145563-1-jhapavitra98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/drivers/net/wwan/t7xx/t7xx_modem_ops.c b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-index 7968e208dd37..adb29d30c63f 100644
---- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-+++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-@@ -457,8 +457,20 @@ static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_inf
- 
- 	offset = sizeof(struct feature_query);
- 	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
-+		size_t remaining = data_length - offset;
-+		size_t feat_data_len, feat_total;
-+
-+		if (remaining < sizeof(*rt_feature))
-+			break;
-+
- 		rt_feature = data + offset;
--		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
-+		feat_data_len = le32_to_cpu(rt_feature->data_len);
-+
-+		if (feat_data_len > remaining - sizeof(*rt_feature))
-+			break;
-+
-+		feat_total = sizeof(*rt_feature) + feat_data_len;
-+		offset += feat_total;
- 
- 		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
- 		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
-@@ -468,8 +480,10 @@ static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_inf
- 		if (ft_spt_st != MTK_FEATURE_MUST_BE_SUPPORTED)
- 			return -EINVAL;
- 
--		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM)
--			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
-+		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM) {
-+			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
-+						   feat_data_len);
-+		}
- 	}
- 
- 	return 0;
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-index ae632ef96698..f869e4ed9ee9 100644
---- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-+++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-@@ -117,6 +117,7 @@ static int fsm_ee_message_handler(struct t7xx_port *port, struct t7xx_fsm_ctl *c
-  * t7xx_port_enum_msg_handler() - Parse the port enumeration message to create/remove nodes.
-  * @md: Modem context.
-  * @msg: Message.
-+ * @msg_len:	Length of @msg in bytes.
-  *
-  * Used to control create/remove device node.
-  *
-@@ -124,12 +125,18 @@ static int fsm_ee_message_handler(struct t7xx_port *port, struct t7xx_fsm_ctl *c
-  * * 0		- Success.
-  * * -EFAULT	- Message check failure.
-  */
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len)
- {
- 	struct device *dev = &md->t7xx_dev->pdev->dev;
- 	unsigned int version, port_count, i;
- 	struct port_msg *port_msg = msg;
- 
-+	if (msg_len < sizeof(*port_msg)) {
-+		dev_err(dev, "Port enum msg too short for header: need %zu, have %zu\n",
-+			sizeof(*port_msg), msg_len);
-+		return -EINVAL;
-+	}
-+
- 	version = FIELD_GET(PORT_MSG_VERSION, le32_to_cpu(port_msg->info));
- 	if (version != PORT_ENUM_VER ||
- 	    le32_to_cpu(port_msg->head_pattern) != PORT_ENUM_HEAD_PATTERN ||
-@@ -141,6 +148,13 @@ int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
- 	}
- 
- 	port_count = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
-+
-+	if (msg_len < struct_size(port_msg, data, port_count)) {
-+		dev_err(dev, "Port enum msg too short: need %zu, have %zu\n",
-+			struct_size(port_msg, data, port_count), msg_len);
-+		return -EINVAL;
-+	}
-+
- 	for (i = 0; i < port_count; i++) {
- 		u32 port_info = le32_to_cpu(port_msg->data[i]);
- 		unsigned int ch_id;
-@@ -191,7 +205,7 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
- 
- 	case CTL_ID_PORT_ENUM:
- 		skb_pull(skb, sizeof(*ctrl_msg_h));
--		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data);
-+		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
- 		if (!ret)
- 			ret = port_ctl_send_msg_to_md(port, CTL_ID_PORT_ENUM, 0);
- 		else
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_proxy.h b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-index f0918b36e899..7c3190bf0fcf 100644
---- a/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-+++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-@@ -103,7 +103,7 @@ void t7xx_port_proxy_reset(struct port_proxy *port_prox);
- void t7xx_port_proxy_uninit(struct port_proxy *port_prox);
- int t7xx_port_proxy_init(struct t7xx_modem *md);
- void t7xx_port_proxy_md_status_notify(struct port_proxy *port_prox, unsigned int state);
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg);
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len);
- int t7xx_port_proxy_chl_enable_disable(struct port_proxy *port_prox, unsigned int ch_id,
- 				       bool en_flag);
- void t7xx_port_proxy_set_cfg(struct t7xx_modem *md, enum port_cfg_id cfg_id);
-
+Jason
 
