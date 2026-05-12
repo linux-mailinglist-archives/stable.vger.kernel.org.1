@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QO9THTVsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:45 +0200
+	id oKbXE6ZuA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21F4526C66
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD70527397
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8997321AF3D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0C9E30D15D4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59BB3D5C06;
-	Tue, 12 May 2026 17:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6FC3537D0;
+	Tue, 12 May 2026 18:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYnheHC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbkevLRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894DD3C09F7;
-	Tue, 12 May 2026 17:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C7349AF5;
+	Tue, 12 May 2026 18:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608489; cv=none; b=s1E1rnu1xnxK49jMlDyqh29Bznk44/16U6qIIFGC6PD++tzZvMII9Dng/O4iMArX93cDxoUCkESYanOiyErqxATbHnxKEy8ZocXL5KHe35QUbSYwV04IZMWIfnwlrfBjcX0crs21UxxHr5giCujy902C7UXW4zYYfsy2ML8Qh3w=
+	t=1778609208; cv=none; b=nzFjLRRwHkmNgq9nAtPUMLDoZDNpc2s2Dl9j2IpWOZzBDKrYaezMFaZOmTYxMW8bzVpxgKxmuil6u1god21p/8YV3sQ0XCeqkk5aP43c3JJuI0skzYeCakJHAxZ0Gnjm0CyI6+DD2C0Fc1VwxsKVRaQ0x3U1T79O8sJaAz3rmmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608489; c=relaxed/simple;
-	bh=ZOT4LRbWsTMQbpw2MQvr/XaFNTi/95/ClteFSMwBelw=;
+	s=arc-20240116; t=1778609208; c=relaxed/simple;
+	bh=/xihcwAI/RtSSKAXPS+vx8gYONKqnnVHIVEg89Ah6pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOPrDkN6Tm20uiO0teCPpenQt7N2sSQDC2ertnVRbkaAzpDWycqrcyH8mLjdK6odH+hEOVZfgUc6z6EhPh3i7uLNBU1SwJCzAKzh+Qf1IrTc1Ep2j0XX351NGG5W8ypyv0KNJ4zMPDj/lxsZnXHveJDLFxjJTncc742xB9+LL10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYnheHC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDBCC2BCB0;
-	Tue, 12 May 2026 17:54:48 +0000 (UTC)
+	 MIME-Version; b=ca9l5cc/P6zCQ8Bc0wzU4AL98hKU30JfDOziWCSHwYFYVAr3rPxXt30NH7n7HVUnh1mAOvfFErh1ukUz7l9lddK7nqCFzCFoU0GYbuO/p5UQUFJ4PooLv6juSgCtbh/ECbY/mA4vC0wVp3YOanh9sBx9DueX/rE+ziQrxp0jjo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbkevLRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845E5C2BCB0;
+	Tue, 12 May 2026 18:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608489;
-	bh=ZOT4LRbWsTMQbpw2MQvr/XaFNTi/95/ClteFSMwBelw=;
+	s=korg; t=1778609207;
+	bh=/xihcwAI/RtSSKAXPS+vx8gYONKqnnVHIVEg89Ah6pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fYnheHC/nxhgFn4JaQNXIF+I7k6pFTdJzxUsWH8fxVuLwG5KEfKjiAL+XdFmg+Ldm
-	 2bG7oB4aQ7Z2Jgg3YMPqChux1oDl7GGDcyUzsB8MhrPXvTzPyeB67ds/CxuO/wBeMd
-	 v/8pwrvNJpQG+A+ujL5Fhah6p/98R5xL1+iJyARY=
+	b=WbkevLRjQMQAmZUDTe7P0zLSkX7gIV8TRdeZlktZ7xL2QX1PSeKE44primdrGZaqY
+	 jnaACIes+h1bCEtJZK1UcZxOuXpAtRip47J080KfSHWjmj8e5AF9yYVSA/0k9ywVni
+	 aF7d7Ef1XUtlZ5rb9jzGoih5hsgrsNR/PyNw2H80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 099/270] net: libwx: fix VF illegal register access
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dmitry Vyukov <dvyukov@google.com>
+Subject: [PATCH 7.0 105/307] rseq: Dont advertise time slice extensions if disabled
 Date: Tue, 12 May 2026 19:38:20 +0200
-Message-ID: <20260512173940.543658175@linuxfoundation.org>
+Message-ID: <20260512173942.341931512@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F21F4526C66
+X-Rspamd-Queue-Id: ABD70527397
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246151-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246430-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,53 +89,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[trustnetic.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-commit 694de316f607fe2473d52ca0707e3918e72c1562 upstream.
+commit 010b7723c0a3b9ad58f50b715dbe2e7781d29400 upstream.
 
-Register WX_CFG_PORT_ST is a PF restricted register. When a VF is
-initialized, attempting to read this register triggers an illegal
-register access, which lead to a system hang.
+If time slice extensions have been disabled on the kernel command line,
+then advertising them in RSEQ flags is wrong.
 
-When the device is VF, the bus function ID can be obtained directly from
-the PCI_FUNC(pdev->devfn).
+Adjust the conditionals to reflect reality, fixup the misleading comments
+about the gap of these flags and the rseq::flags field.
 
-Fixes: a04ea57aae37 ("net: libwx: fix device bus LAN ID")
+Fixes: d6200245c75e ("rseq: Allow registering RSEQ with slice extension")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Tested-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://patch.msgid.link/20260428224427.437059375%40kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/4D1F4452D21DE107+20260429083743.88961-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/uapi/linux/rseq.h |    5 ++++-
+ kernel/rseq.c             |    9 +++++----
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2427,8 +2427,11 @@ int wx_sw_init(struct wx *wx)
- 	wx->oem_svid = pdev->subsystem_vendor;
- 	wx->oem_ssid = pdev->subsystem_device;
- 	wx->bus.device = PCI_SLOT(pdev->devfn);
--	wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
--				 rd32(wx, WX_CFG_PORT_ST));
-+	if (pdev->is_virtfn)
-+		wx->bus.func = PCI_FUNC(pdev->devfn);
-+	else
-+		wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
-+					 rd32(wx, WX_CFG_PORT_ST));
+--- a/include/uapi/linux/rseq.h
++++ b/include/uapi/linux/rseq.h
+@@ -28,7 +28,7 @@ enum rseq_cs_flags_bit {
+ 	RSEQ_CS_FLAG_NO_RESTART_ON_PREEMPT_BIT	= 0,
+ 	RSEQ_CS_FLAG_NO_RESTART_ON_SIGNAL_BIT	= 1,
+ 	RSEQ_CS_FLAG_NO_RESTART_ON_MIGRATE_BIT	= 2,
+-	/* (3) Intentional gap to put new bits into a separate byte */
++	/* (3) Intentional gap to keep new bits separate */
  
- 	if (wx->oem_svid == PCI_VENDOR_ID_WANGXUN ||
- 	    pdev->is_virtfn) {
+ 	/* User read only feature flags */
+ 	RSEQ_CS_FLAG_SLICE_EXT_AVAILABLE_BIT	= 4,
+@@ -161,6 +161,9 @@ struct rseq {
+ 	 *	- RSEQ_CS_FLAG_NO_RESTART_ON_PREEMPT
+ 	 *	- RSEQ_CS_FLAG_NO_RESTART_ON_SIGNAL
+ 	 *	- RSEQ_CS_FLAG_NO_RESTART_ON_MIGRATE
++	 *
++	 * It is now used for feature status advertisement by the kernel.
++	 * See: enum rseq_cs_flags_bit for further information.
+ 	 */
+ 	__u32 flags;
+ 
+--- a/kernel/rseq.c
++++ b/kernel/rseq.c
+@@ -462,10 +462,11 @@ SYSCALL_DEFINE4(rseq, struct rseq __user
+ 		return -EFAULT;
+ 
+ 	if (IS_ENABLED(CONFIG_RSEQ_SLICE_EXTENSION)) {
+-		rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_AVAILABLE;
+-		if (rseq_slice_extension_enabled() &&
+-		    (flags & RSEQ_FLAG_SLICE_EXT_DEFAULT_ON))
+-			rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_ENABLED;
++		if (rseq_slice_extension_enabled()) {
++			rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_AVAILABLE;
++			if (flags & RSEQ_FLAG_SLICE_EXT_DEFAULT_ON)
++				rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_ENABLED;
++		}
+ 	}
+ 
+ 	scoped_user_write_access(rseq, efault) {
 
 
 
