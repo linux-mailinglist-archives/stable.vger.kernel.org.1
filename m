@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNycJSVrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:13 +0200
+	id iDYUFB9vA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02653526922
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986BF5274B6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2418F31BEC5B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 774ED309370B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C5C3BB102;
-	Tue, 12 May 2026 17:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F125525FA29;
+	Tue, 12 May 2026 18:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1hDJNoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6yI1psV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D383955FC;
-	Tue, 12 May 2026 17:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52143EDE59;
+	Tue, 12 May 2026 18:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608312; cv=none; b=GFMIjxzHX8FcMZ67R37loApNXwStuDsvhvdK0kvfG7hzJ5u+tqCiiO4SXQrgquMsFyZZxJd5epIqNKoDqY5xlKT9kEaGUDrBMQcHYvEH3Qq4iVsJzqkAO1bO7UvyAS3YU7ham+lPfQZ4wksb7vKDCW5mUvNGTX7J/oQmDL9Zxmw=
+	t=1778609007; cv=none; b=AnIpslEYuE13pLpN57sOgs9M9w/1PyzwG8sAWW+pJ+VwyvZlgDWLeNMIQVgEe7CwONkxmryJMBtLrP9raJZVAxOQRUTdU6TNUVliu4fnWdcEfeoegYhk00Ca6UapbTF6jIzONAciUpzn4ftfyvlhRYVIKIU3ftjWKDr9A+j1/5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608312; c=relaxed/simple;
-	bh=0pDBjri7ucX3mW3CgexSsJb2pZgV9Ix3LYTsFlgwZ+c=;
+	s=arc-20240116; t=1778609007; c=relaxed/simple;
+	bh=qdFCimMjFF3uwCyhbINAknxvPwRKRq2AeGMJO9EVSwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPUV3PjxSWhxd/rOMOHDRLol/5DmMc5BXLhQz2y5P93LN3C/Ly4NuI/horZJg/kwn/0I/Q4tutZwpks77lnNry+9vhAFL152u9dPBWV82cyWdd27F4CYPT3lHwckou0uG+4WE02aewyeDROzOHmfOqlEDep06egE3rdhRLq3ynI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1hDJNoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7E4C2BCB0;
-	Tue, 12 May 2026 17:51:51 +0000 (UTC)
+	 MIME-Version; b=ATcJWUJcTC0s442gUX7s/gBrldE1sU68oH70x6SaJXjl8BshnMyaayDgam1HDy2LBGvEN7NIu98BoL/Gvl60iud7scGLoM57pcm2huoY0VW9KdMl5nwciWxOV0CqVRSpGhUxSNhNP7xOBrTlNlEMmNlhg6YxsQ8aHmRSnE/oZEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6yI1psV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E73BC2BCB0;
+	Tue, 12 May 2026 18:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608311;
-	bh=0pDBjri7ucX3mW3CgexSsJb2pZgV9Ix3LYTsFlgwZ+c=;
+	s=korg; t=1778609007;
+	bh=qdFCimMjFF3uwCyhbINAknxvPwRKRq2AeGMJO9EVSwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1hDJNoBysvFo9wIsh2nwJ1r1A/Faupn/7Y6mBYNJo/hkf1l4RicbepWVjz+SR2vs
-	 kXB3uXrEpXYPjjCjhHOEcTyw1BVHYUgEagO9F8xS/xSVTa1uMFdYgMveno4IJOwZfk
-	 GlxB2HQsnUZ7JVx6T492HPnt/YIKH0Fd9QK6tRnI=
+	b=s6yI1psVUFU1kuZJzAq5wZF7qACk50xsglP6e3/cVJSeEvEIHEYQXzMZpmP0au3Od
+	 +3afqjRKZOYMKOfPY4C3EZm36gDHFNGA82xjd/CoLyq+w7d9NtsoGvLngGu9TPUFBI
+	 J0gj828H9qm1hBz6/nuDJ2LhMZejuJs982bSK6Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.18 003/270] ipmi: Check event message buffer response for bad data
+	Sean Kelley <skelley@nvidia.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 7.0 009/307] ACPI: CPPC: Fix related_cpus inconsistency during CPU hotplug
 Date: Tue, 12 May 2026 19:36:44 +0200
-Message-ID: <20260512173938.527429678@linuxfoundation.org>
+Message-ID: <20260512173940.321218853@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02653526922
+X-Rspamd-Queue-Id: 986BF5274B6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246082-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246353-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,55 +89,151 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[minyard.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,cloudflare.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,test.sh:url,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 36920f30e78e69df01f9691c470b6f3ba8aebf98 upstream.
+commit 75141a770f4f8225d316f6c7e146723a32e9720e upstream.
 
-The event message buffer response data size got checked later when
-processing, but check it right after the response comes back.  It
-appears some BMCs may return an empty message instead of an error
-when fetching events.
+When concurrently bringing up and down two SMT threads of a physical
+core, many warning call traces occur as below:
 
-There are apparently some new BMCs that make this error, so we need to
-compensate.
+The issue timeline is as follows:
 
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+ 1. When the system starts,
+    cpufreq: CPU: 220, policy->related_cpus: 220-221, policy->cpus: 220-221
+
+ 2. Offline CPU 220 and CPU 221.
+
+ 3. Online CPU 220
+    - CPU 221 is now offline, as acpi_get_psd_map() use
+      for_each_online_cpu(), so the cpu_data->shared_cpu_map,
+      policy->cpus, and related_cpus has only CPU 220.
+
+    cpufreq: CPU: 220, policy->related_cpus: 220, policy->cpus: 220
+
+ 4. Offline CPU 220
+
+ 5. Online CPU 221, the below call trace occurs:
+    - Since CPU 220 and CPU 221 share one policy, and
+      policy->related_cpus = 220 after step 3, so CPU 221
+      is not in policy->related_cpus but
+      per_cpu(cpufreq_cpu_data, cpu221) is not NULL.
+
+After reverting commit 56eb0c0ed345 ("ACPI: CPPC: Fix remaining
+for_each_possible_cpu() to use online CPUs"), the issue disappeared.
+
+The _PSD (P-State Dependency) defines the hardware-level dependency of
+frequency control across CPU cores. Since this relationship is a physical
+attribute of the hardware topology, it remains constant regardless of the
+online or offline status of the CPUs.
+
+Using for_each_online_cpu() in acpi_get_psd_map() is problematic. If a
+CPU is offline, it will be excluded from the shared_cpu_map.
+Consequently, if that CPU is brought online later, the kernel will fail
+to recognize it as part of any shared frequency domain.
+
+Switch back to for_each_possible_cpu() to ensure that all cores defined
+in the ACPI tables are correctly mapped into their respective performance
+domains from the start. This aligns with the logic of policy->related_cpus,
+which must encompass all potentially available cores in the domain to
+prevent logic gaps during CPU hotplug operations.
+
+To resolve the original issue regarding the "nosmt" or "nosmt=force"
+boot parameter, as send_pcc_cmd() function already does if (!desc)
+continue, so reverting that loop back to for_each_possible_cpu() is ok,
+only need to change the match_cpc_ptr NULL case in acpi_get_psd_map() to
+continue as Sean suggested.
+
+How to reproduce, on arm64 machine with SMT support which use acpi cppc
+cpufreq driver:
+
+	bash test.sh 220 & bash test.sh 221 &
+
+	The test.sh is as below:
+		while true
+			do
+			echo 0 > /sys/devices/system/cpu/cpu${1}/online
+			sleep 0.5
+			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
+			echo 1 >  /sys/devices/system/cpu/cpu${1}/online
+			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
+		done
+
+	CPU: 221 PID: 1119 Comm: cpuhp/221 Kdump: loaded Not tainted 6.6.0debug+ #5
+	Hardware name: To be filled by O.E.M. S920X20/BC83AMDA01-7270Z, BIOS 20.39 09/04/2024
+	pstate: a1400009 (NzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+	pc : cpufreq_online+0x8ac/0xa90
+	lr : cpuhp_cpufreq_online+0x18/0x30
+	sp : ffff80008739bce0
+	x29: ffff80008739bce0 x28: 0000000000000000 x27: ffff28400ca32200
+	x26: 0000000000000000 x25: 0000000000000003 x24: ffffd483503ff000
+	x23: ffffd483504051a0 x22: ffffd48350024a00 x21: 00000000000000dd
+	x20: 000000000000001d x19: ffff28400ca32000 x18: 0000000000000000
+	x17: 0000000000000020 x16: ffffd4834e6a3fc8 x15: 0000000000000020
+	x14: 0000000000000008 x13: 0000000000000001 x12: 00000000ffffffff
+	x11: 0000000000000040 x10: ffffd48350430728 x9 : ffffd4834f087c78
+	x8 : 0000000000000001 x7 : ffff2840092bdf00 x6 : ffffd483504264f0
+	x5 : ffffd48350405000 x4 : ffff283f7f95cc60 x3 : 0000000000000000
+	x2 : ffff53bc2f94b000 x1 : 00000000000000dd x0 : 0000000000000000
+	Call trace:
+	 cpufreq_online+0x8ac/0xa90
+	 cpuhp_cpufreq_online+0x18/0x30
+	 cpuhp_invoke_callback+0x128/0x580
+	 cpuhp_thread_fun+0x110/0x1b0
+	 smpboot_thread_fn+0x140/0x190
+	 kthread+0xec/0x100
+	 ret_from_fork+0x10/0x20
+	---[ end trace 0000000000000000 ]---
+
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: 56eb0c0ed345 ("ACPI: CPPC: Fix remaining for_each_possible_cpu() to use online CPUs")
+Co-developed-by: Sean Kelley <skelley@nvidia.com>
+Signed-off-by: Sean Kelley <skelley@nvidia.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20260417040112.3727756-1-ruanjinjie@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/acpi/cppc_acpi.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -642,7 +642,13 @@ static void handle_transaction_done(stru
- 		 */
- 		msg = smi_info->curr_msg;
- 		smi_info->curr_msg = NULL;
--		if (msg->rsp[2] != 0) {
-+		/*
-+		 * It appears some BMCs, with no event data, return no
-+		 * data in the message and not a 0x80 error as the
-+		 * spec says they should.  Shut down processing if
-+		 * the data is not the right length.
-+		 */
-+		if (msg->rsp[2] != 0 || msg->rsp_size != 19) {
- 			/* Error getting event, probably done. */
- 			msg->done(msg);
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -362,7 +362,7 @@ static int send_pcc_cmd(int pcc_ss_id, u
+ end:
+ 	if (cmd == CMD_WRITE) {
+ 		if (unlikely(ret)) {
+-			for_each_online_cpu(i) {
++			for_each_possible_cpu(i) {
+ 				struct cpc_desc *desc = per_cpu(cpc_desc_ptr, i);
  
+ 				if (!desc)
+@@ -524,13 +524,13 @@ int acpi_get_psd_map(unsigned int cpu, s
+ 	else if (pdomain->coord_type == DOMAIN_COORD_TYPE_SW_ANY)
+ 		cpu_data->shared_type = CPUFREQ_SHARED_TYPE_ANY;
+ 
+-	for_each_online_cpu(i) {
++	for_each_possible_cpu(i) {
+ 		if (i == cpu)
+ 			continue;
+ 
+ 		match_cpc_ptr = per_cpu(cpc_desc_ptr, i);
+ 		if (!match_cpc_ptr)
+-			goto err_fault;
++			continue;
+ 
+ 		match_pdomain = &(match_cpc_ptr->domain_info);
+ 		if (match_pdomain->domain != pdomain->domain)
 
 
 
