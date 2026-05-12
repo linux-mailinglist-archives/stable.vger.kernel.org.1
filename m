@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-245966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBL4IrpnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:38 +0200
+	id wAt+EEBtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A775261DB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD007526F99
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 76E9B30237FD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 510C430B235C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4521E3E170F;
-	Tue, 12 May 2026 17:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F27F3EDE70;
+	Tue, 12 May 2026 17:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6wSAKuH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLfYE/Rl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B114657CA;
-	Tue, 12 May 2026 17:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119BA3EDE4E;
+	Tue, 12 May 2026 17:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608009; cv=none; b=rlG0KtMdvHvvLNtg7mEK2IcMWYiikBfCvU6ewg7p4+16Zgns1nEkexqpDBsIpl1yrKIyVt8chSE+5ax4ZgImOJw6Yqxu+/8Yf1qwGKCNi2fkrXiphbANby6J6bD3zmy9gmfy2iXycRqPKrS1rAcpmdgv0v8zDSSXJlYgjNMszoQ=
+	t=1778608791; cv=none; b=UsEtCPQcnfcU+8Ri7bKzYjyd0HplNEygjpJoftBXuKONQQmQS8UEH5ANOzb/oXJcp3sk8aQsrWM+LOu71FSb9GlT0D3gsndmmCdtXUKufXKToSnEiC2R4OPJ+sIyKSSRySZq1j2qW9imfTelIo9rjlozHoA5aJb2XVpP5HlYRjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608009; c=relaxed/simple;
-	bh=A4R9SvpOIVCkb9KWJBP2VwUDyTBnKnjey+O6hJLgH6I=;
+	s=arc-20240116; t=1778608791; c=relaxed/simple;
+	bh=a7xF+1S2zVsnrTy8J1Vrw0L3iitEI3PdUfMk2q/93CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idoX3jy9pBfo7NGXvUO7ctc10ZcZr0dJiVGmqSZy9Vcs3CoWRJ/Cxoev4ul7rhuYDxv2H+Ltas71tDPRvkVebSpEinJtr1b6Un7ZJ68Hykd1gM63BtLXXGPqtbIFUO+RID+OaFTqccHQkd4WOMcg9odFef+s3sDoBY7aeKJXZkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6wSAKuH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D08C2BCFC;
-	Tue, 12 May 2026 17:46:48 +0000 (UTC)
+	 MIME-Version; b=tllvmYllj5NchvSa5wuU/h1QL2HAAO8Tppke9usADayB8e/+2LrCkGQDo25bWxX8Ag5K8H/sp2cJAY/nvtfgvdPf+5aFMxe2LwEcwe5ukmTFXqwgwDa0dry+AGDbfuE0e8IOXwCbuJAJYQMeyO7WUWZLdFbs7e0sISDGIQrMJ0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLfYE/Rl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D588C2BCB0;
+	Tue, 12 May 2026 17:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608008;
-	bh=A4R9SvpOIVCkb9KWJBP2VwUDyTBnKnjey+O6hJLgH6I=;
+	s=korg; t=1778608791;
+	bh=a7xF+1S2zVsnrTy8J1Vrw0L3iitEI3PdUfMk2q/93CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6wSAKuHEp2NmUsQD/3vOk1rG8UDBYAPcbib4Y9znp6Fm3GfPjzGNyeJ0juY7zCnU
-	 uLX93+7p0Bh/qaztKD60tOoDVTyajRjMqmFB4XDaVU/36fwgPjBVrHGfWBEleFF67V
-	 ox+3Px08GyVerNz9iteYr/UWzprGAagTzA53nim4=
+	b=HLfYE/RluNxRcgZsYODsdMJ+7XInn3Y2RZZvwiWngiyByUlK+3NdtC38wNalhsT+F
+	 Il+MemH2xeh0N8GrBr32lSOuGG1aGdUguhQAEQQ0hwqj1OcPJsQgXgbOjZHysgORr3
+	 QJFgZxgLWzfKq7QvnWcrXz0uQ2rnJF/SMR+1s8Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 122/206] isofs: validate block number from NFS file handle in isofs_export_iget
-Date: Tue, 12 May 2026 19:39:34 +0200
-Message-ID: <20260512173935.439893404@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.18 174/270] s390/debug: Reject zero-length input in debug_input_flush_fn()
+Date: Tue, 12 May 2026 19:39:35 +0200
+Message-ID: <20260512173942.110701402@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +64,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 92A775261DB
+X-Rspamd-Queue-Id: CD007526F99
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245966-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246269-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-commit 24376458138387fb251e782e624c7776e9826796 upstream.
+commit e14622a7584f9608927c59a7d6ae4a0999dc545e upstream.
 
-isofs_fh_to_dentry() and isofs_fh_to_parent() pass an attacker-
-controlled block number (ifid->block or ifid->parent_block) from
-the NFS file handle to isofs_export_iget(), which only rejects
-block == 0 before calling isofs_iget() and ultimately sb_bread().
-A crafted file handle with fh_len sufficient to pass the check
-added by commit 0405d4b63d08 ("isofs: Prevent the use of too small
-fid") can still drive the server to read any in-range block on the
-backing device as if it were an iso_directory_record.  That earlier
-fix was assigned CVE-2025-37780.
+debug_input_flush_fn() always copies one byte from the userspace buffer
+with copy_from_user() regardless of the supplied write length. A
+zero-length write therefore reads one byte beyond the caller's buffer.
+If the stale byte happens to be '-' or a digit the debug log is
+silently flushed. With an unmapped buffer the call returns -EFAULT.
 
-sb_bread() on an out-of-range block returns NULL cleanly via the
-EIO path, so there is no memory-safety violation.  For in-range
-reads of adjacent-partition data on the same block device, the
-unrelated bytes end up in iso_inode_info fields that reach the NFS
-client as dentry metadata.  The deployment surface (isofs exported
-over NFS from loop-mounted images) is narrow and requires an
-authenticated NFS peer, but the malformed-file-handle class is
-reportable as hardening next to the existing CVE-2025-37780 fix.
+Reject zero-length writes before copying from userspace.
 
-Reject block >= ISOFS_SB(sb)->s_nzones in isofs_export_iget() so
-the check covers both isofs_fh_to_dentry() and isofs_fh_to_parent()
-call sites with a single line.
-
-Fixes: 0405d4b63d08 ("isofs: Prevent the use of too small fid")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419212155.2169382-3-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Cc: stable@vger.kernel.org # v5.10+
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/debug.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -24,7 +24,7 @@ isofs_export_iget(struct super_block *sb
- {
- 	struct inode *inode;
+--- a/arch/s390/kernel/debug.c
++++ b/arch/s390/kernel/debug.c
+@@ -1586,6 +1586,11 @@ static int debug_input_flush_fn(debug_in
+ 	char input_buf[1];
+ 	int rc = user_len;
  
--	if (block == 0)
-+	if (block == 0 || block >= ISOFS_SB(sb)->s_nzones)
- 		return ERR_PTR(-ESTALE);
- 	inode = isofs_iget(sb, block, offset);
- 	if (IS_ERR(inode))
++	if (!user_len) {
++		rc = -EINVAL;
++		goto out;
++	}
++
+ 	if (user_len > 0x10000)
+ 		user_len = 0x10000;
+ 	if (*offset != 0) {
 
 
 
