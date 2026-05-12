@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-246098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A+sLWtuA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:11 +0200
+	id AO8uCgpzA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26805272ED
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7607F527D2E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC0A131227DF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12BA53199FC1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626FD3DD847;
-	Tue, 12 May 2026 17:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D3B352F86;
+	Tue, 12 May 2026 18:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSed/4Qu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQInTyA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F403BB126;
-	Tue, 12 May 2026 17:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7F025FA29;
+	Tue, 12 May 2026 18:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608353; cv=none; b=OEmk+TQvewR8lMx61+KZ4bUPUtEer1/oQPyeyqlYfFc+zy1d2JXarhhucWovP2jhTKTrgwo8y3c+g61nQK9w015nEub5SdUAyyu8x3DWio2I4qM7o1GbdgCSFkvnMwduUAS0QQzJ/uq/flIRSi5YgPzbTHuQ5Ziwg0KTBGAzeK8=
+	t=1778609074; cv=none; b=jZgSIfaCJywHcRHL6vWe1kDW2bHqPVmf5yN/fZO5Vsm3sO/IWbwcl1v4Z+755cuJy0zExUdE85n6FkY6RdJHt+56/gsrm9mZBHnfjfWUcDud0JZqlXn8jNYOr9DE5hhO7XvBEKyx49fN49H+/DuK2A7a1o67FJFHTTS3BpVK028=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608353; c=relaxed/simple;
-	bh=LFx6/PeTl3wLa7Jl7Ed8BLbZNA2J297lY+vzOSlvOgY=;
+	s=arc-20240116; t=1778609074; c=relaxed/simple;
+	bh=b85WADjDoHNG9ooMNpzP1iljGTge+miHVLECqU3LaN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pG4LglOX3HVRK2SdkpqK9ALyZNe6v9+XPEGxslNvldT453elkbtuDOxXBX8hbM707PPKLdA0ptwSQRMBjaxDHtqbd3O28+TY4DwYy3CEWMqi6h1xPHXqJwa4jXZZsRUCaJOrggI+sQMYfCGXAaR1G15K1FvS9CUjel4zc4/vq88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSed/4Qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6ADDC2BCB0;
-	Tue, 12 May 2026 17:52:32 +0000 (UTC)
+	 MIME-Version; b=U+sPz2M0ZiHjmtQOuFCi0IKQZopHI+hzr9G3N90f8gGH2qbK+qz2hSZ/PSRmJSuunEkJDT0JkgEQc7e6WBx75gosVbij5KWWdq/dTC8Q+aT87L8qdLLjrhwDL/rV40pXkwFZykz97z2TfVGVTLjk74sxBYdGMMmQFjWUX394bs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQInTyA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0176AC2BCB0;
+	Tue, 12 May 2026 18:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608353;
-	bh=LFx6/PeTl3wLa7Jl7Ed8BLbZNA2J297lY+vzOSlvOgY=;
+	s=korg; t=1778609074;
+	bh=b85WADjDoHNG9ooMNpzP1iljGTge+miHVLECqU3LaN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSed/4QuNLkj7+YynDVEwKBuDDwZ7DMiAGCMWoV7wPbLMXOYHsss011tIWE9kVYpu
-	 50UoQO86FrRb6AkKP9eMYOt4YRwFGVQsVLvg9GtpLuXDvi01kiKJjsqTqU+KgkDUBE
-	 r6Q9QvxHujKKrSJGMuL1zunmRn6EWrFDBU3W2HyE=
+	b=tQInTyA/OEDXl8kuSVbPyuR1YahdLO1zg+10apqaQskOrKK1XBqMZrnD0h6SycPWL
+	 /P2kboJuPpe3uNsxGvkueAzq4vmfDvB9LbykUnrEhWkKkYZq4+fwgCQnJAuL29Gzj7
+	 7kylX2mY9mxSCaeKpOh0IOawLVlWNnjH1PpCsbHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Amit Sunil Dhamne <amitsd@google.com>
-Subject: [PATCH 6.18 047/270] usb: typec: tcpm: fix debug accessory mode detection for sink ports
-Date: Tue, 12 May 2026 19:37:28 +0200
-Message-ID: <20260512173939.442266139@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 7.0 054/307] xfrm: provide message size for XFRM_MSG_MAPPING
+Date: Tue, 12 May 2026 19:37:29 +0200
+Message-ID: <20260512173941.264950156@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +69,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E26805272ED
+X-Rspamd-Queue-Id: 7607F527D2E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,150 +80,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,secunet.com];
+	TAGGED_FROM(0.00)[bounces-246379-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246098-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,secunet.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-commit f6ec9bb4acc7182b25a793ad094a764e1cb819a7 upstream.
+commit 28465227c80fe417b4013c432be1f3737cb9f9a3 upstream.
 
-The port in debug accessory mode can be either a source or sink. The
-previous tcpm_port_is_debug() function only checked for source port.
+The compat 64=>32 translation path handles XFRM_MSG_MAPPING, but
+xfrm_msg_min[] does not provide the native payload size for this
+message type.
 
-Commit 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into
-accessory mode debug") changed the detection logic to support both roles,
-but left some logic in _tcpm_cc_change() unchanged, This causes the state
-machine to transition to an incorrect state when operating as a sink in
-debug accessory mode. Log as below:
+Add the missing XFRM_MSG_MAPPING entry so compat translation can size
+and translate mapping notifications correctly.
 
-[  978.637541] CC1: 0 -> 5, CC2: 0 -> 5 [state TOGGLING, polarity 0, connected]
-[  978.637567] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
-[  978.637596] pending state change SRC_ATTACH_WAIT -> DEBUG_ACC_ATTACHED @ 180 ms [rev1 NONE_AMS]
-[  978.647098] CC1: 5 -> 0, CC2: 5 -> 5 [state SRC_ATTACH_WAIT, polarity 0, connected]
-[  978.647115] state change SRC_ATTACH_WAIT -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
-
-It should go to SNK_ATTACH_WAIT instead of SRC_ATTACH_WAIT state.
-
-To fix this, add tcpm_port_is_debug_source() and tcpm_port_is_debug_sink()
-helper to explicitly identify the power mode in debug accessory mode.
-Update the state transition logic in _tcpm_cc_change() to ensure the state
-machine transitions comply with Type-C specification. Also update the logic
-in run_state_machine() to keep consistency.
-
-Fixes: 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into accessory mode debug")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Amit Sunil Dhamne <amitsd@google.com>
-Link: https://patch.msgid.link/20260424074009.2979266-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5461fc0c8d9f ("xfrm/compat: Add 64=>32-bit messages translator")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ net/xfrm/xfrm_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -634,9 +634,14 @@ static const char * const pd_rev[] = {
- 	 (tcpm_cc_is_source((port)->cc2) && \
- 	  !tcpm_cc_is_source((port)->cc1)))
- 
-+#define tcpm_port_is_debug_source(port) \
-+	(tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2))
-+
-+#define tcpm_port_is_debug_sink(port) \
-+	(tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2))
-+
- #define tcpm_port_is_debug(port) \
--	((tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2)) || \
--	 (tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2)))
-+	(tcpm_port_is_debug_source(port) || tcpm_port_is_debug_sink(port))
- 
- #define tcpm_port_is_audio(port) \
- 	(tcpm_cc_is_audio((port)->cc1) && tcpm_cc_is_audio((port)->cc2))
-@@ -4799,7 +4804,7 @@ static void run_state_machine(struct tcp
- 			tcpm_set_state(port, SNK_UNATTACHED, PD_T_DRP_SNK);
- 		break;
- 	case SRC_ATTACH_WAIT:
--		if (tcpm_port_is_debug(port))
-+		if (tcpm_port_is_debug_source(port))
- 			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
- 				       port->timings.cc_debounce_time);
- 		else if (tcpm_port_is_audio(port))
-@@ -5057,7 +5062,7 @@ static void run_state_machine(struct tcp
- 			tcpm_set_state(port, SRC_UNATTACHED, PD_T_DRP_SRC);
- 		break;
- 	case SNK_ATTACH_WAIT:
--		if (tcpm_port_is_debug(port))
-+		if (tcpm_port_is_debug_sink(port))
- 			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
- 				       PD_T_CC_DEBOUNCE);
- 		else if (tcpm_port_is_audio(port))
-@@ -5077,7 +5082,7 @@ static void run_state_machine(struct tcp
- 		if (tcpm_port_is_disconnected(port))
- 			tcpm_set_state(port, SNK_UNATTACHED,
- 				       PD_T_PD_DEBOUNCE);
--		else if (tcpm_port_is_debug(port))
-+		else if (tcpm_port_is_debug_sink(port))
- 			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
- 				       PD_T_CC_DEBOUNCE);
- 		else if (tcpm_port_is_audio(port))
-@@ -5950,10 +5955,10 @@ static void _tcpm_cc_change(struct tcpm_
- 
- 	switch (port->state) {
- 	case TOGGLING:
--		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-+		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
- 		    tcpm_port_is_source(port))
- 			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
--		else if (tcpm_port_is_sink(port))
-+		else if (tcpm_port_is_debug_sink(port) || tcpm_port_is_sink(port))
- 			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
- 		break;
- 	case CHECK_CONTAMINANT:
-@@ -5961,9 +5966,11 @@ static void _tcpm_cc_change(struct tcpm_
- 		break;
- 	case SRC_UNATTACHED:
- 	case ACC_UNATTACHED:
--		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-+		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
- 		    tcpm_port_is_source(port))
- 			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
-+		else if (tcpm_port_is_debug_sink(port))
-+			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
- 		break;
- 	case SRC_ATTACH_WAIT:
- 		if (tcpm_port_is_disconnected(port) ||
-@@ -5985,7 +5992,7 @@ static void _tcpm_cc_change(struct tcpm_
- 		}
- 		break;
- 	case SNK_UNATTACHED:
--		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-+		if (tcpm_port_is_debug_sink(port) || tcpm_port_is_audio(port) ||
- 		    tcpm_port_is_sink(port))
- 			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
- 		break;
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3323,6 +3323,7 @@ const int xfrm_msg_min[XFRM_NR_MSGTYPES]
+ 	[XFRM_MSG_GETSADINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_NEWSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
++	[XFRM_MSG_MAPPING     - XFRM_MSG_BASE] = XMSGSIZE(xfrm_user_mapping),
+ 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ };
 
 
 
