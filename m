@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCsFATkkA2oF1AEAu9opvQ
-	(envelope-from <stable+bounces-245492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:59:37 +0200
+	id AMorD9MjA2oF1AEAu9opvQ
+	(envelope-from <stable+bounces-245493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:57:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6467E52090E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:59:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE28F52087D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C8CF30D1F40
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:51:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 051EA3079552
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145074CA264;
-	Tue, 12 May 2026 12:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4383E4DA54C;
+	Tue, 12 May 2026 12:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xsDp4j9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAoJg3Fc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76473A873E
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE32B39E9CC
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778589927; cv=none; b=XlmyXeOE6JIbTjO6RZ4hh4nP0jUo8qtLb5cdtFZCr9BFD8LeJWKlqr3tSCgpoPpwOf19wDnXwx+k0Ihd9oDE+BEz+6Hja27ywsF85j830mQzT3FekIRcdMFnTSpNRhM4xMs/2ySmxZPHvaDD9W028dz0CZiQ72NPp29+AXzpHSk=
+	t=1778589930; cv=none; b=kIm5EMfAIHvzhxM/fLa4LIwdPEBMrsEPhg+tdwD9Kx7dh1gajFnuClJFxfSvuN8YW57s/uOSrbE2jU8M2CCJDjAzxNN5V32QoQRAgO0mtYop2txuGbxPSKcnYxEhvi3WGE5vdbvl+XNv2e4moMXGrrtEWiRXLbUUEgmjona94js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778589927; c=relaxed/simple;
-	bh=6xnZRdcycUQZqXagLBLuuNEuZIKmUp3YwnkPHThqSeY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sIMTfzE39Pruk+5wtT80z9nyEudMWfN1mBt1VTwcoEmAmxfNfpUOw5y0u9QxwK6FRWhSN+DLousDnToUkojVzpIiZlS2LXDh5zR/BQkL6IFN118MbFA0Bk5hWxvZiyFSLBm8eATDCsXUdeJQDiP4bpG/boPxfB8lmM6404qM444=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xsDp4j9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10E3C2BCF6;
-	Tue, 12 May 2026 12:45:25 +0000 (UTC)
+	s=arc-20240116; t=1778589930; c=relaxed/simple;
+	bh=GGFCbVyphswuX4bIrb/4+nPWdL3xRlaa822Ij15P028=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O6hpgaP3jmuo9O5YK6imVtyJIe04JYIJ4Kz22LKl7/ItACjI7OqdpRBU6ZSa2OPiKQ18KD05b2dNnH1uqBtj/nSZCLqefblH+Pr9PRVIIjRppiavDF51QNLk2THzLin7VLNTBnQiXFSLgjq0Cc78ROqLq5VEHBV1+949dXoep7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAoJg3Fc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EFAC2BCF5;
+	Tue, 12 May 2026 12:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778589926;
-	bh=6xnZRdcycUQZqXagLBLuuNEuZIKmUp3YwnkPHThqSeY=;
+	s=korg; t=1778589930;
+	bh=GGFCbVyphswuX4bIrb/4+nPWdL3xRlaa822Ij15P028=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0xsDp4j9Rs7jGQvyPNACsSoPo9XjgOYTPQEHlk5yqfb2xMrR5h/FVGR4f9rCNwkDW
-	 y7bKo4t6JObtYSYFY3tI/YPGuuUx1PxkxL/uznMQNTbf4U/QOXpQJ4Ywz5E9+VA0T9
-	 TtxBWJKyBFyGvNOdGPaUQwIX+gDPRslt9EYflfvI=
-Subject: FAILED: patch "[PATCH] io_uring/kbuf: support min length left for incremental" failed to apply to 6.12-stable tree
-To: code@mgjm.de,axboe@kernel.dk,krisman@suse.de
+	b=cAoJg3Fc8TfiCtS2DP/gbuVGAkcHg1odrtYVb9Rf14s+iNGQvPwpjcXRW4qbOT1yU
+	 Earjpt6HZ/GaI32XiGDmtpeZLaYfwhmWk8mKdQgUdqeMH2v7+hG5HYUhx55pPV+PvA
+	 PUYlOYuGy/re8gZCwIpjQSg6gebEykMPwLuiaODg=
+Subject: FAILED: patch "[PATCH] io_uring/tw: serialize ctx->retry_llist with ->uring_lock" failed to apply to 6.18-stable tree
+To: axboe@kernel.dk,invd@inhq.net,michael.rodler@x41-dsec.de,robert.femmer@x41-dsec.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 14:41:33 +0200
-Message-ID: <2026051233-murkiness-french-8ca4@gregkh>
+Date: Tue, 12 May 2026 14:41:42 +0200
+Message-ID: <2026051242-reproach-duplicity-8d39@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,23 +54,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6467E52090E
+X-Rspamd-Queue-Id: AE28F52087D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245492-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245493-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -78,28 +78,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,kernel.dk:email,mgjm.de:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,inhq.net:email,kernel.dk:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7deba791ad495ce1d7921683f4f7d1190fa210d1
+git cherry-pick -x 17666e2d7592c3e85260cafd3950121524acc2c5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051233-murkiness-french-8ca4@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051242-reproach-duplicity-8d39@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,98 +111,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7deba791ad495ce1d7921683f4f7d1190fa210d1 Mon Sep 17 00:00:00 2001
-From: Martin Michaelis <code@mgjm.de>
-Date: Thu, 23 Apr 2026 15:54:11 -0600
-Subject: [PATCH] io_uring/kbuf: support min length left for incremental
- buffers
+From 17666e2d7592c3e85260cafd3950121524acc2c5 Mon Sep 17 00:00:00 2001
+From: Jens Axboe <axboe@kernel.dk>
+Date: Mon, 27 Apr 2026 14:29:02 -0600
+Subject: [PATCH] io_uring/tw: serialize ctx->retry_llist with ->uring_lock
 
-Incrementally consumed buffer rings are generally fully consumed, but
-it's quite possible that the application has a minimum size it needs to
-meet to avoid truncation. Currently that minimum limit is 1 byte, but
-this should be a setting that is the hands of the application. For
-recvmsg multishot, a prime use case for incrementally consumed buffers,
-the application may get spurious -EFAULT returned at the end of an
-incrementally consumed buffer, as less space is available than the
-headers need.
+The DEFER_TASKRUN local task work paths all run under ctx->uring_lock,
+which serializes them with each other and with the rest of the ring's
+hot paths. io_move_task_work_from_local() is the exception - it's called
+from io_ring_exit_work() on a kworker without holding the lock and from
+the iopoll cancelation side right after dropping it.
 
-Grab a u32 field in struct io_uring_buf_reg, which the application can
-use to inform the kernel of the minimum size that should be available
-in an incrementally consumed buffer. If less than that is available,
-the current buffer is fully processed and the next one will be picked.
+->work_llist is fine with this, as it's only ever updated via the
+expected paths. But the ->retry_llist is updated while runing, and hence
+it could potentially race between normal task_work running and the
+task-has-exited shutdown path.
+
+Simply grab ->uring_lock while moving the local work to the fallback
+list for exit purposes, which nicely serializes it across both the
+normal additions and the exit prune path.
 
 Cc: stable@vger.kernel.org
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://github.com/axboe/liburing/issues/1433
-Signed-off-by: Martin Michaelis <code@mgjm.de>
-[axboe: write commit message, change io_buffer_list member name]
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Fixes: f46b9cdb22f7 ("io_uring: limit local tw done")
+Reported-by: Robert Femmer <robert.femmer@x41-dsec.de>
+Reported-by: Christian Reitter <invd@inhq.net>
+Reported-by: Michael Rodler <michael.rodler@x41-dsec.de>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
-index 17ac1b785440..909fb7aea638 100644
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -905,7 +905,8 @@ struct io_uring_buf_reg {
- 	__u32	ring_entries;
- 	__u16	bgid;
- 	__u16	flags;
--	__u64	resv[3];
-+	__u32	min_left;
-+	__u32	resv[5];
- };
+diff --git a/io_uring/tw.c b/io_uring/tw.c
+index fdff81eebc95..023d5e6bc491 100644
+--- a/io_uring/tw.c
++++ b/io_uring/tw.c
+@@ -273,8 +273,18 @@ void io_req_task_work_add_remote(struct io_kiocb *req, unsigned flags)
  
- /* argument for IORING_REGISTER_PBUF_STATUS */
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index 43e4f8615fe8..63061aa1cab9 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -47,7 +47,7 @@ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
- 		this_len = min_t(u32, len, buf_len);
- 		buf_len -= this_len;
- 		/* Stop looping for invalid buffer length of 0 */
--		if (buf_len || !this_len) {
-+		if (buf_len > bl->min_left_sub_one || !this_len) {
- 			WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
- 			WRITE_ONCE(buf->len, buf_len);
- 			return false;
-@@ -637,6 +637,10 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
- 	if (reg.ring_entries >= 65536)
- 		return -EINVAL;
- 
-+	/* minimum left byte count is a property of incremental buffers */
-+	if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
-+		return -EINVAL;
-+
- 	bl = io_buffer_get_list(ctx, reg.bgid);
- 	if (bl) {
- 		/* if mapped buffer ring OR classic exists, don't allow */
-@@ -683,6 +687,8 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
- 	bl->mask = reg.ring_entries - 1;
- 	bl->flags |= IOBL_BUF_RING;
- 	bl->buf_ring = br;
-+	if (reg.min_left)
-+		bl->min_left_sub_one = reg.min_left - 1;
- 	if (reg.flags & IOU_PBUF_RING_INC)
- 		bl->flags |= IOBL_INC;
- 	ret = io_buffer_add_list(ctx, bl, reg.bgid);
-diff --git a/io_uring/kbuf.h b/io_uring/kbuf.h
-index abf7052b556e..401773e1ef80 100644
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -32,6 +32,13 @@ struct io_buffer_list {
- 
- 	__u16 flags;
+ void __cold io_move_task_work_from_local(struct io_ring_ctx *ctx)
+ {
+-	struct llist_node *node = llist_del_all(&ctx->work_llist);
++	struct llist_node *node;
  
 +	/*
-+	 * minimum required amount to be left to reuse an incrementally
-+	 * consumed buffer. If less than this is left at consumption time,
-+	 * buffer is done and head is incremented to the next buffer.
++	 * Running the work items may utilize ->retry_llist as a means
++	 * for capping the number of task_work entries run at the same
++	 * time. But that list can potentially race with moving the work
++	 * from here, if the task is exiting. As any normal task_work
++	 * running holds ->uring_lock already, just guard this slow path
++	 * with ->uring_lock to avoid racing on ->retry_llist.
 +	 */
-+	__u32 min_left_sub_one;
-+
- 	struct io_mapped_region region;
- };
- 
++	guard(mutex)(&ctx->uring_lock);
++	node = llist_del_all(&ctx->work_llist);
+ 	__io_fallback_tw(node, false);
+ 	node = llist_del_all(&ctx->retry_llist);
+ 	__io_fallback_tw(node, false);
 
 
