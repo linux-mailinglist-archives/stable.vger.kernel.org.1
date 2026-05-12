@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PcaGhdrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:59 +0200
+	id oAj9GJ9tA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2065268ED
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A8852705F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2B3CE3083D70
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F4F33175CD8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762D03EDE68;
-	Tue, 12 May 2026 17:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E953E5A38;
+	Tue, 12 May 2026 17:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XmLJpV5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXHylCVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393703EDE53;
-	Tue, 12 May 2026 17:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FF73E5A0E;
+	Tue, 12 May 2026 17:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608760; cv=none; b=dBhfDBRZxAHBlQHsoXURWJdW07nz/4m+xlh3SRnnfycJYsOCrFHQFzDNKd0IateA+OGJlA+o9GuXcQqbUzdIoom25urMxoDtJ9Um00y6CMhPCGAXE/nhSeK47OVurx85WHf8FvXybRvk9r8f5yuFjPjdLbkmduU7Pr6tYl7tmxY=
+	t=1778608163; cv=none; b=JnMvJSobgvK+stY7/i3L1Zuw25OxSOwWBs0ycdNHBAdXa1NjHoPySt536gMee61e5foNyHI9LHdTkCxbJa0SGbjo4d1gmCRU94kADxHjEWoiv9wkOde59FbQTACNc2iPU/+FXQ82U+H5/HkrxRTtdTvYl9cbjqRP2s4GhBlSLbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608760; c=relaxed/simple;
-	bh=8usrP0Kw19bIrmZ+g/YDk8rxOgPIiaI8Zyiv8xmSt9o=;
+	s=arc-20240116; t=1778608163; c=relaxed/simple;
+	bh=Oiq83gnkRlPuTm6pAyFSoN6K24Byxc+V/r+RD0CeFpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzw3PZYqmFr7+zydq3wBBoQ7h2CJLaINKvZ8z0FPfAAyA27YD+BM1BmSiGockpA0vIgJjiZWz244BmPtmWl0noMbPLdauju8TE6USvDWAOZuTFgLJDEEnJjrMmDaXV5HZkp1pU2RfWOVczpoUJ2uKZvikLNvPhiANFADlQgDzSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XmLJpV5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CA4C2BCB0;
-	Tue, 12 May 2026 17:59:19 +0000 (UTC)
+	 MIME-Version; b=MP8LVgVXDfoB/UnlEzuzhCS0fJE2WsfbyxiNrYMjijSYy3pJJL4DChN40mYduVmNWU5BqUK+d42FwzHNiTTcX8Aincq7PAMdVyOF64rvBvFWhuv1mVWtTQvj0WevKbvtr+Vem5auRKFYbz47EBIDXvNgnOcE+HcNmOT8xyZu3m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXHylCVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63442C2BCB0;
+	Tue, 12 May 2026 17:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608760;
-	bh=8usrP0Kw19bIrmZ+g/YDk8rxOgPIiaI8Zyiv8xmSt9o=;
+	s=korg; t=1778608162;
+	bh=Oiq83gnkRlPuTm6pAyFSoN6K24Byxc+V/r+RD0CeFpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XmLJpV5UeGK2VXhh7D3O9rsEc7/QqVH5lZDpDA/YOkaIUDxL1gR0lydXi4lsCvjF
-	 b9mTaf8WzQS3As7vm5ztuJEgb8b5a1zJ+WofA/gBmHkmYv/orM0vNM0zAiX6T7pzcV
-	 tjjJKJmOuliOy4VumLd4pqQrYOYufyB5Frw2RjOU=
+	b=RXHylCVCFAw2RkKNuLluUAewZ4foGvGnOUwqwD/3eCDd4VnmM3aRlrBoOsnNkR/om
+	 l3Ehddi3wYrSTV6KGVcUN/eQbD25DEru16YXnzOgWyeBLjoAtES5Dy4Y53TtChTZAR
+	 zuu9jIWZFdfyrXrTaPphoTFE7E6ifjnQFHQabx/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.18 203/270] RDMA/rxe: Reject unknown opcodes before ICRC processing
+Subject: [PATCH 6.12 152/206] RDMA/mlx5: Fix error path fall-through in mlx5_ib_dev_res_srq_init()
 Date: Tue, 12 May 2026 19:40:04 +0200
-Message-ID: <20260512173942.724388295@linuxfoundation.org>
+Message-ID: <20260512173936.080768438@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3E2065268ED
+X-Rspamd-Queue-Id: C9A8852705F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246257-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246024-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,nvidia.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 4c6f86d85d03cdb33addce86aa69aa795ca6c47a upstream.
+commit c488df06bd552bb8b6e14fa0cfd5ad986c6e9525 upstream.
 
-Even after applying commit 7244491dab34 ("RDMA/rxe: Validate pad and ICRC
-before payload_size() in rxe_rcv"), a single unauthenticated UDP packet
-can still trigger panic.  That patch handled payload_size() underflow only
-for valid opcodes with short packets, not for packets carrying an unknown
-opcode.  The unknown-opcode OOB read described below predates that commit
-and reaches back to the initial Soft RoCE driver.
+mlx5_ib_dev_res_srq_init() allocates two SRQs, s0 and s1. When
+ib_create_srq() fails for s1, the error branch destroys s0 but falls
+through and unconditionally assigns the freed s0 and the ERR_PTR s1 to
+devr->s0 and devr->s1.
 
-The check added there reads
+This leads to several problems: the lock-free fast path checks
+"if (devr->s1) return 0;" and treats the ERR_PTR as already initialised;
+users in mlx5_ib_create_qp() dereference the freed SRQ or ERR_PTR via
+to_msrq(devr->s0)->msrq.srqn; and mlx5_ib_dev_res_cleanup() dereferences
+the ERR_PTR and double-frees s0 on teardown.
 
-    pkt->paylen < header_size(pkt) + bth_pad(pkt) + RXE_ICRC_SIZE
-
-where header_size(pkt) expands to rxe_opcode[pkt->opcode].length.  The
-rxe_opcode[] array has 256 entries but is only populated for defined IB
-opcodes; any other entry (for example opcode 0xff) is zero-initialized, so
-length == 0 and the check degenerates to
-
-    pkt->paylen < 0 + bth_pad(pkt) + RXE_ICRC_SIZE
-
-which does not constrain pkt->paylen enough.  rxe_icrc_hdr() then computes
-
-    rxe_opcode[pkt->opcode].length - RXE_BTH_BYTES
-
-which underflows when length == 0 and passes a huge value to rxe_crc32(),
-causing an out-of-bounds read of the skb payload.
-
-Reproduced on v7.0-rc7 with that fix applied, QEMU/KVM with
-CONFIG_RDMA_RXE=y and CONFIG_KASAN=y, after
-
-    rdma link add rxe0 type rxe netdev eth0
-
-A single 48-byte UDP packet to port 4791 with BTH opcode=0xff and
-QPN=IB_MULTICAST_QPN triggers:
-
-    BUG: KASAN: slab-out-of-bounds in crc32_le+0x115/0x170
-    Read of size 1 at addr ...
-    The buggy address is located 0 bytes to the right of
-     allocated 704-byte region
-    Call Trace:
-     crc32_le+0x115/0x170
-     rxe_icrc_hdr.isra.0+0x226/0x300
-     rxe_icrc_check+0x13f/0x3a0
-     rxe_rcv+0x6e1/0x16e0
-     rxe_udp_encap_recv+0x20a/0x320
-     udp_queue_rcv_one_skb+0x7ed/0x12c0
-
-Subsequent packets with the same shape fault on unmapped memory and panic
-the kernel.  The trigger requires only module load and "rdma link add"; no
-QP, no connection, and no authentication.
-
-Fix this by rejecting packets whose opcode has no rxe_opcode[] entry,
-detected via the zero mask or zero length, before any length arithmetic
-runs.
+Fix by adding the same `goto unlock` in the s1 failure path.
 
 Cc: stable@vger.kernel.org
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://patch.msgid.link/r/20260414111555.3386793-1-michael.bommarito@gmail.com
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Fixes: 5895e70f2e6e ("IB/mlx5: Allocate resources just before first QP/SRQ is created")
+Link: https://patch.msgid.link/r/SYBPR01MB7881E1E0970268BD69C0BA75AF2B2@SYBPR01MB7881.ausprd01.prod.outlook.com
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_recv.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/infiniband/hw/mlx5/main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/sw/rxe/rxe_recv.c
-+++ b/drivers/infiniband/sw/rxe/rxe_recv.c
-@@ -330,6 +330,17 @@ void rxe_rcv(struct sk_buff *skb)
- 	pkt->qp = NULL;
- 	pkt->mask |= rxe_opcode[pkt->opcode].mask;
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -3127,6 +3127,7 @@ int mlx5_ib_dev_res_srq_init(struct mlx5
+ 		ret = PTR_ERR(s1);
+ 		mlx5_ib_err(dev, "Couldn't create SRQ 1 for res init, err=%d\n", ret);
+ 		ib_destroy_srq(s0);
++		goto unlock;
+ 	}
  
-+	/*
-+	 * Unknown opcodes have a zero-initialized rxe_opcode[] entry, so
-+	 * both mask and length are 0.  Reject them before any length math:
-+	 * rxe_icrc_hdr() would otherwise compute length - RXE_BTH_BYTES
-+	 * and pass the underflowed value to rxe_crc32(), producing an
-+	 * out-of-bounds read.
-+	 */
-+	if (unlikely(!rxe_opcode[pkt->opcode].mask ||
-+		     !rxe_opcode[pkt->opcode].length))
-+		goto drop;
-+
- 	if (unlikely(pkt->paylen < header_size(pkt) + bth_pad(pkt) +
- 		       RXE_ICRC_SIZE))
- 		goto drop;
+ 	devr->s0 = s0;
 
 
 
