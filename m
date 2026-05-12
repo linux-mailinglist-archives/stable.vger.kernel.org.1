@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCV1KPJrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:38 +0200
+	id EHq9NW9vA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B86526BA4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE96F5275B6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 891053144A59
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 56B9D3099053
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BBA3BB10A;
-	Tue, 12 May 2026 17:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D145A3EDE55;
+	Tue, 12 May 2026 18:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3SHQpc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjjsZt64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F733BB102;
-	Tue, 12 May 2026 17:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C21E25FA29;
+	Tue, 12 May 2026 18:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608425; cv=none; b=H89SG3XzfHjW6+48eHfKy4hx0pAihJzpaMqjkDGM377Kworq7GKlLJe3nyr5jk4PeqtoW/UG4StJE5PrIpnIjLEU9lnYHCgBDOz4dj6YoZUAW9ojm7nPQwuQrIyTMOyA448QMnKMGhI93e0qNs6wdzR24IfowGPXJh+lTEeXqKk=
+	t=1778609133; cv=none; b=jqIkH8VykXTRnpSQRyXfySFcgl15NmjNu8l7Vlpq+1W0csa6KQhw/6g2W55IIl2aC4bjVQxH32DEtDjvFCsMF9Q76vEbWBSCtaL1Tzo28MlGv+0xfBY1jLD0cZYujT2wOsPHMQh53B5jxHtPFMT8R9pEOuXlnCARCJlwYdKIb78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608425; c=relaxed/simple;
-	bh=Zxl/gOy1DllY3HGlmOgHL6oAy4Eqrz7sT3u7yFa0x70=;
+	s=arc-20240116; t=1778609133; c=relaxed/simple;
+	bh=M6ydTwUiWTUG0tE0KbD/szBE402y6/fuzWJBjK5uglo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMlA7QCKw53jNug4vowszHOGMa+BQJGhvuLDj5S6cPYZy9sgbV/ih3pOgCJuOnmEkLbqz6GJSDbvadvxIcqYfRpPunmymGecTEyrY6ijal4wW/3vT3rHrRxpkcYGwJ8FtfZjTPtbEH0Npu3+XLqPE6FYqMXQzhMTUmTNxgnXHSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3SHQpc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2C6C2BCB0;
-	Tue, 12 May 2026 17:53:44 +0000 (UTC)
+	 MIME-Version; b=nYPcQF7Cv2QLcAEfQ4RPDFIbsE38QM0OyCyO1osKh3Lyeq6Gdx2c/MI0KJRh3FSkif3Lp7Hcy4If7BPErAJZ/Unnv0fuGMR+nN5Oqmm0T1BnyzfNC3IM797ZzfdLNlXc/GCuNJOG3w7vbwcNgv/UHw9ZkC2Z4FSGuc6jTFfmU1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjjsZt64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243B2C2BCB0;
+	Tue, 12 May 2026 18:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608425;
-	bh=Zxl/gOy1DllY3HGlmOgHL6oAy4Eqrz7sT3u7yFa0x70=;
+	s=korg; t=1778609133;
+	bh=M6ydTwUiWTUG0tE0KbD/szBE402y6/fuzWJBjK5uglo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3SHQpc00xWK25Art2MsC46f90YJRumTwYAhXbRpuAT1x4l1kz2BFmLDIDAh9JmmP
-	 onLeamwzbfEsz45Vj1D8oIo5ugeHKOOrV7LViyGi9UKpQgnJzNY5A7g3jG4hiVeLWE
-	 Oo226nh46vVSCyY4i8Ik6Y+nO/0Lkbx5G9Li5pKY=
+	b=EjjsZt64v+Z8nCB9wp9OYy32pIjVEl2k9ZDny0MWPKIIK4g41V1qP9F7JM6vrne8Z
+	 kl8pbqnhkm0XWcQy0Db/ZmuK1cWii6UC39AdrHJ8C120Au2OwbqKkglYxjVYDlmDGt
+	 FvUSO0k9lGswSlc1101dkYGsdR5faStrXm54J0/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.18 072/270] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_new_connection_cb()
-Date: Tue, 12 May 2026 19:37:53 +0200
-Message-ID: <20260512173939.967109411@linuxfoundation.org>
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 7.0 079/307] rust: allow `clippy::collapsible_if` globally
+Date: Tue, 12 May 2026 19:37:54 +0200
+Message-ID: <20260512173941.787692975@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 27B86526BA4
+X-Rspamd-Queue-Id: EE96F5275B6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246126-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246402-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,44 +88,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,fourdim.xyz:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,garyguo.net:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siwei Zhang <oss@fourdim.xyz>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 0a120d96166301d7a95be75b52f843837dbd1219 upstream.
+commit 2adc8664018c1cc595c7c0c98474a33c7fe32a85 upstream.
 
-Add the same NULL guard already present in
-l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+Similar to `clippy::collapsible_match` (globally allowed in the previous
+commit), the `clippy::collapsible_if` lint [1] can make code harder to
+read in certain cases.
 
-Fixes: 80808e431e1e ("Bluetooth: Add l2cap_chan_ops abstraction")
-Cc: stable@kernel.org
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Thus just let developers decide on their own.
+
+In addition, remove the existing `expect` we had.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Suggested-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/rust-for-linux/DGROP5CHU1QZ.1OKJRAUZXE9WC@garyguo.net/
+Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if [1]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260426144201.227108-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_sock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ Makefile                                    |    1 +
+ drivers/android/binder/range_alloc/array.rs |    1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1480,6 +1480,9 @@ static struct l2cap_chan *l2cap_sock_new
- {
- 	struct sock *sk, *parent = chan->data;
- 
-+	if (!parent)
-+		return NULL;
-+
- 	lock_sock(parent);
- 
- 	/* Check for backlog size */
+--- a/Makefile
++++ b/Makefile
+@@ -486,6 +486,7 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::as_ptr_cast_mut \
+ 			    -Wclippy::as_underscore \
+ 			    -Wclippy::cast_lossless \
++			    -Aclippy::collapsible_if \
+ 			    -Aclippy::collapsible_match \
+ 			    -Wclippy::ignored_unit_patterns \
+ 			    -Wclippy::mut_mut \
+--- a/drivers/android/binder/range_alloc/array.rs
++++ b/drivers/android/binder/range_alloc/array.rs
+@@ -204,7 +204,6 @@ impl<T> ArrayRangeAllocator<T> {
+         // caller will mark them as unused, which means that they can be freed if the system comes
+         // under memory pressure.
+         let mut freed_range = FreedRange::interior_pages(offset, size);
+-        #[expect(clippy::collapsible_if)] // reads better like this
+         if offset % PAGE_SIZE != 0 {
+             if i == 0 || self.ranges[i - 1].endpoint() <= (offset & PAGE_MASK) {
+                 freed_range.start_page_idx -= 1;
 
 
 
