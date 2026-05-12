@@ -1,178 +1,175 @@
-Return-Path: <stable+bounces-245480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IxsDhAmA2qL1AEAu9opvQ
-	(envelope-from <stable+bounces-245480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:07:28 +0200
+	id iIttKf0hA2r10gEAu9opvQ
+	(envelope-from <stable+bounces-245479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:50:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93943520C37
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:07:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6395206DB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9231631BF46B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:48:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 364AF3091A5A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77144390603;
-	Tue, 12 May 2026 12:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECEB3998A9;
+	Tue, 12 May 2026 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4/EIxMp"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Z6qc53z+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9983A719C
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBE13B810E;
+	Tue, 12 May 2026 12:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778589764; cv=none; b=THF4PWlqTFXLLLCbBKCF4pC1jONX3l1o2s4KM7fYxFuaOsGt4omd3nY5JDPlc+kC72Ddvn33X65p9Ynu5PFpzM/k6j11MMOgSTK2XDZy8rAhoK+aShiBGkfMXyW8E25188l34EQsyeavjsowsqlK3zdy6X0v6/gN9J+7KG5LkNc=
+	t=1778589525; cv=none; b=mdP6FcsYGHyJYX1ftnQ0/AuJWzwjtYJK6s71QWXpMrSQBG2lW0Sq01gW3bq1eJcPNTItqRVimjVyBs8pcKUUSuFtaqrW8Ze/fwBP3+z4vrkLLFwEnXKM0KZcwFIyeF0uDhEuDYneZX/HsFSywnM6wCxaa0v3L/JcIzZv3aViT0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778589764; c=relaxed/simple;
-	bh=GNGLmEl9QcWNAQu0JVrUXMkETeZ/iawEee5rhP6zIAQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tEwkoJKLu31lnzvCWGL5n+bOwYh2FTs9mxVhXHnY5ZHQqL4oopQLLTaOGAmxIrz8TwU/gZOhKLUrMvdtbVx2jzU0AKmYsdplljnaiKmD+YjCuR/2P0Epd+x/xvV4JRcUA7crtNu8Nobrq6O1wYw/Lrgml6UNVVSICPdpaEZnRFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4/EIxMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B57C2BCB0;
-	Tue, 12 May 2026 12:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778589763;
-	bh=GNGLmEl9QcWNAQu0JVrUXMkETeZ/iawEee5rhP6zIAQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=e4/EIxMp1dCBVbp2sQ8lBKfiGK2a9go6DEQWG+oczvk8QpJLHJAbqVZyBwTfUJiSf
-	 TCQz2D04gfVnP1w5PnuHSx3BIcCXPdNmesc6IuZfgKb3S6+amefQVW8AWyA8hONnKk
-	 Bb8DtwHZHX4S8kxO27Br9fNM4v4hogJpKodBT9lY=
-Subject: FAILED: patch "[PATCH] sched_ext: Read scx_root under scx_cgroup_ops_rwsem in cgroup" failed to apply to 6.18-stable tree
-To: tj@kernel.org,arighi@nvidia.com,clm@meta.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 14:38:19 +0200
-Message-ID: <2026051219-oval-unbalance-97f6@gregkh>
+	s=arc-20240116; t=1778589525; c=relaxed/simple;
+	bh=oIAnQSxEMx5vJ8fIn32tZpWlo0rdQTld2L9kBk3tgLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IOnKpmz5r9E2rrP3xUlqMdKJzQbd+pNKTumDS8RCPN9zPPnOzzDT2J3KvfKPPkkOj/qdGtYEXJQx/sOrtzKNepdRlCK7U9laCvI3c8G+0gvusdHBv9R0El5J4CydjmXVgD82UftaqOKJ9+HguvKyJn4uNfmPxz7I+Y6Q20j3jzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Z6qc53z+; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E02F2C59;
+	Tue, 12 May 2026 14:38:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1778589501;
+	bh=oIAnQSxEMx5vJ8fIn32tZpWlo0rdQTld2L9kBk3tgLs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z6qc53z+FnscaPDXBuqI9B1rNlIQws6qhgHiX4oCq61KQh72y0Pw0RizqDPYk8qVZ
+	 Shozowwcj3hDJaOf6tIgwiUcyx5QDbAHaFljbVeME/PYEW9pNI3+Qbhytd4c74iEVD
+	 8WOFLgTSlVDpgkzE/2ag9Ymkbca+ayf74yNAdHQs=
+Date: Tue, 12 May 2026 15:38:27 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yunke Cao <yunkec@google.com>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 3/4] media: uvcvideo: Relax the constrains for
+ interpolating the hw clock
+Message-ID: <20260512123827.GB4128@killaraus.ideasonboard.com>
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+ <20260323-uvc-hwtimestamp-v1-3-aa42e3865204@chromium.org>
+ <20260511155125.GD3043805@killaraus.ideasonboard.com>
+ <CANiDSCs5jeEN7OL1PDc0XXtCP5Op2jpnWJyw7WR4Vn_Z7ECYOQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 93943520C37
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CANiDSCs5jeEN7OL1PDc0XXtCP5Op2jpnWJyw7WR4Vn_Z7ECYOQ@mail.gmail.com>
+X-Rspamd-Queue-Id: 1C6395206DB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245480-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	TAGGED_FROM(0.00)[bounces-245479-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+On Mon, May 11, 2026 at 05:58:30PM +0200, Ricardo Ribalda wrote:
+> On Mon, 11 May 2026 at 17:51, Laurent Pinchart wrote:
+> > On Mon, Mar 23, 2026 at 01:10:30PM +0000, Ricardo Ribalda wrote:
+> > > In the initial version we set the min value to 250msec. Looks like
+> > > 100msec can also provide a good value.
+> >
+> > I'd like to know where the value comes from and how it has been tested.
+> 
+> I used the Android CTS framework for testing. It checks in multiple
+> places that the timestamps are stable.
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+You deleted the information from the comment below, and didn't mention
+anything in the commit message, so I was wondering if the situation has
+changed. I'd like to retain the information somewhere.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> > > Now that we are at it, refactor a bit the code to make it cleaner.
+> >
+> > Do you mean using a macro ? You can mention that explicitly here.
+> >
+> > > Fixes: 6243c83be6ee8 ("media: uvcvideo: Allow hw clock updates with buffers not full")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > ---
+> > >  drivers/media/usb/uvc/uvc_video.c | 18 +++++++++++-------
+> > >  1 file changed, 11 insertions(+), 7 deletions(-)
+> > >
+> > > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> > > index c7ebedb3450f..dcbc0941ffe6 100644
+> > > --- a/drivers/media/usb/uvc/uvc_video.c
+> > > +++ b/drivers/media/usb/uvc/uvc_video.c
+> > > @@ -494,6 +494,13 @@ static int uvc_commit_video(struct uvc_streaming *stream,
+> > >   * Clocks and timestamps
+> > >   */
+> > >
+> > > +/*
+> > > + * The accuracy of the hardware timestamping depends on having enough data to
+> > > + * interpolate between the different clock domains. This value is sof cycles,
+> > > + * this is, milliseconds.
+> > > + */
+> > > +#define MIN_HW_TIMESTAMP_DIFF 100
+> >
+> > UVC prefix.
+> >
+> > > +
+> > >  static inline ktime_t uvc_video_get_time(void)
+> > >  {
+> > >       if (uvc_clock_param == CLOCK_MONOTONIC)
+> > > @@ -834,15 +841,12 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
+> > >               y2 += 2048 << 16;
+> > >
+> > >       /*
+> > > -      * Have at least 1/4 of a second of timestamps before we
+> > > -      * try to do any calculation. Otherwise we do not have enough
+> > > -      * precision. This value was determined by running Android CTS
+> > > -      * on different devices.
+> > > +      * Check that we have enough data to do the interpolation.
+> > >        *
+> > > -      * dev_sof runs at 1KHz, and we have a fixed point precision of
+> > > -      * 16 bits.
+> > > +      * y1 and y2 are dev_sof with a fixed point precision of 16 bits.
+> > >        */
+> > > -     if (clock->size != clock->count && (y2 - y1) < ((1000 / 4) << 16))
+> > > +     if (clock->size != clock->count &&
+> > > +         (y2 - y1) < (MIN_HW_TIMESTAMP_DIFF << 16))
+> > >               goto done;
+> > >
+> > >       y = (u64)(y2 - y1) * (1ULL << 31) + (u64)y1 * (u64)x2
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x 80afd4c84bc8f5e80145ce35279f5ce53f6043db
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051219-oval-unbalance-97f6@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+-- 
+Regards,
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 80afd4c84bc8f5e80145ce35279f5ce53f6043db Mon Sep 17 00:00:00 2001
-From: Tejun Heo <tj@kernel.org>
-Date: Fri, 24 Apr 2026 14:31:35 -1000
-Subject: [PATCH] sched_ext: Read scx_root under scx_cgroup_ops_rwsem in cgroup
- setters
-
-scx_group_set_{weight,idle,bandwidth}() cache scx_root before acquiring
-scx_cgroup_ops_rwsem, so the pointer can be stale by the time the op runs.
-If the loaded scheduler is disabled and freed (via RCU work) and another is
-enabled between the naked load and the rwsem acquire, the reader sees
-scx_cgroup_enabled=true (the new scheduler's) but dereferences the freed one
-- UAF on SCX_HAS_OP(sch, ...) / SCX_CALL_OP(sch, ...).
-
-scx_cgroup_enabled is toggled only under scx_cgroup_ops_rwsem write
-(scx_cgroup_{init,exit}), so reading scx_root inside the rwsem read section
-correlates @sch with the enabled snapshot.
-
-Fixes: a5bd6ba30b33 ("sched_ext: Use cgroup_lock/unlock() to synchronize against cgroup operations")
-Cc: stable@vger.kernel.org # v6.18+
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index dd0539ab9ba8..f6d22636a4de 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4343,9 +4343,10 @@ void scx_cgroup_cancel_attach(struct cgroup_taskset *tset)
- 
- void scx_group_set_weight(struct task_group *tg, unsigned long weight)
- {
--	struct scx_sched *sch = scx_root;
-+	struct scx_sched *sch;
- 
- 	percpu_down_read(&scx_cgroup_ops_rwsem);
-+	sch = scx_root;
- 
- 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_weight) &&
- 	    tg->scx.weight != weight)
-@@ -4358,9 +4359,10 @@ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
- 
- void scx_group_set_idle(struct task_group *tg, bool idle)
- {
--	struct scx_sched *sch = scx_root;
-+	struct scx_sched *sch;
- 
- 	percpu_down_read(&scx_cgroup_ops_rwsem);
-+	sch = scx_root;
- 
- 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_idle))
- 		SCX_CALL_OP(sch, cgroup_set_idle, NULL, tg_cgrp(tg), idle);
-@@ -4374,9 +4376,10 @@ void scx_group_set_idle(struct task_group *tg, bool idle)
- void scx_group_set_bandwidth(struct task_group *tg,
- 			     u64 period_us, u64 quota_us, u64 burst_us)
- {
--	struct scx_sched *sch = scx_root;
-+	struct scx_sched *sch;
- 
- 	percpu_down_read(&scx_cgroup_ops_rwsem);
-+	sch = scx_root;
- 
- 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_bandwidth) &&
- 	    (tg->scx.bw_period_us != period_us ||
-
+Laurent Pinchart
 
