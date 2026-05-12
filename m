@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFKkLgVrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:41 +0200
+	id oFvOIep0A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:43:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADBA5268A5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3897528070
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 11C1A3094ED9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98BBD32BBA61
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7413E0750;
-	Tue, 12 May 2026 17:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7445533B6CC;
+	Tue, 12 May 2026 18:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXd8Cnj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIpex2zF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD853E5A14;
-	Tue, 12 May 2026 17:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3754C6FC5;
+	Tue, 12 May 2026 18:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608139; cv=none; b=JU9MnmV1aUpPXponxjCouoGdF9XhOqeYke0QWyi0KhZU6cbj0ztCcvrVeD8Lg0XVRc/HzMfn9cdM5qcUnSvHhSLeGiVK+O9C/v1SEVPuQbgbGCbAtCiya44XzPhl+j95LUCgLe1zoJZpjQriK59Doq2LVbq4kyjGwpf2k/dHwrc=
+	t=1778609520; cv=none; b=TG+6f1xKLq8ungbsy3v8PTrB8EDZCJF9AwxFCuCGuLJz4/HI0UcryVDaPPkD/9rdZvBAsl9nWSEorimkgpJjZrQ+8cszUPdKbXkBLoRf2bPechcYHQMPF3sW/iIUFsA7yjf/kDzo2LnQBywndalDHiwVcG9xJG/tuSiT5LxaQm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608139; c=relaxed/simple;
-	bh=k7BTFkX5E4RfjR45KekECVdjI1te+PG1znJ7u8VJ9tg=;
+	s=arc-20240116; t=1778609520; c=relaxed/simple;
+	bh=BNoB3oxIzE9HWSF5vrlQbZnKFeOH8bWv81HTXbfdeZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOCiJCgHByMf3wCUBfJLP9ahPgxW1tsGPbXlqvXjE+/7LzFE2R/0BtYlJrlDiBRE7VRz1NhymP7OXgNn0C0pobTBvJmvBYPyFpBRuoa7KPON0QKkTZerXp3D3dHNylLqHvknUEAWLH3DeyZzJ7+w8+exQFbuUP4t7tRbH5c782E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXd8Cnj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B865C2BCB0;
-	Tue, 12 May 2026 17:48:58 +0000 (UTC)
+	 MIME-Version; b=ZESVbkGYuUpMSZ8NyXq1GTlnUqqP8u62Rc1W7D8IyYiW0WQGy8besYsfY13VJYoLNc1ZNjaACeirXmXmswuus/SAdJKnkwAatfk2adyDdB/m0uOvereaKK2mFkm+mBMxPXFj3kpIbasm/MyUwf6g+ACbY32eQAc6FqBaC5K7Efw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIpex2zF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32C9C2BCB0;
+	Tue, 12 May 2026 18:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608139;
-	bh=k7BTFkX5E4RfjR45KekECVdjI1te+PG1znJ7u8VJ9tg=;
+	s=korg; t=1778609520;
+	bh=BNoB3oxIzE9HWSF5vrlQbZnKFeOH8bWv81HTXbfdeZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yXd8Cnj7TL2auZXEr+faZiTkdx9pwN4zN4VZ8wqD7D3tNHcfXJtgh5MHDppEyGs0W
-	 A8yobkCkC5djtt6HJgC0u5zqTH9P38u3OkFqGsbenQdPGB/WST/Y0v9bVQoGiCr7tE
-	 /J9oUsePG+CQiyfQtUyjGmIDOetNoipXsyaHsnVs=
+	b=fIpex2zFxFL/6cLQXeGkNXZSw+/qhsegt4ljSv6CbnOaZ7BzQpLlztLdsazMfQXrI
+	 R7ggrxoLMAu9bibmgQvVhezn5keDKdZ93CJnqcRoz7jGTicW4FJvN5iloyxMo36NvM
+	 l/q2tnFmvu7JsrjQfQgCrN9dLvxEzPMCmK7belRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Perret <qperret@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.12 170/206] KVM: arm64: Fix initialisation order in __pkvm_init_finalise()
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 7.0 227/307] powerpc/xive: fix kmemleak caused by incorrect chip_data lookup
 Date: Tue, 12 May 2026 19:40:22 +0200
-Message-ID: <20260512173936.461653661@linuxfoundation.org>
+Message-ID: <20260512173944.909500074@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BADBA5268A5
+X-Rspamd-Queue-Id: F3897528070
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246552-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246015-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Perret <qperret@google.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-commit 5bb0aed57ba944f8c201e4e82ec066e0187e0f85 upstream.
+commit 6771c54728c278bf1e4bfdab4fddbbb186e33498 upstream.
 
-fix_host_ownership() walks the hypervisor's stage-1 page-table to
-adjust the host's stage-2 accordingly. Any such adjustment that
-requires cache maintenance operations depends on the per-CPU hyp
-fixmap being present. However, fix_host_ownership() is currently
-called before fix_hyp_pgtable_refcnt() and hyp_create_fixmap(), so
-the fixmap does not yet exist when it runs.
+The kmemleak reports the following memory leak:
 
-This is benign today because the host stage-2 starts empty and no
-CMOs are needed, but it becomes a latent crash as soon as
-fix_host_ownership() is extended to operate on a non-empty
-page-table.
+Unreferenced object 0xc0000002a7fbc640 (size 64):
+  comm "kworker/8:1", pid 540, jiffies 4294937872
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 09 04 00 04 00 00  ................
+    00 00 a7 81 00 00 0a c0 00 00 08 04 00 04 00 00  ................
+  backtrace (crc 177d48f6):
+    __kmalloc_cache_noprof+0x520/0x730
+    xive_irq_alloc_data.constprop.0+0x40/0xe0
+    xive_irq_domain_alloc+0xd0/0x1b0
+    irq_domain_alloc_irqs_parent+0x44/0x6c
+    pseries_irq_domain_alloc+0x1cc/0x354
+    irq_domain_alloc_irqs_parent+0x44/0x6c
+    msi_domain_alloc+0xb0/0x220
+    irq_domain_alloc_irqs_locked+0x138/0x4d0
+    __irq_domain_alloc_irqs+0x8c/0xfc
+    __msi_domain_alloc_irqs+0x214/0x4d8
+    msi_domain_alloc_irqs_all_locked+0x70/0xf8
+    pci_msi_setup_msi_irqs+0x60/0x78
+    __pci_enable_msix_range+0x54c/0x98c
+    pci_alloc_irq_vectors_affinity+0x16c/0x1d4
+    nvme_pci_enable+0xac/0x9c0 [nvme]
+    nvme_probe+0x340/0x764 [nvme]
 
-Reorder the calls so that fix_hyp_pgtable_refcnt() and
-hyp_create_fixmap() complete before fix_host_ownership() is invoked.
+This occurs when allocating MSI-X vectors for an NVMe device. During
+allocation the XIVE code creates a struct xive_irq_data and stores it
+in irq_data->chip_data.
 
-Fixes: 0d16d12eb26e ("KVM: arm64: Fix-up hyp stage-1 refcounts for all pages mapped at EL2")
-Signed-off-by: Quentin Perret <qperret@google.com>
-Signed-off-by: Fuad Tabba <tabba@google.com>
-Link: https://patch.msgid.link/20260424084908.370776-7-tabba@google.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+When the MSI-X irqdomain is later freed, xive_irq_free_data() is
+responsible for retrieving this structure and freeing it. However,
+after commit cc0cc23babc9 ("powerpc/xive: Untangle xive from child
+interrupt controller drivers"), xive_irq_free_data() retrieves the
+chip_data using irq_get_chip_data(), which looks up the data through
+the child domain.
+
+This is incorrect because the XIVE-specific irq data is associated with
+the XIVE (parent) domain. As a result the lookup fails and the allocated
+struct xive_irq_data is never freed, leading to the kmemleak report
+shown above.
+
+Fix this by retrieving the irq_data from the correct domain using
+irq_domain_get_irq_data() and then accessing the chip_data via
+irq_data_get_irq_chip_data().
+
 Cc: stable@vger.kernel.org
+Fixes: cc0cc23babc9 ("powerpc/xive: Untangle xive from child interrupt controller drivers")
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260311134336.326996-1-nilay@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/nvhe/setup.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/sysdev/xive/common.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/kvm/hyp/nvhe/setup.c
-+++ b/arch/arm64/kvm/hyp/nvhe/setup.c
-@@ -307,15 +307,15 @@ void __noreturn __pkvm_init_finalise(voi
- 	};
- 	pkvm_pgtable.mm_ops = &pkvm_pgtable_mm_ops;
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1038,13 +1038,19 @@ static struct xive_irq_data *xive_irq_al
+ 	return xd;
+ }
  
--	ret = fix_host_ownership();
-+	ret = fix_hyp_pgtable_refcnt();
- 	if (ret)
- 		goto out;
+-static void xive_irq_free_data(unsigned int virq)
++static void xive_irq_free_data(struct irq_domain *domain, unsigned int virq)
+ {
+-	struct xive_irq_data *xd = irq_get_chip_data(virq);
++	struct xive_irq_data *xd;
++	struct irq_data *data = irq_domain_get_irq_data(domain, virq);
++
++	if (!data)
++		return;
  
--	ret = fix_hyp_pgtable_refcnt();
-+	ret = hyp_create_pcpu_fixmap();
- 	if (ret)
- 		goto out;
++	xd = irq_data_get_irq_chip_data(data);
+ 	if (!xd)
+ 		return;
+-	irq_set_chip_data(virq, NULL);
++
++	irq_domain_reset_irq_data(data);
+ 	xive_cleanup_irq_data(xd);
+ 	kfree(xd);
+ }
+@@ -1305,7 +1311,7 @@ static int xive_irq_domain_map(struct ir
  
--	ret = hyp_create_pcpu_fixmap();
-+	ret = fix_host_ownership();
- 	if (ret)
- 		goto out;
+ static void xive_irq_domain_unmap(struct irq_domain *d, unsigned int virq)
+ {
+-	xive_irq_free_data(virq);
++	xive_irq_free_data(d, virq);
+ }
+ 
+ static int xive_irq_domain_xlate(struct irq_domain *h, struct device_node *ct,
+@@ -1443,7 +1449,7 @@ static void xive_irq_domain_free(struct
+ 	pr_debug("%s %d #%d\n", __func__, virq, nr_irqs);
+ 
+ 	for (i = 0; i < nr_irqs; i++)
+-		xive_irq_free_data(virq + i);
++		xive_irq_free_data(domain, virq + i);
+ }
+ #endif
  
 
 
