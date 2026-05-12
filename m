@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-246092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oL5gO0JrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:42 +0200
+	id gGGvD09rA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E213526957
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EC752697B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 667343115F46
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E27531C8C43
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053913C09F1;
-	Tue, 12 May 2026 17:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2963C0A0E;
+	Tue, 12 May 2026 17:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHIEBGOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M07+o+Fo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2E33C09EB;
-	Tue, 12 May 2026 17:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429793C0A09;
+	Tue, 12 May 2026 17:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608337; cv=none; b=MOhbEs9tPHbJZU/VDSMeT29mveWyVt+CKZrH+veBcxcM/AK60IqkZMpUkP2EAXw7bPP0cWqgw5Ah/RrkLYMa10Nx06964S3r6GFtyMLRlo1aIblg3v6bPUxQaOM/Xemyovewa0ssdhl/pssjAri/FFMUH0IvhHlAt7CxxV4SqM0=
+	t=1778608340; cv=none; b=b7fZAfDNlNmf0c2ZyD2G9DCiSilFhyuRS2QD0abWOkiEKHJqzZMWpHvEkijbay5WFhsDTUd7Vj7yblsG5YV1poWdWY+ZB6MLNTNpeQWT+7C/22bd5Y0LkEKhUqrwrZOo/62ZIRxfQRx79R220Lo3LYSFjoCdxDCX+JCkTN0UPVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608337; c=relaxed/simple;
-	bh=HGro0a5lHzTYJlTATbjnpTkNRpfyI/WVvZbUm0878QQ=;
+	s=arc-20240116; t=1778608340; c=relaxed/simple;
+	bh=gkWK83ab4V4ePLypwQGE42zUWq6g0VkkVTlOi9glO48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2zARzyeI6nFNDuVKHM9sNmRMHjIY0dEupHgA6cXRhPxtwxV3JGD6yV+3d8qA/soBWSkmWqeNhUb0MbupzlejZ30n81D3YdI9R02X2bfH3D3FLp0yTEkLGGkBw1VNfmhbqR80uhh+iY3RsEriZQJeKXM+s6Aw9iebdM6j1hT3J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHIEBGOQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425C6C2BCC7;
-	Tue, 12 May 2026 17:52:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pLFDuT834VTeKg1sTUwsorMG6YRD2NmmOySMVp4kk8XKw/iJ5G1R1L+NBdYN7ChXS+hQ3f/jeGbHRoHf/CypegkXlUaj4agUevMIx3TzmIPI6ZMWgO2zMOpZpV2CKYm87tY1suDxvaz+0vAwIBrGVwqMx9UjqOR3Uz7j9471Ri4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M07+o+Fo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE9AC2BCC7;
+	Tue, 12 May 2026 17:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608337;
-	bh=HGro0a5lHzTYJlTATbjnpTkNRpfyI/WVvZbUm0878QQ=;
+	s=korg; t=1778608340;
+	bh=gkWK83ab4V4ePLypwQGE42zUWq6g0VkkVTlOi9glO48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHIEBGOQM8/aySN+rd3l+SvoyktDpuPgoOn6+oc/monvTVbxzfOB+st92UYGK4aWb
-	 g61pg/0ISUVY6OmJkx2IFc9wrBQQPDve51Ff+hT3C7kCHSDzOg+1ha5zKMIti3Qt6m
-	 dJ22eSmHc4HNt1k7r6mNXSDhx53tNZ9cdT0pmkw8=
+	b=M07+o+FomiNuQ8FVX2Yfm5FdqufI2r36dchxKZSEoNW6sPf5oYKFyD/Y299fnPKUn
+	 yd7phaIwAERygv71ievgN49+6a4nnXVq2w/XqdEIGcpH+AqaEKksALiJ6oGCpnn3GZ
+	 dX4FQAOKwZST4247JD4YYFNsu0HhGX9EzWf8B6hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 041/270] ALSA: usb-audio: Avoid potential endless loop in convert_chmap_v3()
-Date: Tue, 12 May 2026 19:37:22 +0200
-Message-ID: <20260512173939.319090072@linuxfoundation.org>
+Subject: [PATCH 6.18 042/270] ALSA: usb-audio: Fix UAC3 cluster descriptor size check
+Date: Tue, 12 May 2026 19:37:23 +0200
+Message-ID: <20260512173939.340131844@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
 References: <20260512173938.452574370@linuxfoundation.org>
@@ -61,35 +62,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E213526957
+X-Rspamd-Queue-Id: C7EC752697B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246092-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246093-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
@@ -97,36 +99,44 @@ X-Rspamd-Action: no action
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 6e7247d8f5fefeceb0bb9cc80a5388a636b219cd upstream.
+commit 26265dd69da32d88a88d21987853cec899d9e21f upstream.
 
-The convert_chmap_v3() has a loop with its increment size of
-cs_desc->wLength, but we forgot to validate cs_desc->wLength itself,
-which may lead to potential endless loop by a malformed descriptor.
+The UAC3 cluster descriptor length check in
+snd_usb_get_audioformat_uac3()was added to
+make sure that the buffer is large enough for
+a struct uac3_cluster_header_descriptor before the
+returned data is cast and used.
 
-Add a proper size check to abort the loop for plugging the hole.
+However, the check uses sizeof(cluster), where cluster
+is a pointer, not the size of the descriptor header.
+This makes the validation depend on the architecture
+pointer size and does not match the intended object size.
 
-Fixes: ecfd41166b72 ("ALSA: usb-audio: Validate UAC3 cluster segment descriptors")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260427152224.15276-1-tiwai@suse.de
+Check against sizeof(*cluster) instead.
+
+Fixes: fb4e2a6e8f28 ("ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260424-alsa-usb-uac3-cluster-size-v1-1-99a5808898a3@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/usb/stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/sound/usb/stream.c
 +++ b/sound/usb/stream.c
-@@ -352,6 +352,8 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
- 		if (len < sizeof(*cs_desc))
- 			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
-+		if (cs_len < sizeof(*cs_desc))
-+			break;
- 		if (len < cs_len)
- 			break;
- 		cs_type = cs_desc->bSegmentType;
+@@ -999,7 +999,7 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 	 * and request Cluster Descriptor
+ 	 */
+ 	wLength = le16_to_cpu(hc_header.wLength);
+-	if (wLength < sizeof(cluster))
++	if (wLength < sizeof(*cluster))
+ 		return NULL;
+ 	cluster = kzalloc(wLength, GFP_KERNEL);
+ 	if (!cluster)
 
 
 
