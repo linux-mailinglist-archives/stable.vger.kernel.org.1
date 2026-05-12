@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJVvJjZzA2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:38 +0200
+	id kFaxF9VrA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3B8527D93
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE0F526B38
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE90C31ADEFF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8127B313DD7D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CEA23E356;
-	Tue, 12 May 2026 18:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D7B495510;
+	Tue, 12 May 2026 17:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHUCveg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1k5Oe93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4746750276;
-	Tue, 12 May 2026 18:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E5647AF65;
+	Tue, 12 May 2026 17:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609105; cv=none; b=cLkGFIcVBxIys2uvVS0LoIgFj0JMF6gwVQx6E1obSc3lToMMGqH4fMpHQjvtpOouznAfuSjIOWQF3/H1x5/rtZxl856wAeuDEsfVU18mtycuXFajK6X85A5MivttKKnqZGR2wF3A172HOu9RUITblphoplxjgA8lR4YPTpPQ7hs=
+	t=1778608387; cv=none; b=IbrKZWjorMUWFbKupXAuwOnEHzcF1f5HKrPl2M7YTU2z1jxvudlHBildmAIjPgC4L9I3GAlk5WJOgLLYL/Gbyv9knBST4mgMmpEkQ9SRmuIT60Cs9yYMhTS+7zTdQI1L4TKMLpfwLRQ2JM3glTsyRCHDnoffRNRVirsA9vV5tSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609105; c=relaxed/simple;
-	bh=44CKPZ5nw9xjJne8E6Tas39x4i8eBC3fdo4U3jj7S84=;
+	s=arc-20240116; t=1778608387; c=relaxed/simple;
+	bh=qRd6dLPgdQvZiLF8gk7v3k/o6IL9SK9U9q4QeGvD5R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewrTHo1iuCbXMAB+JAcu7N/T2hSyUhipKgS5m/CqvPs3Az9rT/K8JI6fXgQ9E7umQwFvC0ETzoT2QITojFoJtxBWT39+VVR4xR/KmWKDmHzQ7m+EIYT8+3QLiWAkheWHhSC/REXpuK5BF8dcK8rCrOO20NR8SLfsX79jOub+UHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHUCveg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EFFC2BCB0;
-	Tue, 12 May 2026 18:05:04 +0000 (UTC)
+	 MIME-Version; b=hBeDlse7UxdSwhfwAUrDWnNsOX2WOZMk/kj4OlRDxXRMwwIwHN2RwP6eWr2OmE5OmdNNXVI99Hv30zZ5+x+6MFmIb5Lz8xUf3bPha0wnmogY/fOV6JxlkbLxiwpF/uMiiagxPZFsZ5ZOeSM5g9yCmMO4qFf459uZeSavihrFDqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1k5Oe93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311E6C2BCC7;
+	Tue, 12 May 2026 17:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609105;
-	bh=44CKPZ5nw9xjJne8E6Tas39x4i8eBC3fdo4U3jj7S84=;
+	s=korg; t=1778608386;
+	bh=qRd6dLPgdQvZiLF8gk7v3k/o6IL9SK9U9q4QeGvD5R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHUCveg5COwuiNRFZgojANbqJMcf0M13/Urwxpcfp4UXm8yKMJboyPlUiRzyyHiSq
-	 haC7jYVUMUfzvviQ90wCk9/BGz7TK+oiAO/RKBfrYd6UXPE3eOUsOcjhXmfRoLswVu
-	 N4HwH8bltlAPfARMgKgqkKVqKeqwNJm+8VnL7L7M=
+	b=P1k5Oe93euGlvmwsWUAWEUI6pcoe1od2v0TaGnhd3tGGEUxYlFwZUm/dqNf2/PyJG
+	 4gE6C7tIWNJpyOoO+H0kY3IhPr+2zcbim0SK0Qu2BnRqKI9DqmzQKqlXJr7s9/hwk3
+	 Fqub77fE2nfa6aQ+G+9lZbkiYiR1L/VrIsVC30FM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 7.0 065/307] selinux: allow multiple opens of /sys/fs/selinux/policy
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.18 059/270] xfrm: ah: account for ESN high bits in async callbacks
 Date: Tue, 12 May 2026 19:37:40 +0200
-Message-ID: <20260512173941.493184298@linuxfoundation.org>
+Message-ID: <20260512173939.694860305@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +63,166 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2D3B8527D93
+X-Rspamd-Queue-Id: CAE0F526B38
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246391-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246111-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paul-moore.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit a02cd6805562305f936e807da83e253b719dd965 upstream.
+commit ec54093e6a8f87e800bb6aa15eb7fc1e33faa524 upstream.
 
-Currently there can only be a single open of /sys/fs/selinux/policy at
-any time. This allows any process to block any other process from
-reading the kernel policy. The original motivation seems to have been
-a mix of preventing an inconsistent view of the policy size and
-preventing userspace from allocating kernel memory without bound, but
-this is arguably equally bad. Eliminate the policy_opened flag and
-shrink the critical section that the policy mutex is held. While we
-are making changes here, drop a couple of extraneous BUG_ONs.
+AH allocates its temporary auth/ICV layout differently when ESN is enabled:
+the async ahash setup appends a 4-byte seqhi slot before the ICV or
+auth_data area, but the async completion callbacks still reconstruct the
+temporary layout as if seqhi were absent.
 
+With an async AH implementation selected, that makes AH copy or compare
+the wrong bytes on both the IPv4 and IPv6 paths. In UML repro on IPv4 AH
+with ESN and forced async hmac(sha1), ping fails with 100% packet loss,
+and the callback logs show the pre-fix drift:
+
+  ah4 output_done: esn=1 err=0 icv_off=20 expected_off=24
+  ah4 input_done: esn=1 auth_off=20 expected_auth_off=24 icv_off=32 expected_icv_off=36
+
+Reconstruct the callback-side layout the same way the setup path built it
+by skipping the ESN seqhi slot before locating the saved auth_data or ICV.
+Per RFC 4302, the ESN high-order 32 bits participate in the AH ICV
+computation, so the async callbacks must account for the seqhi slot.
+
+Post-fix, the same IPv4 AH+ESN+forced-async-hmac(sha1) UML repro shows
+the corrected offset (ah4 output_done: esn=1 err=0 icv_off=24
+expected_off=24) and ping succeeds; net/ipv4/ah4.o and net/ipv6/ah6.o
+build clean at W=1. IPv6 AH+ESN was not exercised at runtime, and the
+change has not been tested against a real async hardware AH engine.
+
+Fixes: d4d573d0334d ("{IPv4,xfrm} Add ESN support for AH egress part")
+Fixes: d8b2a8600b0e ("{IPv4,xfrm} Add ESN support for AH ingress part")
+Fixes: 26dd70c3fad3 ("{IPv6,xfrm} Add ESN support for AH egress part")
+Fixes: 8d6da6f32557 ("{IPv6,xfrm} Add ESN support for AH ingress part")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/selinux/20100726193414.19538.64028.stgit@paris.rdu.redhat.com/
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Assisted-by: Codex:gpt-5-4
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/selinuxfs.c |   27 ++++-----------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+ net/ipv4/ah4.c |   14 ++++++++++++--
+ net/ipv6/ah6.c |   14 ++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -76,7 +76,6 @@ struct selinux_fs_info {
- 	int *bool_pending_values;
- 	struct dentry *class_dir;
- 	unsigned long last_class_ino;
--	bool policy_opened;
- 	unsigned long last_ino;
- 	struct super_block *sb;
- };
-@@ -340,44 +339,31 @@ struct policy_load_memory {
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -124,9 +124,14 @@ static void ah_output_done(void *data, i
+ 	struct iphdr *top_iph = ip_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
- static int sel_open_policy(struct inode *inode, struct file *filp)
- {
--	struct selinux_fs_info *fsi = inode->i_sb->s_fs_info;
- 	struct policy_load_memory *plm = NULL;
- 	int rc;
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph = AH_SKB_CB(skb)->tmp;
+-	icv = ah_tmp_icv(iph, ihl);
++	seqhi = (__be32 *)((char *)iph + ihl);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
  
--	BUG_ON(filp->private_data);
--
--	mutex_lock(&selinux_state.policy_mutex);
--
- 	rc = avc_has_perm(current_sid(), SECINITSID_SECURITY,
- 			  SECCLASS_SECURITY, SECURITY__READ_POLICY, NULL);
- 	if (rc)
--		goto err;
-+		return rc;
+ 	top_iph->tos = iph->tos;
+@@ -270,12 +275,17 @@ static void ah_input_done(void *data, in
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
+ 	int ah_hlen = (ah->hdrlen + 2) << 2;
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
--	rc = -EBUSY;
--	if (fsi->policy_opened)
--		goto err;
--
--	rc = -ENOMEM;
- 	plm = kzalloc_obj(*plm);
- 	if (!plm)
--		goto err;
-+		return -ENOMEM;
+ 	if (err)
+ 		goto out;
  
-+	mutex_lock(&selinux_state.policy_mutex);
- 	rc = security_read_policy(&plm->data, &plm->len);
- 	if (rc)
- 		goto err;
--
- 	if ((size_t)i_size_read(inode) != plm->len) {
- 		inode_lock(inode);
- 		i_size_write(inode, plm->len);
- 		inode_unlock(inode);
- 	}
--
--	fsi->policy_opened = 1;
-+	mutex_unlock(&selinux_state.policy_mutex);
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+-	auth_data = ah_tmp_auth(work_iph, ihl);
++	seqhi = (__be32 *)((char *)work_iph + ihl);
++	auth_data = ah_tmp_auth(seqhi, seqhi_len);
+ 	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
  
- 	filp->private_data = plm;
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -317,14 +317,19 @@ static void ah6_output_done(void *data,
+ 	struct ipv6hdr *top_iph = ipv6_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	struct tmp_ext *iph_ext;
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
--	mutex_unlock(&selinux_state.policy_mutex);
--
- 	return 0;
- err:
- 	mutex_unlock(&selinux_state.policy_mutex);
-@@ -390,13 +376,8 @@ err:
+ 	extlen = skb_network_header_len(skb) - sizeof(struct ipv6hdr);
+ 	if (extlen)
+ 		extlen += sizeof(*iph_ext);
  
- static int sel_release_policy(struct inode *inode, struct file *filp)
- {
--	struct selinux_fs_info *fsi = inode->i_sb->s_fs_info;
- 	struct policy_load_memory *plm = filp->private_data;
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph_base = AH_SKB_CB(skb)->tmp;
+ 	iph_ext = ah_tmp_ext(iph_base);
+-	icv = ah_tmp_icv(iph_ext, extlen);
++	seqhi = (__be32 *)((char *)iph_ext + extlen);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
  
--	BUG_ON(!plm);
--
--	fsi->policy_opened = 0;
--
- 	vfree(plm->data);
- 	kfree(plm);
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+@@ -471,13 +476,18 @@ static void ah6_input_done(void *data, i
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int hdr_len = skb_network_header_len(skb);
+ 	int ah_hlen = ipv6_authlen(ah);
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
+ 	if (err)
+ 		goto out;
+ 
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+ 	auth_data = ah_tmp_auth(work_iph, hdr_len);
+-	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
++	seqhi = (__be32 *)(auth_data + ahp->icv_trunc_len);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+ 	if (err)
 
 
 
