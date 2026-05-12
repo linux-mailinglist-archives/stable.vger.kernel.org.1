@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OB8yJpNsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:19 +0200
+	id GEo4M2JsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CA0526D69
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C4B526CDE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 78848303EFB9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 59CA230A7B6C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C881A33A6E2;
-	Tue, 12 May 2026 18:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0393D9696;
+	Tue, 12 May 2026 17:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXeBcx+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+iVMa/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC633EDE68;
-	Tue, 12 May 2026 18:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBD43C09ED;
+	Tue, 12 May 2026 17:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609210; cv=none; b=EgwPafyfSYi5hqlCqMcqvusF9d1xnlWRLL3/2A2sTntnbgv4m8SprkRXvtmAI8qpgOivyY1zWJ3gzuXSTmHJq9s13qp16Nkl9JTfTZAlC7MQELbBk2JjfSr53msJ8OtXcoUeI3wzGhseMB5phg1HLJrHxjZL7CMhnSZ44+4XtKM=
+	t=1778608492; cv=none; b=Kz15uic1aT2JgwmlrQPWbHmG1rZv06cacR7FPJK6Udt7iHq0V5glpEwcCPGB9n1fagvehJMCvzx2QHoygxXSzrsDsa3IGS4kzfEoifl8owRU6QznzHZvaZck5qPuE6VTjhQ0gyfOLeVsEa/I9bUpBxsFFPbeZGdCnrAhzU/OV5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609210; c=relaxed/simple;
-	bh=7PX58gXgbTb9kHd++5Fo8a2LJEyrGVTZLLyvfmBj2Oc=;
+	s=arc-20240116; t=1778608492; c=relaxed/simple;
+	bh=cWaNFMIg5yS0lW7ovG4+YwfTlnCoMxRuStJUbGPsAbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iL2ACza+Nvg+XTZfLStmSMIQGNWR+6BLYTnEvpLa/dQBPwmQqs3cdnq//iwJWNV1DwymJ4IWViHlSjN+gJ5fe3nSivttvyMZSKRTKdnjucvph2XEo4x9Pt94tlaCVKSmCAn+upLSV6oOXteDehYIVOsKjOmcD5af1Bsifjz0qes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXeBcx+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2066DC2BCB0;
-	Tue, 12 May 2026 18:06:49 +0000 (UTC)
+	 MIME-Version; b=bE4oiULHUtqunKkr3xRORbQ6wNssKPPIO7GJLuVQqWHQgFhgvMmEPXhlb8z6wnDBgk5DYPAufjcnWoF2phZ8xHGyPgiViiFXxgh6pM+9MwdBaz+TIobQ0VU7uQ98DWhABySuHhMfIxO5h+SzGdRF5nr21Z1Ww0xKefTalkHeVOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+iVMa/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7004C2BCB0;
+	Tue, 12 May 2026 17:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609210;
-	bh=7PX58gXgbTb9kHd++5Fo8a2LJEyrGVTZLLyvfmBj2Oc=;
+	s=korg; t=1778608492;
+	bh=cWaNFMIg5yS0lW7ovG4+YwfTlnCoMxRuStJUbGPsAbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yXeBcx+YxbYlufpYEdLZuwW0MtpP4/wGa4+9tBGNyETuoYTqBdBJAdC8VaBnb1S1F
-	 jgNte7Mjhi4/5Fec5AQphk0Wgw+SiQbbDYEcN13EBj7U6Vulh0OALftYNYJRkbY4lN
-	 Gi9VhhOFfOENNUF2VA3nJzkct2NJ6UHc3quzIMdI=
+	b=L+iVMa/lDCPAYIQSUftGSYel3dlhy8vTTs0EVAJI5SJ3yZ/JfBCa7+fUmdhdp1ER7
+	 BTRn+b38NE2CH/xJ2n7F2zzvb1n3rSU2jqL18sXYie+pimHwtsodXXVPWbaWh7N+97
+	 eB2plw7ITKfWx07YGsD3XIim7FczOlM/bXLWjcbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dmitry Vyukov <dvyukov@google.com>
-Subject: [PATCH 7.0 106/307] selftests/rseq: Make registration flexible for legacy and optimized mode
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 100/270] ip6_gre: Use cached t->net in ip6erspan_changelink().
 Date: Tue, 12 May 2026 19:38:21 +0200
-Message-ID: <20260512173942.362880375@linuxfoundation.org>
+Message-ID: <20260512173940.564546266@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,207 +65,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37CA0526D69
+X-Rspamd-Queue-Id: 45C4B526CDE
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246152-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246431-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,ntu.edu.sg:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-commit d97cb2ef0b221b068e90b6058aa97faa0626bdab upstream.
+commit 1d324c2f43f70c965f25c58cc3611c779adbe47e upstream.
 
-rseq_register_current_thread() either uses the glibc registered RSEQ region
-or registers it's own region with the legacy size of 32 bytes.
+After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
+ip6gre hash via link_net. ip6erspan_changelink() was not converted in
+that series and still uses dev_net(dev), which diverges from the
+device's creation netns after IFLA_NET_NS_FD migration.
 
-That worked so far, but becomes a problem when the kernel implements a
-distinction between legacy and performance optimized behavior based on the
-registration size as that does not allow to test both modes with the self
-test suite.
+This re-inserts the tunnel into the wrong per-netns hash. The
+original netns keeps a stale entry. When that netns is later
+destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
+slab-use-after-free reported by KASAN, followed by a kernel BUG at
+net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
 
-Add two arguments to the function. One to enforce that the registration is
-not using libc provided mode and one to tell the registration to use the
-legacy size and not the kernel advertised size.
+Reachable from an unprivileged user namespace (unshare --user
+--map-root-user --net).
 
-Rename it and make the original one a inline wrapper which preserves the
-existing behavior.
+ip6gre_changelink() earlier in the same file already uses the cached
+t->net; only ip6erspan_changelink() has the wrong shape.
 
-Fixes: 566d8015f7ee ("rseq: Avoid CPU/MM CID updates when no event pending")
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Tested-by: Dmitry Vyukov <dvyukov@google.com>
-Link: https://patch.msgid.link/20260428224427.677889423%40kernel.org
-Cc: stable@vger.kernel.org
+Fixes: 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260430103318.3206018-1-maoyi.xie@ntu.edu.sg
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/rseq-abi.h |    7 ++++-
- tools/testing/selftests/rseq/rseq.c     |   39 ++++++++++++++------------------
- tools/testing/selftests/rseq/rseq.h     |    8 +++++-
- 3 files changed, 31 insertions(+), 23 deletions(-)
+ net/ipv6/ip6_gre.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/rseq/rseq-abi.h
-+++ b/tools/testing/selftests/rseq/rseq-abi.h
-@@ -192,9 +192,14 @@ struct rseq_abi {
- 	struct rseq_abi_slice_ctrl slice_ctrl;
- 
- 	/*
-+	 * Place holder to push the size above 32 bytes.
-+	 */
-+	__u8 __reserved;
-+
-+	/*
- 	 * Flexible array member at end of structure, after last feature field.
- 	 */
- 	char end[];
--} __attribute__((aligned(4 * sizeof(__u64))));
-+} __attribute__((aligned(256)));
- 
- #endif /* _RSEQ_ABI_H */
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -56,6 +56,7 @@ ptrdiff_t rseq_offset;
-  * unsuccessful.
-  */
- unsigned int rseq_size = -1U;
-+static unsigned int rseq_alloc_size;
- 
- /* Flags used during rseq registration.  */
- unsigned int rseq_flags;
-@@ -115,29 +116,17 @@ bool rseq_available(void)
- 	}
- }
- 
--/* The rseq areas need to be at least 32 bytes. */
--static
--unsigned int get_rseq_min_alloc_size(void)
--{
--	unsigned int alloc_size = rseq_size;
--
--	if (alloc_size < ORIG_RSEQ_ALLOC_SIZE)
--		alloc_size = ORIG_RSEQ_ALLOC_SIZE;
--	return alloc_size;
--}
--
- /*
-  * Return the feature size supported by the kernel.
-  *
-  * Depending on the value returned by getauxval(AT_RSEQ_FEATURE_SIZE):
-  *
-- * 0:   Return ORIG_RSEQ_FEATURE_SIZE (20)
-+ *   0: Return ORIG_RSEQ_FEATURE_SIZE (20)
-  * > 0: Return the value from getauxval(AT_RSEQ_FEATURE_SIZE).
-  *
-  * It should never return a value below ORIG_RSEQ_FEATURE_SIZE.
-  */
--static
--unsigned int get_rseq_kernel_feature_size(void)
-+static unsigned int get_rseq_kernel_feature_size(void)
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -2261,10 +2261,11 @@ static int ip6erspan_changelink(struct n
+ 				struct nlattr *data[],
+ 				struct netlink_ext_ack *extack)
  {
- 	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
+-	struct ip6gre_net *ign = net_generic(dev_net(dev), ip6gre_net_id);
++	struct ip6_tnl *t = netdev_priv(dev);
+ 	struct __ip6_tnl_parm p;
+-	struct ip6_tnl *t;
++	struct ip6gre_net *ign;
  
-@@ -152,15 +141,24 @@ unsigned int get_rseq_kernel_feature_siz
- 		return ORIG_RSEQ_FEATURE_SIZE;
- }
- 
--int rseq_register_current_thread(void)
-+int __rseq_register_current_thread(bool nolibc, bool legacy)
- {
-+	unsigned int size;
- 	int rc;
- 
- 	if (!rseq_ownership) {
- 		/* Treat libc's ownership as a successful registration. */
--		return 0;
-+		return nolibc ? -EBUSY : 0;
- 	}
--	rc = sys_rseq(&__rseq.abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
-+
-+	/* The minimal allocation size is 32, which is the legacy allocation size */
-+	size = get_rseq_kernel_feature_size();
-+	if (legacy || size < ORIG_RSEQ_ALLOC_SIZE)
-+		rseq_alloc_size = ORIG_RSEQ_ALLOC_SIZE;
-+	else
-+		rseq_alloc_size = size;
-+
-+	rc = sys_rseq(&__rseq.abi, rseq_alloc_size, 0, RSEQ_SIG);
- 	if (rc) {
- 		/*
- 		 * After at least one thread has registered successfully
-@@ -179,9 +177,8 @@ int rseq_register_current_thread(void)
- 	 * The first thread to register sets the rseq_size to mimic the libc
- 	 * behavior.
- 	 */
--	if (RSEQ_READ_ONCE(rseq_size) == 0) {
--		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
--	}
-+	if (RSEQ_READ_ONCE(rseq_size) == 0)
-+		RSEQ_WRITE_ONCE(rseq_size, size);
- 
- 	return 0;
- }
-@@ -194,7 +191,7 @@ int rseq_unregister_current_thread(void)
- 		/* Treat libc's ownership as a successful unregistration. */
- 		return 0;
- 	}
--	rc = sys_rseq(&__rseq.abi, get_rseq_min_alloc_size(), RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
-+	rc = sys_rseq(&__rseq.abi, rseq_alloc_size, RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
- 	if (rc)
- 		return -1;
- 	return 0;
---- a/tools/testing/selftests/rseq/rseq.h
-+++ b/tools/testing/selftests/rseq/rseq.h
-@@ -8,6 +8,7 @@
- #ifndef RSEQ_H
- #define RSEQ_H
- 
-+#include <assert.h>
- #include <stdint.h>
- #include <stdbool.h>
- #include <pthread.h>
-@@ -142,7 +143,12 @@ static inline struct rseq_abi *rseq_get_
-  * succeed. A restartable sequence executed from a non-registered
-  * thread will always fail.
-  */
--int rseq_register_current_thread(void);
-+int __rseq_register_current_thread(bool nolibc, bool legacy);
-+
-+static inline int rseq_register_current_thread(void)
-+{
-+	return __rseq_register_current_thread(false, false);
-+}
- 
- /*
-  * Unregister rseq for current thread.
++	ign = net_generic(t->net, ip6gre_net_id);
+ 	t = ip6gre_changelink_common(dev, tb, data, &p, extack);
+ 	if (IS_ERR(t))
+ 		return PTR_ERR(t);
 
 
 
