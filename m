@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDWOBnhrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:36 +0200
+	id yLhrIkpwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CD45269F8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E11D527804
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 441593058647
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98207309146D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943DC3BB113;
-	Tue, 12 May 2026 17:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB1B30BB80;
+	Tue, 12 May 2026 18:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqMK5buz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjlj+aOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578EF3955DC;
-	Tue, 12 May 2026 17:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738333EDE4A;
+	Tue, 12 May 2026 18:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608219; cv=none; b=emKG5vSe36alPU9tuywHLylK5cKZ1VQPpRRJwIcrqIsLJMnyqfPffk5d+Mm6dPzIRI7ZICZ+wxTL3WeC4CpKDIFTm29yG92SR9SpsqsXo3BNUzhxDsCDWD/dJCKgoWBOKz/NG7rVF1W9yMVV6zm4TThzdc25q+e7wcYECqczOqE=
+	t=1778608907; cv=none; b=A+1wQrqvAfcfPaYqpHqydctHBj2ZHNG15kDYGLMoBRtxDvhI+VFY0Ua6IHzF0AnoyD25qN804gBRlJJYxmqYW7HswrpgbBULFow3fR81xGvHiwp8QlOQF7k+F1P0rKuFZ7OJbSb1D/OcsrYNrbu1MZ39kj6ddUriVWtampIK5AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608219; c=relaxed/simple;
-	bh=T8oYLA9FrMb/tNG06yJbRKJZYchUXSGKPAG80Piyz1I=;
+	s=arc-20240116; t=1778608907; c=relaxed/simple;
+	bh=R1TT+KQQLG3oszjvNuhYu0MSylmboVcl7JcriNrxNdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKleYbQ98ncU/RYONKr+20nwccdGhhV8XSHfA4KItfjsvEXa92i/nakyfqhJoqZPr8C1SijLzECzxoIGY/R3sXVxdaEXasOjr500pUtG5+660oABaBgKd4wegrF7hixk5A3HN3jlymr3unPeB91ZYT8JCYPNtpLVUlAqi8/rlWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqMK5buz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28C5C2BCB0;
-	Tue, 12 May 2026 17:50:18 +0000 (UTC)
+	 MIME-Version; b=giaYtWqL/1V6fQCHraePue5ULKdb42i4KaqzwFRZnt3WU4UX25WBZjgywW/DxHlvAzT+8UYoxVAbJrFYhJkTfNo8Tk44sdhPC4AImgqbwZq2zbcRoAXCyyYayQwNZZDZtcdQpqFImOss1BK2Q/bwDI2kkVO/FtSrhgL6K/S6wfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjlj+aOV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8DDC2BCB0;
+	Tue, 12 May 2026 18:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608219;
-	bh=T8oYLA9FrMb/tNG06yJbRKJZYchUXSGKPAG80Piyz1I=;
+	s=korg; t=1778608907;
+	bh=R1TT+KQQLG3oszjvNuhYu0MSylmboVcl7JcriNrxNdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqMK5buzgM/ovrPUK92+7wy3peT2wSxygEOrne1wJR7xH+j7tRypzyHoACUY+4qq/
-	 ccoQWEPz7OZpmtMleORvO5/YJUnrJuppbVz51751QYMzmbYU81UhvmDAZKUQh3Woqm
-	 ddRJA8PShpN7hJ3c+h5adrHTFc4p5JwafPdFdUqQ=
+	b=xjlj+aOV0zO9EwHsOT5dbmfICfKAOQKivy7c2O8FweEk6YQEU8rkbLnUyBkCkfZeC
+	 3NQh/0+90cIVB0iLV24E2QGLvGeZ+0r7EGfsc/cMN/SMPhtT4Sy5+IyHkYKw4iLNXd
+	 8TwgoC9sTCvuWDx8kmYEKGYy6N1gQkDNETovcbPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 158/206] selftests: mptcp: pm: restrict unknown check to pm_nl_ctl
-Date: Tue, 12 May 2026 19:40:10 +0200
-Message-ID: <20260512173936.208753916@linuxfoundation.org>
+Subject: [PATCH 6.18 210/270] mptcp: use MPTCP_RST_EMPTCP for ACK HMAC validation failure
+Date: Tue, 12 May 2026 19:40:11 +0200
+Message-ID: <20260512173942.868517331@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 23CD45269F8
+X-Rspamd-Queue-Id: 1E11D527804
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246046-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246314-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,56 +91,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpiricsoftware.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-commit 53705ddfa18408f8e1f064331b6387509fa19f7f upstream.
+commit a6da02d4c00fdda2417e42ad2b762a9209e6cc49 upstream.
 
-When pm_netlink.sh is executed with '-i', 'ip mptcp' is used instead of
-'pm_nl_ctl'. IPRoute2 doesn't support the 'unknown' flag, which has only
-been added to 'pm_nl_ctl' for this specific check: to ensure that the
-kernel ignores such unsupported flag.
+When HMAC validation fails on a received ACK + MP_JOIN in
+subflow_syn_recv_sock(), the subflow is reset with reason
+MPTCP_RST_EPROHIBIT ("Administratively prohibited"). This is
+incorrect: HMAC validation failure is an MPTCP protocol-level
+error, not an administrative policy denial.
 
-No reason to add this flag to 'ip mptcp'. Then, this check should be
-skipped when 'ip mptcp' is used.
+The mirror site on the client, in subflow_finish_connect(), already
+uses MPTCP_RST_EMPTCP ("MPTCP-specific error") for the same kind of
+HMAC failure on the SYN/ACK + MP_JOIN. Use the same reason on the
+server side for symmetry and accuracy.
 
-Fixes: 0cef6fcac24d ("selftests: mptcp: ip_mptcp option for more scripts")
+Suggested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 443041deb5ef ("mptcp: fix NULL pointer in can_accept_new_subflow")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-11-fca8091060a4@kernel.org
+Link: https://patch.msgid.link/20260501-net-mptcp-misc-fixes-7-1-rc3-v1-2-b70118df778e@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/mptcp/subflow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -193,9 +193,13 @@ check "show_endpoints" \
- flush_endpoint
- check "show_endpoints" "" "flush addrs"
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -907,7 +907,7 @@ create_child:
  
--add_endpoint 10.0.1.1 flags unknown
--check "show_endpoints" "$(format_endpoints "1,10.0.1.1")" "ignore unknown flags"
--flush_endpoint
-+# "unknown" flag is only supported by pm_nl_ctl
-+if ! mptcp_lib_is_ip_mptcp; then
-+	add_endpoint 10.0.1.1 flags unknown
-+	check "show_endpoints" "$(format_endpoints "1,10.0.1.1")" \
-+	      "ignore unknown flags"
-+	flush_endpoint
-+fi
+ 			if (!subflow_hmac_valid(subflow_req, &mp_opt)) {
+ 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
+-				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
++				subflow_add_reset_reason(skb, MPTCP_RST_EMPTCP);
+ 				goto dispose_child;
+ 			}
  
- set_limits 9 1 2>/dev/null
- check "get_limits" "${default_limits}" "rcv addrs above hard limit"
 
 
 
