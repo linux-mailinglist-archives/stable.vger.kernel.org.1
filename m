@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-245979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKr2NTVpA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-245979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:53:57 +0200
+	id UPb5HoVvA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BF0526443
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:53:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277065275FC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 20B833122839
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB0AD3170276
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F0C3E9C3A;
-	Tue, 12 May 2026 17:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEDF3EDE43;
+	Tue, 12 May 2026 17:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2B535dMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iv3AxiAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B053E9C2D;
-	Tue, 12 May 2026 17:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF5D3EDE49;
+	Tue, 12 May 2026 17:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608045; cv=none; b=MzQpTpodanW6+lkdH3t/ihWsYq7Y9cN5cncKDm+Lip+cs6Tv2gh7W2ld5A6ljZ8wG+N+bSBBomo5O6YLJfaio5yLfLqxFnUHAIi81RUfQwDYwie/g/3QXSsVnGiVI8xgKM3jcoJq4uWMrqrZUdaVxghcHAn5NQKZyx9k+1DObDM=
+	t=1778608711; cv=none; b=Ewv3YR/jBBTosLtuZcOcsI80QfT6+R6rraCXSYoy+NV8USN29YEmVus8NStwajBWZxF6dqIk6BKEdTxmfcrO7yuw/lsoVp7yPZKCsvUGM9Rb2lLAvnws7lPJWD9ZX2JKD3UMHinstdTpARrecVLJkEXRx/y5RxE89Mcq1YVx09E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608045; c=relaxed/simple;
-	bh=JmKbMO010C53vdcGDZS9AYbIxBVOdoiN4Wijl4ahHmA=;
+	s=arc-20240116; t=1778608711; c=relaxed/simple;
+	bh=UMoi2F4ogsC26P/EupL2QINGkoazul/nZiGye03LqnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mU/y5XZiqoNWCNYrxwAYPMxfdqgJniDlWEpY/xRV4LhF7Un9fA18tL/Ul7AxKrygTY3ebZSovYa+QeZQEzGIGNiw287/9fmmutF/0mvoOPc4HWsgG67j0B5ZUksDwGbjFGicsAmmtuM1ufKApHc6Or+opaJa5ZDSKl3jhbI0/WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2B535dMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8B0C4AF17;
-	Tue, 12 May 2026 17:47:24 +0000 (UTC)
+	 MIME-Version; b=SHCbQWSrm2XQoH+L2SN+M2geMfelIqGrnDBWgrc4fRznHdEI+DhbwQ9HhqevVMUw0GoRyMjr4nwGcZ/K8b1dNDnDBkC1aOns9Tum/L7Q6TnnLkvT2jPz59XWH1WgbTNcYD2ek5hifof/fs8Qah09luFtc2xJVVGvDU5GUC2Z3x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iv3AxiAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB59FC2BCB0;
+	Tue, 12 May 2026 17:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608045;
-	bh=JmKbMO010C53vdcGDZS9AYbIxBVOdoiN4Wijl4ahHmA=;
+	s=korg; t=1778608711;
+	bh=UMoi2F4ogsC26P/EupL2QINGkoazul/nZiGye03LqnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2B535dMFMZbDVxiwGT8DiimvZEXhRtGTrQGekKalRArdTNdpd2FtlgBX6dAy2miHd
-	 r4eqEoEHK8LQp8M3KH1a7mQjWSi1xGXPBSXFQ8DOjVhrhlF9ZTM6mmybPEoNkU9Am8
-	 Wod9JVETCH1MYUIc6A4QiKym+nHrJU2H8ZU+NTCc=
+	b=Iv3AxiAVq6sSPbLBTMPFWKxOX7TFFaKC45tas7kcL+DNTsbb0JYV0779S9ApkjMmz
+	 CFWaZmB0ymOFvhHaidbM/rfs8081PD8kdswvzbDE/+p7ShC6BNDULtfhjbciFX6Pxj
+	 KDkIxAzH4GF0dMSuChJgXg5HBNguKKQla+797Sf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 133/206] pmdomain: core: Fix detach procedure for virtual devices in genpd
-Date: Tue, 12 May 2026 19:39:45 +0200
-Message-ID: <20260512173935.674798322@linuxfoundation.org>
+	Bernd Schumacher <bernd@bschu.de>,
+	"Alexandre N." <an.tech@mailo.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.18 185/270] PCI: Update saved_config_space upon resource assignment
+Date: Tue, 12 May 2026 19:39:46 +0200
+Message-ID: <20260512173942.342989601@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +65,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 46BF0526443
+X-Rspamd-Queue-Id: 277065275FC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245979-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246237-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-m68k.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailo.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 26735dfdd8930d9ef1fa92e590a9bf77726efdf6 upstream.
+commit 909f7bf9b080c10df3c3b38533906dbf09ff1d8b upstream.
 
-If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
-genpd calls pm_runtime_enable() for the corresponding virtual device that
-it registers. While this avoids boilerplate code in drivers, there is no
-corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
+Bernd reports passthrough failure of a Digital Devices Cine S2 V6 DVB
+adapter plugged into an ASRock X570S PG Riptide board with BIOS version
+P5.41 (09/07/2023):
 
-This means these virtual devices are typically detached from its genpd,
-while runtime PM remains enabled for them, which is not how things are
-designed to work. In worst cases it may lead to critical errors, like a
-NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
-reported. For another case, we may end up keeping an unnecessary vote for a
-performance state for the device.
+  ddbridge 0000:05:00.0: detected Digital Devices Cine S2 V6 DVB adapter
+  ddbridge 0000:05:00.0: cannot read registers
+  ddbridge 0000:05:00.0: fail
 
-To fix these problems, let's add this missing call to pm_runtime_disable()
-in genpd_dev_pm_detach().
+BIOS assigns an incorrect BAR to the DVB adapter which doesn't fit into the
+upstream bridge window.  The kernel corrects the BAR assignment:
 
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
-Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
-Cc: stable@vger.kernel.org
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+  pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]: can't claim; no compatible bridge window
+  pci 0000:07:00.0: BAR 0 [mem 0xfc500000-0xfc50ffff 64bit]: assigned
+
+Correction of the BAR assignment happens in an x86-specific fs_initcall,
+pcibios_assign_resources(), after device enumeration in a subsys_initcall.
+This order was introduced at the behest of Linus in 2004:
+
+  https://git.kernel.org/tglx/history/c/a06a30144bbc
+
+No other architecture performs such a late BAR correction.
+
+Bernd bisected the issue to commit a2f1e22390ac ("PCI/ERR: Ensure error
+recoverability at all times"), but it only occurs in the absence of commit
+4d4c10f763d7 ("PCI: Explicitly put devices into D0 when initializing").
+This combination exists in stable kernel v6.12.70, but not in mainline,
+hence Bernd cannot reproduce the issue with mainline.
+
+Since a2f1e22390ac, config space is saved on enumeration, prior to BAR
+correction.  Upon passthrough, the corrected BAR is overwritten with the
+incorrect saved value by:
+
+  vfio_pci_core_register_device()
+    vfio_pci_set_power_state()
+      pci_restore_state()
+
+But only if the device's current_state is PCI_UNKNOWN, as it was prior to
+commit 4d4c10f763d7.  Since the commit, it is PCI_D0, which changes the
+behavior of vfio_pci_set_power_state() to no longer restore the state
+without saving it first.
+
+Alexandre is reporting the same issue as Bernd, but in his case, mainline
+is affected as well.  The difference is that on Alexandre's system, the
+host kernel binds a driver to the device which is unbound prior to
+passthrough, whereas on Bernd's system no driver gets bound by the host
+kernel.
+
+Unbinding sets current_state to PCI_UNKNOWN in pci_device_remove(), so when
+vfio-pci is subsequently bound to the device, pci_restore_state() is once
+again called without invoking pci_save_state() first.
+
+To robustly fix the issue, always update saved_config_space upon resource
+assignment.
+
+Reported-by: Bernd Schumacher <bernd@bschu.de>
+Closes: https://lore.kernel.org/r/acfZrlP0Ua_5D3U4@eldamar.lan/
+Reported-by: Alexandre N. <an.tech@mailo.com>
+Closes: https://lore.kernel.org/r/dd3c3358-de0f-4a56-9c81-04aceaab4058@mailo.com/
+Fixes: a2f1e22390ac ("PCI/ERR: Ensure error recoverability at all times")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Bernd Schumacher <bernd@bschu.de>
+Tested-by: Alexandre N. <an.tech@mailo.com>
+Cc: stable@vger.kernel.org # v6.12+
+Link: https://patch.msgid.link/febc3f354e0c1f5a9f5b3ee9ffddaa44caccf651.1776268054.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/core.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/pci/setup-res.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -2900,6 +2900,7 @@ static const struct bus_type genpd_bus_t
- static void genpd_dev_pm_detach(struct device *dev, bool power_off)
- {
- 	struct generic_pm_domain *pd;
-+	bool is_virt_dev;
- 	unsigned int i;
- 	int ret = 0;
+--- a/drivers/pci/setup-res.c
++++ b/drivers/pci/setup-res.c
+@@ -102,6 +102,7 @@ static void pci_std_update_resource(stru
+ 	}
  
-@@ -2909,6 +2910,13 @@ static void genpd_dev_pm_detach(struct d
+ 	pci_write_config_dword(dev, reg, new);
++	dev->saved_config_space[reg / 4] = new;
+ 	pci_read_config_dword(dev, reg, &check);
  
- 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
- 
-+	/* Check if the device was created by genpd at attach. */
-+	is_virt_dev = dev->bus == &genpd_bus_type;
-+
-+	/* Disable runtime PM if we enabled it at attach. */
-+	if (is_virt_dev)
-+		pm_runtime_disable(dev);
-+
- 	/* Drop the default performance state */
- 	if (dev_gpd_data(dev)->default_pstate) {
- 		dev_pm_genpd_set_performance_state(dev, 0);
-@@ -2934,7 +2942,7 @@ static void genpd_dev_pm_detach(struct d
- 	genpd_queue_power_off_work(pd);
- 
- 	/* Unregister the device if it was created by genpd. */
--	if (dev->bus == &genpd_bus_type)
-+	if (is_virt_dev)
- 		device_unregister(dev);
- }
- 
+ 	if ((new ^ check) & mask) {
+@@ -112,6 +113,7 @@ static void pci_std_update_resource(stru
+ 	if (res->flags & IORESOURCE_MEM_64) {
+ 		new = region.start >> 16 >> 16;
+ 		pci_write_config_dword(dev, reg + 4, new);
++		dev->saved_config_space[(reg + 4) / 4] = new;
+ 		pci_read_config_dword(dev, reg + 4, &check);
+ 		if (check != new) {
+ 			pci_err(dev, "%s: error updating (high %#010x != %#010x)\n",
 
 
 
