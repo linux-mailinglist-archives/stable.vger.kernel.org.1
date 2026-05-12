@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM2TCLJtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:06 +0200
+	id +C87OFZ1A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9B052709E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEDD52814E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08C693104280
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2645431A0591
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C437D34B410;
-	Tue, 12 May 2026 18:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65AE368972;
+	Tue, 12 May 2026 18:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLvqwAA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQLAiwjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883B93EDE57;
-	Tue, 12 May 2026 18:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA977343D9D;
+	Tue, 12 May 2026 18:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608920; cv=none; b=MMCF1VBNxPj96J5O/xerUIJBESadBr5UZ0ax6qjXuZ+w9600BTqgYFcDikBZvppcxMS8GN5TrYdlaa70GRjFaA6nwIT2BRu8dxLHViEmyJR4vMjcJtEGT8kLkk4eTwzPZC56QOkW07XmErmUY7fp2cc3UJFo/ZprkcqSZVRU6Ew=
+	t=1778609638; cv=none; b=q9d+QZGfnYjLc095IBfLMtdtvIStWlQ8aldjCNgh0uhlpTuV3KiUJ80JBtxmU26Bq2Ceisr8Ynpw044y/1VSOOp/3STAhywLvU5WQ7LARLnOaabTmVLIT6WrpNgqswki7/EKAv3g85Rvym8Ta6v8Nq1a1Agt+EdGIP3dnpWp4Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608920; c=relaxed/simple;
-	bh=vBgdxi8Bk0X9uOkFSzLE/Po1Q0OvQSTs03bf8aMonrY=;
+	s=arc-20240116; t=1778609638; c=relaxed/simple;
+	bh=TQaTBELHloQ+MRjeW5Z+0IdXmFBrXw55nl1iTGNSVVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kpfm7/aryP3aSfyekZ2cDKUwU02lQQf0kutmayTNCJrU4QongdcaiSZrMtU6XaQ9DkfWM76joRdtZANIuYyV/9gQuo51NqTZLA+PolZfMZQksMx2NQ4fn3Q3yYx6flOmWXQfOp/18OISRZ8+OfabnmP6TC4MWpUEwiO/YzsFmEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLvqwAA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75E7C2BCB0;
-	Tue, 12 May 2026 18:01:59 +0000 (UTC)
+	 MIME-Version; b=O0GjFP0Iq+GcXsF3RRYPwt370qKVttNzvBmh7av5n9w+wgNutjkqHD/zmUsywKkyZ6ED8MKYNseFG2Nw5CawXH9mEWn9Zn6FvtZ5DMTCUORCMqloWbQwB1rcWAdMm3DbIMfPQrkgkF1LulIxrwjRCcMbXjdqDugGJoan0w2xOZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQLAiwjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A9AC2BCB0;
+	Tue, 12 May 2026 18:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608920;
-	bh=vBgdxi8Bk0X9uOkFSzLE/Po1Q0OvQSTs03bf8aMonrY=;
+	s=korg; t=1778609638;
+	bh=TQaTBELHloQ+MRjeW5Z+0IdXmFBrXw55nl1iTGNSVVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLvqwAA/w3lOx+QCtVbzWV079gQlD9/THE3wTIsyAHEj3WV/o8v5TOEsUVWoqTZ75
-	 E36RXaWi4qLLa4b5g7E1BwfBGEs21LPXV5JEqW1pBtTKNNkv/gYGZHkKXRodchUMrH
-	 mqK87Wn17znR1OUPgJ42FWf0DV4TnYNrPnHvKcFk=
+	b=kQLAiwjO+GrekjJQm++jkBSfeULPlufbWG/v1To0RpFa/E+xlbYQhgBOHohxiX7ou
+	 Eb2E82x6H4v5MlzJCgjFnY/IDEPo7wHttnZVR8rsJABV5rWIwLEt5Uqkadr3KENGma
+	 Gwt+154AKDwfArWE0E7cKgH8p5vrtTlEIPsMq010=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 267/270] net: stmmac: rename STMMAC_GET_ENTRY() -> STMMAC_NEXT_ENTRY()
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 7.0 273/307] f2fs: fix node_cnt race between extent node destroy and writeback
 Date: Tue, 12 May 2026 19:41:08 +0200
-Message-ID: <20260512173944.070837881@linuxfoundation.org>
+Message-ID: <20260512173945.887070052@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,214 +64,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7E9B052709E
+X-Rspamd-Queue-Id: 8FEDD52814E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246319-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246599-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,armlinux.org.uk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xiaomi.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-[ Upstream commit 6b4286e0550814cdc4b897f881ec1fa8b0313227 ]
+commit ed78aeebef05212ef7dca93bd931e4eff67c113f upstream.
 
-STMMAC_GET_ENTRY() doesn't describe what this macro is doing - it is
-incrementing the provided index for the circular array of descriptors.
-Replace "GET" with "NEXT" as this better describes the action here.
+f2fs_destroy_extent_node() does not set FI_NO_EXTENT before clearing
+extent nodes. When called from f2fs_drop_inode() with I_SYNC set,
+concurrent kworker writeback can insert new extent nodes into the same
+extent tree, racing with the destroy and triggering f2fs_bug_on() in
+__destroy_extent_node(). The scenario is as follows:
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/E1w2vba-0000000DbWo-1oL5@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 0bb05e6adfa9 ("net: stmmac: Prevent NULL deref when RX memory exhausted")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+drop inode                            writeback
+ - iput
+  - f2fs_drop_inode  // I_SYNC set
+   - f2fs_destroy_extent_node
+    - __destroy_extent_node
+     - while (node_cnt) {
+        write_lock(&et->lock)
+        __free_extent_tree
+        write_unlock(&et->lock)
+                                       - __writeback_single_inode
+                                        - f2fs_outplace_write_data
+                                         - f2fs_update_read_extent_cache
+                                          - __update_extent_tree_range
+                                           // FI_NO_EXTENT not set,
+                                           // insert new extent node
+       } // node_cnt == 0, exit while
+     - f2fs_bug_on(node_cnt)  // node_cnt > 0
+
+Additionally, __update_extent_tree_range() only checks FI_NO_EXTENT for
+EX_READ type, leaving EX_BLOCK_AGE updates completely unprotected.
+
+This patch set FI_NO_EXTENT under et->lock in __destroy_extent_node(),
+consistent with other callers (__update_extent_tree_range and
+__drop_extent_tree) and check FI_NO_EXTENT for both EX_READ and
+EX_BLOCK_AGE tree.
+
+Fixes: 3fc5d5a182f6 ("f2fs: fix to shrink read extent node in batches")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/chain_mode.c  |    2 -
- drivers/net/ethernet/stmicro/stmmac/common.h      |    2 -
- drivers/net/ethernet/stmicro/stmmac/ring_mode.c   |    2 -
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   26 +++++++++++-----------
- 4 files changed, 16 insertions(+), 16 deletions(-)
+ fs/f2fs/extent_cache.c |   17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-@@ -47,7 +47,7 @@ static int jumbo_frm(struct stmmac_tx_qu
- 
- 	while (len != 0) {
- 		tx_q->tx_skbuff[entry] = NULL;
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 		desc = tx_q->dma_tx + entry;
- 
- 		if (len > bmax) {
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -60,7 +60,7 @@ static inline bool dwmac_is_xmac(enum dw
- #define DMA_MIN_RX_SIZE		64
- #define DMA_MAX_RX_SIZE		1024
- #define DMA_DEFAULT_RX_SIZE	512
--#define STMMAC_GET_ENTRY(x, size)	((x + 1) & (size - 1))
-+#define STMMAC_NEXT_ENTRY(x, size)	((x + 1) & (size - 1))
- 
- #undef FRAME_FILTER_DEBUG
- /* #define FRAME_FILTER_DEBUG */
---- a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
-@@ -51,7 +51,7 @@ static int jumbo_frm(struct stmmac_tx_qu
- 		stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum,
- 				STMMAC_RING_MODE, 0, false, skb->len);
- 		tx_q->tx_skbuff[entry] = NULL;
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 
- 		if (priv->extend_desc)
- 			desc = (struct dma_desc *)(tx_q->dma_etx + entry);
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2609,7 +2609,7 @@ static bool stmmac_xdp_xmit_zc(struct st
- 		xsk_tx_metadata_to_compl(meta,
- 					 &tx_q->tx_skbuff_dma[entry].xsk_meta);
- 
--		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
-+		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
- 		entry = tx_q->cur_tx;
- 	}
- 	u64_stats_update_begin(&txq_stats->napi_syncp);
-@@ -2780,7 +2780,7 @@ static int stmmac_tx_clean(struct stmmac
- 
- 		stmmac_release_tx_desc(priv, p, priv->mode);
- 
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 	}
- 	tx_q->dirty_tx = entry;
- 
-@@ -4079,7 +4079,7 @@ static bool stmmac_vlan_insert(struct st
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -119,9 +119,10 @@ static bool __may_extent_tree(struct ino
+ 	if (!__init_may_extent_tree(inode, type))
  		return false;
  
- 	stmmac_set_tx_owner(priv, p);
--	tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
-+	tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
- 	return true;
- }
++	if (is_inode_flag_set(inode, FI_NO_EXTENT))
++		return false;
++
+ 	if (type == EX_READ) {
+-		if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-			return false;
+ 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+ 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
+ 			return false;
+@@ -644,6 +645,8 @@ static unsigned int __destroy_extent_nod
  
-@@ -4107,7 +4107,7 @@ static void stmmac_tso_allocator(struct
- 	while (tmp_len > 0) {
- 		dma_addr_t curr_addr;
- 
--		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx,
-+		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
- 						priv->dma_conf.dma_tx_size);
- 		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
- 
-@@ -4258,7 +4258,7 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 
- 		stmmac_set_mss(priv, mss_desc, mss);
- 		tx_q->mss = mss;
--		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx,
-+		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
- 						priv->dma_conf.dma_tx_size);
- 		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
+ 	while (atomic_read(&et->node_cnt)) {
+ 		write_lock(&et->lock);
++		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
++			set_inode_flag(inode, FI_NO_EXTENT);
+ 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
+ 		write_unlock(&et->lock);
  	}
-@@ -4362,7 +4362,7 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 	 * ndo_start_xmit will fill this descriptor the next time it's
- 	 * called and stmmac_tx_clean may clean up to this descriptor.
- 	 */
--	tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
-+	tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
+@@ -688,12 +691,12 @@ static void __update_extent_tree_range(s
  
- 	if (unlikely(stmmac_tx_avail(priv, queue) <= (MAX_SKB_FRAGS + 1))) {
- 		netif_dbg(priv, hw, priv->dev, "%s: stop transmitted packets\n",
-@@ -4566,7 +4566,7 @@ static netdev_tx_t stmmac_xmit(struct sk
- 		int len = skb_frag_size(frag);
- 		bool last_segment = (i == (nfrags - 1));
+ 	write_lock(&et->lock);
  
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 		WARN_ON(tx_q->tx_skbuff[entry]);
+-	if (type == EX_READ) {
+-		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+-			write_unlock(&et->lock);
+-			return;
+-		}
++	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
++		write_unlock(&et->lock);
++		return;
++	}
  
- 		if (likely(priv->extend_desc))
-@@ -4636,7 +4636,7 @@ static netdev_tx_t stmmac_xmit(struct sk
- 	 * ndo_start_xmit will fill this descriptor the next time it's
- 	 * called and stmmac_tx_clean may clean up to this descriptor.
- 	 */
--	entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+	entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 	tx_q->cur_tx = entry;
- 
- 	if (netif_msg_pktdata(priv)) {
-@@ -4805,7 +4805,7 @@ static inline void stmmac_rx_refill(stru
- 		dma_wmb();
- 		stmmac_set_rx_owner(priv, p, use_rx_wd);
- 
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_rx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_rx_size);
- 	}
- 	rx_q->dirty_rx = entry;
- 	rx_q->rx_tail_addr = rx_q->dma_rx_phy +
-@@ -4953,7 +4953,7 @@ static int stmmac_xdp_xmit_xdpf(struct s
- 
- 	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
- 
--	entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+	entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 	tx_q->cur_tx = entry;
- 
- 	return STMMAC_XDP_TX;
-@@ -5187,7 +5187,7 @@ static bool stmmac_rx_refill_zc(struct s
- 		dma_wmb();
- 		stmmac_set_rx_owner(priv, rx_desc, use_rx_wd);
- 
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_rx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_rx_size);
- 	}
- 
- 	if (rx_desc) {
-@@ -5282,7 +5282,7 @@ read_again:
- 			break;
- 
- 		/* Prefetch the next RX descriptor */
--		rx_q->cur_rx = STMMAC_GET_ENTRY(rx_q->cur_rx,
-+		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
- 						priv->dma_conf.dma_rx_size);
- 		next_entry = rx_q->cur_rx;
- 
-@@ -5478,7 +5478,7 @@ read_again:
- 		if (unlikely(status & dma_own))
- 			break;
- 
--		rx_q->cur_rx = STMMAC_GET_ENTRY(rx_q->cur_rx,
-+		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
- 						priv->dma_conf.dma_rx_size);
- 		next_entry = rx_q->cur_rx;
++	if (type == EX_READ) {
+ 		prev = et->largest;
+ 		dei.len = 0;
  
 
 
