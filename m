@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-246199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eETYH3BqA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:12 +0200
+	id oNySHZ5oA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECE45266E5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F231E526380
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 73C063055255
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1CEB3045DEC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5F63EDE79;
-	Tue, 12 May 2026 17:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339C23ADB9A;
+	Tue, 12 May 2026 17:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPwI047J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPI9/XLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB063EDE65;
-	Tue, 12 May 2026 17:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE7621FF21;
+	Tue, 12 May 2026 17:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608613; cv=none; b=aow5V04RFkbSEYCSowhAdhSllBgC5f4DDo6qcN8KfkgDGDY0dYwK5ugCDAGqCeInDsT/tKIxcQHzCzsMouFDWeNbhkbkGLqjqR0CJ6jtFy/aXfzC6zkiJTFSfNwYjcrEGL8xxMzqfN3nCurR1Gn1bDxSwanK/zpSwoi4hjjeMxU=
+	t=1778607947; cv=none; b=s1+kB3vg6pKe+pySXXeXIxk5xgbP1iTzEskiAGe8GvrWjbQEszS/KHqaEmq1Ev03tf8+34GFtYGFgpBWJuu2PZzdLc+8FrwOUeHvhQQGLSd4TrTNoPBhaEaXvnnnI1T0AOzl6E/tKESyRJDw4kPSbyooaoplFx1QINYmtBNThTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608613; c=relaxed/simple;
-	bh=dG8dkAVtKaKlzjQX2hpBSns8tV4IiUHrEfdbtNJ0IPk=;
+	s=arc-20240116; t=1778607947; c=relaxed/simple;
+	bh=N+ylIJGOKtLY2Fhr7OqgzZI3iMvnn3K1Oqby2wy35UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GT333hv9JvTH/qPbVxZ/5+CC3vEpk9M2xUqRYDNNHzqYREzodgWQt71t+5a2qdlHkw5PvIEDN0h78P8x565bjlKgu3gLj2GGyN2EyYfCHdPYgei6krX4+WoKSgzTndkCDBB6ZsltUbXQgUxlu2EuYXKd76JzjduRBH+SGBO4dnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPwI047J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F6CC2BCB0;
-	Tue, 12 May 2026 17:56:53 +0000 (UTC)
+	 MIME-Version; b=RiPqTlwFxlDeQCWbfG7pRjeazGSg6x5LXjqk8K6Nzri0i8hML0f1+2TMlyN8TuO6/y40nFGAfo0+c//q9cy6haQ0QB+VDbCnqxK2a9jqh+ovhy1RuPoitO/wkXEosA/a7pCGrnU+q5Pw8I5qbKLVRN9egh0T1i/qcl75qrlYTws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPI9/XLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BB5C2BCB0;
+	Tue, 12 May 2026 17:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608613;
-	bh=dG8dkAVtKaKlzjQX2hpBSns8tV4IiUHrEfdbtNJ0IPk=;
+	s=korg; t=1778607946;
+	bh=N+ylIJGOKtLY2Fhr7OqgzZI3iMvnn3K1Oqby2wy35UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPwI047JXs9KSWvg3UK7QYM/DRgoK91A7bT6QwY2T8WpZlZa85d43urZRVQH/437t
-	 UyZLHI+QmtmC1G3IHgoEiH+z7DFS6h370bxF7IkbPTx1HqeokcON2CKmCar7doTicW
-	 M+ErC8zmWZqJbuhJr+YDDUzlLjtAJuevbONrVx7c=
+	b=pPI9/XLPnlMkBwiSz+u0gTv2rK5lsuXuc+4mcB1JfUHU8/Ue3X6AgNwJZ/SnPZujG
+	 zmPYkrSBojNXvzXe7M5vHzXPfWhQjzdFBp3Ggt8U7xUTeI1ekWeSqUNQa6R/tWo3T3
+	 ECrdqlJzl0/r0klc91SUP+YtnYYOrinDqlxzs4EM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 147/270] ASoC: qcom: q6apm: remove child devices when apm is removed
+	Brian King <bjking1@linux.ibm.com>,
+	Shaik Abdulla <shaik.abdulla1@ibm.com>,
+	Naveed Ahmed <naveedaus@in.ibm.com>,
+	Mingming Cao <mmc@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 096/206] ibmveth: Disable GSO for packets with small MSS
 Date: Tue, 12 May 2026 19:39:08 +0200
-Message-ID: <20260512173941.543158921@linuxfoundation.org>
+Message-ID: <20260512173934.890433142@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +66,135 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5ECE45266E5
+X-Rspamd-Queue-Id: F231E526380
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245940-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246199-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Mingming Cao <mmc@linux.ibm.com>
 
-commit 4a0e1bcc98f7281d1605768bd2fe71eacc34f9b7 upstream.
+commit cc427d24ac6442ffdeafd157a63c7c5b73ed4de4 upstream.
 
-looks like q6apm driver does not remove the child driver q6apm-dai and
-q6apm-bedais when the this driver is removed.
+Some physical adapters on Power systems do not support segmentation
+offload when the MSS is less than 224 bytes. Attempting to send such
+packets causes the adapter to freeze, stopping all traffic until
+manually reset.
 
-Fix this by depopulating them in remove callback.
+Implement ndo_features_check to disable GSO for packets with small MSS
+values. The network stack will perform software segmentation instead.
 
-With this change when the dsp is shutdown all the devices associated with
-q6apm will now be removed.
+The 224-byte minimum matches ibmvnic
+commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
+on GSO packets")
+which uses the same physical adapters in SEA configurations.
 
-Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260402081118.348071-3-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The issue occurs specifically when the hardware attempts to perform
+segmentation (gso_segs > 1) with a small MSS. Single-segment GSO packets
+(gso_segs == 1) do not trigger the problematic LSO code path and are
+transmitted normally without segmentation.
+
+Add an ndo_features_check callback to disable GSO when MSS < 224 bytes.
+Also call vlan_features_check() to ensure proper handling of VLAN packets,
+particularly QinQ (802.1ad) configurations where the hardware parser may
+not support certain offload features.
+
+Validated using iptables to force small MSS values. Without the fix,
+the adapter freezes. With the fix, packets are segmented in software
+and transmission succeeds. Comprehensive regression testing completedd
+(MSS tests, performance, stability).
+
+Fixes: 8641dd85799f ("ibmveth: Add support for TSO")
+Cc: stable@vger.kernel.org
+Reviewed-by: Brian King <bjking1@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+Link: https://patch.msgid.link/20260424162917.65725-1-mmc@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ibm/ibmveth.c |   22 ++++++++++++++++++++++
+ drivers/net/ethernet/ibm/ibmveth.h |    1 +
+ 2 files changed, 23 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6apm.c
-+++ b/sound/soc/qcom/qdsp6/q6apm.c
-@@ -784,6 +784,7 @@ static int apm_probe(gpr_device_t *gdev)
- 
- static void apm_remove(gpr_device_t *gdev)
- {
-+	of_platform_depopulate(&gdev->dev);
- 	snd_soc_unregister_component(&gdev->dev);
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1608,6 +1608,27 @@ static int ibmveth_set_mac_addr(struct n
+ 	return 0;
  }
  
++static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
++						struct net_device *dev,
++						netdev_features_t features)
++{
++	/* Some physical adapters do not support segmentation offload with
++	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
++	 * Note: Single-segment packets (gso_segs == 1) don't need this check
++	 * as they bypass the LSO path and are transmitted without segmentation.
++	 */
++	if (skb_is_gso(skb)) {
++		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
++			netdev_warn_once(dev,
++					 "MSS %u too small for LSO, disabling GSO\n",
++					 skb_shinfo(skb)->gso_size);
++			features &= ~NETIF_F_GSO_MASK;
++		}
++	}
++
++	return vlan_features_check(skb, features);
++}
++
+ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_open		= ibmveth_open,
+ 	.ndo_stop		= ibmveth_close,
+@@ -1619,6 +1640,7 @@ static const struct net_device_ops ibmve
+ 	.ndo_set_features	= ibmveth_set_features,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
++	.ndo_features_check	= ibmveth_features_check,
+ #ifdef CONFIG_NET_POLL_CONTROLLER
+ 	.ndo_poll_controller	= ibmveth_poll_controller,
+ #endif
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -36,6 +36,7 @@
+ #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
+ #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
+ 
++#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
+ /* hcall macros */
+ #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
+   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
 
 
 
