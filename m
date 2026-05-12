@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WN7EDk1xA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:29 +0200
+	id QGruNBNrA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94ECF527994
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C63A5268D8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D9C432C4C03
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C44B3096216
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DC5284883;
-	Tue, 12 May 2026 18:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394513E5A23;
+	Tue, 12 May 2026 17:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWpwfBJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcAJPBua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1182E366831;
-	Tue, 12 May 2026 18:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09363E5A1C;
+	Tue, 12 May 2026 17:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609533; cv=none; b=YKdfZBOD2DvzZ+xIRUwW7zAs8xTiQDDHuUmhrzIsD8kir3Z3Lrq23abZJYhMM/a+qOxfoXVB8PIDbbOeuVUiMTPFvkEV0rnHdm74rvSn2QW83T778UB9S6poanq/mq20mMNq6gmuA9xwnM0NYZFKY+81rGtnZ0zSzSSnBb35+B0=
+	t=1778608150; cv=none; b=rd/7lfooE17ZsLUVBtoLF4jXo+YlVmibBaMWjQJemaagkCnvlakmXQSEXWWb34xJkRtfFAvmxytTFQ/HeAPNLP7afyqQTWK2XSbbnksLDSV2DvcbTdny86EkmpuS1tQ9QWy8B5PlGsO3ST51ACJ3uxw7Oe1Ef9yKExN0WArJmq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609533; c=relaxed/simple;
-	bh=NZH3C4qoJh86SpVsUEEq/83wWHOgTyHQjvwnw1KGBgc=;
+	s=arc-20240116; t=1778608150; c=relaxed/simple;
+	bh=QMu6uAw59xK3TdaRgbqHFffwa1nsD2C5KXHCJAKQrDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MysBbQJQQil6SZ7DsgRl7NQuI7L6G3jZDE77SX8LsZ2FJUeS+Zid/tpJ7CAy3M0FsvUa4bRaUjcZ3Y6es7m998HGQqXaeedcWaXtSRR+JpheWoQRs6/ZiLzyLEqXqyMaPdovQ0NCkG7m6o+w2pdMRvlRotLCXKVpnZp7NLaRkuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWpwfBJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D317C2BCC7;
-	Tue, 12 May 2026 18:12:12 +0000 (UTC)
+	 MIME-Version; b=MAsO7kT+rFRMcrybIjKJTmgzR5A/FdsluwvSxp315i6rip4eXi4yNuducOBjpfbLQQ/PPXjqVyGki3jnpRx5XUoLqnuMd+D+wzKrMUQy+EIJgH2F/2hQ4L1j0UHM/xskExde7DUo5p5ip+waf+XQE05O/uaDAKN2T7B9aJ/vH9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcAJPBua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87DAFC2BCB0;
+	Tue, 12 May 2026 17:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609533;
-	bh=NZH3C4qoJh86SpVsUEEq/83wWHOgTyHQjvwnw1KGBgc=;
+	s=korg; t=1778608149;
+	bh=QMu6uAw59xK3TdaRgbqHFffwa1nsD2C5KXHCJAKQrDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWpwfBJ0359Cc80N9POJRgGE1d6VYw/Ps++/pK61Q0j4fJEGFUJ9YY1ZHHwUfWj1L
-	 M3Ec21f+fTtk46tyaWhWG8qB1c5Sl4blxO1CFWjL9KQLr/L3RNHbZZUYD03x9xsWMO
-	 WdcW1A4RhbL6+1ycLD0+8YZICBMYiJXcn9KHw8XI=
+	b=vcAJPBuaPiiKav28+4sNl0fnl7h1ca3jvbrTf4Olhdw1FDB6QzuHn4cLZVZxPeJEU
+	 PvWW+Irc1Oj/EnMo+6AvWuNzBU7oZ2BujyIv1Ccsu728rNYht2vDp6J+PCcM2tiqT8
+	 yyPEum4KUTGWrPFbkqI1xLAoZr3+xWUPdQh/iMW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Aizen <kai.aizen.dev@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 231/307] RDMA/ionic: bound node_desc sysfs read with %.64s
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 174/206] LoongArch: KVM: Fix HW timer interrupt lost when inject interrupt by software
 Date: Tue, 12 May 2026 19:40:26 +0200
-Message-ID: <20260512173944.994826403@linuxfoundation.org>
+Message-ID: <20260512173936.545531255@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 94ECF527994
+X-Rspamd-Queue-Id: 1C63A5268D8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246557-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246019-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Zen <kai.aizen.dev@gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 654a27f25530d052eeedf086e6c3e2d585c203bd upstream.
+commit 2433f3f5724b3af569d9fb411ba728629524738b upstream.
 
-node_desc[64] in struct ib_device is not guaranteed to be NUL-
-terminated. The core IB sysfs handler uses "%.64s" for exactly this
-reason (drivers/infiniband/core/sysfs.c:1307), since node_desc_store()
-performs a raw memcpy of up to IB_DEVICE_NODE_DESC_MAX bytes with no NUL
-termination:
+With passthrough HW timer, timer interrupt is injected by HW. When
+inject emulated CPU interrupt by software such SIP0/SIP1/IPI, HW timer
+interrupt may be lost.
 
-  memcpy(desc.node_desc, buf, min_t(int, count, IB_DEVICE_NODE_DESC_MAX));
+Here check whether there is timer tick value inversion before and after
+injecting emulated CPU interrupt by software, timer enabling by reading
+timer cfg register is skipped. If the timer tick value is detected with
+changing, then timer should be enabled. And inject a timer interrupt by
+software if there is.
 
-If exactly 64 bytes are written via the node_desc sysfs file, the array
-contains no NUL byte. The ionic hca_type_show() handler uses unbounded
-"%s" and will read past the end of node_desc into adjacent fields of
-struct ib_device until it encounters a NUL.
-
-ionic supports IB_DEVICE_MODIFY_NODE_DESC, so this is triggerable by
-userspace.
-
-Match the core handler and bound the format specifier.
-
-Cc: stable@vger.kernel.org
-Fixes: 2075bbe8ef03 ("RDMA/ionic: Register device ops for miscellaneous functionality")
-Link: https://patch.msgid.link/r/CALynFi7NAbhDCt1tdaDbf6TnLvAqbaHa6-Wqf6OkzREbA_PAfg@mail.gmail.com
-Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Fixes: f45ad5b8aa93 ("LoongArch: KVM: Implement vcpu interrupt operations").
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/ionic/ionic_ibdev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kvm/interrupt.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/infiniband/hw/ionic/ionic_ibdev.c
-+++ b/drivers/infiniband/hw/ionic/ionic_ibdev.c
-@@ -185,7 +185,7 @@ static ssize_t hca_type_show(struct devi
- 	struct ionic_ibdev *dev =
- 		rdma_device_to_drv_device(device, struct ionic_ibdev, ibdev);
+--- a/arch/loongarch/kvm/interrupt.c
++++ b/arch/loongarch/kvm/interrupt.c
+@@ -26,6 +26,7 @@ static unsigned int priority_to_irq[EXCC
+ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned int priority)
+ {
+ 	unsigned int irq = 0;
++	unsigned long old, new;
  
--	return sysfs_emit(buf, "%s\n", dev->ibdev.node_desc);
-+	return sysfs_emit(buf, "%s.64\n", dev->ibdev.node_desc);
- }
- static DEVICE_ATTR_RO(hca_type);
+ 	clear_bit(priority, &vcpu->arch.irq_pending);
+ 	if (priority < EXCCODE_INT_NUM)
+@@ -36,7 +37,13 @@ static int kvm_irq_deliver(struct kvm_vc
+ 	case INT_IPI:
+ 	case INT_SWI0:
+ 	case INT_SWI1:
++		old = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
+ 		set_gcsr_estat(irq);
++		new = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
++
++		/* Inject TI if TVAL inverted */
++		if (new > old)
++			set_gcsr_estat(CPU_TIMER);
+ 		break;
  
+ 	case INT_HWI0 ... INT_HWI7:
+@@ -53,6 +60,7 @@ static int kvm_irq_deliver(struct kvm_vc
+ static int kvm_irq_clear(struct kvm_vcpu *vcpu, unsigned int priority)
+ {
+ 	unsigned int irq = 0;
++	unsigned long old, new;
+ 
+ 	clear_bit(priority, &vcpu->arch.irq_clear);
+ 	if (priority < EXCCODE_INT_NUM)
+@@ -63,7 +71,13 @@ static int kvm_irq_clear(struct kvm_vcpu
+ 	case INT_IPI:
+ 	case INT_SWI0:
+ 	case INT_SWI1:
++		old = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
+ 		clear_gcsr_estat(irq);
++		new = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
++
++		/* Inject TI if TVAL inverted */
++		if (new > old)
++			set_gcsr_estat(CPU_TIMER);
+ 		break;
+ 
+ 	case INT_HWI0 ... INT_HWI7:
 
 
 
