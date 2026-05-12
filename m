@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-245872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8N2EAp5mA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:54 +0200
+	id wBgGNXJvA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEFF525F93
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A32555275BD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 755D13059329
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A7B1309BA42
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D33D3B1EE2;
-	Tue, 12 May 2026 17:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2110F3EDE55;
+	Tue, 12 May 2026 18:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ei38lpqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Te+xGNHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E333CDBDD;
-	Tue, 12 May 2026 17:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A2236896D;
+	Tue, 12 May 2026 18:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607772; cv=none; b=VxeAwKYeq6JaT4ZdYvWaUtZupAwYjapvpnmRmAsh6CotreEX3sq0T64CkRn/F1e+nq6RwSG2SJRi3IpOrvV9n19C5b1UYpPLNiw2H0n40Jg6LH0KrkBXfVXY4DgYx06f7rKFq2TbM5b2sOytN9NqDDdxavAIgmrFREbhi7F9P/U=
+	t=1778609156; cv=none; b=E/Wj0gWoQMggqT5Iz6nlYR8A36ZlRGvgLC5NdR47DewaiM3/UUfV/4BQ73onIG22/GRNL3MxK77zUxWnehAr2HiCcdZed9luExCD4AZ4MYZzTvttJDiQyHV0xwxh02YB5QC/JI40Prfo44NpAUdcKH1NvbanZdEGBdnHMJ4XKSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607772; c=relaxed/simple;
-	bh=0TtdTtinQzUlx7pfLOW4eu3ZkdTOYQwQgi1ADAxzwg4=;
+	s=arc-20240116; t=1778609156; c=relaxed/simple;
+	bh=L+3d7OkG30sXvp3vL7OHKxfjTUx//A8tB9EVRCdO/6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hK7RvVOy08kkURjtx07asQy5yXAmk70RbNenWLrOuD/ik5zuFWWxTo3mGM1mBn1EyXBGqPXK6dvgYefQfEt++wuim8407dKq1iu6z3RcGrP1mwtsIVhymSQ1Dn1nD3I1MHvWS1Xn/CIPLWh4uuBN8lcKIweCmMJ41RP6uGCvy4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ei38lpqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F057C2BCB0;
-	Tue, 12 May 2026 17:42:51 +0000 (UTC)
+	 MIME-Version; b=IyxuDnlkCeImSlIuurdxj8GZ7ALEpu0pVMfA2zQUc/p/Sz90xrsn3WEfWAUK/S1QIp8MHimjB8Mj0nqPwqzqcHg9NIz2H1rhaPfaAtJJZH71AZizFrCj0/DoKJY8y+fRGoAw2EwHg98vCea1D73Vnn12ZtmPKWhSirWu/N6GrzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Te+xGNHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669D0C2BCC7;
+	Tue, 12 May 2026 18:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607771;
-	bh=0TtdTtinQzUlx7pfLOW4eu3ZkdTOYQwQgi1ADAxzwg4=;
+	s=korg; t=1778609156;
+	bh=L+3d7OkG30sXvp3vL7OHKxfjTUx//A8tB9EVRCdO/6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ei38lpqz8YAqdFM07uVniO6RzLD3xTe5uEppN8BbLDoBStyfylNhMpIxz+sPOCA2O
-	 ZTHamOBUCRQf40LqBGSLeZh163boAFf9lvK0a7YN0YZ9JlSqw+4IBbw45LQt5bLDVO
-	 oFLdGQi7jK5tbdyilCHL1U58ufkUiO0+Hx4SxZa0=
+	b=Te+xGNHwsojtFbPFodSN/au6vPze6xfZGt0D/zCdgBbuPPm7IDCMYKw1xtGXub4WK
+	 jqNAsDoBpvBXy8Q2gL84BbNRBrvshFvNAnxicWxi0ihFsJYbFthDUhCxaDxyH9C/h8
+	 aofsNli6YDRthsX1pvZQt8soF4s/Ua6rV8vR/SKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	addy ke <addy.ke@rock-chips.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 012/206] spi: rockchip: fix controller deregistration
-Date: Tue, 12 May 2026 19:37:44 +0200
-Message-ID: <20260512173933.080165596@linuxfoundation.org>
+	Soenke Huster <soenke.huster@eknoes.de>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 7.0 070/307] Bluetooth: virtio_bt: validate rx pkt_type header length
+Date: Tue, 12 May 2026 19:37:45 +0200
+Message-ID: <20260512173941.600615827@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +64,131 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8BEFF525F93
+X-Rspamd-Queue-Id: A32555275BD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245872-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246411-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,rock-chips.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[eknoes.de:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 53e7a16070feb7d1d4d81a583eaac5e25048b9c3 upstream.
+commit daf23014e5d975e72ea9c02b5160d3fcf070ea47 upstream.
 
-Make sure to deregister the controller before freeing underlying
-resources like DMA channels during driver unbind.
+virtbt_rx_handle() reads the leading pkt_type byte from the RX skb
+and forwards the remainder to hci_recv_frame() for every
+event/ACL/SCO/ISO type, without checking that the remaining payload
+is at least the fixed HCI header for that type.
 
-Fixes: 64e36824b32b ("spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI")
-Cc: stable@vger.kernel.org	# 3.17
-Cc: addy ke <addy.ke@rock-chips.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260324082326.901043-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+After the preceding patch bounds the backend-supplied used.len to
+[1, VIRTBT_RX_BUF_SIZE], a one-byte completion still reaches
+hci_recv_frame() with skb->len already pulled to 0. If the byte
+happened to be HCI_ACLDATA_PKT, the ACL-vs-ISO classification
+fast-path in hci_dev_classify_pkt_type() dereferences
+hci_acl_hdr(skb)->handle whenever the HCI device has an active
+CIS_LINK, BIS_LINK, or PA_LINK connection, reading two bytes of
+uninitialized RX-buffer data. The same hazard exists for every
+packet type the driver accepts because none of the switch cases in
+virtbt_rx_handle() check skb->len against the per-type minimum HCI
+header size before handing the frame to the core.
+
+After stripping pkt_type, require skb->len to cover the fixed
+header size for the selected type (event 2, ACL 4, SCO 3, ISO 4)
+before calling hci_recv_frame(); drop ratelimited otherwise.
+Unknown pkt_type values still take the original kfree_skb() default
+path.
+
+Use bt_dev_err_ratelimited() because both the length and pkt_type
+values come from an untrusted backend that can otherwise flood the
+kernel log.
+
+Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
+Cc: stable@vger.kernel.org
+Cc: Soenke Huster <soenke.huster@eknoes.de>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rockchip.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/virtio_bt.c |   23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -914,7 +914,7 @@ static int rockchip_spi_probe(struct pla
+--- a/drivers/bluetooth/virtio_bt.c
++++ b/drivers/bluetooth/virtio_bt.c
+@@ -198,6 +198,7 @@ static int virtbt_shutdown_generic(struc
+ 
+ static void virtbt_rx_handle(struct virtio_bluetooth *vbt, struct sk_buff *skb)
+ {
++	size_t min_hdr;
+ 	__u8 pkt_type;
+ 
+ 	pkt_type = *((__u8 *) skb->data);
+@@ -205,16 +206,32 @@ static void virtbt_rx_handle(struct virt
+ 
+ 	switch (pkt_type) {
+ 	case HCI_EVENT_PKT:
++		min_hdr = sizeof(struct hci_event_hdr);
++		break;
+ 	case HCI_ACLDATA_PKT:
++		min_hdr = sizeof(struct hci_acl_hdr);
++		break;
+ 	case HCI_SCODATA_PKT:
++		min_hdr = sizeof(struct hci_sco_hdr);
++		break;
+ 	case HCI_ISODATA_PKT:
+-		hci_skb_pkt_type(skb) = pkt_type;
+-		hci_recv_frame(vbt->hdev, skb);
++		min_hdr = sizeof(struct hci_iso_hdr);
  		break;
+ 	default:
+ 		kfree_skb(skb);
+-		break;
++		return;
  	}
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register controller\n");
- 		goto err_free_dma_rx;
-@@ -942,6 +942,8 @@ static void rockchip_spi_remove(struct p
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(ctlr);
 +
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
++	if (skb->len < min_hdr) {
++		bt_dev_err_ratelimited(vbt->hdev,
++				       "rx pkt_type 0x%02x payload %u < hdr %zu\n",
++				       pkt_type, skb->len, min_hdr);
++		kfree_skb(skb);
++		return;
++	}
++
++	hci_skb_pkt_type(skb) = pkt_type;
++	hci_recv_frame(vbt->hdev, skb);
+ }
+ 
+ static void virtbt_rx_work(struct work_struct *work)
 
 
 
