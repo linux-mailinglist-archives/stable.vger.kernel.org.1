@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cM7uMYNzA2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:55 +0200
+	id CHt+F0xnA2qj5gEAu9opvQ
+	(envelope-from <stable+bounces-245879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301CD527DFD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2325260CE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6923F31F18BF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE5AF304A6D7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E9233A6E2;
-	Tue, 12 May 2026 18:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A7F3D966A;
+	Tue, 12 May 2026 17:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi86e1iT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JivWQwrH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF683EDE4A;
-	Tue, 12 May 2026 18:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD6F385D85;
+	Tue, 12 May 2026 17:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609172; cv=none; b=noqxaYSKGjIzksjcRr+ko76E5j/VuUCP93pD475hMNMz2i/PIxO/O8tS0tgVkhs8c57mdXjxbh/Kegi3tPzJl7+LpMUjNkvHEQicS8BKIaU+OlNcE5N6a+7ftDXjijdnLErtrvvBACivCzEpIK4tdtQdU5APQdj7JanK4sy7fe8=
+	t=1778607789; cv=none; b=aUVWkmCoIH4OyUNDuM9sagA3M57dMgh43siwZlUMCVOpu++2Z2ftavLd1PaA7JwgfkMp6nUGhwJ8Xd7jWfZTqpHDwSdHlOBthIbDV0nkn5BYpDUmdlr8x1CEHci4H7GowFSPAUkbigNHphtATlcGtbwqzMwsw04w5guoldT2jBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609172; c=relaxed/simple;
-	bh=zaj1fQZW4swbpFs0cO6VjTa5etwUv4RTNBBw8HlX1PY=;
+	s=arc-20240116; t=1778607789; c=relaxed/simple;
+	bh=zLaYP+nJix1HWsCqG0XRmJluh2tARg+eR9bY/glK2Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJTr5GcT/+KT9J5HDVm307zKqZFzcjoQZk2a9BK1UvfhXLPn9FjSM5Nz9MvAAQSHLlnCfoChhjueYhL6P35ZgyEbmz3Iib62wLB+SwrpmWulcuRWonIvsKvD5JyLLsGtGq7zdVW3BsQ9rnpWw0HLsEoMkdZSh3sbtwnWLPoYKjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi86e1iT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8AE7C2BCB0;
-	Tue, 12 May 2026 18:06:11 +0000 (UTC)
+	 MIME-Version; b=sjKlT/4fXOX4PSg7cR8zorqA2YP5sru1eyEZWo9SeI9VQEDxW0DQhL7BrKK3xrg19PIKhRsGTEFxvO6kAb+1KDq8aeHlE73xvSS5rSMGE04+p/Pe00r8H8TThgcrIfyPuH6CR/e7z3EpXxmm6HAoAkaVIcnK52/rkidXiUgh/bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JivWQwrH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6382AC2BCB0;
+	Tue, 12 May 2026 17:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609172;
-	bh=zaj1fQZW4swbpFs0cO6VjTa5etwUv4RTNBBw8HlX1PY=;
+	s=korg; t=1778607789;
+	bh=zLaYP+nJix1HWsCqG0XRmJluh2tARg+eR9bY/glK2Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pi86e1iTDFs2Exxenu7q5zbHVLO7RQCghmEI18EwTuM/i3cpDsbslRyttXvi8Y6Cc
-	 03KyGaf5l9mdfb1lRUJmXQkptXXaxKCqiCdmXLkSFMBPqLXxgqXg3pc0ldHsAFWiFx
-	 AhYjK/RKs+EfbOAPDJf3ssJWtuu7ccTzPZRJAh2c=
+	b=JivWQwrHFhURW1Mrf3VsIIOhL+uLkgbSYe1FNfqN4YOuxJZrZcpCA9oN/nzyBRwVv
+	 wchjOutdnQSDf+5Wqfcp/C+Vk9gsdgd0lSy3dq+ZBA+Lxyadith59ic/+rlzvcMQ1M
+	 +3Zz9omqfg/It1pjMFnioBg8eQjtGsvu+50k/w4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 7.0 093/307] KVM: arm64: Fix kvm_vcpu_initialized() macro parameter
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 036/206] wifi: mac80211: use safe list iteration in radar detect work
 Date: Tue, 12 May 2026 19:38:08 +0200
-Message-ID: <20260512173942.090068053@linuxfoundation.org>
+Message-ID: <20260512173933.596022947@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 301CD527DFD
+X-Rspamd-Queue-Id: 0A2325260CE
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246417-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245879-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,45 +90,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fuad Tabba <tabba@google.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit d89fdda7dd8a488f922e1175e6782f781ba8a23b upstream.
+commit ac8eb3e18f41e2cc8492cc1d358bcb786c850270 upstream.
 
-The macro is defined with parameter 'v' but the body references the
-literal token 'vcpu' instead, causing it to silently operate on whatever
-'vcpu' resolves to in the caller's scope rather than the value passed by
-the caller. All current call sites happen to use a variable named 'vcpu',
-so the bug is latent.
+The call to ieee80211_dfs_cac_cancel can cause the iterated chanctx to
+be freed and removed from the list. Guard against this to avoid a
+slab-use-after-free error.
 
-Fixes: e016333745c7 ("KVM: arm64: Only reset vCPU-scoped feature ID regs once")
-Signed-off-by: Fuad Tabba <tabba@google.com>
-Link: https://patch.msgid.link/20260424084908.370776-5-tabba@google.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
+Fixes: bca8bc0399ac ("wifi: mac80211: handle ieee80211_radar_detected() for MLO")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://patch.msgid.link/20260505151539.236d63a1b736.I35dbb9e96a2d4a480be208770fdd99ba3b817b79@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/util.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1506,7 +1506,7 @@ static inline bool __vcpu_has_feature(co
- #define kvm_vcpu_has_feature(k, f)	__vcpu_has_feature(&(k)->arch, (f))
- #define vcpu_has_feature(v, f)	__vcpu_has_feature(&(v)->kvm->arch, (f))
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3504,11 +3504,11 @@ void ieee80211_dfs_radar_detected_work(s
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, radar_detected_work);
+ 	struct cfg80211_chan_def chandef;
+-	struct ieee80211_chanctx *ctx;
++	struct ieee80211_chanctx *ctx, *tmp;
  
--#define kvm_vcpu_initialized(v) vcpu_get_flag(vcpu, VCPU_INITIALIZED)
-+#define kvm_vcpu_initialized(v) vcpu_get_flag(v, VCPU_INITIALIZED)
+ 	lockdep_assert_wiphy(local->hw.wiphy);
  
- int kvm_trng_call(struct kvm_vcpu *vcpu);
- #ifdef CONFIG_KVM
+-	list_for_each_entry(ctx, &local->chanctx_list, list) {
++	list_for_each_entry_safe(ctx, tmp, &local->chanctx_list, list) {
+ 		if (ctx->replace_state == IEEE80211_CHANCTX_REPLACES_OTHER)
+ 			continue;
+ 
 
 
 
