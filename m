@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHV9Ke9rA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:35 +0200
+	id wFwHLAZsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49353526B96
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 884DC526BE0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E5333204227
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BC33930507B1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EB33ADB9A;
-	Tue, 12 May 2026 17:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65540284883;
+	Tue, 12 May 2026 18:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHQb5Yhw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n22v9TTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB283EDE4E;
-	Tue, 12 May 2026 17:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264343EDE5D;
+	Tue, 12 May 2026 18:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608420; cv=none; b=VLqrDZwXm7d+7JO7YNecwacnpx/gU3SLrw2loj7gBJjZkCWiorus02DX005tVh+llNK+VNiJFXVIYwK8Gpng3kSXxHN5PgfYaGGgjloHV+skdGXRVG+q0+kxbL+Lhk7MjlPtskhvfB16YA/Tu9HHAFDQOjSbEQ96R3luuOranfw=
+	t=1778609036; cv=none; b=AbhaRfm5gRTr6sgQXwnqM1IpY8vsfP731+3MFOQLeRxqDp7gJniYCNJn8W7TnjVa3UhuAzt5n4c5pKdWq256MLiAZsY77Qr2ZmKDjL5V0k4IkSzcXInCu3qgSKJSF8/u6nFtvRKjFlNhx6znIt7x6RjS+GZcY1VsRQQjwosBC4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608420; c=relaxed/simple;
-	bh=x+dBPVf8g2mejnqmz4uUQrEPHofRpIUmsi4VYgp6Ido=;
+	s=arc-20240116; t=1778609036; c=relaxed/simple;
+	bh=4X0lANsi8ek67RnIQCFecdNJRDMwt8Ufs6pWHZ1Qugw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tom8JNPC37L7ZF9Ln/++7WnhQJypmoyDZKHx09YS8zHhdmxDV1i0cw3b4es8WU61ekr65NK2cCNULCj367vozOQFPMZ8sZTK/jvDmdo5YagPm6rYSSb/M+Hh4RA+KJ/r0+7SXjkQiQCMgMCzrvB78GxOgIrqjpY1h1gd1rJro+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHQb5Yhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809C9C2BCB0;
-	Tue, 12 May 2026 17:53:39 +0000 (UTC)
+	 MIME-Version; b=TiopVc9d+5r61st/SxsDMps9wTt/45PLP8UJUoh+HcS1zymX7wdSAHe3MsIGihe+rmgkLIlD7UNWY9JowZHS5P2KvCf99Qr0wyrcex/6BQMcDccMKYLsRxabwiTsN2SM2caWkw5lvjMT29O0xadB4AvhKq2jHPiZMqN88e4o7Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n22v9TTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BBFC2BCB0;
+	Tue, 12 May 2026 18:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608419;
-	bh=x+dBPVf8g2mejnqmz4uUQrEPHofRpIUmsi4VYgp6Ido=;
+	s=korg; t=1778609036;
+	bh=4X0lANsi8ek67RnIQCFecdNJRDMwt8Ufs6pWHZ1Qugw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHQb5YhwScBMa/bOAJgtEZ9Q/0gTdDdW7dyPUapdTmJWsMd66aGJvL44BOs+KCp6k
-	 ki9Gg1K+SJsAsRjEmUSfhXlhrDGz52BH4tD7PzBLjiAdXjOFApARLkmPixAO6KbFDW
-	 b6vXsfDZuXS5EAAJPPIv8aZDa3/7th3PBKzX5vaI=
+	b=n22v9TTfa/Wddh8vqRKu3pSJJ3Hkq15D69q7063OCEmqIoBeiOlOAw8EKNCj87ZPb
+	 GIVysW6qL2+Knz17owpYa8WClwWPcxXeLTIAnnBRubWgG5gyTLW1KCsRZs9D2pjiqf
+	 8ANJvADyZd+9NOJ/AXWEUwW8TBpE5L7qywbGifgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 035/270] wifi: mac80211: remove station if connection prep fails
+	stable <stable@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 7.0 041/307] USB: omap_udc: DMA: Dont enable burst 4 mode
 Date: Tue, 12 May 2026 19:37:16 +0200
-Message-ID: <20260512173939.194978459@linuxfoundation.org>
+Message-ID: <20260512173940.991599636@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 49353526B96
+X-Rspamd-Queue-Id: 884DC526BE0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246124-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246364-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,71 +90,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iki.fi:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-commit 283fc9e44ff5b5ac967439b4951b80bd4299f4e4 upstream.
+commit 3f91484f6c13c434bd573ca6b6779c26adb0ddab upstream.
 
-If connection preparation fails for MLO connections, then the
-interface is completely reset to non-MLD. In this case, we must
-not keep the station since it's related to the link of the vif
-being removed. Delete an existing station. Any "new_sta" is
-already being removed, so that doesn't need changes.
+Commit 65111084c63d7 ("USB: more omap_udc updates (dma and omap1710)")
+added setting for DMA burst 4 mode. But I think this should be undone for
+two reasons:
 
-This fixes a use-after-free/double-free in debugfs if that's
-enabled, because a vif going from MLD (and to MLD, but that's
-not relevant here) recreates its entire debugfs.
+- It breaks DMA on 15xx boards - transfers just silently stall.
 
-Cc: stable@vger.kernel.org
-Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260505151533.c4e52deb06ad.Iafe56cec7de8512626169496b134bce3a6c17010@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+- On newer OMAP1 boards, like Nokia 770 (omap1710), there is no measurable
+performance impact when testing TCP throughput with g_ether with large
+15000 byte MTU size.
+
+It's also worth noting that when the original change was made, the
+OMAP_DMA_DATA_BURST_4 handling in arch/arm/plat-omap/dma.c was broken, and
+actually resulted in the same as the OMAP_DMA_DATA_BURST_DIS i.e. burst
+disabled. This was fixed not until a couple kernel releases later in an
+unrelated commit 1a8bfa1eb998a ("[ARM] 3142/1: OMAP 2/5: Update files
+common to omap1 and omap2").
+
+So based on this it seems there was never really a very good reason to
+enable this burst mode in omap_udc, so remove it now to allow 15xx DMA
+to work again (it provides 2x throughput compared to PIO mode).
+
+Fixes: 65111084c63d ("[PATCH] USB: more omap_udc updates (dma and omap1710)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Link: https://patch.msgid.link/ad06qHLclWHeSGnV@darkstar.musicnaut.iki.fi
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mlme.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/udc/omap_udc.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -8926,7 +8926,7 @@ static int ieee80211_prep_connection(str
- 	struct ieee80211_bss *bss = (void *)cbss->priv;
- 	struct sta_info *new_sta = NULL;
- 	struct ieee80211_link_data *link;
--	bool have_sta = false;
-+	struct sta_info *have_sta = NULL;
- 	bool mlo;
- 	int err;
- 	u16 new_links;
-@@ -8945,11 +8945,8 @@ static int ieee80211_prep_connection(str
- 		mlo = false;
+--- a/drivers/usb/gadget/udc/omap_udc.c
++++ b/drivers/usb/gadget/udc/omap_udc.c
+@@ -733,8 +733,6 @@ static void dma_channel_claim(struct oma
+ 		if (status == 0) {
+ 			omap_writew(reg, UDC_TXDMA_CFG);
+ 			/* EMIFF or SDRC */
+-			omap_set_dma_src_burst_mode(ep->lch,
+-						OMAP_DMA_DATA_BURST_4);
+ 			omap_set_dma_src_data_pack(ep->lch, 1);
+ 			/* TIPB */
+ 			omap_set_dma_dest_params(ep->lch,
+@@ -756,8 +754,6 @@ static void dma_channel_claim(struct oma
+ 				UDC_DATA_DMA,
+ 				0, 0);
+ 			/* EMIFF or SDRC */
+-			omap_set_dma_dest_burst_mode(ep->lch,
+-						OMAP_DMA_DATA_BURST_4);
+ 			omap_set_dma_dest_data_pack(ep->lch, 1);
+ 		}
  	}
- 
--	if (assoc) {
--		rcu_read_lock();
-+	if (assoc)
- 		have_sta = sta_info_get(sdata, ap_mld_addr);
--		rcu_read_unlock();
--	}
- 
- 	if (mlo && !have_sta &&
- 	    WARN_ON(sdata->vif.valid_links || sdata->vif.active_links))
-@@ -9108,6 +9105,8 @@ static int ieee80211_prep_connection(str
- out_release_chan:
- 	ieee80211_link_release_channel(link);
- out_err:
-+	if (mlo && have_sta)
-+		WARN_ON(__sta_info_destroy(have_sta));
- 	ieee80211_vif_set_links(sdata, 0, 0);
- 	return err;
- }
 
 
 
