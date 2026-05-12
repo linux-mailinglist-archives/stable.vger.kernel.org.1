@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-245452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AWMNYQbA2pD0gEAu9opvQ
-	(envelope-from <stable+bounces-245452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:22:28 +0200
+	id WHm5JHwdA2pD0gEAu9opvQ
+	(envelope-from <stable+bounces-245453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:30:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC915200B8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:22:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E0552027B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2DDBB3024AB2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:22:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0DF3F3084A7D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F83F38D417;
-	Tue, 12 May 2026 12:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C6C38E8C7;
+	Tue, 12 May 2026 12:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fN/74jED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qr1Fd+va"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C9038D404
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB65379C54
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778588537; cv=none; b=gcEnb74/oyHWHmvbCVwZIntewP5bACia1FyRhQ/McuvgoeDg/xjCVXE3lL+3ulSTsH+YGCzPrvfMAO8qvuhqZoTh/bG1Xx+q/ts5rmFKoiN7kOJsCpWGJBt8hxV5xSkAmm9J4psGTQoC559S5UdQU3oWsJvGg1lvRPPZQEvyd9Y=
+	t=1778588803; cv=none; b=BbWBL6FNEl91u5nhAdkIhpacR2EJWRXlg+8ohhdUwykFnrZWi86EEUiC4lcMALLRQvPQ/ESdpFw0XP3YGXxhZhuuVGRbRltaleEhvuGjc2LolLFDAiFtqX9GDC/u4jneHGYHwgIBdhwCTjLksuZfGaQovL36dVNOlsSc0ImmBZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778588537; c=relaxed/simple;
-	bh=l5jde6KD7XzMgWpkSCuGk1s7rfgH/9SXAuzS6HOBPPA=;
-	h=Subject:To:Cc:From:Date:Message-ID; b=mSNs4N+dnaQR41lqlVyG6lLVLeRF64bRlM+x0c1VYI0A4UwDQH5snfQVwgdoSeptEwISiLCtY0W0N4nkEehdHM7HktrR8rB9PWW8JF76EcLG68GTz0yfixaBpGIcdrQJX/pm4Ldnk6iBG0kUMyuv5jjaOPS1uimz1dguJBUKa7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fN/74jED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3583C2BCB0;
-	Tue, 12 May 2026 12:22:15 +0000 (UTC)
+	s=arc-20240116; t=1778588803; c=relaxed/simple;
+	bh=GYIjdMIt7Fubb6emPUOGKBOHgknJZ9NGTLaE/S7wKbE=;
+	h=Subject:To:Cc:From:Date:Message-ID; b=KVnPv+7gzN9/032cpar55+cy4YuPHM0pcv0kSW1VV4Hzu71AK/n+NtT6zQQbqVOTPLyHCRqC/2hH/KGn9hIEQzWWdwtdS17sO7+BV4X17Jv03nda6wIEvTCFhFjLXGVvp8LHp6lY5osv1sueyDa1PuoupR3lZ8tIjrenHop1w1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qr1Fd+va; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B0AC2BCB0;
+	Tue, 12 May 2026 12:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778588536;
-	bh=l5jde6KD7XzMgWpkSCuGk1s7rfgH/9SXAuzS6HOBPPA=;
+	s=korg; t=1778588802;
+	bh=GYIjdMIt7Fubb6emPUOGKBOHgknJZ9NGTLaE/S7wKbE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fN/74jEDyXc+FtENd6C1Zi+C8hsRZLMk+z8aKYej8MOKdqKz+xlXLQym7QhroOijy
-	 mYBGRn84Kc4Uxb5kghyScDy1d3L0aZNRF2iSBODIyF81XEMYFy1XBXvK/OIGUriKEx
-	 8xQd2SXoUO/I4K1kCu6BTJnNDl1jGdJWvAZzvNZs=
-Subject: FAILED: patch "[PATCH] wifi: brcmfmac: Fix potential use-after-free issue when" failed to apply to 5.15-stable tree
-To: m.szyprowski@samsung.com,arend.vanspriel@broadcom.com,johannes.berg@intel.com
+	b=Qr1Fd+vaZDn+J33TxYW4zh0tdksN9dpj+FJxxMn5AGFaiXWP5Ija45bpkdCG1oECU
+	 4SBuMc/1K7gszH4ofoHisfNcPYzoDeGqeNDIDxAL7ydI28GPEBpeNfNVyfk9gVyu21
+	 oQhxNF1kUlzrUMQub5d+PVjDaaeZqTfQa98BqoaA=
+Subject: FAILED: patch "[PATCH] usb: dwc3: Move GUID programming after PHY initialization" failed to apply to 6.18-stable tree
+To: selvarasu.g@samsung.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,pritam.sutar@samsung.com,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 14:22:07 +0200
-Message-ID: <2026051207-posing-gauze-27af@gregkh>
+Date: Tue, 12 May 2026 14:26:40 +0200
+Message-ID: <2026051240-configure-sizably-846f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 7BC915200B8
+X-Rspamd-Queue-Id: 03E0552027B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-245453-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245452-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NO_DN(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -80,24 +80,24 @@ X-Spamd-Result: default: False [2.84 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,samsung.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[synopsys.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,gregkh:email,samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x c623b63580880cc742255eaed3d79804c1b91143
+git cherry-pick -x aad35f9c926ec220b0742af1ada45666ae667956
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051207-posing-gauze-27af@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051240-configure-sizably-846f@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -109,50 +109,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c623b63580880cc742255eaed3d79804c1b91143 Mon Sep 17 00:00:00 2001
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Date: Thu, 16 Apr 2026 11:33:39 +0200
-Subject: [PATCH] wifi: brcmfmac: Fix potential use-after-free issue when
- stopping watchdog task
+From aad35f9c926ec220b0742af1ada45666ae667956 Mon Sep 17 00:00:00 2001
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Date: Fri, 17 Apr 2026 12:03:11 +0530
+Subject: [PATCH] usb: dwc3: Move GUID programming after PHY initialization
 
-Watchdog task might end between send_sig() and kthread_stop() calls, what
-results in the use-after-free issue. Fix this by increasing watchdog task
-reference count before calling send_sig() and dropping it by switching to
-kthread_stop_put().
+The Linux Version Code is currently written to the GUID register before
+PHY initialization. Certain PHY implementations (such as Synopsys eUSB
+PHY performing link_sw_reset) clear the GUID register to its default
+value during initialization, causing the kernel version information to
+be lost.
 
-Cc: stable@vger.kernel.org
-Fixes: 373c83a801f1 ("brcmfmac: stop watchdog before detach and free everything")
-Fixes: a9ffda88be74 ("brcm80211: fmac: abstract bus_stop interface function pointer")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260416093339.2066829-1-m.szyprowski@samsung.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Move the GUID register programming to occur after PHY initialization
+completes to ensure the Linux version information persists.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 30f6fcb68632..8fb595733b9c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -2476,8 +2476,9 @@ static void brcmf_sdio_bus_stop(struct device *dev)
- 	brcmf_dbg(TRACE, "Enter\n");
+Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our GUID register")
+Cc: stable <stable@kernel.org>
+Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20260417063314.2359-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 58899b1fa96d..65213896de99 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1359,12 +1359,6 @@ int dwc3_core_init(struct dwc3 *dwc)
  
- 	if (bus->watchdog_tsk) {
-+		get_task_struct(bus->watchdog_tsk);
- 		send_sig(SIGTERM, bus->watchdog_tsk, 1);
--		kthread_stop(bus->watchdog_tsk);
-+		kthread_stop_put(bus->watchdog_tsk);
- 		bus->watchdog_tsk = NULL;
- 	}
+ 	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
  
-@@ -4567,8 +4568,9 @@ void brcmf_sdio_remove(struct brcmf_sdio *bus)
- 	if (bus) {
- 		/* Stop watchdog task */
- 		if (bus->watchdog_tsk) {
-+			get_task_struct(bus->watchdog_tsk);
- 			send_sig(SIGTERM, bus->watchdog_tsk, 1);
--			kthread_stop(bus->watchdog_tsk);
-+			kthread_stop_put(bus->watchdog_tsk);
- 			bus->watchdog_tsk = NULL;
- 		}
+-	/*
+-	 * Write Linux Version Code to our GUID register so it's easy to figure
+-	 * out which kernel version a bug was found.
+-	 */
+-	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
+-
+ 	ret = dwc3_phy_setup(dwc);
+ 	if (ret)
+ 		return ret;
+@@ -1398,6 +1392,12 @@ int dwc3_core_init(struct dwc3 *dwc)
+ 	if (ret)
+ 		goto err_exit_phy;
+ 
++	/*
++	 * Write Linux Version Code to our GUID register so it's easy to figure
++	 * out which kernel version a bug was found.
++	 */
++	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
++
+ 	dwc3_core_setup_global_control(dwc);
+ 	dwc3_core_num_eps(dwc);
  
 
 
