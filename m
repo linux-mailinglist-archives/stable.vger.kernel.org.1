@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMwDBeNrA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:23 +0200
+	id yOqZEvZqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97324526B70
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1AC526873
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D16B3072D51
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1502531B30FE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5A5328B77;
-	Tue, 12 May 2026 18:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA43EDE49;
+	Tue, 12 May 2026 17:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTVy5B27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eo7wZ/VR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AF63EDE59;
-	Tue, 12 May 2026 18:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C283EDE4B;
+	Tue, 12 May 2026 17:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609013; cv=none; b=YP/G/V45Tc5Or39ECkza1EwEoZ3PA3qr0EZdHw6na5eFTl+fL6MavwzMlhRdAPbGNBBvW9cujpKYvhMhcpucjSPYYl7Yo9ol5anoLAehgujQn6j8CGDjmcAKCiZTrAswjCsA61CyOfElnu3yEijQy45rc4MAByB/L1qsfVaKbYI=
+	t=1778608281; cv=none; b=rilYHQlrGylhZaOmTBvEuDUJ6aDsJjhfQjN2pCDjV7iovY0dZbvFdtfMfdvi1NPVPUkP0knk/tt8SWWPkLEW1nhav2m7Mwb/Szv2MIJHFVzzh0ngZRpHviuwsG7umXVGAqJUsQeXc4oXaYTIA0HygmdmMk7gCIYUfWvgH+hs0qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609013; c=relaxed/simple;
-	bh=U77YnOn2ZtVAdVIkIJrRuhCoBNSMBr6G3OZO8Ld6DZo=;
+	s=arc-20240116; t=1778608281; c=relaxed/simple;
+	bh=r6iGfvEkABTRsQCaOzhJ+9EtOFpe0/NJFhEL5nlRTQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPtnrd1uzIdf2xQekmKqOfr2Fgb7LRV1Bx2HQIv75Cig4JZ2AHEalUmac+1BDtAqxxae2W81FFVB9i+rJ6P0GLRCl8wyZ8cI6DNbWNalNFLXwRQ98qVfqQ45ZcoExRxV6EZflC94QWlkGmZe6Rz5cb3ikRFQfcOl7OqX6BZtj9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTVy5B27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D62C2BCB0;
-	Tue, 12 May 2026 18:03:32 +0000 (UTC)
+	 MIME-Version; b=Ge9mHbxIcp7gFvnUfdFwcZJ2c0wI+Z1eR8xZCl8weM5cbOnpSg+xly8J18BC7dzWrreGc6S/v99jr3xKEHMHId/dMvt1umj5lf02dbncd9c3umZfkcWChFLMl5/heHOUSKD7jBh+ZNiqFprPsmBRnNCq6/7O21Zs1wv1++DGDaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eo7wZ/VR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF20C2BCC7;
+	Tue, 12 May 2026 17:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609012;
-	bh=U77YnOn2ZtVAdVIkIJrRuhCoBNSMBr6G3OZO8Ld6DZo=;
+	s=korg; t=1778608280;
+	bh=r6iGfvEkABTRsQCaOzhJ+9EtOFpe0/NJFhEL5nlRTQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PTVy5B27G/BxGFUlBPfSVHwBAbfsz8S/AcrKMb2t1TSYB81hDkkeQwyXhepG5aYEv
-	 n0gYVxdzpJOoe902xYTHzYe7qPjEcSsL9G4Isf34FobubSQX2C5KOebsu3mImBj5CS
-	 GjsY0KDbA+jVWyvFt8RlbvRMu/XRLSrgC6MyIVq4=
+	b=Eo7wZ/VR5URPMkOS0IAjEqdIPUZCYoDIttH79EGmofXA6X7KKPP6Vn/S1+mRycMLq
+	 0hsiFr1Y9MoXnlCh80iKlc9XF2EriM/Qw62vAzbyW344ZmwRdezpvJE41QN3WuVO7r
+	 AOvTppe/YjEQTtLnjAa4mlliHmR7BFD4ZHwRBxgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Yen <leon.yen@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 7.0 024/307] wifi: mt76: mt7921: fix a potential clc buffer length underflow
-Date: Tue, 12 May 2026 19:36:59 +0200
-Message-ID: <20260512173940.636777144@linuxfoundation.org>
+	Gang Yan <yangang@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 019/270] mptcp: sync the msk->sndbuf at accept() time
+Date: Tue, 12 May 2026 19:37:00 +0200
+Message-ID: <20260512173938.861898101@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +65,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97324526B70
+X-Rspamd-Queue-Id: 9E1AC526873
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246070-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246355-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,nbd.name:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Yen <leon.yen@mediatek.com>
+From: Gang Yan <yangang@kylinos.cn>
 
-commit 5373f8b19e568b5c217832b9bbef165bd2b2df14 upstream.
+commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
 
-The buf_len is used to limit the iterations for retrieving the country
-power setting and may underflow under certain conditions due to changes
-in the power table in CLC.
+On passive MPTCP connections, the msk sndbuf is not updated correctly.
 
-This underflow leads to an almost infinite loop or an invalid power
-setting resulting in driver initialization failure.
+The root cause is an order issue in the accept path:
 
+- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
+  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
+
+- Later, tcp_child_process() -> tcp_init_transfer() ->
+  tcp_sndbuf_expand() grows the ssk sndbuf.
+
+So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
+expanded and the msk ends up with a much smaller sndbuf than the
+subflow:
+
+  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
+
+Fix this by moving the __mptcp_propagate_sndbuf() call from
+mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
+__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
+been fully expanded by tcp_sndbuf_expand().
+
+Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
 Cc: stable@vger.kernel.org
-Fixes: fa6ad88e023d ("wifi: mt76: mt7921: fix country count limitation for CLC")
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20251009020158.1923429-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ No conflicts, but move __mptcp_propagate_sndbuf() above the for-loop
+  (mptcp_for_each_subflow()) present in this version, which will modify
+  'subflow' used by __mptcp_propagate_sndbuf() in this new patch. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/mptcp/protocol.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1353,6 +1353,9 @@ int __mt7921_mcu_set_clc(struct mt792x_d
- 		u16 len = le16_to_cpu(rule->len);
- 		u16 offset = len + sizeof(*rule);
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 09e1a93b7daab..c805d36fe50d5 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3428,7 +3428,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 	 * uses the correct data
+ 	 */
+ 	mptcp_copy_inaddrs(nsk, ssk);
+-	__mptcp_propagate_sndbuf(nsk, ssk);
  
-+		if (buf_len < offset)
-+			break;
+ 	mptcp_rcv_space_init(msk, ssk);
+ 	msk->rcvq_space.time = mptcp_stamp();
+@@ -4027,6 +4026,8 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
+ 		msk = mptcp_sk(newsk);
+ 		msk->in_accept_queue = 0;
+ 
++		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
 +
- 		pos += offset;
- 		buf_len -= offset;
- 		if (rule->alpha2[0] != alpha2[0] ||
+ 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
+ 		 * This is needed so NOSPACE flag can be set from tcp stack.
+ 		 */
+-- 
+2.53.0
+
 
 
 
