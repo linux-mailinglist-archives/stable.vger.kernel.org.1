@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-246385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SP+TKWZuA2p45wEAu9opvQ
-	(envelope-from <stable+bounces-246385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:06 +0200
+	id 6DPaBOlrA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442785272DF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA3B526B7F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A71930E86D7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:04:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 30CBD316E093
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285E325FA29;
-	Tue, 12 May 2026 18:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99B93EDE45;
+	Tue, 12 May 2026 17:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciC6gGpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjY0HZkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBEB3EDE67;
-	Tue, 12 May 2026 18:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFDA3EDE59;
+	Tue, 12 May 2026 17:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609089; cv=none; b=nt+JZIrOQumf2ZPf/UZr2/LBbBM2aDHIPiAPLByk7rPWf3Wmo7hpZMeozYC9o8p4B3t215KCG4oR/J99DqICSeP8Mx3IDBUkCKmKqLb6f7Aci7pd23i3GlZEn+uOQ4X9rXWfagAzVKQU1XMUCmDxaLps9EzkhIE/BVeLvjPpxCg=
+	t=1778608373; cv=none; b=iuKxHyvlQiMX1x+Rnzg3I3jSY9qWM0Y4/3sOMHr8UDEh/ze01MI6cZ3DtlJuluCLxKUt0jjQiTpIXoXT1lXdk6P1yDeRdNvIylgOKQaZAmCdTdyxUI+rgGn50Eh8gNY9SZCIkDts9RpJw6FLd6Rtt7JkvI9fwr4f2fjpg1k2vrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609089; c=relaxed/simple;
-	bh=17znin8c8+ritrrVBoLRPt9QBKhTjJzcxE2PqWjkroU=;
+	s=arc-20240116; t=1778608373; c=relaxed/simple;
+	bh=pwfvXt552AoZxGMjy4PyQSYEcOkPrfbtuE1HRLRcrfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBV+K12LiM1bwsjMbRo6qa8bTj9LWcdbhXnpeymIP7ANpJQILLxK/elxhKulhnCNilv0hLOVniScQBZP8XKF7dUQMN4uDDQflj+uZJ/5m/jWEJ/g7mzlDJfOO8y14e7rHuOF6A3cX3/8sl3zu4fFAsFZ3CqJ+YE6m+DKQeOrRAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciC6gGpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EB0C2BCB0;
-	Tue, 12 May 2026 18:04:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gTDBDGsg5f7aki4tmMaqKZPLNDpVQJKGAxUijrzaOVi6Xesjtoz27NpMft9OR15+c/OTyahI8BT+3wmX6TgHRYY1TBlC0cWzC0Sdc+uCqZ4WLEGcq4rzfSU8JDsvumxYoBi/Z39TaWJmVrDB9FERFikIEA2p5rsc7t+Qyczi9HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjY0HZkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7C3C2BCB0;
+	Tue, 12 May 2026 17:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609089;
-	bh=17znin8c8+ritrrVBoLRPt9QBKhTjJzcxE2PqWjkroU=;
+	s=korg; t=1778608373;
+	bh=pwfvXt552AoZxGMjy4PyQSYEcOkPrfbtuE1HRLRcrfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ciC6gGpMe46ByBvjTXWzmh8CaieILf+WrOCxvcrxjrzL4sH4p8v41bmAIJv0RfnJT
-	 kysyev+J+hiKR64+MBj9uMlc5c3cTsmoZeeLIrpkUEJ1FSGnTw/+LDQ9nLEx1h19r6
-	 /h2LJa9iNtr/KhIGQvNB4wZ6sBWFZz+IK/Zji/Wk=
+	b=DjY0HZkDUQ/3fh908jWZW4nzTSXNbzZzTROdeZ+iyW4OiQnWtpczW+F5EN9l+yvjA
+	 ASeLfMCbYMp/EBlF/+CNTiy1DXGhpDp9KXEsry1l+gjYPxpEV256X1gNulJA8MsvvN
+	 rYbj4ivpWfxgxpmc/YBxubEG/yibDhkW6qJMm++w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Windsor <dwindsor@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 7.0 060/307] selinux: dont reserve xattr slot when we wont fill it
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.18 054/270] powerpc/kdump: fix KASAN sanitization flag for core_$(BITS).o
 Date: Tue, 12 May 2026 19:37:35 +0200
-Message-ID: <20260512173941.389935720@linuxfoundation.org>
+Message-ID: <20260512173939.587950089@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +66,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 442785272DF
+X-Rspamd-Queue-Id: ABA3B526B7F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	SUBJECT_HAS_CURRENCY(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246385-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-246106-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Windsor <dwindsor@gmail.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-commit 1e5a8eed7821e7a43a31b4c1b3675a91be6bc6f6 upstream.
+commit b3a97f9484080c6e71db9e803e3cc1bb372a9bc7 upstream.
 
-Move lsm_get_xattr_slot() below the SBLABEL_MNT check so we don't leave
-a NULL-named slot in the array when returning -EOPNOTSUPP; filesystem
-initxattrs() callbacks stop iterating at the first NULL ->name, silently
-dropping xattrs installed by later LSMs.
+KASAN instrumentation is intended to be disabled for the kexec core
+code, but the existing Makefile entry misses the object suffix. As a
+result, the flag is not applied correctly to core_$(BITS).o.
 
+So when KASAN is enabled, kexec_copy_flush and copy_segments in
+kexec/core_64.c are instrumented, which can result in accesses to
+shadow memory via normal address translation paths. Since these run
+with the MMU disabled, such accesses may trigger page faults
+(bad_page_fault) that cannot be handled in the kdump path, ultimately
+causing a hang and preventing the kdump kernel from booting. The same
+is true for kexec as well, since the same functions are used there.
+
+Update the entry to include the “.o” suffix so that KASAN
+instrumentation is properly disabled for this object file.
+
+Fixes: 2ab2d5794f14 ("powerpc/kasan: Disable address sanitization in kexec paths")
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Closes: https://lore.kernel.org/all/1dee8891-8bcc-46b4-93f3-fc3a774abd5b@linux.ibm.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: David Windsor <dwindsor@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260407124349.1698552-1-sourabhjain@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/hooks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/kexec/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -2965,7 +2965,7 @@ static int selinux_inode_init_security(s
- {
- 	const struct cred_security_struct *crsec = selinux_cred(current_cred());
- 	struct superblock_security_struct *sbsec;
--	struct xattr *xattr = lsm_get_xattr_slot(xattrs, xattr_count);
-+	struct xattr *xattr;
- 	u32 newsid, clen;
- 	u16 newsclass;
- 	int rc;
-@@ -2991,6 +2991,7 @@ static int selinux_inode_init_security(s
- 	    !(sbsec->flags & SBLABEL_MNT))
- 		return -EOPNOTSUPP;
- 
-+	xattr = lsm_get_xattr_slot(xattrs, xattr_count);
- 	if (xattr) {
- 		rc = security_sid_to_context_force(newsid,
- 						   &context, &clen);
+--- a/arch/powerpc/kexec/Makefile
++++ b/arch/powerpc/kexec/Makefile
+@@ -16,4 +16,4 @@ GCOV_PROFILE_core_$(BITS).o := n
+ KCOV_INSTRUMENT_core_$(BITS).o := n
+ UBSAN_SANITIZE_core_$(BITS).o := n
+ KASAN_SANITIZE_core.o := n
+-KASAN_SANITIZE_core_$(BITS) := n
++KASAN_SANITIZE_core_$(BITS).o := n
 
 
 
