@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-246418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNuBH+JvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:26 +0200
+	id gNx5H1JsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9845276F0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DAC526CBA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86EE931F331E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 52812318784C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4833EDE61;
-	Tue, 12 May 2026 18:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD333EDE51;
+	Tue, 12 May 2026 17:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAh4X45C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X65y8gef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31AF34405B;
-	Tue, 12 May 2026 18:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B0C3EDE49;
+	Tue, 12 May 2026 17:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609174; cv=none; b=tVqjOWefqYVfDUOJCCArgkM1YeWBdsnR6Ua2N7o1QhnhaJpvQpLW1cG/PUA0hAcSL7qCewZBIdWaBHhBoWy/2/6o93SgXfIhqwr3w0ajbESUcfpu3beCuLQVxi9HwMrS6h4Vu2WfxEYP4naov7Ou+/c3733rLGt8aBCfmCsn1E8=
+	t=1778608461; cv=none; b=armdKu0YAYcN32/OyL7uu1iLTjJwY36/TxPGxbbwv/yfSq60PheMAjmq84e++VvIqD+1xneM3Nn2NihQxNb8fqADJH+9F4M1a/zACbAo2AtvLw3JpaURBmAiSrl5TLk7Qn/A0jhuZFmPvvk++2sJDmi4L6BIgvxKyBtDYH48ljU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609174; c=relaxed/simple;
-	bh=xMI8b0/l3Yqu0D/U31ZrJpGt/oqSx+tcBE77km+Wyms=;
+	s=arc-20240116; t=1778608461; c=relaxed/simple;
+	bh=W+rxMPl2G3rPPYFg/LG6FL9tbekM4KEMMP+s64JS8XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h6IRAzXQcHTcKD7IEAvL7Z7Q1yc6guWO4W0WEl5qgoyGqNFPj4mme9gZ+KS0QDljP68d4jsItxRARKHwpHNXirIUeZnzg13jTAfF/Al2OLemebD7VWtcD5nFjHEKMPbK7n4QeRXg32ER0jhLOUAX8SA6ZckE7aBs1AddVEzOMC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAh4X45C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A7BC2BCB0;
-	Tue, 12 May 2026 18:06:14 +0000 (UTC)
+	 MIME-Version; b=XBdpuf7B/5A5nP3FymNk6S2O1WhubsQabnuLIoEAnlgOwHZRnFJg7DfR3bJ92AIKKUZqF0nt3MTNNgm9otP5tAit7wp6QFfukB7rCCYjd0ZU2zdLQsqAxuTMdJeQOvty3IdxlEjsdeY7jPi1IJlzb/HlYP+67vxgBURVu/bzykc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X65y8gef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF90AC2BCB0;
+	Tue, 12 May 2026 17:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609174;
-	bh=xMI8b0/l3Yqu0D/U31ZrJpGt/oqSx+tcBE77km+Wyms=;
+	s=korg; t=1778608461;
+	bh=W+rxMPl2G3rPPYFg/LG6FL9tbekM4KEMMP+s64JS8XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAh4X45CTYu2BIZA2s8ZxwPL3UhUGsokkVzCYgSDd/uTySBVwHLeO172LVgcVYhHR
-	 Pw4eoG7Eg9M0vYN1npiYGIhRUgBvtlM/SXDKP5eDjk3fBSwBG7w3ZGF3hX8W3MzYzV
-	 HyuhtN6qemLqEtaTdvbtwxWg79wJTNFp/bA3wiBM=
+	b=X65y8gefFP+TKMhoZFgCPbYQGO4BlqLvkVR13eoupXfmVHHMrNVf1DkvGI1lMywqF
+	 PcIGmL1KJnXG6ODgWHN2zLfTA7AO2gGEqkhOHs2pkQT3OWf/xjbkdNozm/mBIHsfhU
+	 Lh+Lf1Lqlo8ijpP8DNdrEChTX19MnVCU03mBlBuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 7.0 094/307] mtd: spi-nor: debugfs: fix out-of-bounds read in spi_nor_params_show()
-Date: Tue, 12 May 2026 19:38:09 +0200
-Message-ID: <20260512173942.110326860@linuxfoundation.org>
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 089/270] mm/hugetlb_cma: round up per_node before logging it
+Date: Tue, 12 May 2026 19:38:10 +0200
+Message-ID: <20260512173940.334694986@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +66,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DF9845276F0
+X-Rspamd-Queue-Id: E0DAC526CBA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,suse.de,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-246140-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246418-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infineon.com:email,linaro.org:email,sashiko.dev:url]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,suse.de:email,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-commit e47029b977e747cb3a9174308fd55762cce70147 upstream.
+commit 8f5ce56b76303c55b78a87af996e2e0f8535f979 upstream.
 
-Sashiko noticed an out-of-bounds read [1].
+When the user requests a total hugetlb CMA size without per-node
+specification, hugetlb_cma_reserve() computes per_node from
+hugetlb_cma_size and the number of nodes that have memory
 
-In spi_nor_params_show(), the snor_f_names array is passed to
-spi_nor_print_flags() using sizeof(snor_f_names).
+        per_node = DIV_ROUND_UP(hugetlb_cma_size,
+                                nodes_weight(hugetlb_bootmem_nodes));
 
-Since snor_f_names is an array of pointers, sizeof() returns the total
-number of bytes occupied by the pointers
-	(element_count * sizeof(void *))
-rather than the element count itself. On 64-bit systems, this makes the
-passed length 8x larger than intended.
+The reservation loop later computes
 
-Inside spi_nor_print_flags(), the 'names_len' argument is used to
-bounds-check the 'names' array access. An out-of-bounds read occurs
-if a flag bit is set that exceeds the array's actual element count
-but is within the inflated byte-size count.
+        size = round_up(min(per_node, hugetlb_cma_size - reserved),
+                          PAGE_SIZE << order);
 
-Correct this by using ARRAY_SIZE() to pass the actual number of
-string pointers in the array.
+So the actually reserved per_node size is multiple of (PAGE_SIZE <<
+order), but the logged per_node is not rounded up, so it may be smaller
+than the actual reserved size.
 
-Cc: stable@vger.kernel.org
-Fixes: 0257be79fc4a ("mtd: spi-nor: expose internal parameters via debugfs")
-Closes: https://sashiko.dev/#/patchset/20260417-die-erase-fix-v2-1-73bb7004ebad%40infineon.com [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+For example, as the existing comment describes, if a 3 GB area is
+requested on a machine with 4 NUMA nodes that have memory, 1 GB is
+allocated on the first three nodes, but the printed log is
+
+        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
+
+Round per_node up to (PAGE_SIZE << order) before logging so that the
+printed log always matches the actual reserved size.  No functional change
+to the actual reservation size, as the following case analysis shows
+
+1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks rounded per_node;
+    round_up() returns rounded per_node (no-op)
+2. remaining < unrounded per_node
+ - AS-IS: min() picks remaining;
+    round_up() returns round_up(remaining)
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining)
+3. unrounded per_node <= remaining < rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining) equals rounded per_node
+
+Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/debugfs.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/hugetlb_cma.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mtd/spi-nor/debugfs.c
-+++ b/drivers/mtd/spi-nor/debugfs.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/array_size.h>
- #include <linux/debugfs.h>
- #include <linux/mtd/spi-nor.h>
- #include <linux/spi/spi.h>
-@@ -92,7 +93,8 @@ static int spi_nor_params_show(struct se
- 	seq_printf(s, "address nbytes\t%u\n", nor->addr_nbytes);
- 
- 	seq_puts(s, "flags\t\t");
--	spi_nor_print_flags(s, nor->flags, snor_f_names, sizeof(snor_f_names));
-+	spi_nor_print_flags(s, nor->flags, snor_f_names,
-+			    ARRAY_SIZE(snor_f_names));
- 	seq_puts(s, "\n");
- 
- 	seq_puts(s, "\nopcodes\n");
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -193,6 +193,7 @@ void __init hugetlb_cma_reserve(int orde
+ 		 */
+ 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
+ 					nodes_weight(hugetlb_bootmem_nodes));
++		per_node = round_up(per_node, PAGE_SIZE << order);
+ 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
+ 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+ 	}
 
 
 
