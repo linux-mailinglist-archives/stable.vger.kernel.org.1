@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-245931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cA/zMl5oA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:50:22 +0200
+	id kKSRL3lwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5413052631E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6010952787F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D48A5303E2F0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A31D13264038
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B17B3D25D2;
-	Tue, 12 May 2026 17:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3C633ADBA;
+	Tue, 12 May 2026 18:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaC16/H7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWBYNm8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE3E2EBB84;
-	Tue, 12 May 2026 17:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D0C23E356;
+	Tue, 12 May 2026 18:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607924; cv=none; b=RiesYN3eo2XSy5AjW7f9af/U+Sqsj0PM52FRpS4o12KQC7HIQL+CS887NNqez5BaK6CJgcNRp0SaC8RJtT/boASQIwprJ4uWvSC4FqXDaBhewWGbbuuar8bmypUsXE52xuDwvyd/FG3p8pX1pNvcua3Ch1LLkn1lujAvw/UvuHk=
+	t=1778609308; cv=none; b=eYa7vo5bCu5Mw0xIJgQyS07WvavC11o298zWH+ypFytupiUzmDTM+EjdO+veTSjE8ZeKnxncw3Tta24bltL5WprIDJ7oOBoCv1E/U5GHsdYbbJeqrVeH8k04vGWJXjbJbpzrIDI7bi11+hEgOV0YIZeaufMMhGknuBjvQx78D1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607924; c=relaxed/simple;
-	bh=T5hc7CXV4GisKUHfogWLe5qngQyxGFDjE6PrSk9D4ao=;
+	s=arc-20240116; t=1778609308; c=relaxed/simple;
+	bh=QxFjrbQ+/hXgH8ZJRefonVLfpS8PDn8IRYStgAAUtnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXw0CKO5lullKKV3L8RphrYYuNo80q5rzAGcDVmMb/Syux8wJHPPWeazJpeI4QSHSDSNPpscgm7eL4MlrKxh0SwZraUjw05LxEV48a8nATJFaOfuAW4YLyDUk3W1CKwKtR1oF116ewLxT4QJ2CAahUt6e2N9wTxuevgndI25D1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaC16/H7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460FFC2BCF5;
-	Tue, 12 May 2026 17:45:23 +0000 (UTC)
+	 MIME-Version; b=BZMNIM+FEUFtAiNDlt44wNuL/2I+NzTU7mDmIHaA6F4GKGzaHipl9fgb/bMWEZVM0FCtWBI3vXqJvACtBljjZSGaGbR/7O1vGtgdRzIFKZu/Z5Ll+eb+Pjhhg0vdS7zG2v1Y1K+AbDRgicVwukCX4O7sLUM49hbh+VzHCeulge4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWBYNm8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEBEC2BCB0;
+	Tue, 12 May 2026 18:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607923;
-	bh=T5hc7CXV4GisKUHfogWLe5qngQyxGFDjE6PrSk9D4ao=;
+	s=korg; t=1778609308;
+	bh=QxFjrbQ+/hXgH8ZJRefonVLfpS8PDn8IRYStgAAUtnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaC16/H7PgYAjkQoq7JQdtyfzhXBcGdkqH8kdQj5gdMllG4GwxWXBfz6JFsSIwz0Y
-	 wGcpW/nLTupbMoWrZ+VCETpfVnjXwJDYBixdRpnzfENgmAySjWJWWztQhbkIK4WuFW
-	 9/d7ij/qLlFkPhqBzORasuVvoT1fnzFwuwA8QkAI=
+	b=YWBYNm8aCI3KYoR0msGc6EsmuMzjkgEQODxAD5L/cVvQCb6kgPpHZN2AdVCxi/k4C
+	 KpltqfE4fyV0sdwirmoeUKIQLvF2aQrLmLBVmaV0mEagYqgY8IQVxpTp56eNfH0ahX
+	 5rCbtV8Zo7MlKUfN+psIm7n18QjUcShmKOEECNiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Johan Hovold <johan@kernel.org>,
-	Brian Masney <bmasney@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.12 087/206] clk: rk808: fix OF node reference imbalance
+	Ben Hillis <Ben.Hillis@microsoft.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 144/307] hv_sock: Report EOF instead of -EIO for FIN
 Date: Tue, 12 May 2026 19:38:59 +0200
-Message-ID: <20260512173934.696793951@linuxfoundation.org>
+Message-ID: <20260512173943.168319726@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5413052631E
+X-Rspamd-Queue-Id: 6010952787F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -77,65 +77,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-246470-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245931-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sntech.de:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dexuan Cui <decui@microsoft.com>
 
-commit de019f203b0d472c98ead4081ad4f05d92c9b826 upstream.
+commit f6315295899415f1ddcf39f7c9cb46d25e2c6c6a upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+Commit f0c5827d07cb unluckily causes a regression for the FIN packet,
+and the final read syscall gets an error rather than 0.
 
-Fix this by using the intended helper for reusing OF nodes.
+Ideally, we would want to fix hvs_channel_readable_payload() so that it
+could return 0 in the FIN scenario, but it's not good for the hv_sock
+driver to use the VMBus ringbuffer's cached priv_read_index, which is
+internal data in the VMBus driver.
 
-Fixes: 2dc51ca822e4 ("clk: RK808: Reduce 'struct rk808' usage")
-Cc: stable@vger.kernel.org	# 6.5
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fix the regression in hv_sock by returning 0 rather than -EIO.
+
+Fixes: f0c5827d07cb ("hv_sock: Return the readable bytes in hvs_stream_has_data()")
+Cc: stable@vger.kernel.org
+Reported-by: Ben Hillis <Ben.Hillis@microsoft.com>
+Reported-by: Mitchell Levy <levymitchell0@gmail.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260416191433.840637-1-decui@microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-rk808.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/hyperv_transport.c |   20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/clk/clk-rk808.c
-+++ b/drivers/clk/clk-rk808.c
-@@ -153,7 +153,7 @@ static int rk808_clkout_probe(struct pla
- 	struct rk808_clkout *rk808_clkout;
- 	int ret;
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -694,7 +694,6 @@ out:
+ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
+ {
+ 	struct hvsock *hvs = vsk->trans;
+-	bool need_refill;
+ 	s64 ret;
  
--	dev->of_node = pdev->dev.parent->of_node;
-+	device_set_of_node_from_dev(dev, dev->parent);
+ 	if (hvs->recv_data_len > 0)
+@@ -702,9 +701,22 @@ static s64 hvs_stream_has_data(struct vs
  
- 	rk808_clkout = devm_kzalloc(dev,
- 				    sizeof(*rk808_clkout), GFP_KERNEL);
+ 	switch (hvs_channel_readable_payload(hvs->chan)) {
+ 	case 1:
+-		need_refill = !hvs->recv_desc;
+-		if (!need_refill)
+-			return -EIO;
++		if (hvs->recv_desc) {
++			/* Here hvs->recv_data_len is 0, so hvs->recv_desc must
++			 * be NULL unless it points to the 0-byte-payload FIN
++			 * packet: see hvs_update_recv_data().
++			 *
++			 * Here all the payload has been dequeued, but
++			 * hvs_channel_readable_payload() still returns 1,
++			 * because the VMBus ringbuffer's read_index is not
++			 * updated for the FIN packet: hvs_stream_dequeue() ->
++			 * hv_pkt_iter_next() updates the cached priv_read_index
++			 * but has no opportunity to update the read_index in
++			 * hv_pkt_iter_close() as hvs_stream_has_data() returns
++			 * 0 for the FIN packet, so it won't get dequeued.
++			 */
++			return 0;
++		}
+ 
+ 		hvs->recv_desc = hv_pkt_iter_first(hvs->chan);
+ 		if (!hvs->recv_desc)
 
 
 
