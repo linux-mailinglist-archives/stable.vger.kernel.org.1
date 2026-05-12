@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-246571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFYMAmdxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:55 +0200
+	id EAgNF5JuA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB835279B9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F498527378
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3485632CCE16
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F0B9130864D0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01A436A378;
-	Tue, 12 May 2026 18:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D5F34405B;
+	Tue, 12 May 2026 18:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ6gi3Ve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFZDMALA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73541368972;
-	Tue, 12 May 2026 18:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D6133B6CC;
+	Tue, 12 May 2026 18:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609566; cv=none; b=pX3qH6tBq5IkOyaN7CKQeeaTDEPzFYeyIOScDqfQF5auMesY1lC/Iw1kv5wCqXMyPL6vZbxmorzv8rcKmJf5z5L00DcMe5MNPZx/QeknAI65id356AHevsJd8zAsSIPtsT6tUjW5NWl4HSKAnQIrus/bEiNG2CejUaQCI8LdpoI=
+	t=1778608846; cv=none; b=kGZIIs16vSHJInZxPznqby9US1Jg8esnN6a24PmdxSULpHE+xFogvKSfGTEIFL51uKpgFTaCGun0Q+4Suz6Durc8b4+4qEGRuXgb69mHbJbh0Q4kHcFMtFgPOgLdwQZC7WOZcPRN11FnG33rSJ91nbNyoJjU1y0v2RrkKbB9kl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609566; c=relaxed/simple;
-	bh=teGZlQvM1TIvSSQFwk26Mx8nnkjzOid8NjVEksjh+4M=;
+	s=arc-20240116; t=1778608846; c=relaxed/simple;
+	bh=M8TcCDsUZO0qXswYU/Uo3wEgii17Sm1N3IklJOvFSvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a304cgssMSijYYC5UmGmHUAstklRDrBIi/kYhaMMvOLpyg2xFqNiZ3izQRhcXH8Ww+lpY+kd3R8Y9PJfymIt1WjUEFnvQfjb06y5nf/N+MF5G7pTKt3VSYIT5HzAvYO4szlqr0DK+XyrnasSvUdsRUkK74aJmSoH1rDSH9pGV3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ6gi3Ve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004BAC2BCB0;
-	Tue, 12 May 2026 18:12:45 +0000 (UTC)
+	 MIME-Version; b=PDzhD8Fj6ZwkUb0nn2QMX0hKly1+ThKc1vlrJTFuE3ATH01KIk4NecNgGjYx9x0KWRHRFhk7W5dHOlnWi4VU+a1b7+aHp/MoMjCsQYiM9NDgsXururC26J56RX9f5FPyvhFFIHMgbUcFheaL6fYKwAHTqbRbBs2/Iowv3ZXObDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFZDMALA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9C8C2BCB0;
+	Tue, 12 May 2026 18:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609566;
-	bh=teGZlQvM1TIvSSQFwk26Mx8nnkjzOid8NjVEksjh+4M=;
+	s=korg; t=1778608845;
+	bh=M8TcCDsUZO0qXswYU/Uo3wEgii17Sm1N3IklJOvFSvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJ6gi3Ve8RPLGHq7P1Pr9g/xq/56KgDamUmcH4QtFuR0HuONKWcef9FczdJlk1+nr
-	 I549ba+v78rs2Ygge6yrcwvCzdNvA7PgWnACZdeZjvVQvc+JUBqc5eRW5VYUxrEptS
-	 FTtDD5rZpA3Ik1Ot/la5d3NWefWiI9FiWdiodwFo=
+	b=vFZDMALAUJKxbxt8/Xj5uIiB4aRqYP+KIzaHQpdI2N8ojRCcuzPSZimgRHoZZN6MB
+	 PCRO09FzjgIJBYWMtCoijgwl8CbXnF91sh0UDpK9/UkwjraPaaoubEf2LfuOTIX60D
+	 ayHanEwhTC9sHoKjyCSMkmRfRiqC4zuxlpzcSWFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 243/307] RDMA/vmw_pvrdma: Fix double free on pvrdma_alloc_ucontext() error path
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 237/270] KVM: arm64: Fix FEAT_Debugv8p9 to check DebugVer, not PMUVer
 Date: Tue, 12 May 2026 19:40:38 +0200
-Message-ID: <20260512173945.251457470@linuxfoundation.org>
+Message-ID: <20260512173943.432249571@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5AB835279B9
+X-Rspamd-Queue-Id: 7F498527378
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246571-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246290-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Fuad Tabba <tabba@google.com>
 
-commit e38e86995df27f1f854063dab1f0c6a513db3faf upstream.
+commit 7fe2cd4e1a3ad230d8fcc00cc99c4bcce4412a75 upstream.
 
-Sashiko points out that pvrdma_uar_free() is already called within
-pvrdma_dealloc_ucontext(), so calling it before triggers a double free.
+FEAT_Debugv8p9 is incorrectly defined against ID_AA64DFR0_EL1.PMUVer
+instead of ID_AA64DFR0_EL1.DebugVer.  All three consumers of the macro
+gate features that are architecturally tied to FEAT_Debugv8p9
+(DebugVer = 0b1011, DDI0487 M.b A2.2.10):
 
+  - HDFGRTR2_EL2.nMDSELR_EL1, HDFGWTR2_EL2.nMDSELR_EL1: MDSELR_EL1
+    is present only when FEAT_Debugv8p9 is implemented (D24.3.21).
+
+  - MDCR_EL2.EBWE: the Extended Breakpoint and Watchpoint Enable bit
+    is RES0 unless FEAT_Debugv8p9 is implemented (D24.3.17).
+
+Neither register has any dependency on PMUVer.
+
+FEAT_Debugv8p9 and FEAT_PMUv3p9 are independent.  Per DDI0487 M.b
+A2.2.10, FEAT_Debugv8p9 is unconditionally mandatory from Armv8.9,
+whereas FEAT_PMUv3p9 is mandatory only when FEAT_PMUv3 is implemented.
+An Armv8.9 CPU without a PMU has DebugVer = 0b1011 but PMUVer = 0b0000,
+so the wrong field check would cause KVM to incorrectly treat EBWE and
+MDSELR_EL1 as RES0 on such hardware.
+
+Fixes: 4bc0fe089840 ("KVM: arm64: Add sanitisation for FEAT_FGT2 registers")
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Link: https://patch.msgid.link/20260424084908.370776-2-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 29c8d9eba550 ("IB: Add vmw_pvrdma driver")
-Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=4
-Link: https://patch.msgid.link/r/10-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/vmw_pvrdma/pvrdma_verbs.c |    2 +-
+ arch/arm64/kvm/config.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/hw/vmw_pvrdma/pvrdma_verbs.c
-+++ b/drivers/infiniband/hw/vmw_pvrdma/pvrdma_verbs.c
-@@ -322,7 +322,7 @@ int pvrdma_alloc_ucontext(struct ib_ucon
- 	uresp.qp_tab_size = vdev->dsr->caps.max_qp;
- 	ret = ib_copy_to_udata(udata, &uresp, sizeof(uresp));
- 	if (ret) {
--		pvrdma_uar_free(vdev, &context->uar);
-+		/* pvrdma_dealloc_ucontext() also frees the UAR */
- 		pvrdma_dealloc_ucontext(&context->ibucontext);
- 		return -EFAULT;
- 	}
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -187,7 +187,7 @@ struct reg_feat_map_desc {
+ #define FEAT_SRMASK		ID_AA64MMFR4_EL1, SRMASK, IMP
+ #define FEAT_PoPS		ID_AA64MMFR4_EL1, PoPS, IMP
+ #define FEAT_PFAR		ID_AA64PFR1_EL1, PFAR, IMP
+-#define FEAT_Debugv8p9		ID_AA64DFR0_EL1, PMUVer, V3P9
++#define FEAT_Debugv8p9		ID_AA64DFR0_EL1, DebugVer, V8P9
+ #define FEAT_PMUv3_SS		ID_AA64DFR0_EL1, PMSS, IMP
+ #define FEAT_SEBEP		ID_AA64DFR0_EL1, SEBEP, IMP
+ #define FEAT_EBEP		ID_AA64DFR1_EL1, EBEP, IMP
 
 
 
