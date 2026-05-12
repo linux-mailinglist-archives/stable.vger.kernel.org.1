@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-246217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMLfLZRqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:48 +0200
+	id wM3+GEN0A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9DC526749
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1A5527F86
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E3633048AB3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEB373075BAE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312EF3955E3;
-	Tue, 12 May 2026 17:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E3D34E744;
+	Tue, 12 May 2026 18:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBlzS2jw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q97l5gM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E688A33B6CC;
-	Tue, 12 May 2026 17:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF81342509;
+	Tue, 12 May 2026 18:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608660; cv=none; b=UpS7cqKiixhExKY+MxAfHuV61ctg9sEOmHKdOm/0Oq7STIN8R8NnVnDKMhuY8s0xGHsTkRTcvYt8X14lfTn1pyum0ywAJQhfTdC5DnZJsjK9H456FmlPe/qidB8j32aCWvKf2aJ0izEmDQ7WqHAUChZdIWXOtRZzmXgLv1b2uvc=
+	t=1778609368; cv=none; b=NbVRez+4cpfqb+ZjY7GbLmytVFSWSQHcdSt/6zLRNOhDaIirMKtJ+jNRu3wMHWs5afWln4NiIMrOYvmgBxG78GqxDQCwmPQBBOCjHa1kJ+22qKQ9F64me7fNu1iZAUsvcBSwhmFFh+L5nwrdmXfxkmUpBhoRYdxXszGJsTFf8BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608660; c=relaxed/simple;
-	bh=DMFqJuiAPaaXXVWVZQKldhYogYVEAA0LHjIe68MOPL4=;
+	s=arc-20240116; t=1778609368; c=relaxed/simple;
+	bh=D4yuZRGWEnsz31DzAFDz0wvPtStLFxwimyb0XNC8lUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6prykuSKqHq7TCcYVWzrm3R5CKj+2dVW18+VKZmMoAbv6VfiGxVQ9kHdfCnkChY5aG1wwr/djNCZNIvcfsJ1q4TBEkTt/LNs7Y8U1DpvZicnxrY7ocILSvGggY2ARkUiv0Y3vRC9MC7NjojlL5OxLUVcjFrbYxaG92H2mb4cPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBlzS2jw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C62EC2BCB0;
-	Tue, 12 May 2026 17:57:39 +0000 (UTC)
+	 MIME-Version; b=kiRf+CfPyKFgxqBCrQeWPQyBQy7s+kpHKQ7/KbBUF010xifxpbwwttLzbHxM19wCfc0+EAkqRGFvi1A/TeZVcS0RV897lEPnUzcbzBDxvaYGhqRTTDXbrtN81Mffpr+6gYBKcCKYkvp+wELjirpgE2rwPiQQF2EzuKcVMVZrXFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q97l5gM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94FCC2BCB0;
+	Tue, 12 May 2026 18:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608659;
-	bh=DMFqJuiAPaaXXVWVZQKldhYogYVEAA0LHjIe68MOPL4=;
+	s=korg; t=1778609368;
+	bh=D4yuZRGWEnsz31DzAFDz0wvPtStLFxwimyb0XNC8lUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBlzS2jwixeo/kppIOdSWsD/XQYF+vboCAhUkLIgbPXxpcaiq2ataFDHl4eMvZB8e
-	 9YUkfMAPs+LRItvxqNkuV95IZDdN7LITl/AhftoP+i3LteO8XAok/TEBW32zSOo0Lb
-	 ovinCJkTfHq/9w+GxWE6P0YuceU3NfUez5M1/pZg=
+	b=q97l5gM5Y9CdFyGMST1OGJOgNjq9zAu+3UvPV1xvDB1fxkwSKWKFCniUmjCw10tJ6
+	 ZZoPUHmCaAiWLWNBNMLF/NgL9O5MOJ5gVg5G0C0QOJul8GUxYLdc1bnAAvM9Ul/Mm3
+	 PiXp20/paRiEOCLy9hJGqZWgVy9iXRRsSb8Uopr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	David Howells <dhowells@redhat.com>,
-	David Gow <davidgow@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 163/270] lib/scatterlist: fix temp buffer in extract_user_to_sg()
+	Li Jian <lazycat-xiao@foxmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 169/307] ASoC: ES8389: convert to devm_clk_get_optional() to get clock
 Date: Tue, 12 May 2026 19:39:24 +0200
-Message-ID: <20260512173941.879074897@linuxfoundation.org>
+Message-ID: <20260512173943.686457080@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +63,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7D9DC526749
+X-Rspamd-Queue-Id: BD1A5527F86
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246493-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,foxmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246217-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,sashiko.dev:url,linux-foundation.org:email,c--e.de:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Li Jian <lazycat-xiao@foxmail.com>
 
-commit 118cf3f55975352ac357fb194405031458186819 upstream.
+commit 8ed3311131077712cdd0b3afec6909b9388ad3e4 upstream.
 
-Instead of allocating a temporary buffer for extracted user pages
-extract_user_to_sg() uses the end of the to be filled scatterlist as a
-temporary buffer.
+When enabling ES8390 via ACPI description, es8389 would fail to
+obtain a clock source, causing the driver to fail to initialize.
+This was not an issue with older kernels, but since commit
+abae8e57e49a ("clk: generalize devm_clk_get() a bit"),
+devm_clk_get() would return an error pointer when a clock source
+was not detected (instead of falling back to a static clock),
+causing the driver to fail early.
 
-Fix the calculation of the start address if the scatterlist already
-contains elements.  The unused space starts at sgtable->sgl +
-sgtable->nents not directly at sgtable->nents and the temporary buffer is
-placed at the end of this unused space.
+Use devm_clk_get_optional() instead to return to the previous
+behaviour, allowing the use of a static clock source.
 
-A subsequent commit will add kunit test cases that demonstrate that the
-patch is necessary.
-
-Pointed out by sashiko.dev on a previous iteration of this series.
-
-Link: https://lkml.kernel.org/r/20260326214905.818170-3-lk@c--e.de
-Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: David Howells <dhowells@redhat.com>
-Cc: David Gow <davidgow@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: <stable@vger.kernel.org>	[v6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Jian <lazycat-xiao@foxmail.com>
+Link: https://patch.msgid.link/tencent_7C78374FB9F4B3A37101E5C719715D8BC40A@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/scatterlist.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/codecs/es8389.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/scatterlist.c
-+++ b/lib/scatterlist.c
-@@ -1099,8 +1099,7 @@ static ssize_t extract_user_to_sg(struct
- 	size_t len, off;
+--- a/sound/soc/codecs/es8389.c
++++ b/sound/soc/codecs/es8389.c
+@@ -892,7 +892,7 @@ static int es8389_probe(struct snd_soc_c
+ 		return ret;
+ 	}
  
- 	/* We decant the page list into the tail of the scatterlist */
--	pages = (void *)sgtable->sgl +
--		array_size(sg_max, sizeof(struct scatterlist));
-+	pages = (void *)sg + array_size(sg_max, sizeof(struct scatterlist));
- 	pages -= sg_max;
- 
- 	do {
+-	es8389->mclk = devm_clk_get(component->dev, "mclk");
++	es8389->mclk = devm_clk_get_optional(component->dev, "mclk");
+ 	if (IS_ERR(es8389->mclk))
+ 		return dev_err_probe(component->dev, PTR_ERR(es8389->mclk),
+ 			"ES8389 is unable to get mclk\n");
 
 
 
