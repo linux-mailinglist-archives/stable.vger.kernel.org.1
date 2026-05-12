@@ -1,267 +1,195 @@
-Return-Path: <stable+bounces-245573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id I7jCNDstA2qN1QEAu9opvQ
-	(envelope-from <stable+bounces-245573-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:38:03 +0200
+	id KL4dJDcrA2oR1QEAu9opvQ
+	(envelope-from <stable+bounces-245574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:29:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230775215D5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:38:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5073A5212BA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DCED32B3C2E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:21:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CDC0430471CE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0253A05F0;
-	Tue, 12 May 2026 13:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6503911D0;
+	Tue, 12 May 2026 13:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjiEcs/U"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqGiBWlv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5225039AD2E
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F23A3905EE
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778591815; cv=none; b=iEkqQAVk93FKH2uhXjE6vbM9l2jF8rbe/I1t0ui4DB5lvvY+xfL3PUSYqyWnk05bexuDjlDWxa04Glg2RX+Qaaozq0yjTT5Z0cSoeNzFZYVJ6x646q+EgdpTl50RyCCb8pG66xIerdOR6q9/GloUMWCnZVnf2o3Q9c87giSNuJo=
+	t=1778591837; cv=none; b=Xr92oyJmCtWJw7mmkbje/Tx3fVQ8E2RqmjwXY+Yg2W61Bd1KAS0+3GMI3j0xf9RBNN2K9GwXkTgL0mHWHJgUfi+M+u1Dy8vcQcw1FyghKMH/ZUPi+HrJ93fYtv3xoDnELpdjpy/4R+4M87ntcOE5HHx1gkD3gNOuvLBsmryQCtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778591815; c=relaxed/simple;
-	bh=pi+HOmhjKS9c4D/FQDTqbAu1Gmi3QWFjGV7NkzJlQvM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Fds7/5W57nCGPjK0oFl2dd129tf0JD+58fOtXviZ65/8kmKwoD0Xq1Pfp5FpDFGImtEZVUuUC7UWngBg13vsxvOTOV8RadOPXntOtX+Pa6jXHU1DAv1/KJ3/CqhO4YEV4awrtrypLcFf6sw46Dol1JgKb19xANXnROgR+3oziEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjiEcs/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865DEC2BCB0;
-	Tue, 12 May 2026 13:16:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778591814;
-	bh=pi+HOmhjKS9c4D/FQDTqbAu1Gmi3QWFjGV7NkzJlQvM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=sjiEcs/UbeP20y67R98OgMODW8c7viNMKdZTiE9/7gm1O4G+xc1wJ1SFnwsCcCoxT
-	 /VTTIOf3nPk3trn31VUhtBTf4KHorfQ5ffCRCp6SdJixZl6A9jkVLklzR3cn9BuFUn
-	 y1PLooqCaEHuoCGPbZvt7IrhmCPca9iJ+HB6GviI=
-Subject: FAILED: patch "[PATCH] arm64: signal: Preserve POR_EL0 if poe_context is missing" failed to apply to 6.12-stable tree
-To: kevin.brodsky@arm.com,catalin.marinas@arm.com,stable@vger.kernel.org,will@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 15:16:59 +0200
-Message-ID: <2026051259-lifter-spellbind-b6d9@gregkh>
+	s=arc-20240116; t=1778591837; c=relaxed/simple;
+	bh=wwNRLIF1JFp5xt9HeapzPaIKxk407Y01fVL/BIECwnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V0zUuXNGNlcwdGHvojP+ssoI2DKKmd2i+CDkzsCPmTAcw7gaVJfTkbmnUMrCz6IAv8h5qKz8tjIMUVvhx9VDpfDO5+54G3rVLVw5YrErIbTn1pc8ioc47zIOkgWAesHqJQ/xz5EZLtLSJARELjvceeythSqxJ6sbTSElaGYmevU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqGiBWlv; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488b150559bso43073155e9.1
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 06:17:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778591833; x=1779196633; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qSTTjErtCCV7PDluuTX4InQQCaNvPmqczetdbYZrylo=;
+        b=KqGiBWlvJ97L0+fCiJN2zFlQUEtHbxwmSSaIiI9BZw0QSZZdWxwf6xfhEoGYFtFqvJ
+         MluAmPRVS4y1+rbAk9nlVmf5byTvQHLYsr1+cTlywgRFgfyUQV5Ak4z4ylIQElAkAfbA
+         iZkJHoMVX5RgJXfXDI990SZo1g1Lzz5zjCIbV+CDrisEegNQCHuqveQq58KwzrJLWAig
+         1ouhNbypuJKjFscYnw0iMAWbAWZ4KIdYBYaBIdJvwDd1L+1bIrF3e+Bt++4QZ5mr6B95
+         iBlU0oSzui1Xc2rFJ0J4fCIuYE4mu9+lVbgpbtiJHKCHC2hZv/v54uuiMff9t2lnc27n
+         1nww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778591833; x=1779196633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qSTTjErtCCV7PDluuTX4InQQCaNvPmqczetdbYZrylo=;
+        b=PonuYP1L9+/uSk+NVHKTtXDsRVhTAxqexip7smhnpRRc7rjjGKDPLpJZ8cCkBZqbwQ
+         j7BD9k21xJrvT2Sj5QVhJTjnK8BeMJ405JN1M8hkZ9hDWAKzfHKADJBDovbVJ/3qVRQU
+         8yNjOWfeQWmddLQ1TwnRlgy+dqXHyVAXIyuTP3YFdrs+pB+SnecRZqBIlfSS8mLEFzGI
+         nwAZRD82rCNFR6woyzomqJkl3XPMG3iGkY4d0VZoAqVGwUclgcVQf9G6muUuyJ6wM45P
+         tR+w3KARMk8pfAAKx4DR65MY1ex5snlQkWa8O7F4trOa7qgchzTuyLlFX9cX60p2BSNI
+         iLjw==
+X-Forwarded-Encrypted: i=1; AFNElJ+YlP5mau0+mKklu0n0JbpVPDZEO/DYh85MCbEsiWacWXX1uhfkZzTddAnyA6sUMRfDD+s5gsQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6QOeF156O/NLYJQ6ZLWQ8XL0G+HIAU5FDBMY60hnCkiPEaN8n
+	lCD9bXL7gQ7FiSZjNDtTxhiw5Xhng4tpattPbj0aYEebMftRB/NJ8wbf
+X-Gm-Gg: Acq92OEvGclQNIjLndAVu6n4oKOD4K/7U6GACs2Wy/npUGemAg4+Y7tN/R5k0sj1TGd
+	j9Tx4CwNw+LPNdsryxDZsgju0ax7eBjEC9m/PPtwZkc7WOP9V6Mr/3VGZjK26wybzSfb6xoMa/V
+	N5S6n3Fna0TnP3+BibUrPnHCpI5+6eNISOKmsuIpsVvrwk/yWSAAjW0QepMM9VXUcm2YUdFcBe1
+	nWko/5HPs0OngK8mPhZgsg+HhaCm1EfBbAxHS5vnPq5L9fImmJNuLte7YFMvcvXNsCuNAAvgeJK
+	bbhiyHumDoJvhCNIxVYLMLuuxyXVh5qJSkKBMXdSrhgh1/O6QKhqFtPYJctzXpLDQ/WUsUDXYZg
+	N/IKsYHcfmnVcsHEItchmVB+Q8cuRfpLQe2BFEa5mEI/BGZHH2XTi4hlU8Pq/8UVSeZxIUXpvAP
+	T2hcbMAWetA/rGdClKuvKbuPx9SdqJyFLbnrsURKydeRCeLXiwGpE8GvBxKvRV
+X-Received: by 2002:a05:600c:6299:b0:486:d76c:fa57 with SMTP id 5b1f17b1804b1-48e706f11d0mr232288505e9.17.1778591832718;
+        Tue, 12 May 2026 06:17:12 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f42a845sm17282245e9.20.2026.05.12.06.17.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 06:17:12 -0700 (PDT)
+Date: Tue, 12 May 2026 14:17:11 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Alex Williamson <alex.williamson@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>, Jason
+ Gunthorpe <jgg@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, linux-kernel
+ <linux-kernel@vger.kernel.org>, Yishai Hadas <yishaih@nvidia.com>,
+ rananta@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] vfio/pci: Fix racy bitfields and tighten struct
+ layout
+Message-ID: <20260512141711.70c49471@pumpkin>
+In-Reply-To: <20260511221609.3837652-2-alex.williamson@nvidia.com>
+References: <20260511221609.3837652-1-alex.williamson@nvidia.com>
+	<20260511221609.3837652-2-alex.williamson@nvidia.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 230775215D5
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5073A5212BA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245573-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-245574-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+On Mon, 11 May 2026 16:16:02 -0600
+Alex Williamson <alex.williamson@nvidia.com> wrote:
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> Bitfield operations are not atomic, they use a read-modify-write
+> pattern, therefore we should be careful not to pack bitfields that
+> can be concurrently updated into the same storage unit.
+> 
+> The split fields (virq_disabled, bardirty, pm_intx_masked,
+> pm_runtime_engaged, sriov_pwr_active) are mutated post-init from
+> contexts that don't serialize against the other writers in the same
+> storage unit, so a bitfield RMW could drop an adjacent field's
+> update.  The remaining bitfields are touched only during probe or
+> close where no concurrent writer exists, so they stay packed.
+> 
+> While reordering, place virq_disabled and bardirty earlier to fill
+> an existing alignment hole.
+> 
+> Fixes: 9cd0f6d5cbb6 ("vfio/pci: Use bitfield for struct vfio_pci_core_device flags")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+> ---
+>  include/linux/vfio_pci_core.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 2ebba746c18f..24e8db5b1c0d 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -101,6 +101,8 @@ struct vfio_pci_core_device {
+>  	const struct vfio_pci_device_ops *pci_ops;
+>  	void __iomem		*barmap[PCI_STD_NUM_BARS];
+>  	bool			bar_mmap_supported[PCI_STD_NUM_BARS];
+> +	bool			virq_disabled;
+> +	bool			bardirty;
 
-To reproduce the conflict and resubmit, you may use the following commands:
+I'd put those two after the :1 fields to avoid an extra hole.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 030e8a40fff65ca6ac1c04a4d3c08afe72438922
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051259-lifter-spellbind-b6d9@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+-- David
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 030e8a40fff65ca6ac1c04a4d3c08afe72438922 Mon Sep 17 00:00:00 2001
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Mon, 27 Apr 2026 13:03:33 +0100
-Subject: [PATCH] arm64: signal: Preserve POR_EL0 if poe_context is missing
-
-Commit 2e8a1acea859 ("arm64: signal: Improve POR_EL0 handling to
-avoid uaccess failures") delayed the write to POR_EL0 in
-rt_sigreturn to avoid spurious uaccess failures. This change however
-relies on the poe_context frame record being present: on a system
-supporting POE, calling sigreturn without a poe_context record now
-results in writing arbitrary data from the kernel stack into POR_EL0.
-
-Fix this by adding a __valid_fields member to struct
-user_access_state, and zeroing the struct on allocation.
-restore_poe_context() then indicates that the por_el0 field is valid
-by setting the corresponding bit in __valid_fields, and
-restore_user_access_state() only touches POR_EL0 if there is a valid
-value to set it to. This is in line with how POR_EL0 was originally
-handled; all frame records are currently optional, except
-fpsimd_context.
-
-To ensure that __valid_fields is kept in sync, fields (currently
-just por_el0) are now accessed via accessors and prefixed with __ to
-discourage direct access.
-
-Fixes: 2e8a1acea859 ("arm64: signal: Improve POR_EL0 handling to avoid uaccess failures")
-Cc: <stable@vger.kernel.org>
-Reported-by: Will Deacon <will@kernel.org>
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 08ffc5a5aea4..38e6fa204c17 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -67,6 +67,9 @@ struct rt_sigframe_user_layout {
- 	unsigned long end_offset;
- };
- 
-+#define TERMINATOR_SIZE round_up(sizeof(struct _aarch64_ctx), 16)
-+#define EXTRA_CONTEXT_SIZE round_up(sizeof(struct extra_context), 16)
-+
- /*
-  * Holds any EL0-controlled state that influences unprivileged memory accesses.
-  * This includes both accesses done in userspace and uaccess done in the kernel.
-@@ -74,13 +77,35 @@ struct rt_sigframe_user_layout {
-  * This state needs to be carefully managed to ensure that it doesn't cause
-  * uaccess to fail when setting up the signal frame, and the signal handler
-  * itself also expects a well-defined state when entered.
-+ *
-+ * The struct should be zero-initialised. Its members should only be accessed
-+ * via the accessors below. __valid_fields tracks which of the fields are valid
-+ * (have been set to some value).
-  */
- struct user_access_state {
--	u64 por_el0;
-+	unsigned int __valid_fields;
-+	u64 __por_el0;
- };
- 
--#define TERMINATOR_SIZE round_up(sizeof(struct _aarch64_ctx), 16)
--#define EXTRA_CONTEXT_SIZE round_up(sizeof(struct extra_context), 16)
-+#define UA_STATE_HAS_POR_EL0	BIT(0)
-+
-+static void set_ua_state_por_el0(struct user_access_state *ua_state,
-+				 u64 por_el0)
-+{
-+	ua_state->__por_el0 = por_el0;
-+	ua_state->__valid_fields |= UA_STATE_HAS_POR_EL0;
-+}
-+
-+static int get_ua_state_por_el0(const struct user_access_state *ua_state,
-+				u64 *por_el0)
-+{
-+	if (ua_state->__valid_fields & UA_STATE_HAS_POR_EL0) {
-+		*por_el0 = ua_state->__por_el0;
-+		return 0;
-+	}
-+
-+	return -ENOENT;
-+}
- 
- /*
-  * Save the user access state into ua_state and reset it to disable any
-@@ -94,7 +119,7 @@ static void save_reset_user_access_state(struct user_access_state *ua_state)
- 		for (int pkey = 0; pkey < arch_max_pkey(); pkey++)
- 			por_enable_all |= POR_ELx_PERM_PREP(pkey, POE_RWX);
- 
--		ua_state->por_el0 = read_sysreg_s(SYS_POR_EL0);
-+		set_ua_state_por_el0(ua_state, read_sysreg_s(SYS_POR_EL0));
- 		write_sysreg_s(por_enable_all, SYS_POR_EL0);
- 		/*
- 		 * No ISB required as we can tolerate spurious Overlay faults -
-@@ -122,8 +147,10 @@ static void set_handler_user_access_state(void)
-  */
- static void restore_user_access_state(const struct user_access_state *ua_state)
- {
--	if (system_supports_poe())
--		write_sysreg_s(ua_state->por_el0, SYS_POR_EL0);
-+	u64 por_el0;
-+
-+	if (get_ua_state_por_el0(ua_state, &por_el0) == 0)
-+		write_sysreg_s(por_el0, SYS_POR_EL0);
- }
- 
- static void init_user_layout(struct rt_sigframe_user_layout *user)
-@@ -333,11 +360,16 @@ static int restore_fpmr_context(struct user_ctxs *user)
- static int preserve_poe_context(struct poe_context __user *ctx,
- 				const struct user_access_state *ua_state)
- {
--	int err = 0;
-+	int err;
-+	u64 por_el0;
-+
-+	err = get_ua_state_por_el0(ua_state, &por_el0);
-+	if (WARN_ON_ONCE(err))
-+		return err;
- 
- 	__put_user_error(POE_MAGIC, &ctx->head.magic, err);
- 	__put_user_error(sizeof(*ctx), &ctx->head.size, err);
--	__put_user_error(ua_state->por_el0, &ctx->por_el0, err);
-+	__put_user_error(por_el0, &ctx->por_el0, err);
- 
- 	return err;
- }
-@@ -353,7 +385,7 @@ static int restore_poe_context(struct user_ctxs *user,
- 
- 	__get_user_error(por_el0, &(user->poe->por_el0), err);
- 	if (!err)
--		ua_state->por_el0 = por_el0;
-+		set_ua_state_por_el0(ua_state, por_el0);
- 
- 	return err;
- }
-@@ -1095,7 +1127,7 @@ SYSCALL_DEFINE0(rt_sigreturn)
- {
- 	struct pt_regs *regs = current_pt_regs();
- 	struct rt_sigframe __user *frame;
--	struct user_access_state ua_state;
-+	struct user_access_state ua_state = {};
- 
- 	/* Always make any pending restarted system calls return -EINTR */
- 	current->restart_block.fn = do_no_restart_syscall;
-@@ -1507,7 +1539,7 @@ static int setup_rt_frame(int usig, struct ksignal *ksig, sigset_t *set,
- {
- 	struct rt_sigframe_user_layout user;
- 	struct rt_sigframe __user *frame;
--	struct user_access_state ua_state;
-+	struct user_access_state ua_state = {};
- 	int err = 0;
- 
- 	fpsimd_save_and_flush_current_state();
+>  	u8			*pci_config_map;
+>  	u8			*vconfig;
+>  	struct perm_bits	*msi_perm;
+> @@ -117,16 +119,14 @@ struct vfio_pci_core_device {
+>  	u32			rbar[7];
+>  	bool			has_dyn_msix:1;
+>  	bool			pci_2_3:1;
+> -	bool			virq_disabled:1;
+>  	bool			reset_works:1;
+>  	bool			extended_caps:1;
+> -	bool			bardirty:1;
+>  	bool			has_vga:1;
+>  	bool			needs_reset:1;
+>  	bool			nointx:1;
+>  	bool			needs_pm_restore:1;
+> -	bool			pm_intx_masked:1;
+> -	bool			pm_runtime_engaged:1;
+> +	bool			pm_intx_masked;
+> +	bool			pm_runtime_engaged;
+>  	struct pci_saved_state	*pci_saved_state;
+>  	struct pci_saved_state	*pm_save;
+>  	int			ioeventfds_nr;
 
 
