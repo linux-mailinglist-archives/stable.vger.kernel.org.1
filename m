@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246513-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPcNGrRsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:52 +0200
+	id QKYVGIl0A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246513-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:42:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1439526DFB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0CB527FF8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DFD7B31ADAEC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0C7032849D6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D933EDE49;
-	Tue, 12 May 2026 17:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32CE35F185;
+	Tue, 12 May 2026 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QB/znXHk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMN+NqTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5173EDE42;
-	Tue, 12 May 2026 17:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860CA342509;
+	Tue, 12 May 2026 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608699; cv=none; b=DAqLizCyaRV40CqhMMFPGtA2c07dqCqzP3n/TaBEqI+3L7nVp6wpIW8k1FrpJY3GxX5Z0m/ysuH1AOxUqvYBnKaeKlI7S7x+2fcpALaBKxW1c4nWiBavTl8pEaMut/zKknnb6T8AitArc1YMQk6Yiq2qqRxp6/yDfUn8/MiMnes=
+	t=1778609419; cv=none; b=fcY/fL+84LrAQqOii9RvA0cxaYNhdSBpuG8qiPJVAABr5NNyh+rldIgGaRgudVqDdpHU+fAXvffdZs7dZwQtQC4jUFkJQJ7A2eZ9bDveJ0MR+31JmIa0rxwNZZ11TtGvA7OVZ3S7lkG2JfM/te4iajXEHz2KltzK79hzICKevxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608699; c=relaxed/simple;
-	bh=fu4ocS/b4alawIsdpqDyRk3H7r9IUTOcGuW0hE52P5k=;
+	s=arc-20240116; t=1778609419; c=relaxed/simple;
+	bh=EcFwoyVEaIPKdlTpi/xGKJ6PUDpBCtpIrt7TdhBZLfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nN0SDhtFrxyyz+nsmqJWA44t2Jghop4lA0TdW6FsMaMDraDrM4m8P1IPMZwmr9yb3u0Q287nEPHjpHcowJEBTGOm6jFl4ASpym3BZyeaDr5FDfeC2bcRjHFLoTaAjB8DXQPk0aDRPHcWucWrO+/4wmpWYaOLCnIhujq7TBLCVKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QB/znXHk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3905EC2BCB0;
-	Tue, 12 May 2026 17:58:18 +0000 (UTC)
+	 MIME-Version; b=H1GeA7p4qY9ITu9gjCkAM7g35Xpi88wj2NbpVBi/LZmvrnaBkqMX06WTTgOZ/CGO8YEk7rC2gV/fLmYvhtU2YHC1Ky9TfrszXyrJDByzW+XZmeXWDb9hsvgljUUhHxxjuo96zl4BqCpPa5YAXnR0oJyP9RemUXLwPVWZ3V4v9Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMN+NqTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC44C2BCB0;
+	Tue, 12 May 2026 18:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608698;
-	bh=fu4ocS/b4alawIsdpqDyRk3H7r9IUTOcGuW0hE52P5k=;
+	s=korg; t=1778609419;
+	bh=EcFwoyVEaIPKdlTpi/xGKJ6PUDpBCtpIrt7TdhBZLfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QB/znXHkxRNvHiSLSpwQIk9o9n014y7JheBmutmMpiOeXzFx5UHDHD3ZIDtx59dQe
-	 4f+bbdRskEnL/jK9NGPkhqlFHc7I8gaukK30ekVURrkGCZDxGXNk6z8ptMBD73cLky
-	 FFDHjfDBMGNjEidquEUGMPWAcpX+AgkYwxazq7/k=
+	b=iMN+NqTztjqxxgWE0QAUfLMhLK/lIMQMyoefyBiiXvjDRee+dGwd6H//azfNwWTp/
+	 WxGC0g97AXxhrG5imsGlwKW5ZHx8hC8IrRYBetsIhDYOMN+KgXPyx8FUWkKu+tGyAz
+	 nWuN8Isj8aor6kDBifzy8h0I35p2R2V9MyiNZ/gE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 181/270] KVM: x86: check for nEPT/nNPT in slow flush hypercalls
+	Eric Biggers <ebiggers@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 7.0 187/307] dm-verity-fec: fix reading parity bytes split across blocks (take 3)
 Date: Tue, 12 May 2026 19:39:42 +0200
-Message-ID: <20260512173942.259550515@linuxfoundation.org>
+Message-ID: <20260512173944.062186282@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D1439526DFB
+X-Rspamd-Queue-Id: DB0CB527FF8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246232-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246513-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,43 +90,189 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 464af6fc2b1dcc74005b7f58ee3812b17777efee upstream.
+commit 430a05cb926f6bdf53e81460a2c3a553257f3f61 upstream.
 
-Checking is_guest_mode(vcpu) is incorrect, because translate_nested_gpa()
-is only valid if an L2 guest is running *with nested EPT/NPT enabled*.
-Instead use the same condition as translate_nested_gpa() itself.
+fec_decode_bufs() assumes that the parity bytes of the first RS codeword
+it decodes are never split across parity blocks.
 
+This assumption is false.  Consider v->fec->block_size == 4096 &&
+v->fec->roots == 17 && fio->nbufs == 1, for example.  In that case, each
+call to fec_decode_bufs() consumes v->fec->roots * (fio->nbufs <<
+DM_VERITY_FEC_BUF_RS_BITS) = 272 parity bytes.
+
+Considering that the parity data for each message block starts on a
+block boundary, the byte alignment in the parity data will iterate
+through 272*i mod 4096 until the 3 parity blocks have been consumed.  On
+the 16th call (i=15), the alignment will be 4080 bytes into the first
+block.  Only 16 bytes remain in that block, but 17 parity bytes will be
+needed.  The code reads out-of-bounds from the parity block buffer.
+
+Fortunately this doesn't normally happen, since it can occur only for
+certain non-default values of fec_roots *and* when the maximum number of
+buffers couldn't be allocated due to low memory.  For example with
+block_size=4096 only the following cases are affected:
+
+    fec_roots=17: nbufs in [1, 3, 5, 15]
+    fec_roots=19: nbufs in [1, 229]
+    fec_roots=21: nbufs in [1, 3, 5, 13, 15, 39, 65, 195]
+    fec_roots=23: nbufs in [1, 89]
+
+Regardless, fix it by refactoring how the parity blocks are read.
+
+Fixes: 6df90c02bae4 ("dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)")
 Cc: stable@vger.kernel.org
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Fixes: aee738236dca ("KVM: x86: Prepare kvm_hv_flush_tlb() to handle L2's GPAs", 2022-11-18)
-Link: https://patch.msgid.link/20260503200905.106077-1-pbonzini@redhat.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/hyperv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-verity-fec.c |  100 +++++++++++++++++++--------------------------
+ 1 file changed, 44 insertions(+), 56 deletions(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2039,7 +2039,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_v
- 	 * flush).  Translate the address here so the memory can be uniformly
- 	 * read with kvm_read_guest().
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -33,36 +33,6 @@ static inline u64 fec_interleave(struct
+ 	return offset + mod * (v->fec->rounds << v->data_dev_block_bits);
+ }
+ 
+-/*
+- * Read error-correcting codes for the requested RS block. Returns a pointer
+- * to the data block. Caller is responsible for releasing buf.
+- */
+-static u8 *fec_read_parity(struct dm_verity *v, u64 rsb, int index,
+-			   unsigned int *offset, unsigned int par_buf_offset,
+-			   struct dm_buffer **buf, unsigned short ioprio)
+-{
+-	u64 position, block, rem;
+-	u8 *res;
+-
+-	/* We have already part of parity bytes read, skip to the next block */
+-	if (par_buf_offset)
+-		index++;
+-
+-	position = (index + rsb) * v->fec->roots;
+-	block = div64_u64_rem(position, v->fec->io_size, &rem);
+-	*offset = par_buf_offset ? 0 : (unsigned int)rem;
+-
+-	res = dm_bufio_read_with_ioprio(v->fec->bufio, block, buf, ioprio);
+-	if (IS_ERR(res)) {
+-		DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
+-		      v->data_dev->name, (unsigned long long)rsb,
+-		      (unsigned long long)block, PTR_ERR(res));
+-		*buf = NULL;
+-	}
+-
+-	return res;
+-}
+-
+ /* Loop over each allocated buffer. */
+ #define fec_for_each_buffer(io, __i) \
+ 	for (__i = 0; __i < (io)->nbufs; __i++)
+@@ -102,15 +72,29 @@ static int fec_decode_bufs(struct dm_ver
+ {
+ 	int r, corrected = 0, res;
+ 	struct dm_buffer *buf;
+-	unsigned int n, i, j, offset, par_buf_offset = 0;
++	unsigned int n, i, j, parity_pos, to_copy;
+ 	uint16_t par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
+ 	u8 *par, *block;
++	u64 parity_block;
+ 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
+ 
+-	par = fec_read_parity(v, rsb, block_offset, &offset,
+-			      par_buf_offset, &buf, bio->bi_ioprio);
+-	if (IS_ERR(par))
++	/*
++	 * Compute the index of the first parity block that will be needed and
++	 * the starting position in that block.  Then read that block.
++	 *
++	 * io_size is always a power of 2, but roots might not be.  Note that
++	 * when it's not, a codeword's parity bytes can span a block boundary.
++	 */
++	parity_block = (rsb + block_offset) * v->fec->roots;
++	parity_pos = parity_block & (v->fec->io_size - 1);
++	parity_block >>= v->data_dev_block_bits;
++	par = dm_bufio_read_with_ioprio(v->fec->bufio, parity_block, &buf,
++					bio->bi_ioprio);
++	if (IS_ERR(par)) {
++		DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
++		      v->data_dev->name, rsb, parity_block, PTR_ERR(par));
+ 		return PTR_ERR(par);
++	}
+ 
+ 	/*
+ 	 * Decode the RS blocks we have in bufs. Each RS block results in
+@@ -118,8 +102,32 @@ static int fec_decode_bufs(struct dm_ver
  	 */
--	if (!hc->fast && is_guest_mode(vcpu)) {
-+	if (!hc->fast && mmu_is_nested(vcpu)) {
- 		hc->ingpa = translate_nested_gpa(vcpu, hc->ingpa, 0, NULL);
- 		if (unlikely(hc->ingpa == INVALID_GPA))
- 			return HV_STATUS_INVALID_HYPERCALL_INPUT;
+ 	fec_for_each_buffer_rs_block(fio, n, i) {
+ 		block = fec_buffer_rs_block(v, fio, n, i);
+-		for (j = 0; j < v->fec->roots - par_buf_offset; j++)
+-			par_buf[par_buf_offset + j] = par[offset + j];
++
++		/*
++		 * Copy the next 'roots' parity bytes to 'par_buf', reading
++		 * another parity block if needed.
++		 */
++		to_copy = min(v->fec->io_size - parity_pos, v->fec->roots);
++		for (j = 0; j < to_copy; j++)
++			par_buf[j] = par[parity_pos++];
++		if (to_copy < v->fec->roots) {
++			parity_block++;
++			parity_pos = 0;
++
++			dm_bufio_release(buf);
++			par = dm_bufio_read_with_ioprio(v->fec->bufio,
++							parity_block, &buf,
++							bio->bi_ioprio);
++			if (IS_ERR(par)) {
++				DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
++				      v->data_dev->name, rsb, parity_block,
++				      PTR_ERR(par));
++				return PTR_ERR(par);
++			}
++			for (; j < v->fec->roots; j++)
++				par_buf[j] = par[parity_pos++];
++		}
++
+ 		/* Decode an RS block using Reed-Solomon */
+ 		res = decode_rs8(fio->rs, block, par_buf, v->fec->rsn,
+ 				 NULL, neras, fio->erasures, 0, NULL);
+@@ -134,26 +142,6 @@ static int fec_decode_bufs(struct dm_ver
+ 		block_offset++;
+ 		if (block_offset >= 1 << v->data_dev_block_bits)
+ 			goto done;
+-
+-		/* Read the next block when we run out of parity bytes */
+-		offset += (v->fec->roots - par_buf_offset);
+-		/* Check if parity bytes are split between blocks */
+-		if (offset < v->fec->io_size && (offset + v->fec->roots) > v->fec->io_size) {
+-			par_buf_offset = v->fec->io_size - offset;
+-			for (j = 0; j < par_buf_offset; j++)
+-				par_buf[j] = par[offset + j];
+-			offset += par_buf_offset;
+-		} else
+-			par_buf_offset = 0;
+-
+-		if (offset >= v->fec->io_size) {
+-			dm_bufio_release(buf);
+-
+-			par = fec_read_parity(v, rsb, block_offset, &offset,
+-					      par_buf_offset, &buf, bio->bi_ioprio);
+-			if (IS_ERR(par))
+-				return PTR_ERR(par);
+-		}
+ 	}
+ done:
+ 	r = corrected;
 
 
 
