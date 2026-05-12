@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aM47FXpqA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:22 +0200
+	id AGb/JoNvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6198526703
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395185275EE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2562630956B0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C316A3104026
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4113B83E3;
-	Tue, 12 May 2026 17:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC663EDE68;
+	Tue, 12 May 2026 18:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3BL5klw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERV2oz/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F9B3BB101;
-	Tue, 12 May 2026 17:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB8C23E356;
+	Tue, 12 May 2026 18:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608216; cv=none; b=Lgo7RfksLiHd0H8IyZlZ5ejOeHfb63E1Hlhv6cqt12LJ+PITIaXbq/hBBvwYWQmwAmhsvEcRU0WpngQo65DqAr09KZduSQQD0+rdK9otvRnU46qN7gDFDJHOeqp7mdIL6ydTr+f/L++wxzhGZz0TmS4Xru73Ybp2ceG0Gn2niSc=
+	t=1778609484; cv=none; b=PnFC4JNy4SMdUY+hEadEEN/HtQ9pwLug6eaTt5gLrWZJdj8Z/HCDfW7+gtq5hDguEKz8lK9sGPuNdv9+wXCtg4WgEGwIXvCf3NRF4kMJhZSTiIfm6SuM8NRF/MGmkP4vCcz+cxKumMqmvvJYwZYrYoVoI/kPw490y5SyQePDdgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608216; c=relaxed/simple;
-	bh=G3/jdEaJvMjZ5K9sDgzeevnbUlFylJjqZQY5oZNdld0=;
+	s=arc-20240116; t=1778609484; c=relaxed/simple;
+	bh=t5N5bKwmu5bFlZLhPt1tQtG+9P4AIZM8CRUBW6UIoD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwtI0468lq+MUhARe3MCL/DQwqaw/pojV9PuszZd3NhSKZ85l1WOy1YKp4AmpYPPc49ZBB2W+KoY8mSS9C4uaHZqKEau4AddXXGOSC9E3HZqTrTsuFIKf6MwFF8nekJqdjxI4zCYL4sDMaezzKC8B4EMO0Yrnuqzv4gC3pNPpq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3BL5klw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C2DC2BCF5;
-	Tue, 12 May 2026 17:50:16 +0000 (UTC)
+	 MIME-Version; b=WAewJqyB5IXRG24OtJeHjvpukanZjRjYhRsqQAsONPTHCNpZ5e8HkSvjT30KbU+DtHV6Sb99XDwE0ADauPN82M4IhY2kMCFRjJeahOPyzvUsKqRKS4ZkwOImoDqbz5a1Ua4brEc57G7D7HVC8+ZjnW6wRok87j3SGOVoF27AlOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERV2oz/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8925C2BCB0;
+	Tue, 12 May 2026 18:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608216;
-	bh=G3/jdEaJvMjZ5K9sDgzeevnbUlFylJjqZQY5oZNdld0=;
+	s=korg; t=1778609484;
+	bh=t5N5bKwmu5bFlZLhPt1tQtG+9P4AIZM8CRUBW6UIoD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3BL5klw++LO5vUyPRUQiEPTYkzvYC+QRGlp+FNwhq37nToKaSwIt6YpoBDSHiAeq
-	 YZFyCtmKnyg3r+dk46+uTbIdSXir37VjUAF6PajO8C7yXQtnhnJZDjgV/c3uaxedHH
-	 Io9zawFjqQiSWUfbiIXQ/Hb67UV/ju3ZRsHxrOKg=
+	b=ERV2oz/Zad7YxWluekcN9SbWrcPOYRHqpgqaMH/PgxkGU+x6aeMtZ1BftvB2J7oud
+	 LP1uh6jg9HuzejhmgwcKGGFRwz8ogOtqLMo+mWviSfGjsPsq0lxpOUvz29mDFxxKe+
+	 w0ayTJ5cvmxYAyU6kByF10QwkpuBZ7O5hfzkjBzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 157/206] selftests: mptcp: check output: catch cmd errors
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 214/307] smb: client: validate dacloffset before building DACL pointers
 Date: Tue, 12 May 2026 19:40:09 +0200
-Message-ID: <20260512173936.187491953@linuxfoundation.org>
+Message-ID: <20260512173944.631870319@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +63,153 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C6198526703
+X-Rspamd-Queue-Id: 395185275EE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246045-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246538-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 65db7b27b90e2ea8d4966935aa9a50b6a60c31ac upstream.
+commit f98b48151cc502ada59d9778f0112d21f2586ca3 upstream.
 
-Using '${?}' inside the if-statement to check the returned value from
-the command that was evaluated as part of the if-statement is not
-correct: here, '${?}' will be linked to the previous instruction, not
-the one that is expected here (${cmd}).
+parse_sec_desc(), build_sec_desc(), and the chown path in
+id_mode_to_cifs_acl() all add the server-supplied dacloffset to pntsd
+before proving a DACL header fits inside the returned security
+descriptor.
 
-Instead, simply mark the error, except if an error is expected. If
-that's the case, 1 can be passed as the 4th argument of this helper.
-Three checks from pm_netlink.sh expect an error.
+On 32-bit builds a malicious server can return dacloffset near
+U32_MAX, wrap the derived DACL pointer below end_of_acl, and then slip
+past the later pointer-based bounds checks. build_sec_desc() and
+id_mode_to_cifs_acl() can then dereference DACL fields from the wrapped
+pointer in the chmod/chown rewrite paths.
 
-While at it, improve the error message when the command unexpectedly
-fails or succeeds.
+Validate dacloffset numerically before building any DACL pointer and
+reuse the same helper at the three DACL entry points.
 
-Note that we could expect a specific returned value, but the checks
-currently expecting an error can be used with 'ip mptcp' or 'pm_nl_ctl',
-and these two tools don't return the same error code.
-
-Fixes: 2d0c1d27ea4e ("selftests: mptcp: add mptcp_lib_check_output helper")
+Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-10-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_lib.sh  |   16 ++++++++++------
- tools/testing/selftests/net/mptcp/pm_netlink.sh |   10 ++++++----
- 2 files changed, 16 insertions(+), 10 deletions(-)
+ fs/smb/client/cifsacl.c |   35 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -407,20 +407,24 @@ mptcp_lib_wait_local_port_listen() {
- 	wait_local_port_listen "${@}" "tcp"
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -1264,6 +1264,17 @@ static int parse_sid(struct smb_sid *psi
+ 	return 0;
  }
  
-+# $1: error file, $2: cmd, $3: expected msg, [$4: expected error]
- mptcp_lib_check_output() {
- 	local err="${1}"
- 	local cmd="${2}"
- 	local expected="${3}"
-+	local exp_error="${4:-0}"
- 	local cmd_ret=0
- 	local out
++static bool dacl_offset_valid(unsigned int acl_len, __u32 dacloffset)
++{
++	if (acl_len < sizeof(struct smb_acl))
++		return false;
++
++	if (dacloffset < sizeof(struct smb_ntsd))
++		return false;
++
++	return dacloffset <= acl_len - sizeof(struct smb_acl);
++}
++
  
--	if ! out=$(${cmd} 2>"${err}"); then
--		cmd_ret=${?}
--	fi
-+	out=$(${cmd} 2>"${err}") || cmd_ret=1
+ /* Convert CIFS ACL to POSIX form */
+ static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
+@@ -1284,7 +1295,6 @@ static int parse_sec_desc(struct cifs_sb
+ 	group_sid_ptr = (struct smb_sid *)((char *)pntsd +
+ 				le32_to_cpu(pntsd->gsidoffset));
+ 	dacloffset = le32_to_cpu(pntsd->dacloffset);
+-	dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 	cifs_dbg(NOISY, "revision %d type 0x%x ooffset 0x%x goffset 0x%x sacloffset 0x%x dacloffset 0x%x\n",
+ 		 pntsd->revision, pntsd->type, le32_to_cpu(pntsd->osidoffset),
+ 		 le32_to_cpu(pntsd->gsidoffset),
+@@ -1315,11 +1325,18 @@ static int parse_sec_desc(struct cifs_sb
+ 		return rc;
+ 	}
  
--	if [ ${cmd_ret} -ne 0 ]; then
--		mptcp_lib_pr_fail "command execution '${cmd}' stderr"
--		cat "${err}"
-+	if [ "${cmd_ret}" != "${exp_error}" ]; then
-+		mptcp_lib_pr_fail "unexpected returned code for '${cmd}', info:"
-+		if [ "${exp_error}" = 0 ]; then
-+			cat "${err}"
-+		else
-+			echo "${out}"
-+		fi
- 		return 2
- 	elif [ "${out}" = "${expected}" ]; then
- 		return 0
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -121,10 +121,12 @@ check()
- 	local cmd="$1"
- 	local expected="$2"
- 	local msg="$3"
-+	local exp_error="$4"
- 	local rc=0
+-	if (dacloffset)
++	if (dacloffset) {
++		if (!dacl_offset_valid(acl_len, dacloffset)) {
++			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++			return -EINVAL;
++		}
++
++		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 		parse_dacl(dacl_ptr, end_of_acl, owner_sid_ptr,
+ 			   group_sid_ptr, fattr, get_mode_from_special_sid);
+-	else
++	} else {
+ 		cifs_dbg(FYI, "no ACL\n"); /* BB grant all or default perms? */
++	}
  
- 	mptcp_lib_print_title "$msg"
--	mptcp_lib_check_output "${err}" "${cmd}" "${expected}" || rc=${?}
-+	mptcp_lib_check_output "${err}" "${cmd}" "${expected}" "${exp_error}" ||
-+		rc=${?}
- 	if [ ${rc} -eq 2 ]; then
- 		mptcp_lib_result_fail "${msg} # error ${rc}"
- 		ret=${KSFT_FAIL}
-@@ -157,13 +159,13 @@ check "show_endpoints" \
- 			    "3,10.0.1.3,signal backup")" "dump addrs"
+ 	return rc;
+ }
+@@ -1342,6 +1359,11 @@ static int build_sec_desc(struct smb_nts
  
- del_endpoint 2
--check "get_endpoint 2" "" "simple del addr"
-+check "get_endpoint 2" "" "simple del addr" 1
- check "show_endpoints" \
- 	"$(format_endpoints "1,10.0.1.1" \
- 			    "3,10.0.1.3,signal backup")" "dump addrs after del"
+ 	dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 	if (dacloffset) {
++		if (!dacl_offset_valid(secdesclen, dacloffset)) {
++			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++			return -EINVAL;
++		}
++
+ 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 		rc = validate_dacl(dacl_ptr, end_of_acl);
+ 		if (rc)
+@@ -1710,6 +1732,12 @@ id_mode_to_cifs_acl(struct inode *inode,
+ 		nsecdesclen = sizeof(struct smb_ntsd) + (sizeof(struct smb_sid) * 2);
+ 		dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 		if (dacloffset) {
++			if (!dacl_offset_valid(secdesclen, dacloffset)) {
++				cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++				rc = -EINVAL;
++				goto id_mode_to_cifs_acl_exit;
++			}
++
+ 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 			rc = validate_dacl(dacl_ptr, (char *)pntsd + secdesclen);
+ 			if (rc) {
+@@ -1752,6 +1780,7 @@ id_mode_to_cifs_acl(struct inode *inode,
+ 		rc = ops->set_acl(pnntsd, nsecdesclen, inode, path, aclflag);
+ 		cifs_dbg(NOISY, "set_cifs_acl rc: %d\n", rc);
+ 	}
++id_mode_to_cifs_acl_exit:
+ 	cifs_put_tlink(tlink);
  
- add_endpoint 10.0.1.3 2>/dev/null
--check "get_endpoint 4" "" "duplicate addr"
-+check "get_endpoint 4" "" "duplicate addr" 1
- 
- add_endpoint 10.0.1.4 flags signal
- check "get_endpoint 4" "$(format_endpoints "4,10.0.1.4,signal")" "id addr increment"
-@@ -172,7 +174,7 @@ for i in $(seq 5 9); do
- 	add_endpoint "10.0.1.${i}" flags signal >/dev/null 2>&1
- done
- check "get_endpoint 9" "$(format_endpoints "9,10.0.1.9,signal")" "hard addr limit"
--check "get_endpoint 10" "" "above hard addr limit"
-+check "get_endpoint 10" "" "above hard addr limit" 1
- 
- del_endpoint 9
- for i in $(seq 10 255); do
+ 	kfree(pnntsd);
 
 
 
