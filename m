@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-245814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG7EKEFKA2r+2wEAu9opvQ
-	(envelope-from <stable+bounces-245814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:41:53 +0200
+	id kD2nCO1HA2rf2gEAu9opvQ
+	(envelope-from <stable+bounces-245815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:31:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D53523DE6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:41:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE15523AEF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0B0E30E0FDF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:49:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A66A3053F3C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46CC25393B;
-	Tue, 12 May 2026 14:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D561D54FA;
+	Tue, 12 May 2026 14:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LyDt4WA0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="COq/mlbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983652D0C94
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A6336166F
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778597388; cv=none; b=OnXSP5qweMEzOvd8FcFrB98vfarCQfqhXEYLxl1QenEsvhLZpwrT9FPU/wQSsCHZ9K4D/2nWvFtayLla1nHO2ekh7y8IyXpy1tnkK9YaRl1k5qN4L/RxyBfq3Hn7klW8FU/6HhkNg1UlHOuxioiqAOCcaZ+l8vT3u4bJuMYnMVA=
+	t=1778597451; cv=none; b=a3UrkMxSI741s2Bipm99U2zZx2bQ2HbVPt/fDj/ExFFjc0JgnhMen/mkkhvh+z1ck6tjjRq2H6idpSsdk6elSxVQFMQqIcoo0TdNnVL6nfM3PGGgojvGsVfDcAVVQhIR9m8KBXcmjhikUmXJIx6DFphXVN+7UPGvepCaS/gqhmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778597388; c=relaxed/simple;
-	bh=Gdm+NF/o8Vk/qHJYm/9RTsvqBhjO0eFortADgcTUtFg=;
+	s=arc-20240116; t=1778597451; c=relaxed/simple;
+	bh=6bBYy1l66boLo3eZPCikdcO6FIZ1uvzNOcdkpaGvaE4=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bArDSNfTjtcCZ7mCrVSmaD74d1AKtxoNhT47f1bKxxMN2Yd+dPhW1Mc81hfTRl8qTonSdYWFi2vKMnZAVryDFDpCnAwIgKMKOjcX5T9eIc5ma/kRTfC2mkvgWp307uNduPi7UaMc7IT8Qz9F9xIOpmb604bHMvUhy0ikGELWvbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LyDt4WA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7CAC2BCB0
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:49:48 +0000 (UTC)
+	 MIME-Version; b=fM6JjNU6ZZy5IdTWrtnYgSxgFb6hZapLEkajB57H/zMf8yNolhCwLT+Guabog4PWz1NDBt+x4/FQAoZn9qx8cAGlySGDiwe3Ime9JMnec0USz37BCVKElL3gSrLGoQL29gMMW3Uwj+yq8ICsZ7yqC9akhYVxmzwTHS5BQH9bIEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COq/mlbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0F5C2BCB0
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778597388;
-	bh=Gdm+NF/o8Vk/qHJYm/9RTsvqBhjO0eFortADgcTUtFg=;
+	s=k20201202; t=1778597451;
+	bh=6bBYy1l66boLo3eZPCikdcO6FIZ1uvzNOcdkpaGvaE4=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=LyDt4WA05IE2b9PUfm+rCiaxE3BJ3hSeJGHQ5Vnh3Rev24bLndUV+R0QbfMqG5Sol
-	 IbAjn0zUIMYZbrB72qc9bX8P3N7nIzyabglaU91jHo8WzMs8q1QMh4jwP2BVQWQYqP
-	 9K7sZDLbV+ttEczryBbqt/EUkxmK0Fe/N0aCI/OBQdGIjLDr7jp59G3bSrPg5DSZJE
-	 OQrqn/YcOTaIYK3FmthwhIBLEjnpOV3F9gcwyLfWlMMBwEMcvlRsWRKvnL+HbITQ4O
-	 ATok1tJpCBL7nca2KnyaW2Nv6wTiv16P5CkRA8kGtQFs2k9TPRGM79ziS9jon6xJSp
-	 5Snhbx8+iTePA==
+	b=COq/mlbVENi9EzEyyJNBZTf0KVuPBymc+zyqvyYywxuDRyRhw01Q5fkI8vSQisTCG
+	 cOc9+FEzhYpKfib5e8mHEUnrCPvbY8U6j/Kd45ZcrCjpbuTGUoaMG7PzIjIOy+w9fy
+	 TTxqvIBaNb5VZNiTPGb9sSrDxbD4NY6W0MATNrtCgYJ4G62hQTfEqnuzKgh3ZsNqzV
+	 XUF1F6W8gZW9OpiSuqOoCziOlhy2eidy+aft+PkPdOVauOMBpJMuiu2u7HHmGeRcWr
+	 Svm01L0F7QMdyqdY9RkIvAju1zVRP5z6m+z855CdmPLawu+/vFvftYSUu+dRhnOFgj
+	 ONs9dImhNkJHA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wMoQc-00000001b0u-13TH
+	id 1wMoRd-00000001b2L-0h6v
 	for stable@vger.kernel.org;
-	Tue, 12 May 2026 14:49:46 +0000
+	Tue, 12 May 2026 14:50:49 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.12.y] KVM: arm64: Wake-up from WFI when iqrchip is in userspace
-Date: Tue, 12 May 2026 15:49:34 +0100
-Message-ID: <20260512144934.3676827-1-maz@kernel.org>
+Subject: [PATCH 6.6.y] KVM: arm64: Wake-up from WFI when iqrchip is in userspace
+Date: Tue, 12 May 2026 15:50:35 +0100
+Message-ID: <20260512145035.3676967-1-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026051236-wistful-naming-15fe@gregkh>
-References: <2026051236-wistful-naming-15fe@gregkh>
+In-Reply-To: <2026051236-flaxseed-tiring-cf79@gregkh>
+References: <2026051236-flaxseed-tiring-cf79@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,20 +70,20 @@ X-SA-Exim-Connect-IP: 185.219.108.64
 X-SA-Exim-Rcpt-To: stable@vger.kernel.org
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Rspamd-Queue-Id: E5D53523DE6
+X-Rspamd-Queue-Id: 1DE15523AEF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-245814-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245815-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_ONE(0.00)[1];
@@ -93,12 +93,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
 commit 4ce98bf0865c349e7026ad9c14f48da264920953 upstream
@@ -124,10 +124,10 @@ Signed-off-by: Marc Zyngier <maz@kernel.org>
  1 file changed, 5 insertions(+)
 
 diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 7d301da8ff289..376a865e88426 100644
+index fe4314af8eecc..3ae529e967c7f 100644
 --- a/arch/arm64/kvm/arm.c
 +++ b/arch/arm64/kvm/arm.c
-@@ -729,6 +729,11 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
+@@ -557,6 +557,11 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
  int kvm_arch_vcpu_runnable(struct kvm_vcpu *v)
  {
  	bool irq_lines = *vcpu_hcr(v) & (HCR_VI | HCR_VF);
