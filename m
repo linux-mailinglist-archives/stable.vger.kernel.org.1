@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COF/FDtqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:19 +0200
+	id AAtOC8xuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37585265FE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC345273E0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 475CF305E716
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69A7A30E4FC4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91923955D7;
-	Tue, 12 May 2026 17:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE802DE6E3;
+	Tue, 12 May 2026 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqkRBBRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofxrUyCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5443EDE7F;
-	Tue, 12 May 2026 17:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715D13EDE45;
+	Tue, 12 May 2026 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608548; cv=none; b=UGEmCarnSwEaRN7zD1SR5JeZd3skSQ6ksDtqdF7oqFAU7wal+B+x4HTyfSZVN/xmElY9pXYd5cfrGpOzgpKRUvY77Td2t1hUtdBmUEhlFB30DOATS3iLj305nUWtZswAoktmpvMug9pdpBKdLbKjP38R2rTvfiDhJIzPE5HCuPI=
+	t=1778609259; cv=none; b=O6oZ3vxxqHgCjT4A5h/Oyd7SXAGMKLWAlzMFjjZnQktIfjdYlqmRe+iD7gOcb32DPAkdx+duB9WMWkLX4YfmbNUPvjGyCEwZaetXB4zXifkKW+JqRrclzgqn0mqW9Va/F6MzKDkt17ZNu7hU3ivXBpnfrV0oL8SXXKa9nwgAZjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608548; c=relaxed/simple;
-	bh=t3PSzCHvALzTp7M2eVlSvx0P5h531GY/Oi24G3K2qao=;
+	s=arc-20240116; t=1778609259; c=relaxed/simple;
+	bh=quvdKxvwviC329LQ5esjr7yslTMQMPVwrMzLMX1U2hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzCKZ/w9Wd1Z6lwJvb/0+aK0ivqJCK6/7sShmRYA8c9PtYR6FsNY5SVRju4BPN/vASEO2Fgw8HUROH2+934P8DxnALJu4FzdyZGL5PvwzK/cJ6WSBTfXA99Oxvh7ZbAvsPgp6ioVxDRL8DPfg+E/vVCvuiysNTbwQ/y68njqndM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqkRBBRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0ABC2BCF5;
-	Tue, 12 May 2026 17:55:48 +0000 (UTC)
+	 MIME-Version; b=MJXF/Cv8Ac4jMDn47gDD7sWy/fhpkdZxlcN+LyfbeISJxy9HqVe0su6+6SkkXmhvz6vKtc9B7ktAtACUGQ9OFcLTVwfN4bzd3Ay4kmadoumlkOzBUVvQ3nPL3RZtEFEXUq9FAwwMuAa3aqhG6AIKrVKU6748kvG/YsJz6S+y6YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofxrUyCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBAFC2BCB0;
+	Tue, 12 May 2026 18:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608548;
-	bh=t3PSzCHvALzTp7M2eVlSvx0P5h531GY/Oi24G3K2qao=;
+	s=korg; t=1778609259;
+	bh=quvdKxvwviC329LQ5esjr7yslTMQMPVwrMzLMX1U2hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hqkRBBRC+aHQiO70vT/Lxw3dfStxID28jVn4mEVxUgpWFUAu2fZDRX1MqORpOPUie
-	 ndU5j/qSwXQGiOMf00irZo3sZ/3+vFpFwpNpo12+51oXF5zck3/iD9INfIA5lTfLFF
-	 m+mYyTSbOv6Y+VMzWz3Cg+/JDxJ4gkN91WQxMP2k=
+	b=ofxrUyCjfcFaFtINJqa/SO4JM4y4e7IrxiAgGTaokNIQmp020hFxr2OkmxMMHL2Vb
+	 y7KRwKFmBweWr6Q1C+E/XXwYMqTqQ60MGKXVyFnIKYuHbjmSnsF8WH6DPdeRyToo1F
+	 4xAmkR8pXG/KougJCh/UxtLdTG704DaVrLPQ16TI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.18 120/270] gpio: of: clear OF_POPULATED on hog nodes in remove path
-Date: Tue, 12 May 2026 19:38:41 +0200
-Message-ID: <20260512173940.983232374@linuxfoundation.org>
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 7.0 127/307] hwmon: (ltc2992) Clamp threshold writes to hardware range
+Date: Tue, 12 May 2026 19:38:42 +0200
+Message-ID: <20260512173942.809227883@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E37585265FE
+X-Rspamd-Queue-Id: AEC345273E0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246174-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246450-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,52 +88,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,juniper.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit bbee90e750262bfb406d66dc65c46d616d2b6673 upstream.
+commit d6cc7c99bf1f73eda7d565d224d791d16239bb41 upstream.
 
-The previously set OF_POPULATED flag should be cleared on the hog nodes
-when removing the chip.
+ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
+do not validate the user-supplied value before converting it to a
+register value. This can result in:
 
+1. Negative input values wrapping to large positive register values.
+   For power, the negative long is implicitly cast to u64 in
+   mul_u64_u32_div(), producing an incorrect value. For voltage and
+   current, the negative converted value wraps when passed to
+   ltc2992_write_reg() as a u32.
+
+2. Intermediate arithmetic exceeding the range representable in u64 on
+   64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
+   exceed U64_MAX when val is a large positive long. In
+   ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
+   similarly. In ltc2992_set_power(), the computed value may not fit
+   in u64.
+
+3. Register values exceeding the hardware field width. Voltage and
+   current threshold registers are 12-bit (stored left-justified in
+   16 bits), and power threshold registers are 24-bit. Without
+   clamping, bits above the field width are truncated in
+   ltc2992_write_reg().
+
+Fix by clamping negative values to zero, clamping positive values to
+the rounded hardware-representable maximum (the value returned by the
+read path for a full-scale register) to prevent intermediate overflow,
+and clamping the converted register value to the hardware field width
+before writing. The existing conversion formula and rounding behavior
+are preserved.
+
+In the power write path, cancel the factor of 1000 from both the
+numerator (r_sense_uohm * 1000) and the denominator
+(VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
+r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
+
+Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
 Cc: stable@vger.kernel.org
-Fixes: 63636d956c455 ("gpio: of: Add DT overlay support for GPIO hogs")
-Acked-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260309-gpio-hog-fwnode-v2-1-4e61f3dbf06a@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260416215904.101969-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-of.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/hwmon/ltc2992.c |   35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -1285,7 +1285,14 @@ int of_gpiochip_add(struct gpio_chip *ch
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -431,10 +431,16 @@ static int ltc2992_get_voltage(struct lt
  
- void of_gpiochip_remove(struct gpio_chip *chip)
+ static int ltc2992_set_voltage(struct ltc2992_state *st, u32 reg, u32 scale, long val)
  {
--	of_node_put(dev_of_node(&chip->gpiodev->dev));
-+	struct device_node *np = dev_of_node(&chip->gpiodev->dev);
+-	val = DIV_ROUND_CLOSEST(val * 1000, scale);
+-	val = val << 4;
++	u32 reg_val;
++	long vmax;
 +
-+	for_each_child_of_node_scoped(np, child) {
-+		if (of_property_present(child, "gpio-hog"))
-+			of_node_clear_flag(child, OF_POPULATED);
-+	}
-+
-+	of_node_put(np);
++	vmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * scale, 1000);
++	val = max(val, 0L);
++	val = min(val, vmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * 1000, scale),
++		      0xFFFULL) << 4;
+ 
+-	return ltc2992_write_reg(st, reg, 2, val);
++	return ltc2992_write_reg(st, reg, 2, reg_val);
  }
  
- bool of_gpiochip_instance_match(struct gpio_chip *gc, unsigned int index)
+ static int ltc2992_read_gpio_alarm(struct ltc2992_state *st, int nr_gpio, u32 attr, long *val)
+@@ -559,9 +565,15 @@ static int ltc2992_get_current(struct lt
+ static int ltc2992_set_current(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	long cmax;
+ 
+-	reg_val = DIV_ROUND_CLOSEST(val * st->r_sense_uohm[channel], LTC2992_IADC_NANOV_LSB);
+-	reg_val = reg_val << 4;
++	cmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * LTC2992_IADC_NANOV_LSB,
++				     st->r_sense_uohm[channel]);
++	val = max(val, 0L);
++	val = min(val, cmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * st->r_sense_uohm[channel],
++					    LTC2992_IADC_NANOV_LSB),
++		      0xFFFULL) << 4;
+ 
+ 	return ltc2992_write_reg(st, reg, 2, reg_val);
+ }
+@@ -634,9 +646,18 @@ static int ltc2992_get_power(struct ltc2
+ static int ltc2992_set_power(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	u64 pmax, uval;
+ 
+-	reg_val = mul_u64_u32_div(val, st->r_sense_uohm[channel] * 1000,
+-				  LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB);
++	uval = max(val, 0L);
++	pmax = mul_u64_u32_div(0xFFFFFFULL,
++			       LTC2992_VADC_UV_LSB / 1000 *
++			       LTC2992_IADC_NANOV_LSB,
++			       st->r_sense_uohm[channel]);
++	uval = min(uval, pmax);
++	reg_val = min(mul_u64_u32_div(uval, st->r_sense_uohm[channel],
++				      LTC2992_VADC_UV_LSB / 1000 *
++				      LTC2992_IADC_NANOV_LSB),
++		      0xFFFFFFULL);
+ 
+ 	return ltc2992_write_reg(st, reg, 3, reg_val);
+ }
 
 
 
