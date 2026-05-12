@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-245888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBPsHmtnA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:19 +0200
+	id MJEwE5FzA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A8D52611D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A655D527E23
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEB40305D13E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4288D30CD86D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7971A3CDBDD;
-	Tue, 12 May 2026 17:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80E5349CD7;
+	Tue, 12 May 2026 18:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LM6wmHgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoK97fnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF90385D85;
-	Tue, 12 May 2026 17:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B353EDE55;
+	Tue, 12 May 2026 18:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607813; cv=none; b=Mj0KT4kBI3SByErq+Mjv4JXJ3xT6tHzZtzlq8zCZmas0h/o13cVqcH0I/vEGF0uQlx5Fu+cdVAk9SnYceTVmP7RyCDgJ2bGF03RsSzctJxhhm8KqJ+ee5rskMFVAd6d88nUiA0c/KbLiZ9i771jhifw3t4NN/HCidlw7ILFiU2s=
+	t=1778609197; cv=none; b=GIj9nkr2fpG3si3Ebnnmautfn9KP6DOjZhDzEH2+Nr5HP0CZSUMIqmhJKfzSB+SvlPxYEEzMCbUfriE0oqq9GSXAUgw17pRB4wGq4nZr9GiUbvkpgMVL6t9OgPzuupTah6/Bjad6pJ/Yg6yXM6G/yHlfwHfRVsrz/ER1a5R3+Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607813; c=relaxed/simple;
-	bh=Ok/O9zKOP8uPw6AVc7QI+Do3b3tnRbZPjqTabCi2K7M=;
+	s=arc-20240116; t=1778609197; c=relaxed/simple;
+	bh=Kz5ekOfRx7TI/4uHeiVq9xZ5kEJrkVQ4pP+qgDNFAdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRePDgrjZDHuJS+esnVI7linMV7VDIBpRPv+aVRluEqen/rhpArrCHqMdPOhLFCGZOei7tkZEHF/1A/fNVChZRs3WRhtDxS4NdFtISHadHlH9rc5j+yumowRM14qS69W4eVXmuYvc8U2HOiiDuckEmBlwLXVH1OdV6oQNkFe/Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LM6wmHgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7031C2BCB0;
-	Tue, 12 May 2026 17:43:32 +0000 (UTC)
+	 MIME-Version; b=MSMuAmLY2grzTOirIoeoNGzijTV7QDWUejsedUTdbKNnJ68NOkHHnOrVzHYhILi7R611GTnVyrHZaOpGJs5HvzojNvxnWH5SY69dzbWyo4CIOkFYtaikUTb/z8YI3xuu/aDZC+CJ9n2E/yKRake1W9BB5GcyGpxscWCEjv69Epc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoK97fnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C157C2BCB0;
+	Tue, 12 May 2026 18:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607813;
-	bh=Ok/O9zKOP8uPw6AVc7QI+Do3b3tnRbZPjqTabCi2K7M=;
+	s=korg; t=1778609197;
+	bh=Kz5ekOfRx7TI/4uHeiVq9xZ5kEJrkVQ4pP+qgDNFAdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LM6wmHgRncn+XWStfLNgJ2yex308hpZY0XIKYedo5YEySaFBKwTFdHAa3ExYpSosU
-	 8pvHDi7xeXlZlcmka2wdRZye5IgxNPzCpBukEQJykZnEsz7j1TuQb40VrIcfqIiVb9
-	 LONBFdU5lJFGy5t3XhfPh7GZ2c5DLxYQaoWseYmM=
+	b=MoK97fnIzrqH7HrXEwspFb3Rtmk1Q0cmuBMtZEH1gA1NWycQhGVLJr+dgklIih4/G
+	 FnfY4MsPi7/41yP/aHlldd3Oe6/atSlR1N1A9D3MZrpvfRfy67Ld2zj8qaydp2FV8A
+	 QvQz6IiUrfIpJN0IGbccapJz362GB4VOelXDknmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 044/206] ALSA: usb-audio: Avoid potential endless loop in convert_chmap_v3()
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 7.0 101/307] perf/x86/intel: Improve validation and configuration of ACR masks
 Date: Tue, 12 May 2026 19:38:16 +0200
-Message-ID: <20260512173933.767146142@linuxfoundation.org>
+Message-ID: <20260512173942.256583300@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,131 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E2A8D52611D
+X-Rspamd-Queue-Id: A655D527E23
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245888-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246426-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-commit 6e7247d8f5fefeceb0bb9cc80a5388a636b219cd upstream.
+commit 5ad732a56be46aabf158c16aa0c095291727aaef upstream.
 
-The convert_chmap_v3() has a loop with its increment size of
-cs_desc->wLength, but we forgot to validate cs_desc->wLength itself,
-which may lead to potential endless loop by a malformed descriptor.
+Currently there are several issues on the user space ACR mask validation
+and configuration.
+- The validation for user space ACR mask (attr.config2) is incomplete,
+  e.g., the ACR mask could include the index which belongs to another
+  ACR events group, but it's not validated.
+- An early return on an invalid ACR mask caused all subsequent ACR groups
+  to be skipped.
+- The stale hardware ACR mask (hw.config1) is not cleared before setting
+  new hardware ACR mask.
 
-Add a proper size check to abort the loop for plugging the hole.
+The following changes address all of the above issues.
+- Figure out the event index group of an ACR group. Any bits in the
+  user-space mask not present in the index group are now dropped.
+- Instead of an early return on invalid bits, drop only the invalid
+  portions and continue iterating through all ACR events to ensure full
+  configuration.
+- Explicitly clear the stale hardware ACR mask for each event prior to
+  writing the new configuration.
 
-Fixes: ecfd41166b72 ("ALSA: usb-audio: Validate UAC3 cluster segment descriptors")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260427152224.15276-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Besides, a non-leader event member of ACR group could be disabled in
+theory. This could cause bit-shifting errors in the acr_mask of remaining
+group members. But since ACR sampling requires all events to be active,
+this should not be a big concern in real use case. Add a "FIXME" comment
+to notice this risk.
+
+Fixes: ec980e4facef ("perf/x86/intel: Support auto counter reload")
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260430002558.712334-2-dapeng1.mi@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/intel/core.c |   32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -352,6 +352,8 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
- 		if (len < sizeof(*cs_desc))
- 			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
-+		if (cs_len < sizeof(*cs_desc))
-+			break;
- 		if (len < cs_len)
- 			break;
- 		cs_type = cs_desc->bSegmentType;
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3332,23 +3332,41 @@ static void intel_pmu_enable_event(struc
+ static void intel_pmu_acr_late_setup(struct cpu_hw_events *cpuc)
+ {
+ 	struct perf_event *event, *leader;
+-	int i, j, idx;
++	int i, j, k, bit, idx;
+ 
++	/*
++	 * FIXME: ACR mask parsing relies on cpuc->event_list[] (active events only).
++	 * Disabling an ACR event causes bit-shifting errors in the acr_mask of
++	 * remaining group members. As ACR sampling requires all events to be active,
++	 * this limitation is acceptable for now. Revisit if independent event toggling
++	 * is required.
++	 */
+ 	for (i = 0; i < cpuc->n_events; i++) {
+ 		leader = cpuc->event_list[i];
+ 		if (!is_acr_event_group(leader))
+ 			continue;
+ 
+-		/* The ACR events must be contiguous. */
++		/* Find the last event of the ACR group. */
+ 		for (j = i; j < cpuc->n_events; j++) {
+ 			event = cpuc->event_list[j];
+ 			if (event->group_leader != leader->group_leader)
+ 				break;
+-			for_each_set_bit(idx, (unsigned long *)&event->attr.config2, X86_PMC_IDX_MAX) {
+-				if (i + idx >= cpuc->n_events ||
+-				    !is_acr_event_group(cpuc->event_list[i + idx]))
+-					return;
+-				__set_bit(cpuc->assign[i + idx], (unsigned long *)&event->hw.config1);
++		}
++
++		/*
++		 * Translate the user-space ACR mask (attr.config2) into the physical
++		 * counter bitmask (hw.config1) for each ACR event in the group.
++		 * NOTE: ACR event contiguity is guaranteed by intel_pmu_hw_config().
++		 */
++		for (k = i; k < j; k++) {
++			event = cpuc->event_list[k];
++			event->hw.config1 = 0;
++			for_each_set_bit(bit, (unsigned long *)&event->attr.config2, X86_PMC_IDX_MAX) {
++				idx = i + bit;
++				/* Event index of ACR group must locate in [i, j). */
++				if (idx >= j || !is_acr_event_group(cpuc->event_list[idx]))
++					continue;
++				__set_bit(cpuc->assign[idx], (unsigned long *)&event->hw.config1);
+ 			}
+ 		}
+ 		i = j - 1;
 
 
 
