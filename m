@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBBWKI87A2oL2AEAu9opvQ
-	(envelope-from <stable+bounces-245599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:39:11 +0200
+	id EL0tHq87A2oL2AEAu9opvQ
+	(envelope-from <stable+bounces-245602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:39:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270E2522B79
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EF5522BBD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E79E231A5D86
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:45:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7173631BD123
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A903395AE3;
-	Tue, 12 May 2026 13:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C3A3998BC;
+	Tue, 12 May 2026 13:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py4dD8sj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qouJkjOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9F8390609
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDAB3998B6
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778593499; cv=none; b=uviFs0P2lgS9Y4VFtv7VDasj0A5G7ESFeoPO1AsnkEM0HgI6KxW8eNzB3xK3qTSscdI+jduoBLu+PsTlKpXQW/Yf1J5hb5LxEtzk869O+foMZpwk3DcLh3ngyLGp8F2XYDqeaWiqqGvJp4OeaF9Ught9sOa/5KTG2DLV34ICCvM=
+	t=1778593547; cv=none; b=F/9bmL0lS5HzkXdR2NVO7eXp/HV5qkUu1IRYKi96viTpehLQKfMsT4TxNenQ+iLaev8veex2IWi+bRCEjfStqp0iI9N+ZPWfqGUK3XC2lQcxEwhtD7ygixOjo88ve/xhktV9j0h/7HzSBBCRVtZZ5W9fDiYEoSK14mi0XsIREo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778593499; c=relaxed/simple;
-	bh=16spmpEupDeXc4JVvR4Z0AULFUcHpg/piCa9rmWl8HQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gNrAgRQwoK/ELqtkvAgatAWlp6pckYq/28swI3vydLazZOBOtkaAu/oxUUBW7wkZVh/VUS8QG93nx+c/aHU+vc/bCEzMwOtyNFH/Iw2p+ogXbzcyT8wWdGsox3D/2TTeDOWbz8xeF0h1qJRmMkpBMO7wW5Bf1txZ7N50HQrvcQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py4dD8sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62ADBC2BCF5;
-	Tue, 12 May 2026 13:44:58 +0000 (UTC)
+	s=arc-20240116; t=1778593547; c=relaxed/simple;
+	bh=2Xxo1cFOdglieRSyFltv/LT0r0MlguTQg3V3OiGOmSU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m91GHtHX7GArOvq2nrDRkxWUtvVy52b2p/lRvfdOLHMsat2fkYD4kn8kKrsQ69roGUFCKgvM30J90Xml6ZNxPCLsRElN7GBQME0L3GM4Kg63t2cS9r//I/NaLTvCmU0vakCJqfDz8DtHVmVvQCyCMNMdD6eDY+7BQDup4ZFsb50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qouJkjOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3FCC2BCF7;
+	Tue, 12 May 2026 13:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778593498;
-	bh=16spmpEupDeXc4JVvR4Z0AULFUcHpg/piCa9rmWl8HQ=;
+	s=korg; t=1778593547;
+	bh=2Xxo1cFOdglieRSyFltv/LT0r0MlguTQg3V3OiGOmSU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Py4dD8sjxGC37M8V8ediGlonXuraL0jUlZTGv5MhS5lqlQ5upTnEbGzpoW2w8v+iR
-	 pQ6mSQczoLw31ik3Lri/hdJIBmKekdD669b0lz6RoJZkoKMVmia2qNXow4r/7+HkXy
-	 GIXnKCIS+YD6b46f+rnXaZzBo/g9QEQNRKnVU/To=
-Subject: FAILED: patch "[PATCH] block: fix zone write plug removal" failed to apply to 6.12-stable tree
-To: dlemoal@kernel.org,axboe@kernel.dk,hch@lst.de,johannes.thumshirn@wdc.com
+	b=qouJkjOHT0+rlzdPm4jX/5h1pq5NW2KShpEtu0/d8CWkBVOqHTRA9gTFy2Kq8WLis
+	 axjcRAkUxFoRltbffkDVUtf4QY68opUrhN5t/1JndUfs0nQTDMuN39EssGmdCVxYOe
+	 VQ+6s5nXm0KYfUiEMZQ1Zomi3hHev4EeQFj5Ye/s=
+Subject: FAILED: patch "[PATCH] fbcon: Avoid OOB font access if console rotation fails" failed to apply to 6.6-stable tree
+To: tzimmermann@suse.de,deller@gmx.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 15:44:55 +0200
-Message-ID: <2026051255-scale-proactive-9452@gregkh>
+Date: Tue, 12 May 2026 15:45:41 +0200
+Message-ID: <2026051241-heap-bright-907f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 270E2522B79
+X-Rspamd-Queue-Id: D5EF5522BBD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -67,10 +67,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245599-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245602-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[suse.de,gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -78,28 +79,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wdc.com:email,kernel.dk:email,linuxfoundation.org:dkim]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,suse.de:email,gmx.de:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x b7d4ffb510373cc6ecf16022dd0e510a023034fb
+git cherry-pick -x e4ef723d8975a2694cc90733a6b888a5e2841842
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051255-scale-proactive-9452@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051241-heap-bright-907f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,293 +112,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b7d4ffb510373cc6ecf16022dd0e510a023034fb Mon Sep 17 00:00:00 2001
-From: Damien Le Moal <dlemoal@kernel.org>
-Date: Fri, 27 Feb 2026 22:19:44 +0900
-Subject: [PATCH] block: fix zone write plug removal
+From e4ef723d8975a2694cc90733a6b888a5e2841842 Mon Sep 17 00:00:00 2001
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Date: Tue, 7 Apr 2026 11:23:12 +0200
+Subject: [PATCH] fbcon: Avoid OOB font access if console rotation fails
 
-Commit 7b295187287e ("block: Do not remove zone write plugs still in
-use") modified disk_should_remove_zone_wplug() to add a check on the
-reference count of a zone write plug to prevent removing zone write
-plugs from a disk hash table when the plugs are still being referenced
-by BIOs or requests in-flight. However, this check does not take into
-account that a BIO completion may happen right after its submission by
-a zone write plug BIO work, and before the zone write plug BIO work
-releases the zone write plug reference count. This situation leads to
-disk_should_remove_zone_wplug() returning false as in this case the zone
-write plug reference count is at least equal to 3. If the BIO that
-completes in such manner transitioned the zone to the FULL condition,
-the zone write plug for the FULL zone will remain in the disk hash
-table.
+Clear the font buffer if the reallocation during console rotation fails
+in fbcon_rotate_font(). The putcs implementations for the rotated buffer
+will return early in this case. See [1] for an example.
 
-Furthermore, relying on a particular value of a zone write plug
-reference count to set the BLK_ZONE_WPLUG_UNHASHED flag is fragile as
-reading the atomic reference count and doing a comparison with some
-value is not overall atomic at all.
+Currently, fbcon_rotate_font() keeps the old buffer, which is too small
+for the rotated font. Printing to the rotated console with a high-enough
+character code will overflow the font buffer.
 
-Address these issues by reworking the reference counting of zone write
-plugs so that removing plugs from a disk hash table can be done
-directly from disk_put_zone_wplug() when the last reference on a plug
-is dropped.
+v2:
+- fix typos in commit message
 
-To do so, replace the function disk_remove_zone_wplug() with
-disk_mark_zone_wplug_dead(). This new function sets the zone write plug
-flag BLK_ZONE_WPLUG_DEAD (which replaces BLK_ZONE_WPLUG_UNHASHED) and
-drops the initial reference on the zone write plug taken when the plug
-was added to the disk hash table. This function is called either for
-zones that are empty or full, or directly in the case of a forced plug
-removal (e.g. when the disk hash table is being destroyed on disk
-removal). With this change, disk_should_remove_zone_wplug() is also
-removed.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
+Cc: stable@vger.kernel.org # v2.6.15+
+Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-disk_put_zone_wplug() is modified to call the function
-disk_free_zone_wplug() to remove a zone write plug from a disk hash
-table and free the plug structure (with a call_rcu()), when the last
-reference on a zone write plug is dropped. disk_free_zone_wplug()
-always checks that the BLK_ZONE_WPLUG_DEAD flag is set.
-
-In order to avoid having multiple zone write plugs for the same zone in
-the disk hash table, disk_get_and_lock_zone_wplug() checked for the
-BLK_ZONE_WPLUG_UNHASHED flag. This check is removed and a check for
-the new BLK_ZONE_WPLUG_DEAD flag is added to
-blk_zone_wplug_handle_write(). With this change, we continue preventing
-adding multiple zone write plugs for the same zone and at the same time
-re-inforce checks on the user behavior by failing new incoming write
-BIOs targeting a zone that is marked as dead. This case can happen only
-if the user erroneously issues write BIOs to zones that are full, or to
-zones that are currently being reset or finished.
-
-Fixes: 7b295187287e ("block: Do not remove zone write plugs still in use")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/block/blk-zoned.c b/block/blk-zoned.c
-index 9d1dd6ccfad7..6e3ef181e837 100644
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -99,17 +99,17 @@ static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
-  *    being executed or the zone write plug bio list is not empty.
-  *  - BLK_ZONE_WPLUG_NEED_WP_UPDATE: Indicates that we lost track of a zone
-  *    write pointer offset and need to update it.
-- *  - BLK_ZONE_WPLUG_UNHASHED: Indicates that the zone write plug was removed
-- *    from the disk hash table and that the initial reference to the zone
-- *    write plug set when the plug was first added to the hash table has been
-- *    dropped. This flag is set when a zone is reset, finished or become full,
-- *    to prevent new references to the zone write plug to be taken for
-- *    newly incoming BIOs. A zone write plug flagged with this flag will be
-- *    freed once all remaining references from BIOs or functions are dropped.
-+ *  - BLK_ZONE_WPLUG_DEAD: Indicates that the zone write plug will be
-+ *    removed from the disk hash table of zone write plugs when the last
-+ *    reference on the zone write plug is dropped. If set, this flag also
-+ *    indicates that the initial extra reference on the zone write plug was
-+ *    dropped, meaning that the reference count indicates the current number of
-+ *    active users (code context or BIOs and requests in flight). This flag is
-+ *    set when a zone is reset, finished or becomes full.
-  */
- #define BLK_ZONE_WPLUG_PLUGGED		(1U << 0)
- #define BLK_ZONE_WPLUG_NEED_WP_UPDATE	(1U << 1)
--#define BLK_ZONE_WPLUG_UNHASHED		(1U << 2)
-+#define BLK_ZONE_WPLUG_DEAD		(1U << 2)
+diff --git a/drivers/video/fbdev/core/fbcon_rotate.c b/drivers/video/fbdev/core/fbcon_rotate.c
+index 1562a8f20b4f..5348f6c6f57c 100644
+--- a/drivers/video/fbdev/core/fbcon_rotate.c
++++ b/drivers/video/fbdev/core/fbcon_rotate.c
+@@ -46,6 +46,10 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
+ 		info->fbops->fb_sync(info);
  
- /**
-  * blk_zone_cond_str - Return a zone condition name string
-@@ -587,64 +587,15 @@ static void disk_free_zone_wplug_rcu(struct rcu_head *rcu_head)
- 	mempool_free(zwplug, zwplug->disk->zone_wplugs_pool);
- }
- 
--static inline void disk_put_zone_wplug(struct blk_zone_wplug *zwplug)
--{
--	if (refcount_dec_and_test(&zwplug->ref)) {
--		WARN_ON_ONCE(!bio_list_empty(&zwplug->bio_list));
--		WARN_ON_ONCE(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED);
--		WARN_ON_ONCE(!(zwplug->flags & BLK_ZONE_WPLUG_UNHASHED));
--
--		call_rcu(&zwplug->rcu_head, disk_free_zone_wplug_rcu);
--	}
--}
--
--static inline bool disk_should_remove_zone_wplug(struct gendisk *disk,
--						 struct blk_zone_wplug *zwplug)
--{
--	lockdep_assert_held(&zwplug->lock);
--
--	/* If the zone write plug was already removed, we are done. */
--	if (zwplug->flags & BLK_ZONE_WPLUG_UNHASHED)
--		return false;
--
--	/* If the zone write plug is still plugged, it cannot be removed. */
--	if (zwplug->flags & BLK_ZONE_WPLUG_PLUGGED)
--		return false;
--
--	/*
--	 * Completions of BIOs with blk_zone_write_plug_bio_endio() may
--	 * happen after handling a request completion with
--	 * blk_zone_write_plug_finish_request() (e.g. with split BIOs
--	 * that are chained). In such case, disk_zone_wplug_unplug_bio()
--	 * should not attempt to remove the zone write plug until all BIO
--	 * completions are seen. Check by looking at the zone write plug
--	 * reference count, which is 2 when the plug is unused (one reference
--	 * taken when the plug was allocated and another reference taken by the
--	 * caller context).
--	 */
--	if (refcount_read(&zwplug->ref) > 2)
--		return false;
--
--	/* We can remove zone write plugs for zones that are empty or full. */
--	return !zwplug->wp_offset || disk_zone_wplug_is_full(disk, zwplug);
--}
--
--static void disk_remove_zone_wplug(struct gendisk *disk,
--				   struct blk_zone_wplug *zwplug)
-+static void disk_free_zone_wplug(struct blk_zone_wplug *zwplug)
- {
-+	struct gendisk *disk = zwplug->disk;
- 	unsigned long flags;
- 
--	/* If the zone write plug was already removed, we have nothing to do. */
--	if (zwplug->flags & BLK_ZONE_WPLUG_UNHASHED)
--		return;
-+	WARN_ON_ONCE(!(zwplug->flags & BLK_ZONE_WPLUG_DEAD));
-+	WARN_ON_ONCE(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED);
-+	WARN_ON_ONCE(!bio_list_empty(&zwplug->bio_list));
- 
--	/*
--	 * Mark the zone write plug as unhashed and drop the extra reference we
--	 * took when the plug was inserted in the hash table. Also update the
--	 * disk zone condition array with the current condition of the zone
--	 * write plug.
--	 */
--	zwplug->flags |= BLK_ZONE_WPLUG_UNHASHED;
- 	spin_lock_irqsave(&disk->zone_wplugs_lock, flags);
- 	blk_zone_set_cond(rcu_dereference_check(disk->zones_cond,
- 				lockdep_is_held(&disk->zone_wplugs_lock)),
-@@ -652,7 +603,29 @@ static void disk_remove_zone_wplug(struct gendisk *disk,
- 	hlist_del_init_rcu(&zwplug->node);
- 	atomic_dec(&disk->nr_zone_wplugs);
- 	spin_unlock_irqrestore(&disk->zone_wplugs_lock, flags);
--	disk_put_zone_wplug(zwplug);
+ 	if (par->fd_size < d_cellsize * len) {
++		kfree(par->fontbuffer);
++		par->fontbuffer = NULL;
++		par->fd_size = 0;
 +
-+	call_rcu(&zwplug->rcu_head, disk_free_zone_wplug_rcu);
-+}
-+
-+static inline void disk_put_zone_wplug(struct blk_zone_wplug *zwplug)
-+{
-+	if (refcount_dec_and_test(&zwplug->ref))
-+		disk_free_zone_wplug(zwplug);
-+}
-+
-+/*
-+ * Flag the zone write plug as dead and drop the initial reference we got when
-+ * the zone write plug was added to the hash table. The zone write plug will be
-+ * unhashed when its last reference is dropped.
-+ */
-+static void disk_mark_zone_wplug_dead(struct blk_zone_wplug *zwplug)
-+{
-+	lockdep_assert_held(&zwplug->lock);
-+
-+	if (!(zwplug->flags & BLK_ZONE_WPLUG_DEAD)) {
-+		zwplug->flags |= BLK_ZONE_WPLUG_DEAD;
-+		disk_put_zone_wplug(zwplug);
-+	}
- }
+ 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
  
- static void blk_zone_wplug_bio_work(struct work_struct *work);
-@@ -672,18 +645,7 @@ static struct blk_zone_wplug *disk_get_and_lock_zone_wplug(struct gendisk *disk,
- again:
- 	zwplug = disk_get_zone_wplug(disk, sector);
- 	if (zwplug) {
--		/*
--		 * Check that a BIO completion or a zone reset or finish
--		 * operation has not already removed the zone write plug from
--		 * the hash table and dropped its reference count. In such case,
--		 * we need to get a new plug so start over from the beginning.
--		 */
- 		spin_lock_irqsave(&zwplug->lock, *flags);
--		if (zwplug->flags & BLK_ZONE_WPLUG_UNHASHED) {
--			spin_unlock_irqrestore(&zwplug->lock, *flags);
--			disk_put_zone_wplug(zwplug);
--			goto again;
--		}
- 		return zwplug;
- 	}
- 
-@@ -788,14 +750,8 @@ static void disk_zone_wplug_set_wp_offset(struct gendisk *disk,
- 	disk_zone_wplug_update_cond(disk, zwplug);
- 
- 	disk_zone_wplug_abort(zwplug);
--
--	/*
--	 * The zone write plug now has no BIO plugged: remove it from the
--	 * hash table so that it cannot be seen. The plug will be freed
--	 * when the last reference is dropped.
--	 */
--	if (disk_should_remove_zone_wplug(disk, zwplug))
--		disk_remove_zone_wplug(disk, zwplug);
-+	if (!zwplug->wp_offset || disk_zone_wplug_is_full(disk, zwplug))
-+		disk_mark_zone_wplug_dead(zwplug);
- }
- 
- static unsigned int blk_zone_wp_offset(struct blk_zone *zone)
-@@ -1447,6 +1403,19 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
- 		return true;
- 	}
- 
-+	/*
-+	 * If we got a zone write plug marked as dead, then the user is issuing
-+	 * writes to a full zone, or without synchronizing with zone reset or
-+	 * zone finish operations. In such case, fail the BIO to signal this
-+	 * invalid usage.
-+	 */
-+	if (zwplug->flags & BLK_ZONE_WPLUG_DEAD) {
-+		spin_unlock_irqrestore(&zwplug->lock, flags);
-+		disk_put_zone_wplug(zwplug);
-+		bio_io_error(bio);
-+		return true;
-+	}
-+
- 	/* Indicate that this BIO is being handled using zone write plugging. */
- 	bio_set_flag(bio, BIO_ZONE_WRITE_PLUGGING);
- 
-@@ -1527,7 +1496,7 @@ static void blk_zone_wplug_handle_native_zone_append(struct bio *bio)
- 				    disk->disk_name, zwplug->zone_no);
- 		disk_zone_wplug_abort(zwplug);
- 	}
--	disk_remove_zone_wplug(disk, zwplug);
-+	disk_mark_zone_wplug_dead(zwplug);
- 	spin_unlock_irqrestore(&zwplug->lock, flags);
- 
- 	disk_put_zone_wplug(zwplug);
-@@ -1630,14 +1599,8 @@ static void disk_zone_wplug_unplug_bio(struct gendisk *disk,
- 	}
- 
- 	zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
--
--	/*
--	 * If the zone is full (it was fully written or finished, or empty
--	 * (it was reset), remove its zone write plug from the hash table.
--	 */
--	if (disk_should_remove_zone_wplug(disk, zwplug))
--		disk_remove_zone_wplug(disk, zwplug);
--
-+	if (!zwplug->wp_offset || disk_zone_wplug_is_full(disk, zwplug))
-+		disk_mark_zone_wplug_dead(zwplug);
- 	spin_unlock_irqrestore(&zwplug->lock, flags);
- }
- 
-@@ -1848,9 +1811,9 @@ static void disk_destroy_zone_wplugs_hash_table(struct gendisk *disk)
- 		while (!hlist_empty(&disk->zone_wplugs_hash[i])) {
- 			zwplug = hlist_entry(disk->zone_wplugs_hash[i].first,
- 					     struct blk_zone_wplug, node);
--			refcount_inc(&zwplug->ref);
--			disk_remove_zone_wplug(disk, zwplug);
--			disk_put_zone_wplug(zwplug);
-+			spin_lock_irq(&zwplug->lock);
-+			disk_mark_zone_wplug_dead(zwplug);
-+			spin_unlock_irq(&zwplug->lock);
+ 		if (dst == NULL) {
+@@ -54,7 +58,6 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
  		}
+ 
+ 		par->fd_size = d_cellsize * len;
+-		kfree(par->fontbuffer);
+ 		par->fontbuffer = dst;
  	}
  
 
