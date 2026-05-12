@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-246393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOpwFz5zA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:46 +0200
+	id UG/pGo9mA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817AC527D9C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E5E525F84
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1566931B31E0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2822C300BD4C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD1733D51A;
-	Tue, 12 May 2026 18:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45F33E0754;
+	Tue, 12 May 2026 17:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izMN8+rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaHDaG58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7DC3EDE55;
-	Tue, 12 May 2026 18:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C673E0749;
+	Tue, 12 May 2026 17:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609110; cv=none; b=hAoloxu8DxoRo6Ok8cECQhSyp9Ub56CUac9KOeRiJUI2G3KVBQE08GKrNJntvDyTbAvMWPUsyrtwr86cHy8KucHkld7EYH3gjPeStBv8FQFSWmPY8POSWjrSlVCKRhpMFSAfZCaGyjnDuQTq+yCFZsLmkyyUbPHKffy2eOAkilU=
+	t=1778607743; cv=none; b=tKod446x4bCEoxptclWznBnMajL0cgk/psDoewgZpT029Kb6zp2+eHdb6zLDOODslZ4rB+xItXzqWTz4bYKFFsO/xsIWT83UPNC7hPAobTUyx7DZRP/jF5fj3rXJDVBSocErC/2cdFkie8UiAg48m81VpC9dKVC/BV5MHu9wKMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609110; c=relaxed/simple;
-	bh=l+nzudSWE+PHcN7VCPX1bDXn96XjO3FJlA/HKkOC+NU=;
+	s=arc-20240116; t=1778607743; c=relaxed/simple;
+	bh=D459uEJystnBzowzRAaQJDo2nNkbNv91p3PBqnEU0ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfFaXKK+ueXH10QF0LhmCXzd6MUeq013fKKxUEjM9qtchLyT2K/3hAvVXXLEsXGLe3MbnCRBFCfnR7E2J987Eo5bg9Shm9zwPFIHVYFxfFS32NZauUH867T1xKNkwruv6rf8W+U8oArYN2ldrAqNjH3U5rexVASLZEq5BjmEKtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izMN8+rn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04EB1C2BCFB;
-	Tue, 12 May 2026 18:05:09 +0000 (UTC)
+	 MIME-Version; b=gSFLxhnbVwLM6Zk0Sm1sV6liUt5So9F9m5RgwTlHtvC8uv8A2Bl52YRB/4rnvH/7Vuq7cbtz3Q+flQ88vzOc+YLOg0QLFWuJ1nuVHuXLSfdfpOVYEHLp9xItKHFCPfUY6oXTbc6oioCd/TIxXfjKFFB1ORWmh5+rsr57gTT7Tk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaHDaG58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C47C2BCB0;
+	Tue, 12 May 2026 17:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609110;
-	bh=l+nzudSWE+PHcN7VCPX1bDXn96XjO3FJlA/HKkOC+NU=;
+	s=korg; t=1778607743;
+	bh=D459uEJystnBzowzRAaQJDo2nNkbNv91p3PBqnEU0ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izMN8+rnZqAYnm2196bcuzEk1i1G1c8pDU/UJTL4JknCODvjL1LobHr2NYWJwofQ8
-	 Spr07garvzMOHwsfTrnQTdJpU6loaF5aU/R1twNl3haV+ZWM+WnqzuelDmJgCw0YFe
-	 XiamzwQdD/pV3MEnIyTwWlCBPMlYECbw3C3eLXqg=
+	b=vaHDaG58+602KWkaqYOSSAdqvw5X9BEHBnQYwJa8mktrczhmUKe/CTfCLyri/XJ5o
+	 30+pq8CINI4zIf/RtXGPPEMqf4+B432kaJdtK5D0ayktKSIVeEHwSyRAdj1O7AbPsu
+	 ie3tEWMjMlpSRZGLOHsUd2tsNtETIgMJxjx2+Ibc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Femmer <robert.femmer@x41-dsec.de>,
-	Christian Reitter <invd@inhq.net>,
-	Michael Rodler <michael.rodler@x41-dsec.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 067/307] io_uring/tw: serialize ctx->retry_llist with ->uring_lock
-Date: Tue, 12 May 2026 19:37:42 +0200
-Message-ID: <20260512173941.535381714@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 011/206] ASoC: SOF: Dont allow pointer operations on unconfigured streams
+Date: Tue, 12 May 2026 19:37:43 +0200
+Message-ID: <20260512173933.058920188@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +62,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 817AC527D9C
+X-Rspamd-Queue-Id: B0E5E525F84
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246393-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245861-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,x41-dsec.de:email]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Mark Brown <broonie@kernel.org>
 
-commit 17666e2d7592c3e85260cafd3950121524acc2c5 upstream.
+commit c5b6285aae050ff1c3ea824ca3d88ac4be1e69c8 upstream.
 
-The DEFER_TASKRUN local task work paths all run under ctx->uring_lock,
-which serializes them with each other and with the rest of the ring's
-hot paths. io_move_task_work_from_local() is the exception - it's called
-from io_ring_exit_work() on a kworker without holding the lock and from
-the iopoll cancelation side right after dropping it.
+When reporting the pointer for a compressed stream we report the current
+I/O frame position by dividing the position by the number of channels
+multiplied by the number of container bytes. These values default to 0 and
+are only configured as part of setting the stream parameters so this allows
+a divide by zero to be configured. Validate that they are non zero,
+returning an error if not
 
-->work_llist is fine with this, as it's only ever updated via the
-expected paths. But the ->retry_llist is updated while runing, and hence
-it could potentially race between normal task_work running and the
-task-has-exited shutdown path.
-
-Simply grab ->uring_lock while moving the local work to the fallback
-list for exit purposes, which nicely serializes it across both the
-normal additions and the exit prune path.
-
+Fixes: c1a731c71359 ("ASoC: SOF: compress: Add support for computing timestamps")
 Cc: stable@vger.kernel.org
-Fixes: f46b9cdb22f7 ("io_uring: limit local tw done")
-Reported-by: Robert Femmer <robert.femmer@x41-dsec.de>
-Reported-by: Christian Reitter <invd@inhq.net>
-Reported-by: Michael Rodler <michael.rodler@x41-dsec.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://patch.msgid.link/20260326-asoc-compress-tstamp-params-v1-1-3dc735b3d599@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/tw.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/soc/sof/compress.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/io_uring/tw.c
-+++ b/io_uring/tw.c
-@@ -273,8 +273,18 @@ void io_req_task_work_add_remote(struct
+--- a/sound/soc/sof/compress.c
++++ b/sound/soc/sof/compress.c
+@@ -371,6 +371,9 @@ static int sof_compr_pointer(struct snd_
+ 	if (!spcm)
+ 		return -EINVAL;
  
- void __cold io_move_task_work_from_local(struct io_ring_ctx *ctx)
- {
--	struct llist_node *node = llist_del_all(&ctx->work_llist);
-+	struct llist_node *node;
- 
-+	/*
-+	 * Running the work items may utilize ->retry_llist as a means
-+	 * for capping the number of task_work entries run at the same
-+	 * time. But that list can potentially race with moving the work
-+	 * from here, if the task is exiting. As any normal task_work
-+	 * running holds ->uring_lock already, just guard this slow path
-+	 * with ->uring_lock to avoid racing on ->retry_llist.
-+	 */
-+	guard(mutex)(&ctx->uring_lock);
-+	node = llist_del_all(&ctx->work_llist);
- 	__io_fallback_tw(node, false);
- 	node = llist_del_all(&ctx->retry_llist);
- 	__io_fallback_tw(node, false);
++	if (!sstream->channels || !sstream->sample_container_bytes)
++		return -EBUSY;
++
+ 	tstamp->sampling_rate = sstream->sampling_rate;
+ 	tstamp->copied_total = sstream->copied_total;
+ 	tstamp->pcm_io_frames = div_u64(spcm->stream[cstream->direction].posn.dai_posn,
 
 
 
