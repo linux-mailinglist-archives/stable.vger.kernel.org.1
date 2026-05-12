@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0La8AsJsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:06 +0200
+	id MOwRJz1tA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-245982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9972F526E39
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFB7526F92
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7EE6C30B222C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B787830CED93
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3313EDE4E;
-	Tue, 12 May 2026 17:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B2A407597;
+	Tue, 12 May 2026 17:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvrDPBxT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcA/qDFo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800073EDE41;
-	Tue, 12 May 2026 17:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E7A3E9C14;
+	Tue, 12 May 2026 17:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608716; cv=none; b=msLH3dMssr+h+Q4CNljd/Z1gWQ55vTL7gyMXI2QU3m/GYArhtnDgb7rbZI4BOa665/G1Rok664zE6kGAlH0ExFybpjJeB9S3sT4Pz6VVggHsOVoKhv1mdhXRW2huGHb5lVJTHJ8HyY1PO75a3q+pLvEWkyz3qef52ljGZDDvTIg=
+	t=1778608053; cv=none; b=Tei2aFrmGKhQBtMsSFBIE+guywKhrncCwEqUndwx91u/QgvlDp2BXKdTDqJbBPBc2ZbyVekCXJtUrQI5BaYekofpu223GVNLJ10lt8L9ySmw4MTaUR7BafCf1hf2Fawd1PyCYQVfo/YNw4aSW4uFO/SsiHGuNrnObqcooYdkwrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608716; c=relaxed/simple;
-	bh=K9cN7gBxarQQAtVCc6WLQcFnLUBqkGA9qnLex8VDT0A=;
+	s=arc-20240116; t=1778608053; c=relaxed/simple;
+	bh=bN8bL2G62fFXSsI/ZAXK66OP8QadpxuVBweQ6elsQmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHnToELQObvMK3baPPRPRPXaHR64sV1bD5HrFMeBiikfZpaiaR2+cfzQHb+GDRq0wCq3jBm2YWGe3V+w8EcoBZptug+3cNks0zhmz+WmzySJnpa3GazObHkkCMNqxj7RkgWPxIlIr2JpA8x4kx8ls3p+tNulO6bXVdGD1mQbb9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvrDPBxT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D3AC2BCB0;
-	Tue, 12 May 2026 17:58:35 +0000 (UTC)
+	 MIME-Version; b=DpzkC7K9lwlwX2DuLOmcxgGD7jsbk7Z3pe+HaYYqYDWK3sOD5qrU1qsja6rigJVKjfzR1cpz7iecaJOGk1MpvbnStr1YNeOsPgVp7O4nog3kZRl+ocXdgLcsty1tA34cbdmtFZmaoCEe7tWC28Yq4TYFR1999+A37XOhPCTCHlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcA/qDFo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E324C2BCB0;
+	Tue, 12 May 2026 17:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608716;
-	bh=K9cN7gBxarQQAtVCc6WLQcFnLUBqkGA9qnLex8VDT0A=;
+	s=korg; t=1778608053;
+	bh=bN8bL2G62fFXSsI/ZAXK66OP8QadpxuVBweQ6elsQmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvrDPBxTKclTQcu9kR2err17r+s8gbP7wp7VRU35gWDI7cYdEU9xD11dgG7k+y3ll
-	 B97Aj+tQRyIkSw4OcZftVOQRcUcE/cvq64gf/Lxe2dsZZKa+hrBYVAt5OgLsIdQAHI
-	 PtT5Ax7AY7eTDwVsrGv0FtzyHoTeXVNyaLaCxli4=
+	b=CcA/qDFo+th4BQs2dBzmpzAtc2qVYXuAwXPwxOqpOugCjrtsHzV88unDTVTxMyWXV
+	 w2HHJjNwlJMtPC6PV1B7lii9AUepXqtwluyF1y92QiuuWu6tLQiXfoeXxrXc+zmTeq
+	 D7MF+9xqgIuKJmBAn2b/DWf3kLq+uzHLHC0B5DnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Stefan Roese <stefan.roese@mailbox.org>
-Subject: [PATCH 6.18 187/270] PCI/AER: Stop ruling out unbound devices as error source
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.12 136/206] s390/debug: Reject zero-length input in debug_input_flush_fn()
 Date: Tue, 12 May 2026 19:39:48 +0200
-Message-ID: <20260512173942.385541228@linuxfoundation.org>
+Message-ID: <20260512173935.739820236@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9972F526E39
+X-Rspamd-Queue-Id: DEFB7526F92
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246239-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245982-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,62 +91,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mailbox.org:email,wunner.de:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-commit 1ab4a3c805084d752ec571efc78272295a9f2f74 upstream.
+commit e14622a7584f9608927c59a7d6ae4a0999dc545e upstream.
 
-When searching for the error source, the AER driver rules out devices whose
-enable_cnt is zero.  This was introduced in 2009 by commit 28eb27cf0839
-("PCI AER: support invalid error source IDs") without providing a
-rationale.
+debug_input_flush_fn() always copies one byte from the userspace buffer
+with copy_from_user() regardless of the supplied write length. A
+zero-length write therefore reads one byte beyond the caller's buffer.
+If the stale byte happens to be '-' or a digit the debug log is
+silently flushed. With an unmapped buffer the call returns -EFAULT.
 
-Drivers typically call pci_enable_device() on probe, hence the enable_cnt
-check essentially filters out unbound devices.  At the time of the commit,
-drivers had to opt in to AER by calling pci_enable_pcie_error_reporting()
-and so any AER-enabled device could be assumed to be bound to a driver.
-The check thus made sense because it allowed skipping config space accesses
-to devices which were known not to be the error source.
+Reject zero-length writes before copying from userspace.
 
-But since 2022, AER is universally enabled on all devices when they are
-enumerated, cf. commit f26e58bf6f54 ("PCI/AER: Enable error reporting when
-AER is native").
-
-Errors may very well be reported by unbound devices, e.g. due to link
-instability.  By ruling them out as error source, errors reported by them
-are neither logged nor cleared.  When they do get bound and another error
-occurs, the earlier error is reported together with the new error, which
-may confuse users.  Stop doing so.
-
-Fixes: f26e58bf6f54 ("PCI/AER: Enable error reporting when AER is native")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Stefan Roese <stefan.roese@mailbox.org>
-Cc: stable@vger.kernel.org # v6.0+
-Link: https://patch.msgid.link/734338c2e8b669db5a5a3b45d34131b55ffebfca.1774605029.git.lukas@wunner.de
+Cc: stable@vger.kernel.org # v5.10+
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/aer.c |    2 --
- 1 file changed, 2 deletions(-)
+ arch/s390/kernel/debug.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1034,8 +1034,6 @@ static bool is_error_source(struct pci_d
- 	 *      3) There are multiple errors and prior ID comparing fails;
- 	 * We check AER status registers to find possible reporter.
- 	 */
--	if (atomic_read(&dev->enable_cnt) == 0)
--		return false;
+--- a/arch/s390/kernel/debug.c
++++ b/arch/s390/kernel/debug.c
+@@ -1432,6 +1432,11 @@ static int debug_input_flush_fn(debug_in
+ 	char input_buf[1];
+ 	int rc = user_len;
  
- 	/* Check if AER is enabled */
- 	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &reg16);
++	if (!user_len) {
++		rc = -EINVAL;
++		goto out;
++	}
++
+ 	if (user_len > 0x10000)
+ 		user_len = 0x10000;
+ 	if (*offset != 0) {
 
 
 
