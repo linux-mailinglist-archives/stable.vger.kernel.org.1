@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-246284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGYnEmRrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:16 +0200
+	id MLUSFzFqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6505269B6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D6EB5265B7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86BC0305E63D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85D633094067
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1840248880;
-	Tue, 12 May 2026 18:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7CF3EDE59;
+	Tue, 12 May 2026 17:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJCzuiGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAo7GGzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7510B23E356;
-	Tue, 12 May 2026 18:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E769A3EDE49;
+	Tue, 12 May 2026 17:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608830; cv=none; b=H8OO3nOJrIKlgaZilTzp3vquiOvY/UKlM7kY26kdxZv9zaE5crzn7I8fjsRPChVce16rSaUm9r/kFfHGiecoP4nmyacduIvSM/5i4iDr91Mnw9o2u1Nh/AihnyQpQf6Xa8uJa/DHzGSRvmdbiy32vDd4VwaZY09D11EeHYig5SE=
+	t=1778608168; cv=none; b=S7cZ12tqf83Y5Q92Rm03aUFf5YcrPySx4Ea7ypkJvZUlPOtgQZZqIKbyg6gU5y3BD5vEJKBxAmVuCrPFLowx0shmkx3RQeBm5q02sIr0FOrhfmjSF5yywmfGoGmt77nOKWyiCFWIUqgQXAW6DSNUuJPJXxPeqFMkOm/qpsue5Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608830; c=relaxed/simple;
-	bh=RCUt8mER2GlZTqdUbfw7vQPBqoFS+x2q0Pk2tRawHvM=;
+	s=arc-20240116; t=1778608168; c=relaxed/simple;
+	bh=kWtPhROQqPhgoX3k0skKuZmLauLRMJdtRbw6LdrvqoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N31RBSVFCvbSNXX5ldtWZAnhiIpvj+b47auxFmEPkMrZwH/J6eBL4em0/WKD3vLKYy7DCaRvAgHnXXSAkM5/SJ8qvo59e/Ew2lH8O/jpgfVjmrBddPhoQ2yHkQ0hSxiUdID2hCjcUhnSMCS8DKeFxnCcfRBixRuwY2MS42hMONs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJCzuiGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E912C2BCB0;
-	Tue, 12 May 2026 18:00:29 +0000 (UTC)
+	 MIME-Version; b=Zpo669t0Cc9+yFe6iw89J2K+LQqwzbTQT0Qldond106LfDc4i4XFp39rf8k8NC/bVeq46NHXXf+Mp63bsFtsu7yDE357UU0GJKV7TOkbaEVUrceFu9ACYNJNpM9ZAn/YK/owlJEdfuBIv3WveHqhwFIjLcNiyG4d/Gw/S0eecZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAo7GGzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6C1C2BCB0;
+	Tue, 12 May 2026 17:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608830;
-	bh=RCUt8mER2GlZTqdUbfw7vQPBqoFS+x2q0Pk2tRawHvM=;
+	s=korg; t=1778608167;
+	bh=kWtPhROQqPhgoX3k0skKuZmLauLRMJdtRbw6LdrvqoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJCzuiGfAkdlHOjxIEdbCPMpYFtw3JaeKLBKSrziMZiyJUD42cNWSuQWSBsogaxJS
-	 kCtzzBF0S87Ncbue7ZrlZnkFRhFeJxCKqwkKPUoHm+Z+E06zfKaO4rR7Jvpzy3okyG
-	 YWIZmWdCcyLx2E1edb00EX6TcC12ZQL35y2GtZYY=
+	b=qAo7GGzbW6tm2Y0FCwrSa8In5SHBjj1nb705/70h7atPe8vP79CFXgn04InnyenHI
+	 khwrl9Dm4ejH+ITWzNdgbGHgL2Q2UlQm0Tulwxi6lBfFxVvpZJGUaLOQ43UMgsp4vh
+	 VGg0z0mgLbLlWBbta93/4W97tau/LwT5GXmXyduw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.18 231/270] f2fs: fix inline data not being written to disk in writeback path
+	linux-fsdevel@vger.kernel.org,
+	linux-unionfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org,
+	Amir Goldstein <amir73il@gmail.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 180/206] fs: prepare for adding LSM blob to backing_file
 Date: Tue, 12 May 2026 19:40:32 +0200
-Message-ID: <20260512173943.308256828@linuxfoundation.org>
+Message-ID: <20260512173936.672348670@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +68,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0B6505269B6
+X-Rspamd-Queue-Id: 1D6EB5265B7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,lists.ozlabs.org,gmail.com,hallyn.com,paul-moore.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-246026-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246284-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,xiaomi.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hallyn.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit fe9b8b30b97102859a9102be7bd2a09803bd90bd upstream.
+[ Upstream commit 880bd496ec72a6dcb00cb70c430ef752ba242ae7 ]
 
-When f2fs_fiemap() is called with `fileinfo->fi_flags` containing the
-FIEMAP_FLAG_SYNC flag, it attempts to write data to disk before
-retrieving file mappings via filemap_write_and_wait(). However, there is
-an issue where the file does not get mapped as expected. The following
-scenario can occur:
+In preparation to adding LSM blob to backing_file struct, factor out
+helpers init_backing_file() and backing_file_free().
 
-root@vm:/mnt/f2fs# dd if=/dev/zero of=data.3k bs=3k count=1
-root@vm:/mnt/f2fs# xfs_io data.3k -c "fiemap -v 0 4096"
-data.3k:
- EXT: FILE-OFFSET      BLOCK-RANGE      TOTAL FLAGS
-   0: [0..5]:          0..5                 6 0x307
-
-The root cause of this issue is that f2fs_write_single_data_page() only
-calls f2fs_write_inline_data() to copy data from the data folio to the
-inode folio, and it clears the dirty flag on the data folio. However, it
-does not mark the data folio as writeback. When
-__filemap_fdatawait_range() checks for folios with the writeback flag,
-it returns early, causing f2fs_fiemap() to report that the file has no
-mapping.
-
-To fix this issue, the solution is to call
-f2fs_write_single_node_folio() in f2fs_inline_data_fiemap() when
-getting fiemap with FIEMAP_FLAG_SYNC flags. This patch ensures that the
-inode folio is written back and the writeback process completes before
-proceeding.
-
-Cc: stable@kernel.org
-Fixes: 9ffe0fb5f3bb ("f2fs: handle inline data operations")
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-erofs@lists.ozlabs.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
+[PM: use the term "LSM blob", fix comment style to match file]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+[ Used kfree() instead of kmem_cache_free(bfilp_cachep, ff) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h   |    2 ++
- fs/f2fs/inline.c |    9 +++++++++
- fs/f2fs/node.c   |    2 +-
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ fs/file_table.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3888,6 +3888,8 @@ int f2fs_sanity_check_node_footer(struct
- 					enum node_type ntype, bool in_irq);
- struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino);
- struct folio *f2fs_get_xnode_folio(struct f2fs_sb_info *sbi, pgoff_t xnid);
-+int f2fs_write_single_node_folio(struct folio *node_folio, int sync_mode,
-+			bool mark_dirty, enum iostat_type io_type);
- int f2fs_move_node_folio(struct folio *node_folio, int gc_type);
- void f2fs_flush_inline_data(struct f2fs_sb_info *sbi);
- int f2fs_fsync_node_pages(struct f2fs_sb_info *sbi, struct inode *inode,
---- a/fs/f2fs/inline.c
-+++ b/fs/f2fs/inline.c
-@@ -812,6 +812,15 @@ int f2fs_inline_data_fiemap(struct inode
- 		goto out;
- 	}
+--- a/fs/file_table.c
++++ b/fs/file_table.c
+@@ -60,6 +60,12 @@ struct path *backing_file_user_path(stru
+ }
+ EXPORT_SYMBOL_GPL(backing_file_user_path);
  
-+	if (fieinfo->fi_flags & FIEMAP_FLAG_SYNC) {
-+		err = f2fs_write_single_node_folio(ifolio, true, false, FS_NODE_IO);
-+		if (err)
-+			return err;
-+		ifolio = f2fs_get_inode_folio(F2FS_I_SB(inode), inode->i_ino);
-+		if (IS_ERR(ifolio))
-+			return PTR_ERR(ifolio);
-+		f2fs_folio_wait_writeback(ifolio, NODE, true, true);
-+	}
- 	ilen = min_t(size_t, MAX_INLINE_DATA(inode), i_size_read(inode));
- 	if (start >= ilen)
- 		goto out;
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1821,7 +1821,7 @@ redirty_out:
- 	return false;
++static inline void backing_file_free(struct backing_file *ff)
++{
++	path_put(&ff->user_path);
++	kfree(ff);
++}
++
+ static inline void file_free(struct file *f)
+ {
+ 	security_file_free(f);
+@@ -67,8 +73,7 @@ static inline void file_free(struct file
+ 		percpu_counter_dec(&nr_files);
+ 	put_cred(f->f_cred);
+ 	if (unlikely(f->f_mode & FMODE_BACKING)) {
+-		path_put(backing_file_user_path(f));
+-		kfree(backing_file(f));
++		backing_file_free(backing_file(f));
+ 	} else {
+ 		kmem_cache_free(filp_cachep, f);
+ 	}
+@@ -255,6 +260,12 @@ struct file *alloc_empty_file_noaccount(
+ 	return f;
  }
  
--static int f2fs_write_single_node_folio(struct folio *node_folio, int sync_mode,
-+int f2fs_write_single_node_folio(struct folio *node_folio, int sync_mode,
- 			bool mark_dirty, enum iostat_type io_type)
- {
- 	int err = 0;
++static int init_backing_file(struct backing_file *ff)
++{
++	memset(&ff->user_path, 0, sizeof(ff->user_path));
++	return 0;
++}
++
+ /*
+  * Variant of alloc_empty_file() that allocates a backing_file container
+  * and doesn't check and modify nr_files.
+@@ -277,7 +288,14 @@ struct file *alloc_empty_backing_file(in
+ 		return ERR_PTR(error);
+ 	}
+ 
++	/* The f_mode flags must be set before fput(). */
+ 	ff->file.f_mode |= FMODE_BACKING | FMODE_NOACCOUNT;
++	error = init_backing_file(ff);
++	if (unlikely(error)) {
++		fput(&ff->file);
++		return ERR_PTR(error);
++	}
++
+ 	return &ff->file;
+ }
+ 
 
 
 
