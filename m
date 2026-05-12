@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-246125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDIoMfBrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:36 +0200
+	id eCfNM6FsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B105526B9D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDA4526D93
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 732103205606
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 745903038015
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDED3BB101;
-	Tue, 12 May 2026 17:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D4D2D060B;
+	Tue, 12 May 2026 18:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvtbPKaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiKrywZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6A03002A9;
-	Tue, 12 May 2026 17:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186A63EDE45;
+	Tue, 12 May 2026 18:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608422; cv=none; b=FH/cROPq9st0DJpwp0FvVjl2hRjxOWybD9mw2QVCuw87Y2elYOcwNhFLVoMRKzDFpn1ER+jGuafERbTct+s6qT5+VfGrwfKefQHggOB181gxvb0cOPVv1lomAS5EP49Kai8Zg/7TRzcSvG3hjd3T5atYuC5O8i8Uf/l3NhTU4Eg=
+	t=1778609239; cv=none; b=O+dZqyKvKgyDW8ODu7e4aBF3r0oyMu2m82ZH2Ru+FHlfxr1sbtIkGtFEvM+w7xZtDCJrj2il3iGI6Y13BJWlXA7/pSfr3O6p+tD+kEkiFsgQ2xhXx2wKcbjqnOEkUTEHVl9V1O+3dXSqHaYfZReAYz+2ZKYfiTP+8/euolQ42SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608422; c=relaxed/simple;
-	bh=THtRRrOR9mTj0amylZjcyNTP4AxjnfVcNOBKhKIm0s4=;
+	s=arc-20240116; t=1778609239; c=relaxed/simple;
+	bh=qDNiAptU+XeqrRK/sYWisypSgmf9L4MlHwM7B6UtiY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VR5QRlmTx+TWKm8BxQFrj/qdN1Wd/H4tJa452zIX8W5o4XyqthlUwbKKrIthQORmD+NO9a+oKXuqfHM1OSV12EP6b7Fe/xxns6h6qlNlN0uNZUrNUmr3GqHwNXJW3bMPaxcN0/jh8VWnZ3TLgZc8nRU8PMJj5Mqq3tOHkEaBHF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvtbPKaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1175EC2BCB0;
-	Tue, 12 May 2026 17:53:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o0d0DhvEet9LZM0h6D8ux6EVFH5U9VMZZhMamKEGirbKYkikePVd8lBngYtUjvUZSnser7Mw3becAROoRTL66vb8lmidk4vQpR2EaqtwMh/oXQPT6E8EMVImZ5vHqZ5Q5vOkGKtVo/KUsU78nzCk6iKQqV4jTugk26wlFXIk2lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiKrywZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F07CC2BCB0;
+	Tue, 12 May 2026 18:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608422;
-	bh=THtRRrOR9mTj0amylZjcyNTP4AxjnfVcNOBKhKIm0s4=;
+	s=korg; t=1778609238;
+	bh=qDNiAptU+XeqrRK/sYWisypSgmf9L4MlHwM7B6UtiY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvtbPKaC2/mYBbgM9FXa8q26/NR55SNwOgJaDZzvcxNg6N1xHMmVtVnApLN/5wlbo
-	 Ey+R4Zak+k5MOX0ZvJwgwIWc3nuRjTaJGDMT48ySf1+Y4UGiZrYtz5ka9xpDAJncCl
-	 QxagcmJatCp7m3ck6fak+sTKQLyAk14vCkmSlSrY=
+	b=TiKrywZqMfFfIkZ5akyR2EnTLXYEy+jMGmrnG3vBVte+AzjoZuV4S9BI5UdLZ5o0E
+	 VZNA2vkNUf8TentEHPq0SE2cS8gpG78v192tsRk3aUBHXQVO8Gf7lxXn8xi+grj6AB
+	 NhWZA2ZjYSBQavM+dAcZodKndCfGBwicQ7/BK4lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhiTao Ou <hkbinbinbin@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.18 071/270] Bluetooth: hci_event: Fix OOB read and infinite loop in hci_le_create_big_complete_evt
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 7.0 077/307] rust: drm: gem: clean up GEM state in init failure case
 Date: Tue, 12 May 2026 19:37:52 +0200
-Message-ID: <20260512173939.945991755@linuxfoundation.org>
+Message-ID: <20260512173941.746077564@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +64,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B105526B9D
+X-Rspamd-Queue-Id: 6FDA4526D93
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246125-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-246442-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,onurozkan.dev:email,nvidia.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Eliot Courtney <ecourtney@nvidia.com>
 
-commit 5ddb8014261137cadaf83ab5617a588d80a22586 upstream.
+commit 2e42a17b8f6bc3c0cd69d7556b588011d3ec2394 upstream.
 
-hci_le_create_big_complete_evt() iterates over BT_BOUND connections for
-a BIG handle using a while loop, accessing ev->bis_handle[i++] on each
-iteration.  However, there is no check that i stays within ev->num_bis
-before the array access.
+Currently, if `drm_gem_object_init` fails, the object is freed without
+any cleanup. Perform the cleanup in that case.
 
-When a controller sends a LE_Create_BIG_Complete event with fewer
-bis_handle entries than there are BT_BOUND connections for that BIG,
-or with num_bis=0, the loop reads beyond the valid bis_handle[] flex
-array into adjacent heap memory.  Since the out-of-bounds values
-typically exceed HCI_CONN_HANDLE_MAX (0x0EFF), hci_conn_set_handle()
-rejects them and the connection remains in BT_BOUND state.  The same
-connection is then found again by hci_conn_hash_lookup_big_state(),
-creating an infinite loop with hci_dev_lock held.
-
-Fix this by terminating the BIG if in case not all BIS could be setup
-properly.
-
-Fixes: a0bfde167b50 ("Bluetooth: ISO: Add support for connecting multiple BISes")
 Cc: stable@vger.kernel.org
-Signed-off-by: ZhiTao Ou <hkbinbinbin@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Onur Özkan <work@onurozkan.dev>
+Link: https://patch.msgid.link/20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com
+[ Move safety comment closer to unsafe block to avoid a clippy warning.
+  - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ rust/kernel/drm/gem/mod.rs |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6973,9 +6973,29 @@ static void hci_le_create_big_complete_e
- 			continue;
- 		}
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -207,8 +207,17 @@ impl<T: DriverObject> Object<T> {
+         // SAFETY: `obj.as_raw()` is guaranteed to be valid by the initialization above.
+         unsafe { (*obj.as_raw()).funcs = &Self::OBJECT_FUNCS };
  
-+		if (ev->num_bis <= i) {
-+			bt_dev_err(hdev,
-+				   "Not enough BIS handles for BIG 0x%2.2x",
-+				   ev->handle);
-+			ev->status = HCI_ERROR_UNSPECIFIED;
-+			hci_connect_cfm(conn, ev->status);
-+			hci_conn_del(conn);
-+			continue;
-+		}
-+
- 		if (hci_conn_set_handle(conn,
--					__le16_to_cpu(ev->bis_handle[i++])))
-+					__le16_to_cpu(ev->bis_handle[i++]))) {
-+			bt_dev_err(hdev,
-+				   "Failed to set BIS handle for BIG 0x%2.2x",
-+				   ev->handle);
-+			/* Force error so BIG gets terminated as not all BIS
-+			 * could be connected.
-+			 */
-+			ev->status = HCI_ERROR_UNSPECIFIED;
-+			hci_connect_cfm(conn, ev->status);
-+			hci_conn_del(conn);
- 			continue;
-+		}
+-        // SAFETY: The arguments are all valid per the type invariants.
+-        to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(), obj.obj.get(), size) })?;
++        if let Err(err) =
++            // SAFETY: The arguments are all valid per the type invariants.
++            to_result(unsafe {
++                bindings::drm_gem_object_init(dev.as_raw(), obj.obj.get(), size)
++            })
++        {
++            // SAFETY: `drm_gem_object_init()` initializes the private GEM object state before
++            // failing, so `drm_gem_private_object_fini()` is the matching cleanup.
++            unsafe { bindings::drm_gem_private_object_fini(obj.obj.get()) };
++            return Err(err);
++        }
  
- 		conn->state = BT_CONNECTED;
- 		set_bit(HCI_CONN_BIG_CREATED, &conn->flags);
-@@ -6984,7 +7004,10 @@ static void hci_le_create_big_complete_e
- 		hci_iso_setup_path(conn);
- 	}
- 
--	if (!ev->status && !i)
-+	/* If there is an unexpected error or if no BISes have been connected
-+	 * for the BIG, terminate it.
-+	 */
-+	if (ev->status == HCI_ERROR_UNSPECIFIED || (!ev->status && !i))
- 		/* If no BISes have been connected for the BIG,
- 		 * terminate. This is in case all bound connections
- 		 * have been closed before the BIG creation
+         // SAFETY: We will never move out of `Self` as `ARef<Self>` is always treated as pinned.
+         let ptr = KBox::into_raw(unsafe { Pin::into_inner_unchecked(obj) });
 
 
 
