@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMqBHN1tA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:49 +0200
+	id qMIONihwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1359852711B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3F95277CB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE86E319B29F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 444E2305C635
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DDB3C09ED;
-	Tue, 12 May 2026 17:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5C53EDE71;
+	Tue, 12 May 2026 18:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4lyflkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ny7SyRmv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72B03002A9;
-	Tue, 12 May 2026 17:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813663EDE41;
+	Tue, 12 May 2026 18:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608252; cv=none; b=OvA3YwU0lWWeNKAy32cR+Vel3DqwwSLp6sWj2eMAy813yutFV4BBIAXyocIChs49CYaQ8Qpq5qgahrFPT4agAuFcpvAecqxeVD8wum/iycOItmvmNrSCP4bIJJx1Ix9YEpwS+8gNEpn4ijM5UosqxW7YuP2CMzZeKLXuICmJ3wI=
+	t=1778608871; cv=none; b=RKSajSUe9+LGj+TMjQBBT4NPfCxnFvk0cMLeO0vaP2/WAPeU49rM3nDACu7uOu9W+j54JVWVpNelBI/eq5ubZZhc86t8HRsDRfeOe0CXTc8Fpo1PGSnkakPsf5h5W5Z8CwAs2b4tw2mdAI8G4bM6FoGcXDiOXr/C7Pw6moFAuEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608252; c=relaxed/simple;
-	bh=v0W4w2KA51UhdNP1B0n/L9T5/ENRUlebrQB03IeETzQ=;
+	s=arc-20240116; t=1778608871; c=relaxed/simple;
+	bh=J/ge+W46mKGibAKo2RByEWzmYwR/KK692KAaysP/p5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CvKYvmKAqkJjfJcna7ffa4KpeDE8XQzciMdaZ9OxHG4v53VCCqa1a62tyvxR7gkp34ZggrNwz3dp+CrY6usR0/8mk+IDWvWfYPf17zNmygHWIwVFpMO1jLCqm7ieRnQ/DAJt91HoGrUHirrrrsUG+tsPRy/pz58EHipnHCI4t6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4lyflkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC91C2BCB0;
-	Tue, 12 May 2026 17:50:52 +0000 (UTC)
+	 MIME-Version; b=X0ViwrHZbxNZ9V4Xx7DKY95V2zWgEpXZeewLRItdf2K3fBRIWwNyL8a806Bcg+DxkDl+G/s9la0fkrpoKydeOYgl0zzqyxfMGSCvBipKsRxU/2zfu3xsqTA2zaNkRSlp2bhPaX7x0tYVRi37vOWgCJTbmUJ7saMrit2QtpfAMGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ny7SyRmv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA7DC2BCB0;
+	Tue, 12 May 2026 18:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608252;
-	bh=v0W4w2KA51UhdNP1B0n/L9T5/ENRUlebrQB03IeETzQ=;
+	s=korg; t=1778608871;
+	bh=J/ge+W46mKGibAKo2RByEWzmYwR/KK692KAaysP/p5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4lyflkppPTf6C8dSftMBT+Hz8WUnsamzvOLvzTLfa4Gy9zxnyjVd5b2ZUuHdo8NS
-	 zHKpkyfMkht50LrxaF8uFoUqqCLY23Zu3V5WgBxucXkACWtYQ5HXqO+5KzedLvW4hi
-	 JULPkeOr1Z+DnOnwzz/lbd5ltGF53cujBdNABIZI=
+	b=Ny7SyRmvYdYFuzWoid8qSgxN9GpQNhQGtmYuz5kW3mGRqruhiv062PbIKHBTolLHD
+	 MFyOrDXgdmf9WPV01f77eJZINpiPQelMdL9qVAFxgb6K7WmqjGXI839iC4Wzpo+jW3
+	 MiAIYii1ZGZt+xvWtTuLCyZ6cDnYSV7KIRw9j5fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/206] gtp: disable BH before calling udp_tunnel_xmit_skb()
+	Martin Michaelis <code@mgjm.de>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 246/270] io_uring/kbuf: support min length left for incremental buffers
 Date: Tue, 12 May 2026 19:40:47 +0200
-Message-ID: <20260512173937.001054450@linuxfoundation.org>
+Message-ID: <20260512173943.618767671@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,136 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1359852711B
+X-Rspamd-Queue-Id: 6E3F95277CB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246059-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246300-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,mgjm.de:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Martin Michaelis <code@mgjm.de>
 
-[ Upstream commit 5638504a2aa9e1b9d72af9060df1a160cce2d379 ]
+Commit 7deba791ad495ce1d7921683f4f7d1190fa210d1 upstream.
 
-gtp_genl_send_echo_req() runs as a generic netlink doit handler in
-process context with BH not disabled. It calls udp_tunnel_xmit_skb(),
-which eventually invokes iptunnel_xmit() — that uses __this_cpu_inc/dec
-on softnet_data.xmit.recursion to track the tunnel xmit recursion level.
+Incrementally consumed buffer rings are generally fully consumed, but
+it's quite possible that the application has a minimum size it needs to
+meet to avoid truncation. Currently that minimum limit is 1 byte, but
+this should be a setting that is the hands of the application. For
+recvmsg multishot, a prime use case for incrementally consumed buffers,
+the application may get spurious -EFAULT returned at the end of an
+incrementally consumed buffer, as less space is available than the
+headers need.
 
-Without local_bh_disable(), the task may migrate between
-dev_xmit_recursion_inc() and dev_xmit_recursion_dec(), breaking the
-per-CPU counter pairing. The result is stale or negative recursion
-levels that can later produce false-positive
-SKB_DROP_REASON_RECURSION_LIMIT drops on either CPU.
+Grab a u32 field in struct io_uring_buf_reg, which the application can
+use to inform the kernel of the minimum size that should be available
+in an incrementally consumed buffer. If less than that is available,
+the current buffer is fully processed and the next one will be picked.
 
-The other udp_tunnel_xmit_skb() call sites in gtp.c are unaffected:
-the data path runs under ndo_start_xmit and the echo response handlers
-run from the UDP encap rx softirq, both with BH already disabled.
-
-Fix it by disabling BH around the udp_tunnel_xmit_skb() call, mirroring
-commit 2cd7e6971fc2 ("sctp: disable BH before calling
-udp_tunnel_xmit_skb()").
-
-Fixes: 6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit functions")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260417055408.4667-1-devnexen@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://github.com/axboe/liburing/issues/1433
+Signed-off-by: Martin Michaelis <code@mgjm.de>
+[axboe: write commit message, change io_buffer_list member name]
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/gtp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/uapi/linux/io_uring.h |    3 ++-
+ io_uring/kbuf.c               |   12 +++++++++---
+ io_uring/kbuf.h               |    7 +++++++
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -2401,6 +2401,7 @@ static int gtp_genl_send_echo_req(struct
- 		return -ENODEV;
- 	}
+--- a/include/uapi/linux/io_uring.h
++++ b/include/uapi/linux/io_uring.h
+@@ -864,7 +864,8 @@ struct io_uring_buf_reg {
+ 	__u32	ring_entries;
+ 	__u16	bgid;
+ 	__u16	flags;
+-	__u64	resv[3];
++	__u32	min_left;
++	__u32	resv[5];
+ };
  
-+	local_bh_disable();
- 	udp_tunnel_xmit_skb(rt, sk, skb_to_send,
- 			    fl4.saddr, fl4.daddr,
- 			    fl4.flowi4_tos,
-@@ -2410,6 +2411,7 @@ static int gtp_genl_send_echo_req(struct
- 			    !net_eq(sock_net(sk),
- 				    dev_net(gtp->dev)),
- 			    false);
-+	local_bh_enable();
- 	return 0;
- }
+ /* argument for IORING_REGISTER_PBUF_STATUS */
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -47,9 +47,9 @@ static bool io_kbuf_inc_commit(struct io
+ 		this_len = min_t(u32, len, buf_len);
+ 		buf_len -= this_len;
+ 		/* Stop looping for invalid buffer length of 0 */
+-		if (buf_len || !this_len) {
+-			buf->addr = READ_ONCE(buf->addr) + this_len;
+-			buf->len = buf_len;
++		if (buf_len > bl->min_left_sub_one || !this_len) {
++			WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
++			WRITE_ONCE(buf->len, buf_len);
+ 			return false;
+ 		}
+ 		buf->len = 0;
+@@ -637,6 +637,10 @@ int io_register_pbuf_ring(struct io_ring
+ 	if (reg.ring_entries >= 65536)
+ 		return -EINVAL;
+ 
++	/* minimum left byte count is a property of incremental buffers */
++	if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
++		return -EINVAL;
++
+ 	bl = io_buffer_get_list(ctx, reg.bgid);
+ 	if (bl) {
+ 		/* if mapped buffer ring OR classic exists, don't allow */
+@@ -684,6 +688,8 @@ int io_register_pbuf_ring(struct io_ring
+ 	bl->mask = reg.ring_entries - 1;
+ 	bl->flags |= IOBL_BUF_RING;
+ 	bl->buf_ring = br;
++	if (reg.min_left)
++		bl->min_left_sub_one = reg.min_left - 1;
+ 	if (reg.flags & IOU_PBUF_RING_INC)
+ 		bl->flags |= IOBL_INC;
+ 	ret = io_buffer_add_list(ctx, bl, reg.bgid);
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -34,6 +34,13 @@ struct io_buffer_list {
+ 
+ 	__u16 flags;
+ 
++	/*
++	 * minimum required amount to be left to reuse an incrementally
++	 * consumed buffer. If less than this is left at consumption time,
++	 * buffer is done and head is incremented to the next buffer.
++	 */
++	__u32 min_left_sub_one;
++
+ 	struct io_mapped_region region;
+ };
  
 
 
