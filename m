@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLRpFUtuA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:39 +0200
+	id gCn0DENqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CC7527282
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FEB52661A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 29BE13061EB1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:14:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 89A533095695
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4843845A4;
-	Tue, 12 May 2026 18:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6893955E4;
+	Tue, 12 May 2026 17:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIUHqfpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC4RoS64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70536375AB1;
-	Tue, 12 May 2026 18:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCAE3955E1;
+	Tue, 12 May 2026 17:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609674; cv=none; b=i5svxR2HpLgJoSU107i5fXTEJDW+X/Tn7gcNOdHvPxbv3MVEkWDq1fG1NwO9BeCN+T6BQSRHzSGgjA2MaXMSqrGG9jIo74x/XTx4N7a0vs+GtCqGbj1QQqwo6xKiitgfiWA4sqwjRwzqzLMu7jrzPxF8JzepYt5S0U2q+PpaKwo=
+	t=1778608204; cv=none; b=HO5AunDl24B9lR2xV9MiilQGuocsfY80c3iroFuXbh7wqXZXd2qPGVJ8Diuqe/f84tBlx4D7UMNKjgqTSCcv/wSjWnTn2aHcl+okXeDFDv05NGIu1bHJihoI4H6cUJeIyDBUKxs+vhIc9s/gc/M+hNi2kCfiZCokd0bUuwI3TRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609674; c=relaxed/simple;
-	bh=nj5X58eI7LDAEiR1jocpfg5X8uLDj7HdBE4oqHXlXTI=;
+	s=arc-20240116; t=1778608204; c=relaxed/simple;
+	bh=8sdu/3PiTpod2yTmPeW8s2QjwGmV0QzaNgstVGLoVdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eN6786ylIf3q5yfOowjQD6O7nGRSHzJnxeIyx/+aIMhuBLQ6WzvIRFk0vlmqOpSJ+SA/TGjVScGvfcG3NkgMBpPVGPlzzfJpZBIOjEGIR+HBQc8rA133GAk3sLswTKLEjv82Idn2Lui6sVQCFKX2JdG4DELPVGAKVxRzKzJUxv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIUHqfpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DBEC2BCB0;
-	Tue, 12 May 2026 18:14:33 +0000 (UTC)
+	 MIME-Version; b=MPOxGkNg7OWRAXY5qhwEUzahJ7TSmQ2lBcTCJrm7Q1vTNz4s8mV/SsYXC5drQCcl35ldSOqu5Pmf5PtmRvaMPQxUf7rUcnE0H1hfzJJDXKEEMLe5jSw0yok1ZteXdRqiUEqIgxucjWalExXz1caSq8vP0LHgcc/rQI6T4VsCRl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC4RoS64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C487C2BCB0;
+	Tue, 12 May 2026 17:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609674;
-	bh=nj5X58eI7LDAEiR1jocpfg5X8uLDj7HdBE4oqHXlXTI=;
+	s=korg; t=1778608203;
+	bh=8sdu/3PiTpod2yTmPeW8s2QjwGmV0QzaNgstVGLoVdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rIUHqfpH7QKivRh23OEsRGK/MNZap7PUgJ2FbbGIWyMN1pnNmTliCUM5CQW+Dqc0T
-	 6pRaiPj3rtS4tZPMnYNt+PPTcZbM0a1hxILRr6t71vCmIYnfYQBsf49mHPIQ2EkQTe
-	 nIFw789rxD9rDPOFSvp2VZeUPruUnX2NrSBMn0/4=
+	b=DC4RoS64+4vpBiEyYBsVFyUVF4GHfOIg2bv96aCOycU9bPQ1ASVKElnu3+3f1Xhtm
+	 XTm+sWiNrnfADSrTin2OQ79hcsuP87dqKvaerkbSQToIZH6QfITdG/ho2vWOurcBkl
+	 xLqZhDILJFXWbzMfNxL+wfDgEeQkjx6/1k8k0kIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 250/307] selftests: mptcp: pm: restrict unknown check to pm_nl_ctl
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 193/206] erofs: tidy up z_erofs_lz4_handle_overlap()
 Date: Tue, 12 May 2026 19:40:45 +0200
-Message-ID: <20260512173945.402817623@linuxfoundation.org>
+Message-ID: <20260512173936.957302631@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E0CC7527282
+X-Rspamd-Queue-Id: 98FEB52661A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246614-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246040-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,56 +91,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pm_netlink.sh:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 53705ddfa18408f8e1f064331b6387509fa19f7f upstream.
+[ Upstream commit 9ae77198d4815c63fc8ebacc659c71d150d1e51b ]
 
-When pm_netlink.sh is executed with '-i', 'ip mptcp' is used instead of
-'pm_nl_ctl'. IPRoute2 doesn't support the 'unknown' flag, which has only
-been added to 'pm_nl_ctl' for this specific check: to ensure that the
-kernel ignores such unsupported flag.
+ - Add some useful comments to explain inplace I/Os and decompression;
 
-No reason to add this flag to 'ip mptcp'. Then, this check should be
-skipped when 'ip mptcp' is used.
+ - Rearrange the code to get rid of one unnecessary goto.
 
-Fixes: 0cef6fcac24d ("selftests: mptcp: ip_mptcp option for more scripts")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-11-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 21e161de2dc6 ("erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/erofs/decompressor.c |   85 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 46 insertions(+), 39 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -194,9 +194,13 @@ check "show_endpoints" \
- flush_endpoint
- check "show_endpoints" "" "flush addrs"
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -112,44 +112,58 @@ static int z_erofs_lz4_prepare_dstpages(
+ 	return kaddr ? 1 : 0;
+ }
  
--add_endpoint 10.0.1.1 flags unknown
--check "show_endpoints" "$(format_endpoints "1,10.0.1.1")" "ignore unknown flags"
--flush_endpoint
-+# "unknown" flag is only supported by pm_nl_ctl
-+if ! mptcp_lib_is_ip_mptcp; then
-+	add_endpoint 10.0.1.1 flags unknown
-+	check "show_endpoints" "$(format_endpoints "1,10.0.1.1")" \
-+	      "ignore unknown flags"
-+	flush_endpoint
-+fi
+-static void *z_erofs_lz4_handle_overlap(struct z_erofs_decompress_req *rq,
++static void *z_erofs_lz4_handle_overlap(const struct z_erofs_decompress_req *rq,
+ 			void *inpage, void *out, unsigned int *inputmargin,
+ 			int *maptype, bool may_inplace)
+ {
+-	unsigned int oend, omargin, total, i;
++	unsigned int oend, omargin, cnt, i;
+ 	struct page **in;
+-	void *src, *tmp;
+-
+-	if (rq->inplace_io) {
+-		oend = rq->pageofs_out + rq->outputsize;
+-		omargin = PAGE_ALIGN(oend) - oend;
+-		if (rq->partial_decoding || !may_inplace ||
+-		    omargin < LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize))
+-			goto docopy;
++	void *src;
  
- set_limits 9 1 2>/dev/null
- check "get_limits" "${default_limits}" "rcv addrs above hard limit"
++	/*
++	 * If in-place I/O isn't used, for example, the bounce compressed cache
++	 * can hold data for incomplete read requests. Just map the compressed
++	 * buffer as well and decompress directly.
++	 */
++	if (!rq->inplace_io) {
++		if (rq->inpages <= 1) {
++			*maptype = 0;
++			return inpage;
++		}
++		kunmap_local(inpage);
++		src = erofs_vm_map_ram(rq->in, rq->inpages);
++		if (!src)
++			return ERR_PTR(-ENOMEM);
++		*maptype = 1;
++		return src;
++	}
++	/*
++	 * Then, deal with in-place I/Os. The reasons why in-place I/O is useful
++	 * are: (1) It minimizes memory footprint during the I/O submission,
++	 * which is useful for slow storage (including network devices and
++	 * low-end HDDs/eMMCs) but with a lot inflight I/Os; (2) If in-place
++	 * decompression can also be applied, it will reuse the unique buffer so
++	 * that no extra CPU D-cache is polluted with temporary compressed data
++	 * for extreme performance.
++	 */
++	oend = rq->pageofs_out + rq->outputsize;
++	omargin = PAGE_ALIGN(oend) - oend;
++	if (!rq->partial_decoding && may_inplace &&
++	    omargin >= LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize)) {
+ 		for (i = 0; i < rq->inpages; ++i)
+ 			if (rq->out[rq->outpages - rq->inpages + i] !=
+ 			    rq->in[i])
+-				goto docopy;
+-		kunmap_local(inpage);
+-		*maptype = 3;
+-		return out + ((rq->outpages - rq->inpages) << PAGE_SHIFT);
++				break;
++		if (i >= rq->inpages) {
++			kunmap_local(inpage);
++			*maptype = 3;
++			return out + ((rq->outpages - rq->inpages) << PAGE_SHIFT);
++		}
+ 	}
+-
+-	if (rq->inpages <= 1) {
+-		*maptype = 0;
+-		return inpage;
+-	}
+-	kunmap_local(inpage);
+-	src = erofs_vm_map_ram(rq->in, rq->inpages);
+-	if (!src)
+-		return ERR_PTR(-ENOMEM);
+-	*maptype = 1;
+-	return src;
+-
+-docopy:
+-	/* Or copy compressed data which can be overlapped to per-CPU buffer */
+-	in = rq->in;
++	/*
++	 * If in-place decompression can't be applied, copy compressed data that
++	 * may potentially overlap during decompression to a per-CPU buffer.
++	 */
+ 	src = z_erofs_get_gbuf(rq->inpages);
+ 	if (!src) {
+ 		DBG_BUGON(1);
+@@ -157,20 +171,13 @@ docopy:
+ 		return ERR_PTR(-EFAULT);
+ 	}
+ 
+-	tmp = src;
+-	total = rq->inputsize;
+-	while (total) {
+-		unsigned int page_copycnt =
+-			min_t(unsigned int, total, PAGE_SIZE - *inputmargin);
+-
++	for (i = 0, in = rq->in; i < rq->inputsize; i += cnt, ++in) {
++		cnt = min_t(u32, rq->inputsize - i, PAGE_SIZE - *inputmargin);
+ 		if (!inpage)
+ 			inpage = kmap_local_page(*in);
+-		memcpy(tmp, inpage + *inputmargin, page_copycnt);
++		memcpy(src + i, inpage + *inputmargin, cnt);
+ 		kunmap_local(inpage);
+ 		inpage = NULL;
+-		tmp += page_copycnt;
+-		total -= page_copycnt;
+-		++in;
+ 		*inputmargin = 0;
+ 	}
+ 	*maptype = 2;
 
 
 
