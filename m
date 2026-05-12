@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKbXE6ZuA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:10 +0200
+	id iJapN3lnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD70527397
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6D9526149
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0C9E30D15D4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3DCB308BD6F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6FC3537D0;
-	Tue, 12 May 2026 18:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C625F3CDBDD;
+	Tue, 12 May 2026 17:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbkevLRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiDnnnaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C7349AF5;
-	Tue, 12 May 2026 18:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AF8385D85;
+	Tue, 12 May 2026 17:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609208; cv=none; b=nzFjLRRwHkmNgq9nAtPUMLDoZDNpc2s2Dl9j2IpWOZzBDKrYaezMFaZOmTYxMW8bzVpxgKxmuil6u1god21p/8YV3sQ0XCeqkk5aP43c3JJuI0skzYeCakJHAxZ0Gnjm0CyI6+DD2C0Fc1VwxsKVRaQ0x3U1T79O8sJaAz3rmmY=
+	t=1778607823; cv=none; b=MOvjgMAzJwMI71iews8Yh6zaflsPik52rd5vyI2Rns8vPC24TZAfhSKPe1OYE6Gibila2hU8hSKRCDLhO8LY+B3tN2iD70GED2RjlJDopunW1mcpdBF5FpjIRXbrEor8OeiLAuPlrjoQy+aLdLX+iESE54PB0BS8OAPpEQxzBiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609208; c=relaxed/simple;
-	bh=/xihcwAI/RtSSKAXPS+vx8gYONKqnnVHIVEg89Ah6pM=;
+	s=arc-20240116; t=1778607823; c=relaxed/simple;
+	bh=9JHJQH+uwGO/OAmvLpTruCbaJYyPb1r4TOXdmEOO9cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ca9l5cc/P6zCQ8Bc0wzU4AL98hKU30JfDOziWCSHwYFYVAr3rPxXt30NH7n7HVUnh1mAOvfFErh1ukUz7l9lddK7nqCFzCFoU0GYbuO/p5UQUFJ4PooLv6juSgCtbh/ECbY/mA4vC0wVp3YOanh9sBx9DueX/rE+ziQrxp0jjo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbkevLRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845E5C2BCB0;
-	Tue, 12 May 2026 18:06:47 +0000 (UTC)
+	 MIME-Version; b=tMBcv98pQvqtUYpOvA/uCw5Dc+c7KZxIzfTnuK2kZtqq6zg4wg38B1I7Utui2oE6rVyWbPV19dJqUjsS3fA1U7mDSM7r/Cn09dpiHkv6svb/RpEFGeUL6NjzFOoTmrHjr8u5jz74DohsdvD70d8dKsVZL/6MnHdkwguUEiVwB+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiDnnnaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B68C2BCB0;
+	Tue, 12 May 2026 17:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609207;
-	bh=/xihcwAI/RtSSKAXPS+vx8gYONKqnnVHIVEg89Ah6pM=;
+	s=korg; t=1778607823;
+	bh=9JHJQH+uwGO/OAmvLpTruCbaJYyPb1r4TOXdmEOO9cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WbkevLRjQMQAmZUDTe7P0zLSkX7gIV8TRdeZlktZ7xL2QX1PSeKE44primdrGZaqY
-	 jnaACIes+h1bCEtJZK1UcZxOuXpAtRip47J080KfSHWjmj8e5AF9yYVSA/0k9ywVni
-	 aF7d7Ef1XUtlZ5rb9jzGoih5hsgrsNR/PyNw2H80=
+	b=jiDnnnaNII+2J9Yp23TjKcl8hBvfmTwRb6gvrcLVM2IwoUBwwexKNFG1N4golTTMP
+	 zb1o0Cnd5+lL+cJWqBKUuY+fy7ztNF4Ch9/c8AfiMCoTXilZL5EMSaG5pkhnzoOkuu
+	 QfpkYi0Jy/zSFJIhPzZa83FXXpAqS+o1xOGa0TMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dmitry Vyukov <dvyukov@google.com>
-Subject: [PATCH 7.0 105/307] rseq: Dont advertise time slice extensions if disabled
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 048/206] USB: serial: option: add Telit Cinterion LE910Cx compositions
 Date: Tue, 12 May 2026 19:38:20 +0200
-Message-ID: <20260512173942.341931512@linuxfoundation.org>
+Message-ID: <20260512173933.854398604@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +63,173 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ABD70527397
+X-Rspamd-Queue-Id: 6B6D9526149
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246430-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245892-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 010b7723c0a3b9ad58f50b715dbe2e7781d29400 upstream.
+commit 100201d349edd226ca3470c894c92dccc67ee7a8 upstream.
 
-If time slice extensions have been disabled on the kernel command line,
-then advertising them in RSEQ flags is wrong.
+Add the following Telit Cinterion LE910Cx compositions:
 
-Adjust the conditionals to reflect reality, fixup the misleading comments
-about the gap of these flags and the rseq::flags field.
+0x1251: RNDIS + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
+T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=108 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1251 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=LE910C1-EU
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=02 Prot=ff Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Fixes: d6200245c75e ("rseq: Allow registering RSEQ with slice extension")
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Tested-by: Dmitry Vyukov <dvyukov@google.com>
-Link: https://patch.msgid.link/20260428224427.437059375%40kernel.org
+0x1253: ECM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
+T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=121 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1253 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=LE910C1-EU
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+0x1254: tty (AT) + tty (AT)
+T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=122 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1254 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=LE910C1-EU
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 2 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+0x1255: tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
+T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=123 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1255 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=LE910C1-EU
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
 Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/rseq.h |    5 ++++-
- kernel/rseq.c             |    9 +++++----
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/uapi/linux/rseq.h
-+++ b/include/uapi/linux/rseq.h
-@@ -28,7 +28,7 @@ enum rseq_cs_flags_bit {
- 	RSEQ_CS_FLAG_NO_RESTART_ON_PREEMPT_BIT	= 0,
- 	RSEQ_CS_FLAG_NO_RESTART_ON_SIGNAL_BIT	= 1,
- 	RSEQ_CS_FLAG_NO_RESTART_ON_MIGRATE_BIT	= 2,
--	/* (3) Intentional gap to put new bits into a separate byte */
-+	/* (3) Intentional gap to keep new bits separate */
- 
- 	/* User read only feature flags */
- 	RSEQ_CS_FLAG_SLICE_EXT_AVAILABLE_BIT	= 4,
-@@ -161,6 +161,9 @@ struct rseq {
- 	 *	- RSEQ_CS_FLAG_NO_RESTART_ON_PREEMPT
- 	 *	- RSEQ_CS_FLAG_NO_RESTART_ON_SIGNAL
- 	 *	- RSEQ_CS_FLAG_NO_RESTART_ON_MIGRATE
-+	 *
-+	 * It is now used for feature status advertisement by the kernel.
-+	 * See: enum rseq_cs_flags_bit for further information.
- 	 */
- 	__u32 flags;
- 
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -462,10 +462,11 @@ SYSCALL_DEFINE4(rseq, struct rseq __user
- 		return -EFAULT;
- 
- 	if (IS_ENABLED(CONFIG_RSEQ_SLICE_EXTENSION)) {
--		rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_AVAILABLE;
--		if (rseq_slice_extension_enabled() &&
--		    (flags & RSEQ_FLAG_SLICE_EXT_DEFAULT_ON))
--			rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_ENABLED;
-+		if (rseq_slice_extension_enabled()) {
-+			rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_AVAILABLE;
-+			if (flags & RSEQ_FLAG_SLICE_EXT_DEFAULT_ON)
-+				rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_ENABLED;
-+		}
- 	}
- 
- 	scoped_user_write_access(rseq, efault) {
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1513,7 +1513,11 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1231, 0xff),	/* Telit LE910Cx (RNDIS) */
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x1250, 0xff, 0x00, 0x00) },	/* Telit LE910Cx (rmnet) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1251, 0xff) },	/* Telit LE910Cx (RNDIS) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1252, 0xff) },	/* Telit LE910Cx (MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1253, 0xff) },	/* Telit LE910Cx (ECM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1254, 0xff) },	/* Telit LE910Cx */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1255, 0xff) },	/* Telit LE910Cx */
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1260),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1261),
 
 
 
