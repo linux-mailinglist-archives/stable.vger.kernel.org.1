@@ -1,309 +1,226 @@
-Return-Path: <stable+bounces-245961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246248-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICw0G5FnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245961-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:57 +0200
+	id +N/GFd9qA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246248-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2147F52618B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54611526843
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6E22308E81D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA44E305F4E0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8533E1725;
-	Tue, 12 May 2026 17:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871573EDE56;
+	Tue, 12 May 2026 17:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="mEv+zTkN"
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="jf1S4Yn0";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="iDS6AZ1q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944A83E0749
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 17:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607998; cv=none; b=s/kZEERJ6QoPRKKpTVyUURhsHYGKK3UZhGjqO8euE0L7nquFQBTk1eCvY+saG5Yhb2cuPkrwkjzWQwatayUCY7MxvTSY7keN4y1Lu3liW6Rf7IYDe/hA5LFo8Pm+S1psltDqTaN7Z3b6LilaTCMD9746S+EEWaCLLPvDg1fJDDQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607998; c=relaxed/simple;
-	bh=Y3LXvkfeP40YhnuQMi3EnRdvaOPX/0EUrPKaHasgNRs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RbnpNq64nVMtPHcbNsKegwIUCBjFKxMCzdg8nD9LSobu+w4F1D1TKCtdE7FRSoFdvTMlYt0Aq6gxMNVOq2idx+UFWeoEZHXBN2cMXSMqxHhzQ4LSbLtZ2t1Ezt5dqqcsDUbOdUkoOnFfxRHt7Jjt8lUyoh9H2/pBh76C6dpXNnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=mEv+zTkN; arc=none smtp.client-ip=209.85.222.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
-Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-8d65f4073bfso797320585a.3
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 10:46:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1778607994; x=1779212794; darn=vger.kernel.org;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jP9tWH7lEqQ6vi1mfPA7yERZk2UiFb9oifwgNqskWVM=;
-        b=mEv+zTkNLkU6P4fPBt7+tEQuJPbvwGQkxZHdi4OQOJhwgeRE+fFNqgY0KvYpZJV6iF
-         XRogm2avMGZyZZwZdbsfMg8BZrP/ssIIl61HggfjfjuluIcP3GSgc0H8fBoKdBBn4qFI
-         C4xBSJDg6L+LGgF2fwzXvd54OnFsPAQAUoalEJVOvzgFlXeo02OMv8f782S25Kxto2se
-         MLP7+Ii9u4GxHo05ZsTUI8zA2TXzlV+djmuzTWWfAct7mr3RtTXKw0GAzidgMKcubKow
-         96b8dGEXnsil7bE/RL0NbrG4LMJFibXcz1tHHxT017XKx/yTmlYqoqrz5L2pTnpcFeJD
-         FTOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778607994; x=1779212794;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jP9tWH7lEqQ6vi1mfPA7yERZk2UiFb9oifwgNqskWVM=;
-        b=csmH2Zn1Bd5L9wvWUkD6t2XP5FcOnJIiIzoNd5nh7JeQ/lRyDogoT2T3Sc0Rbuh2g6
-         XpsPG4Gr+USeRy9dGpJyO1Q8NYoUTsoGXplw/Ywvs8SiUghD7N7W6jKy3uGwrs1unXvf
-         NIcsPhvr/MEtLM4pbiJk028odTKvtMtdLXwh1SWvAPhr9F6u5NlYctKeLhGJY2fjztEQ
-         be6NJMzOCeszkTKwmca7oTOEuuHIA+xgtOEi67kpEdxCkGEXXoBvrWVREsuINo6flbtr
-         ONH0kxV/NDwCPoZIXrR8GEIOxhLQOoJLO6Se//nlY9323KxSjcXSaCvt/zToK/nK8aLX
-         fWBQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8hQD/V393OIORN2cmC4O46jpq5bK6bxiara7F7PzScO8SPN9yKg3pZAiBZjkyOIflyOSmHrLU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFS9oNEZhsEV25wGZJi9oRF9jv8WReYuIE9znfqOtB81BKUG0k
-	IyZFJEGUHHdkds3JrWrYIdtb+8bomPyus2/1HEUsnt6E90W60/UsgFgAC30h2AgtTcwwZMSsn+5
-	/0nnz4QWOwq5m
-X-Gm-Gg: Acq92OEAgGkKC9dF0JCp26JMcMgjAmFGZbjS1J862nakbto7M1cDOUhETk6zU+a33w2
-	0/oyW5AP5rvX6k6MNGFxvYGLWBHAOIkraUIz8SPCaap4H7YT+aoSZV2VJM7TXlBGOGEdkBZRqBm
-	mTr7Fd2bGvNb/xpsMlTSfJDuqdCIm9aSXSIAhY9iS/SRBGH8lXwW/QGhd1OV7FyYxv6Wt++g8Bb
-	M2JCyewUW32XpmIN2lQr1YyIEuQIusuUyUpIJa1EtkeUwRLQwNuiYjcKe44eEICCX/3rGtTe47S
-	6/mGmp3TsJiDG/4lJoYZOlWo0Z1OHY38EmPvE8pVw9DKodbXqcJg6/k+S9UqdIniqMUAFkDvNFM
-	6k6OEcJLW0uPGHK3Syab4QsfGPe9Xp6umBq/iCPXZ1ktRxIRQ4Fx3aJMpkmkNLF6e51S414PQsp
-	7o3/wDm0oZjCU7b5H2SxhoRx3icC3dgzsO1XRBYVI=
-X-Received: by 2002:a05:620a:4608:b0:8f8:8860:fbad with SMTP id af79cd13be357-90cfe7d673fmr552242385a.57.1778607994443;
-        Tue, 12 May 2026 10:46:34 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:e06b::c41? ([2606:6d00:15:e06b::c41])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b87bd588sm1543591985a.29.2026.05.12.10.46.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 10:46:33 -0700 (PDT)
-Message-ID: <ba485144c4d469c834b0f65ed3ce753a331e207a.camel@ndufresne.ca>
-Subject: Re: [PATCH] media: rzv2h-ivc: Wait for frame end in stop_streaming
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, Daniel Scally	
- <dan.scally@ideasonboard.com>, =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?=	
- <barnabas.pocze@ideasonboard.com>, Laurent Pinchart	
- <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>,  Hans Verkuil <hverkuil+cisco@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Jacopo Mondi
-	 <jacopo.mondi+renesas@ideasonboard.com>, stable@vger.kernel.org
-Date: Tue, 12 May 2026 13:46:31 -0400
-In-Reply-To: <20260401-ivc-stop-streaming-v1-1-b7599982c280@ideasonboard.com>
-References: <20260401-ivc-stop-streaming-v1-1-b7599982c280@ideasonboard.com>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-8KgwzaVvsr4d37d+Iy32"
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F27E3EDE43;
+	Tue, 12 May 2026 17:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778608737; cv=pass; b=HXCVvc07cuTTUC2KR6WkIFu0FZ3eXwcT5lqd+rcsDdsv8hRh9zIOf8hEQzCp+qbNUbUubwl/LoxbfklZ+a7apf8oQDlCE8GWkt1uA199m61hAbrD6w7euCZ3b//tocr4Ge1JRg9LNPJSg90k/yKYdSSjRhxtZLgCs1vbpQdznAE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778608737; c=relaxed/simple;
+	bh=LuWjQC3FMkJO1Hwt/21qYeebUBWG1s00qbsVpbstKHg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=csnUOa6hWkJDET6gFVivC+6RTqr2bGLj8d6CnMBgmouoGC65GQrdz1nvnV6NCk3CI59qf4/8PP4LUlWY8yVu//uXWUAYBCmbBs9nrFerXEUOweWOYLmOD5GfAG75moTAX0r4ooDAxrF5iF4uR71AJVcIyE0PQVaUiHooknPJfRU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=jf1S4Yn0; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=iDS6AZ1q; arc=pass smtp.client-ip=85.215.255.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+ARC-Seal: i=1; a=rsa-sha256; t=1778608725; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=euj2I7FE5cUIBij3X8zLEcJdS5EzPd0OwvA9iaWRFzQTGByzXTYflBhhUxvF3jhfgk
+    mRNmtEMG1dkIsxREG6ubFmaTBorDNeF6n0E8ZiLyr10surK0tQTcyXwiZDdwkFbNSU6U
+    B/ocWzLN6zN2awjRdHeaQLTQWjtqI+MUHXuk20VlFWHPNdLjwEWIM64w97MEUfp3O6g6
+    clbC5LBIeoYQiPdJO47KxbDrI1L0dYtQlR2C6UiPU27QIUzhfknvl9PDzlmB28R1XhS5
+    r7Vu5Ms7o0lf5fS5c8QzaGoQSpYlTrJ5lJUfQWGflxsJWHpDekVfC9WVJsAcyCTUED6n
+    sdMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1778608725;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=NSy4R6P/pT+6aAniX5R1PvRqKxggzdyZqdZ+72neo/g=;
+    b=UW14pYKrpYjIUaWm3SALW3lLZruSevsvCLHyLSTCZMj1Ucg+nHBQHviKuvkKYb2W+7
+    Q4P4A43I+98Rjyjh8YzG3U6IbaJicFviyIC8aZcSG7MJ2slsw/BI1uVDeLkY8fyfpApb
+    trE0MKXqbx4agtuTyoc7tnYhsxSo3TcL9Z6+eBY+w5uErQ/taspCEJNy0nhd1tJxlyav
+    SaKBATlZW++5dNx0HIop0JCyIXj3lj+Kex/X76L/GlGrDrBKI7WtykoOQtHBiv7pqtTd
+    ky35KpdBBGBuNeXD2ouV93ZRHNr2MAbvcnhZ//53jurvtFBoWr7eGpvQ46WD0vjz/b8r
+    4tiQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1778608725;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=NSy4R6P/pT+6aAniX5R1PvRqKxggzdyZqdZ+72neo/g=;
+    b=jf1S4Yn0ysMUDTQrIWZklU0ga53/H9ySUXi5BnQwjHqh7iL1z4DtDx/zdxwCfWEVqt
+    3UxAY6OFeYutdoS3EWrxcHXhvFQjw6AjDbsqrJLQUb+SM5zOHegtAfM8skzoCsoshOkV
+    P9sm3MkhHgLIjE3Cb6MuV8W6qvY67CdOkl/83mG3HsK5VVKq42/2LbmdO8tU3GNJ2258
+    HmNsd8es9jf4I3VRLQ95lNA9v30V+Sc76cCmsMWqUZIk08Fvk+I3z+78vF255NPDfHc5
+    aQz/x1NdV5uy5w4G1xi48btFAZ6VD4iFyS08TcRXJUW6EgM6qvsuMxRUDeW3hFWKTGu+
+    GAqg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1778608725;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=NSy4R6P/pT+6aAniX5R1PvRqKxggzdyZqdZ+72neo/g=;
+    b=iDS6AZ1qFaHr5WLR26/mK7GVeTvvHufEENuKsUbgARi+t2/mNAH+Ao/raIe/B7v6xJ
+    +cQuqWZHwxSd5SF9J7BA==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s1YTqptmo87qzm6sElmZEI+VN6rw=="
+Received: from [IPV6:2a00:6020:4a38:6800:3499:34c0:1f42:76da]
+    by smtp.strato.de (RZmta 55.0.1 AUTH)
+    with ESMTPSA id Kba96d24CHwixBL
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Tue, 12 May 2026 19:58:44 +0200 (CEST)
+Message-ID: <c2148508-05fb-40a5-bc3c-e1177eccbb9d@hartkopp.net>
+Date: Tue, 12 May 2026 19:58:39 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 2147F52618B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] can: proc: reset pkg_stats atomics individually
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>, Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Vincent Mailhol <mailhol@kernel.org>, linux-can@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn, stable@vger.kernel.org
+References: <20260512133937.21957-1-runyu.xiao@seu.edu.cn>
+Content-Language: en-US
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <20260512133937.21957-1-runyu.xiao@seu.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 54611526843
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[hartkopp.net,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[hartkopp.net:s=strato-dkim-0002,hartkopp.net:s=strato-dkim-0003];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-245961-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246248-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[hartkopp.net:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[socketcan@hartkopp.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ndufresne-ca.20251104.gappssmtp.com:dkim,ideasonboard.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,10bit:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,hartkopp.net:email,hartkopp.net:mid,hartkopp.net:dkim]
 X-Rspamd-Action: no action
 
 
---=-8KgwzaVvsr4d37d+Iy32
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le mercredi 01 avril 2026 =C3=A0 17:35 +0200, Jacopo Mondi a =C3=A9crit=C2=
-=A0:
-> From: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
->=20
-> The rzv2h-ivc driver fails to handle back-2-back streaming sessions that
-> do not go through a peripheral reset. As the driver uses an autosuspend
-> delay of 2 seconds, it is quite possible that two consecutive streaming
-> sessions won't go through a suspend/resume sequence.
->=20
-> If the peripheral is not reset the second streaming session hangs and no
-> frames are delivered to the ISP.
->=20
-> This is because the stop_streaming() procedure implemented in the driver
-> doesn't match what's prescribed by the chip datasheet:
->=20
-> 1) The chip manual suggests to poll the RZV2H_IVC_FM_INT_STAT_STPEND bit
-> =C2=A0=C2=A0 of RZV2H_IVC_REG_FM_INT_STA instead of polling on RZV2H_IVC_=
-REG_FM_STOP
-> =C2=A0=C2=A0 and prescribes to clear the bit after polling has completed
->=20
-> 2) More importantly: the RZV2H_IVC_REG_FM_STOP_FSTOP bit has to be set
-> =C2=A0=C2=A0 on RZV2H_IVC_REG_FM_STOP -only- if a frame transfer to the I=
-SP is in
-> =C2=A0=C2=A0 progress. Setting the RZV2H_IVC_REG_FM_STOP_FSTOP bit when n=
-o frame is
-> =C2=A0=C2=A0 being transferred causes the polling routine to timeout and =
-the next
-> =C2=A0=C2=A0 streaming session fails to start
->=20
-> As a frame transfer of an image in 1920x1080@10bi takes 5 milliseconds
-> at most, it is quite possible that the frame transfer completion interrup=
-t
-> races with the stop procedure.
->=20
-> Instead of forcing a frame transfer abort, simply wait for the
-> in-progress transfer to complete by polling the ivc->vvalid_ifp status
-> variable in an hand-rolled loop that allows to inspect the variable
-> while holding the spinlock, to allow the irq handler to complete the
-> current buffer.
->=20
-> With this change, streaming back-2-back without suspending the
-> peripheral works successfully.
->=20
+On 12.05.26 15:39, Runyu Xiao wrote:
+> Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+> converted several members of struct can_pkg_stats to atomic_long_t and
+> updated the hot TX/RX and procfs read paths to use atomic_long_*()
+> helpers. However, can_init_stats() still clears the whole struct with
+> memset().
+> 
+> can_init_stats() is reached from can_stat_update() in timer context and
+> also from the procfs reset path. Those paths can run while the TX/RX hot
+> paths are concurrently updating rx_frames, tx_frames, matches and their
+> *_delta counters. Hitting the whole-struct memset() in that window
+> performs plain writes to fields that otherwise follow an atomic_long_t
+> access contract, which can lose or mix live statistics updates.
+> 
+> This issue was found by source-level API-misuse analysis looking for
+> whole-object resets left behind after atomic_long_t conversions, then
+> manually audited on Linux v6.18.21.
+> 
+> Replace the whole-struct memset() with a helper that resets the
+> atomic_long_t counters via atomic_long_set() and clears the derived
+> scalar statistics explicitly. This preserves the existing reset
+> semantics for scalar fields while restoring atomic access discipline for
+> the live counters.
+> 
+> Build-tested by compiling net/can/proc.o on x86_64 netdev/main.
+> Runtime-tested with a QEMU + vcan setup on Linux v6.18.21 by driving
+> concurrent traffic and reset_stats reads, which reproduced inconsistent
+> exported statistics before the fix.
+> 
+> Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
 > Cc: stable@vger.kernel.org
-> Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control bl=
-ock
-> driver")
-> Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+
+Makes perfect sense!
+Many thanks!
+
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+
 > ---
-> As detailed in the commit message, re-starting a streaming session
-> without going through a peripheral reset doesn't currently work.
->=20
-> I initially thought this is because the stop_streaming() procedure
-> implemented in the rzv2h-ivc driver does not comply with what is
-> prescribed by the chip manual.
->=20
-> So I went and modified it according to the manual.
->=20
-> Unfortunately, even by following the suggested procedure, once
-> RZV2H_IVC_REG_FM_STOP is set and a forceful frame transfer abort is
-> started, the RZV2H_IVC_FM_INT_STAT_STPEND bit takes a long time to
-> clear, during which is most often times the case the current in-progress
-> transfer completes by itself. If this happen, then a peripheral
-> reset is required to restart streaming regardless if I forcefully clear
-> the RZV2H_IVC_REG_FM_STOP_FSTOP and RZV2H_IVC_FM_INT_STAT_STPEND bits.
->=20
-> I have tried several strategies to properly forcefully stop an
-> in-progress transfer and handle the potential race betwee the
-> transfer-complete irq and the polling the RZV2H_IVC_REG_FM_INT_STA
-> register (which could potentially sleep), but it's still quite easy to
-> get races between frame completion and the forced stop procedure unless
-> I hold on to the ivc->spinlock preventing the irq handler to run.
->=20
-> Once I timed the transfer time for a 1920x1080@10bit frame to 5 milli-sec=
-onds
-> at most I decided to simply wait for the current in-progress transfer to
-> complete, as this seems the most reliable way to be able to re-start
-> streaming without resetting the peripheral.
-> ---
-> =C2=A0.../platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c=C2=A0=C2=A0 | 31 +=
-+++++++++++++++++---
-> -
-> =C2=A01 file changed, 26 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> index b167f1bab7ef..932fed38cf3f 100644
-> --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> @@ -297,12 +297,33 @@ static int rzv2h_ivc_start_streaming(struct vb2_que=
-ue
-> *q, unsigned int count)
-> =C2=A0static void rzv2h_ivc_stop_streaming(struct vb2_queue *q)
-> =C2=A0{
-> =C2=A0	struct rzv2h_ivc *ivc =3D vb2_get_drv_priv(q);
-> -	u32 val =3D 0;
-> +	unsigned int loop =3D 5;
-> =C2=A0
-> -	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_STOP,
-> RZV2H_IVC_REG_FM_STOP_FSTOP);
-> -	readl_poll_timeout(ivc->base + RZV2H_IVC_REG_FM_STOP,
-> -			=C2=A0=C2=A0 val, !(val & RZV2H_IVC_REG_FM_STOP_FSTOP),
-> -			=C2=A0=C2=A0 10 * USEC_PER_MSEC, 250 * USEC_PER_MSEC);
-> +	/*
-> +	 * If no frame transfer is in progress, we're done, otherwise, wait
-> for
-> +	 * the transfer to complete.
-> +	 *
-> +	 * Transferring a 1920x1080@10bit frame to the ISP takes less than 5
-> +	 * msec so sleep for 2.5 msec (+- 25%) and give up after 5 attempts.
-> +	 */
-> +	for (; loop > 0; loop--) {
-> +		unsigned int vvalid_ifp;
+>   net/can/proc.c | 27 +++++++++++++++++++++++++--
+>   1 file changed, 25 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/can/proc.c b/net/can/proc.c
+> index de4d05ae3459..64b3bdc2fa7e 100644
+> --- a/net/can/proc.c
+> +++ b/net/can/proc.c
+> @@ -76,16 +76,39 @@ static const char rx_list_name[][8] = {
+>    * af_can statistics stuff
+>    */
+>   
+> +static void can_reset_pkg_stats(struct can_pkg_stats *pkg_stats)
+> +{
+> +	atomic_long_set(&pkg_stats->rx_frames, 0);
+> +	atomic_long_set(&pkg_stats->tx_frames, 0);
+> +	atomic_long_set(&pkg_stats->matches, 0);
 > +
-> +		/*
-> +		 * Inspect the ivc->vvalid_ifp variable holding the spinlock
-> not
-> +		 * to the race with the rzv2h_ivc_buffer_done() call in the
-> irq
-> +		 * handler.
-> +		 */
-> +		scoped_guard(spinlock_irq, &ivc->spinlock) {
-> +			vvalid_ifp =3D ivc->vvalid_ifp;
-> +		}
-> +		if (vvalid_ifp < 2)
-> +			break;
+> +	pkg_stats->total_rx_rate = 0;
+> +	pkg_stats->total_tx_rate = 0;
+> +	pkg_stats->total_rx_match_ratio = 0;
 > +
-> +		fsleep(2500);
-> +	}
-> +	if (!loop)
-> +		dev_err(ivc->dev, "Failed to stop streaming\n");
+> +	pkg_stats->current_rx_rate = 0;
+> +	pkg_stats->current_tx_rate = 0;
+> +	pkg_stats->current_rx_match_ratio = 0;
+> +
+> +	pkg_stats->max_rx_rate = 0;
+> +	pkg_stats->max_tx_rate = 0;
+> +	pkg_stats->max_rx_match_ratio = 0;
+> +
+> +	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
+> +	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
+> +	atomic_long_set(&pkg_stats->matches_delta, 0);
+> +}
+> +
+>   static void can_init_stats(struct net *net)
+>   {
+>   	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+>   	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
+>   	/*
+> -	 * This memset function is called from a timer context (when
+> +	 * This stats reset is called from a timer context (when
+>   	 * can_stattimer is active which is the default) OR in a process
+>   	 * context (reading the proc_fs when can_stattimer is disabled).
+>   	 */
+> -	memset(pkg_stats, 0, sizeof(struct can_pkg_stats));
+> +	can_reset_pkg_stats(pkg_stats);
+>   	pkg_stats->jiffies_init = jiffies;
+>   
+>   	rcv_lists_stats->stats_reset++;
 
-Would simply using vb2_wait_for_all_buffers() worked for your use case ? Or=
- does
-RZV2H_IVC_REG_FM_STOP mask off IRQ causing buffers to never be signalled ?
-
-> =C2=A0
-> =C2=A0	rzv2h_ivc_return_buffers(ivc, VB2_BUF_STATE_ERROR);
-> =C2=A0	video_device_pipeline_stop(&ivc->vdev.dev);
->=20
-> ---
-> base-commit: 4fbeef21f5387234111b5d52924e77757626faa5
-> change-id: 20260331-ivc-stop-streaming-2c992277b050
->=20
-> Best regards,
-
---=-8KgwzaVvsr4d37d+Iy32
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCagNndwAKCRDZQZRRKWBy
-9Fl5AQDbDPP5l66uW59iOzFARn4kwcdklC3/keZpGJzbWJ2ZkwD+PDGlwkBonyGD
-mFsO08OF7Quw08qvOTFUjlPf8pSOIgw=
-=yuTG
------END PGP SIGNATURE-----
-
---=-8KgwzaVvsr4d37d+Iy32--
 
