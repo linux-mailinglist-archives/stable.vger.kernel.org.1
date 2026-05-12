@@ -1,328 +1,191 @@
-Return-Path: <stable+bounces-245806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLa/BEhFA2ri2QEAu9opvQ
-	(envelope-from <stable+bounces-245806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:20:40 +0200
+	id CJTXBHc/A2rO2AEAu9opvQ
+	(envelope-from <stable+bounces-245810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:55:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F93052385D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:20:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BD15230D5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F36AE3092398
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:35:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E75983169DB9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CDB3B5F62;
-	Tue, 12 May 2026 14:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9843D3BB69E;
+	Tue, 12 May 2026 14:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="brPjBarW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Parc8l9R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C943ADBAC
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09CA3B8139
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778596546; cv=none; b=WXBZVmf96owVhBVRNujcYVHrfpDQoGVfW9N4vKQrFtgXIrM7WfGJ0hpvhIv7NnCpSl4x/5rzOdFO6ouMLHsvPkWLX+J0ww3CYf5d6RBu4oUOUKoy6Jzwfn6DieTnihYW1jlOCV1b6dRUS75jHc2sVwdQxuKX1Nukx3XIlX6mtWM=
+	t=1778597066; cv=none; b=OWmGiJUxvbF5VddYzYi3hzIIc3j78DMfCaiqJHfjYxddz8xoEg1E+8PrLgYqIKtcxmBagsSsN1Rk2NFFh3xLUrt6V87G8tD4mOQfZi8MrFXs8P8RyFmpu2XHnQQtGaITo62cPWc9dx2vZ5hdo7j2rqVM7W6fq4gF74IYYaPjNas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778596546; c=relaxed/simple;
-	bh=upePEqXE1zP/s22XRDwITn5fUrpC095gaJURkMGDRcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NsBxWV2pVotxQJQ9jrnwxDMOjcguiFZX71o/zMCo96AYkosI/HVoHaX9LujiCTZs/1iPp8SgDnhLlR1E3UH7lPZ4nT1jjHY2mtyNGhNh3CF0jLx5ZVeMHEFmtI3Zzbv1yEZWc9SZQeup3iMrg1hYXA+OKohlZ2l29lcNhrECijY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=brPjBarW; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1778597066; c=relaxed/simple;
+	bh=pNjPLUfYOnlL9AuWfKEjlCxudFzPIGw2EJqVl9WOMxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L9cpmrUQKrQKjwHt45oUN7gefbztdv+C/nIu5nVxNCcPOhOj6/PTihcF3T8JZUKwIe2bkP+vxjRKOu+reeoa+k3T58oS8HKnn38RMrriZAucJmcqEbPbJQBhvk90r1p12eCVR8t1rcUF/eb8QPKURI4oldQ1f9LmrWbTYkJM2zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Parc8l9R; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so50986695e9.0
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 07:35:44 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43d7645adbdso3066160f8f.1
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 07:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778596543; x=1779201343; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778597063; x=1779201863; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FZWzQImWOyWQ14r2Z/b/dDDI7psqgO5EhZ1ndo1M8aw=;
-        b=brPjBarWKA5tCkylgzu9h5GUak2m8knjPL5gtF/yHZ6irWmkBPFG9hlpq9O+JuVnAM
-         O6UURZs2yerPOSlHDNRx2jmR8ddGF2jwouD1F85CkIhT5I0qvRMxaRKdLJZCaYEz5Lto
-         NI6u0y2/Fmjgl8yCOgUwV5w/dg6huTw1X53eMISNnXkTXgLh4+BadcrzJNGA2n+DyKlV
-         n3ZWhkyoZ8mUuyDCAuqfYoW9rK9tKlVFaWclVRF4T5k5n5Q+hK89lFjJLx+ViZBhsMDz
-         wi4NRAXxyRXUQFLdqDcPFrFjk9o5eEbM+HevjMh4lnuVhYDjm5n72Qjqxq6af1u2qsDH
-         eURA==
+        bh=Sza2ZxpHlBY8pmqC5zMaFu/RPKkibTVxTiEJ6kAqjb8=;
+        b=Parc8l9RtSWs1uSoBeSworOcRTD0ctS3rqLYfEtNkczKqfx9HYKPvgQs4ABgELQw57
+         VXadQdQIH+fsvzks32Q8j6wKH44MDtuV0rg8mI5fdjaL/mIDpUpxFw2+2gVTP6isqz8o
+         7AXHio+M/gEDejoCF7tXuHoY3Zid1fh9enhiyxmT8Jjd8MRtiZD/t8ffw5SVehrmggUs
+         9OqGfo7OOFlknp6X8Hm32QjNNgJDEFD/B6gwGVf+GgNVGuxzmf2ZbqN7f8svy2v9NNq3
+         wHGb+XGijRq24soHDH39ni1pWy26RB2ej9ZtBLqKXO92PA/g1z12221VM+pReObyhNjY
+         Gwcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778596543; x=1779201343;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZWzQImWOyWQ14r2Z/b/dDDI7psqgO5EhZ1ndo1M8aw=;
-        b=mYE+An7rmLqsgUYzS6pvARl2jswUq7p7TG3lWenQjkM2s1HfijE46RFdtqxU7IZNyW
-         11ynQ5nk0TxLQrs+KEd/N1NUvAj24o18zWlGclAevYehtznkoxRewgXxKM3tHkVb62ZK
-         ZJ6leDv4TgzpDj4g6er140j9NqWfyXL9UW/o5s/lXiFmGtP56jgU/f4hpB2vZXSz/OSA
-         9FfYGGiMnAJGUXZOByb3KEhyIDooweNIJxeCkAx0w/hvMyWhX48Pk9DzDVK0nlphOtCN
-         1p60M2r7fvvi8m5IDtzw01NKFYsIDPfS7Mehub+rVKx9xsghrszsGupJNQPabBv9lHUZ
-         egbw==
-X-Forwarded-Encrypted: i=1; AFNElJ/c47PsvXDCcgfINFfC275agy8z6JGoz8oNFOPNPjg/ia2TVHZI2p9dYKyCopyBvf6ZyGJshIE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWVngI3DXTqLDTNxX7hAIUnEycKrodpI+EHsl299n1Q7QNYXfM
-	j02oK8KIsHw6kzNbwp7id0/VpG2H/TXclOg9Z8090kGYlZ8EePdeOSd5
-X-Gm-Gg: Acq92OFy3P65IWNWX3qDj79/a+2cnQox3MsEuXSN24r/DIrpLCorE3OsA2FXhSadd6g
-	ueGgdnQ7zgg56i5tgIlEVuadKaG5iUzPuCNPhLPfJNXgP4+DJVXB/xvo715YyHUbJSdvmji2xIP
-	vlzC5+dHIn7f7LMkb2xVoKgna7w5FsW+tL6DTBtq0vPwTLfx8QizFQyiRYyX26pEEhooMMex1Iv
-	sr9vEyE1wGgikUgxWGz+AGO+xOZlGQiAuLp6b4vevYpTZOUJY5sqdlNbZhtNqFgome4FQS9ei08
-	XE4+ivW6fFJyGJkENKkWZT0kKampgZ6lMpf7ng6UuizeCv5jOloEAICrN7Y6fLTpdMs52h52x42
-	Citbu7UovXspgd+ybFwZiIhLaVVQAAl5e4Q8xSMNA0QvOS/eNkym+GRyi5ba93duD0uD7bHObDf
-	oTTSZykgwYGUzHaLLCyeZPnA==
-X-Received: by 2002:a05:600c:a11a:b0:48e:635a:18d2 with SMTP id 5b1f17b1804b1-48e8fe4dc0bmr38431565e9.2.1778596543205;
-        Tue, 12 May 2026 07:35:43 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fc8cd49fesm3135415e9.0.2026.05.12.07.35.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 May 2026 07:35:42 -0700 (PDT)
-Date: Tue, 12 May 2026 14:35:42 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Balbir Singh <balbirs@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>,
-	akpm@linux-foundation.org, ljs@kernel.org, riel@surriel.com,
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
-	jannh@google.com, sj@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        d=1e100.net; s=20251104; t=1778597063; x=1779201863;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Sza2ZxpHlBY8pmqC5zMaFu/RPKkibTVxTiEJ6kAqjb8=;
+        b=SoSdWSVh09Dc5BxVhxoeKCRQpMutMYLTNtzcuP6JQS/ffbThJnc3GGA6KbPrg1QOvm
+         BzigJaR0J7mGsVJhLyDOMyDD6GFhMOnGYV4AyO6GjMy5/AJKKxT7BBXw+URDDuS58Ppm
+         8NZlEsBWvDlcJmwISo7KAO1wsi/6tg8Na2OmDTbZOvcCTcZjzr+RFpZ13uQmOSpNCXr4
+         i6UwMDt5tWykdYJZFGzU11TTvb0AgUGGakpBgoP8FrJtAX3Ny2jTNVkszbvBBYFPApl/
+         uhq5E1B9gbSnC6bvOaq9gXTe9vmqsPxOXyZpFgmTZNFjL7JHPJh2FOIp78g8whxfEWFT
+         kZhg==
+X-Forwarded-Encrypted: i=1; AFNElJ8TvmBjV5+5gvGYBk2n7Onrbn6Lp73bszyHdNGbHWnxSSukPHi6eRxlC9FOQE+JFmzNcV/X5OE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFBQ9tg5vkGvxX66XaxuH5wBy2azE9hgQdp+3M4cYf9QG98YF6
+	gm4qTmMUmdi9qApEGSvPNpF+JPhnodfcqsS6sBL1g66prD4/c1c8jDaAFO2ouA==
+X-Gm-Gg: Acq92OFRFYbUlSEB4nf0SZ7+WFBy1hi01F+lMjd1kym/NDVVYYNI1UeSAnwp3fPI557
+	b+W4hd63DV9GGaA/bPoAOVEW9Ep2dKfs6P6NDsPNBMyrO+JXOLfCm1+cbwyYGTX7OlSqSaF85XH
+	dd7zEQBCSf1p/UhLXbEGswLA0tk/eQ1iRu6boQfKne65wuoCDNRz7SsIZcHJwBu7RG2hg5ZAmoJ
+	jE+9Hw/bicgrS1XmA6ghkkq3rVMe/AV5J4mkKXmeorofdcLxLOJYpYhJon+pBZTILlYR9VoZakB
+	aCEXKTMRz14ig+WhsitW+1HOuauY3NJG3ZV2DoGdH4Sb+FoJiJa3aLkPx5JwpopgaOiswcnEqEn
+	Zt/i91cA7kOciv8BZs795hlW85jzuCcWBfy80jX/hgsHIUE6n+pFCCW/6mvXt5vRgD3228IWTTY
+	37w8xp+CC1N7RcaTZe7qUwdVkQ68nQYS9AssSArNtXW2EBBsFDu3xZbBF+qUQyOSvC2MHF1fAnq
+	AbC
+X-Received: by 2002:a05:6000:4011:b0:44a:aa3c:5927 with SMTP id ffacd0b85a97d-45b13e55d33mr5041184f8f.29.1778597063157;
+        Tue, 12 May 2026 07:44:23 -0700 (PDT)
+Received: from ubuntu-f6bvp (lfbn-idf1-1-304-238.w86-195.abo.wanadoo.fr. [86.195.26.238])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45491f8d4c3sm32858657f8f.34.2026.05.12.07.44.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 07:44:22 -0700 (PDT)
+From: f6bvp <bernard.f6bvp@gmail.com>
+To: toke@toke.dk,
+	kuba@kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <20260512143542.izpp3gu4iqxttw3f@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260508013728.21285-1-richard.weiyang@gmail.com>
- <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
- <0aab59b8-71c5-4059-8281-5dd876946528@kernel.org>
+Cc: Bernard Pidoux <bernard.f6bvp@gmail.com>,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	gregkh@linuxfoundation.org,
+	linux-hams@vger.kernel.org
+Subject: Re: [PATCH net-deletions] net: remove ax25 and amateur radio (hamradio) subsystem
+Date: Tue, 12 May 2026 16:42:28 +0200
+Message-ID: <20260512144416.9848-1-bernard.f6bvp@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <87se8mytvv.fsf@toke.dk>
+References: <87se8mytvv.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0aab59b8-71c5-4059-8281-5dd876946528@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 2F93052385D
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 78BD15230D5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-245806-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,vger.kernel.org,redhat.com,linuxfoundation.org];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245810-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	HAS_REPLYTO(0.00)[richard.weiyang@gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[nvidia.com,gmail.com,linux-foundation.org,kernel.org,surriel.com,infradead.org,google.com,kvack.org,oracle.com,vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bernardf6bvp@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	REPLYTO_EQ_FROM(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 02:43:54PM +0200, David Hildenbrand (Arm) wrote:
->On 5/9/26 00:48, Balbir Singh wrote:
->> On 5/8/26 11:37, Wei Yang wrote:
->>> For pmd_trans_huge() and pmd_is_migration_entry(), we does following
->>> before return the pmd entry:
->>>
->>>   * re-validate pmd entry
->>>   * check PVMW_MIGRATION
->>>   * check_pmd()
->>>   * handle on pte level if split under us
->>>
->>> But for device-private pmd, we just return after pmd_lock(). This may
->>> lead to inproper situation.
->>>
->> 
->> Could you elaborate a more on the improper situation?
->> 
->>> This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
->>> support device-private entries") by following the same pattern as
->>> pmd_trans_huge() and pmd_is_migration_entry().
->>>
->>> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>> Cc: David Hildenbrand <david@kernel.org>
->>> Cc: Balbir Singh <balbirs@nvidia.com>
->>> Cc: SeongJae Park <sj@kernel.org>
->>> Cc: Zi Yan <ziy@nvidia.com>
->>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>> Cc: <stable@vger.kernel.org>
->>> ---
->>>  mm/page_vma_mapped.c | 34 +++++++++++++++++++++++-----------
->>>  1 file changed, 23 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>> index a4d52fdb3056..5d337ea43019 100644
->>> --- a/mm/page_vma_mapped.c
->>> +++ b/mm/page_vma_mapped.c
->>> @@ -269,21 +269,33 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>  			spin_unlock(pvmw->ptl);
->>>  			pvmw->ptl = NULL;
->>>  		} else if (!pmd_present(pmde)) {
->>> -			const softleaf_t entry = softleaf_from_pmd(pmde);
->>> +			softleaf_t entry = softleaf_from_pmd(pmde);
->>>  
->>>  			if (softleaf_is_device_private(entry)) {
->>>  				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>> -				return true;
->>> -			}
->>> -
->>> -			if ((pvmw->flags & PVMW_SYNC) &&
->>> -			    thp_vma_suitable_order(vma, pvmw->address,
->>> -						   PMD_ORDER) &&
->>> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
->>> -				sync_with_folio_pmd_zap(mm, pvmw->pmd);
->>> +				entry = softleaf_from_pmd(*pvmw->pmd);
->>> +
->>> +				if (softleaf_is_device_private(entry)) {
->> 
->> Do we need to check softleaf_is_device_private() twice, can't we hold the pmd
->> lock and check once?
->
->I think what we try to do here is, is to only grab the lock if we verified that there is something of interest in there.
->
->I wonder if we should rewrite that whole thing to just do a pmd_same() check after grabbing the lock.
->
->Something a lot cleaner like:
->
->diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->index a4d52fdb3056..de6a255cc847 100644
->--- a/mm/page_vma_mapped.c
->+++ b/mm/page_vma_mapped.c
->@@ -242,40 +242,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->                 */
->                pmde = pmdp_get_lockless(pvmw->pmd);
-> 
->-               if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->-                       pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->-                       pmde = *pvmw->pmd;
->-                       if (!pmd_present(pmde)) {
->-                               softleaf_t entry;
->-
->-                               if (!thp_migration_supported() ||
->-                                   !(pvmw->flags & PVMW_MIGRATION))
->-                                       return not_found(pvmw);
->-                               entry = softleaf_from_pmd(pmde);
->-
->-                               if (!softleaf_is_migration(entry) ||
->-                                   !check_pmd(softleaf_to_pfn(entry), pvmw))
->-                                       return not_found(pvmw);
->-                               return true;
->-                       }
->-                       if (likely(pmd_trans_huge(pmde))) {
->-                               if (pvmw->flags & PVMW_MIGRATION)
->-                                       return not_found(pvmw);
->-                               if (!check_pmd(pmd_pfn(pmde), pvmw))
->-                                       return not_found(pvmw);
->-                               return true;
->-                       }
->-                       /* THP pmd was split under us: handle on pte level */
->-                       spin_unlock(pvmw->ptl);
->-                       pvmw->ptl = NULL;
->-               } else if (!pmd_present(pmde)) {
->-                       const softleaf_t entry = softleaf_from_pmd(pmde);
->-
->-                       if (softleaf_is_device_private(entry)) {
->-                               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->-                               return true;
->-                       }
->+               if (pmd_present(pmde)) {
->+                       if (!pmd_leaf(pmde))
->+                               goto pte_table;
->+                       if (pvmw->flags & PVMW_MIGRATION)
->+                               return not_found(pvmw);
->+                       if (!check_pmd(pmd_pfn(pmde), pvmw))
->+                               return not_found(pvmw);
->+               } else if (pmd_is_migration_entry(pmde)) {
->+                       softleaf_t entry = softleaf_from_pmd(pmde);
->+
->+                       if (!(pvmw->flags & PVMW_MIGRATION))
->+                               return not_found(pvmw);
->+                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->+                               return not_found(pvmw);
->+               } else if (pmd_is_device_private_entry(pmde)) {
->+                       softleaf_t entry = softleaf_from_pmd(pmde);
-> 
->+                       if (pvmw->flags & PVMW_MIGRATION)
->+                               return not_found(pvmw);
->+                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->+                               return not_found(pvmw);
->+               } else {
->                        if ((pvmw->flags & PVMW_SYNC) &&
->                            thp_vma_suitable_order(vma, pvmw->address,
->                                                   PMD_ORDER) &&
->@@ -285,6 +273,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->                        step_forward(pvmw, PMD_SIZE);
->                        continue;
->                }
->+
->+               /* Double-check under PTL that the PMD didn't change. */
->+               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->+               if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
->+                       return true;
->+               spin_unlock(pvmw->ptl);
->+               pvmw->ptl = NULL;
->+               goto restart;
->+pte_table:
->                if (!map_pte(pvmw, &pmde, &ptl)) {
->                        if (!pvmw->pte)
->
->
->
->
->There is likely room to clean this up / compress it further.
+From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-I tried to compress above logic like this, hope it could look cleaner.
+Toke Høiland-Jørgensen <toke@toke.dk> writes:
 
-	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
-		unsigned long pfn;
-		bool is_migration = pmd_is_migration_entry(pmde);
-		bool for_migration = !!(pvmw->flags & PVMW_MIGRATION);
+> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
 
-		if (is_migration != for_migration)
-			return not_found(pvmw);
+Hello Toke, Jakub, all,
 
-		if (pmd_trans_huge(pmde))
-			pfn = pmd_pfn(pmde);
-		else
-			pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
+I understand the decision to move AX.25, NET/ROM, and ROSE out of tree,
+and I am not opposing it. The maintenance burden caused by AI-generated
+syzbot reports with no human follow-up is a legitimate reason to act.
 
-		if (!check_pmd(pfn, pvmw))
-			return not_found(pvmw);
-	} else if (!pmd_present(pmde)) {
+That said, I would like to raise one specific concern: the ROSE subsystem
+accumulated a number of real bugs through upstream commits that were merged
+without hardware testing. I have been running ROSE on actual packet radio
+equipment and was able to reproduce and fix five of these bugs, confirmed
+via KASAN and netconsole.
 
->I'll note that this now also adds proper check_pmd() checks to pmd_is_device_private_entry().
->
->The not_found(pvmw) if check_pmd() fails is rather weird ... but likely this works because
->THPs can really only be mapped through one PMD, and we always will look at the right spot ...
->
->-- 
->Cheers,
->
->David
+The most severe symptom is that the ROSE module cannot be cleanly unloaded
+once an AX.25 connection has been established, which makes amateur radio
+applications that rely on ROSE effectively unusable until a reboot.
 
--- 
-Wei Yang
-Help you, Help me
+My five patches address:
+
+1. rose: fix dev_put() leak in rose_loopback_timer()
+   Fixes: 0453c6824595 ("net/rose: fix unbound loop in rose_loopback_timer()")
+
+2. rose: hold loopback neighbour reference across timer callback
+   Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+
+3. rose: fix race between loopback timer and module removal
+   Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+
+4. rose: clear neighbour pointer after rose_neigh_put() in state machines
+   Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+
+5. rose: guard rose_neigh_put() against NULL in timer expiry
+   Fixes: 5de7665e0a07 ("net: rose: fix timer races against user threads")
+
+Each patch carries the appropriate Fixes: tag and a Tested-by from me on
+real hardware. They are visible on lore.kernel.org.
+
+Since ROSE will no longer be maintained in-tree from 7.1 onward, the only
+remaining users are those running current stable kernels (7.0.y and
+earlier). Would it be possible to have these five patches queued for the
+stable trees via Greg's stable process?
+
+I am happy to resend them as a formal series tagged [PATCH stable] against
+the current stable releases if that is preferred.
+
+Thank you for your work on the Linux networking subsystem.
+
+73 de Bernard Pidoux, F6BVP
+<f6bvp@free.fr>
 
