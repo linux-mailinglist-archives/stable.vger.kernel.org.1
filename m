@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-246488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOfXFTp0A2rl5wEAu9opvQ
-	(envelope-from <stable+bounces-246488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:58 +0200
+	id CLKuCjBvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F7D527F78
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 975AA5274EB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D8173117D04
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F818315AAE2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD35133ADBA;
-	Tue, 12 May 2026 18:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACF73E5A19;
+	Tue, 12 May 2026 17:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xY7COuVP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lFJU6sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCB5349AF5;
-	Tue, 12 May 2026 18:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5BE3EDE72;
+	Tue, 12 May 2026 17:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609355; cv=none; b=c02gmfhs0dmCY3rHRDrGt5HyhdTvq+4efxvwu70MNlOlxLdCv/nTNK4UPm1NGMyOtuflsD7fmbFaF9+urHmEn+t8x8gnJtPNJv99g/N0DSUJtxhBqbOedHsDm2iWlTvRKC6Uxb/6eQl/7jyczBXVtTmo1P16J2Dy2xl6o1BT0nw=
+	t=1778608533; cv=none; b=lEobpWEzX6Hix320QzWjq7MQVqytuKtgqTI94ZvhU9fYg8AnYlgLFQ2EoZiWX99y7kKRbhrzNKENAz/vrHegj91uqMZVTPTSCe/gsdUkMtvKa8Dlqe9GPUM0jdHRPriJ+MoktJfN0mHtnHeXI4PMHpsKfMaDPIAG2+wwfeUhHgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609355; c=relaxed/simple;
-	bh=zloZMLQ4rDYglQ+u5T/h/2bRV/YrvtDbrlLKS0AzjzM=;
+	s=arc-20240116; t=1778608533; c=relaxed/simple;
+	bh=5kXNYNUiEltnZ436MJVLqC4l4vwdkKyg4RMjmLlz3Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJ+kxUkfhaKPmUjSmt59mmjJVMf0r0w7ygIAwmMGG9HybJmf5riRj0Hcz1WxPMyJmXHaIvHurNOxJPKF2YtFflbEGsAfhFmruy/1H7Upb9gBfawbooO/D3PyD+OtWLJVwNyUI4X2ZVS1RTJ9xSPHZ0O/i1Mbjq/jhCPe15jC9hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xY7COuVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3EBC2BCB0;
-	Tue, 12 May 2026 18:09:14 +0000 (UTC)
+	 MIME-Version; b=F1yjEab94SxBWZKobAt4bdWJfZznwG0c+4Jf3C8Ti4g0z51Ubarh+n8Gg3cKU/x/RRAmkO+CDkZU2PqDRXl5zGD6LbGmHgcow3sWgzMFpeOFrUOh0a35i+RgYifI2tkHc4qLqjOMqPbs0h5DeqsdLB3GBXA8FImwLNYAKXNUDY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lFJU6sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8F4C2BCB0;
+	Tue, 12 May 2026 17:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609355;
-	bh=zloZMLQ4rDYglQ+u5T/h/2bRV/YrvtDbrlLKS0AzjzM=;
+	s=korg; t=1778608533;
+	bh=5kXNYNUiEltnZ436MJVLqC4l4vwdkKyg4RMjmLlz3Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xY7COuVP3MsdHtLchuXMJxhz7ktqWr+XTr9aWHBp4StUGPbv/G/BkMOZOhcOtyQQw
-	 c9IDydZpWxZnZXXsSf7UXScOjq5WF4AG1oxy9H1l/jhfum1kC3aYWVbis2ceqIDgfc
-	 s8+CdAVlPKfUT8jc0GJvA7vHOznSSy42ir6CQIl0=
+	b=1lFJU6sjQ/QHK0OExvnkZRtfD4ct7lzPvD71LXdlkLG1knSYdoGA4i6E+Uv6QQSYL
+	 s7iBsrw00KXUsIYSCC1aqRdxvVciceYVW1UnYMVT1X+etn//RQfnFizA/TJFOoO1fG
+	 qeGvNVsKmILkkkawSadEJXfZgp7+wYFEWDGi71ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Xiao Liu <lx24@stu.ynu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 7.0 121/307] net/rds: handle zerocopy send cleanup before the message is queued
+	Christoph Hellwig <hch@lst.de>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 115/270] block: add pgmap check to biovec_phys_mergeable
 Date: Tue, 12 May 2026 19:38:36 +0200
-Message-ID: <20260512173942.680105598@linuxfoundation.org>
+Message-ID: <20260512173940.879292117@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,126 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B7F7D527F78
+X-Rspamd-Queue-Id: 975AA5274EB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[ynu.edu.cn:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,redhat.com];
-	TAGGED_FROM(0.00)[bounces-246488-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.728];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246168-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ynu.edu.cn:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-commit 44b550d88b267320459d518c0743a241ab2108fa upstream.
+commit 13920e4b7b784b40cf4519ff1f0f3e513476a499 upstream.
 
-A zerocopy send can fail after user pages have been pinned but before
-the message is attached to the sending socket.
+biovec_phys_mergeable() is used by the request merge, DMA mapping,
+and integrity merge paths to decide if two physically contiguous
+bvec segments can be coalesced into one. It currently has no check
+for whether the segments belong to different dev_pagemaps.
 
-The purge path currently infers zerocopy state from rm->m_rs, so an
-unqueued message can be cleaned up as if it owned normal payload pages.
-However, zerocopy ownership is really determined by the presence of
-op_mmp_znotifier, regardless of whether the message has reached the
-socket queue.
+When zone device memory is registered in multiple chunks, each chunk
+gets its own dev_pagemap. A single bio can legitimately contain
+bvecs from different pgmaps -- iov_iter_extract_bvecs() breaks at
+pgmap boundaries but the outer loop in bio_iov_iter_get_pages()
+continues filling the same bio. If such bvecs are physically
+contiguous, biovec_phys_mergeable() will coalesce them, making it
+impossible to recover the correct pgmap for the merged segment
+via page_pgmap().
 
-Capture op_mmp_znotifier up front in rds_message_purge() and use it as
-the cleanup discriminator. If the message is already associated with a
-socket, keep the existing completion path. Otherwise, drop the pinned
-page accounting directly and release the notifier before putting the
-payload pages.
+Add a zone_device_pages_have_same_pgmap() check to prevent merging
+bvec segments that span different pgmaps.
 
-This keeps early send failure cleanup consistent with the zerocopy
-lifetime rules without changing the normal queued completion path.
-
-Fixes: 0cebaccef3ac ("rds: zerocopy Tx support.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Xiao Liu <lx24@stu.ynu.edu.cn>
-Signed-off-by: Xiao Liu <lx24@stu.ynu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/d2ea98a6313d5467bac00f7c9fef8c7acddb9258.1777550074.git.tonanli66@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 49580e690755 ("block: add check when merging zone device pages")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Link: https://patch.msgid.link/20260410153414.4159050-2-namjain@linux.microsoft.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/message.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ block/blk.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/rds/message.c
-+++ b/net/rds/message.c
-@@ -131,24 +131,34 @@ static void rds_rm_zerocopy_callback(str
-  */
- static void rds_message_purge(struct rds_message *rm)
- {
-+	struct rds_znotifier *znotifier;
- 	unsigned long i, flags;
--	bool zcopy = false;
-+	bool zcopy;
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -132,6 +132,8 @@ static inline bool biovec_phys_mergeable
  
- 	if (unlikely(test_bit(RDS_MSG_PAGEVEC, &rm->m_flags)))
- 		return;
- 
- 	spin_lock_irqsave(&rm->m_rs_lock, flags);
-+	znotifier = rm->data.op_mmp_znotifier;
-+	rm->data.op_mmp_znotifier = NULL;
-+	zcopy = !!znotifier;
-+
- 	if (rm->m_rs) {
- 		struct rds_sock *rs = rm->m_rs;
- 
--		if (rm->data.op_mmp_znotifier) {
--			zcopy = true;
--			rds_rm_zerocopy_callback(rs, rm->data.op_mmp_znotifier);
-+		if (znotifier) {
-+			rds_rm_zerocopy_callback(rs, znotifier);
- 			rds_wake_sk_sleep(rs);
--			rm->data.op_mmp_znotifier = NULL;
- 		}
- 		sock_put(rds_rs_to_sk(rs));
- 		rm->m_rs = NULL;
-+	} else if (znotifier) {
-+		/*
-+		 * Zerocopy can fail before the message is queued on the
-+		 * socket, so there is no rs to carry the notification.
-+		 */
-+		mm_unaccount_pinned_pages(&znotifier->z_mmp);
-+		kfree(rds_info_from_znotifier(znotifier));
- 	}
- 	spin_unlock_irqrestore(&rm->m_rs_lock, flags);
- 
+ 	if (addr1 + vec1->bv_len != addr2)
+ 		return false;
++	if (!zone_device_pages_have_same_pgmap(vec1->bv_page, vec2->bv_page))
++		return false;
+ 	if (xen_domain() && !xen_biovec_phys_mergeable(vec1, vec2->bv_page))
+ 		return false;
+ 	if ((addr1 | mask) != ((addr2 + vec2->bv_len - 1) | mask))
 
 
 
