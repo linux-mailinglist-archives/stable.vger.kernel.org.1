@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6B9kNMBqA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:32 +0200
+	id GLg0AHV0A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7DB5267D3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB59527FE2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4C87305E733
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82C48307BCED
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBB23EDE67;
-	Tue, 12 May 2026 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A77A352F86;
+	Tue, 12 May 2026 18:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xorNv9Jj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ops6TzDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D763EDE41;
-	Tue, 12 May 2026 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C115C33ADBA;
+	Tue, 12 May 2026 18:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608688; cv=none; b=kPWx1L80U3fa4xnpjheOhWsP19BJ6XwdwbIiZHCp3m4SgoJqhyxUr/Vvrsnfer+TFIgOrdO27UsPIVddrfij4+qqaZZ0OFZz4BPoRXaqqhQxvT/nZsKztPNk2rGUffgvCF6EZU8q/j9xRgkGoSsVjgqYtkhnZWdwHVHUp4L8+S0=
+	t=1778609406; cv=none; b=GHoYJgJUSrNQJ1z4gmlqFeDVQjLg/Ol9ZN3YAfqXKQC4s2GwJVTG18cNrfSn+MB1bcjmnB3KozD3T3EqbqUd3v5e0yhOBslNYea5lSmEZNNLy2X69GIDMqDBRcw8ROXj+dqc2enZBYU+dOv10i5pZzU8V7AIuU1weeasIE3llDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608688; c=relaxed/simple;
-	bh=0pSSHxZRqEZSNjujKhk+aFsUEFfVwCyGnoq/jotgwfY=;
+	s=arc-20240116; t=1778609406; c=relaxed/simple;
+	bh=yz1dvGKS3l9HINf1cLDuovDmaU94iRFsxpeINeD5veE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJE+6K/kyTbv0VP/j1n6k/JsVLojVUOyPkbMm5N6vG/bW5+kAVr3/UrBbdAW/tHriD+UpKEKoH0ZSOd/6ZPv10r50MbBWKYr9ykDJA0ueF0XS8V5GflyTAGuDm/C1Kgvfn2+BRC3Lb88mTweZo7BP4Orbgssxuehbw8RjZrEc2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xorNv9Jj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC0CC2BCB0;
-	Tue, 12 May 2026 17:58:07 +0000 (UTC)
+	 MIME-Version; b=rEemTSDwRN5MkTyLBwQ4Sqlnfp9Yo/z1qAhnRsshYrjK5ptB3oN7XFE5dtaqnI1SdpOFwRyvTeaChpltxHeYXQHMw5nM79r9tNhsMo6ZZ2ZvE0yJRHkStWu8ICyFIwucueUy037buu/iYRnkWJxFX3HeECRziAIjo1JkWodXR/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ops6TzDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574A9C2BCB0;
+	Tue, 12 May 2026 18:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608688;
-	bh=0pSSHxZRqEZSNjujKhk+aFsUEFfVwCyGnoq/jotgwfY=;
+	s=korg; t=1778609406;
+	bh=yz1dvGKS3l9HINf1cLDuovDmaU94iRFsxpeINeD5veE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xorNv9Jj6h3tKiZtPojqfp9LHvgOR/Y5w+kXCCUsXrgNOZ9oe68ra90Kwb6l+zh/7
-	 U1Wu5PCd8vXB+LK+yCTyg1L9TEHzs3q0TYubXyBiwcNQO40EhmUJoXN+RWPW48ko0x
-	 u3ycKRXjMN5XA1EulrEsQbEyFP9ykcyb5uDXtbAQ=
+	b=ops6TzDwCzGrfpQiv8KPiYDC/drFjil6rXercjUWKrCrVPG8ocabt+WHP75RJT384
+	 SRdUyePyqhR2t77xVp7OWK+pjwGV/ZA94OwpfyHID7fLRc6744G5gYuuinrwm9islI
+	 Q9WO6OzWKGdLOM8KYCNffSSZZB0AXYwhuH7eNiKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zisen Ye <zisenye@stu.xidian.edu.cn>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 177/270] smb/client: fix out-of-bounds read in smb2_compound_op()
+	David Carlier <devnexen@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 7.0 183/307] eventfs: Hold eventfs_mutex and SRCU when remount walks events
 Date: Tue, 12 May 2026 19:39:38 +0200
-Message-ID: <20260512173942.174497476@linuxfoundation.org>
+Message-ID: <20260512173943.978080515@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +63,159 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B7DB5267D3
+X-Rspamd-Queue-Id: 7CB59527FE2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[xidian.edu.cn:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246228-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-246508-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.709];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,kylinos.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zisen Ye <zisenye@stu.xidian.edu.cn>
+From: David Carlier <devnexen@gmail.com>
 
-commit 8d09328dfda089675e4c049f3f256064a1d1996b upstream.
+commit 07004a8c4b572171934390148ee48c4175c77eed upstream.
 
-If a server sends a truncated response but a large OutputBufferLength, and
-terminates the EA list early, check_wsl_eas() returns success without
-validating that the entire OutputBufferLength fits within iov_len.
+Commit 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the
+events descriptor") had eventfs_set_attrs() recurse through ei->children
+on remount.  The walk only holds the rcu_read_lock() taken by
+tracefs_apply_options() over tracefs_inodes, which is wrong:
 
-Then smb2_compound_op() does:
-    memcpy(idata->wsl.eas, data[0], size[0]);
+  - list_for_each_entry over ei->children races with the list_del_rcu()
+    in eventfs_remove_rec() -- LIST_POISON1 deref, same shape as
+    d2603279c7d6.
+  - eventfs_inodes are freed via call_srcu(&eventfs_srcu, ...).
+    rcu_read_lock() does not extend an SRCU grace period, so ti->private
+    can be reclaimed under the walk.
+  - The writes to ei->attr race with eventfs_set_attr(), which holds
+    eventfs_mutex.
 
-Where size[0] is OutputBufferLength. If iov_len is smaller than size[0],
-memcpy can read beyond the end of the rsp_iov allocation and leak adjacent
-kernel heap memory.
+Reproducer:
 
-Link: https://lore.kernel.org/linux-cifs/d998240c-aca9-420d-9dbd-f5ba24af19e0@chenxiaosong.com/
-Fixes: ea41367b2a60 ("smb: client: introduce SMB2_OP_QUERY_WSL_EA")
+  while :; do mount -o remount,uid=$((RANDOM%1000)) /sys/kernel/tracing; done &
+  while :; do
+      echo "p:kp submit_bio" > /sys/kernel/tracing/kprobe_events
+      echo > /sys/kernel/tracing/kprobe_events
+  done
+
+Wrap the events portion of tracefs_apply_options() in
+eventfs_remount_lock()/_unlock() that take eventfs_mutex and
+srcu_read_lock(&eventfs_srcu).  eventfs_set_attrs() doesn't sleep so the
+nested rcu_read_lock() is fine; lockdep_assert_held() pins the contract.
+
+Comment in tracefs_drop_inode() said "RCU cycle" -- it is SRCU.
+
+Fixes: 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the events descriptor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zisen Ye <zisenye@stu.xidian.edu.cn>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://patch.msgid.link/20260418191737.10289-1-devnexen@gmail.com
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2inode.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/tracefs/event_inode.c |   14 ++++++++++++++
+ fs/tracefs/inode.c       |    5 ++++-
+ fs/tracefs/internal.h    |    3 +++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -108,7 +108,7 @@ static int check_wsl_eas(struct kvec *rs
- 	u32 outlen, next;
- 	u16 vlen;
- 	u8 nlen;
--	u8 *end;
-+	u8 *ea_end, *iov_end;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -250,6 +250,8 @@ static void eventfs_set_attrs(struct eve
+ {
+ 	struct eventfs_inode *ei_child;
  
- 	outlen = le32_to_cpu(rsp->OutputBufferLength);
- 	if (outlen < SMB2_WSL_MIN_QUERY_EA_RESP_SIZE ||
-@@ -117,15 +117,19 @@ static int check_wsl_eas(struct kvec *rs
- 
- 	ea = (void *)((u8 *)rsp_iov->iov_base +
- 		      le16_to_cpu(rsp->OutputBufferOffset));
--	end = (u8 *)rsp_iov->iov_base + rsp_iov->iov_len;
-+	ea_end = (u8 *)ea + outlen;
-+	iov_end = (u8 *)rsp_iov->iov_base + rsp_iov->iov_len;
-+	if (ea_end > iov_end)
-+		return -EINVAL;
++	lockdep_assert_held(&eventfs_mutex);
 +
- 	for (;;) {
--		if ((u8 *)ea > end - sizeof(*ea))
-+		if ((u8 *)ea > ea_end - sizeof(*ea))
- 			return -EINVAL;
+ 	/* Update events/<system>/<event> */
+ 	if (WARN_ON_ONCE(level > 3))
+ 		return;
+@@ -912,3 +914,15 @@ void eventfs_remove_events_dir(struct ev
+ 	d_invalidate(dentry);
+ 	d_make_discardable(dentry);
+ }
++
++int eventfs_remount_lock(void)
++{
++	mutex_lock(&eventfs_mutex);
++	return srcu_read_lock(&eventfs_srcu);
++}
++
++void eventfs_remount_unlock(int srcu_idx)
++{
++	srcu_read_unlock(&eventfs_srcu, srcu_idx);
++	mutex_unlock(&eventfs_mutex);
++}
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -336,6 +336,7 @@ static int tracefs_apply_options(struct
+ 	struct inode *inode = d_inode(sb->s_root);
+ 	struct tracefs_inode *ti;
+ 	bool update_uid, update_gid;
++	int srcu_idx;
+ 	umode_t tmp_mode;
  
- 		nlen = ea->ea_name_length;
- 		vlen = le16_to_cpu(ea->ea_value_length);
- 		if (nlen != SMB2_WSL_XATTR_NAME_LEN ||
--		    (u8 *)ea->ea_data + nlen + 1 + vlen > end)
-+		    (u8 *)ea->ea_data + nlen + 1 + vlen > ea_end)
- 			return -EINVAL;
+ 	/*
+@@ -360,6 +361,7 @@ static int tracefs_apply_options(struct
+ 		update_uid = fsi->opts & BIT(Opt_uid);
+ 		update_gid = fsi->opts & BIT(Opt_gid);
  
- 		switch (vlen) {
++		srcu_idx = eventfs_remount_lock();
+ 		rcu_read_lock();
+ 		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
+ 			if (update_uid) {
+@@ -381,6 +383,7 @@ static int tracefs_apply_options(struct
+ 				eventfs_remount(ti, update_uid, update_gid);
+ 		}
+ 		rcu_read_unlock();
++		eventfs_remount_unlock(srcu_idx);
+ 	}
+ 
+ 	return 0;
+@@ -426,7 +429,7 @@ static int tracefs_drop_inode(struct ino
+ 	 * This inode is being freed and cannot be used for
+ 	 * eventfs. Clear the flag so that it doesn't call into
+ 	 * eventfs during the remount flag updates. The eventfs_inode
+-	 * gets freed after an RCU cycle, so the content will still
++	 * gets freed after an SRCU cycle, so the content will still
+ 	 * be safe if the iteration is going on now.
+ 	 */
+ 	ti->flags &= ~TRACEFS_EVENT_INODE;
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -76,4 +76,7 @@ struct inode *tracefs_get_inode(struct s
+ void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
+ void eventfs_d_release(struct dentry *dentry);
+ 
++int eventfs_remount_lock(void);
++void eventfs_remount_unlock(int srcu_idx);
++
+ #endif /* _TRACEFS_INTERNAL_H */
 
 
 
