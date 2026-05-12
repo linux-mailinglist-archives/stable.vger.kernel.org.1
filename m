@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-246401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKKfE9ZyA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:02 +0200
+	id EB8NBRhnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E8D527CE2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FBB526062
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33AB531C39E3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5616E302C5DF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5011D3EDE68;
-	Tue, 12 May 2026 18:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232F83E0739;
+	Tue, 12 May 2026 17:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfVgiaKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnzuNx3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0762325FA29;
-	Tue, 12 May 2026 18:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0DF3DC86D;
+	Tue, 12 May 2026 17:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609131; cv=none; b=FJekyw+XinJvC/ajwK+quzTLwZEBcDsisKuKemMmZlX8tVkA4v6sPTehVqI0SWSyiE0Csj5mV/DpZh1C43Id6x4T8GWPd9t2PD43PzoDwVFSCMrx4Beckjd7Rr7kEADeq1NCtlpGdnKGj4WEa0w07LBly5ef3gpq/iGpeU9xOrM=
+	t=1778607748; cv=none; b=nEK04Z2ZuUajkJgj2V9TPSMCwwKd+9rD9q6wwPh1zm7eCg5PVXBLcIxD1ngrhwb1hfXxsIeM5H5wCWVgLtRA2kzqVQ9+7g8vUdn2um+g0sx4Y7iiMXntyl8NQ3tqPwep0gphEzsvsBMzYGtl5cx3rPMw9uKW1a+H2UAjnwz80xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609131; c=relaxed/simple;
-	bh=8q0Rh3BxTPuIlvgKr084CTxcnbgMRAUcN5Eigf0UH9k=;
+	s=arc-20240116; t=1778607748; c=relaxed/simple;
+	bh=FXETLR0Co3jI32hXKQY6900KyQpOFr3tmmZT7aiL4FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MyrIid143nAlfrbdWs2xg+ApqXqQdNDjxAjRWUcuiOoDxd9kpQEgjeXf2+PK/JuCerjK+7QErMLNq7+gzVGFd6cP4xFB7PsZh9PDpnz4F9w21EAcDR2lxP0rNasKODkNEZVxNLOzu9hKbh92AZSMz9A1Cl4UnPa1mriB6G5cUWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfVgiaKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A16DC2BCB0;
-	Tue, 12 May 2026 18:05:30 +0000 (UTC)
+	 MIME-Version; b=PNsum6lGcDCSUdPfR2Qr45eAZcvdzYtwXGReOj7S9aH2M212z2p8I+Mt+nXX32y3AokVmFRoeD7hmljvxZVCpaEgD/nXRpKOXgCEYONB8UMmEJ2BTByKmvHFJlbnC33dWbDdrALYNkpctAEAEyLAtm8AMs5PqR2C82YExf29KVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnzuNx3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EA0C2BCB0;
+	Tue, 12 May 2026 17:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609130;
-	bh=8q0Rh3BxTPuIlvgKr084CTxcnbgMRAUcN5Eigf0UH9k=;
+	s=korg; t=1778607748;
+	bh=FXETLR0Co3jI32hXKQY6900KyQpOFr3tmmZT7aiL4FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfVgiaKpTWLANVFFzs2wZmPSubLpYKHMf7zlZE2aVCuHduEWAqzX+vQtS23JeBwMD
-	 Q7oMUSKQLmNUnFepuDz5oDFSuI8kix08dVTVVa1GM2RjWcdccc1RD7QLAN6GQjssHy
-	 vGgKkr0v2D8Tqu7g9n0+7vpJTpfXGV2qjWEjRi34=
+	b=xnzuNx3hqje5fvLVH2WSHMcx2Yoy+6HJnEZySmJ/EAQs8wQAxqaCzmRvcnSvpbl6c
+	 9khLZqw/lP5s5EyjGFDp5LLXSlaKLnL/ocCtg1Qo3VtJCHG7l1TqIMNGt+8i0Z3f7+
+	 Njj4hYn+Dii9GUPfEX6Yii16M4bJ6PBQ+rIrrVGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 7.0 078/307] rust: allow `clippy::collapsible_match` globally
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 021/206] net: txgbe: fix RTNL assertion warning when remove module
 Date: Tue, 12 May 2026 19:37:53 +0200
-Message-ID: <20260512173941.766198623@linuxfoundation.org>
+Message-ID: <20260512173933.271945155@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +65,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A1E8D527CE2
+X-Rspamd-Queue-Id: 71FBB526062
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246401-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245863-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,garyguo.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trustnetic.com:email,armlinux.org.uk:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-commit 838d852da8503372f3a1779bfbd1ccb93153ab4e upstream.
+[ Upstream commit e159f05e12cc1111a3103b99375ddf0dfd0e7d63 ]
 
-The `clippy::collapsible_match` lint [1] can make code harder to read
-in certain cases [2], e.g.
+For the copper NIC with external PHY, the driver called
+phylink_connect_phy() during probe and phylink_disconnect_phy() during
+remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
+upon module remove.
 
-      CLIPPY P rust/libmacros.so - due to command line change
-    warning: this `if` can be collapsed into the outer `match`
-      --> rust/pin-init/internal/src/helpers.rs:91:17
-       |
-    91 | /                 if nesting == 1 {
-    92 | |                     impl_generics.push(tt.clone());
-    93 | |                     impl_generics.push(tt);
-    94 | |                     skip_until_comma = false;
-    95 | |                 }
-       | |_________________^
-       |
-       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_match
-       = note: `-W clippy::collapsible-match` implied by `-W clippy::all`
-       = help: to override `-W clippy::all` add `#[allow(clippy::collapsible_match)]`
-    help: collapse nested if block
-       |
-    90 ~             TokenTree::Punct(p) if skip_until_comma && p.as_char() == ','
-    91 ~                 && nesting == 1 => {
-    92 |                     impl_generics.push(tt.clone());
-    93 |                     impl_generics.push(tt);
-    94 |                     skip_until_comma = false;
-    95 ~                 }
-       |
+To fix this, add rtnl_lock() and rtnl_unlock() around the
+phylink_disconnect_phy() in remove function.
 
-The lint does not have much upside -- when the suggestion may be a good
-one, it would still read fine when nested anyway. And it is the kind of
-lint that may easily bias people to just apply the suggestion instead
-of allowing it.
+ ------------[ cut here ]------------
+ RTNL: assertion failed at drivers/net/phy/phylink.c (2351)
+ WARNING: drivers/net/phy/phylink.c:2351 at
+phylink_disconnect_phy+0xd8/0xf0 [phylink], CPU#0: rmmod/4464
+ Modules linked in: ...
+ CPU: 0 UID: 0 PID: 4464 Comm: rmmod Kdump: loaded Not tainted 7.0.0-rc4+
+ Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING
+PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
+ RIP: 0010:phylink_disconnect_phy+0xe4/0xf0 [phylink]
+ Code: 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 f6 31 ff e9 3a 38 8f e7
+48 8d 3d 48 87 e2 ff ba 2f 09 00 00 48 c7 c6 c1 22 24 c0 <67> 48 0f b9 3a
+e9 34 ff ff ff 66 90 90 90 90 90 90 90 90 90 90 90
+ RSP: 0018:ffffce7288363ac0 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffff89654b2a1a00 RCX: 0000000000000000
+ RDX: 000000000000092f RSI: ffffffffc02422c1 RDI: ffffffffc0239020
+ RBP: ffffce7288363ae8 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000000 R12: ffff8964c4022000
+ R13: ffff89654fce3028 R14: ffff89654ebb4000 R15: ffffffffc0226348
+ FS:  0000795e80d93780(0000) GS:ffff896c52857000(0000)
+knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00005b528b592000 CR3: 0000000170d0f000 CR4: 0000000000f50ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  txgbe_remove_phy+0xbb/0xd0 [txgbe]
+  txgbe_remove+0x4c/0xb0 [txgbe]
+  pci_device_remove+0x41/0xb0
+  device_remove+0x43/0x80
+  device_release_driver_internal+0x206/0x270
+  driver_detach+0x4a/0xa0
+  bus_remove_driver+0x83/0x120
+  driver_unregister+0x2f/0x60
+  pci_unregister_driver+0x40/0x90
+  txgbe_driver_exit+0x10/0x850 [txgbe]
+  __do_sys_delete_module.isra.0+0x1c3/0x2f0
+  __x64_sys_delete_module+0x12/0x20
+  x64_sys_call+0x20c3/0x2390
+  do_syscall_64+0x11c/0x1500
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_syscall_64+0x15a/0x1500
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_fault+0x312/0x580
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? __handle_mm_fault+0x9d5/0x1040
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? count_memcg_events+0x101/0x1d0
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? handle_mm_fault+0x1e8/0x2f0
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_user_addr_fault+0x2f8/0x820
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? irqentry_exit+0xb2/0x600
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? exc_page_fault+0x92/0x1c0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-[ In addition, as Gary points out [3], the suggestion is also wrong [4] and
-  in the process of being fixed [5], possibly for Rust 1.97.0:
-
-  Link: https://lore.kernel.org/rust-for-linux/DI3YV94TH9I3.1SOHW51552497@garyguo.net/ [3]
-  Link: https://github.com/rust-lang/rust-clippy/issues/16875 [4]
-  Link: https://github.com/rust-lang/rust-clippy/pull/16878 [5]
-
-    - Miguel ]
-
-Thus just let developers decide on their own.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_match [1]
-Link: https://lore.kernel.org/rust-for-linux/CANiq72nWYJna_hdFxjQCQZK6yJBrr1Mb86iKavivV0U0BgufeA@mail.gmail.com/ [2]
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260426144201.227108-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/8B47A5872884147D+20260407094041.4646-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Makefile
-+++ b/Makefile
-@@ -486,6 +486,7 @@ export rust_common_flags := --edition=20
- 			    -Wclippy::as_ptr_cast_mut \
- 			    -Wclippy::as_underscore \
- 			    -Wclippy::cast_lossless \
-+			    -Aclippy::collapsible_match \
- 			    -Wclippy::ignored_unit_patterns \
- 			    -Wclippy::mut_mut \
- 			    -Wclippy::needless_bitwise_bool \
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index f26946198a2fb..9726622a96bfb 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -622,7 +622,9 @@ int txgbe_init_phy(struct txgbe *txgbe)
+ void txgbe_remove_phy(struct txgbe *txgbe)
+ {
+ 	if (txgbe->wx->media_type == sp_media_copper) {
++		rtnl_lock();
+ 		phylink_disconnect_phy(txgbe->wx->phylink);
++		rtnl_unlock();
+ 		phylink_destroy(txgbe->wx->phylink);
+ 		return;
+ 	}
+-- 
+2.53.0
+
 
 
 
