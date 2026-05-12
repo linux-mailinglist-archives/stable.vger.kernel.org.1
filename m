@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-246270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAagIxVuA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:45 +0200
+	id IFmEAoVnA2qj5gEAu9opvQ
+	(envelope-from <stable+bounces-245958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C69C5271BB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7C152616D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 849143082C8B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9A1C3084A6D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EBE3EDE64;
-	Tue, 12 May 2026 17:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D7D3DC871;
+	Tue, 12 May 2026 17:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5IvWA3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z83RYpZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59653EDE43;
-	Tue, 12 May 2026 17:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FB53D25D2;
+	Tue, 12 May 2026 17:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608793; cv=none; b=gcmlW5+r7+r8xbx00FXd07ts95Ua4jakHQKVXlR4JO0Z7xT108+djk8hQsdSm8pX4ufcett5qNDJ/h0wgwpGZ16h3D5Cu4bbBMcKfj5qN8LJ5g5SQJW5yDy++LdUSfpL6ss2Kz/6W77mMpDERGLuEnmXZCitnl5QcQW9+oKkHm0=
+	t=1778607990; cv=none; b=RRhfnnAen7tggZcFZ3ywXOrvNzWKGY6m5PaRtiEIJ8EQa9EUX+okTP6yADsg9Dtb1DWIMGfRgYmD6BTSb96OTD/UVVW8t15Aa5J47PXfzdx7yUZkP8Uu3Z4xTUn27ivxUWrXv4g6XswJne30wMXhRcoXxtWHVXU0K3V7ozFsQyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608793; c=relaxed/simple;
-	bh=e1fzSY1uKU3WII1u/yK9zv6MzFnlWiQKjqBinskMsuo=;
+	s=arc-20240116; t=1778607990; c=relaxed/simple;
+	bh=6zdoe0PLBlZl4nJG+C+j1cOcKIunqG2rbQ6f7n7zWFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLfaRNv7r7LvfagQVDspZbE88xemJFA0yGlt3mHqQOCSzcaijn3lrOPAwE07ztbCdWDN/GWchepo5Pq1vkwYeMsn5G9Ot4tIJ/MjTq+3P/asQNB6zXH6rAaEF7Hv7ugiu0P/dNd4FMGzlaVExFvxuie9v+AA5mr7Afkr0poiPsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5IvWA3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD49C2BCB0;
-	Tue, 12 May 2026 17:59:53 +0000 (UTC)
+	 MIME-Version; b=jNfkm6BNY0Iv6rSsORu8M1HFcQGL/u7FgKVjc4g8Qh/vCGCNrxGS99D8U/MXQ6eDDx9Nd6Z3/m6lzGQXAq7gjO5wAGvYjgt87zByzw6zPLCxztaP3hfL/kXpLf3ak1IZQxOWty4dTRBQIUGTGKyrtj1073nqodffpFydD2CPsWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z83RYpZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB3CC2BCB0;
+	Tue, 12 May 2026 17:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608793;
-	bh=e1fzSY1uKU3WII1u/yK9zv6MzFnlWiQKjqBinskMsuo=;
+	s=korg; t=1778607990;
+	bh=6zdoe0PLBlZl4nJG+C+j1cOcKIunqG2rbQ6f7n7zWFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5IvWA3W9HiynJtBU1IEg3v9KU9vr0GRf+FQqqLGhDbHEYguiO45/y3Pk6H2wx8a3
-	 wxJ+tTZiIQzcvDBTPB657chrogXOHVzp1PZeCeIESOt231D2R31jzWBq+WUTZDr414
-	 1lwe3Y8X0PyB1cdrOYdfMzECUmmfXdbwcXqLNheU=
+	b=z83RYpZh2pHCgtx/gJGa5aun0xR2xbPRabgysKmxYzTzv3IYy869nbSYt67hg1Yae
+	 caazU+0WkmR60jldSM2rFjN+xLkkig3VsQ2uBvKfxRzZY5IDEL63Rcknm85DLAOfKc
+	 HFC1peukvr/JrPhdwYPfb5aGo9PzBTE7SC7VRtlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.18 165/270] md/raid10: fix divide-by-zero in setup_geo() with zero far_copies
-Date: Tue, 12 May 2026 19:39:26 +0200
-Message-ID: <20260512173941.920289597@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.12 115/206] dm-thin: fix metadata refcount underflow
+Date: Tue, 12 May 2026 19:39:27 +0200
+Message-ID: <20260512173935.291446675@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9C69C5271BB
+X-Rspamd-Queue-Id: AC7C152616D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246270-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245958-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 9aa6d860b0930e2f72795665c42c44252a558a0c upstream.
+commit 09a65adc7d8bbfce06392cb6d375468e2728ead5 upstream.
 
-setup_geo() extracts near_copies (nc) and far_copies (fc) from the
-user-provided layout parameter without checking for zero. When fc=0
-with the "improved" far set layout selected, 'geo->far_set_size =
-disks / fc' triggers a divide-by-zero.
+There's a bug in dm-thin in the function rebalance_children. If the
+internal btree node has one entry, the code tries to copy all btree
+entries from the node's child to the node itself and then decrement the
+child's reference count.
 
-Validate nc and fc immediately after extraction, returning -1 if
-either is zero.
+If the child node is shared (it has reference count > 1), we won't free
+it, so there would be two pointers to each of the grandchildren nodes.
+But the reference counts of the grandchildren is not increased, thus the
+reference count doesn't match the number of pointers that point to the
+grandchildren. This results in "device mapper: space map common: unable
+to decrement block" errors.
 
-Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far' and 'offset' algorithms (part 1)")
+Fix this bug by incrementing reference counts on the grandchildren if the
+btree node is shared.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 3241b1d3e0aa ("dm: add persistent data library")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://lore.kernel.org/linux-raid/SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/persistent-data/dm-btree-remove.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3856,6 +3856,8 @@ static int setup_geo(struct geom *geo, s
- 	nc = layout & 255;
- 	fc = (layout >> 8) & 255;
- 	fo = layout & (1<<16);
-+	if (!nc || !fc)
-+		return -1;
- 	geo->raid_disks = disks;
- 	geo->near_copies = nc;
- 	geo->far_copies = fc;
+--- a/drivers/md/persistent-data/dm-btree-remove.c
++++ b/drivers/md/persistent-data/dm-btree-remove.c
+@@ -490,12 +490,20 @@ static int rebalance_children(struct sha
+ 
+ 	if (le32_to_cpu(n->header.nr_entries) == 1) {
+ 		struct dm_block *child;
++		int is_shared;
+ 		dm_block_t b = value64(n, 0);
+ 
++		r = dm_tm_block_is_shared(info->tm, b, &is_shared);
++		if (r)
++			return r;
++
+ 		r = dm_tm_read_lock(info->tm, b, &btree_node_validator, &child);
+ 		if (r)
+ 			return r;
+ 
++		if (is_shared)
++			inc_children(info->tm, dm_block_data(child), vt);
++
+ 		memcpy(n, dm_block_data(child),
+ 		       dm_bm_block_size(dm_tm_get_bm(info->tm)));
+ 
 
 
 
