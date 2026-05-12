@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAWoB/FsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:53 +0200
+	id QHVzIkdsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6D3526ED6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5EFF526C8D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 94059304926F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9FB131562D1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B6B352F86;
-	Tue, 12 May 2026 18:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169303E0750;
+	Tue, 12 May 2026 17:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xrdm5UUO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAecmyKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF78934405B;
-	Tue, 12 May 2026 18:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71893E0730;
+	Tue, 12 May 2026 17:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609357; cv=none; b=NJhXvUlSCFsKzVWdaLXwsJp9Sfca/waNBjGBRdcphIP0fBDJ9DcJ/7Yx/5UD+Z9pWaTsBtupw9aCvMmapsNka1cfr6Weuf3PuhiHhD2+zE8htH14hXNBLKcqtdtOaoMyJpFYqcsm64fWEVc8FObxRO6olraIQ7WOX/WLzXoIoUg=
+	t=1778608512; cv=none; b=qpzIVInTXfhKbZ4XVciYqm0t5cwx2iXO31nVevHMB6+s7A9r4zHZXjySkyRaOcKKtsSUB5neMrxrdgnmd3joJ/4BiGbIDW6aFF9KsDSP6aTl9b2B9p2HtJEEYOX2NCVu86J11p0mx+o8+usgdUoHPeU0KeXMXruY/vuhg7rQgNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609357; c=relaxed/simple;
-	bh=pbyXHTPtCmx1QxiYBGsX3w0rUvvJzrAQadIJXk8mF5I=;
+	s=arc-20240116; t=1778608512; c=relaxed/simple;
+	bh=/n58lZmzYToF+7ts9CyYD2AELQni4kMl5N3XIznS234=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0TXNT6j3Gw+js+Wu5WzXdmwvOiIHlMsBvCo8odkS2zDbw75SXYX8I7yMpONhWvzVzVYKRBdYBxHkNfU/FcP6m6nbVb7t0HbSfO5vB3DcD1Fw4HLQwaujJfijFJFlxcZ0IZUKfh7o740P5ooy/GrRuTYtVrMB9g18OU+/KoCweQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xrdm5UUO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683B0C2BCB0;
-	Tue, 12 May 2026 18:09:17 +0000 (UTC)
+	 MIME-Version; b=t3JqnKXWOhaU074RehYF6M8uOFyzmVDWTEYDN+ygXqvIlJPB7loSiXQ1vUfe5UTu8aMcPHnLNexjbTP38CIC4NrNYKWHRa19huBuWkjyReSgz2urF08PPf9iJJkuvESRp7S+ch8DtfUULVChl0bZn0wFPhKKgi4xsVOlEXaAqm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAecmyKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D203C2BCB0;
+	Tue, 12 May 2026 17:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609357;
-	bh=pbyXHTPtCmx1QxiYBGsX3w0rUvvJzrAQadIJXk8mF5I=;
+	s=korg; t=1778608512;
+	bh=/n58lZmzYToF+7ts9CyYD2AELQni4kMl5N3XIznS234=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xrdm5UUO1gkeYpC6s7w7Xd4WakAtcmezKMhrAQRL/ghuHBPGn2W0dwZHtKXtB1kKp
-	 vq40/M/WKpIcLKUgVdlno6pSfzeCjysCU6fLiISug0nEzlgn2MGuRaNvRBq6h9uVWf
-	 MYR47tlOd1tJqjYI41QhcvgpxuAIjSX9y1aOQE8k=
+	b=wAecmyKerzcT5nMtA81fm9OxeaqGMYSCbxaQBAHhhpVJVOGRrKMZ4ZOGiqduSIu4M
+	 V+RGspjN92QbxDwYg7N853PM1Moerhp56qd6s64l+gZqaIu/MHJG51QzB8fv9wQFiY
+	 Jc9Hj9UN9zRbnPOjW10GMxUe3sGxJH+Z6ZY6PpSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 7.0 112/307] pseries/papr-hvpipe: Fix race with interrupt handler
-Date: Tue, 12 May 2026 19:38:27 +0200
-Message-ID: <20260512173942.488429435@linuxfoundation.org>
+	Ivan Hu <ivan.hu@canonical.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.18 107/270] x86/efi: Fix graceful fault handling after FPU softirq changes
+Date: Tue, 12 May 2026 19:38:28 +0200
+Message-ID: <20260512173940.711301135@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +63,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB6D3526ED6
+X-Rspamd-Queue-Id: E5EFF526C8D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246489-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246160-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Ivan Hu <ivan.hu@canonical.com>
 
-commit 7a4f0846ee6cc8cf44ae0046ed42e3259d1dd45b upstream.
+commit 088f65e206087bf903743bd18417261d7a4c9644 upstream.
 
-While executing ->ioctl handler or ->release handler, if an interrupt
-fires on the same cpu, then we can enter into a deadlock.
+Since commit d02198550423 ("x86/fpu: Improve crypto performance by
+making kernel-mode FPU reliably usable in softirqs"), kernel_fpu_begin()
+calls fpregs_lock() which uses local_bh_disable() instead of the
+previous preempt_disable(). This sets SOFTIRQ_OFFSET in preempt_count
+during the entire EFI runtime service call, causing in_interrupt() to
+return true in normal task context.
 
-This patch fixes both these handlers to take spin_lock_irq{save|restore}
-versions of the lock to prevent this deadlock.
+The graceful page fault handler efi_crash_gracefully_on_page_fault()
+uses in_interrupt() to bail out for faults in real interrupt context.
+With SOFTIRQ_OFFSET now set, the handler always bails out, leaving EFI
+firmware page faults unhandled. This escalates to die() which also sees
+in_interrupt() as true and calls panic("Fatal exception in interrupt"),
+resulting in a hard system freeze. On systems with buggy firmware that
+triggers page faults during EFI runtime calls (e.g., accessing unmapped
+memory in GetTime()), this causes an unrecoverable hang instead of the
+expected graceful EFI_ABORTED recovery.
 
-Cc: stable@vger.kernel.org
-Fixes: 814ef095f12c9 ("powerpc/pseries: Add papr-hvpipe char driver for HVPIPE interfaces")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/e4ed435c44fc191f2eb23c7907ba6f72f193e6aa.1777606826.git.ritesh.list@gmail.com
+Fix by replacing in_interrupt() with !in_task(). This preserves the
+original intent of bailing for interrupts or NMI faults, while no longer
+falsely triggering from the FPU code path's local_bh_disable().
+
+Fixes: d02198550423 ("x86/fpu: Improve crypto performance by making kernel-mode FPU reliably usable in softirqs")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ivan Hu <ivan.hu@canonical.com>
+[ardb: Sashiko spotted that using 'in_hardirq() || in_nmi()' leaves a
+       window where a softirq may be taken before fpregs_lock() is
+       called, but after efi_rts_work.efi_rts_id has been assigned,
+       and any page faults occurring in that window will then be
+       misidentified as having been caused by the firmware. Instead,
+       use !in_task(), which incorporates in_serving_softirq(). ]
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/papr-hvpipe.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ arch/x86/platform/efi/quirks.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -444,13 +444,14 @@ static int papr_hvpipe_handle_release(st
- 				struct file *file)
- {
- 	struct hvpipe_source_info *src_info;
-+	unsigned long flags;
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -771,7 +771,7 @@ void efi_crash_gracefully_on_page_fault(
+ 	 * If we get an interrupt/NMI while processing an EFI runtime service
+ 	 * then this is a regular OOPS, not an EFI failure.
+ 	 */
+-	if (in_interrupt())
++	if (!in_task())
+ 		return;
  
  	/*
- 	 * Hold the lock, remove source from src_list, reset the
- 	 * hvpipe status and release the lock to prevent any race
- 	 * with message event IRQ.
- 	 */
--	spin_lock(&hvpipe_src_list_lock);
-+	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	src_info = file->private_data;
- 	list_del(&src_info->list);
- 	file->private_data = NULL;
-@@ -461,10 +462,10 @@ static int papr_hvpipe_handle_release(st
- 	 */
- 	if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE) {
- 		src_info->hvpipe_status = 0;
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 		hvpipe_rtas_recv_msg(NULL, 0);
- 	} else
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 
- 	kfree(src_info);
- 	return 0;
-@@ -480,20 +481,21 @@ static const struct file_operations papr
- static int papr_hvpipe_dev_create_handle(u32 srcID)
- {
- 	struct hvpipe_source_info *src_info __free(kfree) = NULL;
-+	unsigned long flags;
- 
--	spin_lock(&hvpipe_src_list_lock);
-+	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	/*
- 	 * Do not allow more than one process communicates with
- 	 * each source.
- 	 */
- 	src_info = hvpipe_find_source(srcID);
- 	if (src_info) {
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 		pr_err("pid(%d) is already using the source(%d)\n",
- 				src_info->tsk->pid, srcID);
- 		return -EALREADY;
- 	}
--	spin_unlock(&hvpipe_src_list_lock);
-+	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 
- 	src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
- 	if (!src_info)
-@@ -510,18 +512,18 @@ static int papr_hvpipe_dev_create_handle
- 		return fdf.err;
- 
- 	retain_and_null_ptr(src_info);
--	spin_lock(&hvpipe_src_list_lock);
-+	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	/*
- 	 * If two processes are executing ioctl() for the same
- 	 * source ID concurrently, prevent the second process to
- 	 * acquire FD.
- 	 */
- 	if (hvpipe_find_source(srcID)) {
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 		return -EALREADY;
- 	}
- 	list_add(&src_info->list, &hvpipe_src_list);
--	spin_unlock(&hvpipe_src_list_lock);
-+	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 	return fd_publish(fdf);
- }
- 
 
 
 
