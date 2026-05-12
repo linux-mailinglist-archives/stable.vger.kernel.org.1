@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-246183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJWvBFNqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:43 +0200
+	id GIUZOiNnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C06152666B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8497452607E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C2DB3063565
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D6DFD30352E3
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D563BB109;
-	Tue, 12 May 2026 17:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12402385D8B;
+	Tue, 12 May 2026 17:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSuYOGKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb6vSm32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091E43BB100;
-	Tue, 12 May 2026 17:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2CA3E0739;
+	Tue, 12 May 2026 17:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608572; cv=none; b=pzFojm0wIo/yAcywq7rNtp+t/S7i/XmngjppgOWu5JxluzqL6VFE+Ttg+65MQb7L1pPjl0lhnx0DTw3LYvRJBDecFKrtHU9KNrMOPsrouWUxkCbk20LYMMgGwRc+aPDUFhkw4Ze0QfsfbRUnvONXN9Kxfk5QdwvnehBC2eXRG3E=
+	t=1778607905; cv=none; b=gof8rpX4R61ubg1Lvp2nPzWzKS6dAKacWxw9jgMKkmWpYTO4t+f1gNWvK78mae6wKTVaWaVdkKkNqYPH/oUkfYdQrT5JONLXV94Q1bl21pQUFOOupBNM4+xu1DRYap012Y0iGiEhgfCfkM2ITkmm2W8k68USannJzGaCoZmf4io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608572; c=relaxed/simple;
-	bh=OojMH6UBtMgdrKqXahQE3FfZXejDsS2J1Bmn5xU7WWk=;
+	s=arc-20240116; t=1778607905; c=relaxed/simple;
+	bh=TcE3XyPjjGLV8CKCaYpAbPuUQXI5g0XKpjgmHm/3Ed4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaUNeKAikj0AKX6mNWQ5rBPZ4R6PF4yr0qRR6gUMYkLFn+Xmj4A0Zxv02AZamUopMPvesNvZN51K07wCzemqBVOaCoVdEUvSjuu0550WRNIGu/cA0flOPDX53nyeJfx4ik9k1ZwJGoB9/QIHClOwCuZzNvGBa1ubvCaq4wPOpw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSuYOGKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF6FC2BCB0;
-	Tue, 12 May 2026 17:56:11 +0000 (UTC)
+	 MIME-Version; b=VACPYkDHO/gL8aCZU3fH9D5qgfvyMqu1PUnMKSl+3wJEK59dCPB0aFWt51V3HW/h95MuAFytO5H5wzKyZYQ1DavZ8FTxS7yVhoRulCLGabE5qZaak5yiPxV5xzY3M9Wf95XWAxSTkzB4sts0yiGKL8FW0eXV+VbJL2tPmiDz0o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb6vSm32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF46C2BCB0;
+	Tue, 12 May 2026 17:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608571;
-	bh=OojMH6UBtMgdrKqXahQE3FfZXejDsS2J1Bmn5xU7WWk=;
+	s=korg; t=1778607905;
+	bh=TcE3XyPjjGLV8CKCaYpAbPuUQXI5g0XKpjgmHm/3Ed4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSuYOGKd3MmvM0RwEDnPRBSkvE/gj5oDDSJ8yjcvk6nE5dpnm1KOsXUgXpJcJDmuN
-	 Mqcwd3OWeiDjjSrkwy9uP5adl8ePrV1LvXttuAX9SuaBXPxBfyFGAy1tGVldDQ32O3
-	 lLOLRJLCvcS1qlmLaAMZ3TeVhiCWTbXBfnLznIts=
+	b=bb6vSm32Eb9QVAEhdJyrDJS4oSsgbvQAk/5HylFLebKsHuiDFamd6iwmnf3yepTlI
+	 MEatZHDibtNxxRkZjPrMOuODS6obqzbbYlyq+xz0p0LdQxCoYj3lcC8SPjgo2sHCnU
+	 biAVXPSkF6PBSfRIjhD0dJAWrXTdWf2GE/rtu9Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.18 132/270] thermal: core: Free thermal zone ID later during removal
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 081/206] ip6_gre: Use cached t->net in ip6erspan_changelink().
 Date: Tue, 12 May 2026 19:38:53 +0200
-Message-ID: <20260512173941.232299685@linuxfoundation.org>
+Message-ID: <20260512173934.566380698@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +65,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9C06152666B
+X-Rspamd-Queue-Id: 8497452607E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246183-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245924-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-commit daae9c18feec74566e023fc88cfb0ce26e39d868 upstream.
+commit 1d324c2f43f70c965f25c58cc3611c779adbe47e upstream.
 
-The thermal zone removal ordering is different from the thermal zone
-registration rollback path ordering and the former is arguably
-problematic because freeing a thermal zone ID prematurely may cause
-it to be used during the registration of another thermal zone which
-may fail as a result.
+After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
+ip6gre hash via link_net. ip6erspan_changelink() was not converted in
+that series and still uses dev_net(dev), which diverges from the
+device's creation netns after IFLA_NET_NS_FD migration.
 
-Prevent that from occurring by changing the thermal zone removal
-ordering to reflect the thermal zone registration rollback path
-ordering.
+This re-inserts the tunnel into the wrong per-netns hash. The
+original netns keeps a stale entry. When that netns is later
+destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
+slab-use-after-free reported by KASAN, followed by a kernel BUG at
+net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
 
-Also more the ida_destroy() call from thermal_zone_device_unregister()
-to thermal_release() for consistency.
+Reachable from an unprivileged user namespace (unshare --user
+--map-root-user --net).
 
-Fixes: b31ef8285b19 ("thermal core: convert ID allocation to IDA")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/5063934.GXAFRqVoOG@rafael.j.wysocki
+ip6gre_changelink() earlier in the same file already uses the cached
+t->net; only ip6erspan_changelink() has the wrong shape.
+
+Fixes: 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260430103318.3206018-1-maoyi.xie@ntu.edu.sg
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv6/ip6_gre.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -965,6 +965,7 @@ static void thermal_release(struct devic
- 		tz = to_thermal_zone(dev);
- 		thermal_zone_destroy_device_groups(tz);
- 		thermal_set_governor(tz, NULL);
-+		ida_destroy(&tz->ida);
- 		mutex_destroy(&tz->lock);
- 		complete(&tz->removal);
- 	} else if (!strncmp(dev_name(dev), "cooling_device",
-@@ -1726,8 +1727,6 @@ void thermal_zone_device_unregister(stru
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -2296,10 +2296,11 @@ static int ip6erspan_changelink(struct n
+ 				struct nlattr *data[],
+ 				struct netlink_ext_ack *extack)
+ {
+-	struct ip6gre_net *ign = net_generic(dev_net(dev), ip6gre_net_id);
++	struct ip6_tnl *t = netdev_priv(dev);
+ 	struct __ip6_tnl_parm p;
+-	struct ip6_tnl *t;
++	struct ip6gre_net *ign;
  
- 	thermal_thresholds_exit(tz);
- 	thermal_remove_hwmon_sysfs(tz);
--	ida_free(&thermal_tz_ida, tz->id);
--	ida_destroy(&tz->ida);
- 
- 	device_del(&tz->device);
- 	put_device(&tz->device);
-@@ -1735,6 +1734,9 @@ void thermal_zone_device_unregister(stru
- 	thermal_notify_tz_delete(tz);
- 
- 	wait_for_completion(&tz->removal);
-+
-+	ida_free(&thermal_tz_ida, tz->id);
-+
- 	kfree(tz->tzp);
- 	kfree(tz);
- }
++	ign = net_generic(t->net, ip6gre_net_id);
+ 	t = ip6gre_changelink_common(dev, tb, data, &p, extack);
+ 	if (IS_ERR(t))
+ 		return PTR_ERR(t);
 
 
 
