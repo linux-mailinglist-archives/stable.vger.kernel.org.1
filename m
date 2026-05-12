@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NqaAsgvA2qN1QEAu9opvQ
-	(envelope-from <stable+bounces-245504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:48:56 +0200
+	id OHXvEoYkA2oF1AEAu9opvQ
+	(envelope-from <stable+bounces-245505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:00:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCFA5219CC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:48:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A20520989
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F47F30DFCCD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:51:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72D9B30A1046
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF76372047;
-	Tue, 12 May 2026 12:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058DD36C9E1;
+	Tue, 12 May 2026 12:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmx5stCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umXSrhsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B963911D3
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092893B812A
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778589979; cv=none; b=OdcA6cL0H+gYy3nUU/ZmoWnONYy7vAHAl94+5/d3KGTSMm4JMkkvPOZG8Cm3ZSzU5uF9JmT0WgRkacWvbb1CUgX77p1wZxZ0WuOKNREFj/d3EjU8wsTo6yCDqQyuriY8FfijNWXOj9Kz4Hu2AbsitR8C3qv96qKBNJ77EvMIWc4=
+	t=1778589984; cv=none; b=ubnbQUmwwnb32lv1Z5ZX0bb5NYHfotvags9coSQMGPBv8p34Enmk8c1GFfPlrDgIu9BvR5/FzJUI/MsjZERji65SMvhcKWvyhQtXeIK/9AbK5SNc/c6DNIVQ1QCliwyb7hvAiIhvw73EY4V95x84al4LDs+weXZ8aRw8uiaoxz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778589979; c=relaxed/simple;
-	bh=veSKUSwKfwBcjRSKEYClz3LSwU/uQcMApITIn3blKL0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=govj8sS+Ex15CRBZ8zPuAndDt82sOb4duBP3AuwqBHPZb/hdw1asMpudF07OYs3YRCZRRgIsKci2DM4klM3RPx1vvMqKr4wT35J8ZYOWArGGuQZZ4p+5mv6UAhq6rTK+1rGvvZLXcbAz5sEQGW1sfEyzEPPsZQ6rZrj3XgxulT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmx5stCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA434C2BCB0;
-	Tue, 12 May 2026 12:46:18 +0000 (UTC)
+	s=arc-20240116; t=1778589984; c=relaxed/simple;
+	bh=Ei2rJsGjWmGfDYR7ztWlhDFuSi4O8xiixXr3V3i4hs8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dIKFVAeFUai/Cs2Zumb+oijDGGDkEbZFGqTQXG9OELT+UvpDtNPmAQOwrgwd+bAZWeLpiBktAcpGa3lOTCjrQ7kxrJmpbSymHz6n8UGJJDf5pBoK14B7PJiVlKdC7z1qTqmWCTofyVxvmCyLjGpMq3o8p6kC7nlaiHNZAmJbwnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umXSrhsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C68C2BCB0;
+	Tue, 12 May 2026 12:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778589979;
-	bh=veSKUSwKfwBcjRSKEYClz3LSwU/uQcMApITIn3blKL0=;
+	s=korg; t=1778589983;
+	bh=Ei2rJsGjWmGfDYR7ztWlhDFuSi4O8xiixXr3V3i4hs8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kmx5stCq3Bo0xOJl1TX21eTS23nDkGa+63JttLvD7JN+cYg1gMA9tSZ3SwSY3Jchy
-	 8sisK5WsShVSBFOD1G0mVSHBbOtP7y+wt+XWQyOZJBt4erW/5kpS3D9UYTV800IvZA
-	 rVBszVUfC4iXc2lh4lP+IXVaR0xXSAU2WU3cwVvo=
-Subject: FAILED: patch "[PATCH] rust: allow `clippy::collapsible_if` globally" failed to apply to 6.12-stable tree
-To: ojeda@kernel.org,gary@garyguo.net
+	b=umXSrhsQld+ZICqz4opf6n2BxQTBW30QDwKdJoHBsSHcBeJCEdgnzYS8+c17/HNIq
+	 GRqszEB7S2lssB4niq5DTIn2kiSoUAjuhu0pSJ6rTeFWlwgW1xW/Xk3y85Cdh0DrBq
+	 G3+z4kH8czB/a8mXIG+h6EqCxp4/HqXY31BtvxSg=
+Subject: FAILED: patch "[PATCH] rust: pin-init: fix incorrect accessor reference lifetime" failed to apply to 7.0-stable tree
+To: gary@garyguo.net,ojeda@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 14:44:10 +0200
-Message-ID: <2026051210-epic-emblaze-b4eb@gregkh>
+Date: Tue, 12 May 2026 14:44:27 +0200
+Message-ID: <2026051227-nuttiness-dropper-e89d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,19 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5BCFA5219CC
+X-Rspamd-Queue-Id: 33A20520989
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245504-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245505-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -80,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,gregkh:email,rust-lang.github.io:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,garyguo.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,linuxfoundation.org:dkim,gregkh:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 7.0-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2adc8664018c1cc595c7c0c98474a33c7fe32a85
+git cherry-pick -x 68bf102226cf2199dc609b67c1e847cad4de4b57
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051210-epic-emblaze-b4eb@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051227-nuttiness-dropper-e89d@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,50 +111,251 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2adc8664018c1cc595c7c0c98474a33c7fe32a85 Mon Sep 17 00:00:00 2001
-From: Miguel Ojeda <ojeda@kernel.org>
-Date: Sun, 26 Apr 2026 16:42:01 +0200
-Subject: [PATCH] rust: allow `clippy::collapsible_if` globally
+From 68bf102226cf2199dc609b67c1e847cad4de4b57 Mon Sep 17 00:00:00 2001
+From: Gary Guo <gary@garyguo.net>
+Date: Mon, 27 Apr 2026 16:43:01 +0100
+Subject: [PATCH] rust: pin-init: fix incorrect accessor reference lifetime
 
-Similar to `clippy::collapsible_match` (globally allowed in the previous
-commit), the `clippy::collapsible_if` lint [1] can make code harder to
-read in certain cases.
+When a field has been initialized, `init!`/`pin_init!` create a reference
+or pinned reference to the field so it can be accessed later during the
+initialization of other fields. However, the reference it created is
+incorrectly `&'static` rather than just the scope of the initializer.
 
-Thus just let developers decide on their own.
+This means that you can do
 
-In addition, remove the existing `expect` we had.
+    init!(Foo {
+        a: 1,
+        _: {
+            let b: &'static u32 = a;
+        }
+    })
 
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DGROP5CHU1QZ.1OKJRAUZXE9WC@garyguo.net/
-Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if [1]
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260426144201.227108-2-ojeda@kernel.org
+which is unsound.
+
+This is caused by `&mut (*#slot).#ident`, which actually allows arbitrary
+lifetime, so this is effectively `'static`. Somewhat ironically, the safety
+justification of creating the accessor is.. "SAFETY: TODO".
+
+Fix it by adding `let_binding` method on `DropGuard` to shorten lifetime.
+This results in exactly what we want for these accessors. The safety and
+invariant comments of `DropGuard` have been reworked; instead of reasoning
+about what caller can do with the guard, express it in a way that the
+ownership is transferred to the guard and `forget` takes it back, so the
+unsafe operations within the `DropGuard` can be more easily justified.
+
+Fixes: 42415d163e5d ("rust: pin-init: add references to previously initialized fields")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260427-pin-init-fix-v3-2-496a699674dd@garyguo.net
+[ Reworded for missing word. - Miguel ]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-diff --git a/Makefile b/Makefile
-index 621d84aa4700..28f4ae452441 100644
---- a/Makefile
-+++ b/Makefile
-@@ -486,6 +486,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wclippy::as_ptr_cast_mut \
- 			    -Wclippy::as_underscore \
- 			    -Wclippy::cast_lossless \
-+			    -Aclippy::collapsible_if \
- 			    -Aclippy::collapsible_match \
- 			    -Wclippy::ignored_unit_patterns \
- 			    -Aclippy::incompatible_msrv \
-diff --git a/drivers/android/binder/range_alloc/array.rs b/drivers/android/binder/range_alloc/array.rs
-index ada1d1b4302e..081d19b09d4b 100644
---- a/drivers/android/binder/range_alloc/array.rs
-+++ b/drivers/android/binder/range_alloc/array.rs
-@@ -204,7 +204,6 @@ pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange>
-         // caller will mark them as unused, which means that they can be freed if the system comes
-         // under memory pressure.
-         let mut freed_range = FreedRange::interior_pages(offset, size);
--        #[expect(clippy::collapsible_if)] // reads better like this
-         if offset % PAGE_SIZE != 0 {
-             if i == 0 || self.ranges[i - 1].endpoint() <= (offset & PAGE_MASK) {
-                 freed_range.start_page_idx -= 1;
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index 0a6600e8156c..487ee0013faf 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -249,18 +249,6 @@ fn init_fields(
+                 });
+                 // Again span for better diagnostics
+                 let write = quote_spanned!(ident.span()=> ::core::ptr::write);
+-                let accessor = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                    }
+-                } else {
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { &mut (*#slot).#ident }
+-                    }
+-                };
+                 quote! {
+                     #(#attrs)*
+                     {
+@@ -268,51 +256,31 @@ fn init_fields(
+                         // SAFETY: TODO
+                         unsafe { #write(&raw mut (*#slot).#ident, #value_ident) };
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Init { ident, value, .. } => {
+                 // Again span for better diagnostics
+                 let init = format_ident!("init", span = value.span());
+-                // NOTE: the field accessor ensures that the initialized field is properly aligned.
+-                // Unaligned fields will cause the compiler to emit E0793. We do not support
+-                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+-                // `ptr::write` below has the same requirement.
+-                let (value_init, accessor) = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    (
+-                        quote! {
+-                            // SAFETY:
+-                            // - `slot` is valid, because we are inside of an initializer closure, we
+-                            //   return when an error/panic occurs.
+-                            // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
+-                            //   for `#ident`.
+-                            unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                        },
+-                    )
++                let value_init = if pinned {
++                    quote! {
++                        // SAFETY:
++                        // - `slot` is valid, because we are inside of an initializer closure, we
++                        //   return when an error/panic occurs.
++                        // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
++                        //   for `#ident`.
++                        unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
++                    }
+                 } else {
+-                    (
+-                        quote! {
+-                            // SAFETY: `slot` is valid, because we are inside of an initializer
+-                            // closure, we return when an error/panic occurs.
+-                            unsafe {
+-                                ::pin_init::Init::__init(
+-                                    #init,
+-                                    &raw mut (*#slot).#ident,
+-                                )?
+-                            };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { &mut (*#slot).#ident }
+-                        },
+-                    )
++                    quote! {
++                        // SAFETY: `slot` is valid, because we are inside of an initializer
++                        // closure, we return when an error/panic occurs.
++                        unsafe {
++                            ::pin_init::Init::__init(
++                                #init,
++                                &raw mut (*#slot).#ident,
++                            )?
++                        };
++                    }
+                 };
+                 quote! {
+                     #(#attrs)*
+@@ -320,9 +288,6 @@ fn init_fields(
+                         let #init = #value;
+                         #value_init
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Code { block: value, .. } => quote! {
+@@ -335,18 +300,41 @@ fn init_fields(
+         if let Some(ident) = kind.ident() {
+             // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
+             let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
++
++            // NOTE: The reference is derived from the guard so that it only lives as long as the
++            // guard does and cannot escape the scope. If it's created via `&mut (*#slot).#ident`
++            // like the unaligned field guard, it will become effectively `'static`.
++            let accessor = if pinned {
++                let project_ident = format_ident!("__project_{ident}");
++                quote! {
++                    // SAFETY: the initialization is pinned.
++                    unsafe { #data.#project_ident(#guard.let_binding()) }
++                }
++            } else {
++                quote! {
++                    #guard.let_binding()
++                }
++            };
++
+             res.extend(quote! {
+                 #(#cfgs)*
+-                // Create the drop guard:
++                // Create the drop guard.
+                 //
+-                // We rely on macro hygiene to make it impossible for users to access this local
+-                // variable.
+-                // SAFETY: We forget the guard later when initialization has succeeded.
+-                let #guard = unsafe {
++                // SAFETY:
++                // - `&raw mut (*slot).#ident` is valid.
++                // - `make_field_check` checks that `&raw mut (*slot).#ident` is properly aligned.
++                // - `(*slot).#ident` has been initialized above.
++                // - We only need the ownership to the pointee back when initialization has
++                //   succeeded, where we `forget` the guard.
++                let mut #guard = unsafe {
+                     ::pin_init::__internal::DropGuard::new(
+                         &raw mut (*slot).#ident
+                     )
+                 };
++
++                #(#cfgs)*
++                #[allow(unused_variables)]
++                let #ident = #accessor;
+             });
+             guards.push(guard);
+             guard_attrs.push(cfgs);
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index 90adbdc1893b..5720a621aed7 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -238,32 +238,42 @@ struct Foo {
+ /// When a value of this type is dropped, it drops a `T`.
+ ///
+ /// Can be forgotten to prevent the drop.
++///
++/// # Invariants
++///
++/// - `ptr` is valid and properly aligned.
++/// - `*ptr` is initialized and owned by this guard.
+ pub struct DropGuard<T: ?Sized> {
+     ptr: *mut T,
+ }
+ 
+ impl<T: ?Sized> DropGuard<T> {
+-    /// Creates a new [`DropGuard<T>`]. It will [`ptr::drop_in_place`] `ptr` when it gets dropped.
++    /// Creates a drop guard and transfer the ownership of the pointer content.
++    ///
++    /// The ownership is only relinguished if the guard is forgotten via [`core::mem::forget`].
+     ///
+     /// # Safety
+     ///
+-    /// `ptr` must be a valid pointer.
+-    ///
+-    /// It is the callers responsibility that `self` will only get dropped if the pointee of `ptr`:
+-    /// - has not been dropped,
+-    /// - is not accessible by any other means,
+-    /// - will not be dropped by any other means.
++    /// - `ptr` is valid and properly aligned.
++    /// - `*ptr` is initialized, and the ownership is transferred to this guard.
+     #[inline]
+     pub unsafe fn new(ptr: *mut T) -> Self {
++        // INVARIANT: By safety requirement.
+         Self { ptr }
+     }
++
++    /// Create a let binding for accessor use.
++    #[inline]
++    pub fn let_binding(&mut self) -> &mut T {
++        // SAFETY: Per type invariant.
++        unsafe { &mut *self.ptr }
++    }
+ }
+ 
+ impl<T: ?Sized> Drop for DropGuard<T> {
+     #[inline]
+     fn drop(&mut self) {
+-        // SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function
+-        // ensuring that this operation is safe.
++        // SAFETY: `self.ptr` is valid, properly aligned and `*self.ptr` is owned by this guard.
+         unsafe { ptr::drop_in_place(self.ptr) }
+     }
+ }
 
 
