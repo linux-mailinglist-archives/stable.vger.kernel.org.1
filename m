@@ -1,213 +1,183 @@
-Return-Path: <stable+bounces-245590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KM2PG48vA2qN1QEAu9opvQ
-	(envelope-from <stable+bounces-245590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:47:59 +0200
+	id 2A5tJIEvA2qN1QEAu9opvQ
+	(envelope-from <stable+bounces-245593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:47:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B4D5219A0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:47:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE4F52197A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65D46305E72A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:39:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1EED8303E423
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C56394EA2;
-	Tue, 12 May 2026 13:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0129B390609;
+	Tue, 12 May 2026 13:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rrz/4YtZ"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="kvtjSyeX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7691397AF2
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAB1360EEA;
+	Tue, 12 May 2026 13:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778593152; cv=none; b=qrMheKQuNkNeR+MjKTfhC+BmB6emz7NJkFL1lJpFG8MKonTz3kGNuRB8MfMpjWL8bmzZKvNweetHHlsRNVNvDbf0PWrYX/cLNfHomkfw1IxKrh5SmOdCjMC3XHPly7O79VHQ1SWP2k3Rjqbp41maMRknuPIGjknaTq4QdUwWZUk=
+	t=1778593208; cv=none; b=O5BEsZSe+zHcFlZDmKh67gr91sGQZog1oye2aNnhmXCtqT0yFMSanm1lkybMzIIK6MG9q3kUnJCB7MNe4kVeSwup2V5u1DYRLFiDUnZF+xH3h3wyFeCXehkIQbIy1AXEfJV3MHhqJA9fPhXFrY+KHAlwLU+By0mlY1DWYLKz1sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778593152; c=relaxed/simple;
-	bh=gXRDxwgqqamYXVsrcV+hAXtoGw0q858FCjMXV59T/Mg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jX1HnQBEsEOOz1JgLPRQ1x0jYsuay6PIc39dS4f+cMwrjZRbl8wuuviSh8uJ7aTM6n2s8YsH7pONDlQwfbXRqRiTSkPum6s411c0lXkwSQba8CxiijUrZdz9WRodx8IRU3h7XCvMoOIDBjXcFI211MEaMaDBovOJNWuEpNGHUYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rrz/4YtZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F11C2BCB0;
-	Tue, 12 May 2026 13:39:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778593152;
-	bh=gXRDxwgqqamYXVsrcV+hAXtoGw0q858FCjMXV59T/Mg=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Rrz/4YtZyqG5pBOhuU74rnc3eJsgvZIa3Krijwfi8YZwy+Pxz8088W2B+7R1lziWE
-	 GMNvWpiLH0C/NA6eOyRv+23UqAziIaPKgj+bOogHIFnUA2Ie0TgTZrAUUh7xEGiVn3
-	 nxeKBoGDPhxG0+KRvunGy1JkdWIGceTvsJvW04Sw=
-Subject: FAILED: patch "[PATCH] pseries/papr-hvpipe: Fix race with interrupt handler" failed to apply to 6.18-stable tree
-To: ritesh.list@gmail.com,maddy@linux.ibm.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 15:39:17 +0200
-Message-ID: <2026051217-briskness-posing-6f46@gregkh>
+	s=arc-20240116; t=1778593208; c=relaxed/simple;
+	bh=cnnH4doB7vsmFrQZvpAxakD7wtyCXrlLBQD9l46Jf1E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lPRVsVM2OZJ5nM4mK2Q75CTzHtuz5hONMaWHJGHx1N/inoBWHTEN8ELlogb5KOH+fEBf9crbz9etIuTcxhJ3S+wDbubf0P1h5sS8Ehm+rn7Y62fNtWXHR2Tf96E7ywPT4LLal7Hrb8ULFHkk44nE9uwtzKqXPaSpCT3F740pIfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=kvtjSyeX; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-4LEIBBM.localdomain (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3e1de6cb0;
+	Tue, 12 May 2026 21:39:54 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Vincent Mailhol <mailhol@kernel.org>,
+	linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net] can: proc: reset pkg_stats atomics individually
+Date: Tue, 12 May 2026 21:39:37 +0800
+Message-Id: <20260512133937.21957-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02B4D5219A0
+X-HM-Tid: 0a9e1c6a610203a1kunm69b17e24be53
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGUkYVhkYSUJDTk9CTxofSVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0
+	NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=kvtjSyeXMZaSHkmjDOzLo5TpBNaiHD6jXpkqmups3HYk6y5cAmrMwZE5hgw0aUdf4vgt0sVaZgHEu4vZ6TQ4kboeDDF0LhpPOophoZ2W6paK+GFEW0A7gpf7A65cyWW6C3oyxADeyTRNIVo0jG5F9wU6LKQ94PFUEVUsy6jWpvY=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=uPet2mht12Bnl3ICSeLirj73fFCJoOzI8zHCWah7FE8=;
+	h=date:mime-version:subject:message-id:from;
+X-Rspamd-Queue-Id: 6DE4F52197A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245590-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,linux.ibm.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email,msgid.link:url]
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245593-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
 X-Rspamd-Action: no action
 
+Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+converted several members of struct can_pkg_stats to atomic_long_t and
+updated the hot TX/RX and procfs read paths to use atomic_long_*()
+helpers. However, can_init_stats() still clears the whole struct with
+memset().
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+can_init_stats() is reached from can_stat_update() in timer context and
+also from the procfs reset path. Those paths can run while the TX/RX hot
+paths are concurrently updating rx_frames, tx_frames, matches and their
+*_delta counters. Hitting the whole-struct memset() in that window
+performs plain writes to fields that otherwise follow an atomic_long_t
+access contract, which can lose or mix live statistics updates.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This issue was found by source-level API-misuse analysis looking for
+whole-object resets left behind after atomic_long_t conversions, then
+manually audited on Linux v6.18.21.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7a4f0846ee6cc8cf44ae0046ed42e3259d1dd45b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051217-briskness-posing-6f46@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+Replace the whole-struct memset() with a helper that resets the
+atomic_long_t counters via atomic_long_set() and clears the derived
+scalar statistics explicitly. This preserves the existing reset
+semantics for scalar fields while restoring atomic access discipline for
+the live counters.
 
-Possible dependencies:
+Build-tested by compiling net/can/proc.o on x86_64 netdev/main.
+Runtime-tested with a QEMU + vcan setup on Linux v6.18.21 by driving
+concurrent traffic and reset_stats reads, which reproduced inconsistent
+exported statistics before the fix.
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7a4f0846ee6cc8cf44ae0046ed42e3259d1dd45b Mon Sep 17 00:00:00 2001
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Date: Fri, 1 May 2026 09:41:40 +0530
-Subject: [PATCH] pseries/papr-hvpipe: Fix race with interrupt handler
-
-While executing ->ioctl handler or ->release handler, if an interrupt
-fires on the same cpu, then we can enter into a deadlock.
-
-This patch fixes both these handlers to take spin_lock_irq{save|restore}
-versions of the lock to prevent this deadlock.
-
+Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
 Cc: stable@vger.kernel.org
-Fixes: 814ef095f12c9 ("powerpc/pseries: Add papr-hvpipe char driver for HVPIPE interfaces")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/e4ed435c44fc191f2eb23c7907ba6f72f193e6aa.1777606826.git.ritesh.list@gmail.com
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ net/can/proc.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-index 14ae480d060a..c41d45e1986d 100644
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -444,13 +444,14 @@ static int papr_hvpipe_handle_release(struct inode *inode,
- 				struct file *file)
+diff --git a/net/can/proc.c b/net/can/proc.c
+index de4d05ae3459..64b3bdc2fa7e 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -76,16 +76,39 @@ static const char rx_list_name[][8] = {
+  * af_can statistics stuff
+  */
+ 
++static void can_reset_pkg_stats(struct can_pkg_stats *pkg_stats)
++{
++	atomic_long_set(&pkg_stats->rx_frames, 0);
++	atomic_long_set(&pkg_stats->tx_frames, 0);
++	atomic_long_set(&pkg_stats->matches, 0);
++
++	pkg_stats->total_rx_rate = 0;
++	pkg_stats->total_tx_rate = 0;
++	pkg_stats->total_rx_match_ratio = 0;
++
++	pkg_stats->current_rx_rate = 0;
++	pkg_stats->current_tx_rate = 0;
++	pkg_stats->current_rx_match_ratio = 0;
++
++	pkg_stats->max_rx_rate = 0;
++	pkg_stats->max_tx_rate = 0;
++	pkg_stats->max_rx_match_ratio = 0;
++
++	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->matches_delta, 0);
++}
++
+ static void can_init_stats(struct net *net)
  {
- 	struct hvpipe_source_info *src_info;
-+	unsigned long flags;
- 
+ 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+ 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
  	/*
- 	 * Hold the lock, remove source from src_list, reset the
- 	 * hvpipe status and release the lock to prevent any race
- 	 * with message event IRQ.
+-	 * This memset function is called from a timer context (when
++	 * This stats reset is called from a timer context (when
+ 	 * can_stattimer is active which is the default) OR in a process
+ 	 * context (reading the proc_fs when can_stattimer is disabled).
  	 */
--	spin_lock(&hvpipe_src_list_lock);
-+	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	src_info = file->private_data;
- 	list_del(&src_info->list);
- 	file->private_data = NULL;
-@@ -461,10 +462,10 @@ static int papr_hvpipe_handle_release(struct inode *inode,
- 	 */
- 	if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE) {
- 		src_info->hvpipe_status = 0;
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 		hvpipe_rtas_recv_msg(NULL, 0);
- 	} else
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-	memset(pkg_stats, 0, sizeof(struct can_pkg_stats));
++	can_reset_pkg_stats(pkg_stats);
+ 	pkg_stats->jiffies_init = jiffies;
  
- 	kfree(src_info);
- 	return 0;
-@@ -480,20 +481,21 @@ static const struct file_operations papr_hvpipe_handle_ops = {
- static int papr_hvpipe_dev_create_handle(u32 srcID)
- {
- 	struct hvpipe_source_info *src_info __free(kfree) = NULL;
-+	unsigned long flags;
- 
--	spin_lock(&hvpipe_src_list_lock);
-+	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	/*
- 	 * Do not allow more than one process communicates with
- 	 * each source.
- 	 */
- 	src_info = hvpipe_find_source(srcID);
- 	if (src_info) {
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 		pr_err("pid(%d) is already using the source(%d)\n",
- 				src_info->tsk->pid, srcID);
- 		return -EALREADY;
- 	}
--	spin_unlock(&hvpipe_src_list_lock);
-+	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 
- 	src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
- 	if (!src_info)
-@@ -510,18 +512,18 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
- 		return fdf.err;
- 
- 	retain_and_null_ptr(src_info);
--	spin_lock(&hvpipe_src_list_lock);
-+	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	/*
- 	 * If two processes are executing ioctl() for the same
- 	 * source ID concurrently, prevent the second process to
- 	 * acquire FD.
- 	 */
- 	if (hvpipe_find_source(srcID)) {
--		spin_unlock(&hvpipe_src_list_lock);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 		return -EALREADY;
- 	}
- 	list_add(&src_info->list, &hvpipe_src_list);
--	spin_unlock(&hvpipe_src_list_lock);
-+	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
- 	return fd_publish(fdf);
- }
- 
+ 	rcv_lists_stats->stats_reset++;
+-- 
+2.34.1
 
 
