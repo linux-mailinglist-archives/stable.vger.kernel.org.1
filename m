@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2H7HBMpvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:02 +0200
+	id YAvwNTdtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA975276B1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D95D526F83
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D8894303EAFF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4EF431B6F79
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92127349AF5;
-	Tue, 12 May 2026 18:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7EE3EDE7B;
+	Tue, 12 May 2026 17:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TK+M3gWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg6Qtzs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544883EDE5C;
-	Tue, 12 May 2026 18:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D73C3EDE76;
+	Tue, 12 May 2026 17:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609391; cv=none; b=O+LWus+9/RrA2w2Io9nyZYHp3OUrJTg5OEZp5iYQ9qNUy3EErgj3UV6u3IZfCZ4YQOhkbhwSQzoIbgmQybKhDfkcpMONdymHPFZdoFKv4cO77FCSlZR6LZOiPkxfkItkJEXSclWjs/GWd/EUBbhBLahPayTemLBUDtS3F9MTlMk=
+	t=1778608783; cv=none; b=N9xIjwvRNO7V9Wn3bWY9Ym1DPVVYGRVNgf7NPl9dZaGJmoF5U/genTQNW5kyNqYUs2Qks3ZsdnVx/ZdKYJbRrfMOzu2qN7WGyJ1DWVlLlqAXOwFMHxzXmiLuYUBvpDRfrEDwYhMw7reB+96zXzM/yF/XUQ1Dt7xPNTkWAtxfpK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609391; c=relaxed/simple;
-	bh=2hE4zK6jTUYwDsYcEOQzOFk1B1euER8tRKTtGej1r6M=;
+	s=arc-20240116; t=1778608783; c=relaxed/simple;
+	bh=VWWLU7La3XNM1nO+J+/oFXDe7oUU1sEf5cynwV6BbT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAg/f0WPhZLQ/3PkxgT/uSKtiPrjNb/z+P6meyWBTN7JIVQq8t/R/6iZYzZ9tsX3Eb8YvwOpIziHgpuIWU8hIlfyeI8iFw6Wqr+qr3xJtgjye4//dTW6AwVp+y3uInKCbJboBQyg7IgYFqROUHYreOJ6sO4I1UmZflVImlhuMhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TK+M3gWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1115C2BCB0;
-	Tue, 12 May 2026 18:09:50 +0000 (UTC)
+	 MIME-Version; b=nCyzf9stdsFr3eob0yP6yTBSjreEC9ruZKuRj5yK2FTsDz4x+lm1gG1Sen4/thGJ0etJgsoL1n02n+7IK+xspqs1iI0pPfK8WVljkPgx+FxNPfDHz1WR0VzzXyMW53LpHjuwx2i4J0/RNe7mmcEwHaQElXwNXy3mVAVQc1IQbUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg6Qtzs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAABEC2BCB0;
+	Tue, 12 May 2026 17:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609391;
-	bh=2hE4zK6jTUYwDsYcEOQzOFk1B1euER8tRKTtGej1r6M=;
+	s=korg; t=1778608783;
+	bh=VWWLU7La3XNM1nO+J+/oFXDe7oUU1sEf5cynwV6BbT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TK+M3gWA+sGi1c2p522TNMCBmStaCNq77LsCE9EMbuPWeysPE1zOS9u/ibZ6AqWY9
-	 MqrICXk0T6ZVgWY06mpfEcJbLvr50VksJaic/FZ7CxviZajAevX9VdKaiCS4TRNHVq
-	 v3ON2WxeUcSiq/VIQY73LS+2C/yXott4NT7jwnRs=
+	b=zg6Qtzs7DSwG0zCj7YWYvuPlubdztkBvdh5NW2JRSoHI6S1Gxp34IezliIXBPTr65
+	 vaC/OSvE2saVExqkN151bLBZLr0OxAHClwNS7Y/QO2YhMh3cHazjKgxn9dH+E8MmI7
+	 HZ1TfGJxfmDE/pQQLQnNJSRQIReWIXaTCvS+7f7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 7.0 177/307] btrfs: fix double free in create_space_info() error path
+	Willem de Bruijn <willemb@google.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	David Carlier <devnexen@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 171/270] psp: strip variable-length PSP header in psp_dev_rcv()
 Date: Tue, 12 May 2026 19:39:32 +0200
-Message-ID: <20260512173943.852409552@linuxfoundation.org>
+Message-ID: <20260512173942.048862126@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +65,154 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3AA975276B1
+X-Rspamd-Queue-Id: 4D95D526F83
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246502-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-246266-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 3f487be81292702a59ea9dbc4088b3360a50e837 upstream.
+commit 30cb24f97d44f6b81c14b85c5323de62eef1fb7f upstream.
 
-When kobject_init_and_add() fails, the call chain is:
+psp_dev_rcv() unconditionally removes a fixed PSP_ENCAP_HLEN, even
+when psph->hdrlen indicates that the PSP header carries optional
+fields. A frame whose PSP header advertises a non-zero VC or any
+extension would therefore be silently mis-decapsulated: option bytes
+would spill into the inner packet head and downstream parsing would
+fail on a corrupted skb.
 
-create_space_info()
--> btrfs_sysfs_add_space_info_type()
--> kobject_init_and_add()
--> failure
--> kobject_put(&space_info->kobj)
--> space_info_release()
--> kfree(space_info)
+Compute the full PSP header length from psph->hdrlen, pull the
+optional bytes into the linear region, and strip the whole header
+when decapsulating. Optional fields (VC, ...) are still ignored,
+just discarded with the rest of the header instead of leaking.
+crypt_offset and the VIRT flag are intentionally not validated here
+- callers know their device's PSP implementation and can decide.
 
-Then control returns to create_space_info():
+Both in-tree callers gate on hardware-validated PSP, so this is a
+correctness fix rather than a reachable corruption path under
+current configurations.
 
-btrfs_sysfs_add_space_info_type() returns error
--> goto out_free
--> kfree(space_info)
-
-This causes a double free.
-
-Keep the direct kfree(space_info) for the earlier failure path, but
-after btrfs_sysfs_add_space_info_type() has called kobject_put(), let
-the kobject release callback handle the cleanup.
-
-Fixes: a11224a016d6d ("btrfs: fix memory leaks in create_space_info() error paths")
-CC: stable@vger.kernel.org # 6.19+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 0eddb8023cee ("psp: provide decapsulation and receive helper for drivers")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260502141945.14484-1-devnexen@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/space-info.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/psp/psp_main.c |   42 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 11 deletions(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -311,7 +311,7 @@ static int create_space_info(struct btrf
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -262,15 +262,16 @@ EXPORT_SYMBOL(psp_dev_encapsulate);
  
- 	ret = btrfs_sysfs_add_space_info_type(space_info);
- 	if (ret)
--		goto out_free;
-+		return ret;
+ /* Receive handler for PSP packets.
+  *
+- * Presently it accepts only already-authenticated packets and does not
+- * support optional fields, such as virtualization cookies. The caller should
+- * ensure that skb->data is pointing to the mac header, and that skb->mac_len
+- * is set. This function does not currently adjust skb->csum (CHECKSUM_COMPLETE
+- * is not supported).
++ * Accepts only already-authenticated packets. The full PSP header is
++ * stripped according to psph->hdrlen; any optional fields it advertises
++ * (virtualization cookies, etc.) are ignored and discarded along with the
++ * rest of the header. The caller should ensure that skb->data is pointing
++ * to the mac header, and that skb->mac_len is set. This function does not
++ * currently adjust skb->csum (CHECKSUM_COMPLETE is not supported).
+  */
+ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ {
+-	int l2_hlen = 0, l3_hlen, encap;
++	int l2_hlen = 0, l3_hlen, encap, psp_hlen;
+ 	struct psp_skb_ext *pse;
+ 	struct psphdr *psph;
+ 	struct ethhdr *eth;
+@@ -311,18 +312,36 @@ int psp_dev_rcv(struct sk_buff *skb, u16
+ 	if (unlikely(uh->dest != htons(PSP_DEFAULT_UDP_PORT)))
+ 		return -EINVAL;
  
- 	list_add(&space_info->list, &info->space_info);
- 	if (flags & BTRFS_BLOCK_GROUP_DATA)
+-	pse = skb_ext_add(skb, SKB_EXT_PSP);
+-	if (!pse)
++	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
++				 sizeof(struct udphdr));
++
++	/* Strip the full PSP header per psph->hdrlen; VC/options are pulled
++	 * into the linear region only so they can be discarded with the
++	 * rest of the header.
++	 */
++	psp_hlen = (psph->hdrlen + 1) * 8;
++
++	if (unlikely(psp_hlen < sizeof(struct psphdr)))
++		return -EINVAL;
++
++	if (psp_hlen > sizeof(struct psphdr) &&
++	    !pskb_may_pull(skb, l2_hlen + l3_hlen +
++				sizeof(struct udphdr) + psp_hlen))
+ 		return -EINVAL;
+ 
+ 	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
+ 				 sizeof(struct udphdr));
++
++	pse = skb_ext_add(skb, SKB_EXT_PSP);
++	if (!pse)
++		return -EINVAL;
++
+ 	pse->spi = psph->spi;
+ 	pse->dev_id = dev_id;
+ 	pse->generation = generation;
+ 	pse->version = FIELD_GET(PSPHDR_VERFL_VERSION, psph->verfl);
+ 
+-	encap = PSP_ENCAP_HLEN;
++	encap = sizeof(struct udphdr) + psp_hlen;
+ 	encap += strip_icv ? PSP_TRL_SIZE : 0;
+ 
+ 	if (proto == htons(ETH_P_IP)) {
+@@ -339,8 +358,9 @@ int psp_dev_rcv(struct sk_buff *skb, u16
+ 		ipv6h->payload_len = htons(ntohs(ipv6h->payload_len) - encap);
+ 	}
+ 
+-	memmove(skb->data + PSP_ENCAP_HLEN, skb->data, l2_hlen + l3_hlen);
+-	skb_pull(skb, PSP_ENCAP_HLEN);
++	memmove(skb->data + sizeof(struct udphdr) + psp_hlen,
++		skb->data, l2_hlen + l3_hlen);
++	skb_pull(skb, sizeof(struct udphdr) + psp_hlen);
+ 
+ 	if (strip_icv)
+ 		pskb_trim(skb, skb->len - PSP_TRL_SIZE);
 
 
 
