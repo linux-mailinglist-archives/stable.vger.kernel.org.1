@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-245897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id HvGrOd1mA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:57 +0200
+	id 6HPbCQBqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEDC526000
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD5052654E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0381930352D6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 527CE304385D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A593DC85B;
-	Tue, 12 May 2026 17:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399543DD866;
+	Tue, 12 May 2026 17:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCQj4TDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUK8ktK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640343B1EE2;
-	Tue, 12 May 2026 17:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC073C0A19;
+	Tue, 12 May 2026 17:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607836; cv=none; b=Q5ylmsP2uRLQRge8CChIdwZP78ivLwrGEaNPrWSZB9cuc3z49g+H+Jp8pHnJuTrARKGttbEeRTeZWWSP46tdQL3ZiyKDjY3sCPZumNifLxojSCpKYX78Zhsno6B0AGM2BupJLLXtnUP4s1MT//87v0wWOqdHFah7MnYcrDSAaNI=
+	t=1778608500; cv=none; b=YIcmygN62kbj5el6N67thWSuqYqifb9gwLystxDfhq2EwwddgKJIsAYO1OKy6spUSn4pwJ/rLIZuC0lsJez0btnAJbE64MfrGGPaT8XSn6TwC9BAsLEkeXxq7ap9aOoLeLAS96wLz+pChcMVCp95x5tW9iKMfwZBHZ/8YXYwHyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607836; c=relaxed/simple;
-	bh=SvfylUR7yQtb3Zxqbd9OPQZh11M2Wsolmm9JG26/pVA=;
+	s=arc-20240116; t=1778608500; c=relaxed/simple;
+	bh=FeQoxhpa8KMUjcdmodSj86ygyM/AyIQvufcdDG6A9TA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QSjXSRki9qcKLcGQgIZSkdLwhPgJI4ajpvBqfscywKiKl2bD9k6VptoVWehWLINQm/j0HBIJ99tjWXAp1QC/lHXA99c8ETry3GtUPD+SGz1RRN5gUswG8K/yIuc9tsEr5+VDluOwMsTyZxNyK0snrzeiIoQmj04rQmiowRdr22Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCQj4TDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C34C2BCB0;
-	Tue, 12 May 2026 17:43:55 +0000 (UTC)
+	 MIME-Version; b=cz30DVSRmIZx+xfv5RsLNx2ejbC+NDBjANhv+291BE+w+UY2GvBVDMpRVmKdWZn1CLDf/qUNEZXbwtHIsCfFqcMduFXLTnIuhRqD7WEJw0wy9o0ak536W+63R18xfE8jJkhCHuIKI55GSLsH4ihT2gqBswTK5j+bAkp0SJOCi8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUK8ktK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796FEC2BCB0;
+	Tue, 12 May 2026 17:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607836;
-	bh=SvfylUR7yQtb3Zxqbd9OPQZh11M2Wsolmm9JG26/pVA=;
+	s=korg; t=1778608499;
+	bh=FeQoxhpa8KMUjcdmodSj86ygyM/AyIQvufcdDG6A9TA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCQj4TDVN2YwM0DN6sAowcNgs3brbm5BhHTJiD8j/qvLKztm0CVUY7wdQ6JNxy+Yg
-	 pw/00x39Sm66og2m3N1P5zQMDKCkSG81urraLvyndWkm3whRSBQxkvvzchX5195v83
-	 l67q7qyBzRzUFHzrnENCGQl08w/H9e+ujJQ1N3IM=
+	b=aUK8ktK+cMO4fxgNWq10ab4kifykXfPwcD2Wi5le5ZIPj3EzYZW5+SvB3CgbMQzlm
+	 Jv5wpCBq9H2iz4MS+cynqhW95pNHBGuu3e7pL6rgOsVB2PP4hV4xfj+bgrkX7v8/UI
+	 07Wa1deLj9qysjo5v5kdjfeWFaPD5pAgdQl8SRW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.12 052/206] powerpc/kdump: fix KASAN sanitization flag for core_$(BITS).o
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Xiao Liu <lx24@stu.ynu.edu.cn>,
+	Nan Li <tonanli66@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Allison Henderson <achender@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 103/270] net/rds: handle zerocopy send cleanup before the message is queued
 Date: Tue, 12 May 2026 19:38:24 +0200
-Message-ID: <20260512173933.939302659@linuxfoundation.org>
+Message-ID: <20260512173940.626809338@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +70,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8DEDC526000
+X-Rspamd-Queue-Id: AAD5052654E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJECT_HAS_CURRENCY(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[ynu.edu.cn:email];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,redhat.com];
+	TAGGED_FROM(0.00)[bounces-246155-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-245897-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_SPAM(0.00)[0.494];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ynu.edu.cn:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Nan Li <tonanli66@gmail.com>
 
-commit b3a97f9484080c6e71db9e803e3cc1bb372a9bc7 upstream.
+commit 44b550d88b267320459d518c0743a241ab2108fa upstream.
 
-KASAN instrumentation is intended to be disabled for the kexec core
-code, but the existing Makefile entry misses the object suffix. As a
-result, the flag is not applied correctly to core_$(BITS).o.
+A zerocopy send can fail after user pages have been pinned but before
+the message is attached to the sending socket.
 
-So when KASAN is enabled, kexec_copy_flush and copy_segments in
-kexec/core_64.c are instrumented, which can result in accesses to
-shadow memory via normal address translation paths. Since these run
-with the MMU disabled, such accesses may trigger page faults
-(bad_page_fault) that cannot be handled in the kdump path, ultimately
-causing a hang and preventing the kdump kernel from booting. The same
-is true for kexec as well, since the same functions are used there.
+The purge path currently infers zerocopy state from rm->m_rs, so an
+unqueued message can be cleaned up as if it owned normal payload pages.
+However, zerocopy ownership is really determined by the presence of
+op_mmp_znotifier, regardless of whether the message has reached the
+socket queue.
 
-Update the entry to include the “.o” suffix so that KASAN
-instrumentation is properly disabled for this object file.
+Capture op_mmp_znotifier up front in rds_message_purge() and use it as
+the cleanup discriminator. If the message is already associated with a
+socket, keep the existing completion path. Otherwise, drop the pinned
+page accounting directly and release the notifier before putting the
+payload pages.
 
-Fixes: 2ab2d5794f14 ("powerpc/kasan: Disable address sanitization in kexec paths")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/all/1dee8891-8bcc-46b4-93f3-fc3a774abd5b@linux.ibm.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260407124349.1698552-1-sourabhjain@linux.ibm.com
+This keeps early send failure cleanup consistent with the zerocopy
+lifetime rules without changing the normal queued completion path.
+
+Fixes: 0cebaccef3ac ("rds: zerocopy Tx support.")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Nan Li <tonanli66@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/d2ea98a6313d5467bac00f7c9fef8c7acddb9258.1777550074.git.tonanli66@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kexec/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rds/message.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/arch/powerpc/kexec/Makefile
-+++ b/arch/powerpc/kexec/Makefile
-@@ -16,4 +16,4 @@ GCOV_PROFILE_core_$(BITS).o := n
- KCOV_INSTRUMENT_core_$(BITS).o := n
- UBSAN_SANITIZE_core_$(BITS).o := n
- KASAN_SANITIZE_core.o := n
--KASAN_SANITIZE_core_$(BITS) := n
-+KASAN_SANITIZE_core_$(BITS).o := n
+--- a/net/rds/message.c
++++ b/net/rds/message.c
+@@ -129,24 +129,34 @@ static void rds_rm_zerocopy_callback(str
+  */
+ static void rds_message_purge(struct rds_message *rm)
+ {
++	struct rds_znotifier *znotifier;
+ 	unsigned long i, flags;
+-	bool zcopy = false;
++	bool zcopy;
+ 
+ 	if (unlikely(test_bit(RDS_MSG_PAGEVEC, &rm->m_flags)))
+ 		return;
+ 
+ 	spin_lock_irqsave(&rm->m_rs_lock, flags);
++	znotifier = rm->data.op_mmp_znotifier;
++	rm->data.op_mmp_znotifier = NULL;
++	zcopy = !!znotifier;
++
+ 	if (rm->m_rs) {
+ 		struct rds_sock *rs = rm->m_rs;
+ 
+-		if (rm->data.op_mmp_znotifier) {
+-			zcopy = true;
+-			rds_rm_zerocopy_callback(rs, rm->data.op_mmp_znotifier);
++		if (znotifier) {
++			rds_rm_zerocopy_callback(rs, znotifier);
+ 			rds_wake_sk_sleep(rs);
+-			rm->data.op_mmp_znotifier = NULL;
+ 		}
+ 		sock_put(rds_rs_to_sk(rs));
+ 		rm->m_rs = NULL;
++	} else if (znotifier) {
++		/*
++		 * Zerocopy can fail before the message is queued on the
++		 * socket, so there is no rs to carry the notification.
++		 */
++		mm_unaccount_pinned_pages(&znotifier->z_mmp);
++		kfree(rds_info_from_znotifier(znotifier));
+ 	}
+ 	spin_unlock_irqrestore(&rm->m_rs_lock, flags);
+ 
 
 
 
