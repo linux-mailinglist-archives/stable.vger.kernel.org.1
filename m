@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-245900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIZvBbNnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:31 +0200
+	id oAWoB/FsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EC85261C6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6D3526ED6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CE6530AD730
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94059304926F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9FD3DC86D;
-	Tue, 12 May 2026 17:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B6B352F86;
+	Tue, 12 May 2026 18:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtDdq3TC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xrdm5UUO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1200D3B1EE2;
-	Tue, 12 May 2026 17:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF78934405B;
+	Tue, 12 May 2026 18:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607844; cv=none; b=Ctj3GQ8fWeYcpdinV8+dOdMO6fygKN57MT2ygKR6Mcgsvl5IYBkQbboRpj54ErP2m4xVRgLl6S/5APAR7mZ8NH0wZI+MiXc06CPn7JZKbBpkRoJKjiKqoUYmA2SXZelsI4vMyyVQimTzzWWa7d8+7l6oXDgZVithkIPvYaEnpCE=
+	t=1778609357; cv=none; b=NJhXvUlSCFsKzVWdaLXwsJp9Sfca/waNBjGBRdcphIP0fBDJ9DcJ/7Yx/5UD+Z9pWaTsBtupw9aCvMmapsNka1cfr6Weuf3PuhiHhD2+zE8htH14hXNBLKcqtdtOaoMyJpFYqcsm64fWEVc8FObxRO6olraIQ7WOX/WLzXoIoUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607844; c=relaxed/simple;
-	bh=F//neRRDO/IcCfBm1QtUW313jVdel2tcnlPLfk2bTPk=;
+	s=arc-20240116; t=1778609357; c=relaxed/simple;
+	bh=pbyXHTPtCmx1QxiYBGsX3w0rUvvJzrAQadIJXk8mF5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWrLH/iBzldnQPisDfrQk5UL8Y+8DZ6CG5NvsU4AwAy4ihT1CESyHV6BcH096FHfOYtGI4Bxo/kCx2exphrnwjWo4C8SvOb6CxEOa7u0Sc3SQVTTHc/3fvzIkGk8Oc1CTh6GMjG2HgJmwwNmEW3yG7GHS5hE/OHbwIbrGSyGQCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtDdq3TC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCB9C2BCB0;
-	Tue, 12 May 2026 17:44:03 +0000 (UTC)
+	 MIME-Version; b=r0TXNT6j3Gw+js+Wu5WzXdmwvOiIHlMsBvCo8odkS2zDbw75SXYX8I7yMpONhWvzVzVYKRBdYBxHkNfU/FcP6m6nbVb7t0HbSfO5vB3DcD1Fw4HLQwaujJfijFJFlxcZ0IZUKfh7o740P5ooy/GrRuTYtVrMB9g18OU+/KoCweQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xrdm5UUO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683B0C2BCB0;
+	Tue, 12 May 2026 18:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607844;
-	bh=F//neRRDO/IcCfBm1QtUW313jVdel2tcnlPLfk2bTPk=;
+	s=korg; t=1778609357;
+	bh=pbyXHTPtCmx1QxiYBGsX3w0rUvvJzrAQadIJXk8mF5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtDdq3TCyat2q9sELUBGWGLl+Ts6ynZV4rrHyTBnbHPHrG6o5Xh2dYE/qz+NLSKY/
-	 HI1Y7iyJzB03ke1XIYmZiLxJfOtd7Oo0DiK6EeRbilw7lO55LKIx7Hjkl4jUHuMjF2
-	 FwE0QZ8LoNy7YPBp+7gdoFhkGrNEM04BZlv8/qnA=
+	b=Xrdm5UUO1gkeYpC6s7w7Xd4WakAtcmezKMhrAQRL/ghuHBPGn2W0dwZHtKXtB1kKp
+	 vq40/M/WKpIcLKUgVdlno6pSfzeCjysCU6fLiISug0nEzlgn2MGuRaNvRBq6h9uVWf
+	 MYR47tlOd1tJqjYI41QhcvgpxuAIjSX9y1aOQE8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Yilin Zhu <zylzyl2333@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.12 055/206] ipv6: xfrm6: release dst on error in xfrm6_rcv_encap()
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 7.0 112/307] pseries/papr-hvpipe: Fix race with interrupt handler
 Date: Tue, 12 May 2026 19:38:27 +0200
-Message-ID: <20260512173934.004637834@linuxfoundation.org>
+Message-ID: <20260512173942.488429435@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,86 +63,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 85EC85261C6
+X-Rspamd-Queue-Id: BB6D3526ED6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245900-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,secunet.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246489-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yilin Zhu <zylzyl2333@gmail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit bc0fcb9823cd0894934cf968b525c575833d7078 upstream.
+commit 7a4f0846ee6cc8cf44ae0046ed42e3259d1dd45b upstream.
 
-xfrm6_rcv_encap() performs an IPv6 route lookup when the skb does not
-already have a dst attached. ip6_route_input_lookup() returns a
-referenced dst entry even when the lookup resolves to an error route.
+While executing ->ioctl handler or ->release handler, if an interrupt
+fires on the same cpu, then we can enter into a deadlock.
 
-If dst->error is set, xfrm6_rcv_encap() drops the skb without attaching
-the dst to the skb and without releasing the reference returned by the
-lookup. Repeated packets hitting this path therefore leak dst entries.
+This patch fixes both these handlers to take spin_lock_irq{save|restore}
+versions of the lock to prevent this deadlock.
 
-Release the dst before jumping to the drop path.
-
-Fixes: 0146dca70b87 ("xfrm: add support for UDPv6 encapsulation of ESP")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: stable@vger.kernel.org
+Fixes: 814ef095f12c9 ("powerpc/pseries: Add papr-hvpipe char driver for HVPIPE interfaces")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/e4ed435c44fc191f2eb23c7907ba6f72f193e6aa.1777606826.git.ritesh.list@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/xfrm6_protocol.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/papr-hvpipe.c |   20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/net/ipv6/xfrm6_protocol.c
-+++ b/net/ipv6/xfrm6_protocol.c
-@@ -88,8 +88,10 @@ int xfrm6_rcv_encap(struct sk_buff *skb,
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -444,13 +444,14 @@ static int papr_hvpipe_handle_release(st
+ 				struct file *file)
+ {
+ 	struct hvpipe_source_info *src_info;
++	unsigned long flags;
  
- 		dst = ip6_route_input_lookup(dev_net(skb->dev), skb->dev, &fl6,
- 					     skb, flags);
--		if (dst->error)
-+		if (dst->error) {
-+			dst_release(dst);
- 			goto drop;
-+		}
- 		skb_dst_set(skb, dst);
+ 	/*
+ 	 * Hold the lock, remove source from src_list, reset the
+ 	 * hvpipe status and release the lock to prevent any race
+ 	 * with message event IRQ.
+ 	 */
+-	spin_lock(&hvpipe_src_list_lock);
++	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	src_info = file->private_data;
+ 	list_del(&src_info->list);
+ 	file->private_data = NULL;
+@@ -461,10 +462,10 @@ static int papr_hvpipe_handle_release(st
+ 	 */
+ 	if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE) {
+ 		src_info->hvpipe_status = 0;
+-		spin_unlock(&hvpipe_src_list_lock);
++		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+ 		hvpipe_rtas_recv_msg(NULL, 0);
+ 	} else
+-		spin_unlock(&hvpipe_src_list_lock);
++		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+ 
+ 	kfree(src_info);
+ 	return 0;
+@@ -480,20 +481,21 @@ static const struct file_operations papr
+ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ {
+ 	struct hvpipe_source_info *src_info __free(kfree) = NULL;
++	unsigned long flags;
+ 
+-	spin_lock(&hvpipe_src_list_lock);
++	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	/*
+ 	 * Do not allow more than one process communicates with
+ 	 * each source.
+ 	 */
+ 	src_info = hvpipe_find_source(srcID);
+ 	if (src_info) {
+-		spin_unlock(&hvpipe_src_list_lock);
++		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+ 		pr_err("pid(%d) is already using the source(%d)\n",
+ 				src_info->tsk->pid, srcID);
+ 		return -EALREADY;
  	}
+-	spin_unlock(&hvpipe_src_list_lock);
++	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+ 
+ 	src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
+ 	if (!src_info)
+@@ -510,18 +512,18 @@ static int papr_hvpipe_dev_create_handle
+ 		return fdf.err;
+ 
+ 	retain_and_null_ptr(src_info);
+-	spin_lock(&hvpipe_src_list_lock);
++	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	/*
+ 	 * If two processes are executing ioctl() for the same
+ 	 * source ID concurrently, prevent the second process to
+ 	 * acquire FD.
+ 	 */
+ 	if (hvpipe_find_source(srcID)) {
+-		spin_unlock(&hvpipe_src_list_lock);
++		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+ 		return -EALREADY;
+ 	}
+ 	list_add(&src_info->list, &hvpipe_src_list);
+-	spin_unlock(&hvpipe_src_list_lock);
++	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+ 	return fd_publish(fdf);
+ }
  
 
 
