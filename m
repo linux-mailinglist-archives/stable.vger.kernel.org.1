@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AgNJGU+A2qr2AEAu9opvQ
-	(envelope-from <stable+bounces-245733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:51:17 +0200
+	id mF8mCl45A2qh1wEAu9opvQ
+	(envelope-from <stable+bounces-245734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:29:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3F1522F38
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:51:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E99885227F7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A80730508BE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:21:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A92530EE9B1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1923B1EF7;
-	Tue, 12 May 2026 14:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49803B1021;
+	Tue, 12 May 2026 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdWEaHTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prQ7n9Io"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C1A3905F0
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A746D3905F0
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778595645; cv=none; b=p7BpJukQp85YkYKxR2vJ5j9F1cGPG2eNc6YDgQ74OuRRv+f9oeFL3IMqKYv/IBeSYfiXa+1CEozCuY28tshgc09A7PJ1TSpOm6i4JMlvJVu5b92lrjEqgGgNTeWLQ1XJ+3GRiIzcrjHzvWN72puslus/y070wda1HJ9IqLPfDiY=
+	t=1778595655; cv=none; b=XUx39CtTFio5LWVs/+st9X8WVja000ma+NqGrikzxL0MBI2/uEzJCUHn/FVBs0A9v9NcQXKxnwHOXIwAFupQs0JNMeYF0ZCYg7NeMqcT1zw0+tvOvbi5QXFLi7dZHp67kGTK5rOH6tTjy4obvutfOcwj+0ZdVGbStVr+da/Dg0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778595645; c=relaxed/simple;
-	bh=eh1dp5NGfQfSz+4eDDcKaDJoMl4XEn2GUC5HawaiSAw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a8fBCDgdK+6VSfNyI2lHprYur493ZXWvmZ75B6VsSfNfMp8RC1WUaVUABYJjGisXoYOv+nKqYtOrc8GKQT6uTKWRiNbBbmcqLZuOSb9zsbZAyuP5OAes2PpOvBlhgPvvFkgCXQ562gj/ZRKYq1eREEJdjeDhbGUgVrRiu9QQqj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdWEaHTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B982C2BCB0;
-	Tue, 12 May 2026 14:20:45 +0000 (UTC)
+	s=arc-20240116; t=1778595655; c=relaxed/simple;
+	bh=7JaOId7y/V4mFA6MTZBQsoOX7s/GHLK/3uYE52fREdY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rDHJY/6TgJWVNLDCVYG0hDvq0tNO1zQ72FYkRregSTtwuvpGxCBCKUrfT3sb6nMICvnWOQ57k0iBTJF0JkpEslkBEnVFkDBBfvuwjUIfypafENE++AGQSkYyHQMrbmayRdvDwryFwd0rdu7ItKz8XNNAa46xvLFWGvTgUoG36pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prQ7n9Io; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA04C2BCB0;
+	Tue, 12 May 2026 14:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778595645;
-	bh=eh1dp5NGfQfSz+4eDDcKaDJoMl4XEn2GUC5HawaiSAw=;
+	s=korg; t=1778595655;
+	bh=7JaOId7y/V4mFA6MTZBQsoOX7s/GHLK/3uYE52fREdY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gdWEaHTuA/xShU1z3BgE4pmeK+sb+9pEh6cPLjzlKGLxZOJ13msRxef7oRslReRoU
-	 LPXHpOnN23X1WnOtGwdyrKxpYgdKynSwccZfGKgcrjg5UuMCidRruN8hOADhopDzUi
-	 G5rzcqsNKQSKzQH72eo/vfR1I9W/qaWbwwcmdk+w=
-Subject: FAILED: patch "[PATCH] mptcp: pm: kernel: correctly retransmit ADD_ADDR ID 0" failed to apply to 6.6-stable tree
+	b=prQ7n9IoWmbTxTpmziG/HnSBlJ1lrs4PP9XURewRfMWXn0FkuSTYfIZoAdIZiCITY
+	 nebcJm5sAYOI+rLvUoCoWC7TCKALc+RYI+82PEM7pT8HRb2fMlKZFTe+aciGRcl8a0
+	 SzTVeZGH5P3G4I/bGDep4Ju0+zr7MFx7S+dxXhlU=
+Subject: FAILED: patch "[PATCH] mptcp: pm: ADD_ADDR rtx: allow ID 0" failed to apply to 6.12-stable tree
 To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:20:44 +0200
-Message-ID: <2026051244-unrivaled-everglade-a9bc@gregkh>
+Date: Tue, 12 May 2026 16:21:00 +0200
+Message-ID: <2026051200-safehouse-jumbo-e3af@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,19 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9D3F1522F38
+X-Rspamd-Queue-Id: E99885227F7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245733-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245734-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -80,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x b12014d2d36eaed4e4bec5f1ac7e91110eeb100d
+git cherry-pick -x 03f324f3f1f7619a47b9c91282cb12775ab0a2f1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051244-unrivaled-everglade-a9bc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051200-safehouse-jumbo-e3af@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,65 +111,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b12014d2d36eaed4e4bec5f1ac7e91110eeb100d Mon Sep 17 00:00:00 2001
+From 03f324f3f1f7619a47b9c91282cb12775ab0a2f1 Mon Sep 17 00:00:00 2001
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 5 May 2026 17:00:49 +0200
-Subject: [PATCH] mptcp: pm: kernel: correctly retransmit ADD_ADDR ID 0
+Date: Tue, 5 May 2026 17:00:50 +0200
+Subject: [PATCH] mptcp: pm: ADD_ADDR rtx: allow ID 0
 
-When adding the ADD_ADDR to the list, the address including the IP, port
-and ID are copied. On the other hand, when the endpoint corresponds to
-the one from the initial subflow, the ID is set to 0, as specified by
-the MPTCP protocol.
+ADD_ADDR can be sent for the ID 0, which corresponds to the local
+address and port linked to the initial subflow.
 
-The issue is that the ID was reset after having copied the ID in the
-ADD_ADDR entry. So the retransmission was done, but using a different ID
-than the initial one.
+Indeed, this address could be removed, and re-added later on, e.g. what
+is done in the "delete re-add signal" MPTCP Join selftests. So no reason
+to ignore it.
 
-Fixes: 8b8ed1b429f8 ("mptcp: pm: reuse ID 0 after delete and re-add")
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-1-fca8091060a4@kernel.org
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-2-fca8091060a4@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
-index c9f1e5af3cd3..fc818b63752e 100644
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -347,6 +347,8 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 57a456690406..5056eb8db24e 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -337,9 +337,6 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 	if (inet_sk_state_load(sk) == TCP_CLOSE)
+ 		return;
  
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < endp_signal_max) {
-+		u8 endp_id;
-+
- 		/* due to racing events on both ends we can reach here while
- 		 * previous add address is still running: if we invoke now
- 		 * mptcp_pm_announce_addr(), that will fail and the
-@@ -360,19 +362,20 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 		if (!select_signal_address(pernet, msk, &local))
- 			goto subflow;
- 
-+		/* Special case for ID0: set the correct ID */
-+		endp_id = local.addr.id;
-+		if (endp_id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
-+
- 		/* If the alloc fails, we are on memory pressure, not worth
- 		 * continuing, and trying to create subflows.
- 		 */
- 		if (!mptcp_pm_alloc_anno_list(msk, &local.addr))
- 			return;
- 
--		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
-+		__clear_bit(endp_id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
- 
--		/* Special case for ID0: set the correct ID */
--		if (local.addr.id == msk->mpc_endpoint_id)
--			local.addr.id = 0;
+-	if (!entry->addr.id)
+-		return;
 -
- 		mptcp_pm_announce_addr(msk, &local.addr, false);
- 		mptcp_pm_addr_send_ack(msk);
- 
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+ 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+ 		goto out;
 
 
