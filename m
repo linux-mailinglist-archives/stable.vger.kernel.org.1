@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CA1CmtvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:27 +0200
+	id gMh8JupzA2rl5wEAu9opvQ
+	(envelope-from <stable+bounces-246458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9498C52759F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D842B527ECD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D257D3168EF7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 897663251EDD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D243EDE55;
-	Tue, 12 May 2026 17:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FAF2D060B;
+	Tue, 12 May 2026 18:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19ukOjWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+Z8N5n9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FAA3EDE67;
-	Tue, 12 May 2026 17:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BCC23E356;
+	Tue, 12 May 2026 18:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608668; cv=none; b=XTvCBXk1NjJkvGW5t4bulMplQN8xAbQ5aXK2uExsm7C/T1jdjOnDHZumLPegyvaBO1V08IfSjJlcRT+U9ES7hsL4cJFQ6ypEOCLvf7hwyaj/itOkuzwPZKR0i0TWtG/pjQBgAd080Csff2rlrKZmZVfS3HRDsKjDYitPQ5SfYHw=
+	t=1778609279; cv=none; b=T4t/OhNeP+czpOp7rMnzSLA/XdR8HNTccfFY0pINreahRaN5j3eO+CbL3i9QbfGvuhnSqIQ7jUY2oK0JaPVAUE4qB9uVxC0TEa7CGW0AtUANkDmGtuGwlbXsfvHiQQrQJiqXvfeYDKpzKmNP25aLymuoEihXyGwfOk9KCWzq5dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608668; c=relaxed/simple;
-	bh=YewymG7X8VRKz9nh63WYgaBIldurkJzHn0emHnpEoHU=;
+	s=arc-20240116; t=1778609279; c=relaxed/simple;
+	bh=R1++CtntCiXSS6aLA1ZgqWX0YouQhUqyd4ChWm/psos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fk7k46qzYAEZZPPvmCMghDL/SboCDPAqp/LuH9gi9C0HGz6TGTtdYOwulYwLSV9app8vvr62vjRAFXWh6BUXR5UZZB9mVrfsV9OE71QiYbe2UmaCT156aWuR71mTagvJbq3uBJsy45+LfgSSURT/JbtYAIpgzTMNUw1mrjsXghg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19ukOjWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DECC2BCF6;
-	Tue, 12 May 2026 17:57:47 +0000 (UTC)
+	 MIME-Version; b=I6YFrvB6gWBpv+1V/hLhx1Xcuk67ypLocfCkix6kVpLI7WSbrbAGbhdjyEksj5P5RlXtPk+NCo4yZbWOzmipYvCBye43MEua4vIHpELROfTMnkFMaP9NLwUVsDjWhm8Zsl7E2TlQbriwGx6W1wuy+ooyQVkR5VWpkfV2ytXyaDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+Z8N5n9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D65C2BCB0;
+	Tue, 12 May 2026 18:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608667;
-	bh=YewymG7X8VRKz9nh63WYgaBIldurkJzHn0emHnpEoHU=;
+	s=korg; t=1778609279;
+	bh=R1++CtntCiXSS6aLA1ZgqWX0YouQhUqyd4ChWm/psos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19ukOjWoBZ2Uj03zA66qflZH08pGT2Om3pNacFwAV2Og+cXzsea11cVQoOfc65Gql
-	 wKLqZnu+A6uw6L9EzFX7UrEQ4hW0pKCyf9z1cKSrmsEkSrUQBgt0xEHV47E8EB8Tad
-	 7EV8GV7mUpm+pYvO1pfnLxdn5H+2GgtTOVWcLuYg=
+	b=x+Z8N5n9HR6dwhAwJFbeoJb1zODQd8KxlOBGQ+AoG2/jm3ZGTAvMOBv5ak3sj1Llr
+	 GdMaXR/4etneXidBABKpVWV8Syt9OehXaJU98wjIXpnyZuACvBA22HWY+Jr8oPXsYF
+	 z0cZTHJapWo29JqL+IeU78CVfIGSh/b2SPybJXHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
-	Johan Hovold <johan@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 127/270] spi: microchip-core-qspi: fix controller deregistration
-Date: Tue, 12 May 2026 19:38:48 +0200
-Message-ID: <20260512173941.127883864@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 134/307] block: add pgmap check to biovec_phys_mergeable
+Date: Tue, 12 May 2026 19:38:49 +0200
+Message-ID: <20260512173942.957061031@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9498C52759F
+X-Rspamd-Queue-Id: D842B527ECD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246220-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246458-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email,lst.de:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-commit e6464140d439f2d42f072eb422a5b1fec470c5a6 upstream.
+commit 13920e4b7b784b40cf4519ff1f0f3e513476a499 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind.
+biovec_phys_mergeable() is used by the request merge, DMA mapping,
+and integrity merge paths to decide if two physically contiguous
+bvec segments can be coalesced into one. It currently has no check
+for whether the segments belong to different dev_pagemaps.
 
-Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
-Cc: stable@vger.kernel.org	# 6.1
-Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260409120419.388546-19-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+When zone device memory is registered in multiple chunks, each chunk
+gets its own dev_pagemap. A single bio can legitimately contain
+bvecs from different pgmaps -- iov_iter_extract_bvecs() breaks at
+pgmap boundaries but the outer loop in bio_iov_iter_get_pages()
+continues filling the same bio. If such bvecs are physically
+contiguous, biovec_phys_mergeable() will coalesce them, making it
+impossible to recover the correct pgmap for the merged segment
+via page_pgmap().
+
+Add a zone_device_pages_have_same_pgmap() check to prevent merging
+bvec segments that span different pgmaps.
+
+Fixes: 49580e690755 ("block: add check when merging zone device pages")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Link: https://patch.msgid.link/20260410153414.4159050-2-namjain@linux.microsoft.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ block/blk.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -692,7 +692,7 @@ static int mchp_coreqspi_probe(struct pl
- 		return -ENOMEM;
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -132,6 +132,8 @@ static inline bool biovec_phys_mergeable
  
- 	qspi = spi_controller_get_devdata(ctlr);
--	platform_set_drvdata(pdev, qspi);
-+	platform_set_drvdata(pdev, ctlr);
- 
- 	qspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(qspi->regs))
-@@ -732,7 +732,7 @@ static int mchp_coreqspi_probe(struct pl
- 	ctlr->num_chipselect = 2;
- 	ctlr->use_gpio_descriptors = true;
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "spi_register_controller failed\n");
-@@ -742,9 +742,13 @@ static int mchp_coreqspi_probe(struct pl
- 
- static void mchp_coreqspi_remove(struct platform_device *pdev)
- {
--	struct mchp_coreqspi *qspi = platform_get_drvdata(pdev);
--	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
-+	u32 control;
- 
-+	spi_unregister_controller(ctlr);
-+
-+	control = readl_relaxed(qspi->regs + REG_CONTROL);
- 	mchp_coreqspi_disable_ints(qspi);
- 	control &= ~CONTROL_ENABLE;
- 	writel_relaxed(control, qspi->regs + REG_CONTROL);
+ 	if (addr1 + vec1->bv_len != addr2)
+ 		return false;
++	if (!zone_device_pages_have_same_pgmap(vec1->bv_page, vec2->bv_page))
++		return false;
+ 	if (xen_domain() && !xen_biovec_phys_mergeable(vec1, vec2->bv_page))
+ 		return false;
+ 	if ((addr1 | mask) != ((addr2 + vec2->bv_len - 1) | mask))
 
 
 
