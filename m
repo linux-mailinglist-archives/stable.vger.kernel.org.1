@@ -1,170 +1,159 @@
-Return-Path: <stable+bounces-245432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DQbFxL3AmqvzAEAu9opvQ
-	(envelope-from <stable+bounces-245432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 11:46:58 +0200
+	id AIOHEzT2AmqvzAEAu9opvQ
+	(envelope-from <stable+bounces-245433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 11:43:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73F451E037
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 11:46:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC02C51DF9F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 11:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 700FC3013794
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 09:36:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA2103031336
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 09:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AECA3B27DB;
-	Tue, 12 May 2026 09:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7C6480345;
+	Tue, 12 May 2026 09:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DOi+iGsj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AR3Gk2KQ"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DF93A3E97;
-	Tue, 12 May 2026 09:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7606A39E175
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 09:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778578587; cv=none; b=mn80A7Q9MaGUJlM5FCvl5bc7O2EZZWH2qsw3wOO7zl2h+IcBnblMCqxWocSe6whfqRPDpGpVAM+uqQCofgpnOrGnZF0bsXcICCMwZh9V6IPLDVcOuTQuIy/pwpjP7jEgFPROJm+zc4xwfxRDxV8vSIBxP8s0qJrfvwsnIv95gsU=
+	t=1778578665; cv=none; b=bCY+Vvk68/4lh85K9Fs0nyFmvsIgPy5GX/8+iMiG0PpEo9nGhb0eUN/p1PsUlY6REfhV0nOFKjexCtXgRdBkVU4CiFtY1QgM5h1qHOq8a3smqY5+D61+EeXWuXEvcg9dRKQAUqYaN4B7hm4ybbH2uV3jui7xUp2TcZNx+GtrBJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778578587; c=relaxed/simple;
-	bh=NnrNnFy9Y1vO5MXisXKwMIEOG7SFfUeXATqrBPEJLEo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BJb8dVm+L8Bb77hDzhiTuXlfYP0IEDORiWBowubZA8jLJxZ8FLgM/KLnORyz10iU8j3dpjiftm5jaUHpKRtmLfIuR4YDgMcp7Gki2MxJaUJ+wk4ZLTWF7+WdO+KFhv7RQfmJ8OC2CmL3uusl7wfaYSi4BGKKtB9nZq2d+kne7/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DOi+iGsj; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=IS
-	HE+wcoI0DEJx32nE6Rs/MB0pl+aIUtEQO/LvMDFyU=; b=DOi+iGsjbkM8oIcZO7
-	1MxT+NQjqUFk8IN5UUDilGee4IRlf62cGw6HsJBUBrYfAHKThExAmyM3UbpEgWoV
-	IVZHdAVCGfJcjRtAMeIrYccp1Jilv5ZvVXUqJndSf6fckuyInuYfeKTcfe6JsNT6
-	wyKP0+K063zxEDDSKbhQ+4Mto=
-Received: from wmy.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3Hxdo9AJqoF2gAw--.21286S2;
-	Tue, 12 May 2026 17:35:52 +0800 (CST)
-From: <w15303746062@163.com>
-To: jdelvare@suse.com,
-	andi.shyti@kernel.org
-Cc: linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] i2c: i801: fix hardware state machine corruption in error path
-Date: Tue, 12 May 2026 17:35:34 +0800
-Message-Id: <20260512093534.348655-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1778578665; c=relaxed/simple;
+	bh=SAbFbAxhM4r1Wa7+KTHFhNb0x4H3P69DT4qmPHd3Vfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Zc8Mirp4fcKjbwlsFJEA4FnnhU01sZ6AHdaVwsEgRKeHREkjMJC/5M/tv+0LvtVN5xLFdjKvZPCrXmjUbESIL3D3SYiRneMccBopTsXOM31B+4FrjlIe2vVrIo6GxGakD+TmTosa+T7yd1LqUASNCuwc/TMFGnRQeX9N+tTCKAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AR3Gk2KQ; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso48562335e9.2
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 02:37:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778578661; x=1779183461; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4D3PparkJF/1QcwiWv94EJLc0/A78G5Dvf9A+oS11+Y=;
+        b=AR3Gk2KQuPxfhiVlTUydGl0+4UeJ/NLAEpxmAmBL9RknvFmAUBupwvQ9oRYn5In8ft
+         eupDzwCyXZ7NVCqGkkO4lSdCMW6mXQP7KQH4LO3kEvJTdpJBKDrv2enfUGNP22hj4M8j
+         xZOLglhG7rkJMFvkcciTR96wdKUtKGYUWw+SQQpp8XVy3xFMUxaw36LhVF8ln1DgSKeg
+         xjsxuaEzyTkc4ojjILi5YwkP+wS5Je1+HVhP5GVv8WxcZQdY6DC8FZ7/yev4pSc2mcmd
+         tEW1i+SBikuHW2GICxn0ASGLnjVXBZaatrbpxihz4E4S4Qufr2tcijyAiTEYmxV6Q0TV
+         HJkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778578661; x=1779183461;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4D3PparkJF/1QcwiWv94EJLc0/A78G5Dvf9A+oS11+Y=;
+        b=hfQ9STJuIeJR8pci5YCjpZaXP0wFTZQ9drZ0AhtdYn5tg5SHJ1j3rDw2DL7kWakVxE
+         9p8ORklHUA7dC19G1e7ZO4Mc4U26Z5xIkkadftXWWoWu8SlPBNIMkOMt42LCuTgxiC2k
+         JXF7Pcbdniwkfd5I+h//YRysdz0iYxVPoad4AT++zLu1LTQzo+hmszp+gdVlVDrKr4jM
+         RVTaV0KRfDyYnYCBiFobFU1ONxH6crNBi11UiN9MY6lxkQTNpwJFfpoOITawmVMkjKh1
+         Eu57Am9Y1CSqYok7lp+NCm93vn6I0N0G7edkKDheEvEfnRtzWmGB/2UvEIryFh+k5rmT
+         GK7w==
+X-Forwarded-Encrypted: i=1; AFNElJ/rYU72r7ZF0AQFYfvwOYtmNZxhM5oxOwBUijA0nh2XvEunffmbxu+lbJWgltj5GCdEvKwaQM0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQlGBwRf9XWlW6/QCbyUet+cNngCKrX4AU4EmjDp7DATSve3HT
+	s521g1tCxdlD6UzQzCNSI7MeNcZWACGAjc/FtsCFZSnj1P5N5mBZTlYT
+X-Gm-Gg: Acq92OHH3raWm0lowVoWvcHQxqK0y/n69MAY379XmSoWIO94631Ic3U0P3sKgyxl9b0
+	6ITrKQhEFdcl+eDz9jNoYcjSckFk8mjSexmLxw0tJgwyd1xmRduYPz8sLhrkjv/SxT3K85H9chr
+	YtQUJpQBmZhEv6FKPntwQJ2JyuxrlljZtfBpoAEhVQLlCKZ3DqQij457AVtvrihEbS4YLgGGDKN
+	mf6baPKgJZtIsRVa1WhZYQHLto1r082O+g7NMi/EekNSg7bCfnmD7lzUpzbmSPx6D+X+gZ6UOPQ
+	DI7pqCnJ3z1Es4wEEvPFUTAepT9FrYpzyUkXtjDXUjt1GvNRQRYIAoH8fUXL8suEQQ4aDWiix0u
+	wcZ2ZP5QEbXi43FVSGp22rKtIOnAHYs9w6ICdwp+8HfQ+Vq33zsSd963u+oTz8220BYerT3PonC
+	HR5mAq4RigEsQGUSCu/Nv8gAdVO5NqHKrr+prI8KGLXZx0Mg2Dtmub73X1/WehjGeYtZIAIIgCt
+	80TA5MQuCmCXd0NSbEoeW23pf0Q/u1652aegRc=
+X-Received: by 2002:a05:600c:5296:b0:487:219e:42d with SMTP id 5b1f17b1804b1-48e706932d5mr197488255e9.11.1778578661525;
+        Tue, 12 May 2026 02:37:41 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::372? ([2620:10d:c092:600::1:8c90])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e906a06d1sm35932315e9.1.2026.05.12.02.37.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 02:37:40 -0700 (PDT)
+Message-ID: <ca57936a-4ac3-4c58-89a9-2a768401839f@gmail.com>
+Date: Tue, 12 May 2026 10:37:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3Hxdo9AJqoF2gAw--.21286S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGw18Zr43AF1DWryxtrW8Zwb_yoW5XFWUpa
-	yUKrZ0k34Dta1j9F4DJF4xuFyruw1fGay7Kr1vk3W5Za13G3WFvryIqFy5uFykJ3savaya
-	qF1qqa9ruF4qvr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzwZcUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC5Bl2WmoC9HnUvgAA3e
-X-Rspamd-Queue-Id: B73F451E037
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0.y,6.18.y 0/2] Backport io_uring commit to affected
+To: Jens Axboe <axboe@kernel.dk>,
+ Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+ stable@vger.kernel.org
+References: <20260507124253.97596-1-harshit.m.mogalapalli@oracle.com>
+ <5fed66f0-ea72-4f36-bf50-2d7c39c4fdeb@kernel.dk>
+ <12c809f5-1326-4cd3-9d4d-2bfb011b23e4@kernel.dk>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <12c809f5-1326-4cd3-9d4d-2bfb011b23e4@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AC02C51DF9F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.84 / 15.00];
-	SEM_URIBL(3.50)[xidian.edu.cn:email];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245432-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[163.com];
-	R_DKIM_ALLOW(0.00)[163.com:s=s110527];
-	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,body];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[163.com,none];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.014];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xidian.edu.cn:email]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245433-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+On 5/7/26 23:46, Jens Axboe wrote:
+> On 5/7/26 4:41 PM, Jens Axboe wrote:
+>> On 5/7/26 6:42 AM, Harshit Mogalapalli wrote:
+>>> Hi Jens and stable maintainers,
+>>>
+>>> The intent of this series is to backport commit: 770594e78c39
+>>> ("io_uring/zcrx: warn on freelist violations") to 6.18.y and 7.0.y.
+>>>
+>>> This above commit likely is fixing commit: 34a3e60821ab ("io_uring/zcrx:
+>>> implement zerocopy receive pp memory provider") in 6.18.y and 7.0.y.
+>>>
+>>> Pulled in a prerequisite to cleanly apply the fix. Only build tested.
+>>
+>> I don't think these are actually required, but at the same time it does
+>> not hurt to add them. I'll leave that to Pavel to decide.
+>>
+>> In any case, thanks for doing the backports!
+> 
+> Adding Pavel, I had assumed he was already on the email, as he's the
+> maintainer for that file.
 
-A severe livelock and subsequent Hung Task panic were observed in the
-i2c-i801 driver during concurrent Fuzzing. The crash is caused by an
-unconditional hardware register cleanup in the error handling path of
-i801_access().
+Looks good to apply to stable as a hardening measure, thanks
 
-When i801_check_pre() fails (e.g., returning -EBUSY because the SMBus
-controller is actively used by BIOS/ACPI), the kernel does not actually
-acquire the hardware ownership. However, the code jumps to the 'out'
-label and executes:
-
-    iowrite8(SMBHSTSTS_INUSE_STS | STATUS_FLAGS, SMBHSTSTS(priv));
-
-This forcefully clears the INUSE_STS lock and resets the hardware status
-flags without owning the controller. Doing so interrupts ongoing BIOS/ACPI
-transactions and totally corrupts the SMBus hardware state machine.
-
-Consequently, all subsequent i801_access() calls fail at the pre-check
-stage, triggering an endless stream of "SMBus is busy, can't use it!"
-error logs. Over a slow serial console, this printk flood monopolizes
-the CPU (Console Livelock), starving other processes trying to acquire
-the mmap_lock down_read semaphore, ultimately triggering the hung task
-watchdog.
-
-Fix this by moving the 'out' label below the hardware register cleanup.
-If i801_check_pre() fails, we safely bypass the iowrite8() and only
-release the software locks (pm_runtime and mutex), strictly adhering to
-the rule of not releasing resources that were never acquired.
-
-Fixes: 1f760b87e54c ("i2c: i801: Call i801_check_pre() from i801_access()")
-Cc: stable@vger.kernel.org # v6.3+
-
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
-Changes in v2:
- - Reused and moved the existing 'out' label instead of adding a new one,
-   fixing a build warning regarding an unused label.
- - Dropped the inaccurate mention of "another thread" in the commit message,
-   as i801_access() is serialized by a mutex.
- - Added Fixes and Cc stable tags as suggested.
-
- drivers/i2c/busses/i2c-i801.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 32a3cef02c7b..b29c99ed3883 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -931,13 +931,13 @@ static s32 i801_access(struct i2c_adapter *adap, u16 addr,
- 	 */
- 	if (hwpec)
- 		iowrite8(ioread8(SMBAUXCTL(priv)) & ~SMBAUXCTL_CRC, SMBAUXCTL(priv));
--out:
- 	/*
- 	 * Unlock the SMBus device for use by BIOS/ACPI,
- 	 * and clear status flags if not done already.
- 	 */
- 	iowrite8(SMBHSTSTS_INUSE_STS | STATUS_FLAGS, SMBHSTSTS(priv));
- 
-+out:
- 	pm_runtime_put_autosuspend(&priv->pci_dev->dev);
- 	mutex_unlock(&priv->acpi_lock);
- 	return ret;
 -- 
-2.34.1
+Pavel Begunkov
 
 
