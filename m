@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-246564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qA0pOlpxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:42 +0200
+	id 4FeuDy5qA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EAB5279A2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC425265AD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69F5732C8DFB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 041A7314A37B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41063343D9D;
-	Tue, 12 May 2026 18:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58DB3EDE61;
+	Tue, 12 May 2026 17:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lYyfk2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrDeAck7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00ABC284883;
-	Tue, 12 May 2026 18:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DC93EDE49;
+	Tue, 12 May 2026 17:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609551; cv=none; b=gUxa2L0QfxSANbF9ZAHkMnfkh4ewE10QnbPtfjgcL2+Db9/WLr4knBM7SEXO3B14SpD1MG/wPIZvq1ZBA+t9uc1ll97pkyV55W3gKMv5OQGUQ1MWd7BLVRtlFyh0R6qp/+OvH9AgTj16GMYwxySPLElJhbbnzl+9joNeylbkyrU=
+	t=1778608170; cv=none; b=SRtwZpqejcPhnPSYu3ruWADyZ5JbXtlVy0M9dFkA4Y46zKR8Jd0t9JtfKkc6q8XI1ndRQ8jUNQ9G/44BRB6D67G8QjWxRB75FmxbGGN9ENVYVSVkQRL0VM60KruC6IrUNgMVNjLlY+Ucr64UFvgPnETe8SGSUftfVQttmQzR1fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609551; c=relaxed/simple;
-	bh=HYGV2yWNZaFKJicVyqj+leCG6/nKQiv98eiPOSAFaGc=;
+	s=arc-20240116; t=1778608170; c=relaxed/simple;
+	bh=VrT9Aj9I+rq4TBk30mzH21keLP7D1swrLroH4Jei730=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PnYrpwlIFbioVsaRrYKTGkTAxdL0/GHhndGJ9e4FZX9ljPn1SzpVyOiJQjyeBxHwo1VI2bbeFc81yRQ84YkjvKrSk/ZSb4dOySlmN+Hefqu9cftihE1gCX8Lg+frN6Ph/k87Tj/Jge4qAib+bFtpBuWxknaoW+lL5G74fdvbwO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lYyfk2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C182C2BCB0;
-	Tue, 12 May 2026 18:12:30 +0000 (UTC)
+	 MIME-Version; b=BtPPQiDQanpsk6e8cS0QusOL9XJEfRz5M85QS3+p2fz2hfVokz08X745pduBDfel7TEnoZw/aQ8gYqAtFHa/4SHRi1LwFQIGPZEMcCz7f4tthkerJPMfz70Z1vpb03GdjFkTWyTKKk56UvgqD2oCItI+52UAiCG+AZjrZPDpty4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrDeAck7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0DAC2BCC7;
+	Tue, 12 May 2026 17:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609550;
-	bh=HYGV2yWNZaFKJicVyqj+leCG6/nKQiv98eiPOSAFaGc=;
+	s=korg; t=1778608170;
+	bh=VrT9Aj9I+rq4TBk30mzH21keLP7D1swrLroH4Jei730=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lYyfk2mOC2MTY0hMOxcXdF1O3Jo032kVZVXW19gYmXU629yv7VbFqGFd9AO1fKvd
-	 dqjzOYpWqk/C7PeMHycNTRJNiFny8txLcJD2PQdVBS9Tzw9g2c1Fq5v0/yhlFn3QYY
-	 quAlAo1elHPAJ3assEczi2uRW6T29cRvgssCkxCQ=
+	b=PrDeAck7I8uNJdzGB6Jsrz74kgFQYC5FBraA2Vh6THRY3G8yWQt28fDSwl8xh5i/g
+	 kG8TpTJZL5Ht45aIprFtI4yyhGhz7iCN3QSCwBAH+nxSagqyIxhx2B1dLf0W+4GqAY
+	 ED6I90AHssYnngnap2rXqKIMl6tD/v0jLyK1bOVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 238/307] RDMA/mlx4: Fix resource leak on error in mlx4_ib_create_srq()
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 181/206] dma-mapping: drop unneeded includes from dma-mapping.h
 Date: Tue, 12 May 2026 19:40:33 +0200
-Message-ID: <20260512173945.143730999@linuxfoundation.org>
+Message-ID: <20260512173936.694186737@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64EAB5279A2
+X-Rspamd-Queue-Id: 9BC425265AD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246564-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246027-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit c54c7e4cb679c0aaa1cb489b9c3f2cd98e63a44c upstream.
+[ Upstream commit be164349e173a8e71cd76f17c7ed720813b8d69b ]
 
-Sashiko points out that mlx4_srq_alloc() was not undone during error
-unwind, add the missing call to mlx4_srq_free().
+Back in the day a lot of logic was implemented inline in dma-mapping.h and
+needed various includes.  Move of this has long been moved out of line,
+so we can drop various includes to improve kernel rebuild times.
 
-Cc: stable@vger.kernel.org
-Fixes: 225c7b1feef1 ("IB/mlx4: Add a driver Mellanox ConnectX InfiniBand adapters")
-Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=8
-Link: https://patch.msgid.link/r/11-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 3023c050af36 ("hwmon: (powerz) Avoid cacheline sharing for DMA buffer")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx4/srq.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/svm.c |    1 +
+ include/linux/dma-mapping.h          |    4 ----
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/infiniband/hw/mlx4/srq.c
-+++ b/drivers/infiniband/hw/mlx4/srq.c
-@@ -193,13 +193,15 @@ int mlx4_ib_create_srq(struct ib_srq *ib
- 	if (udata)
- 		if (ib_copy_to_udata(udata, &srq->msrq.srqn, sizeof (__u32))) {
- 			err = -EFAULT;
--			goto err_wrid;
-+			goto err_srq;
- 		}
+--- a/arch/powerpc/platforms/pseries/svm.c
++++ b/arch/powerpc/platforms/pseries/svm.c
+@@ -8,6 +8,7 @@
  
- 	init_attr->attr.max_wr = srq->msrq.max - 1;
+ #include <linux/mm.h>
+ #include <linux/memblock.h>
++#include <linux/mem_encrypt.h>
+ #include <linux/cc_platform.h>
+ #include <asm/machdep.h>
+ #include <asm/svm.h>
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -2,15 +2,11 @@
+ #ifndef _LINUX_DMA_MAPPING_H
+ #define _LINUX_DMA_MAPPING_H
  
- 	return 0;
+-#include <linux/cache.h>
+-#include <linux/sizes.h>
+-#include <linux/string.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/dma-direction.h>
+ #include <linux/scatterlist.h>
+ #include <linux/bug.h>
+-#include <linux/mem_encrypt.h>
  
-+err_srq:
-+	mlx4_srq_free(dev->dev, &srq->msrq);
- err_wrid:
- 	if (udata)
- 		mlx4_ib_db_unmap_user(ucontext, &srq->db);
+ /**
+  * List of possible attributes associated with a DMA mapping. The semantics
 
 
 
