@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-246362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJcQGgRsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:56 +0200
+	id kDKGNDBvA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB7A526BD1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAFC5274EC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C70C3048B39
+	by sin.lore.kernel.org (Postfix) with ESMTP id DDF353097D92
 	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB9925FA29;
-	Tue, 12 May 2026 18:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51FC23E356;
+	Tue, 12 May 2026 18:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XA0bImZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TddEoBCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113E33EDE5D;
-	Tue, 12 May 2026 18:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980B63EDE59;
+	Tue, 12 May 2026 18:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609031; cv=none; b=n9kdo5QcmZ7fVYoy+gHV01CkMRAQqeDJ/Bpd2DR5FpWRfZrnPllAODOYrjGmz2x37qs/a43FKj6DuFDpQyrHDFU5eUBkdP6V92fJfHsMNmbfD/UAgBH4Vft0ftC+HQjddbEm+yQlHTnoMkuDf+6woe9qXvY5C3o54TBwGpQmMgg=
+	t=1778609033; cv=none; b=cxLkBcok4QwzdqMymArw4JMaB7FOvcQC6ExNaAdUXF/jqCNm+3BgQ7igLFiofzArlSiQPeMeUHsuY5902WADAj+q6oyPYebbAtJsCaIw4MOp2BR4tiHK6hRmlI4k1OPtI2/DhhI+WWBPTj2LPk93L3IgY93ZFQoO+m9cD69iXuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609031; c=relaxed/simple;
-	bh=5N7DWDH+yHSBG3qJ7LR+Mp9E4PkjolhIMWhGuyOEVc0=;
+	s=arc-20240116; t=1778609033; c=relaxed/simple;
+	bh=gp24CY9H/34ObKvMJmJXvW75ognUz+8bDmRFXIQHVrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UH0yRXmWw8DJ4bKz8yl5l1gywguYfDT/lm+IlQz91SemzrbP8wCamzzDm+N2g/sJ0Lui0AeAhAUKH6606p+wNUx4vLpp9RVd+3It/wWdxn2HPyZvdyVE5iSZv3l9SL+6jYM5oJ3uf6oGXjLYdexRg2iHW0OKfHrtRUQtWbn1Lgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XA0bImZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98267C2BCB0;
-	Tue, 12 May 2026 18:03:50 +0000 (UTC)
+	 MIME-Version; b=sZjQynQ1dsDrjOr11ziKH5KlOIwO6LtS14sdOHwkbPdtkUcNdqnwfMIwZJvHpqYIfqUBKvc+P7JWkU6Oib4kjaHNjLKsSuA3FOwSxRkRLl5qIsVCwJAdr0LQUTIOrwAhuWE0lIziKMlVJugyrsvv/Is4FrOKlHbsp+vYHIkM/rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TddEoBCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BA5C2BCB0;
+	Tue, 12 May 2026 18:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609030;
-	bh=5N7DWDH+yHSBG3qJ7LR+Mp9E4PkjolhIMWhGuyOEVc0=;
+	s=korg; t=1778609033;
+	bh=gp24CY9H/34ObKvMJmJXvW75ognUz+8bDmRFXIQHVrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XA0bImZL8DxBm5+kcVfrHuS/y7r5ThtdTn3TgFg448lAivmL7kKa4GTe8hMBErDd0
-	 oSiNMYdtAi+CHj0dGpkOGgQc11scttHIooh8s8ecFGy+rmnHD1wGnWXft2CZaYh2jJ
-	 UN5KMdapaIpUljPibwDFs3niUNS3g43UwxFBBCQE=
+	b=TddEoBCkpH236D0OQJHMkhA6ASxjWjGdyEyrjtdi/y/LMIekVzRqbHLi6YaOvBQNy
+	 IPiIS+A/jtrSEngA03euhoLJfYU6km1rVDRP5dDd16qsvk5je4BK1fnnUPgz0X24v4
+	 U+wNLjXb4FHruZp/ktkGMDpsVMpI2osKQBmBgi7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Amit Sunil Dhamne <amitsd@google.com>,
 	stable <stable@kernel.org>,
-	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 7.0 039/307] usb: dwc3: Move GUID programming after PHY initialization
-Date: Tue, 12 May 2026 19:37:14 +0200
-Message-ID: <20260512173940.949720990@linuxfoundation.org>
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 7.0 040/307] usb: typec: tcpm: reset internal port states on soft reset AMS
+Date: Tue, 12 May 2026 19:37:15 +0200
+Message-ID: <20260512173940.970675491@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
 References: <20260512173940.117428952@linuxfoundation.org>
@@ -65,13 +65,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1FB7A526BD1
+X-Rspamd-Queue-Id: EDAFC5274EC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246362-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246363-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,71 +88,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,synopsys.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-commit aad35f9c926ec220b0742af1ada45666ae667956 upstream.
+commit 2909f0d4994fb4306bf116df5ccee797791fce2c upstream.
 
-The Linux Version Code is currently written to the GUID register before
-PHY initialization. Certain PHY implementations (such as Synopsys eUSB
-PHY performing link_sw_reset) clear the GUID register to its default
-value during initialization, causing the kernel version information to
-be lost.
+Reset internal port states (such as vdm_sm_running and
+explicit_contract) on soft reset AMS as the port needs to negotiate a
+new contract. The consequence of leaving the states in as-is cond are as
+follows:
+  * port is in SRC power role and an explicit contract is negotiated
+    with the port partner (in sink role)
+  * port partner sends a Soft Reset AMS while VDM State Machine is
+    running
+  * port accepts the Soft Reset request and the port advertises src caps
+  * port partner sends a Request message but since the explicit_contract
+    and vdm_sm_running are true from previous negotiation, the port ends
+    up sending Soft Reset instead of Accept msg.
 
-Move the GUID register programming to occur after PHY initialization
-completes to ensure the Linux version information persists.
+Stub Log:
+[  203.653942] AMS DISCOVER_IDENTITY start
+[  203.653947] PD TX, header: 0x176f
+[  203.655901] PD TX complete, status: 0
+[  203.657470] PD RX, header: 0x124f [1]
+[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
+[  203.657482] AMS DISCOVER_IDENTITY finished
+[  203.657484] cc:=4
+[  204.155698] PD RX, header: 0x144f [1]
+[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
+[  204.155741] PD TX, header: 0x196f
+[  204.157622] PD TX complete, status: 0
+[  204.160060] PD RX, header: 0x4d [1]
+[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
+[  204.160076] PD TX, header: 0x163
+[  204.162486] PD TX complete, status: 0
+[  204.162832] AMS SOFT_RESET_AMS finished
+[  204.162840] cc:=4
+[  204.162891] AMS POWER_NEGOTIATION start
+[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
+[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
+[  204.162913] PD TX, header: 0x1361
+[  204.165529] PD TX complete, status: 0
+[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
+[  204.166996] PD RX, header: 0x1242 [1]
+[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
+[  204.167019] AMS POWER_NEGOTIATION finished
+[  204.167020] cc:=4
+[  204.167083] AMS SOFT_RESET_AMS start
+[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
+[  204.167092] PD TX, header: 0x16d
+[  204.168824] PD TX complete, status: 0
+[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
+[  204.171876] PD RX, header: 0x43 [1]
+[  204.171879] AMS SOFT_RESET_AMS finished
 
-Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our GUID register")
+This causes COMMON.PROC.PD.11.2 check failure for
+TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
+
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
 Cc: stable <stable@kernel.org>
-Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260417063314.2359-1-selvarasu.g@samsung.com
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1341,12 +1341,6 @@ int dwc3_core_init(struct dwc3 *dwc)
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5741,6 +5741,8 @@ static void run_state_machine(struct tcp
  
- 	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
- 
--	/*
--	 * Write Linux Version Code to our GUID register so it's easy to figure
--	 * out which kernel version a bug was found.
--	 */
--	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
--
- 	ret = dwc3_phy_setup(dwc);
- 	if (ret)
- 		return ret;
-@@ -1378,6 +1372,12 @@ int dwc3_core_init(struct dwc3 *dwc)
- 	if (ret)
- 		goto err_exit_phy;
- 
-+	/*
-+	 * Write Linux Version Code to our GUID register so it's easy to figure
-+	 * out which kernel version a bug was found.
-+	 */
-+	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
-+
- 	dwc3_core_setup_global_control(dwc);
- 	dwc3_core_num_eps(dwc);
- 
+ 	case VCONN_SWAP_ACCEPT:
+ 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
++		port->vdm_sm_running = false;
++		port->explicit_contract = false;
+ 		tcpm_ams_finish(port);
+ 		tcpm_set_state(port, VCONN_SWAP_START, 0);
+ 		break;
 
 
 
