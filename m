@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-245975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCJ7JqBoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:28 +0200
+	id uPcNGrRsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A13526387
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1439526DFB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 166A930F2616
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:48:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFD7B31ADAEC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F183C0A14;
-	Tue, 12 May 2026 17:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D933EDE49;
+	Tue, 12 May 2026 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOb1XRDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QB/znXHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DB73C0A16;
-	Tue, 12 May 2026 17:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5173EDE42;
+	Tue, 12 May 2026 17:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608034; cv=none; b=gw+ZkGAikiOmf6TsWwHglYhNvM/JHKCq9tejOD+PcVdT8J1mKNDWkMeczu/JVsJVuLf3j6SAGOtJ/rk/xg0IfH93sK5c5qeQeIO6OqikjBGqiorQ4nYm4p32lVudkDeWo31zEwkQQmKzPBhLBmPGlZDEoZ8dOqlnh3eexcArEGA=
+	t=1778608699; cv=none; b=DAqLizCyaRV40CqhMMFPGtA2c07dqCqzP3n/TaBEqI+3L7nVp6wpIW8k1FrpJY3GxX5Z0m/ysuH1AOxUqvYBnKaeKlI7S7x+2fcpALaBKxW1c4nWiBavTl8pEaMut/zKknnb6T8AitArc1YMQk6Yiq2qqRxp6/yDfUn8/MiMnes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608034; c=relaxed/simple;
-	bh=zJIR4OBQM7L1NC4VtHyE1Mu0EvCodpy8McqACrNlzHQ=;
+	s=arc-20240116; t=1778608699; c=relaxed/simple;
+	bh=fu4ocS/b4alawIsdpqDyRk3H7r9IUTOcGuW0hE52P5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKIfiYRMacomE0YTR/2FbQQ5JQRSGi/KHIvEd5A890cYy0P2j5a4JAQ5HiNtNns55YamDTB5upUbLaxzPqfQJi2M9f+Lp3hzAPihLB/6mf02pJUy/UYIAbsF2AyCfDi0Iii2UMtlkdziTHPG8ZW03LVfAQBsijx/fF1jaZAhW90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOb1XRDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAD8C4AF18;
-	Tue, 12 May 2026 17:47:13 +0000 (UTC)
+	 MIME-Version; b=nN0SDhtFrxyyz+nsmqJWA44t2Jghop4lA0TdW6FsMaMDraDrM4m8P1IPMZwmr9yb3u0Q287nEPHjpHcowJEBTGOm6jFl4ASpym3BZyeaDr5FDfeC2bcRjHFLoTaAjB8DXQPk0aDRPHcWucWrO+/4wmpWYaOLCnIhujq7TBLCVKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QB/znXHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3905EC2BCB0;
+	Tue, 12 May 2026 17:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608033;
-	bh=zJIR4OBQM7L1NC4VtHyE1Mu0EvCodpy8McqACrNlzHQ=;
+	s=korg; t=1778608698;
+	bh=fu4ocS/b4alawIsdpqDyRk3H7r9IUTOcGuW0hE52P5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOb1XRDYTwDU/GCD9z/EaC/kvJ4UL14dHFiyS0RqBJCtN6Jt859Qe9tHoo6UUeZEA
-	 IhAQJQ2ev4n5q4HoqG3ULFFnprsygx1Tp+296E5n8s8Ilz6r7B7lT1c1b3+NgBmUb4
-	 HG93iJtaIP869odhzsyPfQy3Xl3TwltyNu/bZSDs=
+	b=QB/znXHkxRNvHiSLSpwQIk9o9n014y7JheBmutmMpiOeXzFx5UHDHD3ZIDtx59dQe
+	 4f+bbdRskEnL/jK9NGPkhqlFHc7I8gaukK30ekVURrkGCZDxGXNk6z8ptMBD73cLky
+	 FFDHjfDBMGNjEidquEUGMPWAcpX+AgkYwxazq7/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivam Kumar <skumar47@syr.edu>,
-	Shivam Kumar <kumar.shivam43666@gmail.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 130/206] nvmet-tcp: fix race between ICReq handling and queue teardown
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.18 181/270] KVM: x86: check for nEPT/nNPT in slow flush hypercalls
 Date: Tue, 12 May 2026 19:39:42 +0200
-Message-ID: <20260512173935.611224652@linuxfoundation.org>
+Message-ID: <20260512173942.259550515@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A8A13526387
+X-Rspamd-Queue-Id: D1439526DFB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-245975-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syr.edu,gmail.com,nvidia.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246232-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syr.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 5293a8882c549fab4a878bc76b0b6c951f980a61 upstream.
+commit 464af6fc2b1dcc74005b7f58ee3812b17777efee upstream.
 
-nvmet_tcp_handle_icreq() updates queue->state after sending an
-Initialization Connection Response (ICResp), but it does so without
-serializing against target-side queue teardown.
+Checking is_guest_mode(vcpu) is incorrect, because translate_nested_gpa()
+is only valid if an L2 guest is running *with nested EPT/NPT enabled*.
+Instead use the same condition as translate_nested_gpa() itself.
 
-If an NVMe/TCP host sends an Initialization Connection Request
-(ICReq) and immediately closes the connection, target-side teardown
-may start in softirq context before io_work drains the already
-buffered ICReq. In that case, nvmet_tcp_schedule_release_queue()
-sets queue->state to NVMET_TCP_Q_DISCONNECTING and drops the queue
-reference under state_lock.
-
-If io_work later processes that ICReq, nvmet_tcp_handle_icreq() can
-still overwrite the state back to NVMET_TCP_Q_LIVE. That defeats the
-DISCONNECTING-state guard in nvmet_tcp_schedule_release_queue() and
-allows a later socket state change to re-enter teardown and issue a
-second kref_put() on an already released queue.
-
-The ICResp send failure path has the same problem. If teardown has
-already moved the queue to DISCONNECTING, a send error can still
-overwrite the state with NVMET_TCP_Q_FAILED, again reopening the
-window for a second teardown path to drop the queue reference.
-
-Fix this by serializing both post-send state transitions with
-state_lock and bailing out if teardown has already started.
-
-Use -ESHUTDOWN as an internal sentinel for that bail-out path rather
-than propagating it as a transport error like -ECONNRESET. Keep
-nvmet_tcp_socket_error() setting rcv_state to NVMET_TCP_RECV_ERR before
-honoring that sentinel so receive-side parsing stays quiesced until the
-existing release path completes.
-
-Fixes: c46a6465bac2 ("nvmet-tcp: add NVMe over TCP target driver")
 Cc: stable@vger.kernel.org
-Reported-by: Shivam Kumar <skumar47@syr.edu>
-Tested-by: Shivam Kumar <kumar.shivam43666@gmail.com>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Fixes: aee738236dca ("KVM: x86: Prepare kvm_hv_flush_tlb() to handle L2's GPAs", 2022-11-18)
+Link: https://patch.msgid.link/20260503200905.106077-1-pbonzini@redhat.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c |   26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/x86/kvm/hyperv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -406,6 +406,19 @@ static void nvmet_tcp_build_pdu_iovec(st
- 
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
- {
-+	/*
-+	 * Keep rcv_state at RECV_ERR even for the internal -ESHUTDOWN path.
-+	 * nvmet_tcp_handle_icreq() can return -ESHUTDOWN after the ICReq has
-+	 * already been consumed and queue teardown has started.
-+	 *
-+	 * If nvmet_tcp_data_ready() or nvmet_tcp_write_space() queues
-+	 * nvmet_tcp_io_work() again before nvmet_tcp_release_queue_work()
-+	 * cancels it, the queue must not keep that old receive state.
-+	 * Otherwise the next nvmet_tcp_io_work() run can reach
-+	 * nvmet_tcp_done_recv_pdu() and try to handle the same ICReq again.
-+	 *
-+	 * That is why queue->rcv_state needs to be updated before we return.
-+	 */
- 	queue->rcv_state = NVMET_TCP_RECV_ERR;
- 	if (queue->nvme_sq.ctrl)
- 		nvmet_ctrl_fatal_error(queue->nvme_sq.ctrl);
-@@ -962,11 +975,24 @@ static int nvmet_tcp_handle_icreq(struct
- 	iov.iov_len = sizeof(*icresp);
- 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
- 	if (ret < 0) {
-+		spin_lock_bh(&queue->state_lock);
-+		if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
-+			spin_unlock_bh(&queue->state_lock);
-+			return -ESHUTDOWN;
-+		}
- 		queue->state = NVMET_TCP_Q_FAILED;
-+		spin_unlock_bh(&queue->state_lock);
- 		return ret; /* queue removal will cleanup */
- 	}
- 
-+	spin_lock_bh(&queue->state_lock);
-+	if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
-+		spin_unlock_bh(&queue->state_lock);
-+		/* Tell nvmet_tcp_socket_error() teardown is in progress. */
-+		return -ESHUTDOWN;
-+	}
- 	queue->state = NVMET_TCP_Q_LIVE;
-+	spin_unlock_bh(&queue->state_lock);
- 	nvmet_prepare_receive_pdu(queue);
- 	return 0;
- }
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -2039,7 +2039,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_v
+ 	 * flush).  Translate the address here so the memory can be uniformly
+ 	 * read with kvm_read_guest().
+ 	 */
+-	if (!hc->fast && is_guest_mode(vcpu)) {
++	if (!hc->fast && mmu_is_nested(vcpu)) {
+ 		hc->ingpa = translate_nested_gpa(vcpu, hc->ingpa, 0, NULL);
+ 		if (unlikely(hc->ingpa == INVALID_GPA))
+ 			return HV_STATUS_INVALID_HYPERCALL_INPUT;
 
 
 
