@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-246528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAalAHRvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:36 +0200
+	id cCHyCMpnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E3E5275C5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D706526202
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 06B393164128
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88C3530A640C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B993C343D9D;
-	Tue, 12 May 2026 18:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86B14963A5;
+	Tue, 12 May 2026 17:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycOhknJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmGO+LXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C127352F86;
-	Tue, 12 May 2026 18:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1A63E172F;
+	Tue, 12 May 2026 17:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609458; cv=none; b=d/C62/XxrtZ70n9K2YNlZ4o7hYCUqXvTxpRuX3FScu3U8w244w5MlZiYEx7lAVbCoVnoZIhah3u8CqWwi1JkS6CZQZxyXgjw9hIFRk7vWYUetaDqhoT9Z6uJ9V+D1XFV0ONQdO4DEYNEILma+5IvqqFyrrBckQJhdVGZ5SYIYmk=
+	t=1778608011; cv=none; b=SZPHyGnJ6uB2FiI48b2pG8cmRoPcnMhNijQiaTvsNz3fsH8InauAJYK6N3x5Ahrl8ltI2oe8Uh4tjb3sdBVSTUgLhaLHNodRMG5W2CraFvgcpFqXijpOrqzbUDJyHsfKua636sSMwFt8aaU2TyfWUdjPOn/Mupf1iQV4WEDpLcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609458; c=relaxed/simple;
-	bh=gz7eIuLJ8kacqfPNLZ+MOwTbIkWRgqW+0P6wkqWNWjk=;
+	s=arc-20240116; t=1778608011; c=relaxed/simple;
+	bh=7nBBYfqz7SdruFsVKUFWBpQ7Te/u19dzmdw2q6JD0Zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5QW1LvWO30EAz7LvIDCHD31bqATfQlnnPaZpDcwVViKwsljicpUL7UeaUqEUEjqczppF55gTHMeB8Nvg4FweMudJNk9AfCJUMcEK8ovkSOFIhqh6cSVKo1lZ+f2M2qk8y+vFHuDZMhDHL2hA7nKlxsGveqjiYc1HMseHbuVHIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycOhknJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3819C2BCF5;
-	Tue, 12 May 2026 18:10:57 +0000 (UTC)
+	 MIME-Version; b=ALOhkR8pNdJtR8mEcPHAqmv3ciIYhVxqf7rncVgXLYitPv1WJ4JjT09C1S9JuLNEf6M2n69QNV8l3hhiVxbXQX5/f39YEEx0X2sqMEB+h//DwKQ6BvYwu0MOACuFy6oNdXyiXbzZLJxdAbmMvUIsJsvALMVo8A66+2VED4ZysXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmGO+LXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DD6C4AF09;
+	Tue, 12 May 2026 17:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609458;
-	bh=gz7eIuLJ8kacqfPNLZ+MOwTbIkWRgqW+0P6wkqWNWjk=;
+	s=korg; t=1778608011;
+	bh=7nBBYfqz7SdruFsVKUFWBpQ7Te/u19dzmdw2q6JD0Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ycOhknJfxPV6reM/QYzXW0q9xx2RS5Z6BiDejczu35VK9prIMETvAPNfP2CuxxiCk
-	 lDn9eatSKyym6tcdzKNWIoQdTVXl8rJemOiJ7GOphhONhszl/t/3cHQmNaKkbsEAKG
-	 I8YCuL8IyURKDsFi0Hk3UyS0BfGXH6tkVZO7UeU8=
+	b=TmGO+LXkL1njJwGh8kTMuAw+6fuMsrKU7Ij8Nv8WZo5Ok55hINPmPEmUtoFJI66o3
+	 nRP2qHxvZ0BTTiHGbuHQcp7DpbP57PuNFR1/WUOL7BWvzXjFrCtwXGaDv/dO+MgIjD
+	 /6unZExQcL53Z8PjrL32W7mIkDd88e9s1o/MmdTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 7.0 162/307] tracing/fprobe: Unregister fprobe even if memory allocation fails
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>
+Subject: [PATCH 6.12 105/206] clk: imx: imx8-acm: fix flags for acm clocks
 Date: Tue, 12 May 2026 19:39:17 +0200
-Message-ID: <20260512173943.543431260@linuxfoundation.org>
+Message-ID: <20260512173935.081185819@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A9E3E5275C5
+X-Rspamd-Queue-Id: 8D706526202
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -73,107 +76,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246528-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245967-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,qualcomm.com:email,toradex.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit 1aec9e5c3e31ce1e28f914427fb7f90b91d310df upstream.
+commit f2c2fc93b4a3efdfcf3805ab74741826d343ff2c upstream.
 
-unregister_fprobe() can fail under memory pressure because of memory
-allocation failure, but this maybe called from module unloading, and
-usually there is no way to retry it. Moreover. trace_fprobe does not
-check the return value.
+Currently, the flags for the ACM clocks are set to 0. This configuration
+causes the fsl-sai audio driver to fail when attempting to set the
+sysclk, returning an EINVAL error. The following error messages
+highlight the issue:
+fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sysclk on 59090000.sai: -22
+imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
 
-To fix this problem, unregister fprobe and fprobe_hash_node even if
-working memory allocation fails.
-Anyway, if the last fprobe is removed, the filter will be freed.
+By setting the flag CLK_SET_RATE_NO_REPARENT, we signal that the ACM
+driver does not support reparenting and instead relies on the clock tree
+as defined in the device tree. This change resolves the issue with the
+fsl-sai audio driver.
 
-Link: https://lore.kernel.org/all/177669365629.132053.8433032896213721288.stgit@mhiramat.tok.corp.google.com/
-
-Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: d3a0946d7ac9 ("clk: imx: imx8: add audio clock mux driver")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260212085750.3253187-1-shengjiu.wang@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fprobe.c |   25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/clk/imx/clk-imx8-acm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -331,9 +331,10 @@ static void fprobe_ftrace_remove_ips(uns
- 	lockdep_assert_held(&fprobe_mutex);
- 
- 	fprobe_ftrace_active--;
--	if (!fprobe_ftrace_active)
-+	if (!fprobe_ftrace_active) {
- 		unregister_ftrace_function(&fprobe_ftrace_ops);
--	if (num)
-+		ftrace_free_filter(&fprobe_ftrace_ops);
-+	} else if (num)
- 		ftrace_set_filter_ips(&fprobe_ftrace_ops, addrs, num, 1, 0);
- }
- 
-@@ -532,10 +533,10 @@ static void fprobe_graph_remove_ips(unsi
- 
- 	fprobe_graph_active--;
- 	/* Q: should we unregister it ? */
--	if (!fprobe_graph_active)
-+	if (!fprobe_graph_active) {
- 		unregister_ftrace_graph(&fprobe_graph_ops);
--
--	if (num)
-+		ftrace_free_filter(&fprobe_graph_ops.ops);
-+	} else if (num)
- 		ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
- }
- 
-@@ -922,15 +923,19 @@ static int unregister_fprobe_nolock(stru
- 	int i, count;
- 
- 	addrs = kcalloc(hlist_array->size, sizeof(unsigned long), GFP_KERNEL);
--	if (!addrs) {
--		ret = -ENOMEM;	/* TODO: Fallback to one-by-one loop */
--		goto out;
--	}
-+	/*
-+	 * This will remove fprobe_hash_node from the hash table even if
-+	 * memory allocation fails. However, ftrace_ops will not be updated.
-+	 * Anyway, when the last fprobe is unregistered, ftrace_ops is also
-+	 * unregistered.
-+	 */
-+	if (!addrs)
-+		pr_warn("Failed to allocate working array. ftrace_ops may not sync.\n");
- 
- 	/* Remove non-synonim ips from table and hash */
- 	count = 0;
- 	for (i = 0; i < hlist_array->size; i++) {
--		if (!delete_fprobe_node(&hlist_array->array[i]))
-+		if (!delete_fprobe_node(&hlist_array->array[i]) && addrs)
- 			addrs[count++] = hlist_array->array[i].addr;
- 	}
- 	del_fprobe_hash(fp);
+--- a/drivers/clk/imx/clk-imx8-acm.c
++++ b/drivers/clk/imx/clk-imx8-acm.c
+@@ -371,7 +371,8 @@ static int imx8_acm_clk_probe(struct pla
+ 	for (i = 0; i < priv->soc_data->num_sels; i++) {
+ 		hws[sels[i].clkid] = devm_clk_hw_register_mux_parent_data_table(dev,
+ 										sels[i].name, sels[i].parents,
+-										sels[i].num_parents, 0,
++										sels[i].num_parents,
++										CLK_SET_RATE_NO_REPARENT,
+ 										base + sels[i].reg,
+ 										sels[i].shift, sels[i].width,
+ 										0, NULL, NULL);
 
 
 
