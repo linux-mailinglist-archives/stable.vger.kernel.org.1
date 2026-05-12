@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-245706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNWfGAE3A2ow1wEAu9opvQ
-	(envelope-from <stable+bounces-245706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:19:45 +0200
+	id YIbVAho3A2ow1wEAu9opvQ
+	(envelope-from <stable+bounces-245707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:20:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F297E5223C6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2C75223FB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 44F6330B92F6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:18:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A133F30C1BEE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9AA39DBD9;
-	Tue, 12 May 2026 14:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE013B1002;
+	Tue, 12 May 2026 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAoUl9fq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUQGuN7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9B33ABD91
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442843AFB01
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778595497; cv=none; b=m86a7qlJ21HH+FXXfOGxeOvgXLEnMQNQBeRCBxsicPgM7jFU+Esuv48d8xiG+/8rmzyjHj5MZcYFW2ssz+6HkakWfOW7uRuhm7psCi63+xVIfbK6DL2IuGuBYXYDwbZx6yzHAYxq8sP/qpDQ4fatIHU/4GgVFp6pji0J4dA7PBY=
+	t=1778595500; cv=none; b=IUIvdSSXsVp5zuYUAf5D7dg2fUubvVhC3gRnLRChYfKE1WpY8/vppg5fdd332j9wS/FbfHC6JiVsNQGNlTHLB9Ux2yfN0vmMDXHBAH44qwgtR0zOfQSP3LiMW/9wQICs50jE9kjoC0PpKMuI0abeVTWM4K2P1q0Y+YFEM7glyyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778595497; c=relaxed/simple;
-	bh=aBopliS7yQXQVI/pJk9mxHvKwCgd3fsEoRz3wwSC7pc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rb5U+oj6hoO6R+uoX1OLQqzJ3N9gwAE+gS2AV6HFEScBxb0ZKZkHnk8117EwDZG4sF5gvUElWVFIvutUpob7RFs+IFfzHv8yOeN/KXhmM7SlMBoPdbw0rZhZLJG1CS9aImOCgRf9PHGDTIgRSz/0727taFoSU1ZAWtgG83HIYdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAoUl9fq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444CAC2BCB0;
-	Tue, 12 May 2026 14:18:17 +0000 (UTC)
+	s=arc-20240116; t=1778595500; c=relaxed/simple;
+	bh=rgARlOx1efisJiWR5P9jvW+F+NH/a8dd9cT8HoVvPbE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Vcyb8szmXxfGD6o7AtXAnanU4C5w/BaKl9P2neEbY9YIPcVFlNldpPYpJlKOYZ7TIpaNxgZ2bsclsWg3kFymm41y6gQWG7fWMURz2fO6R2ns+NmhW0cVav/vbjuCIjSC09jwPaSpBhw9UFsyUVd/r3wco/9FTqFX41qsIv/2gK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUQGuN7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDBAC2BCB0;
+	Tue, 12 May 2026 14:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778595497;
-	bh=aBopliS7yQXQVI/pJk9mxHvKwCgd3fsEoRz3wwSC7pc=;
+	s=korg; t=1778595500;
+	bh=rgARlOx1efisJiWR5P9jvW+F+NH/a8dd9cT8HoVvPbE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QAoUl9fqNgwKjPA4v8rAwITJvY/PPIqjSnv4Tegm5u36gW+NVQWvP14T3OuOJ53vY
-	 c3HyW9vqG/4xajLS/z5kmrXm8prwQS56dJV5I0uaUI4qTcqSR2/y74q3fONdYb5I66
-	 HyQJjjorTUhgmhemt7E6No9FRdkof2ipw6OJl5p4=
-Subject: FAILED: patch "[PATCH] PCI/ASPM: Fix pci_clear_and_set_config_dword() usage" failed to apply to 5.10-stable tree
-To: lukas@wunner.de,bhelgaas@google.com,me@avm99963.com
+	b=rUQGuN7OMMldAUrODsEaQqcs/2cEmMV+nqPAO4aDFt+V8AAfl1UuTIUFRl+MjPRg+
+	 NzxDau4OiQDLE1DUYEViC9TlTR0f4S/E40xK5+RpHqKcxKQpvqks6zF4xiFm7sqGsG
+	 AtweADoKk5bCBmuwnI9w4LxeQjCU1KIr2uMuPYDU=
+Subject: FAILED: patch "[PATCH] power: supply: cw2015: Free allocated workqueue" failed to apply to 5.10-stable tree
+To: krzysztof.kozlowski@oss.qualcomm.com,andriy.shevchenko@linux.intel.com,sebastian.reichel@collabora.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:14:12 +0200
-Message-ID: <2026051212-heat-floral-7696@gregkh>
+Date: Tue, 12 May 2026 16:14:25 +0200
+Message-ID: <2026051225-only-mud-e4d7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F297E5223C6
+X-Rspamd-Queue-Id: 8D2C75223FB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -66,7 +66,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245706-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245707-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,avm99963.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,gregkh:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Action: no action
 
 
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x cc33985d26c92a5c908c0185239c59ec35b8637c
+git cherry-pick -x db254b0b232358ab1aeadebe8d147c99a3569559
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051212-heat-floral-7696@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051225-only-mud-e4d7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,90 +111,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cc33985d26c92a5c908c0185239c59ec35b8637c Mon Sep 17 00:00:00 2001
-From: Lukas Wunner <lukas@wunner.de>
-Date: Mon, 16 Feb 2026 08:46:13 +0100
-Subject: [PATCH] PCI/ASPM: Fix pci_clear_and_set_config_dword() usage
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From db254b0b232358ab1aeadebe8d147c99a3569559 Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Date: Thu, 5 Mar 2026 22:45:41 +0100
+Subject: [PATCH] power: supply: cw2015: Free allocated workqueue
 
-When aspm_calc_l12_info() programs the L1 PM Substates Control 1 register
-fields Common_Mode_Restore_Time, LTR_L1.2_THRESHOLD_Value and _Scale, it
-invokes pci_clear_and_set_config_dword() in an incorrect way:
+Use devm interface so allocated workqueue will be freed during device
+removal and error paths, thus fixing a memory leak.
 
-For the bits to clear it selects those corresponding to the field.  So far
-so good.  But for the bits to set it passes a full register value.
-pci_clear_and_set_config_dword() performs a boolean OR operation which
-sets all bits of that value, not just the ones that were just cleared.
+Change is not equivalent in the workqueue itself: use non-legacy API
+which does not set (__WQ_LEGACY | WQ_MEM_RECLAIM).  The workqueue is
+used to read updated data from the battery, thus there is no point to
+run it for memory reclaim.
 
-Thus, when setting the LTR_L1.2_THRESHOLD_Value and _Scale on the child of
-an ASPM link, aspm_calc_l12_info() also sets the Common_Mode_Restore_Time.
-That's a spec violation:  PCIe r7.0 sec 7.8.3.3 says this field is RsvdP
-for Upstream Ports.  On Adrià's Pixelbook Eve, Common_Mode_Restore_Time
-of the Intel 7265 "Stone Peak" wifi card is zero, yet aspm_calc_l12_info()
-does not preserve the zero bits but instead programs the value calculated
-for the Root Port into the wifi card.
+Cc: stable@vger.kernel.org
+Fixes: b4c7715c10c1 ("power: supply: add CellWise cw2015 fuel gauge driver")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260305-workqueue-devm-v2-2-66a38741c652@oss.qualcomm.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-Likewise, when setting the Common_Mode_Restore_Time on the Root Port,
-aspm_calc_l12_info() also changes the LTR_L1.2_THRESHOLD_Value and _Scale
-from the initial 163840 nsec to 237568 nsec (due to ORing those fields),
-only to reduce it afterwards to 106496 nsec.
-
-Amend all invocations of pci_clear_and_set_config_dword() to only set bits
-which are cleared.
-
-Finally, when setting the T_POWER_ON_Value and _Scale on the Root Port and
-the wifi card, aspm_calc_l12_info() fails to preserve bits declared RsvdP
-and instead overwrites them with zeroes.  Replace pci_write_config_dword()
-with pci_clear_and_set_config_dword() to avoid this.
-
-Fixes: aeda9adebab8 ("PCI/ASPM: Configure L1 substate settings")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220705#c22
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Adrià Vilanova Martínez <me@avm99963.com>
-Cc: stable@vger.kernel.org # v4.11+
-Link: https://patch.msgid.link/5c1752d7512eed0f4ea57b84b12d7ee08ca61fc5.1771226659.git.lukas@wunner.de
-
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 21f5d23e0b61..925373b98dff 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -706,22 +706,29 @@ static void aspm_calc_l12_info(struct pcie_link_state *link,
+diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
+index a05dcc4a48f2..286524d2318c 100644
+--- a/drivers/power/supply/cw2015_battery.c
++++ b/drivers/power/supply/cw2015_battery.c
+@@ -694,7 +694,8 @@ static int cw_bat_probe(struct i2c_client *client)
+ 			 "No monitored battery, some properties will be missing\n");
  	}
  
- 	/* Program T_POWER_ON times in both ports */
--	pci_write_config_dword(parent, parent->l1ss + PCI_L1SS_CTL2, ctl2);
--	pci_write_config_dword(child, child->l1ss + PCI_L1SS_CTL2, ctl2);
-+	pci_clear_and_set_config_dword(parent, parent->l1ss + PCI_L1SS_CTL2,
-+				       PCI_L1SS_CTL2_T_PWR_ON_VALUE |
-+				       PCI_L1SS_CTL2_T_PWR_ON_SCALE, ctl2);
-+	pci_clear_and_set_config_dword(child, child->l1ss + PCI_L1SS_CTL2,
-+				       PCI_L1SS_CTL2_T_PWR_ON_VALUE |
-+				       PCI_L1SS_CTL2_T_PWR_ON_SCALE, ctl2);
+-	cw_bat->battery_workqueue = create_singlethread_workqueue("rk_battery");
++	cw_bat->battery_workqueue = devm_alloc_ordered_workqueue(&client->dev,
++								 "rk_battery", 0);
+ 	if (!cw_bat->battery_workqueue)
+ 		return -ENOMEM;
  
- 	/* Program Common_Mode_Restore_Time in upstream device */
- 	pci_clear_and_set_config_dword(parent, parent->l1ss + PCI_L1SS_CTL1,
--				       PCI_L1SS_CTL1_CM_RESTORE_TIME, ctl1);
-+				       PCI_L1SS_CTL1_CM_RESTORE_TIME,
-+				       ctl1 & PCI_L1SS_CTL1_CM_RESTORE_TIME);
- 
- 	/* Program LTR_L1.2_THRESHOLD time in both ports */
- 	pci_clear_and_set_config_dword(parent, parent->l1ss + PCI_L1SS_CTL1,
- 				       PCI_L1SS_CTL1_LTR_L12_TH_VALUE |
- 				       PCI_L1SS_CTL1_LTR_L12_TH_SCALE,
--				       ctl1);
-+				       ctl1 & (PCI_L1SS_CTL1_LTR_L12_TH_VALUE |
-+					       PCI_L1SS_CTL1_LTR_L12_TH_SCALE));
- 	pci_clear_and_set_config_dword(child, child->l1ss + PCI_L1SS_CTL1,
- 				       PCI_L1SS_CTL1_LTR_L12_TH_VALUE |
- 				       PCI_L1SS_CTL1_LTR_L12_TH_SCALE,
--				       ctl1);
-+				       ctl1 & (PCI_L1SS_CTL1_LTR_L12_TH_VALUE |
-+					       PCI_L1SS_CTL1_LTR_L12_TH_SCALE));
- 
- 	if (pl1_2_enables || cl1_2_enables) {
- 		pci_clear_and_set_config_dword(parent,
 
 
