@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-246233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0M57IbRsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:52 +0200
+	id sLiPKpxpA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-245977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:55:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE0C526DFC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3805A5264B2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C591A31ADADD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 526AB313F4DD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3443EDE4A;
-	Tue, 12 May 2026 17:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E513E5A1D;
+	Tue, 12 May 2026 17:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zERf4h1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AvkkWvI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D32B3EDE42;
-	Tue, 12 May 2026 17:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34AA3E5A15;
+	Tue, 12 May 2026 17:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608701; cv=none; b=J1WFBLsABZVLtMSyQznWlz+LP6jknEUMA/I9j+eDrelJ87gk8pUUbatgbKxN7AsYIpI1mYwZDrm8psBf12ePlnnKc3onJ9eTRSge0U8ogl2b+E0reLUEpg6wNhGpZqCr/mJQQmB7Q9BL6QGOFy8f7FNR6dF9cbXAJTQJAfJ3EaQ=
+	t=1778608039; cv=none; b=Bq5ZrGLcEqvKkQUA6BPEtTEbqzTfnq8mfzmAY+SekJ7rOARRr5RWuEKEOLRcRbJJ6emLsPL1hvZlAQCYXQTDEbi/RjPB7DP0F8HjNSFTDey6uTqnBQcJghFXpMT64N6zKm1efMcawNjJZATxkNcWIBwgDatgklaz9Nj8wYJMn5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608701; c=relaxed/simple;
-	bh=2m0Rg4yJuxja4OyQ9o3oTOSEKns9IHRD1wl+Ynwil5A=;
+	s=arc-20240116; t=1778608039; c=relaxed/simple;
+	bh=bTeIaNs9NJ+3hAT8JkX7b/UvMPLDZI5jEBnZgLfdEaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyBXIW/r8HUzG7clmilNNB91X+KeznRirZJ7YONdETnU7wLCv55TmpTbgSlqBvQ4c+vuKfXFuLT2FGd+V+n5T2fFKXJNBw5JQQNeoKNFi9Cch+VYe48RD8CZxEQFzFlftUfJC18Vmmapw8e40cYCohgPXgF4ZkARHvpELLP0EgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zERf4h1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7909C2BCB0;
-	Tue, 12 May 2026 17:58:20 +0000 (UTC)
+	 MIME-Version; b=ef7lL9uZFlR3W4R3Wriivo5lq+MHu2xaA1H9xjIH6RXc8TUQCRchZ5C1O7ZpNOuIyiD9NlNQeRPzD8hjUSn+21CfSNAYXhs0Zq+LXZvYJ1yLhduYYnUyuPIgm16KiI0wdC2GVr4mSlSfpfmzsiyAY1nEU1UUrE9ZKBwqVfe+zMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AvkkWvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B8FC2BCB0;
+	Tue, 12 May 2026 17:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608701;
-	bh=2m0Rg4yJuxja4OyQ9o3oTOSEKns9IHRD1wl+Ynwil5A=;
+	s=korg; t=1778608039;
+	bh=bTeIaNs9NJ+3hAT8JkX7b/UvMPLDZI5jEBnZgLfdEaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zERf4h1PGBT+Vaeg8NV9Sde4TZ+sWlzDtTpNNT1kgBQWrsvc2dx1KcfM0TXAQWd0k
-	 gFWy+N26aldZpbelM0+BLOqOdopTfxrlPwxG9FDeWBeFojYmkeV8DTqYYZgDwZgc2B
-	 xDEasc+BIyZ5/R/YvPVuR3vdcpKown86uCqiDLyk=
+	b=0AvkkWvIPWqwmy6dJLFKbFvBj51+EOytyL2veEwHqawv4hKTNtofAP1GurrApAPUf
+	 xezH9//49esva9Em+w+o19uZzYYD+7oxifrq4lZAetYdSB0XDLkiC7ScOyshHXbuR5
+	 EoVXZyLbGMtH2UjxEBRQh69wWvS9mIBlCyJSNdmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farrah Chen <farrah.chen@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH 6.18 182/270] KVM: x86: Do IRR scan in __kvm_apic_update_irr even if PIR is empty
-Date: Tue, 12 May 2026 19:39:43 +0200
-Message-ID: <20260512173942.279964534@linuxfoundation.org>
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 132/206] openvswitch: vport: fix self-deadlock on release of tunnel ports
+Date: Tue, 12 May 2026 19:39:44 +0200
+Message-ID: <20260512173935.653004520@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,13 +65,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1CE0C526DFC
+X-Rspamd-Queue-Id: 3805A5264B2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246233-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245977-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,103 +88,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 33fd0ccd2590b470b65adcca288615ad3b5e3e06 upstream.
+commit aa69918bd418e700309fdd08509dba324fb24296 upstream.
 
-Fall back to apic_find_highest_vector() when PID.ON is set but PIR
-turns out to be empty, to correctly report the highest pending interrupt
-from the existing IRR.
+vports are used concurrently and protected by RCU, so netdev_put()
+must happen after the RCU grace period.  So, either in an RCU call or
+after the synchronize_net().  The rtnl_delete_link() must happen under
+RTNL and so can't be executed in RCU context.  Calling synchronize_net()
+while holding RTNL is not a good idea for performance and system
+stability under load in general, so calling netdev_put() in RCU call
+is the right solution here.
 
-In a nested VM stress test, the following WARNING fires in
-vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
-interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
-vmx_sync_pir_to_irr() again) returns -1:
+However,
+when the device is deleted, rtnl_unlock() will call netdev_run_todo()
+and block until all the references are gone.  In the current code this
+means that we never reach the call_rcu() and the vport is never freed
+and the reference is never released, causing a self-deadlock on device
+removal.
 
-  WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
-  Call Trace:
-   kvm_check_and_inject_events
-   vcpu_enter_guest.constprop.0
-   vcpu_run
-   kvm_arch_vcpu_ioctl_run
-   kvm_vcpu_ioctl
-   __x64_sys_ioctl
-   do_syscall_64
-   entry_SYSCALL_64_after_hwframe
+Fix that by moving the rcu_call() before the rtnl_unlock(), so the
+scheduled RCU callback will be executed when synchronize_net() is
+called from the rtnl_unlock()->netdev_run_todo() while the RTNL itself
+is already released.
 
-The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
-and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
-performs two individually-atomic operations that are not a single
-transaction:
-
-  1. pi_test_and_set_pir(vector)  -- sets the PIR bit
-  2. pi_test_and_set_on()         -- sets PID.ON
-
-The following interleaving triggers the bug:
-
-  Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
-  B1: set PIR[vector]
-                                  A1: pi_clear_on()
-                                  A2: pi_harvest_pir() -> sees B1 bit
-                                  A3: xchg() -> consumes bit, PIR=0
-                                      (1st sync returns correct max_irr)
-  B2: set PID.ON = 1
-
-                                  Target vCPU (2nd sync_pir_to_irr):
-                                  C1: pi_test_on() -> TRUE (from B2)
-                                  C2: pi_clear_on() -> ON=0
-                                  C3: pi_harvest_pir() -> PIR empty
-                                  C4: *max_irr = -1, early return
-                                      IRR NOT SCANNED
-
-The interrupt is not lost (it resides in the IRR from the first sync and
-is recovered on the next vcpu_enter_guest() iteration), but the incorrect
-max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
-
-Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Analyzed-by: Chenyi Qiang <chenyi.qiang@intel.com>
+Fixes: 6931d21f87bc ("openvswitch: defer tunnel netdev_put to RCU release")
 Cc: stable@vger.kernel.org
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/kvm/20260428070349.1633238-1-chenyi.qiang@intel.com/T/
-Link: https://patch.msgid.link/20260503201703.108231-2-pbonzini@redhat.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20260430233848.440994-2-i.maximets@ovn.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/openvswitch/vport-netdev.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -669,12 +669,14 @@ bool __kvm_apic_update_irr(unsigned long
- 	u32 irr_val, prev_irr_val;
- 	int max_updated_irr;
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -196,9 +196,13 @@ void ovs_netdev_tunnel_destroy(struct vp
+ 	 */
+ 	if (vport->dev->reg_state == NETREG_REGISTERED)
+ 		rtnl_delete_link(vport->dev, 0, NULL);
+-	rtnl_unlock();
  
-+	if (!pi_harvest_pir(pir, pir_vals)) {
-+		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
-+		return false;
-+	}
-+
- 	max_updated_irr = -1;
- 	*max_irr = -1;
- 
--	if (!pi_harvest_pir(pir, pir_vals))
--		return false;
--
- 	for (i = vec = 0; i <= 7; i++, vec += 32) {
- 		u32 *p_irr = (u32 *)(regs + APIC_IRR + i * 0x10);
++	/* We can't put the device reference yet, since it can still be in
++	 * use, but rtnl_unlock()->netdev_run_todo() will block until all
++	 * the references are released, so the RCU call must be before it.
++	 */
+ 	call_rcu(&vport->rcu, vport_netdev_free);
++	rtnl_unlock();
+ }
+ EXPORT_SYMBOL_GPL(ovs_netdev_tunnel_destroy);
  
 
 
