@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-246242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFkOGtRqA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:52 +0200
+	id EKaeMttwA2q55wEAu9opvQ
+	(envelope-from <stable+bounces-246522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F2E52681D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5964052792E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B14B304D41E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2050314869A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3E43EDE43;
-	Tue, 12 May 2026 17:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC206366831;
+	Tue, 12 May 2026 18:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLNkMbcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkDOABuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402FB3EDE41;
-	Tue, 12 May 2026 17:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4BF34E744;
+	Tue, 12 May 2026 18:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608724; cv=none; b=kgdAF4x4UZ6Vo61bcN1pZMyPTMYK8niw0pIGf/2gK9pyYvjNynz+RJ4IoJEXIP3MilCXxqTOz45WxFh/W9ROIn737ZEd1/nXwhXlqVj+UC18NceYb+mUbRu0X7zYnCzgdQLyw6EQERZylZ7X/+Hh1iarcwZ9i/Ul0W0RxdKNqfw=
+	t=1778609442; cv=none; b=j6Z1p4DYcEAD5W0CcliDbYyHNpXWZSJJYowNcKBJ/zhVBnsrdJ5Objj5gPHcO6Rkgq7A9KsmGiAqp/A7ZdXzYApoPaaZ2quTOuknLCF5iaKTbIMTGhXt2HgY6q5xbfijm55cieRWaVlE2W44BXqwWuGg3RwVdVbhrVHVDjvpwag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608724; c=relaxed/simple;
-	bh=oGACu1iEVvQfMELQ7E4crxdpQb7T+EoqSGVbsOiHUrk=;
+	s=arc-20240116; t=1778609442; c=relaxed/simple;
+	bh=1dLTiI/pS1vvrujpwvoJy8SOGCtMrVWSo5hx6fk0KSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TN07LekpmxTQqAvZtgOZg6JtJbI+eNxiMTN77orZnDB/1e3unFSIhw1UpAs+VZTg+8N/rC4RVLrSomnzruS65uOL7uAa/T441WSGrmbZp4cocSs+P1L49flgJFXKdJVmtGlR7kFlK5SIoHKj7OUTKca/1R5nc8BKldu1LVU2tEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLNkMbcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8C6C2BCB0;
-	Tue, 12 May 2026 17:58:43 +0000 (UTC)
+	 MIME-Version; b=ufctHb+d2zQCJGejJwnacz4k0HEeNjhoGykTYkwinEya3y1y+/sWY9CqBKLRVf7yUsUUKmmf0oQzatJJLBjFsobCuVyUyIVagVgbfduA3TjJRfUSsz1MR22L0Tot6S2A5F9MZAEtqYWNenRGKRWI68PUqPFsEHEvKJ1hsNCw6eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkDOABuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E6EC2BCB0;
+	Tue, 12 May 2026 18:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608724;
-	bh=oGACu1iEVvQfMELQ7E4crxdpQb7T+EoqSGVbsOiHUrk=;
+	s=korg; t=1778609442;
+	bh=1dLTiI/pS1vvrujpwvoJy8SOGCtMrVWSo5hx6fk0KSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLNkMbczLAe7BPw9dYgp33Y7ODL6NYeNYnxqS/hnE8nLXuOXVgUwbwcUvGRutapmx
-	 jVB/baPfOSWb4gUXXl/GV4xwlgByCz+xB18KRxwdxyCbVl1sBbfz6rI3mRWVYKNaEP
-	 egv1Ajm6DreUSYoyCgMKSs+IlKeByBxTX8ZwS8TY=
+	b=xkDOABuFHKRWONVn14CYxE1heKA8ywFknxC42Cml7w9C+byTxd6eLlUvEQtZsKsRd
+	 m3914Yws8Or6aVctTjhQkH+wVrOk6qb2shtp8U9nHsszjMWmFQ4fORnO+uoLjYw5Zm
+	 JlgtxLWZ7wnnC9ZmfgDDy2MOGk7YLTbGTdbgWUfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.18 190/270] powerpc/xive: fix kmemleak caused by incorrect chip_data lookup
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	David Gow <davidgow@google.com>,
+	David Howells <dhowells@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 196/307] lib/scatterlist: fix length calculations in extract_kvec_to_sg
 Date: Tue, 12 May 2026 19:39:51 +0200
-Message-ID: <20260512173942.449454308@linuxfoundation.org>
+Message-ID: <20260512173944.255010990@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,13 +67,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 36F2E52681D
+X-Rspamd-Queue-Id: 5964052792E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246242-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246522-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,122 +90,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,sashiko.dev:url,c--e.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 6771c54728c278bf1e4bfdab4fddbbb186e33498 upstream.
+commit 07b7d66e65d9cfe6b9c2c34aa22cfcaac37a5c45 upstream.
 
-The kmemleak reports the following memory leak:
+Patch series "Fix bugs in extract_iter_to_sg()", v3.
 
-Unreferenced object 0xc0000002a7fbc640 (size 64):
-  comm "kworker/8:1", pid 540, jiffies 4294937872
-  hex dump (first 32 bytes):
-    01 00 00 00 00 00 00 00 00 00 09 04 00 04 00 00  ................
-    00 00 a7 81 00 00 0a c0 00 00 08 04 00 04 00 00  ................
-  backtrace (crc 177d48f6):
-    __kmalloc_cache_noprof+0x520/0x730
-    xive_irq_alloc_data.constprop.0+0x40/0xe0
-    xive_irq_domain_alloc+0xd0/0x1b0
-    irq_domain_alloc_irqs_parent+0x44/0x6c
-    pseries_irq_domain_alloc+0x1cc/0x354
-    irq_domain_alloc_irqs_parent+0x44/0x6c
-    msi_domain_alloc+0xb0/0x220
-    irq_domain_alloc_irqs_locked+0x138/0x4d0
-    __irq_domain_alloc_irqs+0x8c/0xfc
-    __msi_domain_alloc_irqs+0x214/0x4d8
-    msi_domain_alloc_irqs_all_locked+0x70/0xf8
-    pci_msi_setup_msi_irqs+0x60/0x78
-    __pci_enable_msix_range+0x54c/0x98c
-    pci_alloc_irq_vectors_affinity+0x16c/0x1d4
-    nvme_pci_enable+0xac/0x9c0 [nvme]
-    nvme_probe+0x340/0x764 [nvme]
+Fix bugs in the kvec and user variants of extract_iter_to_sg.  This series
+is growing due to useful remarks made by sashiko.dev.
 
-This occurs when allocating MSI-X vectors for an NVMe device. During
-allocation the XIVE code creates a struct xive_irq_data and stores it
-in irq_data->chip_data.
+The main bugs are:
+- The length for an sglist entry when extracting from
+  a kvec can exceed the number of bytes in the page. This
+  is obviously not intended.
+- When extracting a user buffer the sglist is temporarily
+  used as a scratch buffer for extracted page pointers.
+  If the sglist already contains some elements this scratch
+  buffer could overlap with existing entries in the sglist.
 
-When the MSI-X irqdomain is later freed, xive_irq_free_data() is
-responsible for retrieving this structure and freeing it. However,
-after commit cc0cc23babc9 ("powerpc/xive: Untangle xive from child
-interrupt controller drivers"), xive_irq_free_data() retrieves the
-chip_data using irq_get_chip_data(), which looks up the data through
-the child domain.
+The series adds test cases to the kunit_iov_iter test that demonstrate all
+of these bugs.  Additionally, there is a memory leak fix for the test
+itself.
 
-This is incorrect because the XIVE-specific irq data is associated with
-the XIVE (parent) domain. As a result the lookup fails and the allocated
-struct xive_irq_data is never freed, leading to the kmemleak report
-shown above.
+The bugs were orignally introduced into kernel v6.3 where the function
+lived in fs/netfs/iterator.c.  It was later moved to lib/scatterlist.c in
+v6.5.  Thus the actual fix is only marked for backports to v6.5+.
 
-Fix this by retrieving the irq_data from the correct domain using
-irq_domain_get_irq_data() and then accessing the chip_data via
-irq_data_get_irq_chip_data().
 
-Cc: stable@vger.kernel.org
-Fixes: cc0cc23babc9 ("powerpc/xive: Untangle xive from child interrupt controller drivers")
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260311134336.326996-1-nilay@linux.ibm.com
+This patch (of 5):
+
+When extracting from a kvec to a scatterlist, do not cross page
+boundaries.  The required length was already calculated but not used as
+intended.
+
+Adjust the copied length if the loop runs out of sglist entries without
+extracting everything.
+
+While there, return immediately from extract_iter_to_sg if there are no
+sglist entries at all.
+
+A subsequent commit will add kunit test cases that demonstrate that the
+patch is necessary.
+
+Link: https://lkml.kernel.org/r/20260326214905.818170-1-lk@c--e.de
+Link: https://lkml.kernel.org/r/20260326214905.818170-2-lk@c--e.de
+Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: David Gow <davidgow@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>	[v6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/sysdev/xive/common.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ lib/scatterlist.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -1038,13 +1038,19 @@ static struct xive_irq_data *xive_irq_al
- 	return xd;
- }
+--- a/lib/scatterlist.c
++++ b/lib/scatterlist.c
+@@ -1247,7 +1247,7 @@ static ssize_t extract_kvec_to_sg(struct
+ 			else
+ 				page = virt_to_page((void *)kaddr);
  
--static void xive_irq_free_data(unsigned int virq)
-+static void xive_irq_free_data(struct irq_domain *domain, unsigned int virq)
+-			sg_set_page(sg, page, len, off);
++			sg_set_page(sg, page, seg, off);
+ 			sgtable->nents++;
+ 			sg++;
+ 			sg_max--;
+@@ -1256,6 +1256,7 @@ static ssize_t extract_kvec_to_sg(struct
+ 			kaddr += PAGE_SIZE;
+ 			off = 0;
+ 		} while (len > 0 && sg_max > 0);
++		ret -= len;
+ 
+ 		if (maxsize <= 0 || sg_max == 0)
+ 			break;
+@@ -1409,7 +1410,7 @@ ssize_t extract_iter_to_sg(struct iov_it
+ 			   struct sg_table *sgtable, unsigned int sg_max,
+ 			   iov_iter_extraction_t extraction_flags)
  {
--	struct xive_irq_data *xd = irq_get_chip_data(virq);
-+	struct xive_irq_data *xd;
-+	struct irq_data *data = irq_domain_get_irq_data(domain, virq);
-+
-+	if (!data)
-+		return;
+-	if (maxsize == 0)
++	if (maxsize == 0 || sg_max == 0)
+ 		return 0;
  
-+	xd = irq_data_get_irq_chip_data(data);
- 	if (!xd)
- 		return;
--	irq_set_chip_data(virq, NULL);
-+
-+	irq_domain_reset_irq_data(data);
- 	xive_cleanup_irq_data(xd);
- 	kfree(xd);
- }
-@@ -1304,7 +1310,7 @@ static int xive_irq_domain_map(struct ir
- 
- static void xive_irq_domain_unmap(struct irq_domain *d, unsigned int virq)
- {
--	xive_irq_free_data(virq);
-+	xive_irq_free_data(d, virq);
- }
- 
- static int xive_irq_domain_xlate(struct irq_domain *h, struct device_node *ct,
-@@ -1442,7 +1448,7 @@ static void xive_irq_domain_free(struct
- 	pr_debug("%s %d #%d\n", __func__, virq, nr_irqs);
- 
- 	for (i = 0; i < nr_irqs; i++)
--		xive_irq_free_data(virq + i);
-+		xive_irq_free_data(domain, virq + i);
- }
- #endif
- 
+ 	switch (iov_iter_type(iter)) {
 
 
 
