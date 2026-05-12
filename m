@@ -1,180 +1,201 @@
-Return-Path: <stable+bounces-245424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DbeF4zhAmpEyQEAu9opvQ
-	(envelope-from <stable+bounces-245424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:15:08 +0200
+	id uGRAIOHjAmqqyQEAu9opvQ
+	(envelope-from <stable+bounces-245425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:25:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCDB51C8AA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:15:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2077B51CA61
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2C553301B059
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:13:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7AABE3021BFD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A8F48BD33;
-	Tue, 12 May 2026 08:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903DE4921AD;
+	Tue, 12 May 2026 08:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wE2Mu2vK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JvEirj65";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JIwDYP5u";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="iM+tMM3i"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i5sB0YZR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC748B36E
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 08:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB5F492537;
+	Tue, 12 May 2026 08:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778573596; cv=none; b=LUaQpP1/yAboZSl2FG/NKAtc2JjiwZw+YqvmX5rbn8F4mLOK2vMvQ7UAETwJs3+v7c2IF0YzbR0Tjc3JrLniurxTHtFeVsod22bep9AlZr2APn1AXYai0vzKh6oPv6AknavXUdKFD8+kEaGo9gJC5fHTyWG9oOUAjqTXawf0u0E=
+	t=1778574280; cv=none; b=K0JhtjBT0cmu8tHMc6+x1LPklkRQzJfORaEv1YUtRgsYQwtLiuJ84A4o/5xJh8QHMq3Ee5Ez3vwt8EDIp/BkBMtfChQC+1F12hhRqxohebtfKpb1jF2SiU7CWMK/KPmZrSeIj+VNVwS/sNixeMb+9iznFZnpGJHvpoRCxLAFz8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778573596; c=relaxed/simple;
-	bh=PK6aSXAilBcWWbHOL04QvQetI3k2arLzsbq9g/CJ8jU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i0z/TnqSx4ia60dEo0nhQadcXLxyfZQ0b8VBFP/br6wEO2Lazk6CR2bIGX8SCuNg9rkMuImeygDba8sSm6mkYZeOKbCc1Nc++iMqDOEsrKLlCOkxpirzFgTkO/HRwIND+O+bWM3BeihDFLhREORZTwu26Bno5t8kkg2QNmlQx8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wE2Mu2vK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JvEirj65; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JIwDYP5u; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=iM+tMM3i; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D10C36BDA0;
-	Tue, 12 May 2026 08:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778573593; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
-	b=wE2Mu2vK/2slsk95WAKaC/sbLqm5A4+uOCCooGP2MNwjBm5CDENBUprQyGk4BFYzXF3AFD
-	mRDXXS7/JaXcT0VRAa5EIx7/z4GiZE+uI6znL/5UQM6pTJhfXFDPuxejiM1Po6Yp8bOYOL
-	hSw3WCo2+qB0Dc+u8Y8IqKCsKnEbh9g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778573593;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
-	b=JvEirj659ZW6N8eO916ikywIDPN5lwaNWRRIiuTBE06I0WZB28s+7wO5Y9UIgvutURh4UN
-	kbEq+/g+HMYHYUCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778573591; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
-	b=JIwDYP5u85aYyhViveF85W/3YncoOSFi43zJm2q6sBzRac8jVxJmXnyTMv7dQiqwWgJt2w
-	hu9HT1uWBg4tsXfLm+0Pu/2xYRfqzHoHh7FeD87tMswFaoipZeK0X7L+sSK4OkQ/hytUu0
-	ZtMmB94fMmlK8jOorDLglByPgtde2LA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778573591;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
-	b=iM+tMM3iqe7ss6Eq3Sv+vt3nLibka9ukNa2bMvF7lz9XqRKBxcP6nSS0RanLzySY4Mk9Dk
-	TMmHptY2ihXCAfDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DCB1593A9;
-	Tue, 12 May 2026 08:13:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VsB+ABfhAmr5awAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 12 May 2026 08:13:11 +0000
-Message-ID: <dc486fd5-daac-4a9f-b477-52a8f02206c4@suse.de>
-Date: Tue, 12 May 2026 10:13:05 +0200
+	s=arc-20240116; t=1778574280; c=relaxed/simple;
+	bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZtaVf48dbcrOx0FXYiiO1u3plJamytQraID71tK8wkb+/j7u016xkR32HVsxgqAvm0LN0lp0BFWK1UrgM6992SCZVpElfIQEiQwZpUc4COJQQAe8AZbfQy38iPbAT8AbHh7r0WONi1Nji3VbHufc78sjSjRd4u7EGtuDY6GDd2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i5sB0YZR; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778574276; x=1810110276;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
+  b=i5sB0YZRRmKCT5E/7Ap1gtw9ELILvqMUKtzyNqY2gEdRKeA4WRqEu121
+   MVm4zGcmD0m+ByO5bXEuZYKStpskq0StdDBb6jE4zUF/PwlfRoA6NZ1cB
+   Noq+lqLRVlCTR24dBXfPCDd95dtGpzr/JuZulSLPDDkCTc+n0YjOCBnCZ
+   3ChJztPWnYkmu9Y/nttlE0UMgMVNqOTVDNzFUWpGFopOuvwWz6tFQH5PQ
+   XTPKmOmInfYyJx2dONPBAnVv84yCvg2gB/3hlsALKSdoYCX1VhBFl1EzS
+   oS56EytKJwRGgPHypjyzjgjlKWhoHr0dbQa6rcAL8RmQs2YBp81GBTG5N
+   g==;
+X-CSE-ConnectionGUID: F5d6FOXCRRW/FfXVU83T6A==
+X-CSE-MsgGUID: 15VSTndDTn+B6FGoBN9NRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79194968"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
+   d="scan'208";a="79194968"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 01:24:36 -0700
+X-CSE-ConnectionGUID: NUSoQk53Q4yTK2hir+DQQA==
+X-CSE-MsgGUID: XR9Vjtu1Q86+2PsBGE08SA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
+   d="scan'208";a="237945505"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO fedora) ([10.245.245.172])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 01:24:29 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sashiko-bot <sashiko-bot@kernel.org>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Tejun Heo <tj@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Natalie Vock <natalie.vock@gmx.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	cgroups@vger.kernel.org,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/5] drm/amdgpu: Fix init ordering in amdgpu_vram_mgr_init()
+Date: Tue, 12 May 2026 10:24:02 +0200
+Message-ID: <20260512082406.44470-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260512082406.44470-1-thomas.hellstrom@linux.intel.com>
+References: <20260512082406.44470-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 nf] netfilter: nft_inner: Fix IPv6 inner_thoff desync
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
- netfilter-devel@vger.kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, Xuewei Feng
- <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>,
- Ke Xu <xuke@tsinghua.edu.cn>, stable@vger.kernel.org
-References: <20260511173048.7256-1-zhaoyz24@mails.tsinghua.edu.cn>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260511173048.7256-1-zhaoyz24@mails.tsinghua.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 5DCDB51C8AA
+X-Rspamd-Queue-Id: 2077B51CA61
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,mails.tsinghua.edu.cn,126.com,tsinghua.edu.cn,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-245425-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,gmx.de,lankhorst.se,amd.com,lists.freedesktop.org,vger.kernel.org,cmpxchg.org,suse.com,intel.com,suse.de,ffwll.ch,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[25];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245424-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email,z.ai:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,lists.freedesktop.org:email,sashiko.dev:url,amd.com:email,gmx.de:email,linux.intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lankhorst.se:email]
 X-Rspamd-Action: no action
 
-On 5/11/26 7:30 PM, Yizhou Zhao wrote:
-> In nft_inner_parse_l2l3(), when processing inner IPv6 packets,
-> ipv6_find_hdr() correctly computes the transport header offset
-> traversing all extension headers, but the result is immediately
-> overwritten with nhoff + sizeof(_ip6h) (40 bytes), which only
-> accounts for the IPv6 base header. This creates a desync between
-> inner_thoff (wrong — points to extension header start) and l4proto
-> (correct — e.g., IPPROTO_TCP), enabling transport header forgery
-> and potential firewall bypass. This issue affects stable versions
-> from Linux 6.2.
-> 
-> For comparison, the normal (non-inner) IPv6 path correctly
-> preserves ipv6_find_hdr()'s result. Removing the incorrect overwrite
-> ensures that ipv6_find_hdr()'s calculated transport header offset is
-> preserved, thereby fixing the desynchronization.
-> 
-> Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> Reported-by: Xuewei Feng <fengxw06@126.com>
-> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-> Assisted-by: GLM:5.1 Z.ai
-> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+drmm_cgroup_register_region() is called before INIT_LIST_HEAD() and
+gpu_buddy_init() in amdgpu_vram_mgr_init(). If it fails, the function
+returns early and bypasses those initializations.
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Since adev->mman.initialized is set to true before amdgpu_vram_mgr_init()
+is called, a failure triggers amdgpu_ttm_fini(), which calls
+amdgpu_vram_mgr_fini(), which then:
+
+ - Calls list_for_each_entry_safe() on reservations_pending and
+   reserved_pages, whose list_head::next pointers are zero-initialized
+   (NULL). The loop does not recognize them as empty and dereferences NULL.
+
+ - Calls gpu_buddy_fini(), which iterates free_trees[] unconditionally
+   via for_each_free_tree(). Since mm->free_trees is NULL
+   (never allocated), this dereferences NULL.
+
+Both result in a kernel panic on the module load error path.
+
+Fix by moving drmm_cgroup_register_region() to after the list and buddy
+allocator are fully initialized, so the teardown path is safe to run.
+
+Reported-by: Sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260428073116.15687-1-thomas.hellstrom@linux.intel.com?part=4
+Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
+Cc: Friedrich Vock <friedrich.vock@gmx.de>
+Cc: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.14+
+Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 2a241a5b12c4..ac3f71d77140 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -918,9 +918,6 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
+ 	struct ttm_resource_manager *man = &mgr->manager;
+ 	int err;
+ 
+-	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
+-	if (IS_ERR(man->cg))
+-		return PTR_ERR(man->cg);
+ 	ttm_resource_manager_init(man, &adev->mman.bdev,
+ 				  adev->gmc.real_vram_size);
+ 
+@@ -935,6 +932,10 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
+ 	if (err)
+ 		return err;
+ 
++	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
++	if (IS_ERR(man->cg))
++		return PTR_ERR(man->cg);
++
+ 	ttm_set_driver_manager(&adev->mman.bdev, TTM_PL_VRAM, &mgr->manager);
+ 	ttm_resource_manager_set_used(man, true);
+ 	return 0;
+-- 
+2.54.0
+
 
