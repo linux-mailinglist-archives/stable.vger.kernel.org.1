@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-246159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JGLCkdsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:03 +0200
+	id eIZvBbNnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F4F526C8C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EC85261C6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD4113223612
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CE6530AD730
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703AC3E0724;
-	Tue, 12 May 2026 17:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9FD3DC86D;
+	Tue, 12 May 2026 17:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMVPh/8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtDdq3TC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3391D3DD87C;
-	Tue, 12 May 2026 17:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1200D3B1EE2;
+	Tue, 12 May 2026 17:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608510; cv=none; b=mNlf1myE0bIMKbvjTuRkmXmvXndfOOxegiTzzdw56PrRGKvrTsJRpSruyAM7JgtIyTLgJewqzgg8VhN6lZjLZFl5AnRUhKjELuGaoE0AQ6sIoYUOWGZ/ZiyZ4Q0IhZ9nQRQsQEivxUinboyL8XEvjT0myxt3f6PRGB5JM6VmkeI=
+	t=1778607844; cv=none; b=Ctj3GQ8fWeYcpdinV8+dOdMO6fygKN57MT2ygKR6Mcgsvl5IYBkQbboRpj54ErP2m4xVRgLl6S/5APAR7mZ8NH0wZI+MiXc06CPn7JZKbBpkRoJKjiKqoUYmA2SXZelsI4vMyyVQimTzzWWa7d8+7l6oXDgZVithkIPvYaEnpCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608510; c=relaxed/simple;
-	bh=icm01Kk5K+RdajgPj3m0DDVCHJwr+ja3p1+JtorTE3o=;
+	s=arc-20240116; t=1778607844; c=relaxed/simple;
+	bh=F//neRRDO/IcCfBm1QtUW313jVdel2tcnlPLfk2bTPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHcG56LFZYSDDqbmSBZMidIHbFbhWjbFExtK0eMiqj9BtoMwIj1ho+S6DvNXbzCd7PXgW0U70Q59Ojco8MzPXVOV4rqCsFoCffjSplpOCM0u0q8hwx8hx5dcFWSMrnr9oh8fzG3fEG2KTVpuATSeeVF2qI7DdjhGZjGHi6KnWjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMVPh/8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFADBC2BCB0;
-	Tue, 12 May 2026 17:55:09 +0000 (UTC)
+	 MIME-Version; b=KWrLH/iBzldnQPisDfrQk5UL8Y+8DZ6CG5NvsU4AwAy4ihT1CESyHV6BcH096FHfOYtGI4Bxo/kCx2exphrnwjWo4C8SvOb6CxEOa7u0Sc3SQVTTHc/3fvzIkGk8Oc1CTh6GMjG2HgJmwwNmEW3yG7GHS5hE/OHbwIbrGSyGQCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtDdq3TC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCB9C2BCB0;
+	Tue, 12 May 2026 17:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608510;
-	bh=icm01Kk5K+RdajgPj3m0DDVCHJwr+ja3p1+JtorTE3o=;
+	s=korg; t=1778607844;
+	bh=F//neRRDO/IcCfBm1QtUW313jVdel2tcnlPLfk2bTPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMVPh/8rco13DlaYLCspTQqkIkX2Lml6ySI5ifBpniP9OZfKvbFWTbKdDnU1fW4Tb
-	 K6COWxIWTE9MoccXwSj85h+w9U63OYPp+GabMZr4YHbFmy9PPVzqnl0smezZJfQOFv
-	 u0uxdCfZ+GxIhBeH0d9taK7mpVDCY9Oj8II2xjd0=
+	b=GtDdq3TCyat2q9sELUBGWGLl+Ts6ynZV4rrHyTBnbHPHrG6o5Xh2dYE/qz+NLSKY/
+	 HI1Y7iyJzB03ke1XIYmZiLxJfOtd7Oo0DiK6EeRbilw7lO55LKIx7Hjkl4jUHuMjF2
+	 FwE0QZ8LoNy7YPBp+7gdoFhkGrNEM04BZlv8/qnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.18 106/270] parisc: Fix IRQ leak in LASI driver
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruide Cao <caoruide123@gmail.com>,
+	Yilin Zhu <zylzyl2333@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.12 055/206] ipv6: xfrm6: release dst on error in xfrm6_rcv_encap()
 Date: Tue, 12 May 2026 19:38:27 +0200
-Message-ID: <20260512173940.689863688@linuxfoundation.org>
+Message-ID: <20260512173934.004637834@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +71,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 98F4F526C8C
+X-Rspamd-Queue-Id: 85EC85261C6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kylinos.cn,gmx.de];
-	TAGGED_FROM(0.00)[bounces-246159-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245900-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,secunet.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,kylinos.cn:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongling Zeng <zenghongling@kylinos.cn>
+From: Yilin Zhu <zylzyl2333@gmail.com>
 
-commit 37b0dc5e279f35036fb638d1e187197b6c05a76d upstream.
+commit bc0fcb9823cd0894934cf968b525c575833d7078 upstream.
 
-When request_irq() succeeds but gsc_common_setup() fails later,
-the IRQ is never released. Fix this by adding proper error handling
-with goto labels to ensure resources are released in LIFO order.
+xfrm6_rcv_encap() performs an IPv6 route lookup when the skb does not
+already have a dst attached. ip6_route_input_lookup() returns a
+referenced dst entry even when the lookup resolves to an error route.
 
-Detected by Smatch:
-  drivers/parisc/lasi.c:216 lasi_init_chip() warn: 'lasi->gsc_irq.irq'
-from request_irq() not released on lines: 207.
+If dst->error is set, xfrm6_rcv_encap() drops the skb without attaching
+the dst to the skb and without releasing the reference returned by the
+lookup. Repeated packets hitting this path therefore leak dst entries.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202604180957.4QdAIxP6-lkp@intel.com/
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Release the dst before jumping to the drop path.
+
+Fixes: 0146dca70b87 ("xfrm: add support for UDPv6 encapsulation of ESP")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ruide Cao <caoruide123@gmail.com>
+Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/lasi.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/ipv6/xfrm6_protocol.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/parisc/lasi.c
-+++ b/drivers/parisc/lasi.c
-@@ -193,8 +193,7 @@ static int __init lasi_init_chip(struct
+--- a/net/ipv6/xfrm6_protocol.c
++++ b/net/ipv6/xfrm6_protocol.c
+@@ -88,8 +88,10 @@ int xfrm6_rcv_encap(struct sk_buff *skb,
  
- 	ret = request_irq(lasi->gsc_irq.irq, gsc_asic_intr, 0, "lasi", lasi);
- 	if (ret < 0) {
--		kfree(lasi);
--		return ret;
-+		goto err_free;
+ 		dst = ip6_route_input_lookup(dev_net(skb->dev), skb->dev, &fl6,
+ 					     skb, flags);
+-		if (dst->error)
++		if (dst->error) {
++			dst_release(dst);
+ 			goto drop;
++		}
+ 		skb_dst_set(skb, dst);
  	}
  
- 	/* enable IRQ's for devices below LASI */
-@@ -203,8 +202,7 @@ static int __init lasi_init_chip(struct
- 	/* Done init'ing, register this driver */
- 	ret = gsc_common_setup(dev, lasi);
- 	if (ret) {
--		kfree(lasi);
--		return ret;
-+		goto err_irq;
- 	}    
- 
- 	gsc_fixup_irqs(dev, lasi, lasi_choose_irq);
-@@ -214,6 +212,12 @@ static int __init lasi_init_chip(struct
- 		SYS_OFF_PRIO_DEFAULT, lasi_power_off, lasi);
- 
- 	return ret;
-+
-+err_irq:
-+	free_irq(lasi->gsc_irq.irq, lasi);
-+err_free:
-+	kfree(lasi);
-+	return ret;
- }
- 
- static struct parisc_device_id lasi_tbl[] __initdata = {
 
 
 
