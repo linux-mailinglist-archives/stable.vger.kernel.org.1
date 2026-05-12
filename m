@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-246286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LFTJf9sA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:10:07 +0200
+	id WNlpBVFqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D92526EF6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C3E526656
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8256B3100BCC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2630309439F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCA433ADBA;
-	Tue, 12 May 2026 18:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633D53EDE51;
+	Tue, 12 May 2026 17:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nv/7M5TT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5CZ7vGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F733EDE47;
-	Tue, 12 May 2026 18:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D1B3EDE4A;
+	Tue, 12 May 2026 17:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608835; cv=none; b=BFM1sx//lXcfyLMKICykqda8//ZQv0vGGlvaVl9f3TTHbc0f/mAjpBQ6HaQQWTO7UvBVLpPEUM+ZyXjlFn5Oeh2kWqeWwiB+cQe+7NkdNBpt6r37/nqkJzpW8PKYUEV3FZFJa6hCGeOYEe4i3OVqwV27dwtaykPoN4XBaNcPuW0=
+	t=1778608173; cv=none; b=HAknEupDKHq8soWUEUEgxf+HbQPj5ozCGxEbMPLhaefSSsDJpTdDIdqCpQmKTlCg3Xum5WQ3S9kVpje3Rs6lFEHfCtXyHMiomBp2ZTWLSVQumQEG0gXDzGS0RMstLGmf4ctkHGze6i5vDKBr5uzixmpTUtipfNWW1Vt1fzdWoP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608835; c=relaxed/simple;
-	bh=9tAzfOLio3hu6h6zULQ0AUnLTTQiypWXOPZ8slMTJfc=;
+	s=arc-20240116; t=1778608173; c=relaxed/simple;
+	bh=evpMwqvujeKt/Dn9vxFIwn3x1fumzAcNKcuIjvgo7dE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjqwXX2ReONK82hKtCsWmXjZA/ZnfBkZTUtoVo6ueS/zkQG8K8ka/+266P6VKM3EIEzHWcs0Go2xnS2cKzAgl4E6RLokUsIdudDUUa+13Xc+aMrwYQRC4GRkJX147zuNDPaHFonU4V+ZL8VLUAHzZq/4WIExdeSVJA2nRGd7cKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nv/7M5TT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C6CC2BCB0;
-	Tue, 12 May 2026 18:00:34 +0000 (UTC)
+	 MIME-Version; b=UfKlU36ShvQeh/NQNAX/Wt9Mc4KoO5DVit35h9icL2V5SPdjuuOKp+z9aQWkXqGoWv5ypHwNNo8GSuc0bzEvIY4vyteMBHcGJmdqrLmQSSlPAbbZ1TWuzsR1dZ44CmX/EZUY4IK43UGD/XghXwsuaFLdcU1APYaMqAHMws/wlfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5CZ7vGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0419C2BCB0;
+	Tue, 12 May 2026 17:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608835;
-	bh=9tAzfOLio3hu6h6zULQ0AUnLTTQiypWXOPZ8slMTJfc=;
+	s=korg; t=1778608173;
+	bh=evpMwqvujeKt/Dn9vxFIwn3x1fumzAcNKcuIjvgo7dE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nv/7M5TTWRAYgIfToyca+DWHLFkB62ODUa84ToZujToPCeIn9V2dT423/TDS9lZIT
-	 LLeTL9YCS779wRVZc+AFruK6KvtkvIEGA3WqhJl78xEGwHvvrBA43S4Wom2cIImCWd
-	 z3b6ofjDktn6nIyEbbh0Rv+84EHS/+CjNUiprDx4=
+	b=F5CZ7vGYKqojJutCfmoaMRT12GNlquADiX3tlimEPQYdtj9tv83+iTsxtxjK5SOu3
+	 xzq7Li+lCGnbwa/XtViwUFfnVx5/jDRhXW1vCk2cEFYPwXSGGV37uKTf1OOLHwG4HC
+	 XGBv2uPom2tF4uNs7RRPuxlWnb7kEgyEUpq5lQ7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.18 233/270] KVM: arm64: Wake-up from WFI when iqrchip is in userspace
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 182/206] dma-mapping: add __dma_from_device_group_begin()/end()
 Date: Tue, 12 May 2026 19:40:34 +0200
-Message-ID: <20260512173943.349396035@linuxfoundation.org>
+Message-ID: <20260512173936.716162722@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 18D92526EF6
+X-Rspamd-Queue-Id: 96C3E526656
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -73,67 +76,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246286-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246028-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: "Michael S. Tsirkin" <mst@redhat.com>
 
-commit 4ce98bf0865c349e7026ad9c14f48da264920953 upstream.
+[ Upstream commit ca085faabb42c31ee204235facc5a430cb9e78a9 ]
 
-It appears that there is nothing in the wake-up path that
-evaluates whether the in-kernel interrupts are pending unless
-we have a vgic.
+When a structure contains a buffer that DMA writes to alongside fields
+that the CPU writes to, cache line sharing between the DMA buffer and
+CPU-written fields can cause data corruption on non-cache-coherent
+platforms.
 
-This means that the userspace irqchip support has been broken for
-about four years, and nobody noticed. It was also broken before
-as we wouldn't wake-up on a PMU interrupt, but hey, who cares...
+Add __dma_from_device_group_begin()/end() annotations to ensure proper
+alignment to prevent this:
 
-It is probably time to remove the feature altogether, because it
-was a terrible idea 10 years ago, and it still is.
+struct my_device {
+	spinlock_t lock1;
+	__dma_from_device_group_begin();
+	char dma_buffer1[16];
+	char dma_buffer2[16];
+	__dma_from_device_group_end();
+	spinlock_t lock2;
+};
 
-Fixes: b57de4ffd7c6d ("KVM: arm64: Simplify kvm_cpu_has_pending_timer()")
-Link: https://patch.msgid.link/20260423163607.486345-1-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
+Message-ID: <19163086d5e4704c316f18f6da06bc1c72968904.1767601130.git.mst@redhat.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Petr Tesarik <ptesarik@suse.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: 3023c050af36 ("hwmon: (powerz) Avoid cacheline sharing for DMA buffer")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/arm.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/dma-mapping.h |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -755,6 +755,10 @@ int kvm_arch_vcpu_runnable(struct kvm_vc
- {
- 	bool irq_lines = *vcpu_hcr(v) & (HCR_VI | HCR_VF | HCR_VSE);
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -7,6 +7,7 @@
+ #include <linux/dma-direction.h>
+ #include <linux/scatterlist.h>
+ #include <linux/bug.h>
++#include <linux/cache.h>
  
-+	irq_lines |= (!irqchip_in_kernel(v->kvm) &&
-+		      (kvm_timer_should_notify_user(v) ||
-+		       kvm_pmu_should_notify_user(v)));
-+
- 	return ((irq_lines || kvm_vgic_vcpu_pending_irq(v))
- 		&& !kvm_arm_vcpu_stopped(v) && !v->arch.pause);
+ /**
+  * List of possible attributes associated with a DMA mapping. The semantics
+@@ -585,6 +586,18 @@ static inline int dma_get_cache_alignmen
  }
+ #endif
+ 
++#ifdef ARCH_HAS_DMA_MINALIGN
++#define ____dma_from_device_aligned __aligned(ARCH_DMA_MINALIGN)
++#else
++#define ____dma_from_device_aligned
++#endif
++/* Mark start of DMA buffer */
++#define __dma_from_device_group_begin(GROUP)			\
++	__cacheline_group_begin(GROUP) ____dma_from_device_aligned
++/* Mark end of DMA buffer */
++#define __dma_from_device_group_end(GROUP)			\
++	__cacheline_group_end(GROUP) ____dma_from_device_aligned
++
+ static inline void *dmam_alloc_coherent(struct device *dev, size_t size,
+ 		dma_addr_t *dma_handle, gfp_t gfp)
+ {
 
 
 
