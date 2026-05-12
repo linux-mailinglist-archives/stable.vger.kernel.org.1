@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-245561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MODSHEEmA2p21AEAu9opvQ
-	(envelope-from <stable+bounces-245561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:08:17 +0200
+	id eCZTNtUnA2qw1AEAu9opvQ
+	(envelope-from <stable+bounces-245560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:15:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBED3520C99
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:08:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 318D6520E9C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69CA730BD399
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:54:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE1733116D09
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40873A71AD;
-	Tue, 12 May 2026 12:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EB43A719D;
+	Tue, 12 May 2026 12:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0xwkaLt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8DaJdLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2323998AB
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E50C397320
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778590230; cv=none; b=Nl6rztTUD9AdjL5TbtHd4BfkcxojphcDMmjoVAr++nNpL/LLgdMo2LOPpMVM2bSxwApXQWCOhvhlasVLExTirMou0eIMV1LCu8Qy5ruJTfYeRVZg4F6G61b75e0UFy4msE2Q2BphKe45Ay7GJOoAqlMZrkozyWujyO2j17I01Bk=
+	t=1778590228; cv=none; b=JeHbGHNbw8qt2SpXpW2qzeofOUpr2OijV2z27PZYF1hIUj1ehI7OXVLaQEfzLmBpG5UdBm20fMmf6Hns+9Hps1ycazRdKN9rxwFgPVAXugbmo9ALTRYQ4+vx9yr06Nh7IgtE1FEMp+QidSmc8wDsfYmew52anxIGnDwI8ZboQeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778590230; c=relaxed/simple;
+	s=arc-20240116; t=1778590228; c=relaxed/simple;
 	bh=5M8rYw5+mVsL/LpXpZyd/fSErYIKkfaZUpsrhABouaw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nt/p2t9aG/c26NeEGRIcG6nyhwVpzMxa4381w4Qw1PJ9hbn8GTMYKsD6qUFhmcvhQa073meU3bA2K1co6idrJpgwRSYXpGUqN1ah2omub7UY51znI1dSguKzIgVVdS59+Q8qoJVnmva4IkwybnhgcQMB6y3L6UpX5dM0qv0nDfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0xwkaLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70D1C2BCF7;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=od5t7Rnuw4Z6Jx5B3ujlZ8IWOxaR2NmH6CXh8CTlnKjyflQaWwb8x9J3vuFzBMElXsE4HADdEwoG1CF9iSeLuKPFaZbpeweyldWuIO27XWe71myQZpVFjPIFkZ/9G50HZf/wpnii1y/15cwD1vUn9YkiZ5+8wpMh1hNDygTru2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8DaJdLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24D3C2BCB0;
 	Tue, 12 May 2026 12:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778590229;
+	s=korg; t=1778590228;
 	bh=5M8rYw5+mVsL/LpXpZyd/fSErYIKkfaZUpsrhABouaw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=U0xwkaLtIveAEtBMR8po7rfW0Uc7FydmKh00V7nSxU+Ud/KP7s51TcK2jTrZoowF9
-	 IuZAnn2VGzuAhEk1VAg+JCmilO5/50+33rrF8MeR6tP6H55Pt4AdZGz0AHRxGO3ZNm
-	 DwPzd/Zij1xV9/A8ULfhpsjyJPKsnB+LKKYj0XL8=
+	b=e8DaJdLx9FfuVCkGlE17iLfHbIwDLdmvuh/18xQ6A7oE1+SJj3ed9+PeUJdjXez6i
+	 AlwVsxmFK1z/RRWGZPYEOCrjMLCTX4GYYZ7IysdyVWsFmD9VmVG/Ho+me9VVzc1YSB
+	 kvvh/3QOz9RX5uASWnBA9wEZzP3to4tUbLA2HRis=
 Subject: FAILED: patch "[PATCH] spi: s3c64xx: fix NULL-deref on driver unbind" failed to apply to 6.1-stable tree
 To: johan@kernel.org,adithya.kv@samsung.com,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
@@ -54,19 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CBED3520C99
+X-Rspamd-Queue-Id: 318D6520E9C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245561-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245560-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -80,10 +80,10 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,msgid.link:url,gregkh:email,sashiko.dev:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
 
