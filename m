@@ -1,179 +1,292 @@
-Return-Path: <stable+bounces-245477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDgVImQjA2oF1AEAu9opvQ
-	(envelope-from <stable+bounces-245477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:56:04 +0200
+	id 6OChIVchA2r10gEAu9opvQ
+	(envelope-from <stable+bounces-245478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:47:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3B9520827
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:56:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0267D52065B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8B7B3056504
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:37:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C1A030778E0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EF239733A;
-	Tue, 12 May 2026 12:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC293AB5AB;
+	Tue, 12 May 2026 12:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WulKnF66"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHh1jqD8"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6D4C77D4
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FCB3812F8
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778589313; cv=none; b=MVzP1z2annO6DMGzeFgZ/UYg6JfKDnzors8b7f1O1taRBBeg85dH2cgsh9+woHYMYiuUjEOs22ud9WX5V8Ie/xJT5pGBnS8UWoQPm2GQ68n+qPXhYB2S7BRM/cl/iWNcpKXOi2RdmtY9x0sn4v0CoTBgqHT40LC+6no3c1v0XxA=
+	t=1778589447; cv=none; b=oIDy5paHUUlQI8xWqbNM5VPkVws/dDojyQePkUlSt+thnEJEhX7XT2bda7YDyK/oKZtEZF5dwb3Xh66lZsyOkv/CUHQ/kVVYWWwCX841Cly7zEuBpQUYhzOYglqFWNIqrLZgmXK5YVU+ZaNrc4RSWdKVhw0aAXHHVeJPGkOkzXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778589313; c=relaxed/simple;
-	bh=853CF/ipdIOZWSBvml99qDygptnRkJVXQwOPCjZS9T4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9Brj0KFqeVxgG16czyS4StngJPcFoBq4467if2VMoyKLaSvH3UNc2bT3157U1JEXstf7/cffLpNyAOXOIav1KQN/i11LxnsJMG/HeEmp1pBtsWnHDI1Axcb5s++hU9f/+brl8SKLmPlCNtjXCF0NfY1PsNF2TBvpZf6V0ziIzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WulKnF66; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778589302;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gap7WXFqPLGHG+h8WlKiOQ50JtpUJcaaxJqkfmLdmEA=;
-	b=WulKnF66h8e3ifUUxgdzlHj86Tm5KSUAbolMZ8BOt0h8vDFSvQUTg+0lbuTY4E4fXKTC/q
-	qVOXK77HP29jXo2eXV9UaykaE9MBk5ycQoqpHWyqx301/bq4bEvVlXk4xuY21By1uz/uae
-	EfiP7+UxoXS7l5LJrlqdpNOP6DJe2qA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-164-v1BCWvwDO-aUdYWifMv6FQ-1; Tue,
- 12 May 2026 08:34:56 -0400
-X-MC-Unique: v1BCWvwDO-aUdYWifMv6FQ-1
-X-Mimecast-MFC-AGG-ID: v1BCWvwDO-aUdYWifMv6FQ_1778589295
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F46119560B1;
-	Tue, 12 May 2026 12:34:55 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.48.83])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BE0AE180034E;
-	Tue, 12 May 2026 12:34:51 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiaoli Feng <xifeng@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v6 09/24] netfs: fix error handling in netfs_extract_user_iter()
-Date: Tue, 12 May 2026 13:33:46 +0100
-Message-ID: <20260512123404.719402-10-dhowells@redhat.com>
-In-Reply-To: <20260512123404.719402-1-dhowells@redhat.com>
-References: <20260512123404.719402-1-dhowells@redhat.com>
+	s=arc-20240116; t=1778589447; c=relaxed/simple;
+	bh=DuVMza5iUPIUJ4S/iW1odGNYnuaSTN2j4lTMGVIW3vA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c81YJrlSOVee+yA8KmI5h/jOftW8j/B9HPyFDMEsDZ3o3hhTjhE/W4q59X9zJN6SyvMY3qcXiTHRaOeTIaW0KVQXNWZkfq9ZLY1yqTUmEtrl3cRpB0NPBbmylwAS+BGRvnw8hytcDfNEe6Kn/BdNO6JQMzMCbwsjVaoz+hfv1vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHh1jqD8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8155C2BCF5
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:37:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778589445;
+	bh=DuVMza5iUPIUJ4S/iW1odGNYnuaSTN2j4lTMGVIW3vA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IHh1jqD8sf6E2uD4LJwVhfO+jVfkFPhL/39nOClyfF8WOwfLGoQQZVGvFSwtdmhVb
+	 M6PAykrUbmkc+jL3MoUjk2phL2t2tl2N7EhPtGfSDapynF8rMG8cbT+M8JcQysh7GI
+	 CWFxV78/bOv3FYWt8UPh/RIPGjQN59PneEsHEJWGiqnBVyPujqKd+Ss8lLPjbjURb/
+	 blOxFUWtm3A8uCBO3xznVUIZaEUEg2JiuA8cAnwySgOud6+fF71HOxXVAjSiGSBqPc
+	 vdmhiTc2qS9IToMdslLiFkk4S6rQDEBDJtH49usg7nTnrO+PY4ttwr9qE4ZqvUZTGM
+	 mEYjnWruzCo4A==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-394413a63d3so3629011fa.1
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 05:37:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8+4EvvCkkHMKlQPJJ/eHdq+lXpw2hzFo9J73nnW80xf4ZFWib9ch/mVCs+gpTGUDloy1KNzbc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQx4uOAyRzbdiDA+zY+LGMWvlCz255eDStJL+DZJrBfvP/YWK/
+	DMCVNmmly82ZmsAKGRUgzbIixfDTzz8k4h0OM9M2+m/dq5P4LeTzragJQihq+bQea2QXzKabdHH
+	sMmtOJKtKDEoJu8MJPWh3aBfgu/qRt7g=
+X-Received: by 2002:a05:6512:3e21:b0:5a8:6799:efb1 with SMTP id
+ 2adb3069b0e04-5a887cdebbcmr10041896e87.25.1778589444177; Tue, 12 May 2026
+ 05:37:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: 2F3B9520827
+References: <20260511235328.2018458-1-srinivas.pandruvada@linux.intel.com>
+ <CAJZ5v0gVK7qF9Bfw952Vkb+-5WPOH+_M9-bRAwjJvHX3U=WOOg@mail.gmail.com> <3a6b3499a8f2d39bac2bcf483ee48123823795d9.camel@linux.intel.com>
+In-Reply-To: <3a6b3499a8f2d39bac2bcf483ee48123823795d9.camel@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 12 May 2026 14:37:12 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0imv=-NRy1e1mvEYFcyryr7kqyCu+nEzGW=S+PSzDJHWA@mail.gmail.com>
+X-Gm-Features: AVHnY4IZwyXmkNFk0i4LY7dMWA8hpaVkHe6hl_rw0wYZtQ8G-cI_hn4pYoRoARY
+Message-ID: <CAJZ5v0imv=-NRy1e1mvEYFcyryr7kqyCu+nEzGW=S+PSzDJHWA@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq: intel_pstate: Fix Raptor Lake-E cpufreq limits
+To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, viresh.kumar@linaro.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Henry Tseng <henrytseng@qnap.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0267D52065B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245477-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245478-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,manguebit.org:email,linux.dev:email]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qnap.com:email]
 X-Rspamd-Action: no action
 
-From: Paulo Alcantara <pc@manguebit.org>
+On Tue, May 12, 2026 at 1:15=E2=80=AFPM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> On Tue, 2026-05-12 at 12:20 +0200, Rafael J. Wysocki wrote:
+> > On Tue, May 12, 2026 at 1:53=E2=80=AFAM Srinivas Pandruvada
+> > <srinivas.pandruvada@linux.intel.com> wrote:
+> > >
+> > > Raptor Lake-E processors are not correctly showing cpufreq
+> > > frequency
+> > > limits.
+> > >
+> > > These CPUs don't set X86_FEATURE_HYBRID_CPU and have no E-cores,
+> > > but
+> > > P-cores still use hybrid scaling factor.
+> > >
+> > > commit 0fcfc9e51990 ("cpufreq: intel_pstate: Fix scaling for
+> > > hybrid-capable systems with disabled E-cores") added support for
+> > > such configuration. Here using CPPC nominal freq and perf was
+> > > compared
+> > > to still return hybrid scaling factor.
+> > >
+> > > Commit 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get
+> > > scaling
+> > > factors") restructured hwp_get_cpu_scaling() and added an explicit
+> > > check
+> > > for X86_FEATURE_HYBRID_CPU and when not set returns core scaling
+> > > factor.
+> > >
+> > > To address this remove check for X86_FEATURE_HYBRID_CPU and call
+> > > intel_pstate_cppc_get_scaling().
+> > >
+> > > Ideally this change should be enough. But using CPPC for scaling
+> > > factor
+> > > results in rounding error, so still doesn't restore the original
+> > > behavior.
+> > >
+> > > In intel_pstate_cppc_get_scaling() return core scaling factor when
+> > > ACPI CPPC is not present or when CPPC nominal frequency or nominal
+> > > performance are invalid.
+> > >
+> > > Use hybrid_scaling_factor for P-cores when defined for a CPU, if
+> > > not
+> > > calculate from ACPI CPPC nominal frequency and performance.
+> > >
+> > > Fixes: 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get
+> > > scaling factors")
+> > > Reported-by: Henry Tseng <henrytseng@qnap.com>
+> > > Closes:
+> > > https://lore.kernel.org/linux-pm/20260508063032.3248602-1-henrytseng@=
+qnap.com/
+> > > Signed-off-by: Srinivas Pandruvada
+> > > <srinivas.pandruvada@linux.intel.com>
+> > > Cc: stable@vger.kernel.org
+> > > ---
+> > >  drivers/cpufreq/intel_pstate.c | 29 +++++++++++++++--------------
+> > >  1 file changed, 15 insertions(+), 14 deletions(-)
+> > >
+> > > diff --git a/drivers/cpufreq/intel_pstate.c
+> > > b/drivers/cpufreq/intel_pstate.c
+> > > index 1292da53e5fc..0379efdee5f8 100644
+> > > --- a/drivers/cpufreq/intel_pstate.c
+> > > +++ b/drivers/cpufreq/intel_pstate.c
+> > > @@ -421,15 +421,23 @@ static int intel_pstate_cppc_get_scaling(int
+> > > cpu)
+> > >  {
+> > >         struct cppc_perf_caps cppc_perf;
+> > >
+> > > +       if (cppc_get_perf_caps(cpu, &cppc_perf) ||
+> > > !cppc_perf.nominal_freq ||
+> > > +           !cppc_perf.nominal_perf)
+> > > +               goto core_scaling;
+> > > +
+> > > +       if (cppc_perf.nominal_perf * 100 =3D=3D cppc_perf.nominal_fre=
+q)
+> > > +               goto core_scaling;
+> > > +
+> > > +       if (hybrid_scaling_factor)
+> > > +               return hybrid_scaling_factor;
+> > > +
+> > >         /*
+> > > -        * Compute the perf-to-frequency scaling factor for the
+> > > given CPU if
+> > > -        * possible, unless it would be 0.
+> > > +        * Compute the perf-to-frequency scaling factor for the
+> > > given CPU
+> > > +        * from nominal freq and nominal_perf
+> > >          */
+> > > -       if (!cppc_get_perf_caps(cpu, &cppc_perf) &&
+> > > -           cppc_perf.nominal_perf && cppc_perf.nominal_freq)
+> > > -               return div_u64(cppc_perf.nominal_freq *
+> > > KHZ_PER_MHZ,
+> > > -                              cppc_perf.nominal_perf);
+> > > +       return div_u64(cppc_perf.nominal_freq * KHZ_PER_MHZ,
+> > > cppc_perf.nominal_perf);
+> > >
+> > > +core_scaling:
+> > >         return core_get_scaling();
+> > >  }
+> > >
+> > > @@ -2281,17 +2289,10 @@ static int hwp_get_cpu_scaling(int cpu)
+> > >                  */
+> > >                 if (hybrid_get_cpu_type(cpu) =3D=3D
+> > > INTEL_CPU_TYPE_CORE)
+> > >                         return hybrid_scaling_factor;
+> > > -
+> > > -               return core_get_scaling();
+> >
+> > Why is this change necessary or even useful?
+> >
+> > This is about E-cores (because P-cores have been covered above) and
+> > if
+> > hybrid_scaling_factor is set, it is known that the processor is
+> > hybrid
+> > and E-cores have the "core" scaling factor.
+> >
+> > Or is Raptor Lake-E covered by one of the
+> > intel_hybrid_scaling_factor[] entries and hybrid_get_cpu_type(cpu)
+> > doesn't return INTEL_CPU_TYPE_CORE on it?  This piece of information
+> > is missing from the changelog.
+>
+> Raptor Lake-E (Xeon) uses CPU model as Raptor Lake-S, for which there
+> is already a hardcoded scaling factor in the driver.
 
-In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
-extract user pages, bail out on -ENOMEM, otherwise return the error
-code only if @npages == 0, allowing short DIO reads and writes to be
-issued.
+This piece of information needs to be added to the changelog in the
+first place because it is key here.
 
-This fixes mmapstress02 from LTP tests against CIFS.
+> So this "if" block will enter. But since there is no hybrid CPUID feature=
+ is defined,
+> hybrid_get_cpu_type(cpu) will return 0 for P-core or E-core. Here there
+> are no E-cores. So need to remove core_get_scaling() as this will
+> return non hybrid factor.
 
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Reported-by: Xiaoli Feng <xifeng@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Cc: netfs@lists.linux.dev
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
+Well, what about this:
+
 ---
- fs/netfs/iterator.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/cpufreq/intel_pstate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 6903028b7162..429e4396e1b0 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -22,7 +22,7 @@
-  *
-  * Extract the page fragments from the given amount of the source iterator and
-  * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to disposed of.
-+ * the original iterator to be disposed of.
-  *
-  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-  * allowed on the pages extracted.
-@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		ret = iov_iter_extract_pages(orig, &pages, count,
- 					     max_pages - npages, extraction_flags,
- 					     &offset);
--		if (ret < 0) {
--			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
-+		if (unlikely(ret <= 0)) {
-+			ret = ret ?: -EIO;
- 			break;
- 		}
- 
-@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		npages += cur_npages;
- 	}
- 
-+	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
-+		for (i = 0; i < npages; i++)
-+			unpin_user_page(bv[i].bv_page);
-+		kvfree(bv);
-+		return ret;
-+	}
-+
- 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
- 	return npages;
- }
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2279,7 +2279,7 @@ static int hwp_get_cpu_scaling(int cpu)
+          * Return the hybrid scaling factor for P-cores and use the
+          * default core scaling for E-cores.
+          */
+-        if (hybrid_get_cpu_type(cpu) =3D=3D INTEL_CPU_TYPE_CORE)
++        if (hybrid_get_cpu_type(cpu) !=3D INTEL_CPU_TYPE_ATOM)
+             return hybrid_scaling_factor;
 
+         return core_get_scaling();
+
+Or is the original Raptor Lake-S scaling factor unsuitable for Raptor Lake-=
+E?
+
+>
+>
+> >
+> > >         }
+> > >
+> > > -       /* Use core scaling on non-hybrid systems. */
+> > > -       if (!cpu_feature_enabled(X86_FEATURE_HYBRID_CPU))
+> > > -               return core_get_scaling();
+> > > -
+> >
+> > So we're now exposing all of the non-hybrid processors to the fun
+> > with
+> > possibly incorrectly populated CPPC, which is kind of risky.
+> >
+>
+> This was already used before with
+> commit0fcfc9e51990246a9813475716746ff5eb98c6aa
+> relying that all non hybrid processor (including servers) didn't set
+> nominal frequency, so will return core_scaling without using CPPC.
+> I retested change on servers and non hybrids.
+>
+> > If Raptor Lake-E is not covered by an existing
+> > intel_hybrid_scaling_factor[] entry, why don't we add one for it with
+> > a "scaling factor" value indicating that CPPC needs to be used for
+> > computing it on all CPUs?
+>
+> It is already covered by existing, but we can only call
+> for intel_pstate_cppc_get_scaling() when hybrid_scaling_factor is
+> defined. This will require a hardcoding for Bartlett Lake also which
+> uses different CPU model, which Henry Tseng is planing to send.
+
+I would add a new intel_hybrid_scaling_factor[] entry for Bartlett
+Lake then with a proper scaling factor along with the change above.
 
