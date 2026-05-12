@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOUnAhxxA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:27:40 +0200
+	id QCGlHAFqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668A052797D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:27:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4F652655D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3254032B1D97
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9AD130E5B7B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A372366548;
-	Tue, 12 May 2026 18:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16CA3DD844;
+	Tue, 12 May 2026 17:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dufzb/Ci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXrvOXQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8497342509;
-	Tue, 12 May 2026 18:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846DF3C0A1A;
+	Tue, 12 May 2026 17:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609499; cv=none; b=NpNv5xyphukPkpmKiM9Vd+miR3f9AW6b3CJIYl15Jii58qmVBObeKg/e7jmsKQH2tLcR5cs3eDMDCHU4zJoWHYT3gpJraExMNdthSZoH9c72tpI08YzFQuOX5aVHSqbQxytgALYikI1mnU0qLRt/vaBX6zwKDL4gmP5e4wgH8gE=
+	t=1778608121; cv=none; b=CuV1KBdjugVbJiF46cPFqcRaXAZoGRg56HCjv9OqP8obq+cMXN9uN3u2ZFZZBplflvGH9daigm3a0uEEdCL7nf7gA9loaQpSHC/bjZ9zygq850Ta0Ss/77HpNNJVFSporOca97oUQhTkFCxXeNCkTwkuuY3bMgLlmmf5I0C/QCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609499; c=relaxed/simple;
-	bh=Y4iH4ObgExJ3xARiwLEMqC1s5SbjqYK+ebEicaEK7XI=;
+	s=arc-20240116; t=1778608121; c=relaxed/simple;
+	bh=x32BXy56QJ32nOYGgiyMLY417o9i08240Eej2MVzdEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8/hapzSNscJO+PhSLy47P3UwsHaX3L3dxNS6L71QaCgcVm7f1derw5A+P8QjVgTMqLVhBP5eP+h+FBgaZ2Jbd48rTEfBlTTIvzsYqmMhMyWCM180KAKPCmUcbqdCKEG/g3G+b8W+bSM4McscE3rTVVAvOD8w4AhitTmjIEeFOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dufzb/Ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3818DC2BCB0;
-	Tue, 12 May 2026 18:11:39 +0000 (UTC)
+	 MIME-Version; b=SCWrWh0IazMOTwyv03qsTMQ8XWSS/4DBXQT8W/YISI4xflYxTZNRvu3wJyG2nGWrHrF0ZbRzFQDESXJSXkVVgA5MayoE1w6SzjEw2jpOqCwKSJNcxtOFr/dZ4Zr/OdBvaJAFK1snyNw2x2bjoLAyYsTW8eCvaPVSWlvEV4qerVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXrvOXQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184F4C2BCC7;
+	Tue, 12 May 2026 17:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609499;
-	bh=Y4iH4ObgExJ3xARiwLEMqC1s5SbjqYK+ebEicaEK7XI=;
+	s=korg; t=1778608121;
+	bh=x32BXy56QJ32nOYGgiyMLY417o9i08240Eej2MVzdEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dufzb/Ci5IzaFIjxzPFBr/0jRYPZ9NaD1bLLS08tTi5y4IsJV5qU7upTScsTsZ7bd
-	 4LqWhBfY8luqlWnP07pBmgRFsWwT4Y/2D5hinc1irrsszNC/7wDLipW3mKNYzF+juS
-	 jJOsnetJsIh9g31xdbgNNfX8A3Wwt36c60O0dUvo=
+	b=IXrvOXQZy2+J9kyl/Jawt18S+ylq3bY9axZdHRsoCHwy3u/oDbtzrlwqe0/wfOKEk
+	 kXFNq+j/QmaLIXp45mAnKKP/gVgKyzLsANuaTGfT9DZWSKO1FyTU/gxJTWmMP4fpcX
+	 Vxlk4fRhqXs2O7dYTpZ5CkAtwu5Nw0gTkVppbmYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 220/307] mm/damon/sysfs-schemes: protect memcg_path kfree() with damon_sysfs_lock
-Date: Tue, 12 May 2026 19:40:15 +0200
-Message-ID: <20260512173944.760682768@linuxfoundation.org>
+	Cen Zhang <zzzccc427@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 164/206] f2fs: add READ_ONCE() for i_blocks in f2fs_update_inode()
+Date: Tue, 12 May 2026 19:40:16 +0200
+Message-ID: <20260512173936.336658673@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,26 +64,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 668A052797D
+X-Rspamd-Queue-Id: 2C4F652655D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246544-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-246008-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -93,83 +93,46 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Cen Zhang <zzzccc427@gmail.com>
 
-commit 1e68eb96e8beb1abefd12dd22c5637795d8a877e upstream.
+commit 5471834a96fb697874be2ca0b052e74bcf3c23d1 upstream.
 
-Patch series "mm/damon/sysfs-schemes: fix use-after-free for [memcg_]path".
+f2fs_update_inode() reads inode->i_blocks without holding i_lock to
+serialize it to the on-disk inode, while concurrent truncate or
+allocation paths may modify i_blocks under i_lock.  Since blkcnt_t is
+u64, this risks torn reads on 32-bit architectures.
 
-Reads of 'memcg_path' and 'path' files in DAMON sysfs interface could race
-with their writes, results in use-after-free.  Fix those.
+Following the approach in ext4_inode_blocks_set(), add READ_ONCE() to prevent
+potential compiler-induced tearing.
 
-
-This patch (of 2):
-
-damon_sysfs_scheme_filter->mmecg_path can be read and written by users,
-via DAMON sysfs memcg_path file.  It can also be indirectly read, for the
-parameters {on,off}line committing to DAMON.  The reads for parameters
-committing are protected by damon_sysfs_lock to avoid the sysfs files
-being destroyed while any of the parameters are being read.  But the
-user-driven direct reads and writes are not protected by any lock, while
-the write is deallocating the memcg_path-pointing buffer.  As a result,
-the readers could read the already freed buffer (user-after-free).  Note
-that the user-reads don't race when the same open file is used by the
-writer, due to kernfs's open file locking.  Nonetheless, doing the reads
-and writes with separate open files would be common.  Fix it by protecting
-both the user-direct reads and writes with damon_sysfs_lock.
-
-Link: https://lore.kernel.org/20260423150253.111520-1-sj@kernel.org
-Link: https://lore.kernel.org/20260423150253.111520-2-sj@kernel.org
-Fixes: 4f489fe6afb3 ("mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write")
-Co-developed-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 19f99cee206c ("f2fs: add core inode operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs-schemes.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/f2fs/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -533,9 +533,14 @@ static ssize_t memcg_path_show(struct ko
- {
- 	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
- 			struct damon_sysfs_scheme_filter, kobj);
-+	int len;
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -663,7 +663,7 @@ void f2fs_update_inode(struct inode *ino
+ 	ri->i_uid = cpu_to_le32(i_uid_read(inode));
+ 	ri->i_gid = cpu_to_le32(i_gid_read(inode));
+ 	ri->i_links = cpu_to_le32(inode->i_nlink);
+-	ri->i_blocks = cpu_to_le64(SECTOR_TO_BLOCK(inode->i_blocks) + 1);
++	ri->i_blocks = cpu_to_le64(SECTOR_TO_BLOCK(READ_ONCE(inode->i_blocks)) + 1);
  
--	return sysfs_emit(buf, "%s\n",
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	len = sysfs_emit(buf, "%s\n",
- 			filter->memcg_path ? filter->memcg_path : "");
-+	mutex_unlock(&damon_sysfs_lock);
-+	return len;
- }
- 
- static ssize_t memcg_path_store(struct kobject *kobj,
-@@ -550,8 +555,13 @@ static ssize_t memcg_path_store(struct k
- 		return -ENOMEM;
- 
- 	strscpy(path, buf, count + 1);
-+	if (!mutex_trylock(&damon_sysfs_lock)) {
-+		kfree(path);
-+		return -EBUSY;
-+	}
- 	kfree(filter->memcg_path);
- 	filter->memcg_path = path;
-+	mutex_unlock(&damon_sysfs_lock);
- 	return count;
- }
- 
+ 	if (!f2fs_is_atomic_file(inode) ||
+ 			is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
 
 
 
