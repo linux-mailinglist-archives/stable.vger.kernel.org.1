@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-246246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBiGDtNsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:23 +0200
+	id uACMJOJvA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20F1526E4D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF485276F1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9221530EF949
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D19013107093
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2F83EDE5F;
-	Tue, 12 May 2026 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BBF36A378;
+	Tue, 12 May 2026 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBgzv4W0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMnUONKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB373EDE49;
-	Tue, 12 May 2026 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096CE36C9E4;
+	Tue, 12 May 2026 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608734; cv=none; b=F8Ko1ggfW9SdgcX6aldI/LzgffCuChLSOjJoR+jQqmFahMn545GYOIl60//eYO2AuXmheOwJOYEOJsb6NPlg3Dbq6S+Ac7YvAEheeJGPeGIMCgn6Lo2YzIWrnUf/Fh9n1KVRsFh/7wVraHZ32KisXI+LqIG7BD8BrA8vhjGSuPU=
+	t=1778609587; cv=none; b=ZoiUNxDoUckwwOhfOj7iltkq1wgm/ap2nTSF0s5Wpw9dLjyJW0s3zFUVy3Af39C+YgwaOEdYLKEwIKbUFYA59yDGFHLM2RRIkXLFRb8HBrVeZuxjUW9DCzG2g3Be/NqqeRZTUAiIjCmak+PwcsEnjgZCfNFq0nUVT9quIVfwUZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608734; c=relaxed/simple;
-	bh=WlcT09aDDgIqhfEyUc3dIEeXiEIWx4hQ8C6b0SuLNCo=;
+	s=arc-20240116; t=1778609587; c=relaxed/simple;
+	bh=OHEPTOwYxo8jvRiqvOjUrPJZj1wjVwMbDOorHD39o10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhgVAMfxCmhZ8S+1UDSaBWvnigObGv5mExmtJdABeuKnRoo1IH/9dUSaqyyyxcIfJcsdLHDKiDOs0R9CcF7pZMoV0NLMBJ3B8hyzs/ye+XFyKNxbUgtBQwQLQMqf5659McPFxYTAZQh+mff1yu6snd0SUv0ynrdkNfGfD1P8IXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBgzv4W0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17918C2BCB0;
-	Tue, 12 May 2026 17:58:53 +0000 (UTC)
+	 MIME-Version; b=kp6zX7djje3DfJsRZ9brb9vFgD6CiOS9/kgzy3yhLHy3YGv6tmDoFAVzEZnAu8upfyMz/nUgL3bnnwYzzx0ZJFsSGt53yFbcQAc010nMm7j/BYpmKjeTgp4tyY9fUvciyDmU8tRIU8FOmOb5uXcuMTJm6sPONvRjkU2XNZmnyLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMnUONKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9453DC2BCB0;
+	Tue, 12 May 2026 18:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608734;
-	bh=WlcT09aDDgIqhfEyUc3dIEeXiEIWx4hQ8C6b0SuLNCo=;
+	s=korg; t=1778609586;
+	bh=OHEPTOwYxo8jvRiqvOjUrPJZj1wjVwMbDOorHD39o10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBgzv4W023L4tiWyFHd/2IQ8vvHcF01U2vzSxPMSsuyfQ88aTiyyDyxhH7gib1ePg
-	 G/VX3cCmfGUH8H//v20ZgrN6ytNlmszQqoMSBjjYfg1xwngicX3Tkpa4nUaiYtVhuJ
-	 8ZF26/K/APXPbGgZqatDlj/2lfQ7T6PgkuuTwwig=
+	b=xMnUONKQD46i6USZJGpe1HoLUwJSC7xZCNAHFoB/78G63OyPDR1frNqJgBib629KI
+	 BUx49jIFzMWMTdeCJYyNNHUCDMAnoA4YyrTRDVOKYmeCMLOn0U9ibb+PXix5xptxLK
+	 sCIYHZtonPxJqwFpmJKGxragHfuqwhIk+s/3ssU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.18 194/270] RDMA/mana: Fix error unwind in mana_ib_create_qp_rss()
-Date: Tue, 12 May 2026 19:39:55 +0200
-Message-ID: <20260512173942.533560535@linuxfoundation.org>
+	Shivam Kumar <skumar47@syr.edu>,
+	Shivam Kumar <kumar.shivam43666@gmail.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 7.0 201/307] nvmet-tcp: fix race between ICReq handling and queue teardown
+Date: Tue, 12 May 2026 19:39:56 +0200
+Message-ID: <20260512173944.362976120@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A20F1526E4D
+X-Rspamd-Queue-Id: 0FF485276F1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246246-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246579-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syr.edu,gmail.com,nvidia.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syr.edu:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Chaitanya Kulkarni <kch@nvidia.com>
 
-commit 6aaa978c6b6218cfac15fe1dab17c76fe229ce3f upstream.
+commit 5293a8882c549fab4a878bc76b0b6c951f980a61 upstream.
 
-Sashiko points out that mana_ib_cfg_vport_steering() is leaked, the normal
-destroy path cleans it up.
+nvmet_tcp_handle_icreq() updates queue->state after sending an
+Initialization Connection Response (ICResp), but it does so without
+serializing against target-side queue teardown.
 
+If an NVMe/TCP host sends an Initialization Connection Request
+(ICReq) and immediately closes the connection, target-side teardown
+may start in softirq context before io_work drains the already
+buffered ICReq. In that case, nvmet_tcp_schedule_release_queue()
+sets queue->state to NVMET_TCP_Q_DISCONNECTING and drops the queue
+reference under state_lock.
+
+If io_work later processes that ICReq, nvmet_tcp_handle_icreq() can
+still overwrite the state back to NVMET_TCP_Q_LIVE. That defeats the
+DISCONNECTING-state guard in nvmet_tcp_schedule_release_queue() and
+allows a later socket state change to re-enter teardown and issue a
+second kref_put() on an already released queue.
+
+The ICResp send failure path has the same problem. If teardown has
+already moved the queue to DISCONNECTING, a send error can still
+overwrite the state with NVMET_TCP_Q_FAILED, again reopening the
+window for a second teardown path to drop the queue reference.
+
+Fix this by serializing both post-send state transitions with
+state_lock and bailing out if teardown has already started.
+
+Use -ESHUTDOWN as an internal sentinel for that bail-out path rather
+than propagating it as a transport error like -ECONNRESET. Keep
+nvmet_tcp_socket_error() setting rcv_state to NVMET_TCP_RECV_ERR before
+honoring that sentinel so receive-side parsing stays quiesced until the
+existing release path completes.
+
+Fixes: c46a6465bac2 ("nvmet-tcp: add NVMe over TCP target driver")
 Cc: stable@vger.kernel.org
-Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=4
-Link: https://patch.msgid.link/r/7-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reported-by: Shivam Kumar <skumar47@syr.edu>
+Tested-by: Shivam Kumar <kumar.shivam43666@gmail.com>
+Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/qp.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvme/target/tcp.c |   26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
---- a/drivers/infiniband/hw/mana/qp.c
-+++ b/drivers/infiniband/hw/mana/qp.c
-@@ -236,13 +236,15 @@ static int mana_ib_create_qp_rss(struct
- 		ibdev_dbg(&mdev->ib_dev,
- 			  "Failed to copy to udata create rss-qp, %d\n",
- 			  ret);
--		goto fail;
-+		goto err_disable_vport_rx;
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -398,6 +398,19 @@ static void nvmet_tcp_build_pdu_iovec(st
+ 
+ static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
+ {
++	/*
++	 * Keep rcv_state at RECV_ERR even for the internal -ESHUTDOWN path.
++	 * nvmet_tcp_handle_icreq() can return -ESHUTDOWN after the ICReq has
++	 * already been consumed and queue teardown has started.
++	 *
++	 * If nvmet_tcp_data_ready() or nvmet_tcp_write_space() queues
++	 * nvmet_tcp_io_work() again before nvmet_tcp_release_queue_work()
++	 * cancels it, the queue must not keep that old receive state.
++	 * Otherwise the next nvmet_tcp_io_work() run can reach
++	 * nvmet_tcp_done_recv_pdu() and try to handle the same ICReq again.
++	 *
++	 * That is why queue->rcv_state needs to be updated before we return.
++	 */
+ 	queue->rcv_state = NVMET_TCP_RECV_ERR;
+ 	if (queue->nvme_sq.ctrl)
+ 		nvmet_ctrl_fatal_error(queue->nvme_sq.ctrl);
+@@ -922,11 +935,24 @@ static int nvmet_tcp_handle_icreq(struct
+ 	iov.iov_len = sizeof(*icresp);
+ 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
+ 	if (ret < 0) {
++		spin_lock_bh(&queue->state_lock);
++		if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
++			spin_unlock_bh(&queue->state_lock);
++			return -ESHUTDOWN;
++		}
+ 		queue->state = NVMET_TCP_Q_FAILED;
++		spin_unlock_bh(&queue->state_lock);
+ 		return ret; /* queue removal will cleanup */
  	}
  
- 	kfree(mana_ind_table);
- 
++	spin_lock_bh(&queue->state_lock);
++	if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
++		spin_unlock_bh(&queue->state_lock);
++		/* Tell nvmet_tcp_socket_error() teardown is in progress. */
++		return -ESHUTDOWN;
++	}
+ 	queue->state = NVMET_TCP_Q_LIVE;
++	spin_unlock_bh(&queue->state_lock);
+ 	nvmet_prepare_receive_pdu(queue);
  	return 0;
- 
-+err_disable_vport_rx:
-+	mana_disable_vport_rx(mpc);
- fail:
- 	while (i-- > 0) {
- 		ibwq = ind_tbl->ind_tbl[i];
+ }
 
 
 
