@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-246243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG/yCNltA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:45 +0200
+	id QF/vBzdtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69E75270F3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66B8526F7C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 74B6030046B1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E89A3042E1F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7CA3EDE62;
-	Tue, 12 May 2026 17:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A77B36A378;
+	Tue, 12 May 2026 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFJtrN7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjOu436V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30383EDE41;
-	Tue, 12 May 2026 17:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EC1352F86;
+	Tue, 12 May 2026 18:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608726; cv=none; b=eMWy2SD9DjfJwAOIg9sFjPAArsklAI+9hgetxlxFtPDJMs0nz/waP3BFzfIfCvlm6Rtn3fm8FQ0GP3KeRrdayIMQI25K5ezj+xyE8gCXvoYJHam39VxXCKoM3VLlCuO18kjomQ1MFV0dQ57A+8AM5FeB4OtnOz/X9TtNZFbFl3A=
+	t=1778609447; cv=none; b=MsLVIZGj1G3sR2F0fQ2ji8omwR/TM7pisKqlri6ef2yRVwlcXsp+pHYJZvUPkJGbW2B61tEdWUwaFutqLnrYEDupbdD2L37yjzdBMCH6QtllqqRM3yxZ4vD6Myerz3mMJpqQKyNCq8QO8/jHcD1E/MBKvXC2pwp1GojEE2qDNy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608726; c=relaxed/simple;
-	bh=oIkj7PieIMqmHyTJ0S3itbH77NiCZ6cO4X/lKgv0PLg=;
+	s=arc-20240116; t=1778609447; c=relaxed/simple;
+	bh=hjuI7dW9M07DUSQuJuSbc6XovRgEWBy/gGPBTWxI4G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVfmd9CXAONtsftPjhEEdJ5sYnIBPOwf3UGOF6fYybR6WAl3lZ6tqYCkdv5gMfdFdpF99bOxVVbD1XdZx+m7hqE4Pw063jNQEsF/a4GFVHqpkH1azCgBf8ufgj4o8/SClVV2jUyf4rE9INK/AeMZx9BlZZ+dWL3+a1G7y6VStxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFJtrN7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A806C2BCB0;
-	Tue, 12 May 2026 17:58:46 +0000 (UTC)
+	 MIME-Version; b=ngGAk3Zy8dEBhSnWbmCgOyqYxpJCoKwJrwDfcmbJ9Y6l4xth+RJJ07IqsRpcwrjI5Ch3ERIf1jz9cJU1K+81sBVFKmVG729jdRQlO0e3dYcVaIj1gaWY8BCi4YTR0uEHjsCuSqgIfYFtGlr2F+cgu/HxgmZIvpW3D/nfHfoXaFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjOu436V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68FF0C2BCB0;
+	Tue, 12 May 2026 18:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608726;
-	bh=oIkj7PieIMqmHyTJ0S3itbH77NiCZ6cO4X/lKgv0PLg=;
+	s=korg; t=1778609447;
+	bh=hjuI7dW9M07DUSQuJuSbc6XovRgEWBy/gGPBTWxI4G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFJtrN7BAaH5QYTWK8yha59jSFSgh626PVxjWoHIzS472Pah1IA1+SUyCldE+ZXwn
-	 nyIy+kKEBoAVX22p94v0qPdNM24Oc1Reb0t3+hqnYZwcJUP3+s3rbcczZtneCRoFrs
-	 SGDJ8TwYkwmKQusjHZL2VAZqKgNpN7s47fPaR0ko=
+	b=wjOu436VL/8ELCSEqfe+i0/iqM3x87Uu+0Z5J0SNZmsH/S8DKL3R+KtOUdE7Mayjd
+	 swmn68q8IMeIoJJRuE1zynzHN1UfhdQEya/F85vCNJZvjY8DyXX+lLrQB8dg5lseAp
+	 iXH1/zvZCNaYPIPqdJlYa1c68IeQn7mKWpdH+5aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.18 191/270] perf/x86/intel: Always reprogram ACR events to prevent stale masks
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	David Howells <dhowells@redhat.com>,
+	David Gow <davidgow@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 197/307] lib/scatterlist: fix temp buffer in extract_user_to_sg()
 Date: Tue, 12 May 2026 19:39:52 +0200
-Message-ID: <20260512173942.470016199@linuxfoundation.org>
+Message-ID: <20260512173944.277441958@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +67,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B69E75270F3
+X-Rspamd-Queue-Id: A66B8526F7C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246524-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246243-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,infradead.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,c--e.de:email,linux-foundation.org:email,suse.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 8ba0b706a485b1e607594cf4210786d517ad1611 upstream.
+commit 118cf3f55975352ac357fb194405031458186819 upstream.
 
-Members of an ACR group are logically linked via a bitmask of their
-hardware counter indices. If some members of the group are assigned new
-hardware counters during rescheduling, even events that keep their
-original counter index must be updated with a new mask.
+Instead of allocating a temporary buffer for extracted user pages
+extract_user_to_sg() uses the end of the to be filled scatterlist as a
+temporary buffer.
 
-Without this, an event will continue to use a stale acr_mask that
-references the old indices of its group peers. Ensure all ACR events are
-reprogrammed during the scheduling path to maintain consistency across
-the group.
+Fix the calculation of the start address if the scatterlist already
+contains elements.  The unused space starts at sgtable->sgl +
+sgtable->nents not directly at sgtable->nents and the temporary buffer is
+placed at the end of this unused space.
 
-Fixes: ec980e4facef ("perf/x86/intel: Support auto counter reload")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260430002558.712334-3-dapeng1.mi@linux.intel.com
+A subsequent commit will add kunit test cases that demonstrate that the
+patch is necessary.
+
+Pointed out by sashiko.dev on a previous iteration of this series.
+
+Link: https://lkml.kernel.org/r/20260326214905.818170-3-lk@c--e.de
+Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Gow <davidgow@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>	[v6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ lib/scatterlist.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1281,13 +1281,16 @@ int x86_perf_rdpmc_index(struct perf_eve
- 	return event->hw.event_base_rdpmc;
- }
+--- a/lib/scatterlist.c
++++ b/lib/scatterlist.c
+@@ -1123,8 +1123,7 @@ static ssize_t extract_user_to_sg(struct
+ 	size_t len, off;
  
--static inline int match_prev_assignment(struct hw_perf_event *hwc,
-+static inline int match_prev_assignment(struct perf_event *event,
- 					struct cpu_hw_events *cpuc,
- 					int i)
- {
-+	struct hw_perf_event *hwc = &event->hw;
-+
- 	return hwc->idx == cpuc->assign[i] &&
--		hwc->last_cpu == smp_processor_id() &&
--		hwc->last_tag == cpuc->tags[i];
-+	       hwc->last_cpu == smp_processor_id() &&
-+	       hwc->last_tag == cpuc->tags[i] &&
-+	       !is_acr_event_group(event);
- }
+ 	/* We decant the page list into the tail of the scatterlist */
+-	pages = (void *)sgtable->sgl +
+-		array_size(sg_max, sizeof(struct scatterlist));
++	pages = (void *)sg + array_size(sg_max, sizeof(struct scatterlist));
+ 	pages -= sg_max;
  
- static void x86_pmu_start(struct perf_event *event, int flags);
-@@ -1333,7 +1336,7 @@ static void x86_pmu_enable(struct pmu *p
- 			 * - no other event has used the counter since
- 			 */
- 			if (hwc->idx == -1 ||
--			    match_prev_assignment(hwc, cpuc, i))
-+			    match_prev_assignment(event, cpuc, i))
- 				continue;
- 
- 			/*
-@@ -1354,7 +1357,7 @@ static void x86_pmu_enable(struct pmu *p
- 			event = cpuc->event_list[i];
- 			hwc = &event->hw;
- 
--			if (!match_prev_assignment(hwc, cpuc, i))
-+			if (!match_prev_assignment(event, cpuc, i))
- 				x86_assign_hw_event(event, cpuc, i);
- 			else if (i < n_running)
- 				continue;
+ 	do {
 
 
 
